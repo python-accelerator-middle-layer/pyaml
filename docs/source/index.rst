@@ -22,8 +22,8 @@ With pyAML, it WILL be possible to (the software is at conceptualization stage):
 - **easy and friendly configuration**
 - many more features 
 
-
 .. toctree::
    :maxdepth: 2
    :caption: Contents:
 
+   apidocs/index
