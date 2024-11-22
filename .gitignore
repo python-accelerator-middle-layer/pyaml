@@ -51,6 +51,9 @@ coverage.xml
 .pytest_cache/
 cover/
 
+# DS 
+**/.DS_Store
+
 # Translations
 *.mo
 *.pot
