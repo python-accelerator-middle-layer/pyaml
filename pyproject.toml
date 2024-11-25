@@ -24,8 +24,7 @@ dynamic = ["version"]
 #license = {file = "LICENSE"}
 keywords = ["Accelerator", "Synchrotron", "Operation", "Tuning", "Digital Twin", "Commissioning", ]
 maintainers = [
-    {name = "pyAML collaboration", email = "none",
-     name = "Simone Maria Liuzzo", email = "simone.liuzzo@esrf.fr"}
+    {name = "Simone Maria Liuzzo", email = "simone.liuzzo@esrf.fr"}
 ]
 classifiers = [
     "Development Status :: 3 - Alpha",
