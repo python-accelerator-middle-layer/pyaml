@@ -1,4 +1,4 @@
-efaults:
+defaults:
   run:
     shell: bash
 
