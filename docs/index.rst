@@ -1,8 +1,3 @@
-.. pyAML documentation master file, created by
-   sphinx-quickstart on Fri Nov 22 14:38:57 2024.
-   You can adapt this file completely to your liking, but it should at least
-   contain the root `toctree` directive.
-
 pyAML documentation
 ===================
 
@@ -22,8 +17,22 @@ With pyAML, it WILL be possible to (the software is at conceptualization stage):
 - **easy and friendly configuration**
 - many more features 
 
-.. toctree::
-   :maxdepth: 2
-   :caption: Contents:
 
-   apidocs/index
+Package Reference
+=================
+
+.. toctree::
+   :caption: Modules
+   :maxdepth: 1
+   :glob:
+
+   modules/*
+
+
+Indices and tables
+==================
+
+* :ref:`genindex`
+* :ref:`modindex`
+* :ref:`search`
+
