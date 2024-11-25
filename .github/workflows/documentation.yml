@@ -20,7 +20,7 @@ jobs:
 
     - name: Install dependencies
       run: |
-        pip install -r requirements.txt
+        pip install --upgrade pip setuptools wheel
         pip install sphinx sphinx-rtd-theme
 
     - name: Build documentation
@@ -33,4 +33,3 @@ jobs:
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
         publish_dir: ./docs/_build/html
-        
