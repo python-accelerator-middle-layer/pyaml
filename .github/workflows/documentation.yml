@@ -1,39 +1,36 @@
-name: Docs CI
+name: Deploy Documentation
 
 on:
   push:
     branches:
-      - master
-  workflow_dispatch:
+      - main  # Déclencher sur la branche principale
 
 jobs:
-  build_and_publish_doc:
-
+  build:
     runs-on: ubuntu-latest
 
     steps:
-
-    - uses: actions/checkout@v4
-      with:
-        # Necessary to fetch tags and allow setuptools_scm
-        # see: https://github.com/pypa/setuptools_scm/issues/480
-        fetch-depth: 0
+    - name: Checkout code
+      uses: actions/checkout@v3
 
     - name: Set up Python
-      uses: actions/setup-python@v5
+      uses: actions/setup-python@v4
       with:
         python-version: 3.9
-        cache: pip
 
-    - name: Build and install at
-      run: python -m pip install ".[plot, doc]"
+    - name: Install dependencies
+      run: |
+        pip install -r requirements.txt
+        pip install sphinx sphinx-rtd-theme
 
-    - name: Compile docs
-      run: make html
-      working-directory: docs
+    - name: Build documentation
+      run: |
+        cd docs
+        make html  # Ou la commande spécifique pour générer votre documentation
 
-    - name: Publish Docs to gh-pages
-      uses: peaceiris/actions-gh-pages@373f7f263a76c20808c831209c920827a82a2847
+    - name: Deploy to GitHub Pages
+      uses: peaceiris/actions-gh-pages@v4
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
-        publish_dir: docs/_build/html
+        publish_dir: ./docs/_build/html
+        
