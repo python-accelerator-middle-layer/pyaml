@@ -11,12 +11,18 @@ on:  # Runs on any push event in a PR or any push event to master
 jobs:
   documentation:
     name: ${{ matrix.os }} / ${{ matrix.python-version }}
+    
     runs-on: ${{ matrix.os }}
+    
     strategy:
       matrix:  # only lowest supported Python on latest ubuntu
         os: [ubuntu-latest]
         python-version: [3.9]
-
+    
+    permissions:
+      issues: write
+      pull-requests: write
+  
     steps:
       - uses: actions/checkout@v4
 
