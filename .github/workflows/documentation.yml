@@ -1,35 +1,56 @@
-name: Deploy Documentation
+efaults:
+  run:
+    shell: bash
 
-on:
+on:  # Runs on any push event in a PR or any push event to master
+  pull_request:
   push:
     branches:
-      - main  # Déclencher sur la branche principale
+      - 'main'
 
 jobs:
-  build:
-    runs-on: ubuntu-latest
+  documentation:
+    name: ${{ matrix.os }} / ${{ matrix.python-version }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:  # only lowest supported Python on latest ubuntu
+        os: [ubuntu-latest]
+        python-version: [3.9]
 
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
-    - name: Set up Python
-      uses: actions/setup-python@v4
-      with:
-        python-version: 3.9
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+          cache: 'pip'
+          cache-dependency-path: '**/pyproject.toml'
 
-    - name: Install dependencies
-      run: |
-        pip install --upgrade pip setuptools wheel
-        pip install sphinx sphinx-rtd-theme
+      - name: Get full Python version
+        id: full-python-version
+        run: echo ::set-output name=version::$(python -c "import sys; print('-'.join(str(v) for v in sys.version_info))")
 
-    - name: Build documentation
-      run: |
-        cd docs
-        make html  # Ou la commande spécifique pour générer votre documentation
+      - name: Upgrade pip, setuptools and wheel
+        run: python -m pip install --upgrade pip setuptools wheel sphinx sphinx_rtd_theme
 
-    - name: Deploy to GitHub Pages
-      uses: peaceiris/actions-gh-pages@v4
-      with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}
-        publish_dir: ./docs/_build/html
+      - name: Install package
+        run: python -m pip install '.[docs]'
+
+      - name: Build documentation
+        run: python -m sphinx -b html docs ./doc_build -d ./doc_build
+
+      - name: Upload build artifacts  # upload artifacts so reviewers can have a quick look without building documentation from the branch locally
+        uses: actions/upload-artifact@v4
+        if: success() && github.event_name == 'pull_request'  # only for pushes in PR
+        with:
+          name: site-build
+          path: doc_build
+          retention-days: 5
+
+      - name: Upload documentation
+        if: success() && github.ref == 'refs/heads/master'  # only for pushes to master
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          BRANCH: main
