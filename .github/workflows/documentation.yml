@@ -46,7 +46,7 @@ jobs:
         run: python -m sphinx -b html docs ./doc_build -d ./doc_build
 
       - name: Upload build artifacts  # upload artifacts so reviewers can have a quick look without building documentation from the branch locally
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         if: success() && github.event_name == 'pull_request'  # only for pushes in PR
         with:
           name: site-build
