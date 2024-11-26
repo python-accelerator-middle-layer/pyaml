@@ -3,3 +3,6 @@ class loco():
 
     def run():
         """loco run help"""
+
+    def measure_orm():
+        """loco measure help"""
