@@ -1,11 +1,11 @@
 Core functions
 **************************
 
-.. automodule:: pyaml
+.. automodule:: pyAML.pyaml
     :members:
 
-.. automodule:: loco
+.. automodule:: LOCO.loco
     :members:
 
-.. automodule:: device
+.. automodule:: pyAML.device
     :members:
