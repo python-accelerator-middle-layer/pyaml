@@ -16,13 +16,23 @@ With pyAML, it WILL be possible to (the software is at conceptualization stage):
 - **easy and friendly configuration**
 - many more features 
 
+Installation
+------------
+pip support will be provided later. 
+for the moment: 
+
+.. code-block:: RST
+  git clone https://github.com/python-accelerator-middle-layer/pyaml.git
+
+
 Collaboration community
 ------------
 
-discussions
+Discussion
 ~~~~~~~~~~~~
 
-https://mattermost.hzdr.de/accelerator-middle-layer/channels/town-square
+`Mattermost <https://mattermost.hzdr.de/accelerator-middle-layer/channels/town-square>`_
+
 (please log in using Helmoltz ID, you will be prompt to access with your own lab/university credentials)
 
 Shared documents
