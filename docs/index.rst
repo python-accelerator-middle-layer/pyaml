@@ -19,10 +19,9 @@ With pyAML, it WILL be possible to (the software is at conceptualization stage):
 Installation
 ------------
 pip support will be provided later. 
-for the moment: 
+for the time being: 
 
-.. code-block:: RST
-  git clone https://github.com/python-accelerator-middle-layer/pyaml.git
+git clone https://github.com/python-accelerator-middle-layer/pyaml.git
 
 
 Collaboration community
