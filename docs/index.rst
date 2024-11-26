@@ -39,6 +39,15 @@ Shared documents
 
 to access the shared documents please ask S.Liuzzo for access rigths. 
 
+The pyAML "software requirement specification" document is visible here:
+https://www.overleaf.com/read/hnrqzhfpbvpp#ef8935
+
+to be added to editors list please write to S.Liuzzo
+
+Mailing list:
+~~~~~~~~~~~~
+to be added to the pyAML mailing list please write to S.Liuzzo
+
 
 Package Reference
 =================
