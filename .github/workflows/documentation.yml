@@ -61,7 +61,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           BRANCH: main
       
-      - id: deployment
+      - id: deployment to gh-pages
         uses: sphinx-notes/pages@v3
         with:
           publish: false
