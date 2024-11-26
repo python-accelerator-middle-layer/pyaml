@@ -54,13 +54,13 @@ jobs:
           path: ./docs/_build
           retention-days: 5
 
-      - name: Upload documentation
-        if: success() && github.ref == 'refs/heads/main'  # only for pushes to master
-        uses: JamesIves/github-pages-deploy-action@v4
-        with:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          BRANCH: gh-pages
-          folder: docs/_build # The folder the action should deploy.
+      # - name: Upload documentation
+      #   if: success() && github.ref == 'refs/heads/main'  # only for pushes to master
+      #   uses: JamesIves/github-pages-deploy-action@v4
+      #   with:
+      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      #     BRANCH: gh-pages
+      #     folder: docs/_build # The folder the action should deploy.
 
       - name: Trigger RTDs build
         uses: dfm/rtds-action@v1
