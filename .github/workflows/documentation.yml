@@ -60,3 +60,6 @@ jobs:
         with:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           BRANCH: main
+
+      - name: upload readthedocs
+        uses: readthedocs/actions/preview@v1
