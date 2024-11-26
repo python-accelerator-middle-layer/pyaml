@@ -60,7 +60,7 @@ jobs:
         with:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           BRANCH: gh-pages
-          folder: ./docs/_build # The folder the action should deploy.
+          folder: docs_build # The folder the action should deploy.
 
       - name: Trigger RTDs build
         uses: dfm/rtds-action@v1
