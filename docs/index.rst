@@ -1,7 +1,6 @@
 pyAML documentation
 ===================
 
-=============
 Introduction
 ------------
 
@@ -16,6 +15,20 @@ With pyAML, it WILL be possible to (the software is at conceptualization stage):
 - **flexible complex unit conversions**
 - **easy and friendly configuration**
 - many more features 
+
+Collaboration community
+------------
+
+discussions
+~~~~~~~~~~~~
+
+https://mattermost.hzdr.de/accelerator-middle-layer/channels/town-square
+(please log in using Helmoltz ID, you will be prompt to access with your own lab/university credentials)
+
+Shared documents
+~~~~~~~~~~~~
+
+to access the shared documents please ask S.Liuzzo for access rigths. 
 
 
 Package Reference
