@@ -4,8 +4,8 @@ Tuning Tools
 .. automodule:: tuning_tools.LOCO.loco
     :members:
 
-.. automodule:: tuning_tools.SOFB.slow_orbit_feedback
+.. automodule:: tuning_tools.SOFB.sofb
     :members:
 
-.. automodule:: tuning_tools.TUNE.loco
+.. automodule:: tuning_tools.TUNE.tune
     :members:
