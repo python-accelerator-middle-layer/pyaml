@@ -1,5 +1,5 @@
 """
-pyAML package
+slow orbit feedback package
 ~~~~~~~~~~~~~~~~
 
 pyAML
