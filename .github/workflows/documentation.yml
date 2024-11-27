@@ -61,9 +61,6 @@ jobs:
       #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       #     BRANCH: gh-pages
       #     folder: docs/_build # The folder the action should deploy.
-      - name: Compile docs
-      run: make html
-      working-directory: docs
 
       - name: Publish Docs to gh-pages
         uses: peaceiris/actions-gh-pages@373f7f263a76c20808c831209c920827a82a2847
