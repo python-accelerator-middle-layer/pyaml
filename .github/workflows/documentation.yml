@@ -8,21 +8,21 @@ on:  # Runs on any push event in a PR or any push event to master
     branches:
       - 'main'
 
-permissions:
-  actions: write
-  attestations: write
-  checks: write
-  contents: write
-  deployments: write
-  id-token: write
-  issues: write
-  discussions: write
-  packages: write
-  pages: write
-  pull-requests: write
-  repository-projects: write
-  security-events: write
-  statuses: write
+permissions: write-all
+#  actions: write
+#  attestations: write
+#  checks: write
+#  contents: write
+#  deployments: write
+#  id-token: write
+#  issues: write
+#  discussions: write
+#  packages: write
+#  pages: write
+#  pull-requests: write
+#  repository-projects: write
+#  security-events: write
+#  statuses: write
 
 jobs:
   documentation:
@@ -64,11 +64,24 @@ jobs:
 
       - name: Upload build artifacts  # upload artifacts so reviewers can have a quick look without building documentation from the branch locally
         uses: actions/upload-artifact@v4
-        if: success() && github.event_name == 'pull_request'  # only for pushes in PR
+        # if: success() && github.event_name == 'pull_request'  # only for pushes in PR
         with:
           name: site-build
           path: ./docs/_build
           retention-days: 5
+
+      - name: Trigger RTDs build
+        uses: dfm/rtds-action@v1
+        with:
+          webhook_url: ${{ secrets.RTDS_WEBHOOK_URL }}
+          webhook_token: ${{ secrets.RTDS_WEBHOOK_TOKEN }}
+          commit_ref: ${{ github.ref }}
+
+      - name: Publish Docs to gh-pages
+        uses: peaceiris/actions-gh-pages@373f7f263a76c20808c831209c920827a82a2847
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: docs/_build/html
 
       # - name: Upload documentation
       #   if: success() && github.ref == 'refs/heads/main'  # only for pushes to master
@@ -77,16 +90,5 @@ jobs:
       #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       #     BRANCH: gh-pages
       #     folder: docs/_build # The folder the action should deploy.
-
-      - name: Publish Docs to gh-pages
-        uses: peaceiris/actions-gh-pages@373f7f263a76c20808c831209c920827a82a2847
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: docs/_build/html
-          
-      - name: Trigger RTDs build
-        uses: dfm/rtds-action@v1
-        with:
-          webhook_url: ${{ secrets.RTDS_WEBHOOK_URL }}
-          webhook_token: ${{ secrets.RTDS_WEBHOOK_TOKEN }}
-          commit_ref: ${{ github.ref }}
+                
+     
