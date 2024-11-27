@@ -9,20 +9,6 @@ on:  # Runs on any push event in a PR or any push event to master
       - 'main'
 
 permissions: write-all
-#  actions: write
-#  attestations: write
-#  checks: write
-#  contents: write
-#  deployments: write
-#  id-token: write
-#  issues: write
-#  discussions: write
-#  packages: write
-#  pages: write
-#  pull-requests: write
-#  repository-projects: write
-#  security-events: write
-#  statuses: write
 
 jobs:
   documentation:
