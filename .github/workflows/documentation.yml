@@ -24,7 +24,7 @@ jobs:
     permissions:
       issues: write
       pull-requests: write
-      # contents: write
+      contents: write
       pages: write
 
     steps:
