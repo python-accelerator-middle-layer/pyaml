@@ -79,12 +79,6 @@ jobs:
           webhook_token: ${{ secrets.RTDS_WEBHOOK_TOKEN }}
           commit_ref: ${{ github.ref }}
 
-      # - name: Publish Docs to gh-pages
-      #   uses: peaceiris/actions-gh-pages@373f7f263a76c20808c831209c920827a82a2847
-      #   with:
-      #     github_token: ${{ secrets.GITHUB_TOKEN }}
-      #     publish_dir: docs/_build/html
-
       - name: Upload documentation
         if: success() && github.ref == 'refs/heads/main'  # only for pushes to master
         uses: JamesIves/github-pages-deploy-action@v4
@@ -92,5 +86,12 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           BRANCH: gh-pages
           folder: docs/_build # The folder the action should deploy.
+
+      # - name: Publish Docs to gh-pages
+      #   uses: peaceiris/actions-gh-pages@373f7f263a76c20808c831209c920827a82a2847
+      #   with:
+      #     github_token: ${{ secrets.GITHUB_TOKEN }}
+      #     publish_dir: docs/_build/html
+
                 
      
