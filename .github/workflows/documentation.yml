@@ -7,6 +7,8 @@ on:  # Runs on any push event in a PR or any push event to master
   push:
     branches:
       - 'main'
+      
+permissions: write-all
 
 jobs:
   documentation:
