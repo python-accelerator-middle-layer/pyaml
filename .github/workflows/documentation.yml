@@ -8,7 +8,7 @@ on:  # Runs on any push event in a PR or any push event to master
     branches:
       - 'main'
 
-# permissions: write-all
+permissions: write-all
 #  actions: write
 #  attestations: write
 #  checks: write
