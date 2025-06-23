@@ -1,6 +1,5 @@
 # PyAML factory (construct Yaml from config file)
 import importlib
-import pprint as pp
 
 #TODO
 #Implement trace for error management. Hints: Implement private field __file__ in dictionary to report errors.

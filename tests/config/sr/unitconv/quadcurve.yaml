@@ -1,2 +1,2 @@
 type: pyaml.configuration.CSVCurve
-fileName: tests/config/sr/unitconv/quadcurve.csv
+file: tests/config/sr/unitconv/QF1_strength.csv

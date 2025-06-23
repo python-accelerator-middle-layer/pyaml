@@ -8,7 +8,7 @@ cfg_quad = load("tests/config/sr/quadrupoles/QF1C01A.yaml")
 #pp.pprint(cfg_quad)
 quad:Quadrupole = depthFirstBuild(cfg_quad[0])
 uc:LinearUnitConv = quad.unitconv
-print(uc.curve[0])
+print(uc.curve[1])
 
 #cfg_quad2 = load("tests/config/sr/quadrupoles/QF1C01A_2.yaml")
 #pp.pprint(cfg_quad2)

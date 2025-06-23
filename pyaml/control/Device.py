@@ -3,7 +3,7 @@ Class providing access to a device of the control system
 """
 
 class Device(object):
-    def __init__(self,setpoint:str,readback:str):
+    def __init__(self,setpoint:str,readback:str,unit:str):
         pass
 
 def factory_constructor(config: dict) -> Device:

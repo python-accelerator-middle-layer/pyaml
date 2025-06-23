@@ -1,13 +1,18 @@
 import numpy as np
 from .UnitConv import UnitConv
+from pyaml.configuration.CSVCurve import CSVCurve
+from pyaml.configuration.Factory import checkType
+from pyaml.control.Device import Device
 
 class LinearUnitConv(UnitConv):
 
-    def __init__(self, calibration_factor = 1.0,calibration_offset = 0.0, curve: list = None, powerconverter: dict = None, unit: str = None):
-        print("LinearUnitConv()")
+    def __init__(self, curve: CSVCurve, powerconverter: Device, calibration_factor = 1.0,calibration_offset = 0.0, unit: str = None):
+        checkType(curve,CSVCurve,"LinearUnitConv");
+        checkType(powerconverter,Device,"LinearUnitConv");
+
         self.calibration_factor = calibration_factor
         self.calibration_offset = calibration_offset
-        self.curve = np.array(curve,dtype=float)
+        self.curve = curve.get_curve()
         self.unit = unit
 
     # Get coil current(s) from magnet strength(s)
