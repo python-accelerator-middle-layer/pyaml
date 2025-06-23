@@ -1,0 +1,6 @@
+Machine: sr
+Devices:
+  - type: pyaml.magnet.quadrupole
+    config: config/sr/quadrupoles/QF1.yaml
+  - type: pyaml.magnet.quadrupole
+    config: config/sr/quadrupoles/QD2.yaml

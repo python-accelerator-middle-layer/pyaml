@@ -1,0 +1,11 @@
+type: pyaml.magnet.LinearUnitConv
+calibration_factor: 1.00656
+calibration_offset: 0.0034
+curve: 
+  type: pyaml.configuration.CSVCurve
+  fileName: tests/config/sr/unitconv/quadcurve.yaml
+unit: 1/m
+powerconverter:
+  type: pyaml.control.Device
+  setpoint: sr/ps-qf1/c01-a/current
+  readback: sr/ps-qf1/c01-a/current

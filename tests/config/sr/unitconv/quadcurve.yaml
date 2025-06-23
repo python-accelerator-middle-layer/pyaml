@@ -1,0 +1,2 @@
+type: pyaml.configuration.CSVCurve
+fileName: tests/config/sr/unitconv/quadcurve.csv
