@@ -5,7 +5,7 @@ from .Curve import Curve
 import numpy as np
 
 class CSVCurve(Curve):
-
+    
     def __init__(self,file:str):
         # Load CSV curve
         self.curve = np.genfromtxt(file,delimiter=',',dtype=float)

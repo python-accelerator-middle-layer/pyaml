@@ -3,16 +3,13 @@ from .UnitConv import UnitConv
 from pyaml.control import Abstract
 from pyaml.control.Device import Device
 from pyaml.lattice.RWFloat import RWFloat
-from pyaml.configuration.Factory import checkType
+from pyaml.configuration.Factory import validate
 
 class Quadrupole(Magnet):
     """Quadrupole class"""
+    @validate
     def __init__(self, name:str, hardware:Device = None, unitconv: UnitConv = None):
         super().__init__(name)
-
-        # Check input type
-        checkType(hardware,Device,"Quadrupole %s" % (name));
-        checkType(unitconv,UnitConv,"Quadrupole %s" % (name))
 
         if(hardware is not None):
             # Direct access to a magnet device that supports strength/current conversion

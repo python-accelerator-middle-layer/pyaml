@@ -1,14 +1,13 @@
 import numpy as np
 from .UnitConv import UnitConv
 from pyaml.configuration.CSVCurve import CSVCurve
-from pyaml.configuration.Factory import checkType
+from pyaml.configuration.Factory import validate
 from pyaml.control.Device import Device
 
 class LinearUnitConv(UnitConv):
 
+    @validate
     def __init__(self, curve: CSVCurve, powerconverter: Device, calibration_factor = 1.0,calibration_offset = 0.0, unit: str = None):
-        checkType(curve,CSVCurve,"LinearUnitConv");
-        checkType(powerconverter,Device,"LinearUnitConv");
 
         self.calibration_factor = calibration_factor
         self.calibration_offset = calibration_offset

@@ -1,7 +1,8 @@
-# PyAML factory (construct Yaml from config file)
+# PyAML factory (construct AML objects from config files)
 import importlib
+import inspect
 
-#TODO
+#TODO:
 #Implement trace for error management. Hints: Implement private field __file__ in dictionary to report errors.
 
 """Build an object from the dict"""
@@ -29,8 +30,23 @@ def depthFirstBuild(d:dict):
   obj = buildObject(d)
   return obj
 
-"""Check type"""
-def checkType(obj,expectedType:type, msg:str):
-   if (obj is not None) and not isinstance(obj,expectedType):
-      raise Exception(msg + " " + str(expectedType) + " expected but got " + str(type(obj)))
-      
+"""Returns the class name of a method, or function name"""
+def getName(func):
+    if ".__init__" in func.__qualname__:
+        class_name = func.__qualname__.split('.')[-2]  # this prints the innermost type in case of nested classes
+        return f'{class_name}'
+    return func.__name__
+
+"""Type validator of a function"""
+def validate(func):
+    sig = inspect.signature(func)
+    def newFunc(*args, **kwargs):
+        arguments = sig.bind(*args, **kwargs).arguments
+        for arg, value in arguments.items():
+            if arg != "self":
+                expectedType = func.__annotations__[arg]
+                if not isinstance(value, expectedType):
+                    raise Exception( getName(func) + ", " + arg + ": " + 
+                                     str(expectedType) + " but got " + str(type(value)))
+        return func(*args, **kwargs)
+    return newFunc
