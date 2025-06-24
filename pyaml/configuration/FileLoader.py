@@ -5,6 +5,7 @@ from typing import Union
 
 #TODO
 #Implement cycle detection in case of wrong yaml/json link that create a cycle
+#Implement filname and line mapping for error reporting
 
 def load(fileName:str) -> Union[dict,list]:
     """
