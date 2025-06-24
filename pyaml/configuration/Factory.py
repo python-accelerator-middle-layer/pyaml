@@ -43,7 +43,7 @@ def validate(func):
     def newFunc(*args, **kwargs):
         arguments = sig.bind(*args, **kwargs).arguments
         for arg, value in arguments.items():
-            if arg != "self":
+            if arg in func.__annotations__:
                 expectedType = func.__annotations__[arg]
                 if not isinstance(value, expectedType):
                     raise Exception( getName(func) + ", " + arg + ": " + 

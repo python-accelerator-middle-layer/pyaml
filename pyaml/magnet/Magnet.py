@@ -6,9 +6,8 @@ class Magnet(Element.Element):
   Class providing access to one magnet of a physical or simulated lattice
 
   Attributes:
-  strength (ReadWriteScalar): Magnet strength
+  strength (ReadWriteFloatScalar): Magnet strength
   """
-
   def __init__(self, name=None):
     super().__init__(name)
 

@@ -5,7 +5,7 @@ from numpy import double,array
 
 class RWFloat(Abstract.ReadWriteFloatScalar):
     """
-    Class providing read write access to a scalar double variable of a simulator
+    Class providing read write access to a scalar double variable of a simulator or to control system
     """
 
     #def __init__(self,elementName:str,attrName:str,lattice:at.lattice, unitconv:UnitConv):

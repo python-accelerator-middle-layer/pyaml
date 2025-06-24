@@ -4,6 +4,9 @@ from pyaml.configuration.CSVCurve import CSVCurve
 from pyaml.configuration.Factory import validate
 from pyaml.control.Device import Device
 
+"""
+Class that handle manget current/strength conversion using linear interpolation for a single function magnet
+"""
 class LinearUnitConv(UnitConv):
 
     @validate
@@ -13,6 +16,7 @@ class LinearUnitConv(UnitConv):
         self.calibration_offset = calibration_offset
         self.curve = curve.get_curve()
         self.unit = unit
+        self.brho = np.NaN
 
     # Get coil current(s) from magnet strength(s)
     def get_currents(self,strengths:np.array) -> np.array:
@@ -22,6 +26,10 @@ class LinearUnitConv(UnitConv):
     # Get magnet strength(s) from coil current(s)
     def get_strengths(self,strengths:np.array) -> np.array:
         pass
+
+    # Set magnet rigidity
+    def set_magnet_rigidity(self,brho:np.double):
+        self.brho = brho
 
     def __repr__(self):
         return "%s(calibration_factor=%f, calibration_offset=%f, curve[%d], unit=%s)" % (

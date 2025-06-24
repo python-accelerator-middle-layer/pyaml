@@ -12,13 +12,12 @@ class Quadrupole(Magnet):
         super().__init__(name)
 
         if(hardware is not None):
-            # Direct access to a magnet device that supports strength/current conversion
             # TODO
+            # Direct access to a magnet device that supports strength/current conversion
             raise Exception("Quadrupole %s, hardware access not implemented" % (name))
-        elif(unitconv is not None):
-            self.unitconv = unitconv
-        else:
-            raise Exception("Quadrupole %s, no control system or model defined" % (name))
+
+        # In case of unitconv is none, no control system access possible
+        self.unitconv = unitconv 
 
         self.strength : Abstract.ReadWriteFloatScalar = RWFloat(self.unitconv)
 
