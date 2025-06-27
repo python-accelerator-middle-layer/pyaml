@@ -19,7 +19,6 @@ class RWArray(Abstract.ReadWriteFloatArray):
     # Sets the value
     def set(self, value:np.array) -> np.array:
         print("RWFloatArray: set" + str(value))
-        pass
         
     # Sets the value and waits that the read value reach the setpoint
     def set_and_wait(self, value:np.array):

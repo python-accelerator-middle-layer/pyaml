@@ -11,7 +11,8 @@ class CombinedFunctionMagnet(Magnet):
     def __init__(self, name:str, H:str=None,V:str=None,Q:str=None,SQ:str=None,S:str=None,O:str=None, unitconv: UnitConv = None):
         super().__init__(name)
 
-        self.unitconv = None
+        self.unitconv = unitconv
+
         # TODO Count number of defined strength
         # TODO Check that UnitConv is coherent (number of strengths same as number of defined single function magnet)
         self.multipole : Abstract.ReadWriteFloatArray = RWArray(name,self.unitconv,3) 
@@ -19,13 +20,13 @@ class CombinedFunctionMagnet(Magnet):
         idx = 0
         #Create single function magnet
         if H is not None:
-            self.quad = Quadrupole(Q)  # TODO implement HorizontalCorrector
-            self.quad.setSource(self.multipole,idx)
+            #self.horz = HorizontalCorrector(H)  # TODO implement HorizontalCorrector
+            #self.horz.setSource(self.multipole,idx)
             idx+=1 
 
         if V is not None:
-            self.quad = Quadrupole(Q) # TODO implement VerticalCorrector
-            self.quad.setSource(self.multipole,idx)
+            #self.vert = VerticalCorrector(V) # TODO implement VerticalCorrector
+            #self.setSource(self.multipole,idx)
             idx+=1 
 
         if Q is not None:

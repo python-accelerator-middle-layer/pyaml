@@ -3,7 +3,7 @@ from numpy import double,array
 
 class RWFloatMapper(Abstract.ReadWriteFloatScalar):
     """
-    Class mapping a srength to multipole (used for CombinedFunctionMagnet)
+    Class mapping a scalar to an element of an array
     """
     def __init__(self, bind:Abstract.ReadWriteFloatArray, idx:int):
         self.bind = bind
@@ -17,7 +17,7 @@ class RWFloatMapper(Abstract.ReadWriteFloatScalar):
     def set(self, value:double):
         arr = self.bind.get()
         arr[self.idx] = value
-        return self.bind.set(arr)
+        self.bind.set(arr)
 
     # Sets the value and wait that the read value reach the setpoint
     def set_and_wait(self, value:double):
