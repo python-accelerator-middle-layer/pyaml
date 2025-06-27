@@ -14,7 +14,7 @@ print(uc.curve[1])
 m =  CombinedFunctionMagnet("S1C01",H="S1C01-H",V="S1C01-V",Q="S1C01-Q")
 m.multipole.set([0,0,10])
 m.quad.strength.set(20)
-
+print(m.quad.name)
 #cfg_quad2 = load("tests/config/sr/quadrupoles/QF1C01A_2.yaml")
 #pp.pprint(cfg_quad2)
 

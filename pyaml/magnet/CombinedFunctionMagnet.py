@@ -12,18 +12,19 @@ class CombinedFunctionMagnet(Magnet):
         super().__init__(name)
 
         self.unitconv = None
-        # TODO count number of defined strength
+        # TODO Count number of defined strength
+        # TODO Check that UnitConv is coherent (number of strengths same as number of defined single function magnet)
         self.multipole : Abstract.ReadWriteFloatArray = RWArray(name,self.unitconv,3) 
 
         idx = 0
         #Create single function magnet
         if H is not None:
-            self.quad = Quadrupole(Q)  # Todo implements HorizontalCorrector
+            self.quad = Quadrupole(Q)  # TODO implement HorizontalCorrector
             self.quad.setSource(self.multipole,idx)
             idx+=1 
 
         if V is not None:
-            self.quad = Quadrupole(Q) # Todo implements VerticalCorrector
+            self.quad = Quadrupole(Q) # TODO implement VerticalCorrector
             self.quad.setSource(self.multipole,idx)
             idx+=1 
 

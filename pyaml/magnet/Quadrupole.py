@@ -1,6 +1,5 @@
 from .Magnet import Magnet
 from .UnitConv import UnitConv
-from pyaml.control import Element
 from pyaml.control import Abstract
 from pyaml.control.Device import Device
 from pyaml.lattice.RWFloat import RWFloat
@@ -27,7 +26,7 @@ class Quadrupole(Magnet):
 
     """Virtual single function magnet"""
     def setSource(self,source:Abstract.ReadWriteFloatArray,idx:int):
-        # Ovveride strengh, map single strenght to multipole
+        # Override strengh, map single strength to multipole
         self.strength : Abstract.ReadWriteFloatScalar = RWFloatMapper(source,idx)
 
     def __repr__(self):
