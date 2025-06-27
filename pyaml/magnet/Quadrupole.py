@@ -26,7 +26,7 @@ class Quadrupole(Magnet):
 
     """Virtual single function magnet"""
     def setSource(self,source:Abstract.ReadWriteFloatArray,idx:int):
-        # Override strengh, map single strength to multipole
+        # Override strength, map single strength to multipole
         self.strength : Abstract.ReadWriteFloatScalar = RWFloatMapper(source,idx)
 
     def __repr__(self):
