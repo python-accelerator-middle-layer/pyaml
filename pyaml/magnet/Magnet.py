@@ -4,6 +4,7 @@ class Magnet(Element.Element):
 
   """
   Class providing access to one magnet of a physical or simulated lattice
+  All classes that inherits from Magnet are single function Magnet
 
   Attributes:
   strength (ReadWriteFloatScalar): Magnet strength

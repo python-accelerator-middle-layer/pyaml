@@ -5,11 +5,11 @@ from numpy import double,array
 
 class RWFloat(Abstract.ReadWriteFloatScalar):
     """
-    Class providing read write access to a scalar double variable of a simulator or to control system
+    Class providing read write access to a scalar double variable of a simulator or to a control system
     """
 
     #def __init__(self,elementName:str,attrName:str,lattice:at.lattice, unitconv:UnitConv):
-    def __init__(self, unitconv:UnitConv):
+    def __init__(self, elementName:str,unitconv:UnitConv):
         self.unitconv = unitconv
 
         #Get element
