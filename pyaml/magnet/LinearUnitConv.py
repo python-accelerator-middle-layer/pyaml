@@ -16,7 +16,7 @@ class LinearUnitConv(UnitConv):
         self.calibration_offset = calibration_offset
         self.curve = curve.get_curve()
         self.unit = unit
-        self.brho = np.NaN
+        self.brho = np.nan
 
     # Get coil current(s) from magnet strength(s)
     def get_currents(self,strengths:np.array) -> np.array:
