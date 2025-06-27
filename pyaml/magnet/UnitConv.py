@@ -12,7 +12,7 @@ class UnitConv(metaclass=ABCMeta):
 
     # Get magnet strength(s) from coil current(s)
     @abstractmethod
-    def get_strengths(self,strengths:np.array) -> np.array:
+    def get_strengths(self,currents:np.array) -> np.array:
         pass
 
     # Set magnet rigidity

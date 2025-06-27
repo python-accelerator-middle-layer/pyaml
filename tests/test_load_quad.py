@@ -5,6 +5,10 @@ from pyaml.magnet.LinearUnitConv import LinearUnitConv
 from pyaml.magnet.Quadrupole import Quadrupole
 from pyaml.magnet.CombinedFunctionMagnet import CombinedFunctionMagnet
 
+# To run this one, please mak pip install . first in tests/external
+cfg_quad = load("tests/config/sr/quadrupoles/QEXT.yaml")
+quadWithExt:Quadrupole = depthFirstBuild(cfg_quad[0])
+
 cfg_quad = load("tests/config/sr/quadrupoles/QF1C01A.yaml")
 #pp.pprint(cfg_quad)
 quad:Quadrupole = depthFirstBuild(cfg_quad[0])

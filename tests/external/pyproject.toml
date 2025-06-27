@@ -1,0 +1,20 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.version]
+path = "pyaml_external/__init__.py"
+
+[tool.hatch.build.targets.wheel]
+packages = ["pyaml_external"]
+
+[project]
+name = "pyaml_external"
+description = "PyAML External module test"
+requires-python = ">=3.8"
+dynamic = ["version"]
+dependencies = [
+    "numpy>=1.21.0",
+    "scipy>=1.7.3",
+    "accelerator-toolbox>=0.6.1"
+]
