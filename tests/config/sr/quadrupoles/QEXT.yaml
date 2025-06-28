@@ -8,3 +8,8 @@
       setpoint: sr/ps-qf1/c01-a/current
       readback: sr/ps-qf1/c01-a/current
       unit: A
+    id:
+      type: pyaml.control.Device
+      setpoint: sr/id/c01-1/gap
+      readback: sr/id/c01-1/gap
+      unit: A      
