@@ -1,7 +1,8 @@
 from abc import ABCMeta, abstractmethod
 import numpy as np
+from pydantic import BaseModel
 
-class UnitConv(metaclass=ABCMeta):
+class UnitConv(BaseModel, metaclass=ABCMeta):
     """
     Abstract class providing strength to coil current conversion and access to underlying power supplies
     """

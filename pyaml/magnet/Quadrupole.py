@@ -6,35 +6,36 @@ from pyaml.lattice.RWStrengthScalar import RWStrengthScalar
 from pyaml.lattice.RWMapper import RWMapper
 from pyaml.lattice.RCurrentScalar import RCurrentScalar
 from pyaml.configuration.Factory import validate
+from typing import Optional
 
 class Quadrupole(Magnet):
     """Quadrupole class"""
-    @validate
-    def __init__(self, name:str, hardware:Device = None, unitconv: UnitConv = None):
-        super().__init__(name)
 
-        self.unitconv = None
-        
-        if hardware is not None:
+    hardware : Optional[Device] = None
+    unitconv : Optional[UnitConv] = None
+
+    #@validate
+    def __init__(self, **data):
+        super().__init__(**data)
+
+        if(self.hardware is not None):
             # TODO
             # Direct access to a magnet device that supports strength/current conversion
-            raise Exception("Quadrupole %s, hardware access not implemented" % (name))
-        else:
-            # In case of unitconv is none, no control system access possible
-            self.unitconv = unitconv
+            raise Exception("Quadrupole %s, hardware access not implemented" % (self.name))
 
-        self.strength : Abstract.ReadWriteFloatScalar = RWStrengthScalar(name,self.unitconv)
-        self.current : Abstract.ReadFloatScalar = RCurrentScalar(self.unitconv)
+        # In case of unitconv is none, no control system access possible
+        self._strength : Abstract.ReadWriteFloatScalar = RWStrengthScalar(self.name,self.unitconv)
+        self._current : Abstract.ReadFloatScalar = RCurrentScalar(self.unitconv)
 
     """Virtual single function magnet"""
     def setSource(self,source:Abstract.ReadWriteFloatArray,idx:int):
         # Override strength, map single strength to multipole
-        self.strength : Abstract.ReadWriteFloatScalar = RWMapper(source,idx)
+        self._strength : Abstract.ReadWriteFloatScalar = RWMapper(source,idx)
 
     def __repr__(self):
         return "%s(name=%s, unitconv=%s)" % (
             self.__class__.__name__, self.name, self.unitconv)
 
-def factory_constructor(config: dict) -> Quadrupole:
-   """Construct a Quadrupole from Yaml config file"""
-   return Quadrupole(**config)
+# def factory_constructor(config: dict) -> Quadrupole:
+#    """Construct a Quadrupole from Yaml config file"""
+#    return Quadrupole(**config)

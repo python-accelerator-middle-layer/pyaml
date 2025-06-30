@@ -1,19 +1,23 @@
 """
 Class providing access to a device of the control system
 """
-import numpy as np
+from pydantic import BaseModel
+from typing import Optional
 
-class Device(object):
-    def __init__(self,setpoint:str,readback:str,unit:str):
-        self.setpoint = setpoint
-        self.readback = readback
-        self.unit = unit
-        self.cache = 0.0 # Debugging purpose (to be removed)
+class Device(BaseModel):
+
+    setpoint : str
+    readback : Optional[str] = None
+    unit : Optional[str] = None
+
+    def __init__(self, **data):
+        super().__init__(**data)
+        self._cache = 0.0 # Debugging purpose (to be removed)
 
     # Sets the value
     def set(self,value:float):
         print("%s: set %f" % (self.setpoint,value))
-        self.cache = value
+        self._cache = value
 
     # Get the setpoint
     def get(self):

@@ -1,7 +1,8 @@
 from abc import ABCMeta, abstractmethod
 from numpy import array
+from pydantic import BaseModel
 
-class Curve(metaclass=ABCMeta):
+class Curve(BaseModel,metaclass=ABCMeta):
     """
     Abstract class providing access to a curve
     """

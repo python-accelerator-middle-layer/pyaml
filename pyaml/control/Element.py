@@ -1,9 +1,12 @@
-class Element(object):
+from pydantic import BaseModel
+from typing import Optional
+
+class Element(BaseModel):
     """
     Class providing access to one element of a physical or simulated lattice
 
     Attributes:
     name (str): The name identifying the element in configuration file
     """
-    def __init__(self,name=None):
-        self.name = name
+    
+    name : str

@@ -5,17 +5,21 @@ from .Curve import Curve
 import numpy as np
 
 class CSVCurve(Curve):
+
+    file : str
     
-    def __init__(self,file:str):
+    def __init__(self, **data):
+        super().__init__(**data)
+
         # Load CSV curve
-        self.curve = np.genfromtxt(file,delimiter=',',dtype=float)
-        s = np.shape(self.curve)
-        if len(s)!=2 or s[1]!=2:
-            raise Exception(file + " wrong dimension")
+        self._curve = np.genfromtxt(self.file,delimiter=',',dtype=float)
+        _s = np.shape(self._curve)
+        if len(_s)!=2 or _s[1]!=2:
+            raise Exception(self.file + " wrong dimension")
 
     def get_curve(self) -> np.array:
-        return self.curve
-
+        return self._curve
+    
 def factory_constructor(config: dict) -> CSVCurve:
    """Construct a CSVCurve from Yaml config file"""
    return CSVCurve(**config)

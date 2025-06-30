@@ -3,21 +3,28 @@ from .UnitConv import UnitConv
 from pyaml.configuration.CSVCurve import CSVCurve
 from pyaml.configuration.Factory import validate
 from pyaml.control.Device import Device
+from typing import Optional
+
 
 """
 Class that handle manget current/strength conversion using linear interpolation for a single function magnet
 """
 class LinearUnitConv(UnitConv):
 
-    @validate
-    def __init__(self, curve: CSVCurve, powerconverter: Device, calibration_factor = 1.0,calibration_offset = 0.0, unit: str = None):
+    curve: CSVCurve
+    powerconvert: Device
+    calibration_factor : Optional[float] = 1.0
+    calibration_offset : Optional[float] = 0.0
+    unit : Optional[str] = None
 
+    def __init__(self, **data):
+        super().__init__(**data)
         self._curve = curve.get_curve()
-        self._curve[:,1] = self._curve[:,1] * calibration_factor + calibration_offset
-        self._strength_unit = unit
-        self._current_unit = powerconverter.unit
+        self._curve[:,1] = self._curve[:,1] * self.calibration_factor + self.calibration_offset
+        self._strength_unit = self.unit
+        self._current_unit = self.powerconverter.unit
         self._brho = np.nan
-        self._ps = powerconverter
+        self._ps = self.powerconverter
 
     # Compute coil current(s) from magnet strength(s)
     def compute_currents(self,strengths:np.array) -> np.array:
