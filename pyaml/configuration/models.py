@@ -45,6 +45,9 @@ class ConfigBase(PyAmlBaseModel):
     @model_validator(mode="before")
     @classmethod
     def set_default_module_path(cls, values):
+        if isinstance(values, ConfigBase):
+            return values
+
         if values.get("type", "") == "":
             values["type"] = cls.__module__
         return values
@@ -58,6 +61,10 @@ class ConfigBase(PyAmlBaseModel):
         elif isinstance(v, (str, Path)):
             full_path = get_config_file_path(v)
             cfg = cls.load_config_from_file(full_path)
+            if not isinstance(cfg, expected_class):
+                raise ValueError(
+                    f"Invalid type for '{field_name}': {type(cfg)}. Expected {expected_class}."
+                )
             return cfg
         else:
             raise ValueError(
