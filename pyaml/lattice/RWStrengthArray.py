@@ -2,9 +2,9 @@ from pyaml.control import Abstract
 from pyaml.magnet.UnitConv import UnitConv
 import numpy as np
 
-class RWArray(Abstract.ReadWriteFloatArray):
+class RWStrengthArray(Abstract.ReadWriteFloatArray):
     """
-    Class providing read write access to a scalar array variable of a simulator or to a control system
+    Class providing read write access to a strength (array) of a simulator or to a control system
     """
 
     def __init__(self, elementName:str,unitconv:UnitConv,nbMultipole:int):
@@ -23,6 +23,10 @@ class RWArray(Abstract.ReadWriteFloatArray):
     # Sets the value and waits that the read value reach the setpoint
     def set_and_wait(self, value:np.array):
         pass
+
+    # Gets the unit of the value
+    def unit(self) -> list[str]:
+        return self.unitconv.get_strengths_units()
 
 
 

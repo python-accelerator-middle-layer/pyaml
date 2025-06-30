@@ -3,12 +3,11 @@ from pyaml.magnet.UnitConv import UnitConv
 import at
 from numpy import double,array
 
-class RWFloat(Abstract.ReadWriteFloatScalar):
+class RWStrengthScalar(Abstract.ReadWriteFloatScalar):
     """
-    Class providing read write access to a scalar double variable of a simulator or to a control system
+    Class providing read write access to a strength (scalar value) of a simulator or to a control system
     """
 
-    #def __init__(self,elementName:str,attrName:str,lattice:at.lattice, unitconv:UnitConv):
     def __init__(self, elementName:str,unitconv:UnitConv):
         self.unitconv = unitconv
 
@@ -25,19 +24,22 @@ class RWFloat(Abstract.ReadWriteFloatScalar):
 
     # Gets the value
     def get(self) -> double:
-        return 0
         #return getattr(self._element,self._attr)
+        currents = self.unitconv.read_currents()
+        return self.unitconv.compute_strengths(currents)[0]
 
     # Sets the value
     def set(self, value:double):
-        current = self.unitconv.get_currents(array([value]))[0]
-        print("set(" + str(value) + ")=> current=" + str(current))
+        current = self.unitconv.compute_currents([value])
+        self.unitconv.send_currents(current)
         #setattr(self._element,self._attr,value)
 
     # Sets the value and wait that the read value reach the setpoint
     def set_and_wait(self, value:double):
         raise NotImplementedError("Not implemented yet.")
 
-
+    # Gets the unit of the value
+    def unit(self) -> str:
+        return self.unitconv.get_strengths_units()[0]
 
 

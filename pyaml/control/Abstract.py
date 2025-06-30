@@ -2,6 +2,8 @@ from numpy import double
 from abc import ABCMeta, abstractmethod
 from numpy import array
 
+# Float ----------------------------------------------------------------
+
 class ReadFloatScalar(metaclass=ABCMeta):
     """
     Abstract class providing read access to a scalar double
@@ -9,6 +11,10 @@ class ReadFloatScalar(metaclass=ABCMeta):
     # Gets the value
     @abstractmethod
     def get(self) -> double:
+        pass
+
+    # Gets the unit of the value
+    def unit(self) -> str:
         pass
     
 class ReadWriteFloatScalar(ReadFloatScalar):
@@ -35,6 +41,10 @@ class ReadFloatArray(metaclass=ABCMeta):
     def get(self) -> array:
         pass
 
+    # Gets the unit of the values
+    def unit(self) -> list[str]:
+        pass
+
 class ReadWriteFloatArray(ReadFloatScalar):
     """
     Abstract class providing read write access to a vector of double
@@ -48,3 +58,4 @@ class ReadWriteFloatArray(ReadFloatScalar):
     @abstractmethod
     def set_and_wait(self, value:array):
         pass
+

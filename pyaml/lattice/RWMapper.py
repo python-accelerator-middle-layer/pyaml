@@ -1,11 +1,11 @@
 from pyaml.control import Abstract
 from numpy import double,array
 
-class RWFloatMapper(Abstract.ReadWriteFloatScalar):
+class RWMapper(Abstract.ReadWriteFloatScalar):
     """
     Class mapping a scalar to an element of an array
     """
-    def __init__(self, bind:Abstract.ReadWriteFloatArray, idx:int):
+    def __init__(self, bind, idx:int):
         self.bind = bind
         self.idx = idx
 

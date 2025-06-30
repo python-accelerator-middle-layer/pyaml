@@ -3,7 +3,7 @@ from .Quadrupole import Quadrupole
 from .UnitConv import UnitConv
 from pyaml.control import Abstract
 from pyaml.configuration.Factory import validate
-from pyaml.lattice.RWArray import RWArray
+from pyaml.lattice.RWStrengthArray import RWStrengthArray
 
 class CombinedFunctionMagnet(Magnet):
     """CombinedFunctionMagnet class"""    
@@ -15,7 +15,7 @@ class CombinedFunctionMagnet(Magnet):
 
         # TODO Count number of defined strength
         # TODO Check that UnitConv is coherent (number of strengths same as number of defined single function magnet)
-        self.multipole : Abstract.ReadWriteFloatArray = RWArray(name,self.unitconv,3) 
+        self.multipole : Abstract.ReadWriteFloatArray = RWStrengthArray(name,self.unitconv,3) 
 
         idx = 0
         #Create single function magnet

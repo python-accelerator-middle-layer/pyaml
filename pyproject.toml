@@ -19,7 +19,7 @@ packages = ["pyaml"]
 name = "pyaml"
 description = "Python Accelerator Middle Layer"
 readme = "README.md"
-requires-python = ">=3.8"
+requires-python = ">=3.9"
 dynamic = ["version"]
 #license = {file = "LICENSE"}
 keywords = ["Accelerator", "Synchrotron", "Operation", "Tuning", "Digital Twin", "Commissioning", ]
@@ -42,8 +42,8 @@ classifiers = [
 dependencies = [
     "numpy>=1.21.0",
     "scipy>=1.7.3",
-    "matplotlib>=3.5.3",
-    "accelerator-toolbox>=0.6.1"
+    "accelerator-toolbox>=0.6.1",
+    "PyYAML>=6.0.2"
 ]
 
 [project.optional-dependencies]
