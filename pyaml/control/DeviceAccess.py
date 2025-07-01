@@ -14,14 +14,14 @@ class DeviceAccess(BaseModel,metaclass=ABCMeta):
         pass
 
     """
-    Return he setpoint of a control system device value
+    Return the setpoint of a control system device value
     """
     @abstractmethod
     def get(self) -> float:
         pass
 
     """
-    Return the value measured
+    Return the measured value 
     """
     @abstractmethod
     def readback() -> float:

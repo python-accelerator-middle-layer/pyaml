@@ -1,5 +1,5 @@
 {
-      "type": "pyaml.magnet.LinearUnitConv",
+      "type": "pyaml.magnet.SplineUnitConv",
       "calibration_factor": 1.0003,
       "calibration_offset": 0.0,
       "curve": "tests/config/sr/unitconv/quadcurve.json",

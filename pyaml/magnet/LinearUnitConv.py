@@ -21,6 +21,7 @@ class Config(BaseModel):
 class LinearUnitConv(UnitConv):
 
     def __init__(self, cfg: Config):
+        self._cfg = cfg
         self._curve = cfg.curve.get_curve()
         self._curve[:, 1] = (
             self._curve[:, 1] * cfg.calibration_factor + cfg.calibration_offset

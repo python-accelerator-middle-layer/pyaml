@@ -10,7 +10,6 @@ from ..lattice.RWStrengthScalar import RWStrengthScalar
 from ..lattice.RWMapper import RWMapper
 from ..lattice.RCurrentScalar import RCurrentScalar
 from .Magnet import Magnet
-import pprint as pp
 
 class Config(BaseModel):
 
@@ -25,8 +24,6 @@ class Quadrupole(Magnet):
 
     def __init__(self, cfg: Config):
         super().__init__(cfg.name)
-
-        pp.pprint(cfg.model_json_schema())
 
         self.unitconv = cfg.unitconv
 
