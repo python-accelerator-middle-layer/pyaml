@@ -1,43 +1,36 @@
-from pathlib import Path
-
 import numpy as np
-from pydantic import field_validator
+from pydantic import SerializeAsAny
+from pydantic import BaseModel
 
-from . import UnitConv
-from ..configuration.models import recursively_construct_element_from_cfg
-from ..configuration import CSVCurve
-from ..control import Device
+from .UnitConv import UnitConv
+from ..configuration.Curve import Curve
+from ..control.DeviceAccess import DeviceAccess
 
 """
 Class that handle manget current/strength conversion using linear interpolation for a single function magnet
 """
 
+class Config(BaseModel):
 
-class Config(UnitConv.Config):
-    curve: str | Path | CSVCurve.Config
-    powerconverter: str | Path | Device.Config
+    curve: SerializeAsAny[Curve]
+    powerconverter: SerializeAsAny[DeviceAccess]
     calibration_factor: float = 1.0
     calibration_offset: float = 0.0
+    unit: str
 
-    @field_validator("curve", mode="before")
-    def validate_curve(cls, v, values):
-        return cls.validate_sub_config(v, values, "curve", CSVCurve.Config)
-
-
-class LinearUnitConv(UnitConv.UnitConv):
+class LinearUnitConv(UnitConv):
 
     def __init__(self, cfg: Config):
 
         self._cfg = cfg
-        curve_obj = recursively_construct_element_from_cfg(cfg.curve)
-        self._curve = curve_obj.get_curve()
+        self._curve = cfg.curve.get_curve()
         self._curve[:, 1] = (
             self._curve[:, 1] * cfg.calibration_factor + cfg.calibration_offset
         )
         self._strength_unit = cfg.unit
-        self._current_unit = cfg.powerconverter.unit
+        self._current_unit = cfg.powerconverter.unit()
         self._brho = np.nan
-        self._ps = Device.Device(cfg.powerconverter)
+        self._ps = cfg.powerconverter
 
     # Compute coil current(s) from magnet strength(s)
     def compute_currents(self, strengths: np.array) -> np.array:

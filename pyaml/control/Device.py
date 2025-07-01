@@ -1,32 +1,41 @@
 """
-Class providing access to a device of the control system
+Class that implements a Default device class that just prints out values
 """
 
 import numpy as np
+from pydantic import BaseModel
 
-from ..configuration.models import ConfigBase
+from .DeviceAccess import DeviceAccess
 
+class Config(BaseModel):
 
-class Config(ConfigBase):
     setpoint: str
     readback: str
     unit: str
 
 
-class Device(object):
+class Device(DeviceAccess):
+
     def __init__(self, cfg: Config):
         self._cfg = cfg
-
-        self.setpoint = cfg.setpoint
-        self.readback = cfg.readback
-        self.unit = cfg.unit
-        self.cache = 0.0  # Debugging purpose (to be removed)
+        self._setpoint = cfg.setpoint
+        self._readback = cfg.readback
+        self._unit = cfg.unit
+        self._cache = 0.0  # Debugging purpose (to be removed)
 
     # Sets the value
     def set(self, value: float):
-        print("%s: set %f" % (self.setpoint, value))
-        self.cache = value
+        print("%s: set %f" % (self._setpoint, value))
+        self._cache = value
 
     # Get the setpoint
-    def get(self):
-        return self.cache
+    def get(self) -> float:
+        return self._cache
+
+    # Get the measured value
+    def readback() -> float:
+        return self._cache
+
+    # Get the unit
+    def unit(self) -> str:
+        return self._unit

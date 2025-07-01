@@ -1,20 +1,50 @@
 # PyAML factory (construct AML objects from config files)
 import importlib
 import inspect
+from pydantic import ValidationError
+import pprint as pp
 
 #TODO:
 #Implement trace for error management. Hints: Implement private field __file__ in dictionary to report errors.
 
 """Build an object from the dict"""
 def buildObject(d:dict):
+
     if not isinstance(d,dict):
         raise Exception("Unecpted object " + str(d))
     if not "type" in d:
         raise Exception("No type specified for " + str(type(d)) + ":" + str(d))
     typeStr = d["type"]
     del d["type"]
-    p = importlib.import_module(typeStr)
-    return p.factory_constructor(d)
+
+    module = importlib.import_module(typeStr)
+
+    # Get the config object and validate
+    config_cls = getattr(module, "Config", None)
+    if config_cls is None:
+        raise ValueError(f"Unknown config class '{module_path}.Config' in {path}")
+
+    try:
+
+        cfg = config_cls.model_validate(d)
+
+        # Construct and return the object
+        elem_class_name = typeStr.split(".")[-1]
+        elem_cls = getattr(module, elem_class_name, None)
+        if elem_cls is None:
+            raise ValueError(
+                f"Unknown element class '{typeStr}.{elem_class_name}' in {path}"
+            )
+        
+        obj = elem_cls(cfg)
+        return obj
+
+    except ValidationError as e:
+        
+        print(e)
+        pp.pprint(d)
+        return None
+
 
 """Main factory function"""
 def depthFirstBuild(d:dict):

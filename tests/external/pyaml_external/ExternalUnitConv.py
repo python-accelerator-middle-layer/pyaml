@@ -1,7 +1,7 @@
 import numpy as np
 from pyaml.magnet.UnitConv import UnitConv
 from pyaml.configuration.Factory import validate
-from pyaml.control.Device import Device
+from pyaml.control.DeviceAccess import Device
 
 """
 Class example proving manget current/strength conversion

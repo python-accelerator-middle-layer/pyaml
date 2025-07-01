@@ -1,17 +1,9 @@
 from abc import ABCMeta, abstractmethod
-from pathlib import Path
-
+from pydantic import BaseModel
 import numpy as np
 
-from ..configuration.models import ConfigBase
 
-
-class Config(ConfigBase):
-    unit: str | None = None
-    filepath: str | Path | None = None
-
-
-class UnitConv(metaclass=ABCMeta):
+class UnitConv(BaseModel,metaclass=ABCMeta):
     """
     Abstract class providing strength to coil current conversion and access to underlying power supplies
     """
