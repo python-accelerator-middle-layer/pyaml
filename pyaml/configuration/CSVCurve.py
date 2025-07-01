@@ -14,7 +14,6 @@ class Config(BaseModel):
 class CSVCurve(Curve):
 
     def __init__(self, cfg: Config):
-        self._cfg = cfg
 
         # Load CSV curve
         self._curve = np.genfromtxt(cfg.file, delimiter=",", dtype=float)

@@ -1,45 +1,43 @@
-from pathlib import Path
-
 from pydantic import SerializeAsAny
+from pydantic import BaseModel
 
 from .Magnet import Magnet
-from . import Quadrupole
-from . import UnitConv
+from . import Quadrupole 
+from .UnitConv import UnitConv
 from ..control import Abstract
 from ..lattice.RWStrengthArray import RWStrengthArray
-from ..configuration.models import ConfigBase, recursively_construct_element_from_cfg
 
 
-class Config(ConfigBase):
-    """CombinedFunctionMagnet class"""
+class Config(BaseModel):
 
     name: str
-    H: str | None = None
-    V: str | None = None
-    Q: str | None = None
-    SQ: str | None = None
-    S: str | None = None
-    O: str | None = None
-    unitconv: str | Path | SerializeAsAny[UnitConv.Config] | None = None
+    A0: str | None = None
+    B0: str | None = None
+    A1: str | None = None
+    B1: str | None = None
+    A2: str | None = None
+    B2: str | None = None
+    A3: str | None = None
+    B3: str | None = None
+    A4: str | None = None
+    B4: str | None = None
+    A5: str | None = None
+    B5: str | None = None
+    unitconv: SerializeAsAny[UnitConv] | None = None # This None should ne removed 
 
     @classmethod
     def validate_unitconv(cls, v, values):
         return cls.validate_sub_config(v, values, "unitconv", UnitConv.Config)
 
-
+"""CombinedFunctionMagnet class"""
 class CombinedFunctionMagnet(Magnet):
     """CombinedFunctionMagnet class"""
 
     def __init__(self, cfg: Config):
-        self._cfg = cfg
 
-        # def __init__(self, name:str, H:str=None,V:str=None,Q:str=None,SQ:str=None,S:str=None,O:str=None, unitconv: UnitConv = None):
         super().__init__(cfg.name)
 
-        if cfg.unitconv is None:
-            self.unitconv = None
-        else:
-            self.unitconv = recursively_construct_element_from_cfg(cfg.unitconv)
+        self.unitconv = cfg.unitconv
 
         # TODO Count number of defined strength
         # TODO Check that UnitConv is coherent (number of strengths same as number of defined single function magnet)
@@ -49,20 +47,25 @@ class CombinedFunctionMagnet(Magnet):
 
         idx = 0
         # Create single function magnet
-        if cfg.H is not None:
-            # self.horz = HorizontalCorrector(H)  # TODO implement HorizontalCorrector
-            # self.horz.setSource(self.multipole,idx)
+        if cfg.B0 is not None:
+            # self.b0 = HorizontalCorrector(H)  # TODO implement HorizontalCorrector
+            # self.b0.setSource(self.multipole,idx)
             idx += 1
 
-        if cfg.V is not None:
-            # self.vert = VerticalCorrector(V) # TODO implement VerticalCorrector
-            # self.setSource(self.multipole,idx)
+        if cfg.A0 is not None:
+            # self.a0 = VerticalCorrector(V) # TODO implement VerticalCorrector
+            # self.a0(self.multipole,idx)
             idx += 1
 
-        if cfg.Q is not None:
-            q_cfg = Quadrupole.Config(name=cfg.Q)
-            self.quad = Quadrupole.Quadrupole(q_cfg)
-            self.quad.setSource(self.multipole, idx)
+        if cfg.B1 is not None:
+            q_cfg = Quadrupole.Config(name=cfg.B1)
+            self.b1 = Quadrupole.Quadrupole(q_cfg)
+            self.b1.setSource(self.multipole, idx)
+            idx += 1
+
+        if cfg.A1 is not None:
+            #self.b0 = SkewQuadrupole(q_cfg)
+            #self.b0.setSource(self.multipole, idx)
             idx += 1
 
     def __repr__(self):

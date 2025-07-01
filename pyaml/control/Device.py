@@ -21,7 +21,7 @@ class Device(DeviceAccess):
         self._setpoint = cfg.setpoint
         self._readback = cfg.readback
         self._unit = cfg.unit
-        self._cache = 0.0  # Debugging purpose (to be removed)
+        self._cache = 0.0  # Debugging purpose
 
     # Sets the value
     def set(self, value: float):

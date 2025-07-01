@@ -3,25 +3,33 @@ from pydantic import BaseModel
 
 class DeviceAccess(BaseModel,metaclass=ABCMeta):
     """
-    Abstract class providing strength to coil current conversion and access to underlying power supplies
+    Abstract class providing access to a control system
     """
 
-    # Sets the value
+    """
+    Write a control system device value (i.e. a power supply current)
+    """
     @abstractmethod
     def set(self, value: float):
         pass
 
-    # Get the setpoint
+    """
+    Return he setpoint of a control system device value
+    """
     @abstractmethod
     def get(self) -> float:
         pass
 
-    # Get the measured value
+    """
+    Return the value measured
+    """
     @abstractmethod
     def readback() -> float:
         pass
 
-    # Get the unit
+    """
+    Return the value unit
+    """
     @abstractmethod
     def unit(self) -> str:
         pass

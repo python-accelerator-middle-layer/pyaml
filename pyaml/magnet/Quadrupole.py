@@ -21,8 +21,6 @@ class Quadrupole(Magnet):
     """Quadrupole class"""
 
     def __init__(self, cfg: Config):
-        self._cfg = cfg
-
         super().__init__(cfg.name)
 
         self.unitconv = cfg.unitconv

@@ -7,5 +7,5 @@ class Element(object):
     Attributes:
     name (str): The name identifying the element in configuration file
     """
-    def __init__(self,name=None):
+    def __init__(self,name:str):
         self.name = name
