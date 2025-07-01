@@ -2,18 +2,21 @@ from pydantic import SerializeAsAny
 from pydantic import BaseModel
 
 from .UnitConv import UnitConv
+from .LinearUnitConv import LinearUnitConv
+from .SplineUnitConv import SplineUnitConv
 from ..control import Abstract
 from ..control.DeviceAccess import DeviceAccess
 from ..lattice.RWStrengthScalar import RWStrengthScalar
 from ..lattice.RWMapper import RWMapper
 from ..lattice.RCurrentScalar import RCurrentScalar
 from .Magnet import Magnet
+import pprint as pp
 
 class Config(BaseModel):
 
     name : str
     hardware: SerializeAsAny[DeviceAccess] | None = None
-    unitconv: SerializeAsAny[UnitConv] | None = None
+    unitconv: SerializeAsAny[SplineUnitConv] | SerializeAsAny[LinearUnitConv] | SerializeAsAny[UnitConv] | None = None
     
 
 class Quadrupole(Magnet):
@@ -22,6 +25,8 @@ class Quadrupole(Magnet):
 
     def __init__(self, cfg: Config):
         super().__init__(cfg.name)
+
+        pp.pprint(cfg.model_json_schema())
 
         self.unitconv = cfg.unitconv
 
