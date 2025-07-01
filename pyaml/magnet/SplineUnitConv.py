@@ -1,6 +1,7 @@
 import numpy as np
 from pydantic import SerializeAsAny
 from pydantic import BaseModel
+from scipy.interpolate import make_smoothing_spline
 
 from .UnitConv import UnitConv
 from ..configuration.Curve import Curve
@@ -16,6 +17,7 @@ class Config(BaseModel):
     powerconverter: SerializeAsAny[DeviceAccess]
     calibration_factor: float = 1.0
     calibration_offset: float = 0.0
+    alpha: float = 0.0
     unit: str
 
 class SplineUnitConv(UnitConv):
@@ -29,19 +31,17 @@ class SplineUnitConv(UnitConv):
         self._current_unit = cfg.powerconverter.unit()
         self._brho = np.nan
         self._ps = cfg.powerconverter
+        self._spl = make_smoothing_spline(self._curve[:, 0], self._curve[:, 1], lam=cfg.alpha)
+        self._rspl = make_smoothing_spline(self._curve[:, 1], self._curve[:, 0], lam=cfg.alpha)
 
     # Compute coil current(s) from magnet strength(s)
     def compute_currents(self, strengths: np.array) -> np.array:
-        _current = np.interp(
-            strengths[0] * self._brho, self._curve[:, 1], self._curve[:, 0]
-        )
+        _current = self._rspl(strengths[0] * self._brho)
         return np.array([_current])
 
     # Compute magnet strength(s) from coil current(s)
     def compute_strengths(self, currents: np.array) -> np.array:
-        _strength = (
-            np.interp(currents[0], self._curve[:, 0], self._curve[:, 1]) / self._brho
-        )
+        _strength = self._spl(currents[0]) / self._brho
         return np.array([_strength])
 
     # Get strength units
