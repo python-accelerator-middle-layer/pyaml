@@ -1,26 +1,35 @@
 import numpy as np
-from pydantic import SerializeAsAny
 from pydantic import BaseModel
+from scipy.interpolate import make_smoothing_spline
 
-from .UnitConv import UnitConv
-from ..configuration.Curve import Curve
-from ..control.DeviceAccess import DeviceAccess
+from .unitconv import UnitConv
+from ..configuration.curve import Curve
+from ..control.deviceaccess import DeviceAccess
 
-"""
-Class that handle manget current/strength conversion using linear interpolation for a single function magnet
-"""
+# Define the main class name for this module
+PYAMLCLASS = "SplineUnitConv"
 
-class Config(BaseModel):
+class ConfigModel(BaseModel):
 
-    curve: SerializeAsAny[Curve]
-    powerconverter: SerializeAsAny[DeviceAccess]
+    curve: Curve
+    """Curve object used for interpolation"""
+    powerconverter: DeviceAccess
+    """Power converter device to apply currrent"""
     calibration_factor: float = 1.0
+    """Correction factor applied to the curve"""
     calibration_offset: float = 0.0
+    """Correction offset applied to the curve"""
     unit: str
+    """Unit of the strength (i.e. 1/m or m-1)"""
+    alpha: float = 0.0
+    """Regularization parameter (alpha>=0), aplha=0 the interpolation pass through all the points of the curve"""
 
-class LinearUnitConv(UnitConv):
+class SplineUnitConv(UnitConv):
+    """
+    Class that handle manget current/strength conversion using spline interpolation for a single function magnet
+    """
 
-    def __init__(self, cfg: Config):
+    def __init__(self, cfg: ConfigModel):
         self._cfg = cfg
         self._curve = cfg.curve.get_curve()
         self._curve[:, 1] = (
@@ -30,19 +39,17 @@ class LinearUnitConv(UnitConv):
         self._current_unit = cfg.powerconverter.unit()
         self._brho = np.nan
         self._ps = cfg.powerconverter
+        self._spl = make_smoothing_spline(self._curve[:, 0], self._curve[:, 1], lam=cfg.alpha)
+        self._rspl = make_smoothing_spline(self._curve[:, 1], self._curve[:, 0], lam=cfg.alpha)
 
     # Compute coil current(s) from magnet strength(s)
     def compute_currents(self, strengths: np.array) -> np.array:
-        _current = np.interp(
-            strengths[0] * self._brho, self._curve[:, 1], self._curve[:, 0]
-        )
+        _current = self._rspl(strengths[0] * self._brho)
         return np.array([_current])
 
     # Compute magnet strength(s) from coil current(s)
     def compute_strengths(self, currents: np.array) -> np.array:
-        _strength = (
-            np.interp(currents[0], self._curve[:, 0], self._curve[:, 1]) / self._brho
-        )
+        _strength = self._spl(currents[0]) / self._brho
         return np.array([_strength])
 
     # Get strength units

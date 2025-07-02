@@ -1,6 +1,6 @@
 [
   {
-    "type": "pyaml.magnet.Quadrupole",
+    "type": "pyaml.magnet.quadrupole",
     "name": "QF1C01A",
     "unitconv": "tests/config/sr/unitconv/QF1C01A.json"
   }

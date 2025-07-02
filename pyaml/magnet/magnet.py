@@ -1,7 +1,6 @@
-from pyaml.control.Element import Element
+from pyaml.control.element import Element
 
 class Magnet(Element):
-
   """
   Class providing access to one magnet of a physical or simulated lattice
 

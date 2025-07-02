@@ -8,4 +8,5 @@ class Curve(BaseModel,metaclass=ABCMeta):
     """
     @abstractmethod
     def get_curve(self) -> array:
+        """Returns the curve (n rows,2 columns)"""
         pass

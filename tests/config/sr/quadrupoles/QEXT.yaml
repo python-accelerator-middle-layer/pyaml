@@ -1,15 +1,15 @@
-- type: pyaml.magnet.Quadrupole
+- type: pyaml.magnet.quadrupole
   name: QF1C01A
   unitconv:
-    type: pyaml_external.ExternalUnitConv
+    type: pyaml_external.external_unitconv
     param: my random param
     powersupply:
-      type: pyaml.control.Device
+      type: pyaml.control.device
       setpoint: sr/ps-qf1/c01-a/current
       readback: sr/ps-qf1/c01-a/current
       unit: A
     id:
-      type: pyaml.control.Device
+      type: pyaml.control.device
       setpoint: sr/id/c01-1/gap
       readback: sr/id/c01-1/gap
       unit: A      

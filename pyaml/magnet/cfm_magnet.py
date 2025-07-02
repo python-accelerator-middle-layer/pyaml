@@ -1,14 +1,16 @@
 from pydantic import SerializeAsAny
 from pydantic import BaseModel
 
-from .Magnet import Magnet
-from . import Quadrupole 
-from .UnitConv import UnitConv
-from ..control import Abstract
-from ..lattice.RWStrengthArray import RWStrengthArray
+from .magnet import Magnet
+from . import quadrupole 
+from .unitconv import UnitConv
+from ..control import abstract
+from ..lattice.abstract_impl import RWStrengthArray
 
+# Define the main class name for this module
+PYAMLCLASS = "CombinedFunctionMagnet"
 
-class Config(BaseModel):
+class ConfigModel(BaseModel):
 
     name: str
     A0: str | None = None
@@ -23,17 +25,12 @@ class Config(BaseModel):
     B4: str | None = None
     A5: str | None = None
     B5: str | None = None
-    unitconv: SerializeAsAny[UnitConv] | None = None # This None should ne removed 
+    unitconv: UnitConv | None = None
 
-    @classmethod
-    def validate_unitconv(cls, v, values):
-        return cls.validate_sub_config(v, values, "unitconv", UnitConv.Config)
-
-"""CombinedFunctionMagnet class"""
 class CombinedFunctionMagnet(Magnet):
     """CombinedFunctionMagnet class"""
 
-    def __init__(self, cfg: Config):
+    def __init__(self, cfg: ConfigModel):
 
         super().__init__(cfg.name)
 
@@ -41,7 +38,7 @@ class CombinedFunctionMagnet(Magnet):
 
         # TODO Count number of defined strength
         # TODO Check that UnitConv is coherent (number of strengths same as number of defined single function magnet)
-        self.multipole: Abstract.ReadWriteFloatArray = RWStrengthArray(
+        self.multipole: abstract.ReadWriteFloatArray = RWStrengthArray(
             cfg.name, self.unitconv, 3
         )
 
@@ -58,8 +55,8 @@ class CombinedFunctionMagnet(Magnet):
             idx += 1
 
         if cfg.B1 is not None:
-            q_cfg = Quadrupole.Config(name=cfg.B1)
-            self.b1 = Quadrupole.Quadrupole(q_cfg)
+            q_cfg = quadrupole.ConfigModel(name=cfg.B1)
+            self.b1 = quadrupole.Quadrupole(q_cfg)
             self.b1.setSource(self.multipole, idx)
             idx += 1
 

@@ -8,9 +8,7 @@ from typing import Union
 #Implement filename and line mapping for error reporting
 
 def load(fileName:str) -> Union[dict,list]:
-    """
-    Load recursively a configuration setup
-    """
+    """Load recursively a configuration setup"""
     if fileName.endswith(".yaml"):
         l = YAMLLoader()
     elif fileName.endswith(".json"):
