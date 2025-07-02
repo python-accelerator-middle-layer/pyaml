@@ -52,7 +52,7 @@ class LinearUnitConv(UnitConv):
         return np.array([_strength])
 
     # Get strength units
-    def get_strengths_units(self) -> list[str]:
+    def get_strength_units(self) -> list[str]:
         return [self._strength_unit] if self._strength_unit is not None else [""]
 
     # Get current units

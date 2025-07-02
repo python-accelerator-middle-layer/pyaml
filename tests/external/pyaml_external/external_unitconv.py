@@ -48,7 +48,7 @@ class ExternalUnitConv(UnitConv):
         return np.array([currents[0]/_gap])
 
     # Get strength units
-    def get_strengths_units(self) -> list[str]:
+    def get_strength_units(self) -> list[str]:
         return["rad"]
 
     # Get current units

@@ -7,7 +7,7 @@ from pyaml.magnet.quadrupole import Quadrupole
 from pyaml.magnet.quadrupole import ConfigModel as QuadrupoleConfigModel
 
 from pyaml.magnet.linear_unitconv import LinearUnitConv
-from pyaml.magnet import cfm_magnet
+from pyaml.magnet.linear_cfm_unitconv import LinearCFMagnetUnitConv
 import pprint as pp
 import json
 #set_root_folder(Path(__file__).parent.parent)
@@ -20,7 +20,7 @@ if False:
     # To run this one, please run 'pip install .' first in tests/external
     cfg_quad_yaml = load("tests/config/sr/quadrupoles/QEXT.yaml")
     quadWithExt: Quadrupole = depthFirstBuild(cfg_quad_yaml[0])
-    quadWithExt.strength.set(10.0)
+    quadWithExt.strength.set(10.0)    
     print(quadWithExt.strength.get())
 
 #quad: Quadrupole = load_from_yaml("tests/config/sr/quadrupoles/QF1C01A.yaml")
@@ -45,9 +45,7 @@ print(f"Current={quad2.current.get()}")
 print(f"Unit={quad2.strength.unit()}")
 print(f"Unit={quad2.current.unit()}")
 
-cfg = cfm_magnet.ConfigModel(name="S1C01", B0="S1C01-H", A0="S1C01-V", B1="S1C01-Q")
-m = cfm_magnet.CombinedFunctionMagnet(cfg)
-m.multipole.set([0, 0, 10])
-m.b1.strength.set(20)
-print(m.b1.name)
-
+cfg_sh_uc = load("tests/config/sr/unitconv/SH1_C01A.yaml")
+sh:LinearCFMagnetUnitConv = depthFirstBuild(cfg_sh_uc)
+print(sh.get_current_units())
+print(sh.get_strength_units())

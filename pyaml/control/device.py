@@ -31,7 +31,7 @@ class Device(DeviceAccess):
     def name(self) -> str:
         return self._setpoint
 
-    def measure_name(self):
+    def measure_name(self) -> str:
         return self._readback
     
     def set(self, value: float):

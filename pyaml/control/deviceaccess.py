@@ -7,12 +7,12 @@ class DeviceAccess(BaseModel,metaclass=ABCMeta):
     """
 
     @abstractmethod
-    def name(self):
+    def name(self) -> str:
         """Return the name of the variable"""
         pass
 
     @abstractmethod
-    def measure_name(self):
+    def measure_name(self) -> str:
         """Return the name of the measure"""
         pass
 

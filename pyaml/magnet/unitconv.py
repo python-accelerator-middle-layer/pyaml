@@ -19,7 +19,7 @@ class UnitConv(BaseModel):
         pass
 
     @abstractmethod
-    def get_strengths_units(self) -> list[str]:
+    def get_strength_units(self) -> list[str]:
         """Get strength units"""
         pass
 

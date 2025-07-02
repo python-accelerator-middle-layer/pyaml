@@ -1,8 +1,7 @@
 # PyAML factory (construct AML objects from config files)
 import importlib
-import inspect
-from pydantic import ValidationError
 import pprint as pp
+import traceback
 
 #TODO:
 #Implement trace for error management. Hints: Implement private field __file__ in dictionary to report errors.
@@ -44,23 +43,39 @@ def buildObject(d:dict):
         obj = elem_cls(cfg)
         return obj
 
-    except ValidationError as e:
-        
-        print(e)
+    except Exception as e:
+
+        print(traceback.format_exc())
+        print(e)        
+        print(typeStr)
         pp.pprint(d)
-        return None
+        #Fatal
+        quit()
 
 
-def depthFirstBuild(d:dict):
-  """Main factory function"""
+def depthFirstBuild(d):
+  """Main factory function (Depth-first factory)"""
+
+  if isinstance(d,list):
+
+      # list can be a list of objects or a list of native types
+      l = []
+      for e in d:
+          if isinstance(e,dict) or isinstance(e,list):
+              obj = depthFirstBuild(e)
+              l.append(obj)
+          else:
+              l.append(e)
+      return l
   
-  # Depth-first factory
-  for key, value in d.items():
-    if isinstance(value,dict):
-       obj = depthFirstBuild(value)
-       # Replace the inner dict by the object itself
-       d[key]=obj
+  elif isinstance(d,dict):
+        
+    for key, value in d.items():
+        if isinstance(value,dict) or isinstance(value,list):
+            obj = depthFirstBuild(value)
+            # Replace the inner dict by the object itself
+            d[key]=obj        
 
-  # We are now on leaf (no nested object), we can construt
-  obj = buildObject(d)
-  return obj
+    # We are now on leaf (no nested object), we can construt
+    obj = buildObject(d)
+    return obj

@@ -18,11 +18,12 @@ class ConfigModel(BaseModel):
 class CSVCurve(Curve):
 
     def __init__(self, cfg: ConfigModel):
+        self._cfg = cfg
 
         # Load CSV curve
         self._curve = np.genfromtxt(cfg.file, delimiter=",", dtype=float)
-        s = np.shape(self._curve)
-        if len(s) != 2 or s[1] != 2:
+        _s = np.shape(self._curve)
+        if len(_s) != 2 or _s[1] != 2:
             raise Exception(cfg.file + " wrong dimension")
 
     def get_curve(self) -> np.array:
