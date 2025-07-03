@@ -8,6 +8,7 @@ from pyaml.magnet.quadrupole import ConfigModel as QuadrupoleConfigModel
 
 from pyaml.magnet.linear_unitconv import LinearUnitConv
 from pyaml.magnet.linear_cfm_unitconv import LinearCFMagnetUnitConv
+from pyaml.magnet.cfm_magnet import CombinedFunctionMagnet
 import pprint as pp
 import json
 #set_root_folder(Path(__file__).parent.parent)
@@ -54,3 +55,7 @@ sh.set_magnet_rigidity(6e9 / 3e8)
 cur = sh.compute_currents([-0.000028,0.000005,0.000586])
 sh.send_currents(cur)
 print(sh.compute_strengths(cur))
+
+shc01a_cfg = load("tests/config/sr/quadrupoles/SH1_C01A.yaml")
+shc01a:CombinedFunctionMagnet = depthFirstBuild(shc01a_cfg)
+print(shc01a._cfg.mapping)

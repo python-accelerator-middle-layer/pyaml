@@ -11,8 +11,9 @@ PYAMLCLASS = "LinearCFMagnetUnitConv"
 
 
 class ConfigModel(BaseModel):
+
     multipoles: list[str]
-    """List of supported functions: A0,B0,B0,B1,etc (i.e) [B0,A1,B2]"""
+    """List of supported functions: A0,B0,A1,B1,etc (i.e) [B0,A1,B2]"""
     curves: list[Curve]
     """Exitacion curves, 1 curve per function"""
     calibration_factors: list[float] = None
@@ -22,7 +23,7 @@ class ConfigModel(BaseModel):
     """Correction offset applied to curves, 1 offset per function
        Delfault: zeros"""
     pseudo_factors: list[float] = None
-    """Factors applied to 'pseudo currents', 1 sign per function.
+    """Factors applied to 'pseudo currents', 1 factor per function.
        Delfault: ones"""
     powerconverters: list[DeviceAccess]
     """List of power converter devices to apply currrents (can be different
