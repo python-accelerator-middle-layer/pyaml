@@ -1,0 +1,17 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.version]
+path = "dummy-cs-pyaml/__init__.py"
+
+[tool.hatch.build.targets.wheel]
+packages = ["dummy-cs-pyaml"]
+
+[project]
+name = "dummy-cs-pyaml"
+description = "PyAML External CS module test"
+requires-python = ">=3.8"
+dynamic = ["version"]
+dependencies = [
+]

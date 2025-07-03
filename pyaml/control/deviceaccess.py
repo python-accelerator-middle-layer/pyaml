@@ -27,7 +27,7 @@ class DeviceAccess(BaseModel,metaclass=ABCMeta):
         pass
 
     @abstractmethod
-    def readback() -> float:
+    def readback(self) -> float:
         """Return the measured value"""
         pass
 

@@ -5,6 +5,7 @@ Class that implements a default device class that just prints out values (Debugg
 import numpy as np
 from pydantic import BaseModel,Field
 
+from .backend_loader import load_backend
 from .deviceaccess import DeviceAccess
 
 # Define the main class name for this module
@@ -23,10 +24,10 @@ class Device(DeviceAccess):
 
     def __init__(self, cfg: ConfigModel):
         self._cfg = cfg
-        self._setpoint = cfg.setpoint
-        self._readback = cfg.readback
-        self._unit = cfg.unit
-        self._cache = 0.0
+        backend_module = load_backend()
+        device_cls = getattr(backend_module, "PYAMLCLASS")
+        device_cls = getattr(backend_module, "Device")
+        self._impl: DeviceAccess = device_cls(cfg)
 
     def name(self) -> str:
         return self._setpoint
@@ -36,13 +37,13 @@ class Device(DeviceAccess):
     
     def set(self, value: float):
         print("%s: set %f" % (self._setpoint, value))
-        self._cache = value
+        self._impl.set(value)
 
     def get(self) -> float:
-        return self._cache
+        return self._impl.get()
 
-    def readback() -> float:
-        return self._cache
+    def readback(self) -> float:
+        return self._impl.readback()
 
     def unit(self) -> str:
         return self._unit
