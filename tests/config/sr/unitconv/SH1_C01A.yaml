@@ -1,7 +1,7 @@
 type: pyaml.magnet.linear_cfm_unitconv
 multipoles: [B0,A0,A1]
 units: [rad,rad,m-1]
-calibration_factors: [1.0,-1.0,-1.0]
+pseudo_factors: [1.0,-1.0,-1.0]
 curves:
   - type: pyaml.configuration.csvcurve
     file: tests/config/sr/unitconv/SH_h_strength.csv
