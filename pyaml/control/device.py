@@ -1,7 +1,3 @@
-"""
-Class that implements a default device class that just prints out values (Debugging purpose)
-"""
-
 import numpy as np
 from pydantic import BaseModel,Field
 
@@ -21,6 +17,10 @@ class ConfigModel(BaseModel):
     """Value unit"""
 
 class Device(DeviceAccess):
+    """
+    Class that implements a default device class that just prints out 
+    values (Debugging purpose)
+    """
 
     def __init__(self, cfg: ConfigModel):
         self._cfg = cfg
@@ -32,7 +32,7 @@ class Device(DeviceAccess):
     def name(self) -> str:
         return self._setpoint
 
-    def measure_name(self):
+    def measure_name(self) -> str:
         return self._readback
     
     def set(self, value: float):

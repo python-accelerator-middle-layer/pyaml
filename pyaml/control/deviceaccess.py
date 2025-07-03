@@ -3,35 +3,35 @@ from pydantic import BaseModel
 
 class DeviceAccess(BaseModel,metaclass=ABCMeta):
     """
-    Abstract class providing access to a control system float value
+    Abstract class providing access to a control system float variable
     """
 
     @abstractmethod
-    def name(self):
+    def name(self) -> str:
         """Return the name of the variable"""
         pass
 
     @abstractmethod
-    def measure_name(self):
+    def measure_name(self) -> str:
         """Return the name of the measure"""
         pass
 
     @abstractmethod
     def set(self, value: float):
-        """Write a control system device value (i.e. a power supply current)"""
+        """Write a control system device variable (i.e. a power supply current)"""
         pass
 
     @abstractmethod
     def get(self) -> float:
-        """Return the setpoint of a control system device value"""
+        """Return the setpoint of a control system device variable"""
         pass
 
     @abstractmethod
     def readback(self) -> float:
-        """Return the measured value"""
+        """Return the measured variable"""
         pass
 
     @abstractmethod
     def unit(self) -> str:
-        """Return the value unit"""
+        """Return the variable unit"""
         pass

@@ -1,0 +1,27 @@
+type: pyaml.magnet.linear_cfm_unitconv
+multipoles: [B0,A0,A1]
+units: [rad,rad,m-1]
+pseudo_factors: [1.0,-1.0,-1.0]
+curves:
+  - type: pyaml.configuration.csvcurve
+    file: tests/config/sr/unitconv/SH_h_strength.csv
+  - type: pyaml.configuration.csvcurve
+    file: tests/config/sr/unitconv/SH_v_strength.csv
+  - type: pyaml.configuration.csvcurve
+    file: tests/config/sr/unitconv/SH_sq_strength.csv
+matrix:
+  type: pyaml.configuration.csvmatrix
+  file: tests/config/sr/unitconv/SH_matrix.csv
+powerconverters:
+  - type: pyaml.control.device
+    setpoint:  sr/ps-sh3/c01-e-1/current
+    readback:  sr/ps-sh3/c01-e-1/current
+    unit: A
+  - type: pyaml.control.device
+    setpoint:  sr/ps-sh3/c01-e-2/current
+    readback:  sr/ps-sh3/c01-e-2/current
+    unit: A
+  - type: pyaml.control.device
+    setpoint:  sr/ps-sh3/c01-e-3/current
+    readback:  sr/ps-sh3/c01-e-3/current
+    unit: A

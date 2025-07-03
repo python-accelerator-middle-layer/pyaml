@@ -13,12 +13,12 @@ PYAMLCLASS = "Quadrupole"
 
 class ConfigModel(BaseModel):
 
-    """Element name"""
     name : str
-    """Direct access to a magnet device that provides strength/current conversion"""
+    """Element name"""
     hardware: DeviceAccess | None = None
-    """Object in charge of converting magnet strenghts to current"""
+    """Direct access to a magnet device that provides strength/current conversion"""
     unitconv: UnitConv | None = None
+    """Object in charge of converting magnet strenghts to current"""
 
 class Quadrupole(Magnet):
     

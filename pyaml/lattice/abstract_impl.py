@@ -71,7 +71,7 @@ class RWStrengthArray(abstract.ReadWriteFloatArray):
 
     # Gets the unit of the value
     def unit(self) -> list[str]:
-        return self.unitconv.get_strengths_units()
+        return self.unitconv.get_strength_units()
 
 #------------------------------------------------------------------------------
 
@@ -113,6 +113,6 @@ class RWStrengthScalar(abstract.ReadWriteFloatScalar):
 
     # Gets the unit of the value
     def unit(self) -> str:
-        return self.unitconv.get_strengths_units()[0]
+        return self.unitconv.get_strength_units()[0]
 
 
