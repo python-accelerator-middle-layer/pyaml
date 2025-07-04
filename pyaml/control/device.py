@@ -3,6 +3,7 @@ from pydantic import BaseModel,Field
 
 from .backend_loader import load_backend
 from .deviceaccess import DeviceAccess
+from .readback_value import Value
 
 # Define the main class name for this module
 PYAMLCLASS = "Device"
@@ -42,8 +43,8 @@ class Device(DeviceAccess):
     def get(self) -> float:
         return self._cache
 
-    def readback(self) -> float:
-        return self._cache
+    def readback(self) -> Value:
+        return Value(self._cache)
 
     def unit(self) -> str:
         return self._unit
