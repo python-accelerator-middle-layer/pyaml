@@ -1,5 +1,6 @@
 from abc import ABCMeta, abstractmethod
 from pydantic import BaseModel
+from .readback_value import Value
 
 class DeviceAccess(BaseModel,metaclass=ABCMeta):
     """
@@ -27,7 +28,7 @@ class DeviceAccess(BaseModel,metaclass=ABCMeta):
         pass
 
     @abstractmethod
-    def readback(self) -> float:
+    def readback(self) -> Value:
         """Return the measured variable"""
         pass
 
