@@ -13,7 +13,7 @@ PYAMLCLASS = "LinearCFMagnetUnitConv"
 class ConfigModel(BaseModel):
 
     multipoles: list[str]
-    """List of supported functions: A0,B0,A1,B1,etc (i.e) [B0,A1,B2]"""
+    """List of supported functions: A0,B0,A1,B1,etc (i.e. [B0,A1,B2])"""
     curves: list[Curve]
     """Exitacion curves, 1 curve per function"""
     calibration_factors: list[float] = None
@@ -25,6 +25,9 @@ class ConfigModel(BaseModel):
     pseudo_factors: list[float] = None
     """Factors applied to 'pseudo currents', 1 factor per function.
        Delfault: ones"""
+    pseudo_offsets: list[float] = None
+    """Offsets applied to 'pseudo currents', 1 factor per function.
+       Delfault: zeros"""
     powerconverters: list[DeviceAccess]
     """List of power converter devices to apply currrents (can be different
        from number of function)"""
@@ -64,31 +67,17 @@ class LinearCFMagnetUnitConv(UnitConv):
         else:
             self._pf = cfg.pseudo_factors
 
-        if len(self._calibration_factors) != self._nbFunction:
-            raise Exception(
-                "calibration_factors does not have the expected "
-                "number of items ({self._nbFunction} expected)"
-            )
-        if len(self._calibration_offsets) != self._nbFunction:
-            raise Exception(
-                "calibration_offsets does not have the expected "
-                "number of items ({self._nbFunction} expected)"
-            )
-        if len(self._pf) != self._nbFunction:
-            raise Exception(
-                "pseudo_factors does not have the expected "
-                "number of items ({self._nbFunction} expected)"
-            )
-        if len(cfg.units) != self._nbFunction:
-            raise Exception(
-                "units does not have the expected "
-                "number of items ({self._nbFunction} expected)"
-            )
-        if len(cfg.curves) != self._nbFunction:
-            raise Exception(
-                "curves does not have the expected "
-                "number of items ({self._nbFunction} expected)"
-            )
+        if cfg.pseudo_offsets is None:
+            self._po = np.zeros(self._nbFunction)
+        else:
+            self._po = cfg.pseudo_factors
+
+        self.__check_len(self._calibration_factors,"calibration_factors",self._nbFunction)
+        self.__check_len(self._calibration_offsets,"calibration_offsets",self._nbFunction)
+        self.__check_len(self._pf,"pseudo_factors",self._nbFunction)
+        self.__check_len(self._po,"pseudo_offsets",self._nbFunction)
+        self.__check_len(cfg.units,"units",self._nbFunction)
+        self.__check_len(cfg.curves,"curves",self._nbFunction)
 
         if cfg.matrix is None:
             self._matrix = np.identity(self._nbFunction)
@@ -100,7 +89,7 @@ class LinearCFMagnetUnitConv(UnitConv):
         if len(_s) != 2 or _s[0] != self._nbFunction or _s[1] != self._nbPS:
             raise Exception(
                 "matrix wrong dimension "
-                "({self._nbFunction}x{self._nbPS} expected but got {_s[0]}x{_s[1]})"
+                f"({self._nbFunction}x{self._nbPS} expected but got {_s[0]}x{_s[1]})"
             )
 
         # Apply factor and offset
@@ -111,13 +100,22 @@ class LinearCFMagnetUnitConv(UnitConv):
         # Compute pseudo inverse
         self._inv = np.linalg.pinv(self._matrix)
 
+
+    def __check_len(self,obj,name,expected_len):
+        lgth = len(obj) 
+        if lgth != expected_len:
+            raise Exception(
+                f"{name} does not have the expected "
+                f"number of items ({expected_len} items expected but got {lgth})"
+            )    
+
     # Get coil current(s) from magnet strength(s)
     def compute_currents(self, strengths: np.array) -> np.array:
         _pI = np.zeros(self._nbFunction)
         for idx, c in enumerate(self._cfg.curves):
             _pI[idx] = self._pf[idx] * np.interp(
                 strengths[idx] * self._brho, c.get_curve()[:, 1], c.get_curve()[:, 0]
-            )
+            ) + self._po[idx]
         _currents = np.matmul(self._inv, _pI)
         return _currents
 
@@ -128,7 +126,7 @@ class LinearCFMagnetUnitConv(UnitConv):
         for idx, c in enumerate(self._cfg.curves):
             _strength[idx] = (
                 np.interp(
-                    self._pf[idx] * _pI[idx], c.get_curve()[:, 0], c.get_curve()[:, 1]
+                    (_pI[idx] - self._po[idx]) / self._pf[idx],  c.get_curve()[:, 0], c.get_curve()[:, 1]
                 )
                 / self._brho
             )

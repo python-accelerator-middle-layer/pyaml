@@ -26,36 +26,38 @@ if False:
 
 #quad: Quadrupole = load_from_yaml("tests/config/sr/quadrupoles/QF1C01A.yaml")
 
-cfg_quad_yaml = load("tests/config/sr/quadrupoles/QF1C01A.yaml")
-quad:Quadrupole = depthFirstBuild(cfg_quad_yaml[0])
-uc: LinearUnitConv = quad.unitconv
-print(uc._curve[1])
-quad.unitconv.set_magnet_rigidity(6e9 / 3e8)
-quad.strength.set(0.7962)
-print(f"Current={quad.current.get()}")
-print(f"Unit={quad.strength.unit()}")
-print(f"Unit={quad.current.unit()}")
+if False:
+    cfg_quad_yaml = load("tests/config/sr/quadrupoles/QF1C01A.yaml")
+    quad:Quadrupole = depthFirstBuild(cfg_quad_yaml[0])
+    uc: LinearUnitConv = quad.unitconv
+    print(uc._curve[1])
+    quad.unitconv.set_magnet_rigidity(6e9 / 3e8)
+    quad.strength.set(0.7962)
+    print(f"Current={quad.current.get()}")
+    print(f"Unit={quad.strength.unit()}")
+    print(f"Unit={quad.current.unit()}")
 
-cfg_quad_json = load("tests/config/sr/quadrupoles/QF1C01A.json")
-quad2:Quadrupole = depthFirstBuild(cfg_quad_json[0])
-uc: LinearUnitConv = quad2.unitconv
-print(uc._curve[1])
-uc.set_magnet_rigidity(6e9 / 3e8)
-quad2.strength.set(0.7962)
-print(f"Current={quad2.current.get()}")
-print(f"Unit={quad2.strength.unit()}")
-print(f"Unit={quad2.current.unit()}")
-print(f"Strength={uc.compute_strengths([quad2.current.get()])}")
+if False:
+    cfg_quad_json = load("tests/config/sr/quadrupoles/QF1C01A.json")
+    quad2:Quadrupole = depthFirstBuild(cfg_quad_json[0])
+    uc: LinearUnitConv = quad2.unitconv
+    print(uc._curve[1])
+    uc.set_magnet_rigidity(6e9 / 3e8)
+    quad2.strength.set(0.7962)
+    print(f"Current={quad2.current.get()}")
+    print(f"Unit={quad2.strength.unit()}")
+    print(f"Unit={quad2.current.unit()}")
+    print(f"Strength={uc.compute_strengths([quad2.current.get()])}")
 
 cfg_sh_uc = load("tests/config/sr/unitconv/SH1_C01A.yaml")
 sh:LinearCFMagnetUnitConv = depthFirstBuild(cfg_sh_uc)
 print(sh.get_current_units())
 print(sh.get_strength_units())
 sh.set_magnet_rigidity(6e9 / 3e8)
-cur = sh.compute_currents([-0.000028,0.000005,0.000586])
+cur = sh.compute_currents([0.000020,0.000010,0.000000])
 sh.send_currents(cur)
 print(sh.compute_strengths(cur))
 
-shc01a_cfg = load("tests/config/sr/quadrupoles/SH1_C01A.yaml")
-shc01a:CombinedFunctionMagnet = depthFirstBuild(shc01a_cfg)
-print(shc01a._cfg.mapping)
+#shc01a_cfg = load("tests/config/sr/quadrupoles/SH1_C01A.yaml")
+#shc01a:CombinedFunctionMagnet = depthFirstBuild(shc01a_cfg)
+#print(shc01a._cfg.mapping)
