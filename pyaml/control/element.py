@@ -1,4 +1,5 @@
 from pydantic import BaseModel
+from ..configuration.factory import register_element
 
 class ElementModel(BaseModel):
 
@@ -14,7 +15,8 @@ class Element(object):
     """
     def __init__(self,name:str):
         self.name = name
-        
+        register_element(name,self)
+
     def __repr__(self):
         return "%s(name=%s)" % (
             self.__class__.__name__,

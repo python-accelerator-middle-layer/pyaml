@@ -6,6 +6,6 @@ mapping:
   # PyAML families. When this 'virutal' element is set, it then applies
   # the corresponding multipole on the parent element.
   - [B0, SH1-C01A-H]
-  - [A0, SH1-C01A-H]
+  - [A0, SH1-C01A-V]
   - [A1, SH1-C01A-SQ]
 unitconv: sr/unitconv/SH1_C01A.yaml

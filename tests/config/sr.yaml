@@ -10,8 +10,13 @@ arrays:
     name: HCORR
     elements:
       - SH1-C01A-H
-      - SH1-C02A-H       
+      - SH1-C02A-H
+  - type: pyaml.lattice.array
+    name: VCORR
+    elements:
+      - SH1-C01A-V
+      - SH1-C02A-V
 devices:
   - sr/quadrupoles/QF1C01A.yaml
   - sr/quadrupoles/SH1_C01A.yaml
-
+  - sr/quadrupoles/SH1_C02A.yaml
