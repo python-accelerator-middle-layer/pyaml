@@ -1,5 +1,6 @@
 from pydantic import SerializeAsAny
 from pydantic import BaseModel
+from scipy.constants import speed_of_light
 
 from .unitconv import UnitConv
 from .magnet import Magnet
@@ -75,6 +76,10 @@ class CombinedFunctionMagnet(Element):
             mclass.set_source(self.multipole,idx)
             setattr(self,m[0],mclass)
             idx += 1
+
+    def set_energy(self,E:float):
+        if(self.unitconv is not None):
+            self.unitconv.set_magnet_rigidity(E/speed_of_light)
 
     def __repr__(self):
         return "%s(name=%s, unitconv=%s)" % (

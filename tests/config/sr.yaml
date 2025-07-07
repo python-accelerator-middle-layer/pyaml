@@ -1,5 +1,6 @@
 type: pyaml.pyaml
 instrument: sr
+energy: 6e9
 simulators:
   - type: pyaml.lattice.simulator
     lattice: lattices/ring.mat

@@ -5,6 +5,7 @@ from ..lattice.abstract_impl import RWMapper
 from ..lattice.abstract_impl import RCurrentScalar
 from ..lattice.abstract_impl import RWStrengthScalar
 from .unitconv import UnitConv
+from scipy.constants import speed_of_light
 
 class Magnet(Element):
   """
@@ -35,3 +36,7 @@ class Magnet(Element):
       """Set the peer combined function magnet"""
       # Override strength, map single strength to multipole
       self.strength: abstract.ReadWriteFloatScalar = RWMapper(source, idx)
+
+  def set_energy(self,E:float):
+     if( self.unitconv is not None):
+        self.unitconv.set_magnet_rigidity(E/speed_of_light)

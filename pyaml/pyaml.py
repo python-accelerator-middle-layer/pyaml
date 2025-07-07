@@ -19,6 +19,8 @@ class ConfigModel(BaseModel):
 
     instrument: str
     """Instrument name"""
+    energy: float = None
+    """Instrument nominal energy, for ramped machine, this value can be dynamically set"""
     control: ControlSystem = None
     """control system"""
     simulators: list[Simulator] = None
@@ -41,6 +43,13 @@ class AML(object):
         if cfg.arrays is not None:
             for a in cfg.arrays:
                 a.fill(self)
+        if cfg.energy is not None:
+            self.set_energy(cfg.energy)
+
+    def set_energy(self,E:float):
+        for e in self._cfg.devices:
+            e.set_energy(E)
+
 
 def pyaml(fileName:str) -> AML:
     """Load an accelerator middle layer"""
