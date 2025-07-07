@@ -1,5 +1,10 @@
 from pydantic import BaseModel
 
+class ElementModel(BaseModel):
+
+    name : str
+    """Element name"""
+
 class Element(object):
     """
     Class providing access to one element of a physical or simulated lattice
@@ -9,3 +14,9 @@ class Element(object):
     """
     def __init__(self,name:str):
         self.name = name
+        
+    def __repr__(self):
+        return "%s(name=%s)" % (
+            self.__class__.__name__,
+            self.name
+        )

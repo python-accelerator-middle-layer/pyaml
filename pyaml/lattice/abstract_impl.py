@@ -59,11 +59,14 @@ class RWStrengthArray(abstract.ReadWriteFloatArray):
 
     # Gets the value
     def get(self) -> np.array:
-        return self.cache
+        r = self.unitconv.read_currents()
+        str = self.unitconv.compute_strengths(r)        
+        return str
 
     # Sets the value
     def set(self, value:np.array) -> np.array:
-        print("RWFloatArray: set" + str(value))
+        cur = self.unitconv.compute_currents(value)
+        self.unitconv.send_currents(cur)
         
     # Sets the value and waits that the read value reach the setpoint
     def set_and_wait(self, value:np.array):

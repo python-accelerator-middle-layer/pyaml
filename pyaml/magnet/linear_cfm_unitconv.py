@@ -138,24 +138,15 @@ class LinearCFMagnetUnitConv(UnitConv):
 
     # Get current units
     def get_current_units(self) -> list[str]:
-        _u = []
-        for p in self._cfg.powerconverters:
-            _u.append(p.unit())
-        return np.array(_u)
+        return np.array([p.unit() for p in self._cfg.powerconverters])
 
     # Get power supply current setpoint(s) from control system
     def read_currents(self) -> np.array:
-        _c = []
-        for p in self._cfg.powerconverters:
-            _c.append(p.get())
-        return np.array(_c)
+        return np.array([p.get() for p in self._cfg.powerconverters])
 
     # Get power supply current(s) from control system
     def readback_currents(self) -> np.array:
-        _c = []
-        for p in self._cfg.powerconverters:
-            _c.append(p.readback())
-        return np.array(_c)
+        return np.array([p.readback() for p in self._cfg.powerconverters])
 
     # Send power supply current(s) to control system
     def send_currents(self, currents: np.array):

@@ -76,8 +76,8 @@ class LinearUnitConv(UnitConv):
         self._brho = brho
 
     def __repr__(self):
-        return "%s(curve[%d], unit=%s)" % (
+        return "%s(curve[%d pts], unit=%s)" % (
             self.__class__.__name__,
             len(self._curve),
-            self._unit,
+            self._strength_unit,
         )
