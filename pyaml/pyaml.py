@@ -40,7 +40,7 @@ class AML(object):
             cfg.control.init_cs()
         if cfg.arrays is not None:
             for a in cfg.arrays:
-                a.fill()
+                a.fill(self)
 
 def pyaml(fileName:str) -> AML:
     """Load an accelerator middle layer"""

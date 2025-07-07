@@ -78,6 +78,37 @@ class RWStrengthArray(abstract.ReadWriteFloatArray):
 
 #------------------------------------------------------------------------------
 
+class RWStrengthArrayFamily(abstract.ReadWriteFloatArray):
+    """
+    Class providing read write access to a strength (array) of a family
+    """
+
+    def __init__(self, elements):
+        # Assume we have an array of (virtual) single function magnets
+        self.elements = elements
+
+    # Gets the value
+    def get(self) -> np.array:
+        str = []
+        for e in self.elements:
+            str.append(e.strength.get()[0])
+        return np.array(str)
+
+    # Sets the value
+    def set(self, value:np.array) -> np.array:
+        for idx,e in enumerate(self.elements):
+            e.strength.set(np.array(value[idx]))
+        
+    # Sets the value and waits that the read value reach the setpoint
+    def set_and_wait(self, value:np.array):
+        pass
+
+    # Gets the unit of the value
+    def unit(self) -> list[str]:
+        return self.unitconv.get_strength_units()
+
+#------------------------------------------------------------------------------
+
 
 class RWStrengthScalar(abstract.ReadWriteFloatScalar):
     """
