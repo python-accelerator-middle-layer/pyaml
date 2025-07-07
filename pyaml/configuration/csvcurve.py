@@ -2,6 +2,8 @@
 Class for load CSV (x,y) curve
 """
 from pydantic import BaseModel,Field
+from ..configuration import get_root_folder
+from pathlib import Path
 
 import numpy as np
 
@@ -21,7 +23,8 @@ class CSVCurve(Curve):
         self._cfg = cfg
 
         # Load CSV curve
-        self._curve = np.genfromtxt(cfg.file, delimiter=",", dtype=float)
+        path:Path = get_root_folder() / cfg.file
+        self._curve = np.genfromtxt(path, delimiter=",", dtype=float)
         _s = np.shape(self._curve)
         if len(_s) != 2 or _s[1] != 2:
             raise Exception(cfg.file + " wrong dimension")

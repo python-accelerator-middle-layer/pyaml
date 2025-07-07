@@ -6,6 +6,8 @@ import traceback
 #TODO:
 #Implement trace for error management. Hints: Implement private field __file__ in dictionary to report errors.
 
+_ALL_ELEMENTS: dict = {}
+
 def buildObject(d:dict):
     """Build an object from the dict"""
 
@@ -79,3 +81,14 @@ def depthFirstBuild(d):
     # We are now on leaf (no nested object), we can construt
     obj = buildObject(d)
     return obj
+
+def register_element(name:str, elt):
+    if name in _ALL_ELEMENTS:
+        raise Exception(f"element {name} already defined")
+    _ALL_ELEMENTS[name] = elt
+
+
+def get_element(name:str):
+    if name not in _ALL_ELEMENTS:
+        raise Exception(f"element {name} not defined")
+    return _ALL_ELEMENTS[name]

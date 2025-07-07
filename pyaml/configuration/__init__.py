@@ -11,7 +11,8 @@ def set_root_folder(path: str | Path):
     """
     Set the root path for configuration files.
     """
-    ROOT["path"] = Path(path).resolve()
+    #ROOT["path"] = Path(path).resolve()
+    ROOT["path"] = Path(path)
 
 
 def get_root_folder() -> Path:
@@ -28,6 +29,5 @@ def get_config_file_path(path: str | Path) -> Path:
         path = get_root_folder() / path
     return path.resolve()
 
-from .models import load_from_yaml, load_from_json
 from .fileloader import load
 from .factory import depthFirstBuild

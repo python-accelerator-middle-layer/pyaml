@@ -1,7 +1,5 @@
-from pathlib import Path
 
-#from pyaml.configuration import set_root_folder, load_from_yaml, load_from_json
-from pyaml.configuration import load
+from pyaml.configuration import load,set_root_folder
 from pyaml.configuration import depthFirstBuild
 from pyaml.magnet.quadrupole import Quadrupole
 from pyaml.magnet.quadrupole import ConfigModel as QuadrupoleConfigModel
@@ -11,7 +9,8 @@ from pyaml.magnet.linear_cfm_unitconv import LinearCFMagnetUnitConv
 from pyaml.magnet.cfm_magnet import CombinedFunctionMagnet
 import pprint as pp
 import json
-#set_root_folder(Path(__file__).parent.parent)
+
+set_root_folder("tests/config")
 
 if False:
     print(json.dumps(QuadrupoleConfigModel.model_json_schema(),indent=2))
@@ -19,16 +18,15 @@ if False:
 
 if False:
     # To run this one, please run 'pip install .' first in tests/external
-    cfg_quad_yaml = load("tests/config/sr/quadrupoles/QEXT.yaml")
-    quadWithExt: Quadrupole = depthFirstBuild(cfg_quad_yaml[0])
+    cfg_quad_yaml = load("sr/quadrupoles/QEXT.yaml")
+    quadWithExt: Quadrupole = depthFirstBuild(cfg_quad_yaml)
     quadWithExt.strength.set(10.0)    
     print(quadWithExt.strength.get())
 
-#quad: Quadrupole = load_from_yaml("tests/config/sr/quadrupoles/QF1C01A.yaml")
 
-if False:
-    cfg_quad_yaml = load("tests/config/sr/quadrupoles/QF1C01A.yaml")
-    quad:Quadrupole = depthFirstBuild(cfg_quad_yaml[0])
+if True:
+    cfg_quad_yaml = load("sr/quadrupoles/QF1C01A.yaml")
+    quad:Quadrupole = depthFirstBuild(cfg_quad_yaml)
     uc: LinearUnitConv = quad.unitconv
     print(uc._curve[1])
     quad.unitconv.set_magnet_rigidity(6e9 / 3e8)
@@ -38,8 +36,8 @@ if False:
     print(f"Unit={quad.current.unit()}")
 
 if False:
-    cfg_quad_json = load("tests/config/sr/quadrupoles/QF1C01A.json")
-    quad2:Quadrupole = depthFirstBuild(cfg_quad_json[0])
+    cfg_quad_json = load("sr/quadrupoles/QF1C01A.json")
+    quad2:Quadrupole = depthFirstBuild(cfg_quad_json)
     uc: LinearUnitConv = quad2.unitconv
     print(uc._curve[1])
     uc.set_magnet_rigidity(6e9 / 3e8)
@@ -49,15 +47,9 @@ if False:
     print(f"Unit={quad2.current.unit()}")
     print(f"Strength={uc.compute_strengths([quad2.current.get()])}")
 
-cfg_sh_uc = load("tests/config/sr/unitconv/SH1_C01A.yaml")
-sh:LinearCFMagnetUnitConv = depthFirstBuild(cfg_sh_uc)
-print(sh.get_current_units())
-print(sh.get_strength_units())
-sh.set_magnet_rigidity(6e9 / 3e8)
-cur = sh.compute_currents([0.000020,0.000010,0.000000])
-sh.send_currents(cur)
-print(sh.compute_strengths(cur))
-
-#shc01a_cfg = load("tests/config/sr/quadrupoles/SH1_C01A.yaml")
-#shc01a:CombinedFunctionMagnet = depthFirstBuild(shc01a_cfg)
-#print(shc01a._cfg.mapping)
+cfg_sh = load("sr/quadrupoles/SH1_C01A.yaml")
+sh:CombinedFunctionMagnet = depthFirstBuild(cfg_sh)
+sh.unitconv.set_magnet_rigidity(6e9 / 3e8)
+sh.multipole.set([0.000020,0.000010,0.000000])
+sh.A1.strength.set(0.0001)
+print(sh.multipole.get())

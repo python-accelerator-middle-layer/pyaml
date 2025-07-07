@@ -5,7 +5,7 @@ from .magnet import Magnet
 from .unitconv import UnitConv
 
 # Define the main class name for this module
-PYAMLCLASS = "Quadrupole"
+PYAMLCLASS = "Octupole"
 
 class ConfigModel(ElementModel):
 
@@ -14,9 +14,9 @@ class ConfigModel(ElementModel):
     unitconv: UnitConv | None = None
     """Object in charge of converting magnet strenghts to current"""
 
-class Quadrupole(Magnet):    
-    """Quadrupole class"""
-    
+class Octupole(Magnet):    
+    """Octupole class"""
+
     def __init__(self, cfg: ConfigModel):
         super().__init__(
             cfg.name,

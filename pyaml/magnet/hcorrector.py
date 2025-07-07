@@ -5,18 +5,19 @@ from .magnet import Magnet
 from .unitconv import UnitConv
 
 # Define the main class name for this module
-PYAMLCLASS = "Quadrupole"
+PYAMLCLASS = "HCorrector"
+
 
 class ConfigModel(ElementModel):
-
     hardware: DeviceAccess | None = None
     """Direct access to a magnet device that provides strength/current conversion"""
     unitconv: UnitConv | None = None
     """Object in charge of converting magnet strenghts to current"""
 
-class Quadrupole(Magnet):    
-    """Quadrupole class"""
-    
+
+class HCorrector(Magnet):
+    """HCorrector class"""
+
     def __init__(self, cfg: ConfigModel):
         super().__init__(
             cfg.name,
@@ -24,6 +25,3 @@ class Quadrupole(Magnet):
             cfg.unitconv if hasattr(cfg, "unitconv") else None,
         )
         self._cfg = cfg
-
-
-

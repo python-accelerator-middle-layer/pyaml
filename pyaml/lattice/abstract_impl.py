@@ -54,16 +54,19 @@ class RWStrengthArray(abstract.ReadWriteFloatArray):
 
     def __init__(self, elementName:str,unitconv:UnitConv,nbMultipole:int):
         self.unitconv = unitconv
-        #self.cache = self.get() TOTO implement cache initialisation
-        self.cache=np.zeros(nbMultipole)
+        self.elementName = elementName
 
     # Gets the value
     def get(self) -> np.array:
-        return self.cache
+        r = self.unitconv.read_currents()
+        str = self.unitconv.compute_strengths(r)        
+        return str
 
     # Sets the value
     def set(self, value:np.array) -> np.array:
-        print("RWFloatArray: set" + str(value))
+        print(f"set strength: {self.elementName}")
+        cur = self.unitconv.compute_currents(value)
+        self.unitconv.send_currents(cur)
         
     # Sets the value and waits that the read value reach the setpoint
     def set_and_wait(self, value:np.array):
@@ -83,6 +86,7 @@ class RWStrengthScalar(abstract.ReadWriteFloatScalar):
 
     def __init__(self, elementName:str,unitconv:UnitConv):
         self.unitconv = unitconv
+        self.elementName = elementName
 
         #Get element
         #elem = [e for e in lattice if e.Device == elementName]
@@ -103,6 +107,7 @@ class RWStrengthScalar(abstract.ReadWriteFloatScalar):
 
     # Sets the value
     def set(self, value:float):
+        print(f"set strength: {self.elementName}")
         current = self.unitconv.compute_currents([value])
         self.unitconv.send_currents(current)
         #setattr(self._element,self._attr,value)

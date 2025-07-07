@@ -14,20 +14,20 @@
     file: sr/unitconv/SH_matrix.csv
   powerconverters:
 #    - type: tango.pyaml.attribute
-#     attribute:  srmag/ps-corr-sh1/c01-a-ch1/current
+#     attribute:  srmag/ps-corr-sh1/c02-a-ch1/current
     - type: pyaml.control.device
-      setpoint: srmag/ps-corr-sh1/c01-a-ch1/current
-      readback: srmag/ps-corr-sh1/c01-a-ch1/current
+      setpoint: srmag/ps-corr-sh1/c02-a-ch1/current
+      readback: srmag/ps-corr-sh1/c02-a-ch1/current
       unit: A
 #    - type: tango.pyaml.attribute
-#     attribute:  srmag/ps-corr-sh1/c01-a-ch2/current
+#     attribute:  srmag/ps-corr-sh1/c02-a-ch2/current
     - type: pyaml.control.device
-      setpoint: srmag/ps-corr-sh1/c01-a-ch2/current
-      readback: srmag/ps-corr-sh1/c01-a-ch2/current
+      setpoint: srmag/ps-corr-sh1/c02-a-ch2/current
+      readback: srmag/ps-corr-sh1/c02-a-ch2/current
       unit: A
 #    - type: tango.pyaml.attribute
-#     attribute:  srmag/ps-corr-sh1/c01-a-ch3/current
+#     attribute:  srmag/ps-corr-sh1/c02-a-ch3/current
     - type: pyaml.control.device
-      setpoint: srmag/ps-corr-sh1/c01-a-ch3/current
-      readback: srmag/ps-corr-sh1/c01-a-ch3/current
+      setpoint: srmag/ps-corr-sh1/c02-a-ch3/current
+      readback: srmag/ps-corr-sh1/c02-a-ch3/current
       unit: A
