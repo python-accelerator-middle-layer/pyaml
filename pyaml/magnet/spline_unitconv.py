@@ -80,5 +80,5 @@ class SplineUnitConv(UnitConv):
         return "%s(curve[%d], unit=%s)" % (
             self.__class__.__name__,
             len(self._curve),
-            self._unit,
+            self._strength_unit,
         )

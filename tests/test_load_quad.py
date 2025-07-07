@@ -35,7 +35,7 @@ if True:
     print(f"Unit={quad.strength.unit()}")
     print(f"Unit={quad.current.unit()}")
 
-if True:
+if False:
     cfg_quad_json = load("sr/quadrupoles/QF1C01A.json")
     quad2:Quadrupole = depthFirstBuild(cfg_quad_json)
     uc: LinearUnitConv = quad2.unitconv
