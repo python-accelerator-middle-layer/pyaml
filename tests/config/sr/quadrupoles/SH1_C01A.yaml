@@ -8,4 +8,4 @@ mapping:
   - [B0, SH1-C01A-H]
   - [A0, SH1-C01A-H]
   - [A1, SH1-C01A-SQ]
-unitconv: tests/config/sr/unitconv/SH1_C01A.yaml
+unitconv: sr/unitconv/SH1_C01A.yaml

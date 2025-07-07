@@ -4,14 +4,14 @@
   pseudo_factors: [1.0,-1.0,-1.0]
   curves:
     - type: pyaml.configuration.csvcurve
-      file: tests/config/sr/unitconv/SH_h_strength.csv
+      file: sr/unitconv/SH_h_strength.csv
     - type: pyaml.configuration.csvcurve
-      file: tests/config/sr/unitconv/SH_v_strength.csv
+      file: sr/unitconv/SH_v_strength.csv
     - type: pyaml.configuration.csvcurve
-      file: tests/config/sr/unitconv/SH_sq_strength.csv
+      file: sr/unitconv/SH_sq_strength.csv
   matrix:
     type: pyaml.configuration.csvmatrix
-    file: tests/config/sr/unitconv/SH_matrix.csv
+    file: sr/unitconv/SH_matrix.csv
   powerconverters:
 #    - type: tango.pyaml.attribute
 #     attribute:  srmag/ps-corr-sh1/c01-a-ch1/current

@@ -1,13 +1,13 @@
-- type: pyaml.magnet.quadrupole
-  name: QF1C01A
-  unitconv:
-    type: pyaml.magnet.linear_unitconv
-    calibration_factor: 1.006560
-    calibration_offset: 0.0034
-    curve: tests/config/sr/unitconv/quadcurve.yaml
-    unit: 1/m
-    powerconverter:
-      type: pyaml.control.device
-      setpoint: sr/ps-qf1/c01-a/current
-      readback: sr/ps-qf1/c01-a/current
-      unit: A
+type: pyaml.magnet.quadrupole
+name: QF1C01A
+unitconv:
+  type: pyaml.magnet.linear_unitconv
+  calibration_factor: 1.006560
+  calibration_offset: 0.0034
+  curve: sr/unitconv/quadcurve.yaml
+  unit: 1/m
+  powerconverter:
+    type: pyaml.control.device
+    setpoint: sr/ps-qf1/c01-a/current
+    readback: sr/ps-qf1/c01-a/current
+    unit: A

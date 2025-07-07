@@ -1,6 +1,17 @@
-Machine: sr
-Devices:
-  - type: pyaml.magnet.quadrupole
-    config: config/sr/quadrupoles/QF1.yaml
-  - type: pyaml.magnet.quadrupole
-    config: config/sr/quadrupoles/QD2.yaml
+type: pyaml.pyaml
+instrument: sr
+simulators:
+  - type: pyaml.lattice.simulator
+    lattice: lattices/ring.mat
+    name: model
+data_folder: /data/store
+arrays:
+  - type: pyaml.lattice.array
+    name: HCORR
+    elements:
+      - SH1-C01A-H
+      - SH1-C02A-H       
+devices:
+  - sr/quadrupoles/QF1C01A.yaml
+  - sr/quadrupoles/SH1_C01A.yaml
+

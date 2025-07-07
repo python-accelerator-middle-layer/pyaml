@@ -2,6 +2,8 @@
 Class for load CSV matrix
 """
 from pydantic import BaseModel,Field
+from ..configuration import get_root_folder
+from pathlib import Path
 
 import numpy as np
 
@@ -20,7 +22,8 @@ class CSVMatrix(Matrix):
     def __init__(self, cfg: ConfigModel):
         self._cfg = cfg
         # Load CSV matrix
-        self._mat = np.genfromtxt(cfg.file, delimiter=",", dtype=float)
+        path:Path = get_root_folder() / cfg.file
+        self._mat = np.genfromtxt(path, delimiter=",", dtype=float)
 
     def get_matrix(self) -> np.array:
         return self._mat

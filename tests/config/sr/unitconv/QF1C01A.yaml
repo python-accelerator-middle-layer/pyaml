@@ -1,7 +1,7 @@
 type: pyaml.magnet.linear_unitconv
 calibration_factor: 1.0003
 calibration_offset: 0.0
-curve: tests/config/sr/unitconv/quadcurve.yaml
+curve: sr/unitconv/quadcurve.yaml
 unit: 1/m
 powerconverter:
   type: pyaml.control.device

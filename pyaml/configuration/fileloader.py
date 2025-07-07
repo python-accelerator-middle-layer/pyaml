@@ -2,6 +2,8 @@
 import yaml
 import json
 from typing import Union
+from . import get_root_folder
+from pathlib import Path
 
 #TODO
 #Implement cycle detection in case of wrong yaml/json link that creates a cycle
@@ -14,7 +16,7 @@ def load(fileName:str) -> Union[dict,list]:
     elif fileName.endswith(".json"):
         l = JSONLoader()
     else:
-        raise Exception("File format not supported (only .yaml or .json)")
+        raise Exception(f"{fileName} File format not supported (only .yaml or .json)")
     return l.load(fileName)
     
 # Loader base class (nested files expansion)
@@ -56,22 +58,22 @@ class Loader:
 class YAMLLoader(Loader):
     
     def load(self,fileName:str) -> Union[dict,list]:
-        self.fileName = fileName
+        self.path:Path = get_root_folder() / fileName
         self.suffix = ".yaml"
-        with open(fileName) as file:
+        with open(self.path) as file:
             try:
                 return self.expand(yaml.load(file,yaml.CLoader)) # Use fast C loader
             except yaml.YAMLError as e:
-                raise Exception(fileName + ": " + str(e))
+                raise Exception(self.path + ": " + str(e))
 
 # JSON loader
 class JSONLoader(Loader):
 
     def  load(self,fileName:str) -> Union[dict,list]:
-        self.fileName = fileName
+        self.path:Path = get_root_folder() / fileName
         self.suffix = ".json"
-        with open(fileName) as file:
+        with open(self.path) as file:
             try:
                 return self.expand(json.load(file))
             except json.JSONDecodeError as e:
-                raise Exception(fileName + ": " + str(e))
+                raise Exception(self.path + ": " + str(e))

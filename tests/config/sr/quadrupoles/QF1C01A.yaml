@@ -1,4 +1,4 @@
-- type: pyaml.magnet.quadrupole
-  name: QF1C01A
-  unitconv: tests/config/sr/unitconv/QF1C01A.yaml
-  #unitconv: tests/config/sr/unitconv/quadcurve.yaml
+type: pyaml.magnet.quadrupole
+name: QF1C01A
+unitconv: sr/unitconv/QF1C01A.yaml
+#unitconv: sr/unitconv/quadcurve.yaml
