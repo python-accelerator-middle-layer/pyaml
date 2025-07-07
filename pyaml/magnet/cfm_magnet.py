@@ -35,10 +35,8 @@ _fmap:dict = {
 # Define the main class name for this module
 PYAMLCLASS = "CombinedFunctionMagnet"
 
-class ConfigModel(BaseModel):
+class ConfigModel(ElementModel):
 
-    name: str
-    """Element name"""
     mapping: list[list[str]]
     """Name mapping for multipoles (i.e. [[B0,C01A-H],[A0,C01A-H],[B2,C01A-S]])"""
     unitconv: UnitConv | None = None
@@ -52,6 +50,10 @@ class CombinedFunctionMagnet(Element):
         self._cfg = cfg
 
         self.unitconv = cfg.unitconv
+
+        if self.unitconv is not None and not hasattr(self.unitconv._cfg,"multipoles"):
+            raise Exception(f"{cfg.name} unitconv: mutipoles field required for combined function magnet")
+
         self.multipole: abstract.ReadWriteFloatArray = RWStrengthArray(
             cfg.name, self.unitconv, len(cfg.mapping)
         )
@@ -64,6 +66,8 @@ class CombinedFunctionMagnet(Element):
                 raise Exception("Invalid CombinedFunctionMagnet mapping for {m}")
             if not m[0] in _fmap:
                 raise Exception(m[0] + " not implemented for combined function magnet")
+            if m[0] not in self.unitconv._cfg.multipoles:
+                raise Exception(m[0] + " not found in underlying unitconv")
 
             # Construct a virtual single function magnet for each function
             args = {"name":m[1]}
