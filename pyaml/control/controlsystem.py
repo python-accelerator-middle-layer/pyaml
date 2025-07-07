@@ -10,3 +10,8 @@ class ControlSystem(BaseModel,metaclass=ABCMeta):
     def init_cs(self):
         """Initialize control system"""
         pass
+
+    @abstractmethod
+    def name(self) -> str:
+        """Return control system name (i.e. live)"""
+        pass
