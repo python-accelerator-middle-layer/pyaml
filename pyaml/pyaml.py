@@ -36,7 +36,8 @@ class AML(object):
     
     def __init__(self, cfg: ConfigModel):
         self._cfg = cfg
-
+        if(cfg.control is not None):
+            cfg.control.init_cs()
 
 def pyaml(fileName:str) -> AML:
     """Load an accelerator middle layer"""
