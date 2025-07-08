@@ -26,11 +26,16 @@ class Array(object):
         self.elements = []
         className = self.__class__.__name__
         for e in self._cfg.elements:
-            objectName = f"{className}({e})"
+            elemName = f"{className}({e})"
+            elem = None
             try:
-                self.elements.append(get_element(objectName))
+                elem = get_element(elemName)
             except Exception as ex:
-                raise Exception(f"Array {self._cfg.name}: {objectName} element not found")
+                raise Exception(f"Array {self._cfg.name}: {elemName} element not found")
+            if elem in self.elements:
+                raise Exception(f"Array {self._cfg.name}: {elemName} already referenced in array")
+            self.elements.append(elem)
+
 
     def attach_cs(self,parent,cs:ControlSystem):
         self.strength: abstract.ReadWriteFloatArray = RWStrengthArrayFamily(self.elements,cs)
