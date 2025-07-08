@@ -4,5 +4,5 @@ set_root_folder("tests/config")
 
 sr = pyaml("sr.yaml")
 
-sr.HCORR.strength.set([0.000010,0.000020])
-sr.VCORR.strength.set([-0.000015,0.000002])
+sr.model.HCORR.strength.set([0.000010,0.000020])
+sr.model.VCORR.strength.set([-0.000015,0.000002])

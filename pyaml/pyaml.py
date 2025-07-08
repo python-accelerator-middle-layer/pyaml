@@ -5,7 +5,7 @@ PyAML main class
 from .control.controlsystem import ControlSystem
 from .control.element import Element
 from .lattice.simulator import Simulator
-from .lattice.array import Array
+from .arrays.array import Array
 from .configuration.factory import depthFirstBuild
 from pyaml.configuration import load
 from pydantic import BaseModel,ConfigDict
@@ -42,9 +42,14 @@ class AML(object):
             cfg.control.init_cs()
         if cfg.arrays is not None:
             for a in cfg.arrays:
-                a.fill(self)
+                a.fill()
         if cfg.energy is not None:
             self.set_energy(cfg.energy)
+        if cfg.simulators is not None:
+            for s in cfg.simulators:
+                for a in cfg.arrays:
+                    a.attach_model(self,s)
+                
 
     def set_energy(self,E:float):
         for e in self._cfg.devices:

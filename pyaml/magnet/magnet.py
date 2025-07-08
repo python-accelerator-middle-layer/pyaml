@@ -38,5 +38,5 @@ class Magnet(Element):
       self.strength: abstract.ReadWriteFloatScalar = RWMapper(source, idx)
 
   def set_energy(self,E:float):
-     if( self.unitconv is not None):
+     if(self.unitconv is not None):
         self.unitconv.set_magnet_rigidity(E/speed_of_light)

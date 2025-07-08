@@ -56,7 +56,7 @@ class CombinedFunctionMagnet(Element):
             raise Exception(f"{cfg.name} unitconv: mutipoles field required for combined function magnet")
 
         self.multipole: abstract.ReadWriteFloatArray = RWStrengthArray(
-            cfg.name, self.unitconv, len(cfg.mapping)
+            cfg.name, self.unitconv
         )
 
         idx = 0
@@ -80,10 +80,3 @@ class CombinedFunctionMagnet(Element):
     def set_energy(self,E:float):
         if(self.unitconv is not None):
             self.unitconv.set_magnet_rigidity(E/speed_of_light)
-
-    def __repr__(self):
-        return "%s(name=%s, unitconv=%s)" % (
-            self.__class__.__name__,
-            self.name,
-            self.unitconv,
-        )
