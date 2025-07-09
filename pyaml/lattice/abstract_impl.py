@@ -1,7 +1,8 @@
 from pyaml.control import abstract
 from pyaml.magnet.unitconv import UnitConv
 import numpy as np
-import at
+from .simulator import Simulator
+from ..control.controlsystem import ControlSystem
 
 #------------------------------------------------------------------------------
 
@@ -49,10 +50,9 @@ class RWMapper(abstract.ReadWriteFloatScalar):
 
 class RWStrengthArray(abstract.ReadWriteFloatArray):
     """
-    Class providing read write access to a strength (array) of a simulator or to a control system
+    Class providing read write access to a strength (array) of a control system
     """
-
-    def __init__(self, elementName:str,unitconv:UnitConv,nbMultipole:int):
+    def __init__(self, elementName:str,unitconv:UnitConv):
         self.unitconv = unitconv
         self.elementName = elementName
 
@@ -78,6 +78,40 @@ class RWStrengthArray(abstract.ReadWriteFloatArray):
 
 #------------------------------------------------------------------------------
 
+class RWStrengthArrayFamily(abstract.ReadWriteFloatArray):
+    """
+    Class providing read write access to a strength (array) of a family
+    """
+
+    def __init__(self, elements, target:ControlSystem|Simulator):
+        # Assume we have an array of (virtual) single function magnets
+        self.elements = elements
+        self.target = target
+
+    # Gets the value
+    def get(self) -> np.array:        
+        str = []
+        for e in self.elements:
+            e.set_target(self.target)
+            str.append(e.strength.get()[0])
+        return np.array(str)
+
+    # Sets the value
+    def set(self, value:np.array) -> np.array:
+        for idx,e in enumerate(self.elements):
+            e.set_target(self.target)
+            e.strength.set(np.array(value[idx]))
+        
+    # Sets the value and waits that the read value reach the setpoint
+    def set_and_wait(self, value:np.array):
+        pass
+
+    # Gets the unit of the value
+    def unit(self) -> list[str]:
+        return self.unitconv.get_strength_units()
+
+#------------------------------------------------------------------------------
+
 
 class RWStrengthScalar(abstract.ReadWriteFloatScalar):
     """
@@ -87,17 +121,10 @@ class RWStrengthScalar(abstract.ReadWriteFloatScalar):
     def __init__(self, elementName:str,unitconv:UnitConv):
         self.unitconv = unitconv
         self.elementName = elementName
+        self.src = None
 
-        #Get element
-        #elem = [e for e in lattice if e.Device == elementName]
-        #if not elem:
-        #    raise ValueError(f"{elementName} not found")
-        #if len(elem) != 1:
-        #    raise ValueError(f"{elementName} is not unique")
-        #if not hasattr(elem[0],attrName):
-        #    raise ValueError(f"{elementName} has no field {attrName}")
-        #self._element = elem
-        #self._attr = attrName
+    def set_source(sefl,src:Simulator|ControlSystem):
+        self.src = src
 
     # Gets the value
     def get(self) -> float:

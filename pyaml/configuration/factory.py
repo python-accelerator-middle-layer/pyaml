@@ -82,7 +82,8 @@ def depthFirstBuild(d):
     obj = buildObject(d)
     return obj
 
-def register_element(name:str, elt):
+def register_element(elt):
+    name = str(elt)
     if name in _ALL_ELEMENTS:
         raise Exception(f"element {name} already defined")
     _ALL_ELEMENTS[name] = elt

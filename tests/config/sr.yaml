@@ -1,17 +1,18 @@
 type: pyaml.pyaml
 instrument: sr
+energy: 6e9
 simulators:
   - type: pyaml.lattice.simulator
-    lattice: lattices/ring.mat
+    lattice: sr/lattices/ebs.mat
     name: model
 data_folder: /data/store
 arrays:
-  - type: pyaml.lattice.array
+  - type: pyaml.arrays.hcorrector
     name: HCORR
     elements:
       - SH1-C01A-H
       - SH1-C02A-H
-  - type: pyaml.lattice.array
+  - type: pyaml.arrays.vcorrector
     name: VCORR
     elements:
       - SH1-C01A-V
