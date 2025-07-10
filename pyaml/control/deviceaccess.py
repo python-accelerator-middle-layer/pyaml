@@ -1,4 +1,7 @@
 from abc import ABCMeta, abstractmethod
+from typing import Union
+
+import numpy.typing as npt
 from pydantic import BaseModel
 from .readback_value import Value
 
@@ -23,12 +26,17 @@ class DeviceAccess(BaseModel,metaclass=ABCMeta):
         pass
 
     @abstractmethod
+    def set_and_wait(self, value: float):
+        """Write a control system device variable (i.e. a power supply current)"""
+        pass
+
+    @abstractmethod
     def get(self) -> float:
         """Return the setpoint of a control system device variable"""
         pass
 
     @abstractmethod
-    def readback(self) -> Value:
+    def readback(self) -> Union[Value, npt.NDArray[Value]]:
         """Return the measured variable"""
         pass
 

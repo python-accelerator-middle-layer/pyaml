@@ -12,4 +12,7 @@ __version__ = "0.0.0"
 __author__ = "pyAML collaboration"
 __author_email__ = ""
 
-__all__ = [__version__, "YamlLoader"]
+from pyaml.exception import PyAMLException
+
+__all__ = [__version__, "YamlLoader", PyAMLException]
+
