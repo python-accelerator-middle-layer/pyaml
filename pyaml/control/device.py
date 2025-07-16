@@ -37,8 +37,11 @@ class Device(DeviceAccess):
         return self._readback
 
     def set(self, value: float):
-        print("%s: set %f" % (self._setpoint, value))
+        print(f"{self._setpoint}: set {value}")
         self._cache = value
+
+    def set_and_wait(self, value: float):
+        self.set(value)
 
     def get(self) -> float:
         return self._cache

@@ -284,7 +284,7 @@ class Value:
         """
         return -self.value
 
-    def is_good(self):
+    def is_good(self) -> bool:
         """
         Check if the value quality is good.
 
@@ -293,4 +293,4 @@ class Value:
         bool
             True if the quality is VALID or CHANGING.
         """
-        return self.quality in [Quality.VALID, Quality.CHANGING]
+        return self.quality in (Quality.VALID, Quality.CHANGING)

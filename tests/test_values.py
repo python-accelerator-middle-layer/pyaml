@@ -14,7 +14,6 @@ def test_value_basic():
     assert laissez_faire_l_insouciance == 3
 
 
-
 def test_value_with_numpy():
     my_list = [Value(3.14) for _ in range(10)]
 
@@ -30,10 +29,11 @@ def test_value_with_numpy():
     assert np.all(mult_result2 == 6.28)
 
     # Typing tests
-    assert type(my_array[0])==Value
+    assert type(my_array[0])==np.float64
     my_array_typed = np.array(my_list, dtype=float)
     assert type(my_array_typed[0])==np.float64
-    assert type(mult_result1[0])==float
+    assert type(mult_result1[0])==np.float64
+
 
 def test_value_with_array():
     a = np.array([10, 20, 30])
@@ -45,3 +45,17 @@ def test_value_with_array():
     a3 = np.array([20, 40, 60])
     two_times = array_value * vector
     assert (two_times == a3).all()
+
+def test_of_array_of_value_of_array():
+    a = np.array([10, 20, 30])
+    a2 = np.array([100, 400, 900])
+    a3 = np.array([1000, 4000, 9000])
+    matrix = np.array([Value(a), Value(a2), Value(a3)])
+    matrix2 = np.full((3,3), 2)
+    matrix_res =  matrix * matrix2
+    assert matrix_res.shape == (3,3)
+    for line in matrix_res:
+        for val1, val2 in zip(line, matrix):
+            assert type(val2)==Value
+            for a, b in zip(val1, val2.value):
+                assert a == b * 2
