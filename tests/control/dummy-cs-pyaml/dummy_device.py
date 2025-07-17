@@ -1,6 +1,7 @@
 from pydantic import BaseModel
 
 from pyaml.control.deviceaccess import DeviceAccess
+from pyaml.control.readback_value import Value
 
 # Define the main class name for this module
 PYAMLCLASS = "DummyDevice"
@@ -26,7 +27,7 @@ class DummyDevice(DeviceAccess):
         self._setpoint = cfg.setpoint
         self._readback = cfg.readback
         self._unit = cfg.unit
-        self._cache = 0.0
+        self._cache = Value(0.0)
 
     def name(self) -> str:
         return self._setpoint
@@ -35,13 +36,15 @@ class DummyDevice(DeviceAccess):
         return self._readback
 
     def set(self, value: float):
-        print("%s: set %f" % (self._setpoint, value))
+        self._cache = value
+
+    def set_and_wait(self, value: float):
         self._cache = value
 
     def get(self) -> float:
         return self._cache
 
-    def readback(self) -> float:
+    def readback(self) -> Value:
         return self._cache
 
     def unit(self) -> str:
