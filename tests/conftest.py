@@ -60,6 +60,14 @@ def install_test_package(request):
 
 
 @pytest.fixture
+def config_root_dir():
+    """
+    Returns the absolute path to the `tests/config` directory.
+    """
+    return str((pathlib.Path(__file__).parent / "config").resolve())
+
+
+@pytest.fixture
 def value_scalar():
     """Return a basic scalar Value instance."""
     return Value(3.14)

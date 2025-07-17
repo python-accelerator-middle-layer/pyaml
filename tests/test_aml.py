@@ -1,8 +1,12 @@
 from pyaml.pyaml import pyaml
 from pyaml.configuration import set_root_folder
-set_root_folder("tests/config")
+import pyaml as pyaml_pkg
 
-sr = pyaml("sr.yaml")
+def test_aml(config_root_dir):
+    set_root_folder(config_root_dir)
 
-sr.model.HCORR.strength.set([0.000010,0.000020])
-sr.model.VCORR.strength.set([-0.000015,0.000002])
+    sr = pyaml("sr.yaml")
+
+    sr.model.HCORR.strength.set([0.000010,0.000020])
+    sr.model.VCORR.strength.set([-0.000015,0.000002])
+    pyaml_pkg.configuration.factory._ALL_ELEMENTS.clear()
