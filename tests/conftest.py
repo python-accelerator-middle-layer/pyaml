@@ -26,24 +26,32 @@ def install_test_package(request):
     """
     info = request.param
     package_name = info["name"]
-    package_dir = pathlib.Path(info["path"])
+    package_path = pathlib.Path(info["path"]).resolve()
 
-    if not package_dir.exists():
-        raise FileNotFoundError(f"Directory not found: {package_dir}")
+    if not package_path.exists():
+        raise FileNotFoundError(f"Package path not found: {package_path}")
 
-    if not ((package_dir / "pyproject.toml").exists() or (package_dir / "setup.py").exists()):
-        raise RuntimeError(f"No pyproject.toml or setup.py found in {package_dir}")
+    if not ((package_path / "pyproject.toml").exists() or (package_path / "setup.py").exists()):
+        raise RuntimeError(f"No pyproject.toml or setup.py found in {package_path}")
 
     # Install package
     subprocess.check_call([
-        sys.executable, "-m", "pip", "install", "--quiet", "--editable", str(package_dir)
+        sys.executable, "-m", "pip", "install", "--quiet", "--editable", str(package_path)
     ])
     # Test the import.
     import importlib
-    sys.modules.pop(package_name, None)
-    importlib.import_module(package_name)
+    # Ensure its path is importable
+    if str(package_path) not in sys.path:
+        sys.path.insert(0, str(package_path))
 
-    yield
+    # Remove from sys.modules to avoid caching issues
+    sys.modules.pop(package_name, None)
+
+    # Import the module freshly
+    module = importlib.import_module(package_name)
+
+    yield module
+
 
     # Uninstall package
     subprocess.call([
