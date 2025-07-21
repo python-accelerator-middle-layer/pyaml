@@ -1,13 +1,11 @@
 from pydantic import SerializeAsAny
-from pydantic import BaseModel
 from scipy.constants import speed_of_light
 
 from .unitconv import UnitConv
-from .magnet import Magnet
-from ..control import abstract
 from ..control.element import ElementModel
-from ..lattice.abstract_impl import RWStrengthArray
 from ..control.element import Element
+from ..control import abstract
+from ..control.abstract import RWMapper
 
 from .hcorrector import HCorrector
 from .vcorrector import VCorrector
@@ -17,8 +15,7 @@ from .sextupole import Sextupole
 from .skewsext import SkewSext
 from .octupole import Octupole
 from .skewoctu import SkewOctu
-from .decapole import Decapole
-from .skewdeca import SkewDeca
+from .magnet import Magnet
 
 _fmap:dict = {
     "B0":HCorrector,
@@ -28,9 +25,7 @@ _fmap:dict = {
     "B2":Sextupole,
     "A2":SkewSext,
     "B3":Octupole,
-    "A3":SkewOctu,
-    "B4":Decapole,
-    "A4":SkewDeca
+    "A3":SkewOctu
 }
 
 # Define the main class name for this module
@@ -49,19 +44,14 @@ class CombinedFunctionMagnet(Element):
     def __init__(self, cfg: ConfigModel):
         super().__init__(cfg.name)
         self._cfg = cfg
-
         self.unitconv = cfg.unitconv
 
         if self.unitconv is not None and not hasattr(self.unitconv._cfg,"multipoles"):
             raise Exception(f"{cfg.name} unitconv: mutipoles field required for combined function magnet")
 
-        self.multipole: abstract.ReadWriteFloatArray = RWStrengthArray(
-            cfg.name, self.unitconv
-        )
-
         idx = 0
+        self.polynoms = []
         for m in cfg.mapping:
-
             # Check mapping validity
             if len(m)!=2:
                 raise Exception("Invalid CombinedFunctionMagnet mapping for {m}")
@@ -69,14 +59,20 @@ class CombinedFunctionMagnet(Element):
                 raise Exception(m[0] + " not implemented for combined function magnet")
             if m[0] not in self.unitconv._cfg.multipoles:
                 raise Exception(m[0] + " not found in underlying unitconv")
+            self.polynoms.append(_fmap[m[0]].polynom)
 
-            # Construct a virtual single function magnet for each function
-            args = {"name":m[1]}
-            mclass:Magnet = _fmap[m[0]](ElementModel(**args))
-            mclass.set_source(self.multipole,idx)
-            setattr(self,m[0],mclass)
-            idx += 1
+    def attach(self, strengths: abstract.ReadWriteFloatArray, currents: abstract.ReadWriteFloatArray) -> list[Magnet]:
 
+            # Construct a single function magnet for each multipole of this combined function magnet        
+            l = []
+            for idx,m in enumerate(self.cfg.mapping):
+                args = {"name":m[1]}
+                mclass:Magnet = _fmap[m[0]](ElementModel(**args))
+                strength = RWMapper(strengths,idx)
+                currents = RWMapper(currents,idx)
+                l.append(mclass.attach(strength,currents))
+            return l
+    
     def set_energy(self,E:float):
         if(self.unitconv is not None):
             self.unitconv.set_magnet_rigidity(E/speed_of_light)

@@ -1,7 +1,6 @@
 import numpy as np
 from pydantic import BaseModel,Field
 
-from .backend_loader import load_backend
 from .deviceaccess import DeviceAccess
 from .readback_value import Value
 

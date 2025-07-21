@@ -3,6 +3,7 @@ from ..control.element import ElementModel
 from ..control.deviceaccess import DeviceAccess
 from .magnet import Magnet
 from .unitconv import UnitConv
+from ..lattice.polynom_info import PolynomInfo
 
 # Define the main class name for this module
 PYAMLCLASS = "SkewSext"
@@ -16,6 +17,7 @@ class ConfigModel(ElementModel):
 
 class SkewSext(Magnet):    
     """SkewSext class"""
+    polynom = PolynomInfo('PolynomA',2)
 
     def __init__(self, cfg: ConfigModel):
         super().__init__(

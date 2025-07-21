@@ -3,6 +3,7 @@ from ..control.element import ElementModel
 from ..control.deviceaccess import DeviceAccess
 from .magnet import Magnet
 from .unitconv import UnitConv
+from ..lattice.polynom_info import PolynomInfo
 
 # Define the main class name for this module
 PYAMLCLASS = "Octupole"
@@ -16,6 +17,7 @@ class ConfigModel(ElementModel):
 
 class Octupole(Magnet):    
     """Octupole class"""
+    polynom = PolynomInfo('PolynomB',3)
 
     def __init__(self, cfg: ConfigModel):
         super().__init__(
@@ -24,6 +26,3 @@ class Octupole(Magnet):
             cfg.unitconv if hasattr(cfg, "unitconv") else None,
         )
         self._cfg = cfg
-
-
-

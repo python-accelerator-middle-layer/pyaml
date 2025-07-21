@@ -1,9 +1,6 @@
 from pyaml.control.element import Element
 from ..control.deviceaccess import DeviceAccess
 from ..control import abstract
-from ..lattice.abstract_impl import RWMapper
-from ..lattice.abstract_impl import RCurrentScalar
-from ..lattice.abstract_impl import RWStrengthScalar
 from .unitconv import UnitConv
 from scipy.constants import speed_of_light
 
@@ -18,7 +15,8 @@ class Magnet(Element):
   def __init__(self, name:str, hardware:DeviceAccess = None, unitconv:UnitConv = None):
     super().__init__(name)
     self.unitconv = unitconv
-
+    __strength = None
+    __current = None
     if hardware is not None:
       # TODO
       # Direct access to a magnet device that supports strength/current conversion
@@ -26,16 +24,22 @@ class Magnet(Element):
           " %s, hardware access not implemented" % (self.__class__.__name__,name)
       )
     
-    # In case of unitconv is none, no control system access possible
-    self.strength: abstract.ReadWriteFloatScalar = RWStrengthScalar(
-      name, self.unitconv
-    )
-    self.current: abstract.ReadFloatScalar = RCurrentScalar(self.unitconv)
+  @property
+  def strength(self) -> abstract.ReadWriteFloatScalar:
+    return self.__strength
 
-  def set_source(self, source: abstract.ReadWriteFloatArray, idx: int):
-      """Set the peer combined function magnet"""
-      # Override strength, map single strength to multipole
-      self.strength: abstract.ReadWriteFloatScalar = RWMapper(source, idx)
+  @property
+  def current(self) -> abstract.ReadWriteFloatScalar:
+    if self.__current is None:
+        raise Exception(f"{str(self)} has no bijective strenght<->current unitconv model")
+    return self.__current
+
+  def attach(self, strength: abstract.ReadWriteFloatScalar, current: abstract.ReadWriteFloatScalar):
+    # Attach strengh and current attribute and returns a new reference
+    obj = self.__class__(self._cfg)
+    __strength = strength
+    __current = current
+    return obj
 
   def set_energy(self,E:float):
      if(self.unitconv is not None):

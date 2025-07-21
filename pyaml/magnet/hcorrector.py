@@ -3,6 +3,7 @@ from ..control.element import ElementModel
 from ..control.deviceaccess import DeviceAccess
 from .magnet import Magnet
 from .unitconv import UnitConv
+from ..lattice.polynom_info import PolynomInfo
 
 # Define the main class name for this module
 PYAMLCLASS = "HCorrector"
@@ -17,6 +18,7 @@ class ConfigModel(ElementModel):
 
 class HCorrector(Magnet):
     """HCorrector class"""
+    polynom = PolynomInfo('PolynomB',0)
 
     def __init__(self, cfg: ConfigModel):
         super().__init__(
@@ -25,3 +27,4 @@ class HCorrector(Magnet):
             cfg.unitconv if hasattr(cfg, "unitconv") else None,
         )
         self._cfg = cfg
+

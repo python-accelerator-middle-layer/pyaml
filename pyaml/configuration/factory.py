@@ -2,6 +2,7 @@
 import importlib
 import pprint as pp
 import traceback
+from ..control.element import Element
 
 #TODO:
 #Implement trace for error management. Hints: Implement private field __file__ in dictionary to report errors.
@@ -43,6 +44,7 @@ def buildObject(d:dict):
             )
         
         obj = elem_cls(cfg)
+        register_element(obj)
         return obj
 
     except Exception as e:
@@ -83,10 +85,11 @@ def depthFirstBuild(d):
     return obj
 
 def register_element(elt):
-    name = str(elt)
-    if name in _ALL_ELEMENTS:
-        raise Exception(f"element {name} already defined")
-    _ALL_ELEMENTS[name] = elt
+    if isinstance(elt,Element):
+        name = str(elt)
+        if name in _ALL_ELEMENTS:
+            raise Exception(f"element {name} already defined")
+        _ALL_ELEMENTS[name] = elt
 
 
 def get_element(name:str):
