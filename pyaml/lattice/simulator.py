@@ -1,4 +1,3 @@
-import numpy as np
 from pydantic import BaseModel
 import at
 from ..configuration import get_root_folder

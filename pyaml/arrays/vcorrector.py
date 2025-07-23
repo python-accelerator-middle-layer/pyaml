@@ -5,8 +5,7 @@ from ..lattice.element_holder import ElementHolder,MagnetType
 # Define the main class name for this module
 PYAMLCLASS = "VCorrector"
 
-class ConfigModel(ArrayModel):
-    pass
+class ConfigModel(ArrayModel):...
 
 class VCorrector(Array):
     """

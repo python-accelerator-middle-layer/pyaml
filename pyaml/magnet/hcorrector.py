@@ -1,23 +1,13 @@
-from ..lattice.element import ElementModel
-
-from ..control.deviceaccess import DeviceAccess
-from .magnet import Magnet
-from .unitconv import UnitConv
+from .magnet import Magnet,MagnetModel
 from ..lattice.polynom_info import PolynomInfo
 
 # Define the main class name for this module
 PYAMLCLASS = "HCorrector"
 
-
-class ConfigModel(ElementModel):
-    hardware: DeviceAccess | None = None
-    """Direct access to a magnet device that provides strength/current conversion"""
-    unitconv: UnitConv | None = None
-    """Object in charge of converting magnet strenghts to current"""
-
+class ConfigModel(MagnetModel):...
 
 class HCorrector(Magnet):
-    """HCorrector class"""
+    """Horizontal Corrector class"""
     polynom = PolynomInfo('PolynomB',0)
 
     def __init__(self, cfg: ConfigModel):

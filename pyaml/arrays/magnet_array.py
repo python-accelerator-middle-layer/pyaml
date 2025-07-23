@@ -2,6 +2,8 @@ from ..control.abstract import ReadWriteFloatArray
 from ..magnet.magnet import Magnet
 import numpy as np
 
+#TODO: Implement magnet_array.RWMagnetCurrent
+
 class RWMagnetStrength(ReadWriteFloatArray):
 
     def __init__(self, magnets:list[Magnet]):
@@ -29,11 +31,11 @@ class MagnetArray(object):
     Class that implements access to a magnet arrays
     """
     def __init__(self,magnets:list[Magnet]):
-        __rwstrengh = RWMagnetStrength(magnets)
+        self.__rwstrengths = RWMagnetStrength(magnets)
 
     @property
     def strengths(self) -> RWMagnetStrength:
-        return self.__rwstrength
+        return self.__rwstrengths
 
 
 
