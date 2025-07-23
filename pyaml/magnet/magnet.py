@@ -1,8 +1,9 @@
-from pyaml.control.element import Element
+from pyaml.lattice.element import Element
 from ..control.deviceaccess import DeviceAccess
 from ..control import abstract
 from .unitconv import UnitConv
 from scipy.constants import speed_of_light
+from typing import Self
 
 class Magnet(Element):
   """
@@ -31,14 +32,14 @@ class Magnet(Element):
   @property
   def current(self) -> abstract.ReadWriteFloatScalar:
     if self.__current is None:
-        raise Exception(f"{str(self)} has no bijective strenght<->current unitconv model")
+        raise Exception(f"{str(self)} has non trivial strenght<->current unitconv model")
     return self.__current
 
-  def attach(self, strength: abstract.ReadWriteFloatScalar, current: abstract.ReadWriteFloatScalar):
+  def attach(self, strength: abstract.ReadWriteFloatScalar, current: abstract.ReadWriteFloatScalar) -> Self:
     # Attach strengh and current attribute and returns a new reference
     obj = self.__class__(self._cfg)
-    __strength = strength
-    __current = current
+    obj.__strength = strength
+    obj.__current = current
     return obj
 
   def set_energy(self,E:float):

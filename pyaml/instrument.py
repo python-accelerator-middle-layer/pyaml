@@ -3,7 +3,7 @@ Instrument class
 """
 
 from .control.controlsystem import ControlSystem
-from .control.element import Element
+from .lattice.element import Element
 from .lattice.simulator import Simulator
 from .arrays.array import Array
 from pydantic import BaseModel,ConfigDict
@@ -42,25 +42,28 @@ class Instrument(object):
         if cfg.control is not None:
             for c in cfg.control:
                 if c.name() == "live":
-                    __live = c
+                    self.__live = c
                     c.init_cs()
-
-        if cfg.energy is not None:
-            self.set_energy(cfg.energy)
             
         if cfg.simulators is not None:
             for s in cfg.simulators:
                 if s.name() == "design":
-                  __design = s
+                  self.__design = s
                 s.fill_device(cfg.devices)
 
         if cfg.arrays is not None:
-            for a in cfg.arrays:
-                a.fill()
+            for a in cfg.arrays:                    
+                for s in cfg.simulators:
+                    a.fill_array(s)
+
+        if cfg.energy is not None:
+            self.set_energy(cfg.energy)
 
     def set_energy(self,E:float):
-        # TODO, apply on all control system and simulators
-        pass
+        if self._cfg.simulators is not None:
+            for s in self._cfg.simulators:
+                s.set_energy(E)
+        # TODO: apply E on Control system
 
     @property
     def live(self) -> ControlSystem:

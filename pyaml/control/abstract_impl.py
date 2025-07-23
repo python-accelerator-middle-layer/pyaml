@@ -63,12 +63,13 @@ class RWCurrentArray(abstract.ReadWriteFloatArray):
         return self.unitconv.read_currents()
 
     # Sets the value
-    def set(self, value:np.array) -> np.array:
+    def set(self, value:np.array):
         self.unitconv.send_currents(value)
         
     # Sets the value and waits that the read value reach the setpoint
     def set_and_wait(self, value:np.array):
-        pass
+        raise NotImplementedError("Not implemented yet.")
+
 
     # Gets the unit of the value
     def unit(self) -> list[str]:
@@ -90,13 +91,13 @@ class RWStrengthArray(abstract.ReadWriteFloatArray):
         return str
 
     # Sets the value
-    def set(self, value:np.array) -> np.array:
+    def set(self, value:np.array):
         cur = self.unitconv.compute_currents(value)
         self.unitconv.send_currents(cur)
         
     # Sets the value and waits that the read value reach the setpoint
     def set_and_wait(self, value:np.array):
-        pass
+        raise NotImplementedError("Not implemented yet.")
 
     # Gets the unit of the value
     def unit(self) -> list[str]:

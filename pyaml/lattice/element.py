@@ -17,7 +17,7 @@ class Element(object):
 
     def set_energy(self,E:float):
         pass
-
+    
     def __repr__(self):
         return "%s(%s)" % (
             self.__class__.__name__,

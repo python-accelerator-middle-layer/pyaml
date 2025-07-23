@@ -1,4 +1,4 @@
-from ..control.element import ElementModel
+from ..lattice.element import ElementModel
 
 from ..control.deviceaccess import DeviceAccess
 from .magnet import Magnet

@@ -85,3 +85,8 @@ class RWMapper(ReadWriteFloatScalar):
     # Sets the value and wait that the read value reach the setpoint
     def set_and_wait(self, value:float):
         raise NotImplementedError("Not implemented yet.")
+    
+    # Return the unit
+    def unit(self) -> str:
+        return self.bind.unit()[self.idx]
+

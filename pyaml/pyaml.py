@@ -24,7 +24,7 @@ class PyAML(object):
         self._cfg = cfg
         self.INSTRUMENTS:dict = {}
         for i in cfg.instruments:
-            self.INSTRUMENTS.add[i._cfg.name,i]
+            self.INSTRUMENTS[i._cfg.name]=i
 
     def get(self,name:str) -> Instrument:
       if name not in self.INSTRUMENTS:

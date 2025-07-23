@@ -2,8 +2,8 @@ from pydantic import SerializeAsAny
 from scipy.constants import speed_of_light
 
 from .unitconv import UnitConv
-from ..control.element import ElementModel
-from ..control.element import Element
+from ..lattice.element import ElementModel
+from ..lattice.element import Element
 from ..control import abstract
 from ..control.abstract import RWMapper
 
@@ -65,7 +65,7 @@ class CombinedFunctionMagnet(Element):
 
             # Construct a single function magnet for each multipole of this combined function magnet        
             l = []
-            for idx,m in enumerate(self.cfg.mapping):
+            for idx,m in enumerate(self._cfg.mapping):
                 args = {"name":m[1]}
                 mclass:Magnet = _fmap[m[0]](ElementModel(**args))
                 strength = RWMapper(strengths,idx)

@@ -2,12 +2,13 @@ import numpy as np
 from pydantic import BaseModel
 import at
 from ..configuration import get_root_folder
-from ..control.element import Element
+from .element import Element
 from pathlib import Path
 from ..magnet.magnet import Magnet
 from ..magnet.cfm_magnet import CombinedFunctionMagnet
 from ..lattice.abstract_impl import RWCurrentScalar,RWCurrenthArray
 from ..lattice.abstract_impl import RWStrengthScalar,RWStrengthArray
+from .element_holder import ElementHolder
 
 # Define the main class name for this module
 PYAMLCLASS = "Simulator"
@@ -21,33 +22,13 @@ class ConfigModel(BaseModel):
     mat_key: str = None
     """AT lattice ring name"""
 
-class MagnetType:
-   HCORRECTOR = 0
-   VCORRECTOR = 1
-   QUADRUPOLE = 2
-   SKEWQUAD = 3
-   SEXTUPOLE = 4
-   SKEWSEXT = 5
-   OCTUPOLE = 6
-   SKEWOCTU = 7
-
-_mmap:list = [
-    "HCorrector",
-    "VCorrector",
-    "Quadrupole",
-    "SkewQuad",
-    "Sextupole",
-    "SkewSext",
-    "Octupole",
-    "SkewOctu"]
-
-
-class Simulator(object):
+class Simulator(ElementHolder):
     """
     Class that implements access to AT simulator
     """
 
     def __init__(self, cfg: ConfigModel):
+        super().__init__()
         self._cfg = cfg
         path:Path = get_root_folder() / cfg.lattice
 
@@ -56,14 +37,17 @@ class Simulator(object):
         else:
           self.ring = at.load_lattice(path,mat_key=f"{self._cfg.mat_key}")
 
-        # Handle
-        self.MAGNETS: list[Element] = {}
-        self.DIAGS: list[Element] = {}
-        self.RF: list[Element] = {}
-        self.OTHERS: list[Element] = {}
-
     def name(self) -> str:
        return self._cfg.name
+    
+    def get_lattice(self) -> at.Lattice:
+      return self.ring
+    
+    def set_energy(self,E:float):
+      self.ring.energy = E
+      # For current calculation
+      for m in self.MAGNETS.items():
+        m[1].set_energy(E)
     
     def fill_device(self,elements:list[Element]):
        for e in elements:
@@ -75,18 +59,16 @@ class Simulator(object):
             name = str(m)
             self.MAGNETS[name] = m
           elif isinstance(e,CombinedFunctionMagnet):
+            self.MAGNETS[str(e)]=e
             currents = RWCurrenthArray(self.get_at_elems(e.name),e.polynoms,e.unitconv)
-            strengths = RWStrengthScalar(self.get_at_elems(e.name),e.polynoms,e.unitconv)
+            strengths = RWStrengthArray(self.get_at_elems(e.name),e.polynoms,e.unitconv)
+            # Create unique refs of each function for this simulator
             ms = e.attach(strengths,currents)
             for m in ms:
-              name = str(m)
-              self.MAGNETS[name] = m
+              self.MAGNETS[str(m)] = m
     
     def get_at_elems(self,elementName:str) -> list[at.Element]:
-       return [e for e in self.ring if e.FamName == elementName]
-
-    def get_magnet(self,type:MagnetType,name:str) -> Magnet:
-      fName = f"{_mmap[type]}({name})"
-      if fName not in self.MAGNETS:
-        raise Exception(f"Magnet {name} not defined")
-      return self.MAGNETS[name]
+       elementList = [e for e in self.ring if e.FamName == elementName]
+       if not elementList:
+          raise Exception(f"{elementName} not found in lattice:{self._cfg.lattice}")
+       return elementList

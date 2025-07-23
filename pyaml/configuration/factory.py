@@ -2,7 +2,7 @@
 import importlib
 import pprint as pp
 import traceback
-from ..control.element import Element
+from ..lattice.element import Element
 
 #TODO:
 #Implement trace for error management. Hints: Implement private field __file__ in dictionary to report errors.

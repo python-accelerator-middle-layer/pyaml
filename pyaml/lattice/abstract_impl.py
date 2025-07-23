@@ -41,7 +41,8 @@ class RWStrengthScalar(abstract.ReadWriteFloatScalar):
     Class providing read write access to a strength (scalar value) of a simulator
     """
 
-    def __init__(self, elements:list[at.Element], poly:PolynomInfo):
+    def __init__(self, elements:list[at.Element], poly:PolynomInfo, unitconv:UnitConv):
+        self.unitconv = unitconv
         self.elements = elements
         self.poly = elements[0].__getattribute__(poly.attName)
         self.polyIdx = poly.index
@@ -75,7 +76,7 @@ class RWCurrenthArray(abstract.ReadWriteFloatArray):
         self.polyIdx = []
         self.unitconv = unitconv
         for p in poly:
-            self.poly.append[elements[0].__getattribute__(p.attName)]
+            self.poly.append(elements[0].__getattribute__(p.attName))
             self.polyIdx.append(p.index)
 
     # Gets the value
@@ -84,7 +85,7 @@ class RWCurrenthArray(abstract.ReadWriteFloatArray):
         s = np.zeros(nbStrength)
         for i in range(nbStrength):
             s[i] = self.poly[i][self.polyIdx[i]] * self.elements[0].Length
-        return self.unitconv.compute_currents([s])
+        return self.unitconv.compute_currents(s)
 
     # Sets the value
     def set(self, value:np.array):
@@ -108,12 +109,13 @@ class RWStrengthArray(abstract.ReadWriteFloatArray):
     Class providing read write access to a strength (array) of a simulator
     """
 
-    def __init__(self, elements:list[at.Element], poly:list[PolynomInfo]):
+    def __init__(self, elements:list[at.Element], poly:list[PolynomInfo], unitconv:UnitConv):
         self.elements = elements
         self.poly = []
         self.polyIdx = []
+        self.unitconv = unitconv
         for p in poly:
-            self.poly.append[elements[0].__getattribute__(p.attName)]
+            self.poly.append(elements[0].__getattribute__(p.attName))
             self.polyIdx.append(p.index)
 
     # Gets the value
@@ -129,7 +131,7 @@ class RWStrengthArray(abstract.ReadWriteFloatArray):
         nbStrength = len(self.poly)
         s = np.zeros(nbStrength)
         for i in range(nbStrength):
-            self.poly[i][self.polyIdx[i]] = value / self.elements[0].Length
+            self.poly[i][self.polyIdx[i]] = value[i] / self.elements[0].Length
 
     # Sets the value and wait that the read value reach the setpoint
     def set_and_wait(self, value:np.array):
@@ -137,5 +139,5 @@ class RWStrengthArray(abstract.ReadWriteFloatArray):
 
     # Gets the unit of the value
     def unit(self) -> list[str]:
-        return self.unitconv.get_strength_units()[0]
+        return self.unitconv.get_strength_units()
 

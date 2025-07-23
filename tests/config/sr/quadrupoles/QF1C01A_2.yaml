@@ -1,5 +1,5 @@
 type: pyaml.magnet.quadrupole
-name: QF1C01A
+name: QF1A-C01
 unitconv:
   type: pyaml.magnet.linear_unitconv
   calibration_factor: 1.006560
