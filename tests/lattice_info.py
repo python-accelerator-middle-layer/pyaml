@@ -25,6 +25,6 @@ def prepare_and_save():
 def dump():
     # Dump lattice 
     for e in ring:
-        print(str(e.FamName))
+        print(f"\"{e.FamName}\",")
 
 dump()

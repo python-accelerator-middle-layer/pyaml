@@ -44,7 +44,7 @@ class Instrument(object):
                 if c.name() == "live":
                     self.__live = c
                     c.init_cs()
-            
+
         if cfg.simulators is not None:
             for s in cfg.simulators:
                 if s.name() == "design":

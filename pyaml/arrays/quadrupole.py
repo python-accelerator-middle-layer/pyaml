@@ -3,11 +3,11 @@ from .array import Array
 from ..lattice.element_holder import ElementHolder,MagnetType
 
 # Define the main class name for this module
-PYAMLCLASS = "HCorrector"
+PYAMLCLASS = "Quadrupole"
 
 class ConfigModel(ArrayModel):...
 
-class HCorrector(Array):
+class Quadrupole(Array):
     """
     Class that implements access to arrays (families)
     """
@@ -15,5 +15,5 @@ class HCorrector(Array):
         super().__init__(cfg)
 
     def fill_array(self,holder:ElementHolder):
-        holder.fill_magnet_array(MagnetType.HCORRECTOR,self._cfg.name,self._cfg.elements)
+        holder.fill_magnet_array(MagnetType.QUADRUPOLE,self._cfg.name,self._cfg.elements)
 

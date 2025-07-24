@@ -1,5 +1,5 @@
 """
-Class handling element references for simulators and control system
+Module handling element references for simulators and control system
 """
 from .element import Element
 from ..magnet.magnet import Magnet
@@ -30,7 +30,7 @@ _mmap:list = [
 
 class ElementHolder(object):
     """
-    Class that store reference of object used from both simulators and control system
+    Class that store references of objects used from both simulators and control system
     """
 
     def __init__(self):
