@@ -1,0 +1,10 @@
+type: pyaml.magnet.linear_model
+calibration_factor: 1.0003
+calibration_offset: 0.0
+curve: sr/magnet_models/quadcurve.yaml
+unit: 1/m
+powerconverter:
+  type: pyaml.control.device
+  setpoint: sr/ps-qf1/c01-a/current
+  readback: sr/ps-qf1/c01-a/current
+  unit: A

@@ -1,0 +1,150 @@
+from pydantic import BaseModel
+
+import numpy as np
+from ..configuration.curve import Curve
+from ..configuration.matrix import Matrix
+from ..control.deviceaccess import DeviceAccess
+from .model import MagnetModel
+
+# Define the main class name for this module
+PYAMLCLASS = "LinearCFMagnetModel"
+
+
+class ConfigModel(BaseModel):
+
+    multipoles: list[str]
+    """List of supported functions: A0,B0,A1,B1,etc (i.e. [B0,A1,B2])"""
+    curves: list[Curve]
+    """Exitacion curves, 1 curve per function"""
+    calibration_factors: list[float] = None
+    """Correction factor applied to curves, 1 factor per function
+       Delfault: ones"""
+    calibration_offsets: list[float] = None
+    """Correction offset applied to curves, 1 offset per function
+       Delfault: zeros"""
+    pseudo_factors: list[float] = None
+    """Factors applied to 'pseudo currents', 1 factor per function.
+       Delfault: ones"""
+    pseudo_offsets: list[float] = None
+    """Offsets applied to 'pseudo currents', 1 factor per function.
+       Delfault: zeros"""
+    powerconverters: list[DeviceAccess]
+    """List of power converter devices to apply currrents (can be different
+       from number of function)"""
+    matrix: Matrix = None
+    """n x m matrix (n rows for n function , m columns for m currents) 
+       to handle multipoles separation. Default: Identity"""
+    units: list[str]
+    """List of strength unit (i.e. ['rad','m-1','m-2'])"""
+
+
+class LinearCFMagnetModel(MagnetModel):
+    """
+    Class providing a simple linear model for combined function magnets. A matrix
+    can handle separation of multipoles. A pseudo current is a linear combination
+    of power supply currents assiociated to a single function.
+    """
+
+    def __init__(self, cfg: ConfigModel):
+        self._cfg = cfg
+
+        # Check config
+        self._nbFunction: int = len(cfg.multipoles)
+        self._nbPS: int = len(cfg.powerconverters)
+
+        if cfg.calibration_factors is None:
+            self._calibration_factors = np.ones(self._nbFunction)
+        else:
+            self._calibration_factors = cfg.calibration_factors
+
+        if cfg.calibration_offsets is None:
+            self._calibration_offsets = np.zeros(self._nbFunction)
+        else:
+            self._calibration_offsets = cfg.calibration_offsets
+
+        if cfg.pseudo_factors is None:
+            self._pf = np.ones(self._nbFunction)
+        else:
+            self._pf = cfg.pseudo_factors
+
+        if cfg.pseudo_offsets is None:
+            self._po = np.zeros(self._nbFunction)
+        else:
+            self._po = cfg.pseudo_factors
+
+        self.__check_len(self._calibration_factors,"calibration_factors",self._nbFunction)
+        self.__check_len(self._calibration_offsets,"calibration_offsets",self._nbFunction)
+        self.__check_len(self._pf,"pseudo_factors",self._nbFunction)
+        self.__check_len(self._po,"pseudo_offsets",self._nbFunction)
+        self.__check_len(cfg.units,"units",self._nbFunction)
+        self.__check_len(cfg.curves,"curves",self._nbFunction)
+
+        if cfg.matrix is None:
+            self._matrix = np.identity(self._nbFunction)
+        else:
+            self._matrix = cfg.matrix.get_matrix()
+
+        _s = np.shape(self._matrix)
+
+        if len(_s) != 2 or _s[0] != self._nbFunction or _s[1] != self._nbPS:
+            raise Exception(
+                "matrix wrong dimension "
+                f"({self._nbFunction}x{self._nbPS} expected but got {_s[0]}x{_s[1]})"
+            )
+
+        # Apply factor and offset
+        for idx, c in enumerate(cfg.curves):
+            c.get_curve()[:, 1] *= self._calibration_factors[idx]
+            c.get_curve()[:, 1] += self._calibration_offsets[idx]
+
+        # Compute pseudo inverse
+        self._inv = np.linalg.pinv(self._matrix)
+
+
+    def __check_len(self,obj,name,expected_len):
+        lgth = len(obj) 
+        if lgth != expected_len:
+            raise Exception(
+                f"{name} does not have the expected "
+                f"number of items ({expected_len} items expected but got {lgth})"
+            )    
+
+    def compute_hardware_values(self, strengths: np.array) -> np.array:
+        _pI = np.zeros(self._nbFunction)
+        for idx, c in enumerate(self._cfg.curves):
+            _pI[idx] = self._pf[idx] * np.interp(
+                strengths[idx] * self._brho, c.get_curve()[:, 1], c.get_curve()[:, 0]
+            ) + self._po[idx]
+        _currents = np.matmul(self._inv, _pI)
+        return _currents
+
+    def compute_strengths(self, currents: np.array) -> np.array:
+        _strength = np.zeros(self._nbFunction)
+        _pI = np.matmul(self._matrix, currents)
+        for idx, c in enumerate(self._cfg.curves):
+            _strength[idx] = (
+                np.interp(
+                    (_pI[idx] - self._po[idx]) / self._pf[idx],  c.get_curve()[:, 0], c.get_curve()[:, 1]
+                )
+                / self._brho
+            )
+        return _strength
+
+    def get_strength_units(self) -> list[str]:
+        return self._cfg.units
+
+    def get_hardware_units(self) -> list[str]:
+        return np.array([p.unit() for p in self._cfg.powerconverters])
+
+    def read_hardware_values(self) -> np.array:
+        return np.array([p.get() for p in self._cfg.powerconverters])
+
+    def readback_hardware_values(self) -> np.array:
+        return np.array([p.readback() for p in self._cfg.powerconverters])
+
+    def send_harware_values(self, currents: np.array):
+        for idx, p in enumerate(self._cfg.powerconverters):
+            p.set(currents[idx])
+
+    def set_magnet_rigidity(self, brho: np.double):
+        self._brho = brho

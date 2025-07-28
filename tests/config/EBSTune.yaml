@@ -1,0 +1,1751 @@
+type: pyaml.pyaml
+instruments:
+  - type: pyaml.instrument
+    name: sr
+    energy: 6e9
+    simulators:
+      - type: pyaml.lattice.simulator
+        lattice: sr/lattices/ebs.mat
+        name: design
+    data_folder: /data/store
+    arrays:
+      - type: pyaml.arrays.quadrupole
+        name: QForTune
+        elements:
+          - QD2E-C04
+          - QD2A-C05
+          - QD2E-C05
+          - QD2A-C06
+          - QD2E-C06
+          - QD2A-C07
+          - QD2E-C07
+          - QD2A-C08
+          - QD2E-C08
+          - QD2A-C09
+          - QD2E-C09
+          - QD2A-C10
+          - QD2E-C10
+          - QD2A-C11
+          - QD2E-C11
+          - QD2A-C12
+          - QD2E-C12
+          - QD2A-C13
+          - QD2E-C13
+          - QD2A-C14
+          - QD2E-C14
+          - QD2A-C15
+          - QD2E-C15
+          - QD2A-C16
+          - QD2E-C16
+          - QD2A-C17
+          - QD2E-C17
+          - QD2A-C18
+          - QD2E-C18
+          - QD2A-C19
+          - QD2E-C19
+          - QD2A-C20
+          - QD2E-C20
+          - QD2A-C21
+          - QD2E-C21
+          - QD2A-C22
+          - QD2E-C22
+          - QD2A-C23
+          - QD2E-C23
+          - QD2A-C24
+          - QD2E-C24
+          - QD2A-C25
+          - QD2E-C25
+          - QD2A-C26
+          - QD2E-C26
+          - QD2A-C27
+          - QD2E-C27
+          - QD2A-C28
+          - QD2E-C28
+          - QD2A-C29
+          - QD2E-C29
+          - QD2A-C30
+          - QD2E-C30
+          - QD2A-C31
+          - QD2E-C31
+          - QD2A-C32
+          - QD2E-C32
+          - QD2A-C01
+          - QD2E-C01
+          - QD2A-C02
+          - QD2E-C02
+          - QD2A-C03
+          - QF1E-C04
+          - QF1A-C05
+          - QF1E-C05
+          - QF1A-C06
+          - QF1E-C06
+          - QF1A-C07
+          - QF1E-C07
+          - QF1A-C08
+          - QF1E-C08
+          - QF1A-C09
+          - QF1E-C09
+          - QF1A-C10
+          - QF1E-C10
+          - QF1A-C11
+          - QF1E-C11
+          - QF1A-C12
+          - QF1E-C12
+          - QF1A-C13
+          - QF1E-C13
+          - QF1A-C14
+          - QF1E-C14
+          - QF1A-C15
+          - QF1E-C15
+          - QF1A-C16
+          - QF1E-C16
+          - QF1A-C17
+          - QF1E-C17
+          - QF1A-C18
+          - QF1E-C18
+          - QF1A-C19
+          - QF1E-C19
+          - QF1A-C20
+          - QF1E-C20
+          - QF1A-C21
+          - QF1E-C21
+          - QF1A-C22
+          - QF1E-C22
+          - QF1A-C23
+          - QF1E-C23
+          - QF1A-C24
+          - QF1E-C24
+          - QF1A-C25
+          - QF1E-C25
+          - QF1A-C26
+          - QF1E-C26
+          - QF1A-C27
+          - QF1E-C27
+          - QF1A-C28
+          - QF1E-C28
+          - QF1A-C29
+          - QF1E-C29
+          - QF1A-C30
+          - QF1E-C30
+          - QF1A-C31
+          - QF1E-C31
+          - QF1A-C32
+          - QF1E-C32
+          - QF1A-C01
+          - QF1E-C01
+          - QF1A-C02
+          - QF1E-C02
+          - QF1A-C03
+    devices:
+    - type: pyaml.magnet.quadrupole
+      name: QF1E-C04
+      model:
+        type: pyaml.magnet.linear_model
+        calibration_factor: 1.00054
+        curve:
+          type: pyaml.configuration.csvcurve
+          file: sr/magnet_models/QF1_strength.csv
+        unit: 1/m
+        powerconverter:
+          type: tango.pyaml.attribute
+          attribute: srmag/vps-qf1/c04-e/current
+          unit: A
+    - type: pyaml.magnet.quadrupole
+      name: QF1A-C05
+      model:
+        type: pyaml.magnet.linear_model
+        calibration_factor: 0.996841
+        curve:
+          type: pyaml.configuration.csvcurve
+          file: sr/magnet_models/QF1_strength.csv
+        unit: 1/m
+        powerconverter:
+          type: tango.pyaml.attribute
+          attribute: srmag/vps-qf1/c05-a/current
+          unit: A
+    - type: pyaml.magnet.quadrupole
+      name: QF1E-C05
+      model:
+        type: pyaml.magnet.linear_model
+        calibration_factor: 1.00191
+        curve:
+          type: pyaml.configuration.csvcurve
+          file: sr/magnet_models/QF1_strength.csv
+        unit: 1/m
+        powerconverter:
+          type: tango.pyaml.attribute
+          attribute: srmag/vps-qf1/c05-e/current
+          unit: A
+    - type: pyaml.magnet.quadrupole
+      name: QF1A-C06
+      model:
+        type: pyaml.magnet.linear_model
+        calibration_factor: 1.0003
+        curve:
+          type: pyaml.configuration.csvcurve
+          file: sr/magnet_models/QF1_strength.csv
+        unit: 1/m
+        powerconverter:
+          type: tango.pyaml.attribute
+          attribute: srmag/vps-qf1/c06-a/current
+          unit: A
+    - type: pyaml.magnet.quadrupole
+      name: QF1E-C06
+      model:
+        type: pyaml.magnet.linear_model
+        calibration_factor: 0.997615
+        curve:
+          type: pyaml.configuration.csvcurve
+          file: sr/magnet_models/QF1_strength.csv
+        unit: 1/m
+        powerconverter:
+          type: tango.pyaml.attribute
+          attribute: srmag/vps-qf1/c06-e/current
+          unit: A
+    - type: pyaml.magnet.quadrupole
+      name: QF1A-C07
+      model:
+        type: pyaml.magnet.linear_model
+        calibration_factor: 0.998152
+        curve:
+          type: pyaml.configuration.csvcurve
+          file: sr/magnet_models/QF1_strength.csv
+        unit: 1/m
+        powerconverter:
+          type: tango.pyaml.attribute
+          attribute: srmag/vps-qf1/c07-a/current
+          unit: A
+    - type: pyaml.magnet.quadrupole
+      name: QF1E-C07
+      model:
+        type: pyaml.magnet.linear_model
+        calibration_factor: 1.00262
+        curve:
+          type: pyaml.configuration.csvcurve
+          file: sr/magnet_models/QF1_strength.csv
+        unit: 1/m
+        powerconverter:
+          type: tango.pyaml.attribute
+          attribute: srmag/vps-qf1/c07-e/current
+          unit: A
+    - type: pyaml.magnet.quadrupole
+      name: QF1A-C08
+      model:
+        type: pyaml.magnet.linear_model
+        calibration_factor: 1.00319
+        curve:
+          type: pyaml.configuration.csvcurve
+          file: sr/magnet_models/QF1_strength.csv
+        unit: 1/m
+        powerconverter:
+          type: tango.pyaml.attribute
+          attribute: srmag/vps-qf1/c08-a/current
+          unit: A
+    - type: pyaml.magnet.quadrupole
+      name: QF1E-C08
+      model:
+        type: pyaml.magnet.linear_model
+        calibration_factor: 0.996180929
+        curve:
+          type: pyaml.configuration.csvcurve
+          file: sr/magnet_models/QF1_strength.csv
+        unit: 1/m
+        powerconverter:
+          type: tango.pyaml.attribute
+          attribute: srmag/vps-qf1/c08-e/current
+          unit: A
+    - type: pyaml.magnet.quadrupole
+      name: QF1A-C09
+      model:
+        type: pyaml.magnet.linear_model
+        calibration_factor: 1.00206
+        curve:
+          type: pyaml.configuration.csvcurve
+          file: sr/magnet_models/QF1_strength.csv
+        unit: 1/m
+        powerconverter:
+          type: tango.pyaml.attribute
+          attribute: srmag/vps-qf1/c09-a/current
+          unit: A
+    - type: pyaml.magnet.quadrupole
+      name: QF1E-C09
+      model:
+        type: pyaml.magnet.linear_model
+        calibration_factor: 0.999285
+        curve:
+          type: pyaml.configuration.csvcurve
+          file: sr/magnet_models/QF1_strength.csv
+        unit: 1/m
+        powerconverter:
+          type: tango.pyaml.attribute
+          attribute: srmag/vps-qf1/c09-e/current
+          unit: A
+    - type: pyaml.magnet.quadrupole
+      name: QF1A-C10
+      model:
+        type: pyaml.magnet.linear_model
+        calibration_factor: 1.00232
+        curve:
+          type: pyaml.configuration.csvcurve
+          file: sr/magnet_models/QF1_strength.csv
+        unit: 1/m
+        powerconverter:
+          type: tango.pyaml.attribute
+          attribute: srmag/vps-qf1/c10-a/current
+          unit: A
+    - type: pyaml.magnet.quadrupole
+      name: QF1E-C10
+      model:
+        type: pyaml.magnet.linear_model
+        calibration_factor: 0.998212
+        curve:
+          type: pyaml.configuration.csvcurve
+          file: sr/magnet_models/QF1_strength.csv
+        unit: 1/m
+        powerconverter:
+          type: tango.pyaml.attribute
+          attribute: srmag/vps-qf1/c10-e/current
+          unit: A
+    - type: pyaml.magnet.quadrupole
+      name: QF1A-C11
+      model:
+        type: pyaml.magnet.linear_model
+        calibration_factor: 0.999225
+        curve:
+          type: pyaml.configuration.csvcurve
+          file: sr/magnet_models/QF1_strength.csv
+        unit: 1/m
+        powerconverter:
+          type: tango.pyaml.attribute
+          attribute: srmag/vps-qf1/c11-a/current
+          unit: A
+    - type: pyaml.magnet.quadrupole
+      name: QF1E-C11
+      model:
+        type: pyaml.magnet.linear_model
+        calibration_factor: 0.998033
+        curve:
+          type: pyaml.configuration.csvcurve
+          file: sr/magnet_models/QF1_strength.csv
+        unit: 1/m
+        powerconverter:
+          type: tango.pyaml.attribute
+          attribute: srmag/vps-qf1/c11-e/current
+          unit: A
+    - type: pyaml.magnet.quadrupole
+      name: QF1A-C12
+      model:
+        type: pyaml.magnet.linear_model
+        calibration_factor: 0.998748
+        curve:
+          type: pyaml.configuration.csvcurve
+          file: sr/magnet_models/QF1_strength.csv
+        unit: 1/m
+        powerconverter:
+          type: tango.pyaml.attribute
+          attribute: srmag/vps-qf1/c12-a/current
+          unit: A
+    - type: pyaml.magnet.quadrupole
+      name: QF1E-C12
+      model:
+        type: pyaml.magnet.linear_model
+        calibration_factor: 1.0023
+        curve:
+          type: pyaml.configuration.csvcurve
+          file: sr/magnet_models/QF1_strength.csv
+        unit: 1/m
+        powerconverter:
+          type: tango.pyaml.attribute
+          attribute: srmag/vps-qf1/c12-e/current
+          unit: A
+    - type: pyaml.magnet.quadrupole
+      name: QF1A-C13
+      model:
+        type: pyaml.magnet.linear_model
+        calibration_factor: 1.00337
+        curve:
+          type: pyaml.configuration.csvcurve
+          file: sr/magnet_models/QF1_strength.csv
+        unit: 1/m
+        powerconverter:
+          type: tango.pyaml.attribute
+          attribute: srmag/vps-qf1/c13-a/current
+          unit: A
+    - type: pyaml.magnet.quadrupole
+      name: QF1E-C13
+      model:
+        type: pyaml.magnet.linear_model
+        calibration_factor: 1.00403
+        curve:
+          type: pyaml.configuration.csvcurve
+          file: sr/magnet_models/QF1_strength.csv
+        unit: 1/m
+        powerconverter:
+          type: tango.pyaml.attribute
+          attribute: srmag/vps-qf1/c13-e/current
+          unit: A
+    - type: pyaml.magnet.quadrupole
+      name: QF1A-C14
+      model:
+        type: pyaml.magnet.linear_model
+        calibration_factor: 1.00182
+        curve:
+          type: pyaml.configuration.csvcurve
+          file: sr/magnet_models/QF1_strength.csv
+        unit: 1/m
+        powerconverter:
+          type: tango.pyaml.attribute
+          attribute: srmag/vps-qf1/c14-a/current
+          unit: A
+    - type: pyaml.magnet.quadrupole
+      name: QF1E-C14
+      model:
+        type: pyaml.magnet.linear_model
+        calibration_factor: 0.998303
+        curve:
+          type: pyaml.configuration.csvcurve
+          file: sr/magnet_models/QF1_strength.csv
+        unit: 1/m
+        powerconverter:
+          type: tango.pyaml.attribute
+          attribute: srmag/vps-qf1/c14-e/current
+          unit: A
+    - type: pyaml.magnet.quadrupole
+      name: QF1A-C15
+      model:
+        type: pyaml.magnet.linear_model
+        calibration_factor: 0.998748
+        curve:
+          type: pyaml.configuration.csvcurve
+          file: sr/magnet_models/QF1_strength.csv
+        unit: 1/m
+        powerconverter:
+          type: tango.pyaml.attribute
+          attribute: srmag/vps-qf1/c15-a/current
+          unit: A
+    - type: pyaml.magnet.quadrupole
+      name: QF1E-C15
+      model:
+        type: pyaml.magnet.linear_model
+        calibration_factor: 0.994098
+        curve:
+          type: pyaml.configuration.csvcurve
+          file: sr/magnet_models/QF1_strength.csv
+        unit: 1/m
+        powerconverter:
+          type: tango.pyaml.attribute
+          attribute: srmag/vps-qf1/c15-e/current
+          unit: A
+    - type: pyaml.magnet.quadrupole
+      name: QF1A-C16
+      model:
+        type: pyaml.magnet.linear_model
+        calibration_factor: 1.00232
+        curve:
+          type: pyaml.configuration.csvcurve
+          file: sr/magnet_models/QF1_strength.csv
+        unit: 1/m
+        powerconverter:
+          type: tango.pyaml.attribute
+          attribute: srmag/vps-qf1/c16-a/current
+          unit: A
+    - type: pyaml.magnet.quadrupole
+      name: QF1E-C16
+      model:
+        type: pyaml.magnet.linear_model
+        calibration_factor: 0.99884
+        curve:
+          type: pyaml.configuration.csvcurve
+          file: sr/magnet_models/QF1_strength.csv
+        unit: 1/m
+        powerconverter:
+          type: tango.pyaml.attribute
+          attribute: srmag/vps-qf1/c16-e/current
+          unit: A
+    - type: pyaml.magnet.quadrupole
+      name: QF1A-C17
+      model:
+        type: pyaml.magnet.linear_model
+        calibration_factor: 1.0079
+        curve:
+          type: pyaml.configuration.csvcurve
+          file: sr/magnet_models/QF1_strength.csv
+        unit: 1/m
+        powerconverter:
+          type: tango.pyaml.attribute
+          attribute: srmag/vps-qf1/c17-a/current
+          unit: A
+    - type: pyaml.magnet.quadrupole
+      name: QF1E-C17
+      model:
+        type: pyaml.magnet.linear_model
+        calibration_factor: 0.999523
+        curve:
+          type: pyaml.configuration.csvcurve
+          file: sr/magnet_models/QF1_strength.csv
+        unit: 1/m
+        powerconverter:
+          type: tango.pyaml.attribute
+          attribute: srmag/vps-qf1/c17-e/current
+          unit: A
+    - type: pyaml.magnet.quadrupole
+      name: QF1A-C18
+      model:
+        type: pyaml.magnet.linear_model
+        calibration_factor: 1
+        curve:
+          type: pyaml.configuration.csvcurve
+          file: sr/magnet_models/QF1_strength.csv
+        unit: 1/m
+        powerconverter:
+          type: tango.pyaml.attribute
+          attribute: srmag/vps-qf1/c18-a/current
+          unit: A
+    - type: pyaml.magnet.quadrupole
+      name: QF1E-C18
+      model:
+        type: pyaml.magnet.linear_model
+        calibration_factor: 0.999854
+        curve:
+          type: pyaml.configuration.csvcurve
+          file: sr/magnet_models/QF1_strength.csv
+        unit: 1/m
+        powerconverter:
+          type: tango.pyaml.attribute
+          attribute: srmag/vps-qf1/c18-e/current
+          unit: A
+    - type: pyaml.magnet.quadrupole
+      name: QF1A-C19
+      model:
+        type: pyaml.magnet.linear_model
+        calibration_factor: 0.99845
+        curve:
+          type: pyaml.configuration.csvcurve
+          file: sr/magnet_models/QF1_strength.csv
+        unit: 1/m
+        powerconverter:
+          type: tango.pyaml.attribute
+          attribute: srmag/vps-qf1/c19-a/current
+          unit: A
+    - type: pyaml.magnet.quadrupole
+      name: QF1E-C19
+      model:
+        type: pyaml.magnet.linear_model
+        calibration_factor: 1
+        curve:
+          type: pyaml.configuration.csvcurve
+          file: sr/magnet_models/QF1_strength.csv
+        unit: 1/m
+        powerconverter:
+          type: tango.pyaml.attribute
+          attribute: srmag/vps-qf1/c19-e/current
+          unit: A
+    - type: pyaml.magnet.quadrupole
+      name: QF1A-C20
+      model:
+        type: pyaml.magnet.linear_model
+        calibration_factor: 1.00095
+        curve:
+          type: pyaml.configuration.csvcurve
+          file: sr/magnet_models/QF1_strength.csv
+        unit: 1/m
+        powerconverter:
+          type: tango.pyaml.attribute
+          attribute: srmag/vps-qf1/c20-a/current
+          unit: A
+    - type: pyaml.magnet.quadrupole
+      name: QF1E-C20
+      model:
+        type: pyaml.magnet.linear_model
+        calibration_factor: 0.996753
+        curve:
+          type: pyaml.configuration.csvcurve
+          file: sr/magnet_models/QF1_strength.csv
+        unit: 1/m
+        powerconverter:
+          type: tango.pyaml.attribute
+          attribute: srmag/vps-qf1/c20-e/current
+          unit: A
+    - type: pyaml.magnet.quadrupole
+      name: QF1A-C21
+      model:
+        type: pyaml.magnet.linear_model
+        calibration_factor: 1.00334
+        curve:
+          type: pyaml.configuration.csvcurve
+          file: sr/magnet_models/QF1_strength.csv
+        unit: 1/m
+        powerconverter:
+          type: tango.pyaml.attribute
+          attribute: srmag/vps-qf1/c21-a/current
+          unit: A
+    - type: pyaml.magnet.quadrupole
+      name: QF1E-C21
+      model:
+        type: pyaml.magnet.linear_model
+        calibration_factor: 0.997707
+        curve:
+          type: pyaml.configuration.csvcurve
+          file: sr/magnet_models/QF1_strength.csv
+        unit: 1/m
+        powerconverter:
+          type: tango.pyaml.attribute
+          attribute: srmag/vps-qf1/c21-e/current
+          unit: A
+    - type: pyaml.magnet.quadrupole
+      name: QF1A-C22
+      model:
+        type: pyaml.magnet.linear_model
+        calibration_factor: 1.00152
+        curve:
+          type: pyaml.configuration.csvcurve
+          file: sr/magnet_models/QF1_strength.csv
+        unit: 1/m
+        powerconverter:
+          type: tango.pyaml.attribute
+          attribute: srmag/vps-qf1/c22-a/current
+          unit: A
+    - type: pyaml.magnet.quadrupole
+      name: QF1E-C22
+      model:
+        type: pyaml.magnet.linear_model
+        calibration_factor: 0.998124
+        curve:
+          type: pyaml.configuration.csvcurve
+          file: sr/magnet_models/QF1_strength.csv
+        unit: 1/m
+        powerconverter:
+          type: tango.pyaml.attribute
+          attribute: srmag/vps-qf1/c22-e/current
+          unit: A
+    - type: pyaml.magnet.quadrupole
+      name: QF1A-C23
+      model:
+        type: pyaml.magnet.linear_model
+        calibration_factor: 0.996662
+        curve:
+          type: pyaml.configuration.csvcurve
+          file: sr/magnet_models/QF1_strength.csv
+        unit: 1/m
+        powerconverter:
+          type: tango.pyaml.attribute
+          attribute: srmag/vps-qf1/c23-a/current
+          unit: A
+    - type: pyaml.magnet.quadrupole
+      name: QF1E-C23
+      model:
+        type: pyaml.magnet.linear_model
+        calibration_factor: 1.0017
+        curve:
+          type: pyaml.configuration.csvcurve
+          file: sr/magnet_models/QF1_strength.csv
+        unit: 1/m
+        powerconverter:
+          type: tango.pyaml.attribute
+          attribute: srmag/vps-qf1/c23-e/current
+          unit: A
+    - type: pyaml.magnet.quadrupole
+      name: QF1A-C24
+      model:
+        type: pyaml.magnet.linear_model
+        calibration_factor: 0.999642
+        curve:
+          type: pyaml.configuration.csvcurve
+          file: sr/magnet_models/QF1_strength.csv
+        unit: 1/m
+        powerconverter:
+          type: tango.pyaml.attribute
+          attribute: srmag/vps-qf1/c24-a/current
+          unit: A
+    - type: pyaml.magnet.quadrupole
+      name: QF1E-C24
+      model:
+        type: pyaml.magnet.linear_model
+        calibration_factor: 1.00042
+        curve:
+          type: pyaml.configuration.csvcurve
+          file: sr/magnet_models/QF1_strength.csv
+        unit: 1/m
+        powerconverter:
+          type: tango.pyaml.attribute
+          attribute: srmag/vps-qf1/c24-e/current
+          unit: A
+    - type: pyaml.magnet.quadrupole
+      name: QF1A-C25
+      model:
+        type: pyaml.magnet.linear_model
+        calibration_factor: 1.00471
+        curve:
+          type: pyaml.configuration.csvcurve
+          file: sr/magnet_models/QF1_strength.csv
+        unit: 1/m
+        powerconverter:
+          type: tango.pyaml.attribute
+          attribute: srmag/vps-qf1/c25-a/current
+          unit: A
+    - type: pyaml.magnet.quadrupole
+      name: QF1E-C25
+      model:
+        type: pyaml.magnet.linear_model
+        calibration_factor: 1.00393
+        curve:
+          type: pyaml.configuration.csvcurve
+          file: sr/magnet_models/QF1_strength.csv
+        unit: 1/m
+        powerconverter:
+          type: tango.pyaml.attribute
+          attribute: srmag/vps-qf1/c25-e/current
+          unit: A
+    - type: pyaml.magnet.quadrupole
+      name: QF1A-C26
+      model:
+        type: pyaml.magnet.linear_model
+        calibration_factor: 0.992906
+        curve:
+          type: pyaml.configuration.csvcurve
+          file: sr/magnet_models/QF1_strength.csv
+        unit: 1/m
+        powerconverter:
+          type: tango.pyaml.attribute
+          attribute: srmag/vps-qf1/c26-a/current
+          unit: A
+    - type: pyaml.magnet.quadrupole
+      name: QF1E-C26
+      model:
+        type: pyaml.magnet.linear_model
+        calibration_factor: 1.00268
+        curve:
+          type: pyaml.configuration.csvcurve
+          file: sr/magnet_models/QF1_strength.csv
+        unit: 1/m
+        powerconverter:
+          type: tango.pyaml.attribute
+          attribute: srmag/vps-qf1/c26-e/current
+          unit: A
+    - type: pyaml.magnet.quadrupole
+      name: QF1A-C27
+      model:
+        type: pyaml.magnet.linear_model
+        calibration_factor: 1.00248
+        curve:
+          type: pyaml.configuration.csvcurve
+          file: sr/magnet_models/QF1_strength.csv
+        unit: 1/m
+        powerconverter:
+          type: tango.pyaml.attribute
+          attribute: srmag/vps-qf1/c27-a/current
+          unit: A
+    - type: pyaml.magnet.quadrupole
+      name: QF1E-C27
+      model:
+        type: pyaml.magnet.linear_model
+        calibration_factor: 1.00203
+        curve:
+          type: pyaml.configuration.csvcurve
+          file: sr/magnet_models/QF1_strength.csv
+        unit: 1/m
+        powerconverter:
+          type: tango.pyaml.attribute
+          attribute: srmag/vps-qf1/c27-e/current
+          unit: A
+    - type: pyaml.magnet.quadrupole
+      name: QF1A-C28
+      model:
+        type: pyaml.magnet.linear_model
+        calibration_factor: 0.998030791
+        curve:
+          type: pyaml.configuration.csvcurve
+          file: sr/magnet_models/QF1_strength.csv
+        unit: 1/m
+        powerconverter:
+          type: tango.pyaml.attribute
+          attribute: srmag/vps-qf1/c28-a/current
+          unit: A
+    - type: pyaml.magnet.quadrupole
+      name: QF1E-C28
+      model:
+        type: pyaml.magnet.linear_model
+        calibration_factor: 1.00232
+        curve:
+          type: pyaml.configuration.csvcurve
+          file: sr/magnet_models/QF1_strength.csv
+        unit: 1/m
+        powerconverter:
+          type: tango.pyaml.attribute
+          attribute: srmag/vps-qf1/c28-e/current
+          unit: A
+    - type: pyaml.magnet.quadrupole
+      name: QF1A-C29
+      model:
+        type: pyaml.magnet.linear_model
+        calibration_factor: 0.995052
+        curve:
+          type: pyaml.configuration.csvcurve
+          file: sr/magnet_models/QF1_strength.csv
+        unit: 1/m
+        powerconverter:
+          type: tango.pyaml.attribute
+          attribute: srmag/vps-qf1/c29-a/current
+          unit: A
+    - type: pyaml.magnet.quadrupole
+      name: QF1E-C29
+      model:
+        type: pyaml.magnet.linear_model
+        calibration_factor: 1.00155
+        curve:
+          type: pyaml.configuration.csvcurve
+          file: sr/magnet_models/QF1_strength.csv
+        unit: 1/m
+        powerconverter:
+          type: tango.pyaml.attribute
+          attribute: srmag/vps-qf1/c29-e/current
+          unit: A
+    - type: pyaml.magnet.quadrupole
+      name: QF1A-C30
+      model:
+        type: pyaml.magnet.linear_model
+        calibration_factor: 0.998271
+        curve:
+          type: pyaml.configuration.csvcurve
+          file: sr/magnet_models/QF1_strength.csv
+        unit: 1/m
+        powerconverter:
+          type: tango.pyaml.attribute
+          attribute: srmag/vps-qf1/c30-a/current
+          unit: A
+    - type: pyaml.magnet.quadrupole
+      name: QF1E-C30
+      model:
+        type: pyaml.magnet.linear_model
+        calibration_factor: 0.999702
+        curve:
+          type: pyaml.configuration.csvcurve
+          file: sr/magnet_models/QF1_strength.csv
+        unit: 1/m
+        powerconverter:
+          type: tango.pyaml.attribute
+          attribute: srmag/vps-qf1/c30-e/current
+          unit: A
+    - type: pyaml.magnet.quadrupole
+      name: QF1A-C31
+      model:
+        type: pyaml.magnet.linear_model
+        calibration_factor: 0.998005
+        curve:
+          type: pyaml.configuration.csvcurve
+          file: sr/magnet_models/QF1_strength.csv
+        unit: 1/m
+        powerconverter:
+          type: tango.pyaml.attribute
+          attribute: srmag/vps-qf1/c31-a/current
+          unit: A
+    - type: pyaml.magnet.quadrupole
+      name: QF1E-C31
+      model:
+        type: pyaml.magnet.linear_model
+        calibration_factor: 0.999463
+        curve:
+          type: pyaml.configuration.csvcurve
+          file: sr/magnet_models/QF1_strength.csv
+        unit: 1/m
+        powerconverter:
+          type: tango.pyaml.attribute
+          attribute: srmag/vps-qf1/c31-e/current
+          unit: A
+    - type: pyaml.magnet.quadrupole
+      name: QF1A-C32
+      model:
+        type: pyaml.magnet.linear_model
+        calibration_factor: 0.997794
+        curve:
+          type: pyaml.configuration.csvcurve
+          file: sr/magnet_models/QF1_strength.csv
+        unit: 1/m
+        powerconverter:
+          type: tango.pyaml.attribute
+          attribute: srmag/vps-qf1/c32-a/current
+          unit: A
+    - type: pyaml.magnet.quadrupole
+      name: QF1E-C32
+      model:
+        type: pyaml.magnet.linear_model
+        calibration_factor: 1.00203
+        curve:
+          type: pyaml.configuration.csvcurve
+          file: sr/magnet_models/QF1_strength.csv
+        unit: 1/m
+        powerconverter:
+          type: tango.pyaml.attribute
+          attribute: srmag/vps-qf1/c32-e/current
+          unit: A
+    - type: pyaml.magnet.quadrupole
+      name: QF1A-C01
+      model:
+        type: pyaml.magnet.linear_model
+        calibration_factor: 1.00504
+        curve:
+          type: pyaml.configuration.csvcurve
+          file: sr/magnet_models/QF1_strength.csv
+        unit: 1/m
+        powerconverter:
+          type: tango.pyaml.attribute
+          attribute: srmag/vps-qf1/c01-a/current
+          unit: A
+    - type: pyaml.magnet.quadrupole
+      name: QF1E-C01
+      model:
+        type: pyaml.magnet.linear_model
+        calibration_factor: 0.998212
+        curve:
+          type: pyaml.configuration.csvcurve
+          file: sr/magnet_models/QF1_strength.csv
+        unit: 1/m
+        powerconverter:
+          type: tango.pyaml.attribute
+          attribute: srmag/vps-qf1/c01-e/current
+          unit: A
+    - type: pyaml.magnet.quadrupole
+      name: QF1A-C02
+      model:
+        type: pyaml.magnet.linear_model
+        calibration_factor: 1.0037
+        curve:
+          type: pyaml.configuration.csvcurve
+          file: sr/magnet_models/QF1_strength.csv
+        unit: 1/m
+        powerconverter:
+          type: tango.pyaml.attribute
+          attribute: srmag/vps-qf1/c02-a/current
+          unit: A
+    - type: pyaml.magnet.quadrupole
+      name: QF1E-C02
+      model:
+        type: pyaml.magnet.linear_model
+        calibration_factor: 1.00093
+        curve:
+          type: pyaml.configuration.csvcurve
+          file: sr/magnet_models/QF1_strength.csv
+        unit: 1/m
+        powerconverter:
+          type: tango.pyaml.attribute
+          attribute: srmag/vps-qf1/c02-e/current
+          unit: A
+    - type: pyaml.magnet.quadrupole
+      name: QF1A-C03
+      model:
+        type: pyaml.magnet.linear_model
+        calibration_factor: 1.0025
+        curve:
+          type: pyaml.configuration.csvcurve
+          file: sr/magnet_models/QF1_strength.csv
+        unit: 1/m
+        powerconverter:
+          type: tango.pyaml.attribute
+          attribute: srmag/vps-qf1/c03-a/current
+          unit: A
+    - type: pyaml.magnet.quadrupole
+      name: QD2E-C04
+      model:
+        type: pyaml.magnet.linear_model
+        calibration_factor: 0.999305341
+        curve:
+          type: pyaml.configuration.csvcurve
+          file: sr/magnet_models/QD2_strength.csv
+        unit: 1/m
+        powerconverter:
+          type: tango.pyaml.attribute
+          attribute: srmag/vps-qd2/c04-e/current
+          unit: A
+    - type: pyaml.magnet.quadrupole
+      name: QD2A-C05
+      model:
+        type: pyaml.magnet.linear_model
+        calibration_factor: 0.997452918
+        curve:
+          type: pyaml.configuration.csvcurve
+          file: sr/magnet_models/QD2_strength.csv
+        unit: 1/m
+        powerconverter:
+          type: tango.pyaml.attribute
+          attribute: srmag/vps-qd2/c05-a/current
+          unit: A
+    - type: pyaml.magnet.quadrupole
+      name: QD2E-C05
+      model:
+        type: pyaml.magnet.linear_model
+        calibration_factor: 0.997993208
+        curve:
+          type: pyaml.configuration.csvcurve
+          file: sr/magnet_models/QD2_strength.csv
+        unit: 1/m
+        powerconverter:
+          type: tango.pyaml.attribute
+          attribute: srmag/vps-qd2/c05-e/current
+          unit: A
+    - type: pyaml.magnet.quadrupole
+      name: QD2A-C06
+      model:
+        type: pyaml.magnet.linear_model
+        calibration_factor: 1.006031322
+        curve:
+          type: pyaml.configuration.csvcurve
+          file: sr/magnet_models/QD2_strength.csv
+        unit: 1/m
+        powerconverter:
+          type: tango.pyaml.attribute
+          attribute: srmag/vps-qd2/c06-a/current
+          unit: A
+    - type: pyaml.magnet.quadrupole
+      name: QD2E-C06
+      model:
+        type: pyaml.magnet.linear_model
+        calibration_factor: 0.998547233
+        curve:
+          type: pyaml.configuration.csvcurve
+          file: sr/magnet_models/QD2_strength.csv
+        unit: 1/m
+        powerconverter:
+          type: tango.pyaml.attribute
+          attribute: srmag/vps-qd2/c06-e/current
+          unit: A
+    - type: pyaml.magnet.quadrupole
+      name: QD2A-C07
+      model:
+        type: pyaml.magnet.linear_model
+        calibration_factor: 1.002327856
+        curve:
+          type: pyaml.configuration.csvcurve
+          file: sr/magnet_models/QD2_strength.csv
+        unit: 1/m
+        powerconverter:
+          type: tango.pyaml.attribute
+          attribute: srmag/vps-qd2/c07-a/current
+          unit: A
+    - type: pyaml.magnet.quadrupole
+      name: QD2E-C07
+      model:
+        type: pyaml.magnet.linear_model
+        calibration_factor: 1.000154369
+        curve:
+          type: pyaml.configuration.csvcurve
+          file: sr/magnet_models/QD2_strength.csv
+        unit: 1/m
+        powerconverter:
+          type: tango.pyaml.attribute
+          attribute: srmag/vps-qd2/c07-e/current
+          unit: A
+    - type: pyaml.magnet.quadrupole
+      name: QD2A-C08
+      model:
+        type: pyaml.magnet.linear_model
+        calibration_factor: 1.009580478
+        curve:
+          type: pyaml.configuration.csvcurve
+          file: sr/magnet_models/QD2_strength.csv
+        unit: 1/m
+        powerconverter:
+          type: tango.pyaml.attribute
+          attribute: srmag/vps-qd2/c08-a/current
+          unit: A
+    - type: pyaml.magnet.quadrupole
+      name: QD2E-C08
+      model:
+        type: pyaml.magnet.linear_model
+        calibration_factor: 1.00447669
+        curve:
+          type: pyaml.configuration.csvcurve
+          file: sr/magnet_models/QD2_strength.csv
+        unit: 1/m
+        powerconverter:
+          type: tango.pyaml.attribute
+          attribute: srmag/vps-qd2/c08-e/current
+          unit: A
+    - type: pyaml.magnet.quadrupole
+      name: QD2A-C09
+      model:
+        type: pyaml.magnet.linear_model
+        calibration_factor: 1.0015563
+        curve:
+          type: pyaml.configuration.csvcurve
+          file: sr/magnet_models/QD2_strength.csv
+        unit: 1/m
+        powerconverter:
+          type: tango.pyaml.attribute
+          attribute: srmag/vps-qd2/c09-a/current
+          unit: A
+    - type: pyaml.magnet.quadrupole
+      name: QD2E-C09
+      model:
+        type: pyaml.magnet.linear_model
+        calibration_factor: 0.997221365
+        curve:
+          type: pyaml.configuration.csvcurve
+          file: sr/magnet_models/QD2_strength.csv
+        unit: 1/m
+        powerconverter:
+          type: tango.pyaml.attribute
+          attribute: srmag/vps-qd2/c09-e/current
+          unit: A
+    - type: pyaml.magnet.quadrupole
+      name: QD2A-C10
+      model:
+        type: pyaml.magnet.linear_model
+        calibration_factor: 1.005954167
+        curve:
+          type: pyaml.configuration.csvcurve
+          file: sr/magnet_models/QD2_strength.csv
+        unit: 1/m
+        powerconverter:
+          type: tango.pyaml.attribute
+          attribute: srmag/vps-qd2/c10-a/current
+          unit: A
+    - type: pyaml.magnet.quadrupole
+      name: QD2E-C10
+      model:
+        type: pyaml.magnet.linear_model
+        calibration_factor: 1.006725723
+        curve:
+          type: pyaml.configuration.csvcurve
+          file: sr/magnet_models/QD2_strength.csv
+        unit: 1/m
+        powerconverter:
+          type: tango.pyaml.attribute
+          attribute: srmag/vps-qd2/c10-e/current
+          unit: A
+    - type: pyaml.magnet.quadrupole
+      name: QD2A-C11
+      model:
+        type: pyaml.magnet.linear_model
+        calibration_factor: 0.994535144
+        curve:
+          type: pyaml.configuration.csvcurve
+          file: sr/magnet_models/QD2_strength.csv
+        unit: 1/m
+        powerconverter:
+          type: tango.pyaml.attribute
+          attribute: srmag/vps-qd2/c11-a/current
+          unit: A
+    - type: pyaml.magnet.quadrupole
+      name: QD2E-C11
+      model:
+        type: pyaml.magnet.linear_model
+        calibration_factor: 0.999550256
+        curve:
+          type: pyaml.configuration.csvcurve
+          file: sr/magnet_models/QD2_strength.csv
+        unit: 1/m
+        powerconverter:
+          type: tango.pyaml.attribute
+          attribute: srmag/vps-qd2/c11-e/current
+          unit: A
+    - type: pyaml.magnet.quadrupole
+      name: QD2A-C12
+      model:
+        type: pyaml.magnet.linear_model
+        calibration_factor: 1.001479145
+        curve:
+          type: pyaml.configuration.csvcurve
+          file: sr/magnet_models/QD2_strength.csv
+        unit: 1/m
+        powerconverter:
+          type: tango.pyaml.attribute
+          attribute: srmag/vps-qd2/c12-a/current
+          unit: A
+    - type: pyaml.magnet.quadrupole
+      name: QD2E-C12
+      model:
+        type: pyaml.magnet.linear_model
+        calibration_factor: 1.000321811
+        curve:
+          type: pyaml.configuration.csvcurve
+          file: sr/magnet_models/QD2_strength.csv
+        unit: 1/m
+        powerconverter:
+          type: tango.pyaml.attribute
+          attribute: srmag/vps-qd2/c12-e/current
+          unit: A
+    - type: pyaml.magnet.quadrupole
+      name: QD2A-C13
+      model:
+        type: pyaml.magnet.linear_model
+        calibration_factor: 1.006715036
+        curve:
+          type: pyaml.configuration.csvcurve
+          file: sr/magnet_models/QD2_strength.csv
+        unit: 1/m
+        powerconverter:
+          type: tango.pyaml.attribute
+          attribute: srmag/vps-qd2/c13-a/current
+          unit: A
+    - type: pyaml.magnet.quadrupole
+      name: QD2E-C13
+      model:
+        type: pyaml.magnet.linear_model
+        calibration_factor: 1.0036395
+        curve:
+          type: pyaml.configuration.csvcurve
+          file: sr/magnet_models/QD2_strength.csv
+        unit: 1/m
+        powerconverter:
+          type: tango.pyaml.attribute
+          attribute: srmag/vps-qd2/c13-e/current
+          unit: A
+    - type: pyaml.magnet.quadrupole
+      name: QD2A-C14
+      model:
+        type: pyaml.magnet.linear_model
+        calibration_factor: 0.997684471
+        curve:
+          type: pyaml.configuration.csvcurve
+          file: sr/magnet_models/QD2_strength.csv
+        unit: 1/m
+        powerconverter:
+          type: tango.pyaml.attribute
+          attribute: srmag/vps-qd2/c14-a/current
+          unit: A
+    - type: pyaml.magnet.quadrupole
+      name: QD2E-C14
+      model:
+        type: pyaml.magnet.linear_model
+        calibration_factor: 1.000385922
+        curve:
+          type: pyaml.configuration.csvcurve
+          file: sr/magnet_models/QD2_strength.csv
+        unit: 1/m
+        powerconverter:
+          type: tango.pyaml.attribute
+          attribute: srmag/vps-qd2/c14-e/current
+          unit: A
+    - type: pyaml.magnet.quadrupole
+      name: QD2A-C15
+      model:
+        type: pyaml.magnet.linear_model
+        calibration_factor: 0.999010167
+        curve:
+          type: pyaml.configuration.csvcurve
+          file: sr/magnet_models/QD2_strength.csv
+        unit: 1/m
+        powerconverter:
+          type: tango.pyaml.attribute
+          attribute: srmag/vps-qd2/c15-a/current
+          unit: A
+    - type: pyaml.magnet.quadrupole
+      name: QD2E-C15
+      model:
+        type: pyaml.magnet.linear_model
+        calibration_factor: 0.998392922
+        curve:
+          type: pyaml.configuration.csvcurve
+          file: sr/magnet_models/QD2_strength.csv
+        unit: 1/m
+        powerconverter:
+          type: tango.pyaml.attribute
+          attribute: srmag/vps-qd2/c15-e/current
+          unit: A
+    - type: pyaml.magnet.quadrupole
+      name: QD2A-C16
+      model:
+        type: pyaml.magnet.linear_model
+        calibration_factor: 0.999318789
+        curve:
+          type: pyaml.configuration.csvcurve
+          file: sr/magnet_models/QD2_strength.csv
+        unit: 1/m
+        powerconverter:
+          type: tango.pyaml.attribute
+          attribute: srmag/vps-qd2/c16-a/current
+          unit: A
+    - type: pyaml.magnet.quadrupole
+      name: QD2E-C16
+      model:
+        type: pyaml.magnet.linear_model
+        calibration_factor: 0.996926967
+        curve:
+          type: pyaml.configuration.csvcurve
+          file: sr/magnet_models/QD2_strength.csv
+        unit: 1/m
+        powerconverter:
+          type: tango.pyaml.attribute
+          attribute: srmag/vps-qd2/c16-e/current
+          unit: A
+    - type: pyaml.magnet.quadrupole
+      name: QD2A-C17
+      model:
+        type: pyaml.magnet.linear_model
+        calibration_factor: 1.000849027
+        curve:
+          type: pyaml.configuration.csvcurve
+          file: sr/magnet_models/QD2_strength.csv
+        unit: 1/m
+        powerconverter:
+          type: tango.pyaml.attribute
+          attribute: srmag/vps-qd2/c17-a/current
+          unit: A
+    - type: pyaml.magnet.quadrupole
+      name: QD2E-C17
+      model:
+        type: pyaml.magnet.linear_model
+        calibration_factor: 1.003392444
+        curve:
+          type: pyaml.configuration.csvcurve
+          file: sr/magnet_models/QD2_strength.csv
+        unit: 1/m
+        powerconverter:
+          type: tango.pyaml.attribute
+          attribute: srmag/vps-qd2/c17-e/current
+          unit: A
+    - type: pyaml.magnet.quadrupole
+      name: QD2A-C18
+      model:
+        type: pyaml.magnet.linear_model
+        calibration_factor: 1.001312133
+        curve:
+          type: pyaml.configuration.csvcurve
+          file: sr/magnet_models/QD2_strength.csv
+        unit: 1/m
+        powerconverter:
+          type: tango.pyaml.attribute
+          attribute: srmag/vps-qd2/c18-a/current
+          unit: A
+    - type: pyaml.magnet.quadrupole
+      name: QD2E-C18
+      model:
+        type: pyaml.magnet.linear_model
+        calibration_factor: 1.005402902
+        curve:
+          type: pyaml.configuration.csvcurve
+          file: sr/magnet_models/QD2_strength.csv
+        unit: 1/m
+        powerconverter:
+          type: tango.pyaml.attribute
+          attribute: srmag/vps-qd2/c18-e/current
+          unit: A
+    - type: pyaml.magnet.quadrupole
+      name: QD2A-C19
+      model:
+        type: pyaml.magnet.linear_model
+        calibration_factor: 0.995846789
+        curve:
+          type: pyaml.configuration.csvcurve
+          file: sr/magnet_models/QD2_strength.csv
+        unit: 1/m
+        powerconverter:
+          type: tango.pyaml.attribute
+          attribute: srmag/vps-qd2/c19-a/current
+          unit: A
+    - type: pyaml.magnet.quadrupole
+      name: QD2E-C19
+      model:
+        type: pyaml.magnet.linear_model
+        calibration_factor: 1.005877011
+        curve:
+          type: pyaml.configuration.csvcurve
+          file: sr/magnet_models/QD2_strength.csv
+        unit: 1/m
+        powerconverter:
+          type: tango.pyaml.attribute
+          attribute: srmag/vps-qd2/c19-e/current
+          unit: A
+    - type: pyaml.magnet.quadrupole
+      name: QD2A-C20
+      model:
+        type: pyaml.magnet.linear_model
+        calibration_factor: 1.001016211
+        curve:
+          type: pyaml.configuration.csvcurve
+          file: sr/magnet_models/QD2_strength.csv
+        unit: 1/m
+        powerconverter:
+          type: tango.pyaml.attribute
+          attribute: srmag/vps-qd2/c20-a/current
+          unit: A
+    - type: pyaml.magnet.quadrupole
+      name: QD2E-C20
+      model:
+        type: pyaml.magnet.linear_model
+        calibration_factor: 0.999010167
+        curve:
+          type: pyaml.configuration.csvcurve
+          file: sr/magnet_models/QD2_strength.csv
+        unit: 1/m
+        powerconverter:
+          type: tango.pyaml.attribute
+          attribute: srmag/vps-qd2/c20-e/current
+          unit: A
+    - type: pyaml.magnet.quadrupole
+      name: QD2A-C21
+      model:
+        type: pyaml.magnet.linear_model
+        calibration_factor: 1.007265811
+        curve:
+          type: pyaml.configuration.csvcurve
+          file: sr/magnet_models/QD2_strength.csv
+        unit: 1/m
+        powerconverter:
+          type: tango.pyaml.attribute
+          attribute: srmag/vps-qd2/c21-a/current
+          unit: A
+    - type: pyaml.magnet.quadrupole
+      name: QD2E-C21
+      model:
+        type: pyaml.magnet.linear_model
+        calibration_factor: 0.998238611
+        curve:
+          type: pyaml.configuration.csvcurve
+          file: sr/magnet_models/QD2_strength.csv
+        unit: 1/m
+        powerconverter:
+          type: tango.pyaml.attribute
+          attribute: srmag/vps-qd2/c21-e/current
+          unit: A
+    - type: pyaml.magnet.quadrupole
+      name: QD2A-C22
+      model:
+        type: pyaml.magnet.linear_model
+        calibration_factor: 0.998161456
+        curve:
+          type: pyaml.configuration.csvcurve
+          file: sr/magnet_models/QD2_strength.csv
+        unit: 1/m
+        powerconverter:
+          type: tango.pyaml.attribute
+          attribute: srmag/vps-qd2/c22-a/current
+          unit: A
+    - type: pyaml.magnet.quadrupole
+      name: QD2E-C22
+      model:
+        type: pyaml.magnet.linear_model
+        calibration_factor: 1.004642522
+        curve:
+          type: pyaml.configuration.csvcurve
+          file: sr/magnet_models/QD2_strength.csv
+        unit: 1/m
+        powerconverter:
+          type: tango.pyaml.attribute
+          attribute: srmag/vps-qd2/c22-e/current
+          unit: A
+    - type: pyaml.magnet.quadrupole
+      name: QD2A-C23
+      model:
+        type: pyaml.magnet.linear_model
+        calibration_factor: 1.001479145
+        curve:
+          type: pyaml.configuration.csvcurve
+          file: sr/magnet_models/QD2_strength.csv
+        unit: 1/m
+        powerconverter:
+          type: tango.pyaml.attribute
+          attribute: srmag/vps-qd2/c23-a/current
+          unit: A
+    - type: pyaml.magnet.quadrupole
+      name: QD2E-C23
+      model:
+        type: pyaml.magnet.linear_model
+        calibration_factor: 1.001942078
+        curve:
+          type: pyaml.configuration.csvcurve
+          file: sr/magnet_models/QD2_strength.csv
+        unit: 1/m
+        powerconverter:
+          type: tango.pyaml.attribute
+          attribute: srmag/vps-qd2/c23-e/current
+          unit: A
+    - type: pyaml.magnet.quadrupole
+      name: QD2A-C24
+      model:
+        type: pyaml.magnet.linear_model
+        calibration_factor: 0.999087322
+        curve:
+          type: pyaml.configuration.csvcurve
+          file: sr/magnet_models/QD2_strength.csv
+        unit: 1/m
+        powerconverter:
+          type: tango.pyaml.attribute
+          attribute: srmag/vps-qd2/c24-a/current
+          unit: A
+    - type: pyaml.magnet.quadrupole
+      name: QD2E-C24
+      model:
+        type: pyaml.magnet.linear_model
+        calibration_factor: 0.998547233
+        curve:
+          type: pyaml.configuration.csvcurve
+          file: sr/magnet_models/QD2_strength.csv
+        unit: 1/m
+        powerconverter:
+          type: tango.pyaml.attribute
+          attribute: srmag/vps-qd2/c24-e/current
+          unit: A
+    - type: pyaml.magnet.quadrupole
+      name: QD2A-C25
+      model:
+        type: pyaml.magnet.linear_model
+        calibration_factor: 1.001698055
+        curve:
+          type: pyaml.configuration.csvcurve
+          file: sr/magnet_models/QD2_strength.csv
+        unit: 1/m
+        powerconverter:
+          type: tango.pyaml.attribute
+          attribute: srmag/vps-qd2/c25-a/current
+          unit: A
+    - type: pyaml.magnet.quadrupole
+      name: QD2E-C25
+      model:
+        type: pyaml.magnet.linear_model
+        calibration_factor: 0.999704567
+        curve:
+          type: pyaml.configuration.csvcurve
+          file: sr/magnet_models/QD2_strength.csv
+        unit: 1/m
+        powerconverter:
+          type: tango.pyaml.attribute
+          attribute: srmag/vps-qd2/c25-e/current
+          unit: A
+    - type: pyaml.magnet.quadrupole
+      name: QD2A-C26
+      model:
+        type: pyaml.magnet.linear_model
+        calibration_factor: 0.999164478
+        curve:
+          type: pyaml.configuration.csvcurve
+          file: sr/magnet_models/QD2_strength.csv
+        unit: 1/m
+        powerconverter:
+          type: tango.pyaml.attribute
+          attribute: srmag/vps-qd2/c26-a/current
+          unit: A
+    - type: pyaml.magnet.quadrupole
+      name: QD2E-C26
+      model:
+        type: pyaml.magnet.linear_model
+        calibration_factor: 1.000694659
+        curve:
+          type: pyaml.configuration.csvcurve
+          file: sr/magnet_models/QD2_strength.csv
+        unit: 1/m
+        powerconverter:
+          type: tango.pyaml.attribute
+          attribute: srmag/vps-qd2/c26-e/current
+          unit: A
+    - type: pyaml.magnet.quadrupole
+      name: QD2A-C27
+      model:
+        type: pyaml.magnet.linear_model
+        calibration_factor: 0.99945971
+        curve:
+          type: pyaml.configuration.csvcurve
+          file: sr/magnet_models/QD2_strength.csv
+        unit: 1/m
+        powerconverter:
+          type: tango.pyaml.attribute
+          attribute: srmag/vps-qd2/c27-a/current
+          unit: A
+    - type: pyaml.magnet.quadrupole
+      name: QD2E-C27
+      model:
+        type: pyaml.magnet.linear_model
+        calibration_factor: 0.999922816
+        curve:
+          type: pyaml.configuration.csvcurve
+          file: sr/magnet_models/QD2_strength.csv
+        unit: 1/m
+        powerconverter:
+          type: tango.pyaml.attribute
+          attribute: srmag/vps-qd2/c27-e/current
+          unit: A
+    - type: pyaml.magnet.quadrupole
+      name: QD2A-C28
+      model:
+        type: pyaml.magnet.linear_model
+        calibration_factor: 0.999922816
+        curve:
+          type: pyaml.configuration.csvcurve
+          file: sr/magnet_models/QD2_strength.csv
+        unit: 1/m
+        powerconverter:
+          type: tango.pyaml.attribute
+          attribute: srmag/vps-qd2/c28-a/current
+          unit: A
+    - type: pyaml.magnet.quadrupole
+      name: QD2E-C28
+      model:
+        type: pyaml.magnet.linear_model
+        calibration_factor: 0.997838839
+        curve:
+          type: pyaml.configuration.csvcurve
+          file: sr/magnet_models/QD2_strength.csv
+        unit: 1/m
+        powerconverter:
+          type: tango.pyaml.attribute
+          attribute: srmag/vps-qd2/c28-e/current
+          unit: A
+    - type: pyaml.magnet.quadrupole
+      name: QD2A-C29
+      model:
+        type: pyaml.magnet.linear_model
+        calibration_factor: 1.003318926
+        curve:
+          type: pyaml.configuration.csvcurve
+          file: sr/magnet_models/QD2_strength.csv
+        unit: 1/m
+        powerconverter:
+          type: tango.pyaml.attribute
+          attribute: srmag/vps-qd2/c29-a/current
+          unit: A
+    - type: pyaml.magnet.quadrupole
+      name: QD2E-C29
+      model:
+        type: pyaml.magnet.linear_model
+        calibration_factor: 1.004179589
+        curve:
+          type: pyaml.configuration.csvcurve
+          file: sr/magnet_models/QD2_strength.csv
+        unit: 1/m
+        powerconverter:
+          type: tango.pyaml.attribute
+          attribute: srmag/vps-qd2/c29-e/current
+          unit: A
+    - type: pyaml.magnet.quadrupole
+      name: QD2A-C30
+      model:
+        type: pyaml.magnet.linear_model
+        calibration_factor: 0.999010167
+        curve:
+          type: pyaml.configuration.csvcurve
+          file: sr/magnet_models/QD2_strength.csv
+        unit: 1/m
+        powerconverter:
+          type: tango.pyaml.attribute
+          attribute: srmag/vps-qd2/c30-a/current
+          unit: A
+    - type: pyaml.magnet.quadrupole
+      name: QD2E-C30
+      model:
+        type: pyaml.magnet.linear_model
+        calibration_factor: 0.9987787
+        curve:
+          type: pyaml.configuration.csvcurve
+          file: sr/magnet_models/QD2_strength.csv
+        unit: 1/m
+        powerconverter:
+          type: tango.pyaml.attribute
+          attribute: srmag/vps-qd2/c30-e/current
+          unit: A
+    - type: pyaml.magnet.quadrupole
+      name: QD2A-C31
+      model:
+        type: pyaml.magnet.linear_model
+        calibration_factor: 1.004411056
+        curve:
+          type: pyaml.configuration.csvcurve
+          file: sr/magnet_models/QD2_strength.csv
+        unit: 1/m
+        powerconverter:
+          type: tango.pyaml.attribute
+          attribute: srmag/vps-qd2/c31-a/current
+          unit: A
+    - type: pyaml.magnet.quadrupole
+      name: QD2E-C31
+      model:
+        type: pyaml.magnet.linear_model
+        calibration_factor: 1.0029451
+        curve:
+          type: pyaml.configuration.csvcurve
+          file: sr/magnet_models/QD2_strength.csv
+        unit: 1/m
+        powerconverter:
+          type: tango.pyaml.attribute
+          attribute: srmag/vps-qd2/c31-e/current
+          unit: A
+    - type: pyaml.magnet.quadrupole
+      name: QD2A-C32
+      model:
+        type: pyaml.magnet.linear_model
+        calibration_factor: 1.009426167
+        curve:
+          type: pyaml.configuration.csvcurve
+          file: sr/magnet_models/QD2_strength.csv
+        unit: 1/m
+        powerconverter:
+          type: tango.pyaml.attribute
+          attribute: srmag/vps-qd2/c32-a/current
+          unit: A
+    - type: pyaml.magnet.quadrupole
+      name: QD2E-C32
+      model:
+        type: pyaml.magnet.linear_model
+        calibration_factor: 1.0050283
+        curve:
+          type: pyaml.configuration.csvcurve
+          file: sr/magnet_models/QD2_strength.csv
+        unit: 1/m
+        powerconverter:
+          type: tango.pyaml.attribute
+          attribute: srmag/vps-qd2/c32-e/current
+          unit: A
+    - type: pyaml.magnet.quadrupole
+      name: QD2A-C01
+      model:
+        type: pyaml.magnet.linear_model
+        calibration_factor: 0.998533498
+        curve:
+          type: pyaml.configuration.csvcurve
+          file: sr/magnet_models/QD2_strength.csv
+        unit: 1/m
+        powerconverter:
+          type: tango.pyaml.attribute
+          attribute: srmag/vps-qd2/c01-a/current
+          unit: A
+    - type: pyaml.magnet.quadrupole
+      name: QD2E-C01
+      model:
+        type: pyaml.magnet.linear_model
+        calibration_factor: 1.003485189
+        curve:
+          type: pyaml.configuration.csvcurve
+          file: sr/magnet_models/QD2_strength.csv
+        unit: 1/m
+        powerconverter:
+          type: tango.pyaml.attribute
+          attribute: srmag/vps-qd2/c01-e/current
+          unit: A
+    - type: pyaml.magnet.quadrupole
+      name: QD2A-C02
+      model:
+        type: pyaml.magnet.linear_model
+        calibration_factor: 1.001389318
+        curve:
+          type: pyaml.configuration.csvcurve
+          file: sr/magnet_models/QD2_strength.csv
+        unit: 1/m
+        powerconverter:
+          type: tango.pyaml.attribute
+          attribute: srmag/vps-qd2/c02-a/current
+          unit: A
+    - type: pyaml.magnet.quadrupole
+      name: QD2E-C02
+      model:
+        type: pyaml.magnet.linear_model
+        calibration_factor: 1.006108478
+        curve:
+          type: pyaml.configuration.csvcurve
+          file: sr/magnet_models/QD2_strength.csv
+        unit: 1/m
+        powerconverter:
+          type: tango.pyaml.attribute
+          attribute: srmag/vps-qd2/c02-e/current
+          unit: A
+    - type: pyaml.magnet.quadrupole
+      name: QD2A-C03
+      model:
+        type: pyaml.magnet.linear_model
+        calibration_factor: 1.002096389
+        curve:
+          type: pyaml.configuration.csvcurve
+          file: sr/magnet_models/QD2_strength.csv
+        unit: 1/m
+        powerconverter:
+          type: tango.pyaml.attribute
+          attribute: srmag/vps-qd2/c03-a/current
+          unit: A

@@ -3,7 +3,7 @@ requires = ["hatchling"]
 build-backend = "hatchling.build"
 
 [tool.hatch.version]
-path = "pyAML/__init__.py"
+path = "pyaml/__init__.py"
 
 [tool.hatch.build.targets.sdist]
 exclude = [
@@ -13,10 +13,10 @@ exclude = [
 ]
 
 [tool.hatch.build.targets.wheel]
-packages = ["pyAML"]
+packages = ["pyaml"]
 
 [project]
-name = "pyAML"
+name = "pyaml"
 description = "Python Accelerator Middle Layer"
 readme = "README.md"
 requires-python = ">=3.9"
@@ -40,10 +40,11 @@ classifiers = [
 ]
 
 dependencies = [
-    "numpy>=2.0.0",
-    "scipy>=1.11.4",
-    "matplotlib>=3.7.3",
-    "accelerator-toolbox>=0.6.1"
+    "numpy>=1.21.0",
+    "scipy>=1.7.3",
+    "accelerator-toolbox>=0.6.1",
+    "PyYAML>=6.0.2",
+    "pydantic>=2.11.7"
 ]
 
 [project.optional-dependencies]

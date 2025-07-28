@@ -1,0 +1,4 @@
+"""
+PyAML Magnet module
+"""
+

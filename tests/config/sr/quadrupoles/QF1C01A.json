@@ -1,0 +1,5 @@
+{
+  "type": "pyaml.magnet.quadrupole",
+  "name": "QF1C01A",
+  "unitconv": "sr/magnet_models/QF1C01A.json"
+}
