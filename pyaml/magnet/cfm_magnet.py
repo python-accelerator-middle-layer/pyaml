@@ -1,7 +1,7 @@
 from pydantic import SerializeAsAny
 from scipy.constants import speed_of_light
 
-from .unitconv import UnitConv
+from .model import MagnetModel
 from ..lattice.element import ElementModel
 from ..lattice.element import Element
 from ..control import abstract
@@ -35,7 +35,7 @@ class ConfigModel(ElementModel):
 
     mapping: list[list[str]]
     """Name mapping for multipoles (i.e. [[B0,C01A-H],[A0,C01A-H],[B2,C01A-S]])"""
-    unitconv: UnitConv | None = None
+    model: MagnetModel | None = None
     """Object in charge of converting magnet strenghts to currents"""
 
 class CombinedFunctionMagnet(Element):
@@ -44,10 +44,10 @@ class CombinedFunctionMagnet(Element):
     def __init__(self, cfg: ConfigModel):
         super().__init__(cfg.name)
         self._cfg = cfg
-        self.unitconv = cfg.unitconv
+        self.model = cfg.model
 
-        if self.unitconv is not None and not hasattr(self.unitconv._cfg,"multipoles"):
-            raise Exception(f"{cfg.name} unitconv: mutipoles field required for combined function magnet")
+        if self.model is not None and not hasattr(self.model._cfg,"multipoles"):
+            raise Exception(f"{cfg.name} model: mutipoles field required for combined function magnet")
 
         idx = 0
         self.polynoms = []
@@ -57,8 +57,8 @@ class CombinedFunctionMagnet(Element):
                 raise Exception("Invalid CombinedFunctionMagnet mapping for {m}")
             if not m[0] in _fmap:
                 raise Exception(m[0] + " not implemented for combined function magnet")
-            if m[0] not in self.unitconv._cfg.multipoles:
-                raise Exception(m[0] + " not found in underlying unitconv")
+            if m[0] not in self.model._cfg.multipoles:
+                raise Exception(m[0] + " not found in underlying magnet model")
             self.polynoms.append(_fmap[m[0]].polynom)
 
     def attach(self, strengths: abstract.ReadWriteFloatArray, currents: abstract.ReadWriteFloatArray) -> list[Magnet]:
@@ -74,5 +74,5 @@ class CombinedFunctionMagnet(Element):
             return l
     
     def set_energy(self,E:float):
-        if(self.unitconv is not None):
-            self.unitconv.set_magnet_rigidity(E/speed_of_light)
+        if(self.model is not None):
+            self.model.set_magnet_rigidity(E/speed_of_light)

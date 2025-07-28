@@ -1,3 +1,3 @@
 type: pyaml.magnet.quadrupole
 name: QF1A-C01
-unitconv: sr/unitconv/QF1AC01.yaml
+unitconv: sr/magnet_models/QF1AC01.yaml

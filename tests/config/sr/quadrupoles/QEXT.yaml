@@ -1,7 +1,7 @@
-type: pyaml.magnet.quadrupole
-name: QF1C01A
-unitconv:
-  type: pyaml_external.external_unitconv
+type: pyaml.magnet.magnet
+name: IDCORR
+model:
+  type: pyaml_external.external_model
   param: my random param
   powersupply:
     type: pyaml.control.device

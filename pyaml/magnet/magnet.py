@@ -1,7 +1,7 @@
 from pyaml.lattice.element import Element,ElementModel
 from ..control.deviceaccess import DeviceAccess
 from ..control import abstract
-from .unitconv import UnitConv
+from .model import MagnetModel
 from scipy.constants import speed_of_light
 from typing import Self
 
@@ -9,22 +9,31 @@ class MagnetModel(ElementModel):
 
     hardware: DeviceAccess | None = None
     """Direct access to a magnet device that provides strength/current conversion"""
-    unitconv: UnitConv | None = None
-    """Object in charge of converting magnet strenghts to current"""
+    model: MagnetModel | None = None
+    """Object in charge of converting magnet strenghts to power supply values"""
 
 class Magnet(Element):
   """
   Class providing access to one magnet of a physical or simulated lattice
-
-  Attributes:
-  strength (ReadWriteFloatScalar): Magnet strength
-  current (ReadWriteFloatScalar): Magnet current
   """
-  def __init__(self, name:str, hardware:DeviceAccess = None, unitconv:UnitConv = None):
+
+  def __init__(self, name:str, hardware:DeviceAccess = None, model:MagnetModel = None):
+    """
+    Construct a magnet
+
+    Parameters
+    ----------
+    name : str
+        Element name
+    hardware : DeviceAccess
+        Direct access to a hardware (bypass the magnet model)
+    model : MagnetModel
+        Magnet model in charge of comutping coil(s) current
+    """
     super().__init__(name)
-    self.unitconv = unitconv
-    __strength = None
-    __current = None
+    self.__model = model
+    self.__strength = None
+    self.__hardware = None
     if hardware is not None:
       # TODO
       # Direct access to a magnet device that supports strength/current conversion
@@ -37,18 +46,22 @@ class Magnet(Element):
     return self.__strength
 
   @property
-  def current(self) -> abstract.ReadWriteFloatScalar:
-    if self.__current is None:
-        raise Exception(f"{str(self)} has non trivial strenght<->current unitconv model")
-    return self.__current
+  def hardware(self) -> abstract.ReadWriteFloatScalar:
+    if self.__hardware is None:
+        raise Exception(f"{str(self)} has no model that supports hardware units")
+    return self.__hardware
 
-  def attach(self, strength: abstract.ReadWriteFloatScalar, current: abstract.ReadWriteFloatScalar) -> Self:
+  @property
+  def model(self) -> MagnetModel:
+     return self.__model
+
+  def attach(self, strength: abstract.ReadWriteFloatScalar, hardware: abstract.ReadWriteFloatScalar) -> Self:
     # Attach strengh and current attribute and returns a new reference
     obj = self.__class__(self._cfg)
     obj.__strength = strength
-    obj.__current = current
+    obj.__hardware = hardware
     return obj
 
   def set_energy(self,E:float):
-     if(self.unitconv is not None):
-        self.unitconv.set_magnet_rigidity(E/speed_of_light)
+     if(self.__model is not None):
+        self.__model.set_magnet_rigidity(E/speed_of_light)

@@ -1,13 +1,12 @@
 import numpy as np
 from pydantic import BaseModel
-from scipy.interpolate import make_smoothing_spline
 
-from .unitconv import UnitConv
+from .model import MagnetModel
 from ..configuration.curve import Curve
 from ..control.deviceaccess import DeviceAccess
 
 # Define the main class name for this module
-PYAMLCLASS = "SplineUnitConv"
+PYAMLCLASS = "LinearMagnetModel"
 
 class ConfigModel(BaseModel):
 
@@ -18,15 +17,13 @@ class ConfigModel(BaseModel):
     calibration_factor: float = 1.0
     """Correction factor applied to the curve"""
     calibration_offset: float = 0.0
-    """Correction offset applied to the curve"""
+    """Correction offset applied to the curve")"""
     unit: str
     """Unit of the strength (i.e. 1/m or m-1)"""
-    alpha: float = 0.0
-    """Regularization parameter (alpha>=0), aplha=0 the interpolation pass through all the points of the curve"""
 
-class SplineUnitConv(UnitConv):
+class LinearMagnetModel(MagnetModel):
     """
-    Class that handle manget current/strength conversion using spline interpolation for a single function magnet
+    Class that handle manget current/strength conversion using linear interpolation for a single function magnet
     """
 
     def __init__(self, cfg: ConfigModel):
@@ -39,45 +36,39 @@ class SplineUnitConv(UnitConv):
         self._current_unit = cfg.powerconverter.unit()
         self._brho = np.nan
         self._ps = cfg.powerconverter
-        self._spl = make_smoothing_spline(self._curve[:, 0], self._curve[:, 1], lam=cfg.alpha)
-        self._rspl = make_smoothing_spline(self._curve[:, 1], self._curve[:, 0], lam=cfg.alpha)
 
-    # Compute coil current(s) from magnet strength(s)
-    def compute_currents(self, strengths: np.array) -> np.array:
-        _current = self._rspl(strengths[0] * self._brho)
+    def compute_hardware_values(self, strengths: np.array) -> np.array:
+        _current = np.interp(
+            strengths[0] * self._brho, self._curve[:, 1], self._curve[:, 0]
+        )
         return np.array([_current])
 
-    # Compute magnet strength(s) from coil current(s)
     def compute_strengths(self, currents: np.array) -> np.array:
-        _strength = self._spl(currents[0]) / self._brho
+        _strength = (
+            np.interp(currents[0], self._curve[:, 0], self._curve[:, 1]) / self._brho
+        )
         return np.array([_strength])
 
-    # Get strength units
     def get_strength_units(self) -> list[str]:
         return [self._strength_unit] if self._strength_unit is not None else [""]
 
-    # Get current units
-    def get_current_units(self) -> list[str]:
+    def get_hardware_units(self) -> list[str]:
         return [self._current_unit] if self._current_unit is not None else [""]
 
-    # Get power supply current setpoint(s) from control system
-    def read_currents(self) -> np.array:
+    def read_hardware_values(self) -> np.array:
         return [self._ps.get()]
 
-    # Get power supply current(s) from control system
-    def readback_currents(self) -> np.array:
+    def readback_hardware_values(self) -> np.array:
         return [self._ps.readback()]
 
-    # Send power supply current(s) to control system
-    def send_currents(self, currents: np.array):
+    def send_harware_values(self, currents: np.array):
         self._ps.set(currents[0])
 
-    # Set magnet rigidity
     def set_magnet_rigidity(self, brho: np.double):
         self._brho = brho
 
     def __repr__(self):
-        return "%s(curve[%d], unit=%s)" % (
+        return "%s(curve[%d pts], unit=%s)" % (
             self.__class__.__name__,
             len(self._curve),
             self._strength_unit,

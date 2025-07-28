@@ -1,0 +1,2 @@
+type: pyaml.configuration.csvcurve
+file: sr/magnet_models/QF1_strength.csv

@@ -1,45 +1,45 @@
 from pyaml.control import abstract
-from pyaml.magnet.unitconv import UnitConv
+from pyaml.magnet.model import MagnetModel
 import numpy as np
 
 #------------------------------------------------------------------------------
 
-class RWCurrentScalar(abstract.ReadFloatScalar):
+class RWHardwareScalar(abstract.ReadFloatScalar):
     """
-    Class providing read write access to a magnet current (scalar value) of a control system
+    Class providing read write access to a magnet of a control system (in hardware units)
     """
-    def __init__(self, unitconv:UnitConv):
-        self.unitconv = unitconv
+    def __init__(self, model:MagnetModel):
+        self.model = model
 
     def get(self) -> float:
-        return self.unitconv.read_currents()[0]
+        return self.model.read_hardware_values()[0]
     
     def set(self, value:float):
-        self.unitconv.send_currents([value])
+        self.model.send_harware_values([value])
         
     def unit(self) -> str:
-        return self.unitconv.get_current_units()[0]
+        return self.model.get_hardware_units()[0]
     
 #------------------------------------------------------------------------------
 
 class RWStrengthScalar(abstract.ReadWriteFloatScalar):
     """
-    Class providing read write access to a strength (scalar value) to a control system
+    Class providing read write access to a strength of a control system
     """
 
-    def __init__(self, unitconv:UnitConv):
-        self.unitconv = unitconv
+    def __init__(self, model:MagnetModel):
+        self.model = model
         self.src = None
 
     # Gets the value
     def get(self) -> float:
-        currents = self.unitconv.read_currents()
-        return self.unitconv.compute_strengths(currents)[0]
+        currents = self.model.read_hardware_values()
+        return self.model.compute_strengths(currents)[0]
 
     # Sets the value
     def set(self, value:float):
-        current = self.unitconv.compute_currents([value])
-        self.unitconv.send_currents(current)
+        current = self.model.compute_hardware_values([value])
+        self.model.send_harware_values(current)
 
     # Sets the value and wait that the read value reach the setpoint
     def set_and_wait(self, value:float):
@@ -47,24 +47,24 @@ class RWStrengthScalar(abstract.ReadWriteFloatScalar):
 
     # Gets the unit of the value
     def unit(self) -> str:
-        return self.unitconv.get_strength_units()[0]
+        return self.model.get_strength_units()[0]
 
 #------------------------------------------------------------------------------
 
-class RWCurrentArray(abstract.ReadWriteFloatArray):
+class RWHardwareArray(abstract.ReadWriteFloatArray):
     """
-    Class providing read write access to a magnet current array of a control system
+    Class providing read write access to a magnet array of a control system (in hardware units)
     """
-    def __init__(self, unitconv:UnitConv):
-        self.unitconv = unitconv
+    def __init__(self, model:MagnetModel):
+        self.model = model
 
     # Gets the value
     def get(self) -> np.array:
-        return self.unitconv.read_currents()
+        return self.model.read_hardware_values()
 
     # Sets the value
     def set(self, value:np.array):
-        self.unitconv.send_currents(value)
+        self.model.send_harware_values(value)
         
     # Sets the value and waits that the read value reach the setpoint
     def set_and_wait(self, value:np.array):
@@ -73,27 +73,27 @@ class RWCurrentArray(abstract.ReadWriteFloatArray):
 
     # Gets the unit of the value
     def unit(self) -> list[str]:
-        return self.unitconv.get_current_units()
+        return self.model.get_hardware_units()
 
 #------------------------------------------------------------------------------
 
 class RWStrengthArray(abstract.ReadWriteFloatArray):
     """
-    Class providing read write access to a magnet strength array of a control system
+    Class providing read write access to magnet strengths of a control system
     """
-    def __init__(self, unitconv:UnitConv):
-        self.unitconv = unitconv
+    def __init__(self, model:MagnetModel):
+        self.model = model
 
     # Gets the value
     def get(self) -> np.array:
-        r = self.unitconv.read_currents()
-        str = self.unitconv.compute_strengths(r)        
+        r = self.model.read_hardware_values()
+        str = self.model.compute_strengths(r)        
         return str
 
     # Sets the value
     def set(self, value:np.array):
-        cur = self.unitconv.compute_currents(value)
-        self.unitconv.send_currents(cur)
+        cur = self.model.compute_hardware_values(value)
+        self.model.send_harware_values(cur)
         
     # Sets the value and waits that the read value reach the setpoint
     def set_and_wait(self, value:np.array):
@@ -101,7 +101,7 @@ class RWStrengthArray(abstract.ReadWriteFloatArray):
 
     # Gets the unit of the value
     def unit(self) -> list[str]:
-        return self.unitconv.get_strength_units()
+        return self.model.get_strength_units()
 
 
 

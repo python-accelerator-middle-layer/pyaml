@@ -5,7 +5,7 @@ from .element import Element
 from pathlib import Path
 from ..magnet.magnet import Magnet
 from ..magnet.cfm_magnet import CombinedFunctionMagnet
-from ..lattice.abstract_impl import RWCurrentScalar,RWCurrenthArray
+from ..lattice.abstract_impl import RWHardwareScalar,RWHardwareArray
 from ..lattice.abstract_impl import RWStrengthScalar,RWStrengthArray
 from .element_holder import ElementHolder
 
@@ -51,16 +51,16 @@ class Simulator(ElementHolder):
     def fill_device(self,elements:list[Element]):
        for e in elements:
           if isinstance(e,Magnet):
-            current = RWCurrentScalar(self.get_at_elems(e.name),e.polynom,e.unitconv)
-            strength = RWStrengthScalar(self.get_at_elems(e.name),e.polynom,e.unitconv)
+            current = RWHardwareScalar(self.get_at_elems(e.name),e.polynom,e.model)
+            strength = RWStrengthScalar(self.get_at_elems(e.name),e.polynom,e.model)
             # Create a unique ref for this simulator
             m = e.attach(strength,current)
             name = str(m)
             self.MAGNETS[name] = m
           elif isinstance(e,CombinedFunctionMagnet):
             self.MAGNETS[str(e)]=e
-            currents = RWCurrenthArray(self.get_at_elems(e.name),e.polynoms,e.unitconv)
-            strengths = RWStrengthArray(self.get_at_elems(e.name),e.polynoms,e.unitconv)
+            currents = RWHardwareArray(self.get_at_elems(e.name),e.polynoms,e.model)
+            strengths = RWStrengthArray(self.get_at_elems(e.name),e.polynoms,e.model)
             # Create unique refs of each function for this simulator
             ms = e.attach(strengths,currents)
             for m in ms:

@@ -1,8 +1,8 @@
 {
-      "type": "pyaml.magnet.spline_unitconv",
+      "type": "pyaml.magnet.spline_model",
       "calibration_factor": 1.0003,
       "calibration_offset": 0.0,
-      "curve": "sr/unitconv/quadcurve.json",
+      "curve": "sr/magnet_models/quadcurve.json",
       "unit": "1/m",
       "powerconverter": {
         "type": "pyaml.control.device",

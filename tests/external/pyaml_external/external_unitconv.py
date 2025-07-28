@@ -1,6 +1,6 @@
 from pydantic import BaseModel
 import numpy as np
-from pyaml.magnet.unitconv import UnitConv
+from pyaml.magnet.model import MagnetModel
 from pyaml.control.deviceaccess import DeviceAccess
 
 
@@ -21,7 +21,7 @@ class ConfigModel(BaseModel):
 # UnitConv inherits from pydantic BaseModel
 # Take care of having all your private fields prefixed by an `_`
 
-class ExternalUnitConv(UnitConv):
+class ExternalUnitConv(MagnetModel):
     """
     Class example proving manget current/strength conversion
     """
@@ -36,7 +36,7 @@ class ExternalUnitConv(UnitConv):
     # Implementation of the UnitConv abstract class
 
     # Get coil current(s) from magnet strength(s)
-    def compute_currents(self,strengths:np.array) -> np.array:
+    def compute_hardware_values(self,strengths:np.array) -> np.array:
         print("ExternalUnitConv.compute_currents(%f)" % (strengths[0]))
         _gap = self._id.get()
         return np.array([strengths[0]*_gap])
@@ -52,19 +52,19 @@ class ExternalUnitConv(UnitConv):
         return["rad"]
 
     # Get current units
-    def get_current_units(self) -> list[str]:
+    def get_hardware_units(self) -> list[str]:
         return["A"]
 
     # Get power supply current setpoint(s) from control system
-    def read_currents(self) -> np.array:
+    def read_hardware_values(self) -> np.array:
         return self._ps.get()
 
     # Get power supply current(s) from control system
-    def readback_currents(self) -> np.array:
+    def readback_hardware_values(self) -> np.array:
         pass
 
     # Send power supply current(s) to control system
-    def send_currents(self,currents:np.array):
+    def send_harware_values(self,currents:np.array):
         self._ps.set(currents)
         pass
 

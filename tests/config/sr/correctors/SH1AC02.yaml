@@ -8,4 +8,4 @@ mapping:
   - [B0, SH1A-C02-H]
   - [A0, SH1A-C02-V]
   - [A1, SH1A-C02-SQ]
-unitconv: sr/unitconv/SH1AC02.yaml
+model: sr/magnet_models/SH1AC02.yaml

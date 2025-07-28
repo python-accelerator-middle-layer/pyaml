@@ -139,12 +139,12 @@ instruments:
     devices:
     - type: pyaml.magnet.quadrupole
       name: QF1E-C04
-      unitconv:
-        type: pyaml.magnet.linear_unitconv
+      model:
+        type: pyaml.magnet.linear_model
         calibration_factor: 1.00054
         curve:
           type: pyaml.configuration.csvcurve
-          file: sr/unitconv/QF1_strength.csv
+          file: sr/magnet_models/QF1_strength.csv
         unit: 1/m
         powerconverter:
           type: tango.pyaml.attribute
@@ -152,12 +152,12 @@ instruments:
           unit: A
     - type: pyaml.magnet.quadrupole
       name: QF1A-C05
-      unitconv:
-        type: pyaml.magnet.linear_unitconv
+      model:
+        type: pyaml.magnet.linear_model
         calibration_factor: 0.996841
         curve:
           type: pyaml.configuration.csvcurve
-          file: sr/unitconv/QF1_strength.csv
+          file: sr/magnet_models/QF1_strength.csv
         unit: 1/m
         powerconverter:
           type: tango.pyaml.attribute
@@ -165,12 +165,12 @@ instruments:
           unit: A
     - type: pyaml.magnet.quadrupole
       name: QF1E-C05
-      unitconv:
-        type: pyaml.magnet.linear_unitconv
+      model:
+        type: pyaml.magnet.linear_model
         calibration_factor: 1.00191
         curve:
           type: pyaml.configuration.csvcurve
-          file: sr/unitconv/QF1_strength.csv
+          file: sr/magnet_models/QF1_strength.csv
         unit: 1/m
         powerconverter:
           type: tango.pyaml.attribute
@@ -178,12 +178,12 @@ instruments:
           unit: A
     - type: pyaml.magnet.quadrupole
       name: QF1A-C06
-      unitconv:
-        type: pyaml.magnet.linear_unitconv
+      model:
+        type: pyaml.magnet.linear_model
         calibration_factor: 1.0003
         curve:
           type: pyaml.configuration.csvcurve
-          file: sr/unitconv/QF1_strength.csv
+          file: sr/magnet_models/QF1_strength.csv
         unit: 1/m
         powerconverter:
           type: tango.pyaml.attribute
@@ -191,12 +191,12 @@ instruments:
           unit: A
     - type: pyaml.magnet.quadrupole
       name: QF1E-C06
-      unitconv:
-        type: pyaml.magnet.linear_unitconv
+      model:
+        type: pyaml.magnet.linear_model
         calibration_factor: 0.997615
         curve:
           type: pyaml.configuration.csvcurve
-          file: sr/unitconv/QF1_strength.csv
+          file: sr/magnet_models/QF1_strength.csv
         unit: 1/m
         powerconverter:
           type: tango.pyaml.attribute
@@ -204,12 +204,12 @@ instruments:
           unit: A
     - type: pyaml.magnet.quadrupole
       name: QF1A-C07
-      unitconv:
-        type: pyaml.magnet.linear_unitconv
+      model:
+        type: pyaml.magnet.linear_model
         calibration_factor: 0.998152
         curve:
           type: pyaml.configuration.csvcurve
-          file: sr/unitconv/QF1_strength.csv
+          file: sr/magnet_models/QF1_strength.csv
         unit: 1/m
         powerconverter:
           type: tango.pyaml.attribute
@@ -217,12 +217,12 @@ instruments:
           unit: A
     - type: pyaml.magnet.quadrupole
       name: QF1E-C07
-      unitconv:
-        type: pyaml.magnet.linear_unitconv
+      model:
+        type: pyaml.magnet.linear_model
         calibration_factor: 1.00262
         curve:
           type: pyaml.configuration.csvcurve
-          file: sr/unitconv/QF1_strength.csv
+          file: sr/magnet_models/QF1_strength.csv
         unit: 1/m
         powerconverter:
           type: tango.pyaml.attribute
@@ -230,12 +230,12 @@ instruments:
           unit: A
     - type: pyaml.magnet.quadrupole
       name: QF1A-C08
-      unitconv:
-        type: pyaml.magnet.linear_unitconv
+      model:
+        type: pyaml.magnet.linear_model
         calibration_factor: 1.00319
         curve:
           type: pyaml.configuration.csvcurve
-          file: sr/unitconv/QF1_strength.csv
+          file: sr/magnet_models/QF1_strength.csv
         unit: 1/m
         powerconverter:
           type: tango.pyaml.attribute
@@ -243,12 +243,12 @@ instruments:
           unit: A
     - type: pyaml.magnet.quadrupole
       name: QF1E-C08
-      unitconv:
-        type: pyaml.magnet.linear_unitconv
+      model:
+        type: pyaml.magnet.linear_model
         calibration_factor: 0.996180929
         curve:
           type: pyaml.configuration.csvcurve
-          file: sr/unitconv/QF1_strength.csv
+          file: sr/magnet_models/QF1_strength.csv
         unit: 1/m
         powerconverter:
           type: tango.pyaml.attribute
@@ -256,12 +256,12 @@ instruments:
           unit: A
     - type: pyaml.magnet.quadrupole
       name: QF1A-C09
-      unitconv:
-        type: pyaml.magnet.linear_unitconv
+      model:
+        type: pyaml.magnet.linear_model
         calibration_factor: 1.00206
         curve:
           type: pyaml.configuration.csvcurve
-          file: sr/unitconv/QF1_strength.csv
+          file: sr/magnet_models/QF1_strength.csv
         unit: 1/m
         powerconverter:
           type: tango.pyaml.attribute
@@ -269,12 +269,12 @@ instruments:
           unit: A
     - type: pyaml.magnet.quadrupole
       name: QF1E-C09
-      unitconv:
-        type: pyaml.magnet.linear_unitconv
+      model:
+        type: pyaml.magnet.linear_model
         calibration_factor: 0.999285
         curve:
           type: pyaml.configuration.csvcurve
-          file: sr/unitconv/QF1_strength.csv
+          file: sr/magnet_models/QF1_strength.csv
         unit: 1/m
         powerconverter:
           type: tango.pyaml.attribute
@@ -282,12 +282,12 @@ instruments:
           unit: A
     - type: pyaml.magnet.quadrupole
       name: QF1A-C10
-      unitconv:
-        type: pyaml.magnet.linear_unitconv
+      model:
+        type: pyaml.magnet.linear_model
         calibration_factor: 1.00232
         curve:
           type: pyaml.configuration.csvcurve
-          file: sr/unitconv/QF1_strength.csv
+          file: sr/magnet_models/QF1_strength.csv
         unit: 1/m
         powerconverter:
           type: tango.pyaml.attribute
@@ -295,12 +295,12 @@ instruments:
           unit: A
     - type: pyaml.magnet.quadrupole
       name: QF1E-C10
-      unitconv:
-        type: pyaml.magnet.linear_unitconv
+      model:
+        type: pyaml.magnet.linear_model
         calibration_factor: 0.998212
         curve:
           type: pyaml.configuration.csvcurve
-          file: sr/unitconv/QF1_strength.csv
+          file: sr/magnet_models/QF1_strength.csv
         unit: 1/m
         powerconverter:
           type: tango.pyaml.attribute
@@ -308,12 +308,12 @@ instruments:
           unit: A
     - type: pyaml.magnet.quadrupole
       name: QF1A-C11
-      unitconv:
-        type: pyaml.magnet.linear_unitconv
+      model:
+        type: pyaml.magnet.linear_model
         calibration_factor: 0.999225
         curve:
           type: pyaml.configuration.csvcurve
-          file: sr/unitconv/QF1_strength.csv
+          file: sr/magnet_models/QF1_strength.csv
         unit: 1/m
         powerconverter:
           type: tango.pyaml.attribute
@@ -321,12 +321,12 @@ instruments:
           unit: A
     - type: pyaml.magnet.quadrupole
       name: QF1E-C11
-      unitconv:
-        type: pyaml.magnet.linear_unitconv
+      model:
+        type: pyaml.magnet.linear_model
         calibration_factor: 0.998033
         curve:
           type: pyaml.configuration.csvcurve
-          file: sr/unitconv/QF1_strength.csv
+          file: sr/magnet_models/QF1_strength.csv
         unit: 1/m
         powerconverter:
           type: tango.pyaml.attribute
@@ -334,12 +334,12 @@ instruments:
           unit: A
     - type: pyaml.magnet.quadrupole
       name: QF1A-C12
-      unitconv:
-        type: pyaml.magnet.linear_unitconv
+      model:
+        type: pyaml.magnet.linear_model
         calibration_factor: 0.998748
         curve:
           type: pyaml.configuration.csvcurve
-          file: sr/unitconv/QF1_strength.csv
+          file: sr/magnet_models/QF1_strength.csv
         unit: 1/m
         powerconverter:
           type: tango.pyaml.attribute
@@ -347,12 +347,12 @@ instruments:
           unit: A
     - type: pyaml.magnet.quadrupole
       name: QF1E-C12
-      unitconv:
-        type: pyaml.magnet.linear_unitconv
+      model:
+        type: pyaml.magnet.linear_model
         calibration_factor: 1.0023
         curve:
           type: pyaml.configuration.csvcurve
-          file: sr/unitconv/QF1_strength.csv
+          file: sr/magnet_models/QF1_strength.csv
         unit: 1/m
         powerconverter:
           type: tango.pyaml.attribute
@@ -360,12 +360,12 @@ instruments:
           unit: A
     - type: pyaml.magnet.quadrupole
       name: QF1A-C13
-      unitconv:
-        type: pyaml.magnet.linear_unitconv
+      model:
+        type: pyaml.magnet.linear_model
         calibration_factor: 1.00337
         curve:
           type: pyaml.configuration.csvcurve
-          file: sr/unitconv/QF1_strength.csv
+          file: sr/magnet_models/QF1_strength.csv
         unit: 1/m
         powerconverter:
           type: tango.pyaml.attribute
@@ -373,12 +373,12 @@ instruments:
           unit: A
     - type: pyaml.magnet.quadrupole
       name: QF1E-C13
-      unitconv:
-        type: pyaml.magnet.linear_unitconv
+      model:
+        type: pyaml.magnet.linear_model
         calibration_factor: 1.00403
         curve:
           type: pyaml.configuration.csvcurve
-          file: sr/unitconv/QF1_strength.csv
+          file: sr/magnet_models/QF1_strength.csv
         unit: 1/m
         powerconverter:
           type: tango.pyaml.attribute
@@ -386,12 +386,12 @@ instruments:
           unit: A
     - type: pyaml.magnet.quadrupole
       name: QF1A-C14
-      unitconv:
-        type: pyaml.magnet.linear_unitconv
+      model:
+        type: pyaml.magnet.linear_model
         calibration_factor: 1.00182
         curve:
           type: pyaml.configuration.csvcurve
-          file: sr/unitconv/QF1_strength.csv
+          file: sr/magnet_models/QF1_strength.csv
         unit: 1/m
         powerconverter:
           type: tango.pyaml.attribute
@@ -399,12 +399,12 @@ instruments:
           unit: A
     - type: pyaml.magnet.quadrupole
       name: QF1E-C14
-      unitconv:
-        type: pyaml.magnet.linear_unitconv
+      model:
+        type: pyaml.magnet.linear_model
         calibration_factor: 0.998303
         curve:
           type: pyaml.configuration.csvcurve
-          file: sr/unitconv/QF1_strength.csv
+          file: sr/magnet_models/QF1_strength.csv
         unit: 1/m
         powerconverter:
           type: tango.pyaml.attribute
@@ -412,12 +412,12 @@ instruments:
           unit: A
     - type: pyaml.magnet.quadrupole
       name: QF1A-C15
-      unitconv:
-        type: pyaml.magnet.linear_unitconv
+      model:
+        type: pyaml.magnet.linear_model
         calibration_factor: 0.998748
         curve:
           type: pyaml.configuration.csvcurve
-          file: sr/unitconv/QF1_strength.csv
+          file: sr/magnet_models/QF1_strength.csv
         unit: 1/m
         powerconverter:
           type: tango.pyaml.attribute
@@ -425,12 +425,12 @@ instruments:
           unit: A
     - type: pyaml.magnet.quadrupole
       name: QF1E-C15
-      unitconv:
-        type: pyaml.magnet.linear_unitconv
+      model:
+        type: pyaml.magnet.linear_model
         calibration_factor: 0.994098
         curve:
           type: pyaml.configuration.csvcurve
-          file: sr/unitconv/QF1_strength.csv
+          file: sr/magnet_models/QF1_strength.csv
         unit: 1/m
         powerconverter:
           type: tango.pyaml.attribute
@@ -438,12 +438,12 @@ instruments:
           unit: A
     - type: pyaml.magnet.quadrupole
       name: QF1A-C16
-      unitconv:
-        type: pyaml.magnet.linear_unitconv
+      model:
+        type: pyaml.magnet.linear_model
         calibration_factor: 1.00232
         curve:
           type: pyaml.configuration.csvcurve
-          file: sr/unitconv/QF1_strength.csv
+          file: sr/magnet_models/QF1_strength.csv
         unit: 1/m
         powerconverter:
           type: tango.pyaml.attribute
@@ -451,12 +451,12 @@ instruments:
           unit: A
     - type: pyaml.magnet.quadrupole
       name: QF1E-C16
-      unitconv:
-        type: pyaml.magnet.linear_unitconv
+      model:
+        type: pyaml.magnet.linear_model
         calibration_factor: 0.99884
         curve:
           type: pyaml.configuration.csvcurve
-          file: sr/unitconv/QF1_strength.csv
+          file: sr/magnet_models/QF1_strength.csv
         unit: 1/m
         powerconverter:
           type: tango.pyaml.attribute
@@ -464,12 +464,12 @@ instruments:
           unit: A
     - type: pyaml.magnet.quadrupole
       name: QF1A-C17
-      unitconv:
-        type: pyaml.magnet.linear_unitconv
+      model:
+        type: pyaml.magnet.linear_model
         calibration_factor: 1.0079
         curve:
           type: pyaml.configuration.csvcurve
-          file: sr/unitconv/QF1_strength.csv
+          file: sr/magnet_models/QF1_strength.csv
         unit: 1/m
         powerconverter:
           type: tango.pyaml.attribute
@@ -477,12 +477,12 @@ instruments:
           unit: A
     - type: pyaml.magnet.quadrupole
       name: QF1E-C17
-      unitconv:
-        type: pyaml.magnet.linear_unitconv
+      model:
+        type: pyaml.magnet.linear_model
         calibration_factor: 0.999523
         curve:
           type: pyaml.configuration.csvcurve
-          file: sr/unitconv/QF1_strength.csv
+          file: sr/magnet_models/QF1_strength.csv
         unit: 1/m
         powerconverter:
           type: tango.pyaml.attribute
@@ -490,12 +490,12 @@ instruments:
           unit: A
     - type: pyaml.magnet.quadrupole
       name: QF1A-C18
-      unitconv:
-        type: pyaml.magnet.linear_unitconv
+      model:
+        type: pyaml.magnet.linear_model
         calibration_factor: 1
         curve:
           type: pyaml.configuration.csvcurve
-          file: sr/unitconv/QF1_strength.csv
+          file: sr/magnet_models/QF1_strength.csv
         unit: 1/m
         powerconverter:
           type: tango.pyaml.attribute
@@ -503,12 +503,12 @@ instruments:
           unit: A
     - type: pyaml.magnet.quadrupole
       name: QF1E-C18
-      unitconv:
-        type: pyaml.magnet.linear_unitconv
+      model:
+        type: pyaml.magnet.linear_model
         calibration_factor: 0.999854
         curve:
           type: pyaml.configuration.csvcurve
-          file: sr/unitconv/QF1_strength.csv
+          file: sr/magnet_models/QF1_strength.csv
         unit: 1/m
         powerconverter:
           type: tango.pyaml.attribute
@@ -516,12 +516,12 @@ instruments:
           unit: A
     - type: pyaml.magnet.quadrupole
       name: QF1A-C19
-      unitconv:
-        type: pyaml.magnet.linear_unitconv
+      model:
+        type: pyaml.magnet.linear_model
         calibration_factor: 0.99845
         curve:
           type: pyaml.configuration.csvcurve
-          file: sr/unitconv/QF1_strength.csv
+          file: sr/magnet_models/QF1_strength.csv
         unit: 1/m
         powerconverter:
           type: tango.pyaml.attribute
@@ -529,12 +529,12 @@ instruments:
           unit: A
     - type: pyaml.magnet.quadrupole
       name: QF1E-C19
-      unitconv:
-        type: pyaml.magnet.linear_unitconv
+      model:
+        type: pyaml.magnet.linear_model
         calibration_factor: 1
         curve:
           type: pyaml.configuration.csvcurve
-          file: sr/unitconv/QF1_strength.csv
+          file: sr/magnet_models/QF1_strength.csv
         unit: 1/m
         powerconverter:
           type: tango.pyaml.attribute
@@ -542,12 +542,12 @@ instruments:
           unit: A
     - type: pyaml.magnet.quadrupole
       name: QF1A-C20
-      unitconv:
-        type: pyaml.magnet.linear_unitconv
+      model:
+        type: pyaml.magnet.linear_model
         calibration_factor: 1.00095
         curve:
           type: pyaml.configuration.csvcurve
-          file: sr/unitconv/QF1_strength.csv
+          file: sr/magnet_models/QF1_strength.csv
         unit: 1/m
         powerconverter:
           type: tango.pyaml.attribute
@@ -555,12 +555,12 @@ instruments:
           unit: A
     - type: pyaml.magnet.quadrupole
       name: QF1E-C20
-      unitconv:
-        type: pyaml.magnet.linear_unitconv
+      model:
+        type: pyaml.magnet.linear_model
         calibration_factor: 0.996753
         curve:
           type: pyaml.configuration.csvcurve
-          file: sr/unitconv/QF1_strength.csv
+          file: sr/magnet_models/QF1_strength.csv
         unit: 1/m
         powerconverter:
           type: tango.pyaml.attribute
@@ -568,12 +568,12 @@ instruments:
           unit: A
     - type: pyaml.magnet.quadrupole
       name: QF1A-C21
-      unitconv:
-        type: pyaml.magnet.linear_unitconv
+      model:
+        type: pyaml.magnet.linear_model
         calibration_factor: 1.00334
         curve:
           type: pyaml.configuration.csvcurve
-          file: sr/unitconv/QF1_strength.csv
+          file: sr/magnet_models/QF1_strength.csv
         unit: 1/m
         powerconverter:
           type: tango.pyaml.attribute
@@ -581,12 +581,12 @@ instruments:
           unit: A
     - type: pyaml.magnet.quadrupole
       name: QF1E-C21
-      unitconv:
-        type: pyaml.magnet.linear_unitconv
+      model:
+        type: pyaml.magnet.linear_model
         calibration_factor: 0.997707
         curve:
           type: pyaml.configuration.csvcurve
-          file: sr/unitconv/QF1_strength.csv
+          file: sr/magnet_models/QF1_strength.csv
         unit: 1/m
         powerconverter:
           type: tango.pyaml.attribute
@@ -594,12 +594,12 @@ instruments:
           unit: A
     - type: pyaml.magnet.quadrupole
       name: QF1A-C22
-      unitconv:
-        type: pyaml.magnet.linear_unitconv
+      model:
+        type: pyaml.magnet.linear_model
         calibration_factor: 1.00152
         curve:
           type: pyaml.configuration.csvcurve
-          file: sr/unitconv/QF1_strength.csv
+          file: sr/magnet_models/QF1_strength.csv
         unit: 1/m
         powerconverter:
           type: tango.pyaml.attribute
@@ -607,12 +607,12 @@ instruments:
           unit: A
     - type: pyaml.magnet.quadrupole
       name: QF1E-C22
-      unitconv:
-        type: pyaml.magnet.linear_unitconv
+      model:
+        type: pyaml.magnet.linear_model
         calibration_factor: 0.998124
         curve:
           type: pyaml.configuration.csvcurve
-          file: sr/unitconv/QF1_strength.csv
+          file: sr/magnet_models/QF1_strength.csv
         unit: 1/m
         powerconverter:
           type: tango.pyaml.attribute
@@ -620,12 +620,12 @@ instruments:
           unit: A
     - type: pyaml.magnet.quadrupole
       name: QF1A-C23
-      unitconv:
-        type: pyaml.magnet.linear_unitconv
+      model:
+        type: pyaml.magnet.linear_model
         calibration_factor: 0.996662
         curve:
           type: pyaml.configuration.csvcurve
-          file: sr/unitconv/QF1_strength.csv
+          file: sr/magnet_models/QF1_strength.csv
         unit: 1/m
         powerconverter:
           type: tango.pyaml.attribute
@@ -633,12 +633,12 @@ instruments:
           unit: A
     - type: pyaml.magnet.quadrupole
       name: QF1E-C23
-      unitconv:
-        type: pyaml.magnet.linear_unitconv
+      model:
+        type: pyaml.magnet.linear_model
         calibration_factor: 1.0017
         curve:
           type: pyaml.configuration.csvcurve
-          file: sr/unitconv/QF1_strength.csv
+          file: sr/magnet_models/QF1_strength.csv
         unit: 1/m
         powerconverter:
           type: tango.pyaml.attribute
@@ -646,12 +646,12 @@ instruments:
           unit: A
     - type: pyaml.magnet.quadrupole
       name: QF1A-C24
-      unitconv:
-        type: pyaml.magnet.linear_unitconv
+      model:
+        type: pyaml.magnet.linear_model
         calibration_factor: 0.999642
         curve:
           type: pyaml.configuration.csvcurve
-          file: sr/unitconv/QF1_strength.csv
+          file: sr/magnet_models/QF1_strength.csv
         unit: 1/m
         powerconverter:
           type: tango.pyaml.attribute
@@ -659,12 +659,12 @@ instruments:
           unit: A
     - type: pyaml.magnet.quadrupole
       name: QF1E-C24
-      unitconv:
-        type: pyaml.magnet.linear_unitconv
+      model:
+        type: pyaml.magnet.linear_model
         calibration_factor: 1.00042
         curve:
           type: pyaml.configuration.csvcurve
-          file: sr/unitconv/QF1_strength.csv
+          file: sr/magnet_models/QF1_strength.csv
         unit: 1/m
         powerconverter:
           type: tango.pyaml.attribute
@@ -672,12 +672,12 @@ instruments:
           unit: A
     - type: pyaml.magnet.quadrupole
       name: QF1A-C25
-      unitconv:
-        type: pyaml.magnet.linear_unitconv
+      model:
+        type: pyaml.magnet.linear_model
         calibration_factor: 1.00471
         curve:
           type: pyaml.configuration.csvcurve
-          file: sr/unitconv/QF1_strength.csv
+          file: sr/magnet_models/QF1_strength.csv
         unit: 1/m
         powerconverter:
           type: tango.pyaml.attribute
@@ -685,12 +685,12 @@ instruments:
           unit: A
     - type: pyaml.magnet.quadrupole
       name: QF1E-C25
-      unitconv:
-        type: pyaml.magnet.linear_unitconv
+      model:
+        type: pyaml.magnet.linear_model
         calibration_factor: 1.00393
         curve:
           type: pyaml.configuration.csvcurve
-          file: sr/unitconv/QF1_strength.csv
+          file: sr/magnet_models/QF1_strength.csv
         unit: 1/m
         powerconverter:
           type: tango.pyaml.attribute
@@ -698,12 +698,12 @@ instruments:
           unit: A
     - type: pyaml.magnet.quadrupole
       name: QF1A-C26
-      unitconv:
-        type: pyaml.magnet.linear_unitconv
+      model:
+        type: pyaml.magnet.linear_model
         calibration_factor: 0.992906
         curve:
           type: pyaml.configuration.csvcurve
-          file: sr/unitconv/QF1_strength.csv
+          file: sr/magnet_models/QF1_strength.csv
         unit: 1/m
         powerconverter:
           type: tango.pyaml.attribute
@@ -711,12 +711,12 @@ instruments:
           unit: A
     - type: pyaml.magnet.quadrupole
       name: QF1E-C26
-      unitconv:
-        type: pyaml.magnet.linear_unitconv
+      model:
+        type: pyaml.magnet.linear_model
         calibration_factor: 1.00268
         curve:
           type: pyaml.configuration.csvcurve
-          file: sr/unitconv/QF1_strength.csv
+          file: sr/magnet_models/QF1_strength.csv
         unit: 1/m
         powerconverter:
           type: tango.pyaml.attribute
@@ -724,12 +724,12 @@ instruments:
           unit: A
     - type: pyaml.magnet.quadrupole
       name: QF1A-C27
-      unitconv:
-        type: pyaml.magnet.linear_unitconv
+      model:
+        type: pyaml.magnet.linear_model
         calibration_factor: 1.00248
         curve:
           type: pyaml.configuration.csvcurve
-          file: sr/unitconv/QF1_strength.csv
+          file: sr/magnet_models/QF1_strength.csv
         unit: 1/m
         powerconverter:
           type: tango.pyaml.attribute
@@ -737,12 +737,12 @@ instruments:
           unit: A
     - type: pyaml.magnet.quadrupole
       name: QF1E-C27
-      unitconv:
-        type: pyaml.magnet.linear_unitconv
+      model:
+        type: pyaml.magnet.linear_model
         calibration_factor: 1.00203
         curve:
           type: pyaml.configuration.csvcurve
-          file: sr/unitconv/QF1_strength.csv
+          file: sr/magnet_models/QF1_strength.csv
         unit: 1/m
         powerconverter:
           type: tango.pyaml.attribute
@@ -750,12 +750,12 @@ instruments:
           unit: A
     - type: pyaml.magnet.quadrupole
       name: QF1A-C28
-      unitconv:
-        type: pyaml.magnet.linear_unitconv
+      model:
+        type: pyaml.magnet.linear_model
         calibration_factor: 0.998030791
         curve:
           type: pyaml.configuration.csvcurve
-          file: sr/unitconv/QF1_strength.csv
+          file: sr/magnet_models/QF1_strength.csv
         unit: 1/m
         powerconverter:
           type: tango.pyaml.attribute
@@ -763,12 +763,12 @@ instruments:
           unit: A
     - type: pyaml.magnet.quadrupole
       name: QF1E-C28
-      unitconv:
-        type: pyaml.magnet.linear_unitconv
+      model:
+        type: pyaml.magnet.linear_model
         calibration_factor: 1.00232
         curve:
           type: pyaml.configuration.csvcurve
-          file: sr/unitconv/QF1_strength.csv
+          file: sr/magnet_models/QF1_strength.csv
         unit: 1/m
         powerconverter:
           type: tango.pyaml.attribute
@@ -776,12 +776,12 @@ instruments:
           unit: A
     - type: pyaml.magnet.quadrupole
       name: QF1A-C29
-      unitconv:
-        type: pyaml.magnet.linear_unitconv
+      model:
+        type: pyaml.magnet.linear_model
         calibration_factor: 0.995052
         curve:
           type: pyaml.configuration.csvcurve
-          file: sr/unitconv/QF1_strength.csv
+          file: sr/magnet_models/QF1_strength.csv
         unit: 1/m
         powerconverter:
           type: tango.pyaml.attribute
@@ -789,12 +789,12 @@ instruments:
           unit: A
     - type: pyaml.magnet.quadrupole
       name: QF1E-C29
-      unitconv:
-        type: pyaml.magnet.linear_unitconv
+      model:
+        type: pyaml.magnet.linear_model
         calibration_factor: 1.00155
         curve:
           type: pyaml.configuration.csvcurve
-          file: sr/unitconv/QF1_strength.csv
+          file: sr/magnet_models/QF1_strength.csv
         unit: 1/m
         powerconverter:
           type: tango.pyaml.attribute
@@ -802,12 +802,12 @@ instruments:
           unit: A
     - type: pyaml.magnet.quadrupole
       name: QF1A-C30
-      unitconv:
-        type: pyaml.magnet.linear_unitconv
+      model:
+        type: pyaml.magnet.linear_model
         calibration_factor: 0.998271
         curve:
           type: pyaml.configuration.csvcurve
-          file: sr/unitconv/QF1_strength.csv
+          file: sr/magnet_models/QF1_strength.csv
         unit: 1/m
         powerconverter:
           type: tango.pyaml.attribute
@@ -815,12 +815,12 @@ instruments:
           unit: A
     - type: pyaml.magnet.quadrupole
       name: QF1E-C30
-      unitconv:
-        type: pyaml.magnet.linear_unitconv
+      model:
+        type: pyaml.magnet.linear_model
         calibration_factor: 0.999702
         curve:
           type: pyaml.configuration.csvcurve
-          file: sr/unitconv/QF1_strength.csv
+          file: sr/magnet_models/QF1_strength.csv
         unit: 1/m
         powerconverter:
           type: tango.pyaml.attribute
@@ -828,12 +828,12 @@ instruments:
           unit: A
     - type: pyaml.magnet.quadrupole
       name: QF1A-C31
-      unitconv:
-        type: pyaml.magnet.linear_unitconv
+      model:
+        type: pyaml.magnet.linear_model
         calibration_factor: 0.998005
         curve:
           type: pyaml.configuration.csvcurve
-          file: sr/unitconv/QF1_strength.csv
+          file: sr/magnet_models/QF1_strength.csv
         unit: 1/m
         powerconverter:
           type: tango.pyaml.attribute
@@ -841,12 +841,12 @@ instruments:
           unit: A
     - type: pyaml.magnet.quadrupole
       name: QF1E-C31
-      unitconv:
-        type: pyaml.magnet.linear_unitconv
+      model:
+        type: pyaml.magnet.linear_model
         calibration_factor: 0.999463
         curve:
           type: pyaml.configuration.csvcurve
-          file: sr/unitconv/QF1_strength.csv
+          file: sr/magnet_models/QF1_strength.csv
         unit: 1/m
         powerconverter:
           type: tango.pyaml.attribute
@@ -854,12 +854,12 @@ instruments:
           unit: A
     - type: pyaml.magnet.quadrupole
       name: QF1A-C32
-      unitconv:
-        type: pyaml.magnet.linear_unitconv
+      model:
+        type: pyaml.magnet.linear_model
         calibration_factor: 0.997794
         curve:
           type: pyaml.configuration.csvcurve
-          file: sr/unitconv/QF1_strength.csv
+          file: sr/magnet_models/QF1_strength.csv
         unit: 1/m
         powerconverter:
           type: tango.pyaml.attribute
@@ -867,12 +867,12 @@ instruments:
           unit: A
     - type: pyaml.magnet.quadrupole
       name: QF1E-C32
-      unitconv:
-        type: pyaml.magnet.linear_unitconv
+      model:
+        type: pyaml.magnet.linear_model
         calibration_factor: 1.00203
         curve:
           type: pyaml.configuration.csvcurve
-          file: sr/unitconv/QF1_strength.csv
+          file: sr/magnet_models/QF1_strength.csv
         unit: 1/m
         powerconverter:
           type: tango.pyaml.attribute
@@ -880,12 +880,12 @@ instruments:
           unit: A
     - type: pyaml.magnet.quadrupole
       name: QF1A-C01
-      unitconv:
-        type: pyaml.magnet.linear_unitconv
+      model:
+        type: pyaml.magnet.linear_model
         calibration_factor: 1.00504
         curve:
           type: pyaml.configuration.csvcurve
-          file: sr/unitconv/QF1_strength.csv
+          file: sr/magnet_models/QF1_strength.csv
         unit: 1/m
         powerconverter:
           type: tango.pyaml.attribute
@@ -893,12 +893,12 @@ instruments:
           unit: A
     - type: pyaml.magnet.quadrupole
       name: QF1E-C01
-      unitconv:
-        type: pyaml.magnet.linear_unitconv
+      model:
+        type: pyaml.magnet.linear_model
         calibration_factor: 0.998212
         curve:
           type: pyaml.configuration.csvcurve
-          file: sr/unitconv/QF1_strength.csv
+          file: sr/magnet_models/QF1_strength.csv
         unit: 1/m
         powerconverter:
           type: tango.pyaml.attribute
@@ -906,12 +906,12 @@ instruments:
           unit: A
     - type: pyaml.magnet.quadrupole
       name: QF1A-C02
-      unitconv:
-        type: pyaml.magnet.linear_unitconv
+      model:
+        type: pyaml.magnet.linear_model
         calibration_factor: 1.0037
         curve:
           type: pyaml.configuration.csvcurve
-          file: sr/unitconv/QF1_strength.csv
+          file: sr/magnet_models/QF1_strength.csv
         unit: 1/m
         powerconverter:
           type: tango.pyaml.attribute
@@ -919,12 +919,12 @@ instruments:
           unit: A
     - type: pyaml.magnet.quadrupole
       name: QF1E-C02
-      unitconv:
-        type: pyaml.magnet.linear_unitconv
+      model:
+        type: pyaml.magnet.linear_model
         calibration_factor: 1.00093
         curve:
           type: pyaml.configuration.csvcurve
-          file: sr/unitconv/QF1_strength.csv
+          file: sr/magnet_models/QF1_strength.csv
         unit: 1/m
         powerconverter:
           type: tango.pyaml.attribute
@@ -932,12 +932,12 @@ instruments:
           unit: A
     - type: pyaml.magnet.quadrupole
       name: QF1A-C03
-      unitconv:
-        type: pyaml.magnet.linear_unitconv
+      model:
+        type: pyaml.magnet.linear_model
         calibration_factor: 1.0025
         curve:
           type: pyaml.configuration.csvcurve
-          file: sr/unitconv/QF1_strength.csv
+          file: sr/magnet_models/QF1_strength.csv
         unit: 1/m
         powerconverter:
           type: tango.pyaml.attribute
@@ -945,12 +945,12 @@ instruments:
           unit: A
     - type: pyaml.magnet.quadrupole
       name: QD2E-C04
-      unitconv:
-        type: pyaml.magnet.linear_unitconv
+      model:
+        type: pyaml.magnet.linear_model
         calibration_factor: 0.999305341
         curve:
           type: pyaml.configuration.csvcurve
-          file: sr/unitconv/QD2_strength.csv
+          file: sr/magnet_models/QD2_strength.csv
         unit: 1/m
         powerconverter:
           type: tango.pyaml.attribute
@@ -958,12 +958,12 @@ instruments:
           unit: A
     - type: pyaml.magnet.quadrupole
       name: QD2A-C05
-      unitconv:
-        type: pyaml.magnet.linear_unitconv
+      model:
+        type: pyaml.magnet.linear_model
         calibration_factor: 0.997452918
         curve:
           type: pyaml.configuration.csvcurve
-          file: sr/unitconv/QD2_strength.csv
+          file: sr/magnet_models/QD2_strength.csv
         unit: 1/m
         powerconverter:
           type: tango.pyaml.attribute
@@ -971,12 +971,12 @@ instruments:
           unit: A
     - type: pyaml.magnet.quadrupole
       name: QD2E-C05
-      unitconv:
-        type: pyaml.magnet.linear_unitconv
+      model:
+        type: pyaml.magnet.linear_model
         calibration_factor: 0.997993208
         curve:
           type: pyaml.configuration.csvcurve
-          file: sr/unitconv/QD2_strength.csv
+          file: sr/magnet_models/QD2_strength.csv
         unit: 1/m
         powerconverter:
           type: tango.pyaml.attribute
@@ -984,12 +984,12 @@ instruments:
           unit: A
     - type: pyaml.magnet.quadrupole
       name: QD2A-C06
-      unitconv:
-        type: pyaml.magnet.linear_unitconv
+      model:
+        type: pyaml.magnet.linear_model
         calibration_factor: 1.006031322
         curve:
           type: pyaml.configuration.csvcurve
-          file: sr/unitconv/QD2_strength.csv
+          file: sr/magnet_models/QD2_strength.csv
         unit: 1/m
         powerconverter:
           type: tango.pyaml.attribute
@@ -997,12 +997,12 @@ instruments:
           unit: A
     - type: pyaml.magnet.quadrupole
       name: QD2E-C06
-      unitconv:
-        type: pyaml.magnet.linear_unitconv
+      model:
+        type: pyaml.magnet.linear_model
         calibration_factor: 0.998547233
         curve:
           type: pyaml.configuration.csvcurve
-          file: sr/unitconv/QD2_strength.csv
+          file: sr/magnet_models/QD2_strength.csv
         unit: 1/m
         powerconverter:
           type: tango.pyaml.attribute
@@ -1010,12 +1010,12 @@ instruments:
           unit: A
     - type: pyaml.magnet.quadrupole
       name: QD2A-C07
-      unitconv:
-        type: pyaml.magnet.linear_unitconv
+      model:
+        type: pyaml.magnet.linear_model
         calibration_factor: 1.002327856
         curve:
           type: pyaml.configuration.csvcurve
-          file: sr/unitconv/QD2_strength.csv
+          file: sr/magnet_models/QD2_strength.csv
         unit: 1/m
         powerconverter:
           type: tango.pyaml.attribute
@@ -1023,12 +1023,12 @@ instruments:
           unit: A
     - type: pyaml.magnet.quadrupole
       name: QD2E-C07
-      unitconv:
-        type: pyaml.magnet.linear_unitconv
+      model:
+        type: pyaml.magnet.linear_model
         calibration_factor: 1.000154369
         curve:
           type: pyaml.configuration.csvcurve
-          file: sr/unitconv/QD2_strength.csv
+          file: sr/magnet_models/QD2_strength.csv
         unit: 1/m
         powerconverter:
           type: tango.pyaml.attribute
@@ -1036,12 +1036,12 @@ instruments:
           unit: A
     - type: pyaml.magnet.quadrupole
       name: QD2A-C08
-      unitconv:
-        type: pyaml.magnet.linear_unitconv
+      model:
+        type: pyaml.magnet.linear_model
         calibration_factor: 1.009580478
         curve:
           type: pyaml.configuration.csvcurve
-          file: sr/unitconv/QD2_strength.csv
+          file: sr/magnet_models/QD2_strength.csv
         unit: 1/m
         powerconverter:
           type: tango.pyaml.attribute
@@ -1049,12 +1049,12 @@ instruments:
           unit: A
     - type: pyaml.magnet.quadrupole
       name: QD2E-C08
-      unitconv:
-        type: pyaml.magnet.linear_unitconv
+      model:
+        type: pyaml.magnet.linear_model
         calibration_factor: 1.00447669
         curve:
           type: pyaml.configuration.csvcurve
-          file: sr/unitconv/QD2_strength.csv
+          file: sr/magnet_models/QD2_strength.csv
         unit: 1/m
         powerconverter:
           type: tango.pyaml.attribute
@@ -1062,12 +1062,12 @@ instruments:
           unit: A
     - type: pyaml.magnet.quadrupole
       name: QD2A-C09
-      unitconv:
-        type: pyaml.magnet.linear_unitconv
+      model:
+        type: pyaml.magnet.linear_model
         calibration_factor: 1.0015563
         curve:
           type: pyaml.configuration.csvcurve
-          file: sr/unitconv/QD2_strength.csv
+          file: sr/magnet_models/QD2_strength.csv
         unit: 1/m
         powerconverter:
           type: tango.pyaml.attribute
@@ -1075,12 +1075,12 @@ instruments:
           unit: A
     - type: pyaml.magnet.quadrupole
       name: QD2E-C09
-      unitconv:
-        type: pyaml.magnet.linear_unitconv
+      model:
+        type: pyaml.magnet.linear_model
         calibration_factor: 0.997221365
         curve:
           type: pyaml.configuration.csvcurve
-          file: sr/unitconv/QD2_strength.csv
+          file: sr/magnet_models/QD2_strength.csv
         unit: 1/m
         powerconverter:
           type: tango.pyaml.attribute
@@ -1088,12 +1088,12 @@ instruments:
           unit: A
     - type: pyaml.magnet.quadrupole
       name: QD2A-C10
-      unitconv:
-        type: pyaml.magnet.linear_unitconv
+      model:
+        type: pyaml.magnet.linear_model
         calibration_factor: 1.005954167
         curve:
           type: pyaml.configuration.csvcurve
-          file: sr/unitconv/QD2_strength.csv
+          file: sr/magnet_models/QD2_strength.csv
         unit: 1/m
         powerconverter:
           type: tango.pyaml.attribute
@@ -1101,12 +1101,12 @@ instruments:
           unit: A
     - type: pyaml.magnet.quadrupole
       name: QD2E-C10
-      unitconv:
-        type: pyaml.magnet.linear_unitconv
+      model:
+        type: pyaml.magnet.linear_model
         calibration_factor: 1.006725723
         curve:
           type: pyaml.configuration.csvcurve
-          file: sr/unitconv/QD2_strength.csv
+          file: sr/magnet_models/QD2_strength.csv
         unit: 1/m
         powerconverter:
           type: tango.pyaml.attribute
@@ -1114,12 +1114,12 @@ instruments:
           unit: A
     - type: pyaml.magnet.quadrupole
       name: QD2A-C11
-      unitconv:
-        type: pyaml.magnet.linear_unitconv
+      model:
+        type: pyaml.magnet.linear_model
         calibration_factor: 0.994535144
         curve:
           type: pyaml.configuration.csvcurve
-          file: sr/unitconv/QD2_strength.csv
+          file: sr/magnet_models/QD2_strength.csv
         unit: 1/m
         powerconverter:
           type: tango.pyaml.attribute
@@ -1127,12 +1127,12 @@ instruments:
           unit: A
     - type: pyaml.magnet.quadrupole
       name: QD2E-C11
-      unitconv:
-        type: pyaml.magnet.linear_unitconv
+      model:
+        type: pyaml.magnet.linear_model
         calibration_factor: 0.999550256
         curve:
           type: pyaml.configuration.csvcurve
-          file: sr/unitconv/QD2_strength.csv
+          file: sr/magnet_models/QD2_strength.csv
         unit: 1/m
         powerconverter:
           type: tango.pyaml.attribute
@@ -1140,12 +1140,12 @@ instruments:
           unit: A
     - type: pyaml.magnet.quadrupole
       name: QD2A-C12
-      unitconv:
-        type: pyaml.magnet.linear_unitconv
+      model:
+        type: pyaml.magnet.linear_model
         calibration_factor: 1.001479145
         curve:
           type: pyaml.configuration.csvcurve
-          file: sr/unitconv/QD2_strength.csv
+          file: sr/magnet_models/QD2_strength.csv
         unit: 1/m
         powerconverter:
           type: tango.pyaml.attribute
@@ -1153,12 +1153,12 @@ instruments:
           unit: A
     - type: pyaml.magnet.quadrupole
       name: QD2E-C12
-      unitconv:
-        type: pyaml.magnet.linear_unitconv
+      model:
+        type: pyaml.magnet.linear_model
         calibration_factor: 1.000321811
         curve:
           type: pyaml.configuration.csvcurve
-          file: sr/unitconv/QD2_strength.csv
+          file: sr/magnet_models/QD2_strength.csv
         unit: 1/m
         powerconverter:
           type: tango.pyaml.attribute
@@ -1166,12 +1166,12 @@ instruments:
           unit: A
     - type: pyaml.magnet.quadrupole
       name: QD2A-C13
-      unitconv:
-        type: pyaml.magnet.linear_unitconv
+      model:
+        type: pyaml.magnet.linear_model
         calibration_factor: 1.006715036
         curve:
           type: pyaml.configuration.csvcurve
-          file: sr/unitconv/QD2_strength.csv
+          file: sr/magnet_models/QD2_strength.csv
         unit: 1/m
         powerconverter:
           type: tango.pyaml.attribute
@@ -1179,12 +1179,12 @@ instruments:
           unit: A
     - type: pyaml.magnet.quadrupole
       name: QD2E-C13
-      unitconv:
-        type: pyaml.magnet.linear_unitconv
+      model:
+        type: pyaml.magnet.linear_model
         calibration_factor: 1.0036395
         curve:
           type: pyaml.configuration.csvcurve
-          file: sr/unitconv/QD2_strength.csv
+          file: sr/magnet_models/QD2_strength.csv
         unit: 1/m
         powerconverter:
           type: tango.pyaml.attribute
@@ -1192,12 +1192,12 @@ instruments:
           unit: A
     - type: pyaml.magnet.quadrupole
       name: QD2A-C14
-      unitconv:
-        type: pyaml.magnet.linear_unitconv
+      model:
+        type: pyaml.magnet.linear_model
         calibration_factor: 0.997684471
         curve:
           type: pyaml.configuration.csvcurve
-          file: sr/unitconv/QD2_strength.csv
+          file: sr/magnet_models/QD2_strength.csv
         unit: 1/m
         powerconverter:
           type: tango.pyaml.attribute
@@ -1205,12 +1205,12 @@ instruments:
           unit: A
     - type: pyaml.magnet.quadrupole
       name: QD2E-C14
-      unitconv:
-        type: pyaml.magnet.linear_unitconv
+      model:
+        type: pyaml.magnet.linear_model
         calibration_factor: 1.000385922
         curve:
           type: pyaml.configuration.csvcurve
-          file: sr/unitconv/QD2_strength.csv
+          file: sr/magnet_models/QD2_strength.csv
         unit: 1/m
         powerconverter:
           type: tango.pyaml.attribute
@@ -1218,12 +1218,12 @@ instruments:
           unit: A
     - type: pyaml.magnet.quadrupole
       name: QD2A-C15
-      unitconv:
-        type: pyaml.magnet.linear_unitconv
+      model:
+        type: pyaml.magnet.linear_model
         calibration_factor: 0.999010167
         curve:
           type: pyaml.configuration.csvcurve
-          file: sr/unitconv/QD2_strength.csv
+          file: sr/magnet_models/QD2_strength.csv
         unit: 1/m
         powerconverter:
           type: tango.pyaml.attribute
@@ -1231,12 +1231,12 @@ instruments:
           unit: A
     - type: pyaml.magnet.quadrupole
       name: QD2E-C15
-      unitconv:
-        type: pyaml.magnet.linear_unitconv
+      model:
+        type: pyaml.magnet.linear_model
         calibration_factor: 0.998392922
         curve:
           type: pyaml.configuration.csvcurve
-          file: sr/unitconv/QD2_strength.csv
+          file: sr/magnet_models/QD2_strength.csv
         unit: 1/m
         powerconverter:
           type: tango.pyaml.attribute
@@ -1244,12 +1244,12 @@ instruments:
           unit: A
     - type: pyaml.magnet.quadrupole
       name: QD2A-C16
-      unitconv:
-        type: pyaml.magnet.linear_unitconv
+      model:
+        type: pyaml.magnet.linear_model
         calibration_factor: 0.999318789
         curve:
           type: pyaml.configuration.csvcurve
-          file: sr/unitconv/QD2_strength.csv
+          file: sr/magnet_models/QD2_strength.csv
         unit: 1/m
         powerconverter:
           type: tango.pyaml.attribute
@@ -1257,12 +1257,12 @@ instruments:
           unit: A
     - type: pyaml.magnet.quadrupole
       name: QD2E-C16
-      unitconv:
-        type: pyaml.magnet.linear_unitconv
+      model:
+        type: pyaml.magnet.linear_model
         calibration_factor: 0.996926967
         curve:
           type: pyaml.configuration.csvcurve
-          file: sr/unitconv/QD2_strength.csv
+          file: sr/magnet_models/QD2_strength.csv
         unit: 1/m
         powerconverter:
           type: tango.pyaml.attribute
@@ -1270,12 +1270,12 @@ instruments:
           unit: A
     - type: pyaml.magnet.quadrupole
       name: QD2A-C17
-      unitconv:
-        type: pyaml.magnet.linear_unitconv
+      model:
+        type: pyaml.magnet.linear_model
         calibration_factor: 1.000849027
         curve:
           type: pyaml.configuration.csvcurve
-          file: sr/unitconv/QD2_strength.csv
+          file: sr/magnet_models/QD2_strength.csv
         unit: 1/m
         powerconverter:
           type: tango.pyaml.attribute
@@ -1283,12 +1283,12 @@ instruments:
           unit: A
     - type: pyaml.magnet.quadrupole
       name: QD2E-C17
-      unitconv:
-        type: pyaml.magnet.linear_unitconv
+      model:
+        type: pyaml.magnet.linear_model
         calibration_factor: 1.003392444
         curve:
           type: pyaml.configuration.csvcurve
-          file: sr/unitconv/QD2_strength.csv
+          file: sr/magnet_models/QD2_strength.csv
         unit: 1/m
         powerconverter:
           type: tango.pyaml.attribute
@@ -1296,12 +1296,12 @@ instruments:
           unit: A
     - type: pyaml.magnet.quadrupole
       name: QD2A-C18
-      unitconv:
-        type: pyaml.magnet.linear_unitconv
+      model:
+        type: pyaml.magnet.linear_model
         calibration_factor: 1.001312133
         curve:
           type: pyaml.configuration.csvcurve
-          file: sr/unitconv/QD2_strength.csv
+          file: sr/magnet_models/QD2_strength.csv
         unit: 1/m
         powerconverter:
           type: tango.pyaml.attribute
@@ -1309,12 +1309,12 @@ instruments:
           unit: A
     - type: pyaml.magnet.quadrupole
       name: QD2E-C18
-      unitconv:
-        type: pyaml.magnet.linear_unitconv
+      model:
+        type: pyaml.magnet.linear_model
         calibration_factor: 1.005402902
         curve:
           type: pyaml.configuration.csvcurve
-          file: sr/unitconv/QD2_strength.csv
+          file: sr/magnet_models/QD2_strength.csv
         unit: 1/m
         powerconverter:
           type: tango.pyaml.attribute
@@ -1322,12 +1322,12 @@ instruments:
           unit: A
     - type: pyaml.magnet.quadrupole
       name: QD2A-C19
-      unitconv:
-        type: pyaml.magnet.linear_unitconv
+      model:
+        type: pyaml.magnet.linear_model
         calibration_factor: 0.995846789
         curve:
           type: pyaml.configuration.csvcurve
-          file: sr/unitconv/QD2_strength.csv
+          file: sr/magnet_models/QD2_strength.csv
         unit: 1/m
         powerconverter:
           type: tango.pyaml.attribute
@@ -1335,12 +1335,12 @@ instruments:
           unit: A
     - type: pyaml.magnet.quadrupole
       name: QD2E-C19
-      unitconv:
-        type: pyaml.magnet.linear_unitconv
+      model:
+        type: pyaml.magnet.linear_model
         calibration_factor: 1.005877011
         curve:
           type: pyaml.configuration.csvcurve
-          file: sr/unitconv/QD2_strength.csv
+          file: sr/magnet_models/QD2_strength.csv
         unit: 1/m
         powerconverter:
           type: tango.pyaml.attribute
@@ -1348,12 +1348,12 @@ instruments:
           unit: A
     - type: pyaml.magnet.quadrupole
       name: QD2A-C20
-      unitconv:
-        type: pyaml.magnet.linear_unitconv
+      model:
+        type: pyaml.magnet.linear_model
         calibration_factor: 1.001016211
         curve:
           type: pyaml.configuration.csvcurve
-          file: sr/unitconv/QD2_strength.csv
+          file: sr/magnet_models/QD2_strength.csv
         unit: 1/m
         powerconverter:
           type: tango.pyaml.attribute
@@ -1361,12 +1361,12 @@ instruments:
           unit: A
     - type: pyaml.magnet.quadrupole
       name: QD2E-C20
-      unitconv:
-        type: pyaml.magnet.linear_unitconv
+      model:
+        type: pyaml.magnet.linear_model
         calibration_factor: 0.999010167
         curve:
           type: pyaml.configuration.csvcurve
-          file: sr/unitconv/QD2_strength.csv
+          file: sr/magnet_models/QD2_strength.csv
         unit: 1/m
         powerconverter:
           type: tango.pyaml.attribute
@@ -1374,12 +1374,12 @@ instruments:
           unit: A
     - type: pyaml.magnet.quadrupole
       name: QD2A-C21
-      unitconv:
-        type: pyaml.magnet.linear_unitconv
+      model:
+        type: pyaml.magnet.linear_model
         calibration_factor: 1.007265811
         curve:
           type: pyaml.configuration.csvcurve
-          file: sr/unitconv/QD2_strength.csv
+          file: sr/magnet_models/QD2_strength.csv
         unit: 1/m
         powerconverter:
           type: tango.pyaml.attribute
@@ -1387,12 +1387,12 @@ instruments:
           unit: A
     - type: pyaml.magnet.quadrupole
       name: QD2E-C21
-      unitconv:
-        type: pyaml.magnet.linear_unitconv
+      model:
+        type: pyaml.magnet.linear_model
         calibration_factor: 0.998238611
         curve:
           type: pyaml.configuration.csvcurve
-          file: sr/unitconv/QD2_strength.csv
+          file: sr/magnet_models/QD2_strength.csv
         unit: 1/m
         powerconverter:
           type: tango.pyaml.attribute
@@ -1400,12 +1400,12 @@ instruments:
           unit: A
     - type: pyaml.magnet.quadrupole
       name: QD2A-C22
-      unitconv:
-        type: pyaml.magnet.linear_unitconv
+      model:
+        type: pyaml.magnet.linear_model
         calibration_factor: 0.998161456
         curve:
           type: pyaml.configuration.csvcurve
-          file: sr/unitconv/QD2_strength.csv
+          file: sr/magnet_models/QD2_strength.csv
         unit: 1/m
         powerconverter:
           type: tango.pyaml.attribute
@@ -1413,12 +1413,12 @@ instruments:
           unit: A
     - type: pyaml.magnet.quadrupole
       name: QD2E-C22
-      unitconv:
-        type: pyaml.magnet.linear_unitconv
+      model:
+        type: pyaml.magnet.linear_model
         calibration_factor: 1.004642522
         curve:
           type: pyaml.configuration.csvcurve
-          file: sr/unitconv/QD2_strength.csv
+          file: sr/magnet_models/QD2_strength.csv
         unit: 1/m
         powerconverter:
           type: tango.pyaml.attribute
@@ -1426,12 +1426,12 @@ instruments:
           unit: A
     - type: pyaml.magnet.quadrupole
       name: QD2A-C23
-      unitconv:
-        type: pyaml.magnet.linear_unitconv
+      model:
+        type: pyaml.magnet.linear_model
         calibration_factor: 1.001479145
         curve:
           type: pyaml.configuration.csvcurve
-          file: sr/unitconv/QD2_strength.csv
+          file: sr/magnet_models/QD2_strength.csv
         unit: 1/m
         powerconverter:
           type: tango.pyaml.attribute
@@ -1439,12 +1439,12 @@ instruments:
           unit: A
     - type: pyaml.magnet.quadrupole
       name: QD2E-C23
-      unitconv:
-        type: pyaml.magnet.linear_unitconv
+      model:
+        type: pyaml.magnet.linear_model
         calibration_factor: 1.001942078
         curve:
           type: pyaml.configuration.csvcurve
-          file: sr/unitconv/QD2_strength.csv
+          file: sr/magnet_models/QD2_strength.csv
         unit: 1/m
         powerconverter:
           type: tango.pyaml.attribute
@@ -1452,12 +1452,12 @@ instruments:
           unit: A
     - type: pyaml.magnet.quadrupole
       name: QD2A-C24
-      unitconv:
-        type: pyaml.magnet.linear_unitconv
+      model:
+        type: pyaml.magnet.linear_model
         calibration_factor: 0.999087322
         curve:
           type: pyaml.configuration.csvcurve
-          file: sr/unitconv/QD2_strength.csv
+          file: sr/magnet_models/QD2_strength.csv
         unit: 1/m
         powerconverter:
           type: tango.pyaml.attribute
@@ -1465,12 +1465,12 @@ instruments:
           unit: A
     - type: pyaml.magnet.quadrupole
       name: QD2E-C24
-      unitconv:
-        type: pyaml.magnet.linear_unitconv
+      model:
+        type: pyaml.magnet.linear_model
         calibration_factor: 0.998547233
         curve:
           type: pyaml.configuration.csvcurve
-          file: sr/unitconv/QD2_strength.csv
+          file: sr/magnet_models/QD2_strength.csv
         unit: 1/m
         powerconverter:
           type: tango.pyaml.attribute
@@ -1478,12 +1478,12 @@ instruments:
           unit: A
     - type: pyaml.magnet.quadrupole
       name: QD2A-C25
-      unitconv:
-        type: pyaml.magnet.linear_unitconv
+      model:
+        type: pyaml.magnet.linear_model
         calibration_factor: 1.001698055
         curve:
           type: pyaml.configuration.csvcurve
-          file: sr/unitconv/QD2_strength.csv
+          file: sr/magnet_models/QD2_strength.csv
         unit: 1/m
         powerconverter:
           type: tango.pyaml.attribute
@@ -1491,12 +1491,12 @@ instruments:
           unit: A
     - type: pyaml.magnet.quadrupole
       name: QD2E-C25
-      unitconv:
-        type: pyaml.magnet.linear_unitconv
+      model:
+        type: pyaml.magnet.linear_model
         calibration_factor: 0.999704567
         curve:
           type: pyaml.configuration.csvcurve
-          file: sr/unitconv/QD2_strength.csv
+          file: sr/magnet_models/QD2_strength.csv
         unit: 1/m
         powerconverter:
           type: tango.pyaml.attribute
@@ -1504,12 +1504,12 @@ instruments:
           unit: A
     - type: pyaml.magnet.quadrupole
       name: QD2A-C26
-      unitconv:
-        type: pyaml.magnet.linear_unitconv
+      model:
+        type: pyaml.magnet.linear_model
         calibration_factor: 0.999164478
         curve:
           type: pyaml.configuration.csvcurve
-          file: sr/unitconv/QD2_strength.csv
+          file: sr/magnet_models/QD2_strength.csv
         unit: 1/m
         powerconverter:
           type: tango.pyaml.attribute
@@ -1517,12 +1517,12 @@ instruments:
           unit: A
     - type: pyaml.magnet.quadrupole
       name: QD2E-C26
-      unitconv:
-        type: pyaml.magnet.linear_unitconv
+      model:
+        type: pyaml.magnet.linear_model
         calibration_factor: 1.000694659
         curve:
           type: pyaml.configuration.csvcurve
-          file: sr/unitconv/QD2_strength.csv
+          file: sr/magnet_models/QD2_strength.csv
         unit: 1/m
         powerconverter:
           type: tango.pyaml.attribute
@@ -1530,12 +1530,12 @@ instruments:
           unit: A
     - type: pyaml.magnet.quadrupole
       name: QD2A-C27
-      unitconv:
-        type: pyaml.magnet.linear_unitconv
+      model:
+        type: pyaml.magnet.linear_model
         calibration_factor: 0.99945971
         curve:
           type: pyaml.configuration.csvcurve
-          file: sr/unitconv/QD2_strength.csv
+          file: sr/magnet_models/QD2_strength.csv
         unit: 1/m
         powerconverter:
           type: tango.pyaml.attribute
@@ -1543,12 +1543,12 @@ instruments:
           unit: A
     - type: pyaml.magnet.quadrupole
       name: QD2E-C27
-      unitconv:
-        type: pyaml.magnet.linear_unitconv
+      model:
+        type: pyaml.magnet.linear_model
         calibration_factor: 0.999922816
         curve:
           type: pyaml.configuration.csvcurve
-          file: sr/unitconv/QD2_strength.csv
+          file: sr/magnet_models/QD2_strength.csv
         unit: 1/m
         powerconverter:
           type: tango.pyaml.attribute
@@ -1556,12 +1556,12 @@ instruments:
           unit: A
     - type: pyaml.magnet.quadrupole
       name: QD2A-C28
-      unitconv:
-        type: pyaml.magnet.linear_unitconv
+      model:
+        type: pyaml.magnet.linear_model
         calibration_factor: 0.999922816
         curve:
           type: pyaml.configuration.csvcurve
-          file: sr/unitconv/QD2_strength.csv
+          file: sr/magnet_models/QD2_strength.csv
         unit: 1/m
         powerconverter:
           type: tango.pyaml.attribute
@@ -1569,12 +1569,12 @@ instruments:
           unit: A
     - type: pyaml.magnet.quadrupole
       name: QD2E-C28
-      unitconv:
-        type: pyaml.magnet.linear_unitconv
+      model:
+        type: pyaml.magnet.linear_model
         calibration_factor: 0.997838839
         curve:
           type: pyaml.configuration.csvcurve
-          file: sr/unitconv/QD2_strength.csv
+          file: sr/magnet_models/QD2_strength.csv
         unit: 1/m
         powerconverter:
           type: tango.pyaml.attribute
@@ -1582,12 +1582,12 @@ instruments:
           unit: A
     - type: pyaml.magnet.quadrupole
       name: QD2A-C29
-      unitconv:
-        type: pyaml.magnet.linear_unitconv
+      model:
+        type: pyaml.magnet.linear_model
         calibration_factor: 1.003318926
         curve:
           type: pyaml.configuration.csvcurve
-          file: sr/unitconv/QD2_strength.csv
+          file: sr/magnet_models/QD2_strength.csv
         unit: 1/m
         powerconverter:
           type: tango.pyaml.attribute
@@ -1595,12 +1595,12 @@ instruments:
           unit: A
     - type: pyaml.magnet.quadrupole
       name: QD2E-C29
-      unitconv:
-        type: pyaml.magnet.linear_unitconv
+      model:
+        type: pyaml.magnet.linear_model
         calibration_factor: 1.004179589
         curve:
           type: pyaml.configuration.csvcurve
-          file: sr/unitconv/QD2_strength.csv
+          file: sr/magnet_models/QD2_strength.csv
         unit: 1/m
         powerconverter:
           type: tango.pyaml.attribute
@@ -1608,12 +1608,12 @@ instruments:
           unit: A
     - type: pyaml.magnet.quadrupole
       name: QD2A-C30
-      unitconv:
-        type: pyaml.magnet.linear_unitconv
+      model:
+        type: pyaml.magnet.linear_model
         calibration_factor: 0.999010167
         curve:
           type: pyaml.configuration.csvcurve
-          file: sr/unitconv/QD2_strength.csv
+          file: sr/magnet_models/QD2_strength.csv
         unit: 1/m
         powerconverter:
           type: tango.pyaml.attribute
@@ -1621,12 +1621,12 @@ instruments:
           unit: A
     - type: pyaml.magnet.quadrupole
       name: QD2E-C30
-      unitconv:
-        type: pyaml.magnet.linear_unitconv
+      model:
+        type: pyaml.magnet.linear_model
         calibration_factor: 0.9987787
         curve:
           type: pyaml.configuration.csvcurve
-          file: sr/unitconv/QD2_strength.csv
+          file: sr/magnet_models/QD2_strength.csv
         unit: 1/m
         powerconverter:
           type: tango.pyaml.attribute
@@ -1634,12 +1634,12 @@ instruments:
           unit: A
     - type: pyaml.magnet.quadrupole
       name: QD2A-C31
-      unitconv:
-        type: pyaml.magnet.linear_unitconv
+      model:
+        type: pyaml.magnet.linear_model
         calibration_factor: 1.004411056
         curve:
           type: pyaml.configuration.csvcurve
-          file: sr/unitconv/QD2_strength.csv
+          file: sr/magnet_models/QD2_strength.csv
         unit: 1/m
         powerconverter:
           type: tango.pyaml.attribute
@@ -1647,12 +1647,12 @@ instruments:
           unit: A
     - type: pyaml.magnet.quadrupole
       name: QD2E-C31
-      unitconv:
-        type: pyaml.magnet.linear_unitconv
+      model:
+        type: pyaml.magnet.linear_model
         calibration_factor: 1.0029451
         curve:
           type: pyaml.configuration.csvcurve
-          file: sr/unitconv/QD2_strength.csv
+          file: sr/magnet_models/QD2_strength.csv
         unit: 1/m
         powerconverter:
           type: tango.pyaml.attribute
@@ -1660,12 +1660,12 @@ instruments:
           unit: A
     - type: pyaml.magnet.quadrupole
       name: QD2A-C32
-      unitconv:
-        type: pyaml.magnet.linear_unitconv
+      model:
+        type: pyaml.magnet.linear_model
         calibration_factor: 1.009426167
         curve:
           type: pyaml.configuration.csvcurve
-          file: sr/unitconv/QD2_strength.csv
+          file: sr/magnet_models/QD2_strength.csv
         unit: 1/m
         powerconverter:
           type: tango.pyaml.attribute
@@ -1673,12 +1673,12 @@ instruments:
           unit: A
     - type: pyaml.magnet.quadrupole
       name: QD2E-C32
-      unitconv:
-        type: pyaml.magnet.linear_unitconv
+      model:
+        type: pyaml.magnet.linear_model
         calibration_factor: 1.0050283
         curve:
           type: pyaml.configuration.csvcurve
-          file: sr/unitconv/QD2_strength.csv
+          file: sr/magnet_models/QD2_strength.csv
         unit: 1/m
         powerconverter:
           type: tango.pyaml.attribute
@@ -1686,12 +1686,12 @@ instruments:
           unit: A
     - type: pyaml.magnet.quadrupole
       name: QD2A-C01
-      unitconv:
-        type: pyaml.magnet.linear_unitconv
+      model:
+        type: pyaml.magnet.linear_model
         calibration_factor: 0.998533498
         curve:
           type: pyaml.configuration.csvcurve
-          file: sr/unitconv/QD2_strength.csv
+          file: sr/magnet_models/QD2_strength.csv
         unit: 1/m
         powerconverter:
           type: tango.pyaml.attribute
@@ -1699,12 +1699,12 @@ instruments:
           unit: A
     - type: pyaml.magnet.quadrupole
       name: QD2E-C01
-      unitconv:
-        type: pyaml.magnet.linear_unitconv
+      model:
+        type: pyaml.magnet.linear_model
         calibration_factor: 1.003485189
         curve:
           type: pyaml.configuration.csvcurve
-          file: sr/unitconv/QD2_strength.csv
+          file: sr/magnet_models/QD2_strength.csv
         unit: 1/m
         powerconverter:
           type: tango.pyaml.attribute
@@ -1712,12 +1712,12 @@ instruments:
           unit: A
     - type: pyaml.magnet.quadrupole
       name: QD2A-C02
-      unitconv:
-        type: pyaml.magnet.linear_unitconv
+      model:
+        type: pyaml.magnet.linear_model
         calibration_factor: 1.001389318
         curve:
           type: pyaml.configuration.csvcurve
-          file: sr/unitconv/QD2_strength.csv
+          file: sr/magnet_models/QD2_strength.csv
         unit: 1/m
         powerconverter:
           type: tango.pyaml.attribute
@@ -1725,12 +1725,12 @@ instruments:
           unit: A
     - type: pyaml.magnet.quadrupole
       name: QD2E-C02
-      unitconv:
-        type: pyaml.magnet.linear_unitconv
+      model:
+        type: pyaml.magnet.linear_model
         calibration_factor: 1.006108478
         curve:
           type: pyaml.configuration.csvcurve
-          file: sr/unitconv/QD2_strength.csv
+          file: sr/magnet_models/QD2_strength.csv
         unit: 1/m
         powerconverter:
           type: tango.pyaml.attribute
@@ -1738,12 +1738,12 @@ instruments:
           unit: A
     - type: pyaml.magnet.quadrupole
       name: QD2A-C03
-      unitconv:
-        type: pyaml.magnet.linear_unitconv
+      model:
+        type: pyaml.magnet.linear_model
         calibration_factor: 1.002096389
         curve:
           type: pyaml.configuration.csvcurve
-          file: sr/unitconv/QD2_strength.csv
+          file: sr/magnet_models/QD2_strength.csv
         unit: 1/m
         powerconverter:
           type: tango.pyaml.attribute

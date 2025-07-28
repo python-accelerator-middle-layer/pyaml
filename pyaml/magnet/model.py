@@ -3,19 +3,19 @@ from pydantic import BaseModel
 import numpy as np
 from typing import Any
 
-class UnitConv(BaseModel):
+class MagnetModel(BaseModel):
     """
     Abstract class providing strength to coil current conversion and access to underlying power supplies
     """
 
     @abstractmethod
-    def compute_currents(self, strengths: np.array) -> np.array:
-        """Compute coil current(s) from magnet strength(s)"""
+    def compute_hardware_values(self, strengths: np.array) -> np.array:
+        """Compute hardware value(s) from magnet strength(s)"""
         pass
 
     @abstractmethod
-    def compute_strengths(self, currents: np.array) -> np.array:
-        """Compute magnet strength(s) from coil current(s)"""
+    def compute_strengths(self, hardware_values: np.array) -> np.array:
+        """Compute magnet strength(s) from hardware value(s)"""
         pass
 
     @abstractmethod
@@ -24,23 +24,23 @@ class UnitConv(BaseModel):
         pass
 
     @abstractmethod
-    def get_current_units(self) -> list[str]:
-        """Get current units"""
+    def get_hardware_units(self) -> list[str]:
+        """Get hardware units"""
         pass
 
     @abstractmethod
-    def read_currents(self) -> np.array:
+    def read_hardware_values(self) -> np.array:
         """Get power supply current setpoint(s) from control system"""
         pass
 
     @abstractmethod
-    def readback_currents(self) -> np.array:
-        """Get power supply current(s) from control system"""
+    def readback_hardware_values(self) -> np.array:
+        """Get power supply harware value(s) from control system"""
         pass
 
     @abstractmethod
-    def send_currents(self, currents: np.array):
-        """Send power supply current(s) to control system"""
+    def send_harware_values(self, currents: np.array):
+        """Send power supply value(s) to control system"""
         pass
 
     @abstractmethod

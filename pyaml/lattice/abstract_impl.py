@@ -1,5 +1,5 @@
 from pyaml.control import abstract
-from pyaml.magnet.unitconv import UnitConv
+from pyaml.magnet.model import MagnetModel
 from .polynom_info import PolynomInfo
 import numpy as np
 import at
@@ -8,41 +8,41 @@ import at
 
 #------------------------------------------------------------------------------
 
-class RWCurrentScalar(abstract.ReadWriteFloatScalar):
+class RWHardwareScalar(abstract.ReadWriteFloatScalar):
     """
-    Class providing read access to a manget current (scalar value) of a simulator
-    Current is converted from Strenght using UnitConv
+    Class providing read write access to a magnet of a simulator in hardware unit.
+    Hardware unit is converted from strength using the magnet model
     """
 
-    def __init__(self, elements:list[at.Element], poly:PolynomInfo, unitconv:UnitConv):
-        self.unitconv = unitconv
+    def __init__(self, elements:list[at.Element], poly:PolynomInfo, model:MagnetModel):
+        self.model = model
         self.elements = elements
         self.poly = elements[0].__getattribute__(poly.attName)
         self.polyIdx = poly.index
 
     def get(self) -> float:
         s = self.poly[self.polyIdx] * self.elements[0].Length
-        return self.unitconv.compute_currents([s])[0]
+        return self.model.compute_hardware_values([s])[0]
     
     def set(self,value:float):
-        s = self.unitconv.compute_strengths([value])[0]
+        s = self.model.compute_strengths([value])[0]
         self.poly[self.polyIdx] = s / self.elements[0].Length
 
     def set_and_wait(self, value:float):
         raise NotImplementedError("Not implemented yet.")
         
     def unit(self) -> str:
-        return self.unitconv.get_current_units()[0]
+        return self.model.get_hardware_units()[0]
     
 #------------------------------------------------------------------------------
 
 class RWStrengthScalar(abstract.ReadWriteFloatScalar):
     """
-    Class providing read write access to a strength (scalar value) of a simulator
+    Class providing read write access to a strength of a simulator
     """
 
-    def __init__(self, elements:list[at.Element], poly:PolynomInfo, unitconv:UnitConv):
-        self.unitconv = unitconv
+    def __init__(self, elements:list[at.Element], poly:PolynomInfo, model:MagnetModel):
+        self.unitconv = model
         self.elements = elements
         self.poly = elements[0].__getattribute__(poly.attName)
         self.polyIdx = poly.index
@@ -65,16 +65,17 @@ class RWStrengthScalar(abstract.ReadWriteFloatScalar):
 
 #------------------------------------------------------------------------------
 
-class RWCurrenthArray(abstract.ReadWriteFloatArray):
+class RWHardwareArray(abstract.ReadWriteFloatArray):
     """
-    Class providing read write access to a current (array) of a simulator
+    Class providing read write access to a magnet of a simulator in hardware units.
+    Hardware units are converted from strengths using the magnet model
     """
 
-    def __init__(self, elements:list[at.Element], poly:list[PolynomInfo], unitconv:UnitConv):
+    def __init__(self, elements:list[at.Element], poly:list[PolynomInfo], model:MagnetModel):
         self.elements = elements
         self.poly = []
         self.polyIdx = []
-        self.unitconv = unitconv
+        self.model = model
         for p in poly:
             self.poly.append(elements[0].__getattribute__(p.attName))
             self.polyIdx.append(p.index)
@@ -85,12 +86,12 @@ class RWCurrenthArray(abstract.ReadWriteFloatArray):
         s = np.zeros(nbStrength)
         for i in range(nbStrength):
             s[i] = self.poly[i][self.polyIdx[i]] * self.elements[0].Length
-        return self.unitconv.compute_currents(s)
+        return self.model.compute_hardware_values(s)
 
     # Sets the value
     def set(self, value:np.array):
         nbStrength = len(self.poly)
-        s = self.unitconv.compute_strengths(value)
+        s = self.model.compute_strengths(value)
         for i in range(nbStrength):
             self.poly[i][self.polyIdx[i]] = s[i] / self.elements[0].Length
 
@@ -100,7 +101,7 @@ class RWCurrenthArray(abstract.ReadWriteFloatArray):
 
     # Gets the unit of the value
     def unit(self) -> list[str]:
-        return self.unitconv.get_current_units()
+        return self.model.get_hardware_units()
 
 #------------------------------------------------------------------------------
 
@@ -109,11 +110,11 @@ class RWStrengthArray(abstract.ReadWriteFloatArray):
     Class providing read write access to a strength (array) of a simulator
     """
 
-    def __init__(self, elements:list[at.Element], poly:list[PolynomInfo], unitconv:UnitConv):
+    def __init__(self, elements:list[at.Element], poly:list[PolynomInfo], model:MagnetModel):
         self.elements = elements
         self.poly = []
         self.polyIdx = []
-        self.unitconv = unitconv
+        self.unitconv = model
         for p in poly:
             self.poly.append(elements[0].__getattribute__(p.attName))
             self.polyIdx.append(p.index)

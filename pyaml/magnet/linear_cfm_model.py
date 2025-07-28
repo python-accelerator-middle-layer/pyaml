@@ -4,10 +4,10 @@ import numpy as np
 from ..configuration.curve import Curve
 from ..configuration.matrix import Matrix
 from ..control.deviceaccess import DeviceAccess
-from .unitconv import UnitConv
+from .model import MagnetModel
 
 # Define the main class name for this module
-PYAMLCLASS = "LinearCFMagnetUnitConv"
+PYAMLCLASS = "LinearCFMagnetModel"
 
 
 class ConfigModel(BaseModel):
@@ -38,7 +38,7 @@ class ConfigModel(BaseModel):
     """List of strength unit (i.e. ['rad','m-1','m-2'])"""
 
 
-class LinearCFMagnetUnitConv(UnitConv):
+class LinearCFMagnetModel(MagnetModel):
     """
     Class providing a simple linear model for combined function magnets. A matrix
     can handle separation of multipoles. A pseudo current is a linear combination
@@ -109,8 +109,7 @@ class LinearCFMagnetUnitConv(UnitConv):
                 f"number of items ({expected_len} items expected but got {lgth})"
             )    
 
-    # Get coil current(s) from magnet strength(s)
-    def compute_currents(self, strengths: np.array) -> np.array:
+    def compute_hardware_values(self, strengths: np.array) -> np.array:
         _pI = np.zeros(self._nbFunction)
         for idx, c in enumerate(self._cfg.curves):
             _pI[idx] = self._pf[idx] * np.interp(
@@ -119,7 +118,6 @@ class LinearCFMagnetUnitConv(UnitConv):
         _currents = np.matmul(self._inv, _pI)
         return _currents
 
-    # Get magnet strength(s) from coil current(s)
     def compute_strengths(self, currents: np.array) -> np.array:
         _strength = np.zeros(self._nbFunction)
         _pI = np.matmul(self._matrix, currents)
@@ -132,27 +130,21 @@ class LinearCFMagnetUnitConv(UnitConv):
             )
         return _strength
 
-    # Get strength units
     def get_strength_units(self) -> list[str]:
         return self._cfg.units
 
-    # Get current units
-    def get_current_units(self) -> list[str]:
+    def get_hardware_units(self) -> list[str]:
         return np.array([p.unit() for p in self._cfg.powerconverters])
 
-    # Get power supply current setpoint(s) from control system
-    def read_currents(self) -> np.array:
+    def read_hardware_values(self) -> np.array:
         return np.array([p.get() for p in self._cfg.powerconverters])
 
-    # Get power supply current(s) from control system
-    def readback_currents(self) -> np.array:
+    def readback_hardware_values(self) -> np.array:
         return np.array([p.readback() for p in self._cfg.powerconverters])
 
-    # Send power supply current(s) to control system
-    def send_currents(self, currents: np.array):
+    def send_harware_values(self, currents: np.array):
         for idx, p in enumerate(self._cfg.powerconverters):
             p.set(currents[idx])
 
-    # Set magnet rigidity
     def set_magnet_rigidity(self, brho: np.double):
         self._brho = brho
