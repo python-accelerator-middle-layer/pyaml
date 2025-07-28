@@ -1,0 +1,15 @@
+type: pyaml.magnet.hcorrector
+name: IDCORR
+model:
+  type: pyaml_external.external_magnet_model
+  param: my random param
+  powersupply:
+    type: pyaml.control.device
+    setpoint: sr/ps-qf1/c01-a/current
+    readback: sr/ps-qf1/c01-a/current
+    unit: A
+  id:
+    type: pyaml.control.device
+    setpoint: sr/id/c01-1/gap
+    readback: sr/id/c01-1/gap
+    unit: A
