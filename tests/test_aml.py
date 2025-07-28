@@ -5,27 +5,25 @@ from pyaml.lattice.element_holder import MagnetType
 from pyaml.magnet.model import MagnetModel
 import at
 
-#def test_aml(config_root_dir):
+def test_aml():
 
-ml:PyAML = pyaml("tests/config/sr.yaml")
-sr:Instrument = ml.get('sr')
-sr.design.get_lattice().disable_6d()
-sr.design.get_magnet(MagnetType.HCORRECTOR,"SH1A-C01-H").strength.set(0.000010)
-o,_ = sr.design.get_lattice().find_orbit()
-print(o)
+    ml:PyAML = pyaml("tests/config/sr.yaml")
+    sr:Instrument = ml.get('sr')
+    sr.design.get_lattice().disable_6d()
+    sr.design.get_magnet(MagnetType.HCORRECTOR,"SH1A-C01-H").strength.set(0.000010)
+    o,_ = sr.design.get_lattice().find_orbit()
+    print(o)
 
-pcurrent = sr.design.get_magnet(MagnetType.HCORRECTOR,"SH1A-C01-H").hardware.get()
-print(pcurrent)
-model:MagnetModel = sr.design.get_magnet(MagnetType.COMBINED,"SH1A-C01").model
-rcurrents = model.compute_hardware_values([0.000010,0,0])
-print(rcurrents)
-print(sr.design.get_magnet(MagnetType.HCORRECTOR,"SH1A-C01-H").strength.unit())
-print(sr.design.get_magnet(MagnetType.HCORRECTOR,"SH1A-C01-H").hardware.unit())
+    pcurrent = sr.design.get_magnet(MagnetType.HCORRECTOR,"SH1A-C01-H").hardware.get()
+    print(pcurrent)
+    model:MagnetModel = sr.design.get_magnet(MagnetType.COMBINED,"SH1A-C01").model
+    rcurrents = model.compute_hardware_values([0.000010,0,0])
+    print(rcurrents)
+    print(sr.design.get_magnet(MagnetType.HCORRECTOR,"SH1A-C01-H").strength.unit())
+    print(sr.design.get_magnet(MagnetType.HCORRECTOR,"SH1A-C01-H").hardware.unit())
 
-sr.design.get_magnets("HCORR").strengths.set([0.000010,-0.000010])
-o,_ = sr.design.get_lattice().find_orbit()
-print(o)
+    sr.design.get_magnets("HCORR").strengths.set([0.000010,-0.000010])
+    o,_ = sr.design.get_lattice().find_orbit()
+    print(o)
 
-
-
-#pyaml.configuration.factory._ALL_ELEMENTS.clear()
+    pyaml_pkg.configuration.factory._ALL_ELEMENTS.clear()

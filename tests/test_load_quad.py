@@ -8,6 +8,7 @@ from pyaml.magnet.quadrupole import Quadrupole
 from pyaml.magnet.quadrupole import ConfigModel as QuadrupoleConfigModel
 from pyaml.magnet.cfm_magnet import CombinedFunctionMagnet
 from pyaml.magnet.linear_model import LinearMagnetModel
+import pyaml as pyaml_pkg
 
 
 def test_json():
@@ -19,10 +20,10 @@ def test_json():
 }], indirect=True)
 def test_quad_external_unit_conv(install_test_package, config_root_dir):
     set_root_folder(config_root_dir)
-    cfg_quad_yaml = load("sr/quadrupoles/QEXT.yaml")
-    quad_with_external_unit_conv: Quadrupole = depthFirstBuild(cfg_quad_yaml)
-    quad_with_external_unit_conv.strength.set(10.0)
-    print(quad_with_external_unit_conv.strength.get())
+    cfg_quad_yaml = load("sr/custom_magnets/QEXT.yaml")
+    quad_with_external_model: Quadrupole = depthFirstBuild(cfg_quad_yaml)
+    quad_with_external_model.strength.set(10.0)
+    print(quad_with_external_model.strength.get())
     pyaml.configuration.factory._ALL_ELEMENTS.clear()
 
 @pytest.mark.parametrize("magnet_file", [
@@ -34,8 +35,8 @@ def test_quad_linear(magnet_file, config_root_dir):
     cfg_quad_yaml = load(magnet_file)
     print(f"Current file: {config_root_dir}/{magnet_file}")
     quad:Quadrupole = depthFirstBuild(cfg_quad_yaml)
-    uc: LinearMagnetModel = quad.__model
-    print(uc._curve[1])
+    uc: LinearMagnetModel = quad.model
+    print(uc._cfg.curve[1])
     uc.set_magnet_rigidity(6e9 / 3e8)
     quad.strength.set(0.7962)
     print(f"Current={quad.hardware.get()}")
@@ -45,7 +46,7 @@ def test_quad_linear(magnet_file, config_root_dir):
     pyaml.configuration.factory._ALL_ELEMENTS.clear()
 
 @pytest.mark.parametrize("magnet_file", [
-    "sr/quadrupoles/SH1_C01A.yaml",
+    "sr/correctors/SH1_C01A.yaml",
 ])
 def test_combined_function_magnets(magnet_file, config_root_dir):
     set_root_folder(config_root_dir)
@@ -55,4 +56,4 @@ def test_combined_function_magnets(magnet_file, config_root_dir):
     sh.multipole.set([0.000020, 0.000010, 0.000000])
     sh.A1.strength.set(0.0001)
     print(sh.multipole.get())
-    pyaml.configuration.factory._ALL_ELEMENTS.clear()
+    pyaml_pkg.configuration.factory._ALL_ELEMENTS.clear()
