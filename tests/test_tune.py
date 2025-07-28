@@ -36,6 +36,6 @@ strs = quadForTune.strengths.get()
 strs += np.matmul(correctionmat,[0.1,0.05]) # Ask for correction [dqx,dqy]
 quadForTune.strengths.set(strs)
 newTune = sr.design.get_lattice().get_tune()
-print(newTune-tune) # Expext someting close to [0.1,0.05]
+print(newTune-tune) # Expect someting close to [0.1,0.05]
 
 #pyaml.configuration.factory._ALL_ELEMENTS.clear()
