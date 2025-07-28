@@ -23,6 +23,7 @@ class DummyDevice(DeviceAccess):
     """
 
     def __init__(self, cfg: ConfigModel):
+        super().__init__()
         self._cfg = cfg
         self._setpoint = cfg.setpoint
         self._readback = cfg.readback
@@ -36,12 +37,12 @@ class DummyDevice(DeviceAccess):
         return self._readback
 
     def set(self, value: float):
-        self._cache = value
+        self._cache = Value(value)
 
     def set_and_wait(self, value: float):
-        self._cache = value
+        self.set(value)
 
-    def get(self) -> float:
+    def get(self) -> Value:
         return self._cache
 
     def readback(self) -> Value:
