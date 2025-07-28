@@ -1,6 +1,5 @@
 from pyaml.pyaml import pyaml,PyAML
 from pyaml.instrument import Instrument
-from pyaml.configuration import set_root_folder
 import pyaml as pyaml_pkg
 from pyaml.lattice.element_holder import MagnetType
 from pyaml.arrays.magnet_array import MagnetArray
@@ -8,9 +7,8 @@ import numpy as np
 import at
 
 #def test_aml(config_root_dir):
-set_root_folder("tests/config")
 
-ml:PyAML = pyaml("EBSTune.yaml")
+ml:PyAML = pyaml("tests/config/EBSTune.yaml")
 sr:Instrument = ml.get('sr')
 sr.design.get_lattice().disable_6d()
 
