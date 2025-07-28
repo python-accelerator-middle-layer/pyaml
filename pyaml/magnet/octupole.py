@@ -14,6 +14,6 @@ class Octupole(Magnet):
         super().__init__(
             cfg.name,
             cfg.hardware if hasattr(cfg, "hardware") else None,
-            cfg.unitconv if hasattr(cfg, "unitconv") else None,
+            cfg.model if hasattr(cfg, "model") else None,
         )
         self._cfg = cfg

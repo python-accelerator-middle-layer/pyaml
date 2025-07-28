@@ -4,10 +4,12 @@ import json
 import pyaml
 from pyaml.configuration import load,set_root_folder
 from pyaml.configuration import depthFirstBuild
+from pyaml.magnet.hcorrector import HCorrector
 from pyaml.magnet.quadrupole import Quadrupole
 from pyaml.magnet.quadrupole import ConfigModel as QuadrupoleConfigModel
 from pyaml.magnet.cfm_magnet import CombinedFunctionMagnet
 from pyaml.magnet.linear_model import LinearMagnetModel
+from pyaml.control.abstract_impl import RWHardwareScalar,RWStrengthScalar
 import pyaml as pyaml_pkg
 
 
@@ -18,12 +20,16 @@ def test_json():
     "name": "pyaml_external",
     "path": "tests/external"
 }], indirect=True)
-def test_quad_external_unit_conv(install_test_package, config_root_dir):
+def test_quad_external_model(install_test_package, config_root_dir):
     set_root_folder(config_root_dir)
-    cfg_quad_yaml = load("sr/custom_magnets/QEXT.yaml")
-    quad_with_external_model: Quadrupole = depthFirstBuild(cfg_quad_yaml)
-    quad_with_external_model.strength.set(10.0)
-    print(quad_with_external_model.strength.get())
+
+    cfg_hcorr_yaml = load("sr/custom_magnets/hidcorr.yaml")
+    hcorr_with_external_model: HCorrector = depthFirstBuild(cfg_hcorr_yaml)
+    strength = RWStrengthScalar(hcorr_with_external_model.model)
+    hardware = RWHardwareScalar(hcorr_with_external_model.model)
+    ref_corr = hcorr_with_external_model.attach(strength,hardware)
+    ref_corr.strength.set(10.0)
+    print(ref_corr.strength.get())
     pyaml.configuration.factory._ALL_ELEMENTS.clear()
 
 @pytest.mark.parametrize("magnet_file", [
