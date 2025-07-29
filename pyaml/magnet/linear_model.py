@@ -18,6 +18,8 @@ class ConfigModel(BaseModel):
     """Correction factor applied to the curve"""
     calibration_offset: float = 0.0
     """Correction offset applied to the curve")"""
+    crosstalk: float = 1.0
+    """Crosstalk factor"""
     unit: str
     """Unit of the strength (i.e. 1/m or m-1)"""
 
@@ -30,8 +32,10 @@ class LinearMagnetModel(MagnetModel):
         self._cfg = cfg
         self.__curve = cfg.curve.get_curve()
         self.__curve[:, 1] = (
-            self.__curve[:, 1] * cfg.calibration_factor + cfg.calibration_offset
+            self.__curve[:, 1] * cfg.calibration_factor * cfg.crosstalk + cfg.calibration_offset
         )
+        sortedR = self.__curve[self.__curve[:,1].argsort()[:-1]]
+        self.__rcurve = sortedR[:,[1,0]]
         self.__strength_unit = cfg.unit
         self.__hardware_unit = cfg.powerconverter.unit()
         self.__brho = np.nan
@@ -39,7 +43,7 @@ class LinearMagnetModel(MagnetModel):
 
     def compute_hardware_values(self, strengths: np.array) -> np.array:
         _current = np.interp(
-            strengths[0] * self.__brho, self.__curve[:, 1], self.__curve[:, 0]
+            strengths[0] * self.__brho, self.__rcurve[:, 0], self.__rcurve[:, 1]
         )
         return np.array([_current])
 
