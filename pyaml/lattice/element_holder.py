@@ -35,13 +35,13 @@ class ElementHolder(object):
 
     def __init__(self):
         # Device handle
-        self.MAGNETS: dict = {}
-        self.BPMS: dict = {}
-        self.RF: dict = {}
-        self.OTHERS: dict = {}
+        self.__MAGNETS: dict = {}
+        self.__BPMS: dict = {}
+        self.__RF: dict = {}
+        self.__OTHERS: dict = {}
 
         # Array handle
-        self.MAGNET_ARRAYS: dict = {}
+        self.__MAGNET_ARRAYS: dict = {}
     
     def fill_device(self,elements:list[Element]):
        raise "ElementHolder.fill_device() is not subclassed"
@@ -53,16 +53,22 @@ class ElementHolder(object):
             a.append(self.get_magnet(type,name))
           except Exception as err:
             raise Exception(f"MagnetArray {arrayName} : {err}")
-       self.MAGNET_ARRAYS[arrayName] = MagnetArray(a)
+       self.__MAGNET_ARRAYS[arrayName] = MagnetArray(a)
 
     def get_magnet(self,type:MagnetType,name:str) -> Magnet:
       fName = f"{_mmap[type]}({name})"
-      if fName not in self.MAGNETS:
+      if fName not in self.__MAGNETS:
         raise Exception(f"Magnet {fName} not defined")
-      return self.MAGNETS[fName]
+      return self.__MAGNETS[fName]
+    
+    def add_magnet(self,name:str,m:Magnet):
+        self.__MAGNETS[name] = m
+
+    def get_all_magnets(self) -> dict:
+       return self.__MAGNETS
     
     def get_magnets(self,name:str) -> MagnetArray:
-       if name not in self.MAGNET_ARRAYS:
+       if name not in self.__MAGNET_ARRAYS:
          raise Exception(f"Magnet array {name} not defined")
-       return self.MAGNET_ARRAYS[name]
+       return self.__MAGNET_ARRAYS[name]
           

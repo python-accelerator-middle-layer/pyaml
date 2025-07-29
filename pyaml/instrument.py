@@ -19,8 +19,8 @@ class ConfigModel(BaseModel):
     """Instrument name"""
     energy: float = None
     """Instrument nominal energy, for ramped machine, this value can be dynamically set"""
-    control: list[ControlSystem] = None
-    """List of control system used, an instrument can access sevral control system"""
+    controls: list[ControlSystem] = None
+    """List of control system used, an instrument can access several control systems"""
     simulators: list[Simulator] = None
     """Simulator list"""
     data_folder: str
@@ -39,11 +39,12 @@ class Instrument(object):
         __design = None
         __live = None
 
-        if cfg.control is not None:
-            for c in cfg.control:
+        if cfg.controls is not None:
+            for c in cfg.controls:
                 if c.name() == "live":
                     self.__live = c
                     c.init_cs()
+                c.fill_device(cfg.devices)
 
         if cfg.simulators is not None:
             for s in cfg.simulators:
@@ -55,6 +56,8 @@ class Instrument(object):
             for a in cfg.arrays:                    
                 for s in cfg.simulators:
                     a.fill_array(s)
+                for c in cfg.controls:
+                    a.fill_array(c)
 
         if cfg.energy is not None:
             self.set_energy(cfg.energy)
