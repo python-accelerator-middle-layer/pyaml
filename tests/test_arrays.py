@@ -5,7 +5,7 @@ from pyaml.lattice.element_holder import MagnetType
 from pyaml.magnet.model import MagnetModel
 import numpy as np
 
-def test_aml():
+def test_arrays():
 
     ml:PyAML = pyaml("tests/config/sr.yaml")
     sr:Instrument = ml.get('sr')
