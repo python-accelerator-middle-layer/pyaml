@@ -1,5 +1,5 @@
 """
-PyAML External module example
+PyAML Dummy control system for tests.
 """
 
 __title__ = "pyAML Dummy Control System"

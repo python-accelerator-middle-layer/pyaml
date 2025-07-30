@@ -1,6 +1,7 @@
 from pydantic import BaseModel
 from pyaml.control.controlsystem import ControlSystem
 
+PYAMLCLASS = "DummyControlSystem"
 
 class ConfigModel(BaseModel):
     """
