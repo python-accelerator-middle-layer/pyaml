@@ -53,11 +53,13 @@ class Instrument(object):
                 s.fill_device(cfg.devices)
 
         if cfg.arrays is not None:
-            for a in cfg.arrays:                    
-                for s in cfg.simulators:
-                    a.fill_array(s)
-                for c in cfg.controls:
-                    a.fill_array(c)
+            for a in cfg.arrays:
+                if cfg.simulators is not None:
+                    for s in cfg.simulators:
+                        a.fill_array(s)
+                if cfg.controls is not None:
+                    for c in cfg.controls:
+                        a.fill_array(c)
 
         if cfg.energy is not None:
             self.set_energy(cfg.energy)
@@ -66,7 +68,9 @@ class Instrument(object):
         if self._cfg.simulators is not None:
             for s in self._cfg.simulators:
                 s.set_energy(E)
-        # TODO: apply E on Control system
+        if self._cfg.controls is not None:
+            for c in self._cfg.controls:
+                c.set_energy(E)
 
     @property
     def live(self) -> ControlSystem:
