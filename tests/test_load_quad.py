@@ -1,16 +1,15 @@
 import pytest
 import json
+import numpy as np
+from scipy.constants import speed_of_light
 
-import pyaml
-from pyaml.configuration import load,set_root_folder
+from pyaml.configuration import load,clear,set_root_folder
 from pyaml.configuration import depthFirstBuild
 from pyaml.magnet.hcorrector import HCorrector
 from pyaml.magnet.quadrupole import Quadrupole
 from pyaml.magnet.quadrupole import ConfigModel as QuadrupoleConfigModel
 from pyaml.magnet.cfm_magnet import CombinedFunctionMagnet
-from pyaml.magnet.linear_model import LinearMagnetModel
-from pyaml.control.abstract_impl import RWHardwareScalar,RWStrengthScalar
-import pyaml as pyaml_pkg
+from pyaml.control.abstract_impl import RWHardwareScalar,RWStrengthScalar,RWHardwareArray,RWStrengthArray
 
 
 def test_json():
@@ -22,7 +21,6 @@ def test_json():
 }], indirect=True)
 def test_quad_external_model(install_test_package, config_root_dir):
     set_root_folder(config_root_dir)
-
     cfg_hcorr_yaml = load("sr/custom_magnets/hidcorr.yaml")
     hcorr_with_external_model: HCorrector = depthFirstBuild(cfg_hcorr_yaml)
     strength = RWStrengthScalar(hcorr_with_external_model.model)
@@ -30,36 +28,59 @@ def test_quad_external_model(install_test_package, config_root_dir):
     ref_corr = hcorr_with_external_model.attach(strength,hardware)
     ref_corr.strength.set(10.0)
     print(ref_corr.strength.get())
-    pyaml.configuration.factory._ALL_ELEMENTS.clear()
+    clear()
 
 @pytest.mark.parametrize("magnet_file", [
-    "sr/quadrupoles/QF1C01A.yaml",
-    "sr/quadrupoles/QF1C01A.json",
+    "sr/quadrupoles/QF1AC01.yaml",
+    "sr/quadrupoles/QF1AC01.json",
 ])
 def test_quad_linear(magnet_file, config_root_dir):
     set_root_folder(config_root_dir)
-    cfg_quad_yaml = load(magnet_file)
+    cfg_quad = load(magnet_file)
     print(f"Current file: {config_root_dir}/{magnet_file}")
-    quad:Quadrupole = depthFirstBuild(cfg_quad_yaml)
-    uc: LinearMagnetModel = quad.model
-    print(uc._cfg.curve[1])
-    uc.set_magnet_rigidity(6e9 / 3e8)
-    quad.strength.set(0.7962)
-    print(f"Current={quad.hardware.get()}")
-    print(f"Unit={quad.strength.unit()}")
-    print(f"Unit={quad.hardware.unit()}")
-    print(f"Strength={uc.compute_strengths([quad.hardware.get()])}")
-    pyaml.configuration.factory._ALL_ELEMENTS.clear()
+    quad:Quadrupole = depthFirstBuild(cfg_quad)
+    strength = RWStrengthScalar(quad.model)
+    hardware = RWHardwareScalar(quad.model)
+    ref_quad = quad.attach(strength,hardware)
+    ref_quad.model.set_magnet_rigidity(6e9 / speed_of_light)
+    ref_quad.strength.set(0.7962)
+    current = ref_quad.hardware.get()
+    assert( np.abs(current-80.423276) < 1e-4 )
+    sunit = ref_quad.strength.unit()
+    hunit = ref_quad.hardware.unit()
+    assert( sunit == "1/m" )
+    assert( hunit == "A" )
+    str = ref_quad.model.compute_strengths([current])
+    assert( np.abs(str-0.7962) < 1e-6 )
+    clear()
 
 @pytest.mark.parametrize("magnet_file", [
-    "sr/correctors/SH1_C01A.yaml",
+    "sr/correctors/SH1AC01.yaml",
 ])
 def test_combined_function_magnets(magnet_file, config_root_dir):
     set_root_folder(config_root_dir)
     cfg_sh = load(magnet_file)
     sh: CombinedFunctionMagnet = depthFirstBuild(cfg_sh)
-    sh.model.set_magnet_rigidity(6e9 / 3e8)
-    sh.multipole.set([0.000020, 0.000010, 0.000000])
-    sh.A1.strength.set(0.0001)
-    print(sh.multipole.get())
-    pyaml_pkg.configuration.factory._ALL_ELEMENTS.clear()
+    sh.model.set_magnet_rigidity(6e9 / speed_of_light)
+    currents = RWHardwareArray(sh.model)
+    strengths = RWStrengthArray(sh.model)
+    sUnits = sh.model.get_strength_units()
+    hUnits = sh.model.get_hardware_units()
+    assert( sUnits[0] == 'rad' and sUnits[1] == 'rad' and sUnits[2] == 'm-1' )
+    assert( hUnits[0] == 'A' and hUnits[1] == 'A' and hUnits[2] == 'A')
+    ms = sh.attach(strengths,currents)
+    hCorr = ms[0]
+    vCorr = ms[1]
+    sqCorr = ms[2]
+    hCorr.strength.set(0.000020)
+    vCorr.strength.set(-0.000015)
+    sqCorr.strength.set(0.000100)
+    currents = sh.model.read_hardware_values()
+    assert( np.abs(currents[0]-0.05913476) < 1e-8 )
+    assert( np.abs(currents[1]-0.05132066) < 1e-8 )
+    assert( np.abs(currents[2]+0.06253617) < 1e-8 )
+    str = sh.model.compute_strengths(currents)
+    assert( np.abs(str[0]-0.000020) < 1e-8 )
+    assert( np.abs(str[1]+0.000015) < 1e-8 )
+    assert( np.abs(str[2]-0.000100) < 1e-8 )
+    clear()

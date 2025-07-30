@@ -20,6 +20,11 @@ class Curve(BaseModel,metaclass=ABCMeta):
         """
         Returns the inverse curve.
         Basically swap x and y and sort y in ascending order.
+
+        Parameters
+        ----------
+        curve : np.array
+            Curve to be inverted
         """
         __curve = curve
         __sortedCurve = __curve[__curve[:,1].argsort()[:-1]]

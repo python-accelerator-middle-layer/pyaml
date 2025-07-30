@@ -91,11 +91,16 @@ class LinearCFMagnetModel(MagnetModel):
                 "matrix wrong dimension "
                 f"({self.__nbFunction}x{self.__nbPS} expected but got {_s[0]}x{_s[1]})"
             )
+        
+        self.__curves = []
+        self.__rcurves = []
 
         # Apply factor and offset
         for idx, c in enumerate(cfg.curves):
-            c.get_curve()[:, 1] *= self.__calibration_factors[idx]
-            c.get_curve()[:, 1] += self.__calibration_offsets[idx]
+            self.__curves.append(c.get_curve())
+            self.__curves[idx][:, 1] *= self.__calibration_factors[idx]
+            self.__curves[idx][:, 1] += self.__calibration_offsets[idx]
+            self.__rcurves.append(Curve.inverse(self.__curves[idx]))
 
         # Compute pseudo inverse
         self.__inv = np.linalg.pinv(self.__matrix)
@@ -111,9 +116,9 @@ class LinearCFMagnetModel(MagnetModel):
 
     def compute_hardware_values(self, strengths: np.array) -> np.array:
         _pI = np.zeros(self.__nbFunction)
-        for idx, c in enumerate(self._cfg.curves):
+        for idx, c in enumerate(self.__rcurves):
             _pI[idx] = self.__pf[idx] * np.interp(
-                strengths[idx] * self._brho, c.get_curve()[:, 1], c.get_curve()[:, 0]
+                strengths[idx] * self._brho, c[:, 0], c[:, 1]
             ) + self.__po[idx]
         _currents = np.matmul(self.__inv, _pI)
         return _currents
@@ -121,10 +126,10 @@ class LinearCFMagnetModel(MagnetModel):
     def compute_strengths(self, currents: np.array) -> np.array:
         _strength = np.zeros(self.__nbFunction)
         _pI = np.matmul(self.__matrix, currents)
-        for idx, c in enumerate(self._cfg.curves):
+        for idx, c in enumerate(self.__curves):
             _strength[idx] = (
                 np.interp(
-                    (_pI[idx] - self.__po[idx]) / self.__pf[idx],  c.get_curve()[:, 0], c.get_curve()[:, 1]
+                    (_pI[idx] - self.__po[idx]) / self.__pf[idx],  c[:, 0], c[:, 1]
                 )
                 / self._brho
             )

@@ -22,3 +22,4 @@ def get_root_folder() -> Path:
 
 from .fileloader import load
 from .factory import depthFirstBuild
+from .factory import clear
