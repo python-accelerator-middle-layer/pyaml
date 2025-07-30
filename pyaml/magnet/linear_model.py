@@ -34,8 +34,7 @@ class LinearMagnetModel(MagnetModel):
         self.__curve[:, 1] = (
             self.__curve[:, 1] * cfg.calibration_factor * cfg.crosstalk + cfg.calibration_offset
         )
-        sortedR = self.__curve[self.__curve[:,1].argsort()[:-1]]
-        self.__rcurve = sortedR[:,[1,0]]
+        self.__rcurve = Curve.inverse(self.__curve)
         self.__strength_unit = cfg.unit
         self.__hardware_unit = cfg.powerconverter.unit()
         self.__brho = np.nan
