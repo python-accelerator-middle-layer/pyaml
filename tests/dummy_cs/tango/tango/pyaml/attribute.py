@@ -9,15 +9,12 @@ class ConfigModel(BaseModel):
     unit: str = ""
 
 class Attribute(DeviceAccess):
-    def __init__(self, cfg: ConfigModel):
-        super().__init__(cfg)
-
     """
     Class that implements a default device class that just prints out 
     values (Debugging purpose)
     """
-
     def __init__(self, cfg: ConfigModel):
+        super().__init__()
         self._cfg = cfg
         self._setpoint = cfg.attribute
         self._readback = cfg.attribute
@@ -31,7 +28,6 @@ class Attribute(DeviceAccess):
         return self._readback
 
     def set(self, value: float):
-        print(f"{self._setpoint}: set {value}")
         self._cache = value
 
     def set_and_wait(self, value: float):

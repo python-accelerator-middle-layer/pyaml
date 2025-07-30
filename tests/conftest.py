@@ -13,31 +13,37 @@ def install_test_package(request):
 
     The test must provide a dictionary as parameter with:
     - 'name': name of the installable package (used for pip uninstall)
-    - 'path': relative path to the package folder (e.g. 'tests/mon_dir')
+    - 'path': relative path to the package folder (e.g. 'tests/my_dir'). Optional, replaced by package name if absent.
 
     Example:
     --------
     @pytest.mark.parametrize("install_test_package", [{
-        "name": "mon_package",
-        "path": "tests/mon_dir"
+        "name": "my_package",
+        "path": "tests/my_dir"
     }], indirect=True)
     def test_x(install_test_package):
         ...
     """
     info = request.param
     package_name = info["name"]
-    package_path = pathlib.Path(info["path"]).resolve()
-
-    if not package_path.exists():
-        raise FileNotFoundError(f"Package path not found: {package_path}")
+    package_path = None
+    if info["path"] is not None:
+        package_path = pathlib.Path(info["path"]).resolve()
+        if not package_path.exists():
+            raise FileNotFoundError(f"Package path not found: {package_path}")
 
     if not ((package_path / "pyproject.toml").exists() or (package_path / "setup.py").exists()):
         raise RuntimeError(f"No pyproject.toml or setup.py found in {package_path}")
 
     # Install package
-    subprocess.check_call([
-        sys.executable, "-m", "pip", "install", "--quiet", "--editable", str(package_path)
-    ])
+    if package_path is not None:
+        subprocess.check_call([
+            sys.executable, "-m", "pip", "install", "--quiet", "--editable", str(package_path)
+        ])
+    else:
+        subprocess.check_call([
+            sys.executable, "-m", "pip", "install", "--quiet", "--editable", str(package_name)
+        ])
     # Test the import.
     import importlib
     # Ensure its path is importable
