@@ -1,7 +1,7 @@
 type: pyaml.magnet.magnet
 name: IDCORR
 model:
-  type: pyaml_external.external_model
+  type: pyaml_external.external_unitconv
   param: my random param
   powersupply:
     type: pyaml.control.device

@@ -1,3 +1,4 @@
+import pyaml
 from pyaml.pyaml import pyaml,PyAML
 from pyaml.instrument import Instrument
 from pyaml.configuration import set_root_folder
@@ -7,7 +8,7 @@ from pyaml.arrays.magnet_array import MagnetArray
 import numpy as np
 import at
 
-if False:
+def test_ebs_tune():
     #def test_aml(config_root_dir):
     set_root_folder("tests/config")
 
@@ -23,11 +24,11 @@ if False:
     tunemat = np.zeros((len(quadForTune),2))
 
     for idx,m in enumerate(quadForTune):
-        str = m.strength.get()
-        m.strength.set(str+1e-4)
+        strength = m.strength.get()
+        m.strength.set(strength+1e-4)
         dq = sr.design.get_lattice().get_tune() - tune
         tunemat[idx] = dq*1e4
-        m.strength.set(str)
+        m.strength.set(strength)
 
     # Compute correction matrix
     correctionmat = np.linalg.pinv(tunemat.T)
@@ -39,4 +40,4 @@ if False:
     newTune = sr.design.get_lattice().get_tune()
     print(newTune-tune) # Expext someting close to [0.1,0.05]
 
-    #pyaml.configuration.factory._ALL_ELEMENTS.clear()
+    pyaml.configuration.factory._ALL_ELEMENTS.clear()
