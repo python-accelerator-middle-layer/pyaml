@@ -20,6 +20,6 @@ instruments:
           - SH1A-C01-V
           - SH1A-C02-V
     devices:
-      - sr/quadrupoles/QF1C01A.yaml
+      - sr/quadrupoles/QF1AC01.yaml
       - sr/correctors/SH1AC01.yaml
       - sr/correctors/SH1AC02.yaml

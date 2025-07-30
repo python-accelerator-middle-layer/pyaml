@@ -34,7 +34,7 @@ class ControlSystem(BaseModel,ElementHolder,metaclass=ABCMeta):
         E : float
             Energy in eV
         """
-        for m in self.__MAGNETS.items():
+        for m in self.get_all_magnets().items():
             m[1].set_energy(E)
     
     def fill_device(self,elements:list[Element]):

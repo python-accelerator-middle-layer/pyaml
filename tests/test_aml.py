@@ -1,9 +1,9 @@
 from pyaml.pyaml import pyaml,PyAML
+from pyaml.configuration.factory import clear
 from pyaml.instrument import Instrument
-import pyaml as pyaml_pkg
 from pyaml.lattice.element_holder import MagnetType
 from pyaml.magnet.model import MagnetModel
-import at
+import numpy as np
 
 def test_aml():
 
@@ -11,19 +11,30 @@ def test_aml():
     sr:Instrument = ml.get('sr')
     sr.design.get_lattice().disable_6d()
     sr.design.get_magnet(MagnetType.HCORRECTOR,"SH1A-C01-H").strength.set(0.000010)
+    sr.design.get_magnet(MagnetType.VCORRECTOR,"SH1A-C01-V").strength.set(0.000015)
+
     o,_ = sr.design.get_lattice().find_orbit()
-    print(o)
+    assert(np.abs(o[0] + 9.91848416e-05)<1e-10)
+    assert(np.abs(o[1] + 3.54829761e-07)<1e-10)
+    assert(np.abs(o[2] + 1.56246320e-06)<1e-10)
+    assert(np.abs(o[3] + 1.75037311e-05)<1e-10)
 
-    pcurrent = sr.design.get_magnet(MagnetType.HCORRECTOR,"SH1A-C01-H").hardware.get()
-    print(pcurrent)
-    model:MagnetModel = sr.design.get_magnet(MagnetType.COMBINED,"SH1A-C01").model
-    rcurrents = model.compute_hardware_values([0.000010,0,0])
-    print(rcurrents)
-    print(sr.design.get_magnet(MagnetType.HCORRECTOR,"SH1A-C01-H").strength.unit())
-    print(sr.design.get_magnet(MagnetType.HCORRECTOR,"SH1A-C01-H").hardware.unit())
+    sr.design.get_magnet(MagnetType.HCORRECTOR,"SH1A-C02-H").strength.set(-0.000008)
+    sr.design.get_magnet(MagnetType.VCORRECTOR,"SH1A-C02-V").strength.set(-0.000017)
 
-    sr.design.get_magnets("HCORR").strengths.set([0.000010,-0.000010])
     o,_ = sr.design.get_lattice().find_orbit()
-    print(o)
+    assert(np.abs(o[0] + 1.60277642e-04)<1e-10)
+    assert(np.abs(o[1] - 2.36103795e-06)<1e-10)
+    assert(np.abs(o[2] - 3.62843295e-05)<1e-10)
+    assert(np.abs(o[3] + 6.06571010e-06)<1e-10)
 
-    pyaml_pkg.configuration.factory._ALL_ELEMENTS.clear()
+    sr.design.get_magnets("HCORR").strengths.set([0.000010,-0.000008])
+    sr.design.get_magnets("VCORR").strengths.set([0.000015,-0.000017])
+
+    o,_ = sr.design.get_lattice().find_orbit()
+    assert(np.abs(o[0] + 1.60277642e-04)<1e-10)
+    assert(np.abs(o[1] - 2.36103795e-06)<1e-10)
+    assert(np.abs(o[2] - 3.62843295e-05)<1e-10)
+    assert(np.abs(o[3] + 6.06571010e-06)<1e-10)
+
+    clear()

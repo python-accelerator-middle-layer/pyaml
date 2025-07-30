@@ -6,7 +6,7 @@ from pyaml.arrays.magnet_array import MagnetArray
 import numpy as np
 import at
 
-#def test_aml():
+#def test_tune():
 
 ml:PyAML = pyaml("tests/config/EBSTune.yaml")
 sr:Instrument = ml.get('sr')

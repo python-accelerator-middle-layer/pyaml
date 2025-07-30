@@ -75,7 +75,7 @@ def test_combined_function_magnets(magnet_file, config_root_dir):
     hCorr.strength.set(0.000020)
     vCorr.strength.set(-0.000015)
     sqCorr.strength.set(0.000100)
-    currents = sh.model.read_hardware_values()
+    currents = sh.model.compute_hardware_values([0.000020,-0.000015,0.000100])
     assert( np.abs(currents[0]-0.05913476) < 1e-8 )
     assert( np.abs(currents[1]-0.05132066) < 1e-8 )
     assert( np.abs(currents[2]+0.06253617) < 1e-8 )
