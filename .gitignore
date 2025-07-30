@@ -1,5 +1,6 @@
 # Dev environements
 .idea
+test_pyaml_logging.conf
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
