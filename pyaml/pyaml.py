@@ -5,7 +5,8 @@ PyAML main class
 from pydantic import BaseModel,ConfigDict
 from .instrument import Instrument
 from .configuration.factory import depthFirstBuild
-from pyaml.configuration import load
+from pyaml.configuration import load,set_root_folder
+import os
 
 # Define the main class name for this module
 PYAMLCLASS = "PyAML"
@@ -35,6 +36,10 @@ def pyaml(fileName:str) -> PyAML:
     """Load an accelerator middle layer"""
 
     # Asume that all files are referenced from folder where main AML file is stored
-    aml_cfg = load(fileName)
+    if not os.path.exists(fileName):
+       raise Exception(f"{fileName} file nnot found")
+    rootfolder = os.path.abspath(os.path.dirname(fileName))
+    set_root_folder(rootfolder)
+    aml_cfg = load(os.path.basename(fileName))
     aml:PyAML = depthFirstBuild(aml_cfg)
     return aml

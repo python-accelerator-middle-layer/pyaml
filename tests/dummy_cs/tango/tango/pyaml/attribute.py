@@ -1,34 +1,29 @@
 from pydantic import BaseModel
-
 from pyaml.control.deviceaccess import DeviceAccess
 from pyaml.control.readback_value import Value
 
-# Define the main class name for this module
-PYAMLCLASS = "DummyDevice"
-
+PYAMLCLASS : str = "Attribute"
 
 class ConfigModel(BaseModel):
-    setpoint: str
-    """Name of control system device value (i.e. a power supply current)"""
-    readback: str
-    """Measured value"""
-    unit: str
-    """Value unit"""
+    attribute: str
+    unit: str = ""
 
+class Attribute(DeviceAccess):
+    def __init__(self, cfg: ConfigModel):
+        super().__init__(cfg)
 
-class DummyDevice(DeviceAccess):
     """
-    Class that implements a default device class that just prints out
+    Class that implements a default device class that just prints out 
     values (Debugging purpose)
     """
 
     def __init__(self, cfg: ConfigModel):
         super().__init__()
         self._cfg = cfg
-        self._setpoint = cfg.setpoint
-        self._readback = cfg.readback
+        self._setpoint = cfg.attribute
+        self._readback = cfg.attribute
         self._unit = cfg.unit
-        self._cache = Value(0.0)
+        self._cache = 0.0
 
     def name(self) -> str:
         return self._setpoint
@@ -37,7 +32,12 @@ class DummyDevice(DeviceAccess):
         return self._readback
 
     def set(self, value: float):
+<<<<<<<< HEAD:tests/control/dummy-cs-pyaml/dummy-cs-pyaml/dummy_device.py
         self._cache = Value(value)
+========
+        print(f"{self._setpoint}: set {value}")
+        self._cache = value
+>>>>>>>> origin/main:tests/dummy_cs/tango/tango/pyaml/attribute.py
 
     def set_and_wait(self, value: float):
         self.set(value)
@@ -46,7 +46,7 @@ class DummyDevice(DeviceAccess):
         return self._cache
 
     def readback(self) -> Value:
-        return self._cache
+        return Value(self._cache)
 
     def unit(self) -> str:
         return self._unit

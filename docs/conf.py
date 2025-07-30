@@ -26,7 +26,7 @@ warnings.filterwarnings("ignore", message="numpy.ufunc size changed")
 
 
 TOPLEVEL_DIR = pathlib.Path(__file__).parent.parent.absolute()
-ABOUT_FILE = TOPLEVEL_DIR / "pyAML" / "__init__.py"
+ABOUT_FILE = TOPLEVEL_DIR / "pyaml" / "__init__.py"
 
 if str(TOPLEVEL_DIR) not in sys.path:
     sys.path.insert(0, str(TOPLEVEL_DIR))

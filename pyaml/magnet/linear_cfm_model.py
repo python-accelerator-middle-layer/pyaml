@@ -49,56 +49,61 @@ class LinearCFMagnetModel(MagnetModel):
         self._cfg = cfg
 
         # Check config
-        self._nbFunction: int = len(cfg.multipoles)
-        self._nbPS: int = len(cfg.powerconverters)
+        self.__nbFunction: int = len(cfg.multipoles)
+        self.__nbPS: int = len(cfg.powerconverters)
 
         if cfg.calibration_factors is None:
-            self._calibration_factors = np.ones(self._nbFunction)
+            self.__calibration_factors = np.ones(self.__nbFunction)
         else:
-            self._calibration_factors = cfg.calibration_factors
+            self.__calibration_factors = cfg.calibration_factors
 
         if cfg.calibration_offsets is None:
-            self._calibration_offsets = np.zeros(self._nbFunction)
+            self.__calibration_offsets = np.zeros(self.__nbFunction)
         else:
-            self._calibration_offsets = cfg.calibration_offsets
+            self.__calibration_offsets = cfg.calibration_offsets
 
         if cfg.pseudo_factors is None:
-            self._pf = np.ones(self._nbFunction)
+            self.__pf = np.ones(self.__nbFunction)
         else:
-            self._pf = cfg.pseudo_factors
+            self.__pf = cfg.pseudo_factors
 
         if cfg.pseudo_offsets is None:
-            self._po = np.zeros(self._nbFunction)
+            self.__po = np.zeros(self.__nbFunction)
         else:
-            self._po = cfg.pseudo_factors
+            self.__po = cfg.pseudo_factors
 
-        self.__check_len(self._calibration_factors,"calibration_factors",self._nbFunction)
-        self.__check_len(self._calibration_offsets,"calibration_offsets",self._nbFunction)
-        self.__check_len(self._pf,"pseudo_factors",self._nbFunction)
-        self.__check_len(self._po,"pseudo_offsets",self._nbFunction)
-        self.__check_len(cfg.units,"units",self._nbFunction)
-        self.__check_len(cfg.curves,"curves",self._nbFunction)
+        self.__check_len(self.__calibration_factors,"calibration_factors",self.__nbFunction)
+        self.__check_len(self.__calibration_offsets,"calibration_offsets",self.__nbFunction)
+        self.__check_len(self.__pf,"pseudo_factors",self.__nbFunction)
+        self.__check_len(self.__po,"pseudo_offsets",self.__nbFunction)
+        self.__check_len(cfg.units,"units",self.__nbFunction)
+        self.__check_len(cfg.curves,"curves",self.__nbFunction)
 
         if cfg.matrix is None:
-            self._matrix = np.identity(self._nbFunction)
+            self.__matrix = np.identity(self.__nbFunction)
         else:
-            self._matrix = cfg.matrix.get_matrix()
+            self.__matrix = cfg.matrix.get_matrix()
 
-        _s = np.shape(self._matrix)
+        _s = np.shape(self.__matrix)
 
-        if len(_s) != 2 or _s[0] != self._nbFunction or _s[1] != self._nbPS:
+        if len(_s) != 2 or _s[0] != self.__nbFunction or _s[1] != self.__nbPS:
             raise Exception(
                 "matrix wrong dimension "
-                f"({self._nbFunction}x{self._nbPS} expected but got {_s[0]}x{_s[1]})"
+                f"({self.__nbFunction}x{self.__nbPS} expected but got {_s[0]}x{_s[1]})"
             )
+        
+        self.__curves = []
+        self.__rcurves = []
 
         # Apply factor and offset
         for idx, c in enumerate(cfg.curves):
-            c.get_curve()[:, 1] *= self._calibration_factors[idx]
-            c.get_curve()[:, 1] += self._calibration_offsets[idx]
+            self.__curves.append(c.get_curve())
+            self.__curves[idx][:, 1] *= self.__calibration_factors[idx]
+            self.__curves[idx][:, 1] += self.__calibration_offsets[idx]
+            self.__rcurves.append(Curve.inverse(self.__curves[idx]))
 
         # Compute pseudo inverse
-        self._inv = np.linalg.pinv(self._matrix)
+        self.__inv = np.linalg.pinv(self.__matrix)
 
 
     def __check_len(self,obj,name,expected_len):
@@ -110,21 +115,21 @@ class LinearCFMagnetModel(MagnetModel):
             )    
 
     def compute_hardware_values(self, strengths: np.array) -> np.array:
-        _pI = np.zeros(self._nbFunction)
-        for idx, c in enumerate(self._cfg.curves):
-            _pI[idx] = self._pf[idx] * np.interp(
-                strengths[idx] * self._brho, c.get_curve()[:, 1], c.get_curve()[:, 0]
-            ) + self._po[idx]
-        _currents = np.matmul(self._inv, _pI)
+        _pI = np.zeros(self.__nbFunction)
+        for idx, c in enumerate(self.__rcurves):
+            _pI[idx] = self.__pf[idx] * np.interp(
+                strengths[idx] * self._brho, c[:, 0], c[:, 1]
+            ) + self.__po[idx]
+        _currents = np.matmul(self.__inv, _pI)
         return _currents
 
     def compute_strengths(self, currents: np.array) -> np.array:
-        _strength = np.zeros(self._nbFunction)
-        _pI = np.matmul(self._matrix, currents)
-        for idx, c in enumerate(self._cfg.curves):
+        _strength = np.zeros(self.__nbFunction)
+        _pI = np.matmul(self.__matrix, currents)
+        for idx, c in enumerate(self.__curves):
             _strength[idx] = (
                 np.interp(
-                    (_pI[idx] - self._po[idx]) / self._pf[idx],  c.get_curve()[:, 0], c.get_curve()[:, 1]
+                    (_pI[idx] - self.__po[idx]) / self.__pf[idx],  c[:, 0], c[:, 1]
                 )
                 / self._brho
             )

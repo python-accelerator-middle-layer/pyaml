@@ -28,18 +28,17 @@ class RWStrengthScalar(abstract.ReadWriteFloatScalar):
     """
 
     def __init__(self, model:MagnetModel):
-        self.model = model
-        self.src = None
+        self.__model = model
 
     # Gets the value
     def get(self) -> float:
-        currents = self.model.read_hardware_values()
-        return self.model.compute_strengths(currents)[0]
+        currents = self.__model.read_hardware_values()
+        return self.__model.compute_strengths(currents)[0]
 
     # Sets the value
     def set(self, value:float):
-        current = self.model.compute_hardware_values([value])
-        self.model.send_harware_values(current)
+        current = self.__model.compute_hardware_values([value])
+        self.__model.send_harware_values(current)
 
     # Sets the value and wait that the read value reach the setpoint
     def set_and_wait(self, value:float):
@@ -47,7 +46,7 @@ class RWStrengthScalar(abstract.ReadWriteFloatScalar):
 
     # Gets the unit of the value
     def unit(self) -> str:
-        return self.model.get_strength_units()[0]
+        return self.__model.get_strength_units()[0]
 
 #------------------------------------------------------------------------------
 

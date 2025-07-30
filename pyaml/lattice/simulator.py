@@ -45,7 +45,7 @@ class Simulator(ElementHolder):
     def set_energy(self,E:float):
       self.ring.energy = E
       # For current calculation
-      for m in self.MAGNETS.items():
+      for m in self.get_all_magnets().items():
         m[1].set_energy(E)
     
     def fill_device(self,elements:list[Element]):
@@ -55,16 +55,16 @@ class Simulator(ElementHolder):
             strength = RWStrengthScalar(self.get_at_elems(e.name),e.polynom,e.model)
             # Create a unique ref for this simulator
             m = e.attach(strength,current)
-            name = str(m)
-            self.MAGNETS[name] = m
+            self.add_magnet(str(m),m)
           elif isinstance(e,CombinedFunctionMagnet):
-            self.MAGNETS[str(e)]=e
+            self.add_magnet(str(e),e)
             currents = RWHardwareArray(self.get_at_elems(e.name),e.polynoms,e.model)
             strengths = RWStrengthArray(self.get_at_elems(e.name),e.polynoms,e.model)
             # Create unique refs of each function for this simulator
             ms = e.attach(strengths,currents)
             for m in ms:
-              self.MAGNETS[str(m)] = m
+              self.add_magnet(str(m),m)
+              self.add_magnet(str(m),m)
     
     def get_at_elems(self,elementName:str) -> list[at.Element]:
        elementList = [e for e in self.ring if e.FamName == elementName]

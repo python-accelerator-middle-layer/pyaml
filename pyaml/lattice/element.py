@@ -18,6 +18,7 @@ class Element(object):
     def set_energy(self,E:float):
         pass
     
+    # TODO: _repr_ is used for identifying element in various array. Use a get_id() method instead
     def __repr__(self):
         return "%s(%s)" % (
             self.__class__.__name__,

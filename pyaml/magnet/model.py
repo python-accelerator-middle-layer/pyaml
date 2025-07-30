@@ -3,7 +3,7 @@ from pydantic import BaseModel
 import numpy as np
 from typing import Any
 
-class MagnetModel(BaseModel):
+class MagnetModel(BaseModel,metaclass=ABCMeta):
     """
     Abstract class providing strength to coil current conversion and access to underlying power supplies
     """

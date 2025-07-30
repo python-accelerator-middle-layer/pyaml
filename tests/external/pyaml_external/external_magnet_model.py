@@ -5,7 +5,7 @@ from pyaml.control.deviceaccess import DeviceAccess
 
 
 # Define the main class name for this module (mandatory)
-PYAMLCLASS = "ExternalUnitConv"
+PYAMLCLASS = "ExternalMagnetModel"
 
 
 # The ConfigModel (mandatory) indicates what should be inside the associated
@@ -18,16 +18,16 @@ class ConfigModel(BaseModel):
     id: DeviceAccess
     param: str = None
 
-# UnitConv inherits from pydantic BaseModel
+# ConfigModel inherits from pydantic BaseModel
 # Take care of having all your private fields prefixed by an `_`
 
-class ExternalUnitConv(MagnetModel):
+class ExternalMagnetModel(MagnetModel):
     """
     Class example proving manget current/strength conversion
     """
 
     def __init__(self, cfg: ConfigModel):
-        print("ExternalUnitConv:\n  powersupply:%s\n  id:%s\n  param:%s" 
+        print("ExternalMagnetModel:\n  powersupply:%s\n  id:%s\n  param:%s" 
               % (cfg.powersupply.name(),cfg.id.name(),cfg.param))
         self._ps = cfg.powersupply
         self._id = cfg.id
@@ -37,13 +37,13 @@ class ExternalUnitConv(MagnetModel):
 
     # Get coil current(s) from magnet strength(s)
     def compute_hardware_values(self,strengths:np.array) -> np.array:
-        print("ExternalUnitConv.compute_currents(%f)" % (strengths[0]))
+        print("ExternalMagnetModel.compute_hardware_values(%f)" % (strengths[0]))
         _gap = self._id.get()
         return np.array([strengths[0]*_gap])
 
     # Get magnet strength(s) from coil current(s)
     def compute_strengths(self,currents:np.array) -> np.array:
-        print("ExternalUnitConv.compute_strengths(%f)" % (currents[0]))
+        print("ExternalMagnetModel.compute_strengths(%f)" % (currents[0]))
         _gap = self._id.get()
         return np.array([currents[0]/_gap])
 

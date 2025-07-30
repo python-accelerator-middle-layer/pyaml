@@ -1,6 +1,6 @@
 {
-      "type": "pyaml.magnet.spline_model",
-      "calibration_factor": 1.0003,
+      "type": "pyaml.magnet.linear_model",
+      "calibration_factor": 1.00504,
       "calibration_offset": 0.0,
       "curve": "sr/magnet_models/quadcurve.json",
       "unit": "1/m",

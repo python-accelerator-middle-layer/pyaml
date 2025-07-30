@@ -3,15 +3,16 @@ requires = ["hatchling"]
 build-backend = "hatchling.build"
 
 [tool.hatch.version]
-path = "dummy-cs-pyaml/__init__.py"
+path = "tango/__init__.py"
 
 [tool.hatch.build.targets.wheel]
-packages = ["dummy-cs-pyaml"]
+packages = ["tango"]
 
 [project]
-name = "dummy-cs-pyaml"
-description = "PyAML External CS module test"
+name = "tango"
+description = "PyAML Tango CS mocking"
 requires-python = ">=3.8"
 dynamic = ["version"]
 dependencies = [
+    "pydantic>=2.0"
 ]

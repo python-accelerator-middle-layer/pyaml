@@ -117,3 +117,6 @@ def get_element(name:str):
     if name not in _ALL_ELEMENTS:
         raise PyAMLException(f"element {name} not defined")
     return _ALL_ELEMENTS[name]
+
+def clear():
+    _ALL_ELEMENTS.clear()
