@@ -1,6 +1,7 @@
 """
 PyAML main class
 """
+import logging
 
 from pydantic import BaseModel,ConfigDict
 from .instrument import Instrument
@@ -10,6 +11,8 @@ import os
 
 # Define the main class name for this module
 PYAMLCLASS = "PyAML"
+
+logger = logging.getLogger(__name__)
 
 class ConfigModel(BaseModel):
 
@@ -32,14 +35,15 @@ class PyAML(object):
         raise Exception(f"Instrument {name} not defined")
       return self.INSTRUMENTS[name]
 
-def pyaml(fileName:str) -> PyAML:
+def pyaml(filename:str) -> PyAML:
     """Load an accelerator middle layer"""
+    logger.log(logging.INFO, f"Loading PyAML from file '{filename}'")
 
     # Asume that all files are referenced from folder where main AML file is stored
-    if not os.path.exists(fileName):
-       raise Exception(f"{fileName} file nnot found")
-    rootfolder = os.path.abspath(os.path.dirname(fileName))
+    if not os.path.exists(filename):
+       raise Exception(f"{filename} file not found")
+    rootfolder = os.path.abspath(os.path.dirname(filename))
     set_root_folder(rootfolder)
-    aml_cfg = load(os.path.basename(fileName))
+    aml_cfg = load(os.path.basename(filename))
     aml:PyAML = depthFirstBuild(aml_cfg)
     return aml
