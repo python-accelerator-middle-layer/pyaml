@@ -1,5 +1,4 @@
 from abc import ABCMeta, abstractmethod
-from pydantic import BaseModel
 from ..lattice.element_holder import ElementHolder
 from ..lattice.element import Element
 from ..control.abstract_impl import RWHardwareScalar,RWHardwareArray,RWStrengthScalar,RWStrengthArray
@@ -12,7 +11,6 @@ class ControlSystem(ElementHolder,metaclass=ABCMeta):
     """
 
     def __init__(self):
-        BaseModel.__init__(self)
         ElementHolder.__init__(self)
 
     @abstractmethod
