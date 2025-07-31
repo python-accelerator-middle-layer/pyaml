@@ -1,15 +1,11 @@
 # PyAML factory (construct AML objects from config files)
 import importlib
-import pprint as pp
-import traceback
 from threading import Lock
 
 from .config_exception import PyAMLConfigException
 from ..exception import PyAMLException
 from ..lattice.element import Element
 
-#TODO:
-#Implement trace for error management. Hints: Implement private field __file__ in dictionary to report errors.
 
 class BuildStrategy:
     def can_handle(self, module: object, config_dict: dict) -> bool:
