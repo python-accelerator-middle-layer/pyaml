@@ -1,12 +1,13 @@
 # PyAML config file loader
 import logging
-
-import yaml
 import json
 from typing import Union
-from . import get_root_folder
 from pathlib import Path
 
+from ruamel.yaml import YAML
+from ruamel.yaml.comments import CommentedMap, CommentedSeq
+
+from . import get_root_folder
 from .. import PyAMLException
 
 logger = logging.getLogger(__name__)
@@ -37,7 +38,7 @@ class Loader:
         return isinstance(value,str) and any(value.endswith(suffix) for suffix in self.suffixes)
 
     # Recursively expand a dict
-    def expandDict(self,d:dict):            
+    def expand_dict(self,d:dict):
         for key, value in d.items():
             if self.hasToExpand(value):
                 d[key] = load(value)
@@ -45,7 +46,7 @@ class Loader:
                 self.expand(value)
 
     # Recursively expand a list
-    def expandList(self,l:list):            
+    def expand_list(self,l:list):
         for idx,value in enumerate(l):
             if self.hasToExpand(value):
                 l[idx] = load(value)
@@ -55,10 +56,28 @@ class Loader:
     # Recursively expand an object
     def expand(self,obj: Union[dict,list]):
         if isinstance(obj,dict):
-            self.expandDict(obj)
+            self.expand_dict(obj)
         elif isinstance(obj,list):
-            self.expandList(obj)
+            self.expand_list(obj)
+        self.tag_node_positions(obj)
         return obj
+
+    def tag_node_positions(self, obj):
+        """Recursively tag dicts with their __location__ (line, column)."""
+        if isinstance(obj, CommentedMap):
+            if hasattr(obj, 'lc'):
+                obj['__location__'] = (obj.lc.line + 1, obj.lc.col + 1)
+            for v in obj.values():
+                self.tag_node_positions(v)
+        elif isinstance(obj, dict):
+            for v in obj.values():
+                self.tag_node_positions(v)
+        elif isinstance(obj, CommentedSeq):
+            for i in obj:
+                self.tag_node_positions(i)
+        elif isinstance(obj, list):
+            for i in obj:
+                self.tag_node_positions(i)
 
     # Load a file
     def load(self) -> Union[dict,list]:
@@ -73,11 +92,13 @@ class YAMLLoader(Loader):
     def load(self) -> Union[dict,list]:
         logger.log(logging.DEBUG, f"Loading YAML file '{self.path}'")
         self.suffixes = [".yaml", ".yml"]
+        yaml = YAML()
+        yaml.preserve_quotes = True
         with open(self.path) as file:
             try:
-                return self.expand(yaml.load(file,yaml.CLoader)) # Use fast C loader
-            except yaml.YAMLError as e:
-                raise Exception(str(self.path) + ": " + str(e))
+                return self.expand(yaml.load(file)) # Use fast C loader
+            except Exception as e:
+                raise PyAMLException(str(self.path) + ": " + str(e)) from e
 
 # JSON loader
 class JSONLoader(Loader):
@@ -92,4 +113,4 @@ class JSONLoader(Loader):
             try:
                 return self.expand(json.load(file))
             except json.JSONDecodeError as e:
-                raise Exception(str(self.path) + ": " + str(e))
+                raise PyAMLException(str(self.path) + ": " + str(e)) from e
