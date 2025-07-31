@@ -66,7 +66,7 @@ class CombinedFunctionMagnet(Element):
             l = []
             for idx,m in enumerate(self._cfg.mapping):
                 args = {"name":m[1]}
-                mclass:Magnet = _fmap[m[0]](ElementModel(**args))
+                mclass:Magnet = _fmap[m[0]](ElementConfigModel(**args))
                 strength = RWMapper(strengths,idx)
                 currents = RWMapper(currents,idx)
                 l.append(mclass.attach(strength,currents))
