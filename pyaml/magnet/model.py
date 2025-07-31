@@ -1,5 +1,6 @@
 from abc import ABCMeta, abstractmethod
 import numpy as np
+import numpy.typing as npt
 
 class MagnetModel(metaclass=ABCMeta):
     """
@@ -7,41 +8,107 @@ class MagnetModel(metaclass=ABCMeta):
     """
 
     @abstractmethod
-    def compute_hardware_values(self, strengths: np.array) -> np.array:
-        """Compute hardware value(s) from magnet strength(s)"""
+    def compute_hardware_values(self, strengths: npt.NDArray[np.float64]) -> npt.NDArray[np.float64]:
+        """
+        Compute hardware value(s) from magnet strength(s)
+
+        Parameters
+        ----------
+        strengths : npt.NDArray[np.float64]
+            Array of strengths. For a single multipole, strengths is an array of 1 item.
+
+        Returns
+        -------
+        npt.NDArray[np.float64]
+            Array of hardware values (i.e. currents or voltages).
+        """
         pass
 
     @abstractmethod
-    def compute_strengths(self, hardware_values: np.array) -> np.array:
-        """Compute magnet strength(s) from hardware value(s)"""
+    def compute_strengths(self, hardware_values: npt.NDArray[np.float64]) -> npt.NDArray[np.float64]:
+        """
+        Compute magnet strength(s) from hardware value(s)
+        
+        Parameters
+        ----------
+        hardware_values : npt.NDArray[np.float64]
+            Array of hardware values (i.e. currents or voltages)       
+
+        Returns
+        -------
+        npt.NDArray[np.float64]
+            Array of strengths. For a single multipole, returns an array of 1 item
+        """
         pass
 
     @abstractmethod
     def get_strength_units(self) -> list[str]:
-        """Get strength units"""
+        """
+        Get strength units
+
+        Returns
+        -------
+        list[str]
+            Array of strength units. For a single multipole, returns a list of 1 item
+        """
         pass
 
     @abstractmethod
     def get_hardware_units(self) -> list[str]:
-        """Get hardware units"""
+        """
+        Get hardware units
+        
+        Returns
+        -------
+        list[str]
+            Array of hardware units. For a single multipole, returns a list of 1 item        
+        """
         pass
 
     @abstractmethod
-    def read_hardware_values(self) -> np.array:
-        """Get power supply current setpoint(s) from control system"""
+    def read_hardware_values(self) -> npt.NDArray[np.float64]:
+        """
+        Get power supply current (or voltage) setpoint(s) from control system
+
+        Returns
+        -------
+        npt.NDArray[np.float64]
+            Array of hardware values (i.e. currents or voltages)       
+        """
         pass
 
     @abstractmethod
-    def readback_hardware_values(self) -> np.array:
-        """Get power supply harware value(s) from control system"""
+    def readback_hardware_values(self) -> npt.NDArray[np.float64]:
+        """
+        Get power supply harware value(s) measurements from control system
+        
+        Returns
+        -------
+        npt.NDArray[np.float64]
+            Array of hardware values (i.e. currents or voltages)     
+        """
         pass
 
     @abstractmethod
-    def send_harware_values(self, currents: np.array):
-        """Send power supply value(s) to control system"""
+    def send_harware_values(self, hardware_values: npt.NDArray[np.float64]):
+        """
+        Send power supply value(s) to control system
+        
+        Parameters
+        ----------
+        hardware_values : npt.NDArray[np.float64]
+            Array of hardware values (i.e. currents or voltages)  
+        """
         pass
 
     @abstractmethod
     def set_magnet_rigidity(self, brho: np.double):
-        """Set magnet rigidity"""
+        """        
+        Set magnet rigidity
+
+        Parameters
+        ----------
+        brho: np.double
+            Magnet rigidity used to calculate power supply setpoints
+        """
         pass
