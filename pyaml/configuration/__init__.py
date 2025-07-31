@@ -3,11 +3,12 @@ PyAML configuration module
 """
 
 from pathlib import Path
+from typing import Union
 
 ROOT = {"path": Path.cwd().resolve()}
 
 
-def set_root_folder(path: str | Path):
+def set_root_folder(path: Union[str, Path]):
     """
     Set the root path for configuration files.
     """
