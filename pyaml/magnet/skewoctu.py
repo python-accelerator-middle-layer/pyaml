@@ -1,10 +1,10 @@
-from .magnet import Magnet,MagnetModel
+from .magnet import Magnet,MagnetConfigModel
 from ..lattice.polynom_info import PolynomInfo
 
 # Define the main class name for this module
 PYAMLCLASS = "SkewOctu"
 
-class ConfigModel(MagnetModel):...
+class ConfigModel(MagnetConfigModel):...
 
 class SkewOctu(Magnet):    
     """SkewOctu class"""

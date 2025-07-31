@@ -1,4 +1,4 @@
-from pydantic import BaseModel
+from pydantic import BaseModel,ConfigDict
 import at
 from ..configuration import get_root_folder
 from .element import Element
@@ -13,6 +13,8 @@ from .element_holder import ElementHolder
 PYAMLCLASS = "Simulator"
 
 class ConfigModel(BaseModel):
+
+    model_config = ConfigDict(arbitrary_types_allowed=True,extra="forbid")
 
     name: str
     """Simulator name"""

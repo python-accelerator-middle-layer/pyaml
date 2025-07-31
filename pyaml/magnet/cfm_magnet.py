@@ -2,8 +2,7 @@ from pydantic import SerializeAsAny
 from scipy.constants import speed_of_light
 
 from .model import MagnetModel
-from ..lattice.element import ElementModel
-from ..lattice.element import Element
+from ..lattice.element import Element,ElementConfigModel
 from ..control import abstract
 from ..control.abstract import RWMapper
 
@@ -31,7 +30,7 @@ _fmap:dict = {
 # Define the main class name for this module
 PYAMLCLASS = "CombinedFunctionMagnet"
 
-class ConfigModel(ElementModel):
+class ConfigModel(ElementConfigModel):
 
     mapping: list[list[str]]
     """Name mapping for multipoles (i.e. [[B0,C01A-H],[A0,C01A-H],[B2,C01A-S]])"""

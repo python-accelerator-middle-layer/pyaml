@@ -1,11 +1,11 @@
-from pyaml.lattice.element import Element,ElementModel
+from pyaml.lattice.element import Element,ElementConfigModel
 from ..control.deviceaccess import DeviceAccess
 from ..control import abstract
 from .model import MagnetModel
 from scipy.constants import speed_of_light
 from typing import Self
 
-class MagnetModel(ElementModel):
+class MagnetConfigModel(ElementConfigModel):
 
     hardware: DeviceAccess | None = None
     """Direct access to a magnet device that provides strength/current conversion"""
