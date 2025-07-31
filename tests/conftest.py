@@ -1,9 +1,12 @@
+import types
 import pytest
 import subprocess
 import sys
 import pathlib
 import numpy as np
 from pyaml.control.readback_value import Value
+from pydantic import BaseModel
+from pyaml.configuration.factory import factory, BuildStrategy, clear
 
 
 @pytest.fixture
@@ -105,3 +108,56 @@ def scalar_vector():
 def broadcast_matrix():
     """Return a 3x3 matrix filled with 2s for broadcasted multiplication tests."""
     return np.full((3, 3), 2)
+
+
+# ────────────── Simulated module ──────────────
+
+class MockConfig(BaseModel):
+    name: str
+
+class MockElement:
+    def __init__(self, config):
+        self.name = config.name
+
+mock_module = types.ModuleType("mock_module")
+mock_module.ConfigModel = MockConfig
+mock_module.PYAMLCLASS = "MockElement"
+mock_module.MockElement = MockElement
+
+
+# ────────────── Custom strategy ──────────────
+
+class MockStrategy(BuildStrategy):
+    def can_handle(self, module, config_dict):
+        return config_dict.get("custom") is True
+
+    def build(self, module, config_dict):
+        name = config_dict.get("name", "default")
+        return MockElement(config=MockConfig(name=f"custom_{name}"))
+
+
+# ────────────── Pytest fixtures ──────────────
+
+@pytest.fixture(scope="module", autouse=True)
+def inject_mock_module():
+    """Inject a simulated external module into sys.modules."""
+    sys.modules["mock_module"] = mock_module
+    yield
+    sys.modules.pop("mock_module", None)
+
+
+@pytest.fixture(autouse=True)
+def clear_factory_registry():
+    """Clear element registry before/after each test."""
+    clear()
+    yield
+    clear()
+
+
+@pytest.fixture(autouse=True)
+def register_mock_strategy():
+    """Register and unregister mock build strategy."""
+    strategy = MockStrategy()
+    factory.register_strategy(strategy)
+    yield
+    factory.remove_strategy(strategy)

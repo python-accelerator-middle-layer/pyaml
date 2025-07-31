@@ -1,122 +1,164 @@
 # PyAML factory (construct AML objects from config files)
 import importlib
-import pprint as pp
-import traceback
+from threading import Lock
 
 from .config_exception import PyAMLConfigException
 from ..exception import PyAMLException
 from ..lattice.element import Element
 
-#TODO:
-#Implement trace for error management. Hints: Implement private field __file__ in dictionary to report errors.
 
-_ALL_ELEMENTS: dict = {}
+class BuildStrategy:
+    def can_handle(self, module: object, config_dict: dict) -> bool:
+        """Return True if this strategy can handle the module/config."""
+        raise NotImplementedError
 
-def buildObject(d:dict):
-    """Build an object from the dict"""
+    def build(self, module: object, config_dict: dict):
+        """Build the object according to custom logic."""
+        raise NotImplementedError
 
-    if not isinstance(d,dict):
-        raise PyAMLException("Unexpected object " + str(d))
-    if not "type" in d:
-        raise PyAMLException("No type specified for " + str(type(d)) + ":" + str(d))
-    type_str = d["type"]
-    del d["type"]
+class PyAMLFactory:
+    """Singleton factory to build PyAML elements with future compatibility logic."""
 
-    try:
-        module = importlib.import_module(type_str)
-    except ModuleNotFoundError as ex:
-        raise PyAMLException(f"Module referenced in type cannot be founded: '{type_str}'") from ex
+    _instance = None
+    _lock = Lock()
 
-    # Get the config object
-    config_cls = getattr(module, "ConfigModel", None)
-    if config_cls is None:
-        raise ValueError(f"ConfigModel class '{type_str}.ConfigModel' not found")
+    def __new__(cls):
+        """
+        No matter how many times you call PyAMLFactory(), it will be created only once.
+        """
+        with cls._lock:
+            if cls._instance is None:
+                cls._instance = super().__new__(cls)
+                cls._instance._elements = {}
+                cls._instance._strategies = []
+            return cls._instance
 
-    # Get the class name
-    cls_name = getattr(module, "PYAMLCLASS", None)
-    if cls_name is None:
-        raise ValueError(f"PYAMLCLASS definition not found in '{type_str}'")
+    def register_strategy(self, strategy: BuildStrategy):
+        """Register a plugin-based strategy for object creation."""
+        self._strategies.append(strategy)
 
-    try:
+    def remove_strategy(self, strategy: BuildStrategy):
+        """Register a plugin-based strategy for object creation."""
+        self._strategies.remove(strategy)
 
-        # Validate the model
-        cfg = config_cls.model_validate(d)
+    def build_object(self, d:dict):
+        """Build an object from the dict"""
 
-        # Construct and return the object
-        elem_cls = getattr(module, cls_name, None)
-        if elem_cls is None:
-            raise ValueError(
-                f"Unknown element class '{type_str}.{cls_name}'"
-            )
-        
-        obj = elem_cls(cfg)
-        register_element(obj)
+        if not isinstance(d,dict):
+            raise PyAMLException("Unexpected object " + str(d))
+        if not "type" in d:
+            raise PyAMLException("No type specified for " + str(type(d)) + ":" + str(d))
+        type_str = d.pop("type")
+
+        try:
+            module = importlib.import_module(type_str)
+        except ModuleNotFoundError as ex:
+            raise PyAMLException(f"Module referenced in type cannot be founded: '{type_str}'") from ex
+
+        # Try plugin strategies first
+        for strategy in self._strategies:
+            try:
+                if strategy.can_handle(module, d):
+                    obj = strategy.build(module, d)
+                    self.register_element(obj)
+                    return obj
+            except Exception as e:
+                raise PyAMLException("Custom strategy failed") from e
+
+        # Default loading strategy
+        # Get the config object
+        config_cls = getattr(module, "ConfigModel", None)
+        if config_cls is None:
+            raise ValueError(f"ConfigModel class '{type_str}.ConfigModel' not found")
+
+        # Get the class name
+        cls_name = getattr(module, "PYAMLCLASS", None)
+        if cls_name is None:
+            raise ValueError(f"PYAMLCLASS definition not found in '{type_str}'")
+
+        try:
+
+            # Validate the model
+            cfg = config_cls.model_validate(d)
+
+            # Construct and return the object
+            elem_cls = getattr(module, cls_name, None)
+            if elem_cls is None:
+                raise ValueError(
+                    f"Unknown element class '{type_str}.{cls_name}'"
+                )
+
+            obj = elem_cls(cfg)
+            self.register_element(obj)
+            return obj
+
+        except Exception as e:
+            raise PyAMLConfigException(f'{type_str}.{cls_name}') from e
+
+
+    def depth_first_build(self, d):
+      """Main factory function (Depth-first factory)"""
+
+      if isinstance(d,list):
+          # list can be a list of objects or a list of native types
+          l = []
+          for index, e in enumerate(d):
+              if isinstance(e,dict) or isinstance(e,list):
+                  try:
+                      obj = self.depth_first_build(e)
+                      l.append(obj)
+                  except PyAMLException as pyaml_ex:
+                      raise PyAMLConfigException(f"[{index}]", pyaml_ex) from pyaml_ex
+                  except Exception as ex:
+                      raise PyAMLConfigException(f"[{index}]") from ex
+              else:
+                  l.append(e)
+          return l
+
+      elif isinstance(d,dict):
+        for key, value in d.items():
+            if isinstance(value,dict) or isinstance(value,list):
+                try:
+                    obj = self.depth_first_build(value)
+                    # Replace the inner dict by the object itself
+                    d[key]=obj
+                except PyAMLException as pyaml_ex:
+                    raise PyAMLConfigException(key, pyaml_ex) from pyaml_ex
+                except Exception as ex:
+                    raise PyAMLConfigException(key) from ex
+
+        # We are now on leaf (no nested object), we can construct
+        try:
+            obj = self.build_object(d)
+        except PyAMLException as pyaml_ex:
+            raise PyAMLConfigException(None, pyaml_ex) from pyaml_ex
+        except Exception as ex:
+            raise PyAMLException("An exception occurred while building object") from ex
         return obj
 
-    except Exception as e:
+      raise PyAMLException("Unexpected element found.")
 
-        print(traceback.format_exc())
-        print(e)        
-        print(type_str)
-        pp.pprint(d)
-        #Fatal
-        quit()
-
-
-def depthFirstBuild(d):
-  """Main factory function (Depth-first factory)"""
-
-  if isinstance(d,list):
-      # list can be a list of objects or a list of native types
-      l = []
-      for index, e in enumerate(d):
-          if isinstance(e,dict) or isinstance(e,list):
-              try:
-                  obj = depthFirstBuild(e)
-                  l.append(obj)
-              except PyAMLException as pyaml_ex:
-                  raise PyAMLConfigException(f"[{index}]", pyaml_ex) from pyaml_ex
-              except Exception as ex:
-                  raise PyAMLConfigException(f"[{index}]") from ex
-          else:
-              l.append(e)
-      return l
-  
-  elif isinstance(d,dict):
-    for key, value in d.items():
-        if isinstance(value,dict) or isinstance(value,list):
-            try:
-                obj = depthFirstBuild(value)
-                # Replace the inner dict by the object itself
-                d[key]=obj
-            except PyAMLException as pyaml_ex:
-                raise PyAMLConfigException(key, pyaml_ex) from pyaml_ex
-            except Exception as ex:
-                raise PyAMLConfigException(key) from ex
-
-    # We are now on leaf (no nested object), we can construct
-    try:
-        obj = buildObject(d)
-    except PyAMLException as pyaml_ex:
-        raise PyAMLConfigException(None, pyaml_ex) from pyaml_ex
-    except Exception as ex:
-        raise PyAMLException("An exception occurred while building object") from ex
-    return obj
-
-  raise PyAMLException("Unexpected element found.")
-
-def register_element(elt):
-    if isinstance(elt,Element):
-        name = str(elt)
-        if name in _ALL_ELEMENTS:
-            raise PyAMLException(f"element {name} already defined")
-        _ALL_ELEMENTS[name] = elt
+    def register_element(self, elt):
+        if isinstance(elt,Element):
+            name = str(elt)
+            if name in self._elements:
+                raise PyAMLException(f"element {name} already defined")
+            self._elements[name] = elt
 
 
-def get_element(name:str):
-    if name not in _ALL_ELEMENTS:
-        raise PyAMLException(f"element {name} not defined")
-    return _ALL_ELEMENTS[name]
+    def get_element(self, name:str):
+        if name not in self._elements:
+            raise PyAMLException(f"element {name} not defined")
+        return self._elements[name]
 
-def clear():
-    _ALL_ELEMENTS.clear()
+    def clear(self):
+        self._elements.clear()
+
+factory = PyAMLFactory()
+
+# For backward compatibility
+buildObject = factory.build_object
+depthFirstBuild = factory.depth_first_build
+register_element = factory.register_element
+get_element = factory.get_element
+clear = factory.clear
