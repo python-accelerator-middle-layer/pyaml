@@ -1,4 +1,4 @@
-from pydantic import BaseModel
+from pydantic import BaseModel,ConfigDict
 import numpy as np
 from pyaml.magnet.model import MagnetModel
 from pyaml.control.deviceaccess import DeviceAccess
@@ -13,6 +13,8 @@ PYAMLCLASS = "ExternalMagnetModel"
 # The ConfigModel structure is then passed to the constructor of the above class
 
 class ConfigModel(BaseModel):
+
+    model_config = ConfigDict(arbitrary_types_allowed=True,extra="forbid")
 
     powersupply: DeviceAccess
     id: DeviceAccess

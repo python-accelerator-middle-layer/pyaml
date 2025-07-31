@@ -12,8 +12,8 @@ from pyaml.magnet.cfm_magnet import CombinedFunctionMagnet
 from pyaml.control.abstract_impl import RWHardwareScalar,RWStrengthScalar,RWHardwareArray,RWStrengthArray
 
 
-def test_json():
-    print(json.dumps(QuadrupoleConfigModel.model_json_schema(),indent=2))
+#def test_json():
+#    print(json.dumps(QuadrupoleConfigModel.model_json_schema(),indent=2))
 
 @pytest.mark.parametrize("install_test_package", [{
     "name": "pyaml_external",

@@ -1,11 +1,14 @@
 import os
-from pydantic import BaseModel
+from pydantic import BaseModel,ConfigDict
 from pyaml.control.controlsystem import ControlSystem
 
 PYAMLCLASS : str = "TangoControlSystem"
 
 
 class ConfigModel(BaseModel):
+
+    model_config = ConfigDict(arbitrary_types_allowed=True,extra="forbid")
+
     name: str
     tango_host: str
     debug_level: int

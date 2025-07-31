@@ -1,10 +1,13 @@
-from pydantic import BaseModel
+from pydantic import BaseModel,ConfigDict
 from pyaml.control.deviceaccess import DeviceAccess
 from pyaml.control.readback_value import Value
 
 PYAMLCLASS : str = "Attribute"
 
 class ConfigModel(BaseModel):
+
+    model_config = ConfigDict(arbitrary_types_allowed=True,extra="forbid")
+
     attribute: str
     unit: str = ""
 
