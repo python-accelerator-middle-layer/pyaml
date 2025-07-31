@@ -1,7 +1,6 @@
 # PyAML config file loader
 import logging
 import json
-import pytest
 from typing import Union
 from pathlib import Path
 
@@ -115,36 +114,3 @@ class JSONLoader(Loader):
                 return self.expand(json.load(file))
             except json.JSONDecodeError as e:
                 raise PyAMLException(str(self.path) + ": " + str(e)) from e
-
-
-def test_error_with_location(tmp_path):
-    # YAML avec erreur (champ 'nme' au lieu de 'name')
-    content = "- type: mock_module\n  nme: oops\n"
-
-    file_path = tmp_path / "bad.yaml"
-    file_path.write_text(content)
-
-    # Chargement YAML avec position
-    yaml = YAML()
-    data = yaml.load(file_path.open())
-
-    # Injection de __location__ dans chaque dict
-    def tag_node_positions(obj):
-        if isinstance(obj, dict) and hasattr(obj, 'lc'):
-            obj['__location__'] = (obj.lc.line + 1, obj.lc.col + 1)
-        if isinstance(obj, dict):
-            for v in obj.values():
-                tag_node_positions(v)
-        elif isinstance(obj, list):
-            for i in obj:
-                tag_node_positions(i)
-
-    tag_node_positions(data)
-
-    with pytest.raises(PyAMLConfigException) as excinfo:
-        depthFirstBuild(data)
-
-    msg = str(excinfo.value)
-    assert "line 2" in msg or "line 1" in msg  # selon parser
-    assert "column" in msg
-    assert "name" in msg or "field" in msg
