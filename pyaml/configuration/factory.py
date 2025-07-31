@@ -43,17 +43,22 @@ class PyAMLFactory:
 
     def build_object(self, d:dict):
         """Build an object from the dict"""
+        location = d.pop('__location__', None)
+        location_str = ""
+        if location:
+            line, col = location
+            location_str = f" at line {line}, column {col}."
 
         if not isinstance(d,dict):
-            raise PyAMLException("Unexpected object " + str(d))
+            raise PyAMLException(f"Unexpected object {str(d)}{location_str}")
         if not "type" in d:
-            raise PyAMLException("No type specified for " + str(type(d)) + ":" + str(d))
+            raise PyAMLException(f"No type specified for {str(type(d))}:{str(d)}{location_str}")
         type_str = d.pop("type")
 
         try:
             module = importlib.import_module(type_str)
         except ModuleNotFoundError as ex:
-            raise PyAMLException(f"Module referenced in type cannot be founded: '{type_str}'") from ex
+            raise PyAMLException(f"Module referenced in type cannot be founded: '{type_str}'{location_str}") from ex
 
         # Try plugin strategies first
         for strategy in self._strategies:
@@ -63,18 +68,18 @@ class PyAMLFactory:
                     self.register_element(obj)
                     return obj
             except Exception as e:
-                raise PyAMLException("Custom strategy failed") from e
+                raise PyAMLException(f"Custom strategy failed{location_str}") from e
 
         # Default loading strategy
         # Get the config object
         config_cls = getattr(module, "ConfigModel", None)
         if config_cls is None:
-            raise ValueError(f"ConfigModel class '{type_str}.ConfigModel' not found")
+            raise PyAMLException(f"ConfigModel class '{type_str}.ConfigModel' not found{location_str}")
 
         # Get the class name
         cls_name = getattr(module, "PYAMLCLASS", None)
         if cls_name is None:
-            raise ValueError(f"PYAMLCLASS definition not found in '{type_str}'")
+            raise PyAMLException(f"PYAMLCLASS definition not found in '{type_str}'{location_str}")
 
         try:
 
@@ -84,16 +89,14 @@ class PyAMLFactory:
             # Construct and return the object
             elem_cls = getattr(module, cls_name, None)
             if elem_cls is None:
-                raise ValueError(
-                    f"Unknown element class '{type_str}.{cls_name}'"
-                )
+                raise PyAMLException(f"Unknown element class '{type_str}.{cls_name}'")
 
             obj = elem_cls(cfg)
             self.register_element(obj)
             return obj
 
         except Exception as e:
-            raise PyAMLConfigException(f'{type_str}.{cls_name}') from e
+            raise PyAMLException(f'{type_str}.{cls_name}') from e
 
 
     def depth_first_build(self, d):
@@ -110,7 +113,7 @@ class PyAMLFactory:
                   except PyAMLException as pyaml_ex:
                       raise PyAMLConfigException(f"[{index}]", pyaml_ex) from pyaml_ex
                   except Exception as ex:
-                      raise PyAMLConfigException(f"[{index}]") from ex
+                      raise PyAMLConfigException(f"[{index}]", ex) from ex
               else:
                   l.append(e)
           return l

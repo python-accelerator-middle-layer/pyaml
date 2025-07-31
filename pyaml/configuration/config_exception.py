@@ -9,13 +9,13 @@ class PyAMLConfigException(PyAMLException):
         message -- explanation of the error
     """
 
-    def __init__(self, config_key = None, parent_exception:Union["PyAMLConfigException", "PyAMLException"] = None):
+    def __init__(self, config_key = None, parent_exception:Exception = None):
         self.parent_keys = []
         self.config_key = config_key
         self.parent_exception = parent_exception
         message = "An exception occurred while building object."
         if parent_exception is not None:
-            if isinstance(self.parent_exception, PyAMLConfigException) and parent_exception.config_key is not None:
+            if isinstance(parent_exception, PyAMLConfigException) and parent_exception.config_key is not None:
                 self.parent_keys.append(parent_exception.config_key)
                 self.parent_keys.extend(parent_exception.parent_keys)
                 if config_key is not None:
@@ -23,10 +23,14 @@ class PyAMLConfigException(PyAMLException):
                 else:
                     message = f"An exception occurred while building object in '{parent_exception.get_keys()}': {parent_exception.get_original_message()}"
             else:
-                if config_key is not None:
-                    message = f"An exception occurred while building key '{config_key}': {parent_exception.message}"
+                if isinstance(parent_exception, PyAMLException):
+                    parent_message = parent_exception.message
                 else:
-                    message = f"An exception occurred while building object: {parent_exception.message}"
+                    parent_message = str(parent_exception)
+                if config_key is not None:
+                    message = f"An exception occurred while building key '{config_key}': {parent_message}"
+                else:
+                    message = f"An exception occurred while building object: {parent_message}"
         super().__init__(message)
 
     def get_keys(self) -> str:
@@ -42,7 +46,9 @@ class PyAMLConfigException(PyAMLException):
         if self.parent_exception is not None:
             if isinstance(self.parent_exception, PyAMLConfigException):
                 return self.parent_exception.get_original_message()
-            else:
+            elif isinstance(self.parent_exception, PyAMLException):
                 return self.parent_exception.message
+            else:
+                return str(self.parent_exception)
         else:
             return self.message
