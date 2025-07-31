@@ -1,5 +1,5 @@
 import numpy as np
-from pydantic import BaseModel
+from pydantic import BaseModel,ConfigDict
 
 from .model import MagnetModel
 from ..configuration.curve import Curve
@@ -9,6 +9,8 @@ from ..control.deviceaccess import DeviceAccess
 PYAMLCLASS = "LinearMagnetModel"
 
 class ConfigModel(BaseModel):
+
+    model_config = ConfigDict(arbitrary_types_allowed=True,extra="forbid")
 
     curve: Curve
     """Curve object used for interpolation"""

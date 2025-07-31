@@ -1,4 +1,4 @@
-from pydantic import BaseModel
+from pydantic import BaseModel,ConfigDict
 
 import numpy as np
 from ..configuration.curve import Curve
@@ -11,6 +11,8 @@ PYAMLCLASS = "LinearCFMagnetModel"
 
 
 class ConfigModel(BaseModel):
+
+    model_config = ConfigDict(arbitrary_types_allowed=True,extra="forbid")
 
     multipoles: list[str]
     """List of supported functions: A0,B0,A1,B1,etc (i.e. [B0,A1,B2])"""

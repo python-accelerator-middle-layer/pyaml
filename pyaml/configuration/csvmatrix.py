@@ -1,7 +1,7 @@
 """
 Class for load CSV matrix
 """
-from pydantic import BaseModel,Field
+from pydantic import BaseModel,ConfigDict
 from ..configuration import get_root_folder
 from pathlib import Path
 
@@ -13,6 +13,8 @@ from .matrix import Matrix
 PYAMLCLASS = "CSVMatrix"
 
 class ConfigModel(BaseModel):
+
+    model_config = ConfigDict(arbitrary_types_allowed=True,extra="forbid")
 
     file: str
     """CSV file that contains the matrix"""

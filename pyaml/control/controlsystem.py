@@ -6,7 +6,7 @@ from ..control.abstract_impl import RWHardwareScalar,RWHardwareArray,RWStrengthS
 from ..magnet.magnet import Magnet
 from ..magnet.cfm_magnet import CombinedFunctionMagnet
 
-class ControlSystem(BaseModel,ElementHolder,metaclass=ABCMeta):
+class ControlSystem(ElementHolder,metaclass=ABCMeta):
     """
     Abstract class providing access to a control system float variable
     """

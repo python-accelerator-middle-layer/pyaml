@@ -1,6 +1,8 @@
-from pydantic import BaseModel
+from pydantic import BaseModel,ConfigDict
 
 class ElementModel(BaseModel):
+
+    model_config = ConfigDict(arbitrary_types_allowed=True,extra="forbid")
 
     name : str
     """Element name"""

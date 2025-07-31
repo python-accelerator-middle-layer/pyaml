@@ -13,11 +13,11 @@ PYAMLCLASS = "Instrument"
 
 class ConfigModel(BaseModel):
 
-    model_config = ConfigDict(arbitrary_types_allowed=True)
+    model_config = ConfigDict(arbitrary_types_allowed=True,extra="forbid")
 
     name: str
     """Instrument name"""
-    energy: float = None
+    energy: float
     """Instrument nominal energy, for ramped machine, this value can be dynamically set"""
     controls: list[ControlSystem] = None
     """List of control system used, an instrument can access several control systems"""

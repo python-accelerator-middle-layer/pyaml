@@ -1,5 +1,5 @@
 import numpy as np
-from pydantic import BaseModel
+from pydantic import BaseModel,ConfigDict
 from scipy.interpolate import make_smoothing_spline
 
 from .model import MagnetModel
@@ -10,6 +10,8 @@ from ..control.deviceaccess import DeviceAccess
 PYAMLCLASS = "SplineMagnetModel"
 
 class ConfigModel(BaseModel):
+
+    model_config = ConfigDict(arbitrary_types_allowed=True,extra="forbid")
 
     curve: Curve
     """Curve object used for interpolation"""

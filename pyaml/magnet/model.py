@@ -1,9 +1,7 @@
 from abc import ABCMeta, abstractmethod
-from pydantic import BaseModel
 import numpy as np
-from typing import Any
 
-class MagnetModel(BaseModel,metaclass=ABCMeta):
+class MagnetModel(metaclass=ABCMeta):
     """
     Abstract class providing strength to coil current conversion and access to underlying power supplies
     """

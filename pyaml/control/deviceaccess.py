@@ -2,10 +2,9 @@ from abc import ABCMeta, abstractmethod
 from typing import Union
 
 import numpy.typing as npt
-from pydantic import BaseModel
 from .readback_value import Value
 
-class DeviceAccess(BaseModel,metaclass=ABCMeta):
+class DeviceAccess(metaclass=ABCMeta):
     """
     Abstract class providing access to a control system float variable
     """
