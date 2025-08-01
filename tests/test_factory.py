@@ -1,6 +1,6 @@
 import pytest
 from pyaml import PyAMLConfigException
-from pyaml.configuration.factory import depthFirstBuild
+from pyaml.configuration.factory import Factory
 from pyaml.pyaml import PyAML, pyaml
 from tests.conftest import MockElement
 
@@ -11,7 +11,7 @@ def test_factory_build_default():
         "type": "mock_module",
         "name": "simple"
     }
-    obj = depthFirstBuild(data)
+    obj = Factory.depth_first_build(data)
     assert isinstance(obj, MockElement)
     assert obj.name == "simple"
 
@@ -23,7 +23,7 @@ def test_factory_with_custom_strategy():
         "name": "injected",
         "custom": True
     }
-    obj = depthFirstBuild(data)
+    obj = Factory.depth_first_build(data)
     assert isinstance(obj, MockElement)
     assert obj.name == "custom_injected"
 

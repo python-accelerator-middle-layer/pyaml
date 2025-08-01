@@ -1,5 +1,5 @@
 from pyaml.pyaml import pyaml,PyAML
-from pyaml.configuration.factory import clear
+from pyaml.configuration.factory import Factory
 from pyaml.instrument import Instrument
 from pyaml.lattice.element_holder import MagnetType
 from pyaml.magnet.model import MagnetModel
@@ -37,4 +37,4 @@ def test_arrays():
     assert(np.abs(o[2] - 3.62843295e-05)<1e-10)
     assert(np.abs(o[3] + 6.06571010e-06)<1e-10)
 
-    clear()
+    Factory.clear()

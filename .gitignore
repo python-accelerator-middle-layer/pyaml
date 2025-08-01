@@ -12,6 +12,7 @@ __pycache__/
 
 # Private test
 tests/jlp*.py
+tests/jlp*.yaml
 
 # Distribution / packaging
 .Python

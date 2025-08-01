@@ -4,7 +4,6 @@ Magnet array configuration
 
 import numpy as np
 from pydantic import BaseModel
-from ..configuration.factory import get_element
 from ..lattice.element_holder import ElementHolder
 
 class ArrayModel(BaseModel):

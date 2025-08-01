@@ -144,7 +144,7 @@ class PyAMLFactory:
 
       elif isinstance(d,dict):
         for key, value in d.items():
-            if( not key == "__fieldlocations__"):
+            if not key == "__fieldlocations__":
                 if isinstance(value,dict) or isinstance(value,list):
                     try:
                         obj = self.depth_first_build(value)
@@ -182,11 +182,4 @@ class PyAMLFactory:
     def clear(self):
         self._elements.clear()
 
-factory = PyAMLFactory()
-
-# For backward compatibility
-buildObject = factory.build_object
-depthFirstBuild = factory.depth_first_build
-register_element = factory.register_element
-get_element = factory.get_element
-clear = factory.clear
+Factory = PyAMLFactory()

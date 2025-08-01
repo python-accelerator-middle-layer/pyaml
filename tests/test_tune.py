@@ -2,7 +2,7 @@ from pyaml.pyaml import pyaml,PyAML
 from pyaml.instrument import Instrument
 from pyaml.lattice.element_holder import MagnetType
 from pyaml.arrays.magnet_array import MagnetArray
-from pyaml.configuration.factory import clear
+from pyaml.configuration.factory import Factory
 import numpy as np
 import at
 import pytest
@@ -53,4 +53,4 @@ def test_tune(install_test_package):
         quadForTuneLive.strengths.set(strs)
 
 
-    clear()
+    Factory.clear()
