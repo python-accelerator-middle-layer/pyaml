@@ -46,7 +46,6 @@ class PyAMLFactory:
             if isinstance(e,ValidationError):
                 # Handle pydantic errors
                 for err in e.errors():
-                    print(err)
                     msg = err['msg']
                     field = ""
                     if len(err['loc'])==2:
@@ -126,8 +125,6 @@ class PyAMLFactory:
 
     def depth_first_build(self, d):
       """Main factory function (Depth-first factory)"""
-      #print(json.dumps(d,indent=2))
-      #quit()
 
       if isinstance(d,list):
           # list can be a list of objects or a list of native types
