@@ -5,7 +5,7 @@ from threading import Lock
 from .config_exception import PyAMLConfigException
 from ..exception import PyAMLException
 from ..lattice.element import Element
-
+from pydantic import ValidationError
 
 class BuildStrategy:
     def can_handle(self, module: object, config_dict: dict) -> bool:
@@ -41,24 +41,50 @@ class PyAMLFactory:
         """Register a plugin-based strategy for object creation."""
         self._strategies.remove(strategy)
 
+    def handle_build_error(self, e, type_str:str, location_str:str, field_locations:dict):
+            globalMessage = ""
+            if isinstance(e,ValidationError):
+                # Handle pydantic errors
+                for err in e.errors():
+                    print(err)
+                    msg = err['msg']
+                    field = ""
+                    if len(err['loc'])==2:
+                        field, fieldIdx = err['loc']
+                        message = f"'{field}.{fieldIdx}': {msg}"
+                    else:
+                        field = err['loc'][0]
+                        message = f"'{field}': {msg}"
+                    if field in field_locations:
+                        file, line, col = field_locations[field]
+                        loc = f"{file} at line {line}, colum {col}"
+                        message += f" {loc}"
+                    globalMessage += message
+                    globalMessage += ", "
+            if len(globalMessage)==0:
+                # TODO: improve location for arrays
+                globalMessage = str(e)
+            raise PyAMLException(f"{globalMessage} for object: '{type_str}' {location_str}") from e
+
     def build_object(self, d:dict):
         """Build an object from the dict"""
         location = d.pop('__location__', None)
+        field_locations = d.pop('__fieldlocations__', None)
         location_str = ""
         if location:
-            line, col = location
-            location_str = f" at line {line}, column {col}."
+            file, line, col = location
+            location_str = f"{file} at line {line}, column {col}."
 
         if not isinstance(d,dict):
-            raise PyAMLException(f"Unexpected object {str(d)}{location_str}")
+            raise PyAMLException(f"Unexpected object {str(d)} {location_str}")
         if not "type" in d:
-            raise PyAMLException(f"No type specified for {str(type(d))}:{str(d)}{location_str}")
+            raise PyAMLException(f"No type specified for {str(type(d))}:{str(d)} {location_str}")
         type_str = d.pop("type")
 
         try:
             module = importlib.import_module(type_str)
         except ModuleNotFoundError as ex:
-            raise PyAMLException(f"Module referenced in type cannot be founded: '{type_str}'{location_str}") from ex
+            raise PyAMLException(f"Module referenced in type cannot be founded: '{type_str}' {location_str}") from ex
 
         # Try plugin strategies first
         for strategy in self._strategies:
@@ -68,18 +94,18 @@ class PyAMLFactory:
                     self.register_element(obj)
                     return obj
             except Exception as e:
-                raise PyAMLException(f"Custom strategy failed{location_str}") from e
+                raise PyAMLException(f"Custom strategy failed {location_str}") from e
 
         # Default loading strategy
         # Get the config object
         config_cls = getattr(module, "ConfigModel", None)
         if config_cls is None:
-            raise PyAMLException(f"ConfigModel class '{type_str}.ConfigModel' not found{location_str}")
+            raise PyAMLException(f"ConfigModel class '{type_str}.ConfigModel' not found {location_str}")
 
         # Get the class name
         cls_name = getattr(module, "PYAMLCLASS", None)
         if cls_name is None:
-            raise PyAMLException(f"PYAMLCLASS definition not found in '{type_str}'{location_str}")
+            raise PyAMLException(f"PYAMLCLASS definition not found in '{type_str}' {location_str}")
 
         try:
 
@@ -96,11 +122,12 @@ class PyAMLFactory:
             return obj
 
         except Exception as e:
-            raise PyAMLException(f'{type_str}.{cls_name}') from e
-
+            self.handle_build_error(e,type_str,location_str,field_locations)
 
     def depth_first_build(self, d):
       """Main factory function (Depth-first factory)"""
+      #print(json.dumps(d,indent=2))
+      #quit()
 
       if isinstance(d,list):
           # list can be a list of objects or a list of native types
@@ -120,15 +147,16 @@ class PyAMLFactory:
 
       elif isinstance(d,dict):
         for key, value in d.items():
-            if isinstance(value,dict) or isinstance(value,list):
-                try:
-                    obj = self.depth_first_build(value)
-                    # Replace the inner dict by the object itself
-                    d[key]=obj
-                except PyAMLException as pyaml_ex:
-                    raise PyAMLConfigException(key, pyaml_ex) from pyaml_ex
-                except Exception as ex:
-                    raise PyAMLConfigException(key) from ex
+            if( not key == "__fieldlocations__"):
+                if isinstance(value,dict) or isinstance(value,list):
+                    try:
+                        obj = self.depth_first_build(value)
+                        # Replace the inner dict by the object itself
+                        d[key]=obj
+                    except PyAMLException as pyaml_ex:
+                        raise PyAMLConfigException(key, pyaml_ex) from pyaml_ex
+                    except Exception as ex:
+                        raise PyAMLConfigException(key) from ex
 
         # We are now on leaf (no nested object), we can construct
         try:
