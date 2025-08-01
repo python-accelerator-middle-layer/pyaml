@@ -26,9 +26,10 @@ class RWMagnetStrength(ReadWriteFloatArray):
     def unit(self) -> list[str]:
         [m.strength.unit() for m in self.__magnets]
 
+
 class MagnetArray(list[Magnet]):
     """
-    Class that implements access to a magnet arrays
+    Class that implements access to a magnet array
     """
     def __init__(self,iterable):
         super().__init__(i for i in iterable)
