@@ -17,7 +17,7 @@ class Magnet(Element):
   Class providing access to one magnet of a physical or simulated lattice
   """
 
-  def __init__(self, name:str, hardware:DeviceAccess = None, model:MagnetModel = None):
+  def __init__(self, name:str, linked_elements:list[str], hardware:DeviceAccess = None, model:MagnetModel = None):
     """
     Construct a magnet
 
@@ -30,7 +30,7 @@ class Magnet(Element):
     model : MagnetModel
         Magnet model in charge of comutping coil(s) current
     """
-    super().__init__(name)
+    super().__init__(name, linked_elements)
     self.__model = model
     self.__strength = None
     self.__hardware = None

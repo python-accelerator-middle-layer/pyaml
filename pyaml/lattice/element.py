@@ -6,6 +6,8 @@ class ElementConfigModel(BaseModel):
 
     name : str
     """Element name"""
+    linked_elements: list[str] | None = None
+    """References to other elements by their names"""
 
 class Element(object):
     """
@@ -14,8 +16,9 @@ class Element(object):
     Attributes:
     name (str): The name identifying the element in the configuration file
     """
-    def __init__(self,name:str):
+    def __init__(self,name:str, linked_elements: list[str]):
         self.name: str = name
+        self.linked_elements: list[str] = linked_elements
 
     def set_energy(self,E:float):
         pass

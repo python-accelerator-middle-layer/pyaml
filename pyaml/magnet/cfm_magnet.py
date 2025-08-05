@@ -41,7 +41,7 @@ class CombinedFunctionMagnet(Element):
     """CombinedFunctionMagnet class"""
 
     def __init__(self, cfg: ConfigModel):
-        super().__init__(cfg.name)
+        super().__init__(cfg.name, cfg.linked_elements)
         self._cfg = cfg
         self.model = cfg.model
 

@@ -67,6 +67,9 @@ class Simulator(ElementHolder):
             for m in ms:
               self.add_magnet(str(m),m)
               self.add_magnet(str(m),m)
+          if e.linked_elements:
+              for linked_elem_name in e.linked_elements:
+                  self.get_at_elems(linked_elem_name)
     
     def get_at_elems(self,elementName:str) -> list[at.Element]:
        elementList = [e for e in self.ring if e.FamName == elementName]
