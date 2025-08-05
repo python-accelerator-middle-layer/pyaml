@@ -17,6 +17,14 @@ logger = logging.getLogger(__name__)
 
 accepted_suffixes = [".yaml", ".yml", ".json"]
 
+class PyAMLConfigCyclingException(PyAMLException):
+    
+    def __init__(self, error_filename:str, path_stack:list[Path]):
+        self.error_filename = error_filename
+        parent_file_stack = [parent_path.name for parent_path in path_stack]
+        super().__init__(f"Circular file inclusion of {error_filename}. File list before reaching it: {parent_file_stack}")
+    pass
+
 def load(filename:str, paths_stack:list=None) -> Union[dict,list]:
     """Load recursively a configuration setup"""
     if filename.endswith(".yaml") or filename.endswith(".yml"):
@@ -35,12 +43,12 @@ def hasToExpand(value):
 # Loader base class (nested files expansion)
 class Loader:
 
-    def __init__(self, filename:str, parent_path_stack:list):
+    def __init__(self, filename:str, parent_path_stack:list[Path]):
         self.path:Path = get_root_folder() / filename
-        self.files_stack = []
+        self.files_stack:list[Path] = []
         if parent_path_stack:
             if any(self.path.samefile(parent_path) for parent_path in parent_path_stack):
-                raise PyAMLException(f"A cycle has been detected: {parent_path_stack}")
+                raise PyAMLConfigCyclingException(filename, parent_path_stack)
             self.files_stack.extend(parent_path_stack)
         self.files_stack.append(self.path)
 
@@ -48,10 +56,22 @@ class Loader:
     # Recursively expand a dict
     def expand_dict(self,d:dict):
         for key, value in d.items():
-            if hasToExpand(value):
-                d[key] = load(value, self.files_stack)
-            else:
-                self.expand(value)
+            try:
+                if hasToExpand(value):
+                    d[key] = load(value, self.files_stack)
+                else:
+                    self.expand(value)
+            except PyAMLConfigCyclingException as pyaml_ex:
+                location = d.pop('__location__', None)
+                field_locations = d.pop('__fieldlocations__', None)
+                location_str = ""
+                if location:
+                    file, line, col = location
+                    if field_locations and key in field_locations:
+                        location = field_locations[key]
+                        file, line, col = location
+                    location_str = f" in {file} at line {line}, column {col}"
+                raise PyAMLException(f"Circular file inclusion of {pyaml_ex.error_filename}{location_str}") from pyaml_ex
 
     # Recursively expand a list
     def expand_list(self,l:list):

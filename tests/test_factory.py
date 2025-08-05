@@ -47,4 +47,6 @@ def test_error_cycles(test_file):
     with pytest.raises(PyAMLException) as exc:
         ml: PyAML = pyaml(test_file)
 
-    assert "A cycle has been detected" in str(exc.value)
+    assert "Circular file inclusion of " in str(exc.value)
+    if not test_file.endswith(".json"):
+        assert "at line 23" in str(exc.value)
