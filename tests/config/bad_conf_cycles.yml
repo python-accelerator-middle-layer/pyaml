@@ -1,0 +1,26 @@
+type: pyaml.pyaml
+instruments:
+  - type: pyaml.instrument
+    name: sr
+    energy: 6e9
+    simulators:
+      - type: pyaml.lattice.simulator
+        lattice: sr/lattices/ebs.mat
+        name: design
+    data_folder: /data/store
+    arrays:
+      - type: pyaml.arrays.hcorrector
+        name: HCORR
+        elements:
+          - SH1A-C01-H
+          - SH1A-C02-H
+      - type: pyaml.arrays.vcorrector
+        name: VCORR
+        elements:
+          - SH1A-C01-V
+          - SH1A-C02-V
+    devices:
+      - ../config/bad_conf_cycles.yml # Cycle here
+      - sr/quadrupoles/QF1AC01.yaml
+      - sr/correctors/SH1AC01.yaml
+      - sr/correctors/SH1AC02.yaml

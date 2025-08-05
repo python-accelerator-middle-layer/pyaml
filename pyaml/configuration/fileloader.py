@@ -15,43 +15,69 @@ from .. import PyAMLException
 
 logger = logging.getLogger(__name__)
 
-#TODO
-#Implement cycle detection in case of wrong yaml/json link that creates a cycle
+accepted_suffixes = [".yaml", ".yml", ".json"]
 
-def load(filename:str) -> Union[dict,list]:
+class PyAMLConfigCyclingException(PyAMLException):
+    
+    def __init__(self, error_filename:str, path_stack:list[Path]):
+        self.error_filename = error_filename
+        parent_file_stack = [parent_path.name for parent_path in path_stack]
+        super().__init__(f"Circular file inclusion of {error_filename}. File list before reaching it: {parent_file_stack}")
+    pass
+
+def load(filename:str, paths_stack:list=None) -> Union[dict,list]:
     """Load recursively a configuration setup"""
     if filename.endswith(".yaml") or filename.endswith(".yml"):
-        l = YAMLLoader(filename)
+        l = YAMLLoader(filename, paths_stack)
     elif filename.endswith(".json"):
-        l = JSONLoader(filename)
+        l = JSONLoader(filename, paths_stack)
     else:
         raise PyAMLException(f"{filename} File format not supported (only .yaml .yml or .json)")
-    return l.load(filename)
+    return l.load()
+
+# Expand condition
+def hasToExpand(value):
+    return isinstance(value,str) and any(value.endswith(suffix) for suffix in accepted_suffixes)
+
 
 # Loader base class (nested files expansion)
 class Loader:
 
-    def __init__(self, filename:str):
-        self.suffixes = []
+    def __init__(self, filename:str, parent_path_stack:list[Path]):
         self.path:Path = get_root_folder() / filename
+        self.files_stack:list[Path] = []
+        if parent_path_stack:
+            if any(self.path.samefile(parent_path) for parent_path in parent_path_stack):
+                raise PyAMLConfigCyclingException(filename, parent_path_stack)
+            self.files_stack.extend(parent_path_stack)
+        self.files_stack.append(self.path)
 
-    # Expand condition
-    def hasToExpand(self,value):
-        return isinstance(value,str) and any(value.endswith(suffix) for suffix in self.suffixes)
 
     # Recursively expand a dict
     def expand_dict(self,d:dict):
         for key, value in d.items():
-            if self.hasToExpand(value):
-                d[key] = load(value)
-            else:
-                self.expand(value)
+            try:
+                if hasToExpand(value):
+                    d[key] = load(value, self.files_stack)
+                else:
+                    self.expand(value)
+            except PyAMLConfigCyclingException as pyaml_ex:
+                location = d.pop('__location__', None)
+                field_locations = d.pop('__fieldlocations__', None)
+                location_str = ""
+                if location:
+                    file, line, col = location
+                    if field_locations and key in field_locations:
+                        location = field_locations[key]
+                        file, line, col = location
+                    location_str = f" in {file} at line {line}, column {col}"
+                raise PyAMLException(f"Circular file inclusion of {pyaml_ex.error_filename}{location_str}") from pyaml_ex
 
     # Recursively expand a list
     def expand_list(self,l:list):
         for idx,value in enumerate(l):
-            if self.hasToExpand(value):
-                l[idx] = load(value)
+            if hasToExpand(value):
+                l[idx] = load(value, self.files_stack)
             else:
                 self.expand(value)
 
@@ -65,7 +91,7 @@ class Loader:
 
     # Load a file
     def load(self) -> Union[dict,list]:
-        raise Exception(str(self.path) + ": load() method not implemented")
+        raise PyAMLException(str(self.path) + ": load() method not implemented")
 
 class SafeLineLoader(SafeLoader):
 
@@ -93,22 +119,24 @@ class SafeLineLoader(SafeLoader):
 
 # YAML loader
 class YAMLLoader(Loader):
-    
-    def load(self,fileName:str) -> Union[dict,list]:
-        self.path:Path = get_root_folder() / fileName
-        self.suffixes = [".yaml",".yml"]
+    def __init__(self, filename: str, parent_paths_stack:list):
+        super().__init__(filename, parent_paths_stack)
+
+    def load(self) -> Union[dict,list]:
+        logger.log(logging.DEBUG, f"Loading YAML file '{self.path}'")
         with open(self.path) as file:
             try:
                 return self.expand(yaml.load(file,Loader=SafeLineLoader))
             except yaml.YAMLError as e:
-                raise Exception(self.path + ": " + str(e))
+                raise PyAMLException(str(self.path) + ": " + str(e)) from e
 
 # JSON loader
 class JSONLoader(Loader):
+    def __init__(self, filename: str, parent_paths_stack:list):
+        super().__init__(filename, parent_paths_stack)
 
-    def  load(self,fileName:str) -> Union[dict,list]:
+    def  load(self) -> Union[dict,list]:
         logger.log(logging.DEBUG, f"Loading JSON file '{self.path}'")
-        self.suffixes = [".json"]
         with open(self.path) as file:
             try:
                 return self.expand(json.load(file))
