@@ -10,13 +10,23 @@ class DeviceAccessList(metaclass=ABCMeta):
     """
 
     @abstractmethod
-    def name(self) -> list[str]:
+    def names(self) -> list[str]:
         """Return the names of the variables"""
         pass
 
     @abstractmethod
-    def measure_name(self) -> list[str]:
+    def set_names(self,names:list[str]):
+        """Set the names of the variables"""
+        pass
+
+    @abstractmethod
+    def measure_names(self) -> list[str]:
         """Return the names of the measures"""
+        pass
+
+    @abstractmethod
+    def set_measuresnames(self,names:list[str]):
+        """Set the names of the variables"""
         pass
 
     @abstractmethod
