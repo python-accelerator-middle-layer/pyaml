@@ -11,12 +11,12 @@ class DeviceAccessList(metaclass=ABCMeta):
     """
 
     @abstractmethod
-    def add_devices(devices:DeviceAccess | list[DeviceAccess]):
+    def add_devices(self, devices:DeviceAccess | list[DeviceAccess]):
         """Add a DeviceAccess to this list"""        
         pass
 
     @abstractmethod
-    def get_devices() -> DeviceAccess | list[DeviceAccess]:
+    def get_devices(self) -> DeviceAccess | list[DeviceAccess]:
         """Get the DeviceAccess list"""        
         pass
 
