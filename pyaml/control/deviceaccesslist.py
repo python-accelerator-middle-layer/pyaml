@@ -5,7 +5,7 @@ import numpy as np
 from .readback_value import Value
 from .deviceaccess import DeviceAccess
 
-class DeviceAccessList(metaclass=ABCMeta):
+class DeviceAccessList(list[DeviceAccess],metaclass=ABCMeta):
     """
     Abstract class providing access to a list of control system float variable
     """
