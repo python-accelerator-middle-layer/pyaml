@@ -1,6 +1,7 @@
 from abc import ABCMeta, abstractmethod
 import numpy as np
 import numpy.typing as npt
+from ..control.deviceaccess import DeviceAccess
 
 class MagnetModel(metaclass=ABCMeta):
     """
@@ -98,6 +99,18 @@ class MagnetModel(metaclass=ABCMeta):
         ----------
         hardware_values : npt.NDArray[np.float64]
             Array of hardware values (i.e. currents or voltages)  
+        """
+        pass
+
+    @abstractmethod
+    def get_devices(self) -> list[DeviceAccess]:
+        """
+        Get device handles
+        
+        Returns
+        -------
+        list[DeviceAccess]
+            Array of DeviceAcess
         """
         pass
 

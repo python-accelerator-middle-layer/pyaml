@@ -153,5 +153,8 @@ class LinearCFMagnetModel(MagnetModel):
         for idx, p in enumerate(self._cfg.powerconverters):
             p.set(currents[idx])
 
+    def get_devices(self) -> list[DeviceAccess]:
+        return self._cfg.powerconverters
+
     def set_magnet_rigidity(self, brho: np.double):
         self._brho = brho

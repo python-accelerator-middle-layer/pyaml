@@ -69,6 +69,9 @@ class LinearMagnetModel(MagnetModel):
     def send_harware_values(self, currents: np.array):
         self.__ps.set(currents[0])
 
+    def get_devices(self) -> list[DeviceAccess]:
+        return [self.__ps]
+
     def set_magnet_rigidity(self, brho: np.double):
         self.__brho = brho
 
