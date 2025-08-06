@@ -3,6 +3,7 @@ from abc import ABCMeta, abstractmethod
 import numpy.typing as npt
 import numpy as np
 from .readback_value import Value
+from .deviceaccess import DeviceAccess
 
 class DeviceAccessList(metaclass=ABCMeta):
     """
@@ -10,23 +11,13 @@ class DeviceAccessList(metaclass=ABCMeta):
     """
 
     @abstractmethod
-    def names(self) -> list[str]:
-        """Return the names of the variables"""
+    def add_devices(devices:DeviceAccess | list[DeviceAccess]):
+        """Add a DeviceAccess to this list"""        
         pass
 
     @abstractmethod
-    def set_names(self,names:list[str]):
-        """Set the names of the variables"""
-        pass
-
-    @abstractmethod
-    def measure_names(self) -> list[str]:
-        """Return the names of the measures"""
-        pass
-
-    @abstractmethod
-    def set_measuresnames(self,names:list[str]):
-        """Set the names of the variables"""
+    def get_devices() -> DeviceAccess | list[DeviceAccess]:
+        """Get the DeviceAccess list"""        
         pass
 
     @abstractmethod
@@ -45,7 +36,7 @@ class DeviceAccessList(metaclass=ABCMeta):
         pass
 
     @abstractmethod
-    def readback(self) -> npt.NDArray[Value]:
+    def readback(self) -> np.array:
         """Return the measured variables"""
         pass
 
