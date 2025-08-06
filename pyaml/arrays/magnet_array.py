@@ -32,6 +32,8 @@ class RWMagnetStrength(ReadWriteFloatArray):
             for idx,m in enumerate(self.__magnets):
                 m.strength.set(value[idx])
         else:
+            # TODO: if the array does not contains some mappings to combined function 
+            # magnets, the algorithm below can be optimized
             allHardwareValues = self.aggregator.get() # Read all hardware setpoints
             newHardwareValues = []
             mIdx = 0
@@ -92,22 +94,48 @@ class MagnetArray(list[Magnet]):
     """
     Class that implements access to a magnet array
     """
+
     def __init__(self,iterable):
+        """
+        Construct a magnet array
+
+        Parameters
+        ----------
+        iterable
+            Magnet iterator
+        """
         super().__init__(i for i in iterable)
         self.__rwstrengths = RWMagnetStrength(iterable)
         self.__rwhardwares = RWMagnetHardware(iterable)
 
-    # Set the aggregator (Control system only)
     def set_aggregator(self,agg:DeviceAccessList,devices_nb:list[int]):
+        """
+        Set an aggregator for this array.
+        Aggregator allow fast control system access by parallelizing 
+        call to underlying hardware.
+
+        Parameters
+        ----------
+        agg : DeviceAccessList
+            List of device access
+        devices_nb : list[int]
+            Number of devices needed by the magnet #idx.        
+        """
         self.__rwstrengths.set_aggregator(agg,devices_nb)
         self.__rwhardwares.set_aggregator(agg,devices_nb)
 
-    @property
+    @property        
     def strengths(self) -> RWMagnetStrength:
+        """
+        Give access to strength of each magnet of this array
+        """
         return self.__rwstrengths
 
     @property
     def hardwares(self) -> RWMagnetHardware:
+        """
+        Give access to hardware value of each magnet of this array
+        """
         return self.__rwhardwares
 
 

@@ -21,16 +21,15 @@ class ArrayModel(BaseModel):
 
 class Array(object):
     """
-    Class that implements access to arrays (families)
+    Class that implements configuration for access to arrays (families)
     """
-
     def __init__(self, cfg: ArrayModel):
         self._cfg = cfg
 
     def fill_array(self,holder:ElementHolder):
         raise "Array.fill_array() is not subclassed"
     
-    def init_agregator(self,holder:ElementHolder):
+    def init_aggregator(self,holder:ElementHolder):
         if(len(self._cfg.aggregator)==0):
             # Construct dynamically aggregator
             mag = holder.get_magnets(self._cfg.name)
