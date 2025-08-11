@@ -15,7 +15,7 @@ class RWHardwareScalar(abstract.ReadFloatScalar):
         return self.model.read_hardware_values()[0]
     
     def set(self, value:float):
-        self.model.send_harware_values([value])
+        self.model.send_hardware_values([value])
         
     def unit(self) -> str:
         return self.model.get_hardware_units()[0]
@@ -41,7 +41,7 @@ class RWStrengthScalar(abstract.ReadWriteFloatScalar):
     # Sets the value
     def set(self, value:float):
         current = self.__model.compute_hardware_values([value])
-        self.__model.send_harware_values(current)
+        self.__model.send_hardware_values(current)
 
     # Sets the value and wait that the read value reach the setpoint
     def set_and_wait(self, value:float):
@@ -69,7 +69,7 @@ class RWHardwareArray(abstract.ReadWriteFloatArray):
 
     # Sets the value
     def set(self, value:np.array):
-        self.model.send_harware_values(value)
+        self.model.send_hardware_values(value)
         
     # Sets the value and waits that the read value reach the setpoint
     def set_and_wait(self, value:np.array):
@@ -98,7 +98,7 @@ class RWStrengthArray(abstract.ReadWriteFloatArray):
     # Sets the value
     def set(self, value:np.array):
         cur = self.model.compute_hardware_values(value)
-        self.model.send_harware_values(cur)
+        self.model.send_hardware_values(cur)
         
     # Sets the value and waits that the read value reach the setpoint
     def set_and_wait(self, value:np.array):

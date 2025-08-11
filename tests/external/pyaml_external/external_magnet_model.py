@@ -66,7 +66,7 @@ class ExternalMagnetModel(MagnetModel):
         pass
 
     # Send power supply current(s) to control system
-    def send_harware_values(self,currents:np.array):
+    def send_hardware_values(self,currents:np.array):
         self._ps.set(currents)
         pass
 
