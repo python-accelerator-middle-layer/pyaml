@@ -70,6 +70,13 @@ class ExternalMagnetModel(MagnetModel):
         self._ps.set(currents)
         pass
 
+    def get_devices(self) -> list[DeviceAccess]:
+        return [self._ps,self.id]
+    
+    def hasHardwareMapping(self) -> bool:
+        # No trivial conversion between strength and hardware unit
+        return False
+
     # Set magnet rigidity
     def set_magnet_rigidity(self,brho:np.double):
         pass

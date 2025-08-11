@@ -19,7 +19,10 @@ class RWHardwareScalar(abstract.ReadFloatScalar):
         
     def unit(self) -> str:
         return self.model.get_hardware_units()[0]
-    
+
+    def index(self) -> int:
+        return 0
+
 #------------------------------------------------------------------------------
 
 class RWStrengthScalar(abstract.ReadWriteFloatScalar):
@@ -47,6 +50,9 @@ class RWStrengthScalar(abstract.ReadWriteFloatScalar):
     # Gets the unit of the value
     def unit(self) -> str:
         return self.__model.get_strength_units()[0]
+
+    def index(self) -> int:
+        return 0
 
 #------------------------------------------------------------------------------
 

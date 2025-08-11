@@ -1,6 +1,7 @@
 from abc import ABCMeta, abstractmethod
 import numpy as np
 import numpy.typing as npt
+from ..control.deviceaccess import DeviceAccess
 
 class MagnetModel(metaclass=ABCMeta):
     """
@@ -102,8 +103,20 @@ class MagnetModel(metaclass=ABCMeta):
         pass
 
     @abstractmethod
+    def get_devices(self) -> list[DeviceAccess]:
+        """
+        Get device handles
+        
+        Returns
+        -------
+        list[DeviceAccess]
+            Array of DeviceAcess
+        """
+        pass
+
+    @abstractmethod
     def set_magnet_rigidity(self, brho: np.double):
-        """        
+        """
         Set magnet rigidity
 
         Parameters
@@ -112,3 +125,15 @@ class MagnetModel(metaclass=ABCMeta):
             Magnet rigidity used to calculate power supply setpoints
         """
         pass
+
+
+    def hasHardwareMapping(self) -> bool:
+        """
+        Tells if the model allows to work in hardware unit.
+
+        Returns
+        ----------
+        bool
+            True if the model supports hardware unit
+        """
+        return True

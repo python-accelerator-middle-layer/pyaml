@@ -5,7 +5,7 @@ Instrument class
 from .control.controlsystem import ControlSystem
 from .lattice.element import Element
 from .lattice.simulator import Simulator
-from .arrays.array import Array
+from .arrays.array import ArrayConfig
 from pydantic import BaseModel,ConfigDict
 
 # Define the main class name for this module
@@ -25,7 +25,7 @@ class ConfigModel(BaseModel):
     """Simulator list"""
     data_folder: str
     """Data folder"""
-    arrays: list[Array] = None
+    arrays: list[ArrayConfig] = None
     """Element family"""
     devices: list[Element]
     """Element list"""
@@ -43,7 +43,7 @@ class Instrument(object):
             for c in cfg.controls:
                 if c.name() == "live":
                     self.__live = c
-                    c.init_cs()
+                c.init_cs()
                 c.fill_device(cfg.devices)
 
         if cfg.simulators is not None:
@@ -60,6 +60,7 @@ class Instrument(object):
                 if cfg.controls is not None:
                     for c in cfg.controls:
                         a.fill_array(c)
+                        a.init_aggregator(c)
 
         if cfg.energy is not None:
             self.set_energy(cfg.energy)

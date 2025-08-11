@@ -1,19 +1,13 @@
-from .array import ArrayModel
-from .array import Array
+from .array import ArrayConfigModel
+from .array import MagnetArrayConfig
 from ..lattice.element_holder import ElementHolder,MagnetType
 
 # Define the main class name for this module
 PYAMLCLASS = "Quadrupole"
 
-class ConfigModel(ArrayModel):...
+class ConfigModel(ArrayConfigModel):...
 
-class Quadrupole(Array):
-    """
-    Class that implements access to arrays (families)
-    """
-    def __init__(self, cfg: ArrayModel):
-        super().__init__(cfg)
-
+class Quadrupole(MagnetArrayConfig):
+    
     def fill_array(self,holder:ElementHolder):
         holder.fill_magnet_array(MagnetType.QUADRUPOLE,self._cfg.name,self._cfg.elements)
-
