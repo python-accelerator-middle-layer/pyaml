@@ -3,12 +3,12 @@ from .array import MagnetArrayConfig
 from ..lattice.element_holder import ElementHolder,MagnetType
 
 # Define the main class name for this module
-PYAMLCLASS = "HCorrector"
+PYAMLCLASS = "SkewQuad"
 
 class ConfigModel(ArrayConfigModel):...
 
-class HCorrector(MagnetArrayConfig):
+class SkewQuad(MagnetArrayConfig):
 
     def fill_array(self,holder:ElementHolder):
-        holder.fill_magnet_array(MagnetType.HCORRECTOR,self._cfg.name,self._cfg.elements)
+        holder.fill_magnet_array(MagnetType.SKEWQUAD,self._cfg.name,self._cfg.elements)
 

@@ -8,14 +8,15 @@ instruments:
         lattice: sr/lattices/ebs.mat
         name: design
     controls:
-      - type: tango.pyaml.tango_controlsystem
+      - type: tango.pyaml.controlsystem
         tango_host: ebs-simu-3:10000
         name: live
-        debug_level: 0
     data_folder: /data/store
     arrays:
       - type: pyaml.arrays.quadrupole
         name: QForTune
+        aggregator:
+          type: tango.pyaml.multi_attribute
         elements:
           - QD2E-C04
           - QD2A-C05

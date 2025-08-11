@@ -26,5 +26,5 @@ class Curve(metaclass=ABCMeta):
             Curve to be inverted
         """
         __curve = curve
-        __sortedCurve = __curve[__curve[:,1].argsort()[:-1]]
+        __sortedCurve = __curve[__curve[:,1].argsort()]
         return __sortedCurve[:,[1,0]]

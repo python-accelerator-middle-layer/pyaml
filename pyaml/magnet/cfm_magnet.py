@@ -60,7 +60,7 @@ class CombinedFunctionMagnet(Element):
                 raise Exception(m[0] + " not found in underlying magnet model")
             self.polynoms.append(_fmap[m[0]].polynom)
 
-    def attach(self, strengths: abstract.ReadWriteFloatArray, currents: abstract.ReadWriteFloatArray) -> list[Magnet]:
+    def attach(self, strengths: abstract.ReadWriteFloatArray, hardwares: abstract.ReadWriteFloatArray) -> list[Magnet]:
 
             # Construct a single function magnet for each multipole of this combined function magnet        
             l = []
@@ -68,8 +68,8 @@ class CombinedFunctionMagnet(Element):
                 args = {"name":m[1]}
                 mclass:Magnet = _fmap[m[0]](ElementConfigModel(**args))
                 strength = RWMapper(strengths,idx)
-                current = RWMapper(currents,idx)
-                l.append(mclass.attach(strength,current))
+                hardware = RWMapper(hardwares,idx) if self.model.hasHardwareMapping() else None
+                l.append(mclass.attach(strength,hardware))
             return l
     
     def set_energy(self,E:float):
