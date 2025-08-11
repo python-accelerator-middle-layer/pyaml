@@ -116,7 +116,7 @@ class MagnetModel(metaclass=ABCMeta):
 
     @abstractmethod
     def set_magnet_rigidity(self, brho: np.double):
-        """        
+        """
         Set magnet rigidity
 
         Parameters
@@ -125,3 +125,15 @@ class MagnetModel(metaclass=ABCMeta):
             Magnet rigidity used to calculate power supply setpoints
         """
         pass
+
+
+    def hasHardwareMapping(self) -> bool:
+        """
+        Tells if the model allows to work in hardware unit.
+
+        Returns
+        ----------
+        bool
+            True if the model supports hardware unit
+        """
+        return True

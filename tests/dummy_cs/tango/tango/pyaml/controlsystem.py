@@ -11,8 +11,7 @@ class ConfigModel(BaseModel):
 
     name: str
     tango_host: str
-    debug_level: int
-
+    debug_level: str=None
 
 class TangoControlSystem(ControlSystem):
     def __init__(self, cfg: ConfigModel):
