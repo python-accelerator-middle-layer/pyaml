@@ -1,7 +1,8 @@
 from pyaml.control import abstract
 from pyaml.magnet.model import MagnetModel
+from pyaml.bpm.bpm_model import BPMModel
 import numpy as np
-
+from numpy.typing import NDArray
 #------------------------------------------------------------------------------
 
 class RWHardwareScalar(abstract.ReadFloatScalar):
@@ -102,6 +103,62 @@ class RWStrengthArray(abstract.ReadWriteFloatArray):
     def unit(self) -> list[str]:
         return self.model.get_strength_units()
 
+#------------------------------------------------------------------------------
 
+class RbpmArray(abstract.ReadFloatArray):
+    """
+    Class providing read access to a BPM array of a control system
+    """
+    def __init__(self, model:BPMModel):
+        self.__model = model
+
+    # Gets the value
+    def get(self) -> np.array:
+        return self.__model.read_hardware_positions()
+
+    # Gets the unit of the value
+    def unit(self) -> list[str]:
+        return self.__model.get_hardware_position_units()
+
+#------------------------------------------------------------------------------
+
+class RWbpmTiltScalar(abstract.ReadFloatScalar):
+    """
+    Class providing read access to a BPM tilt of a control system
+    """
+    def __init__(self, model:BPMModel):
+        self.__model = model
+
+    # Gets the value
+    def get(self) -> float:
+        return self.__model.read_hardware_tilt_value()
+
+    def set(self, value:float):
+        self.__model.set_hardware_tilt_value(value)
+
+    # Gets the unit of the value
+    def unit(self) -> str:
+        return self.__model.get_hardware_angle_unit()
+
+#------------------------------------------------------------------------------
+
+class RWBpmOffsetArray(abstract.ReadWriteFloatArray):
+    """
+    Class providing read write access to a BPM offset of a control system
+    """
+    def __init__(self, model: BPMModel):
+        self.__model = model
+
+    # Gets the value
+    def get(self) -> NDArray[np.float64]:
+        return self.__model.read_hardware_offset_values()
+
+    # Sets the value
+    def set(self, value: NDArray[np.float64]):
+        self.__model.set_hardware_offset_values(value)
+
+    # Gets the unit of the value
+    def unit(self) -> str:
+        return self.__model.get_hardware_position_units()[0]
 
 

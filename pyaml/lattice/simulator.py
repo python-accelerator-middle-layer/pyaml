@@ -4,11 +4,12 @@ from ..configuration import get_root_folder
 from .element import Element
 from pathlib import Path
 from ..magnet.magnet import Magnet
+from pyaml.bpm.bpm import BPM
 from ..magnet.cfm_magnet import CombinedFunctionMagnet
 from ..lattice.abstract_impl import RWHardwareScalar,RWHardwareArray
 from ..lattice.abstract_impl import RWStrengthScalar,RWStrengthArray
 from .element_holder import ElementHolder
-
+from ..lattice.abstract_impl import RWBpmTiltScalar,RWBpmOffsetArray, RBpmArray
 # Define the main class name for this module
 PYAMLCLASS = "Simulator"
 
@@ -67,6 +68,13 @@ class Simulator(ElementHolder):
             for m in ms:
               self.add_magnet(str(m),m)
               self.add_magnet(str(m),m)
+          elif isinstance(e,BPM):
+            # This assumes unique BPM names in the pyAT lattice  
+            tilt = RWBpmTiltScalar(self.get_at_elems(e.name))
+            offsets = RWBpmOffsetArray(self.get_at_elems(e.name))
+            positions = RBpmArray(self.get_at_elems(e.name),self.ring)
+            e.attach(positions, offsets, tilt)
+            self.add_bpm(str(e),e)
     
     def get_at_elems(self,elementName:str) -> list[at.Element]:
        elementList = [e for e in self.ring if e.FamName == elementName]
