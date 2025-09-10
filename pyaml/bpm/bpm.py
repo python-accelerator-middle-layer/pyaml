@@ -1,8 +1,9 @@
 from pyaml.lattice.element import Element, ElementConfigModel
-from pyaml.pyaml.lattice.abstract_impl import RBpmPositionArray, RWBpmOffsetArray, RBpmTiltScalar
+from pyaml.lattice.abstract_impl import RBpmPositionArray, RWBpmOffsetArray, RWBpmTiltScalar
 from ..control.deviceaccess import DeviceAccess
 from ..control import abstract
 from typing import Self
+from pyaml.bpm.bpm_model import BPMModel
 
 PYAMLCLASS = "BPM"
 
@@ -22,7 +23,7 @@ class BPMConfigModel(ElementConfigModel):
         """
         hardware_name: str 
 
-class BPM (Element):
+class BPM(Element):
     """
     Class providing access to one BPM of a physical or simulated lattice
     """
@@ -61,7 +62,8 @@ class BPM (Element):
             raise Exception(f"{str(self)} has no model that supports hardware units")
         return self.__hardware
 
-    def attach(self, positions: RBpmPositionArray , offset: RWBpmOffsetArray, tilt: RBpmTiltScalar) -> Self:
+    def attach(self, positions: RBpmPositionArray , offset: RWBpmOffsetArray,
+               tilt: RWBpmTiltScalar) -> Self:
         # Attach positions, offset and tilt attributes and returns a new
         # reference
         obj = self.__class__(self._cfg)

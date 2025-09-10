@@ -9,7 +9,7 @@ from ..magnet.cfm_magnet import CombinedFunctionMagnet
 from ..lattice.abstract_impl import RWHardwareScalar,RWHardwareArray
 from ..lattice.abstract_impl import RWStrengthScalar,RWStrengthArray
 from .element_holder import ElementHolder
-from ..lattice.abstract_impl import RWBpmTiltScalar,RWBpmOffsetArray, RBpmArray
+from ..lattice.abstract_impl import RWBpmTiltScalar,RWBpmOffsetArray, RBpmPositionArray
 # Define the main class name for this module
 PYAMLCLASS = "Simulator"
 

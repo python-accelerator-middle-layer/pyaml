@@ -1,0 +1,24 @@
+type: pyaml.pyaml
+instruments:
+  - type: pyaml.instrument
+    name: sr
+    energy: 6e9
+    simulators:
+      - type: pyaml.lattice.simulator
+        lattice: sr/lattices/ebs.mat
+        name: design
+    controls:
+      - type: tango.pyaml.controlsystem
+        tango_host: ebs-simu-3:10000
+        name: live
+    data_folder: /data/store
+    devices:
+    - type: pyaml.bpm.bpm
+      name: BPM_C03-02
+      model:
+        type: pyaml.bpm.bpm_tiltoffset_model
+        position_unit: mm
+        tilt_unit: rad
+        offset_unit: mm
+        position_hardware_unit: mm
+        bpm_device: sr/bpm/bpm-c03-02
