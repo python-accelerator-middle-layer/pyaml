@@ -3,15 +3,15 @@ import json
 import numpy as np
 from scipy.constants import speed_of_light
 
-from pyaml.configuration import load,clear,set_root_folder
-from pyaml.configuration import depthFirstBuild
+from pyaml.configuration import load,set_root_folder
+from pyaml.configuration import Factory
 from pyaml.magnet.hcorrector import HCorrector
 from pyaml.magnet.quadrupole import Quadrupole
 from pyaml.magnet.quadrupole import ConfigModel as QuadrupoleConfigModel
 from pyaml.magnet.cfm_magnet import CombinedFunctionMagnet
 from pyaml.control.abstract_impl import RWHardwareScalar,RWStrengthScalar,RWHardwareArray,RWStrengthArray
 
-
+# TODO: Generate JSON pydantic schema for MetaConfigurator
 #def test_json():
 #    print(json.dumps(QuadrupoleConfigModel.model_json_schema(),indent=2))
 
@@ -22,13 +22,13 @@ from pyaml.control.abstract_impl import RWHardwareScalar,RWStrengthScalar,RWHard
 def test_quad_external_model(install_test_package, config_root_dir):
     set_root_folder(config_root_dir)
     cfg_hcorr_yaml = load("sr/custom_magnets/hidcorr.yaml")
-    hcorr_with_external_model: HCorrector = depthFirstBuild(cfg_hcorr_yaml)
+    hcorr_with_external_model: HCorrector = Factory.depth_first_build(cfg_hcorr_yaml)
     strength = RWStrengthScalar(hcorr_with_external_model.model)
     hardware = RWHardwareScalar(hcorr_with_external_model.model)
     ref_corr = hcorr_with_external_model.attach(strength,hardware)
     ref_corr.strength.set(10.0)
     print(ref_corr.strength.get())
-    clear()
+    Factory.clear()
 
 @pytest.mark.parametrize("magnet_file", [
     "sr/quadrupoles/QF1AC01.yaml",
@@ -38,7 +38,7 @@ def test_quad_linear(magnet_file, config_root_dir):
     set_root_folder(config_root_dir)
     cfg_quad = load(magnet_file)
     print(f"Current file: {config_root_dir}/{magnet_file}")
-    quad:Quadrupole = depthFirstBuild(cfg_quad)
+    quad:Quadrupole = Factory.depth_first_build(cfg_quad)
     strength = RWStrengthScalar(quad.model)
     hardware = RWHardwareScalar(quad.model)
     ref_quad = quad.attach(strength,hardware)
@@ -52,7 +52,7 @@ def test_quad_linear(magnet_file, config_root_dir):
     assert( hunit == "A" )
     str = ref_quad.model.compute_strengths([current])
     assert( np.abs(str-0.7962) < 1e-6 )
-    clear()
+    Factory.clear()
 
 @pytest.mark.parametrize("magnet_file", [
     "sr/correctors/SH1AC01.yaml",
@@ -60,7 +60,7 @@ def test_quad_linear(magnet_file, config_root_dir):
 def test_combined_function_magnets(magnet_file, config_root_dir):
     set_root_folder(config_root_dir)
     cfg_sh = load(magnet_file)
-    sh: CombinedFunctionMagnet = depthFirstBuild(cfg_sh)
+    sh: CombinedFunctionMagnet = Factory.depth_first_build(cfg_sh)
     sh.model.set_magnet_rigidity(6e9 / speed_of_light)
     currents = RWHardwareArray(sh.model)
     strengths = RWStrengthArray(sh.model)
@@ -83,4 +83,4 @@ def test_combined_function_magnets(magnet_file, config_root_dir):
     assert( np.abs(str[0]-0.000020) < 1e-8 )
     assert( np.abs(str[1]+0.000015) < 1e-8 )
     assert( np.abs(str[2]-0.000100) < 1e-8 )
-    clear()
+    Factory.clear()

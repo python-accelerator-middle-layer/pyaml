@@ -89,4 +89,8 @@ class RWMapper(ReadWriteFloatScalar):
     # Return the unit
     def unit(self) -> str:
         return self.bind.unit()[self.idx]
+    
+    # Return the mapped index
+    def index(self) -> int:
+        return self.idx
 

@@ -5,7 +5,7 @@ import logging
 
 from pydantic import BaseModel,ConfigDict
 from .instrument import Instrument
-from .configuration.factory import depthFirstBuild
+from .configuration.factory import Factory
 from pyaml.configuration import load,set_root_folder
 import os
 
@@ -45,5 +45,5 @@ def pyaml(filename:str) -> PyAML:
     rootfolder = os.path.abspath(os.path.dirname(filename))
     set_root_folder(rootfolder)
     aml_cfg = load(os.path.basename(filename))
-    aml:PyAML = depthFirstBuild(aml_cfg)
+    aml:PyAML = Factory.depth_first_build(aml_cfg)
     return aml

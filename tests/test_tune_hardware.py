@@ -18,39 +18,34 @@ def test_tune(install_test_package):
     sr.design.get_lattice().disable_6d()
 
     quadForTuneDesign = sr.design.get_magnets("QForTune")
-    quadForTuneLive = sr.live.get_magnets("QForTune")
 
-    # Build tune response matrix
+    # Build tune response matrix (hardware units)
     tune = sr.design.get_lattice().get_tune()
     print(tune)
     tunemat = np.zeros((len(quadForTuneDesign),2))
 
-    for idx,m in enumerate(quadForTuneDesign):
-        str = m.strength.get()
-        m.strength.set(str+1e-4)
+    idx = 0
+    for m in quadForTuneDesign:
+        current = m.hardware.get()
+        m.hardware.set(current+1e-6)
         dq = sr.design.get_lattice().get_tune() - tune
-        tunemat[idx] = dq*1e4
-        m.strength.set(str)
+        tunemat[idx] = dq*1e6
+        m.hardware.set(current)
+        idx += 1
 
     # Compute correction matrix
     correctionmat = np.linalg.pinv(tunemat.T)
 
     # Correct tune
-    strs = quadForTuneDesign.strengths.get()
-    strs += np.matmul(correctionmat,[0.1,0.05]) # Ask for correction [dqx,dqy]
-    quadForTuneDesign.strengths.set(strs)
+    currents = quadForTuneDesign.hardwares.get()
+    currents += np.matmul(correctionmat,[0.1,0.05]) # Ask for correction [dqx,dqy]
+    quadForTuneDesign.hardwares.set(currents)
     newTune = sr.design.get_lattice().get_tune()
-    diffTune = newTune-tune
-    print(diffTune)
+    units = quadForTuneDesign.hardwares.unit()
+    diffTune = newTune - tune
     assert( np.abs(diffTune[0]-0.1) < 1e-3 )
-    assert( np.abs(diffTune[1]-0.05) < 1e-3 )
-
-    if False:
-        # Correct the tune on live (need a Virutal Accelerator)
-        quadForTuneLive = sr.live.get_magnets("QForTune")
-        strs = quadForTuneLive.strengths.get()
-        strs += np.matmul(correctionmat,[0.1,0.05]) # Ask for correction [dqx,dqy]
-        quadForTuneLive.strengths.set(strs)
-
-
+    assert( np.abs(diffTune[1]-0.05) < 1.1e-3 )
+    assert( np.abs(currents[0]-88.04522942) < 1e-8 )
+    assert( np.abs(currents[1]-88.26677735) < 1e-8 )
+    assert( units[0] == 'A' and units[1] == 'A' )
     Factory.clear()

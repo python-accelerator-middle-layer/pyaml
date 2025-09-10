@@ -53,7 +53,7 @@ class ElementHolder(object):
             a.append(self.get_magnet(type,name))
           except Exception as err:
             raise Exception(f"MagnetArray {arrayName} : {err}")
-       self.__MAGNET_ARRAYS[arrayName] = MagnetArray(a)
+       self.__MAGNET_ARRAYS[arrayName] = MagnetArray(arrayName,a)
 
     def get_magnet(self,type:MagnetType,name:str) -> Magnet:
       fName = f"{_mmap[type]}({name})"

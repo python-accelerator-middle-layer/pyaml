@@ -6,7 +6,7 @@ import pathlib
 import numpy as np
 from pyaml.control.readback_value import Value
 from pydantic import BaseModel
-from pyaml.configuration.factory import factory, BuildStrategy, clear
+from pyaml.configuration.factory import Factory,BuildStrategy
 
 
 @pytest.fixture
@@ -149,15 +149,15 @@ def inject_mock_module():
 @pytest.fixture(autouse=True)
 def clear_factory_registry():
     """Clear element registry before/after each test."""
-    clear()
+    Factory.clear()
     yield
-    clear()
+    Factory.clear()
 
 
 @pytest.fixture(autouse=True)
 def register_mock_strategy():
     """Register and unregister mock build strategy."""
     strategy = MockStrategy()
-    factory.register_strategy(strategy)
+    Factory.register_strategy(strategy)
     yield
-    factory.remove_strategy(strategy)
+    Factory.remove_strategy(strategy)
