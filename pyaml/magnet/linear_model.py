@@ -66,7 +66,7 @@ class LinearMagnetModel(MagnetModel):
     def readback_hardware_values(self) -> np.array:
         return [self.__ps.readback()]
 
-    def send_harware_values(self, currents: np.array):
+    def send_hardware_values(self, currents: np.array):
         self.__ps.set(currents[0])
 
     def get_devices(self) -> list[DeviceAccess]:

@@ -91,7 +91,7 @@ class MagnetModel(metaclass=ABCMeta):
         pass
 
     @abstractmethod
-    def send_harware_values(self, hardware_values: npt.NDArray[np.float64]):
+    def send_hardware_values(self, hardware_values: npt.NDArray[np.float64]):
         """
         Send power supply value(s) to control system
         

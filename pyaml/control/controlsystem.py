@@ -49,7 +49,7 @@ class ControlSystem(ElementHolder,metaclass=ABCMeta):
             current = RWHardwareScalar(e.model)
             strength = RWStrengthScalar(e.model)
             # Create a unique ref for this control system
-            m = e.attach(strength,current)
+            m = e.attach(strength, current)
             self.add_magnet(str(m),m)
           elif isinstance(e,CombinedFunctionMagnet):
             self.add_magnet(str(e),e)
