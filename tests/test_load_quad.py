@@ -30,11 +30,16 @@ def test_quad_external_model(install_test_package, config_root_dir):
     print(ref_corr.strength.get())
     Factory.clear()
 
-@pytest.mark.parametrize("magnet_file", [
-    "sr/quadrupoles/QF1AC01.yaml",
-    "sr/quadrupoles/QF1AC01.json",
-])
-def test_quad_linear(magnet_file, config_root_dir):
+@pytest.mark.parametrize(
+    ("magnet_file", "install_test_package"),
+    [
+        ("sr/quadrupoles/QF1AC01.yaml", None),
+        ("sr/quadrupoles/QF1AC01-IDENT.yaml", {"name": "tango", "path": "tests/dummy_cs/tango"}),
+        ("sr/quadrupoles/QF1AC01.json", None),
+    ],
+    indirect=["install_test_package"],
+)
+def test_quad_linear(magnet_file, install_test_package, config_root_dir):
     set_root_folder(config_root_dir)
     cfg_quad = load(magnet_file)
     print(f"Current file: {config_root_dir}/{magnet_file}")

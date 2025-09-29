@@ -15,7 +15,7 @@ class ConfigModel(BaseModel):
 
     powerconverter: DeviceAccess|None = None
     """Power converter device to apply current"""
-    magnet: DeviceAccess|None = None
+    physics: DeviceAccess|None = None
     """Magnet device to apply strength"""
     unit: str
     """Unit of the strength (i.e. 1/m or m-1)"""
@@ -30,14 +30,14 @@ class IdentityMagnetModel(MagnetModel):
         self.__strength_unit = cfg.unit
         self.__ps = None
         self.__hardware_unit = None
-        self.__magnet = None
-        self.__magnet_unit = None
+        self.__physics = None
+        self.__physics_unit = None
         if cfg.powerconverter is not None:
             self.__ps = cfg.powerconverter
             self.__hardware_unit = cfg.powerconverter.unit()
-        if cfg.magnet is not None:
-            self.__magnet = cfg.magnet
-            self.__magnet_unit = cfg.magnet.unit()
+        if cfg.physics is not None:
+            self.__physics = cfg.physics
+            self.__physics_unit = cfg.physics.unit()
 
     def compute_hardware_values(self, strengths: np.array) -> np.array:
         raise PyAMLException("The identity model does not support computation")
@@ -46,14 +46,14 @@ class IdentityMagnetModel(MagnetModel):
         raise PyAMLException("The identity model does not support computation")
 
     def get_strength_units(self) -> list[str]:
-        return [self.__magnet_unit] if self.__magnet_unit is not None else [""]
+        return [self.__physics_unit] if self.__physics_unit is not None else [""]
 
     def get_hardware_units(self) -> list[str]:
         return [self.__hardware_unit] if self.__hardware_unit is not None else [""]
 
     def read_hardware_values(self) -> np.array:
         if self.__ps is None:
-            raise PyAMLException(f"{str(self)} does not supports physics values")
+            raise PyAMLException(f"{str(self)} does not supports hardware values")
         return [self.__ps.get()]
 
     def readback_hardware_values(self) -> np.array:
@@ -63,20 +63,29 @@ class IdentityMagnetModel(MagnetModel):
 
     def send_hardware_values(self, currents: np.array):
         if self.__ps is None:
-            raise PyAMLException(f"{str(self)} does not hardware physics values")
+            raise PyAMLException(f"{str(self)} does not supports hardware values")
         self.__ps.set(currents[0])
 
     def get_devices(self) -> list[DeviceAccess]:
         devices = []
         if self.__ps is not None:
             devices.append(self.__ps)
-        if self.__magnet is not None:
-            devices.append(self.__magnet)
+        if self.__physics is not None:
+            devices.append(self.__physics)
         return devices
 
     def __repr__(self):
-        return f"{self.__class__.__name__}(identity {("Magnet" if self.__magnet is not None else "Power supply")}, unit={self.__strength_unit})"
+        return f"{self.__class__.__name__}(identity {("Magnet" if self.__physics is not None else "Power supply")}, unit={self.__strength_unit})"
 
     def set_magnet_rigidity(self, brho: np.double):
         pass
 
+    def get_strengths(self) -> np.array:
+        if self.__physics is None:
+            raise PyAMLException(f"{str(self)} does not supports physics values")
+        return np.array([np.float64(self.__physics.get())])
+
+    def set_strengths(self, values:list[float]):
+        if self.__physics is None:
+            raise PyAMLException(f"{str(self)} does not supports physics values")
+        self.__physics.set(values[0])

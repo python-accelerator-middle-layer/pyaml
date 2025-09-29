@@ -137,3 +137,13 @@ class MagnetModel(metaclass=ABCMeta):
             True if the model supports hardware unit
         """
         return True
+
+    # Gets the value
+    def get_strengths(self) -> npt.NDArray[np.float64]:
+        currents = self.read_hardware_values()
+        return self.compute_strengths(currents)
+
+    # Sets the value
+    def set_strengths(self, values:list[float]):
+        current = self.compute_hardware_values(np.array(values))
+        self.send_hardware_values(current)

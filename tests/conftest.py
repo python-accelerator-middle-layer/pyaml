@@ -27,7 +27,11 @@ def install_test_package(request):
     def test_x(install_test_package):
         ...
     """
+
     info = request.param
+    if info is None:
+        yield None
+        return
     package_name = info["name"]
     package_path = None
     if info["path"] is not None:

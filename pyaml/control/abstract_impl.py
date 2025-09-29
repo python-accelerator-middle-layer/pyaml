@@ -18,7 +18,7 @@ class RWHardwareScalar(abstract.ReadWriteFloatScalar):
         return self.model.read_hardware_values()[0]
     
     def set(self, value:float):
-        self.model.send_hardware_values([value])
+        self.model.send_hardware_values(np.array([value]))
 
     def set_and_wait(self, value: double):
         raise NotImplementedError("Not implemented yet.")
@@ -41,13 +41,11 @@ class RWStrengthScalar(abstract.ReadWriteFloatScalar):
 
     # Gets the value
     def get(self) -> float:
-        currents = self.__model.read_hardware_values()
-        return self.__model.compute_strengths(currents)[0]
+        return self.__model.get_strengths()[0]
 
     # Sets the value
     def set(self, value:float):
-        current = self.__model.compute_hardware_values(np.array(value))
-        self.__model.send_hardware_values(current)
+        self.__model.set_strengths([value])
 
     # Sets the value and wait that the read value reach the setpoint
     def set_and_wait(self, value:float):
@@ -97,15 +95,12 @@ class RWStrengthArray(abstract.ReadWriteFloatArray):
 
     # Gets the value
     def get(self) -> np.array:
-        r = self.model.read_hardware_values()
-        str = self.model.compute_strengths(r)        
-        return str
+        return self.model.get_strengths()
 
     # Sets the value
     def set(self, value:np.array):
-        cur = self.model.compute_hardware_values(value)
-        self.model.send_hardware_values(cur)
-        
+        self.model.set_strengths(value)
+
     # Sets the value and waits that the read value reach the setpoint
     def set_and_wait(self, value:np.array):
         raise NotImplementedError("Not implemented yet.")
