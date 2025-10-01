@@ -5,6 +5,6 @@ model:
   unit: 1/m
   physics:
     type: pyaml.control.device
-    setpoint: sr/ps-qf1/c01-a/current
-    readback: sr/ps-qf1/c01-a/current
-    unit: A
+    setpoint: sr/ps-qf1/c01-a/strength
+    readback: sr/ps-qf1/c01-a/strength
+    unit: 1/m

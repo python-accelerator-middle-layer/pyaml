@@ -3,6 +3,7 @@ import json
 import numpy as np
 from scipy.constants import speed_of_light
 
+from pyaml import PyAMLException
 from pyaml.configuration import load,set_root_folder
 from pyaml.configuration import Factory
 from pyaml.magnet.hcorrector import HCorrector
@@ -31,15 +32,16 @@ def test_quad_external_model(install_test_package, config_root_dir):
     Factory.clear()
 
 @pytest.mark.parametrize(
-    ("magnet_file", "install_test_package"),
+    ("magnet_file", "test_hardware", "compute_hardware", "install_test_package"),
     [
-        ("sr/quadrupoles/QF1AC01.yaml", None),
-        ("sr/quadrupoles/QF1AC01-IDENT.yaml", {"name": "tango", "path": "tests/dummy_cs/tango"}),
-        ("sr/quadrupoles/QF1AC01.json", None),
+        ("sr/quadrupoles/QF1AC01.yaml", True, True, None),
+        ("sr/quadrupoles/QF1AC01-IDENT.yaml", False, False, {"name": "tango", "path": "tests/dummy_cs/tango"}),
+        ("sr/quadrupoles/QF1AC01-IDENT-HW.yaml", True, False, {"name": "tango", "path": "tests/dummy_cs/tango"}),
+        ("sr/quadrupoles/QF1AC01.json", True, True, None),
     ],
     indirect=["install_test_package"],
 )
-def test_quad_linear(magnet_file, install_test_package, config_root_dir):
+def test_quad_linear(magnet_file, test_hardware, compute_hardware, install_test_package, config_root_dir):
     set_root_folder(config_root_dir)
     cfg_quad = load(magnet_file)
     print(f"Current file: {config_root_dir}/{magnet_file}")
@@ -49,14 +51,22 @@ def test_quad_linear(magnet_file, install_test_package, config_root_dir):
     ref_quad = quad.attach(strength,hardware)
     ref_quad.model.set_magnet_rigidity(6e9 / speed_of_light)
     ref_quad.strength.set(0.7962)
-    current = ref_quad.hardware.get()
-    assert( np.abs(current-80.423276) < 1e-4 )
+    if test_hardware:
+        current = ref_quad.hardware.get()
+        print(current)
+        assert( np.abs(current-80.423276) < 1e-4 )
+        hunit = ref_quad.hardware.unit()
+        assert( hunit == "A" )
+        if compute_hardware:
+            strength = ref_quad.model.compute_strengths([current])
+        else:
+            strength = ref_quad.model.get_strengths()
+    else:
+        strength = ref_quad.model.get_strengths()
+
     sunit = ref_quad.strength.unit()
-    hunit = ref_quad.hardware.unit()
     assert( sunit == "1/m" )
-    assert( hunit == "A" )
-    str = ref_quad.model.compute_strengths([current])
-    assert( np.abs(str-0.7962) < 1e-6 )
+    assert( np.abs(strength-0.7962) < 1e-6 )
     Factory.clear()
 
 @pytest.mark.parametrize("magnet_file", [
