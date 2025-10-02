@@ -1,0 +1,21 @@
+type: pyaml.pyaml
+instruments:
+  - type: pyaml.instrument
+    name: sr
+    energy: 6e9
+    simulators:
+      - type: pyaml.lattice.simulator
+        lattice: sr/lattices/ebs.mat
+        name: design
+    data_folder: /data/store
+    devices:
+      - type: pyaml.magnet.quadrupole
+        name: QF1A-C01
+        model:
+          type: pyaml.magnet.identity_model
+          unit: A
+          powerconverter:
+            type: pyaml.control.device
+            setpoint: srmag/vps-qf1/c05-a/current
+            readback: srmag/vps-qf1/c05-a/current
+            unit: A

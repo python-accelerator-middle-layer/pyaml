@@ -4,13 +4,16 @@ import numpy as np
 from scipy.constants import speed_of_light
 
 from pyaml import PyAMLException
-from pyaml.configuration import load,set_root_folder
+from pyaml.configuration import load, set_root_folder, get_root_folder
 from pyaml.configuration import Factory
+from pyaml.lattice.element_holder import MagnetType
 from pyaml.magnet.hcorrector import HCorrector
 from pyaml.magnet.quadrupole import Quadrupole
 from pyaml.magnet.quadrupole import ConfigModel as QuadrupoleConfigModel
 from pyaml.magnet.cfm_magnet import CombinedFunctionMagnet
 from pyaml.control.abstract_impl import RWHardwareScalar,RWStrengthScalar,RWHardwareArray,RWStrengthArray
+from pyaml.pyaml import pyaml,PyAML
+from pyaml.instrument import Instrument
 
 # TODO: Generate JSON pydantic schema for MetaConfigurator
 #def test_json():
@@ -35,8 +38,8 @@ def test_quad_external_model(install_test_package, config_root_dir):
     ("magnet_file", "test_hardware", "compute_hardware", "install_test_package"),
     [
         ("sr/quadrupoles/QF1AC01.yaml", True, True, None),
-        ("sr/quadrupoles/QF1AC01-IDENT.yaml", False, False, {"name": "tango", "path": "tests/dummy_cs/tango"}),
-        ("sr/quadrupoles/QF1AC01-IDENT-HW.yaml", True, False, {"name": "tango", "path": "tests/dummy_cs/tango"}),
+        ("sr/quadrupoles/QF1AC01-IDENT-STRGTH.yaml", False, False, {"name": "tango", "path": "tests/dummy_cs/tango"}),
+        ("sr/quadrupoles/QF1AC01-IDENT-HW-STRGTH.yaml", True, False, {"name": "tango", "path": "tests/dummy_cs/tango"}),
         ("sr/quadrupoles/QF1AC01.json", True, True, None),
     ],
     indirect=["install_test_package"],
@@ -68,6 +71,51 @@ def test_quad_linear(magnet_file, test_hardware, compute_hardware, install_test_
     assert( sunit == "1/m" )
     assert( np.abs(strength-0.7962) < 1e-6 )
     Factory.clear()
+
+
+@pytest.mark.parametrize(
+    "magnet_file",
+    [
+        "sr-ident-hw-only.yaml",
+    ])
+def test_quad_ident_hardware_only(magnet_file, config_root_dir):
+    set_root_folder(config_root_dir)
+    ml:PyAML = pyaml(get_root_folder() / magnet_file)
+    sr:Instrument = ml.get('sr')
+    with pytest.raises(PyAMLException):
+        sr.design.get_magnet(MagnetType.QUADRUPOLE, "QF1A-C01").strength.set(0.000010)  # throw an exception
+    with pytest.raises(PyAMLException):
+        sr.design.get_magnet(MagnetType.QUADRUPOLE, "QF1A-C01").hardware.set(82)  # throw an exception
+
+    with pytest.raises(PyAMLException):
+        sr.live.get_magnet(MagnetType.QUADRUPOLE, "QF1A-C01").strength.set(0.000010)  # throw an exception
+    sr.live.get_magnet(MagnetType.QUADRUPOLE, "QF1A-C01").hardware.set(82)  # Write 82A
+
+    with pytest.raises(PyAMLException):
+        sr.design.get_magnet(MagnetType.QUADRUPOLE, "QF1E-C04").strength.unit()  # throw an exception
+    assert sr.live.get_magnet(MagnetType.QUADRUPOLE, "QF1E-C04").hardware.unit() == "A"  # A
+
+
+@pytest.mark.parametrize(
+    "magnet_file",
+    [
+        "sr-ident-strgth-only.yaml",
+    ])
+def test_quad_ident_strength_only(magnet_file, config_root_dir):
+    set_root_folder(config_root_dir)
+    ml:PyAML = pyaml(get_root_folder() / magnet_file)
+    sr:Instrument = ml.get('sr')
+    # 2 following lines are equivalent
+    sr.design.get_magnet(MagnetType.QUADRUPOLE, "QF1A-C01").strength.set(0.000010)
+    sr.design.get_magnet(MagnetType.QUADRUPOLE, "QF1A-C01").hardware.set(0.000010)
+
+    # 2 following lines are equivalent
+    sr.live.get_magnet(MagnetType.QUADRUPOLE, "QF1A-C01").strength.set(0.000010)
+    sr.live.get_magnet(MagnetType.QUADRUPOLE, "QF1A-C01").hardware.set(0.000010)
+
+    assert sr.design.get_magnet(MagnetType.QUADRUPOLE, "QF1E-C04").strength.unit() == "1/m"
+    assert sr.design.get_magnet(MagnetType.QUADRUPOLE, "QF1E-C04").hardware.unit() == "1/m"
+
 
 @pytest.mark.parametrize("magnet_file", [
     "sr/correctors/SH1AC01.yaml",
