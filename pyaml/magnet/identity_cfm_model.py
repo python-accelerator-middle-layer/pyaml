@@ -82,7 +82,7 @@ class IdentityCFMagnetModel(MagnetModel):
     def set_magnet_rigidity(self, brho: np.double):
         pass
 
-    def has_physics_mapping(self) -> bool:
+    def has_physics(self) -> bool:
         return self._cfg.physics is not None
 
     def has_hardware(self) -> bool:
