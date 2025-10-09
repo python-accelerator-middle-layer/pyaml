@@ -127,7 +127,7 @@ class MagnetModel(metaclass=ABCMeta):
         pass
 
 
-    def hasHardwareMapping(self) -> bool:
+    def has_hardware(self) -> bool:
         """
         Tells if the model allows to work in hardware unit.
 
@@ -137,13 +137,14 @@ class MagnetModel(metaclass=ABCMeta):
             True if the model supports hardware unit
         """
         return True
+    
+    def has_physics(self) -> bool:
+        """
+        Tells if the model allows to work in physics unit.
 
-    # Gets the value
-    def get_strengths(self) -> npt.NDArray[np.float64]:
-        currents = self.read_hardware_values()
-        return self.compute_strengths(currents)
-
-    # Sets the value
-    def set_strengths(self, values:list[float]):
-        current = self.compute_hardware_values(np.array(values))
-        self.send_hardware_values(current)
+        Returns
+        ----------
+        bool
+            True if the model supports physics unit
+        """
+        return True

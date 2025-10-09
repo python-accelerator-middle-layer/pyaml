@@ -12,19 +12,19 @@ class RWHardwareScalar(abstract.ReadWriteFloatScalar):
     """
 
     def __init__(self, model:MagnetModel):
-        self.model = model
+        self.__model = model
 
     def get(self) -> float:
-        return self.model.read_hardware_values()[0]
+        return self.__model.read_hardware_values()[0]
     
     def set(self, value:float):
-        self.model.send_hardware_values(np.array([value]))
+        self.__model.send_hardware_values(np.array([value]))
 
     def set_and_wait(self, value: double):
         raise NotImplementedError("Not implemented yet.")
 
     def unit(self) -> str:
-        return self.model.get_hardware_units()[0]
+        return self.__model.get_hardware_units()[0]
 
     def index(self) -> int:
         return 0
@@ -41,11 +41,13 @@ class RWStrengthScalar(abstract.ReadWriteFloatScalar):
 
     # Gets the value
     def get(self) -> float:
-        return self.__model.get_strengths()[0]
+        currents = self.__model.read_hardware_values()
+        return self.__model.compute_strengths(currents)
 
     # Sets the value
     def set(self, value:float):
-        self.__model.set_strengths([value])
+        current = self.__model.compute_hardware_values([value])
+        self.__model.send_hardware_values(current)
 
     # Sets the value and wait that the read value reach the setpoint
     def set_and_wait(self, value:float):
@@ -65,15 +67,15 @@ class RWHardwareArray(abstract.ReadWriteFloatArray):
     Class providing read write access to a magnet array of a control system (in hardware units)
     """
     def __init__(self, model:MagnetModel):
-        self.model = model
+        self.__model = model
 
     # Gets the value
     def get(self) -> np.array:
-        return self.model.read_hardware_values()
+        return self.__model.read_hardware_values()
 
     # Sets the value
     def set(self, value:np.array):
-        self.model.send_hardware_values(value)
+        self.__model.send_hardware_values(value)
         
     # Sets the value and waits that the read value reach the setpoint
     def set_and_wait(self, value:np.array):
@@ -82,7 +84,7 @@ class RWHardwareArray(abstract.ReadWriteFloatArray):
 
     # Gets the unit of the value
     def unit(self) -> list[str]:
-        return self.model.get_hardware_units()
+        return self.__model.get_hardware_units()
 
 #------------------------------------------------------------------------------
 
@@ -91,15 +93,18 @@ class RWStrengthArray(abstract.ReadWriteFloatArray):
     Class providing read write access to magnet strengths of a control system
     """
     def __init__(self, model:MagnetModel):
-        self.model = model
+        self.__model = model
 
     # Gets the value
     def get(self) -> np.array:
-        return self.model.get_strengths()
+        r = self.__model.read_hardware_values()
+        str = self.__model.compute_strengths(r)
+        return str
 
     # Sets the value
     def set(self, value:np.array):
-        self.model.set_strengths(value)
+        cur = self.__model.compute_hardware_values(value)
+        self.__model.send_hardware_values(cur)
 
     # Sets the value and waits that the read value reach the setpoint
     def set_and_wait(self, value:np.array):
@@ -107,7 +112,7 @@ class RWStrengthArray(abstract.ReadWriteFloatArray):
 
     # Gets the unit of the value
     def unit(self) -> list[str]:
-        return self.model.get_strength_units()
+        return self.__model.get_strength_units()
 
 
 

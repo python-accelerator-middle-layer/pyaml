@@ -52,16 +52,17 @@ class Simulator(ElementHolder):
     
     def fill_device(self,elements:list[Element]):
        for e in elements:
+          # Need conversion to physics unit to work with simulator
           if isinstance(e,Magnet):
-            current = RWHardwareScalar(self.get_at_elems(e.name),e.polynom,e.model)
-            strength = RWStrengthScalar(self.get_at_elems(e.name),e.polynom,e.model)
+            current = RWHardwareScalar(self.get_at_elems(e.name),e.polynom,e.model) if e.model.has_physics() else None
+            strength = RWStrengthScalar(self.get_at_elems(e.name),e.polynom,e.model) if e.model.has_physics() else None
             # Create a unique ref for this simulator
             m = e.attach(strength,current)
             self.add_magnet(str(m),m)
           elif isinstance(e,CombinedFunctionMagnet):
             self.add_magnet(str(e),e)
-            currents = RWHardwareArray(self.get_at_elems(e.name),e.polynoms,e.model)
-            strengths = RWStrengthArray(self.get_at_elems(e.name),e.polynoms,e.model)
+            currents = RWHardwareArray(self.get_at_elems(e.name),e.polynoms,e.model) if e.model.has_physics() else None
+            strengths = RWStrengthArray(self.get_at_elems(e.name),e.polynoms,e.model) if e.model.has_physics() else None
             # Create unique refs of each function for this simulator
             ms = e.attach(strengths,currents)
             for m in ms:

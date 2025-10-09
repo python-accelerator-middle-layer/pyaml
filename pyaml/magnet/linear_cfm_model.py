@@ -159,6 +159,6 @@ class LinearCFMagnetModel(MagnetModel):
     def set_magnet_rigidity(self, brho: np.double):
         self._brho = brho
 
-    def hasHardwareMapping(self) -> bool:
+    def has_hardware(self) -> bool:
         return (self.__nbPS == self.__nbFunction) and np.allclose(self.__matrix, np.eye(self.__nbFunction))
 

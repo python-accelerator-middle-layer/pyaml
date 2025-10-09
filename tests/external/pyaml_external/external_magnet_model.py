@@ -73,7 +73,7 @@ class ExternalMagnetModel(MagnetModel):
     def get_devices(self) -> list[DeviceAccess]:
         return [self._ps,self.id]
     
-    def hasHardwareMapping(self) -> bool:
+    def has_hardware(self) -> bool:
         # No trivial conversion between strength and hardware unit
         return False
 
