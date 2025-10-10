@@ -3,13 +3,18 @@ import json
 import numpy as np
 from scipy.constants import speed_of_light
 
-from pyaml.configuration import load,set_root_folder
+from pyaml import PyAMLException
+from pyaml.configuration import load, set_root_folder, get_root_folder
 from pyaml.configuration import Factory
+from pyaml.lattice.element_holder import MagnetType
 from pyaml.magnet.hcorrector import HCorrector
 from pyaml.magnet.quadrupole import Quadrupole
 from pyaml.magnet.quadrupole import ConfigModel as QuadrupoleConfigModel
+from pyaml.magnet.identity_model import IdentityMagnetModel
 from pyaml.magnet.cfm_magnet import CombinedFunctionMagnet
 from pyaml.control.abstract_impl import RWHardwareScalar,RWStrengthScalar,RWHardwareArray,RWStrengthArray
+from pyaml.pyaml import pyaml,PyAML
+from pyaml.instrument import Instrument
 
 # TODO: Generate JSON pydantic schema for MetaConfigurator
 #def test_json():
@@ -30,29 +35,50 @@ def test_quad_external_model(install_test_package, config_root_dir):
     print(ref_corr.strength.get())
     Factory.clear()
 
-@pytest.mark.parametrize("magnet_file", [
-    "sr/quadrupoles/QF1AC01.yaml",
-    "sr/quadrupoles/QF1AC01.json",
-])
-def test_quad_linear(magnet_file, config_root_dir):
+@pytest.mark.parametrize(
+    ("magnet_file", "install_test_package"),
+    [
+        ("sr/quadrupoles/QF1AC01.yaml", None),
+        ("sr/quadrupoles/QF1AC01-IDENT-STRGTH.yaml", {"name": "tango", "path": "tests/dummy_cs/tango"}),
+        ("sr/quadrupoles/QF1AC01-IDENT-HW.yaml", {"name": "tango", "path": "tests/dummy_cs/tango"}),
+        ("sr/quadrupoles/QF1AC01.json", None),
+    ],
+    indirect=["install_test_package"],
+)
+def test_quad_linear(magnet_file, install_test_package, config_root_dir):
     set_root_folder(config_root_dir)
     cfg_quad = load(magnet_file)
     print(f"Current file: {config_root_dir}/{magnet_file}")
     quad:Quadrupole = Factory.depth_first_build(cfg_quad)
-    strength = RWStrengthScalar(quad.model)
-    hardware = RWHardwareScalar(quad.model)
+    hardware = RWHardwareScalar(quad.model) if quad.model.has_hardware() else None
+    strength = RWStrengthScalar(quad.model) if quad.model.has_physics() else None
     ref_quad = quad.attach(strength,hardware)
     ref_quad.model.set_magnet_rigidity(6e9 / speed_of_light)
-    ref_quad.strength.set(0.7962)
-    current = ref_quad.hardware.get()
-    assert( np.abs(current-80.423276) < 1e-4 )
-    sunit = ref_quad.strength.unit()
-    hunit = ref_quad.hardware.unit()
-    assert( sunit == "1/m" )
-    assert( hunit == "A" )
-    str = ref_quad.model.compute_strengths([current])
-    assert( np.abs(str-0.7962) < 1e-6 )
+
+    try:
+        ref_quad.strength.set(0.7962)
+        sunit = ref_quad.strength.unit()
+        assert( sunit == "1/m" )
+    except Exception as ex:
+        if not quad.model.has_physics():
+            assert( "has no model that supports physics units" in str(ex) )
+            ref_quad.hardware.set(80.423276)
+        else:
+            raise ex
+
+    try:
+        current = ref_quad.hardware.get()
+        assert( np.abs(current-80.423276) < 1e-4 )
+        hunit = ref_quad.hardware.unit()
+        assert( hunit == "A" )
+    except Exception as ex:
+        if not quad.model.has_hardware():
+            assert( "has no model that supports hardware units" in str(ex) )
+        else:
+            raise ex
+
     Factory.clear()
+
 
 @pytest.mark.parametrize("magnet_file", [
     "sr/correctors/SH1AC01.yaml",

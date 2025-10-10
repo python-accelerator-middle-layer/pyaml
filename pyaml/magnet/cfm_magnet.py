@@ -68,7 +68,7 @@ class CombinedFunctionMagnet(Element):
                 args = {"name":m[1]}
                 mclass:Magnet = _fmap[m[0]](ElementConfigModel(**args))
                 strength = RWMapper(strengths,idx)
-                hardware = RWMapper(hardwares,idx) if self.model.hasHardwareMapping() else None
+                hardware = RWMapper(hardwares,idx) if self.model.has_hardware() else None
                 l.append(mclass.attach(strength,hardware))
             return l
     

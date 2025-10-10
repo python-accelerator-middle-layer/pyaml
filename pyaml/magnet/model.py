@@ -91,7 +91,7 @@ class MagnetModel(metaclass=ABCMeta):
         pass
 
     @abstractmethod
-    def send_harware_values(self, hardware_values: npt.NDArray[np.float64]):
+    def send_hardware_values(self, hardware_values: npt.NDArray[np.float64]):
         """
         Send power supply value(s) to control system
         
@@ -127,7 +127,7 @@ class MagnetModel(metaclass=ABCMeta):
         pass
 
 
-    def hasHardwareMapping(self) -> bool:
+    def has_hardware(self) -> bool:
         """
         Tells if the model allows to work in hardware unit.
 
@@ -135,5 +135,16 @@ class MagnetModel(metaclass=ABCMeta):
         ----------
         bool
             True if the model supports hardware unit
+        """
+        return True
+    
+    def has_physics(self) -> bool:
+        """
+        Tells if the model allows to work in physics unit.
+
+        Returns
+        ----------
+        bool
+            True if the model supports physics unit
         """
         return True

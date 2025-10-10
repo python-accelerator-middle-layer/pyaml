@@ -13,7 +13,6 @@ class VCorrector(Magnet):
     def __init__(self, cfg: ConfigModel):
         super().__init__(
             cfg.name,
-            cfg.hardware if hasattr(cfg, "hardware") else None,
             cfg.model if hasattr(cfg, "model") else None,
         )
         self._cfg = cfg
