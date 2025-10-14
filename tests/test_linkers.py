@@ -1,6 +1,7 @@
 import pytest
 
 from pyaml import PyAMLException
+from pyaml.instrument import Instrument
 
 from pyaml.lattice.famname_linker import (
     FamNameElementsLinker,
@@ -12,6 +13,9 @@ from pyaml.lattice.attribute_linker import (
     PyAtAttributeIdentifier,
     ConfigModel as AttrConfigModel,
 )
+from pyaml.pyaml import PyAML, pyaml
+
+
 # -----------------------
 # Dummy PyAML Element
 # -----------------------
@@ -21,6 +25,11 @@ class DummyPyAMLElement:
     def __init__(self, name: str):
         self.name = name
 
+
+def test_conf_with_linker():
+    ml:PyAML = pyaml("tests/config/sr-attribute-linker.yaml")
+    sr:Instrument = ml.get('sr')
+    assert sr is not None
 
 # -----------------------
 # FamNameElementsLinker tests
