@@ -2,8 +2,19 @@ from pyaml.pyaml import pyaml,PyAML
 from pyaml.instrument import Instrument
 from pyaml.configuration.factory import Factory
 import numpy as np
+import os
 
-ml:PyAML = pyaml("/home/a3744/Documents/software/pyAML/pyaml/tests/config/EBSTune.yaml")
+
+# Get the directory of the current script
+script_dir = os.path.dirname(__file__)
+
+# Go up one level and then into 'data'
+relative_path = os.path.join(script_dir, '..', '..', 'tests', 'config','EBSTune.yaml')
+
+# Normalize the path (resolves '..')
+absolute_path = os.path.abspath(relative_path)
+
+ml:PyAML = pyaml(absolute_path)
 sr:Instrument = ml.get('sr')
 sr.design.get_lattice().disable_6d()
 
