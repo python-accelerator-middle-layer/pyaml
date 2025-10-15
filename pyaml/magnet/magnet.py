@@ -4,7 +4,10 @@ from ..control.deviceaccess import DeviceAccess
 from ..control import abstract
 from .model import MagnetModel
 from scipy.constants import speed_of_light
-from typing import Self
+try:
+    from typing import Self  # Python 3.11+
+except ImportError:
+    from typing_extensions import Self  # Python 3.10 and earlier
 import numpy as np
 
 class MagnetConfigModel(ElementConfigModel):
