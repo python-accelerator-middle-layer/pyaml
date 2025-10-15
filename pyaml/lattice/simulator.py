@@ -1,7 +1,7 @@
 from pydantic import BaseModel,ConfigDict
 import at
 
-from .famname_linker import FamNameElementsLinker
+from .attribute_linker import PyAtAttributeElementsLinker, ConfigModel as PyAtAttrLinkerConfigModel
 from .lattice_elements_linker import LatticeElementsLinker
 from ..configuration import get_root_folder
 from .element import Element
@@ -36,7 +36,7 @@ class Simulator(ElementHolder):
     def __init__(self, cfg: ConfigModel):
         super().__init__()
         self._cfg = cfg
-        self._linker = cfg.linker if cfg.linker else FamNameElementsLinker()
+        self._linker = cfg.linker if cfg.linker else PyAtAttributeElementsLinker(PyAtAttrLinkerConfigModel(attribute_name="FamName"))
         path:Path = get_root_folder() / cfg.lattice
 
         if(self._cfg.mat_key is None):
