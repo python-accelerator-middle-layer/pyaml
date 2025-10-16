@@ -6,7 +6,6 @@ from scipy.constants import speed_of_light
 from pyaml import PyAMLException
 from pyaml.configuration import load, set_root_folder, get_root_folder
 from pyaml.configuration import Factory
-from pyaml.lattice.element_holder import MagnetType
 from pyaml.magnet.hcorrector import HCorrector
 from pyaml.magnet.quadrupole import Quadrupole
 from pyaml.magnet.quadrupole import ConfigModel as QuadrupoleConfigModel
