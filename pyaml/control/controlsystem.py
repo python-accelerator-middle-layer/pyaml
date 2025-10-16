@@ -50,12 +50,12 @@ class ControlSystem(ElementHolder,metaclass=ABCMeta):
             strength = RWStrengthScalar(e.model) if e.model.has_physics() else None
             # Create a unique ref for this control system
             m = e.attach(strength, current)
-            self.add_magnet(str(m),m)
+            self.add_magnet(m.get_name(),m)
           elif isinstance(e,CombinedFunctionMagnet):
-            self.add_magnet(str(e),e)
+            self.add_magnet(e.get_name(),e)
             currents = RWHardwareArray(e.model) if e.model.has_hardware() else None
             strengths = RWStrengthArray(e.model) if e.model.has_physics() else None
             # Create unique refs of each function for this control system
             ms = e.attach(strengths,currents)
             for m in ms:
-              self.add_magnet(str(m),m)
+              self.add_magnet(m.get_name(),m)

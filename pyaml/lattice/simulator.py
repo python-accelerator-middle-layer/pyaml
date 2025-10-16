@@ -66,16 +66,16 @@ class Simulator(ElementHolder):
             strength = RWStrengthScalar(self.get_at_elems(e),e.polynom,e.model) if e.model.has_physics() else None
             # Create a unique ref for this simulator
             m = e.attach(strength,current)
-            self.add_magnet(str(m),m)
+            self.add_magnet(m.get_name(),m)
           elif isinstance(e,CombinedFunctionMagnet):
-            self.add_magnet(str(e),e)
+            self.add_magnet(e.get_name(),e)
             currents = RWHardwareArray(self.get_at_elems(e),e.polynoms,e.model) if e.model.has_physics() else None
             strengths = RWStrengthArray(self.get_at_elems(e),e.polynoms,e.model) if e.model.has_physics() else None
             # Create unique refs of each function for this simulator
             ms = e.attach(strengths,currents)
             for m in ms:
-              self.add_magnet(str(m),m)
-              self.add_magnet(str(m),m)
+              self.add_magnet(m.get_name(),m)
+              self.add_magnet(m.get_name(),m)
     
     def get_at_elems(self,element:Element) -> list[at.Element]:
        identifier = self._linker.get_element_identifier(element)

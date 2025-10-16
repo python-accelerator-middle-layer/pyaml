@@ -12,12 +12,12 @@ instruments:
           attribute_name: FamName # equivalent to the default linker
     data_folder: /data/store
     arrays:
-      - type: pyaml.arrays.hcorrector
+      - type: pyaml.arrays.magnet
         name: HCORR
         elements:
           - SH1A-C01-H
           - SH1A-C02-H
-      - type: pyaml.arrays.vcorrector
+      - type: pyaml.arrays.magnet
         name: VCORR
         elements:
           - SH1A-C01-V

@@ -34,16 +34,3 @@ class ArrayConfig(object):
     def init_aggregator(self,holder:ElementHolder):
         raise "Array.init_aggregator() is not subclassed"
 
-class MagnetArrayConfig(ArrayConfig):
-
-   def __init__(self, cfg: ArrayConfigModel):
-        super().__init__(cfg)
-
-   def init_aggregator(self,holder:ElementHolder):
-        if self._cfg.aggregator is not None and len(self._cfg.aggregator)==0:
-            # Construct dynamically aggregator for magnets
-            mag = holder.get_magnets(self._cfg.name)
-            for m in mag:
-                devs = m.model.get_devices()
-                self._cfg.aggregator.add_devices(devs)
-            mag.set_aggregator(self._cfg.aggregator)

@@ -2,7 +2,6 @@ import pytest
 
 from pyaml import PyAMLException
 from pyaml.instrument import Instrument
-from pyaml.lattice.element_holder import MagnetType
 
 from pyaml.lattice.attribute_linker import (
     PyAtAttributeElementsLinker,
@@ -19,14 +18,16 @@ from pyaml.pyaml import PyAML, pyaml
 class DummyPyAMLElement:
     """Minimal stand-in for a PyAML Element: only provides .name."""
     def __init__(self, name: str):
-        self.name = name
+        self._name = name
+    def get_name(self) -> str:
+        return self._name
 
 
 def test_conf_with_linker():
     ml:PyAML = pyaml("tests/config/sr-attribute-linker.yaml")
     sr:Instrument = ml.get('sr')
     assert sr is not None
-    magnet = sr.design.get_magnet(MagnetType.HCORRECTOR,"SH1A-C01-H")
+    magnet = sr.design.get_magnet("SH1A-C01-H")
     assert magnet is not None
 
 

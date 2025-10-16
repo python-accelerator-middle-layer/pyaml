@@ -168,7 +168,7 @@ class PyAMLFactory:
 
     def register_element(self, elt):
         if isinstance(elt,Element):
-            name = str(elt)
+            name = elt.get_name()
             if name in self._elements:
                 raise PyAMLException(f"element {name} already defined")
             self._elements[name] = elt

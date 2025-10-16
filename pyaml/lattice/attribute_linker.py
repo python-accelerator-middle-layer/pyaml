@@ -61,7 +61,7 @@ class PyAtAttributeElementsLinker(LatticeElementsLinker):
         super().__init__(config_model)
 
     def get_element_identifier(self, element: Element) -> LinkerIdentifier:
-        return PyAtAttributeIdentifier(self.linker_config_model.attribute_name, element.name)
+        return PyAtAttributeIdentifier(self.linker_config_model.attribute_name, element.get_name())
 
     def _test_at_element(self, identifier: PyAtAttributeIdentifier, element: at.Element) -> bool:
         attr_value = getattr(element, identifier.attribute_name, None)
