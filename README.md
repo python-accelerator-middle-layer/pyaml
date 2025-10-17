@@ -1,11 +1,16 @@
-[![Documentation Status](https://readthedocs.org/projects/pyaml/badge/?version=latest)](https://pyaml.readthedocs.io/en/latest/?badge=latest)
+# pyAML: Python Accelerator Middle Layer
 
-# pyAML: python accelerator middle layer
+Disclaimer: the pyAML software is still under development.
 
-disclaimer: the pyAML software is still under conception and development
+#### Installation
 
-pyAML is a sofware meant to operate and develop new tools for high energy charged particle accelerators. 
-pyAML it will be control agnostics and can be used by any facility
-pyAML it will allow easy scripting as for MML
-
-The pyAML documentation can be fund [here](https://pyaml.readthedocs.io/en/latest/) [and here](https://python-accelerator-middle-layer.github.io/pyaml/)
+1. Clone the repository
+2. Create a virtual environment and activate it
+3. Install the package. For editable installation:
+   
+   ```
+   cd pyaml
+   pip install -e .
+   ```
+4. If you want to try the examples using the TANGO bindings you also need [tango-pyaml](https://github.com/python-accelerator-middle-layer/tango-pyaml).
+   Clone that repository and install the package inside the same virtual environment as the `pyaml` package.
