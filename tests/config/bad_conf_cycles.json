@@ -9,7 +9,7 @@
       "data_folder": "/data/store",
       "arrays": [
         {
-          "type": "pyaml.arrays.hcorrector",
+          "type": "pyaml.arrays.magnet",
           "name": "HCORR",
           "elements": [
             "SH1A-C01-H",
@@ -17,7 +17,7 @@
           ]
         },
         {
-          "type": "pyaml.arrays.vcorrector",
+          "type": "pyaml.arrays.magnet",
           "name": "VCORR",
           "elements": ["SH1A-C01-V", "SH1A-C02-V"]
         }

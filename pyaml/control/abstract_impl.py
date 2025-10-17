@@ -42,7 +42,7 @@ class RWStrengthScalar(abstract.ReadWriteFloatScalar):
     # Gets the value
     def get(self) -> float:
         currents = self.__model.read_hardware_values()
-        return self.__model.compute_strengths(currents)
+        return self.__model.compute_strengths(currents)[0]
 
     # Sets the value
     def set(self, value:float):
