@@ -1,6 +1,8 @@
-from pyaml.control import abstract
-from pyaml.magnet.model import MagnetModel
+from ..control import abstract
+from ..magnet.model import MagnetModel
 from .polynom_info import PolynomInfo
+from ..rf.rf_plant import RFPlant
+from ..rf.rf_transmitter import RFTransmitter
 import numpy as np
 import at
 
@@ -141,4 +143,57 @@ class RWStrengthArray(abstract.ReadWriteFloatArray):
     # Gets the unit of the value
     def unit(self) -> list[str]:
         return self.unitconv.get_strength_units()
+
+#------------------------------------------------------------------------------
+
+class RWRFVoltageScalar(abstract.ReadWriteFloatScalar):
+    """
+    Class providing read write access to a cavity voltage of a simulator.
+    """
+
+    def __init__(self, elements:list[at.Element], transmitter:RFTransmitter):
+        self.elements = elements
+        self.__transmitter = transmitter
+
+    def get(self) -> float:
+        sum = 0
+        for e in self.elements:
+            sum += e.Voltage
+        return sum
+    
+    def set(self,value:float):
+        v = value / len(self.elements)
+        for e in self.elements:
+            e.Voltage = v
+
+    def set_and_wait(self, value:float):
+        raise NotImplementedError("Not implemented yet.")
+        
+    def unit(self) -> str:
+        return self.__transmitter._cfg.voltage.unit()
+    
+#------------------------------------------------------------------------------
+
+class RWRFFrequencyScalar(abstract.ReadWriteFloatScalar):
+    """
+    Class providing read write access to RF frequency of a simulator.
+    """
+
+    def __init__(self, elements:list[at.Element], rf:RFPlant ):
+        self.__elements = elements
+        self.__rf = rf
+
+    def get(self) -> float:
+        # Serialized cavity has the same frequency
+        return self.__elements[0].Frequency
+    
+    def set(self,value:float):
+        for idx,e in enumerate(self.__elements):
+            e.Frequency = value * self.__rf.__allharmonics[idx]
+
+    def set_and_wait(self, value:float):
+        raise NotImplementedError("Not implemented yet.")
+        
+    def unit(self) -> str:
+        return self.__rf._cfg.masterclock.unit()
 

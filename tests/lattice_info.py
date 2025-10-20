@@ -1,5 +1,5 @@
 import at
-ring = at.load_lattice("tests/config/sr/lattices/ebs.mat")
+ring = at.load_lattice("config/sr/lattices/ebs.mat")
 
 
 
@@ -20,11 +20,12 @@ def prepare_and_save():
         if hasattr(e,"Device"):
             delattr(e,"Device")
 
-    at.save_lattice(ring,"tests/config/sr/lattices/ebs_jlp.mat")
+    at.save_lattice(ring,"config/sr/lattices/ebs_jlp.mat")
 
 def dump():
     # Dump lattice 
     for e in ring:
-        print(f"\"{e.FamName}\",")
+        if e.FamName.startswith("CAV"):
+            print(e)
 
 dump()
