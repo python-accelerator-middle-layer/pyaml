@@ -144,7 +144,7 @@ class RWStrengthArray(abstract.ReadWriteFloatArray):
 
 #------------------------------------------------------------------------------
 
-class RBpmPositionArray(abstract.ReadFloatArray):
+class RBpmArray(abstract.ReadFloatArray):
     """
     Class providing read access to a BPM position (array) of a simulator.
     Position in pyAT is calculated using find_orbit function, which returns the

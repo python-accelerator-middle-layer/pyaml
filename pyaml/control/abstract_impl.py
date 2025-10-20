@@ -111,7 +111,7 @@ class RWStrengthArray(abstract.ReadWriteFloatArray):
 
 #------------------------------------------------------------------------------
 
-class RbpmArray(abstract.ReadFloatArray):
+class RBpmArray(abstract.ReadFloatArray):
     """
     Class providing read access to a BPM array of a control system
     """
@@ -128,7 +128,7 @@ class RbpmArray(abstract.ReadFloatArray):
 
 #------------------------------------------------------------------------------
 
-class RWbpmTiltScalar(abstract.ReadFloatScalar):
+class RWBpmTiltScalar(abstract.ReadFloatScalar):
     """
     Class providing read access to a BPM tilt of a control system
     """

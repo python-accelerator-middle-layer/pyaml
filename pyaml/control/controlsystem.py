@@ -4,6 +4,7 @@ from ..lattice.element import Element
 from ..control.abstract_impl import RWHardwareScalar,RWHardwareArray,RWStrengthScalar,RWStrengthArray
 from ..magnet.magnet import Magnet
 from ..magnet.cfm_magnet import CombinedFunctionMagnet
+from ..bpm.bpm import BPM
 
 class ControlSystem(ElementHolder,metaclass=ABCMeta):
     """
