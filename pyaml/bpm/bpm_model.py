@@ -8,7 +8,7 @@ class BPMModel(metaclass=ABCMeta):
     tilts.
     """
     @abstractmethod
-    def read_hardware_positions(self) -> NDArray[np.float64]:
+    def read_hardware_position_values(self) -> NDArray[np.float64]:
         """
         Read horizontal and vertical positions from a BPM.
         Returns
@@ -31,7 +31,7 @@ class BPMModel(metaclass=ABCMeta):
         pass
 
     @abstractmethod
-    def read_hardware_offset_values(self) -> NDArray[np.float64]:
+    def read_hardware_offset_values(self) -> NDArray:
         """
         Read the offset values from a BPM.
         Returns
@@ -68,25 +68,25 @@ class BPMModel(metaclass=ABCMeta):
         """
         pass
 
-    @abstractmethod
-    def get_hardware_angle_unit(self) -> str:
-        """
-        Get the hardware unit for BPM readings.
-        Returns
-        -------
-        str
-            The unit of measurement for BPM hardware values.
-        """
-        pass
-    
-    @abstractmethod
-    def get_hardware_position_units(self) -> list[str]:
-        """
-        Get the hardware units for BPM positions and offsets.
-        Returns
-        -------
-        list[str]
-            List of units for horizontal and vertical positions and offsets.
-        """
-        pass
+    # @abstractmethod
+    # def get_hardware_angle_unit(self) -> str:
+    #     """
+    #     Get the hardware unit for BPM readings.
+    #     Returns
+    #     -------
+    #     str
+    #         The unit of measurement for BPM hardware values.
+    #     """
+    #     pass
+    #
+    # @abstractmethod
+    # def get_hardware_position_units(self) -> list[str]:
+    #     """
+    #     Get the hardware units for BPM positions and offsets.
+    #     Returns
+    #     -------
+    #     list[str]
+    #         List of units for horizontal and vertical positions and offsets.
+    #     """
+    #     pass
 

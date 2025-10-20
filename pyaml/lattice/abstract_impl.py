@@ -164,8 +164,8 @@ class RBpmPositionArray(abstract.ReadFloatArray):
         return orbit[0, [0, 2]]
 
     # Gets the unit of the value
-    def unit(self) -> list[str]:
-        return ['mm', 'mm']
+    def unit(self) -> str:
+        return 'mm'
 
 #------------------------------------------------------------------------------
 
@@ -201,8 +201,8 @@ class RWBpmOffsetArray(abstract.ReadWriteFloatArray):
         raise NotImplementedError("Not implemented yet.")
 
     # Gets the unit of the value
-    def unit(self) -> list[str]:
-        return ['mm', 'mm']  # Assuming all offsets are in mm
+    def unit(self) -> str:
+        return 'mm'  # Assuming all offsets are in mm
 
 #------------------------------------------------------------------------------
 

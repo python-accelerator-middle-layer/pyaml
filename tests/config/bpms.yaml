@@ -14,11 +14,26 @@ instruments:
     data_folder: /data/store
     devices:
     - type: pyaml.bpm.bpm
-      name: BPM_C03-02
+      name: BPM_C01-01
       model:
         type: pyaml.bpm.bpm_tiltoffset_model
-        position_unit: mm
-        tilt_unit: rad
-        offset_unit: mm
-        position_hardware_unit: mm
-        bpm_device: sr/bpm/bpm-c03-02
+        x_pos:
+          type: tango.pyaml.attribute
+          attribute: srdiag/bpm/c01-01/SA_HPosition
+          unit: mm
+        y_pos:
+          type: tango.pyaml.attribute
+          attribute: srdiag/bpm/c01-01/SA_VPosition
+          unit: mm
+        x_offset:
+          type: tango.pyaml.attribute
+          attribute: srdiag/bpm/c01-01/HOffset
+          unit: mm
+        y_offset:
+          type: tango.pyaml.attribute
+          attribute: srdiag/bpm/c01-01/VOffset
+          unit: mm
+        tilt:
+          type: tango.pyaml.attribute
+          attribute: srdiag/bpm/c01-01/Tilt_Angle
+          unit: rad

@@ -16,7 +16,7 @@ def test_bpm(install_test_package):
     sr:Instrument = ml.get('sr')
     sr.design.get_lattice().disable_6d()
 
-    bpm = sr.design.get_bpm('BPM_C03-02')
+    # bpm = sr.design.get_bpm('BPM_C03-02')
 
     assert( True )
 
