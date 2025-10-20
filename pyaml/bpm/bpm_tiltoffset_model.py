@@ -20,12 +20,6 @@ class ConfigModel(BaseModel):
     """Vertical BPM offset"""
     tilt: DeviceAccess
     """BPM tilt"""
-    # position_unit: str
-    # """Unit of the positions (i.e. mm)"""
-    # tilt_unit: str
-    # """Unit of the tilt (i.e. rad)"""
-    # offset_unit: str
-    # """Unit of the offsets (i.e. mm)"""
 
 class BPMTiltOffsetModel(BPMModel):
     """
@@ -35,9 +29,6 @@ class BPMTiltOffsetModel(BPMModel):
     def __init__(self, cfg: ConfigModel):
         self._cfg = cfg 
         
-        # self.__position_unit = cfg.position_unit
-        # self.__tilt_unit = cfg.tilt_unit
-        # self.__offset_unit = cfg.offset_unit
         self.__x_pos = cfg.x_pos
         self.__y_pos = cfg.y_pos
         self.__x_offset = cfg.x_offset

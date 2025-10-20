@@ -159,7 +159,7 @@ class RBpmArray(abstract.ReadFloatArray):
 
     # Gets the value
     def get(self) -> np.array:
-        index = self.lattice.get_refpts(self.element.name)
+        index = self.lattice.get_refpts(self.element.FamName)
         _, orbit = at.find_orbit(self.lattice, index)
         return orbit[0, [0, 2]]
 

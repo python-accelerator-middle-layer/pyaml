@@ -148,7 +148,7 @@ class RWBpmTiltScalar(abstract.ReadFloatScalar):
 
 #------------------------------------------------------------------------------
 
-class RWBpmOffsetArray(abstract.ReadWriteFloatArray):
+class RWBpmOffset(abstract.ReadWriteFloatArray):
     """
     Class providing read write access to a BPM offset of a control system
     """
@@ -161,7 +161,7 @@ class RWBpmOffsetArray(abstract.ReadWriteFloatArray):
 
     # Sets the value
     def set(self, value: NDArray[np.float64]):
-        self.__model.set_hardware_offset_values(value)
+        self.__model.set_hardware_offset_values(value) 
 
     # Gets the unit of the value
     def unit(self) -> str:
