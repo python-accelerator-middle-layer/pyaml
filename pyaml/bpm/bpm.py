@@ -71,10 +71,6 @@ class BPM(Element):
         obj.__hardware = self.__hardware
         obj.__positions = positions
         obj.__offset = offset
-        # obj.__x_pos = positions[0]
-        # obj.__y_pos = positions[1]
-        # obj.__x_offset = offset[0]
-        # obj.__y_offset = offset[1]
         obj.__tilt = tilt
         return obj
         

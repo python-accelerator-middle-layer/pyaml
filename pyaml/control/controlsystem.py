@@ -2,6 +2,7 @@ from abc import ABCMeta, abstractmethod
 from ..lattice.element_holder import ElementHolder
 from ..lattice.element import Element
 from ..control.abstract_impl import RWHardwareScalar,RWHardwareArray,RWStrengthScalar,RWStrengthArray
+from ..control.abstract_impl import RWBpmTiltScalar,RWBpmOffsetArray, RBpmArray
 from ..magnet.magnet import Magnet
 from ..magnet.cfm_magnet import CombinedFunctionMagnet
 from ..bpm.bpm import BPM
@@ -61,5 +62,8 @@ class ControlSystem(ElementHolder,metaclass=ABCMeta):
             for m in ms:
               self.add_magnet(m.get_name(),m)
           elif isinstance(e,BPM):
-              self.add_bpm(str(e),e)
+            tilt = RWBpmTiltScalar(e.model)
+            offsets = RWBpmOffsetArray(e.model)
+            positions = RBpmArray(e.model)
+            self.add_bpm(e.get_name(),e)
 

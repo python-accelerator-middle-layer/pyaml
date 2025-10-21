@@ -79,11 +79,11 @@ class Simulator(ElementHolder):
               self.add_magnet(m.get_name(), m)
           elif isinstance(e,BPM):
             # This assumes unique BPM names in the pyAT lattice  
-            tilt = RWBpmTiltScalar(self.get_at_elems(e.name)[0])
-            offsets = RWBpmOffsetArray(self.get_at_elems(e.name)[0])
-            positions = RBpmArray(self.get_at_elems(e.name)[0],self.ring)
+            tilt = RWBpmTiltScalar(self.get_at_elems(e)[0])
+            offsets = RWBpmOffsetArray(self.get_at_elems(e)[0])
+            positions = RBpmArray(self.get_at_elems(e)[0],self.ring)
             e = e.attach(positions, offsets, tilt)
-            self.add_bpm(str(e),e)
+            self.add_bpm(e.get_name(),e)
     
     def get_at_elems(self,element:Element) -> list[at.Element]:
        identifier = self._linker.get_element_identifier(element)

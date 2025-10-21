@@ -14,7 +14,7 @@ def test_simulator_bpm_tilt(install_test_package):
     ml:PyAML = pyaml("tests/config/bpms.yaml")
     sr:Instrument = ml.get('sr')
     sr.design.get_lattice().disable_6d()
-    bpm = sr.design.get_bpm('BPM(BPM_C01-01)')
+    bpm = sr.design.get_bpm('BPM_C01-01')
     
     assert bpm.tilt.get() == 0
     bpm.tilt.set(0.01)
@@ -31,7 +31,7 @@ def test_simulator_bpm_offset(install_test_package):
     ml:PyAML = pyaml("tests/config/bpms.yaml")
     sr:Instrument = ml.get('sr')
     sr.design.get_lattice().disable_6d()
-    bpm = sr.design.get_bpm('BPM(BPM_C01-01)')
+    bpm = sr.design.get_bpm('BPM_C01-01')
 
     assert bpm.offset.get()[0] == 0
     assert bpm.offset.get()[1] == 0
@@ -51,7 +51,7 @@ def test_simulator_bpm_position(install_test_package):
     ml:PyAML = pyaml("tests/config/bpms.yaml")
     sr:Instrument = ml.get('sr')
     sr.design.get_lattice().disable_6d()
-    bpm = sr.design.get_bpm('BPM(BPM_C01-01)')
+    bpm = sr.design.get_bpm('BPM_C01-01')
 
     assert np.allclose( bpm.positions.get(), np.array([0.0,0.0]) ) 
     

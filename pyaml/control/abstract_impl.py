@@ -148,13 +148,15 @@ class RWBpmTiltScalar(abstract.ReadFloatScalar):
     def set(self, value:float):
         self.__model.set_hardware_tilt_value(value)
 
+    def set_and_wait(self, value: NDArray[np.float64]):
+        raise NotImplementedError("Not implemented yet.")
     # Gets the unit of the value
     def unit(self) -> str:
         return self.__model.get_hardware_angle_unit()
 
 #------------------------------------------------------------------------------
 
-class RWBpmOffset(abstract.ReadWriteFloatArray):
+class RWBpmOffsetArray(abstract.ReadWriteFloatArray):
     """
     Class providing read write access to a BPM offset of a control system
     """
@@ -168,7 +170,8 @@ class RWBpmOffset(abstract.ReadWriteFloatArray):
     # Sets the value
     def set(self, value: NDArray[np.float64]):
         self.__model.set_hardware_offset_values(value) 
-
+    def set_and_wait(self, value: NDArray[np.float64]):
+        raise NotImplementedError("Not implemented yet.")
     # Gets the unit of the value
     def unit(self) -> str:
         return self.__model.get_hardware_position_units()[0]
