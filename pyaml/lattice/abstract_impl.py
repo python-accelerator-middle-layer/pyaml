@@ -1,10 +1,12 @@
+import numpy as np
+import at
+from scipy.constants import speed_of_light
+
 from ..control import abstract
 from ..magnet.model import MagnetModel
 from .polynom_info import PolynomInfo
 from ..rf.rf_plant import RFPlant
 from ..rf.rf_transmitter import RFTransmitter
-import numpy as np
-import at
 
 # TODO handle serialized magnets
 
@@ -148,7 +150,7 @@ class RWStrengthArray(abstract.ReadWriteFloatArray):
 
 class RWRFVoltageScalar(abstract.ReadWriteFloatScalar):
     """
-    Class providing read write access to a cavity voltage of a simulator.
+    Class providing read write access to a cavity voltage of a simulator for a given RF trasnmitter.
     """
 
     def __init__(self, elements:list[at.Element], transmitter:RFTransmitter):
@@ -157,7 +159,7 @@ class RWRFVoltageScalar(abstract.ReadWriteFloatScalar):
 
     def get(self) -> float:
         sum = 0
-        for e in self.elements:
+        for idx,e in enumerate(self.elements):
             sum += e.Voltage
         return sum
     
@@ -171,6 +173,33 @@ class RWRFVoltageScalar(abstract.ReadWriteFloatScalar):
         
     def unit(self) -> str:
         return self.__transmitter._cfg.voltage.unit()
+
+#------------------------------------------------------------------------------
+
+class RWRFPhaseScalar(abstract.ReadWriteFloatScalar):
+    """
+    Class providing read write access to a cavity phase of a simulator for a given RF trasnmitter.
+    """
+
+    def __init__(self, elements:list[at.Element], transmitter:RFTransmitter):
+        self.__elements = elements
+        self.__transmitter = transmitter
+
+    def get(self) -> float:
+        # Assume that all cavities of this transmitter have the same Time Lag and Frequency
+        wavelength = speed_of_light / self.__elements[0].Frequency        
+        return (wavelength /  self.__elements[0].TimeLag) * 2.0 * np.pi
+    
+    def set(self,value:float):
+        wavelength = speed_of_light / self.__elements[0].Frequency
+        for e in self.__elements:
+            e.TimeLag = wavelength * value / (2.0 * np.pi)
+
+    def set_and_wait(self, value:float):
+        raise NotImplementedError("Not implemented yet.")
+        
+    def unit(self) -> str:
+        return self.__transmitter._cfg.phase.unit()
     
 #------------------------------------------------------------------------------
 
@@ -179,8 +208,9 @@ class RWRFFrequencyScalar(abstract.ReadWriteFloatScalar):
     Class providing read write access to RF frequency of a simulator.
     """
 
-    def __init__(self, elements:list[at.Element], rf:RFPlant ):
+    def __init__(self, elements:list[at.Element], harmonics:list[float], rf:RFPlant ):
         self.__elements = elements
+        self.__harm = harmonics
         self.__rf = rf
 
     def get(self) -> float:
@@ -189,7 +219,7 @@ class RWRFFrequencyScalar(abstract.ReadWriteFloatScalar):
     
     def set(self,value:float):
         for idx,e in enumerate(self.__elements):
-            e.Frequency = value * self.__rf.__allharmonics[idx]
+            e.Frequency = value * self.__harm[idx]
 
     def set_and_wait(self, value:float):
         raise NotImplementedError("Not implemented yet.")

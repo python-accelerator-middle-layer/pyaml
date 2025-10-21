@@ -22,7 +22,6 @@ class ConfigModel(ElementConfigModel):
     """List of RF trasnmitters"""
 
 class RFPlant(Element):
-
     """
     Main RF object
     """
@@ -31,11 +30,7 @@ class RFPlant(Element):
         super().__init__(cfg.name)
         self._cfg = cfg
         self.__frequency = None
-        self.__allcav = []
-        self.__allharmonics = []
-        for c in cfg.transmitters:
-            self.__allcav.extend(c._cfg.cavities)
-            self.__allharmonics.extend(c._cfg.harmonics)
+        self.__voltage = None
 
     @property
     def frequency(self) -> abstract.ReadWriteFloatScalar:
@@ -43,8 +38,53 @@ class RFPlant(Element):
             raise PyAMLException(f"{str(self)} has no masterclock device defined")
         return self.__frequency
 
-    def attach(self, frequency: abstract.ReadWriteFloatScalar) -> Self:
+    @property
+    def voltage(self) -> abstract.ReadWriteFloatScalar:
+        if self.__voltage is None:
+            raise PyAMLException(f"{str(self)} has no trasmitter device defined")
+        return self.__voltage
+
+    def attach(self, frequency: abstract.ReadWriteFloatScalar, voltage: abstract.ReadWriteFloatScalar) -> Self:
         # Attach frequency attribute and returns a new reference
         obj = self.__class__(self._cfg)
         obj.__frequency = frequency
+        obj.__voltage = voltage
         return obj
+
+class RWTotalVoltage(abstract.ReadWriteFloatScalar):
+
+    def __init__(self, transmitters: list[RFTransmitter]):
+        """
+        Construct a RWTotalVoltage setter
+
+        Parameters
+        ----------
+        transmitters : list[RFTransmitter]
+            List of attached transmitters
+        """
+        self.__trans = transmitters
+
+    def get(self) -> float:
+        sum = 0
+        # Count only fundamental harmonic
+        for t in self.__trans:
+            if(t._cfg.harmonic==1.):
+                sum += t.voltage.get()
+        return sum
+    
+    def set(self,value:float):
+        # Assume that sum of transmitter (fundamental harmonic) distribution is 1
+        for t in self.__trans:
+            if(t._cfg.harmonic==1.):
+                v = value * t._cfg.distribution
+                t.voltage.set(v)
+
+    def set_and_wait(self, value:float):
+        raise NotImplementedError("Not implemented yet.")
+        
+    def unit(self) -> str:
+        return self.__trans[0]._cfg.phase.unit()
+
+    
+
+

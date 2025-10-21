@@ -23,10 +23,10 @@ class ConfigModel(ElementConfigModel):
     """Device to apply cavity phase"""
     cavities: list[str]
     """List of cavity names connected to this transmitter"""
-    harmonics: list[int]
-    """Harmonic frequency ratio, 1 for main frequency"""
-    distribution: float|None = None
-    """RF distribution (Part of the total RF powered by this transmitter)"""
+    harmonic: float = 1.0
+    """Harmonic frequency ratio, 1.0 for main frequency"""
+    distribution: float = 1.0
+    """RF distribution (Part of the total RF voltage powered by this transmitter)"""
 
 class RFTransmitter(Element):
 

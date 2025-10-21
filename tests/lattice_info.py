@@ -25,7 +25,7 @@ def prepare_and_save():
 def dump():
     # Dump lattice 
     for e in ring:
-        if e.FamName.startswith("CAV"):
+        if e.FamName.startswith("QD"):
             print(e)
 
 dump()

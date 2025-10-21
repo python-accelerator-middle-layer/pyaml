@@ -121,7 +121,7 @@ class RWStrengthArray(abstract.ReadWriteFloatArray):
 
 class RWRFVoltageScalar(abstract.ReadWriteFloatScalar):
     """
-    Class providing read write access to cavity voltage of a control system.
+    Class providing read write access to cavity voltage for a transmitter of a control system.
     """
 
     def __init__(self, transmitter:RFTransmitter):
@@ -138,12 +138,34 @@ class RWRFVoltageScalar(abstract.ReadWriteFloatScalar):
         
     def unit(self) -> str:
         return self.__transmitter._cfg.voltage.unit()
+
+#------------------------------------------------------------------------------
+
+class RWRFPhaseScalar(abstract.ReadWriteFloatScalar):
+    """
+    Class providing read write access to cavity phase for a transmitter of a control system.
+    """
+
+    def __init__(self, transmitter:RFTransmitter):
+        self.__transmitter = transmitter
+
+    def get(self) -> float:        
+        return self.__transmitter._cfg.phase.get()
+    
+    def set(self,value:float):
+        return self.__transmitter._cfg.phase.set(value)
+
+    def set_and_wait(self, value:float):
+        raise NotImplementedError("Not implemented yet.")
+        
+    def unit(self) -> str:
+        return self.__transmitter._cfg.phase.unit()
     
 #------------------------------------------------------------------------------
 
 class RWRFFrequencyScalar(abstract.ReadWriteFloatScalar):
     """
-    Class providing read write access to a RF frequency of a control system.
+    Class providing read write access to RF frequency of a control system.
     """
 
     def __init__(self, rf:RFPlant ):
