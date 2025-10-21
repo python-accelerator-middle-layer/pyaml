@@ -39,6 +39,8 @@ def test_rf_multi():
 
     ml:PyAML = pyaml("tests/config/EBS_rf_multi.yaml")
     sr:Instrument = ml.get('sr')
+
+    # Simulator
     RF = sr.design.get_rf_plant("RF")
 
     RF.frequency.set(3.523e8)
@@ -64,5 +66,19 @@ def test_rf_multi():
                 assert(np.isclose(e.Voltage,300e3))
             else:
                 assert(np.isclose(e.Voltage,1e6))
+
+    # Control system
+    RF = sr.live.get_rf_plant("RF")
+    RF1 = sr.live.get_rf_trasnmitter("RFTRA1")
+    RF2 = sr.live.get_rf_trasnmitter("RFTRA2")
+    RFTRA_HARMONIC = sr.live.get_rf_trasnmitter("RFTRA_HARMONIC")
+
+    RF.frequency.set(3.523e8)
+    RFTRA_HARMONIC.voltage.set(300e3)
+    RF.voltage.set(12e6)
+
+    assert(np.isclose(RF1._cfg.voltage.get(),10e6))
+    assert(np.isclose(RF2._cfg.voltage.get(),2e6))
+    assert(np.isclose(RFTRA_HARMONIC._cfg.voltage.get(),3e5))
 
     Factory.clear()
