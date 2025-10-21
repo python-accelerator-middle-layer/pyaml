@@ -1,0 +1,13 @@
+  type: pyaml.magnet.identity_cfm_model
+  multipoles: [B0,A0,A1]
+  units: [rad,rad,m-1]
+  physics:
+    - type: tango.pyaml.attribute
+      attribute:  srmag/ps-corr-sh1/c01-a-ch1/strength
+      unit: rad
+    - type: tango.pyaml.attribute
+      attribute:  srmag/ps-corr-sh1/c01-a-ch2/strength
+      unit: rad
+    - type: tango.pyaml.attribute
+      attribute:  srmag/ps-corr-sh1/c01-a-ch3/strength
+      unit: m-1
