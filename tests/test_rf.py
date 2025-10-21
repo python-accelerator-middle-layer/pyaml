@@ -29,8 +29,8 @@ def test_rf():
         RF = sr.live.get_rf_plant("RF")
         RF.frequency.set(3.523721693993786E8)
         RF.voltage.set(6.5e6)
-        print(RF.frequency.get())
-        print(RF.voltage.get())
+        assert np.isclose(RF.frequency.get(), 3.523721693993786E8)
+        assert np.isclose(RF.voltage.get(), 6.5e6)
 
     Factory.clear()
 
