@@ -68,25 +68,3 @@ class BPMModel(metaclass=ABCMeta):
         """
         pass
 
-    # @abstractmethod
-    # def get_hardware_angle_unit(self) -> str:
-    #     """
-    #     Get the hardware unit for BPM readings.
-    #     Returns
-    #     -------
-    #     str
-    #         The unit of measurement for BPM hardware values.
-    #     """
-    #     pass
-    #
-    # @abstractmethod
-    # def get_hardware_position_units(self) -> list[str]:
-    #     """
-    #     Get the hardware units for BPM positions and offsets.
-    #     Returns
-    #     -------
-    #     list[str]
-    #         List of units for horizontal and vertical positions and offsets.
-    #     """
-    #     pass
-

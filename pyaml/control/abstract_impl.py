@@ -127,7 +127,7 @@ class RBpmArray(abstract.ReadFloatArray):
 
     # Gets the value
     def get(self) -> np.array:
-        return self.__model.read_hardware_positions()
+        return self.__model.read_hardware_position_values()
 
     # Gets the unit of the value
     def unit(self) -> list[str]:

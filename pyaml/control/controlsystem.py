@@ -69,6 +69,7 @@ class ControlSystem(ElementHolder,metaclass=ABCMeta):
             tilt = RWBpmTiltScalar(e.model)
             offsets = RWBpmOffsetArray(e.model)
             positions = RBpmArray(e.model)
+            e = e.attach(positions, offsets, tilt)
             self.add_bpm(e.get_name(),e)
 
 
