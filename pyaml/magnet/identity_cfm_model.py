@@ -33,14 +33,14 @@ class IdentityCFMagnetModel(MagnetModel):
         # Check config
         self.__nbFunction: int = len(cfg.multipoles)
 
-        if cfg.physics is None and cfg.powerconverter is None:
+        if cfg.physics is None and cfg.powerconverters is None:
             raise Exception("Invalid IdentityCFMagnetModel configuration, physics or powerconverters device required")
-        if cfg.physics is not None and cfg.powerconverter is not None:
+        if cfg.physics is not None and cfg.powerconverters is not None:
             raise Exception("Invalid IdentityCFMagnetModel configuration, physics or powerconverters device required but not both")
         if cfg.physics:
             self.__devices = cfg.physics
         else:
-            self.__devices = cfg.powerconverter
+            self.__devices = cfg.powerconverters
 
         self.__nbDev: int = len(self.__devices)
 
