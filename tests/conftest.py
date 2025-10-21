@@ -1,4 +1,6 @@
 import types
+
+import at
 import pytest
 import subprocess
 import sys
@@ -27,7 +29,11 @@ def install_test_package(request):
     def test_x(install_test_package):
         ...
     """
+
     info = request.param
+    if info is None:
+        yield None
+        return
     package_name = info["name"]
     package_path = None
     if info["path"] is not None:
@@ -161,3 +167,27 @@ def register_mock_strategy():
     Factory.register_strategy(strategy)
     yield
     Factory.remove_strategy(strategy)
+
+
+# -----------------------
+# Linkers fixtures
+# -----------------------
+
+
+@pytest.fixture
+def lattice_with_famnames() -> at.Lattice:
+    """Lattice with duplicate FamName to test multi-match and first-element behavior."""
+    qf1 = at.elements.Quadrupole('QF_1', 0.2); qf1.FamName = 'QF'
+    qf2 = at.elements.Quadrupole('QF_2', 0.25); qf2.FamName = 'QF'
+    qd1 = at.elements.Quadrupole('QD_1', 0.3); qd1.FamName = 'QD'
+    return at.Lattice([qf1, qf2, qd1], energy=3e9)
+
+
+@pytest.fixture
+def lattice_with_custom_attr() -> at.Lattice:
+    """Lattice where a custom attribute (e.g., 'Tag') is set on elements."""
+    d1 = at.elements.Drift('D1', 1.0);         setattr(d1, "Tag", "D1")
+    qf = at.elements.Quadrupole('QF', 0.2);    setattr(qf, "Tag", "QF")
+    qf2 = at.elements.Quadrupole('QF2', 0.2);  setattr(qf2, "Tag", "QF")
+    qd = at.elements.Quadrupole('QD', 0.3);    setattr(qd, "Tag", "QD")
+    return at.Lattice([d1, qf, qf2, qd], energy=3e9)

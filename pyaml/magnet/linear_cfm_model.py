@@ -149,7 +149,7 @@ class LinearCFMagnetModel(MagnetModel):
     def readback_hardware_values(self) -> np.array:
         return np.array([p.readback() for p in self._cfg.powerconverters])
 
-    def send_harware_values(self, currents: np.array):
+    def send_hardware_values(self, currents: np.array):
         for idx, p in enumerate(self._cfg.powerconverters):
             p.set(currents[idx])
 
@@ -159,6 +159,6 @@ class LinearCFMagnetModel(MagnetModel):
     def set_magnet_rigidity(self, brho: np.double):
         self._brho = brho
 
-    def hasHardwareMapping(self) -> bool:
+    def has_hardware(self) -> bool:
         return (self.__nbPS == self.__nbFunction) and np.allclose(self.__matrix, np.eye(self.__nbFunction))
 

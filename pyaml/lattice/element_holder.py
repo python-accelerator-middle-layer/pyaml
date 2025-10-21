@@ -5,28 +5,6 @@ from .element import Element
 from ..magnet.magnet import Magnet
 from ..arrays.magnet_array import MagnetArray
 
-class MagnetType:
-   COMBINED = 0
-   HCORRECTOR = 1
-   VCORRECTOR = 2
-   QUADRUPOLE = 3
-   SKEWQUAD = 4
-   SEXTUPOLE = 5
-   SKEWSEXT = 6
-   OCTUPOLE = 7
-   SKEWOCTU = 8
-
-_mmap:list = [
-    "CombinedFunctionMagnet",
-    "HCorrector",
-    "VCorrector",
-    "Quadrupole",
-    "SkewQuad",
-    "Sextupole",
-    "SkewSext",
-    "Octupole",
-    "SkewOctu"]
-
 
 class ElementHolder(object):
     """
@@ -46,20 +24,19 @@ class ElementHolder(object):
     def fill_device(self,elements:list[Element]):
        raise "ElementHolder.fill_device() is not subclassed"
     
-    def fill_magnet_array(self,type:MagnetType,arrayName:str,elementNames:list[str]):
+    def fill_magnet_array(self,arrayName:str,elementNames:list[str]):
        a = []
        for name in elementNames:
           try:
-            a.append(self.get_magnet(type,name))
+            a.append(self.get_magnet(name))
           except Exception as err:
             raise Exception(f"MagnetArray {arrayName} : {err}")
        self.__MAGNET_ARRAYS[arrayName] = MagnetArray(arrayName,a)
 
-    def get_magnet(self,type:MagnetType,name:str) -> Magnet:
-      fName = f"{_mmap[type]}({name})"
-      if fName not in self.__MAGNETS:
-        raise Exception(f"Magnet {fName} not defined")
-      return self.__MAGNETS[fName]
+    def get_magnet(self,name:str) -> Magnet:
+      if name not in self.__MAGNETS:
+        raise Exception(f"Magnet {name} not defined")
+      return self.__MAGNETS[name]
     
     def add_magnet(self,name:str,m:Magnet):
         self.__MAGNETS[name] = m

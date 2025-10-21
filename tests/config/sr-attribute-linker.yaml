@@ -7,6 +7,9 @@ instruments:
       - type: pyaml.lattice.simulator
         lattice: sr/lattices/ebs.mat
         name: design
+        linker:
+          type: pyaml.lattice.attribute_linker
+          attribute_name: FamName # equivalent to the default linker
     data_folder: /data/store
     arrays:
       - type: pyaml.arrays.magnet

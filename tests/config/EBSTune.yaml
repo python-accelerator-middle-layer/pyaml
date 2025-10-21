@@ -13,7 +13,7 @@ instruments:
         name: live
     data_folder: /data/store
     arrays:
-      - type: pyaml.arrays.quadrupole
+      - type: pyaml.arrays.magnet
         name: QForTune
         aggregator:
           type: tango.pyaml.multi_attribute

@@ -1,5 +1,8 @@
 from pydantic import BaseModel,ConfigDict
 import at
+
+from .attribute_linker import PyAtAttributeElementsLinker, ConfigModel as PyAtAttrLinkerConfigModel
+from .lattice_elements_linker import LatticeElementsLinker
 from ..configuration import get_root_folder
 from .element import Element
 from pathlib import Path
@@ -23,6 +26,8 @@ class ConfigModel(BaseModel):
     """AT lattice file"""
     mat_key: str = None
     """AT lattice ring name"""
+    linker: LatticeElementsLinker = None
+    """The linker configuration model"""
 
 class Simulator(ElementHolder):
     """
@@ -32,12 +37,15 @@ class Simulator(ElementHolder):
     def __init__(self, cfg: ConfigModel):
         super().__init__()
         self._cfg = cfg
+        self._linker = cfg.linker if cfg.linker else PyAtAttributeElementsLinker(PyAtAttrLinkerConfigModel(attribute_name="FamName"))
         path:Path = get_root_folder() / cfg.lattice
 
         if(self._cfg.mat_key is None):
           self.ring = at.load_lattice(path)
         else:
           self.ring = at.load_lattice(path,mat_key=f"{self._cfg.mat_key}")
+
+        self._linker.set_lattice(self.ring)
 
     def name(self) -> str:
        return self._cfg.name
@@ -53,21 +61,22 @@ class Simulator(ElementHolder):
     
     def fill_device(self,elements:list[Element]):
        for e in elements:
+          # Need conversion to physics unit to work with simulator
           if isinstance(e,Magnet):
-            current = RWHardwareScalar(self.get_at_elems(e.name),e.polynom,e.model)
-            strength = RWStrengthScalar(self.get_at_elems(e.name),e.polynom,e.model)
+            current = RWHardwareScalar(self.get_at_elems(e),e.polynom,e.model) if e.model.has_physics() else None
+            strength = RWStrengthScalar(self.get_at_elems(e),e.polynom,e.model) if e.model.has_physics() else None
             # Create a unique ref for this simulator
             m = e.attach(strength,current)
-            self.add_magnet(str(m),m)
+            self.add_magnet(m.get_name(),m)
           elif isinstance(e,CombinedFunctionMagnet):
-            self.add_magnet(str(e),e)
-            currents = RWHardwareArray(self.get_at_elems(e.name),e.polynoms,e.model)
-            strengths = RWStrengthArray(self.get_at_elems(e.name),e.polynoms,e.model)
+            self.add_magnet(e.get_name(),e)
+            currents = RWHardwareArray(self.get_at_elems(e),e.polynoms,e.model) if e.model.has_physics() else None
+            strengths = RWStrengthArray(self.get_at_elems(e),e.polynoms,e.model) if e.model.has_physics() else None
             # Create unique refs of each function for this simulator
             ms = e.attach(strengths,currents)
             for m in ms:
-              self.add_magnet(str(m),m)
-              self.add_magnet(str(m),m)
+              self.add_magnet(m.get_name(), m)
+              self.add_magnet(m.get_name(), m)
           elif isinstance(e,BPM):
             # This assumes unique BPM names in the pyAT lattice  
             tilt = RWBpmTiltScalar(self.get_at_elems(e.name)[0])
@@ -76,8 +85,9 @@ class Simulator(ElementHolder):
             e = e.attach(positions, offsets, tilt)
             self.add_bpm(str(e),e)
     
-    def get_at_elems(self,elementName:str) -> list[at.Element]:
-       elementList = [e for e in self.ring if e.FamName == elementName]
-       if not elementList:
-          raise Exception(f"{elementName} not found in lattice:{self._cfg.lattice}")
-       return elementList
+    def get_at_elems(self,element:Element) -> list[at.Element]:
+       identifier = self._linker.get_element_identifier(element)
+       element_list = self._linker.get_at_elements(identifier)
+       if not element_list:
+          raise Exception(f"{identifier} not found in lattice:{self._cfg.lattice}")
+       return element_list

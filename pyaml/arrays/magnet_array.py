@@ -102,7 +102,7 @@ class RWMagnetHardware(ReadWriteFloatArray):
     def set_aggregator(self,agg:DeviceAccessList):
         self.aggregator = agg
         for m in self.__magnets:
-            self.hasHardwareMapping |= m.model.hasHardwareMapping()
+            self.hasHardwareMapping |= m.model.has_hardware()
 
 class MagnetArray(list[Magnet]):
     """
