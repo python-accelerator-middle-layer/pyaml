@@ -1,8 +1,10 @@
 from numpy import double
-
-from pyaml.control import abstract
-from pyaml.magnet.model import MagnetModel
 import numpy as np
+
+from ..control import abstract
+from ..magnet.model import MagnetModel
+from ..rf.rf_plant import RFPlant
+from ..rf.rf_transmitter import RFTransmitter
 
 #------------------------------------------------------------------------------
 
@@ -115,5 +117,70 @@ class RWStrengthArray(abstract.ReadWriteFloatArray):
         return self.__model.get_strength_units()
 
 
+#------------------------------------------------------------------------------
 
+class RWRFVoltageScalar(abstract.ReadWriteFloatScalar):
+    """
+    Class providing read write access to cavity voltage for a transmitter of a control system.
+    """
+
+    def __init__(self, transmitter:RFTransmitter):
+        self.__transmitter = transmitter
+
+    def get(self) -> float:        
+        return self.__transmitter._cfg.voltage.get()
+    
+    def set(self,value:float):
+        return self.__transmitter._cfg.voltage.set(value)
+
+    def set_and_wait(self, value:float):
+        raise NotImplementedError("Not implemented yet.")
+        
+    def unit(self) -> str:
+        return self.__transmitter._cfg.voltage.unit()
+
+#------------------------------------------------------------------------------
+
+class RWRFPhaseScalar(abstract.ReadWriteFloatScalar):
+    """
+    Class providing read write access to cavity phase for a transmitter of a control system.
+    """
+
+    def __init__(self, transmitter:RFTransmitter):
+        self.__transmitter = transmitter
+
+    def get(self) -> float:        
+        return self.__transmitter._cfg.phase.get()
+    
+    def set(self,value:float):
+        return self.__transmitter._cfg.phase.set(value)
+
+    def set_and_wait(self, value:float):
+        raise NotImplementedError("Not implemented yet.")
+        
+    def unit(self) -> str:
+        return self.__transmitter._cfg.phase.unit()
+    
+#------------------------------------------------------------------------------
+
+class RWRFFrequencyScalar(abstract.ReadWriteFloatScalar):
+    """
+    Class providing read write access to RF frequency of a control system.
+    """
+
+    def __init__(self, rf:RFPlant ):
+        self.__rf = rf
+
+    def get(self) -> float:
+        # Serialized cavity has the same frequency
+        return self.__rf._cfg.masterclock.get()
+
+    def set(self,value:float):
+        return self.__rf._cfg.masterclock.set(value)
+
+    def set_and_wait(self, value:float):
+        raise NotImplementedError("Not implemented yet.")
+
+    def unit(self) -> str:
+        return self.__rf._cfg.masterclock.unit()
 

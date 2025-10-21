@@ -8,8 +8,11 @@ from .element import Element
 from pathlib import Path
 from ..magnet.magnet import Magnet
 from ..magnet.cfm_magnet import CombinedFunctionMagnet
+from ..rf.rf_plant import RFPlant,RWTotalVoltage
+from ..rf.rf_transmitter import RFTransmitter
 from ..lattice.abstract_impl import RWHardwareScalar,RWHardwareArray
 from ..lattice.abstract_impl import RWStrengthScalar,RWStrengthArray
+from ..lattice.abstract_impl import RWRFFrequencyScalar,RWRFVoltageScalar,RWRFPhaseScalar
 from .element_holder import ElementHolder
 
 # Define the main class name for this module
@@ -67,6 +70,7 @@ class Simulator(ElementHolder):
             # Create a unique ref for this simulator
             m = e.attach(strength,current)
             self.add_magnet(m.get_name(),m)
+
           elif isinstance(e,CombinedFunctionMagnet):
             self.add_magnet(e.get_name(),e)
             currents = RWHardwareArray(self.get_at_elems(e),e.polynoms,e.model) if e.model.has_physics() else None
@@ -76,6 +80,36 @@ class Simulator(ElementHolder):
             for m in ms:
               self.add_magnet(m.get_name(),m)
               self.add_magnet(m.get_name(),m)
+
+          elif isinstance(e,RFPlant):
+             self.add_rf_plant(e.get_name(),e)
+             cavs: list[at.Element] = []
+             harmonics: list[float] = []
+             attachedTrans: list[RFTransmitter] = []
+             for t in e._cfg.transmitters:
+                cavsPerTrans: list[at.Element] = []
+                for c in t._cfg.cavities:
+                   # Expect unique name for cavities
+                   cav = self.get_at_elems(Element(c))
+                   if len(cav)>1:
+                         raise Exception(f"RF transmitter {t.get_name()}, multiple cavity definition:{cav[0]}")
+                   if len(cav)==0:
+                         raise Exception(f"RF transmitter {t.get_name()}, No cavity found")
+                   cavsPerTrans.append(cav[0])
+                   harmonics.append(t._cfg.harmonic)
+
+                voltage = RWRFVoltageScalar(cavsPerTrans,t)
+                phase = RWRFPhaseScalar(cavsPerTrans,t)
+                nt = t.attach(voltage,phase)
+                attachedTrans.append(nt)
+                self.add_rf_transnmitter(nt.get_name(),nt)
+                cavs.extend(cavsPerTrans)
+
+             frequency = RWRFFrequencyScalar(cavs,harmonics,e)
+             voltage = RWTotalVoltage(attachedTrans)
+             ne = e.attach(frequency,voltage)
+             self.add_rf_plant(ne.get_name(),ne)
+             
     
     def get_at_elems(self,element:Element) -> list[at.Element]:
        identifier = self._linker.get_element_identifier(element)
