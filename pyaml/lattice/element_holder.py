@@ -3,6 +3,8 @@ Module handling element references for simulators and control system
 """
 from .element import Element
 from ..magnet.magnet import Magnet
+from ..rf.rf_plant import RFPlant
+from ..rf.rf_transmitter import RFTransmitter
 from ..arrays.magnet_array import MagnetArray
 
 
@@ -15,7 +17,8 @@ class ElementHolder(object):
         # Device handle
         self.__MAGNETS: dict = {}
         self.__BPMS: dict = {}
-        self.__RF: dict = {}
+        self.__RFPLANT: dict = {}
+        self.__RFTRANSMITTER: dict = {}
         self.__OTHERS: dict = {}
 
         # Array handle
@@ -39,7 +42,28 @@ class ElementHolder(object):
       return self.__MAGNETS[name]
     
     def add_magnet(self,name:str,m:Magnet):
-        self.__MAGNETS[name] = m
+       self.__MAGNETS[name] = m
+
+    def get_rf_plant(self,name:str) -> RFPlant:
+      if name not in self.__RFPLANT:
+        raise Exception(f"RFPlant {name} not defined")
+      return self.__RFPLANT[name]       
+
+    def add_rf_plant(self,name:str,rf:RFPlant):
+       self.__RFPLANT[name] = rf
+
+    def get_rf_plant(self,name:str) -> RFPlant:
+      if name not in self.__RFPLANT:
+        raise Exception(f"RFPlant {name} not defined")
+      return self.__RFPLANT[name]       
+
+    def add_rf_transnmitter(self,name:str,rf:RFTransmitter):
+       self.__RFTRANSMITTER[name] = rf
+
+    def get_rf_trasnmitter(self,name:str) -> RFTransmitter:
+      if name not in self.__RFTRANSMITTER:
+        raise Exception(f"RFTransmitter {name} not defined")
+      return self.__RFTRANSMITTER[name]       
 
     def get_all_magnets(self) -> dict:
        return self.__MAGNETS

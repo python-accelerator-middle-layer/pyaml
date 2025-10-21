@@ -2,10 +2,13 @@ from abc import ABCMeta, abstractmethod
 from ..lattice.element_holder import ElementHolder
 from ..lattice.element import Element
 from ..control.abstract_impl import RWHardwareScalar,RWHardwareArray,RWStrengthScalar,RWStrengthArray
+from ..bpm.bpm import BPM
 from ..control.abstract_impl import RWBpmTiltScalar,RWBpmOffsetArray, RBpmArray
+from ..control.abstract_impl import RWRFFrequencyScalar,RWRFVoltageScalar,RWRFPhaseScalar
 from ..magnet.magnet import Magnet
 from ..magnet.cfm_magnet import CombinedFunctionMagnet
-from ..bpm.bpm import BPM
+from ..rf.rf_plant import RFPlant,RWTotalVoltage
+from ..rf.rf_transmitter import RFTransmitter
 
 class ControlSystem(ElementHolder,metaclass=ABCMeta):
     """
@@ -53,6 +56,7 @@ class ControlSystem(ElementHolder,metaclass=ABCMeta):
             # Create a unique ref for this control system
             m = e.attach(strength, current)
             self.add_magnet(m.get_name(),m)
+
           elif isinstance(e,CombinedFunctionMagnet):
             self.add_magnet(e.get_name(),e)
             currents = RWHardwareArray(e.model) if e.model.has_hardware() else None
@@ -67,3 +71,18 @@ class ControlSystem(ElementHolder,metaclass=ABCMeta):
             positions = RBpmArray(e.model)
             self.add_bpm(e.get_name(),e)
 
+
+          elif isinstance(e,RFPlant):
+             self.add_rf_plant(e.get_name(),e)
+             attachedTrans: list[RFTransmitter] = []
+             for t in e._cfg.transmitters:
+                voltage = RWRFVoltageScalar(t)
+                phase = RWRFPhaseScalar(t)
+                nt = t.attach(voltage,phase)
+                self.add_rf_transnmitter(nt.get_name(),nt)
+                attachedTrans.append(nt)
+
+             frequency = RWRFFrequencyScalar(e)
+             voltage = RWTotalVoltage(attachedTrans)
+             ne = e.attach(frequency,voltage)
+             self.add_rf_plant(ne.get_name(),ne)
