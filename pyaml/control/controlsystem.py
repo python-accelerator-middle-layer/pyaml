@@ -60,6 +60,6 @@ class ControlSystem(ElementHolder,metaclass=ABCMeta):
             ms = e.attach(strengths,currents)
             for m in ms:
               self.add_magnet(m.get_name(),m)
-           elif isinstance(e,BPM):
+          elif isinstance(e,BPM):
               self.add_bpm(str(e),e)
 
