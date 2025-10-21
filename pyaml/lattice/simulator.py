@@ -117,7 +117,3 @@ class Simulator(ElementHolder):
        if not element_list:
           raise Exception(f"{identifier} not found in lattice:{self._cfg.lattice}")
        return element_list
-
-    def get_at_elems_from_name(self,names:list[str]) -> list[at.Element]:
-       
-       return element_list
