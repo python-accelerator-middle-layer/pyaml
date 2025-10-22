@@ -51,7 +51,9 @@ def test_controlsystem_bpm_position(install_test_package):
     ml:PyAML = pyaml("tests/config/bpms.yaml")
     sr:Instrument = ml.get('sr')
     bpm = sr.live.get_bpm('BPM_C01-01')
+    bpm_simple = sr.live.get_bpm('BPM_C01-02')
 
     assert np.allclose( bpm.positions.get(), np.array([0.0,0.0]) ) 
+    assert np.allclose( bpm_simple.positions.get(), np.array([0.0,0.0]) ) 
     
     Factory.clear()

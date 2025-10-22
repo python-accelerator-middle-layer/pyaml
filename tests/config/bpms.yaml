@@ -37,3 +37,15 @@ instruments:
           type: tango.pyaml.attribute
           attribute: srdiag/bpm/c01-01/Tilt_Angle
           unit: rad
+    - type: pyaml.bpm.bpm
+      name: BPM_C01-02
+      model:
+        type: pyaml.bpm.bpm_simple_model
+        x_pos:
+          type: tango.pyaml.attribute
+          attribute: srdiag/bpm/c01-02/SA_HPosition
+          unit: mm
+        y_pos:
+          type: tango.pyaml.attribute
+          attribute: srdiag/bpm/c01-02/SA_VPosition
+          unit: mm

@@ -4,7 +4,7 @@ import numpy as np
 from ..control.deviceaccess import DeviceAccess
 from numpy.typing import NDArray
 # Define the main class name for this module
-PYAMLCLASS = "BPMTiltOffsetModel"
+PYAMLCLASS = "BPMSimpleModel"
 
 class ConfigModel(BaseModel):
 
