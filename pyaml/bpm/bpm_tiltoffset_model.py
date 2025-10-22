@@ -1,4 +1,5 @@
 from pyaml.bpm.bpm_model import BPMModel
+from pyaml.bpm.bpm_simple_model import BPMSimpleModel
 from pydantic import BaseModel,ConfigDict
 import numpy as np
 from ..control.deviceaccess import DeviceAccess
@@ -21,30 +22,18 @@ class ConfigModel(BaseModel):
     tilt: DeviceAccess
     """BPM tilt"""
 
-class BPMTiltOffsetModel(BPMModel):
+class BPMTiltOffsetModel(BPMSimpleModel):
     """
     Concrete implementation of BPMModel that simulates a BPM with tilt and
     offset values.
     """
     def __init__(self, cfg: ConfigModel):
-        self._cfg = cfg 
-        
+        super().__init__(cfg) 
         self.__x_pos = cfg.x_pos
         self.__y_pos = cfg.y_pos
         self.__x_offset = cfg.x_offset
         self.__y_offset = cfg.y_offset
         self.__tilt = cfg.tilt
-
-    def read_hardware_position_values(self) -> NDArray:
-        """
-        Simulate reading the position values from a BPM.
-        Returns
-        -------
-        np.ndarray
-            Array of shape (2,) containing the horizontal and vertical
-            positions
-        """
-        return np.array([self.__x_pos.get(), self.__y_pos.get()])
 
     def read_hardware_tilt_value(self) -> float:
         """
