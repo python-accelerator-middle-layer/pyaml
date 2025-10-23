@@ -148,6 +148,100 @@ class RWStrengthArray(abstract.ReadWriteFloatArray):
 
 #------------------------------------------------------------------------------
 
+class RBpmArray(abstract.ReadFloatArray):
+    """
+    Class providing read access to a BPM position (array) of a simulator.
+    Position in pyAT is calculated using find_orbit function, which returns the
+    orbit at a specified index. The position is then extracted from the orbit
+    array as the first two elements (x, y).
+    """
+
+    def __init__(self, element: at.Element, lattice: at.Lattice):
+        self.element = element
+        self.lattice = lattice
+        
+
+    # Gets the value
+    def get(self) -> np.array:
+        index = self.lattice.index(self.element)
+        _, orbit = at.find_orbit(self.lattice, refpts=index)
+        return orbit[0, [0, 2]]
+
+    # Gets the unit of the value
+    def unit(self) -> str:
+        return 'mm'
+
+#------------------------------------------------------------------------------
+
+class RWBpmOffsetArray(abstract.ReadWriteFloatArray):
+    """
+    Class providing read write access to a BPM offset (array) of a simulator. 
+    Offset in pyAT is defined in Offset attribute as a 2-element array.
+    """
+
+    def __init__(self, element:at.Element):
+        self.element = element
+        try:
+            self.offset = element.__getattribute__('Offset')
+        except AttributeError:
+            self.offset = None
+
+    # Gets the value
+    def get(self) -> np.array:  
+        if self.offset is None:
+            raise ValueError("Element does not have an Offset attribute.")
+        return self.offset
+
+    # Sets the value
+    def set(self, value:np.array):
+        if self.offset is None:
+            raise ValueError("Element does not have an Offset attribute.")
+        if len(value) != 2:
+            raise ValueError("BPM offset must be a 2-element array.")
+        self.offset = value
+
+    # Sets the value and wait that the read value reach the setpoint
+    def set_and_wait(self, value:np.array):
+        raise NotImplementedError("Not implemented yet.")
+
+    # Gets the unit of the value
+    def unit(self) -> str:
+        return 'mm'  # Assuming all offsets are in mm
+
+#------------------------------------------------------------------------------
+
+class RWBpmTiltScalar(abstract.ReadWriteFloatScalar):
+    """
+    Class providing read write access to a BPM tilt of a simulator. Tilt in
+    pyAT is defined in Rotation attribute as a first element.
+    """
+
+    def __init__(self, element:at.Element):
+        self.element = element
+        try:
+            self.tilt = element.__getattribute__('Rotation')[0]
+        except AttributeError:
+            self.tilt = None
+
+    # Gets the value
+    def get(self) -> float:
+        if self.tilt is None:
+            raise ValueError("Element does not have a Tilt attribute.")
+        return self.tilt
+
+    # Sets the value
+    def set(self, value:float, ):
+        self.tilt = value
+        self.element.__setattr__('Rotation', [value, None, None])
+
+    # Sets the value and wait that the read value reach the setpoint
+    def set_and_wait(self, value:float):
+        raise NotImplementedError("Not implemented yet.")
+
+    # Gets the unit of the value
+    def unit(self) -> str:
+        return 'rad'  # Assuming BPM tilts are in rad
+
 class RWRFVoltageScalar(abstract.ReadWriteFloatScalar):
     """
     Class providing read write access to a cavity voltage of a simulator for a given RF trasnmitter.

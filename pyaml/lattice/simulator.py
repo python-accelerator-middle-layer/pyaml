@@ -7,6 +7,7 @@ from ..configuration import get_root_folder
 from .element import Element
 from pathlib import Path
 from ..magnet.magnet import Magnet
+from pyaml.bpm.bpm import BPM
 from ..magnet.cfm_magnet import CombinedFunctionMagnet
 from ..rf.rf_plant import RFPlant,RWTotalVoltage
 from ..rf.rf_transmitter import RFTransmitter
@@ -14,7 +15,7 @@ from ..lattice.abstract_impl import RWHardwareScalar,RWHardwareArray
 from ..lattice.abstract_impl import RWStrengthScalar,RWStrengthArray
 from ..lattice.abstract_impl import RWRFFrequencyScalar,RWRFVoltageScalar,RWRFPhaseScalar
 from .element_holder import ElementHolder
-
+from ..lattice.abstract_impl import RWBpmTiltScalar,RWBpmOffsetArray, RBpmArray
 # Define the main class name for this module
 PYAMLCLASS = "Simulator"
 
@@ -78,8 +79,15 @@ class Simulator(ElementHolder):
             # Create unique refs of each function for this simulator
             ms = e.attach(strengths,currents)
             for m in ms:
-              self.add_magnet(m.get_name(),m)
-              self.add_magnet(m.get_name(),m)
+              self.add_magnet(m.get_name(), m)
+              self.add_magnet(m.get_name(), m)
+          elif isinstance(e,BPM):
+            # This assumes unique BPM names in the pyAT lattice  
+            tilt = RWBpmTiltScalar(self.get_at_elems(e)[0])
+            offsets = RWBpmOffsetArray(self.get_at_elems(e)[0])
+            positions = RBpmArray(self.get_at_elems(e)[0],self.ring)
+            e = e.attach(positions, offsets, tilt)
+            self.add_bpm(e.get_name(),e)
 
           elif isinstance(e,RFPlant):
              self.add_rf_plant(e.get_name(),e)

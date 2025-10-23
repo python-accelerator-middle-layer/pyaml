@@ -1,11 +1,11 @@
 from numpy import double
-import numpy as np
-
-from ..control import abstract
-from ..magnet.model import MagnetModel
+from pyaml.control import abstract
+from pyaml.magnet.model import MagnetModel
+from pyaml.bpm.bpm_model import BPMModel
 from ..rf.rf_plant import RFPlant
 from ..rf.rf_transmitter import RFTransmitter
-
+import numpy as np
+from numpy.typing import NDArray
 #------------------------------------------------------------------------------
 
 class RWHardwareScalar(abstract.ReadWriteFloatScalar):
@@ -116,6 +116,66 @@ class RWStrengthArray(abstract.ReadWriteFloatArray):
     def unit(self) -> list[str]:
         return self.__model.get_strength_units()
 
+#------------------------------------------------------------------------------
+
+class RBpmArray(abstract.ReadFloatArray):
+    """
+    Class providing read access to a BPM array of a control system
+    """
+    def __init__(self, model:BPMModel):
+        self.__model = model
+
+    # Gets the value
+    def get(self) -> np.array:
+        return self.__model.read_position()
+
+    # Gets the unit of the value
+    def unit(self) -> list[str]:
+        return [self.__model.__x_pos.unit(), self.__model.__y_pos.unit()]
+
+#------------------------------------------------------------------------------
+
+class RWBpmTiltScalar(abstract.ReadFloatScalar):
+    """
+    Class providing read access to a BPM tilt of a control system
+    """
+    def __init__(self, model:BPMModel):
+        self.__model = model
+
+    # Gets the value
+    def get(self) -> float:
+        return self.__model.read_tilt()
+
+    def set(self, value:float):
+        self.__model.set_tilt(value)
+
+    def set_and_wait(self, value: NDArray[np.float64]):
+        raise NotImplementedError("Not implemented yet.")
+    # Gets the unit of the value
+    def unit(self) -> str:
+        return self.__model.__tilt.unit()
+
+#------------------------------------------------------------------------------
+
+class RWBpmOffsetArray(abstract.ReadWriteFloatArray):
+    """
+    Class providing read write access to a BPM offset of a control system
+    """
+    def __init__(self, model: BPMModel):
+        self.__model = model
+
+    # Gets the value
+    def get(self) -> NDArray[np.float64]:
+        return self.__model.read_offset()
+
+    # Sets the value
+    def set(self, value: NDArray[np.float64]):
+        self.__model.set_offset(value) 
+    def set_and_wait(self, value: NDArray[np.float64]):
+        raise NotImplementedError("Not implemented yet.")
+    # Gets the unit of the value
+    def unit(self) -> str:
+        return self.__model.__x_offset.unit()
 
 #------------------------------------------------------------------------------
 

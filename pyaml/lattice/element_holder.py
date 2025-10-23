@@ -72,3 +72,12 @@ class ElementHolder(object):
        if name not in self.__MAGNET_ARRAYS:
          raise Exception(f"Magnet array {name} not defined")
        return self.__MAGNET_ARRAYS[name]
+  
+    def get_bpm(self,name:str) -> Element:
+      if name not in self.__BPMS:
+         raise Exception(f"BPM {name} not defined")
+      return self.__BPMS[name]
+
+    def add_bpm(self,name:str,bpm:Element):
+        self.__BPMS[name] = bpm
+          
