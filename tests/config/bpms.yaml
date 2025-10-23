@@ -49,3 +49,26 @@ instruments:
           type: tango.pyaml.attribute
           attribute: srdiag/bpm/c01-02/SA_VPosition
           unit: mm
+    - type: pyaml.bpm.bpm
+      name: BPM_C01-03
+      model:
+        type: pyaml.bpm.bpm_simple_model
+        x_pos:
+          type: tango.pyaml.attribute
+          attribute: srdiag/bpm/c01-03/SA_HPosition
+          unit: mm
+        y_pos:
+          type: tango.pyaml.attribute
+          attribute: srdiag/bpm/c01-03/SA_VPosition
+          unit: mm
+    - type: pyaml.magnet.cfm_magnet
+      name: SH1A-C01         #Name of the element in the lattice model
+      mapping:
+        # Multipole mapping for usage in families, in this example SH1-C01A-H is not 
+        # a lattice element present in the model, it is just a name to use in 
+        # PyAML families. When this 'virutal' element is set, it then applies
+        # the corresponding multipole on the parent element.
+        - [B0, SH1A-C01-H]
+        - [A0, SH1A-C01-V]
+        - [A1, SH1A-C01-SQ]
+      model: sr/magnet_models/SH1AC01.yaml

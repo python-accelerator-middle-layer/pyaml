@@ -57,3 +57,25 @@ def test_simulator_bpm_position(install_test_package):
     assert np.allclose( bpm_simple.positions.get(), np.array([0.0,0.0]) ) 
     
     Factory.clear()
+
+@pytest.mark.parametrize("install_test_package", [{
+    "name": "tango",
+    "path": "tests/dummy_cs/tango"
+}], indirect=True)
+def test_simulator_bpm_position_with_bad_corrector_strength(install_test_package):
+
+    ml:PyAML = pyaml("tests/config/bpms.yaml")
+    sr:Instrument = ml.get('sr')
+    sr.design.get_lattice().disable_6d()
+    bpm = sr.design.get_bpm('BPM_C01-01')
+    bpm_simple = sr.design.get_bpm('BPM_C01-02')
+    bpm3 = sr.design.get_bpm('BPM_C01-03')
+
+    sr.design.get_magnet("SH1A-C01-H").strength.set(-1e-6)
+    sr.design.get_magnet("SH1A-C01-V").strength.set(-1e-6)
+    for bpm in [bpm, bpm_simple, bpm3]:
+        assert bpm.positions.get()[0] != 0.0
+        assert bpm.positions.get()[1] != 0.0
+    
+    Factory.clear()
+

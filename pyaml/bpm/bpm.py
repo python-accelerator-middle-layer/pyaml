@@ -9,7 +9,6 @@ PYAMLCLASS = "BPM"
 
 class ConfigModel(ElementConfigModel):
 
-        # hardware: DeviceAccess | None = None
         model: BPMModel | None = None
         """Object in charge of BPM modeling"""
 
@@ -36,17 +35,11 @@ class BPM(Element):
         
         super().__init__(cfg.name)
 
-        # self.__hardware = cfg.hardware if hasattr(cfg, "hardware") else None
         self.__model = cfg.model if hasattr(cfg, "model") else None
         self._cfg = cfg
         self.__positions = None
         self.__offset = None
         self.__tilt = None
-    # @property
-    # def hardware(self) -> abstract.ReadWriteFloatScalar:
-    #     if self.__hardware is None:
-    #         raise Exception(f"{str(self)} has no model that supports hardware units")
-    #     return self.__hardware
 
     @property
     def model(self) -> BPMModel:
@@ -76,7 +69,6 @@ class BPM(Element):
         # reference
         obj = self.__class__(self._cfg)
         obj.__model = self.__model
-        # obj.__hardware = self.__hardware
         obj.__positions = positions
         obj.__offset = offset
         obj.__tilt = tilt
