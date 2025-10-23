@@ -9,6 +9,8 @@ from ..magnet.magnet import Magnet
 from ..magnet.cfm_magnet import CombinedFunctionMagnet
 from ..rf.rf_plant import RFPlant,RWTotalVoltage
 from ..rf.rf_transmitter import RFTransmitter
+from ..control.deviceaccesslist import DeviceAccessList
+from ..configuration.factory import Factory
 
 class ControlSystem(ElementHolder,metaclass=ABCMeta):
     """
@@ -23,11 +25,25 @@ class ControlSystem(ElementHolder,metaclass=ABCMeta):
         """Initialize control system"""
         pass
 
+    def create_scalar_aggregator(self) -> DeviceAccessList:
+        mod = self.scalar_aggregator()
+        return Factory.build_object({"type":mod}) if mod is not None else None
+
     @abstractmethod
     def name(self) -> str:
         """Return control system name (i.e. live)"""
         pass
+    
+    @abstractmethod
+    def scalar_aggregator(self) -> str | None:
+        """Returns the module name used for handling aggregator of DeviceAccess"""
+        return None
 
+    @abstractmethod
+    def vector_aggregator(self) -> str | None:
+        """Returns the module name used for handling aggregator of DeviceVectorAccess"""
+        return None
+    
     def set_energy(self,E:float):
         """
         Sets the energy on magnets belonging to this control system
