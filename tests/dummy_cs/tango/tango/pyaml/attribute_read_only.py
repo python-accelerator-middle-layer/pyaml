@@ -31,10 +31,10 @@ class AttributeReadOnly(DeviceAccess):
         return self._readback
 
     def set(self, value: float):
-        raise Exception(f"{self._cfg.name} is read only attribute")
+        raise Exception(f"{self._cfg.attribute} is read only attribute")
 
     def set_and_wait(self, value: float):
-        raise Exception(f"{self._cfg.name} is read only attribute")
+        raise Exception(f"{self._cfg.attribute} is read only attribute")
 
     def get(self) -> float:
         return self._cache
