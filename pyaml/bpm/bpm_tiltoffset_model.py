@@ -35,7 +35,7 @@ class BPMTiltOffsetModel(BPMSimpleModel):
         self.__y_offset = cfg.y_offset
         self.__tilt = cfg.tilt
 
-    def read_hardware_tilt_value(self) -> float:
+    def read_tilt(self) -> float:
         """
         Simulate reading the tilt value from a BPM.
         Returns
@@ -44,8 +44,8 @@ class BPMTiltOffsetModel(BPMSimpleModel):
             The tilt value of the BPM
         """
         return self.__tilt.get()
-
-    def read_hardware_offset_values(self) -> NDArray:
+    
+    def read_offset(self) -> NDArray:
         """
         Simulate reading the offset values from a BPM.
         Returns
@@ -55,8 +55,8 @@ class BPMTiltOffsetModel(BPMSimpleModel):
             offsets
         """
         return np.array([self.__x_offset.get(), self.__y_offset.get()])
-
-    def set_hardware_tilt_value(self, tilt: float):
+    
+    def set_tilt(self, tilt: float):
         """
         Simulate setting the tilt value of a BPM.
         Parameters
@@ -68,8 +68,8 @@ class BPMTiltOffsetModel(BPMSimpleModel):
         None
         """
         self.__tilt.set(tilt)
-
-    def set_hardware_offset_values(self, offset_values: np.ndarray):
+    
+    def set_offset(self, offset_values: np.ndarray):
         """
         Simulate setting the offset values of a BPM
         Parameters
@@ -80,4 +80,4 @@ class BPMTiltOffsetModel(BPMSimpleModel):
         """
         self.__x_offset.set(offset_values[0])
         self.__y_offset.set(offset_values[1])
-
+    

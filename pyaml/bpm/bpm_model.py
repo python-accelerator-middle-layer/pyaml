@@ -8,7 +8,7 @@ class BPMModel(metaclass=ABCMeta):
     tilts.
     """
     @abstractmethod
-    def read_hardware_position_values(self) -> NDArray[np.float64]:
+    def read_position(self) -> NDArray[np.float64]:
         """
         Read horizontal and vertical positions from a BPM.
         Returns
@@ -20,7 +20,7 @@ class BPMModel(metaclass=ABCMeta):
         pass
     
     @abstractmethod
-    def read_hardware_tilt_value(self) -> float:
+    def read_tilt(self) -> float:
         """
         Read the tilt value from a BPM.
         Returns
@@ -31,7 +31,7 @@ class BPMModel(metaclass=ABCMeta):
         pass
 
     @abstractmethod
-    def read_hardware_offset_values(self) -> NDArray:
+    def read_offset(self) -> NDArray:
         """
         Read the offset values from a BPM.
         Returns
@@ -43,7 +43,7 @@ class BPMModel(metaclass=ABCMeta):
         pass
 
     @abstractmethod
-    def set_hardware_tilt_value(self, tilt: float):
+    def set_tilt(self, tilt: float):
         """
         Set the tilt value of a BPM.
         Parameters
@@ -57,7 +57,7 @@ class BPMModel(metaclass=ABCMeta):
         pass
 
     @abstractmethod
-    def set_hardware_offset_values(self, offset_values: NDArray[np.float64]):
+    def set_offset(self, offset: NDArray[np.float64]):
         """
         Set the offset values of a BPM
         Parameters

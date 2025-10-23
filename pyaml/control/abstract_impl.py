@@ -127,7 +127,7 @@ class RBpmArray(abstract.ReadFloatArray):
 
     # Gets the value
     def get(self) -> np.array:
-        return self.__model.read_hardware_position_values()
+        return self.__model.read_position()
 
     # Gets the unit of the value
     def unit(self) -> list[str]:
@@ -144,10 +144,10 @@ class RWBpmTiltScalar(abstract.ReadFloatScalar):
 
     # Gets the value
     def get(self) -> float:
-        return self.__model.read_hardware_tilt_value()
+        return self.__model.read_tilt()
 
     def set(self, value:float):
-        self.__model.set_hardware_tilt_value(value)
+        self.__model.set_tilt(value)
 
     def set_and_wait(self, value: NDArray[np.float64]):
         raise NotImplementedError("Not implemented yet.")
@@ -166,11 +166,11 @@ class RWBpmOffsetArray(abstract.ReadWriteFloatArray):
 
     # Gets the value
     def get(self) -> NDArray[np.float64]:
-        return self.__model.read_hardware_offset_values()
+        return self.__model.read_offset()
 
     # Sets the value
     def set(self, value: NDArray[np.float64]):
-        self.__model.set_hardware_offset_values(value) 
+        self.__model.set_offset(value) 
     def set_and_wait(self, value: NDArray[np.float64]):
         raise NotImplementedError("Not implemented yet.")
     # Gets the unit of the value

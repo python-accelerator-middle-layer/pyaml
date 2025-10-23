@@ -75,7 +75,6 @@ class ElementHolder(object):
   
     def get_bpm(self,name:str) -> Element:
       if name not in self.__BPMS:
-         print(self.__BPMS.keys())
          raise Exception(f"BPM {name} not defined")
       return self.__BPMS[name]
 

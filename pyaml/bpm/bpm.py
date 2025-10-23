@@ -9,10 +9,9 @@ PYAMLCLASS = "BPM"
 
 class ConfigModel(ElementConfigModel):
 
-        hardware: DeviceAccess | None = None
-        """Direct access to a magnet device that provides strength/current conversion"""
+        # hardware: DeviceAccess | None = None
         model: BPMModel | None = None
-        """Object in charge of converting magnet strenghts to power supply values"""
+        """Object in charge of BPM modeling"""
 
 
 
@@ -37,14 +36,17 @@ class BPM(Element):
         
         super().__init__(cfg.name)
 
-        self.__hardware = cfg.hardware if hasattr(cfg, "hardware") else None
+        # self.__hardware = cfg.hardware if hasattr(cfg, "hardware") else None
         self.__model = cfg.model if hasattr(cfg, "model") else None
         self._cfg = cfg
-    @property
-    def hardware(self) -> abstract.ReadWriteFloatScalar:
-        if self.__hardware is None:
-            raise Exception(f"{str(self)} has no model that supports hardware units")
-        return self.__hardware
+        self.__positions = None
+        self.__offset = None
+        self.__tilt = None
+    # @property
+    # def hardware(self) -> abstract.ReadWriteFloatScalar:
+    #     if self.__hardware is None:
+    #         raise Exception(f"{str(self)} has no model that supports hardware units")
+    #     return self.__hardware
 
     @property
     def model(self) -> BPMModel:
@@ -52,14 +54,20 @@ class BPM(Element):
 
     @property
     def positions(self) -> RBpmArray:
+        if self.__positions is None:
+            raise Exception(f"{str(self)} has no attached positions") 
         return self.__positions
 
     @property
     def offset(self) -> RWBpmOffsetArray:
+        if self.__offset is None:
+            raise Exception(f"{str(self)} has no attached offset")
         return self.__offset
 
     @property
     def tilt(self) -> RWBpmTiltScalar:
+        if self.__tilt is None:
+            raise Exception(f"{str(self)} has no attached tilt")
         return self.__tilt
 
     def attach(self, positions: RBpmArray , offset: RWBpmOffsetArray,
@@ -68,7 +76,7 @@ class BPM(Element):
         # reference
         obj = self.__class__(self._cfg)
         obj.__model = self.__model
-        obj.__hardware = self.__hardware
+        # obj.__hardware = self.__hardware
         obj.__positions = positions
         obj.__offset = offset
         obj.__tilt = tilt
