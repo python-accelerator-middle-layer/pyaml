@@ -18,11 +18,11 @@ instruments:
       model:
         type: pyaml.bpm.bpm_tiltoffset_model
         x_pos:
-          type: tango.pyaml.attribute
+          type: tango.pyaml.attribute_read_only
           attribute: srdiag/bpm/c01-01/SA_HPosition
           unit: mm
         y_pos:
-          type: tango.pyaml.attribute
+          type: tango.pyaml.attribute_read_only
           attribute: srdiag/bpm/c01-01/SA_VPosition
           unit: mm
         x_offset:
@@ -42,11 +42,11 @@ instruments:
       model:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
-          type: tango.pyaml.attribute
+          type: tango.pyaml.attribute_read_only
           attribute: srdiag/bpm/c01-02/SA_HPosition
           unit: mm
         y_pos:
-          type: tango.pyaml.attribute
+          type: tango.pyaml.attribute_read_only
           attribute: srdiag/bpm/c01-02/SA_VPosition
           unit: mm
     - type: pyaml.bpm.bpm
@@ -54,11 +54,11 @@ instruments:
       model:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
-          type: tango.pyaml.attribute
+          type: tango.pyaml.attribute_read_only
           attribute: srdiag/bpm/c01-03/SA_HPosition
           unit: mm
         y_pos:
-          type: tango.pyaml.attribute
+          type: tango.pyaml.attribute_read_only
           attribute: srdiag/bpm/c01-03/SA_VPosition
           unit: mm
     - type: pyaml.magnet.cfm_magnet
