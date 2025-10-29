@@ -62,11 +62,7 @@ def install_test_package(request):
     # Remove from sys.modules to avoid caching issues
     sys.modules.pop(package_name, None)
 
-    # Import the module freshly
-    module = importlib.import_module(package_name)
-
-    yield module
-
+    yield None
 
     # Uninstall package
     subprocess.call([

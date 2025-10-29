@@ -1,16 +1,15 @@
 from .array import ArrayConfigModel,ArrayConfig
-from ..control.controlsystem import ControlSystem
 from ..lattice.element_holder import ElementHolder
 
 # Define the main class name for this module
-PYAMLCLASS = "Magnet"
+PYAMLCLASS = "BPM"
 
 class ConfigModel(ArrayConfigModel):...
 
-class Magnet(ArrayConfig):
+class BPM(ArrayConfig):
 
    def __init__(self, cfg: ArrayConfigModel):
         super().__init__(cfg)
 
    def fill_array(self,holder:ElementHolder):   
-        holder.fill_magnet_array(self._cfg.name,self._cfg.elements)
+        holder.fill_bpm_array(self._cfg.name,self._cfg.elements)

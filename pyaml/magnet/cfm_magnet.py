@@ -14,7 +14,7 @@ from .sextupole import Sextupole
 from .skewsext import SkewSext
 from .octupole import Octupole
 from .skewoctu import SkewOctu
-from .magnet import Magnet
+from .magnet import Magnet,MagnetConfigModel
 
 _fmap:dict = {
     "B0":HCorrector,
@@ -65,8 +65,8 @@ class CombinedFunctionMagnet(Element):
             # Construct a single function magnet for each multipole of this combined function magnet        
             l = []
             for idx,m in enumerate(self._cfg.mapping):
-                args = {"name":m[1]}
-                mclass:Magnet = _fmap[m[0]](ElementConfigModel(**args))
+                args = {"name":m[1],"model":self.model}
+                mclass:Magnet = _fmap[m[0]](MagnetConfigModel(**args))
                 strength = RWMapper(strengths,idx)
                 hardware = RWMapper(hardwares,idx) if self.model.has_hardware() else None
                 l.append(mclass.attach(strength,hardware))

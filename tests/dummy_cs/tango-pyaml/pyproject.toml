@@ -6,10 +6,10 @@ build-backend = "hatchling.build"
 path = "tango/__init__.py"
 
 [tool.hatch.build.targets.wheel]
-packages = ["tango"]
+packages = ["tango-pyaml"]
 
 [project]
-name = "tango"
+name = "tango-pyaml"
 description = "PyAML Tango CS mocking"
 requires-python = ">=3.8"
 dynamic = ["version"]

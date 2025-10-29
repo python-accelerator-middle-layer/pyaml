@@ -109,31 +109,30 @@ class MagnetArray(list[Magnet]):
     Class that implements access to a magnet array
     """
 
-    def __init__(self,arrayName:str,iterable):
+    def __init__(self,arrayName:str,magnets:list[Magnet],agg:DeviceAccessList|None=None):
         """
         Construct a magnet array
 
         Parameters
         ----------
-        iterable
+        arrayName : str
+            Array name
+        magnets: list[Magnet]
             Magnet iterator
-        """
-        super().__init__(i for i in iterable)
-        self.__name = arrayName
-        self.__rwstrengths = RWMagnetStrength(arrayName,iterable)
-        self.__rwhardwares = RWMagnetHardware(arrayName,iterable)
-
-    def set_aggregator(self,agg:DeviceAccessList):
-        """
-        Set an aggregator for this array.
-        Aggregator allow fast control system access by parallelizing 
-        call to underlying hardware.
-
-        Parameters
-        ----------
         agg : DeviceAccessList
-            List of device access
+            Control system aggregator (Parralel access to list of device)
         """
+        super().__init__(i for i in magnets)
+        self.__name = arrayName
+        self.__rwstrengths = RWMagnetStrength(arrayName,magnets)
+        self.__rwhardwares = RWMagnetHardware(arrayName,magnets)
+
+        if agg is not None:
+            # Fill magnet aggregator
+            for m in magnets:
+                devs = m.model.get_devices()
+                agg.add_devices(devs)
+            
         self.__rwstrengths.set_aggregator(agg)
         self.__rwhardwares.set_aggregator(agg)
 
