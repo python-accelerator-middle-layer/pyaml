@@ -1,11 +1,44 @@
-from numpy import double
-from pyaml.control import abstract
-from pyaml.magnet.model import MagnetModel
-from pyaml.bpm.bpm_model import BPMModel
+from ..common import abstract
+from ..control.deviceaccesslist import DeviceAccessList
+from ..control.deviceaccess import DeviceAccess
+from ..magnet.model import MagnetModel
+from ..bpm.bpm_model import BPMModel
 from ..rf.rf_plant import RFPlant
 from ..rf.rf_transmitter import RFTransmitter
+from ..common.abstract_aggregator import ScalarAggregator
+
+from numpy import double
 import numpy as np
 from numpy.typing import NDArray
+
+#------------------------------------------------------------------------------
+
+class CSScalarAggregator(ScalarAggregator):
+    """
+    Control system aggregator for a scalar value
+    """
+
+    def __init__(self, devs:DeviceAccessList):
+        self.__devs = devs
+
+    def add_devices(self, devices:DeviceAccess | list[DeviceAccess] ):
+        self.__devs.add_devices(devices)
+
+    def set(self, value: NDArray[np.float64]):
+        self.__devs.set(value)
+
+    def set_and_wait(self, value: NDArray[np.float64]):
+        self.__devs.set_and_wait(value)
+
+    def get(self) -> NDArray[np.float64]:
+        return self.__devs.get()
+
+    def readback(self) -> np.array:
+        return self.__devs.readback()
+
+    def unit(self) -> str:
+        return self.__devs.unit()
+
 #------------------------------------------------------------------------------
 
 class RWHardwareScalar(abstract.ReadWriteFloatScalar):

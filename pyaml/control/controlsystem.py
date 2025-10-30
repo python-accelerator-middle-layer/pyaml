@@ -1,15 +1,16 @@
 from abc import ABCMeta, abstractmethod
-from ..lattice.element_holder import ElementHolder
+from ..common.element_holder import ElementHolder
 from ..lattice.element import Element
 from ..control.abstract_impl import RWHardwareScalar,RWHardwareArray,RWStrengthScalar,RWStrengthArray
 from ..bpm.bpm import BPM
 from ..control.abstract_impl import RWBpmTiltScalar,RWBpmOffsetArray, RBpmArray
 from ..control.abstract_impl import RWRFFrequencyScalar,RWRFVoltageScalar,RWRFPhaseScalar
+from ..control.abstract_impl import CSScalarAggregator
+from ..common.abstract_aggregator import ScalarAggregator
 from ..magnet.magnet import Magnet
 from ..magnet.cfm_magnet import CombinedFunctionMagnet
 from ..rf.rf_plant import RFPlant,RWTotalVoltage
 from ..rf.rf_transmitter import RFTransmitter
-from ..control.deviceaccesslist import DeviceAccessList
 from ..configuration.factory import Factory
 
 class ControlSystem(ElementHolder,metaclass=ABCMeta):
@@ -25,10 +26,6 @@ class ControlSystem(ElementHolder,metaclass=ABCMeta):
         """Initialize control system"""
         pass
 
-    def create_scalar_aggregator(self) -> DeviceAccessList:
-        mod = self.scalar_aggregator()
-        return Factory.build_object({"type":mod}) if mod is not None else None
-
     @abstractmethod
     def name(self) -> str:
         """Return control system name (i.e. live)"""
@@ -43,7 +40,30 @@ class ControlSystem(ElementHolder,metaclass=ABCMeta):
     def vector_aggregator(self) -> str | None:
         """Returns the module name used for handling aggregator of DeviceVectorAccess"""
         return None
+
+    def create_scalar_aggregator(self) -> ScalarAggregator:
+        mod = self.scalar_aggregator()
+        agg = Factory.build_object({"type":mod}) if mod is not None else None
+        return CSScalarAggregator(agg)
     
+    def create_magnet_aggregator(self,magnets:list[Magnet]) -> ScalarAggregator:
+        agg = self.create_scalar_aggregator()
+        for m in magnets:
+            agg.add_devices(m.model.get_devices())
+        return agg
+    
+    def create_bpm_aggregators(self,bpms:list[BPM]) -> list[ScalarAggregator]:
+        agg = self.create_scalar_aggregator()
+        aggh = self.create_scalar_aggregator()
+        aggv = self.create_scalar_aggregator()
+        for b in bpms:
+            devs = b.model.get_pos_devices()
+            agg.add_devices(devs)
+            aggh.add_devices(devs[0])
+            aggv.add_devices(devs[1])
+        return [agg,aggh,aggv]
+
+
     def set_energy(self,E:float):
         """
         Sets the energy on magnets belonging to this control system

@@ -3,8 +3,8 @@ from scipy.constants import speed_of_light
 
 from .model import MagnetModel
 from ..lattice.element import Element,ElementConfigModel
-from ..control import abstract
-from ..control.abstract import RWMapper
+from ..common import abstract
+from ..common.abstract import RWMapper
 
 from .hcorrector import HCorrector
 from .vcorrector import VCorrector

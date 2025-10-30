@@ -1,10 +1,9 @@
 """
 Magnet array configuration
 """
+from ..common.element_holder import ElementHolder
 
-import numpy as np
 from pydantic import BaseModel,ConfigDict
-from ..lattice.element_holder import ElementHolder
 
 class ArrayConfigModel(BaseModel):
 

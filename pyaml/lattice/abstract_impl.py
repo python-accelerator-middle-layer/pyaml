@@ -1,12 +1,14 @@
-import numpy as np
-import at
-from scipy.constants import speed_of_light
-
-from ..control import abstract
+from ..common import abstract
 from ..magnet.model import MagnetModel
 from .polynom_info import PolynomInfo
 from ..rf.rf_plant import RFPlant
 from ..rf.rf_transmitter import RFTransmitter
+from ..common.abstract_aggregator import ScalarAggregator
+
+import numpy as np
+import at
+from scipy.constants import speed_of_light
+from numpy.typing import NDArray
 
 # TODO handle serialized magnets
 
@@ -148,6 +150,60 @@ class RWStrengthArray(abstract.ReadWriteFloatArray):
 
 #------------------------------------------------------------------------------
 
+class BPMScalarAggregator(ScalarAggregator):
+    """
+    BPM simulator aggregator
+    """
+
+    def __init__(self, ring:at.Lattice):
+        self.__ring = ring
+        self.__elts = []
+        self.__refpts =[]
+
+    def add_elem(self,elem:at.Element):
+        self.__elts.append(elem)
+        self.__refpts.append(self.__ring.index(elem))
+
+    def set(self, value: NDArray[np.float64]):
+        pass
+
+    def set_and_wait(self, value: NDArray[np.float64]):
+        pass
+
+    def get(self) -> np.array:
+        _, orbit = at.find_orbit(self.__ring, refpts=self.__refpts)
+        return orbit[:, [0, 2]]
+
+    def readback(self) -> np.array:
+        return self.get()
+
+    def unit(self) -> str:
+        return 'm'
+    
+#------------------------------------------------------------------------------
+
+class BPMVScalarAggregator(BPMScalarAggregator):
+    """
+    Vertical BPM simulator aggregator
+    """
+
+    def get(self) -> np.array:
+        _, orbit = at.find_orbit(self.__ring, refpts=self.__refpts)
+        return orbit[:, 0]
+
+#------------------------------------------------------------------------------
+
+class BPMHScalarAggregator(BPMScalarAggregator):
+    """
+    Horizontal BPM simulator aggregator
+    """
+
+    def get(self) -> np.array:
+        _, orbit = at.find_orbit(self.__ring, refpts=self.__refpts)
+        return orbit[:, 2]
+
+#------------------------------------------------------------------------------
+
 class RBpmArray(abstract.ReadFloatArray):
     """
     Class providing read access to a BPM position (array) of a simulator.
@@ -169,7 +225,7 @@ class RBpmArray(abstract.ReadFloatArray):
 
     # Gets the unit of the value
     def unit(self) -> str:
-        return 'mm'
+        return 'm'
 
 #------------------------------------------------------------------------------
 
@@ -241,6 +297,8 @@ class RWBpmTiltScalar(abstract.ReadWriteFloatScalar):
     # Gets the unit of the value
     def unit(self) -> str:
         return 'rad'  # Assuming BPM tilts are in rad
+
+#------------------------------------------------------------------------------
 
 class RWRFVoltageScalar(abstract.ReadWriteFloatScalar):
     """

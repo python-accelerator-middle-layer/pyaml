@@ -1,14 +1,15 @@
-from ..control.abstract import ReadWriteFloatArray
+from ..common.abstract import ReadWriteFloatArray
 from ..magnet.magnet import Magnet
+from ..common.abstract_aggregator import ScalarAggregator
+
 import numpy as np
-from ..control.deviceaccesslist import DeviceAccessList
 
 class RWMagnetStrength(ReadWriteFloatArray):
 
     def __init__(self, name:str, magnets:list[Magnet]):
         self.__magnets = magnets
         self.__name = name
-        self.aggregator:DeviceAccessList = None
+        self.aggregator:ScalarAggregator = None
 
     # Gets the values
     def get(self) -> np.array:
@@ -21,7 +22,7 @@ class RWMagnetStrength(ReadWriteFloatArray):
             idx = 0
             for m in self.__magnets:
                 nbDev = len(m.model.get_devices())
-                allStrength[idx] = m.model.compute_strengths(allHardwareValues[idx:idx+nbDev])[m.strength.index()]
+                allStrength[mIdx] = m.model.compute_strengths(allHardwareValues[idx:idx+nbDev])[m.strength.index()]
                 mIdx += 1
                 idx += nbDev
             return allStrength
@@ -58,7 +59,7 @@ class RWMagnetStrength(ReadWriteFloatArray):
         return [m.strength.unit() for m in self.__magnets]
 
     # Set the aggregator (Control system only)
-    def set_aggregator(self,agg:DeviceAccessList):
+    def set_aggregator(self,agg:ScalarAggregator):
         self.aggregator = agg
 
 class RWMagnetHardware(ReadWriteFloatArray):
@@ -66,7 +67,7 @@ class RWMagnetHardware(ReadWriteFloatArray):
     def __init__(self, name:str, magnets:list[Magnet]):
         self.__name = name
         self.__magnets = magnets
-        self.aggregator:DeviceAccessList = None
+        self.aggregator:ScalarAggregator = None
         self.hasHardwareMapping = True
 
     # Gets the values
@@ -98,8 +99,8 @@ class RWMagnetHardware(ReadWriteFloatArray):
     def unit(self) -> list[str]:
         return [m.hardware.unit() for m in self.__magnets]
 
-    # Set the aggregator (Control system only)
-    def set_aggregator(self,agg:DeviceAccessList):
+    # Set the aggregator
+    def set_aggregator(self,agg:ScalarAggregator):
         self.aggregator = agg
         for m in self.__magnets:
             self.hasHardwareMapping |= m.model.has_hardware()
@@ -109,7 +110,7 @@ class MagnetArray(list[Magnet]):
     Class that implements access to a magnet array
     """
 
-    def __init__(self,arrayName:str,magnets:list[Magnet],agg:DeviceAccessList|None=None):
+    def __init__(self,arrayName:str,magnets:list[Magnet],holder):
         """
         Construct a magnet array
 
@@ -119,20 +120,15 @@ class MagnetArray(list[Magnet]):
             Array name
         magnets: list[Magnet]
             Magnet iterator
-        agg : DeviceAccessList
-            Control system aggregator (Parralel access to list of device)
+        holder : Element holder
+            Holder that contains element of this array (Simulator or Control System)
         """
         super().__init__(i for i in magnets)
         self.__name = arrayName
         self.__rwstrengths = RWMagnetStrength(arrayName,magnets)
         self.__rwhardwares = RWMagnetHardware(arrayName,magnets)
 
-        if agg is not None:
-            # Fill magnet aggregator
-            for m in magnets:
-                devs = m.model.get_devices()
-                agg.add_devices(devs)
-            
+        agg = holder.create_magnet_aggregator(magnets)
         self.__rwstrengths.set_aggregator(agg)
         self.__rwhardwares.set_aggregator(agg)
 

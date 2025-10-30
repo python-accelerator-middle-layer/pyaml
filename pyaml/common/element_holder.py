@@ -1,13 +1,12 @@
 """
 Module handling element references for simulators and control system
 """
-from .element import Element
+from ..lattice.element import Element
 from ..magnet.magnet import Magnet
 from ..rf.rf_plant import RFPlant
 from ..rf.rf_transmitter import RFTransmitter
 from ..arrays.magnet_array import MagnetArray
 from ..arrays.bpm_array import BPMArray
-from ..control.deviceaccesslist import DeviceAccessList
 
 class ElementHolder(object):
     """
@@ -26,14 +25,10 @@ class ElementHolder(object):
         self.__MAGNET_ARRAYS: dict = {}
         self.__BPM_ARRAYS: dict = {}
 
-    def create_scalar_aggregator(self) -> DeviceAccessList:
-       """
-       Returns a control system scalar aggretor
-       """
-       return None
-
     def fill_device(self,elements:list[Element]):
        raise "ElementHolder.fill_device() is not subclassed"
+    
+    # Magnets
     
     def fill_magnet_array(self,arrayName:str,elementNames:list[str]):
        a = []
@@ -42,19 +37,7 @@ class ElementHolder(object):
             a.append(self.get_magnet(name))
           except Exception as err:
             raise Exception(f"MagnetArray {arrayName} : {err}")
-       self.__MAGNET_ARRAYS[arrayName] = MagnetArray(arrayName,a,self.create_scalar_aggregator())
-
-    def fill_bpm_array(self,arrayName:str,elementNames:list[str]):
-       a = []
-       for name in elementNames:
-          try:
-            a.append(self.get_bpm(name))
-          except Exception as err:
-            raise Exception(f"BpmArray {arrayName} : {err}")
-       hv = self.create_scalar_aggregator()
-       h = self.create_scalar_aggregator()
-       v = self.create_scalar_aggregator()
-       self.__BPM_ARRAYS[arrayName] = BPMArray(arrayName,a,hv,h,v)
+       self.__MAGNET_ARRAYS[arrayName] = MagnetArray(arrayName,a,self)
 
     def get_magnet(self,name:str) -> Magnet:
       if name not in self.__MAGNETS:
@@ -63,6 +46,40 @@ class ElementHolder(object):
     
     def add_magnet(self,name:str,m:Magnet):
        self.__MAGNETS[name] = m
+
+    def get_magnets(self,name:str) -> MagnetArray:
+       if name not in self.__MAGNET_ARRAYS:
+         raise Exception(f"Magnet array {name} not defined")
+       return self.__MAGNET_ARRAYS[name]
+    
+    def get_all_magnets(self) -> dict:
+       return self.__MAGNETS
+
+    # BPMs
+
+    def fill_bpm_array(self,arrayName:str,elementNames:list[str]):
+       a = []
+       for name in elementNames:
+          try:
+            a.append(self.get_bpm(name))
+          except Exception as err:
+            raise Exception(f"BpmArray {arrayName} : {err}")
+       self.__BPM_ARRAYS[arrayName] = BPMArray(arrayName,a,self)
+
+    def get_bpm(self,name:str) -> Element:
+      if name not in self.__BPMS:
+         raise Exception(f"BPM {name} not defined")
+      return self.__BPMS[name]
+
+    def add_bpm(self,name:str,bpm:Element):
+        self.__BPMS[name] = bpm
+
+    def get_bpms(self,name:str) -> BPMArray:
+       if name not in self.__BPM_ARRAYS:
+         raise Exception(f"BPM array {name} not defined")
+       return self.__BPM_ARRAYS[name]
+
+    # RF
 
     def get_rf_plant(self,name:str) -> RFPlant:
       if name not in self.__RFPLANT:
@@ -85,19 +102,6 @@ class ElementHolder(object):
         raise Exception(f"RFTransmitter {name} not defined")
       return self.__RFTRANSMITTER[name]       
 
-    def get_all_magnets(self) -> dict:
-       return self.__MAGNETS
     
-    def get_magnets(self,name:str) -> MagnetArray:
-       if name not in self.__MAGNET_ARRAYS:
-         raise Exception(f"Magnet array {name} not defined")
-       return self.__MAGNET_ARRAYS[name]
   
-    def get_bpm(self,name:str) -> Element:
-      if name not in self.__BPMS:
-         raise Exception(f"BPM {name} not defined")
-      return self.__BPMS[name]
-
-    def add_bpm(self,name:str,bpm:Element):
-        self.__BPMS[name] = bpm
           

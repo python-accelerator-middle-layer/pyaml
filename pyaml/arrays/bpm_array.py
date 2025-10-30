@@ -1,7 +1,8 @@
-from ..control.abstract import ReadFloatArray
+from ..common.abstract import ReadFloatArray
 from ..bpm.bpm import BPM
-import numpy as np
 from ..control.deviceaccesslist import DeviceAccessList
+
+import numpy as np
 
 class RWBPMPosition(ReadFloatArray):
 
@@ -56,7 +57,7 @@ class BPMArray(list[BPM]):
     Class that implements access to a BPM array
     """
 
-    def __init__(self,arrayName:str,bpms:list[BPM],agg:DeviceAccessList|None=None,aggh:DeviceAccessList|None=None,aggv:DeviceAccessList|None=None):
+    def __init__(self,arrayName:str,bpms:list[BPM],holder):
         """
         Construct a BPM array
 
@@ -66,8 +67,8 @@ class BPMArray(list[BPM]):
             Array name
         bpms: list[BPM]
             BPM iterator
-        agg : DeviceAccessList
-            Control system aggregator (Parralel access to list of device)
+        holder : Element holder
+            Holder that contains element of this array (Simulator or Control System)
         """
         super().__init__(i for i in bpms)
         self.__name = arrayName
@@ -75,17 +76,10 @@ class BPMArray(list[BPM]):
         self.__hpos = RWBPMSinglePosition(arrayName,bpms,0)
         self.__vpos = RWBPMSinglePosition(arrayName,bpms,1)
 
-        if agg is not None:
-            # Fill magnet aggregator
-            for b in bpms:
-                devs = b.model.get_pos_devices()
-                agg.add_devices(devs)
-                aggh.add_devices(devs[0])
-                aggv.add_devices(devs[1])
-            
-        self.__hvpos.set_aggregator(agg)
-        self.__hpos.set_aggregator(aggh)
-        self.__vpos.set_aggregator(aggv)
+        aggs = holder.create_bpm_aggregators(bpms)
+        self.__hvpos.set_aggregator(aggs[0])
+        self.__hpos.set_aggregator(aggs[1])
+        self.__vpos.set_aggregator(aggs[2])
 
     @property   
     def positions(self) -> RWBPMPosition:

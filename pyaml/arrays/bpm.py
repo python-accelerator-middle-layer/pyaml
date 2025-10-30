@@ -1,5 +1,5 @@
 from .array import ArrayConfigModel,ArrayConfig
-from ..lattice.element_holder import ElementHolder
+from ..common.element_holder import ElementHolder
 
 # Define the main class name for this module
 PYAMLCLASS = "BPM"

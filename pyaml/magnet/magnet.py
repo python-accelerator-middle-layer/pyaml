@@ -1,7 +1,7 @@
 from pyaml.lattice.element import Element,ElementConfigModel
 from .. import PyAMLException
 from ..control.deviceaccess import DeviceAccess
-from ..control import abstract
+from ..common import abstract
 from .model import MagnetModel
 from scipy.constants import speed_of_light
 try:
