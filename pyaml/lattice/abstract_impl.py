@@ -156,13 +156,11 @@ class BPMScalarAggregator(ScalarAggregator):
     """
 
     def __init__(self, ring:at.Lattice):
-        self.__ring = ring
-        self.__elts = []
-        self.__refpts =[]
+        self.lattice = ring
+        self.refpts = []
 
     def add_elem(self,elem:at.Element):
-        self.__elts.append(elem)
-        self.__refpts.append(self.__ring.index(elem))
+        self.refpts.append(self.lattice.index(elem))
 
     def set(self, value: NDArray[np.float64]):
         pass
@@ -171,8 +169,8 @@ class BPMScalarAggregator(ScalarAggregator):
         pass
 
     def get(self) -> np.array:
-        _, orbit = at.find_orbit(self.__ring, refpts=self.__refpts)
-        return orbit[:, [0, 2]]
+        _, orbit = at.find_orbit(self.lattice, refpts=self.refpts)
+        return orbit[:, [0, 2]].flatten()
 
     def readback(self) -> np.array:
         return self.get()
@@ -188,7 +186,7 @@ class BPMVScalarAggregator(BPMScalarAggregator):
     """
 
     def get(self) -> np.array:
-        _, orbit = at.find_orbit(self.__ring, refpts=self.__refpts)
+        _, orbit = at.find_orbit(self.lattice, refpts=self.refpts)
         return orbit[:, 0]
 
 #------------------------------------------------------------------------------
@@ -199,7 +197,7 @@ class BPMHScalarAggregator(BPMScalarAggregator):
     """
 
     def get(self) -> np.array:
-        _, orbit = at.find_orbit(self.__ring, refpts=self.__refpts)
+        _, orbit = at.find_orbit(self.lattice, refpts=self.refpts)
         return orbit[:, 2]
 
 #------------------------------------------------------------------------------
@@ -262,7 +260,7 @@ class RWBpmOffsetArray(abstract.ReadWriteFloatArray):
 
     # Gets the unit of the value
     def unit(self) -> str:
-        return 'mm'  # Assuming all offsets are in mm
+        return 'm'  # Assuming all offsets are in m
 
 #------------------------------------------------------------------------------
 

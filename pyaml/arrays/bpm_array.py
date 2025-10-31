@@ -15,8 +15,8 @@ class RWBPMPosition(ReadFloatArray):
     def get(self) -> np.array:
         if not self.aggregator:
             return np.array([b.positions.get() for b in self.__bpms])
-        else:
-            return self.aggregator.get()
+        else:  
+            return self.aggregator.get().reshape(len(self.__bpms),2)
 
     # Gets the unit of the values
     def unit(self) -> list[str]:
@@ -44,7 +44,7 @@ class RWBPMSinglePosition(ReadFloatArray):
 
     # Gets the unit of the values
     def unit(self) -> list[str]:
-        return [b.positions.unit()[self.__idx] for b in self.__bpms]
+        return [b.positions.unit() for b in self.__bpms]
 
     # Set the aggregator (Control system only)
     def set_aggregator(self,agg:DeviceAccessList):
@@ -98,7 +98,7 @@ class BPMArray(list[BPM]):
     @property   
     def v(self) -> RWBPMSinglePosition:
         """
-        Give access to bpm H posttions of each bpm of this array
+        Give access to bpm V posttions of each bpm of this array
         """
         return self.__vpos
 

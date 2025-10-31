@@ -8543,11 +8543,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/04-01/SA_HPosition
+          attribute: srdiag/bpm/c04-01/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/04-01/SA_VPosition
+          attribute: srdiag/bpm/c04-01/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C04-02
@@ -8555,11 +8555,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/04-02/SA_HPosition
+          attribute: srdiag/bpm/c04-02/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/04-02/SA_VPosition
+          attribute: srdiag/bpm/c04-02/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C04-03
@@ -8567,11 +8567,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/04-03/SA_HPosition
+          attribute: srdiag/bpm/c04-03/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/04-03/SA_VPosition
+          attribute: srdiag/bpm/c04-03/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C04-04
@@ -8579,11 +8579,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/04-04/SA_HPosition
+          attribute: srdiag/bpm/c04-04/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/04-04/SA_VPosition
+          attribute: srdiag/bpm/c04-04/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C04-05
@@ -8591,11 +8591,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/04-05/SA_HPosition
+          attribute: srdiag/bpm/c04-05/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/04-05/SA_VPosition
+          attribute: srdiag/bpm/c04-05/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C04-06
@@ -8603,11 +8603,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/04-06/SA_HPosition
+          attribute: srdiag/bpm/c04-06/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/04-06/SA_VPosition
+          attribute: srdiag/bpm/c04-06/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C04-07
@@ -8615,11 +8615,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/04-07/SA_HPosition
+          attribute: srdiag/bpm/c04-07/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/04-07/SA_VPosition
+          attribute: srdiag/bpm/c04-07/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C04-08
@@ -8627,11 +8627,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/04-08/SA_HPosition
+          attribute: srdiag/bpm/c04-08/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/04-08/SA_VPosition
+          attribute: srdiag/bpm/c04-08/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C04-09
@@ -8639,11 +8639,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/04-09/SA_HPosition
+          attribute: srdiag/bpm/c04-09/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/04-09/SA_VPosition
+          attribute: srdiag/bpm/c04-09/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C04-10
@@ -8651,11 +8651,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/04-10/SA_HPosition
+          attribute: srdiag/bpm/c04-10/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/04-10/SA_VPosition
+          attribute: srdiag/bpm/c04-10/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C05-01
@@ -8663,11 +8663,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/05-01/SA_HPosition
+          attribute: srdiag/bpm/c05-01/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/05-01/SA_VPosition
+          attribute: srdiag/bpm/c05-01/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C05-02
@@ -8675,11 +8675,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/05-02/SA_HPosition
+          attribute: srdiag/bpm/c05-02/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/05-02/SA_VPosition
+          attribute: srdiag/bpm/c05-02/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C05-03
@@ -8687,11 +8687,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/05-03/SA_HPosition
+          attribute: srdiag/bpm/c05-03/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/05-03/SA_VPosition
+          attribute: srdiag/bpm/c05-03/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C05-04
@@ -8699,11 +8699,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/05-04/SA_HPosition
+          attribute: srdiag/bpm/c05-04/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/05-04/SA_VPosition
+          attribute: srdiag/bpm/c05-04/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C05-05
@@ -8711,11 +8711,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/05-05/SA_HPosition
+          attribute: srdiag/bpm/c05-05/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/05-05/SA_VPosition
+          attribute: srdiag/bpm/c05-05/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C05-06
@@ -8723,11 +8723,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/05-06/SA_HPosition
+          attribute: srdiag/bpm/c05-06/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/05-06/SA_VPosition
+          attribute: srdiag/bpm/c05-06/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C05-07
@@ -8735,11 +8735,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/05-07/SA_HPosition
+          attribute: srdiag/bpm/c05-07/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/05-07/SA_VPosition
+          attribute: srdiag/bpm/c05-07/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C05-08
@@ -8747,11 +8747,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/05-08/SA_HPosition
+          attribute: srdiag/bpm/c05-08/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/05-08/SA_VPosition
+          attribute: srdiag/bpm/c05-08/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C05-09
@@ -8759,11 +8759,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/05-09/SA_HPosition
+          attribute: srdiag/bpm/c05-09/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/05-09/SA_VPosition
+          attribute: srdiag/bpm/c05-09/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C05-10
@@ -8771,11 +8771,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/05-10/SA_HPosition
+          attribute: srdiag/bpm/c05-10/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/05-10/SA_VPosition
+          attribute: srdiag/bpm/c05-10/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C06-01
@@ -8783,11 +8783,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/06-01/SA_HPosition
+          attribute: srdiag/bpm/c06-01/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/06-01/SA_VPosition
+          attribute: srdiag/bpm/c06-01/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C06-02
@@ -8795,11 +8795,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/06-02/SA_HPosition
+          attribute: srdiag/bpm/c06-02/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/06-02/SA_VPosition
+          attribute: srdiag/bpm/c06-02/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C06-03
@@ -8807,11 +8807,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/06-03/SA_HPosition
+          attribute: srdiag/bpm/c06-03/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/06-03/SA_VPosition
+          attribute: srdiag/bpm/c06-03/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C06-04
@@ -8819,11 +8819,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/06-04/SA_HPosition
+          attribute: srdiag/bpm/c06-04/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/06-04/SA_VPosition
+          attribute: srdiag/bpm/c06-04/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C06-05
@@ -8831,11 +8831,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/06-05/SA_HPosition
+          attribute: srdiag/bpm/c06-05/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/06-05/SA_VPosition
+          attribute: srdiag/bpm/c06-05/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C06-06
@@ -8843,11 +8843,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/06-06/SA_HPosition
+          attribute: srdiag/bpm/c06-06/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/06-06/SA_VPosition
+          attribute: srdiag/bpm/c06-06/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C06-07
@@ -8855,11 +8855,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/06-07/SA_HPosition
+          attribute: srdiag/bpm/c06-07/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/06-07/SA_VPosition
+          attribute: srdiag/bpm/c06-07/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C06-08
@@ -8867,11 +8867,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/06-08/SA_HPosition
+          attribute: srdiag/bpm/c06-08/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/06-08/SA_VPosition
+          attribute: srdiag/bpm/c06-08/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C06-09
@@ -8879,11 +8879,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/06-09/SA_HPosition
+          attribute: srdiag/bpm/c06-09/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/06-09/SA_VPosition
+          attribute: srdiag/bpm/c06-09/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C06-10
@@ -8891,11 +8891,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/06-10/SA_HPosition
+          attribute: srdiag/bpm/c06-10/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/06-10/SA_VPosition
+          attribute: srdiag/bpm/c06-10/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C07-01
@@ -8903,11 +8903,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/07-01/SA_HPosition
+          attribute: srdiag/bpm/c07-01/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/07-01/SA_VPosition
+          attribute: srdiag/bpm/c07-01/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C07-02
@@ -8915,11 +8915,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/07-02/SA_HPosition
+          attribute: srdiag/bpm/c07-02/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/07-02/SA_VPosition
+          attribute: srdiag/bpm/c07-02/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C07-03
@@ -8927,11 +8927,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/07-03/SA_HPosition
+          attribute: srdiag/bpm/c07-03/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/07-03/SA_VPosition
+          attribute: srdiag/bpm/c07-03/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C07-04
@@ -8939,11 +8939,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/07-04/SA_HPosition
+          attribute: srdiag/bpm/c07-04/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/07-04/SA_VPosition
+          attribute: srdiag/bpm/c07-04/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C07-05
@@ -8951,11 +8951,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/07-05/SA_HPosition
+          attribute: srdiag/bpm/c07-05/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/07-05/SA_VPosition
+          attribute: srdiag/bpm/c07-05/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C07-06
@@ -8963,11 +8963,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/07-06/SA_HPosition
+          attribute: srdiag/bpm/c07-06/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/07-06/SA_VPosition
+          attribute: srdiag/bpm/c07-06/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C07-07
@@ -8975,11 +8975,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/07-07/SA_HPosition
+          attribute: srdiag/bpm/c07-07/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/07-07/SA_VPosition
+          attribute: srdiag/bpm/c07-07/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C07-08
@@ -8987,11 +8987,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/07-08/SA_HPosition
+          attribute: srdiag/bpm/c07-08/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/07-08/SA_VPosition
+          attribute: srdiag/bpm/c07-08/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C07-09
@@ -8999,11 +8999,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/07-09/SA_HPosition
+          attribute: srdiag/bpm/c07-09/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/07-09/SA_VPosition
+          attribute: srdiag/bpm/c07-09/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C07-10
@@ -9011,11 +9011,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/07-10/SA_HPosition
+          attribute: srdiag/bpm/c07-10/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/07-10/SA_VPosition
+          attribute: srdiag/bpm/c07-10/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C08-01
@@ -9023,11 +9023,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/08-01/SA_HPosition
+          attribute: srdiag/bpm/c08-01/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/08-01/SA_VPosition
+          attribute: srdiag/bpm/c08-01/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C08-02
@@ -9035,11 +9035,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/08-02/SA_HPosition
+          attribute: srdiag/bpm/c08-02/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/08-02/SA_VPosition
+          attribute: srdiag/bpm/c08-02/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C08-03
@@ -9047,11 +9047,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/08-03/SA_HPosition
+          attribute: srdiag/bpm/c08-03/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/08-03/SA_VPosition
+          attribute: srdiag/bpm/c08-03/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C08-04
@@ -9059,11 +9059,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/08-04/SA_HPosition
+          attribute: srdiag/bpm/c08-04/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/08-04/SA_VPosition
+          attribute: srdiag/bpm/c08-04/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C08-05
@@ -9071,11 +9071,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/08-05/SA_HPosition
+          attribute: srdiag/bpm/c08-05/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/08-05/SA_VPosition
+          attribute: srdiag/bpm/c08-05/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C08-06
@@ -9083,11 +9083,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/08-06/SA_HPosition
+          attribute: srdiag/bpm/c08-06/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/08-06/SA_VPosition
+          attribute: srdiag/bpm/c08-06/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C08-07
@@ -9095,11 +9095,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/08-07/SA_HPosition
+          attribute: srdiag/bpm/c08-07/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/08-07/SA_VPosition
+          attribute: srdiag/bpm/c08-07/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C08-08
@@ -9107,11 +9107,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/08-08/SA_HPosition
+          attribute: srdiag/bpm/c08-08/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/08-08/SA_VPosition
+          attribute: srdiag/bpm/c08-08/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C08-09
@@ -9119,11 +9119,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/08-09/SA_HPosition
+          attribute: srdiag/bpm/c08-09/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/08-09/SA_VPosition
+          attribute: srdiag/bpm/c08-09/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C08-10
@@ -9131,11 +9131,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/08-10/SA_HPosition
+          attribute: srdiag/bpm/c08-10/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/08-10/SA_VPosition
+          attribute: srdiag/bpm/c08-10/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C09-01
@@ -9143,11 +9143,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/09-01/SA_HPosition
+          attribute: srdiag/bpm/c09-01/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/09-01/SA_VPosition
+          attribute: srdiag/bpm/c09-01/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C09-02
@@ -9155,11 +9155,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/09-02/SA_HPosition
+          attribute: srdiag/bpm/c09-02/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/09-02/SA_VPosition
+          attribute: srdiag/bpm/c09-02/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C09-03
@@ -9167,11 +9167,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/09-03/SA_HPosition
+          attribute: srdiag/bpm/c09-03/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/09-03/SA_VPosition
+          attribute: srdiag/bpm/c09-03/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C09-04
@@ -9179,11 +9179,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/09-04/SA_HPosition
+          attribute: srdiag/bpm/c09-04/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/09-04/SA_VPosition
+          attribute: srdiag/bpm/c09-04/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C09-05
@@ -9191,11 +9191,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/09-05/SA_HPosition
+          attribute: srdiag/bpm/c09-05/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/09-05/SA_VPosition
+          attribute: srdiag/bpm/c09-05/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C09-06
@@ -9203,11 +9203,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/09-06/SA_HPosition
+          attribute: srdiag/bpm/c09-06/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/09-06/SA_VPosition
+          attribute: srdiag/bpm/c09-06/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C09-07
@@ -9215,11 +9215,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/09-07/SA_HPosition
+          attribute: srdiag/bpm/c09-07/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/09-07/SA_VPosition
+          attribute: srdiag/bpm/c09-07/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C09-08
@@ -9227,11 +9227,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/09-08/SA_HPosition
+          attribute: srdiag/bpm/c09-08/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/09-08/SA_VPosition
+          attribute: srdiag/bpm/c09-08/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C09-09
@@ -9239,11 +9239,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/09-09/SA_HPosition
+          attribute: srdiag/bpm/c09-09/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/09-09/SA_VPosition
+          attribute: srdiag/bpm/c09-09/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C09-10
@@ -9251,11 +9251,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/09-10/SA_HPosition
+          attribute: srdiag/bpm/c09-10/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/09-10/SA_VPosition
+          attribute: srdiag/bpm/c09-10/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C10-01
@@ -9263,11 +9263,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/10-01/SA_HPosition
+          attribute: srdiag/bpm/c10-01/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/10-01/SA_VPosition
+          attribute: srdiag/bpm/c10-01/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C10-02
@@ -9275,11 +9275,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/10-02/SA_HPosition
+          attribute: srdiag/bpm/c10-02/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/10-02/SA_VPosition
+          attribute: srdiag/bpm/c10-02/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C10-03
@@ -9287,11 +9287,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/10-03/SA_HPosition
+          attribute: srdiag/bpm/c10-03/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/10-03/SA_VPosition
+          attribute: srdiag/bpm/c10-03/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C10-04
@@ -9299,11 +9299,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/10-04/SA_HPosition
+          attribute: srdiag/bpm/c10-04/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/10-04/SA_VPosition
+          attribute: srdiag/bpm/c10-04/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C10-05
@@ -9311,11 +9311,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/10-05/SA_HPosition
+          attribute: srdiag/bpm/c10-05/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/10-05/SA_VPosition
+          attribute: srdiag/bpm/c10-05/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C10-06
@@ -9323,11 +9323,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/10-06/SA_HPosition
+          attribute: srdiag/bpm/c10-06/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/10-06/SA_VPosition
+          attribute: srdiag/bpm/c10-06/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C10-07
@@ -9335,11 +9335,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/10-07/SA_HPosition
+          attribute: srdiag/bpm/c10-07/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/10-07/SA_VPosition
+          attribute: srdiag/bpm/c10-07/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C10-08
@@ -9347,11 +9347,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/10-08/SA_HPosition
+          attribute: srdiag/bpm/c10-08/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/10-08/SA_VPosition
+          attribute: srdiag/bpm/c10-08/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C10-09
@@ -9359,11 +9359,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/10-09/SA_HPosition
+          attribute: srdiag/bpm/c10-09/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/10-09/SA_VPosition
+          attribute: srdiag/bpm/c10-09/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C10-10
@@ -9371,11 +9371,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/10-10/SA_HPosition
+          attribute: srdiag/bpm/c10-10/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/10-10/SA_VPosition
+          attribute: srdiag/bpm/c10-10/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C11-01
@@ -9383,11 +9383,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/11-01/SA_HPosition
+          attribute: srdiag/bpm/c11-01/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/11-01/SA_VPosition
+          attribute: srdiag/bpm/c11-01/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C11-02
@@ -9395,11 +9395,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/11-02/SA_HPosition
+          attribute: srdiag/bpm/c11-02/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/11-02/SA_VPosition
+          attribute: srdiag/bpm/c11-02/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C11-03
@@ -9407,11 +9407,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/11-03/SA_HPosition
+          attribute: srdiag/bpm/c11-03/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/11-03/SA_VPosition
+          attribute: srdiag/bpm/c11-03/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C11-04
@@ -9419,11 +9419,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/11-04/SA_HPosition
+          attribute: srdiag/bpm/c11-04/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/11-04/SA_VPosition
+          attribute: srdiag/bpm/c11-04/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C11-05
@@ -9431,11 +9431,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/11-05/SA_HPosition
+          attribute: srdiag/bpm/c11-05/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/11-05/SA_VPosition
+          attribute: srdiag/bpm/c11-05/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C11-06
@@ -9443,11 +9443,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/11-06/SA_HPosition
+          attribute: srdiag/bpm/c11-06/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/11-06/SA_VPosition
+          attribute: srdiag/bpm/c11-06/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C11-07
@@ -9455,11 +9455,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/11-07/SA_HPosition
+          attribute: srdiag/bpm/c11-07/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/11-07/SA_VPosition
+          attribute: srdiag/bpm/c11-07/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C11-08
@@ -9467,11 +9467,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/11-08/SA_HPosition
+          attribute: srdiag/bpm/c11-08/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/11-08/SA_VPosition
+          attribute: srdiag/bpm/c11-08/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C11-09
@@ -9479,11 +9479,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/11-09/SA_HPosition
+          attribute: srdiag/bpm/c11-09/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/11-09/SA_VPosition
+          attribute: srdiag/bpm/c11-09/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C11-10
@@ -9491,11 +9491,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/11-10/SA_HPosition
+          attribute: srdiag/bpm/c11-10/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/11-10/SA_VPosition
+          attribute: srdiag/bpm/c11-10/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C12-01
@@ -9503,11 +9503,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/12-01/SA_HPosition
+          attribute: srdiag/bpm/c12-01/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/12-01/SA_VPosition
+          attribute: srdiag/bpm/c12-01/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C12-02
@@ -9515,11 +9515,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/12-02/SA_HPosition
+          attribute: srdiag/bpm/c12-02/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/12-02/SA_VPosition
+          attribute: srdiag/bpm/c12-02/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C12-03
@@ -9527,11 +9527,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/12-03/SA_HPosition
+          attribute: srdiag/bpm/c12-03/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/12-03/SA_VPosition
+          attribute: srdiag/bpm/c12-03/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C12-04
@@ -9539,11 +9539,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/12-04/SA_HPosition
+          attribute: srdiag/bpm/c12-04/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/12-04/SA_VPosition
+          attribute: srdiag/bpm/c12-04/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C12-05
@@ -9551,11 +9551,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/12-05/SA_HPosition
+          attribute: srdiag/bpm/c12-05/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/12-05/SA_VPosition
+          attribute: srdiag/bpm/c12-05/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C12-06
@@ -9563,11 +9563,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/12-06/SA_HPosition
+          attribute: srdiag/bpm/c12-06/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/12-06/SA_VPosition
+          attribute: srdiag/bpm/c12-06/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C12-07
@@ -9575,11 +9575,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/12-07/SA_HPosition
+          attribute: srdiag/bpm/c12-07/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/12-07/SA_VPosition
+          attribute: srdiag/bpm/c12-07/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C12-08
@@ -9587,11 +9587,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/12-08/SA_HPosition
+          attribute: srdiag/bpm/c12-08/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/12-08/SA_VPosition
+          attribute: srdiag/bpm/c12-08/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C12-09
@@ -9599,11 +9599,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/12-09/SA_HPosition
+          attribute: srdiag/bpm/c12-09/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/12-09/SA_VPosition
+          attribute: srdiag/bpm/c12-09/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C12-10
@@ -9611,11 +9611,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/12-10/SA_HPosition
+          attribute: srdiag/bpm/c12-10/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/12-10/SA_VPosition
+          attribute: srdiag/bpm/c12-10/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C13-01
@@ -9623,11 +9623,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/13-01/SA_HPosition
+          attribute: srdiag/bpm/c13-01/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/13-01/SA_VPosition
+          attribute: srdiag/bpm/c13-01/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C13-02
@@ -9635,11 +9635,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/13-02/SA_HPosition
+          attribute: srdiag/bpm/c13-02/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/13-02/SA_VPosition
+          attribute: srdiag/bpm/c13-02/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C13-03
@@ -9647,11 +9647,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/13-03/SA_HPosition
+          attribute: srdiag/bpm/c13-03/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/13-03/SA_VPosition
+          attribute: srdiag/bpm/c13-03/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C13-04
@@ -9659,11 +9659,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/13-04/SA_HPosition
+          attribute: srdiag/bpm/c13-04/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/13-04/SA_VPosition
+          attribute: srdiag/bpm/c13-04/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C13-05
@@ -9671,11 +9671,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/13-05/SA_HPosition
+          attribute: srdiag/bpm/c13-05/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/13-05/SA_VPosition
+          attribute: srdiag/bpm/c13-05/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C13-06
@@ -9683,11 +9683,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/13-06/SA_HPosition
+          attribute: srdiag/bpm/c13-06/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/13-06/SA_VPosition
+          attribute: srdiag/bpm/c13-06/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C13-07
@@ -9695,11 +9695,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/13-07/SA_HPosition
+          attribute: srdiag/bpm/c13-07/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/13-07/SA_VPosition
+          attribute: srdiag/bpm/c13-07/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C13-08
@@ -9707,11 +9707,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/13-08/SA_HPosition
+          attribute: srdiag/bpm/c13-08/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/13-08/SA_VPosition
+          attribute: srdiag/bpm/c13-08/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C13-09
@@ -9719,11 +9719,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/13-09/SA_HPosition
+          attribute: srdiag/bpm/c13-09/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/13-09/SA_VPosition
+          attribute: srdiag/bpm/c13-09/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C13-10
@@ -9731,11 +9731,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/13-10/SA_HPosition
+          attribute: srdiag/bpm/c13-10/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/13-10/SA_VPosition
+          attribute: srdiag/bpm/c13-10/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C14-01
@@ -9743,11 +9743,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/14-01/SA_HPosition
+          attribute: srdiag/bpm/c14-01/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/14-01/SA_VPosition
+          attribute: srdiag/bpm/c14-01/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C14-02
@@ -9755,11 +9755,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/14-02/SA_HPosition
+          attribute: srdiag/bpm/c14-02/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/14-02/SA_VPosition
+          attribute: srdiag/bpm/c14-02/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C14-03
@@ -9767,11 +9767,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/14-03/SA_HPosition
+          attribute: srdiag/bpm/c14-03/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/14-03/SA_VPosition
+          attribute: srdiag/bpm/c14-03/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C14-04
@@ -9779,11 +9779,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/14-04/SA_HPosition
+          attribute: srdiag/bpm/c14-04/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/14-04/SA_VPosition
+          attribute: srdiag/bpm/c14-04/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C14-05
@@ -9791,11 +9791,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/14-05/SA_HPosition
+          attribute: srdiag/bpm/c14-05/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/14-05/SA_VPosition
+          attribute: srdiag/bpm/c14-05/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C14-06
@@ -9803,11 +9803,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/14-06/SA_HPosition
+          attribute: srdiag/bpm/c14-06/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/14-06/SA_VPosition
+          attribute: srdiag/bpm/c14-06/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C14-07
@@ -9815,11 +9815,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/14-07/SA_HPosition
+          attribute: srdiag/bpm/c14-07/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/14-07/SA_VPosition
+          attribute: srdiag/bpm/c14-07/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C14-08
@@ -9827,11 +9827,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/14-08/SA_HPosition
+          attribute: srdiag/bpm/c14-08/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/14-08/SA_VPosition
+          attribute: srdiag/bpm/c14-08/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C14-09
@@ -9839,11 +9839,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/14-09/SA_HPosition
+          attribute: srdiag/bpm/c14-09/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/14-09/SA_VPosition
+          attribute: srdiag/bpm/c14-09/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C14-10
@@ -9851,11 +9851,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/14-10/SA_HPosition
+          attribute: srdiag/bpm/c14-10/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/14-10/SA_VPosition
+          attribute: srdiag/bpm/c14-10/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C15-01
@@ -9863,11 +9863,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/15-01/SA_HPosition
+          attribute: srdiag/bpm/c15-01/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/15-01/SA_VPosition
+          attribute: srdiag/bpm/c15-01/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C15-02
@@ -9875,11 +9875,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/15-02/SA_HPosition
+          attribute: srdiag/bpm/c15-02/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/15-02/SA_VPosition
+          attribute: srdiag/bpm/c15-02/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C15-03
@@ -9887,11 +9887,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/15-03/SA_HPosition
+          attribute: srdiag/bpm/c15-03/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/15-03/SA_VPosition
+          attribute: srdiag/bpm/c15-03/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C15-04
@@ -9899,11 +9899,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/15-04/SA_HPosition
+          attribute: srdiag/bpm/c15-04/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/15-04/SA_VPosition
+          attribute: srdiag/bpm/c15-04/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C15-05
@@ -9911,11 +9911,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/15-05/SA_HPosition
+          attribute: srdiag/bpm/c15-05/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/15-05/SA_VPosition
+          attribute: srdiag/bpm/c15-05/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C15-06
@@ -9923,11 +9923,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/15-06/SA_HPosition
+          attribute: srdiag/bpm/c15-06/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/15-06/SA_VPosition
+          attribute: srdiag/bpm/c15-06/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C15-07
@@ -9935,11 +9935,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/15-07/SA_HPosition
+          attribute: srdiag/bpm/c15-07/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/15-07/SA_VPosition
+          attribute: srdiag/bpm/c15-07/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C15-08
@@ -9947,11 +9947,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/15-08/SA_HPosition
+          attribute: srdiag/bpm/c15-08/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/15-08/SA_VPosition
+          attribute: srdiag/bpm/c15-08/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C15-09
@@ -9959,11 +9959,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/15-09/SA_HPosition
+          attribute: srdiag/bpm/c15-09/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/15-09/SA_VPosition
+          attribute: srdiag/bpm/c15-09/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C15-10
@@ -9971,11 +9971,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/15-10/SA_HPosition
+          attribute: srdiag/bpm/c15-10/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/15-10/SA_VPosition
+          attribute: srdiag/bpm/c15-10/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C16-01
@@ -9983,11 +9983,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/16-01/SA_HPosition
+          attribute: srdiag/bpm/c16-01/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/16-01/SA_VPosition
+          attribute: srdiag/bpm/c16-01/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C16-02
@@ -9995,11 +9995,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/16-02/SA_HPosition
+          attribute: srdiag/bpm/c16-02/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/16-02/SA_VPosition
+          attribute: srdiag/bpm/c16-02/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C16-03
@@ -10007,11 +10007,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/16-03/SA_HPosition
+          attribute: srdiag/bpm/c16-03/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/16-03/SA_VPosition
+          attribute: srdiag/bpm/c16-03/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C16-04
@@ -10019,11 +10019,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/16-04/SA_HPosition
+          attribute: srdiag/bpm/c16-04/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/16-04/SA_VPosition
+          attribute: srdiag/bpm/c16-04/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C16-05
@@ -10031,11 +10031,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/16-05/SA_HPosition
+          attribute: srdiag/bpm/c16-05/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/16-05/SA_VPosition
+          attribute: srdiag/bpm/c16-05/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C16-06
@@ -10043,11 +10043,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/16-06/SA_HPosition
+          attribute: srdiag/bpm/c16-06/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/16-06/SA_VPosition
+          attribute: srdiag/bpm/c16-06/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C16-07
@@ -10055,11 +10055,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/16-07/SA_HPosition
+          attribute: srdiag/bpm/c16-07/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/16-07/SA_VPosition
+          attribute: srdiag/bpm/c16-07/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C16-08
@@ -10067,11 +10067,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/16-08/SA_HPosition
+          attribute: srdiag/bpm/c16-08/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/16-08/SA_VPosition
+          attribute: srdiag/bpm/c16-08/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C16-09
@@ -10079,11 +10079,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/16-09/SA_HPosition
+          attribute: srdiag/bpm/c16-09/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/16-09/SA_VPosition
+          attribute: srdiag/bpm/c16-09/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C16-10
@@ -10091,11 +10091,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/16-10/SA_HPosition
+          attribute: srdiag/bpm/c16-10/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/16-10/SA_VPosition
+          attribute: srdiag/bpm/c16-10/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C17-01
@@ -10103,11 +10103,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/17-01/SA_HPosition
+          attribute: srdiag/bpm/c17-01/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/17-01/SA_VPosition
+          attribute: srdiag/bpm/c17-01/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C17-02
@@ -10115,11 +10115,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/17-02/SA_HPosition
+          attribute: srdiag/bpm/c17-02/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/17-02/SA_VPosition
+          attribute: srdiag/bpm/c17-02/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C17-03
@@ -10127,11 +10127,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/17-03/SA_HPosition
+          attribute: srdiag/bpm/c17-03/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/17-03/SA_VPosition
+          attribute: srdiag/bpm/c17-03/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C17-04
@@ -10139,11 +10139,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/17-04/SA_HPosition
+          attribute: srdiag/bpm/c17-04/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/17-04/SA_VPosition
+          attribute: srdiag/bpm/c17-04/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C17-05
@@ -10151,11 +10151,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/17-05/SA_HPosition
+          attribute: srdiag/bpm/c17-05/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/17-05/SA_VPosition
+          attribute: srdiag/bpm/c17-05/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C17-06
@@ -10163,11 +10163,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/17-06/SA_HPosition
+          attribute: srdiag/bpm/c17-06/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/17-06/SA_VPosition
+          attribute: srdiag/bpm/c17-06/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C17-07
@@ -10175,11 +10175,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/17-07/SA_HPosition
+          attribute: srdiag/bpm/c17-07/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/17-07/SA_VPosition
+          attribute: srdiag/bpm/c17-07/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C17-08
@@ -10187,11 +10187,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/17-08/SA_HPosition
+          attribute: srdiag/bpm/c17-08/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/17-08/SA_VPosition
+          attribute: srdiag/bpm/c17-08/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C17-09
@@ -10199,11 +10199,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/17-09/SA_HPosition
+          attribute: srdiag/bpm/c17-09/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/17-09/SA_VPosition
+          attribute: srdiag/bpm/c17-09/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C17-10
@@ -10211,11 +10211,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/17-10/SA_HPosition
+          attribute: srdiag/bpm/c17-10/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/17-10/SA_VPosition
+          attribute: srdiag/bpm/c17-10/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C18-01
@@ -10223,11 +10223,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/18-01/SA_HPosition
+          attribute: srdiag/bpm/c18-01/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/18-01/SA_VPosition
+          attribute: srdiag/bpm/c18-01/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C18-02
@@ -10235,11 +10235,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/18-02/SA_HPosition
+          attribute: srdiag/bpm/c18-02/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/18-02/SA_VPosition
+          attribute: srdiag/bpm/c18-02/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C18-03
@@ -10247,11 +10247,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/18-03/SA_HPosition
+          attribute: srdiag/bpm/c18-03/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/18-03/SA_VPosition
+          attribute: srdiag/bpm/c18-03/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C18-04
@@ -10259,11 +10259,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/18-04/SA_HPosition
+          attribute: srdiag/bpm/c18-04/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/18-04/SA_VPosition
+          attribute: srdiag/bpm/c18-04/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C18-05
@@ -10271,11 +10271,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/18-05/SA_HPosition
+          attribute: srdiag/bpm/c18-05/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/18-05/SA_VPosition
+          attribute: srdiag/bpm/c18-05/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C18-06
@@ -10283,11 +10283,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/18-06/SA_HPosition
+          attribute: srdiag/bpm/c18-06/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/18-06/SA_VPosition
+          attribute: srdiag/bpm/c18-06/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C18-07
@@ -10295,11 +10295,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/18-07/SA_HPosition
+          attribute: srdiag/bpm/c18-07/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/18-07/SA_VPosition
+          attribute: srdiag/bpm/c18-07/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C18-08
@@ -10307,11 +10307,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/18-08/SA_HPosition
+          attribute: srdiag/bpm/c18-08/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/18-08/SA_VPosition
+          attribute: srdiag/bpm/c18-08/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C18-09
@@ -10319,11 +10319,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/18-09/SA_HPosition
+          attribute: srdiag/bpm/c18-09/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/18-09/SA_VPosition
+          attribute: srdiag/bpm/c18-09/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C18-10
@@ -10331,11 +10331,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/18-10/SA_HPosition
+          attribute: srdiag/bpm/c18-10/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/18-10/SA_VPosition
+          attribute: srdiag/bpm/c18-10/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C19-01
@@ -10343,11 +10343,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/19-01/SA_HPosition
+          attribute: srdiag/bpm/c19-01/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/19-01/SA_VPosition
+          attribute: srdiag/bpm/c19-01/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C19-02
@@ -10355,11 +10355,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/19-02/SA_HPosition
+          attribute: srdiag/bpm/c19-02/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/19-02/SA_VPosition
+          attribute: srdiag/bpm/c19-02/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C19-03
@@ -10367,11 +10367,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/19-03/SA_HPosition
+          attribute: srdiag/bpm/c19-03/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/19-03/SA_VPosition
+          attribute: srdiag/bpm/c19-03/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C19-04
@@ -10379,11 +10379,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/19-04/SA_HPosition
+          attribute: srdiag/bpm/c19-04/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/19-04/SA_VPosition
+          attribute: srdiag/bpm/c19-04/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C19-05
@@ -10391,11 +10391,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/19-05/SA_HPosition
+          attribute: srdiag/bpm/c19-05/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/19-05/SA_VPosition
+          attribute: srdiag/bpm/c19-05/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C19-06
@@ -10403,11 +10403,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/19-06/SA_HPosition
+          attribute: srdiag/bpm/c19-06/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/19-06/SA_VPosition
+          attribute: srdiag/bpm/c19-06/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C19-07
@@ -10415,11 +10415,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/19-07/SA_HPosition
+          attribute: srdiag/bpm/c19-07/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/19-07/SA_VPosition
+          attribute: srdiag/bpm/c19-07/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C19-08
@@ -10427,11 +10427,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/19-08/SA_HPosition
+          attribute: srdiag/bpm/c19-08/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/19-08/SA_VPosition
+          attribute: srdiag/bpm/c19-08/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C19-09
@@ -10439,11 +10439,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/19-09/SA_HPosition
+          attribute: srdiag/bpm/c19-09/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/19-09/SA_VPosition
+          attribute: srdiag/bpm/c19-09/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C19-10
@@ -10451,11 +10451,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/19-10/SA_HPosition
+          attribute: srdiag/bpm/c19-10/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/19-10/SA_VPosition
+          attribute: srdiag/bpm/c19-10/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C20-01
@@ -10463,11 +10463,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/20-01/SA_HPosition
+          attribute: srdiag/bpm/c20-01/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/20-01/SA_VPosition
+          attribute: srdiag/bpm/c20-01/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C20-02
@@ -10475,11 +10475,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/20-02/SA_HPosition
+          attribute: srdiag/bpm/c20-02/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/20-02/SA_VPosition
+          attribute: srdiag/bpm/c20-02/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C20-03
@@ -10487,11 +10487,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/20-03/SA_HPosition
+          attribute: srdiag/bpm/c20-03/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/20-03/SA_VPosition
+          attribute: srdiag/bpm/c20-03/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C20-04
@@ -10499,11 +10499,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/20-04/SA_HPosition
+          attribute: srdiag/bpm/c20-04/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/20-04/SA_VPosition
+          attribute: srdiag/bpm/c20-04/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C20-05
@@ -10511,11 +10511,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/20-05/SA_HPosition
+          attribute: srdiag/bpm/c20-05/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/20-05/SA_VPosition
+          attribute: srdiag/bpm/c20-05/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C20-06
@@ -10523,11 +10523,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/20-06/SA_HPosition
+          attribute: srdiag/bpm/c20-06/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/20-06/SA_VPosition
+          attribute: srdiag/bpm/c20-06/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C20-07
@@ -10535,11 +10535,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/20-07/SA_HPosition
+          attribute: srdiag/bpm/c20-07/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/20-07/SA_VPosition
+          attribute: srdiag/bpm/c20-07/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C20-08
@@ -10547,11 +10547,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/20-08/SA_HPosition
+          attribute: srdiag/bpm/c20-08/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/20-08/SA_VPosition
+          attribute: srdiag/bpm/c20-08/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C20-09
@@ -10559,11 +10559,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/20-09/SA_HPosition
+          attribute: srdiag/bpm/c20-09/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/20-09/SA_VPosition
+          attribute: srdiag/bpm/c20-09/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C20-10
@@ -10571,11 +10571,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/20-10/SA_HPosition
+          attribute: srdiag/bpm/c20-10/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/20-10/SA_VPosition
+          attribute: srdiag/bpm/c20-10/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C21-01
@@ -10583,11 +10583,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/21-01/SA_HPosition
+          attribute: srdiag/bpm/c21-01/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/21-01/SA_VPosition
+          attribute: srdiag/bpm/c21-01/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C21-02
@@ -10595,11 +10595,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/21-02/SA_HPosition
+          attribute: srdiag/bpm/c21-02/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/21-02/SA_VPosition
+          attribute: srdiag/bpm/c21-02/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C21-03
@@ -10607,11 +10607,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/21-03/SA_HPosition
+          attribute: srdiag/bpm/c21-03/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/21-03/SA_VPosition
+          attribute: srdiag/bpm/c21-03/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C21-04
@@ -10619,11 +10619,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/21-04/SA_HPosition
+          attribute: srdiag/bpm/c21-04/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/21-04/SA_VPosition
+          attribute: srdiag/bpm/c21-04/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C21-05
@@ -10631,11 +10631,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/21-05/SA_HPosition
+          attribute: srdiag/bpm/c21-05/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/21-05/SA_VPosition
+          attribute: srdiag/bpm/c21-05/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C21-06
@@ -10643,11 +10643,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/21-06/SA_HPosition
+          attribute: srdiag/bpm/c21-06/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/21-06/SA_VPosition
+          attribute: srdiag/bpm/c21-06/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C21-07
@@ -10655,11 +10655,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/21-07/SA_HPosition
+          attribute: srdiag/bpm/c21-07/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/21-07/SA_VPosition
+          attribute: srdiag/bpm/c21-07/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C21-08
@@ -10667,11 +10667,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/21-08/SA_HPosition
+          attribute: srdiag/bpm/c21-08/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/21-08/SA_VPosition
+          attribute: srdiag/bpm/c21-08/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C21-09
@@ -10679,11 +10679,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/21-09/SA_HPosition
+          attribute: srdiag/bpm/c21-09/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/21-09/SA_VPosition
+          attribute: srdiag/bpm/c21-09/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C21-10
@@ -10691,11 +10691,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/21-10/SA_HPosition
+          attribute: srdiag/bpm/c21-10/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/21-10/SA_VPosition
+          attribute: srdiag/bpm/c21-10/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C22-01
@@ -10703,11 +10703,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/22-01/SA_HPosition
+          attribute: srdiag/bpm/c22-01/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/22-01/SA_VPosition
+          attribute: srdiag/bpm/c22-01/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C22-02
@@ -10715,11 +10715,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/22-02/SA_HPosition
+          attribute: srdiag/bpm/c22-02/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/22-02/SA_VPosition
+          attribute: srdiag/bpm/c22-02/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C22-03
@@ -10727,11 +10727,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/22-03/SA_HPosition
+          attribute: srdiag/bpm/c22-03/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/22-03/SA_VPosition
+          attribute: srdiag/bpm/c22-03/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C22-04
@@ -10739,11 +10739,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/22-04/SA_HPosition
+          attribute: srdiag/bpm/c22-04/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/22-04/SA_VPosition
+          attribute: srdiag/bpm/c22-04/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C22-05
@@ -10751,11 +10751,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/22-05/SA_HPosition
+          attribute: srdiag/bpm/c22-05/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/22-05/SA_VPosition
+          attribute: srdiag/bpm/c22-05/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C22-06
@@ -10763,11 +10763,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/22-06/SA_HPosition
+          attribute: srdiag/bpm/c22-06/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/22-06/SA_VPosition
+          attribute: srdiag/bpm/c22-06/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C22-07
@@ -10775,11 +10775,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/22-07/SA_HPosition
+          attribute: srdiag/bpm/c22-07/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/22-07/SA_VPosition
+          attribute: srdiag/bpm/c22-07/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C22-08
@@ -10787,11 +10787,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/22-08/SA_HPosition
+          attribute: srdiag/bpm/c22-08/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/22-08/SA_VPosition
+          attribute: srdiag/bpm/c22-08/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C22-09
@@ -10799,11 +10799,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/22-09/SA_HPosition
+          attribute: srdiag/bpm/c22-09/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/22-09/SA_VPosition
+          attribute: srdiag/bpm/c22-09/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C22-10
@@ -10811,11 +10811,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/22-10/SA_HPosition
+          attribute: srdiag/bpm/c22-10/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/22-10/SA_VPosition
+          attribute: srdiag/bpm/c22-10/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C23-01
@@ -10823,11 +10823,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/23-01/SA_HPosition
+          attribute: srdiag/bpm/c23-01/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/23-01/SA_VPosition
+          attribute: srdiag/bpm/c23-01/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C23-02
@@ -10835,11 +10835,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/23-02/SA_HPosition
+          attribute: srdiag/bpm/c23-02/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/23-02/SA_VPosition
+          attribute: srdiag/bpm/c23-02/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C23-03
@@ -10847,11 +10847,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/23-03/SA_HPosition
+          attribute: srdiag/bpm/c23-03/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/23-03/SA_VPosition
+          attribute: srdiag/bpm/c23-03/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C23-04
@@ -10859,11 +10859,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/23-04/SA_HPosition
+          attribute: srdiag/bpm/c23-04/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/23-04/SA_VPosition
+          attribute: srdiag/bpm/c23-04/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C23-05
@@ -10871,11 +10871,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/23-05/SA_HPosition
+          attribute: srdiag/bpm/c23-05/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/23-05/SA_VPosition
+          attribute: srdiag/bpm/c23-05/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C23-06
@@ -10883,11 +10883,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/23-06/SA_HPosition
+          attribute: srdiag/bpm/c23-06/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/23-06/SA_VPosition
+          attribute: srdiag/bpm/c23-06/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C23-07
@@ -10895,11 +10895,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/23-07/SA_HPosition
+          attribute: srdiag/bpm/c23-07/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/23-07/SA_VPosition
+          attribute: srdiag/bpm/c23-07/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C23-08
@@ -10907,11 +10907,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/23-08/SA_HPosition
+          attribute: srdiag/bpm/c23-08/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/23-08/SA_VPosition
+          attribute: srdiag/bpm/c23-08/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C23-09
@@ -10919,11 +10919,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/23-09/SA_HPosition
+          attribute: srdiag/bpm/c23-09/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/23-09/SA_VPosition
+          attribute: srdiag/bpm/c23-09/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C23-10
@@ -10931,11 +10931,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/23-10/SA_HPosition
+          attribute: srdiag/bpm/c23-10/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/23-10/SA_VPosition
+          attribute: srdiag/bpm/c23-10/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C24-01
@@ -10943,11 +10943,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/24-01/SA_HPosition
+          attribute: srdiag/bpm/c24-01/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/24-01/SA_VPosition
+          attribute: srdiag/bpm/c24-01/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C24-02
@@ -10955,11 +10955,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/24-02/SA_HPosition
+          attribute: srdiag/bpm/c24-02/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/24-02/SA_VPosition
+          attribute: srdiag/bpm/c24-02/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C24-03
@@ -10967,11 +10967,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/24-03/SA_HPosition
+          attribute: srdiag/bpm/c24-03/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/24-03/SA_VPosition
+          attribute: srdiag/bpm/c24-03/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C24-04
@@ -10979,11 +10979,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/24-04/SA_HPosition
+          attribute: srdiag/bpm/c24-04/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/24-04/SA_VPosition
+          attribute: srdiag/bpm/c24-04/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C24-05
@@ -10991,11 +10991,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/24-05/SA_HPosition
+          attribute: srdiag/bpm/c24-05/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/24-05/SA_VPosition
+          attribute: srdiag/bpm/c24-05/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C24-06
@@ -11003,11 +11003,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/24-06/SA_HPosition
+          attribute: srdiag/bpm/c24-06/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/24-06/SA_VPosition
+          attribute: srdiag/bpm/c24-06/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C24-07
@@ -11015,11 +11015,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/24-07/SA_HPosition
+          attribute: srdiag/bpm/c24-07/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/24-07/SA_VPosition
+          attribute: srdiag/bpm/c24-07/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C24-08
@@ -11027,11 +11027,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/24-08/SA_HPosition
+          attribute: srdiag/bpm/c24-08/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/24-08/SA_VPosition
+          attribute: srdiag/bpm/c24-08/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C24-09
@@ -11039,11 +11039,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/24-09/SA_HPosition
+          attribute: srdiag/bpm/c24-09/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/24-09/SA_VPosition
+          attribute: srdiag/bpm/c24-09/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C24-10
@@ -11051,11 +11051,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/24-10/SA_HPosition
+          attribute: srdiag/bpm/c24-10/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/24-10/SA_VPosition
+          attribute: srdiag/bpm/c24-10/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C25-01
@@ -11063,11 +11063,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/25-01/SA_HPosition
+          attribute: srdiag/bpm/c25-01/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/25-01/SA_VPosition
+          attribute: srdiag/bpm/c25-01/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C25-02
@@ -11075,11 +11075,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/25-02/SA_HPosition
+          attribute: srdiag/bpm/c25-02/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/25-02/SA_VPosition
+          attribute: srdiag/bpm/c25-02/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C25-03
@@ -11087,11 +11087,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/25-03/SA_HPosition
+          attribute: srdiag/bpm/c25-03/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/25-03/SA_VPosition
+          attribute: srdiag/bpm/c25-03/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C25-04
@@ -11099,11 +11099,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/25-04/SA_HPosition
+          attribute: srdiag/bpm/c25-04/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/25-04/SA_VPosition
+          attribute: srdiag/bpm/c25-04/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C25-05
@@ -11111,11 +11111,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/25-05/SA_HPosition
+          attribute: srdiag/bpm/c25-05/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/25-05/SA_VPosition
+          attribute: srdiag/bpm/c25-05/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C25-06
@@ -11123,11 +11123,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/25-06/SA_HPosition
+          attribute: srdiag/bpm/c25-06/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/25-06/SA_VPosition
+          attribute: srdiag/bpm/c25-06/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C25-07
@@ -11135,11 +11135,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/25-07/SA_HPosition
+          attribute: srdiag/bpm/c25-07/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/25-07/SA_VPosition
+          attribute: srdiag/bpm/c25-07/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C25-08
@@ -11147,11 +11147,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/25-08/SA_HPosition
+          attribute: srdiag/bpm/c25-08/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/25-08/SA_VPosition
+          attribute: srdiag/bpm/c25-08/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C25-09
@@ -11159,11 +11159,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/25-09/SA_HPosition
+          attribute: srdiag/bpm/c25-09/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/25-09/SA_VPosition
+          attribute: srdiag/bpm/c25-09/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C25-10
@@ -11171,11 +11171,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/25-10/SA_HPosition
+          attribute: srdiag/bpm/c25-10/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/25-10/SA_VPosition
+          attribute: srdiag/bpm/c25-10/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C26-01
@@ -11183,11 +11183,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/26-01/SA_HPosition
+          attribute: srdiag/bpm/c26-01/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/26-01/SA_VPosition
+          attribute: srdiag/bpm/c26-01/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C26-02
@@ -11195,11 +11195,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/26-02/SA_HPosition
+          attribute: srdiag/bpm/c26-02/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/26-02/SA_VPosition
+          attribute: srdiag/bpm/c26-02/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C26-03
@@ -11207,11 +11207,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/26-03/SA_HPosition
+          attribute: srdiag/bpm/c26-03/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/26-03/SA_VPosition
+          attribute: srdiag/bpm/c26-03/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C26-04
@@ -11219,11 +11219,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/26-04/SA_HPosition
+          attribute: srdiag/bpm/c26-04/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/26-04/SA_VPosition
+          attribute: srdiag/bpm/c26-04/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C26-05
@@ -11231,11 +11231,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/26-05/SA_HPosition
+          attribute: srdiag/bpm/c26-05/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/26-05/SA_VPosition
+          attribute: srdiag/bpm/c26-05/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C26-06
@@ -11243,11 +11243,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/26-06/SA_HPosition
+          attribute: srdiag/bpm/c26-06/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/26-06/SA_VPosition
+          attribute: srdiag/bpm/c26-06/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C26-07
@@ -11255,11 +11255,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/26-07/SA_HPosition
+          attribute: srdiag/bpm/c26-07/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/26-07/SA_VPosition
+          attribute: srdiag/bpm/c26-07/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C26-08
@@ -11267,11 +11267,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/26-08/SA_HPosition
+          attribute: srdiag/bpm/c26-08/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/26-08/SA_VPosition
+          attribute: srdiag/bpm/c26-08/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C26-09
@@ -11279,11 +11279,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/26-09/SA_HPosition
+          attribute: srdiag/bpm/c26-09/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/26-09/SA_VPosition
+          attribute: srdiag/bpm/c26-09/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C26-10
@@ -11291,11 +11291,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/26-10/SA_HPosition
+          attribute: srdiag/bpm/c26-10/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/26-10/SA_VPosition
+          attribute: srdiag/bpm/c26-10/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C27-01
@@ -11303,11 +11303,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/27-01/SA_HPosition
+          attribute: srdiag/bpm/c27-01/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/27-01/SA_VPosition
+          attribute: srdiag/bpm/c27-01/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C27-02
@@ -11315,11 +11315,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/27-02/SA_HPosition
+          attribute: srdiag/bpm/c27-02/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/27-02/SA_VPosition
+          attribute: srdiag/bpm/c27-02/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C27-03
@@ -11327,11 +11327,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/27-03/SA_HPosition
+          attribute: srdiag/bpm/c27-03/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/27-03/SA_VPosition
+          attribute: srdiag/bpm/c27-03/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C27-04
@@ -11339,11 +11339,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/27-04/SA_HPosition
+          attribute: srdiag/bpm/c27-04/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/27-04/SA_VPosition
+          attribute: srdiag/bpm/c27-04/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C27-05
@@ -11351,11 +11351,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/27-05/SA_HPosition
+          attribute: srdiag/bpm/c27-05/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/27-05/SA_VPosition
+          attribute: srdiag/bpm/c27-05/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C27-06
@@ -11363,11 +11363,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/27-06/SA_HPosition
+          attribute: srdiag/bpm/c27-06/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/27-06/SA_VPosition
+          attribute: srdiag/bpm/c27-06/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C27-07
@@ -11375,11 +11375,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/27-07/SA_HPosition
+          attribute: srdiag/bpm/c27-07/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/27-07/SA_VPosition
+          attribute: srdiag/bpm/c27-07/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C27-08
@@ -11387,11 +11387,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/27-08/SA_HPosition
+          attribute: srdiag/bpm/c27-08/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/27-08/SA_VPosition
+          attribute: srdiag/bpm/c27-08/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C27-09
@@ -11399,11 +11399,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/27-09/SA_HPosition
+          attribute: srdiag/bpm/c27-09/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/27-09/SA_VPosition
+          attribute: srdiag/bpm/c27-09/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C27-10
@@ -11411,11 +11411,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/27-10/SA_HPosition
+          attribute: srdiag/bpm/c27-10/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/27-10/SA_VPosition
+          attribute: srdiag/bpm/c27-10/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C28-01
@@ -11423,11 +11423,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/28-01/SA_HPosition
+          attribute: srdiag/bpm/c28-01/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/28-01/SA_VPosition
+          attribute: srdiag/bpm/c28-01/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C28-02
@@ -11435,11 +11435,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/28-02/SA_HPosition
+          attribute: srdiag/bpm/c28-02/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/28-02/SA_VPosition
+          attribute: srdiag/bpm/c28-02/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C28-03
@@ -11447,11 +11447,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/28-03/SA_HPosition
+          attribute: srdiag/bpm/c28-03/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/28-03/SA_VPosition
+          attribute: srdiag/bpm/c28-03/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C28-04
@@ -11459,11 +11459,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/28-04/SA_HPosition
+          attribute: srdiag/bpm/c28-04/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/28-04/SA_VPosition
+          attribute: srdiag/bpm/c28-04/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C28-05
@@ -11471,11 +11471,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/28-05/SA_HPosition
+          attribute: srdiag/bpm/c28-05/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/28-05/SA_VPosition
+          attribute: srdiag/bpm/c28-05/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C28-06
@@ -11483,11 +11483,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/28-06/SA_HPosition
+          attribute: srdiag/bpm/c28-06/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/28-06/SA_VPosition
+          attribute: srdiag/bpm/c28-06/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C28-07
@@ -11495,11 +11495,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/28-07/SA_HPosition
+          attribute: srdiag/bpm/c28-07/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/28-07/SA_VPosition
+          attribute: srdiag/bpm/c28-07/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C28-08
@@ -11507,11 +11507,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/28-08/SA_HPosition
+          attribute: srdiag/bpm/c28-08/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/28-08/SA_VPosition
+          attribute: srdiag/bpm/c28-08/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C28-09
@@ -11519,11 +11519,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/28-09/SA_HPosition
+          attribute: srdiag/bpm/c28-09/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/28-09/SA_VPosition
+          attribute: srdiag/bpm/c28-09/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C28-10
@@ -11531,11 +11531,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/28-10/SA_HPosition
+          attribute: srdiag/bpm/c28-10/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/28-10/SA_VPosition
+          attribute: srdiag/bpm/c28-10/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C29-01
@@ -11543,11 +11543,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/29-01/SA_HPosition
+          attribute: srdiag/bpm/c29-01/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/29-01/SA_VPosition
+          attribute: srdiag/bpm/c29-01/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C29-02
@@ -11555,11 +11555,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/29-02/SA_HPosition
+          attribute: srdiag/bpm/c29-02/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/29-02/SA_VPosition
+          attribute: srdiag/bpm/c29-02/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C29-03
@@ -11567,11 +11567,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/29-03/SA_HPosition
+          attribute: srdiag/bpm/c29-03/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/29-03/SA_VPosition
+          attribute: srdiag/bpm/c29-03/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C29-04
@@ -11579,11 +11579,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/29-04/SA_HPosition
+          attribute: srdiag/bpm/c29-04/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/29-04/SA_VPosition
+          attribute: srdiag/bpm/c29-04/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C29-05
@@ -11591,11 +11591,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/29-05/SA_HPosition
+          attribute: srdiag/bpm/c29-05/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/29-05/SA_VPosition
+          attribute: srdiag/bpm/c29-05/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C29-06
@@ -11603,11 +11603,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/29-06/SA_HPosition
+          attribute: srdiag/bpm/c29-06/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/29-06/SA_VPosition
+          attribute: srdiag/bpm/c29-06/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C29-07
@@ -11615,11 +11615,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/29-07/SA_HPosition
+          attribute: srdiag/bpm/c29-07/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/29-07/SA_VPosition
+          attribute: srdiag/bpm/c29-07/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C29-08
@@ -11627,11 +11627,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/29-08/SA_HPosition
+          attribute: srdiag/bpm/c29-08/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/29-08/SA_VPosition
+          attribute: srdiag/bpm/c29-08/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C29-09
@@ -11639,11 +11639,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/29-09/SA_HPosition
+          attribute: srdiag/bpm/c29-09/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/29-09/SA_VPosition
+          attribute: srdiag/bpm/c29-09/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C29-10
@@ -11651,11 +11651,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/29-10/SA_HPosition
+          attribute: srdiag/bpm/c29-10/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/29-10/SA_VPosition
+          attribute: srdiag/bpm/c29-10/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C30-01
@@ -11663,11 +11663,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/30-01/SA_HPosition
+          attribute: srdiag/bpm/c30-01/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/30-01/SA_VPosition
+          attribute: srdiag/bpm/c30-01/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C30-02
@@ -11675,11 +11675,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/30-02/SA_HPosition
+          attribute: srdiag/bpm/c30-02/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/30-02/SA_VPosition
+          attribute: srdiag/bpm/c30-02/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C30-03
@@ -11687,11 +11687,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/30-03/SA_HPosition
+          attribute: srdiag/bpm/c30-03/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/30-03/SA_VPosition
+          attribute: srdiag/bpm/c30-03/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C30-04
@@ -11699,11 +11699,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/30-04/SA_HPosition
+          attribute: srdiag/bpm/c30-04/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/30-04/SA_VPosition
+          attribute: srdiag/bpm/c30-04/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C30-05
@@ -11711,11 +11711,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/30-05/SA_HPosition
+          attribute: srdiag/bpm/c30-05/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/30-05/SA_VPosition
+          attribute: srdiag/bpm/c30-05/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C30-06
@@ -11723,11 +11723,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/30-06/SA_HPosition
+          attribute: srdiag/bpm/c30-06/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/30-06/SA_VPosition
+          attribute: srdiag/bpm/c30-06/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C30-07
@@ -11735,11 +11735,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/30-07/SA_HPosition
+          attribute: srdiag/bpm/c30-07/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/30-07/SA_VPosition
+          attribute: srdiag/bpm/c30-07/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C30-08
@@ -11747,11 +11747,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/30-08/SA_HPosition
+          attribute: srdiag/bpm/c30-08/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/30-08/SA_VPosition
+          attribute: srdiag/bpm/c30-08/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C30-09
@@ -11759,11 +11759,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/30-09/SA_HPosition
+          attribute: srdiag/bpm/c30-09/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/30-09/SA_VPosition
+          attribute: srdiag/bpm/c30-09/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C30-10
@@ -11771,11 +11771,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/30-10/SA_HPosition
+          attribute: srdiag/bpm/c30-10/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/30-10/SA_VPosition
+          attribute: srdiag/bpm/c30-10/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C31-01
@@ -11783,11 +11783,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/31-01/SA_HPosition
+          attribute: srdiag/bpm/c31-01/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/31-01/SA_VPosition
+          attribute: srdiag/bpm/c31-01/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C31-02
@@ -11795,11 +11795,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/31-02/SA_HPosition
+          attribute: srdiag/bpm/c31-02/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/31-02/SA_VPosition
+          attribute: srdiag/bpm/c31-02/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C31-03
@@ -11807,11 +11807,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/31-03/SA_HPosition
+          attribute: srdiag/bpm/c31-03/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/31-03/SA_VPosition
+          attribute: srdiag/bpm/c31-03/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C31-04
@@ -11819,11 +11819,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/31-04/SA_HPosition
+          attribute: srdiag/bpm/c31-04/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/31-04/SA_VPosition
+          attribute: srdiag/bpm/c31-04/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C31-05
@@ -11831,11 +11831,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/31-05/SA_HPosition
+          attribute: srdiag/bpm/c31-05/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/31-05/SA_VPosition
+          attribute: srdiag/bpm/c31-05/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C31-06
@@ -11843,11 +11843,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/31-06/SA_HPosition
+          attribute: srdiag/bpm/c31-06/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/31-06/SA_VPosition
+          attribute: srdiag/bpm/c31-06/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C31-07
@@ -11855,11 +11855,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/31-07/SA_HPosition
+          attribute: srdiag/bpm/c31-07/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/31-07/SA_VPosition
+          attribute: srdiag/bpm/c31-07/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C31-08
@@ -11867,11 +11867,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/31-08/SA_HPosition
+          attribute: srdiag/bpm/c31-08/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/31-08/SA_VPosition
+          attribute: srdiag/bpm/c31-08/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C31-09
@@ -11879,11 +11879,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/31-09/SA_HPosition
+          attribute: srdiag/bpm/c31-09/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/31-09/SA_VPosition
+          attribute: srdiag/bpm/c31-09/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C31-10
@@ -11891,11 +11891,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/31-10/SA_HPosition
+          attribute: srdiag/bpm/c31-10/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/31-10/SA_VPosition
+          attribute: srdiag/bpm/c31-10/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C32-01
@@ -11903,11 +11903,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/32-01/SA_HPosition
+          attribute: srdiag/bpm/c32-01/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/32-01/SA_VPosition
+          attribute: srdiag/bpm/c32-01/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C32-02
@@ -11915,11 +11915,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/32-02/SA_HPosition
+          attribute: srdiag/bpm/c32-02/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/32-02/SA_VPosition
+          attribute: srdiag/bpm/c32-02/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C32-03
@@ -11927,11 +11927,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/32-03/SA_HPosition
+          attribute: srdiag/bpm/c32-03/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/32-03/SA_VPosition
+          attribute: srdiag/bpm/c32-03/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C32-04
@@ -11939,11 +11939,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/32-04/SA_HPosition
+          attribute: srdiag/bpm/c32-04/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/32-04/SA_VPosition
+          attribute: srdiag/bpm/c32-04/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C32-05
@@ -11951,11 +11951,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/32-05/SA_HPosition
+          attribute: srdiag/bpm/c32-05/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/32-05/SA_VPosition
+          attribute: srdiag/bpm/c32-05/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C32-06
@@ -11963,11 +11963,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/32-06/SA_HPosition
+          attribute: srdiag/bpm/c32-06/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/32-06/SA_VPosition
+          attribute: srdiag/bpm/c32-06/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C32-07
@@ -11975,11 +11975,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/32-07/SA_HPosition
+          attribute: srdiag/bpm/c32-07/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/32-07/SA_VPosition
+          attribute: srdiag/bpm/c32-07/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C32-08
@@ -11987,11 +11987,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/32-08/SA_HPosition
+          attribute: srdiag/bpm/c32-08/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/32-08/SA_VPosition
+          attribute: srdiag/bpm/c32-08/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C32-09
@@ -11999,11 +11999,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/32-09/SA_HPosition
+          attribute: srdiag/bpm/c32-09/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/32-09/SA_VPosition
+          attribute: srdiag/bpm/c32-09/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C32-10
@@ -12011,11 +12011,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/32-10/SA_HPosition
+          attribute: srdiag/bpm/c32-10/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/32-10/SA_VPosition
+          attribute: srdiag/bpm/c32-10/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C01-01
@@ -12023,11 +12023,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/01-01/SA_HPosition
+          attribute: srdiag/bpm/c01-01/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/01-01/SA_VPosition
+          attribute: srdiag/bpm/c01-01/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C01-02
@@ -12035,11 +12035,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/01-02/SA_HPosition
+          attribute: srdiag/bpm/c01-02/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/01-02/SA_VPosition
+          attribute: srdiag/bpm/c01-02/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C01-03
@@ -12047,11 +12047,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/01-03/SA_HPosition
+          attribute: srdiag/bpm/c01-03/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/01-03/SA_VPosition
+          attribute: srdiag/bpm/c01-03/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C01-04
@@ -12059,11 +12059,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/01-04/SA_HPosition
+          attribute: srdiag/bpm/c01-04/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/01-04/SA_VPosition
+          attribute: srdiag/bpm/c01-04/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C01-05
@@ -12071,11 +12071,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/01-05/SA_HPosition
+          attribute: srdiag/bpm/c01-05/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/01-05/SA_VPosition
+          attribute: srdiag/bpm/c01-05/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C01-06
@@ -12083,11 +12083,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/01-06/SA_HPosition
+          attribute: srdiag/bpm/c01-06/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/01-06/SA_VPosition
+          attribute: srdiag/bpm/c01-06/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C01-07
@@ -12095,11 +12095,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/01-07/SA_HPosition
+          attribute: srdiag/bpm/c01-07/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/01-07/SA_VPosition
+          attribute: srdiag/bpm/c01-07/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C01-08
@@ -12107,11 +12107,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/01-08/SA_HPosition
+          attribute: srdiag/bpm/c01-08/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/01-08/SA_VPosition
+          attribute: srdiag/bpm/c01-08/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C01-09
@@ -12119,11 +12119,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/01-09/SA_HPosition
+          attribute: srdiag/bpm/c01-09/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/01-09/SA_VPosition
+          attribute: srdiag/bpm/c01-09/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C01-10
@@ -12131,11 +12131,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/01-10/SA_HPosition
+          attribute: srdiag/bpm/c01-10/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/01-10/SA_VPosition
+          attribute: srdiag/bpm/c01-10/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C02-01
@@ -12143,11 +12143,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/02-01/SA_HPosition
+          attribute: srdiag/bpm/c02-01/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/02-01/SA_VPosition
+          attribute: srdiag/bpm/c02-01/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C02-02
@@ -12155,11 +12155,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/02-02/SA_HPosition
+          attribute: srdiag/bpm/c02-02/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/02-02/SA_VPosition
+          attribute: srdiag/bpm/c02-02/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C02-03
@@ -12167,11 +12167,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/02-03/SA_HPosition
+          attribute: srdiag/bpm/c02-03/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/02-03/SA_VPosition
+          attribute: srdiag/bpm/c02-03/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C02-04
@@ -12179,11 +12179,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/02-04/SA_HPosition
+          attribute: srdiag/bpm/c02-04/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/02-04/SA_VPosition
+          attribute: srdiag/bpm/c02-04/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C02-05
@@ -12191,11 +12191,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/02-05/SA_HPosition
+          attribute: srdiag/bpm/c02-05/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/02-05/SA_VPosition
+          attribute: srdiag/bpm/c02-05/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C02-06
@@ -12203,11 +12203,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/02-06/SA_HPosition
+          attribute: srdiag/bpm/c02-06/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/02-06/SA_VPosition
+          attribute: srdiag/bpm/c02-06/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C02-07
@@ -12215,11 +12215,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/02-07/SA_HPosition
+          attribute: srdiag/bpm/c02-07/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/02-07/SA_VPosition
+          attribute: srdiag/bpm/c02-07/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C02-08
@@ -12227,11 +12227,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/02-08/SA_HPosition
+          attribute: srdiag/bpm/c02-08/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/02-08/SA_VPosition
+          attribute: srdiag/bpm/c02-08/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C02-09
@@ -12239,11 +12239,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/02-09/SA_HPosition
+          attribute: srdiag/bpm/c02-09/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/02-09/SA_VPosition
+          attribute: srdiag/bpm/c02-09/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C02-10
@@ -12251,11 +12251,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/02-10/SA_HPosition
+          attribute: srdiag/bpm/c02-10/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/02-10/SA_VPosition
+          attribute: srdiag/bpm/c02-10/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C03-01
@@ -12263,11 +12263,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/03-01/SA_HPosition
+          attribute: srdiag/bpm/c03-01/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/03-01/SA_VPosition
+          attribute: srdiag/bpm/c03-01/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C03-02
@@ -12275,11 +12275,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/03-02/SA_HPosition
+          attribute: srdiag/bpm/c03-02/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/03-02/SA_VPosition
+          attribute: srdiag/bpm/c03-02/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C03-03
@@ -12287,11 +12287,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/03-03/SA_HPosition
+          attribute: srdiag/bpm/c03-03/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/03-03/SA_VPosition
+          attribute: srdiag/bpm/c03-03/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C03-04
@@ -12299,11 +12299,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/03-04/SA_HPosition
+          attribute: srdiag/bpm/c03-04/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/03-04/SA_VPosition
+          attribute: srdiag/bpm/c03-04/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C03-05
@@ -12311,11 +12311,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/03-05/SA_HPosition
+          attribute: srdiag/bpm/c03-05/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/03-05/SA_VPosition
+          attribute: srdiag/bpm/c03-05/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C03-06
@@ -12323,11 +12323,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/03-06/SA_HPosition
+          attribute: srdiag/bpm/c03-06/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/03-06/SA_VPosition
+          attribute: srdiag/bpm/c03-06/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C03-07
@@ -12335,11 +12335,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/03-07/SA_HPosition
+          attribute: srdiag/bpm/c03-07/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/03-07/SA_VPosition
+          attribute: srdiag/bpm/c03-07/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C03-08
@@ -12347,11 +12347,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/03-08/SA_HPosition
+          attribute: srdiag/bpm/c03-08/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/03-08/SA_VPosition
+          attribute: srdiag/bpm/c03-08/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C03-09
@@ -12359,11 +12359,11 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/03-09/SA_HPosition
+          attribute: srdiag/bpm/c03-09/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/03-09/SA_VPosition
+          attribute: srdiag/bpm/c03-09/SA_VPosition
           unit: m
     - type: pyaml.bpm.bpm
       name: BPM_C03-10
@@ -12371,9 +12371,9 @@ instruments:
         type: pyaml.bpm.bpm_simple_model
         x_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/03-10/SA_HPosition
+          attribute: srdiag/bpm/c03-10/SA_HPosition
           unit: m
         y_pos:
           type: tango.pyaml.attribute_read_only
-          attribute: srdiag/bpm/03-10/SA_VPosition
+          attribute: srdiag/bpm/c03-10/SA_VPosition
           unit: m

@@ -162,9 +162,9 @@ class RBpmArray(abstract.ReadFloatArray):
     def get(self) -> np.array:
         return self.__model.read_position()
 
-    # Gets the unit of the value
-    def unit(self) -> list[str]:
-        return [self.__model.__x_pos.unit(), self.__model.__y_pos.unit()]
+    # Gets the unit of the value Assume that x and y has the same unit
+    def unit(self) -> str:
+        return self.__model.get_pos_devices()[0].unit()
 
 #------------------------------------------------------------------------------
 
@@ -186,7 +186,7 @@ class RWBpmTiltScalar(abstract.ReadFloatScalar):
         raise NotImplementedError("Not implemented yet.")
     # Gets the unit of the value
     def unit(self) -> str:
-        return self.__model.__tilt.unit()
+        return self.__model.get_tilt_device().unit()
 
 #------------------------------------------------------------------------------
 
@@ -208,7 +208,7 @@ class RWBpmOffsetArray(abstract.ReadWriteFloatArray):
         raise NotImplementedError("Not implemented yet.")
     # Gets the unit of the value
     def unit(self) -> str:
-        return self.__model.__x_offset.unit()
+        return self.__model.get_offset_devices()[0].unit()
 
 #------------------------------------------------------------------------------
 
