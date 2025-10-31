@@ -7,16 +7,10 @@ instruments:
       - type: pyaml.lattice.simulator
         lattice: sr/lattices/ebs.mat
         name: design
-    controls:
-      - type: tango.pyaml.controlsystem
-        tango_host: ebs-simu-3:10000
-        name: live
     data_folder: /data/store
     arrays:
       - type: pyaml.arrays.magnet
         name: QForTune
-        aggregator:
-          type: tango.pyaml.multi_attribute
         elements:
           - QD2E-C04
           - QD2A-C05
