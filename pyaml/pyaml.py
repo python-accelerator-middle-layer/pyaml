@@ -22,17 +22,7 @@ class ConfigModel(BaseModel):
     """Instrument name"""
 
 class PyAML(object):
-    """
-    PyAML top level class
-
-    Allows to 
-      read and set magents and RF
-      read diagnostics
-      run tuning tools
-    For any control system
-    In a simulator or in the real machine
-
-    """
+    """PyAML top level class"""
 
     def __init__(self, cfg: ConfigModel):
         self._cfg = cfg
@@ -46,14 +36,7 @@ class PyAML(object):
       return self.INSTRUMENTS[name]
 
 def pyaml(filename:str) -> PyAML:
-    r"""
-    Load an accelerator middle layer
-    
-    Parameters:
-          filename: configuration file.
-    Returns:
-          accelerator middle layer object.
-    """
+    """Load an accelerator middle layer"""
     logger.log(logging.INFO, f"Loading PyAML from file '{filename}'")
 
     # Asume that all files are referenced from folder where main AML file is stored
