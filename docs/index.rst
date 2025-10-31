@@ -63,12 +63,11 @@ Documentation
    modules/*
 
 
-List of all modules
-----------------
+.. List of all modules
+.. ----------------
 
-.. toctree::
-
-   api
+.. .. toctree::
+..   api
 
 
 Indices and tables
