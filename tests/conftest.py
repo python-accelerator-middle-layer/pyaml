@@ -62,7 +62,7 @@ def install_test_package(request):
     # Remove from sys.modules to avoid caching issues
     sys.modules.pop(package_name, None)
 
-    yield None
+    yield package_name
 
     # Uninstall package
     subprocess.call([

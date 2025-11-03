@@ -64,8 +64,12 @@ class Simulator(ElementHolder):
       # For current calculation
       for m in self.get_all_magnets().items():
         m[1].set_energy(E)
-
-    def create_magnet_aggregator(self,magnets:list[Magnet]) -> ScalarAggregator:
+ 
+    def create_magnet_strength_aggregator(self,magnets:list[Magnet]) -> ScalarAggregator:
+        # No magnet aggregator for simulator
+        return None
+ 
+    def create_magnet_harddware_aggregator(self,magnets:list[Magnet]) -> ScalarAggregator:
         # No magnet aggregator for simulator
         return None
 

@@ -1,11 +1,12 @@
 from abc import ABCMeta, abstractmethod
 from ..common.element_holder import ElementHolder
+from ..common.abstract import RWMapper
 from ..lattice.element import Element
 from ..control.abstract_impl import RWHardwareScalar,RWHardwareArray,RWStrengthScalar,RWStrengthArray
 from ..bpm.bpm import BPM
 from ..control.abstract_impl import RWBpmTiltScalar,RWBpmOffsetArray, RBpmArray
 from ..control.abstract_impl import RWRFFrequencyScalar,RWRFVoltageScalar,RWRFPhaseScalar
-from ..control.abstract_impl import CSScalarAggregator
+from ..control.abstract_impl import CSScalarAggregator,CSStrengthScalarAggregator
 from ..common.abstract_aggregator import ScalarAggregator
 from ..magnet.magnet import Magnet
 from ..magnet.cfm_magnet import CombinedFunctionMagnet
@@ -46,10 +47,20 @@ class ControlSystem(ElementHolder,metaclass=ABCMeta):
         agg = Factory.build_object({"type":mod}) if mod is not None else None
         return CSScalarAggregator(agg)
     
-    def create_magnet_aggregator(self,magnets:list[Magnet]) -> ScalarAggregator:
+    def create_magnet_strength_aggregator(self,magnets:list[Magnet]) -> ScalarAggregator:
+        agg = CSStrengthScalarAggregator(self.create_scalar_aggregator())
+        for m in magnets:
+            agg.add_magnet(m)
+        return agg
+
+    def create_magnet_harddware_aggregator(self,magnets:list[Magnet]) -> ScalarAggregator:
+        # When working in hardware space, 1 single power supply device per multipolar strength is required
         agg = self.create_scalar_aggregator()
         for m in magnets:
-            agg.add_devices(m.model.get_devices())
+            if not m.model.has_hardware():
+               return None
+            psIndex = m.hardware.index() if isinstance(m.hardware,RWMapper) else 0
+            agg.add_devices(m.model.get_devices()[psIndex])
         return agg
     
     def create_bpm_aggregators(self,bpms:list[BPM]) -> list[ScalarAggregator]:

@@ -2,6 +2,7 @@ from ..common import abstract
 from ..control.deviceaccesslist import DeviceAccessList
 from ..control.deviceaccess import DeviceAccess
 from ..magnet.model import MagnetModel
+from ..magnet.magnet import Magnet
 from ..bpm.bpm_model import BPMModel
 from ..rf.rf_plant import RFPlant
 from ..rf.rf_transmitter import RFTransmitter
@@ -15,29 +16,107 @@ from numpy.typing import NDArray
 
 class CSScalarAggregator(ScalarAggregator):
     """
-    Control system aggregator for a scalar value
+    Basic control system aggregator for a list of scalar values
     """
 
     def __init__(self, devs:DeviceAccessList):
-        self.__devs = devs
+        self._devs = devs
 
     def add_devices(self, devices:DeviceAccess | list[DeviceAccess] ):
-        self.__devs.add_devices(devices)
+        self._devs.add_devices(devices)
 
     def set(self, value: NDArray[np.float64]):
-        self.__devs.set(value)
+        self._devs.set(value)
 
     def set_and_wait(self, value: NDArray[np.float64]):
-        self.__devs.set_and_wait(value)
+        self._devs.set_and_wait(value)
 
     def get(self) -> NDArray[np.float64]:
-        return self.__devs.get()
+        return self._devs.get()
 
     def readback(self) -> np.array:
-        return self.__devs.readback()
+        return self._devs.readback()
 
     def unit(self) -> str:
-        return self.__devs.unit()
+        return self._devs.unit()
+    
+    def nb_device(self) -> int:
+        return self._devs.__len__()
+
+#------------------------------------------------------------------------------
+
+class CSStrengthScalarAggregator(CSScalarAggregator):
+    """
+    Control system aggregator for a list of magnet strengths.
+    This aggregator is in charge of computing hardware setpoints and applying them without overlap.
+    When virtual magnets exported from combined function mangets are present (RWMapper), 
+    the aggregator prevents to apply several times the same power supply setpoint.
+    """
+
+    def __init__(self, peer:CSScalarAggregator):
+        CSScalarAggregator.__init__(self,peer._devs)
+        self.__models: list[MagnetModel] = []                   # List of magnet model
+        self.__modelToMagnet: list[list[tuple[int,int]]] = []   # strengths indexing
+        self.__nbMagnet = 0                                     # Number of magnet strengths
+
+    def add_magnet(self, magnet:Magnet):
+        # Incoming magnet can be a magnet exported from a CombinedFunctionMagnet or simple magnet.
+        # All magnets exported from a same CombinedFunctionMagnet share the same model
+        # TODO: check that strength is supported (m.strength may be None)
+        strengthIndex = magnet.strength.index() if isinstance(magnet.strength,abstract.RWMapper) else 0
+        if magnet.model not in self.__models:
+            index = len(self.__models)
+            self.__models.append(magnet.model)
+            self.__modelToMagnet.append([(self.__nbMagnet,strengthIndex)])
+            self._devs.add_devices(magnet.model.get_devices())
+        else:
+            index = self.__models.index(magnet.model)
+            self.__modelToMagnet[index].append((self.__nbMagnet,strengthIndex))
+        self.__nbMagnet += 1
+
+    def set(self, value: NDArray[np.float64]):
+        allHardwareValues = self._devs.get() # Read all hardware setpoints
+        newHardwareValues = np.zeros(self.nb_device())
+        hardwareIndex = 0
+        for modelIndex,model in enumerate(self.__models):
+            nbDev = len(model.get_devices())
+            mStrengths = model.compute_strengths( allHardwareValues[hardwareIndex:hardwareIndex+nbDev] )
+            for (valueIdx,strengthIdx) in self.__modelToMagnet[modelIndex]:
+                mStrengths[strengthIdx] = value[valueIdx]
+            newHardwareValues[hardwareIndex:hardwareIndex+nbDev] = model.compute_hardware_values(mStrengths)
+            hardwareIndex += nbDev
+        self._devs.set(newHardwareValues)
+
+    def set_and_wait(self, value: NDArray[np.float64]):
+        raise NotImplementedError("Not implemented yet.")
+
+    def get(self) -> NDArray[np.float64]:
+        allHardwareValues = self._devs.get() # Read all hardware setpoints
+        allStrength = np.zeros(self.__nbMagnet)
+        hardwareIndex = 0
+        for modelIndex,model in enumerate(self.__models):
+            nbDev = len(model.get_devices())
+            mStrengths = model.compute_strengths( allHardwareValues[hardwareIndex:hardwareIndex+nbDev] )
+            for (valueIdx,strengthIdx) in self.__modelToMagnet[modelIndex]:
+                allStrength[valueIdx] = mStrengths[strengthIdx]
+            hardwareIndex += nbDev
+        return allStrength
+
+    def readback(self) -> np.array:
+        allHardwareValues = self._devs.readback() # Read all hardware readback
+        allStrength = np.zeros(self.__nbMagnet)
+        hardwareIndex = 0
+        for modelIndex,model in enumerate(self.__models):
+            nbDev = len(model.get_devices())
+            mStrengths = model.compute_strengths( allHardwareValues[hardwareIndex:hardwareIndex+nbDev] )
+            for (valueIdx,strengthIdx) in self.__modelToMagnet[modelIndex]:
+                allStrength[valueIdx] = mStrengths[strengthIdx]
+            hardwareIndex += nbDev
+        return allStrength
+
+    def unit(self) -> str:
+        return self._devs.unit()
+
 
 #------------------------------------------------------------------------------
 
@@ -60,9 +139,6 @@ class RWHardwareScalar(abstract.ReadWriteFloatScalar):
 
     def unit(self) -> str:
         return self.__model.get_hardware_units()[0]
-
-    def index(self) -> int:
-        return 0
 
 #------------------------------------------------------------------------------
 
@@ -91,9 +167,6 @@ class RWStrengthScalar(abstract.ReadWriteFloatScalar):
     # Gets the unit of the value
     def unit(self) -> str:
         return self.__model.get_strength_units()[0]
-
-    def index(self) -> int:
-        return 0
 
 #------------------------------------------------------------------------------
 
