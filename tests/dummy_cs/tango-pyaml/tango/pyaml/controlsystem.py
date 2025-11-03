@@ -23,3 +23,9 @@ class TangoControlSystem(ControlSystem):
 
     def init_cs(self):
         pass
+
+    def scalar_aggregator(self) -> str | None:
+        return "tango.pyaml.multi_attribute"
+
+    def vector_aggregator(self) -> str | None:
+        return None

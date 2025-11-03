@@ -14,8 +14,11 @@ from ..rf.rf_transmitter import RFTransmitter
 from ..lattice.abstract_impl import RWHardwareScalar,RWHardwareArray
 from ..lattice.abstract_impl import RWStrengthScalar,RWStrengthArray
 from ..lattice.abstract_impl import RWRFFrequencyScalar,RWRFVoltageScalar,RWRFPhaseScalar
-from .element_holder import ElementHolder
+from ..common.element_holder import ElementHolder
+from ..common.abstract_aggregator import ScalarAggregator
 from ..lattice.abstract_impl import RWBpmTiltScalar,RWBpmOffsetArray, RBpmArray
+from ..lattice.abstract_impl import BPMHScalarAggregator,BPMScalarAggregator,BPMVScalarAggregator
+
 # Define the main class name for this module
 PYAMLCLASS = "Simulator"
 
@@ -61,6 +64,25 @@ class Simulator(ElementHolder):
       # For current calculation
       for m in self.get_all_magnets().items():
         m[1].set_energy(E)
+ 
+    def create_magnet_strength_aggregator(self,magnets:list[Magnet]) -> ScalarAggregator:
+        # No magnet aggregator for simulator
+        return None
+ 
+    def create_magnet_harddware_aggregator(self,magnets:list[Magnet]) -> ScalarAggregator:
+        # No magnet aggregator for simulator
+        return None
+
+    def create_bpm_aggregators(self,bpms:list[BPM]) -> list[ScalarAggregator]:
+        agg = BPMScalarAggregator(self.get_lattice())
+        aggh = BPMHScalarAggregator(self.get_lattice())
+        aggv = BPMVScalarAggregator(self.get_lattice())
+        for b in bpms:
+          e = self.get_at_elems(b)[0]
+          agg.add_elem(e)
+          aggh.add_elem(e)
+          aggv.add_elem(e)
+        return [agg,aggh,aggv]
     
     def fill_device(self,elements:list[Element]):
        for e in elements:

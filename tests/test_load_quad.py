@@ -38,8 +38,8 @@ def test_quad_external_model(install_test_package, config_root_dir):
     ("magnet_file", "install_test_package"),
     [
         ("sr/quadrupoles/QF1AC01.yaml", None),
-        ("sr/quadrupoles/QF1AC01-IDENT-STRGTH.yaml", {"name": "tango", "path": "tests/dummy_cs/tango"}),
-        ("sr/quadrupoles/QF1AC01-IDENT-HW.yaml", {"name": "tango", "path": "tests/dummy_cs/tango"}),
+        ("sr/quadrupoles/QF1AC01-IDENT-STRGTH.yaml", {"name": "tango-pyaml", "path": "tests/dummy_cs/tango-pyaml"}),
+        ("sr/quadrupoles/QF1AC01-IDENT-HW.yaml", {"name": "tango-pyaml", "path": "tests/dummy_cs/tango-pyaml"}),
         ("sr/quadrupoles/QF1AC01.json", None),
     ],
     indirect=["install_test_package"],

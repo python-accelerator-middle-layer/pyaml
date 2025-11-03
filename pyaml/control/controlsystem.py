@@ -1,14 +1,18 @@
 from abc import ABCMeta, abstractmethod
-from ..lattice.element_holder import ElementHolder
+from ..common.element_holder import ElementHolder
+from ..common.abstract import RWMapper
 from ..lattice.element import Element
 from ..control.abstract_impl import RWHardwareScalar,RWHardwareArray,RWStrengthScalar,RWStrengthArray
 from ..bpm.bpm import BPM
 from ..control.abstract_impl import RWBpmTiltScalar,RWBpmOffsetArray, RBpmArray
 from ..control.abstract_impl import RWRFFrequencyScalar,RWRFVoltageScalar,RWRFPhaseScalar
+from ..control.abstract_impl import CSScalarAggregator,CSStrengthScalarAggregator
+from ..common.abstract_aggregator import ScalarAggregator
 from ..magnet.magnet import Magnet
 from ..magnet.cfm_magnet import CombinedFunctionMagnet
 from ..rf.rf_plant import RFPlant,RWTotalVoltage
 from ..rf.rf_transmitter import RFTransmitter
+from ..configuration.factory import Factory
 
 class ControlSystem(ElementHolder,metaclass=ABCMeta):
     """
@@ -27,6 +31,49 @@ class ControlSystem(ElementHolder,metaclass=ABCMeta):
     def name(self) -> str:
         """Return control system name (i.e. live)"""
         pass
+    
+    @abstractmethod
+    def scalar_aggregator(self) -> str | None:
+        """Returns the module name used for handling aggregator of DeviceAccess"""
+        return None
+
+    @abstractmethod
+    def vector_aggregator(self) -> str | None:
+        """Returns the module name used for handling aggregator of DeviceVectorAccess"""
+        return None
+
+    def create_scalar_aggregator(self) -> ScalarAggregator:
+        mod = self.scalar_aggregator()
+        agg = Factory.build_object({"type":mod}) if mod is not None else None
+        return CSScalarAggregator(agg)
+    
+    def create_magnet_strength_aggregator(self,magnets:list[Magnet]) -> ScalarAggregator:
+        agg = CSStrengthScalarAggregator(self.create_scalar_aggregator())
+        for m in magnets:
+            agg.add_magnet(m)
+        return agg
+
+    def create_magnet_harddware_aggregator(self,magnets:list[Magnet]) -> ScalarAggregator:
+        # When working in hardware space, 1 single power supply device per multipolar strength is required
+        agg = self.create_scalar_aggregator()
+        for m in magnets:
+            if not m.model.has_hardware():
+               return None
+            psIndex = m.hardware.index() if isinstance(m.hardware,RWMapper) else 0
+            agg.add_devices(m.model.get_devices()[psIndex])
+        return agg
+    
+    def create_bpm_aggregators(self,bpms:list[BPM]) -> list[ScalarAggregator]:
+        agg = self.create_scalar_aggregator()
+        aggh = self.create_scalar_aggregator()
+        aggv = self.create_scalar_aggregator()
+        for b in bpms:
+            devs = b.model.get_pos_devices()
+            agg.add_devices(devs)
+            aggh.add_devices(devs[0])
+            aggv.add_devices(devs[1])
+        return [agg,aggh,aggv]
+
 
     def set_energy(self,E:float):
         """

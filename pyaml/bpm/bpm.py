@@ -1,7 +1,7 @@
 from pyaml.lattice.element import Element, ElementConfigModel
 from pyaml.lattice.abstract_impl import RBpmArray, RWBpmOffsetArray, RWBpmTiltScalar
 from ..control.deviceaccess import DeviceAccess
-from ..control import abstract
+from ..common import abstract
 from typing import Self
 from pyaml.bpm.bpm_model import BPMModel
 

@@ -12,7 +12,7 @@ import numpy as np
 @pytest.mark.parametrize(
     ("magnet_file", "install_test_package"),
     [
-        ("tests/config/sr-ident-cfm.yaml", {"name": "tango", "path": "tests/dummy_cs/tango"}),
+        ("tests/config/sr-ident-cfm.yaml", {"name": "tango-pyaml", "path": "tests/dummy_cs/tango-pyaml"}),
     ],
     indirect=["install_test_package"],
 )
