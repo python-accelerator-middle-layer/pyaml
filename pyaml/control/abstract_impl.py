@@ -7,8 +7,8 @@ from ..bpm.bpm_model import BPMModel
 from ..rf.rf_plant import RFPlant
 from ..rf.rf_transmitter import RFTransmitter
 from ..common.abstract_aggregator import ScalarAggregator
-
 from numpy import double
+from ..diagnostics.tune_monitor import BetatronTuneMonitor
 import numpy as np
 from numpy.typing import NDArray
 
@@ -349,4 +349,22 @@ class RWRFFrequencyScalar(abstract.ReadWriteFloatScalar):
 
     def unit(self) -> str:
         return self.__rf._cfg.masterclock.unit()
+
+#------------------------------------------------------------------------------
+
+class RBetatronTuneArray(abstract.ReadFloatScalar):
+    """
+    Class providing read write access to betatron tune of a control system.
+    """
+
+    def __init__(self, tune_monitor):
+        self.__tune_monitor = tune_monitor
+
+    def get(self) -> list[float]:
+        # Serialized cavity has the same frequency
+        return [self.__tune_monitor._cfg.tune_h.get(), 
+               self.__tune_monitor._cfg.tune_v.get()]
+
+    def unit(self) -> str:
+        return self.__tune_monitor._cfg.tune_v.unit()
 
