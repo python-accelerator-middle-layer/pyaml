@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# pyAML documentation build configuration file, originally created for pySC: https://github.com/lmalina/pySC/blob/master/doc/conf.py
+# pyAML documentation build configuration file, 
 #
 # This file is execfile()d with the current directory set to its
 # containing dir.
