@@ -19,6 +19,12 @@ from pyaml.instrument import Instrument
 #def test_json():
 #    print(json.dumps(QuadrupoleConfigModel.model_json_schema(),indent=2))
 
+class DummyPeer:
+    def __init__(self):
+        pass
+    def name(self)->str:
+        return "Dummy"
+
 @pytest.mark.parametrize("install_test_package", [{
     "name": "pyaml_external",
     "path": "tests/external"
@@ -29,7 +35,7 @@ def test_quad_external_model(install_test_package, config_root_dir):
     hcorr_with_external_model: HCorrector = Factory.depth_first_build(cfg_hcorr_yaml)
     strength = RWStrengthScalar(hcorr_with_external_model.model)
     hardware = RWHardwareScalar(hcorr_with_external_model.model)
-    ref_corr = hcorr_with_external_model.attach(strength,hardware)
+    ref_corr = hcorr_with_external_model.attach(DummyPeer(),strength,hardware)
     ref_corr.strength.set(10.0)
     print(ref_corr.strength.get())
     Factory.clear()
@@ -51,7 +57,7 @@ def test_quad_linear(magnet_file, install_test_package, config_root_dir):
     quad:Quadrupole = Factory.depth_first_build(cfg_quad)
     hardware = RWHardwareScalar(quad.model) if quad.model.has_hardware() else None
     strength = RWStrengthScalar(quad.model) if quad.model.has_physics() else None
-    ref_quad = quad.attach(strength,hardware)
+    ref_quad = quad.attach(DummyPeer(),strength,hardware)
     ref_quad.model.set_magnet_rigidity(6e9 / speed_of_light)
 
     try:
@@ -93,7 +99,7 @@ def test_combined_function_magnets(magnet_file, config_root_dir):
     hUnits = sh.model.get_hardware_units()
     assert( sUnits[0] == 'rad' and sUnits[1] == 'rad' and sUnits[2] == 'm-1' )
     assert( hUnits[0] == 'A' and hUnits[1] == 'A' and hUnits[2] == 'A')
-    ms = sh.attach(strengths,currents)
+    ms = sh.attach(DummyPeer(),strengths,currents)
     hCorr = ms[0]
     vCorr = ms[1]
     sqCorr = ms[2]

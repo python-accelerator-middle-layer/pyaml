@@ -1,7 +1,7 @@
 from abc import ABCMeta, abstractmethod
 from ..common.element_holder import ElementHolder
 from ..common.abstract import RWMapper
-from ..lattice.element import Element
+from ..common.element import Element
 from ..control.abstract_impl import RWHardwareScalar,RWHardwareArray,RWStrengthScalar,RWStrengthArray
 from ..bpm.bpm import BPM
 from ..control.abstract_impl import RWBpmTiltScalar,RWBpmOffsetArray, RBpmArray
@@ -101,7 +101,7 @@ class ControlSystem(ElementHolder,metaclass=ABCMeta):
             current = RWHardwareScalar(e.model) if e.model.has_hardware() else None
             strength = RWStrengthScalar(e.model) if e.model.has_physics() else None
             # Create a unique ref for this control system
-            m = e.attach(strength, current)
+            m = e.attach(self,strength, current)
             self.add_magnet(m.get_name(),m)
 
           elif isinstance(e,CombinedFunctionMagnet):
@@ -109,7 +109,7 @@ class ControlSystem(ElementHolder,metaclass=ABCMeta):
             currents = RWHardwareArray(e.model) if e.model.has_hardware() else None
             strengths = RWStrengthArray(e.model) if e.model.has_physics() else None
             # Create unique refs of each function for this control system
-            ms = e.attach(strengths,currents)
+            ms = e.attach(self,strengths,currents)
             for m in ms:
               self.add_magnet(m.get_name(),m)
           elif isinstance(e,BPM):

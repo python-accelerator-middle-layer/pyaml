@@ -3,7 +3,7 @@ import importlib
 from threading import Lock
 
 from ..common.exception import PyAMLConfigException
-from ..lattice.element import Element
+from ..common.element import Element
 from pydantic import ValidationError
 
 class BuildStrategy:
@@ -154,6 +154,7 @@ class PyAMLFactory:
         if isinstance(elt,Element):
             name = elt.get_name()
             if name in self._elements:
+                print(self._elements)
                 raise PyAMLConfigException(f"element {name} already defined")
             self._elements[name] = elt
 

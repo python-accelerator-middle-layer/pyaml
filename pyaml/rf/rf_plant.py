@@ -8,7 +8,7 @@ except ImportError:
 from .rf_transmitter import RFTransmitter
 from .. import PyAMLException
 from ..control.deviceaccess import DeviceAccess
-from ..lattice.element import Element,ElementConfigModel
+from ..common.element import Element,ElementConfigModel
 from ..common import abstract
 
 # Define the main class name for this module

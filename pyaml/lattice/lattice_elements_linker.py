@@ -6,7 +6,7 @@ from at import Lattice
 from pydantic import BaseModel, ConfigDict
 
 from pyaml import PyAMLException
-from pyaml.lattice.element import Element
+from pyaml.common.element import Element
 
 
 class LinkerConfigModel(BaseModel):

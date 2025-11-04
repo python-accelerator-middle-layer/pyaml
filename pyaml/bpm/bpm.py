@@ -1,4 +1,4 @@
-from ..lattice.element import Element, ElementConfigModel
+from ..common.element import Element, ElementConfigModel
 from ..lattice.abstract_impl import RBpmArray, RWBpmOffsetArray, RWBpmTiltScalar
 from ..bpm.bpm_model import BPMModel
 from ..common.exception import PyAMLException
