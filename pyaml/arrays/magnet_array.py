@@ -1,53 +1,32 @@
-from ..control.abstract import ReadWriteFloatArray
+from ..common.abstract import ReadWriteFloatArray
 from ..magnet.magnet import Magnet
+from ..common.abstract_aggregator import ScalarAggregator
+
 import numpy as np
-from ..control.deviceaccesslist import DeviceAccessList
 
 class RWMagnetStrength(ReadWriteFloatArray):
 
     def __init__(self, name:str, magnets:list[Magnet]):
-        self.__magnets = magnets
         self.__name = name
-        self.aggregator:DeviceAccessList = None
+        self.__magnets = magnets
+        self.__nb = len(self.__magnets)
+        self.__aggregator:ScalarAggregator = None
 
     # Gets the values
     def get(self) -> np.array:
-        if not self.aggregator:
+        if not self.__aggregator:
             return np.array([m.strength.get() for m in self.__magnets])
         else:
-            allHardwareValues = self.aggregator.get() # Read all hardware setpoints
-            allStrength = np.zeros(len(self.__magnets))
-            mIdx = 0
-            idx = 0
-            for m in self.__magnets:
-                nbDev = len(m.model.get_devices())
-                allStrength[idx] = m.model.compute_strengths(allHardwareValues[idx:idx+nbDev])[m.strength.index()]
-                mIdx += 1
-                idx += nbDev
-            return allStrength
+            return self.__aggregator.get()
 
     # Sets the values
     def set(self, value:np.array):
-        if not self.aggregator:
+        nvalue = np.ones(self.__nb) * value if isinstance(value,float) else value        
+        if not self.__aggregator:
             for idx,m in enumerate(self.__magnets):
-                m.strength.set(value[idx])
+                m.strength.set(nvalue[idx])
         else:
-            # TODO: if the array does not contains mappings to combined function 
-            # magnets, the algorithm below can be optimized
-            allHardwareValues = self.aggregator.get() # Read all hardware setpoints
-            newHardwareValues = np.zeros(len(self.aggregator))
-            mIdx = 0
-            idx = 0
-            for m in self.__magnets:
-                # m is a single function magnet or a mapping to a 
-                # combined function magnet (RWMapper)
-                nbDev = len(m.model.get_devices())
-                mStrengths = m.model.compute_strengths( allHardwareValues[idx:idx+nbDev] )
-                mStrengths[m.strength.index()] = value[mIdx]
-                newHardwareValues[idx:idx+nbDev] = m.model.compute_hardware_values(mStrengths)
-                mIdx += 1
-                idx += nbDev
-            self.aggregator.set(newHardwareValues)
+            self.__aggregator.set(nvalue)
         
     # Sets the values and waits that the read values reach their setpoint
     def set_and_wait(self, value:np.array):
@@ -58,37 +37,32 @@ class RWMagnetStrength(ReadWriteFloatArray):
         return [m.strength.unit() for m in self.__magnets]
 
     # Set the aggregator (Control system only)
-    def set_aggregator(self,agg:DeviceAccessList):
-        self.aggregator = agg
+    def set_aggregator(self,agg:ScalarAggregator):
+        self.__aggregator = agg
 
 class RWMagnetHardware(ReadWriteFloatArray):
 
     def __init__(self, name:str, magnets:list[Magnet]):
         self.__name = name
         self.__magnets = magnets
-        self.aggregator:DeviceAccessList = None
-        self.hasHardwareMapping = True
+        self.__nb = len(self.__magnets)
+        self.__aggregator:ScalarAggregator = None
 
     # Gets the values
     def get(self) -> np.array:
-        if not self.aggregator:
+        if not self.__aggregator:
             return np.array([m.hardware.get() for m in self.__magnets])
         else:
-            if not self.hasHardwareMapping:
-                raise Exception(f"Array {self.__name} contains elements that that do not support hardware units")
-            else:
-                return self.aggregator.get()
+            return self.__aggregator.get()
 
     # Sets the values
     def set(self, value:np.array):
-        if not self.aggregator:
+        nvalue = np.ones(self.__nb) * value if isinstance(value,float) else value        
+        if not self.__aggregator:
             for idx,m in enumerate(self.__magnets):
                 m.hardware.set(value[idx])
         else:
-            if not self.hasHardwareMapping:
-                raise Exception(f"Array {self.__name} contains elements that that do not support hardware units")
-            else:
-                self.aggregator.set(value)
+            self.__aggregator.set(value)
         
     # Sets the values and waits that the read values reach their setpoint
     def set_and_wait(self, value:np.array):
@@ -98,44 +72,38 @@ class RWMagnetHardware(ReadWriteFloatArray):
     def unit(self) -> list[str]:
         return [m.hardware.unit() for m in self.__magnets]
 
-    # Set the aggregator (Control system only)
-    def set_aggregator(self,agg:DeviceAccessList):
-        self.aggregator = agg
-        for m in self.__magnets:
-            self.hasHardwareMapping |= m.model.has_hardware()
+    # Set the aggregator
+    def set_aggregator(self,agg:ScalarAggregator):
+        self.__aggregator = agg
 
 class MagnetArray(list[Magnet]):
     """
     Class that implements access to a magnet array
     """
 
-    def __init__(self,arrayName:str,iterable):
+    def __init__(self,arrayName:str,magnets:list[Magnet],holder = None):
         """
         Construct a magnet array
 
         Parameters
         ----------
-        iterable
+        arrayName : str
+            Array name
+        magnets: list[Magnet]
             Magnet iterator
+        holder : Element holder
+            Holder (Simulator or Control System) that contains element of this array used for aggregator
         """
-        super().__init__(i for i in iterable)
+        super().__init__(i for i in magnets)
         self.__name = arrayName
-        self.__rwstrengths = RWMagnetStrength(arrayName,iterable)
-        self.__rwhardwares = RWMagnetHardware(arrayName,iterable)
+        self.__rwstrengths = RWMagnetStrength(arrayName,magnets)
+        self.__rwhardwares = RWMagnetHardware(arrayName,magnets)
 
-    def set_aggregator(self,agg:DeviceAccessList):
-        """
-        Set an aggregator for this array.
-        Aggregator allow fast control system access by parallelizing 
-        call to underlying hardware.
-
-        Parameters
-        ----------
-        agg : DeviceAccessList
-            List of device access
-        """
-        self.__rwstrengths.set_aggregator(agg)
-        self.__rwhardwares.set_aggregator(agg)
+        if holder is not None:
+            aggs = holder.create_magnet_strength_aggregator(magnets)
+            aggh = holder.create_magnet_harddware_aggregator(magnets)
+            self.__rwstrengths.set_aggregator(aggs)
+            self.__rwhardwares.set_aggregator(aggh)
 
     @property        
     def strengths(self) -> RWMagnetStrength:

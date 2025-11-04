@@ -6,8 +6,8 @@ import at
 import pytest
 
 @pytest.mark.parametrize("install_test_package", [{
-    "name": "tango",
-    "path": "tests/dummy_cs/tango"
+    "name": "tango-pyaml",
+    "path": "tests/dummy_cs/tango-pyaml"
 }], indirect=True)
 def test_tune(install_test_package):
 

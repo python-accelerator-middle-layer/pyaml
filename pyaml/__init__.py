@@ -14,8 +14,8 @@ __author_email__ = ""
 
 import logging.config
 import os
-from pyaml.exception import PyAMLException
-from pyaml.configuration.config_exception import PyAMLConfigException
+from pyaml.common.exception import PyAMLException
+from pyaml.common.exception import PyAMLConfigException
 
 __all__ = [__version__, PyAMLException, PyAMLConfigException]
 

@@ -6,8 +6,8 @@ import numpy as np
 import pytest
 
 @pytest.mark.parametrize("install_test_package", [{
-    "name": "tango",
-    "path": "tests/dummy_cs/tango"
+    "name": "tango-pyaml",
+    "path": "tests/dummy_cs/tango-pyaml"
 }], indirect=True)
 def test_simulator_bpm_tilt(install_test_package):
 
@@ -22,8 +22,8 @@ def test_simulator_bpm_tilt(install_test_package):
     Factory.clear()
 
 @pytest.mark.parametrize("install_test_package", [{
-    "name": "tango",
-    "path": "tests/dummy_cs/tango"
+    "name": "tango-pyaml",
+    "path": "tests/dummy_cs/tango-pyaml"
 }], indirect=True)
 def test_simulator_bpm_offset(install_test_package):
 
@@ -42,8 +42,8 @@ def test_simulator_bpm_offset(install_test_package):
     Factory.clear()
 
 @pytest.mark.parametrize("install_test_package", [{
-    "name": "tango",
-    "path": "tests/dummy_cs/tango"
+    "name": "tango-pyaml",
+    "path": "tests/dummy_cs/tango-pyaml"
 }], indirect=True)
 def test_simulator_bpm_position(install_test_package):
 
@@ -59,8 +59,8 @@ def test_simulator_bpm_position(install_test_package):
     Factory.clear()
 
 @pytest.mark.parametrize("install_test_package", [{
-    "name": "tango",
-    "path": "tests/dummy_cs/tango"
+    "name": "tango-pyaml",
+    "path": "tests/dummy_cs/tango-pyaml"
 }], indirect=True)
 def test_simulator_bpm_position_with_bad_corrector_strength(install_test_package):
 

@@ -1,0 +1,8 @@
+[project]
+name = "tango-pyaml"
+description = "PyAML Tango CS mocking"
+requires-python = ">=3.8"
+dynamic = ["version"]
+dependencies = [
+    "pydantic>=2.0"
+]

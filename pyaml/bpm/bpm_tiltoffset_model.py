@@ -81,3 +81,35 @@ class BPMTiltOffsetModel(BPMSimpleModel):
         self.__x_offset.set(offset_values[0])
         self.__y_offset.set(offset_values[1])
     
+    def get_pos_devices(self) -> list[DeviceAccess]:
+        """
+        Get device handles used for position reading
+        
+        Returns
+        -------
+        list[DeviceAccess]
+            Array of DeviceAcess
+        """
+        return [self.__x_pos,self.__y_pos]
+
+    def get_tilt_device(self) -> DeviceAccess:
+        """
+        Get device handle used for tilt access
+        
+        Returns
+        -------
+        DeviceAccess
+            DeviceAcess
+        """
+        return [self.__tilt]
+
+    def get_offset_devices(self) -> list[DeviceAccess]:
+        """
+        Get device handles used for offset access
+        
+        Returns
+        -------
+        list[DeviceAccess]
+            Array of DeviceAcess
+        """
+        return [self.__x_offset,self.__y_offset]

@@ -10,6 +10,7 @@ from .attribute import ConfigModel as AttributeConfigModel
 
 PYAMLCLASS : str = "MultiAttribute"
 
+LAST_NB_WRITTEN = 0
 
 class ConfigModel(BaseModel):
     """
@@ -38,12 +39,13 @@ class MultiAttribute(DeviceAccessList):
 
     def add_devices(self, devices: DeviceAccess | list[DeviceAccess]):
         if isinstance(devices, list):
-            if any([not isinstance(device, Attribute) for device in devices]):
-                raise pyaml.PyAMLException("All devices must be instances of Attribute (tango.pyaml.attribute).")
+            for device in devices:
+                if not isinstance(device, Attribute):
+                    raise pyaml.PyAMLException(f"All devices must be instances of Attribute (tango.pyaml.attribute) but got ({device.__class__.__name__})")
             super().extend(devices)
         else:
             if not isinstance(devices, Attribute):
-                raise pyaml.PyAMLException("Device must be an instance of Attribute (tango.pyaml.attribute).")
+                raise pyaml.PyAMLException(f"Device must be an instance of Attribute (tango.pyaml.attribute) but got ({devices.__class__.__name__})")
             super().append(devices)
 
     def get_devices(self) -> DeviceAccess | list[DeviceAccess]:
@@ -54,6 +56,8 @@ class MultiAttribute(DeviceAccessList):
 
     def set(self, value: npt.NDArray[np.float64]):
         print(f"MultiAttribute.set({len(value)} values)")
+        global LAST_NB_WRITTEN
+        LAST_NB_WRITTEN += len(value)
         for idx,a in enumerate(self):
             a.set(value[idx])
 
@@ -69,3 +73,6 @@ class MultiAttribute(DeviceAccessList):
 
     def unit(self) -> list[str]:
         return [a.unit() for a in self]
+    
+    def get_last_nb_written(self) -> int:
+        return self.__last_nb_written

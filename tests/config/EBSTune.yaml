@@ -15,8 +15,6 @@ instruments:
     arrays:
       - type: pyaml.arrays.magnet
         name: QForTune
-        aggregator:
-          type: tango.pyaml.multi_attribute
         elements:
           - QD2E-C04
           - QD2A-C05

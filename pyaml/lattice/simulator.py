@@ -1,6 +1,3 @@
-from pydantic import BaseModel,ConfigDict
-import at
-
 from .attribute_linker import PyAtAttributeElementsLinker, ConfigModel as PyAtAttrLinkerConfigModel
 from .lattice_elements_linker import LatticeElementsLinker
 from ..configuration import get_root_folder
@@ -14,8 +11,15 @@ from ..rf.rf_transmitter import RFTransmitter
 from ..lattice.abstract_impl import RWHardwareScalar,RWHardwareArray
 from ..lattice.abstract_impl import RWStrengthScalar,RWStrengthArray
 from ..lattice.abstract_impl import RWRFFrequencyScalar,RWRFVoltageScalar,RWRFPhaseScalar
-from .element_holder import ElementHolder
+from ..common.element_holder import ElementHolder
+from ..common.abstract_aggregator import ScalarAggregator
 from ..lattice.abstract_impl import RWBpmTiltScalar,RWBpmOffsetArray, RBpmArray
+from ..lattice.abstract_impl import BPMHScalarAggregator,BPMScalarAggregator,BPMVScalarAggregator
+from ..common.exception import PyAMLException
+
+from pydantic import BaseModel,ConfigDict
+import at
+
 # Define the main class name for this module
 PYAMLCLASS = "Simulator"
 
@@ -61,6 +65,25 @@ class Simulator(ElementHolder):
       # For current calculation
       for m in self.get_all_magnets().items():
         m[1].set_energy(E)
+ 
+    def create_magnet_strength_aggregator(self,magnets:list[Magnet]) -> ScalarAggregator:
+        # No magnet aggregator for simulator
+        return None
+ 
+    def create_magnet_harddware_aggregator(self,magnets:list[Magnet]) -> ScalarAggregator:
+        # No magnet aggregator for simulator
+        return None
+
+    def create_bpm_aggregators(self,bpms:list[BPM]) -> list[ScalarAggregator]:
+        agg = BPMScalarAggregator(self.get_lattice())
+        aggh = BPMHScalarAggregator(self.get_lattice())
+        aggv = BPMVScalarAggregator(self.get_lattice())
+        for b in bpms:
+          e = self.get_at_elems(b)[0]
+          agg.add_elem(e)
+          aggh.add_elem(e)
+          aggv.add_elem(e)
+        return [agg,aggh,aggv]
     
     def fill_device(self,elements:list[Element]):
        for e in elements:
@@ -100,9 +123,9 @@ class Simulator(ElementHolder):
                    # Expect unique name for cavities
                    cav = self.get_at_elems(Element(c))
                    if len(cav)>1:
-                         raise Exception(f"RF transmitter {t.get_name()}, multiple cavity definition:{cav[0]}")
+                         raise PyAMLException(f"RF transmitter {t.get_name()}, multiple cavity definition:{cav[0]}")
                    if len(cav)==0:
-                         raise Exception(f"RF transmitter {t.get_name()}, No cavity found")
+                         raise PyAMLException(f"RF transmitter {t.get_name()}, No cavity found")
                    cavsPerTrans.append(cav[0])
                    harmonics.append(t._cfg.harmonic)
 
@@ -123,5 +146,5 @@ class Simulator(ElementHolder):
        identifier = self._linker.get_element_identifier(element)
        element_list = self._linker.get_at_elements(identifier)
        if not element_list:
-          raise Exception(f"{identifier} not found in lattice:{self._cfg.lattice}")
+          raise PyAMLException(f"{identifier} not found in lattice:{self._cfg.lattice}")
        return element_list

@@ -81,3 +81,35 @@ class BPMSimpleModel(BPMModel):
         """
         raise NotImplementedError("Offset setting not implemented in this model.")
     
+    def get_pos_devices(self) -> list[DeviceAccess]:
+        """
+        Get device handles used for position reading
+        
+        Returns
+        -------
+        list[DeviceAccess]
+            Array of DeviceAcess
+        """
+        return [self.__x_pos,self.__y_pos]
+
+    def get_tilt_device(self) -> DeviceAccess:
+        """
+        Get device handle used for tilt access
+        
+        Returns
+        -------
+        list[DeviceAccess]
+            Array of DeviceAcess
+        """
+        return []
+
+    def get_offset_devices(self) -> list[DeviceAccess]:
+        """
+        Get device handles used for offset access
+        
+        Returns
+        -------
+        list[DeviceAccess]
+            Array of DeviceAcess
+        """
+        return []

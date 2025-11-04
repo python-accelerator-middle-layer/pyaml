@@ -1,7 +1,6 @@
 from pyaml.lattice.element import Element,ElementConfigModel
 from .. import PyAMLException
-from ..control.deviceaccess import DeviceAccess
-from ..control import abstract
+from ..common import abstract
 from .model import MagnetModel
 from scipy.constants import speed_of_light
 try:
@@ -39,13 +38,13 @@ class Magnet(Element):
   @property
   def strength(self) -> abstract.ReadWriteFloatScalar:
     if self.__strength is None:
-        raise PyAMLException(f"{str(self)} has no model that supports physics units")
+        raise PyAMLException(f"{str(self)} is unattached or has no model that supports physics units")
     return self.__strength
 
   @property
   def hardware(self) -> abstract.ReadWriteFloatScalar:
     if self.__hardware is None:
-        raise PyAMLException(f"{str(self)} has no model that supports hardware units")
+        raise PyAMLException(f"{str(self)} is unattached or has no model that supports hardware units")
     return self.__hardware
 
   @property
