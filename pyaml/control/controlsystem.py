@@ -114,6 +114,7 @@ class ControlSystem(ElementHolder,metaclass=ABCMeta):
             ms = e.attach(self,strengths,currents)
             for m in ms:
               self.add_magnet(m.get_name(),m)
+
           elif isinstance(e,BPM):
             tilt = RWBpmTiltScalar(e.model)
             offsets = RWBpmOffsetArray(e.model)
@@ -136,7 +137,8 @@ class ControlSystem(ElementHolder,metaclass=ABCMeta):
              voltage = RWTotalVoltage(attachedTrans)
              ne = e.attach(self,frequency,voltage)
              self.add_rf_plant(ne.get_name(),ne)
+
           elif isinstance(e,BetatronTuneMonitor):
               betatron_tune = RBetatronTuneArray(e)
-              e = e.attach(betatron_tune)
+              e = e.attach(self,betatron_tune)
               self.add_betatron_tune_monitor(e.get_name(), e)

@@ -2,10 +2,9 @@ from .attribute_linker import PyAtAttributeElementsLinker, ConfigModel as PyAtAt
 from .lattice_elements_linker import LatticeElementsLinker
 from ..configuration import get_root_folder
 from ..common.element import Element
-from pathlib import Path
 from ..magnet.magnet import Magnet
-from pyaml.bpm.bpm import BPM
-from pyaml.diagnostics.tune_monitor import BetatronTuneMonitor
+from ..bpm.bpm import BPM
+from ..diagnostics.tune_monitor import BetatronTuneMonitor
 from ..magnet.cfm_magnet import CombinedFunctionMagnet
 from ..rf.rf_plant import RFPlant,RWTotalVoltage
 from ..rf.rf_transmitter import RFTransmitter
@@ -21,6 +20,7 @@ from ..common.exception import PyAMLException
 
 from pydantic import BaseModel,ConfigDict
 import at
+from pathlib import Path
 
 # Define the main class name for this module
 PYAMLCLASS = "Simulator"
@@ -142,9 +142,10 @@ class Simulator(ElementHolder):
              voltage = RWTotalVoltage(attachedTrans)
              ne = e.attach(self,frequency,voltage)
              self.add_rf_plant(ne.get_name(),ne)
+
           elif isinstance(e, BetatronTuneMonitor):
              betatron_tune = RBetatronTuneArray(self.ring)
-             e = e.attach(betatron_tune)
+             e = e.attach(self,betatron_tune)
              self.add_betatron_tune_monitor(e.get_name(), e)
              
     

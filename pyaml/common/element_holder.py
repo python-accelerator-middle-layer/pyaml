@@ -8,6 +8,7 @@ from ..rf.rf_transmitter import RFTransmitter
 from ..arrays.magnet_array import MagnetArray
 from ..arrays.bpm_array import BPMArray
 from ..common.exception import PyAMLException
+from ..diagnostics.tune_monitor import BetatronTuneMonitor
 
 class ElementHolder(object):
     """
@@ -107,17 +108,10 @@ class ElementHolder(object):
         raise PyAMLException(f"RFTransmitter {name} not defined")
       return self.__RFTRANSMITTER[name]       
 
-    
+
+    # Tune monitor  
   
-    def get_bpm(self,name:str) -> Element:
-      if name not in self.__BPMS:
-         raise Exception(f"BPM {name} not defined")
-      return self.__BPMS[name]
-
-    def add_bpm(self,name:str,bpm:Element):
-        self.__BPMS[name] = bpm
-
-    def get_betatron_tune_monitor(self, name:str) -> Element:
+    def get_betatron_tune_monitor(self, name:str) -> BetatronTuneMonitor:
         if name not in self.__DIAG:
             raise Exception(f"Diagnostic devices array does not contain {name}")
         return self.__DIAG[name]
