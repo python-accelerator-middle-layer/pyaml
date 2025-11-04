@@ -1,8 +1,11 @@
 pyAML documentation
-===================
+======================================
+
+.. contents:: Table of Contents
+    :depth: 3
 
 Introduction
-------------
+------------------------
 
 python Accelerator Middle Layer (pyAML) is a joint technology platform to develop common tools for control, tuning and development of storage rings, beam transport lines and linear accelerators.
 
@@ -17,7 +20,7 @@ With pyAML, it WILL be possible to (the software is at conceptualization stage):
 - many more features 
 
 Installation
-------------
+------------------------
 pip support will be provided later. 
 for the time being: 
 
@@ -25,17 +28,17 @@ git clone https://github.com/python-accelerator-middle-layer/pyaml.git
 
 
 Collaboration community
-------------
+------------------------
 
 Discussion
-~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~
 
 `Mattermost <https://mattermost.hzdr.de/accelerator-middle-layer/channels/town-square>`_
 
 (please log in using Helmoltz ID, you will be prompt to access with your own lab/university credentials)
 
 Shared documents
-~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~
 
 to access the shared documents please ask S.Liuzzo for access rigths. 
 
@@ -45,12 +48,12 @@ https://www.overleaf.com/read/hnrqzhfpbvpp#ef8935
 to be added to editors list please write to S.Liuzzo
 
 Mailing list:
-~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~
 to be added to the pyAML mailing list please write to S.Liuzzo
 
 
-Package Reference
-=================
+Documentation
+----------------------
 
 .. toctree::
    :caption: Modules
@@ -61,7 +64,7 @@ Package Reference
 
 
 Indices and tables
-==================
+====================================
 
 * :ref:`genindex`
 * :ref:`modindex`

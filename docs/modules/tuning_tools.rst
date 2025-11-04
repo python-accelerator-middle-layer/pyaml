@@ -1,11 +1,11 @@
-Tuning Tools
-**************************
+Tuning tools
+***************
 
-.. automodule:: tuning_tools.LOCO.loco
+.. automodule:: pyaml.tuning_tools.LOCO.loco
     :members:
 
-.. automodule:: tuning_tools.SOFB.sofb
+.. automodule:: pyaml.tuning_tools.SOFB.sofb
     :members:
 
-.. automodule:: tuning_tools.TUNE.tune
+.. automodule:: pyaml.tuning_tools.TUNE.tune
     :members:
