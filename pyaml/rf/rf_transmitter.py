@@ -43,13 +43,13 @@ class RFTransmitter(Element):
     @property
     def voltage(self) -> abstract.ReadWriteFloatScalar:
         if self.__voltage is None:
-            raise PyAMLException(f"{str(self)} has no voltage device defined")
+            raise PyAMLException(f"{str(self)} is unattached or has no voltage device defined")
         return self.__voltage
 
     @property
     def phase(self) -> abstract.ReadWriteFloatScalar:
         if self.__phase is None:
-            raise PyAMLException(f"{str(self)} has no phase device defined")
+            raise PyAMLException(f"{str(self)} is unattached or has no phase device defined")
         return self.__phase
 
     def attach(self, voltage: abstract.ReadWriteFloatScalar, phase: abstract.ReadWriteFloatScalar) -> Self:

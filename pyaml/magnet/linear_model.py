@@ -1,9 +1,9 @@
-import numpy as np
-from pydantic import BaseModel,ConfigDict
-
 from .model import MagnetModel
 from ..configuration.curve import Curve
 from ..control.deviceaccess import DeviceAccess
+
+import numpy as np
+from pydantic import BaseModel,ConfigDict
 
 # Define the main class name for this module
 PYAMLCLASS = "LinearMagnetModel"

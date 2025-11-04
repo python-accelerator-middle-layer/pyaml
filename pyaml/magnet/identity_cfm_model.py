@@ -3,7 +3,6 @@ from pydantic import BaseModel,ConfigDict
 
 from .model import MagnetModel
 from .. import PyAMLException
-from ..configuration.curve import Curve
 from ..control.deviceaccess import DeviceAccess
 
 # Define the main class name for this module
@@ -34,9 +33,9 @@ class IdentityCFMagnetModel(MagnetModel):
         self.__nbFunction: int = len(cfg.multipoles)
 
         if cfg.physics is None and cfg.powerconverters is None:
-            raise Exception("Invalid IdentityCFMagnetModel configuration, physics or powerconverters device required")
+            raise PyAMLException("Invalid IdentityCFMagnetModel configuration, physics or powerconverters device required")
         if cfg.physics is not None and cfg.powerconverters is not None:
-            raise Exception("Invalid IdentityCFMagnetModel configuration, physics or powerconverters device required but not both")
+            raise PyAMLException("Invalid IdentityCFMagnetModel configuration, physics or powerconverters device required but not both")
         if cfg.physics:
             self.__devices = cfg.physics
         else:
@@ -49,7 +48,7 @@ class IdentityCFMagnetModel(MagnetModel):
     def __check_len(self,obj,name,expected_len):
         lgth = len(obj) 
         if lgth != expected_len:
-            raise Exception(
+            raise PyAMLException(
                 f"{name} does not have the expected "
                 f"number of items ({expected_len} items expected but got {lgth})"
             )    

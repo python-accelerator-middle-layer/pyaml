@@ -17,6 +17,7 @@ class TangoControlSystem(ControlSystem):
     def __init__(self, cfg: ConfigModel):
         super().__init__()
         self._cfg = cfg
+        print(f"Creating dummy TangoControlSystem: {cfg.name}")
 
     def name(self) -> str:
         return self._cfg.name

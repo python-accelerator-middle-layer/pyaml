@@ -2,8 +2,7 @@
 import importlib
 from threading import Lock
 
-from .config_exception import PyAMLConfigException
-from ..exception import PyAMLException
+from ..common.exception import PyAMLConfigException
 from ..lattice.element import Element
 from pydantic import ValidationError
 
@@ -41,29 +40,26 @@ class PyAMLFactory:
         """Register a plugin-based strategy for object creation."""
         self._strategies.remove(strategy)
 
-    def handle_build_error(self, e, type_str:str, location_str:str, field_locations:dict):
+    def handle_validation_error(self, e, type_str:str, location_str:str, field_locations:dict):
+            # Handle pydantic errors
             globalMessage = ""
-            if isinstance(e,ValidationError):
-                # Handle pydantic errors
-                for err in e.errors():
-                    msg = err['msg']
-                    field = ""
-                    if len(err['loc'])==2:
-                        field, fieldIdx = err['loc']
-                        message = f"'{field}.{fieldIdx}': {msg}"
-                    else:
-                        field = err['loc'][0]
-                        message = f"'{field}': {msg}"
-                    if field in field_locations:
-                        file, line, col = field_locations[field]
-                        loc = f"{file} at line {line}, colum {col}"
-                        message += f" {loc}"
-                    globalMessage += message
-                    globalMessage += ", "
-            if len(globalMessage)==0:
-                # TODO: improve location for arrays
-                globalMessage = str(e)
-            raise PyAMLException(f"{globalMessage} for object: '{type_str}' {location_str}") from e
+            for err in e.errors():
+                msg = err['msg']
+                field = ""
+                if len(err['loc'])==2:
+                    field, fieldIdx = err['loc']
+                    message = f"'{field}.{fieldIdx}': {msg}"
+                else:
+                    field = err['loc'][0]
+                    message = f"'{field}': {msg}"
+                if field in field_locations:
+                    file, line, col = field_locations[field]
+                    loc = f"{file} at line {line}, colum {col}"
+                    message += f" {loc}"
+                globalMessage += message
+                globalMessage += ", "
+            # Discard pydantic stack trace
+            raise PyAMLConfigException(f"{globalMessage} for object: '{type_str}' {location_str}") from None
 
     def build_object(self, d:dict):
         """Build an object from the dict"""
@@ -75,15 +71,16 @@ class PyAMLFactory:
             location_str = f"{file} at line {line}, column {col}."
 
         if not isinstance(d,dict):
-            raise PyAMLException(f"Unexpected object {str(d)} {location_str}")
+            raise PyAMLConfigException(f"Unexpected object {str(d)} {location_str}")
         if not "type" in d:
-            raise PyAMLException(f"No type specified for {str(type(d))}:{str(d)} {location_str}")
+            raise PyAMLConfigException(f"No type specified for {str(type(d))}:{str(d)} {location_str}")
         type_str = d.pop("type")
 
         try:
             module = importlib.import_module(type_str)
         except ModuleNotFoundError as ex:
-            raise PyAMLException(f"Module referenced in type cannot be founded: '{type_str}' {location_str}") from ex
+            # Discard module not found stack trace
+            raise PyAMLConfigException(f"Module referenced in type cannot be found: '{type_str}' {location_str}") from None
 
         # Try plugin strategies first
         for strategy in self._strategies:
@@ -93,35 +90,38 @@ class PyAMLFactory:
                     self.register_element(obj)
                     return obj
             except Exception as e:
-                raise PyAMLException(f"Custom strategy failed {location_str}") from e
+                raise PyAMLConfigException(f"Custom strategy failed {location_str}") from e
 
         # Default loading strategy
         # Get the config object
         config_cls = getattr(module, "ConfigModel", None)
         if config_cls is None:
-            raise PyAMLException(f"ConfigModel class '{type_str}.ConfigModel' not found {location_str}")
+            raise PyAMLConfigException(f"ConfigModel class '{type_str}.ConfigModel' not found {location_str}")
 
         # Get the class name
         cls_name = getattr(module, "PYAMLCLASS", None)
         if cls_name is None:
-            raise PyAMLException(f"PYAMLCLASS definition not found in '{type_str}' {location_str}")
+            raise PyAMLConfigException(f"PYAMLCLASS definition not found in '{type_str}' {location_str}")
 
         try:
-
             # Validate the model
             cfg = config_cls.model_validate(d)
+        except ValidationError as e:
+            self.handle_validation_error(e,type_str,location_str,field_locations)
 
-            # Construct and return the object
-            elem_cls = getattr(module, cls_name, None)
-            if elem_cls is None:
-                raise PyAMLException(f"Unknown element class '{type_str}.{cls_name}'")
+        # Construct and return the object
+        elem_cls = getattr(module, cls_name, None)
+        if elem_cls is None:
+            raise PyAMLConfigException(f"Unknown element class '{type_str}.{cls_name}'")
 
+        try:
             obj = elem_cls(cfg)
-            self.register_element(obj)
-            return obj
-
         except Exception as e:
-            self.handle_build_error(e,type_str,location_str,field_locations)
+            raise PyAMLConfigException(f"{str(e)} when creating '{type_str}.{cls_name}' {location_str}")
+
+        self.register_element(obj)
+        return obj
+
 
     def depth_first_build(self, d):
       """Main factory function (Depth-first factory)"""
@@ -131,13 +131,8 @@ class PyAMLFactory:
           l = []
           for index, e in enumerate(d):
               if isinstance(e,dict) or isinstance(e,list):
-                  try:
-                      obj = self.depth_first_build(e)
-                      l.append(obj)
-                  except PyAMLException as pyaml_ex:
-                      raise PyAMLConfigException(f"[{index}]", pyaml_ex) from pyaml_ex
-                  except Exception as ex:
-                      raise PyAMLConfigException(f"[{index}]", ex) from ex
+                  obj = self.depth_first_build(e)
+                  l.append(obj)
               else:
                   l.append(e)
           return l
@@ -146,37 +141,26 @@ class PyAMLFactory:
         for key, value in d.items():
             if not key == "__fieldlocations__":
                 if isinstance(value,dict) or isinstance(value,list):
-                    try:
-                        obj = self.depth_first_build(value)
-                        # Replace the inner dict by the object itself
-                        d[key]=obj
-                    except PyAMLException as pyaml_ex:
-                        raise PyAMLConfigException(key, pyaml_ex) from pyaml_ex
-                    except Exception as ex:
-                        raise PyAMLConfigException(key) from ex
+                    obj = self.depth_first_build(value)
+                    # Replace the inner dict by the object itself
+                    d[key]=obj
 
         # We are now on leaf (no nested object), we can construct
-        try:
-            obj = self.build_object(d)
-        except PyAMLException as pyaml_ex:
-            raise PyAMLConfigException(None, pyaml_ex) from pyaml_ex
-        except Exception as ex:
-            raise PyAMLException("An exception occurred while building object") from ex
-        return obj
+        return self.build_object(d)
 
-      raise PyAMLException("Unexpected element found.")
+      raise PyAMLConfigException(f"Unexpected element found. 'dict' or 'list' expected but got '{d.__class__.__name__}'")
 
     def register_element(self, elt):
         if isinstance(elt,Element):
             name = elt.get_name()
             if name in self._elements:
-                raise PyAMLException(f"element {name} already defined")
+                raise PyAMLConfigException(f"element {name} already defined")
             self._elements[name] = elt
 
 
     def get_element(self, name:str):
         if name not in self._elements:
-            raise PyAMLException(f"element {name} not defined")
+            raise PyAMLConfigException(f"element {name} not defined")
         return self._elements[name]
 
     def clear(self):

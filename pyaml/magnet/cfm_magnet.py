@@ -1,11 +1,9 @@
-from pydantic import SerializeAsAny
-from scipy.constants import speed_of_light
 
 from .model import MagnetModel
 from ..lattice.element import Element,ElementConfigModel
 from ..common import abstract
 from ..common.abstract import RWMapper
-
+from ..common.exception import PyAMLException
 from .hcorrector import HCorrector
 from .vcorrector import VCorrector
 from .quadrupole import Quadrupole
@@ -15,6 +13,9 @@ from .skewsext import SkewSext
 from .octupole import Octupole
 from .skewoctu import SkewOctu
 from .magnet import Magnet,MagnetConfigModel
+
+from pydantic import SerializeAsAny
+from scipy.constants import speed_of_light
 
 _fmap:dict = {
     "B0":HCorrector,
@@ -46,18 +47,18 @@ class CombinedFunctionMagnet(Element):
         self.model = cfg.model
 
         if self.model is not None and not hasattr(self.model._cfg,"multipoles"):
-            raise Exception(f"{cfg.name} model: mutipoles field required for combined function magnet")
+            raise PyAMLException(f"{cfg.name} model: mutipoles field required for combined function magnet")
 
         idx = 0
         self.polynoms = []
         for m in cfg.mapping:
             # Check mapping validity
             if len(m)!=2:
-                raise Exception("Invalid CombinedFunctionMagnet mapping for {m}")
+                raise PyAMLException("Invalid CombinedFunctionMagnet mapping for {m}")
             if not m[0] in _fmap:
-                raise Exception(m[0] + " not implemented for combined function magnet")
+                raise PyAMLException(m[0] + " not implemented for combined function magnet")
             if m[0] not in self.model._cfg.multipoles:
-                raise Exception(m[0] + " not found in underlying magnet model")
+                raise PyAMLException(m[0] + " not found in underlying magnet model")
             self.polynoms.append(_fmap[m[0]].polynom)
 
     def attach(self, strengths: abstract.ReadWriteFloatArray, hardwares: abstract.ReadWriteFloatArray) -> list[Magnet]:

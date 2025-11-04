@@ -1,4 +1,5 @@
 from ..common import abstract
+from ..common.exception import PyAMLException
 from ..magnet.model import MagnetModel
 from .polynom_info import PolynomInfo
 from ..rf.rf_plant import RFPlant
@@ -243,15 +244,15 @@ class RWBpmOffsetArray(abstract.ReadWriteFloatArray):
     # Gets the value
     def get(self) -> np.array:  
         if self.offset is None:
-            raise ValueError("Element does not have an Offset attribute.")
+            raise PyAMLException("Element does not have an Offset attribute.")
         return self.offset
 
     # Sets the value
     def set(self, value:np.array):
         if self.offset is None:
-            raise ValueError("Element does not have an Offset attribute.")
+            raise PyAMLException("Element does not have an Offset attribute.")
         if len(value) != 2:
-            raise ValueError("BPM offset must be a 2-element array.")
+            raise PyAMLException("BPM offset must be a 2-element array.")
         self.offset = value
 
     # Sets the value and wait that the read value reach the setpoint
