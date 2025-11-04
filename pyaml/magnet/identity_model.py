@@ -1,10 +1,9 @@
-import numpy as np
-from pydantic import BaseModel,ConfigDict
-
 from .model import MagnetModel
 from .. import PyAMLException
-from ..configuration.curve import Curve
 from ..control.deviceaccess import DeviceAccess
+
+import numpy as np
+from pydantic import BaseModel,ConfigDict
 
 # Define the main class name for this module
 PYAMLCLASS = "IdentityMagnetModel"
@@ -29,9 +28,9 @@ class IdentityMagnetModel(MagnetModel):
         self._cfg = cfg
         self.__unit = cfg.unit
         if cfg.physics is None and cfg.powerconverter is None:
-            raise Exception("Invalid IdentityMagnetModel configuration, physics or powerconverter device required")
+            raise PyAMLException("Invalid IdentityMagnetModel configuration, physics or powerconverter device required")
         if cfg.physics is not None and cfg.powerconverter is not None:
-            raise Exception("Invalid IdentityMagnetModel configuration, physics or powerconverter device required but not both")
+            raise PyAMLException("Invalid IdentityMagnetModel configuration, physics or powerconverter device required but not both")
         if cfg.physics:
             self.__device = cfg.physics
         else:

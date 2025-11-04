@@ -1,9 +1,9 @@
-from pyaml.lattice.element import Element, ElementConfigModel
-from pyaml.lattice.abstract_impl import RBpmArray, RWBpmOffsetArray, RWBpmTiltScalar
-from ..control.deviceaccess import DeviceAccess
-from ..common import abstract
+from ..lattice.element import Element, ElementConfigModel
+from ..lattice.abstract_impl import RBpmArray, RWBpmOffsetArray, RWBpmTiltScalar
+from ..bpm.bpm_model import BPMModel
+from ..common.exception import PyAMLException
+
 from typing import Self
-from pyaml.bpm.bpm_model import BPMModel
 
 PYAMLCLASS = "BPM"
 
@@ -48,19 +48,19 @@ class BPM(Element):
     @property
     def positions(self) -> RBpmArray:
         if self.__positions is None:
-            raise Exception(f"{str(self)} has no attached positions") 
+            raise PyAMLException(f"{str(self)} has no attached positions") 
         return self.__positions
 
     @property
     def offset(self) -> RWBpmOffsetArray:
         if self.__offset is None:
-            raise Exception(f"{str(self)} has no attached offset")
+            raise PyAMLException(f"{str(self)} has no attached offset")
         return self.__offset
 
     @property
     def tilt(self) -> RWBpmTiltScalar:
         if self.__tilt is None:
-            raise Exception(f"{str(self)} has no attached tilt")
+            raise PyAMLException(f"{str(self)} has no attached tilt")
         return self.__tilt
 
     def attach(self, positions: RBpmArray , offset: RWBpmOffsetArray,

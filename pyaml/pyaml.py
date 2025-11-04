@@ -1,12 +1,10 @@
-"""
-PyAML main class
-"""
-import logging
-
-from pydantic import BaseModel,ConfigDict
 from .instrument import Instrument
 from .configuration.factory import Factory
-from pyaml.configuration import load,set_root_folder
+from .configuration import load,set_root_folder
+from .common.exception import PyAMLException
+
+from pydantic import BaseModel,ConfigDict
+import logging
 import os
 
 # Define the main class name for this module
@@ -32,7 +30,7 @@ class PyAML(object):
 
     def get(self,name:str) -> Instrument:
       if name not in self.INSTRUMENTS:
-        raise Exception(f"Instrument {name} not defined")
+        raise PyAMLException(f"Instrument {name} not defined")
       return self.INSTRUMENTS[name]
 
 def pyaml(filename:str) -> PyAML:
@@ -41,7 +39,7 @@ def pyaml(filename:str) -> PyAML:
 
     # Asume that all files are referenced from folder where main AML file is stored
     if not os.path.exists(filename):
-       raise Exception(f"{filename} file not found")
+       raise PyAMLException(f"{filename} file not found")
     rootfolder = os.path.abspath(os.path.dirname(filename))
     set_root_folder(rootfolder)
     aml_cfg = load(os.path.basename(filename))
