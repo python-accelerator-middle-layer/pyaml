@@ -18,7 +18,9 @@ def test_tune(install_test_package):
     quadForTuneDesign = sr.design.get_magnets("QForTune")
 
     # Build tune response matrix (hardware units)
-    tune = sr.design.get_lattice().get_tune()
+    
+    tune_monitor = sr.design.get_betatron_tune_monitor("BETATRON_TUNE")
+    tune = tune_monitor.tune.get()
     print(tune)
     tunemat = np.zeros((len(quadForTuneDesign),2))
 
@@ -26,7 +28,7 @@ def test_tune(install_test_package):
     for m in quadForTuneDesign:
         current = m.hardware.get()
         m.hardware.set(current+1e-6)
-        dq = sr.design.get_lattice().get_tune() - tune
+        dq = tune_monitor.tune.get() - tune
         tunemat[idx] = dq*1e6
         m.hardware.set(current)
         idx += 1
@@ -38,7 +40,7 @@ def test_tune(install_test_package):
     currents = quadForTuneDesign.hardwares.get()
     currents += np.matmul(correctionmat,[0.1,0.05]) # Ask for correction [dqx,dqy]
     quadForTuneDesign.hardwares.set(currents)
-    newTune = sr.design.get_lattice().get_tune()
+    newTune = tune_monitor.tune.get()
     units = quadForTuneDesign.hardwares.unit()
     diffTune = newTune - tune
     assert( np.abs(diffTune[0]-0.1) < 1e-3 )

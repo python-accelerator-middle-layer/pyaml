@@ -1877,3 +1877,14 @@ instruments:
           type: tango.pyaml.attribute
           attribute: srmag/vps-qd2/c03-a/current
           unit: A
+    - type: pyaml.diagnostics.tune_monitor
+      name: BETATRON_TUNE
+      tune_h:
+        type: tango.pyaml.attribute_read_only
+        attribute: srdiag/tune/tune_v
+        unit: mm
+      tune_v:
+        type: tango.pyaml.attribute_read_only
+        attribute: srdiag/tune/tune_h
+        unit: mm
+

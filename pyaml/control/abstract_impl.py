@@ -360,10 +360,10 @@ class RBetatronTuneArray(abstract.ReadFloatScalar):
     def __init__(self, tune_monitor):
         self.__tune_monitor = tune_monitor
 
-    def get(self) -> list[float]:
+    def get(self) -> NDArray:
         # Serialized cavity has the same frequency
-        return [self.__tune_monitor._cfg.tune_h.get(), 
-               self.__tune_monitor._cfg.tune_v.get()]
+        return np.array([self.__tune_monitor._cfg.tune_h.get(), 
+               self.__tune_monitor._cfg.tune_v.get()])
 
     def unit(self) -> str:
         return self.__tune_monitor._cfg.tune_v.unit()
