@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# pyAML documentation build configuration file, originally created for pySC: https://github.com/lmalina/pySC/blob/master/doc/conf.py
+# pyAML documentation build configuration file, 
 #
 # This file is execfile()d with the current directory set to its
 # containing dir.
@@ -48,11 +48,12 @@ extensions = ['sphinx.ext.autodoc',
               'sphinx.ext.doctest',
               'sphinx.ext.todo',
               'sphinx.ext.coverage',
-              'sphinx.ext.mathjax',
+              # 'sphinx.ext.mathjax',
               'sphinx.ext.viewcode',
               'sphinx.ext.githubpages',
               'sphinx.ext.napoleon',
               'sphinx.ext.autosectionlabel',
+              'sphinx.ext.autosummary',
               ]
 autosectionlabel_prefix_document = True
 autosectionlabel_maxdepth = 2
@@ -92,7 +93,7 @@ release = ABOUT_PYAML["__version__"]
 #
 # This is also used if you do content translation via gettext catalogs.
 # Usually you set "language" from the command line for these cases.
-language = None
+language = 'en'
 
 # List of patterns, relative to source directory, that match files and
 # directories to ignore when looking for source files.
@@ -120,6 +121,8 @@ html_theme_options = {
     'display_version': True,
     'logo_only': True,
     'navigation_depth': 2,
+    "rightsidebar": "false",
+    "relbarbgcolor": "black"
 }
 
 
