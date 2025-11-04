@@ -8,7 +8,6 @@ from ..rf.rf_plant import RFPlant
 from ..rf.rf_transmitter import RFTransmitter
 from ..common.abstract_aggregator import ScalarAggregator
 from numpy import double
-from ..diagnostics.tune_monitor import BetatronTuneMonitor
 import numpy as np
 from numpy.typing import NDArray
 
@@ -361,7 +360,7 @@ class RBetatronTuneArray(abstract.ReadFloatScalar):
         self.__tune_monitor = tune_monitor
 
     def get(self) -> NDArray:
-        # Serialized cavity has the same frequency
+        # Return horizontal and vertical betatron tunes as a NumPy array
         return np.array([self.__tune_monitor._cfg.tune_h.get(), 
                self.__tune_monitor._cfg.tune_v.get()])
 

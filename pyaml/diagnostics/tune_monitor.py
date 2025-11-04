@@ -1,10 +1,9 @@
 
-from pyaml.lattice.element import Element, ElementConfigModel
-from pyaml.lattice.abstract_impl import RBetatronTuneArray
+from ..lattice.element import Element, ElementConfigModel
+from ..lattice.abstract_impl import RBetatronTuneArray
 from ..control.deviceaccess import DeviceAccess
 from typing import Self
 from pydantic import ConfigDict
-from ..control.deviceaccess import DeviceAccess
 
 PYAMLCLASS = "BetatronTuneMonitor"
 
@@ -19,19 +18,18 @@ class ConfigModel(ElementConfigModel):
 
 class BetatronTuneMonitor(Element):
     """
-    Class providing access to one BPM of a physical or simulated lattice
+    Class providing access to a betatron tune monitor of a physical or simulated lattice.
+    The monitor provides horizontal and vertical betatron tune measurements.
     """
 
     def __init__(self, cfg: ConfigModel):
         """
-        Construct a BPM
-
+        Construct a BetatronTuneMonitor.
         Parameters
         ----------
-        name : str
-            Element name
-        model : BetatronTuneMonitorModel
-            BetatronTuneMonitorModel
+        cfg : ConfigModel
+            Configuration for the BetatronTuneMonitor, including 
+            device access for horizontal and vertical tunes.
         """
         
         super().__init__(cfg.name)

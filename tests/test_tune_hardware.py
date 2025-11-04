@@ -2,7 +2,6 @@ from pyaml.pyaml import pyaml,PyAML
 from pyaml.instrument import Instrument
 from pyaml.configuration.factory import Factory
 import numpy as np
-import at
 import pytest
 
 @pytest.mark.parametrize("install_test_package", [{

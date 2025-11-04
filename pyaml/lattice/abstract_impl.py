@@ -382,7 +382,7 @@ class RWRFFrequencyScalar(abstract.ReadWriteFloatScalar):
 
 class RBetatronTuneArray(abstract.ReadFloatScalar):
     """
-    Class providing read write access to RF frequency of a simulator.
+    Class providing read-only access to the betatron tune of a ring.
     """
 
     def __init__(self, ring: at.Lattice):

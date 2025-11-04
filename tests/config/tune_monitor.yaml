@@ -17,9 +17,9 @@ instruments:
       name: BETATRON_TUNE
       tune_h:
         type: tango.pyaml.attribute_read_only
-        attribute: srdiag/tune/tune_v
+        attribute: srdiag/tune/tune_h
         unit: mm
       tune_v:
         type: tango.pyaml.attribute_read_only
-        attribute: srdiag/tune/tune_h
+        attribute: srdiag/tune/tune_v
         unit: mm
