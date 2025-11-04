@@ -1,7 +1,7 @@
 """
 Module handling element references for simulators and control system
 """
-from ..lattice.element import Element
+from .element import Element
 from ..magnet.magnet import Magnet
 from ..rf.rf_plant import RFPlant
 from ..rf.rf_transmitter import RFTransmitter
@@ -53,6 +53,9 @@ class ElementHolder(object):
       return self.__MAGNETS[name]
     
     def add_magnet(self,name:str,m:Magnet):
+       if name in self.__MAGNETS:
+            print(self.__MAGNETS)
+            raise PyAMLException(f"Duplicate magnet name {name}") from None
        self.__MAGNETS[name] = m
 
     def get_magnets(self,name:str) -> MagnetArray:

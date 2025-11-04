@@ -1,7 +1,7 @@
 from .attribute_linker import PyAtAttributeElementsLinker, ConfigModel as PyAtAttrLinkerConfigModel
 from .lattice_elements_linker import LatticeElementsLinker
 from ..configuration import get_root_folder
-from .element import Element
+from ..common.element import Element
 from pathlib import Path
 from ..magnet.magnet import Magnet
 from pyaml.bpm.bpm import BPM
@@ -94,7 +94,7 @@ class Simulator(ElementHolder):
             current = RWHardwareScalar(self.get_at_elems(e),e.polynom,e.model) if e.model.has_physics() else None
             strength = RWStrengthScalar(self.get_at_elems(e),e.polynom,e.model) if e.model.has_physics() else None
             # Create a unique ref for this simulator
-            m = e.attach(strength,current)
+            m = e.attach(self,strength,current)
             self.add_magnet(m.get_name(),m)
 
           elif isinstance(e,CombinedFunctionMagnet):
@@ -102,10 +102,10 @@ class Simulator(ElementHolder):
             currents = RWHardwareArray(self.get_at_elems(e),e.polynoms,e.model) if e.model.has_physics() else None
             strengths = RWStrengthArray(self.get_at_elems(e),e.polynoms,e.model) if e.model.has_physics() else None
             # Create unique refs of each function for this simulator
-            ms = e.attach(strengths,currents)
+            ms = e.attach(self,strengths,currents)
             for m in ms:
               self.add_magnet(m.get_name(), m)
-              self.add_magnet(m.get_name(), m)
+              
           elif isinstance(e,BPM):
             # This assumes unique BPM names in the pyAT lattice  
             tilt = RWBpmTiltScalar(self.get_at_elems(e)[0])
