@@ -1,0 +1,19 @@
+pyaml.pyaml
+===========
+
+.. automodule:: pyaml.pyaml
+
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+   
+      pyaml
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+   
+      ConfigModel
+      PyAML
+   

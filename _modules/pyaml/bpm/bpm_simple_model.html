@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>pyaml.bpm.bpm_simple_model &#8212; pyAML 0.0.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/classic.css?v=b682477d" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/css/custom.css" />
+    
+    <script src="../../../_static/documentation_options.js?v=7026087e"></script>
+    <script src="../../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="Related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../index.html">pyAML 0.0.0 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../index.html" accesskey="U">Module code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">pyaml.bpm.bpm_simple_model</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for pyaml.bpm.bpm_simple_model</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span><span class="w"> </span><span class="nn">pyaml.bpm.bpm_model</span><span class="w"> </span><span class="kn">import</span> <span class="n">BPMModel</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pydantic</span><span class="w"> </span><span class="kn">import</span> <span class="n">BaseModel</span><span class="p">,</span><span class="n">ConfigDict</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">..control.deviceaccess</span><span class="w"> </span><span class="kn">import</span> <span class="n">DeviceAccess</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">numpy.typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">NDArray</span>
+<span class="c1"># Define the main class name for this module</span>
+<span class="n">PYAMLCLASS</span> <span class="o">=</span> <span class="s2">&quot;BPMSimpleModel&quot;</span>
+
+<div class="viewcode-block" id="ConfigModel">
+<a class="viewcode-back" href="../../../modules/bpm.html#pyaml.bpm.bpm_simple_model.ConfigModel">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">ConfigModel</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+
+    <span class="n">model_config</span> <span class="o">=</span> <span class="n">ConfigDict</span><span class="p">(</span><span class="n">arbitrary_types_allowed</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span><span class="n">extra</span><span class="o">=</span><span class="s2">&quot;forbid&quot;</span><span class="p">)</span>
+
+    <span class="n">x_pos</span><span class="p">:</span> <span class="n">DeviceAccess</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Horizontal position&quot;&quot;&quot;</span>
+    <span class="n">y_pos</span><span class="p">:</span> <span class="n">DeviceAccess</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Vertical position&quot;&quot;&quot;</span></div>
+
+
+<div class="viewcode-block" id="BPMSimpleModel">
+<a class="viewcode-back" href="../../../modules/bpm.html#pyaml.bpm.bpm_simple_model.BPMSimpleModel">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">BPMSimpleModel</span><span class="p">(</span><span class="n">BPMModel</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Concrete implementation of BPMModel that simulates a BPM with tilt and</span>
+<span class="sd">    offset values.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cfg</span><span class="p">:</span> <span class="n">ConfigModel</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_cfg</span> <span class="o">=</span> <span class="n">cfg</span> 
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">__x_pos</span> <span class="o">=</span> <span class="n">cfg</span><span class="o">.</span><span class="n">x_pos</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__y_pos</span> <span class="o">=</span> <span class="n">cfg</span><span class="o">.</span><span class="n">y_pos</span>
+
+<div class="viewcode-block" id="BPMSimpleModel.read_position">
+<a class="viewcode-back" href="../../../modules/bpm.html#pyaml.bpm.bpm_simple_model.BPMSimpleModel.read_position">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">read_position</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">NDArray</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Simulate reading the position values from a BPM.</span>
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        np.ndarray</span>
+<span class="sd">            Array of shape (2,) containing the horizontal and vertical</span>
+<span class="sd">            positions</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">__x_pos</span><span class="o">.</span><span class="n">get</span><span class="p">(),</span> <span class="bp">self</span><span class="o">.</span><span class="n">__y_pos</span><span class="o">.</span><span class="n">get</span><span class="p">()])</span></div>
+
+    
+<div class="viewcode-block" id="BPMSimpleModel.read_tilt">
+<a class="viewcode-back" href="../../../modules/bpm.html#pyaml.bpm.bpm_simple_model.BPMSimpleModel.read_tilt">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">read_tilt</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Simulate reading the tilt value from a BPM.</span>
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        float</span>
+<span class="sd">            The tilt value of the BPM</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;Tilt reading not implemented in this model.&quot;</span><span class="p">)</span></div>
+
+    
+<div class="viewcode-block" id="BPMSimpleModel.read_offset">
+<a class="viewcode-back" href="../../../modules/bpm.html#pyaml.bpm.bpm_simple_model.BPMSimpleModel.read_offset">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">read_offset</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">NDArray</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Simulate reading the offset values from a BPM.</span>
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        np.ndarray</span>
+<span class="sd">            Array of shape (2,) containing the horizontal and vertical</span>
+<span class="sd">            offsets</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;Offset reading not implemented in this model.&quot;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="BPMSimpleModel.set_tilt">
+<a class="viewcode-back" href="../../../modules/bpm.html#pyaml.bpm.bpm_simple_model.BPMSimpleModel.set_tilt">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">set_tilt</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tilt</span><span class="p">:</span> <span class="nb">float</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Simulate setting the tilt value of a BPM.</span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        tilt : float</span>
+<span class="sd">            The tilt value to set for the BPM</span>
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;Tilt setting not implemented in this model.&quot;</span><span class="p">)</span></div>
+
+    
+<div class="viewcode-block" id="BPMSimpleModel.set_offset">
+<a class="viewcode-back" href="../../../modules/bpm.html#pyaml.bpm.bpm_simple_model.BPMSimpleModel.set_offset">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">set_offset</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">offset_values</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Simulate setting the offset values of a BPM</span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        offset_values : np.ndarray</span>
+<span class="sd">            Array of shape (2,) containing the horizontal and vertical</span>
+<span class="sd">            offsets to set for the BPM</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;Offset setting not implemented in this model.&quot;</span><span class="p">)</span></div>
+
+    
+<div class="viewcode-block" id="BPMSimpleModel.get_pos_devices">
+<a class="viewcode-back" href="../../../modules/bpm.html#pyaml.bpm.bpm_simple_model.BPMSimpleModel.get_pos_devices">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_pos_devices</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">DeviceAccess</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get device handles used for position reading</span>
+<span class="sd">        </span>
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        list[DeviceAccess]</span>
+<span class="sd">            Array of DeviceAcess</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">__x_pos</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">__y_pos</span><span class="p">]</span></div>
+
+
+<div class="viewcode-block" id="BPMSimpleModel.get_tilt_device">
+<a class="viewcode-back" href="../../../modules/bpm.html#pyaml.bpm.bpm_simple_model.BPMSimpleModel.get_tilt_device">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_tilt_device</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">DeviceAccess</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get device handle used for tilt access</span>
+<span class="sd">        </span>
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        list[DeviceAccess]</span>
+<span class="sd">            Array of DeviceAcess</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">[]</span></div>
+
+
+<div class="viewcode-block" id="BPMSimpleModel.get_offset_devices">
+<a class="viewcode-back" href="../../../modules/bpm.html#pyaml.bpm.bpm_simple_model.BPMSimpleModel.get_offset_devices">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_offset_devices</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">DeviceAccess</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get device handles used for offset access</span>
+<span class="sd">        </span>
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        list[DeviceAccess]</span>
+<span class="sd">            Array of DeviceAcess</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">[]</span></div>
+</div>
+
+</pre></div>
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../../../index.html">
+              <img class="logo" src="../../../_static/logo.png" alt="Logo of pyAML"/>
+            </a></p>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="Related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../index.html">pyAML 0.0.0 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../index.html" >Module code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">pyaml.bpm.bpm_simple_model</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+    &#169; Copyright .
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.2.3.
+    </div>
+  </body>
+</html>

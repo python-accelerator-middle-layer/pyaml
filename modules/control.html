@@ -1,0 +1,722 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Control &#8212; pyAML 0.0.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../_static/classic.css?v=b682477d" />
+    <link rel="stylesheet" type="text/css" href="../_static/css/custom.css" />
+    
+    <script src="../_static/documentation_options.js?v=7026087e"></script>
+    <script src="../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="lattice" href="lattice.html" />
+    <link rel="prev" title="Configuration" href="configuration.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="Related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="lattice.html" title="lattice"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="configuration.html" title="Configuration"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">pyAML 0.0.0 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Control</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="module-pyaml.control.controlsystem">
+<span id="control"></span><h1>Control<a class="headerlink" href="#module-pyaml.control.controlsystem" title="Link to this heading">¶</a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="pyaml.control.controlsystem.ControlSystem">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyaml.control.controlsystem.</span></span><span class="sig-name descname"><span class="pre">ControlSystem</span></span><a class="reference internal" href="../_modules/pyaml/control/controlsystem.html#ControlSystem"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.control.controlsystem.ControlSystem" title="Link to this definition">¶</a></dt>
+<dd><p>Abstract class providing access to a control system float variable</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaml.control.controlsystem.ControlSystem.fill_device">
+<span class="sig-name descname"><span class="pre">fill_device</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">elements</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="lattice.html#pyaml.lattice.element.Element" title="pyaml.lattice.element.Element"><span class="pre">Element</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/control/controlsystem.html#ControlSystem.fill_device"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.control.controlsystem.ControlSystem.fill_device" title="Link to this definition">¶</a></dt>
+<dd><p>Fill device of this control system with Element coming from the configuration file</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>elements</strong> (<em>list</em><em>[</em><a class="reference internal" href="lattice.html#pyaml.lattice.element.Element" title="pyaml.lattice.element.Element"><em>Element</em></a><em>]</em>) -- List of elements coming from the configuration file to attach to this control system</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaml.control.controlsystem.ControlSystem.init_cs">
+<em class="property"><span class="k"><span class="pre">abstractmethod</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">init_cs</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/control/controlsystem.html#ControlSystem.init_cs"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.control.controlsystem.ControlSystem.init_cs" title="Link to this definition">¶</a></dt>
+<dd><p>Initialize control system</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaml.control.controlsystem.ControlSystem.name">
+<em class="property"><span class="k"><span class="pre">abstractmethod</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">name</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../_modules/pyaml/control/controlsystem.html#ControlSystem.name"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.control.controlsystem.ControlSystem.name" title="Link to this definition">¶</a></dt>
+<dd><p>Return control system name (i.e. live)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaml.control.controlsystem.ControlSystem.scalar_aggregator">
+<em class="property"><span class="k"><span class="pre">abstractmethod</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">scalar_aggregator</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/pyaml/control/controlsystem.html#ControlSystem.scalar_aggregator"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.control.controlsystem.ControlSystem.scalar_aggregator" title="Link to this definition">¶</a></dt>
+<dd><p>Returns the module name used for handling aggregator of DeviceAccess</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaml.control.controlsystem.ControlSystem.set_energy">
+<span class="sig-name descname"><span class="pre">set_energy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">E</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/control/controlsystem.html#ControlSystem.set_energy"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.control.controlsystem.ControlSystem.set_energy" title="Link to this definition">¶</a></dt>
+<dd><p>Sets the energy on magnets belonging to this control system</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>E</strong> (<em>float</em>) -- Energy in eV</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaml.control.controlsystem.ControlSystem.vector_aggregator">
+<em class="property"><span class="k"><span class="pre">abstractmethod</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">vector_aggregator</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/pyaml/control/controlsystem.html#ControlSystem.vector_aggregator"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.control.controlsystem.ControlSystem.vector_aggregator" title="Link to this definition">¶</a></dt>
+<dd><p>Returns the module name used for handling aggregator of DeviceVectorAccess</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class" id="module-pyaml.control.device">
+<dt class="sig sig-object py" id="pyaml.control.device.ConfigModel">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyaml.control.device.</span></span><span class="sig-name descname"><span class="pre">ConfigModel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">setpoint</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">readback</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">unit</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/control/device.html#ConfigModel"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.control.device.ConfigModel" title="Link to this definition">¶</a></dt>
+<dd><dl class="py attribute">
+<dt class="sig sig-object py" id="pyaml.control.device.ConfigModel.model_config">
+<span class="sig-name descname"><span class="pre">model_config</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">ConfigDict</span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{}</span></em><a class="headerlink" href="#pyaml.control.device.ConfigModel.model_config" title="Link to this definition">¶</a></dt>
+<dd><p>Configuration for the model, should be a dictionary conforming to [<cite>ConfigDict</cite>][pydantic.config.ConfigDict].</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyaml.control.device.ConfigModel.readback">
+<span class="sig-name descname"><span class="pre">readback</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#pyaml.control.device.ConfigModel.readback" title="Link to this definition">¶</a></dt>
+<dd><p>Measured value</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyaml.control.device.ConfigModel.setpoint">
+<span class="sig-name descname"><span class="pre">setpoint</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#pyaml.control.device.ConfigModel.setpoint" title="Link to this definition">¶</a></dt>
+<dd><p>Name of control system device value (i.e. a power supply current)</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyaml.control.device.ConfigModel.unit">
+<span class="sig-name descname"><span class="pre">unit</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#pyaml.control.device.ConfigModel.unit" title="Link to this definition">¶</a></dt>
+<dd><p>Value unit</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="pyaml.control.device.Device">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyaml.control.device.</span></span><span class="sig-name descname"><span class="pre">Device</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cfg</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#pyaml.control.device.ConfigModel" title="pyaml.control.device.ConfigModel"><span class="pre">ConfigModel</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/control/device.html#Device"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.control.device.Device" title="Link to this definition">¶</a></dt>
+<dd><p>Class that implements a default device class that just prints out
+values (Debugging purpose)</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaml.control.device.Device.get">
+<span class="sig-name descname"><span class="pre">get</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="reference internal" href="../_modules/pyaml/control/device.html#Device.get"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.control.device.Device.get" title="Link to this definition">¶</a></dt>
+<dd><p>Return the setpoint of a control system device variable</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaml.control.device.Device.measure_name">
+<span class="sig-name descname"><span class="pre">measure_name</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../_modules/pyaml/control/device.html#Device.measure_name"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.control.device.Device.measure_name" title="Link to this definition">¶</a></dt>
+<dd><p>Return the name of the measure</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaml.control.device.Device.name">
+<span class="sig-name descname"><span class="pre">name</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../_modules/pyaml/control/device.html#Device.name"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.control.device.Device.name" title="Link to this definition">¶</a></dt>
+<dd><p>Return the name of the variable</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaml.control.device.Device.readback">
+<span class="sig-name descname"><span class="pre">readback</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#pyaml.control.readback_value.Value" title="pyaml.control.readback_value.Value"><span class="pre">Value</span></a></span></span><a class="reference internal" href="../_modules/pyaml/control/device.html#Device.readback"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.control.device.Device.readback" title="Link to this definition">¶</a></dt>
+<dd><p>Return the measured variable</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaml.control.device.Device.set">
+<span class="sig-name descname"><span class="pre">set</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/control/device.html#Device.set"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.control.device.Device.set" title="Link to this definition">¶</a></dt>
+<dd><p>Write a control system device variable (i.e. a power supply current)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaml.control.device.Device.set_and_wait">
+<span class="sig-name descname"><span class="pre">set_and_wait</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/control/device.html#Device.set_and_wait"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.control.device.Device.set_and_wait" title="Link to this definition">¶</a></dt>
+<dd><p>Write a control system device variable (i.e. a power supply current)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaml.control.device.Device.unit">
+<span class="sig-name descname"><span class="pre">unit</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../_modules/pyaml/control/device.html#Device.unit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.control.device.Device.unit" title="Link to this definition">¶</a></dt>
+<dd><p>Return the variable unit</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class" id="module-pyaml.control.abstract_impl">
+<dt class="sig sig-object py" id="pyaml.control.abstract_impl.CSScalarAggregator">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyaml.control.abstract_impl.</span></span><span class="sig-name descname"><span class="pre">CSScalarAggregator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">devs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#pyaml.control.deviceaccesslist.DeviceAccessList" title="pyaml.control.deviceaccesslist.DeviceAccessList"><span class="pre">DeviceAccessList</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/control/abstract_impl.html#CSScalarAggregator"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.control.abstract_impl.CSScalarAggregator" title="Link to this definition">¶</a></dt>
+<dd><p>Basic control system aggregator for a list of scalar values</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaml.control.abstract_impl.CSScalarAggregator.get">
+<span class="sig-name descname"><span class="pre">get</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ndarray</span><span class="p"><span class="pre">[</span></span><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">dtype</span><span class="p"><span class="pre">[</span></span><span class="pre">float64</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/pyaml/control/abstract_impl.html#CSScalarAggregator.get"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.control.abstract_impl.CSScalarAggregator.get" title="Link to this definition">¶</a></dt>
+<dd><p>Return a list variables</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaml.control.abstract_impl.CSScalarAggregator.readback">
+<span class="sig-name descname"><span class="pre">readback</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">array</span></span></span><a class="reference internal" href="../_modules/pyaml/control/abstract_impl.html#CSScalarAggregator.readback"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.control.abstract_impl.CSScalarAggregator.readback" title="Link to this definition">¶</a></dt>
+<dd><p>Return  a list variables (measurements)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaml.control.abstract_impl.CSScalarAggregator.set">
+<span class="sig-name descname"><span class="pre">set</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span><span class="p"><span class="pre">[</span></span><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">dtype</span><span class="p"><span class="pre">[</span></span><span class="pre">float64</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/control/abstract_impl.html#CSScalarAggregator.set"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.control.abstract_impl.CSScalarAggregator.set" title="Link to this definition">¶</a></dt>
+<dd><p>Write a list of variable</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaml.control.abstract_impl.CSScalarAggregator.set_and_wait">
+<span class="sig-name descname"><span class="pre">set_and_wait</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span><span class="p"><span class="pre">[</span></span><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">dtype</span><span class="p"><span class="pre">[</span></span><span class="pre">float64</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/control/abstract_impl.html#CSScalarAggregator.set_and_wait"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.control.abstract_impl.CSScalarAggregator.set_and_wait" title="Link to this definition">¶</a></dt>
+<dd><p>Write a list of variable and wait that setpoint are reached</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaml.control.abstract_impl.CSScalarAggregator.unit">
+<span class="sig-name descname"><span class="pre">unit</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../_modules/pyaml/control/abstract_impl.html#CSScalarAggregator.unit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.control.abstract_impl.CSScalarAggregator.unit" title="Link to this definition">¶</a></dt>
+<dd><p>Return the variables unit</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="pyaml.control.abstract_impl.CSStrengthScalarAggregator">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyaml.control.abstract_impl.</span></span><span class="sig-name descname"><span class="pre">CSStrengthScalarAggregator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">peer</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#pyaml.control.abstract_impl.CSScalarAggregator" title="pyaml.control.abstract_impl.CSScalarAggregator"><span class="pre">CSScalarAggregator</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/control/abstract_impl.html#CSStrengthScalarAggregator"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.control.abstract_impl.CSStrengthScalarAggregator" title="Link to this definition">¶</a></dt>
+<dd><p>Control system aggregator for a list of magnet strengths.
+This aggregator is in charge of computing hardware setpoints and applying them without overlap.
+When virtual magnets exported from combined function mangets are present (RWMapper),
+the aggregator prevents to apply several times the same power supply setpoint.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaml.control.abstract_impl.CSStrengthScalarAggregator.get">
+<span class="sig-name descname"><span class="pre">get</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ndarray</span><span class="p"><span class="pre">[</span></span><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">dtype</span><span class="p"><span class="pre">[</span></span><span class="pre">float64</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/pyaml/control/abstract_impl.html#CSStrengthScalarAggregator.get"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.control.abstract_impl.CSStrengthScalarAggregator.get" title="Link to this definition">¶</a></dt>
+<dd><p>Return a list variables</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaml.control.abstract_impl.CSStrengthScalarAggregator.readback">
+<span class="sig-name descname"><span class="pre">readback</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">array</span></span></span><a class="reference internal" href="../_modules/pyaml/control/abstract_impl.html#CSStrengthScalarAggregator.readback"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.control.abstract_impl.CSStrengthScalarAggregator.readback" title="Link to this definition">¶</a></dt>
+<dd><p>Return  a list variables (measurements)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaml.control.abstract_impl.CSStrengthScalarAggregator.set">
+<span class="sig-name descname"><span class="pre">set</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span><span class="p"><span class="pre">[</span></span><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">dtype</span><span class="p"><span class="pre">[</span></span><span class="pre">float64</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/control/abstract_impl.html#CSStrengthScalarAggregator.set"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.control.abstract_impl.CSStrengthScalarAggregator.set" title="Link to this definition">¶</a></dt>
+<dd><p>Write a list of variable</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaml.control.abstract_impl.CSStrengthScalarAggregator.set_and_wait">
+<span class="sig-name descname"><span class="pre">set_and_wait</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span><span class="p"><span class="pre">[</span></span><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">dtype</span><span class="p"><span class="pre">[</span></span><span class="pre">float64</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/control/abstract_impl.html#CSStrengthScalarAggregator.set_and_wait"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.control.abstract_impl.CSStrengthScalarAggregator.set_and_wait" title="Link to this definition">¶</a></dt>
+<dd><p>Write a list of variable and wait that setpoint are reached</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaml.control.abstract_impl.CSStrengthScalarAggregator.unit">
+<span class="sig-name descname"><span class="pre">unit</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../_modules/pyaml/control/abstract_impl.html#CSStrengthScalarAggregator.unit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.control.abstract_impl.CSStrengthScalarAggregator.unit" title="Link to this definition">¶</a></dt>
+<dd><p>Return the variables unit</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="pyaml.control.abstract_impl.RBpmArray">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyaml.control.abstract_impl.</span></span><span class="sig-name descname"><span class="pre">RBpmArray</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="bpm.html#pyaml.bpm.bpm_model.BPMModel" title="pyaml.bpm.bpm_model.BPMModel"><span class="pre">BPMModel</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/control/abstract_impl.html#RBpmArray"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.control.abstract_impl.RBpmArray" title="Link to this definition">¶</a></dt>
+<dd><p>Class providing read access to a BPM array of a control system</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaml.control.abstract_impl.RBpmArray.get">
+<span class="sig-name descname"><span class="pre">get</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">array</span></span></span><a class="reference internal" href="../_modules/pyaml/control/abstract_impl.html#RBpmArray.get"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.control.abstract_impl.RBpmArray.get" title="Link to this definition">¶</a></dt>
+<dd><p>Get the value</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaml.control.abstract_impl.RBpmArray.unit">
+<span class="sig-name descname"><span class="pre">unit</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../_modules/pyaml/control/abstract_impl.html#RBpmArray.unit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.control.abstract_impl.RBpmArray.unit" title="Link to this definition">¶</a></dt>
+<dd><p>Get the unit of the values</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="pyaml.control.abstract_impl.RWBpmOffsetArray">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyaml.control.abstract_impl.</span></span><span class="sig-name descname"><span class="pre">RWBpmOffsetArray</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="bpm.html#pyaml.bpm.bpm_model.BPMModel" title="pyaml.bpm.bpm_model.BPMModel"><span class="pre">BPMModel</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/control/abstract_impl.html#RWBpmOffsetArray"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.control.abstract_impl.RWBpmOffsetArray" title="Link to this definition">¶</a></dt>
+<dd><p>Class providing read write access to a BPM offset of a control system</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaml.control.abstract_impl.RWBpmOffsetArray.get">
+<span class="sig-name descname"><span class="pre">get</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ndarray</span><span class="p"><span class="pre">[</span></span><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">dtype</span><span class="p"><span class="pre">[</span></span><span class="pre">float64</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/pyaml/control/abstract_impl.html#RWBpmOffsetArray.get"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.control.abstract_impl.RWBpmOffsetArray.get" title="Link to this definition">¶</a></dt>
+<dd><p>Get the value</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaml.control.abstract_impl.RWBpmOffsetArray.set">
+<span class="sig-name descname"><span class="pre">set</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span><span class="p"><span class="pre">[</span></span><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">dtype</span><span class="p"><span class="pre">[</span></span><span class="pre">float64</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/control/abstract_impl.html#RWBpmOffsetArray.set"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.control.abstract_impl.RWBpmOffsetArray.set" title="Link to this definition">¶</a></dt>
+<dd><p>Set the values</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaml.control.abstract_impl.RWBpmOffsetArray.set_and_wait">
+<span class="sig-name descname"><span class="pre">set_and_wait</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span><span class="p"><span class="pre">[</span></span><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">dtype</span><span class="p"><span class="pre">[</span></span><span class="pre">float64</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/control/abstract_impl.html#RWBpmOffsetArray.set_and_wait"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.control.abstract_impl.RWBpmOffsetArray.set_and_wait" title="Link to this definition">¶</a></dt>
+<dd><p>Set the values and wait that setpoints are reached</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaml.control.abstract_impl.RWBpmOffsetArray.unit">
+<span class="sig-name descname"><span class="pre">unit</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../_modules/pyaml/control/abstract_impl.html#RWBpmOffsetArray.unit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.control.abstract_impl.RWBpmOffsetArray.unit" title="Link to this definition">¶</a></dt>
+<dd><p>Get the unit of the value</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="pyaml.control.abstract_impl.RWBpmTiltScalar">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyaml.control.abstract_impl.</span></span><span class="sig-name descname"><span class="pre">RWBpmTiltScalar</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="bpm.html#pyaml.bpm.bpm_model.BPMModel" title="pyaml.bpm.bpm_model.BPMModel"><span class="pre">BPMModel</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/control/abstract_impl.html#RWBpmTiltScalar"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.control.abstract_impl.RWBpmTiltScalar" title="Link to this definition">¶</a></dt>
+<dd><p>Class providing read access to a BPM tilt of a control system</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaml.control.abstract_impl.RWBpmTiltScalar.get">
+<span class="sig-name descname"><span class="pre">get</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="reference internal" href="../_modules/pyaml/control/abstract_impl.html#RWBpmTiltScalar.get"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.control.abstract_impl.RWBpmTiltScalar.get" title="Link to this definition">¶</a></dt>
+<dd><p>Get the value</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaml.control.abstract_impl.RWBpmTiltScalar.unit">
+<span class="sig-name descname"><span class="pre">unit</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../_modules/pyaml/control/abstract_impl.html#RWBpmTiltScalar.unit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.control.abstract_impl.RWBpmTiltScalar.unit" title="Link to this definition">¶</a></dt>
+<dd><p>Get the unit of the value</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="pyaml.control.abstract_impl.RWHardwareArray">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyaml.control.abstract_impl.</span></span><span class="sig-name descname"><span class="pre">RWHardwareArray</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">MagnetModel</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/control/abstract_impl.html#RWHardwareArray"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.control.abstract_impl.RWHardwareArray" title="Link to this definition">¶</a></dt>
+<dd><p>Class providing read write access to a magnet array of a control system (in hardware units)</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaml.control.abstract_impl.RWHardwareArray.get">
+<span class="sig-name descname"><span class="pre">get</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">array</span></span></span><a class="reference internal" href="../_modules/pyaml/control/abstract_impl.html#RWHardwareArray.get"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.control.abstract_impl.RWHardwareArray.get" title="Link to this definition">¶</a></dt>
+<dd><p>Get the value</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaml.control.abstract_impl.RWHardwareArray.set">
+<span class="sig-name descname"><span class="pre">set</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">array</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/control/abstract_impl.html#RWHardwareArray.set"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.control.abstract_impl.RWHardwareArray.set" title="Link to this definition">¶</a></dt>
+<dd><p>Set the values</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaml.control.abstract_impl.RWHardwareArray.set_and_wait">
+<span class="sig-name descname"><span class="pre">set_and_wait</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">array</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/control/abstract_impl.html#RWHardwareArray.set_and_wait"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.control.abstract_impl.RWHardwareArray.set_and_wait" title="Link to this definition">¶</a></dt>
+<dd><p>Set the values and wait that setpoints are reached</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaml.control.abstract_impl.RWHardwareArray.unit">
+<span class="sig-name descname"><span class="pre">unit</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/pyaml/control/abstract_impl.html#RWHardwareArray.unit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.control.abstract_impl.RWHardwareArray.unit" title="Link to this definition">¶</a></dt>
+<dd><p>Get the unit of the value</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="pyaml.control.abstract_impl.RWHardwareScalar">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyaml.control.abstract_impl.</span></span><span class="sig-name descname"><span class="pre">RWHardwareScalar</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">MagnetModel</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/control/abstract_impl.html#RWHardwareScalar"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.control.abstract_impl.RWHardwareScalar" title="Link to this definition">¶</a></dt>
+<dd><p>Class providing read write access to a magnet of a control system (in hardware units)</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaml.control.abstract_impl.RWHardwareScalar.get">
+<span class="sig-name descname"><span class="pre">get</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="reference internal" href="../_modules/pyaml/control/abstract_impl.html#RWHardwareScalar.get"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.control.abstract_impl.RWHardwareScalar.get" title="Link to this definition">¶</a></dt>
+<dd><p>Get the value</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaml.control.abstract_impl.RWHardwareScalar.set">
+<span class="sig-name descname"><span class="pre">set</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/control/abstract_impl.html#RWHardwareScalar.set"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.control.abstract_impl.RWHardwareScalar.set" title="Link to this definition">¶</a></dt>
+<dd><p>Set the value</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaml.control.abstract_impl.RWHardwareScalar.set_and_wait">
+<span class="sig-name descname"><span class="pre">set_and_wait</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float64</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/control/abstract_impl.html#RWHardwareScalar.set_and_wait"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.control.abstract_impl.RWHardwareScalar.set_and_wait" title="Link to this definition">¶</a></dt>
+<dd><p>Set the value and wait that setpoint is reached</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaml.control.abstract_impl.RWHardwareScalar.unit">
+<span class="sig-name descname"><span class="pre">unit</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../_modules/pyaml/control/abstract_impl.html#RWHardwareScalar.unit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.control.abstract_impl.RWHardwareScalar.unit" title="Link to this definition">¶</a></dt>
+<dd><p>Get the unit of the value</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="pyaml.control.abstract_impl.RWRFFrequencyScalar">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyaml.control.abstract_impl.</span></span><span class="sig-name descname"><span class="pre">RWRFFrequencyScalar</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">rf</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="rf.html#pyaml.rf.rf_plant.RFPlant" title="pyaml.rf.rf_plant.RFPlant"><span class="pre">RFPlant</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/control/abstract_impl.html#RWRFFrequencyScalar"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.control.abstract_impl.RWRFFrequencyScalar" title="Link to this definition">¶</a></dt>
+<dd><p>Class providing read write access to RF frequency of a control system.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaml.control.abstract_impl.RWRFFrequencyScalar.get">
+<span class="sig-name descname"><span class="pre">get</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="reference internal" href="../_modules/pyaml/control/abstract_impl.html#RWRFFrequencyScalar.get"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.control.abstract_impl.RWRFFrequencyScalar.get" title="Link to this definition">¶</a></dt>
+<dd><p>Get the value</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaml.control.abstract_impl.RWRFFrequencyScalar.set">
+<span class="sig-name descname"><span class="pre">set</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/control/abstract_impl.html#RWRFFrequencyScalar.set"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.control.abstract_impl.RWRFFrequencyScalar.set" title="Link to this definition">¶</a></dt>
+<dd><p>Set the value</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaml.control.abstract_impl.RWRFFrequencyScalar.set_and_wait">
+<span class="sig-name descname"><span class="pre">set_and_wait</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/control/abstract_impl.html#RWRFFrequencyScalar.set_and_wait"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.control.abstract_impl.RWRFFrequencyScalar.set_and_wait" title="Link to this definition">¶</a></dt>
+<dd><p>Set the value and wait that setpoint is reached</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaml.control.abstract_impl.RWRFFrequencyScalar.unit">
+<span class="sig-name descname"><span class="pre">unit</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../_modules/pyaml/control/abstract_impl.html#RWRFFrequencyScalar.unit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.control.abstract_impl.RWRFFrequencyScalar.unit" title="Link to this definition">¶</a></dt>
+<dd><p>Get the unit of the value</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="pyaml.control.abstract_impl.RWRFPhaseScalar">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyaml.control.abstract_impl.</span></span><span class="sig-name descname"><span class="pre">RWRFPhaseScalar</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">transmitter</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="rf.html#pyaml.rf.rf_transmitter.RFTransmitter" title="pyaml.rf.rf_transmitter.RFTransmitter"><span class="pre">RFTransmitter</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/control/abstract_impl.html#RWRFPhaseScalar"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.control.abstract_impl.RWRFPhaseScalar" title="Link to this definition">¶</a></dt>
+<dd><p>Class providing read write access to cavity phase for a transmitter of a control system.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaml.control.abstract_impl.RWRFPhaseScalar.get">
+<span class="sig-name descname"><span class="pre">get</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="reference internal" href="../_modules/pyaml/control/abstract_impl.html#RWRFPhaseScalar.get"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.control.abstract_impl.RWRFPhaseScalar.get" title="Link to this definition">¶</a></dt>
+<dd><p>Get the value</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaml.control.abstract_impl.RWRFPhaseScalar.set">
+<span class="sig-name descname"><span class="pre">set</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/control/abstract_impl.html#RWRFPhaseScalar.set"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.control.abstract_impl.RWRFPhaseScalar.set" title="Link to this definition">¶</a></dt>
+<dd><p>Set the value</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaml.control.abstract_impl.RWRFPhaseScalar.set_and_wait">
+<span class="sig-name descname"><span class="pre">set_and_wait</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/control/abstract_impl.html#RWRFPhaseScalar.set_and_wait"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.control.abstract_impl.RWRFPhaseScalar.set_and_wait" title="Link to this definition">¶</a></dt>
+<dd><p>Set the value and wait that setpoint is reached</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaml.control.abstract_impl.RWRFPhaseScalar.unit">
+<span class="sig-name descname"><span class="pre">unit</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../_modules/pyaml/control/abstract_impl.html#RWRFPhaseScalar.unit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.control.abstract_impl.RWRFPhaseScalar.unit" title="Link to this definition">¶</a></dt>
+<dd><p>Get the unit of the value</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="pyaml.control.abstract_impl.RWRFVoltageScalar">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyaml.control.abstract_impl.</span></span><span class="sig-name descname"><span class="pre">RWRFVoltageScalar</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">transmitter</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="rf.html#pyaml.rf.rf_transmitter.RFTransmitter" title="pyaml.rf.rf_transmitter.RFTransmitter"><span class="pre">RFTransmitter</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/control/abstract_impl.html#RWRFVoltageScalar"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.control.abstract_impl.RWRFVoltageScalar" title="Link to this definition">¶</a></dt>
+<dd><p>Class providing read write access to cavity voltage for a transmitter of a control system.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaml.control.abstract_impl.RWRFVoltageScalar.get">
+<span class="sig-name descname"><span class="pre">get</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="reference internal" href="../_modules/pyaml/control/abstract_impl.html#RWRFVoltageScalar.get"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.control.abstract_impl.RWRFVoltageScalar.get" title="Link to this definition">¶</a></dt>
+<dd><p>Get the value</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaml.control.abstract_impl.RWRFVoltageScalar.set">
+<span class="sig-name descname"><span class="pre">set</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/control/abstract_impl.html#RWRFVoltageScalar.set"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.control.abstract_impl.RWRFVoltageScalar.set" title="Link to this definition">¶</a></dt>
+<dd><p>Set the value</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaml.control.abstract_impl.RWRFVoltageScalar.set_and_wait">
+<span class="sig-name descname"><span class="pre">set_and_wait</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/control/abstract_impl.html#RWRFVoltageScalar.set_and_wait"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.control.abstract_impl.RWRFVoltageScalar.set_and_wait" title="Link to this definition">¶</a></dt>
+<dd><p>Set the value and wait that setpoint is reached</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaml.control.abstract_impl.RWRFVoltageScalar.unit">
+<span class="sig-name descname"><span class="pre">unit</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../_modules/pyaml/control/abstract_impl.html#RWRFVoltageScalar.unit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.control.abstract_impl.RWRFVoltageScalar.unit" title="Link to this definition">¶</a></dt>
+<dd><p>Get the unit of the value</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="pyaml.control.abstract_impl.RWStrengthArray">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyaml.control.abstract_impl.</span></span><span class="sig-name descname"><span class="pre">RWStrengthArray</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">MagnetModel</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/control/abstract_impl.html#RWStrengthArray"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.control.abstract_impl.RWStrengthArray" title="Link to this definition">¶</a></dt>
+<dd><p>Class providing read write access to magnet strengths of a control system</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaml.control.abstract_impl.RWStrengthArray.get">
+<span class="sig-name descname"><span class="pre">get</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">array</span></span></span><a class="reference internal" href="../_modules/pyaml/control/abstract_impl.html#RWStrengthArray.get"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.control.abstract_impl.RWStrengthArray.get" title="Link to this definition">¶</a></dt>
+<dd><p>Get the value</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaml.control.abstract_impl.RWStrengthArray.set">
+<span class="sig-name descname"><span class="pre">set</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">array</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/control/abstract_impl.html#RWStrengthArray.set"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.control.abstract_impl.RWStrengthArray.set" title="Link to this definition">¶</a></dt>
+<dd><p>Set the values</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaml.control.abstract_impl.RWStrengthArray.set_and_wait">
+<span class="sig-name descname"><span class="pre">set_and_wait</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">array</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/control/abstract_impl.html#RWStrengthArray.set_and_wait"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.control.abstract_impl.RWStrengthArray.set_and_wait" title="Link to this definition">¶</a></dt>
+<dd><p>Set the values and wait that setpoints are reached</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaml.control.abstract_impl.RWStrengthArray.unit">
+<span class="sig-name descname"><span class="pre">unit</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/pyaml/control/abstract_impl.html#RWStrengthArray.unit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.control.abstract_impl.RWStrengthArray.unit" title="Link to this definition">¶</a></dt>
+<dd><p>Get the unit of the value</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="pyaml.control.abstract_impl.RWStrengthScalar">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyaml.control.abstract_impl.</span></span><span class="sig-name descname"><span class="pre">RWStrengthScalar</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">MagnetModel</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/control/abstract_impl.html#RWStrengthScalar"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.control.abstract_impl.RWStrengthScalar" title="Link to this definition">¶</a></dt>
+<dd><p>Class providing read write access to a strength of a control system</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaml.control.abstract_impl.RWStrengthScalar.get">
+<span class="sig-name descname"><span class="pre">get</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="reference internal" href="../_modules/pyaml/control/abstract_impl.html#RWStrengthScalar.get"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.control.abstract_impl.RWStrengthScalar.get" title="Link to this definition">¶</a></dt>
+<dd><p>Get the value</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaml.control.abstract_impl.RWStrengthScalar.set">
+<span class="sig-name descname"><span class="pre">set</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/control/abstract_impl.html#RWStrengthScalar.set"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.control.abstract_impl.RWStrengthScalar.set" title="Link to this definition">¶</a></dt>
+<dd><p>Set the value</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaml.control.abstract_impl.RWStrengthScalar.set_and_wait">
+<span class="sig-name descname"><span class="pre">set_and_wait</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/control/abstract_impl.html#RWStrengthScalar.set_and_wait"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.control.abstract_impl.RWStrengthScalar.set_and_wait" title="Link to this definition">¶</a></dt>
+<dd><p>Set the value and wait that setpoint is reached</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaml.control.abstract_impl.RWStrengthScalar.unit">
+<span class="sig-name descname"><span class="pre">unit</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../_modules/pyaml/control/abstract_impl.html#RWStrengthScalar.unit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.control.abstract_impl.RWStrengthScalar.unit" title="Link to this definition">¶</a></dt>
+<dd><p>Get the unit of the value</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class" id="module-pyaml.control.deviceaccess">
+<dt class="sig sig-object py" id="pyaml.control.deviceaccess.DeviceAccess">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyaml.control.deviceaccess.</span></span><span class="sig-name descname"><span class="pre">DeviceAccess</span></span><a class="reference internal" href="../_modules/pyaml/control/deviceaccess.html#DeviceAccess"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.control.deviceaccess.DeviceAccess" title="Link to this definition">¶</a></dt>
+<dd><p>Abstract class providing access to a control system float variable</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaml.control.deviceaccess.DeviceAccess.get">
+<em class="property"><span class="k"><span class="pre">abstractmethod</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="reference internal" href="../_modules/pyaml/control/deviceaccess.html#DeviceAccess.get"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.control.deviceaccess.DeviceAccess.get" title="Link to this definition">¶</a></dt>
+<dd><p>Return the setpoint of a control system device variable</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaml.control.deviceaccess.DeviceAccess.measure_name">
+<em class="property"><span class="k"><span class="pre">abstractmethod</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">measure_name</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../_modules/pyaml/control/deviceaccess.html#DeviceAccess.measure_name"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.control.deviceaccess.DeviceAccess.measure_name" title="Link to this definition">¶</a></dt>
+<dd><p>Return the name of the measure</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaml.control.deviceaccess.DeviceAccess.name">
+<em class="property"><span class="k"><span class="pre">abstractmethod</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">name</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../_modules/pyaml/control/deviceaccess.html#DeviceAccess.name"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.control.deviceaccess.DeviceAccess.name" title="Link to this definition">¶</a></dt>
+<dd><p>Return the name of the variable</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaml.control.deviceaccess.DeviceAccess.readback">
+<em class="property"><span class="k"><span class="pre">abstractmethod</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">readback</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#pyaml.control.readback_value.Value" title="pyaml.control.readback_value.Value"><span class="pre">Value</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">ndarray</span><span class="p"><span class="pre">[</span></span><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">dtype</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#pyaml.control.readback_value.Value" title="pyaml.control.readback_value.Value"><span class="pre">Value</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/pyaml/control/deviceaccess.html#DeviceAccess.readback"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.control.deviceaccess.DeviceAccess.readback" title="Link to this definition">¶</a></dt>
+<dd><p>Return the measured variable</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaml.control.deviceaccess.DeviceAccess.set">
+<em class="property"><span class="k"><span class="pre">abstractmethod</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">set</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/control/deviceaccess.html#DeviceAccess.set"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.control.deviceaccess.DeviceAccess.set" title="Link to this definition">¶</a></dt>
+<dd><p>Write a control system device variable (i.e. a power supply current)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaml.control.deviceaccess.DeviceAccess.set_and_wait">
+<em class="property"><span class="k"><span class="pre">abstractmethod</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">set_and_wait</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/control/deviceaccess.html#DeviceAccess.set_and_wait"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.control.deviceaccess.DeviceAccess.set_and_wait" title="Link to this definition">¶</a></dt>
+<dd><p>Write a control system device variable (i.e. a power supply current)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaml.control.deviceaccess.DeviceAccess.unit">
+<em class="property"><span class="k"><span class="pre">abstractmethod</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">unit</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../_modules/pyaml/control/deviceaccess.html#DeviceAccess.unit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.control.deviceaccess.DeviceAccess.unit" title="Link to this definition">¶</a></dt>
+<dd><p>Return the variable unit</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class" id="module-pyaml.control.deviceaccesslist">
+<dt class="sig sig-object py" id="pyaml.control.deviceaccesslist.DeviceAccessList">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyaml.control.deviceaccesslist.</span></span><span class="sig-name descname"><span class="pre">DeviceAccessList</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">iterable</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">()</span></span></em>, <em class="sig-param"><span class="positional-only-separator o"><abbr title="Positional-only parameter separator (PEP 570)"><span class="pre">/</span></abbr></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/control/deviceaccesslist.html#DeviceAccessList"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.control.deviceaccesslist.DeviceAccessList" title="Link to this definition">¶</a></dt>
+<dd><p>Abstract class providing access to a list of control system float variable</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaml.control.deviceaccesslist.DeviceAccessList.add_devices">
+<em class="property"><span class="k"><span class="pre">abstractmethod</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">add_devices</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">devices</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#pyaml.control.deviceaccess.DeviceAccess" title="pyaml.control.deviceaccess.DeviceAccess"><span class="pre">DeviceAccess</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#pyaml.control.deviceaccess.DeviceAccess" title="pyaml.control.deviceaccess.DeviceAccess"><span class="pre">DeviceAccess</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/control/deviceaccesslist.html#DeviceAccessList.add_devices"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.control.deviceaccesslist.DeviceAccessList.add_devices" title="Link to this definition">¶</a></dt>
+<dd><p>Add a DeviceAccess to this list</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaml.control.deviceaccesslist.DeviceAccessList.get">
+<em class="property"><span class="k"><span class="pre">abstractmethod</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ndarray</span><span class="p"><span class="pre">[</span></span><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">dtype</span><span class="p"><span class="pre">[</span></span><span class="pre">float64</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/pyaml/control/deviceaccesslist.html#DeviceAccessList.get"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.control.deviceaccesslist.DeviceAccessList.get" title="Link to this definition">¶</a></dt>
+<dd><p>Return a list of setpoints of control system device variables</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaml.control.deviceaccesslist.DeviceAccessList.get_devices">
+<em class="property"><span class="k"><span class="pre">abstractmethod</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_devices</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#pyaml.control.deviceaccess.DeviceAccess" title="pyaml.control.deviceaccess.DeviceAccess"><span class="pre">DeviceAccess</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#pyaml.control.deviceaccess.DeviceAccess" title="pyaml.control.deviceaccess.DeviceAccess"><span class="pre">DeviceAccess</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/pyaml/control/deviceaccesslist.html#DeviceAccessList.get_devices"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.control.deviceaccesslist.DeviceAccessList.get_devices" title="Link to this definition">¶</a></dt>
+<dd><p>Get the DeviceAccess list</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaml.control.deviceaccesslist.DeviceAccessList.readback">
+<em class="property"><span class="k"><span class="pre">abstractmethod</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">readback</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">array</span></span></span><a class="reference internal" href="../_modules/pyaml/control/deviceaccesslist.html#DeviceAccessList.readback"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.control.deviceaccesslist.DeviceAccessList.readback" title="Link to this definition">¶</a></dt>
+<dd><p>Return the measured variables</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaml.control.deviceaccesslist.DeviceAccessList.set">
+<em class="property"><span class="k"><span class="pre">abstractmethod</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">set</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span><span class="p"><span class="pre">[</span></span><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">dtype</span><span class="p"><span class="pre">[</span></span><span class="pre">float64</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/control/deviceaccesslist.html#DeviceAccessList.set"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.control.deviceaccesslist.DeviceAccessList.set" title="Link to this definition">¶</a></dt>
+<dd><p>Write a list of control system device variable (i.e. a power supply currents)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaml.control.deviceaccesslist.DeviceAccessList.set_and_wait">
+<em class="property"><span class="k"><span class="pre">abstractmethod</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">set_and_wait</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span><span class="p"><span class="pre">[</span></span><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">dtype</span><span class="p"><span class="pre">[</span></span><span class="pre">float64</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/control/deviceaccesslist.html#DeviceAccessList.set_and_wait"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.control.deviceaccesslist.DeviceAccessList.set_and_wait" title="Link to this definition">¶</a></dt>
+<dd><p>Write a list control system device variable (i.e. a power supply currents)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaml.control.deviceaccesslist.DeviceAccessList.unit">
+<em class="property"><span class="k"><span class="pre">abstractmethod</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">unit</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../_modules/pyaml/control/deviceaccesslist.html#DeviceAccessList.unit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.control.deviceaccesslist.DeviceAccessList.unit" title="Link to this definition">¶</a></dt>
+<dd><p>Return the variable unit</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class" id="module-pyaml.control.readback_value">
+<dt class="sig sig-object py" id="pyaml.control.readback_value.Quality">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyaml.control.readback_value.</span></span><span class="sig-name descname"><span class="pre">Quality</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">values</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/control/readback_value.html#Quality"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.control.readback_value.Quality" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="pyaml.control.readback_value.Value">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyaml.control.readback_value.</span></span><span class="sig-name descname"><span class="pre">Value</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">quality</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#pyaml.control.readback_value.Quality" title="pyaml.control.readback_value.Quality"><span class="pre">Quality</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">Quality.VALID</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">timestamp</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">datetime</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/control/readback_value.html#Value"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.control.readback_value.Value" title="Link to this definition">¶</a></dt>
+<dd><p>Represents a numerical value with associated quality and timestamp.</p>
+<p>This class wraps a scalar or NumPy array and can be used in arithmetic
+operations and comparisons. It also retains metadata like quality and timestamp.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>value</strong> (<em>float</em><em>, </em><em>int</em><em> or </em><em>numpy.ndarray</em>) -- The numerical value(s) to wrap.</p></li>
+<li><p><strong>quality</strong> (<a class="reference internal" href="#pyaml.control.readback_value.Quality" title="pyaml.control.readback_value.Quality"><em>Quality</em></a><em>, </em><em>optional</em>) -- The quality of the value. Defaults to Quality.VALID.</p></li>
+<li><p><strong>timestamp</strong> (<em>datetime</em><em>, </em><em>optional</em>) -- Timestamp associated with the value. Defaults to current time.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaml.control.readback_value.Value.is_good">
+<span class="sig-name descname"><span class="pre">is_good</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="../_modules/pyaml/control/readback_value.html#Value.is_good"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.control.readback_value.Value.is_good" title="Link to this definition">¶</a></dt>
+<dd><p>Check if the value quality is good.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>True if the quality is VALID or CHANGING.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../index.html">
+              <img class="logo" src="../_static/logo.png" alt="Logo of pyAML"/>
+            </a></p>
+  <div>
+    <h4>Previous topic</h4>
+    <p class="topless"><a href="configuration.html"
+                          title="previous chapter">Configuration</a></p>
+  </div>
+  <div>
+    <h4>Next topic</h4>
+    <p class="topless"><a href="lattice.html"
+                          title="next chapter">lattice</a></p>
+  </div>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="Related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="lattice.html" title="lattice"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="configuration.html" title="Configuration"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">pyAML 0.0.0 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Control</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+    &#169; Copyright .
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.2.3.
+    </div>
+  </body>
+</html>

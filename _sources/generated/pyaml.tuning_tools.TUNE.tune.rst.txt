@@ -1,0 +1,12 @@
+pyaml.tuning\_tools.TUNE.tune
+=============================
+
+.. automodule:: pyaml.tuning_tools.TUNE.tune
+
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+   
+      tune_correction
+   

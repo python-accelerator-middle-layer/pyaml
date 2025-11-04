@@ -1,0 +1,13 @@
+pyaml.control.device
+====================
+
+.. automodule:: pyaml.control.device
+
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+   
+      ConfigModel
+      Device
+   

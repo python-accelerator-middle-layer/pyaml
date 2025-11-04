@@ -1,12 +1,5 @@
 /*
- * classic.css_t
- * ~~~~~~~~~~~~~
- *
  * Sphinx stylesheet -- classic theme.
- *
- * :copyright: Copyright 2007-2024 by the Sphinx team, see AUTHORS.
- * :license: BSD, see LICENSE for details.
- *
  */
 
 @import url("basic.css");
@@ -61,7 +54,7 @@ div.footer a {
 }
 
 div.related {
-    background-color: #133f52;
+    background-color: black;
     line-height: 30px;
     color: #ffffff;
 }

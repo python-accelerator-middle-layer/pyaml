@@ -1,0 +1,13 @@
+pyaml.tuning\_tools.SOFB
+========================
+
+.. automodule:: pyaml.tuning_tools.SOFB
+
+   
+.. rubric:: Modules
+
+.. autosummary::
+   :toctree:
+   :recursive:
+
+   sofb

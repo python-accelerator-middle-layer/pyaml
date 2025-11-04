@@ -1,0 +1,13 @@
+pyaml.instrument
+================
+
+.. automodule:: pyaml.instrument
+
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+   
+      ConfigModel
+      Instrument
+   

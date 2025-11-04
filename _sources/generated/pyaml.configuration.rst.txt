@@ -1,0 +1,26 @@
+pyaml.configuration
+===================
+
+.. automodule:: pyaml.configuration
+
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+   
+      get_root_folder
+      set_root_folder
+   
+.. rubric:: Modules
+
+.. autosummary::
+   :toctree:
+   :recursive:
+
+   csvcurve
+   csvmatrix
+   curve
+   factory
+   fileloader
+   matrix
+   models
