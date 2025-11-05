@@ -118,7 +118,7 @@ class ControlSystem(ElementHolder,metaclass=ABCMeta):
             tilt = RWBpmTiltScalar(e.model)
             offsets = RWBpmOffsetArray(e.model)
             positions = RBpmArray(e.model)
-            e = e.attach(positions, offsets, tilt)
+            e = e.attach(self,positions, offsets, tilt)
             self.add_bpm(e.get_name(),e)
 
 
@@ -128,13 +128,13 @@ class ControlSystem(ElementHolder,metaclass=ABCMeta):
              for t in e._cfg.transmitters:
                 voltage = RWRFVoltageScalar(t)
                 phase = RWRFPhaseScalar(t)
-                nt = t.attach(voltage,phase)
+                nt = t.attach(self,voltage,phase)
                 self.add_rf_transnmitter(nt.get_name(),nt)
                 attachedTrans.append(nt)
 
              frequency = RWRFFrequencyScalar(e)
              voltage = RWTotalVoltage(attachedTrans)
-             ne = e.attach(frequency,voltage)
+             ne = e.attach(self,frequency,voltage)
              self.add_rf_plant(ne.get_name(),ne)
           elif isinstance(e,BetatronTuneMonitor):
               betatron_tune = RBetatronTuneArray(e)

@@ -33,3 +33,6 @@ class CSVMatrix(Matrix):
 
     def get_matrix(self) -> np.array:
         return self._mat
+
+    def __repr__(self):
+       return repr(self._cfg).replace("ConfigModel",self.__class__.__name__)

@@ -76,8 +76,5 @@ class LinearMagnetModel(MagnetModel):
         self.__brho = brho
 
     def __repr__(self):
-        return "%s(curve[%d pts], unit=%s)" % (
-            self.__class__.__name__,
-            len(self.__curve),
-            self.__strength_unit,
-        )
+       return repr(self._cfg).replace("ConfigModel",self.__class__.__name__)
+    

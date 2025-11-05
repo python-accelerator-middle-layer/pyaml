@@ -44,12 +44,16 @@ class RFPlant(Element):
             raise PyAMLException(f"{str(self)} has no trasmitter device defined")
         return self.__voltage
 
-    def attach(self, frequency: abstract.ReadWriteFloatScalar, voltage: abstract.ReadWriteFloatScalar) -> Self:
+    def attach(self, peer, frequency: abstract.ReadWriteFloatScalar, voltage: abstract.ReadWriteFloatScalar) -> Self:
         # Attach frequency attribute and returns a new reference
         obj = self.__class__(self._cfg)
         obj.__frequency = frequency
         obj.__voltage = voltage
+        obj._peer = peer
         return obj
+    
+    def __repr__(self):
+       return repr(self._cfg).replace("ConfigModel",self.__class__.__name__)
 
 class RWTotalVoltage(abstract.ReadWriteFloatScalar):
 

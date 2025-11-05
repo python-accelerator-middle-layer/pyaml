@@ -86,3 +86,6 @@ class IdentityCFMagnetModel(MagnetModel):
 
     def has_hardware(self) -> bool:
         return self._cfg.powerconverters is not None
+
+    def __repr__(self):
+       return repr(self._cfg).replace("ConfigModel",self.__class__.__name__)

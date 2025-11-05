@@ -111,7 +111,7 @@ class Simulator(ElementHolder):
             tilt = RWBpmTiltScalar(self.get_at_elems(e)[0])
             offsets = RWBpmOffsetArray(self.get_at_elems(e)[0])
             positions = RBpmArray(self.get_at_elems(e)[0],self.ring)
-            e = e.attach(positions, offsets, tilt)
+            e = e.attach(self,positions, offsets, tilt)
             self.add_bpm(e.get_name(),e)
 
           elif isinstance(e,RFPlant):
@@ -133,14 +133,14 @@ class Simulator(ElementHolder):
 
                 voltage = RWRFVoltageScalar(cavsPerTrans,t)
                 phase = RWRFPhaseScalar(cavsPerTrans,t)
-                nt = t.attach(voltage,phase)
+                nt = t.attach(self,voltage,phase)
                 attachedTrans.append(nt)
                 self.add_rf_transnmitter(nt.get_name(),nt)
                 cavs.extend(cavsPerTrans)
 
              frequency = RWRFFrequencyScalar(cavs,harmonics,e)
              voltage = RWTotalVoltage(attachedTrans)
-             ne = e.attach(frequency,voltage)
+             ne = e.attach(self,frequency,voltage)
              self.add_rf_plant(ne.get_name(),ne)
           elif isinstance(e, BetatronTuneMonitor):
              betatron_tune = RBetatronTuneArray(self.ring)
@@ -154,3 +154,6 @@ class Simulator(ElementHolder):
        if not element_list:
           raise PyAMLException(f"{identifier} not found in lattice:{self._cfg.lattice}")
        return element_list
+
+    def __repr__(self):
+       return repr(self._cfg).replace("ConfigModel",self.__class__.__name__)

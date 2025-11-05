@@ -88,21 +88,11 @@ class Magnet(Element):
      """
      self.__modelName = name
 
-  def get_strength_str(self) -> str:
-     """
-     Returns a string representation of the magnet strength
-     """
-     if self.__strength is not None:
-        return f"{str(self.__strength.get())} {self.__strength.unit()}"
-     elif self.__hardware is not None:
-        return f"{str(self.__hardware.get())} {self.__hardware.unit()}"
-             
   def __str__(self):
-      return "%s(name='%s', model='%s', peer='%s', strength=%f, hardware=%f)" % (
+      return "%s(name='%s', model='%s', peer='%s', magnet_model=%s)" % (
           self.__class__.__name__,
           self.get_name(),
           self.__modelName,
           self.get_peer(),
-          self.__strength.get() if self.__strength is not None else np.nan,
-          self.__hardware.get() if self.__hardware is not None else np.nan
+          repr(self.__model)                    
       )

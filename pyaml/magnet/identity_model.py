@@ -70,7 +70,4 @@ class IdentityMagnetModel(MagnetModel):
         return self._cfg.powerconverter is not None
 
     def __repr__(self):
-        return "%s(unit=%s)" % (
-            self.__class__.__name__,
-            self.__unit,
-        )
+       return repr(self._cfg).replace("ConfigModel",self.__class__.__name__)

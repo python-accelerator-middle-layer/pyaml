@@ -38,3 +38,6 @@ class CSVCurve(Curve):
 
     def get_curve(self) -> np.array:
         return self._curve
+
+    def __repr__(self):
+       return repr(self._cfg).replace("ConfigModel",self.__class__.__name__)

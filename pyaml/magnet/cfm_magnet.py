@@ -85,3 +85,6 @@ class CombinedFunctionMagnet(Element):
     def set_energy(self,E:float):
         if(self.model is not None):
             self.model.set_magnet_rigidity(E/speed_of_light)
+
+    def __repr__(self):
+       return repr(self._cfg).replace("ConfigModel",self.__class__.__name__)

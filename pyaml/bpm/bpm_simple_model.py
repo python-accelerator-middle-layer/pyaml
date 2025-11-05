@@ -113,3 +113,6 @@ class BPMSimpleModel(BPMModel):
             Array of DeviceAcess
         """
         return []
+
+    def __repr__(self):
+       return repr(self._cfg).replace("ConfigModel",self.__class__.__name__)
