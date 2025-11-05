@@ -10,6 +10,7 @@ pyaml.control.abstract\_impl
    
       CSScalarAggregator
       CSStrengthScalarAggregator
+      RBetatronTuneArray
       RBpmArray
       RWBpmOffsetArray
       RWBpmTiltScalar

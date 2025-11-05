@@ -44,6 +44,7 @@
 <span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">..magnet.magnet</span><span class="w"> </span><span class="kn">import</span> <span class="n">Magnet</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">pyaml.bpm.bpm</span><span class="w"> </span><span class="kn">import</span> <span class="n">BPM</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pyaml.diagnostics.tune_monitor</span><span class="w"> </span><span class="kn">import</span> <span class="n">BetatronTuneMonitor</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">..magnet.cfm_magnet</span><span class="w"> </span><span class="kn">import</span> <span class="n">CombinedFunctionMagnet</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">..rf.rf_plant</span><span class="w"> </span><span class="kn">import</span> <span class="n">RFPlant</span><span class="p">,</span><span class="n">RWTotalVoltage</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">..rf.rf_transmitter</span><span class="w"> </span><span class="kn">import</span> <span class="n">RFTransmitter</span>
@@ -52,6 +53,7 @@
 <span class="kn">from</span><span class="w"> </span><span class="nn">..lattice.abstract_impl</span><span class="w"> </span><span class="kn">import</span> <span class="n">RWRFFrequencyScalar</span><span class="p">,</span><span class="n">RWRFVoltageScalar</span><span class="p">,</span><span class="n">RWRFPhaseScalar</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">..common.element_holder</span><span class="w"> </span><span class="kn">import</span> <span class="n">ElementHolder</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">..common.abstract_aggregator</span><span class="w"> </span><span class="kn">import</span> <span class="n">ScalarAggregator</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">..lattice.abstract_impl</span><span class="w"> </span><span class="kn">import</span> <span class="n">RBetatronTuneArray</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">..lattice.abstract_impl</span><span class="w"> </span><span class="kn">import</span> <span class="n">RWBpmTiltScalar</span><span class="p">,</span><span class="n">RWBpmOffsetArray</span><span class="p">,</span> <span class="n">RBpmArray</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">..lattice.abstract_impl</span><span class="w"> </span><span class="kn">import</span> <span class="n">BPMHScalarAggregator</span><span class="p">,</span><span class="n">BPMScalarAggregator</span><span class="p">,</span><span class="n">BPMVScalarAggregator</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">..common.exception</span><span class="w"> </span><span class="kn">import</span> <span class="n">PyAMLException</span>
@@ -184,6 +186,10 @@
              <span class="n">voltage</span> <span class="o">=</span> <span class="n">RWTotalVoltage</span><span class="p">(</span><span class="n">attachedTrans</span><span class="p">)</span>
              <span class="n">ne</span> <span class="o">=</span> <span class="n">e</span><span class="o">.</span><span class="n">attach</span><span class="p">(</span><span class="n">frequency</span><span class="p">,</span><span class="n">voltage</span><span class="p">)</span>
              <span class="bp">self</span><span class="o">.</span><span class="n">add_rf_plant</span><span class="p">(</span><span class="n">ne</span><span class="o">.</span><span class="n">get_name</span><span class="p">(),</span><span class="n">ne</span><span class="p">)</span>
+          <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="n">BetatronTuneMonitor</span><span class="p">):</span>
+             <span class="n">betatron_tune</span> <span class="o">=</span> <span class="n">RBetatronTuneArray</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ring</span><span class="p">)</span>
+             <span class="n">e</span> <span class="o">=</span> <span class="n">e</span><span class="o">.</span><span class="n">attach</span><span class="p">(</span><span class="n">betatron_tune</span><span class="p">)</span>
+             <span class="bp">self</span><span class="o">.</span><span class="n">add_betatron_tune_monitor</span><span class="p">(</span><span class="n">e</span><span class="o">.</span><span class="n">get_name</span><span class="p">(),</span> <span class="n">e</span><span class="p">)</span>
              
     
     <span class="k">def</span><span class="w"> </span><span class="nf">get_at_elems</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">element</span><span class="p">:</span><span class="n">Element</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">at</span><span class="o">.</span><span class="n">Element</span><span class="p">]:</span>

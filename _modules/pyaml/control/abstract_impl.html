@@ -46,7 +46,6 @@
 <span class="kn">from</span><span class="w"> </span><span class="nn">..rf.rf_plant</span><span class="w"> </span><span class="kn">import</span> <span class="n">RFPlant</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">..rf.rf_transmitter</span><span class="w"> </span><span class="kn">import</span> <span class="n">RFTransmitter</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">..common.abstract_aggregator</span><span class="w"> </span><span class="kn">import</span> <span class="n">ScalarAggregator</span>
-
 <span class="kn">from</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="kn">import</span> <span class="n">double</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">numpy.typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">NDArray</span>
@@ -560,6 +559,33 @@
 <a class="viewcode-back" href="../../../modules/control.html#pyaml.control.abstract_impl.RWRFFrequencyScalar.unit">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">unit</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__rf</span><span class="o">.</span><span class="n">_cfg</span><span class="o">.</span><span class="n">masterclock</span><span class="o">.</span><span class="n">unit</span><span class="p">()</span></div>
+</div>
+
+
+<span class="c1">#------------------------------------------------------------------------------</span>
+
+<div class="viewcode-block" id="RBetatronTuneArray">
+<a class="viewcode-back" href="../../../modules/control.html#pyaml.control.abstract_impl.RBetatronTuneArray">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">RBetatronTuneArray</span><span class="p">(</span><span class="n">abstract</span><span class="o">.</span><span class="n">ReadFloatScalar</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Class providing read write access to betatron tune of a control system.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tune_monitor</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__tune_monitor</span> <span class="o">=</span> <span class="n">tune_monitor</span>
+
+<div class="viewcode-block" id="RBetatronTuneArray.get">
+<a class="viewcode-back" href="../../../modules/control.html#pyaml.control.abstract_impl.RBetatronTuneArray.get">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">NDArray</span><span class="p">:</span>
+        <span class="c1"># Return horizontal and vertical betatron tunes as a NumPy array</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">__tune_monitor</span><span class="o">.</span><span class="n">_cfg</span><span class="o">.</span><span class="n">tune_h</span><span class="o">.</span><span class="n">get</span><span class="p">(),</span> 
+               <span class="bp">self</span><span class="o">.</span><span class="n">__tune_monitor</span><span class="o">.</span><span class="n">_cfg</span><span class="o">.</span><span class="n">tune_v</span><span class="o">.</span><span class="n">get</span><span class="p">()])</span></div>
+
+
+<div class="viewcode-block" id="RBetatronTuneArray.unit">
+<a class="viewcode-back" href="../../../modules/control.html#pyaml.control.abstract_impl.RBetatronTuneArray.unit">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">unit</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__tune_monitor</span><span class="o">.</span><span class="n">_cfg</span><span class="o">.</span><span class="n">tune_v</span><span class="o">.</span><span class="n">unit</span><span class="p">()</span></div>
 </div>
 
 
