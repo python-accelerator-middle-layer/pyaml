@@ -108,7 +108,6 @@ class ControlSystem(ElementHolder,metaclass=ABCMeta):
             self.add_magnet(m)
 
           elif isinstance(e,CombinedFunctionMagnet):
-            self.add_magnet(e)
             currents = RWHardwareArray(e.model) if e.model.has_hardware() else None
             strengths = RWStrengthArray(e.model) if e.model.has_physics() else None
             # Create unique refs of each function for this control system

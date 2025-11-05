@@ -1,6 +1,7 @@
 from pyaml.pyaml import pyaml,PyAML
 from pyaml.configuration.factory import Factory
 from pyaml.instrument import Instrument
+from pyaml.arrays.element_array import ElementArray
 from pyaml.arrays.magnet_array import MagnetArray
 from pyaml.arrays.bpm_array import BPMArray
 import importlib
@@ -131,7 +132,18 @@ def test_arrays(install_test_package):
 
     # Radom array
     elts = sr.design.get_elemens("ElArray")
-    print(elts.names())
+
+    # Create an array that contains all elements
+    allElts = ElementArray("AllElements",sr.design.get_all_elements())    
+    assert(len(allElts)==9)
+
+    # Create an array that contains all elements
+    allMags = MagnetArray("AllMagnets",sr.design.get_all_magnets())    
+    assert(len(allMags)==7)
+
+    # Create an array that contains all BPM
+    allBpms = BPMArray("AllBPMs",sr.design.get_all_bpms())    
+    assert(len(allBpms)==2)
 
     Factory.clear()
 

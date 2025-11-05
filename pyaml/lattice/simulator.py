@@ -98,7 +98,7 @@ class Simulator(ElementHolder):
             self.add_magnet(m)
 
           elif isinstance(e,CombinedFunctionMagnet):
-            self.add_magnet(e)
+            #self.add_magnet(e) TODO handle attached combined function manget
             currents = RWHardwareArray(self.get_at_elems(e),e.polynoms,e.model) if e.model.has_physics() else None
             strengths = RWStrengthArray(self.get_at_elems(e),e.polynoms,e.model) if e.model.has_physics() else None
             # Create unique refs of each function for this simulator

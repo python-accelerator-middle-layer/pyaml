@@ -3,6 +3,7 @@ Module handling element references for simulators and control system
 """
 from .element import Element
 from ..magnet.magnet import Magnet
+from ..bpm.bpm import BPM
 from ..rf.rf_plant import RFPlant
 from ..rf.rf_transmitter import RFTransmitter
 from ..arrays.magnet_array import MagnetArray
@@ -83,6 +84,9 @@ class ElementHolder(object):
 
     def get_magnets(self,name:str) -> MagnetArray:
        return self.__get("Magnet array",name,self.__MAGNET_ARRAYS)
+
+    def get_all_magnets(self) -> list[Magnet]:
+       return [value for key, value in self.__MAGNETS.items()]
     
     # BPMs
 
@@ -92,11 +96,14 @@ class ElementHolder(object):
     def get_bpm(self,name:str) -> Element:
       return self.__get("BPM",name,self.__BPMS)
 
-    def add_bpm(self,bpm:Element):
+    def add_bpm(self,bpm:BPM):
        self.__add(self.__BPMS,bpm)
 
     def get_bpms(self,name:str) -> BPMArray:
        return self.__get("BPM array",name,self.__BPM_ARRAYS)
+
+    def get_all_bpms(self) -> list[BPM]:
+       return [value for key, value in self.__BPMS.items()]
 
     # RF
 
