@@ -380,7 +380,7 @@ class RWRFFrequencyScalar(abstract.ReadWriteFloatScalar):
 
 #------------------------------------------------------------------------------
 
-class RBetatronTuneArray(abstract.ReadFloatScalar):
+class RBetatronTuneArray(abstract.ReadFloatArray):
     """
     Class providing read-only access to the betatron tune of a ring.
     """

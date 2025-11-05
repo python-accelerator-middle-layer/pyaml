@@ -1,6 +1,7 @@
 from ..common.abstract import ReadFloatArray
 from ..bpm.bpm import BPM
 from ..control.deviceaccesslist import DeviceAccessList
+from ..common.exception import PyAMLException
 
 import numpy as np
 
@@ -57,7 +58,7 @@ class BPMArray(list[BPM]):
     Class that implements access to a BPM array
     """
 
-    def __init__(self,arrayName:str,bpms:list[BPM],holder = None):
+    def __init__(self,arrayName:str,bpms:list[BPM],use_aggregator = True):
         """
         Construct a BPM array
 
@@ -66,17 +67,23 @@ class BPMArray(list[BPM]):
         arrayName : str
             Array name
         bpms: list[BPM]
-            BPM iterator
-        holder : Element holder
-            Holder (Simulator or Control System) that contains element of this array used for aggregator
+            BPM list, all elements must be attached to the same instance of 
+            either a Simulator or a ControlSystem.
+        use_aggregator : bool
+            Use aggregator to increase performance by using paralell access to underlying devices.
         """
+        super().__init__(i for i in bpms)
+        holder = bpms[0]._peer if len(bpms)>0 else None
+        if holder is None or any([m._peer!=holder for m in bpms]):
+            raise PyAMLException(f"BPMArray {arrayName} : All elements must be attached to the same instance of either a Simulator or a ControlSystem")
+
         super().__init__(i for i in bpms)
         self.__name = arrayName
         self.__hvpos = RWBPMPosition(arrayName,bpms)
         self.__hpos = RWBPMSinglePosition(arrayName,bpms,0)
         self.__vpos = RWBPMSinglePosition(arrayName,bpms,1)
 
-        if holder is not None:    
+        if use_aggregator:    
             aggs = holder.create_bpm_aggregators(bpms)
             self.__hvpos.set_aggregator(aggs[0])
             self.__hpos.set_aggregator(aggs[1])

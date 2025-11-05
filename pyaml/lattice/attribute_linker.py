@@ -1,7 +1,7 @@
 import at
 from pydantic import ConfigDict
 
-from pyaml.lattice.element import Element
+from pyaml.common.element import Element
 from pyaml.lattice.lattice_elements_linker import LinkerIdentifier, LinkerConfigModel, LatticeElementsLinker
 
 PYAMLCLASS = "PyAtAttributeElementsLinker"

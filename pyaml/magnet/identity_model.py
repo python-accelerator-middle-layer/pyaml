@@ -1,6 +1,7 @@
 from .model import MagnetModel
 from .. import PyAMLException
 from ..control.deviceaccess import DeviceAccess
+from ..common.element import __pyaml_repr__
 
 import numpy as np
 from pydantic import BaseModel,ConfigDict
@@ -70,7 +71,4 @@ class IdentityMagnetModel(MagnetModel):
         return self._cfg.powerconverter is not None
 
     def __repr__(self):
-        return "%s(unit=%s)" % (
-            self.__class__.__name__,
-            self.__unit,
-        )
+       return __pyaml_repr__(self)

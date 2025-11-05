@@ -4,6 +4,7 @@ from pydantic import BaseModel,ConfigDict
 from .model import MagnetModel
 from .. import PyAMLException
 from ..control.deviceaccess import DeviceAccess
+from ..common.element import __pyaml_repr__
 
 # Define the main class name for this module
 PYAMLCLASS = "IdentityCFMagnetModel"
@@ -86,3 +87,6 @@ class IdentityCFMagnetModel(MagnetModel):
 
     def has_hardware(self) -> bool:
         return self._cfg.powerconverters is not None
+
+    def __repr__(self):
+        return __pyaml_repr__(self)

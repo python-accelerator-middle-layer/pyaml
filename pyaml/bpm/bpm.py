@@ -1,4 +1,4 @@
-from ..lattice.element import Element, ElementConfigModel
+from ..common.element import Element, ElementConfigModel
 from ..lattice.abstract_impl import RBpmArray, RWBpmOffsetArray, RWBpmTiltScalar
 from ..bpm.bpm_model import BPMModel
 from ..common.exception import PyAMLException
@@ -63,7 +63,7 @@ class BPM(Element):
             raise PyAMLException(f"{str(self)} has no attached tilt")
         return self.__tilt
 
-    def attach(self, positions: RBpmArray , offset: RWBpmOffsetArray,
+    def attach(self, peer, positions: RBpmArray , offset: RWBpmOffsetArray,
                tilt: RWBpmTiltScalar) -> Self:
         # Attach positions, offset and tilt attributes and returns a new
         # reference
@@ -72,5 +72,6 @@ class BPM(Element):
         obj.__positions = positions
         obj.__offset = offset
         obj.__tilt = tilt
+        obj._peer = peer
         return obj
         

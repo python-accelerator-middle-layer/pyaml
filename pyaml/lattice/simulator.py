@@ -1,11 +1,10 @@
 from .attribute_linker import PyAtAttributeElementsLinker, ConfigModel as PyAtAttrLinkerConfigModel
 from .lattice_elements_linker import LatticeElementsLinker
 from ..configuration import get_root_folder
-from .element import Element
-from pathlib import Path
+from ..common.element import Element
 from ..magnet.magnet import Magnet
-from pyaml.bpm.bpm import BPM
-from pyaml.diagnostics.tune_monitor import BetatronTuneMonitor
+from ..bpm.bpm import BPM
+from ..diagnostics.tune_monitor import BetatronTuneMonitor
 from ..magnet.cfm_magnet import CombinedFunctionMagnet
 from ..rf.rf_plant import RFPlant,RWTotalVoltage
 from ..rf.rf_transmitter import RFTransmitter
@@ -21,6 +20,7 @@ from ..common.exception import PyAMLException
 
 from pydantic import BaseModel,ConfigDict
 import at
+from pathlib import Path
 
 # Define the main class name for this module
 PYAMLCLASS = "Simulator"
@@ -94,7 +94,7 @@ class Simulator(ElementHolder):
             current = RWHardwareScalar(self.get_at_elems(e),e.polynom,e.model) if e.model.has_physics() else None
             strength = RWStrengthScalar(self.get_at_elems(e),e.polynom,e.model) if e.model.has_physics() else None
             # Create a unique ref for this simulator
-            m = e.attach(strength,current)
+            m = e.attach(self,strength,current)
             self.add_magnet(m.get_name(),m)
 
           elif isinstance(e,CombinedFunctionMagnet):
@@ -102,16 +102,16 @@ class Simulator(ElementHolder):
             currents = RWHardwareArray(self.get_at_elems(e),e.polynoms,e.model) if e.model.has_physics() else None
             strengths = RWStrengthArray(self.get_at_elems(e),e.polynoms,e.model) if e.model.has_physics() else None
             # Create unique refs of each function for this simulator
-            ms = e.attach(strengths,currents)
+            ms = e.attach(self,strengths,currents)
             for m in ms:
               self.add_magnet(m.get_name(), m)
-              self.add_magnet(m.get_name(), m)
+              
           elif isinstance(e,BPM):
             # This assumes unique BPM names in the pyAT lattice  
             tilt = RWBpmTiltScalar(self.get_at_elems(e)[0])
             offsets = RWBpmOffsetArray(self.get_at_elems(e)[0])
             positions = RBpmArray(self.get_at_elems(e)[0],self.ring)
-            e = e.attach(positions, offsets, tilt)
+            e = e.attach(self,positions, offsets, tilt)
             self.add_bpm(e.get_name(),e)
 
           elif isinstance(e,RFPlant):
@@ -133,18 +133,19 @@ class Simulator(ElementHolder):
 
                 voltage = RWRFVoltageScalar(cavsPerTrans,t)
                 phase = RWRFPhaseScalar(cavsPerTrans,t)
-                nt = t.attach(voltage,phase)
+                nt = t.attach(self,voltage,phase)
                 attachedTrans.append(nt)
                 self.add_rf_transnmitter(nt.get_name(),nt)
                 cavs.extend(cavsPerTrans)
 
              frequency = RWRFFrequencyScalar(cavs,harmonics,e)
              voltage = RWTotalVoltage(attachedTrans)
-             ne = e.attach(frequency,voltage)
+             ne = e.attach(self,frequency,voltage)
              self.add_rf_plant(ne.get_name(),ne)
+
           elif isinstance(e, BetatronTuneMonitor):
              betatron_tune = RBetatronTuneArray(self.ring)
-             e = e.attach(betatron_tune)
+             e = e.attach(self,betatron_tune)
              self.add_betatron_tune_monitor(e.get_name(), e)
              
     
@@ -154,3 +155,6 @@ class Simulator(ElementHolder):
        if not element_list:
           raise PyAMLException(f"{identifier} not found in lattice:{self._cfg.lattice}")
        return element_list
+
+    def __repr__(self):
+       return repr(self._cfg).replace("ConfigModel",self.__class__.__name__)

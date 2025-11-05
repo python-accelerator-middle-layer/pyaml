@@ -97,7 +97,7 @@ def test_arrays(install_test_package):
     mags = []
     for m in  sr.live.get_magnets("HVCORR"):
         mags.append(m)
-    array = MagnetArray("HVCOOR_noagg",mags) # holder = None, no aggregator
+    array = MagnetArray("HVCOOR_noagg",mags,use_aggregator=False)
     array.strengths.set([0.000010,-0.000008,0.000015,-0.000017])
     ps1 = sr.live.get_magnet("SH1A-C01-H").model.read_hardware_values()
     ps2 = sr.live.get_magnet("SH1A-C02-H").model.read_hardware_values()
@@ -123,7 +123,7 @@ def test_arrays(install_test_package):
     for b in sr.design.get_bpms("BPMS"):
         bpms.append(b)
 
-    bpms = BPMArray("BPM_noagg",bpms) # holder = None, no aggregator
+    bpms = BPMArray("BPM_noagg",bpms,use_aggregator=False)
     pos = bpms.positions.get()
     assert(np.abs(pos[0][0] + 7.21154171490481e-05)<1e-10)
     assert(np.abs(pos[0][1] - 3.3988843436571406e-05)<1e-10)

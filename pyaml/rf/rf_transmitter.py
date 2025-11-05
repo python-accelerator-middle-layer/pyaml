@@ -7,7 +7,7 @@ except ImportError:
 
 from .. import PyAMLException
 from ..control.deviceaccess import DeviceAccess
-from ..lattice.element import Element,ElementConfigModel
+from ..common.element import Element,ElementConfigModel
 from ..common import abstract
 
 # Define the main class name for this module
@@ -52,15 +52,10 @@ class RFTransmitter(Element):
             raise PyAMLException(f"{str(self)} is unattached or has no phase device defined")
         return self.__phase
 
-    def attach(self, voltage: abstract.ReadWriteFloatScalar, phase: abstract.ReadWriteFloatScalar) -> Self:
+    def attach(self, peer, voltage: abstract.ReadWriteFloatScalar, phase: abstract.ReadWriteFloatScalar) -> Self:
         # Attach voltage and phase attribute and returns a new reference
         obj = self.__class__(self._cfg)
         obj.__voltage = voltage
         obj.__phase = phase
+        obj._peer = peer
         return obj
-
-    def __repr__(self):
-        return "%s(%s)" % (
-            self.__class__.__name__,
-            self._cfg.name
-        )

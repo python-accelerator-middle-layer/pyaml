@@ -3,7 +3,7 @@ Instrument class
 """
 
 from .control.controlsystem import ControlSystem
-from .lattice.element import Element
+from .common.element import Element
 from .lattice.simulator import Simulator
 from .arrays.array import ArrayConfig
 from pydantic import BaseModel,ConfigDict

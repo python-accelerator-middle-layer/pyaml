@@ -44,3 +44,6 @@ class Attribute(DeviceAccess):
 
     def unit(self) -> str:
         return self._unit
+
+    def __repr__(self):
+       return repr(self._cfg).replace("ConfigModel",self.__class__.__name__)

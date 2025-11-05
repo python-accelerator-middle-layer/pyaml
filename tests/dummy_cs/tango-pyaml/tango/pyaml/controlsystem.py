@@ -30,3 +30,6 @@ class TangoControlSystem(ControlSystem):
 
     def vector_aggregator(self) -> str | None:
         return None
+
+    def __repr__(self):
+       return repr(self._cfg).replace("ConfigModel",self.__class__.__name__)

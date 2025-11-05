@@ -1,7 +1,7 @@
-
-from ..lattice.element import Element, ElementConfigModel
-from ..lattice.abstract_impl import RBetatronTuneArray
+from ..common.element import Element, ElementConfigModel
+from ..common.abstract import ReadFloatArray
 from ..control.deviceaccess import DeviceAccess
+
 from typing import Self
 from pydantic import ConfigDict
 
@@ -37,12 +37,13 @@ class BetatronTuneMonitor(Element):
         self.__tune = None
 
     @property
-    def tune(self) -> RBetatronTuneArray:
+    def tune(self) -> ReadFloatArray:
+        self.check_peer()
         return self.__tune
 
-    def attach(self, betatron_tune: RBetatronTuneArray) -> Self:
-
+    def attach(self, peer, betatron_tune: ReadFloatArray) -> Self:
         obj = self.__class__(self._cfg)
         obj.__tune = betatron_tune
+        obj._peer = peer
         return obj
-        
+

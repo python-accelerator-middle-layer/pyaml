@@ -3,6 +3,7 @@ from ..configuration.matrix import Matrix
 from ..control.deviceaccess import DeviceAccess
 from .model import MagnetModel
 from ..common.exception import PyAMLException
+from ..common.element import __pyaml_repr__
 
 from pydantic import BaseModel,ConfigDict
 import numpy as np
@@ -162,4 +163,7 @@ class LinearCFMagnetModel(MagnetModel):
 
     def has_hardware(self) -> bool:
         return (self.__nbPS == self.__nbFunction) and np.allclose(self.__matrix, np.eye(self.__nbFunction))
+
+    def __repr__(self):
+        return __pyaml_repr__(self)
 

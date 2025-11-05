@@ -919,6 +919,16 @@ instruments:
           - BPM_C03-09
           - BPM_C03-10
     devices:
+    - type: pyaml.diagnostics.tune_monitor
+      name: BETATRON_TUNE
+      tune_h:
+        type: tango.pyaml.attribute_read_only
+        attribute: sys/ringsimulator/ebs/Tune_h
+        unit: ""
+      tune_v:
+        type: tango.pyaml.attribute_read_only
+        attribute: sys/ringsimulator/ebs/Tune_v
+        unit: ""    
     - type: pyaml.rf.rf_plant
       name: RF
       masterclock:
