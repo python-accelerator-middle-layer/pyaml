@@ -119,7 +119,7 @@
 <dl class="py method">
 <dt class="sig sig-object py" id="pyaml.lattice.abstract_impl.RBetatronTuneArray.unit">
 <span class="sig-name descname"><span class="pre">unit</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../_modules/pyaml/lattice/abstract_impl.html#RBetatronTuneArray.unit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.lattice.abstract_impl.RBetatronTuneArray.unit" title="Link to this definition">¶</a></dt>
-<dd><p>Get the unit of the value</p>
+<dd><p>Get the unit of the values</p>
 </dd></dl>
 
 </dd></dl>
@@ -470,37 +470,6 @@ configuration and the PyAT lattice. Its exact structure depends on the
 linking strategy (e.g., family name, element index, or user-defined tag).</p>
 <p>Subclasses should define the fields and logic necessary to represent
 a unique reference to one or more PyAT elements.</p>
-</dd></dl>
-
-<dl class="py class" id="module-pyaml.lattice.element">
-<dt class="sig sig-object py" id="pyaml.lattice.element.Element">
-<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyaml.lattice.element.</span></span><span class="sig-name descname"><span class="pre">Element</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/lattice/element.html#Element"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.lattice.element.Element" title="Link to this definition">¶</a></dt>
-<dd><p>Class providing access to one element of a physical or simulated lattice</p>
-<p>Attributes:
-name (str): The name identifying the element in the configuration file</p>
-<dl class="py method">
-<dt class="sig sig-object py" id="pyaml.lattice.element.Element.get_name">
-<span class="sig-name descname"><span class="pre">get_name</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/lattice/element.html#Element.get_name"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.lattice.element.Element.get_name" title="Link to this definition">¶</a></dt>
-<dd><p>Returns the name of the element</p>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="pyaml.lattice.element.ElementConfigModel">
-<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyaml.lattice.element.</span></span><span class="sig-name descname"><span class="pre">ElementConfigModel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/lattice/element.html#ElementConfigModel"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.lattice.element.ElementConfigModel" title="Link to this definition">¶</a></dt>
-<dd><dl class="py attribute">
-<dt class="sig sig-object py" id="pyaml.lattice.element.ElementConfigModel.model_config">
-<span class="sig-name descname"><span class="pre">model_config</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">ConfigDict</span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'arbitrary_types_allowed':</span> <span class="pre">True,</span> <span class="pre">'extra':</span> <span class="pre">'forbid'}</span></em><a class="headerlink" href="#pyaml.lattice.element.ElementConfigModel.model_config" title="Link to this definition">¶</a></dt>
-<dd><p>Configuration for the model, should be a dictionary conforming to [<cite>ConfigDict</cite>][pydantic.config.ConfigDict].</p>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pyaml.lattice.element.ElementConfigModel.name">
-<span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#pyaml.lattice.element.ElementConfigModel.name" title="Link to this definition">¶</a></dt>
-<dd><p>Element name</p>
-</dd></dl>
-
 </dd></dl>
 
 <p id="module-pyaml.lattice.polynom_info">Class providing polynom information</p>

@@ -12,5 +12,6 @@ pyaml.common
 
    abstract
    abstract_aggregator
+   element
    element_holder
    exception

@@ -1,7 +1,7 @@
-pyaml.lattice.element
-=====================
+pyaml.common.element
+====================
 
-.. automodule:: pyaml.lattice.element
+.. automodule:: pyaml.common.element
 
    
    .. rubric:: Classes

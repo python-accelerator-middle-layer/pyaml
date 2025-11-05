@@ -47,7 +47,7 @@
 <span class="kn">from</span><span class="w"> </span><span class="nn">.rf_transmitter</span><span class="w"> </span><span class="kn">import</span> <span class="n">RFTransmitter</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">..</span><span class="w"> </span><span class="kn">import</span> <span class="n">PyAMLException</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">..control.deviceaccess</span><span class="w"> </span><span class="kn">import</span> <span class="n">DeviceAccess</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">..lattice.element</span><span class="w"> </span><span class="kn">import</span> <span class="n">Element</span><span class="p">,</span><span class="n">ElementConfigModel</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">..common.element</span><span class="w"> </span><span class="kn">import</span> <span class="n">Element</span><span class="p">,</span><span class="n">ElementConfigModel</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">..common</span><span class="w"> </span><span class="kn">import</span> <span class="n">abstract</span>
 
 <span class="c1"># Define the main class name for this module</span>
@@ -88,14 +88,15 @@
             <span class="k">raise</span> <span class="n">PyAMLException</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="si">}</span><span class="s2"> has no trasmitter device defined&quot;</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__voltage</span>
 
-    <span class="k">def</span><span class="w"> </span><span class="nf">attach</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">frequency</span><span class="p">:</span> <span class="n">abstract</span><span class="o">.</span><span class="n">ReadWriteFloatScalar</span><span class="p">,</span> <span class="n">voltage</span><span class="p">:</span> <span class="n">abstract</span><span class="o">.</span><span class="n">ReadWriteFloatScalar</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Self</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">attach</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">peer</span><span class="p">,</span> <span class="n">frequency</span><span class="p">:</span> <span class="n">abstract</span><span class="o">.</span><span class="n">ReadWriteFloatScalar</span><span class="p">,</span> <span class="n">voltage</span><span class="p">:</span> <span class="n">abstract</span><span class="o">.</span><span class="n">ReadWriteFloatScalar</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Self</span><span class="p">:</span>
         <span class="c1"># Attach frequency attribute and returns a new reference</span>
         <span class="n">obj</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_cfg</span><span class="p">)</span>
         <span class="n">obj</span><span class="o">.</span><span class="n">__frequency</span> <span class="o">=</span> <span class="n">frequency</span>
         <span class="n">obj</span><span class="o">.</span><span class="n">__voltage</span> <span class="o">=</span> <span class="n">voltage</span>
+        <span class="n">obj</span><span class="o">.</span><span class="n">_peer</span> <span class="o">=</span> <span class="n">peer</span>
         <span class="k">return</span> <span class="n">obj</span></div>
 
-
+    
 <div class="viewcode-block" id="RWTotalVoltage">
 <a class="viewcode-back" href="../../../modules/rf.html#pyaml.rf.rf_plant.RWTotalVoltage">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">RWTotalVoltage</span><span class="p">(</span><span class="n">abstract</span><span class="o">.</span><span class="n">ReadWriteFloatScalar</span><span class="p">):</span>
