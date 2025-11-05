@@ -116,10 +116,10 @@ class PyAMLFactory:
 
         try:
             obj = elem_cls(cfg)
+            self.register_element(obj)
         except Exception as e:
             raise PyAMLConfigException(f"{str(e)} when creating '{type_str}.{cls_name}' {location_str}")
 
-        self.register_element(obj)
         return obj
 
 
@@ -154,7 +154,6 @@ class PyAMLFactory:
         if isinstance(elt,Element):
             name = elt.get_name()
             if name in self._elements:
-                print(self._elements)
                 raise PyAMLConfigException(f"element {name} already defined")
             self._elements[name] = elt
 

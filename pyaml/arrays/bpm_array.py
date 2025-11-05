@@ -1,7 +1,7 @@
 from ..common.abstract import ReadFloatArray
 from ..bpm.bpm import BPM
 from ..control.deviceaccesslist import DeviceAccessList
-from ..common.exception import PyAMLException
+from .element_array import get_peer_from_array
 
 import numpy as np
 
@@ -73,12 +73,9 @@ class BPMArray(list[BPM]):
             Use aggregator to increase performance by using paralell access to underlying devices.
         """
         super().__init__(i for i in bpms)
-        holder = bpms[0]._peer if len(bpms)>0 else None
-        if holder is None or any([m._peer!=holder for m in bpms]):
-            raise PyAMLException(f"BPMArray {arrayName} : All elements must be attached to the same instance of either a Simulator or a ControlSystem")
-
-        super().__init__(i for i in bpms)
         self.__name = arrayName
+        holder = get_peer_from_array(self)
+
         self.__hvpos = RWBPMPosition(arrayName,bpms)
         self.__hpos = RWBPMSinglePosition(arrayName,bpms,0)
         self.__vpos = RWBPMSinglePosition(arrayName,bpms,1)
@@ -88,6 +85,9 @@ class BPMArray(list[BPM]):
             self.__hvpos.set_aggregator(aggs[0])
             self.__hpos.set_aggregator(aggs[1])
             self.__vpos.set_aggregator(aggs[2])
+
+    def get_name(self) -> str:
+        return self.__name
 
     @property
     def positions(self) -> RWBPMPosition:

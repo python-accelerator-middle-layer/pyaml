@@ -1,8 +1,7 @@
 from ..common.abstract import ReadWriteFloatArray
 from ..magnet.magnet import Magnet
 from ..common.abstract_aggregator import ScalarAggregator
-from ..common.exception import PyAMLException
-
+from .element_array import get_peer_from_array
 import numpy as np
 
 class RWMagnetStrength(ReadWriteFloatArray):
@@ -97,11 +96,9 @@ class MagnetArray(list[Magnet]):
             Use aggregator to increase performance by using paralell access to underlying devices.
         """
         super().__init__(i for i in magnets)
-        holder = magnets[0]._peer if len(magnets)>0 else None
-        if holder is None or any([m._peer!=holder for m in magnets]):
-            raise PyAMLException(f"MagnetArray {arrayName} :  All elements must be attached to the same instance of either a Simulator or a ControlSystem")
-
         self.__name = arrayName
+        holder = get_peer_from_array(self)
+        
         self.__rwstrengths = RWMagnetStrength(arrayName,magnets)
         self.__rwhardwares = RWMagnetHardware(arrayName,magnets)
 
@@ -110,6 +107,9 @@ class MagnetArray(list[Magnet]):
             aggh = holder.create_magnet_harddware_aggregator(magnets)
             self.__rwstrengths.set_aggregator(aggs)
             self.__rwhardwares.set_aggregator(aggh)
+
+    def get_name(self) -> str:
+        return self.__name
 
     @property        
     def strengths(self) -> RWMagnetStrength:

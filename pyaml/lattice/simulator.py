@@ -64,9 +64,9 @@ class Simulator(ElementHolder):
     
     def set_energy(self,E:float):
       self.ring.energy = E
-      # For current calculation
-      for m in self.get_all_magnets().items():
-        m[1].set_energy(E)
+      # Needed by energy dependant element (i.e. magnet coil current calculation)
+      for m in self.get_all_elements():
+        m.set_energy(E)
  
     def create_magnet_strength_aggregator(self,magnets:list[Magnet]) -> ScalarAggregator:
         # No magnet aggregator for simulator
@@ -95,16 +95,16 @@ class Simulator(ElementHolder):
             strength = RWStrengthScalar(self.get_at_elems(e),e.polynom,e.model) if e.model.has_physics() else None
             # Create a unique ref for this simulator
             m = e.attach(self,strength,current)
-            self.add_magnet(m.get_name(),m)
+            self.add_magnet(m)
 
           elif isinstance(e,CombinedFunctionMagnet):
-            self.add_magnet(e.get_name(),e)
+            self.add_magnet(e)
             currents = RWHardwareArray(self.get_at_elems(e),e.polynoms,e.model) if e.model.has_physics() else None
             strengths = RWStrengthArray(self.get_at_elems(e),e.polynoms,e.model) if e.model.has_physics() else None
             # Create unique refs of each function for this simulator
             ms = e.attach(self,strengths,currents)
             for m in ms:
-              self.add_magnet(m.get_name(), m)
+              self.add_magnet(m)
               
           elif isinstance(e,BPM):
             # This assumes unique BPM names in the pyAT lattice  
@@ -112,10 +112,9 @@ class Simulator(ElementHolder):
             offsets = RWBpmOffsetArray(self.get_at_elems(e)[0])
             positions = RBpmArray(self.get_at_elems(e)[0],self.ring)
             e = e.attach(self,positions, offsets, tilt)
-            self.add_bpm(e.get_name(),e)
+            self.add_bpm(e)
 
           elif isinstance(e,RFPlant):
-             self.add_rf_plant(e.get_name(),e)
              cavs: list[at.Element] = []
              harmonics: list[float] = []
              attachedTrans: list[RFTransmitter] = []
@@ -135,18 +134,18 @@ class Simulator(ElementHolder):
                 phase = RWRFPhaseScalar(cavsPerTrans,t)
                 nt = t.attach(self,voltage,phase)
                 attachedTrans.append(nt)
-                self.add_rf_transnmitter(nt.get_name(),nt)
+                self.add_rf_transnmitter(nt)
                 cavs.extend(cavsPerTrans)
 
              frequency = RWRFFrequencyScalar(cavs,harmonics,e)
              voltage = RWTotalVoltage(attachedTrans)
              ne = e.attach(self,frequency,voltage)
-             self.add_rf_plant(ne.get_name(),ne)
+             self.add_rf_plant(ne)
 
           elif isinstance(e, BetatronTuneMonitor):
              betatron_tune = RBetatronTuneArray(self.ring)
              e = e.attach(self,betatron_tune)
-             self.add_betatron_tune_monitor(e.get_name(), e)
+             self.add_betatron_tune_monitor(e)
              
     
     def get_at_elems(self,element:Element) -> list[at.Element]:

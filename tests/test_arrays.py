@@ -108,7 +108,6 @@ def test_arrays(install_test_package):
     assert(np.abs(ps2[1] - 0.06600571179092833)<1e-10)
     assert(np.abs(ps2[2] + 0.0634854407797858)<1e-10)
 
-
     # Test BPMs array
 
     # Using aggragtor
@@ -129,6 +128,10 @@ def test_arrays(install_test_package):
     assert(np.abs(pos[0][1] - 3.3988843436571406e-05)<1e-10)
     assert(np.abs(pos[1][0] - 1.1681211772781844e-04)<1e-10)
     assert(np.abs(pos[1][1] - 7.072972488250373e-06)<1e-10)
+
+    # Radom array
+    elts = sr.design.get_elemens("ElArray")
+    print(elts.names())
 
     Factory.clear()
 

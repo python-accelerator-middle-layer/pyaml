@@ -35,6 +35,13 @@ instruments:
         elements:
           - BPM_C04-01
           - BPM_C04-02
+      - type: pyaml.arrays.element
+        name: ElArray
+        elements:
+          - BPM_C04-01
+          - BPM_C04-02
+          - SH1A-C01-V
+          - SH1A-C02-H
     devices:
       - sr/quadrupoles/QF1AC01.yaml
       - sr/correctors/SH1AC01.yaml
