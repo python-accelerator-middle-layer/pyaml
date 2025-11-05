@@ -21,6 +21,7 @@ class ElementHolder(object):
         self.__RFPLANT: dict = {}
         self.__RFTRANSMITTER: dict = {}
         self.__OTHERS: dict = {}
+        self.__DIAG: dict = {}
 
         # Array handle
         self.__MAGNET_ARRAYS: dict = {}
@@ -105,4 +106,18 @@ class ElementHolder(object):
 
     
   
-          
+    def get_bpm(self,name:str) -> Element:
+      if name not in self.__BPMS:
+         raise Exception(f"BPM {name} not defined")
+      return self.__BPMS[name]
+
+    def add_bpm(self,name:str,bpm:Element):
+        self.__BPMS[name] = bpm
+
+    def get_betatron_tune_monitor(self, name:str) -> Element:
+        if name not in self.__DIAG:
+            raise Exception(f"Diagnostic devices array does not contain {name}")
+        return self.__DIAG[name]
+
+    def add_betatron_tune_monitor(self, name:str, tune_monitor:Element):
+        self.__DIAG[name] = tune_monitor

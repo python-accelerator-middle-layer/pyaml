@@ -4,10 +4,12 @@ from ..common.abstract import RWMapper
 from ..lattice.element import Element
 from ..control.abstract_impl import RWHardwareScalar,RWHardwareArray,RWStrengthScalar,RWStrengthArray
 from ..bpm.bpm import BPM
+from ..diagnostics.tune_monitor import BetatronTuneMonitor
 from ..control.abstract_impl import RWBpmTiltScalar,RWBpmOffsetArray, RBpmArray
 from ..control.abstract_impl import RWRFFrequencyScalar,RWRFVoltageScalar,RWRFPhaseScalar
 from ..control.abstract_impl import CSScalarAggregator,CSStrengthScalarAggregator
 from ..common.abstract_aggregator import ScalarAggregator
+from ..control.abstract_impl import RBetatronTuneArray
 from ..magnet.magnet import Magnet
 from ..magnet.cfm_magnet import CombinedFunctionMagnet
 from ..rf.rf_plant import RFPlant,RWTotalVoltage
@@ -134,3 +136,7 @@ class ControlSystem(ElementHolder,metaclass=ABCMeta):
              voltage = RWTotalVoltage(attachedTrans)
              ne = e.attach(frequency,voltage)
              self.add_rf_plant(ne.get_name(),ne)
+          elif isinstance(e,BetatronTuneMonitor):
+              betatron_tune = RBetatronTuneArray(e)
+              e = e.attach(betatron_tune)
+              self.add_betatron_tune_monitor(e.get_name(), e)

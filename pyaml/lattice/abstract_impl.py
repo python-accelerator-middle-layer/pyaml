@@ -378,3 +378,19 @@ class RWRFFrequencyScalar(abstract.ReadWriteFloatScalar):
     def unit(self) -> str:
         return self.__rf._cfg.masterclock.unit()
 
+#------------------------------------------------------------------------------
+
+class RBetatronTuneArray(abstract.ReadFloatScalar):
+    """
+    Class providing read-only access to the betatron tune of a ring.
+    """
+
+    def __init__(self, ring: at.Lattice):
+        self.__ring = ring
+        
+    def get(self) -> float:
+        return self.__ring.get_tune()[:2]
+
+    def unit(self) -> str:
+        return '1'
+

@@ -5,6 +5,7 @@ from .element import Element
 from pathlib import Path
 from ..magnet.magnet import Magnet
 from pyaml.bpm.bpm import BPM
+from pyaml.diagnostics.tune_monitor import BetatronTuneMonitor
 from ..magnet.cfm_magnet import CombinedFunctionMagnet
 from ..rf.rf_plant import RFPlant,RWTotalVoltage
 from ..rf.rf_transmitter import RFTransmitter
@@ -13,6 +14,7 @@ from ..lattice.abstract_impl import RWStrengthScalar,RWStrengthArray
 from ..lattice.abstract_impl import RWRFFrequencyScalar,RWRFVoltageScalar,RWRFPhaseScalar
 from ..common.element_holder import ElementHolder
 from ..common.abstract_aggregator import ScalarAggregator
+from ..lattice.abstract_impl import RBetatronTuneArray
 from ..lattice.abstract_impl import RWBpmTiltScalar,RWBpmOffsetArray, RBpmArray
 from ..lattice.abstract_impl import BPMHScalarAggregator,BPMScalarAggregator,BPMVScalarAggregator
 from ..common.exception import PyAMLException
@@ -140,6 +142,10 @@ class Simulator(ElementHolder):
              voltage = RWTotalVoltage(attachedTrans)
              ne = e.attach(frequency,voltage)
              self.add_rf_plant(ne.get_name(),ne)
+          elif isinstance(e, BetatronTuneMonitor):
+             betatron_tune = RBetatronTuneArray(self.ring)
+             e = e.attach(betatron_tune)
+             self.add_betatron_tune_monitor(e.get_name(), e)
              
     
     def get_at_elems(self,element:Element) -> list[at.Element]:
