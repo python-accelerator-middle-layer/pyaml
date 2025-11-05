@@ -53,7 +53,7 @@ class RFPlant(Element):
         return obj
     
     def __repr__(self):
-       return repr(self._cfg).replace("ConfigModel",self.__class__.__name__)
+       return repr(self._cfg).replace("ConfigModel(",self.__class__.__name__ + "(peer='" + self.get_peer() + "', ")
 
 class RWTotalVoltage(abstract.ReadWriteFloatScalar):
 

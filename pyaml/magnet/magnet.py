@@ -89,10 +89,10 @@ class Magnet(Element):
      self.__modelName = name
 
   def __str__(self):
-      return "%s(name='%s', model='%s', peer='%s', magnet_model=%s)" % (
+      return "%s(peer='%s', name='%s', model='%s', magnet_model=%s)" % (
           self.__class__.__name__,
+          self.get_peer(),
           self.get_name(),
           self.__modelName,
-          self.get_peer(),
           repr(self.__model)                    
       )
