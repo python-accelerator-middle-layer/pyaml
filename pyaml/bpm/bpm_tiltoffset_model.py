@@ -3,6 +3,8 @@ from pyaml.bpm.bpm_simple_model import BPMSimpleModel
 from pydantic import BaseModel,ConfigDict
 import numpy as np
 from ..control.deviceaccess import DeviceAccess
+from ..common.element import __pyaml_repr__
+
 from numpy.typing import NDArray
 # Define the main class name for this module
 PYAMLCLASS = "BPMTiltOffsetModel"
@@ -113,3 +115,6 @@ class BPMTiltOffsetModel(BPMSimpleModel):
             Array of DeviceAcess
         """
         return [self.__x_offset,self.__y_offset]
+
+    def __repr__(self):
+        return __pyaml_repr__(self)

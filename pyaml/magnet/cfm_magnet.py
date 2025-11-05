@@ -1,6 +1,6 @@
 
 from .model import MagnetModel
-from ..common.element import Element,ElementConfigModel
+from ..common.element import Element,ElementConfigModel,__pyaml_repr__
 from ..common import abstract
 from ..common.abstract import RWMapper
 from ..common.exception import PyAMLException
@@ -87,4 +87,5 @@ class CombinedFunctionMagnet(Element):
             self.model.set_magnet_rigidity(E/speed_of_light)
 
     def __repr__(self):
-       return repr(self._cfg).replace("ConfigModel",self.__class__.__name__)
+        return __pyaml_repr__(self)
+

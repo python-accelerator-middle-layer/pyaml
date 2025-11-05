@@ -2,6 +2,8 @@ from pyaml.bpm.bpm_model import BPMModel
 from pydantic import BaseModel,ConfigDict
 import numpy as np
 from ..control.deviceaccess import DeviceAccess
+from ..common.element import __pyaml_repr__
+
 from numpy.typing import NDArray
 # Define the main class name for this module
 PYAMLCLASS = "BPMSimpleModel"
@@ -115,4 +117,5 @@ class BPMSimpleModel(BPMModel):
         return []
 
     def __repr__(self):
-       return repr(self._cfg).replace("ConfigModel",self.__class__.__name__)
+        return __pyaml_repr__(self)
+

@@ -1,6 +1,7 @@
 from .model import MagnetModel
 from ..configuration.curve import Curve
 from ..control.deviceaccess import DeviceAccess
+from ..common.element import __pyaml_repr__
 
 import numpy as np
 from pydantic import BaseModel,ConfigDict
@@ -76,5 +77,6 @@ class LinearMagnetModel(MagnetModel):
         self.__brho = brho
 
     def __repr__(self):
-       return repr(self._cfg).replace("ConfigModel",self.__class__.__name__)
+        return __pyaml_repr__(self)
+
     

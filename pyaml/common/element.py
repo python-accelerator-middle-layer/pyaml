@@ -2,6 +2,21 @@ from .exception import PyAMLException
 
 from pydantic import BaseModel,ConfigDict
 
+
+def __pyaml_repr__(obj):
+    """
+    Returns a string representation of a pyaml object
+    """
+    if hasattr(obj,"_cfg"):
+        if isinstance(obj,Element):
+            return repr(obj._cfg).replace("ConfigModel(",obj.__class__.__name__ + "(peer='" + obj.get_peer() + "', ")
+        else:
+            # no peer
+            return repr(obj._cfg).replace("ConfigModel",obj.__class__.__name__ )
+    else:
+        # Default to repr
+        return repr(obj)
+
 class ElementConfigModel(BaseModel):
 
     model_config = ConfigDict(arbitrary_types_allowed=True,extra="forbid")
@@ -47,8 +62,8 @@ class Element(object):
         return "None" if self._peer is None else f"{self._peer.__class__.__name__}:{self._peer.name()}"
  
     def __repr__(self):
-        return "%s(name='%s', peer='%s')" % (
-            self.__class__.__name__,
-            self.__name,
-            self.get_peer()
-        )
+        return __pyaml_repr__(self)
+
+
+
+    

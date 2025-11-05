@@ -52,9 +52,6 @@ class RFPlant(Element):
         obj._peer = peer
         return obj
     
-    def __repr__(self):
-       return repr(self._cfg).replace("ConfigModel(",self.__class__.__name__ + "(peer='" + self.get_peer() + "', ")
-
 class RWTotalVoltage(abstract.ReadWriteFloatScalar):
 
     def __init__(self, transmitters: list[RFTransmitter]):
