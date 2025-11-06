@@ -22,24 +22,24 @@ class RWHardwareScalar(abstract.ReadWriteFloatScalar):
     """
 
     def __init__(self, elements:list[at.Element], poly:PolynomInfo, model:MagnetModel):
-        self.model = model
-        self.elements = elements
-        self.poly = elements[0].__getattribute__(poly.attName)
-        self.polyIdx = poly.index
+        self.__model = model
+        self.__elements = elements
+        self.__poly = elements[0].__getattribute__(poly.attName)
+        self.__polyIdx = poly.index
 
     def get(self) -> float:
-        s = self.poly[self.polyIdx] * self.elements[0].Length
-        return self.model.compute_hardware_values([s])[0]
+        s = self.__poly[self.__polyIdx] * self.__elements[0].Length
+        return self.__model.compute_hardware_values([s])[0]
     
     def set(self,value:float):
-        s = self.model.compute_strengths([value])[0]
-        self.poly[self.polyIdx] = s / self.elements[0].Length
+        s = self.__model.compute_strengths([value])[0]
+        self.__poly[self.__polyIdx] = s / self.__elements[0].Length
 
     def set_and_wait(self, value:float):
         raise NotImplementedError("Not implemented yet.")
         
     def unit(self) -> str:
-        return self.model.get_hardware_units()[0]
+        return self.__model.get_hardware_units()[0]
     
 #------------------------------------------------------------------------------
 
@@ -49,18 +49,18 @@ class RWStrengthScalar(abstract.ReadWriteFloatScalar):
     """
 
     def __init__(self, elements:list[at.Element], poly:PolynomInfo, model:MagnetModel):
-        self.unitconv = model
-        self.elements = elements
-        self.poly = elements[0].__getattribute__(poly.attName)
-        self.polyIdx = poly.index
+        self.__model = model
+        self.__elements = elements
+        self.__poly = elements[0].__getattribute__(poly.attName)
+        self.__polyIdx = poly.index
 
     # Gets the value
     def get(self) -> float:
-        return self.poly[self.polyIdx] * self.elements[0].Length
+        return self.__poly[self.__polyIdx] * self.__elements[0].Length
 
     # Sets the value
     def set(self, value:float):
-        self.poly[self.polyIdx] = value / self.elements[0].Length
+        self.__poly[self.__polyIdx] = value / self.__elements[0].Length
 
     # Sets the value and wait that the read value reach the setpoint
     def set_and_wait(self, value:float):
@@ -68,7 +68,7 @@ class RWStrengthScalar(abstract.ReadWriteFloatScalar):
 
     # Gets the unit of the value
     def unit(self) -> str:
-        return self.unitconv.get_strength_units()[0]
+        return self.__model.get_strength_units()[0]
 
 #------------------------------------------------------------------------------
 
@@ -79,28 +79,28 @@ class RWHardwareArray(abstract.ReadWriteFloatArray):
     """
 
     def __init__(self, elements:list[at.Element], poly:list[PolynomInfo], model:MagnetModel):
-        self.elements = elements
-        self.poly = []
-        self.polyIdx = []
-        self.model = model
+        self.__elements = elements
+        self.__poly = []
+        self.__polyIdx = []
+        self.__model = model
         for p in poly:
-            self.poly.append(elements[0].__getattribute__(p.attName))
-            self.polyIdx.append(p.index)
+            self.__poly.append(elements[0].__getattribute__(p.attName))
+            self.__polyIdx.append(p.index)
 
     # Gets the value
     def get(self) -> np.array:  
-        nbStrength = len(self.poly)
+        nbStrength = len(self.__poly)
         s = np.zeros(nbStrength)
         for i in range(nbStrength):
-            s[i] = self.poly[i][self.polyIdx[i]] * self.elements[0].Length
-        return self.model.compute_hardware_values(s)
+            s[i] = self.__poly[i][self.__polyIdx[i]] * self.__elements[0].Length
+        return self.__model.compute_hardware_values(s)
 
     # Sets the value
     def set(self, value:np.array):
-        nbStrength = len(self.poly)
-        s = self.model.compute_strengths(value)
+        nbStrength = len(self.__poly)
+        s = self.__model.compute_strengths(value)
         for i in range(nbStrength):
-            self.poly[i][self.polyIdx[i]] = s[i] / self.elements[0].Length
+            self.__poly[i][self.__polyIdx[i]] = s[i] / self.__elements[0].Length
 
     # Sets the value and wait that the read value reach the setpoint
     def set_and_wait(self, value:np.array):
@@ -108,7 +108,7 @@ class RWHardwareArray(abstract.ReadWriteFloatArray):
 
     # Gets the unit of the value
     def unit(self) -> list[str]:
-        return self.model.get_hardware_units()
+        return self.__model.get_hardware_units()
 
 #------------------------------------------------------------------------------
 
@@ -118,28 +118,28 @@ class RWStrengthArray(abstract.ReadWriteFloatArray):
     """
 
     def __init__(self, elements:list[at.Element], poly:list[PolynomInfo], model:MagnetModel):
-        self.elements = elements
-        self.poly = []
-        self.polyIdx = []
-        self.unitconv = model
+        self.__elements = elements
+        self.__poly = []
+        self.__polyIdx = []
+        self.__model = model
         for p in poly:
-            self.poly.append(elements[0].__getattribute__(p.attName))
-            self.polyIdx.append(p.index)
+            self.__poly.append(elements[0].__getattribute__(p.attName))
+            self.__polyIdx.append(p.index)
 
     # Gets the value
     def get(self) -> np.array:  
-        nbStrength = len(self.poly)
+        nbStrength = len(self.__poly)
         s = np.zeros(nbStrength)
         for i in range(nbStrength):
-            s[i] = self.poly[i][self.polyIdx[i]] * self.elements[0].Length
+            s[i] = self.__poly[i][self.__polyIdx[i]] * self.__elements[0].Length
         return s
 
     # Sets the value
     def set(self, value:np.array):
-        nbStrength = len(self.poly)
+        nbStrength = len(self.__poly)
         s = np.zeros(nbStrength)
         for i in range(nbStrength):
-            self.poly[i][self.polyIdx[i]] = value[i] / self.elements[0].Length
+            self.__poly[i][self.__polyIdx[i]] = value[i] / self.__elements[0].Length
 
     # Sets the value and wait that the read value reach the setpoint
     def set_and_wait(self, value:np.array):
@@ -147,7 +147,8 @@ class RWStrengthArray(abstract.ReadWriteFloatArray):
 
     # Gets the unit of the value
     def unit(self) -> list[str]:
-        return self.unitconv.get_strength_units()
+        return self.__model.get_strength_units()
+    
 
 #------------------------------------------------------------------------------
 
@@ -157,11 +158,11 @@ class BPMScalarAggregator(ScalarAggregator):
     """
 
     def __init__(self, ring:at.Lattice):
-        self.lattice = ring
-        self.refpts = []
+        self.__lattice = ring
+        self.__refpts = []
 
     def add_elem(self,elem:at.Element):
-        self.refpts.append(self.lattice.index(elem))
+        self.__refpts.append(self.__lattice.index(elem))
 
     def set(self, value: NDArray[np.float64]):
         pass
@@ -170,7 +171,7 @@ class BPMScalarAggregator(ScalarAggregator):
         pass
 
     def get(self) -> np.array:
-        _, orbit = at.find_orbit(self.lattice, refpts=self.refpts)
+        _, orbit = at.find_orbit(self.__lattice, refpts=self.__refpts)
         return orbit[:, [0, 2]].flatten()
 
     def readback(self) -> np.array:
@@ -187,7 +188,7 @@ class BPMVScalarAggregator(BPMScalarAggregator):
     """
 
     def get(self) -> np.array:
-        _, orbit = at.find_orbit(self.lattice, refpts=self.refpts)
+        _, orbit = at.find_orbit(self.__lattice, refpts=self.__refpts)
         return orbit[:, 0]
 
 #------------------------------------------------------------------------------
@@ -198,7 +199,7 @@ class BPMHScalarAggregator(BPMScalarAggregator):
     """
 
     def get(self) -> np.array:
-        _, orbit = at.find_orbit(self.lattice, refpts=self.refpts)
+        _, orbit = at.find_orbit(self.__lattice, refpts=self.__refpts)
         return orbit[:, 2]
 
 #------------------------------------------------------------------------------
@@ -212,14 +213,14 @@ class RBpmArray(abstract.ReadFloatArray):
     """
 
     def __init__(self, element: at.Element, lattice: at.Lattice):
-        self.element = element
-        self.lattice = lattice
+        self.__element = element
+        self.__lattice = lattice
         
 
     # Gets the value
     def get(self) -> np.array:
-        index = self.lattice.index(self.element)
-        _, orbit = at.find_orbit(self.lattice, refpts=index)
+        index = self.__lattice.index(self.__element)
+        _, orbit = at.find_orbit(self.__lattice, refpts=index)
         return orbit[0, [0, 2]]
 
     # Gets the unit of the value
@@ -235,25 +236,25 @@ class RWBpmOffsetArray(abstract.ReadWriteFloatArray):
     """
 
     def __init__(self, element:at.Element):
-        self.element = element
+        self.__element = element
         try:
-            self.offset = element.__getattribute__('Offset')
+            self.__offset = element.__getattribute__('Offset')
         except AttributeError:
-            self.offset = None
+            self.__offset = None
 
     # Gets the value
     def get(self) -> np.array:  
-        if self.offset is None:
+        if self.__offset is None:
             raise PyAMLException("Element does not have an Offset attribute.")
-        return self.offset
+        return self.__offset
 
     # Sets the value
     def set(self, value:np.array):
-        if self.offset is None:
+        if self.__offset is None:
             raise PyAMLException("Element does not have an Offset attribute.")
         if len(value) != 2:
             raise PyAMLException("BPM offset must be a 2-element array.")
-        self.offset = value
+        self.__offset = value
 
     # Sets the value and wait that the read value reach the setpoint
     def set_and_wait(self, value:np.array):
@@ -272,22 +273,22 @@ class RWBpmTiltScalar(abstract.ReadWriteFloatScalar):
     """
 
     def __init__(self, element:at.Element):
-        self.element = element
+        self.__element = element
         try:
-            self.tilt = element.__getattribute__('Rotation')[0]
+            self.__tilt = element.__getattribute__('Rotation')[0]
         except AttributeError:
-            self.tilt = None
+            self.__tilt = None
 
     # Gets the value
     def get(self) -> float:
-        if self.tilt is None:
+        if self.__tilt is None:
             raise ValueError("Element does not have a Tilt attribute.")
-        return self.tilt
+        return self.__tilt
 
     # Sets the value
     def set(self, value:float, ):
-        self.tilt = value
-        self.element.__setattr__('Rotation', [value, None, None])
+        self.__tilt = value
+        self.__element.__setattr__('Rotation', [value, None, None])
 
     # Sets the value and wait that the read value reach the setpoint
     def set_and_wait(self, value:float):
@@ -305,18 +306,18 @@ class RWRFVoltageScalar(abstract.ReadWriteFloatScalar):
     """
 
     def __init__(self, elements:list[at.Element], transmitter:RFTransmitter):
-        self.elements = elements
+        self.__elements = elements
         self.__transmitter = transmitter
 
     def get(self) -> float:
         sum = 0
-        for idx,e in enumerate(self.elements):
+        for idx,e in enumerate(self.__elements):
             sum += e.Voltage
         return sum
     
     def set(self,value:float):
-        v = value / len(self.elements)
-        for e in self.elements:
+        v = value / len(self.__elements)
+        for e in self.__elements:
             e.Voltage = v
 
     def set_and_wait(self, value:float):

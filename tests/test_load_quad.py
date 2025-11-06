@@ -100,9 +100,9 @@ def test_combined_function_magnets(magnet_file, config_root_dir):
     assert( sUnits[0] == 'rad' and sUnits[1] == 'rad' and sUnits[2] == 'm-1' )
     assert( hUnits[0] == 'A' and hUnits[1] == 'A' and hUnits[2] == 'A')
     ms = sh.attach(DummyPeer(),strengths,currents)
-    hCorr = ms[0]
-    vCorr = ms[1]
-    sqCorr = ms[2]
+    hCorr = ms[1]
+    vCorr = ms[2]
+    sqCorr = ms[3]
     hCorr.strength.set(0.000020)
     vCorr.strength.set(-0.000015)
     sqCorr.strength.set(0.000100)

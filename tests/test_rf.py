@@ -2,8 +2,13 @@ from pyaml.pyaml import pyaml,PyAML
 from pyaml.instrument import Instrument
 from pyaml.configuration.factory import Factory
 import numpy as np
+import pytest
 
-def test_rf():
+@pytest.mark.parametrize("install_test_package", [{
+    "name": "tango-pyaml",
+    "path": "tests/dummy_cs/tango-pyaml"
+}], indirect=True)
+def test_rf(install_test_package):
 
     ml:PyAML = pyaml("tests/config/EBS_rf.yaml")
     sr:Instrument = ml.get('sr')
@@ -35,7 +40,11 @@ def test_rf():
     Factory.clear()
 
 
-def test_rf_multi():
+@pytest.mark.parametrize("install_test_package", [{
+    "name": "tango-pyaml",
+    "path": "tests/dummy_cs/tango-pyaml"
+}], indirect=True)
+def test_rf_multi(install_test_package):
 
     ml:PyAML = pyaml("tests/config/EBS_rf_multi.yaml")
     sr:Instrument = ml.get('sr')

@@ -86,8 +86,9 @@ class ControlSystem(ElementHolder,metaclass=ABCMeta):
         E : float
             Energy in eV
         """
-        for m in self.get_all_magnets().items():
-            m[1].set_energy(E)
+        # Needed by energy dependant element (i.e. magnet coil current calculation)
+        for m in self.get_all_elements():
+            m.set_energy(E)
     
     def fill_device(self,elements:list[Element]):
         """
@@ -104,41 +105,40 @@ class ControlSystem(ElementHolder,metaclass=ABCMeta):
             strength = RWStrengthScalar(e.model) if e.model.has_physics() else None
             # Create a unique ref for this control system
             m = e.attach(self,strength, current)
-            self.add_magnet(m.get_name(),m)
+            self.add_magnet(m)
 
           elif isinstance(e,CombinedFunctionMagnet):
-            self.add_magnet(e.get_name(),e)
             currents = RWHardwareArray(e.model) if e.model.has_hardware() else None
             strengths = RWStrengthArray(e.model) if e.model.has_physics() else None
-            # Create unique refs of each function for this control system
+            # Create unique refs the cfm and each of its function for this control system
             ms = e.attach(self,strengths,currents)
-            for m in ms:
-              self.add_magnet(m.get_name(),m)
+            self.add_cfm_magnet(ms[0])
+            for m in ms[1:]:
+              self.add_magnet(m)
 
           elif isinstance(e,BPM):
             tilt = RWBpmTiltScalar(e.model)
             offsets = RWBpmOffsetArray(e.model)
             positions = RBpmArray(e.model)
             e = e.attach(self,positions, offsets, tilt)
-            self.add_bpm(e.get_name(),e)
+            self.add_bpm(e)
 
 
           elif isinstance(e,RFPlant):
-             self.add_rf_plant(e.get_name(),e)
              attachedTrans: list[RFTransmitter] = []
              for t in e._cfg.transmitters:
                 voltage = RWRFVoltageScalar(t)
                 phase = RWRFPhaseScalar(t)
                 nt = t.attach(self,voltage,phase)
-                self.add_rf_transnmitter(nt.get_name(),nt)
+                self.add_rf_transnmitter(nt)
                 attachedTrans.append(nt)
 
              frequency = RWRFFrequencyScalar(e)
              voltage = RWTotalVoltage(attachedTrans)
              ne = e.attach(self,frequency,voltage)
-             self.add_rf_plant(ne.get_name(),ne)
+             self.add_rf_plant(ne)
 
           elif isinstance(e,BetatronTuneMonitor):
               betatron_tune = RBetatronTuneArray(e)
               e = e.attach(self,betatron_tune)
-              self.add_betatron_tune_monitor(e.get_name(), e)
+              self.add_betatron_tune_monitor(e)

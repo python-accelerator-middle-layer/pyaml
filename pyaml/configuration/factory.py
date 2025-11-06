@@ -1,6 +1,7 @@
 # PyAML factory (construct AML objects from config files)
 import importlib
 from threading import Lock
+import fnmatch
 
 from ..common.exception import PyAMLConfigException
 from ..common.element import Element
@@ -116,10 +117,10 @@ class PyAMLFactory:
 
         try:
             obj = elem_cls(cfg)
+            self.register_element(obj)
         except Exception as e:
             raise PyAMLConfigException(f"{str(e)} when creating '{type_str}.{cls_name}' {location_str}")
 
-        self.register_element(obj)
         return obj
 
 
@@ -154,7 +155,6 @@ class PyAMLFactory:
         if isinstance(elt,Element):
             name = elt.get_name()
             if name in self._elements:
-                print(self._elements)
                 raise PyAMLConfigException(f"element {name} already defined")
             self._elements[name] = elt
 
@@ -163,6 +163,12 @@ class PyAMLFactory:
         if name not in self._elements:
             raise PyAMLConfigException(f"element {name} not defined")
         return self._elements[name]
+    
+    def get_elements_by_name(self,wildcard:str) -> list[Element]:        
+        return [e for k,e in self._elements.items() if fnmatch.fnmatch(k, wildcard)]
+
+    def get_elements_by_type(self,type) -> list[Element]:
+        return [e for k,e in self._elements.items() if isinstance(e,type)]
 
     def clear(self):
         self._elements.clear()
