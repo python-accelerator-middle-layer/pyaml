@@ -1,3 +1,5 @@
+[![Documentation Status](https://readthedocs.org/projects/pyaml/badge/?version=latest)](https://pyaml.readthedocs.io/en/latest/?badge=latest)
+
 # pyAML: Python Accelerator Middle Layer
 
 Disclaimer: the pyAML software is still under development.
