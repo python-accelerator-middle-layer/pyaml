@@ -110,9 +110,10 @@ class ControlSystem(ElementHolder,metaclass=ABCMeta):
           elif isinstance(e,CombinedFunctionMagnet):
             currents = RWHardwareArray(e.model) if e.model.has_hardware() else None
             strengths = RWStrengthArray(e.model) if e.model.has_physics() else None
-            # Create unique refs of each function for this control system
+            # Create unique refs the cfm and each of its function for this control system
             ms = e.attach(self,strengths,currents)
-            for m in ms:
+            self.add_cfm_magnet(ms[0])
+            for m in ms[1:]:
               self.add_magnet(m)
 
           elif isinstance(e,BPM):

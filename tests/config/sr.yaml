@@ -30,6 +30,11 @@ instruments:
           - SH1A-C02-H
           - SH1A-C01-V
           - SH1A-C02-V
+      - type: pyaml.arrays.cfm_magnet
+        name: CFM
+        elements:
+          - SH1A-C01
+          - SH1A-C02
       - type: pyaml.arrays.bpm
         name: BPMS
         elements:

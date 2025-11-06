@@ -4,6 +4,7 @@ from pyaml.instrument import Instrument
 from pyaml.arrays.element_array import ElementArray
 from pyaml.arrays.magnet_array import MagnetArray
 from pyaml.arrays.bpm_array import BPMArray
+from pyaml.arrays.cfm_magnet_array import CombinedFunctionMagnet
 import importlib
 
 import numpy as np
@@ -135,7 +136,7 @@ def test_arrays(install_test_package):
 
     # Create an array that contains all elements
     allElts = ElementArray("AllElements",sr.design.get_all_elements())    
-    assert(len(allElts)==9)
+    assert(len(allElts)==11)
 
     # Create an array that contains all elements
     allMags = MagnetArray("AllMagnets",sr.design.get_all_magnets())    
@@ -144,6 +145,32 @@ def test_arrays(install_test_package):
     # Create an array that contains all BPM
     allBpms = BPMArray("AllBPMs",sr.design.get_all_bpms())    
     assert(len(allBpms)==2)
+
+    cfm = sr.design.get_cfm_magnets("CFM")
+    strHVSQ = cfm.strengths.get()
+    assert(np.abs(strHVSQ[0] - 0.000010)<1e-10)   # H
+    assert(np.abs(strHVSQ[1] - 0.000015)<1e-10)   # V
+    assert(np.abs(strHVSQ[2] + 0.0)<1e-10)        # SQ
+    assert(np.abs(strHVSQ[3] + 0.000008)<1e-10)   # H
+    assert(np.abs(strHVSQ[4] + 0.000017)<1e-10)   # V
+    assert(np.abs(strHVSQ[5] + 0.0)<1e-10)        # SQ
+
+    strHVSQu = cfm.strengths.unit()
+    assert(strHVSQu[0] == "rad")
+    assert(strHVSQu[1] == "rad")
+    assert(strHVSQu[2] == "m-1")
+    assert(strHVSQu[3] == "rad")
+    assert(strHVSQu[4] == "rad")
+    assert(strHVSQu[5] == "m-1")
+
+    cfm.strengths.set([.000010,0.000015,1e-6,-0.000008,-0.000017,1e-6])
+    strHVSQ = cfm.strengths.get()
+    assert(np.abs(strHVSQ[0] - 0.000010)<1e-10)   # H
+    assert(np.abs(strHVSQ[1] - 0.000015)<1e-10)   # V
+    assert(np.abs(strHVSQ[2] - 1.e-6)<1e-10)        # SQ
+    assert(np.abs(strHVSQ[3] + 0.000008)<1e-10)   # H
+    assert(np.abs(strHVSQ[4] + 0.000017)<1e-10)   # V
+    assert(np.abs(strHVSQ[5] - 1e-6)<1e-10)        # SQ
 
     Factory.clear()
 

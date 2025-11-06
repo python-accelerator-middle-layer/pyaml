@@ -3,10 +3,12 @@ Module handling element references for simulators and control system
 """
 from .element import Element
 from ..magnet.magnet import Magnet
+from ..magnet.cfm_magnet import CombinedFunctionMagnet
 from ..bpm.bpm import BPM
 from ..rf.rf_plant import RFPlant
 from ..rf.rf_transmitter import RFTransmitter
 from ..arrays.magnet_array import MagnetArray
+from ..arrays.cfm_magnet_array import CombinedFunctionMagnetArray
 from ..arrays.bpm_array import BPMArray
 from ..arrays.element_array import ElementArray
 from ..common.exception import PyAMLException
@@ -20,6 +22,7 @@ class ElementHolder(object):
     def __init__(self):
         # Device handle
         self.__MAGNETS: dict = {}
+        self.__CFM_MAGNETS: dict = {}
         self.__BPMS: dict = {}
         self.__RFPLANT: dict = {}
         self.__RFTRANSMITTER: dict = {}
@@ -28,6 +31,7 @@ class ElementHolder(object):
 
         # Array handle
         self.__MAGNET_ARRAYS: dict = {}
+        self.__CFM_MAGNET_ARRAYS: dict = {}
         self.__BPM_ARRAYS: dict = {}
         self.__ELEMENT_ARRAYS: dict = {}
 
@@ -87,6 +91,23 @@ class ElementHolder(object):
 
     def get_all_magnets(self) -> list[Magnet]:
        return [value for key, value in self.__MAGNETS.items()]
+
+    # Combined Function Magnets
+    
+    def fill_cfm_magnet_array(self,arrayName:str,elementNames:list[str]):
+      self.fill_array(arrayName,elementNames,self.get_cfm_magnet,CombinedFunctionMagnetArray,self.__CFM_MAGNET_ARRAYS)
+
+    def get_cfm_magnet(self,name:str) -> Magnet:
+       return self.__get("CombinedFunctionMagnet",name,self.__CFM_MAGNETS)
+    
+    def add_cfm_magnet(self,m:Magnet):
+       self.__add(self.__CFM_MAGNETS,m)
+
+    def get_cfm_magnets(self,name:str) -> CombinedFunctionMagnetArray:
+       return self.__get("CombinedFunctionMagnet array",name,self.__CFM_MAGNET_ARRAYS)
+
+    def get_all_cfm_magnets(self) -> list[CombinedFunctionMagnet]:
+       return [value for key, value in self.__CFM_MAGNET_ARRAYS.items()]
     
     # BPMs
 

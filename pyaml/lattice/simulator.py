@@ -98,12 +98,12 @@ class Simulator(ElementHolder):
             self.add_magnet(m)
 
           elif isinstance(e,CombinedFunctionMagnet):
-            #self.add_magnet(e) TODO handle attached combined function manget
             currents = RWHardwareArray(self.get_at_elems(e),e.polynoms,e.model) if e.model.has_physics() else None
             strengths = RWStrengthArray(self.get_at_elems(e),e.polynoms,e.model) if e.model.has_physics() else None
             # Create unique refs of each function for this simulator
             ms = e.attach(self,strengths,currents)
-            for m in ms:
+            self.add_cfm_magnet(ms[0])
+            for m in ms[1:]:
               self.add_magnet(m)
               
           elif isinstance(e,BPM):
