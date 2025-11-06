@@ -1,21 +1,16 @@
 from ..common.element import Element
+from ..magnet.magnet import Magnet
+from ..bpm.bpm import BPM
+from ..magnet.cfm_magnet import CombinedFunctionMagnet
 from ..common.exception import PyAMLException
-
-def get_peer_from_array(array):
-    """
-    Returns the peer (Simulator or ControlSystem) of an element list
-    """
-    peer = array[0]._peer if len(array)>0 else None
-    if peer is None or any([m._peer!=peer for m in array]):
-        raise PyAMLException(f"{array.__class__.__name__} {array.get_name()}:  All elements must be attached to the same instance of either a Simulator or a ControlSystem")
-    return peer
+import importlib
 
 class ElementArray(list[Element]):
     """
     Class that implements access to a magnet array
     """
 
-    def __init__(self,arrayName:str,elements:list[Element]):
+    def __init__(self,arrayName:str,elements:list[Element],use_aggregator = True):
         """
         Construct an element array
 
@@ -29,17 +24,49 @@ class ElementArray(list[Element]):
         """
         super().__init__(i for i in elements)
         self.__name = arrayName
-        holder = get_peer_from_array(self)
-        self.__name = arrayName
+        self.__peer = self[0]._peer if len(self)>0 else None
+        self.__use_aggretator = use_aggregator
+        if self.__peer is None or any([m._peer!=self.__peer for m in self]):
+            raise PyAMLException(f"{self.__class__.__name__} {self.get_name()}:  All elements must be attached to the same instance of either a Simulator or a ControlSystem")
+
+    def get_peer(self):
+        """
+        Returns the peer (Simulator or ControlSystem) of an element list
+        """
+        return self.__peer
 
     def get_name(self) -> str:
         return self.__name
 
     def names(self) -> list[str]:
         return [e.get_name() for e in self]
-
-
     
+    def __getitem__(self,key):
+        if(isinstance(key,int)):
+            return super().__getitem__(key)
+        elif(isinstance(key,slice)):
 
-
-    
+            # Check type
+            eltType = None
+            r = []
+            for i in range(*key.indices(len(self))):
+                if eltType is None:
+                    eltType = type(self[i])
+                elif not isinstance(self[i],eltType):
+                    eltType = Element # Fall back to element
+                r.append(self[i])
+            
+            if issubclass(eltType,Magnet):
+                m = importlib.import_module("pyaml.arrays.magnet_array")
+                arrayClass =  getattr(m, "MagnetArray", None)
+                return arrayClass("",r,self.__use_aggretator)
+            elif issubclass(eltType,BPM):
+                m = importlib.import_module("pyaml.arrays.bpm_array")
+                arrayClass =  getattr(m, "BPMArray", None)
+                return arrayClass("",r,self.__use_aggretator)
+            elif issubclass(eltType,CombinedFunctionMagnet):
+                m = importlib.import_module("pyaml.arrays.cfm_array")
+                arrayClass =  getattr(m, "CombinedFunctionMagnetArray", None)
+                return arrayClass("",r,self.__use_aggretator)
+            else:
+                raise PyAMLException(f"Unsupported sliced array for type {str(eltType)}")
