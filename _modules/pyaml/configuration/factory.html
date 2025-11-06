@@ -40,6 +40,7 @@
 <span></span><span class="c1"># PyAML factory (construct AML objects from config files)</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">importlib</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">threading</span><span class="w"> </span><span class="kn">import</span> <span class="n">Lock</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">fnmatch</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">..common.exception</span><span class="w"> </span><span class="kn">import</span> <span class="n">PyAMLConfigException</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">..common.element</span><span class="w"> </span><span class="kn">import</span> <span class="n">Element</span>
@@ -165,10 +166,10 @@
 
         <span class="k">try</span><span class="p">:</span>
             <span class="n">obj</span> <span class="o">=</span> <span class="n">elem_cls</span><span class="p">(</span><span class="n">cfg</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">register_element</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>
         <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
             <span class="k">raise</span> <span class="n">PyAMLConfigException</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">)</span><span class="si">}</span><span class="s2"> when creating &#39;</span><span class="si">{</span><span class="n">type_str</span><span class="si">}</span><span class="s2">.</span><span class="si">{</span><span class="n">cls_name</span><span class="si">}</span><span class="s2">&#39; </span><span class="si">{</span><span class="n">location_str</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">register_element</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">obj</span></div>
 
 
@@ -207,7 +208,6 @@
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">elt</span><span class="p">,</span><span class="n">Element</span><span class="p">):</span>
             <span class="n">name</span> <span class="o">=</span> <span class="n">elt</span><span class="o">.</span><span class="n">get_name</span><span class="p">()</span>
             <span class="k">if</span> <span class="n">name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_elements</span><span class="p">:</span>
-                <span class="nb">print</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_elements</span><span class="p">)</span>
                 <span class="k">raise</span> <span class="n">PyAMLConfigException</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;element </span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2"> already defined&quot;</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_elements</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">elt</span>
 
@@ -216,6 +216,12 @@
         <span class="k">if</span> <span class="n">name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_elements</span><span class="p">:</span>
             <span class="k">raise</span> <span class="n">PyAMLConfigException</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;element </span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2"> not defined&quot;</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_elements</span><span class="p">[</span><span class="n">name</span><span class="p">]</span>
+    
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_elements_by_name</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">wildcard</span><span class="p">:</span><span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">Element</span><span class="p">]:</span>        
+        <span class="k">return</span> <span class="p">[</span><span class="n">e</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span><span class="n">e</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_elements</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">if</span> <span class="n">fnmatch</span><span class="o">.</span><span class="n">fnmatch</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">wildcard</span><span class="p">)]</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_elements_by_type</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="nb">type</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">Element</span><span class="p">]:</span>
+        <span class="k">return</span> <span class="p">[</span><span class="n">e</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span><span class="n">e</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_elements</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">e</span><span class="p">,</span><span class="nb">type</span><span class="p">)]</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">clear</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_elements</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span></div>
