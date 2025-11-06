@@ -3,7 +3,9 @@ from ..magnet.magnet import Magnet
 from ..bpm.bpm import BPM
 from ..magnet.cfm_magnet import CombinedFunctionMagnet
 from ..common.exception import PyAMLException
+
 import importlib
+import fnmatch
 
 class ElementArray(list[Element]):
     """
@@ -40,13 +42,39 @@ class ElementArray(list[Element]):
 
     def names(self) -> list[str]:
         return [e.get_name() for e in self]
-    
-    def __getitem__(self,key):
-        if(isinstance(key,int)):
-            return super().__getitem__(key)
-        elif(isinstance(key,slice)):
+        
+    def __create_array(self,arrName:str,eltType:type,elements:list):
 
-            # Check type
+        if len(elements)==0:
+            return []
+
+        if issubclass(eltType,Magnet):
+            m = importlib.import_module("pyaml.arrays.magnet_array")
+            arrayClass =  getattr(m, "MagnetArray", None)
+            return arrayClass("",elements,self.__use_aggretator)
+        elif issubclass(eltType,BPM):
+            m = importlib.import_module("pyaml.arrays.bpm_array")
+            arrayClass =  getattr(m, "BPMArray", None)
+            return arrayClass("",elements,self.__use_aggretator)
+        elif issubclass(eltType,CombinedFunctionMagnet):
+            m = importlib.import_module("pyaml.arrays.cfm_array")
+            arrayClass =  getattr(m, "CombinedFunctionMagnetArray", None)
+            return arrayClass("",elements,self.__use_aggretator)
+        elif issubclass(eltType,Element):
+            return ElementArray("",elements,self.__use_aggretator)
+        else:
+            raise PyAMLException(f"Unsupported sliced array for type {str(eltType)}")
+        
+    def __getitem__(self,key):
+
+        if isinstance(key,int):
+
+            # By index
+            return super().__getitem__(key)
+        
+        elif isinstance(key,slice):
+
+            # Slicing
             eltType = None
             r = []
             for i in range(*key.indices(len(self))):
@@ -55,20 +83,18 @@ class ElementArray(list[Element]):
                 elif not isinstance(self[i],eltType):
                     eltType = Element # Fall back to element
                 r.append(self[i])
-            
-            if issubclass(eltType,Magnet):
-                m = importlib.import_module("pyaml.arrays.magnet_array")
-                arrayClass =  getattr(m, "MagnetArray", None)
-                return arrayClass("",r,self.__use_aggretator)
-            elif issubclass(eltType,BPM):
-                m = importlib.import_module("pyaml.arrays.bpm_array")
-                arrayClass =  getattr(m, "BPMArray", None)
-                return arrayClass("",r,self.__use_aggretator)
-            elif issubclass(eltType,CombinedFunctionMagnet):
-                m = importlib.import_module("pyaml.arrays.cfm_array")
-                arrayClass =  getattr(m, "CombinedFunctionMagnetArray", None)
-                return arrayClass("",r,self.__use_aggretator)
-            elif issubclass(eltType,Element):
-                return ElementArray("",r,self.__use_aggretator)
-            else:
-                raise PyAMLException(f"Unsupported sliced array for type {str(eltType)}")
+            return self.__create_array("",eltType,r)
+
+        elif isinstance(key,str):
+
+            # Selection by name
+            eltType = None
+            r = []
+            for e in self:
+                if fnmatch.fnmatch(e.get_name(), key):
+                    if eltType is None:
+                        eltType = type(e)
+                    elif not isinstance(e,eltType):
+                        eltType = Element # Fall back to element
+                    r.append(e)
+            return self.__create_array("",eltType,r)
