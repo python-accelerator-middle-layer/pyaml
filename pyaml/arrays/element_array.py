@@ -68,5 +68,7 @@ class ElementArray(list[Element]):
                 m = importlib.import_module("pyaml.arrays.cfm_array")
                 arrayClass =  getattr(m, "CombinedFunctionMagnetArray", None)
                 return arrayClass("",r,self.__use_aggretator)
+            elif issubclass(eltType,Element):
+                return ElementArray("",r,self.__use_aggretator)
             else:
                 raise PyAMLException(f"Unsupported sliced array for type {str(eltType)}")

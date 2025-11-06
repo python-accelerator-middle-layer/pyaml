@@ -96,7 +96,7 @@ class CombinedFunctionMagnetArray(ElementArray):
         use_aggregator : bool
             Use aggregator to increase performance by using paralell access to underlying devices.
         """
-        super().__init__(arrayName,magnets)
+        super().__init__(arrayName,magnets,use_aggregator)
         
         self.__rwstrengths = RWMagnetStrengths(arrayName,magnets)
         self.__rwhardwares = RWMagnetHardwares(arrayName,magnets)
