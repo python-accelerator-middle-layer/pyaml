@@ -58,7 +58,8 @@ class RWMagnetHardwares(ReadWriteFloatArray):
 
     # Sets the values
     def set(self, value:np.array):
-        nvalue = np.ones(self.__nb) * value if isinstance(value,float) else value        
+        nvalue = np.ones(self.__nb) * value if isinstance(value,float) else value
+        idx = 0
         for m in self.__magnets:
             m.hardwares.set(nvalue[idx:idx+m.nb_multipole()])
             idx+=m.nb_multipole()
