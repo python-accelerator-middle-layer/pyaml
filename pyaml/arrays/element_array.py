@@ -65,14 +65,14 @@ class ElementArray(list[Element]):
         else:
             raise PyAMLException(f"Unsupported sliced array for type {str(eltType)}")
         
+    def __eval_field(self,attName:str,e:Element) -> str:
+        funcName = "get_" + attName
+        func = getattr(e,funcName, None)
+        return func() if func is not None else ""
+
     def __getitem__(self,key):
 
-        if isinstance(key,int):
-
-            # By index
-            return super().__getitem__(key)
-        
-        elif isinstance(key,slice):
+        if isinstance(key,slice):
 
             # Slicing
             eltType = None
@@ -87,14 +87,34 @@ class ElementArray(list[Element]):
 
         elif isinstance(key,str):
 
-            # Selection by name
-            eltType = None
-            r = []
-            for e in self:
-                if fnmatch.fnmatch(e.get_name(), key):
-                    if eltType is None:
-                        eltType = type(e)
-                    elif not isinstance(e,eltType):
-                        eltType = Element # Fall back to element
-                    r.append(e)
+            fields = key.split(':')
+
+            if len(fields)<=1:
+                # Selection by name
+                eltType = None
+                r = []
+                for e in self:
+                    if fnmatch.fnmatch(e.get_name(), key):
+                        if eltType is None:
+                            eltType = type(e)
+                        elif not isinstance(e,eltType):
+                            eltType = Element # Fall back to element
+                        r.append(e)
+            else:
+                # Selection by fields
+                eltType = None
+                r = []
+                for e in self:
+                    txt = self.__eval_field(fields[0],e)
+                    if fnmatch.fnmatch(txt , fields[1]):
+                        if eltType is None:
+                            eltType = type(e)
+                        elif not isinstance(e,eltType):
+                            eltType = Element # Fall back to element
+                        r.append(e)
+
             return self.__create_array("",eltType,r)
+
+        else:
+            # Default to super selection
+            return super().__getitem__(key)
