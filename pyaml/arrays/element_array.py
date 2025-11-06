@@ -9,7 +9,7 @@ import fnmatch
 
 class ElementArray(list[Element]):
     """
-    Class that implements access to a magnet array
+    Class that implements access to a element array
     """
 
     def __init__(self,arrayName:str,elements:list[Element],use_aggregator = True):
@@ -23,6 +23,8 @@ class ElementArray(list[Element]):
         elements: list[Element]
             Element list, all elements must be attached to the same instance of 
             either a Simulator or a ControlSystem.
+        use_aggregator : bool
+            Use aggregator to increase performance by using paralell access to underlying devices.
         """
         super().__init__(i for i in elements)
         self.__name = arrayName
