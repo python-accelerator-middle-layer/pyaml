@@ -57,7 +57,7 @@ class ElementArray(list[Element]):
             arrayClass =  getattr(m, "BPMArray", None)
             return arrayClass("",elements,self.__use_aggretator)
         elif issubclass(eltType,CombinedFunctionMagnet):
-            m = importlib.import_module("pyaml.arrays.cfm_array")
+            m = importlib.import_module("pyaml.arrays.cfm_magnet_array")
             arrayClass =  getattr(m, "CombinedFunctionMagnetArray", None)
             return arrayClass("",elements,self.__use_aggretator)
         elif issubclass(eltType,Element):
