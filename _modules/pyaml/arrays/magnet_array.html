@@ -494,7 +494,7 @@
 <span></span><span class="kn">from</span><span class="w"> </span><span class="nn">..common.abstract</span><span class="w"> </span><span class="kn">import</span> <span class="n">ReadWriteFloatArray</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">..magnet.magnet</span><span class="w"> </span><span class="kn">import</span> <span class="n">Magnet</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">..common.abstract_aggregator</span><span class="w"> </span><span class="kn">import</span> <span class="n">ScalarAggregator</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">.element_array</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_peer_from_array</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.element_array</span><span class="w"> </span><span class="kn">import</span> <span class="n">ElementArray</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 
 <div class="viewcode-block" id="RWMagnetStrength">
@@ -601,7 +601,7 @@
 
 <div class="viewcode-block" id="MagnetArray">
 <a class="viewcode-back" href="../../../modules/arrays.html#pyaml.arrays.magnet_array.MagnetArray">[docs]</a>
-<span class="k">class</span><span class="w"> </span><span class="nc">MagnetArray</span><span class="p">(</span><span class="nb">list</span><span class="p">[</span><span class="n">Magnet</span><span class="p">]):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">MagnetArray</span><span class="p">(</span><span class="n">ElementArray</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Class that implements access to a magnet array</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -620,21 +620,16 @@
 <span class="sd">        use_aggregator : bool</span>
 <span class="sd">            Use aggregator to increase performance by using paralell access to underlying devices.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">magnets</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">__name</span> <span class="o">=</span> <span class="n">arrayName</span>
-        <span class="n">holder</span> <span class="o">=</span> <span class="n">get_peer_from_array</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">arrayName</span><span class="p">,</span><span class="n">magnets</span><span class="p">,</span><span class="n">use_aggregator</span><span class="p">)</span>
         
         <span class="bp">self</span><span class="o">.</span><span class="n">__rwstrengths</span> <span class="o">=</span> <span class="n">RWMagnetStrength</span><span class="p">(</span><span class="n">arrayName</span><span class="p">,</span><span class="n">magnets</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__rwhardwares</span> <span class="o">=</span> <span class="n">RWMagnetHardware</span><span class="p">(</span><span class="n">arrayName</span><span class="p">,</span><span class="n">magnets</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="n">use_aggregator</span><span class="p">:</span>
-            <span class="n">aggs</span> <span class="o">=</span> <span class="n">holder</span><span class="o">.</span><span class="n">create_magnet_strength_aggregator</span><span class="p">(</span><span class="n">magnets</span><span class="p">)</span>
-            <span class="n">aggh</span> <span class="o">=</span> <span class="n">holder</span><span class="o">.</span><span class="n">create_magnet_harddware_aggregator</span><span class="p">(</span><span class="n">magnets</span><span class="p">)</span>
+            <span class="n">aggs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_peer</span><span class="p">()</span><span class="o">.</span><span class="n">create_magnet_strength_aggregator</span><span class="p">(</span><span class="n">magnets</span><span class="p">)</span>
+            <span class="n">aggh</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_peer</span><span class="p">()</span><span class="o">.</span><span class="n">create_magnet_harddware_aggregator</span><span class="p">(</span><span class="n">magnets</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">__rwstrengths</span><span class="o">.</span><span class="n">set_aggregator</span><span class="p">(</span><span class="n">aggs</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">__rwhardwares</span><span class="o">.</span><span class="n">set_aggregator</span><span class="p">(</span><span class="n">aggh</span><span class="p">)</span>
-
-    <span class="k">def</span><span class="w"> </span><span class="nf">get_name</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__name</span>
 
     <span class="nd">@property</span>        
     <span class="k">def</span><span class="w"> </span><span class="nf">strengths</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">RWMagnetStrength</span><span class="p">:</span>
