@@ -1,7 +1,7 @@
 from ..common.abstract import ReadWriteFloatArray
 from ..magnet.magnet import Magnet
 from ..common.abstract_aggregator import ScalarAggregator
-from .element_array import get_peer_from_array
+from .element_array import ElementArray
 import numpy as np
 
 class RWMagnetStrength(ReadWriteFloatArray):
@@ -76,7 +76,7 @@ class RWMagnetHardware(ReadWriteFloatArray):
     def set_aggregator(self,agg:ScalarAggregator):
         self.__aggregator = agg
 
-class MagnetArray(list[Magnet]):
+class MagnetArray(ElementArray):
     """
     Class that implements access to a magnet array
     """
@@ -95,21 +95,16 @@ class MagnetArray(list[Magnet]):
         use_aggregator : bool
             Use aggregator to increase performance by using paralell access to underlying devices.
         """
-        super().__init__(i for i in magnets)
-        self.__name = arrayName
-        holder = get_peer_from_array(self)
+        super().__init__(arrayName,magnets,use_aggregator)
         
         self.__rwstrengths = RWMagnetStrength(arrayName,magnets)
         self.__rwhardwares = RWMagnetHardware(arrayName,magnets)
 
         if use_aggregator:
-            aggs = holder.create_magnet_strength_aggregator(magnets)
-            aggh = holder.create_magnet_harddware_aggregator(magnets)
+            aggs = self.get_peer().create_magnet_strength_aggregator(magnets)
+            aggh = self.get_peer().create_magnet_harddware_aggregator(magnets)
             self.__rwstrengths.set_aggregator(aggs)
             self.__rwhardwares.set_aggregator(aggh)
-
-    def get_name(self) -> str:
-        return self.__name
 
     @property        
     def strengths(self) -> RWMagnetStrength:

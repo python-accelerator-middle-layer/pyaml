@@ -1,6 +1,7 @@
 from ..common.abstract import ReadWriteFloatArray
 from ..magnet.cfm_magnet import CombinedFunctionMagnet
-from .element_array import get_peer_from_array
+from .element_array import ElementArray
+from ..common.exception import PyAMLException
 import numpy as np
 
 #TODO handle aggregator for CFM
@@ -76,7 +77,7 @@ class RWMagnetHardwares(ReadWriteFloatArray):
         return r
 
 
-class CombinedFunctionMagnetArray(list[CombinedFunctionMagnet]):
+class CombinedFunctionMagnetArray(ElementArray):
     """
     Class that implements access to a magnet array
     """
@@ -95,18 +96,13 @@ class CombinedFunctionMagnetArray(list[CombinedFunctionMagnet]):
         use_aggregator : bool
             Use aggregator to increase performance by using paralell access to underlying devices.
         """
-        super().__init__(i for i in magnets)
-        self.__name = arrayName
-        holder = get_peer_from_array(self)
+        super().__init__(arrayName,magnets,use_aggregator)
         
         self.__rwstrengths = RWMagnetStrengths(arrayName,magnets)
         self.__rwhardwares = RWMagnetHardwares(arrayName,magnets)
 
         if use_aggregator:
-            raise("Aggregator not implemented for CombinedFunctionMagnetArray")
-
-    def get_name(self) -> str:
-        return self.__name
+            raise(PyAMLException("Aggregator not implemented for CombinedFunctionMagnetArray"))
 
     @property        
     def strengths(self) -> RWMagnetStrengths:

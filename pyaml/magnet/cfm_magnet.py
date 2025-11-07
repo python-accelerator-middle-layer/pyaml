@@ -77,6 +77,12 @@ class CombinedFunctionMagnet(Element):
              # Attach
              self._peer = peer
 
+    def get_model_name(self) -> str:
+        """
+        Returns the model name of this magnet
+        """
+        return self._cfg.name
+
     def __create_virutal_manget(self,name:str,idx:int) -> Magnet:
             args = {"name":name,"model":self.model}
             mVirtual:Magnet = _fmap[idx](MagnetConfigModel(**args))

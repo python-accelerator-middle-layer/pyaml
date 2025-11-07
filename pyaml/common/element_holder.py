@@ -107,7 +107,7 @@ class ElementHolder(object):
        return self.__get("CombinedFunctionMagnet array",name,self.__CFM_MAGNET_ARRAYS)
 
     def get_all_cfm_magnets(self) -> list[CombinedFunctionMagnet]:
-       return [value for key, value in self.__CFM_MAGNET_ARRAYS.items()]
+       return [value for key, value in self.__CFM_MAGNETS.items()]
     
     # BPMs
 

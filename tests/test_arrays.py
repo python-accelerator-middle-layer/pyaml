@@ -3,8 +3,8 @@ from pyaml.configuration.factory import Factory
 from pyaml.instrument import Instrument
 from pyaml.arrays.element_array import ElementArray
 from pyaml.arrays.magnet_array import MagnetArray
+from pyaml.arrays.cfm_magnet_array import CombinedFunctionMagnetArray
 from pyaml.arrays.bpm_array import BPMArray
-from pyaml.arrays.cfm_magnet_array import CombinedFunctionMagnet
 import importlib
 
 import numpy as np
@@ -171,6 +171,26 @@ def test_arrays(install_test_package):
     assert(np.abs(strHVSQ[3] + 0.000008)<1e-10)   # H
     assert(np.abs(strHVSQ[4] + 0.000017)<1e-10)   # V
     assert(np.abs(strHVSQ[5] - 1e-6)<1e-10)        # SQ
+
+    Factory.clear()
+
+    # Test dynamic arrays
+
+    ml:PyAML = pyaml("tests/config/EBSOrbit.yaml")
+    sr:Instrument = ml.get('sr')
+    ae = ElementArray("All",sr.design.get_all_elements())
+    acfm = ElementArray("AllCFM",sr.design.get_all_cfm_magnets(),use_aggregator=False)
+
+    bpmC5 = ae['BPM*'][10:20] # All BPM C5
+    assert(isinstance(bpmC5,BPMArray) and len(bpmC5)==10)
+    bpmc10 = ae['BPM*C10*'] # All BPM C10
+    assert(isinstance(bpmc10,BPMArray) and len(bpmc10)==10)
+    magSHV = ae['SH*-V'] # All SH vertical corrector
+    assert(isinstance(magSHV,MagnetArray) and len(magSHV)==96)
+    magSH1A = ae['model_name:SH1A-*'] # All SH1A magnets (including the CFMs)
+    assert(isinstance(magSH1A,ElementArray) and len(magSH1A)==129)
+    magSH1AC = acfm['model_name:SH1A-*'] # All SH1A magnets (CFMs only)
+    assert(isinstance(magSH1AC,ElementArray) and len(magSH1AC)==32)
 
     Factory.clear()
 

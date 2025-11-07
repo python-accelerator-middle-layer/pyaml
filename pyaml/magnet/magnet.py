@@ -88,8 +88,14 @@ class Magnet(Element):
      """
      self.__modelName = name
 
+  def get_model_name(self) -> str:
+     """
+     Returns the model name of this magnet
+     """
+     return self.__modelName
+
   def __repr__(self):
-      return "%s(peer='%s', name='%s', model='%s', magnet_model=%s)" % (
+      return "%s(peer='%s', name='%s', model_name='%s', magnet_model=%s)" % (
           self.__class__.__name__,
           self.get_peer(),
           self.get_name(),

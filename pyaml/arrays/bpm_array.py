@@ -1,7 +1,7 @@
 from ..common.abstract import ReadFloatArray
 from ..bpm.bpm import BPM
 from ..control.deviceaccesslist import DeviceAccessList
-from .element_array import get_peer_from_array
+from .element_array import ElementArray
 
 import numpy as np
 
@@ -53,7 +53,7 @@ class RWBPMSinglePosition(ReadFloatArray):
 
 
 
-class BPMArray(list[BPM]):
+class BPMArray(ElementArray):
     """
     Class that implements access to a BPM array
     """
@@ -72,22 +72,17 @@ class BPMArray(list[BPM]):
         use_aggregator : bool
             Use aggregator to increase performance by using paralell access to underlying devices.
         """
-        super().__init__(i for i in bpms)
-        self.__name = arrayName
-        holder = get_peer_from_array(self)
+        super().__init__(arrayName,bpms,use_aggregator)
 
         self.__hvpos = RWBPMPosition(arrayName,bpms)
         self.__hpos = RWBPMSinglePosition(arrayName,bpms,0)
         self.__vpos = RWBPMSinglePosition(arrayName,bpms,1)
 
         if use_aggregator:    
-            aggs = holder.create_bpm_aggregators(bpms)
+            aggs = self.get_peer().create_bpm_aggregators(bpms)
             self.__hvpos.set_aggregator(aggs[0])
             self.__hpos.set_aggregator(aggs[1])
             self.__vpos.set_aggregator(aggs[2])
-
-    def get_name(self) -> str:
-        return self.__name
 
     @property
     def positions(self) -> RWBPMPosition:
