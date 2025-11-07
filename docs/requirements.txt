@@ -7,7 +7,7 @@ sphinxcontrib-mermaid==1.0.0
 myst-parser==4.0.0
 sphinx-hoverxref==1.4.1
 numpy==2.3.4
-pydantic==2.11.0
+pydantic==2.12.4
 accelerator-toolbox==0.7.1
 matplotlib==3.10.7
 ipykernel==7.1.0
