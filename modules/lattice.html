@@ -1,58 +1,517 @@
+
 <!DOCTYPE html>
 
-<html lang="en" data-content_root="../">
+
+<html lang="en" data-content_root="../" >
+
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <title>lattice &#8212; pyAML 0.0.0 documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
-    <link rel="stylesheet" type="text/css" href="../_static/classic.css?v=b682477d" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css" />
     <link rel="stylesheet" type="text/css" href="../_static/css/custom.css" />
-    
-    <script src="../_static/documentation_options.js?v=7026087e"></script>
+  
+  <!-- So that users can add custom icons -->
+  <script src="../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
+
+    <script src="../_static/documentation_options.js?v=3e6ca1ad"></script>
     <script src="../_static/doctools.js?v=9bcbadda"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
-    
+    <script>DOCUMENTATION_OPTIONS.pagename = 'modules/lattice';</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="magnets" href="magnet.html" />
-    <link rel="prev" title="Control" href="control.html" /> 
-  </head><body>
-    <div class="related" role="navigation" aria-label="Related">
-      <h3>Navigation</h3>
-      <ul>
-        <li class="right" style="margin-right: 10px">
-          <a href="../genindex.html" title="General Index"
-             accesskey="I">index</a></li>
-        <li class="right" >
-          <a href="../py-modindex.html" title="Python Module Index"
-             >modules</a> |</li>
-        <li class="right" >
-          <a href="magnet.html" title="magnets"
-             accesskey="N">next</a> |</li>
-        <li class="right" >
-          <a href="control.html" title="Control"
-             accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">pyAML 0.0.0 documentation</a> &#187;</li>
-        <li class="nav-item nav-item-this"><a href="">lattice</a></li> 
-      </ul>
-    </div>  
+    <link rel="prev" title="Control" href="control.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="0.0" />
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
 
-    <div class="document">
-      <div class="documentwrapper">
-        <div class="bodywrapper">
-          <div class="body" role="main">
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/logo.png" class="logo__image only-light" alt="pyAML 0.0.0 documentation - Home"/>
+    <img src="../_static/dark.png" class="logo__image only-dark pst-js-only" alt="pyAML 0.0.0 documentation - Home"/>
+  
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../notebooks/load_configuration.html">
+    Load a configuration file
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../notebooks/live_design.html">
+    Switch design live
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../notebooks/control_system.html">
+    Select a control system
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="arrays.html">
+    ARRAYS
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="bpm.html">
+    BPMS
+  </a>
+</li>
+
+            <li class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button"
+                data-bs-toggle="dropdown" aria-expanded="false"
+                aria-controls="pst-nav-more-links">
+                    More
+                </button>
+                <ul id="pst-nav-more-links" class="dropdown-menu">
+                    
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="configuration.html">
+    Configuration
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="control.html">
+    Control
+  </a>
+</li>
+
+
+<li class=" current active">
+  <a class="nav-link dropdown-item nav-internal" href="#">
+    lattice
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="magnet.html">
+    magnets
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="pyaml.html">
+    pyaml
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="rf.html">
+    RF
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="tuning_tools.html">
+    Tuning tools
+  </a>
+</li>
+
+                </ul>
+            </li>
             
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+        <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+      
+        <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/atcollab/at" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+</ul></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../notebooks/load_configuration.html">
+    Load a configuration file
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../notebooks/live_design.html">
+    Switch design live
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../notebooks/control_system.html">
+    Select a control system
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="arrays.html">
+    ARRAYS
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="bpm.html">
+    BPMS
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="configuration.html">
+    Configuration
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="control.html">
+    Control
+  </a>
+</li>
+
+
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="#">
+    lattice
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="magnet.html">
+    magnets
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="pyaml.html">
+    pyaml
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="rf.html">
+    RF
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="tuning_tools.html">
+    Tuning tools
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+        
+          <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/atcollab/at" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+</ul></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+  <div>
+    <h4>Previous topic</h4>
+    <p class="topless"><a href="control.html"
+                          title="previous chapter">Control</a></p>
+  </div>
+  <div>
+    <h4>Next topic</h4>
+    <p class="topless"><a href="magnet.html"
+                          title="next chapter">magnets</a></p>
+  </div></div>
+        <div class="sidebar-primary-item">
+<div id="searchbox"></div></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">lattice</span></li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
   <section id="module-pyaml.lattice.abstract_impl">
-<span id="lattice"></span><h1>lattice<a class="headerlink" href="#module-pyaml.lattice.abstract_impl" title="Link to this heading">¶</a></h1>
+<span id="lattice"></span><h1>lattice<a class="headerlink" href="#module-pyaml.lattice.abstract_impl" title="Link to this heading">#</a></h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="pyaml.lattice.abstract_impl.BPMHScalarAggregator">
-<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyaml.lattice.abstract_impl.</span></span><span class="sig-name descname"><span class="pre">BPMHScalarAggregator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ring</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Lattice</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/lattice/abstract_impl.html#BPMHScalarAggregator"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.lattice.abstract_impl.BPMHScalarAggregator" title="Link to this definition">¶</a></dt>
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyaml.lattice.abstract_impl.</span></span><span class="sig-name descname"><span class="pre">BPMHScalarAggregator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ring</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Lattice</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/lattice/abstract_impl.html#BPMHScalarAggregator"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.lattice.abstract_impl.BPMHScalarAggregator" title="Link to this definition">#</a></dt>
 <dd><p>Horizontal BPM simulator aggregator</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="pyaml.lattice.abstract_impl.BPMHScalarAggregator.get">
-<span class="sig-name descname"><span class="pre">get</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">array</span></span></span><a class="reference internal" href="../_modules/pyaml/lattice/abstract_impl.html#BPMHScalarAggregator.get"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.lattice.abstract_impl.BPMHScalarAggregator.get" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">get</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">array</span></span></span><a class="reference internal" href="../_modules/pyaml/lattice/abstract_impl.html#BPMHScalarAggregator.get"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.lattice.abstract_impl.BPMHScalarAggregator.get" title="Link to this definition">#</a></dt>
 <dd><p>Return a list variables</p>
 </dd></dl>
 
@@ -60,35 +519,35 @@
 
 <dl class="py class">
 <dt class="sig sig-object py" id="pyaml.lattice.abstract_impl.BPMScalarAggregator">
-<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyaml.lattice.abstract_impl.</span></span><span class="sig-name descname"><span class="pre">BPMScalarAggregator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ring</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Lattice</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/lattice/abstract_impl.html#BPMScalarAggregator"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.lattice.abstract_impl.BPMScalarAggregator" title="Link to this definition">¶</a></dt>
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyaml.lattice.abstract_impl.</span></span><span class="sig-name descname"><span class="pre">BPMScalarAggregator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ring</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Lattice</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/lattice/abstract_impl.html#BPMScalarAggregator"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.lattice.abstract_impl.BPMScalarAggregator" title="Link to this definition">#</a></dt>
 <dd><p>BPM simulator aggregator</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="pyaml.lattice.abstract_impl.BPMScalarAggregator.get">
-<span class="sig-name descname"><span class="pre">get</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">array</span></span></span><a class="reference internal" href="../_modules/pyaml/lattice/abstract_impl.html#BPMScalarAggregator.get"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.lattice.abstract_impl.BPMScalarAggregator.get" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">get</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">array</span></span></span><a class="reference internal" href="../_modules/pyaml/lattice/abstract_impl.html#BPMScalarAggregator.get"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.lattice.abstract_impl.BPMScalarAggregator.get" title="Link to this definition">#</a></dt>
 <dd><p>Return a list variables</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pyaml.lattice.abstract_impl.BPMScalarAggregator.readback">
-<span class="sig-name descname"><span class="pre">readback</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">array</span></span></span><a class="reference internal" href="../_modules/pyaml/lattice/abstract_impl.html#BPMScalarAggregator.readback"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.lattice.abstract_impl.BPMScalarAggregator.readback" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">readback</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">array</span></span></span><a class="reference internal" href="../_modules/pyaml/lattice/abstract_impl.html#BPMScalarAggregator.readback"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.lattice.abstract_impl.BPMScalarAggregator.readback" title="Link to this definition">#</a></dt>
 <dd><p>Return  a list variables (measurements)</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pyaml.lattice.abstract_impl.BPMScalarAggregator.set">
-<span class="sig-name descname"><span class="pre">set</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span><span class="p"><span class="pre">[</span></span><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">dtype</span><span class="p"><span class="pre">[</span></span><span class="pre">float64</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/lattice/abstract_impl.html#BPMScalarAggregator.set"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.lattice.abstract_impl.BPMScalarAggregator.set" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">set</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span><span class="p"><span class="pre">[</span></span><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">dtype</span><span class="p"><span class="pre">[</span></span><span class="pre">float64</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/lattice/abstract_impl.html#BPMScalarAggregator.set"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.lattice.abstract_impl.BPMScalarAggregator.set" title="Link to this definition">#</a></dt>
 <dd><p>Write a list of variable</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pyaml.lattice.abstract_impl.BPMScalarAggregator.set_and_wait">
-<span class="sig-name descname"><span class="pre">set_and_wait</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span><span class="p"><span class="pre">[</span></span><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">dtype</span><span class="p"><span class="pre">[</span></span><span class="pre">float64</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/lattice/abstract_impl.html#BPMScalarAggregator.set_and_wait"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.lattice.abstract_impl.BPMScalarAggregator.set_and_wait" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">set_and_wait</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span><span class="p"><span class="pre">[</span></span><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">dtype</span><span class="p"><span class="pre">[</span></span><span class="pre">float64</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/lattice/abstract_impl.html#BPMScalarAggregator.set_and_wait"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.lattice.abstract_impl.BPMScalarAggregator.set_and_wait" title="Link to this definition">#</a></dt>
 <dd><p>Write a list of variable and wait that setpoint are reached</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pyaml.lattice.abstract_impl.BPMScalarAggregator.unit">
-<span class="sig-name descname"><span class="pre">unit</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../_modules/pyaml/lattice/abstract_impl.html#BPMScalarAggregator.unit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.lattice.abstract_impl.BPMScalarAggregator.unit" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">unit</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../_modules/pyaml/lattice/abstract_impl.html#BPMScalarAggregator.unit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.lattice.abstract_impl.BPMScalarAggregator.unit" title="Link to this definition">#</a></dt>
 <dd><p>Return the variables unit</p>
 </dd></dl>
 
@@ -96,11 +555,11 @@
 
 <dl class="py class">
 <dt class="sig sig-object py" id="pyaml.lattice.abstract_impl.BPMVScalarAggregator">
-<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyaml.lattice.abstract_impl.</span></span><span class="sig-name descname"><span class="pre">BPMVScalarAggregator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ring</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Lattice</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/lattice/abstract_impl.html#BPMVScalarAggregator"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.lattice.abstract_impl.BPMVScalarAggregator" title="Link to this definition">¶</a></dt>
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyaml.lattice.abstract_impl.</span></span><span class="sig-name descname"><span class="pre">BPMVScalarAggregator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ring</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Lattice</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/lattice/abstract_impl.html#BPMVScalarAggregator"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.lattice.abstract_impl.BPMVScalarAggregator" title="Link to this definition">#</a></dt>
 <dd><p>Vertical BPM simulator aggregator</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="pyaml.lattice.abstract_impl.BPMVScalarAggregator.get">
-<span class="sig-name descname"><span class="pre">get</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">array</span></span></span><a class="reference internal" href="../_modules/pyaml/lattice/abstract_impl.html#BPMVScalarAggregator.get"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.lattice.abstract_impl.BPMVScalarAggregator.get" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">get</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">array</span></span></span><a class="reference internal" href="../_modules/pyaml/lattice/abstract_impl.html#BPMVScalarAggregator.get"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.lattice.abstract_impl.BPMVScalarAggregator.get" title="Link to this definition">#</a></dt>
 <dd><p>Return a list variables</p>
 </dd></dl>
 
@@ -108,17 +567,17 @@
 
 <dl class="py class">
 <dt class="sig sig-object py" id="pyaml.lattice.abstract_impl.RBetatronTuneArray">
-<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyaml.lattice.abstract_impl.</span></span><span class="sig-name descname"><span class="pre">RBetatronTuneArray</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ring</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Lattice</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/lattice/abstract_impl.html#RBetatronTuneArray"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.lattice.abstract_impl.RBetatronTuneArray" title="Link to this definition">¶</a></dt>
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyaml.lattice.abstract_impl.</span></span><span class="sig-name descname"><span class="pre">RBetatronTuneArray</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ring</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Lattice</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/lattice/abstract_impl.html#RBetatronTuneArray"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.lattice.abstract_impl.RBetatronTuneArray" title="Link to this definition">#</a></dt>
 <dd><p>Class providing read-only access to the betatron tune of a ring.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="pyaml.lattice.abstract_impl.RBetatronTuneArray.get">
-<span class="sig-name descname"><span class="pre">get</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="reference internal" href="../_modules/pyaml/lattice/abstract_impl.html#RBetatronTuneArray.get"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.lattice.abstract_impl.RBetatronTuneArray.get" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">get</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="reference internal" href="../_modules/pyaml/lattice/abstract_impl.html#RBetatronTuneArray.get"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.lattice.abstract_impl.RBetatronTuneArray.get" title="Link to this definition">#</a></dt>
 <dd><p>Get the value</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pyaml.lattice.abstract_impl.RBetatronTuneArray.unit">
-<span class="sig-name descname"><span class="pre">unit</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../_modules/pyaml/lattice/abstract_impl.html#RBetatronTuneArray.unit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.lattice.abstract_impl.RBetatronTuneArray.unit" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">unit</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../_modules/pyaml/lattice/abstract_impl.html#RBetatronTuneArray.unit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.lattice.abstract_impl.RBetatronTuneArray.unit" title="Link to this definition">#</a></dt>
 <dd><p>Get the unit of the values</p>
 </dd></dl>
 
@@ -126,20 +585,20 @@
 
 <dl class="py class">
 <dt class="sig sig-object py" id="pyaml.lattice.abstract_impl.RBpmArray">
-<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyaml.lattice.abstract_impl.</span></span><span class="sig-name descname"><span class="pre">RBpmArray</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">element</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Element</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lattice</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Lattice</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/lattice/abstract_impl.html#RBpmArray"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.lattice.abstract_impl.RBpmArray" title="Link to this definition">¶</a></dt>
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyaml.lattice.abstract_impl.</span></span><span class="sig-name descname"><span class="pre">RBpmArray</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">element</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Element</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lattice</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Lattice</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/lattice/abstract_impl.html#RBpmArray"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.lattice.abstract_impl.RBpmArray" title="Link to this definition">#</a></dt>
 <dd><p>Class providing read access to a BPM position (array) of a simulator.
 Position in pyAT is calculated using find_orbit function, which returns the
 orbit at a specified index. The position is then extracted from the orbit
 array as the first two elements (x, y).</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="pyaml.lattice.abstract_impl.RBpmArray.get">
-<span class="sig-name descname"><span class="pre">get</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">array</span></span></span><a class="reference internal" href="../_modules/pyaml/lattice/abstract_impl.html#RBpmArray.get"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.lattice.abstract_impl.RBpmArray.get" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">get</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">array</span></span></span><a class="reference internal" href="../_modules/pyaml/lattice/abstract_impl.html#RBpmArray.get"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.lattice.abstract_impl.RBpmArray.get" title="Link to this definition">#</a></dt>
 <dd><p>Get the value</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pyaml.lattice.abstract_impl.RBpmArray.unit">
-<span class="sig-name descname"><span class="pre">unit</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../_modules/pyaml/lattice/abstract_impl.html#RBpmArray.unit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.lattice.abstract_impl.RBpmArray.unit" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">unit</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../_modules/pyaml/lattice/abstract_impl.html#RBpmArray.unit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.lattice.abstract_impl.RBpmArray.unit" title="Link to this definition">#</a></dt>
 <dd><p>Get the unit of the values</p>
 </dd></dl>
 
@@ -147,30 +606,30 @@ array as the first two elements (x, y).</p>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="pyaml.lattice.abstract_impl.RWBpmOffsetArray">
-<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyaml.lattice.abstract_impl.</span></span><span class="sig-name descname"><span class="pre">RWBpmOffsetArray</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">element</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Element</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/lattice/abstract_impl.html#RWBpmOffsetArray"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.lattice.abstract_impl.RWBpmOffsetArray" title="Link to this definition">¶</a></dt>
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyaml.lattice.abstract_impl.</span></span><span class="sig-name descname"><span class="pre">RWBpmOffsetArray</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">element</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Element</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/lattice/abstract_impl.html#RWBpmOffsetArray"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.lattice.abstract_impl.RWBpmOffsetArray" title="Link to this definition">#</a></dt>
 <dd><p>Class providing read write access to a BPM offset (array) of a simulator.
 Offset in pyAT is defined in Offset attribute as a 2-element array.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="pyaml.lattice.abstract_impl.RWBpmOffsetArray.get">
-<span class="sig-name descname"><span class="pre">get</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">array</span></span></span><a class="reference internal" href="../_modules/pyaml/lattice/abstract_impl.html#RWBpmOffsetArray.get"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.lattice.abstract_impl.RWBpmOffsetArray.get" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">get</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">array</span></span></span><a class="reference internal" href="../_modules/pyaml/lattice/abstract_impl.html#RWBpmOffsetArray.get"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.lattice.abstract_impl.RWBpmOffsetArray.get" title="Link to this definition">#</a></dt>
 <dd><p>Get the value</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pyaml.lattice.abstract_impl.RWBpmOffsetArray.set">
-<span class="sig-name descname"><span class="pre">set</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">array</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/lattice/abstract_impl.html#RWBpmOffsetArray.set"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.lattice.abstract_impl.RWBpmOffsetArray.set" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">set</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">array</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/lattice/abstract_impl.html#RWBpmOffsetArray.set"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.lattice.abstract_impl.RWBpmOffsetArray.set" title="Link to this definition">#</a></dt>
 <dd><p>Set the values</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pyaml.lattice.abstract_impl.RWBpmOffsetArray.set_and_wait">
-<span class="sig-name descname"><span class="pre">set_and_wait</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">array</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/lattice/abstract_impl.html#RWBpmOffsetArray.set_and_wait"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.lattice.abstract_impl.RWBpmOffsetArray.set_and_wait" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">set_and_wait</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">array</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/lattice/abstract_impl.html#RWBpmOffsetArray.set_and_wait"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.lattice.abstract_impl.RWBpmOffsetArray.set_and_wait" title="Link to this definition">#</a></dt>
 <dd><p>Set the values and wait that setpoints are reached</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pyaml.lattice.abstract_impl.RWBpmOffsetArray.unit">
-<span class="sig-name descname"><span class="pre">unit</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../_modules/pyaml/lattice/abstract_impl.html#RWBpmOffsetArray.unit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.lattice.abstract_impl.RWBpmOffsetArray.unit" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">unit</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../_modules/pyaml/lattice/abstract_impl.html#RWBpmOffsetArray.unit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.lattice.abstract_impl.RWBpmOffsetArray.unit" title="Link to this definition">#</a></dt>
 <dd><p>Get the unit of the value</p>
 </dd></dl>
 
@@ -178,30 +637,30 @@ Offset in pyAT is defined in Offset attribute as a 2-element array.</p>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="pyaml.lattice.abstract_impl.RWBpmTiltScalar">
-<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyaml.lattice.abstract_impl.</span></span><span class="sig-name descname"><span class="pre">RWBpmTiltScalar</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">element</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Element</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/lattice/abstract_impl.html#RWBpmTiltScalar"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.lattice.abstract_impl.RWBpmTiltScalar" title="Link to this definition">¶</a></dt>
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyaml.lattice.abstract_impl.</span></span><span class="sig-name descname"><span class="pre">RWBpmTiltScalar</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">element</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Element</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/lattice/abstract_impl.html#RWBpmTiltScalar"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.lattice.abstract_impl.RWBpmTiltScalar" title="Link to this definition">#</a></dt>
 <dd><p>Class providing read write access to a BPM tilt of a simulator. Tilt in
 pyAT is defined in Rotation attribute as a first element.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="pyaml.lattice.abstract_impl.RWBpmTiltScalar.get">
-<span class="sig-name descname"><span class="pre">get</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="reference internal" href="../_modules/pyaml/lattice/abstract_impl.html#RWBpmTiltScalar.get"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.lattice.abstract_impl.RWBpmTiltScalar.get" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">get</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="reference internal" href="../_modules/pyaml/lattice/abstract_impl.html#RWBpmTiltScalar.get"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.lattice.abstract_impl.RWBpmTiltScalar.get" title="Link to this definition">#</a></dt>
 <dd><p>Get the value</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pyaml.lattice.abstract_impl.RWBpmTiltScalar.set">
-<span class="sig-name descname"><span class="pre">set</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/lattice/abstract_impl.html#RWBpmTiltScalar.set"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.lattice.abstract_impl.RWBpmTiltScalar.set" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">set</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/lattice/abstract_impl.html#RWBpmTiltScalar.set"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.lattice.abstract_impl.RWBpmTiltScalar.set" title="Link to this definition">#</a></dt>
 <dd><p>Set the value</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pyaml.lattice.abstract_impl.RWBpmTiltScalar.set_and_wait">
-<span class="sig-name descname"><span class="pre">set_and_wait</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/lattice/abstract_impl.html#RWBpmTiltScalar.set_and_wait"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.lattice.abstract_impl.RWBpmTiltScalar.set_and_wait" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">set_and_wait</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/lattice/abstract_impl.html#RWBpmTiltScalar.set_and_wait"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.lattice.abstract_impl.RWBpmTiltScalar.set_and_wait" title="Link to this definition">#</a></dt>
 <dd><p>Set the value and wait that setpoint is reached</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pyaml.lattice.abstract_impl.RWBpmTiltScalar.unit">
-<span class="sig-name descname"><span class="pre">unit</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../_modules/pyaml/lattice/abstract_impl.html#RWBpmTiltScalar.unit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.lattice.abstract_impl.RWBpmTiltScalar.unit" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">unit</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../_modules/pyaml/lattice/abstract_impl.html#RWBpmTiltScalar.unit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.lattice.abstract_impl.RWBpmTiltScalar.unit" title="Link to this definition">#</a></dt>
 <dd><p>Get the unit of the value</p>
 </dd></dl>
 
@@ -209,30 +668,30 @@ pyAT is defined in Rotation attribute as a first element.</p>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="pyaml.lattice.abstract_impl.RWHardwareArray">
-<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyaml.lattice.abstract_impl.</span></span><span class="sig-name descname"><span class="pre">RWHardwareArray</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">elements</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">Element</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">poly</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#pyaml.lattice.polynom_info.PolynomInfo" title="pyaml.lattice.polynom_info.PolynomInfo"><span class="pre">PolynomInfo</span></a><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">MagnetModel</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/lattice/abstract_impl.html#RWHardwareArray"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.lattice.abstract_impl.RWHardwareArray" title="Link to this definition">¶</a></dt>
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyaml.lattice.abstract_impl.</span></span><span class="sig-name descname"><span class="pre">RWHardwareArray</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">elements</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">Element</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">poly</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#pyaml.lattice.polynom_info.PolynomInfo" title="pyaml.lattice.polynom_info.PolynomInfo"><span class="pre">PolynomInfo</span></a><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">MagnetModel</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/lattice/abstract_impl.html#RWHardwareArray"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.lattice.abstract_impl.RWHardwareArray" title="Link to this definition">#</a></dt>
 <dd><p>Class providing read write access to a magnet of a simulator in hardware units.
 Hardware units are converted from strengths using the magnet model</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="pyaml.lattice.abstract_impl.RWHardwareArray.get">
-<span class="sig-name descname"><span class="pre">get</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">array</span></span></span><a class="reference internal" href="../_modules/pyaml/lattice/abstract_impl.html#RWHardwareArray.get"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.lattice.abstract_impl.RWHardwareArray.get" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">get</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">array</span></span></span><a class="reference internal" href="../_modules/pyaml/lattice/abstract_impl.html#RWHardwareArray.get"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.lattice.abstract_impl.RWHardwareArray.get" title="Link to this definition">#</a></dt>
 <dd><p>Get the value</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pyaml.lattice.abstract_impl.RWHardwareArray.set">
-<span class="sig-name descname"><span class="pre">set</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">array</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/lattice/abstract_impl.html#RWHardwareArray.set"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.lattice.abstract_impl.RWHardwareArray.set" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">set</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">array</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/lattice/abstract_impl.html#RWHardwareArray.set"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.lattice.abstract_impl.RWHardwareArray.set" title="Link to this definition">#</a></dt>
 <dd><p>Set the values</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pyaml.lattice.abstract_impl.RWHardwareArray.set_and_wait">
-<span class="sig-name descname"><span class="pre">set_and_wait</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">array</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/lattice/abstract_impl.html#RWHardwareArray.set_and_wait"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.lattice.abstract_impl.RWHardwareArray.set_and_wait" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">set_and_wait</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">array</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/lattice/abstract_impl.html#RWHardwareArray.set_and_wait"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.lattice.abstract_impl.RWHardwareArray.set_and_wait" title="Link to this definition">#</a></dt>
 <dd><p>Set the values and wait that setpoints are reached</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pyaml.lattice.abstract_impl.RWHardwareArray.unit">
-<span class="sig-name descname"><span class="pre">unit</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/pyaml/lattice/abstract_impl.html#RWHardwareArray.unit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.lattice.abstract_impl.RWHardwareArray.unit" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">unit</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/pyaml/lattice/abstract_impl.html#RWHardwareArray.unit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.lattice.abstract_impl.RWHardwareArray.unit" title="Link to this definition">#</a></dt>
 <dd><p>Get the unit of the value</p>
 </dd></dl>
 
@@ -240,30 +699,30 @@ Hardware units are converted from strengths using the magnet model</p>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="pyaml.lattice.abstract_impl.RWHardwareScalar">
-<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyaml.lattice.abstract_impl.</span></span><span class="sig-name descname"><span class="pre">RWHardwareScalar</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">elements</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">Element</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">poly</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#pyaml.lattice.polynom_info.PolynomInfo" title="pyaml.lattice.polynom_info.PolynomInfo"><span class="pre">PolynomInfo</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">model</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">MagnetModel</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/lattice/abstract_impl.html#RWHardwareScalar"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.lattice.abstract_impl.RWHardwareScalar" title="Link to this definition">¶</a></dt>
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyaml.lattice.abstract_impl.</span></span><span class="sig-name descname"><span class="pre">RWHardwareScalar</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">elements</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">Element</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">poly</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#pyaml.lattice.polynom_info.PolynomInfo" title="pyaml.lattice.polynom_info.PolynomInfo"><span class="pre">PolynomInfo</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">model</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">MagnetModel</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/lattice/abstract_impl.html#RWHardwareScalar"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.lattice.abstract_impl.RWHardwareScalar" title="Link to this definition">#</a></dt>
 <dd><p>Class providing read write access to a magnet of a simulator in hardware unit.
 Hardware unit is converted from strength using the magnet model</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="pyaml.lattice.abstract_impl.RWHardwareScalar.get">
-<span class="sig-name descname"><span class="pre">get</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="reference internal" href="../_modules/pyaml/lattice/abstract_impl.html#RWHardwareScalar.get"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.lattice.abstract_impl.RWHardwareScalar.get" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">get</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="reference internal" href="../_modules/pyaml/lattice/abstract_impl.html#RWHardwareScalar.get"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.lattice.abstract_impl.RWHardwareScalar.get" title="Link to this definition">#</a></dt>
 <dd><p>Get the value</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pyaml.lattice.abstract_impl.RWHardwareScalar.set">
-<span class="sig-name descname"><span class="pre">set</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/lattice/abstract_impl.html#RWHardwareScalar.set"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.lattice.abstract_impl.RWHardwareScalar.set" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">set</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/lattice/abstract_impl.html#RWHardwareScalar.set"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.lattice.abstract_impl.RWHardwareScalar.set" title="Link to this definition">#</a></dt>
 <dd><p>Set the value</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pyaml.lattice.abstract_impl.RWHardwareScalar.set_and_wait">
-<span class="sig-name descname"><span class="pre">set_and_wait</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/lattice/abstract_impl.html#RWHardwareScalar.set_and_wait"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.lattice.abstract_impl.RWHardwareScalar.set_and_wait" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">set_and_wait</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/lattice/abstract_impl.html#RWHardwareScalar.set_and_wait"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.lattice.abstract_impl.RWHardwareScalar.set_and_wait" title="Link to this definition">#</a></dt>
 <dd><p>Set the value and wait that setpoint is reached</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pyaml.lattice.abstract_impl.RWHardwareScalar.unit">
-<span class="sig-name descname"><span class="pre">unit</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../_modules/pyaml/lattice/abstract_impl.html#RWHardwareScalar.unit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.lattice.abstract_impl.RWHardwareScalar.unit" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">unit</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../_modules/pyaml/lattice/abstract_impl.html#RWHardwareScalar.unit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.lattice.abstract_impl.RWHardwareScalar.unit" title="Link to this definition">#</a></dt>
 <dd><p>Get the unit of the value</p>
 </dd></dl>
 
@@ -271,29 +730,29 @@ Hardware unit is converted from strength using the magnet model</p>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="pyaml.lattice.abstract_impl.RWRFFrequencyScalar">
-<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyaml.lattice.abstract_impl.</span></span><span class="sig-name descname"><span class="pre">RWRFFrequencyScalar</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">elements</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">Element</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">harmonics</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rf</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="rf.html#pyaml.rf.rf_plant.RFPlant" title="pyaml.rf.rf_plant.RFPlant"><span class="pre">RFPlant</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/lattice/abstract_impl.html#RWRFFrequencyScalar"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.lattice.abstract_impl.RWRFFrequencyScalar" title="Link to this definition">¶</a></dt>
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyaml.lattice.abstract_impl.</span></span><span class="sig-name descname"><span class="pre">RWRFFrequencyScalar</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">elements</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">Element</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">harmonics</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rf</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="rf.html#pyaml.rf.rf_plant.RFPlant" title="pyaml.rf.rf_plant.RFPlant"><span class="pre">RFPlant</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/lattice/abstract_impl.html#RWRFFrequencyScalar"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.lattice.abstract_impl.RWRFFrequencyScalar" title="Link to this definition">#</a></dt>
 <dd><p>Class providing read write access to RF frequency of a simulator.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="pyaml.lattice.abstract_impl.RWRFFrequencyScalar.get">
-<span class="sig-name descname"><span class="pre">get</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="reference internal" href="../_modules/pyaml/lattice/abstract_impl.html#RWRFFrequencyScalar.get"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.lattice.abstract_impl.RWRFFrequencyScalar.get" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">get</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="reference internal" href="../_modules/pyaml/lattice/abstract_impl.html#RWRFFrequencyScalar.get"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.lattice.abstract_impl.RWRFFrequencyScalar.get" title="Link to this definition">#</a></dt>
 <dd><p>Get the value</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pyaml.lattice.abstract_impl.RWRFFrequencyScalar.set">
-<span class="sig-name descname"><span class="pre">set</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/lattice/abstract_impl.html#RWRFFrequencyScalar.set"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.lattice.abstract_impl.RWRFFrequencyScalar.set" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">set</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/lattice/abstract_impl.html#RWRFFrequencyScalar.set"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.lattice.abstract_impl.RWRFFrequencyScalar.set" title="Link to this definition">#</a></dt>
 <dd><p>Set the value</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pyaml.lattice.abstract_impl.RWRFFrequencyScalar.set_and_wait">
-<span class="sig-name descname"><span class="pre">set_and_wait</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/lattice/abstract_impl.html#RWRFFrequencyScalar.set_and_wait"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.lattice.abstract_impl.RWRFFrequencyScalar.set_and_wait" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">set_and_wait</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/lattice/abstract_impl.html#RWRFFrequencyScalar.set_and_wait"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.lattice.abstract_impl.RWRFFrequencyScalar.set_and_wait" title="Link to this definition">#</a></dt>
 <dd><p>Set the value and wait that setpoint is reached</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pyaml.lattice.abstract_impl.RWRFFrequencyScalar.unit">
-<span class="sig-name descname"><span class="pre">unit</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../_modules/pyaml/lattice/abstract_impl.html#RWRFFrequencyScalar.unit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.lattice.abstract_impl.RWRFFrequencyScalar.unit" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">unit</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../_modules/pyaml/lattice/abstract_impl.html#RWRFFrequencyScalar.unit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.lattice.abstract_impl.RWRFFrequencyScalar.unit" title="Link to this definition">#</a></dt>
 <dd><p>Get the unit of the value</p>
 </dd></dl>
 
@@ -301,29 +760,29 @@ Hardware unit is converted from strength using the magnet model</p>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="pyaml.lattice.abstract_impl.RWRFPhaseScalar">
-<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyaml.lattice.abstract_impl.</span></span><span class="sig-name descname"><span class="pre">RWRFPhaseScalar</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">elements</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">Element</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">transmitter</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="rf.html#pyaml.rf.rf_transmitter.RFTransmitter" title="pyaml.rf.rf_transmitter.RFTransmitter"><span class="pre">RFTransmitter</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/lattice/abstract_impl.html#RWRFPhaseScalar"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.lattice.abstract_impl.RWRFPhaseScalar" title="Link to this definition">¶</a></dt>
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyaml.lattice.abstract_impl.</span></span><span class="sig-name descname"><span class="pre">RWRFPhaseScalar</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">elements</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">Element</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">transmitter</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="rf.html#pyaml.rf.rf_transmitter.RFTransmitter" title="pyaml.rf.rf_transmitter.RFTransmitter"><span class="pre">RFTransmitter</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/lattice/abstract_impl.html#RWRFPhaseScalar"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.lattice.abstract_impl.RWRFPhaseScalar" title="Link to this definition">#</a></dt>
 <dd><p>Class providing read write access to a cavity phase of a simulator for a given RF trasnmitter.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="pyaml.lattice.abstract_impl.RWRFPhaseScalar.get">
-<span class="sig-name descname"><span class="pre">get</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="reference internal" href="../_modules/pyaml/lattice/abstract_impl.html#RWRFPhaseScalar.get"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.lattice.abstract_impl.RWRFPhaseScalar.get" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">get</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="reference internal" href="../_modules/pyaml/lattice/abstract_impl.html#RWRFPhaseScalar.get"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.lattice.abstract_impl.RWRFPhaseScalar.get" title="Link to this definition">#</a></dt>
 <dd><p>Get the value</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pyaml.lattice.abstract_impl.RWRFPhaseScalar.set">
-<span class="sig-name descname"><span class="pre">set</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/lattice/abstract_impl.html#RWRFPhaseScalar.set"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.lattice.abstract_impl.RWRFPhaseScalar.set" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">set</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/lattice/abstract_impl.html#RWRFPhaseScalar.set"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.lattice.abstract_impl.RWRFPhaseScalar.set" title="Link to this definition">#</a></dt>
 <dd><p>Set the value</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pyaml.lattice.abstract_impl.RWRFPhaseScalar.set_and_wait">
-<span class="sig-name descname"><span class="pre">set_and_wait</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/lattice/abstract_impl.html#RWRFPhaseScalar.set_and_wait"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.lattice.abstract_impl.RWRFPhaseScalar.set_and_wait" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">set_and_wait</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/lattice/abstract_impl.html#RWRFPhaseScalar.set_and_wait"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.lattice.abstract_impl.RWRFPhaseScalar.set_and_wait" title="Link to this definition">#</a></dt>
 <dd><p>Set the value and wait that setpoint is reached</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pyaml.lattice.abstract_impl.RWRFPhaseScalar.unit">
-<span class="sig-name descname"><span class="pre">unit</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../_modules/pyaml/lattice/abstract_impl.html#RWRFPhaseScalar.unit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.lattice.abstract_impl.RWRFPhaseScalar.unit" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">unit</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../_modules/pyaml/lattice/abstract_impl.html#RWRFPhaseScalar.unit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.lattice.abstract_impl.RWRFPhaseScalar.unit" title="Link to this definition">#</a></dt>
 <dd><p>Get the unit of the value</p>
 </dd></dl>
 
@@ -331,29 +790,29 @@ Hardware unit is converted from strength using the magnet model</p>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="pyaml.lattice.abstract_impl.RWRFVoltageScalar">
-<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyaml.lattice.abstract_impl.</span></span><span class="sig-name descname"><span class="pre">RWRFVoltageScalar</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">elements</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">Element</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">transmitter</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="rf.html#pyaml.rf.rf_transmitter.RFTransmitter" title="pyaml.rf.rf_transmitter.RFTransmitter"><span class="pre">RFTransmitter</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/lattice/abstract_impl.html#RWRFVoltageScalar"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.lattice.abstract_impl.RWRFVoltageScalar" title="Link to this definition">¶</a></dt>
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyaml.lattice.abstract_impl.</span></span><span class="sig-name descname"><span class="pre">RWRFVoltageScalar</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">elements</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">Element</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">transmitter</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="rf.html#pyaml.rf.rf_transmitter.RFTransmitter" title="pyaml.rf.rf_transmitter.RFTransmitter"><span class="pre">RFTransmitter</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/lattice/abstract_impl.html#RWRFVoltageScalar"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.lattice.abstract_impl.RWRFVoltageScalar" title="Link to this definition">#</a></dt>
 <dd><p>Class providing read write access to a cavity voltage of a simulator for a given RF trasnmitter.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="pyaml.lattice.abstract_impl.RWRFVoltageScalar.get">
-<span class="sig-name descname"><span class="pre">get</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="reference internal" href="../_modules/pyaml/lattice/abstract_impl.html#RWRFVoltageScalar.get"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.lattice.abstract_impl.RWRFVoltageScalar.get" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">get</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="reference internal" href="../_modules/pyaml/lattice/abstract_impl.html#RWRFVoltageScalar.get"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.lattice.abstract_impl.RWRFVoltageScalar.get" title="Link to this definition">#</a></dt>
 <dd><p>Get the value</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pyaml.lattice.abstract_impl.RWRFVoltageScalar.set">
-<span class="sig-name descname"><span class="pre">set</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/lattice/abstract_impl.html#RWRFVoltageScalar.set"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.lattice.abstract_impl.RWRFVoltageScalar.set" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">set</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/lattice/abstract_impl.html#RWRFVoltageScalar.set"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.lattice.abstract_impl.RWRFVoltageScalar.set" title="Link to this definition">#</a></dt>
 <dd><p>Set the value</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pyaml.lattice.abstract_impl.RWRFVoltageScalar.set_and_wait">
-<span class="sig-name descname"><span class="pre">set_and_wait</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/lattice/abstract_impl.html#RWRFVoltageScalar.set_and_wait"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.lattice.abstract_impl.RWRFVoltageScalar.set_and_wait" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">set_and_wait</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/lattice/abstract_impl.html#RWRFVoltageScalar.set_and_wait"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.lattice.abstract_impl.RWRFVoltageScalar.set_and_wait" title="Link to this definition">#</a></dt>
 <dd><p>Set the value and wait that setpoint is reached</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pyaml.lattice.abstract_impl.RWRFVoltageScalar.unit">
-<span class="sig-name descname"><span class="pre">unit</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../_modules/pyaml/lattice/abstract_impl.html#RWRFVoltageScalar.unit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.lattice.abstract_impl.RWRFVoltageScalar.unit" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">unit</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../_modules/pyaml/lattice/abstract_impl.html#RWRFVoltageScalar.unit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.lattice.abstract_impl.RWRFVoltageScalar.unit" title="Link to this definition">#</a></dt>
 <dd><p>Get the unit of the value</p>
 </dd></dl>
 
@@ -361,29 +820,29 @@ Hardware unit is converted from strength using the magnet model</p>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="pyaml.lattice.abstract_impl.RWStrengthArray">
-<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyaml.lattice.abstract_impl.</span></span><span class="sig-name descname"><span class="pre">RWStrengthArray</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">elements</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">Element</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">poly</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#pyaml.lattice.polynom_info.PolynomInfo" title="pyaml.lattice.polynom_info.PolynomInfo"><span class="pre">PolynomInfo</span></a><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">MagnetModel</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/lattice/abstract_impl.html#RWStrengthArray"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.lattice.abstract_impl.RWStrengthArray" title="Link to this definition">¶</a></dt>
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyaml.lattice.abstract_impl.</span></span><span class="sig-name descname"><span class="pre">RWStrengthArray</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">elements</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">Element</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">poly</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#pyaml.lattice.polynom_info.PolynomInfo" title="pyaml.lattice.polynom_info.PolynomInfo"><span class="pre">PolynomInfo</span></a><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">MagnetModel</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/lattice/abstract_impl.html#RWStrengthArray"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.lattice.abstract_impl.RWStrengthArray" title="Link to this definition">#</a></dt>
 <dd><p>Class providing read write access to a strength (array) of a simulator</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="pyaml.lattice.abstract_impl.RWStrengthArray.get">
-<span class="sig-name descname"><span class="pre">get</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">array</span></span></span><a class="reference internal" href="../_modules/pyaml/lattice/abstract_impl.html#RWStrengthArray.get"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.lattice.abstract_impl.RWStrengthArray.get" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">get</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">array</span></span></span><a class="reference internal" href="../_modules/pyaml/lattice/abstract_impl.html#RWStrengthArray.get"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.lattice.abstract_impl.RWStrengthArray.get" title="Link to this definition">#</a></dt>
 <dd><p>Get the value</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pyaml.lattice.abstract_impl.RWStrengthArray.set">
-<span class="sig-name descname"><span class="pre">set</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">array</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/lattice/abstract_impl.html#RWStrengthArray.set"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.lattice.abstract_impl.RWStrengthArray.set" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">set</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">array</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/lattice/abstract_impl.html#RWStrengthArray.set"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.lattice.abstract_impl.RWStrengthArray.set" title="Link to this definition">#</a></dt>
 <dd><p>Set the values</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pyaml.lattice.abstract_impl.RWStrengthArray.set_and_wait">
-<span class="sig-name descname"><span class="pre">set_and_wait</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">array</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/lattice/abstract_impl.html#RWStrengthArray.set_and_wait"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.lattice.abstract_impl.RWStrengthArray.set_and_wait" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">set_and_wait</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">array</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/lattice/abstract_impl.html#RWStrengthArray.set_and_wait"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.lattice.abstract_impl.RWStrengthArray.set_and_wait" title="Link to this definition">#</a></dt>
 <dd><p>Set the values and wait that setpoints are reached</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pyaml.lattice.abstract_impl.RWStrengthArray.unit">
-<span class="sig-name descname"><span class="pre">unit</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/pyaml/lattice/abstract_impl.html#RWStrengthArray.unit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.lattice.abstract_impl.RWStrengthArray.unit" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">unit</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/pyaml/lattice/abstract_impl.html#RWStrengthArray.unit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.lattice.abstract_impl.RWStrengthArray.unit" title="Link to this definition">#</a></dt>
 <dd><p>Get the unit of the value</p>
 </dd></dl>
 
@@ -391,29 +850,29 @@ Hardware unit is converted from strength using the magnet model</p>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="pyaml.lattice.abstract_impl.RWStrengthScalar">
-<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyaml.lattice.abstract_impl.</span></span><span class="sig-name descname"><span class="pre">RWStrengthScalar</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">elements</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">Element</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">poly</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#pyaml.lattice.polynom_info.PolynomInfo" title="pyaml.lattice.polynom_info.PolynomInfo"><span class="pre">PolynomInfo</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">model</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">MagnetModel</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/lattice/abstract_impl.html#RWStrengthScalar"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.lattice.abstract_impl.RWStrengthScalar" title="Link to this definition">¶</a></dt>
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyaml.lattice.abstract_impl.</span></span><span class="sig-name descname"><span class="pre">RWStrengthScalar</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">elements</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">Element</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">poly</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#pyaml.lattice.polynom_info.PolynomInfo" title="pyaml.lattice.polynom_info.PolynomInfo"><span class="pre">PolynomInfo</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">model</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">MagnetModel</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/lattice/abstract_impl.html#RWStrengthScalar"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.lattice.abstract_impl.RWStrengthScalar" title="Link to this definition">#</a></dt>
 <dd><p>Class providing read write access to a strength of a simulator</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="pyaml.lattice.abstract_impl.RWStrengthScalar.get">
-<span class="sig-name descname"><span class="pre">get</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="reference internal" href="../_modules/pyaml/lattice/abstract_impl.html#RWStrengthScalar.get"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.lattice.abstract_impl.RWStrengthScalar.get" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">get</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="reference internal" href="../_modules/pyaml/lattice/abstract_impl.html#RWStrengthScalar.get"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.lattice.abstract_impl.RWStrengthScalar.get" title="Link to this definition">#</a></dt>
 <dd><p>Get the value</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pyaml.lattice.abstract_impl.RWStrengthScalar.set">
-<span class="sig-name descname"><span class="pre">set</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/lattice/abstract_impl.html#RWStrengthScalar.set"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.lattice.abstract_impl.RWStrengthScalar.set" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">set</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/lattice/abstract_impl.html#RWStrengthScalar.set"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.lattice.abstract_impl.RWStrengthScalar.set" title="Link to this definition">#</a></dt>
 <dd><p>Set the value</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pyaml.lattice.abstract_impl.RWStrengthScalar.set_and_wait">
-<span class="sig-name descname"><span class="pre">set_and_wait</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/lattice/abstract_impl.html#RWStrengthScalar.set_and_wait"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.lattice.abstract_impl.RWStrengthScalar.set_and_wait" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">set_and_wait</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/lattice/abstract_impl.html#RWStrengthScalar.set_and_wait"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.lattice.abstract_impl.RWStrengthScalar.set_and_wait" title="Link to this definition">#</a></dt>
 <dd><p>Set the value and wait that setpoint is reached</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pyaml.lattice.abstract_impl.RWStrengthScalar.unit">
-<span class="sig-name descname"><span class="pre">unit</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../_modules/pyaml/lattice/abstract_impl.html#RWStrengthScalar.unit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.lattice.abstract_impl.RWStrengthScalar.unit" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">unit</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../_modules/pyaml/lattice/abstract_impl.html#RWStrengthScalar.unit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.lattice.abstract_impl.RWStrengthScalar.unit" title="Link to this definition">#</a></dt>
 <dd><p>Get the unit of the value</p>
 </dd></dl>
 
@@ -421,7 +880,7 @@ Hardware unit is converted from strength using the magnet model</p>
 
 <dl class="py class" id="module-pyaml.lattice.attribute_linker">
 <dt class="sig sig-object py" id="pyaml.lattice.attribute_linker.ConfigModel">
-<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyaml.lattice.attribute_linker.</span></span><span class="sig-name descname"><span class="pre">ConfigModel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">attribute_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/lattice/attribute_linker.html#ConfigModel"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.lattice.attribute_linker.ConfigModel" title="Link to this definition">¶</a></dt>
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyaml.lattice.attribute_linker.</span></span><span class="sig-name descname"><span class="pre">ConfigModel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">attribute_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/lattice/attribute_linker.html#ConfigModel"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.lattice.attribute_linker.ConfigModel" title="Link to this definition">#</a></dt>
 <dd><p>Base configuration model for linker definitions.</p>
 <p>This class defines the configuration structure used to instantiate
 a specific linking strategy. Each concrete implementation of a
@@ -429,7 +888,7 @@ a specific linking strategy. Each concrete implementation of a
 to include additional configuration parameters.</p>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="pyaml.lattice.attribute_linker.ConfigModel.model_config">
-<span class="sig-name descname"><span class="pre">model_config</span></span><a class="headerlink" href="#pyaml.lattice.attribute_linker.ConfigModel.model_config" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">model_config</span></span><a class="headerlink" href="#pyaml.lattice.attribute_linker.ConfigModel.model_config" title="Link to this definition">#</a></dt>
 <dd><p>Pydantic configuration allowing arbitrary field types and forbidding
 unexpected extra keys.</p>
 <dl class="field-list simple">
@@ -441,7 +900,7 @@ unexpected extra keys.</p>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="id0">
-<span class="sig-name descname"><span class="pre">model_config</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">ConfigDict</span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'arbitrary_types_allowed':</span> <span class="pre">True,</span> <span class="pre">'extra':</span> <span class="pre">'forbid'}</span></em><a class="headerlink" href="#id0" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">model_config</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">ConfigDict</span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'arbitrary_types_allowed':</span> <span class="pre">True,</span> <span class="pre">'extra':</span> <span class="pre">'forbid'}</span></em><a class="headerlink" href="#id0" title="Link to this definition">#</a></dt>
 <dd><p>Configuration for the model, should be a dictionary conforming to [<cite>ConfigDict</cite>][pydantic.config.ConfigDict].</p>
 </dd></dl>
 
@@ -449,7 +908,7 @@ unexpected extra keys.</p>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="pyaml.lattice.attribute_linker.PyAtAttributeElementsLinker">
-<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyaml.lattice.attribute_linker.</span></span><span class="sig-name descname"><span class="pre">PyAtAttributeElementsLinker</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config_model</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#pyaml.lattice.attribute_linker.ConfigModel" title="pyaml.lattice.attribute_linker.ConfigModel"><span class="pre">ConfigModel</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/lattice/attribute_linker.html#PyAtAttributeElementsLinker"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.lattice.attribute_linker.PyAtAttributeElementsLinker" title="Link to this definition">¶</a></dt>
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyaml.lattice.attribute_linker.</span></span><span class="sig-name descname"><span class="pre">PyAtAttributeElementsLinker</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config_model</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#pyaml.lattice.attribute_linker.ConfigModel" title="pyaml.lattice.attribute_linker.ConfigModel"><span class="pre">ConfigModel</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/lattice/attribute_linker.html#PyAtAttributeElementsLinker"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.lattice.attribute_linker.PyAtAttributeElementsLinker" title="Link to this definition">#</a></dt>
 <dd><p>Abstract base class defining the interface for PyAT–PyAML element linking.</p>
 <p>Implementations of this class define how PyAML elements are matched
 to PyAT elements based on a given linking strategy (e.g., by family name,
@@ -463,7 +922,7 @@ by index, or by a custom attribute).</p>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="pyaml.lattice.attribute_linker.PyAtAttributeIdentifier">
-<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyaml.lattice.attribute_linker.</span></span><span class="sig-name descname"><span class="pre">PyAtAttributeIdentifier</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">attribute_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">identifier</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/lattice/attribute_linker.html#PyAtAttributeIdentifier"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.lattice.attribute_linker.PyAtAttributeIdentifier" title="Link to this definition">¶</a></dt>
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyaml.lattice.attribute_linker.</span></span><span class="sig-name descname"><span class="pre">PyAtAttributeIdentifier</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">attribute_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">identifier</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/lattice/attribute_linker.html#PyAtAttributeIdentifier"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.lattice.attribute_linker.PyAtAttributeIdentifier" title="Link to this definition">#</a></dt>
 <dd><p>Abstract base class for identifiers used to match PyAML and PyAT elements.</p>
 <p>The identifier acts as an intermediate representation between the PyAML
 configuration and the PyAT lattice. Its exact structure depends on the
@@ -475,40 +934,40 @@ a unique reference to one or more PyAT elements.</p>
 <p id="module-pyaml.lattice.polynom_info">Class providing polynom information</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="pyaml.lattice.polynom_info.PolynomInfo">
-<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyaml.lattice.polynom_info.</span></span><span class="sig-name descname"><span class="pre">PolynomInfo</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">attName</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">index</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/lattice/polynom_info.html#PolynomInfo"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.lattice.polynom_info.PolynomInfo" title="Link to this definition">¶</a></dt>
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyaml.lattice.polynom_info.</span></span><span class="sig-name descname"><span class="pre">PolynomInfo</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">attName</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">index</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/lattice/polynom_info.html#PolynomInfo"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.lattice.polynom_info.PolynomInfo" title="Link to this definition">#</a></dt>
 <dd><p>Polynom information</p>
 </dd></dl>
 
 <dl class="py class" id="module-pyaml.lattice.simulator">
 <dt class="sig sig-object py" id="pyaml.lattice.simulator.ConfigModel">
-<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyaml.lattice.simulator.</span></span><span class="sig-name descname"><span class="pre">ConfigModel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lattice</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mat_key</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">linker</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">LatticeElementsLinker</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/lattice/simulator.html#ConfigModel"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.lattice.simulator.ConfigModel" title="Link to this definition">¶</a></dt>
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyaml.lattice.simulator.</span></span><span class="sig-name descname"><span class="pre">ConfigModel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lattice</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mat_key</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">linker</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">LatticeElementsLinker</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/lattice/simulator.html#ConfigModel"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.lattice.simulator.ConfigModel" title="Link to this definition">#</a></dt>
 <dd><dl class="py attribute">
 <dt class="sig sig-object py" id="pyaml.lattice.simulator.ConfigModel.lattice">
-<span class="sig-name descname"><span class="pre">lattice</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#pyaml.lattice.simulator.ConfigModel.lattice" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">lattice</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#pyaml.lattice.simulator.ConfigModel.lattice" title="Link to this definition">#</a></dt>
 <dd><p>AT lattice file</p>
 </dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="pyaml.lattice.simulator.ConfigModel.linker">
-<span class="sig-name descname"><span class="pre">linker</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">LatticeElementsLinker</span></em><a class="headerlink" href="#pyaml.lattice.simulator.ConfigModel.linker" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">linker</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">LatticeElementsLinker</span></em><a class="headerlink" href="#pyaml.lattice.simulator.ConfigModel.linker" title="Link to this definition">#</a></dt>
 <dd><p>The linker configuration model</p>
 </dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="pyaml.lattice.simulator.ConfigModel.mat_key">
-<span class="sig-name descname"><span class="pre">mat_key</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#pyaml.lattice.simulator.ConfigModel.mat_key" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">mat_key</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#pyaml.lattice.simulator.ConfigModel.mat_key" title="Link to this definition">#</a></dt>
 <dd><p>AT lattice ring name</p>
 </dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="pyaml.lattice.simulator.ConfigModel.model_config">
-<span class="sig-name descname"><span class="pre">model_config</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">ConfigDict</span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'arbitrary_types_allowed':</span> <span class="pre">True,</span> <span class="pre">'extra':</span> <span class="pre">'forbid'}</span></em><a class="headerlink" href="#pyaml.lattice.simulator.ConfigModel.model_config" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">model_config</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">ConfigDict</span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'arbitrary_types_allowed':</span> <span class="pre">True,</span> <span class="pre">'extra':</span> <span class="pre">'forbid'}</span></em><a class="headerlink" href="#pyaml.lattice.simulator.ConfigModel.model_config" title="Link to this definition">#</a></dt>
 <dd><p>Configuration for the model, should be a dictionary conforming to [<cite>ConfigDict</cite>][pydantic.config.ConfigDict].</p>
 </dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="pyaml.lattice.simulator.ConfigModel.name">
-<span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#pyaml.lattice.simulator.ConfigModel.name" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#pyaml.lattice.simulator.ConfigModel.name" title="Link to this definition">#</a></dt>
 <dd><p>Simulator name</p>
 </dd></dl>
 
@@ -516,68 +975,213 @@ a unique reference to one or more PyAT elements.</p>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="pyaml.lattice.simulator.Simulator">
-<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyaml.lattice.simulator.</span></span><span class="sig-name descname"><span class="pre">Simulator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cfg</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#pyaml.lattice.simulator.ConfigModel" title="pyaml.lattice.simulator.ConfigModel"><span class="pre">ConfigModel</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/lattice/simulator.html#Simulator"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.lattice.simulator.Simulator" title="Link to this definition">¶</a></dt>
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyaml.lattice.simulator.</span></span><span class="sig-name descname"><span class="pre">Simulator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cfg</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#pyaml.lattice.simulator.ConfigModel" title="pyaml.lattice.simulator.ConfigModel"><span class="pre">ConfigModel</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/lattice/simulator.html#Simulator"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.lattice.simulator.Simulator" title="Link to this definition">#</a></dt>
 <dd><p>Class that implements access to AT simulator</p>
 </dd></dl>
 
 </section>
 
 
-            <div class="clearer"></div>
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="control.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Control</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="magnet.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">magnets</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.lattice.abstract_impl.BPMHScalarAggregator"><code class="docutils literal notranslate"><span class="pre">BPMHScalarAggregator</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.lattice.abstract_impl.BPMHScalarAggregator.get"><code class="docutils literal notranslate"><span class="pre">BPMHScalarAggregator.get()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.lattice.abstract_impl.BPMScalarAggregator"><code class="docutils literal notranslate"><span class="pre">BPMScalarAggregator</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.lattice.abstract_impl.BPMScalarAggregator.get"><code class="docutils literal notranslate"><span class="pre">BPMScalarAggregator.get()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.lattice.abstract_impl.BPMScalarAggregator.readback"><code class="docutils literal notranslate"><span class="pre">BPMScalarAggregator.readback()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.lattice.abstract_impl.BPMScalarAggregator.set"><code class="docutils literal notranslate"><span class="pre">BPMScalarAggregator.set()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.lattice.abstract_impl.BPMScalarAggregator.set_and_wait"><code class="docutils literal notranslate"><span class="pre">BPMScalarAggregator.set_and_wait()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.lattice.abstract_impl.BPMScalarAggregator.unit"><code class="docutils literal notranslate"><span class="pre">BPMScalarAggregator.unit()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.lattice.abstract_impl.BPMVScalarAggregator"><code class="docutils literal notranslate"><span class="pre">BPMVScalarAggregator</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.lattice.abstract_impl.BPMVScalarAggregator.get"><code class="docutils literal notranslate"><span class="pre">BPMVScalarAggregator.get()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.lattice.abstract_impl.RBetatronTuneArray"><code class="docutils literal notranslate"><span class="pre">RBetatronTuneArray</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.lattice.abstract_impl.RBetatronTuneArray.get"><code class="docutils literal notranslate"><span class="pre">RBetatronTuneArray.get()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.lattice.abstract_impl.RBetatronTuneArray.unit"><code class="docutils literal notranslate"><span class="pre">RBetatronTuneArray.unit()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.lattice.abstract_impl.RBpmArray"><code class="docutils literal notranslate"><span class="pre">RBpmArray</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.lattice.abstract_impl.RBpmArray.get"><code class="docutils literal notranslate"><span class="pre">RBpmArray.get()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.lattice.abstract_impl.RBpmArray.unit"><code class="docutils literal notranslate"><span class="pre">RBpmArray.unit()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.lattice.abstract_impl.RWBpmOffsetArray"><code class="docutils literal notranslate"><span class="pre">RWBpmOffsetArray</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.lattice.abstract_impl.RWBpmOffsetArray.get"><code class="docutils literal notranslate"><span class="pre">RWBpmOffsetArray.get()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.lattice.abstract_impl.RWBpmOffsetArray.set"><code class="docutils literal notranslate"><span class="pre">RWBpmOffsetArray.set()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.lattice.abstract_impl.RWBpmOffsetArray.set_and_wait"><code class="docutils literal notranslate"><span class="pre">RWBpmOffsetArray.set_and_wait()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.lattice.abstract_impl.RWBpmOffsetArray.unit"><code class="docutils literal notranslate"><span class="pre">RWBpmOffsetArray.unit()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.lattice.abstract_impl.RWBpmTiltScalar"><code class="docutils literal notranslate"><span class="pre">RWBpmTiltScalar</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.lattice.abstract_impl.RWBpmTiltScalar.get"><code class="docutils literal notranslate"><span class="pre">RWBpmTiltScalar.get()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.lattice.abstract_impl.RWBpmTiltScalar.set"><code class="docutils literal notranslate"><span class="pre">RWBpmTiltScalar.set()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.lattice.abstract_impl.RWBpmTiltScalar.set_and_wait"><code class="docutils literal notranslate"><span class="pre">RWBpmTiltScalar.set_and_wait()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.lattice.abstract_impl.RWBpmTiltScalar.unit"><code class="docutils literal notranslate"><span class="pre">RWBpmTiltScalar.unit()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.lattice.abstract_impl.RWHardwareArray"><code class="docutils literal notranslate"><span class="pre">RWHardwareArray</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.lattice.abstract_impl.RWHardwareArray.get"><code class="docutils literal notranslate"><span class="pre">RWHardwareArray.get()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.lattice.abstract_impl.RWHardwareArray.set"><code class="docutils literal notranslate"><span class="pre">RWHardwareArray.set()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.lattice.abstract_impl.RWHardwareArray.set_and_wait"><code class="docutils literal notranslate"><span class="pre">RWHardwareArray.set_and_wait()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.lattice.abstract_impl.RWHardwareArray.unit"><code class="docutils literal notranslate"><span class="pre">RWHardwareArray.unit()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.lattice.abstract_impl.RWHardwareScalar"><code class="docutils literal notranslate"><span class="pre">RWHardwareScalar</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.lattice.abstract_impl.RWHardwareScalar.get"><code class="docutils literal notranslate"><span class="pre">RWHardwareScalar.get()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.lattice.abstract_impl.RWHardwareScalar.set"><code class="docutils literal notranslate"><span class="pre">RWHardwareScalar.set()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.lattice.abstract_impl.RWHardwareScalar.set_and_wait"><code class="docutils literal notranslate"><span class="pre">RWHardwareScalar.set_and_wait()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.lattice.abstract_impl.RWHardwareScalar.unit"><code class="docutils literal notranslate"><span class="pre">RWHardwareScalar.unit()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.lattice.abstract_impl.RWRFFrequencyScalar"><code class="docutils literal notranslate"><span class="pre">RWRFFrequencyScalar</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.lattice.abstract_impl.RWRFFrequencyScalar.get"><code class="docutils literal notranslate"><span class="pre">RWRFFrequencyScalar.get()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.lattice.abstract_impl.RWRFFrequencyScalar.set"><code class="docutils literal notranslate"><span class="pre">RWRFFrequencyScalar.set()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.lattice.abstract_impl.RWRFFrequencyScalar.set_and_wait"><code class="docutils literal notranslate"><span class="pre">RWRFFrequencyScalar.set_and_wait()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.lattice.abstract_impl.RWRFFrequencyScalar.unit"><code class="docutils literal notranslate"><span class="pre">RWRFFrequencyScalar.unit()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.lattice.abstract_impl.RWRFPhaseScalar"><code class="docutils literal notranslate"><span class="pre">RWRFPhaseScalar</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.lattice.abstract_impl.RWRFPhaseScalar.get"><code class="docutils literal notranslate"><span class="pre">RWRFPhaseScalar.get()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.lattice.abstract_impl.RWRFPhaseScalar.set"><code class="docutils literal notranslate"><span class="pre">RWRFPhaseScalar.set()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.lattice.abstract_impl.RWRFPhaseScalar.set_and_wait"><code class="docutils literal notranslate"><span class="pre">RWRFPhaseScalar.set_and_wait()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.lattice.abstract_impl.RWRFPhaseScalar.unit"><code class="docutils literal notranslate"><span class="pre">RWRFPhaseScalar.unit()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.lattice.abstract_impl.RWRFVoltageScalar"><code class="docutils literal notranslate"><span class="pre">RWRFVoltageScalar</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.lattice.abstract_impl.RWRFVoltageScalar.get"><code class="docutils literal notranslate"><span class="pre">RWRFVoltageScalar.get()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.lattice.abstract_impl.RWRFVoltageScalar.set"><code class="docutils literal notranslate"><span class="pre">RWRFVoltageScalar.set()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.lattice.abstract_impl.RWRFVoltageScalar.set_and_wait"><code class="docutils literal notranslate"><span class="pre">RWRFVoltageScalar.set_and_wait()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.lattice.abstract_impl.RWRFVoltageScalar.unit"><code class="docutils literal notranslate"><span class="pre">RWRFVoltageScalar.unit()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.lattice.abstract_impl.RWStrengthArray"><code class="docutils literal notranslate"><span class="pre">RWStrengthArray</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.lattice.abstract_impl.RWStrengthArray.get"><code class="docutils literal notranslate"><span class="pre">RWStrengthArray.get()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.lattice.abstract_impl.RWStrengthArray.set"><code class="docutils literal notranslate"><span class="pre">RWStrengthArray.set()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.lattice.abstract_impl.RWStrengthArray.set_and_wait"><code class="docutils literal notranslate"><span class="pre">RWStrengthArray.set_and_wait()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.lattice.abstract_impl.RWStrengthArray.unit"><code class="docutils literal notranslate"><span class="pre">RWStrengthArray.unit()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.lattice.abstract_impl.RWStrengthScalar"><code class="docutils literal notranslate"><span class="pre">RWStrengthScalar</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.lattice.abstract_impl.RWStrengthScalar.get"><code class="docutils literal notranslate"><span class="pre">RWStrengthScalar.get()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.lattice.abstract_impl.RWStrengthScalar.set"><code class="docutils literal notranslate"><span class="pre">RWStrengthScalar.set()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.lattice.abstract_impl.RWStrengthScalar.set_and_wait"><code class="docutils literal notranslate"><span class="pre">RWStrengthScalar.set_and_wait()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.lattice.abstract_impl.RWStrengthScalar.unit"><code class="docutils literal notranslate"><span class="pre">RWStrengthScalar.unit()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.lattice.attribute_linker.ConfigModel"><code class="docutils literal notranslate"><span class="pre">ConfigModel</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.lattice.attribute_linker.ConfigModel.model_config"><code class="docutils literal notranslate"><span class="pre">ConfigModel.model_config</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id0"><code class="docutils literal notranslate"><span class="pre">ConfigModel.model_config</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.lattice.attribute_linker.PyAtAttributeElementsLinker"><code class="docutils literal notranslate"><span class="pre">PyAtAttributeElementsLinker</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.lattice.attribute_linker.PyAtAttributeIdentifier"><code class="docutils literal notranslate"><span class="pre">PyAtAttributeIdentifier</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.lattice.polynom_info.PolynomInfo"><code class="docutils literal notranslate"><span class="pre">PolynomInfo</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.lattice.simulator.ConfigModel"><code class="docutils literal notranslate"><span class="pre">ConfigModel</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.lattice.simulator.ConfigModel.lattice"><code class="docutils literal notranslate"><span class="pre">ConfigModel.lattice</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.lattice.simulator.ConfigModel.linker"><code class="docutils literal notranslate"><span class="pre">ConfigModel.linker</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.lattice.simulator.ConfigModel.mat_key"><code class="docutils literal notranslate"><span class="pre">ConfigModel.mat_key</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.lattice.simulator.ConfigModel.model_config"><code class="docutils literal notranslate"><span class="pre">ConfigModel.model_config</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.lattice.simulator.ConfigModel.name"><code class="docutils literal notranslate"><span class="pre">ConfigModel.name</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.lattice.simulator.Simulator"><code class="docutils literal notranslate"><span class="pre">Simulator</span></code></a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
           </div>
-        </div>
-      </div>
-      <div class="sphinxsidebar" role="navigation" aria-label="Main">
-        <div class="sphinxsidebarwrapper">
-            <p class="logo"><a href="../index.html">
-              <img class="logo" src="../_static/logo.png" alt="Logo of pyAML"/>
-            </a></p>
-  <div>
-    <h4>Previous topic</h4>
-    <p class="topless"><a href="control.html"
-                          title="previous chapter">Control</a></p>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
   </div>
-  <div>
-    <h4>Next topic</h4>
-    <p class="topless"><a href="magnet.html"
-                          title="next chapter">magnets</a></p>
-  </div>
-<search id="searchbox" style="display: none" role="search">
-  <h3 id="searchlabel">Quick search</h3>
-    <div class="searchformwrapper">
-    <form class="search" action="../search.html" method="get">
-      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
-      <input type="submit" value="Go" />
-    </form>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.2.3.
+    <br/>
+  </p>
+</div>
+      
     </div>
-</search>
-<script>document.getElementById('searchbox').style.display = "block"</script>
-        </div>
-      </div>
-      <div class="clearer"></div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+<p class="theme-version">
+  <!-- # L10n: Setting the PST URL as an argument as this does not need to be localized -->
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.16.1.
+</p></div>
+      
     </div>
-    <div class="related" role="navigation" aria-label="Related">
-      <h3>Navigation</h3>
-      <ul>
-        <li class="right" style="margin-right: 10px">
-          <a href="../genindex.html" title="General Index"
-             >index</a></li>
-        <li class="right" >
-          <a href="../py-modindex.html" title="Python Module Index"
-             >modules</a> |</li>
-        <li class="right" >
-          <a href="magnet.html" title="magnets"
-             >next</a> |</li>
-        <li class="right" >
-          <a href="control.html" title="Control"
-             >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">pyAML 0.0.0 documentation</a> &#187;</li>
-        <li class="nav-item nav-item-this"><a href="">lattice</a></li> 
-      </ul>
-    </div>
-    <div class="footer" role="contentinfo">
-    &#169; Copyright .
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.2.3.
-    </div>
+  
+</div>
+
+  </footer>
   </body>
 </html>
