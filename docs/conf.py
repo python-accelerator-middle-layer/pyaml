@@ -54,11 +54,7 @@ extensions = ['sphinx.ext.autodoc',
               'sphinx.ext.napoleon',
               'sphinx.ext.autosectionlabel',
               'sphinx.ext.autosummary',
-             # 'nbsphinx'
-             'myst_nb',
-             # 'sphinx.ext.intersphinx',
-             # 'sphinx_copybutton',
-             # 'sphinx_design'
+              'myst_nb'
               ]
 autosectionlabel_prefix_document = True
 autosectionlabel_maxdepth = 2
