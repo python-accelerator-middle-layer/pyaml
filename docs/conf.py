@@ -48,12 +48,17 @@ extensions = ['sphinx.ext.autodoc',
               'sphinx.ext.doctest',
               'sphinx.ext.todo',
               'sphinx.ext.coverage',
-              # 'sphinx.ext.mathjax',
+              'sphinx.ext.mathjax',
               'sphinx.ext.viewcode',
               'sphinx.ext.githubpages',
               'sphinx.ext.napoleon',
               'sphinx.ext.autosectionlabel',
               'sphinx.ext.autosummary',
+             # 'nbsphinx'
+             'myst_nb',
+             # 'sphinx.ext.intersphinx',
+             # 'sphinx_copybutton',
+             # 'sphinx_design'
               ]
 autosectionlabel_prefix_document = True
 autosectionlabel_maxdepth = 2
@@ -111,7 +116,9 @@ todo_include_todos = True
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
 #
-html_theme = 'classic'
+
+# html_theme = 'classic'
+html_theme = "pydata_sphinx_theme"
 
 # Theme options are theme-specific and customize the look and feel of a theme
 # further.  For a list of options available for each theme, see the
@@ -120,9 +127,14 @@ html_theme_options = {
     'collapse_navigation': False,
     'display_version': True,
     'logo_only': True,
-    'navigation_depth': 2,
-    "rightsidebar": "false",
+    'navigation_depth': 6,
+    "rightsidebar": True,
     "relbarbgcolor": "black"
+}
+
+html_sidebars = {
+    "index": [],
+    "common/about": [],
 }
 
 
@@ -232,3 +244,16 @@ texinfo_documents = [
 autodoc_mock_imports = ['PyQt5', 'PyQt5.QtGui', 'PyQt5.QtCore', 'PyQt5.QtWidgets',
                         "matplotlib.backends.backend_qt5agg",
                         ]
+
+# -- Options for the myst markdown parser ------------------------------------
+
+myst_enable_extensions = [
+    "attrs_inline",
+    "colon_fence",
+    "dollarmath",
+    "replacements",
+    "deflist",
+]
+myst_heading_anchors = 3
+nb_execution_mode = "off" #"auto"
+nb_execution_allow_errors = True
