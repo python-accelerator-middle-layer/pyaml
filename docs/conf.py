@@ -128,17 +128,20 @@ html_theme_options = {
     "relbarbgcolor": "black"
 }
 
-html_sidebars = {
-    "index": [],
-    "common/about": [],
-}
-
 
 # Name of an image file (path relative to the configuration directory)
 # that is the logo of the docs, or URL that points an image file for the logo.
 # It is placed at the top of the sidebar;
 # its width should therefore not exceed 200 pixels.
 html_logo = '_static/img/logo.png'
+html_copy_source = False
+html_theme_options = {
+    "github_url": "https://github.com/atcollab/at",
+    "logo": {
+      "image_light": '_static/img/logo.png',
+      "image_dark": '_static/img/dark.png',
+   }
+}
 
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
@@ -177,8 +180,11 @@ html_sidebars = {
     '**': [
         'relations.html',  # needs 'show_related': True theme option to display
         'searchbox.html',
-    ]
+    ],
+    "index": [],
+    "common/about": [],
 }
+
 
 # -- Options for HTMLHelp output ------------------------------------------
 
