@@ -305,9 +305,8 @@ class RWRFVoltageScalar(abstract.ReadWriteFloatScalar):
     Class providing read write access to a cavity voltage of a simulator for a given RF trasnmitter.
     """
 
-    def __init__(self, elements:list[at.Element], transmitter:RFTransmitter):
+    def __init__(self, elements:list[at.Element]):
         self.__elements = elements
-        self.__transmitter = transmitter
 
     def get(self) -> float:
         sum = 0
@@ -324,7 +323,7 @@ class RWRFVoltageScalar(abstract.ReadWriteFloatScalar):
         raise NotImplementedError("Not implemented yet.")
         
     def unit(self) -> str:
-        return self.__transmitter._cfg.voltage.unit()
+        return "V"
 
 #------------------------------------------------------------------------------
 
@@ -333,9 +332,8 @@ class RWRFPhaseScalar(abstract.ReadWriteFloatScalar):
     Class providing read write access to a cavity phase of a simulator for a given RF trasnmitter.
     """
 
-    def __init__(self, elements:list[at.Element], transmitter:RFTransmitter):
+    def __init__(self, elements:list[at.Element]):
         self.__elements = elements
-        self.__transmitter = transmitter
 
     def get(self) -> float:
         # Assume that all cavities of this transmitter have the same Time Lag and Frequency
@@ -351,7 +349,7 @@ class RWRFPhaseScalar(abstract.ReadWriteFloatScalar):
         raise NotImplementedError("Not implemented yet.")
         
     def unit(self) -> str:
-        return self.__transmitter._cfg.phase.unit()
+        return "rad"
     
 #------------------------------------------------------------------------------
 
@@ -360,10 +358,9 @@ class RWRFFrequencyScalar(abstract.ReadWriteFloatScalar):
     Class providing read write access to RF frequency of a simulator.
     """
 
-    def __init__(self, elements:list[at.Element], harmonics:list[float], rf:RFPlant ):
+    def __init__(self, elements:list[at.Element], harmonics:list[float]):
         self.__elements = elements
         self.__harm = harmonics
-        self.__rf = rf
 
     def get(self) -> float:
         # Serialized cavity has the same frequency
@@ -377,7 +374,52 @@ class RWRFFrequencyScalar(abstract.ReadWriteFloatScalar):
         raise NotImplementedError("Not implemented yet.")
         
     def unit(self) -> str:
-        return self.__rf._cfg.masterclock.unit()
+        return "Hz"
+
+#------------------------------------------------------------------------------
+
+class RWRFATFrequencyScalar(abstract.ReadWriteFloatScalar):
+    """
+    Class providing read write access to RF frequency of a simulator using
+    AT methods.
+    """
+
+    def __init__(self, ring: at.Lattice):
+        self.__ring = ring
+
+    def get(self) -> float:
+        return self.__ring.get_rf_frequency()
+    
+    def set(self,value:float):
+        self.__ring.set_rf_frequency(value)
+
+    def set_and_wait(self, value:float):
+        raise NotImplementedError("Not implemented yet.")
+        
+    def unit(self) -> str:
+        return 'Hz'
+    
+#------------------------------------------------------------------------------
+
+class RWRFATotalVoltageScalar(abstract.ReadWriteFloatScalar):
+    """
+    Class providing read write access to a RF voltage of a simulator using AT methods.
+    """
+
+    def __init__(self, ring: at.Lattice):
+        self.__ring = ring
+
+    def get(self) -> float:
+        return self.__ring.get_rf_voltage()
+    
+    def set(self,value:float):
+        self.__ring.set_rf_voltage(value)
+
+    def set_and_wait(self, value:float):
+        raise NotImplementedError("Not implemented yet.")
+        
+    def unit(self) -> str:
+        return 'V'
 
 #------------------------------------------------------------------------------
 

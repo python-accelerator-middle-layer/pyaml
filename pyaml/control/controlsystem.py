@@ -126,15 +126,16 @@ class ControlSystem(ElementHolder,metaclass=ABCMeta):
 
           elif isinstance(e,RFPlant):
              attachedTrans: list[RFTransmitter] = []
-             for t in e._cfg.transmitters:
-                voltage = RWRFVoltageScalar(t)
-                phase = RWRFPhaseScalar(t)
-                nt = t.attach(self,voltage,phase)
-                self.add_rf_transnmitter(nt)
-                attachedTrans.append(nt)
+             if e._cfg.transmitters:
+                for t in e._cfg.transmitters:
+                    voltage = RWRFVoltageScalar(t)
+                    phase = RWRFPhaseScalar(t)
+                    nt = t.attach(self,voltage,phase)
+                    self.add_rf_transnmitter(nt)
+                    attachedTrans.append(nt)
 
              frequency = RWRFFrequencyScalar(e)
-             voltage = RWTotalVoltage(attachedTrans)
+             voltage = RWTotalVoltage(attachedTrans) if e._cfg.transmitters else None
              ne = e.attach(self,frequency,voltage)
              self.add_rf_plant(ne)
 

@@ -11,6 +11,7 @@ from ..rf.rf_transmitter import RFTransmitter
 from ..lattice.abstract_impl import RWHardwareScalar,RWHardwareArray
 from ..lattice.abstract_impl import RWStrengthScalar,RWStrengthArray
 from ..lattice.abstract_impl import RWRFFrequencyScalar,RWRFVoltageScalar,RWRFPhaseScalar
+from ..lattice.abstract_impl import RWRFATFrequencyScalar,RWRFATotalVoltageScalar
 from ..common.element_holder import ElementHolder
 from ..common.abstract_aggregator import ScalarAggregator
 from ..lattice.abstract_impl import RBetatronTuneArray
@@ -115,32 +116,38 @@ class Simulator(ElementHolder):
             self.add_bpm(e)
 
           elif isinstance(e,RFPlant):
-             cavs: list[at.Element] = []
-             harmonics: list[float] = []
-             attachedTrans: list[RFTransmitter] = []
-             for t in e._cfg.transmitters:
+            if e._cfg.transmitters:
+              cavs: list[at.Element] = []
+              harmonics: list[float] = []
+              attachedTrans: list[RFTransmitter] = []
+              for t in e._cfg.transmitters:
                 cavsPerTrans: list[at.Element] = []
                 for c in t._cfg.cavities:
-                   # Expect unique name for cavities
-                   cav = self.get_at_elems(Element(c))
-                   if len(cav)>1:
-                         raise PyAMLException(f"RF transmitter {t.get_name()}, multiple cavity definition:{cav[0]}")
-                   if len(cav)==0:
-                         raise PyAMLException(f"RF transmitter {t.get_name()}, No cavity found")
-                   cavsPerTrans.append(cav[0])
-                   harmonics.append(t._cfg.harmonic)
-
-                voltage = RWRFVoltageScalar(cavsPerTrans,t)
-                phase = RWRFPhaseScalar(cavsPerTrans,t)
+                  # Expect unique name for cavities
+                  cav = self.get_at_elems(Element(c))
+                  if len(cav)>1:
+                        raise PyAMLException(f"RF transmitter {t.get_name()}, multiple cavity definition:{cav[0]}")
+                  if len(cav)==0:
+                        raise PyAMLException(f"RF transmitter {t.get_name()}, No cavity found")
+                  cavsPerTrans.append(cav[0])
+                  harmonics.append(t._cfg.harmonic)
+                voltage = RWRFVoltageScalar(cavsPerTrans)
+                phase = RWRFPhaseScalar(cavsPerTrans)
                 nt = t.attach(self,voltage,phase)
-                attachedTrans.append(nt)
                 self.add_rf_transnmitter(nt)
                 cavs.extend(cavsPerTrans)
+                attachedTrans.append(nt)
 
-             frequency = RWRFFrequencyScalar(cavs,harmonics,e)
-             voltage = RWTotalVoltage(attachedTrans)
-             ne = e.attach(self,frequency,voltage)
-             self.add_rf_plant(ne)
+              frequency = RWRFFrequencyScalar(cavs,harmonics)
+              voltage = RWTotalVoltage(attachedTrans)
+              ne = e.attach(self,frequency,voltage)
+              self.add_rf_plant(ne)             
+            else:
+              # No transmitter defined switch to AT methods
+              frequency = RWRFATFrequencyScalar(self.ring)
+              voltage = RWRFATotalVoltageScalar(self.ring)
+              ne = e.attach(self,frequency,voltage)
+              self.add_rf_plant(ne)
 
           elif isinstance(e, BetatronTuneMonitor):
              betatron_tune = RBetatronTuneArray(self.ring)
