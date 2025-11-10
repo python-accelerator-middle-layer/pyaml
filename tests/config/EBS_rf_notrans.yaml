@@ -1,0 +1,21 @@
+type: pyaml.pyaml
+instruments:
+  - type: pyaml.instrument
+    name: sr
+    energy: 6e9
+    simulators:
+      - type: pyaml.lattice.simulator
+        lattice: sr/lattices/ebs.mat
+        name: design
+    controls:
+      - type: tango.pyaml.controlsystem
+        tango_host: ebs-simu-3:10000
+        name: live        
+    data_folder: /data/store
+    devices:    
+      - type: pyaml.rf.rf_plant
+        name: RF
+        masterclock:
+          type: tango.pyaml.attribute
+          attribute: sy/ms/1/Frequency
+          unit: Hz
