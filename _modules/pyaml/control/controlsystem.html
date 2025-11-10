@@ -638,15 +638,16 @@
 
           <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">e</span><span class="p">,</span><span class="n">RFPlant</span><span class="p">):</span>
              <span class="n">attachedTrans</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">RFTransmitter</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
-             <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">e</span><span class="o">.</span><span class="n">_cfg</span><span class="o">.</span><span class="n">transmitters</span><span class="p">:</span>
-                <span class="n">voltage</span> <span class="o">=</span> <span class="n">RWRFVoltageScalar</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
-                <span class="n">phase</span> <span class="o">=</span> <span class="n">RWRFPhaseScalar</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
-                <span class="n">nt</span> <span class="o">=</span> <span class="n">t</span><span class="o">.</span><span class="n">attach</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">voltage</span><span class="p">,</span><span class="n">phase</span><span class="p">)</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">add_rf_transnmitter</span><span class="p">(</span><span class="n">nt</span><span class="p">)</span>
-                <span class="n">attachedTrans</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">nt</span><span class="p">)</span>
+             <span class="k">if</span> <span class="n">e</span><span class="o">.</span><span class="n">_cfg</span><span class="o">.</span><span class="n">transmitters</span><span class="p">:</span>
+                <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">e</span><span class="o">.</span><span class="n">_cfg</span><span class="o">.</span><span class="n">transmitters</span><span class="p">:</span>
+                    <span class="n">voltage</span> <span class="o">=</span> <span class="n">RWRFVoltageScalar</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
+                    <span class="n">phase</span> <span class="o">=</span> <span class="n">RWRFPhaseScalar</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
+                    <span class="n">nt</span> <span class="o">=</span> <span class="n">t</span><span class="o">.</span><span class="n">attach</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">voltage</span><span class="p">,</span><span class="n">phase</span><span class="p">)</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">add_rf_transnmitter</span><span class="p">(</span><span class="n">nt</span><span class="p">)</span>
+                    <span class="n">attachedTrans</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">nt</span><span class="p">)</span>
 
              <span class="n">frequency</span> <span class="o">=</span> <span class="n">RWRFFrequencyScalar</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
-             <span class="n">voltage</span> <span class="o">=</span> <span class="n">RWTotalVoltage</span><span class="p">(</span><span class="n">attachedTrans</span><span class="p">)</span>
+             <span class="n">voltage</span> <span class="o">=</span> <span class="n">RWTotalVoltage</span><span class="p">(</span><span class="n">attachedTrans</span><span class="p">)</span> <span class="k">if</span> <span class="n">e</span><span class="o">.</span><span class="n">_cfg</span><span class="o">.</span><span class="n">transmitters</span> <span class="k">else</span> <span class="kc">None</span>
              <span class="n">ne</span> <span class="o">=</span> <span class="n">e</span><span class="o">.</span><span class="n">attach</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">frequency</span><span class="p">,</span><span class="n">voltage</span><span class="p">)</span>
              <span class="bp">self</span><span class="o">.</span><span class="n">add_rf_plant</span><span class="p">(</span><span class="n">ne</span><span class="p">)</span>
 

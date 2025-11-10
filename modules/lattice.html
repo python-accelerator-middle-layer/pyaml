@@ -729,8 +729,69 @@ Hardware unit is converted from strength using the magnet model</p>
 </dd></dl>
 
 <dl class="py class">
+<dt class="sig sig-object py" id="pyaml.lattice.abstract_impl.RWRFATFrequencyScalar">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyaml.lattice.abstract_impl.</span></span><span class="sig-name descname"><span class="pre">RWRFATFrequencyScalar</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ring</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Lattice</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/lattice/abstract_impl.html#RWRFATFrequencyScalar"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.lattice.abstract_impl.RWRFATFrequencyScalar" title="Link to this definition">#</a></dt>
+<dd><p>Class providing read write access to RF frequency of a simulator using
+AT methods.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaml.lattice.abstract_impl.RWRFATFrequencyScalar.get">
+<span class="sig-name descname"><span class="pre">get</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="reference internal" href="../_modules/pyaml/lattice/abstract_impl.html#RWRFATFrequencyScalar.get"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.lattice.abstract_impl.RWRFATFrequencyScalar.get" title="Link to this definition">#</a></dt>
+<dd><p>Get the value</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaml.lattice.abstract_impl.RWRFATFrequencyScalar.set">
+<span class="sig-name descname"><span class="pre">set</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/lattice/abstract_impl.html#RWRFATFrequencyScalar.set"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.lattice.abstract_impl.RWRFATFrequencyScalar.set" title="Link to this definition">#</a></dt>
+<dd><p>Set the value</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaml.lattice.abstract_impl.RWRFATFrequencyScalar.set_and_wait">
+<span class="sig-name descname"><span class="pre">set_and_wait</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/lattice/abstract_impl.html#RWRFATFrequencyScalar.set_and_wait"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.lattice.abstract_impl.RWRFATFrequencyScalar.set_and_wait" title="Link to this definition">#</a></dt>
+<dd><p>Set the value and wait that setpoint is reached</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaml.lattice.abstract_impl.RWRFATFrequencyScalar.unit">
+<span class="sig-name descname"><span class="pre">unit</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../_modules/pyaml/lattice/abstract_impl.html#RWRFATFrequencyScalar.unit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.lattice.abstract_impl.RWRFATFrequencyScalar.unit" title="Link to this definition">#</a></dt>
+<dd><p>Get the unit of the value</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="pyaml.lattice.abstract_impl.RWRFATotalVoltageScalar">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyaml.lattice.abstract_impl.</span></span><span class="sig-name descname"><span class="pre">RWRFATotalVoltageScalar</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ring</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Lattice</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/lattice/abstract_impl.html#RWRFATotalVoltageScalar"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.lattice.abstract_impl.RWRFATotalVoltageScalar" title="Link to this definition">#</a></dt>
+<dd><p>Class providing read write access to a RF voltage of a simulator using AT methods.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaml.lattice.abstract_impl.RWRFATotalVoltageScalar.get">
+<span class="sig-name descname"><span class="pre">get</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="reference internal" href="../_modules/pyaml/lattice/abstract_impl.html#RWRFATotalVoltageScalar.get"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.lattice.abstract_impl.RWRFATotalVoltageScalar.get" title="Link to this definition">#</a></dt>
+<dd><p>Get the value</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaml.lattice.abstract_impl.RWRFATotalVoltageScalar.set">
+<span class="sig-name descname"><span class="pre">set</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/lattice/abstract_impl.html#RWRFATotalVoltageScalar.set"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.lattice.abstract_impl.RWRFATotalVoltageScalar.set" title="Link to this definition">#</a></dt>
+<dd><p>Set the value</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaml.lattice.abstract_impl.RWRFATotalVoltageScalar.set_and_wait">
+<span class="sig-name descname"><span class="pre">set_and_wait</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/lattice/abstract_impl.html#RWRFATotalVoltageScalar.set_and_wait"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.lattice.abstract_impl.RWRFATotalVoltageScalar.set_and_wait" title="Link to this definition">#</a></dt>
+<dd><p>Set the value and wait that setpoint is reached</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaml.lattice.abstract_impl.RWRFATotalVoltageScalar.unit">
+<span class="sig-name descname"><span class="pre">unit</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../_modules/pyaml/lattice/abstract_impl.html#RWRFATotalVoltageScalar.unit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.lattice.abstract_impl.RWRFATotalVoltageScalar.unit" title="Link to this definition">#</a></dt>
+<dd><p>Get the unit of the value</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
 <dt class="sig sig-object py" id="pyaml.lattice.abstract_impl.RWRFFrequencyScalar">
-<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyaml.lattice.abstract_impl.</span></span><span class="sig-name descname"><span class="pre">RWRFFrequencyScalar</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">elements</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">Element</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">harmonics</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rf</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="rf.html#pyaml.rf.rf_plant.RFPlant" title="pyaml.rf.rf_plant.RFPlant"><span class="pre">RFPlant</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/lattice/abstract_impl.html#RWRFFrequencyScalar"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.lattice.abstract_impl.RWRFFrequencyScalar" title="Link to this definition">#</a></dt>
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyaml.lattice.abstract_impl.</span></span><span class="sig-name descname"><span class="pre">RWRFFrequencyScalar</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">elements</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">Element</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">harmonics</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/lattice/abstract_impl.html#RWRFFrequencyScalar"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.lattice.abstract_impl.RWRFFrequencyScalar" title="Link to this definition">#</a></dt>
 <dd><p>Class providing read write access to RF frequency of a simulator.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="pyaml.lattice.abstract_impl.RWRFFrequencyScalar.get">
@@ -760,7 +821,7 @@ Hardware unit is converted from strength using the magnet model</p>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="pyaml.lattice.abstract_impl.RWRFPhaseScalar">
-<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyaml.lattice.abstract_impl.</span></span><span class="sig-name descname"><span class="pre">RWRFPhaseScalar</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">elements</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">Element</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">transmitter</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="rf.html#pyaml.rf.rf_transmitter.RFTransmitter" title="pyaml.rf.rf_transmitter.RFTransmitter"><span class="pre">RFTransmitter</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/lattice/abstract_impl.html#RWRFPhaseScalar"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.lattice.abstract_impl.RWRFPhaseScalar" title="Link to this definition">#</a></dt>
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyaml.lattice.abstract_impl.</span></span><span class="sig-name descname"><span class="pre">RWRFPhaseScalar</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">elements</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">Element</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/lattice/abstract_impl.html#RWRFPhaseScalar"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.lattice.abstract_impl.RWRFPhaseScalar" title="Link to this definition">#</a></dt>
 <dd><p>Class providing read write access to a cavity phase of a simulator for a given RF trasnmitter.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="pyaml.lattice.abstract_impl.RWRFPhaseScalar.get">
@@ -790,7 +851,7 @@ Hardware unit is converted from strength using the magnet model</p>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="pyaml.lattice.abstract_impl.RWRFVoltageScalar">
-<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyaml.lattice.abstract_impl.</span></span><span class="sig-name descname"><span class="pre">RWRFVoltageScalar</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">elements</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">Element</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">transmitter</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="rf.html#pyaml.rf.rf_transmitter.RFTransmitter" title="pyaml.rf.rf_transmitter.RFTransmitter"><span class="pre">RFTransmitter</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/lattice/abstract_impl.html#RWRFVoltageScalar"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.lattice.abstract_impl.RWRFVoltageScalar" title="Link to this definition">#</a></dt>
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyaml.lattice.abstract_impl.</span></span><span class="sig-name descname"><span class="pre">RWRFVoltageScalar</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">elements</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">Element</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/lattice/abstract_impl.html#RWRFVoltageScalar"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.lattice.abstract_impl.RWRFVoltageScalar" title="Link to this definition">#</a></dt>
 <dd><p>Class providing read write access to a cavity voltage of a simulator for a given RF trasnmitter.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="pyaml.lattice.abstract_impl.RWRFVoltageScalar.get">
@@ -1080,6 +1141,20 @@ a unique reference to one or more PyAT elements.</p>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.lattice.abstract_impl.RWHardwareScalar.set"><code class="docutils literal notranslate"><span class="pre">RWHardwareScalar.set()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.lattice.abstract_impl.RWHardwareScalar.set_and_wait"><code class="docutils literal notranslate"><span class="pre">RWHardwareScalar.set_and_wait()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.lattice.abstract_impl.RWHardwareScalar.unit"><code class="docutils literal notranslate"><span class="pre">RWHardwareScalar.unit()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.lattice.abstract_impl.RWRFATFrequencyScalar"><code class="docutils literal notranslate"><span class="pre">RWRFATFrequencyScalar</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.lattice.abstract_impl.RWRFATFrequencyScalar.get"><code class="docutils literal notranslate"><span class="pre">RWRFATFrequencyScalar.get()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.lattice.abstract_impl.RWRFATFrequencyScalar.set"><code class="docutils literal notranslate"><span class="pre">RWRFATFrequencyScalar.set()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.lattice.abstract_impl.RWRFATFrequencyScalar.set_and_wait"><code class="docutils literal notranslate"><span class="pre">RWRFATFrequencyScalar.set_and_wait()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.lattice.abstract_impl.RWRFATFrequencyScalar.unit"><code class="docutils literal notranslate"><span class="pre">RWRFATFrequencyScalar.unit()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.lattice.abstract_impl.RWRFATotalVoltageScalar"><code class="docutils literal notranslate"><span class="pre">RWRFATotalVoltageScalar</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.lattice.abstract_impl.RWRFATotalVoltageScalar.get"><code class="docutils literal notranslate"><span class="pre">RWRFATotalVoltageScalar.get()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.lattice.abstract_impl.RWRFATotalVoltageScalar.set"><code class="docutils literal notranslate"><span class="pre">RWRFATotalVoltageScalar.set()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.lattice.abstract_impl.RWRFATotalVoltageScalar.set_and_wait"><code class="docutils literal notranslate"><span class="pre">RWRFATotalVoltageScalar.set_and_wait()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.lattice.abstract_impl.RWRFATotalVoltageScalar.unit"><code class="docutils literal notranslate"><span class="pre">RWRFATotalVoltageScalar.unit()</span></code></a></li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.lattice.abstract_impl.RWRFFrequencyScalar"><code class="docutils literal notranslate"><span class="pre">RWRFFrequencyScalar</span></code></a><ul class="nav section-nav flex-column">

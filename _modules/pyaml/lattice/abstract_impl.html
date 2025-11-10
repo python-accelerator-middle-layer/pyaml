@@ -929,9 +929,8 @@
 <span class="sd">    Class providing read write access to a cavity voltage of a simulator for a given RF trasnmitter.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">elements</span><span class="p">:</span><span class="nb">list</span><span class="p">[</span><span class="n">at</span><span class="o">.</span><span class="n">Element</span><span class="p">],</span> <span class="n">transmitter</span><span class="p">:</span><span class="n">RFTransmitter</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">elements</span><span class="p">:</span><span class="nb">list</span><span class="p">[</span><span class="n">at</span><span class="o">.</span><span class="n">Element</span><span class="p">]):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__elements</span> <span class="o">=</span> <span class="n">elements</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">__transmitter</span> <span class="o">=</span> <span class="n">transmitter</span>
 
 <div class="viewcode-block" id="RWRFVoltageScalar.get">
 <a class="viewcode-back" href="../../../modules/lattice.html#pyaml.lattice.abstract_impl.RWRFVoltageScalar.get">[docs]</a>
@@ -959,7 +958,7 @@
 <div class="viewcode-block" id="RWRFVoltageScalar.unit">
 <a class="viewcode-back" href="../../../modules/lattice.html#pyaml.lattice.abstract_impl.RWRFVoltageScalar.unit">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">unit</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__transmitter</span><span class="o">.</span><span class="n">_cfg</span><span class="o">.</span><span class="n">voltage</span><span class="o">.</span><span class="n">unit</span><span class="p">()</span></div>
+        <span class="k">return</span> <span class="s2">&quot;V&quot;</span></div>
 </div>
 
 
@@ -972,9 +971,8 @@
 <span class="sd">    Class providing read write access to a cavity phase of a simulator for a given RF trasnmitter.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">elements</span><span class="p">:</span><span class="nb">list</span><span class="p">[</span><span class="n">at</span><span class="o">.</span><span class="n">Element</span><span class="p">],</span> <span class="n">transmitter</span><span class="p">:</span><span class="n">RFTransmitter</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">elements</span><span class="p">:</span><span class="nb">list</span><span class="p">[</span><span class="n">at</span><span class="o">.</span><span class="n">Element</span><span class="p">]):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__elements</span> <span class="o">=</span> <span class="n">elements</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">__transmitter</span> <span class="o">=</span> <span class="n">transmitter</span>
 
 <div class="viewcode-block" id="RWRFPhaseScalar.get">
 <a class="viewcode-back" href="../../../modules/lattice.html#pyaml.lattice.abstract_impl.RWRFPhaseScalar.get">[docs]</a>
@@ -1001,7 +999,7 @@
 <div class="viewcode-block" id="RWRFPhaseScalar.unit">
 <a class="viewcode-back" href="../../../modules/lattice.html#pyaml.lattice.abstract_impl.RWRFPhaseScalar.unit">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">unit</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__transmitter</span><span class="o">.</span><span class="n">_cfg</span><span class="o">.</span><span class="n">phase</span><span class="o">.</span><span class="n">unit</span><span class="p">()</span></div>
+        <span class="k">return</span> <span class="s2">&quot;rad&quot;</span></div>
 </div>
 
     
@@ -1014,10 +1012,9 @@
 <span class="sd">    Class providing read write access to RF frequency of a simulator.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">elements</span><span class="p">:</span><span class="nb">list</span><span class="p">[</span><span class="n">at</span><span class="o">.</span><span class="n">Element</span><span class="p">],</span> <span class="n">harmonics</span><span class="p">:</span><span class="nb">list</span><span class="p">[</span><span class="nb">float</span><span class="p">],</span> <span class="n">rf</span><span class="p">:</span><span class="n">RFPlant</span> <span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">elements</span><span class="p">:</span><span class="nb">list</span><span class="p">[</span><span class="n">at</span><span class="o">.</span><span class="n">Element</span><span class="p">],</span> <span class="n">harmonics</span><span class="p">:</span><span class="nb">list</span><span class="p">[</span><span class="nb">float</span><span class="p">]):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__elements</span> <span class="o">=</span> <span class="n">elements</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__harm</span> <span class="o">=</span> <span class="n">harmonics</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">__rf</span> <span class="o">=</span> <span class="n">rf</span>
 
 <div class="viewcode-block" id="RWRFFrequencyScalar.get">
 <a class="viewcode-back" href="../../../modules/lattice.html#pyaml.lattice.abstract_impl.RWRFFrequencyScalar.get">[docs]</a>
@@ -1042,7 +1039,82 @@
 <div class="viewcode-block" id="RWRFFrequencyScalar.unit">
 <a class="viewcode-back" href="../../../modules/lattice.html#pyaml.lattice.abstract_impl.RWRFFrequencyScalar.unit">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">unit</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__rf</span><span class="o">.</span><span class="n">_cfg</span><span class="o">.</span><span class="n">masterclock</span><span class="o">.</span><span class="n">unit</span><span class="p">()</span></div>
+        <span class="k">return</span> <span class="s2">&quot;Hz&quot;</span></div>
+</div>
+
+
+<span class="c1">#------------------------------------------------------------------------------</span>
+
+<div class="viewcode-block" id="RWRFATFrequencyScalar">
+<a class="viewcode-back" href="../../../modules/lattice.html#pyaml.lattice.abstract_impl.RWRFATFrequencyScalar">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">RWRFATFrequencyScalar</span><span class="p">(</span><span class="n">abstract</span><span class="o">.</span><span class="n">ReadWriteFloatScalar</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Class providing read write access to RF frequency of a simulator using</span>
+<span class="sd">    AT methods.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ring</span><span class="p">:</span> <span class="n">at</span><span class="o">.</span><span class="n">Lattice</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__ring</span> <span class="o">=</span> <span class="n">ring</span>
+
+<div class="viewcode-block" id="RWRFATFrequencyScalar.get">
+<a class="viewcode-back" href="../../../modules/lattice.html#pyaml.lattice.abstract_impl.RWRFATFrequencyScalar.get">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__ring</span><span class="o">.</span><span class="n">get_rf_frequency</span><span class="p">()</span></div>
+
+    
+<div class="viewcode-block" id="RWRFATFrequencyScalar.set">
+<a class="viewcode-back" href="../../../modules/lattice.html#pyaml.lattice.abstract_impl.RWRFATFrequencyScalar.set">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">set</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">value</span><span class="p">:</span><span class="nb">float</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__ring</span><span class="o">.</span><span class="n">set_rf_frequency</span><span class="p">(</span><span class="n">value</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="RWRFATFrequencyScalar.set_and_wait">
+<a class="viewcode-back" href="../../../modules/lattice.html#pyaml.lattice.abstract_impl.RWRFATFrequencyScalar.set_and_wait">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">set_and_wait</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span><span class="nb">float</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;Not implemented yet.&quot;</span><span class="p">)</span></div>
+
+        
+<div class="viewcode-block" id="RWRFATFrequencyScalar.unit">
+<a class="viewcode-back" href="../../../modules/lattice.html#pyaml.lattice.abstract_impl.RWRFATFrequencyScalar.unit">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">unit</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s1">&#39;Hz&#39;</span></div>
+</div>
+
+    
+<span class="c1">#------------------------------------------------------------------------------</span>
+
+<div class="viewcode-block" id="RWRFATotalVoltageScalar">
+<a class="viewcode-back" href="../../../modules/lattice.html#pyaml.lattice.abstract_impl.RWRFATotalVoltageScalar">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">RWRFATotalVoltageScalar</span><span class="p">(</span><span class="n">abstract</span><span class="o">.</span><span class="n">ReadWriteFloatScalar</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Class providing read write access to a RF voltage of a simulator using AT methods.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ring</span><span class="p">:</span> <span class="n">at</span><span class="o">.</span><span class="n">Lattice</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__ring</span> <span class="o">=</span> <span class="n">ring</span>
+
+<div class="viewcode-block" id="RWRFATotalVoltageScalar.get">
+<a class="viewcode-back" href="../../../modules/lattice.html#pyaml.lattice.abstract_impl.RWRFATotalVoltageScalar.get">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__ring</span><span class="o">.</span><span class="n">get_rf_voltage</span><span class="p">()</span></div>
+
+    
+<div class="viewcode-block" id="RWRFATotalVoltageScalar.set">
+<a class="viewcode-back" href="../../../modules/lattice.html#pyaml.lattice.abstract_impl.RWRFATotalVoltageScalar.set">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">set</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">value</span><span class="p">:</span><span class="nb">float</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__ring</span><span class="o">.</span><span class="n">set_rf_voltage</span><span class="p">(</span><span class="n">value</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="RWRFATotalVoltageScalar.set_and_wait">
+<a class="viewcode-back" href="../../../modules/lattice.html#pyaml.lattice.abstract_impl.RWRFATotalVoltageScalar.set_and_wait">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">set_and_wait</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span><span class="nb">float</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;Not implemented yet.&quot;</span><span class="p">)</span></div>
+
+        
+<div class="viewcode-block" id="RWRFATotalVoltageScalar.unit">
+<a class="viewcode-back" href="../../../modules/lattice.html#pyaml.lattice.abstract_impl.RWRFATotalVoltageScalar.unit">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">unit</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s1">&#39;V&#39;</span></div>
 </div>
 
 
