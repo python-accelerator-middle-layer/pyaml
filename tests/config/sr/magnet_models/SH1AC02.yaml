@@ -4,30 +4,21 @@
   pseudo_factors: [1.0,-1.0,-1.0]
   curves:
     - type: pyaml.configuration.csvcurve
-      file: sr/magnet_models/SH_h_strength.csv
+      file: sr/magnet_models/SH1_SH3_h_strength.csv
     - type: pyaml.configuration.csvcurve
-      file: sr/magnet_models/SH_v_strength.csv
+      file: sr/magnet_models/SH1_SH3_v_strength.csv
     - type: pyaml.configuration.csvcurve
-      file: sr/magnet_models/SH_sq_strength.csv
+      file: sr/magnet_models/SH1_SH3_sq_strength.csv
   matrix:
     type: pyaml.configuration.csvmatrix
     file: sr/magnet_models/SH_matrix.csv
   powerconverters:
-#    - type: tango.pyaml.attribute
-#     attribute:  srmag/ps-corr-sh1/c02-a-ch1/current
-    - type: pyaml.control.device
-      setpoint: srmag/ps-corr-sh1/c02-a-ch1/current
-      readback: srmag/ps-corr-sh1/c02-a-ch1/current
+    - type: tango.pyaml.attribute
+      attribute:  srmag/ps-corr-sh1/c02-a-ch1/current
       unit: A
-#    - type: tango.pyaml.attribute
-#     attribute:  srmag/ps-corr-sh1/c02-a-ch2/current
-    - type: pyaml.control.device
-      setpoint: srmag/ps-corr-sh1/c02-a-ch2/current
-      readback: srmag/ps-corr-sh1/c02-a-ch2/current
+    - type: tango.pyaml.attribute
+      attribute:  srmag/ps-corr-sh1/c02-a-ch2/current
       unit: A
-#    - type: tango.pyaml.attribute
-#     attribute:  srmag/ps-corr-sh1/c02-a-ch3/current
-    - type: pyaml.control.device
-      setpoint: srmag/ps-corr-sh1/c02-a-ch3/current
-      readback: srmag/ps-corr-sh1/c02-a-ch3/current
+    - type: tango.pyaml.attribute
+      attribute:  srmag/ps-corr-sh1/c02-a-ch3/current
       unit: A

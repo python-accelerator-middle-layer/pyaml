@@ -66,14 +66,14 @@ class ExternalMagnetModel(MagnetModel):
         pass
 
     # Send power supply current(s) to control system
-    def send_hardware_values(self,currents:np.array):
+    def send_hardware_values(self, currents:np.array):
         self._ps.set(currents)
         pass
 
     def get_devices(self) -> list[DeviceAccess]:
         return [self._ps,self.id]
     
-    def hasHardwareMapping(self) -> bool:
+    def has_hardware(self) -> bool:
         # No trivial conversion between strength and hardware unit
         return False
 

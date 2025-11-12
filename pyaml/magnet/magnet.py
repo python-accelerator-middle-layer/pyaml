@@ -1,14 +1,17 @@
-from pyaml.lattice.element import Element,ElementConfigModel
-from ..control.deviceaccess import DeviceAccess
-from ..control import abstract
+from ..common.element import Element,ElementConfigModel
+from .. import PyAMLException
+from ..common import abstract
 from .model import MagnetModel
+
 from scipy.constants import speed_of_light
-from typing import Self
+try:
+    from typing import Self  # Python 3.11+
+except ImportError:
+    from typing_extensions import Self  # Python 3.10 and earlier
+import numpy as np
 
 class MagnetConfigModel(ElementConfigModel):
 
-    hardware: DeviceAccess | None = None
-    """Direct access to a magnet device that provides strength/current conversion"""
     model: MagnetModel | None = None
     """Object in charge of converting magnet strenghts to power supply values"""
 
@@ -17,7 +20,7 @@ class Magnet(Element):
   Class providing access to one magnet of a physical or simulated lattice
   """
 
-  def __init__(self, name:str, linked_elements:list[str], hardware:DeviceAccess = None, model:MagnetModel = None):
+  def __init__(self, name:str, model:MagnetModel = None):
     """
     Construct a magnet
 
@@ -25,43 +28,77 @@ class Magnet(Element):
     ----------
     name : str
         Element name
-    hardware : DeviceAccess
-        Direct access to a hardware (bypass the magnet model)
     model : MagnetModel
-        Magnet model in charge of comutping coil(s) current
+        Magnet model in charge of computing coil(s) current
     """
-    super().__init__(name, linked_elements)
+    super().__init__(name)
     self.__model = model
-    self.__strength = None
-    self.__hardware = None
-    if hardware is not None:
-      # TODO
-      # Direct access to a magnet device that supports strength/current conversion
-      raise Exception(
-          " %s, hardware access not implemented" % (self.__class__.__name__,name)
-      )
-    
+    self.__strength:abstract.ReadWriteFloatScalar = None
+    self.__hardware:abstract.ReadWriteFloatScalar = None
+    self.__modelName = self.get_name()
+
   @property
   def strength(self) -> abstract.ReadWriteFloatScalar:
+    """
+    Gives access to the strength of this magnet in physics unit
+    """
+    self.check_peer()
+    if self.__strength is None:
+        raise PyAMLException(f"{str(self)} has no model that supports physics units")
     return self.__strength
 
   @property
   def hardware(self) -> abstract.ReadWriteFloatScalar:
+    """
+    Gives access to the strength of this magnet in hardware unit when possible
+    """
+    self.check_peer()
     if self.__hardware is None:
-        raise Exception(f"{str(self)} has no model that supports hardware units")
+        raise PyAMLException(f"{str(self)} has no model that supports hardware units")
     return self.__hardware
 
   @property
   def model(self) -> MagnetModel:
+     """
+     Returns a handle to the underlying magnet model
+     """
      return self.__model
 
-  def attach(self, strength: abstract.ReadWriteFloatScalar, hardware: abstract.ReadWriteFloatScalar) -> Self:
-    # Attach strengh and current attribute and returns a new reference
+  def attach(self, peer, strength: abstract.ReadWriteFloatScalar, hardware: abstract.ReadWriteFloatScalar) -> Self:
+    """
+    Create a new reference to attach this magnet to a simulator or a control systemand.
+    """
     obj = self.__class__(self._cfg)
+    obj.__modelName = self.__modelName
     obj.__strength = strength
     obj.__hardware = hardware
+    obj._peer = peer
     return obj
 
-  def set_energy(self,E:float):
-     if(self.__model is not None):
-        self.__model.set_magnet_rigidity(E/speed_of_light)
+  def set_energy(self, energy:float):
+     """
+     Set the energy in eV to compute and set the magnet rigidity on the underlying magnet model.
+     """
+     if self.__model is not None:
+        self.__model.set_magnet_rigidity(np.double(energy / speed_of_light))
+
+  def set_model_name(self, name:str):
+     """
+     Sets the name of this magnet in the model (Used for combined function manget)
+     """
+     self.__modelName = name
+
+  def get_model_name(self) -> str:
+     """
+     Returns the model name of this magnet
+     """
+     return self.__modelName
+
+  def __repr__(self):
+      return "%s(peer='%s', name='%s', model_name='%s', magnet_model=%s)" % (
+          self.__class__.__name__,
+          self.get_peer(),
+          self.get_name(),
+          self.__modelName,
+          repr(self.__model)
+      )

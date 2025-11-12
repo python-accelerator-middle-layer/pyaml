@@ -3,7 +3,7 @@ Instrument class
 """
 
 from .control.controlsystem import ControlSystem
-from .lattice.element import Element
+from .common.element import Element
 from .lattice.simulator import Simulator
 from .arrays.array import ArrayConfig
 from pydantic import BaseModel,ConfigDict
@@ -42,7 +42,10 @@ class Instrument(object):
         if cfg.controls is not None:
             for c in cfg.controls:
                 if c.name() == "live":
-                    self.__live = c
+                  self.__live = c
+                else:
+                  # Add as dynacmic attribute
+                  setattr(self,c.name(),c)
                 c.init_cs()
                 c.fill_device(cfg.devices)
 
@@ -50,6 +53,9 @@ class Instrument(object):
             for s in cfg.simulators:
                 if s.name() == "design":
                   self.__design = s
+                else:
+                  # Add as dynacmic attribute
+                  setattr(self,s.name(),s)
                 s.fill_device(cfg.devices)
 
         if cfg.arrays is not None:
@@ -60,7 +66,6 @@ class Instrument(object):
                 if cfg.controls is not None:
                     for c in cfg.controls:
                         a.fill_array(c)
-                        a.init_aggregator(c)
 
         if cfg.energy is not None:
             self.set_energy(cfg.energy)

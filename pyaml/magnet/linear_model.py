@@ -1,9 +1,10 @@
-import numpy as np
-from pydantic import BaseModel,ConfigDict
-
 from .model import MagnetModel
 from ..configuration.curve import Curve
 from ..control.deviceaccess import DeviceAccess
+from ..common.element import __pyaml_repr__
+
+import numpy as np
+from pydantic import BaseModel,ConfigDict
 
 # Define the main class name for this module
 PYAMLCLASS = "LinearMagnetModel"
@@ -76,8 +77,6 @@ class LinearMagnetModel(MagnetModel):
         self.__brho = brho
 
     def __repr__(self):
-        return "%s(curve[%d pts], unit=%s)" % (
-            self.__class__.__name__,
-            len(self.__curve),
-            self.__strength_unit,
-        )
+        return __pyaml_repr__(self)
+
+    

@@ -19,7 +19,7 @@ jobs:
     strategy:
       matrix:  # only lowest supported Python on latest ubuntu
         os: [ubuntu-latest]
-        python-version: [3.9]
+        python-version: [3.14]
     
     permissions:
       issues: write
@@ -47,6 +47,9 @@ jobs:
       - name: Install package
         run: python -m pip install '.[docs]'
 
+      - name: Install dependencies
+        run: pip install -r ./docs/requirements.txt
+        
       - name: Build documentation
         run: python -m sphinx -b html docs ./docs/_build -d ./docs/_build
 

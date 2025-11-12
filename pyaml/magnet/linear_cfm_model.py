@@ -1,10 +1,12 @@
-from pydantic import BaseModel,ConfigDict
-
-import numpy as np
 from ..configuration.curve import Curve
 from ..configuration.matrix import Matrix
 from ..control.deviceaccess import DeviceAccess
 from .model import MagnetModel
+from ..common.exception import PyAMLException
+from ..common.element import __pyaml_repr__
+
+from pydantic import BaseModel,ConfigDict
+import numpy as np
 
 # Define the main class name for this module
 PYAMLCLASS = "LinearCFMagnetModel"
@@ -89,7 +91,7 @@ class LinearCFMagnetModel(MagnetModel):
         _s = np.shape(self.__matrix)
 
         if len(_s) != 2 or _s[0] != self.__nbFunction or _s[1] != self.__nbPS:
-            raise Exception(
+            raise PyAMLException(
                 "matrix wrong dimension "
                 f"({self.__nbFunction}x{self.__nbPS} expected but got {_s[0]}x{_s[1]})"
             )
@@ -111,7 +113,7 @@ class LinearCFMagnetModel(MagnetModel):
     def __check_len(self,obj,name,expected_len):
         lgth = len(obj) 
         if lgth != expected_len:
-            raise Exception(
+            raise PyAMLException(
                 f"{name} does not have the expected "
                 f"number of items ({expected_len} items expected but got {lgth})"
             )    
@@ -159,6 +161,9 @@ class LinearCFMagnetModel(MagnetModel):
     def set_magnet_rigidity(self, brho: np.double):
         self._brho = brho
 
-    def hasHardwareMapping(self) -> bool:
+    def has_hardware(self) -> bool:
         return (self.__nbPS == self.__nbFunction) and np.allclose(self.__matrix, np.eye(self.__nbFunction))
+
+    def __repr__(self):
+        return __pyaml_repr__(self)
 

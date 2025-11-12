@@ -5,6 +5,7 @@ from scipy.interpolate import make_smoothing_spline
 from .model import MagnetModel
 from ..configuration.curve import Curve
 from ..control.deviceaccess import DeviceAccess
+from ..common.element import __pyaml_repr__
 
 # Define the main class name for this module
 PYAMLCLASS = "SplineMagnetModel"
@@ -77,8 +78,5 @@ class SplineMagnetModel(MagnetModel):
         self.__brho = brho
 
     def __repr__(self):
-        return "%s(curve[%d], unit=%s)" % (
-            self.__class__.__name__,
-            len(self.__curve),
-            self.__strength_unit,
-        )
+        return __pyaml_repr__(self)
+

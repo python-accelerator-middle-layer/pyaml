@@ -13,10 +13,8 @@ instruments:
         name: live
     data_folder: /data/store
     arrays:
-      - type: pyaml.arrays.quadrupole
+      - type: pyaml.arrays.magnet
         name: QForTune
-        aggregator:
-          type: tango.pyaml.multi_attribute
         elements:
           - QD2E-C04
           - QD2A-C05
@@ -1879,3 +1877,14 @@ instruments:
           type: tango.pyaml.attribute
           attribute: srmag/vps-qd2/c03-a/current
           unit: A
+    - type: pyaml.diagnostics.tune_monitor
+      name: BETATRON_TUNE
+      tune_h:
+        type: tango.pyaml.attribute_read_only
+        attribute: srdiag/tune/tune_h
+        unit: mm
+      tune_v:
+        type: tango.pyaml.attribute_read_only
+        attribute: srdiag/tune/tune_v
+        unit: mm
+

@@ -1,0 +1,59 @@
+type: pyaml.pyaml
+instruments:
+  - type: pyaml.instrument
+    name: sr
+    energy: 6e9
+    simulators:
+      - type: pyaml.lattice.simulator
+        lattice: sr/lattices/ebs.mat
+        name: design
+    controls:
+      - type: tango.pyaml.controlsystem
+        tango_host: ebs-simu-3:10000
+        name: live
+    data_folder: /data/store
+    arrays:
+      - type: pyaml.arrays.bpm
+        name: BPM
+        elements:
+          - BPM_C04-04
+          - BPM_C04-05
+          - BPM_C04-06
+          - BPM_C04-06 # duplicate name in array
+    devices:
+    - type: pyaml.bpm.bpm
+      name: BPM_C04-04
+      model:
+        type: pyaml.bpm.bpm_simple_model
+        x_pos:
+          type: tango.pyaml.attribute_read_only
+          attribute: srdiag/bpm/c04-04/SA_HPosition
+          unit: m
+        y_pos:
+          type: tango.pyaml.attribute_read_only
+          attribute: srdiag/bpm/c04-04/SA_VPosition
+          unit: m
+    - type: pyaml.bpm.bpm
+      name: BPM_C04-05
+      model:
+        type: pyaml.bpm.bpm_simple_model
+        x_pos:
+          type: tango.pyaml.attribute_read_only
+          attribute: srdiag/bpm/c04-05/SA_HPosition
+          unit: m
+        y_pos:
+          type: tango.pyaml.attribute_read_only
+          attribute: srdiag/bpm/c04-05/SA_VPosition
+          unit: m
+    - type: pyaml.bpm.bpm
+      name: BPM_C04-06
+      model:
+        type: pyaml.bpm.bpm_simple_model
+        x_pos:
+          type: tango.pyaml.attribute_read_only
+          attribute: srdiag/bpm/c04-06/SA_HPosition
+          unit: m
+        y_pos:
+          type: tango.pyaml.attribute_read_only
+          attribute: srdiag/bpm/c04-06/SA_VPosition
+          unit: m
