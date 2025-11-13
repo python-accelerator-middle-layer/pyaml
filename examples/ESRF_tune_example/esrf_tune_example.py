@@ -1,6 +1,5 @@
-from pyaml.pyaml import pyaml,PyAML
+from pyaml.configuration import load_instrument
 from pyaml.instrument import Instrument
-from pyaml.configuration.factory import Factory
 import numpy as np
 import os
 
@@ -14,8 +13,7 @@ relative_path = os.path.join(script_dir, '..', '..', 'tests', 'config','EBSTune.
 # Normalize the path (resolves '..')
 absolute_path = os.path.abspath(relative_path)
 
-ml:PyAML = pyaml(absolute_path)
-sr:Instrument = ml.get('sr')
+sr:Instrument = load_instrument(absolute_path)
 sr.design.get_lattice().disable_6d()
 
 quadForTuneDesign = sr.design.get_magnets("QForTune")
@@ -52,6 +50,3 @@ if False:
     strs = quadForTuneLive.strengths.get()
     strs += np.matmul(correctionmat,[0.1,0.05]) # Ask for correction [dqx,dqy]
     quadForTuneLive.strengths.set(strs)
-
-
-Factory.clear()
