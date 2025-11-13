@@ -2,8 +2,10 @@ from ..common.element import Element, ElementConfigModel
 from ..lattice.abstract_impl import RBpmArray, RWBpmOffsetArray, RWBpmTiltScalar
 from ..bpm.bpm_model import BPMModel
 from ..common.exception import PyAMLException
-
-from typing import Self
+try:
+    from typing import Self  # Python 3.11+
+except ImportError:
+    from typing_extensions import Self  # Python 3.10 and earlier
 
 PYAMLCLASS = "BPM"
 
