@@ -1,8 +1,10 @@
 from ..common.element import Element, ElementConfigModel
 from ..common.abstract import ReadFloatArray
 from ..control.deviceaccess import DeviceAccess
-
-from typing import Self
+try:
+    from typing import Self  # Python 3.11+
+except ImportError:
+    from typing_extensions import Self  # Python 3.10 and earlier
 from pydantic import ConfigDict
 
 PYAMLCLASS = "BetatronTuneMonitor"
