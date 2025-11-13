@@ -1,6 +1,6 @@
 from .instrument import Instrument
 from .configuration.factory import Factory
-from .configuration import load,set_root_folder
+from .configuration import load, set_root_folder
 from .common.exception import PyAMLException
 
 from pydantic import BaseModel,ConfigDict

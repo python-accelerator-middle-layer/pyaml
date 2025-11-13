@@ -10,12 +10,28 @@ from yaml.loader import SafeLoader
 from yaml.constructor import ConstructorError
 import collections.abc
 
-from . import get_root_folder
 from .. import PyAMLException
 
 logger = logging.getLogger(__name__)
 
 accepted_suffixes = [".yaml", ".yml", ".json"]
+
+
+ROOT = {"path": Path.cwd().resolve()}
+
+
+def set_root_folder(path: Union[str, Path]):
+    """
+    Set the root path for configuration files.
+    """
+    ROOT["path"] = Path(path)
+
+
+def get_root_folder() -> Path:
+    """
+    Get the root path for configuration files.
+    """
+    return ROOT["path"]
 
 class PyAMLConfigCyclingException(PyAMLException):
     
