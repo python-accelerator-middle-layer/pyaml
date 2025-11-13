@@ -36,7 +36,7 @@ class ConfigModel(ElementConfigModel):
     mapping: list[list[str]]
     """Name mapping for multipoles (i.e. [[B0,C01A-H],[A0,C01A-H],[B2,C01A-S]])"""
     model: MagnetModel | None = None
-    """Object in charge of converting magnet strenghts to currents"""
+    """Object in charge of converting magnet strengths to currents"""
 
 class CombinedFunctionMagnet(Element):
     """CombinedFunctionMagnet class"""

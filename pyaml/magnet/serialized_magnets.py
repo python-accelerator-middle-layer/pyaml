@@ -13,20 +13,14 @@ class ConfigModel(BaseModel):
 
     model_config = ConfigDict(arbitrary_types_allowed=True,extra="forbid")
 
-    name: str
-    """The series name"""
+    function: str
+    """List of magnets"""
 
     elements: list[str]
-    """List of magnets in the lattice"""
+    """List of magnets"""
 
-    powerconverter: DeviceAccess | list[DeviceAccess]
-    """
-    The hardware can be a single power supply or a list of power supplies.
-    If a list is provided, the same value will be affected to all of them.
-    """
-
-    unit: str
-    """Strength unit (i.e. ['rad','m-1','m-2']). All magnets in series have the same unit"""
+    model: MagnetModel | None = None
+    """Object in charge of converting magnet strengths to currents"""
 
 
 class SerializedMagnetsModel(MagnetModel):
@@ -48,7 +42,7 @@ class SerializedMagnetsModel(MagnetModel):
     """
 
     def __init__(self, cfg: ConfigModel):
-        super().__init__(cfg.name, cfg.linked_elements)
+        super().__init__(cfg.name)
         self._cfg = cfg
         self.model = cfg.model
 
@@ -65,18 +59,18 @@ class SerializedMagnetsModel(MagnetModel):
         return [device.unit() for device in self.get_devices()]
 
     def read_hardware_values(self) -> npt.NDArray[np.float64]:
-        return np.array([p.get() for p in self._cfg.powerconverter])
+        return np.array([p.get() for p in self.get_devices()])
 
     def readback_hardware_values(self) -> npt.NDArray[np.float64]:
-        return np.array([p.readback() for p in self._cfg.powerconverter])
+        return np.array([p.readback() for p in self.get_devices()])
 
     def send_hardware_values(self, hardware_values: npt.NDArray[np.float64]):
-        for idx, p in enumerate(self._cfg.powerconverter):
-            p.set(currents[idx])
+        for idx, p in enumerate(self.get_devices()):
+            p.set(hardware_values[idx])
 
     def get_devices(self) -> list[DeviceAccess]:
-        if isinstance(self._cfg.powerconverter, list):
-            return self._cfg.powerconverter
+        if isinstance(self.model.powerconverter, list):
+            return self.model.powerconverter
         else:
             return [self._cfg.powerconverter]
 

@@ -33,7 +33,7 @@ class ConfigModel(BaseModel):
     """Offsets applied to 'pseudo currents', 1 factor per function.
        Delfault: zeros"""
     powerconverters: list[DeviceAccess]
-    """List of power converter devices to apply currrents (can be different
+    """List of power converter devices to apply currents (can be different
        from number of function)"""
     matrix: Matrix = None
     """n x m matrix (n rows for n function , m columns for m currents) 
@@ -46,11 +46,12 @@ class LinearCFMagnetModel(MagnetModel):
     """
     Class providing a simple linear model for combined function magnets. A matrix
     can handle separation of multipoles. A pseudo current is a linear combination
-    of power supply currents assiociated to a single function.
+    of power supply currents associated to a single function.
     """
 
     def __init__(self, cfg: ConfigModel):
         self._cfg = cfg
+        self._brho = np.nan
 
         # Check config
         self.__nbFunction: int = len(cfg.multipoles)
