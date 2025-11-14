@@ -45,8 +45,7 @@ def test_rf(install_test_package):
 }], indirect=True)
 def test_rf_multi(install_test_package):
 
-    ml:PyAML = pyaml("tests/config/EBS_rf_multi.yaml")
-    sr:Instrument = ml.get('sr')
+    sr:Accelerator = Accelerator.load("tests/config/EBS_rf_multi.yaml")
 
     # Simulator
     RF = sr.design.get_rf_plant("RF")
@@ -98,8 +97,7 @@ def test_rf_multi(install_test_package):
 }], indirect=True)
 def test_rf_multi_notrans(install_test_package):
 
-    ml:PyAML = pyaml("tests/config/EBS_rf_notrans.yaml")
-    sr:Instrument = ml.get('sr')
+    sr:Accelerator = Accelerator.load("tests/config/EBS_rf_notrans.yaml")
 
     # Simulator
     RF = sr.design.get_rf_plant("RF")
