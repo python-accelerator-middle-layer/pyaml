@@ -7,10 +7,23 @@ from pyaml.arrays.magnet import Magnet,ConfigModel as MagnetArrayConfigModel
 from tango.pyaml.controlsystem import TangoControlSystem,ConfigModel as ControlSystemConfig
 from tango.pyaml.attribute import Attribute,ConfigModel as AttributeConfig
 from tango.pyaml.attribute_read_only import AttributeReadOnly,ConfigModel as AttributeReadOnlyConfig
+from pyaml.configuration import set_root_folder
+import os
 
 
 import numpy as np
 import time
+
+# Get the directory of the current script
+script_dir = os.path.dirname(__file__)
+
+# Go up one level and then into 'data'
+relative_path = os.path.join(script_dir, '..', '..', 'tests')
+
+# Normalize the path (resolves '..')
+absolute_path = os.path.abspath(relative_path)
+
+set_root_folder(absolute_path)
 
 # Configuration
 
