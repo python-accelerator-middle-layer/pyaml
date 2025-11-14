@@ -1,8 +1,8 @@
 import pytest
 from pyaml import PyAMLConfigException, PyAMLException
 from pyaml.configuration.factory import Factory
-from pyaml.pyaml import PyAML, pyaml
 from tests.conftest import MockElement
+from pyaml.accelerator import Accelerator
 
 
 def test_factory_build_default():
@@ -33,7 +33,7 @@ def test_factory_with_custom_strategy():
 ])
 def test_error_location(test_file):
     with pytest.raises(PyAMLConfigException) as exc:
-        ml: PyAML = pyaml(test_file)
+        ml:Accelerator = Accelerator.load(test_file)
     print(str(exc.value))
     test_file_names = test_file.split("/")
     test_file_name = test_file_names[len(test_file_names)-1]
@@ -45,7 +45,7 @@ def test_error_location(test_file):
 ])
 def test_error_cycles(test_file):
     with pytest.raises(PyAMLException) as exc:
-        ml: PyAML = pyaml(test_file)
+        ml:Accelerator = Accelerator.load(test_file)
 
     assert "Circular file inclusion of " in str(exc.value)
     if not test_file.endswith(".json"):

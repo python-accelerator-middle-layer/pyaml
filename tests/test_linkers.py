@@ -1,14 +1,13 @@
 import pytest
 
 from pyaml import PyAMLException
-from pyaml.instrument import Instrument
+from pyaml.accelerator import Accelerator
 
 from pyaml.lattice.attribute_linker import (
     PyAtAttributeElementsLinker,
     PyAtAttributeIdentifier,
     ConfigModel as AttrConfigModel,
 )
-from pyaml.pyaml import PyAML, pyaml
 
 
 # -----------------------
@@ -24,8 +23,7 @@ class DummyPyAMLElement:
 
 
 def test_conf_with_linker():
-    ml:PyAML = pyaml("tests/config/sr-attribute-linker.yaml")
-    sr:Instrument = ml.get('sr')
+    sr:Accelerator = Accelerator.load("tests/config/sr-attribute-linker.yaml")
     assert sr is not None
     magnet = sr.design.get_magnet("SH1A-C01-H")
     assert magnet is not None

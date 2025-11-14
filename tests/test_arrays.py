@@ -1,6 +1,5 @@
-from pyaml.pyaml import pyaml,PyAML
 from pyaml.configuration.factory import Factory
-from pyaml.instrument import Instrument
+from pyaml.accelerator import Accelerator
 from pyaml.arrays.element_array import ElementArray
 from pyaml.arrays.magnet_array import MagnetArray
 from pyaml.arrays.cfm_magnet_array import CombinedFunctionMagnetArray
@@ -16,8 +15,7 @@ import pytest
 }], indirect=True)
 def test_arrays(install_test_package):
 
-    ml:PyAML = pyaml("tests/config/sr.yaml")
-    sr:Instrument = ml.get('sr')
+    sr:Accelerator = Accelerator.load("tests/config/sr.yaml")
     sr.design.get_lattice().disable_6d()
 
     # Test on model
