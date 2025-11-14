@@ -1,11 +1,14 @@
 import numpy as np
 from numpy import typing as npt
 from pydantic import BaseModel,ConfigDict
+from scipy.constants import speed_of_light
 
 from .magnet import Magnet, MagnetConfigModel
 from .model import MagnetModel
 from .. import PyAMLException
-from ..common.element import Element, ElementConfigModel
+from ..common import abstract
+from ..common.abstract import RWMapper
+from ..common.element import Element, ElementConfigModel, __pyaml_repr__
 from ..configuration import Factory
 from ..control.deviceaccess import DeviceAccess
 from .function_mapping import function_map
@@ -15,15 +18,10 @@ PYAMLCLASS = "SerializedMagnetsModel"
 
 
 class ConfigModel(ElementConfigModel):
-
-    model_config = ConfigDict(arbitrary_types_allowed=True,extra="forbid")
-
     function: str
     """List of magnets"""
-
     elements: list[str]
     """List of magnets"""
-
     model: MagnetModel | None = None
     """Object in charge of converting magnet strengths to currents"""
 
@@ -50,17 +48,17 @@ class SerializedMagnetsModel(Element):
         super().__init__(cfg.name)
         self._cfg = cfg
         self.model = cfg.model
-        self.polynoms = []
+        self.polynom = None
         self.__virtuals:list[Magnet] = []
 
         if peer is None:
 
             # Configuration part
+            self.polynom = function_map[self._cfg.function].polynom
             if not self._cfg.function in function_map:
                 raise PyAMLException(self._cfg.function + " not implemented for serialized magnet")
             for element in self._cfg.elements:
                 # Check mapping validity
-                self.polynoms.append(function_map[self._cfg.function].polynom)
                 # Create the virtual magnet for the corresponding magnet
                 vm = self.__create_virtual_magnet(element)
                 self.__virtuals.append(vm)
@@ -76,39 +74,50 @@ class SerializedMagnetsModel(Element):
             virtual.set_model_name(self.get_name())
             return virtual
 
-    def compute_hardware_values(self, strengths: npt.NDArray[np.float64]) -> npt.NDArray[np.float64]:
-        pass
-
-    def compute_strengths(self, hardware_values: npt.NDArray[np.float64]) -> npt.NDArray[np.float64]:
-        pass
-
-    def get_series_name(self) -> str:
-        return self._cfg.name
-
-    def nb_magnets(self) -> int:
+    def get_nb_magnets(self) -> int:
         return len(self._cfg.elements)
 
-    def get_strength_units(self) -> list[str]:
-        return [self._cfg.unit]*len(self._cfg.elements)
+    def get_magnets(self) -> list[Magnet]:
+        return self.__virtuals
 
-    def get_hardware_units(self) -> list[str]:
-        return [device.unit() for device in self.get_devices()]
+    def attach(self, peer, strengths: list[abstract.ReadWriteFloatScalar], hardwares: list[abstract.ReadWriteFloatScalar]) -> list[Magnet]:
+        l = []
+        # Construct a single function magnet for each multipole of this combined function magnet
+        for idx, magnet in enumerate(self._cfg.elements):
+            strength = strengths[idx]
+            hardware = hardwares[idx] if self.model.has_hardware() else None
+            l.append(self.__virtuals[idx].attach(peer, strength, hardware))
+        return l
 
-    def read_hardware_values(self) -> npt.NDArray[np.float64]:
-        return np.array([p.get() for p in self.get_devices()])
+    @property
+    def strengths(self) -> abstract.ReadWriteFloatScalar:
+        """
+        Gives access to the strengths of this combined function magnet in physics unit
+        """
+        self.check_peer()
+        if self.__strengths is None:
+            raise PyAMLException(f"{str(self)} has no model that supports physics units")
+        return self.__strengths
 
-    def readback_hardware_values(self) -> npt.NDArray[np.float64]:
-        return np.array([p.readback() for p in self.get_devices()])
+    @property
+    def hardwares(self) -> abstract.ReadWriteFloatScalar:
+        """
+        Gives access to the strengths of this combined function magnet in hardware unit when possible
+        """
+        self.check_peer()
+        if self.__hardwares is None:
+            raise PyAMLException(f"{str(self)} has no model that supports hardware units")
+        return self.__hardwares
 
-    def send_hardware_values(self, hardware_values: npt.NDArray[np.float64]):
-        for idx, p in enumerate(self.get_devices()):
-            p.set(hardware_values[idx])
+    def set_energy(self, energy: float):
+        if (self.model is not None):
+            self.model.set_magnet_rigidity(energy / speed_of_light)
+
+    def __repr__(self):
+        return __pyaml_repr__(self)
 
     def get_devices(self) -> list[DeviceAccess]:
         if isinstance(self.model.powerconverter, list):
             return self.model.powerconverter
         else:
             return [self._cfg.powerconverter]
-
-    def set_magnet_rigidity(self, brho: np.double):
-        pass

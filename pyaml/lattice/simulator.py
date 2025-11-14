@@ -6,6 +6,7 @@ from ..magnet.magnet import Magnet
 from ..bpm.bpm import BPM
 from ..diagnostics.tune_monitor import BetatronTuneMonitor
 from ..magnet.cfm_magnet import CombinedFunctionMagnet
+from ..magnet.serialized_magnet import SerializedMagnetsModel
 from ..rf.rf_plant import RFPlant,RWTotalVoltage
 from ..rf.rf_transmitter import RFTransmitter
 from ..lattice.abstract_impl import RWHardwareScalar,RWHardwareArray
@@ -73,7 +74,7 @@ class Simulator(ElementHolder):
         # No magnet aggregator for simulator
         return None
 
-    def create_magnet_harddware_aggregator(self,magnets:list[Magnet]) -> ScalarAggregator:
+    def create_magnet_hardware_aggregator(self,magnets:list[Magnet]) -> ScalarAggregator:
         # No magnet aggregator for simulator
         return None
 
@@ -105,6 +106,19 @@ class Simulator(ElementHolder):
             ms = e.attach(self,strengths,currents)
             self.add_cfm_magnet(ms[0])
             for m in ms[1:]:
+              self.add_magnet(m)
+
+          elif isinstance(e,SerializedMagnetsModel):
+            currents = []
+            strengths = []
+            # Create unique refs the cfm and each of its function for this control system
+            for magnet in e.get_magnets():
+                current = RWHardwareScalar(self.get_at_elems(magnet),e.polynom,e.model) if e.model.has_hardware() else None
+                strength = RWStrengthScalar(self.get_at_elems(magnet),e.polynom,e.model) if e.model.has_physics() else None
+                currents.append(current)
+                strengths.append(strength)
+            ms = e.attach(self,strengths,currents)
+            for m in ms:
               self.add_magnet(m)
 
           elif isinstance(e,BPM):
@@ -154,7 +168,7 @@ class Simulator(ElementHolder):
              e = e.attach(self,betatron_tune)
              self.add_betatron_tune_monitor(e)
 
-    
+
     def get_at_elems(self,element:Element) -> list[at.Element]:
        identifier = self._linker.get_element_identifier(element)
        element_list = self._linker.get_at_elements(identifier)

@@ -12,6 +12,7 @@ from ..common.abstract_aggregator import ScalarAggregator
 from ..control.abstract_impl import RBetatronTuneArray
 from ..magnet.magnet import Magnet
 from ..magnet.cfm_magnet import CombinedFunctionMagnet
+from ..magnet.serialized_magnet import SerializedMagnetsModel
 from ..rf.rf_plant import RFPlant,RWTotalVoltage
 from ..rf.rf_transmitter import RFTransmitter
 from ..configuration.factory import Factory
@@ -55,7 +56,7 @@ class ControlSystem(ElementHolder,metaclass=ABCMeta):
             agg.add_magnet(m)
         return agg
 
-    def create_magnet_harddware_aggregator(self,magnets:list[Magnet]) -> ScalarAggregator:
+    def create_magnet_hardware_aggregator(self,magnets:list[Magnet]) -> ScalarAggregator:
         # When working in hardware space, 1 single power supply device per multipolar strength is required
         agg = self.create_scalar_aggregator()
         for m in magnets:
@@ -114,6 +115,19 @@ class ControlSystem(ElementHolder,metaclass=ABCMeta):
             ms = e.attach(self,strengths,currents)
             self.add_cfm_magnet(ms[0])
             for m in ms[1:]:
+              self.add_magnet(m)
+
+          elif isinstance(e,SerializedMagnetsModel):
+            currents = []
+            strengths = []
+            # Create unique refs the cfm and each of its function for this control system
+            for i in range(e.get_nb_magnets()):
+                current = RWHardwareScalar(e.model) if e.model.has_hardware() else None
+                strength = RWStrengthScalar(e.model) if e.model.has_physics() else None
+                currents.append(current)
+                strengths.append(strength)
+            ms = e.attach(self,strengths,currents)
+            for m in ms:
               self.add_magnet(m)
 
           elif isinstance(e,BPM):
