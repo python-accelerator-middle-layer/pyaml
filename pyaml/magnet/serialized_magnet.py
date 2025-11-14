@@ -3,13 +3,14 @@ from numpy import typing as npt
 from pydantic import BaseModel,ConfigDict
 
 from .model import MagnetModel
+from ..common.element import Element, ElementConfigModel
 from ..control.deviceaccess import DeviceAccess
 
 # Define the main class name for this module
 PYAMLCLASS = "SerializedMagnetsModel"
 
 
-class ConfigModel(BaseModel):
+class ConfigModel(ElementConfigModel):
 
     model_config = ConfigDict(arbitrary_types_allowed=True,extra="forbid")
 
@@ -23,7 +24,7 @@ class ConfigModel(BaseModel):
     """Object in charge of converting magnet strengths to currents"""
 
 
-class SerializedMagnetsModel(MagnetModel):
+class SerializedMagnetsModel(Element):
     """
     Class managing serialized magnets: a set of magnet with the same set point.
     The set point is usually managed by only one power supply but it can be covered by several ones.

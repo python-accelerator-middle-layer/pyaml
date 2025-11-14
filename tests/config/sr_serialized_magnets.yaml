@@ -8,22 +8,27 @@ instruments:
         lattice: sr/lattices/ebs.mat
         name: design
     data_folder: /data/store
-    arrays:
-      - type: pyaml.arrays.hcorrector
-        name: HCORR
-        elements:
-          - SH1A-C01-H
-          - SH1A-C02-H
-      - type: pyaml.arrays.vcorrector
-        name: VCORR
-        elements:
-          - SH1A-C01-V
-          - SH1A-C02-V
     devices:
       - sr/quadrupoles/QF1AC01.yaml
-      - sr/quadrupoles/QF8B-C04_serialized.yaml
-      - sr/quadrupoles/QF8D-C04_serialized.yaml
-      - sr/quadrupoles/QF6D-C04_serialized.yaml
-      - sr/quadrupoles/QD5D-C04_serialized.yaml
+      - type: pyaml.magnet.serialized_magnet
+        name: mySeriesOfMagnets
+        function: B1
+        elements:
+          - QF8B-C04
+          - QF8D-C04
+          - QD5D-C04
+          - QF6D-C04
+          - QF4D-C04
+        model:
+          type: pyaml.magnet.linear_serialized_model
+          pseudo_factors: 1.0
+          unit: m-1
+          curves:
+            type: pyaml.configuration.csvcurve
+            file: sr/magnet_models/SH1_SH3_sq_strength.csv
+          powerconverters:
+            type: tango.pyaml.attribute
+            attribute: srmag/ps-corr-sh1/c01-a-ch1/current
+            unit: A
       - sr/correctors/SH1AC01.yaml
       - sr/correctors/SH1AC02.yaml

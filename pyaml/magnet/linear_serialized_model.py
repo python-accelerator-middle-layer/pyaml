@@ -15,8 +15,6 @@ PYAMLCLASS = "LinearSerializedMagnetModel"
 class ConfigModel(BaseModel):
     model_config = ConfigDict(arbitrary_types_allowed=True, extra="forbid")
 
-    pole: str
-    """Function: A0,B0,A1,B1,etc"""
     curves: Curve|list[Curve]
     """Excitation curves, 1 curve for all or 1 curve per magnet"""
     calibration_factors: float|list[float] = None
@@ -31,6 +29,9 @@ class ConfigModel(BaseModel):
     pseudo_offsets: float|list[float] = None
     """Offsets applied to 'pseudo currents', 1 factor for all or 1 factor per magnet.
        Delfault: zeros"""
+    matrix: Matrix = None
+    """n x m matrix (n rows for n magnets , m columns for m currents) 
+       to handle magnets separations. Default: Identity"""
     powerconverters: DeviceAccess | list[DeviceAccess]
     """
     The hardware can be a single power supply or a list of power supplies.
@@ -47,8 +48,8 @@ def get_length(elem) -> int:
         return 1
 
 def get_max_length(*args, **kwargs) -> int:
-    max_args = max([get_length(elem) for elem in args])
-    max_kwargs = max([get_length(elem) for elem in kwargs.values()])
+    max_args = max([get_length(elem) for elem in args]) if args else 0
+    max_kwargs = max([get_length(elem) for elem in kwargs.values()]) if kwargs else 0
     return max(max_args, max_kwargs)
 
 def to_list_of_length(elem, length:int) ->list:
@@ -71,7 +72,7 @@ class LinearSerializedMagnetModel(MagnetModel):
         # Check config
         self.__nbMagnets: int = get_max_length(cfg.curves, cfg.calibration_factors, cfg.calibration_offsets,
                                                cfg.pseudo_factors, cfg.pseudo_offsets, cfg.powerconverters)
-        self.__nbPS: int = len(cfg.powerconverters)
+        self.__nbPS: int = get_length(cfg.powerconverters)
 
         if cfg.calibration_factors is None:
             self.__calibration_factors = np.ones(self.__nbMagnets)
@@ -97,8 +98,8 @@ class LinearSerializedMagnetModel(MagnetModel):
         self.__check_len(self.__calibration_offsets, "calibration_offsets", self.__nbMagnets)
         self.__check_len(self.__pf, "pseudo_factors", self.__nbMagnets)
         self.__check_len(self.__po, "pseudo_offsets", self.__nbMagnets)
-        #self.__check_len(cfg.units, "units", self.__nbFunction)
-        self.__check_len(cfg.curves, "curves", self.__nbMagnets)
+        if isinstance(cfg.curves, list):
+            self.__check_len(cfg.curves, "curves", self.__nbMagnets)
 
         if cfg.matrix is None:
             self.__matrix = np.identity(self.__nbMagnets)
@@ -117,7 +118,11 @@ class LinearSerializedMagnetModel(MagnetModel):
         self.__rcurves = []
 
         # Apply factor and offset
-        for idx, c in enumerate(cfg.curves):
+        if isinstance(cfg.curves, list):
+            curves = cfg.curves
+        else:
+            curves = [cfg.curves]
+        for idx, c in enumerate(curves):
             self.__curves.append(c.get_curve())
             self.__curves[idx][:, 1] *= self.__calibration_factors[idx]
             self.__curves[idx][:, 1] += self.__calibration_offsets[idx]
