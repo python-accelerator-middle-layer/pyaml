@@ -1,4 +1,5 @@
-[![Documentation Status](https://readthedocs.org/projects/pyaml/badge/?version=latest)](https://pyaml.readthedocs.io/en/latest/?badge=latest)
+[![Documentation Status](https://readthedocs.org/projects/pyaml/badge/?version=latest)](https://pyaml.readthedocs.io/en/latest/?badge=latest) 
+![Current release](https://img.shields.io/github/v/tag/python-accelerator-middle-layer/pyaml)
 
 # pyAML: Python Accelerator Middle Layer
 
