@@ -7,9 +7,10 @@ from .common.element import Element
 from .lattice.simulator import Simulator
 from .arrays.array import ArrayConfig
 from pydantic import BaseModel,ConfigDict
+from .configuration import load_accelerator
 
 # Define the main class name for this module
-PYAMLCLASS = "Instrument"
+PYAMLCLASS = "Accelerator"
 
 class ConfigModel(BaseModel):
 
@@ -31,7 +32,7 @@ class ConfigModel(BaseModel):
     """Element list"""
 
 
-class Instrument(object):    
+class Accelerator(object):
     """PyAML top level class"""
     
     def __init__(self, cfg: ConfigModel):
@@ -85,3 +86,7 @@ class Instrument(object):
     @property
     def design(self) -> Simulator:
         return self.__design
+
+    @staticmethod
+    def load(filename:str) -> "Accelerator":
+        return load_accelerator(filename)

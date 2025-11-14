@@ -3,9 +3,8 @@ import pytest
 from pyaml.magnet.cfm_magnet import CombinedFunctionMagnet
 from pyaml.magnet.hcorrector import HCorrector
 from pyaml.magnet.vcorrector import VCorrector
-from pyaml.pyaml import pyaml,PyAML
 from pyaml.configuration.factory import Factory
-from pyaml.instrument import Instrument
+from pyaml.accelerator import Accelerator
 from pyaml.magnet.model import MagnetModel
 import numpy as np
 
@@ -18,8 +17,7 @@ import numpy as np
 )
 def test_cfm_magnets(magnet_file, install_test_package):
 
-    ml:PyAML = pyaml(magnet_file)
-    sr:Instrument = ml.get('sr')
+    sr:Accelerator = Accelerator.load(magnet_file)
     sr.design.get_lattice().disable_6d()
     #magnet_design = sr.design.get_magnet("SH1A-C01")
     #magnet_live = sr.live.get_magnet("SH1A-C01")

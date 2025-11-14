@@ -4,7 +4,8 @@ import numpy as np
 from scipy.constants import speed_of_light
 
 from pyaml import PyAMLException
-from pyaml.configuration import load, set_root_folder, get_root_folder
+from pyaml.configuration import set_root_folder, get_root_folder
+from pyaml.configuration.fileloader import load
 from pyaml.configuration import Factory
 from pyaml.magnet.hcorrector import HCorrector
 from pyaml.magnet.quadrupole import Quadrupole
@@ -12,8 +13,7 @@ from pyaml.magnet.quadrupole import ConfigModel as QuadrupoleConfigModel
 from pyaml.magnet.identity_model import IdentityMagnetModel
 from pyaml.magnet.cfm_magnet import CombinedFunctionMagnet
 from pyaml.control.abstract_impl import RWHardwareScalar,RWStrengthScalar,RWHardwareArray,RWStrengthArray
-from pyaml.pyaml import pyaml,PyAML
-from pyaml.instrument import Instrument
+from pyaml.accelerator import Accelerator
 
 # TODO: Generate JSON pydantic schema for MetaConfigurator
 #def test_json():

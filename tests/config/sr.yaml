@@ -1,77 +1,76 @@
 type: pyaml.pyaml
-instruments:
-  - type: pyaml.instrument
-    name: sr
-    energy: 6e9
-    simulators:
-      - type: pyaml.lattice.simulator
-        lattice: sr/lattices/ebs.mat
-        name: design
-    controls:
-      - type: tango.pyaml.controlsystem
-        tango_host: ebs-simu-3:10000
-        name: live
-    data_folder: /data/store
-    arrays:
-      - type: pyaml.arrays.magnet
-        name: HCORR
-        elements:
-          - SH1A-C01-H
-          - SH1A-C02-H
-      - type: pyaml.arrays.magnet
-        name: VCORR
-        elements:
-          - SH1A-C01-V
-          - SH1A-C02-V
-      - type: pyaml.arrays.magnet
-        name: HVCORR
-        elements:
-          - SH1A-C01-H
-          - SH1A-C02-H
-          - SH1A-C01-V
-          - SH1A-C02-V
-      - type: pyaml.arrays.cfm_magnet
-        name: CFM
-        elements:
-          - SH1A-C01
-          - SH1A-C02
-      - type: pyaml.arrays.bpm
-        name: BPMS
-        elements:
-          - BPM_C04-01
-          - BPM_C04-02
-      - type: pyaml.arrays.element
-        name: ElArray
-        elements:
-          - BPM_C04-01
-          - BPM_C04-02
-          - SH1A-C01-V
-          - SH1A-C02-H
-    devices:
-      - sr/quadrupoles/QF1AC01.yaml
-      - sr/correctors/SH1AC01.yaml
-      - sr/correctors/SH1AC02.yaml
-      - type: pyaml.bpm.bpm
-        name: BPM_C04-01
-        model:
-          type: pyaml.bpm.bpm_simple_model
-          x_pos:
-            type: tango.pyaml.attribute_read_only
-            attribute: srdiag/bpm/c04-01/SA_HPosition
-            unit: m
-          y_pos:
-            type: tango.pyaml.attribute_read_only
-            attribute: srdiag/bpm/c04-01/SA_VPosition
-            unit: m
-      - type: pyaml.bpm.bpm
-        name: BPM_C04-02
-        model:
-          type: pyaml.bpm.bpm_simple_model
-          x_pos:
-            type: tango.pyaml.attribute_read_only
-            attribute: srdiag/bpm/c04-02/SA_HPosition
-            unit: m
-          y_pos:
-            type: tango.pyaml.attribute_read_only
-            attribute: srdiag/bpm/c04-02/SA_VPosition
-            unit: m
+type: pyaml.accelerator
+name: sr
+energy: 6e9
+simulators:
+  - type: pyaml.lattice.simulator
+    lattice: sr/lattices/ebs.mat
+    name: design
+controls:
+  - type: tango.pyaml.controlsystem
+    tango_host: ebs-simu-3:10000
+    name: live
+data_folder: /data/store
+arrays:
+  - type: pyaml.arrays.magnet
+    name: HCORR
+    elements:
+      - SH1A-C01-H
+      - SH1A-C02-H
+  - type: pyaml.arrays.magnet
+    name: VCORR
+    elements:
+      - SH1A-C01-V
+      - SH1A-C02-V
+  - type: pyaml.arrays.magnet
+    name: HVCORR
+    elements:
+      - SH1A-C01-H
+      - SH1A-C02-H
+      - SH1A-C01-V
+      - SH1A-C02-V
+  - type: pyaml.arrays.cfm_magnet
+    name: CFM
+    elements:
+      - SH1A-C01
+      - SH1A-C02
+  - type: pyaml.arrays.bpm
+    name: BPMS
+    elements:
+      - BPM_C04-01
+      - BPM_C04-02
+  - type: pyaml.arrays.element
+    name: ElArray
+    elements:
+      - BPM_C04-01
+      - BPM_C04-02
+      - SH1A-C01-V
+      - SH1A-C02-H
+devices:
+  - sr/quadrupoles/QF1AC01.yaml
+  - sr/correctors/SH1AC01.yaml
+  - sr/correctors/SH1AC02.yaml
+  - type: pyaml.bpm.bpm
+    name: BPM_C04-01
+    model:
+      type: pyaml.bpm.bpm_simple_model
+      x_pos:
+        type: tango.pyaml.attribute_read_only
+        attribute: srdiag/bpm/c04-01/SA_HPosition
+        unit: m
+      y_pos:
+        type: tango.pyaml.attribute_read_only
+        attribute: srdiag/bpm/c04-01/SA_VPosition
+        unit: m
+  - type: pyaml.bpm.bpm
+    name: BPM_C04-02
+    model:
+      type: pyaml.bpm.bpm_simple_model
+      x_pos:
+        type: tango.pyaml.attribute_read_only
+        attribute: srdiag/bpm/c04-02/SA_HPosition
+        unit: m
+      y_pos:
+        type: tango.pyaml.attribute_read_only
+        attribute: srdiag/bpm/c04-02/SA_VPosition
+        unit: m

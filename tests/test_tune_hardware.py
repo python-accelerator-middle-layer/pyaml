@@ -1,5 +1,4 @@
-from pyaml.pyaml import pyaml,PyAML
-from pyaml.instrument import Instrument
+from pyaml.accelerator import Accelerator
 from pyaml.configuration.factory import Factory
 import numpy as np
 import pytest
@@ -10,8 +9,7 @@ import pytest
 }], indirect=True)
 def test_tune(install_test_package):
 
-    ml:PyAML = pyaml("tests/config/EBSTune.yaml")
-    sr:Instrument = ml.get('sr')
+    sr:Accelerator = Accelerator.load(("tests/config/EBSTune.yaml"))
     sr.design.get_lattice().disable_6d()
 
     quadForTuneDesign = sr.design.get_magnets("QForTune")

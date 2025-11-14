@@ -1,6 +1,4 @@
-
-from pyaml.pyaml import PyAML, pyaml
-from pyaml.instrument import Instrument
+from pyaml.accelerator import Accelerator
 from pyaml.configuration.factory import Factory
 import numpy as np
 import pytest
@@ -11,8 +9,7 @@ import pytest
 }], indirect=True)
 def test_simulator_bpm_tilt(install_test_package):
 
-    ml:PyAML = pyaml("tests/config/bpms.yaml")
-    sr:Instrument = ml.get('sr')
+    sr:Accelerator = Accelerator.load("tests/config/bpms.yaml")
     sr.design.get_lattice().disable_6d()
     bpm = sr.design.get_bpm('BPM_C01-01')
     assert bpm.tilt.get() == 0
@@ -27,8 +24,7 @@ def test_simulator_bpm_tilt(install_test_package):
 }], indirect=True)
 def test_simulator_bpm_offset(install_test_package):
 
-    ml:PyAML = pyaml("tests/config/bpms.yaml")
-    sr:Instrument = ml.get('sr')
+    sr:Accelerator = Accelerator.load("tests/config/bpms.yaml")
     sr.design.get_lattice().disable_6d()
     bpm = sr.design.get_bpm('BPM_C01-01')
 
@@ -47,8 +43,7 @@ def test_simulator_bpm_offset(install_test_package):
 }], indirect=True)
 def test_simulator_bpm_position(install_test_package):
 
-    ml:PyAML = pyaml("tests/config/bpms.yaml")
-    sr:Instrument = ml.get('sr')
+    sr:Accelerator = Accelerator.load("tests/config/bpms.yaml")
     sr.design.get_lattice().disable_6d()
     bpm = sr.design.get_bpm('BPM_C01-01')
     bpm_simple = sr.live.get_bpm('BPM_C01-02')
@@ -64,8 +59,7 @@ def test_simulator_bpm_position(install_test_package):
 }], indirect=True)
 def test_simulator_bpm_position_with_bad_corrector_strength(install_test_package):
 
-    ml:PyAML = pyaml("tests/config/bpms.yaml")
-    sr:Instrument = ml.get('sr')
+    sr:Accelerator = Accelerator.load("tests/config/bpms.yaml")
     sr.design.get_lattice().disable_6d()
     bpm = sr.design.get_bpm('BPM_C01-01')
     bpm_simple = sr.design.get_bpm('BPM_C01-02')

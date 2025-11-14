@@ -1,28 +1,26 @@
-type: pyaml.pyaml
-instruments:
-  - type: pyaml.instrument
-    name: sr
-    energy: 6e9
-    simulators:
-      - type: pyaml.lattice.simulator
-        lattice: sr/lattices/ebs.mat
-        name: design
-        linker:
-          type: pyaml.lattice.attribute_linker
-          attribute_name: FamName # equivalent to the default linker
-    data_folder: /data/store
-    arrays:
-      - type: pyaml.arrays.magnet
-        name: HCORR
-        elements:
-          - SH1A-C01-H
-          - SH1A-C02-H
-      - type: pyaml.arrays.magnet
-        name: VCORR
-        elements:
-          - SH1A-C01-V
-          - SH1A-C02-V
-    devices:
-      - sr/quadrupoles/QF1AC01.yaml
-      - sr/correctors/SH1AC01.yaml
-      - sr/correctors/SH1AC02.yaml
+type: pyaml.accelerator
+name: sr
+energy: 6e9
+simulators:
+  - type: pyaml.lattice.simulator
+    lattice: sr/lattices/ebs.mat
+    name: design
+    linker:
+      type: pyaml.lattice.attribute_linker
+      attribute_name: FamName # equivalent to the default linker
+data_folder: /data/store
+arrays:
+  - type: pyaml.arrays.magnet
+    name: HCORR
+    elements:
+      - SH1A-C01-H
+      - SH1A-C02-H
+  - type: pyaml.arrays.magnet
+    name: VCORR
+    elements:
+      - SH1A-C01-V
+      - SH1A-C02-V
+devices:
+  - sr/quadrupoles/QF1AC01.yaml
+  - sr/correctors/SH1AC01.yaml
+  - sr/correctors/SH1AC02.yaml

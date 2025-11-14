@@ -1,7 +1,4 @@
-
-
-from pyaml.pyaml import PyAML, pyaml
-from pyaml.instrument import Instrument
+from pyaml.accelerator import Accelerator
 from pyaml.configuration.factory import Factory
 import numpy as np
 import pytest
@@ -12,8 +9,7 @@ import pytest
 }], indirect=True)
 def test_controlsystem_bpm_tilt(install_test_package):
 
-    ml:PyAML = pyaml("tests/config/bpms.yaml")
-    sr:Instrument = ml.get('sr')
+    sr:Accelerator = Accelerator("tests/config/bpms.yaml")
     bpm = sr.live.get_bpm('BPM_C01-01')
     print(bpm.tilt.get())
     
@@ -29,8 +25,7 @@ def test_controlsystem_bpm_tilt(install_test_package):
 }], indirect=True)
 def test_controlsystem_bpm_offset(install_test_package):
 
-    ml:PyAML = pyaml("tests/config/bpms.yaml")
-    sr:Instrument = ml.get('sr')
+    sr:Accelerator = Accelerator("tests/config/bpms.yaml")
     bpm = sr.live.get_bpm('BPM_C01-01')
 
     assert bpm.offset.get()[0] == 0
@@ -48,8 +43,7 @@ def test_controlsystem_bpm_offset(install_test_package):
 }], indirect=True)
 def test_controlsystem_bpm_position(install_test_package):
 
-    ml:PyAML = pyaml("tests/config/bpms.yaml")
-    sr:Instrument = ml.get('sr')
+    sr:Accelerator = Accelerator("tests/config/bpms.yaml")
     bpm = sr.live.get_bpm('BPM_C01-01')
     bpm_simple = sr.live.get_bpm('BPM_C01-02')
 
