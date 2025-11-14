@@ -7,6 +7,7 @@ from .common.element import Element
 from .lattice.simulator import Simulator
 from .arrays.array import ArrayConfig
 from pydantic import BaseModel,ConfigDict
+from .configuration import load_instrument
 
 # Define the main class name for this module
 PYAMLCLASS = "Instrument"
@@ -85,3 +86,7 @@ class Instrument(object):
     @property
     def design(self) -> Simulator:
         return self.__design
+
+    @staticmethod
+    def load(filename:str) -> "Instrument":
+        return load_instrument(filename)

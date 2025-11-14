@@ -13,7 +13,7 @@ relative_path = os.path.join(script_dir, '..', '..', 'tests', 'config','EBSTune.
 # Normalize the path (resolves '..')
 absolute_path = os.path.abspath(relative_path)
 
-sr:Instrument = load_instrument(absolute_path)
+sr:Instrument = Instrument.load(absolute_path)
 sr.design.get_lattice().disable_6d()
 
 quadForTuneDesign = sr.design.get_magnets("QForTune")
