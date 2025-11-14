@@ -1,7 +1,7 @@
 # PyAML config file loader
 import logging
 import json
-from typing import Union
+from typing import Union, TYPE_CHECKING
 from pathlib import Path
 import io
 import os
@@ -13,7 +13,10 @@ import collections.abc
 
 from .. import PyAMLException
 from pyaml.configuration.factory import Factory
-#from pyaml.instrument import Instrument
+
+if TYPE_CHECKING:
+    from pyaml.instrument import Instrument
+
 
 logger = logging.getLogger(__name__)
 
@@ -44,9 +47,7 @@ class PyAMLConfigCyclingException(PyAMLException):
         super().__init__(f"Circular file inclusion of {error_filename}. File list before reaching it: {parent_file_stack}")
     pass
 
-#def load_instrument(filename:str, paths_stack:list=None) -> Instrument:
-# TODO: fix to inclue type hint here without running into problems with circular imports.
-def load_instrument(filename:str, paths_stack:list=None):
+def load_instrument(filename:str, paths_stack:list=None) -> "Instrument":
     """ Load an instrument from file."""
 
     # Asume that all files are referenced from folder where main AML file is stored
