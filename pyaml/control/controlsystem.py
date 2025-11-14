@@ -1,4 +1,7 @@
 from abc import ABCMeta, abstractmethod
+
+from pydantic import BaseModel
+
 from ..lattice.element_holder import ElementHolder
 from ..lattice.element import Element
 from ..control.abstract_impl import RWHardwareScalar,RWHardwareArray,RWStrengthScalar,RWStrengthArray
@@ -31,7 +34,7 @@ class ControlSystem(ElementHolder,metaclass=ABCMeta):
     def set_energy(self,E:float):
         """
         Sets the energy on magnets belonging to this control system
-        
+
         Parameters
         ----------
         E : float
@@ -39,16 +42,16 @@ class ControlSystem(ElementHolder,metaclass=ABCMeta):
         """
         for m in self.get_all_magnets().items():
             m[1].set_energy(E)
-    
+
     def fill_device(self,elements:list[Element]):
         """
         Fill device of this control system with Element coming from the configuration file
-        
+
         Parameters
         ----------
         elements : list[Element]
             List of elements coming from the configuration file to attach to this control system
-        """           
+        """
         for e in elements:
           if isinstance(e,Magnet):
             current = RWHardwareScalar(e.model) if e.model.has_hardware() else None
@@ -87,3 +90,32 @@ class ControlSystem(ElementHolder,metaclass=ABCMeta):
              voltage = RWTotalVoltage(attachedTrans)
              ne = e.attach(frequency,voltage)
              self.add_rf_plant(ne.get_name(),ne)
+
+class OphydAsyncCompatibleControlSystemConfig(BaseModel):
+    name: str
+
+class OphydAsyncCompatibleControlSystem(ControlSystem):
+    """A generic control system using ophyd_async backend."""
+
+    def __init__(self, cfg: OphydAsyncCompatibleControlSystemConfig):
+        super().__init__()
+        self._cfg = cfg
+
+    def name(self) -> str:
+        """
+        Return the name of the control system.
+
+        Returns
+        -------
+        str
+            Name of the control system.
+        """
+        return self._cfg.name
+
+    def init_cs(self):
+        """
+        Initialize the control system.
+
+        This method is a placeholder and should be implemented as needed.
+        """
+        pass
