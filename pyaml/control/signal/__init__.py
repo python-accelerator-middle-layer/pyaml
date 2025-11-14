@@ -63,52 +63,6 @@ def _reap_done_tasks(evloop: asyncio.AbstractEventLoop) -> None:
         # During shutdown, asyncio may be partially cleaned up
         pass
 
-# def _cleanup_all_tasks(evloop: asyncio.AbstractEventLoop) -> None:
-#     """Cancel all pending tasks and clean up the event loop."""
-#     if evloop is None or evloop.is_closed():
-#         return
-
-#     # Check if asyncio is still available (not being torn down)
-#     if asyncio is None or not hasattr(asyncio, 'all_tasks'):
-#         return
-
-#     try:
-#         # Get all pending tasks
-#         pending = [t for t in asyncio.all_tasks(evloop) if not t.done()]
-
-#         # Cancel all pending tasks
-#         for task in pending:
-#             task.cancel()
-
-#         # Give them a chance to process cancellation
-#         if pending:
-#             evloop.run_until_complete(asyncio.gather(*pending, return_exceptions=True))
-
-#         # Clean up done tasks
-#         _reap_done_tasks(evloop)
-#     except (RuntimeError, AttributeError, TypeError):
-#         # During shutdown, asyncio may be partially cleaned up
-#         # Just suppress errors and let Python finish shutting down
-#         pass
-
-# def _shutdown_loop():
-#     """Shutdown handler to clean up the event loop on exit."""
-#     global _loop
-
-#     # Check if we're in the middle of Python interpreter shutdown
-#     if asyncio is None or _loop is None:
-#         return
-
-#     try:
-#         if not _loop.is_closed():
-#             _cleanup_all_tasks(_loop)
-#             _loop.close()
-#     except (RuntimeError, AttributeError, TypeError):
-#         # Ignore errors during shutdown
-#         pass
-
-# # Register cleanup at exit
-# atexit.register(_shutdown_loop)
 
 def arun(coro: Awaitable[Any]) -> Any:
 
