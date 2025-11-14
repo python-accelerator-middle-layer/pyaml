@@ -15,7 +15,7 @@ from .. import PyAMLException
 from pyaml.configuration.factory import Factory
 
 if TYPE_CHECKING:
-    from pyaml.instrument import Instrument
+    from pyaml.accelerator import Accelerator
 
 
 logger = logging.getLogger(__name__)
@@ -47,7 +47,7 @@ class PyAMLConfigCyclingException(PyAMLException):
         super().__init__(f"Circular file inclusion of {error_filename}. File list before reaching it: {parent_file_stack}")
     pass
 
-def load_instrument(filename:str, paths_stack:list=None) -> "Instrument":
+def load_accelerator(filename:str, paths_stack:list=None) -> "Accelerator":
     """ Load an instrument from file."""
 
     # Asume that all files are referenced from folder where main AML file is stored

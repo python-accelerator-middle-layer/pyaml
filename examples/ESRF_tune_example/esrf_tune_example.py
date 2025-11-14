@@ -1,5 +1,4 @@
-from pyaml.configuration import load_instrument
-from pyaml.instrument import Instrument
+from pyaml.accelerator import Accelerator
 import numpy as np
 import os
 
@@ -13,7 +12,7 @@ relative_path = os.path.join(script_dir, '..', '..', 'tests', 'config','EBSTune.
 # Normalize the path (resolves '..')
 absolute_path = os.path.abspath(relative_path)
 
-sr:Instrument = Instrument.load(absolute_path)
+sr:Accelerator = Accelerator.load(absolute_path)
 sr.design.get_lattice().disable_6d()
 
 quadForTuneDesign = sr.design.get_magnets("QForTune")

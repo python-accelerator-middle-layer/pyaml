@@ -1,7 +1,4 @@
-#type: pyaml.pyaml
-#instrument:
-#  - type: pyaml.instrument
-    type: pyaml.instrument
+    type: pyaml.accelerator
     name: sr
     energy: 6e9
     simulators:
