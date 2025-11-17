@@ -121,9 +121,10 @@ class ControlSystem(ElementHolder,metaclass=ABCMeta):
             currents = []
             strengths = []
             # Create unique refs the cfm and each of its function for this control system
+            # TODO link hardware to strengths
             for i in range(e.get_nb_magnets()):
-                current = RWHardwareScalar(e.model) if e.model.has_hardware() else None
-                strength = RWStrengthScalar(e.model) if e.model.has_physics() else None
+                current = RWHardwareScalar(e.model.get_sub_model(i)) if e.model.has_hardware() else None
+                strength = RWStrengthScalar(e.model.get_sub_model(i)) if e.model.has_physics() else None
                 currents.append(current)
                 strengths.append(strength)
             ms = e.attach(self,strengths,currents)

@@ -21,7 +21,8 @@ instruments:
           - QF4D-C04
         model:
           type: pyaml.magnet.linear_serialized_model
-          pseudo_factors: 1.0
+          calibration_factors: 1.00504
+          calibration_offsets: 0.0
           unit: m-1
           curves:
             type: pyaml.configuration.csvcurve

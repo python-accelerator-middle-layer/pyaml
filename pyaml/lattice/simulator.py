@@ -112,9 +112,10 @@ class Simulator(ElementHolder):
             currents = []
             strengths = []
             # Create unique refs the cfm and each of its function for this control system
-            for magnet in e.get_magnets():
-                current = RWHardwareScalar(self.get_at_elems(magnet),e.polynom,e.model) if e.model.has_hardware() else None
-                strength = RWStrengthScalar(self.get_at_elems(magnet),e.polynom,e.model) if e.model.has_physics() else None
+            # TODO link hardware to strengths and bind strength together
+            for index, magnet in enumerate(e.get_magnets()):
+                current = RWHardwareScalar(self.get_at_elems(magnet),e.polynom,e.model.get_sub_model(index)) if e.model.has_hardware() else None
+                strength = RWStrengthScalar(self.get_at_elems(magnet),e.polynom,e.model.get_sub_model(index)) if e.model.has_physics() else None
                 currents.append(current)
                 strengths.append(strength)
             ms = e.attach(self,strengths,currents)
