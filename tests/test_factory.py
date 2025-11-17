@@ -49,4 +49,4 @@ def test_error_cycles(test_file):
 
     assert "Circular file inclusion of " in str(exc.value)
     if not test_file.endswith(".json"):
-        assert "at line 23" in str(exc.value)
+        assert "at line 21" in str(exc.value)
