@@ -1,21 +1,19 @@
-type: pyaml.pyaml
-instruments:
-  - type: pyaml.instrument
-    name: sr
-    energy: 6e9
-    simulators:
-      - type: pyaml.lattice.simulator
-        lattice: sr/lattices/ebs.mat
-        name: design
-    data_folder: /data/store
-    devices:
-      - type: pyaml.magnet.quadrupole
-        name: QF1A-C01
-        model:
-          type: pyaml.magnet.identity_model
-          unit: 1/m
-          physics:
-            type: pyaml.control.device
-            setpoint: srmag/m-qf1/c05-a/strength
-            readback: srmag/m-qf1/c05-a/strength
-            unit: 1/m
+type: pyaml.accelerator
+name: sr
+energy: 6e9
+simulators:
+  - type: pyaml.lattice.simulator
+    lattice: sr/lattices/ebs.mat
+    name: design
+data_folder: /data/store
+devices:
+  - type: pyaml.magnet.quadrupole
+    name: QF1A-C01
+    model:
+      type: pyaml.magnet.identity_model
+      unit: 1/m
+      physics:
+        type: pyaml.control.device
+        setpoint: srmag/m-qf1/c05-a/strength
+        readback: srmag/m-qf1/c05-a/strength
+        unit: 1/m
