@@ -4,7 +4,7 @@ import numpy as np
 import pytest
 
 @pytest.mark.parametrize("install_test_package", [{
-    "name": "pyaml-tango",
+    "name": "tango-pyaml",
     "path": "tests/dummy_cs/tango-pyaml"
 }], indirect=True)
 def test_controlsystem_bpm_tilt(install_test_package):
