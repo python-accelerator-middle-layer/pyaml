@@ -511,9 +511,27 @@
 <dd></dd></dl>
 
 <dl class="py function">
+<dt class="sig sig-object py" id="pyaml.configuration.fileloader.get_root_folder">
+<span class="sig-prename descclassname"><span class="pre">pyaml.configuration.fileloader.</span></span><span class="sig-name descname"><span class="pre">get_root_folder</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Path</span></span></span><a class="reference internal" href="../_modules/pyaml/configuration/fileloader.html#get_root_folder"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.configuration.fileloader.get_root_folder" title="Link to this definition">#</a></dt>
+<dd><p>Get the root path for configuration files.</p>
+</dd></dl>
+
+<dl class="py function">
 <dt class="sig sig-object py" id="pyaml.configuration.fileloader.load">
 <span class="sig-prename descclassname"><span class="pre">pyaml.configuration.fileloader.</span></span><span class="sig-name descname"><span class="pre">load</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">paths_stack</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">list</span></span></span><a class="reference internal" href="../_modules/pyaml/configuration/fileloader.html#load"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.configuration.fileloader.load" title="Link to this definition">#</a></dt>
 <dd><p>Load recursively a configuration setup</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyaml.configuration.fileloader.load_accelerator">
+<span class="sig-prename descclassname"><span class="pre">pyaml.configuration.fileloader.</span></span><span class="sig-name descname"><span class="pre">load_accelerator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">paths_stack</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Accelerator</span></span></span><a class="reference internal" href="../_modules/pyaml/configuration/fileloader.html#load_accelerator"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.configuration.fileloader.load_accelerator" title="Link to this definition">#</a></dt>
+<dd><p>Load an instrument from file.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyaml.configuration.fileloader.set_root_folder">
+<span class="sig-prename descclassname"><span class="pre">pyaml.configuration.fileloader.</span></span><span class="sig-name descname"><span class="pre">set_root_folder</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Path</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/configuration/fileloader.html#set_root_folder"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.configuration.fileloader.set_root_folder" title="Link to this definition">#</a></dt>
+<dd><p>Set the root path for configuration files.</p>
 </dd></dl>
 
 <dl class="py class" id="module-pyaml.configuration.factory">
@@ -704,7 +722,10 @@ Curve is expected to be monotonic (non-decreasing or non-increasing).</p>
   <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.configuration.fileloader.PyAMLConfigCyclingException"><code class="docutils literal notranslate"><span class="pre">PyAMLConfigCyclingException</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.configuration.fileloader.get_root_folder"><code class="docutils literal notranslate"><span class="pre">get_root_folder()</span></code></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.configuration.fileloader.load"><code class="docutils literal notranslate"><span class="pre">load()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.configuration.fileloader.load_accelerator"><code class="docutils literal notranslate"><span class="pre">load_accelerator()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.configuration.fileloader.set_root_folder"><code class="docutils literal notranslate"><span class="pre">set_root_folder()</span></code></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.configuration.factory.PyAMLFactory"><code class="docutils literal notranslate"><span class="pre">PyAMLFactory</span></code></a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.configuration.factory.PyAMLFactory.build_object"><code class="docutils literal notranslate"><span class="pre">PyAMLFactory.build_object()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.configuration.factory.PyAMLFactory.depth_first_build"><code class="docutils literal notranslate"><span class="pre">PyAMLFactory.depth_first_build()</span></code></a></li>
