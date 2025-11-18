@@ -55,7 +55,7 @@ def install_test_package(request):
 
     yield package_name
 
-    # Do not uninstall packe at the end tp speed up tests a bit
+    # Do not uninstall package at the end to speed up tests a bit
     #subprocess.call([
     #    sys.executable, "-m", "pip", "uninstall", "-y", package_name
     #])
