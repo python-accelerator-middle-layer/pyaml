@@ -40,34 +40,25 @@ def install_test_package(request):
         package_path = pathlib.Path(info["path"]).resolve()
         if not package_path.exists():
             raise FileNotFoundError(f"Package path not found: {package_path}")
+        
+    if package_path is None:
+        raise RuntimeError(f"No package_path defined for install_test_package fixture")
 
     if not ((package_path / "pyproject.toml").exists() or (package_path / "setup.py").exists()):
-        raise RuntimeError(f"No pyproject.toml or setup.py found in {package_path}")
+        raise RuntimeError(f"No pyproject.toml or setup.py found in {package_path}")    
 
-    # Install package
+    # Install package in a classis way, `--editable` create a .pth entry in conda env which is imcompatible with submodule
     if package_path is not None:
         subprocess.check_call([
-            sys.executable, "-m", "pip", "install", "--quiet", "--editable", str(package_path)
+            sys.executable, "-m", "pip", "--quiet", "install", str(package_path)
         ])
-    else:
-        subprocess.check_call([
-            sys.executable, "-m", "pip", "install", "--quiet", "--editable", str(package_name)
-        ])
-    # Test the import.
-    import importlib
-    # Ensure its path is importable
-    if str(package_path) not in sys.path:
-        sys.path.insert(0, str(package_path))
-
-    # Remove from sys.modules to avoid caching issues
-    sys.modules.pop(package_name, None)
 
     yield package_name
 
-    # Uninstall package
-    subprocess.call([
-        sys.executable, "-m", "pip", "uninstall", "-y", package_name
-    ])
+    # Do not uninstall packe at the end tp speed up tests a bit
+    #subprocess.call([
+    #    sys.executable, "-m", "pip", "uninstall", "-y", package_name
+    #])
 
 
 @pytest.fixture
