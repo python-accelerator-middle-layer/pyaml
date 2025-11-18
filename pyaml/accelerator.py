@@ -88,5 +88,16 @@ class Accelerator(object):
         return self.__design
 
     @staticmethod
-    def load(filename:str) -> "Accelerator":
-        return load_accelerator(filename)
+    def load(filename:str, use_fast_loader:bool = False) -> "Accelerator":
+        """
+        Load an accelerator from a config file.
+
+        Parameters
+        ----------
+        filename : str
+            Configuration file name, yaml or json.
+        use_fast_loader : bool
+            Use fast yaml loader. When specified, no line number are reported in case of error, 
+            only the element name that triggered the error will be reported in the exception)
+        """
+        return load_accelerator(filename,use_fast_loader)
