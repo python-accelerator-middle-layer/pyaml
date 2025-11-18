@@ -1,11 +1,11 @@
 import asyncio
 import contextlib
 from typing import Awaitable, Any
-import atexit
 
 # One persistent event loop
 _loop = None
 _nest_asyncio_applied = False
+
 
 def loop() -> asyncio.AbstractEventLoop:
 
@@ -18,6 +18,7 @@ def loop() -> asyncio.AbstractEventLoop:
         if not _nest_asyncio_applied:
             try:
                 import nest_asyncio
+
                 nest_asyncio.apply(running_loop)
                 _nest_asyncio_applied = True
             except ImportError:
@@ -35,13 +36,17 @@ def loop() -> asyncio.AbstractEventLoop:
         if not _nest_asyncio_applied:
             try:
                 import nest_asyncio
+
                 nest_asyncio.apply(_loop)
                 _nest_asyncio_applied = True
             except ImportError:
                 pass
 
     return _loop
+
+
 loop()  # Make sure to initialize `_loop`
+
 
 def _reap_done_tasks(evloop: asyncio.AbstractEventLoop) -> None:
     """Reap exceptions from tasks that are already DONE on this loop.
@@ -74,4 +79,3 @@ def arun(coro: Awaitable[Any]) -> Any:
         # Clean up completed/cancelled tasks so residual CancelledError
         # doesn't leak to next run
         _reap_done_tasks(evloop)
-

@@ -1,7 +1,5 @@
 from abc import ABCMeta, abstractmethod
 
-from pydantic import BaseModel
-
 from ..lattice.element_holder import ElementHolder
 from ..lattice.element import Element
 from ..control.abstract_impl import RWHardwareScalar,RWHardwareArray,RWStrengthScalar,RWStrengthArray
@@ -91,31 +89,3 @@ class ControlSystem(ElementHolder,metaclass=ABCMeta):
              ne = e.attach(frequency,voltage)
              self.add_rf_plant(ne.get_name(),ne)
 
-class OphydAsyncCompatibleControlSystemConfig(BaseModel):
-    name: str
-
-class OphydAsyncCompatibleControlSystem(ControlSystem):
-    """A generic control system using ophyd_async backend."""
-
-    def __init__(self, cfg: OphydAsyncCompatibleControlSystemConfig):
-        super().__init__()
-        self._cfg = cfg
-
-    def name(self) -> str:
-        """
-        Return the name of the control system.
-
-        Returns
-        -------
-        str
-            Name of the control system.
-        """
-        return self._cfg.name
-
-    def init_cs(self):
-        """
-        Initialize the control system.
-
-        This method is a placeholder and should be implemented as needed.
-        """
-        pass

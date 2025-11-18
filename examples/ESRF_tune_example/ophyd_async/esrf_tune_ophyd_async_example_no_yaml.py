@@ -3,7 +3,8 @@ CS_NAME = "tango"
 
 if CS_NAME == "tango":
     import os
-    os.environ['TANGO_HOST'] = '127.0.0.1:10000'
+
+    os.environ["TANGO_HOST"] = "127.0.0.1:10000"
 
 import time
 
@@ -21,17 +22,27 @@ from pyaml.magnet.linear_model import (
 from pyaml.lattice.simulator import Simulator, ConfigModel as SimulatorConfigModel
 from pyaml.arrays.magnet import Magnet, ConfigModel as MagnetArrayConfigModel
 
-from pyaml.control.controlsystem import (
-    OphydAsyncCompatibleControlSystem,
-    OphydAsyncCompatibleControlSystemConfig,
-)
-from pyaml.control.signal.core import (
-    FloatSignalContainer, ConfigModel as FloatSignalContainerConfig)
-
 if CS_NAME == "tango":
-    from pyaml.control.signal.core import TangoConfigRW, TangoConfigR
+    from pyaml_cs_oa.tango import TangoConfigRW, TangoConfigR
+    from pyaml_cs_oa.tango import (
+        TangoControlSystem as ControlSys,
+        TangoControlSystemConfig as ControlSysConfig,
+    )
+    from pyaml_cs_oa.core import (
+        FloatSignalContainer,
+        ConfigModel as FloatSignalContainerConfig,
+    )
 elif CS_NAME == "epics":
-    from pyaml.control.signal.core import EpicsConfigRW, EpicsConfigR
+    from pyaml_cs_oa.epics import EpicsConfigRW, EpicsConfigR
+    from pyaml_cs_oa.epics import (
+        EpicsControlSystem as ControlSys,
+        EpicsControlSystemConfig as ControlSysConfig,
+    )
+
+    from pyaml_cs_oa.core import (
+        FloatSignalContainer,
+        ConfigModel as FloatSignalContainerConfig,
+    )
 else:
     raise ValueError(f"Unsupported CS_NAME: {CS_NAME}")
 
@@ -81,11 +92,11 @@ devices = []
 names = []
 for cfg in elemConfig:
     if CS_NAME == "tango":
-        cs_config=TangoConfigRW(read_attr=cfg["attname"],
-                                write_attr=cfg["attname"])
+        cs_config = TangoConfigRW(read_attr=cfg["attname"], write_attr=cfg["attname"])
     elif CS_NAME == "epics":
-        cs_config = EpicsConfigRW(read_pvname=cfg["readback_pvname"],
-                                  write_pvname=cfg["setpoint_pvname"])
+        cs_config = EpicsConfigRW(
+            read_pvname=cfg["readback_pvname"], write_pvname=cfg["setpoint_pvname"]
+        )
     else:
         raise ValueError(f"Unsupported CS_NAME: {CS_NAME}")
 
@@ -108,9 +119,7 @@ simulator = Simulator(
 
 quads = Magnet(MagnetArrayConfigModel(name="quadsForTune", elements=names))
 
-control = OphydAsyncCompatibleControlSystem(
-    OphydAsyncCompatibleControlSystemConfig(name="live")
-)
+control = ControlSys(ControlSysConfig(name="live"))
 
 sr = Instrument(
     InstrumentConfigModel(
@@ -142,6 +151,9 @@ print(arun(SP.async_get()))
 print(RB.get())
 print(SP.get())
 
+print(RB.read())
+print(SP.read())
+
 # Usage exmaple
 
 quadForTuneDesign = sr.design.get_magnets("quadsForTune")
@@ -164,13 +176,13 @@ correctionmat = np.linalg.pinv(tunemat.T)
 # Correct tune on live
 qAtt_cfg = {}
 if CS_NAME == "tango":
-    for xy, hv in [('x', 'h'), ('y', 'v')]:
+    for xy, hv in [("x", "h"), ("y", "v")]:
         qAtt_cfg[xy] = FloatSignalContainerConfig(
             cs_config=TangoConfigR(read_attr=f"test/simple/1/tune_{hv}"),
             unit="",
         )
 elif CS_NAME == "epics":
-    for xy, hv in [('x', 'h'), ('y', 'v')]:
+    for xy, hv in [("x", "h"), ("y", "v")]:
         qAtt_cfg[xy] = FloatSignalContainerConfig(
             cs_config=EpicsConfigR(read_pvname=f"SIMPLE:Tune:{hv.upper()}"),
             unit="",
@@ -178,8 +190,8 @@ elif CS_NAME == "epics":
 else:
     raise ValueError(f"Unsupported CS_NAME: {CS_NAME}")
 
-qxAtt = FloatSignalContainer(qAtt_cfg['x'])
-qyAtt = FloatSignalContainer(qAtt_cfg['y'])
+qxAtt = FloatSignalContainer(qAtt_cfg["x"])
+qyAtt = FloatSignalContainer(qAtt_cfg["y"])
 
 print(f"Tune-X={qxAtt.readback()}, {qxAtt.RB.get()}")
 print(f"Tune-Y={qyAtt.readback()}, {qyAtt.RB.get()}")
@@ -191,4 +203,3 @@ time.sleep(3)
 
 print(f"Tune-X={qxAtt.readback()}, {qxAtt.RB.get()}")
 print(f"Tune-Y={qyAtt.readback()}, {qyAtt.RB.get()}")
-
