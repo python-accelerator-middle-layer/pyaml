@@ -76,7 +76,6 @@ class LinearSerializedMagnetModel(MagnetModel):
 
     def __init__(self, cfg: ConfigModel):
         self._cfg = cfg
-        self._brho = np.nan
 
         # Check config
         self.__nbMagnets: int = _get_max_length(cfg.curves, cfg.calibration_factors, cfg.calibration_offsets,
@@ -181,7 +180,7 @@ class LinearSerializedMagnetModel(MagnetModel):
         return self._cfg.powerconverters
 
     def set_magnet_rigidity(self, brho: np.double):
-        self._brho = brho
+        [model.set_magnet_rigidity(brho) for model in self.__sub_models]
 
     def has_hardware(self) -> bool:
         return self.__nbPS >0

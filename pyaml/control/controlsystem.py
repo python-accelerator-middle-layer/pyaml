@@ -120,8 +120,7 @@ class ControlSystem(ElementHolder,metaclass=ABCMeta):
           elif isinstance(e,SerializedMagnetsModel):
             currents = []
             strengths = []
-            # Create unique refs the cfm and each of its function for this control system
-            # TODO link hardware to strengths
+            # Create unique refs the series and each of its function for this control system
             for i in range(e.get_nb_magnets()):
                 current = RWHardwareScalar(e.model.get_sub_model(i)) if e.model.has_hardware() else None
                 strength = RWStrengthScalar(e.model.get_sub_model(i)) if e.model.has_physics() else None

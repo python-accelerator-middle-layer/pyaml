@@ -9,7 +9,7 @@ from ..magnet.cfm_magnet import CombinedFunctionMagnet
 from ..magnet.serialized_magnet import SerializedMagnetsModel
 from ..rf.rf_plant import RFPlant,RWTotalVoltage
 from ..rf.rf_transmitter import RFTransmitter
-from ..lattice.abstract_impl import RWHardwareScalar,RWHardwareArray
+from ..lattice.abstract_impl import RWHardwareScalar, RWHardwareArray, RWSerializedHardware, RWSerializedStrength
 from ..lattice.abstract_impl import RWStrengthScalar,RWStrengthArray
 from ..lattice.abstract_impl import RWRFFrequencyScalar,RWRFVoltageScalar,RWRFPhaseScalar
 from ..lattice.abstract_impl import RWRFATFrequencyScalar,RWRFATotalVoltageScalar
@@ -111,14 +111,21 @@ class Simulator(ElementHolder):
           elif isinstance(e,SerializedMagnetsModel):
             currents = []
             strengths = []
-            # Create unique refs the cfm and each of its function for this control system
-            # TODO link hardware to strengths and bind strength together
+            # Create unique refs the series and each of its function for this control system
+            # Link hardware to strengths and bind strength together
             for index, magnet in enumerate(e.get_magnets()):
                 current = RWHardwareScalar(self.get_at_elems(magnet),e.polynom,e.model.get_sub_model(index)) if e.model.has_hardware() else None
                 strength = RWStrengthScalar(self.get_at_elems(magnet),e.polynom,e.model.get_sub_model(index)) if e.model.has_physics() else None
                 currents.append(current)
                 strengths.append(strength)
-            ms = e.attach(self,strengths,currents)
+            linked_currents = []
+            linked_strengths = []
+            for i in range(e.get_nb_magnets()):
+                current = RWSerializedHardware(currents, i) if e.model.has_hardware() else None
+                strength = RWSerializedStrength(strengths, currents, i) if e.model.has_physics() else None
+                linked_currents.append(current)
+                linked_strengths.append(strength)
+            ms = e.attach(self,linked_strengths,linked_currents)
             for m in ms:
               self.add_magnet(m)
 
