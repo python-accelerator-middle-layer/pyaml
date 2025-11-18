@@ -55,6 +55,20 @@ class Readback:
         """Synchronous wrapper around `async_get()`."""
         return arun(self.async_get())
 
+    async def _run_read(self)-> SignalDatatypeT:
+        await self._r_sig.connect()
+        backend = self._r_sig._connector.backend
+        return await backend.get_reading()
+
+    async def async_read(self) -> SignalDatatypeT:
+        return await _recover_once(
+            self._run_read, self._r_sig.connect, getattr(self._r_sig, "__rebuild__", None))
+
+    def read(self) -> SignalDatatypeT:
+        """Synchronous wrapper around `async_read()`."""
+        return arun(self.async_read())
+
+
 class Setpoint:
 
     def __init__(self, w_signal: SignalW[SignalDatatypeT],
@@ -75,6 +89,20 @@ class Setpoint:
     def get(self) -> SignalDatatypeT:
         """Synchronous wrapper around `async_get()`."""
         return arun(self.async_get())
+
+    async def _run_read(self)-> SignalDatatypeT:
+        await self._w_sig.connect()
+        backend = self._w_sig._connector.backend
+        return await backend.get_reading()
+
+    async def async_read(self) -> SignalDatatypeT:
+        return await _recover_once(
+            self._run_read, self._w_sig.connect, getattr(self._w_sig, "__rebuild__", None))
+
+    def read(self) -> SignalDatatypeT:
+        """Synchronous wrapper around `async_read()`."""
+        return arun(self.async_read())
+
 
     async def _run_set(self, value):
         await self._w_sig.connect()
