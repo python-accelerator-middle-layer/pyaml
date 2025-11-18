@@ -53,7 +53,7 @@ class PyAMLFactory:
                 else:
                     field = err['loc'][0]
                     message = f"'{field}': {msg}"
-                if field in field_locations:
+                if field_locations and field in field_locations:
                     file, line, col = field_locations[field]
                     loc = f"{file} at line {line}, colum {col}"
                     message += f" {loc}"

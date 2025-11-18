@@ -1,5 +1,4 @@
-from pyaml.pyaml import pyaml,PyAML
-from pyaml.instrument import Instrument
+from pyaml.accelerator import Accelerator
 from pyaml.configuration.factory import Factory
 from pyaml.common.exception import PyAMLException
 import numpy as np
@@ -11,8 +10,7 @@ import pytest
 }], indirect=True)
 def test_rf(install_test_package):
 
-    ml:PyAML = pyaml("tests/config/EBS_rf.yaml")
-    sr:Instrument = ml.get('sr')
+    sr:Accelerator = Accelerator.load("tests/config/EBS_rf.yaml")
     RF = sr.design.get_rf_plant("RF")
 
     RF.frequency.set(3.523e8)
@@ -47,8 +45,7 @@ def test_rf(install_test_package):
 }], indirect=True)
 def test_rf_multi(install_test_package):
 
-    ml:PyAML = pyaml("tests/config/EBS_rf_multi.yaml")
-    sr:Instrument = ml.get('sr')
+    sr:Accelerator = Accelerator.load("tests/config/EBS_rf_multi.yaml")
 
     # Simulator
     RF = sr.design.get_rf_plant("RF")
@@ -100,8 +97,7 @@ def test_rf_multi(install_test_package):
 }], indirect=True)
 def test_rf_multi_notrans(install_test_package):
 
-    ml:PyAML = pyaml("tests/config/EBS_rf_notrans.yaml")
-    sr:Instrument = ml.get('sr')
+    sr:Accelerator = Accelerator.load("tests/config/EBS_rf_notrans.yaml")
 
     # Simulator
     RF = sr.design.get_rf_plant("RF")

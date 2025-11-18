@@ -1,21 +1,44 @@
 # PyAML config file loader
 import logging
 import json
-from typing import Union
+from typing import Union, TYPE_CHECKING
 from pathlib import Path
 import io
+import os
 
 import yaml
 from yaml.loader import SafeLoader
+from yaml import CLoader
 from yaml.constructor import ConstructorError
 import collections.abc
 
-from . import get_root_folder
 from .. import PyAMLException
+from pyaml.configuration.factory import Factory
+
+if TYPE_CHECKING:
+    from pyaml.accelerator import Accelerator
+
 
 logger = logging.getLogger(__name__)
 
 accepted_suffixes = [".yaml", ".yml", ".json"]
+
+
+ROOT = {"path": Path.cwd().resolve()}
+
+
+def set_root_folder(path: Union[str, Path]):
+    """
+    Set the root path for configuration files.
+    """
+    ROOT["path"] = Path(path)
+
+
+def get_root_folder() -> Path:
+    """
+    Get the root path for configuration files.
+    """
+    return ROOT["path"]
 
 class PyAMLConfigCyclingException(PyAMLException):
     
@@ -25,12 +48,26 @@ class PyAMLConfigCyclingException(PyAMLException):
         super().__init__(f"Circular file inclusion of {error_filename}. File list before reaching it: {parent_file_stack}")
     pass
 
-def load(filename:str, paths_stack:list=None) -> Union[dict,list]:
+def load_accelerator(filename:str, use_fast_loader:bool = False) -> "Accelerator":
+    """ Load an accelerator from file."""
+
+    # Asume that all files are referenced from folder where main AML file is stored
+    if not os.path.exists(filename):
+       raise PyAMLException(f"{filename} file not found")
+    rootfolder = os.path.abspath(os.path.dirname(filename))
+    set_root_folder(rootfolder)
+    config_dict = load(os.path.basename(filename),None,use_fast_loader)
+    aml = Factory.depth_first_build(config_dict)
+
+    Factory.clear()
+    return aml
+
+def load(filename:str, paths_stack:list=None, use_fast_loader:bool = False) -> Union[dict,list]:
     """Load recursively a configuration setup"""
     if filename.endswith(".yaml") or filename.endswith(".yml"):
-        l = YAMLLoader(filename, paths_stack)
+        l = YAMLLoader(filename, paths_stack, use_fast_loader)
     elif filename.endswith(".json"):
-        l = JSONLoader(filename, paths_stack)
+        l = JSONLoader(filename, paths_stack, use_fast_loader)
     else:
         raise PyAMLException(f"{filename} File format not supported (only .yaml .yml or .json)")
     return l.load()
@@ -58,7 +95,7 @@ class Loader:
         for key, value in d.items():
             try:
                 if hasToExpand(value):
-                    d[key] = load(value, self.files_stack)
+                    d[key] = load(value, self.files_stack, self.use_fast_loader)
                 else:
                     self.expand(value)
             except PyAMLConfigCyclingException as pyaml_ex:
@@ -119,21 +156,24 @@ class SafeLineLoader(SafeLoader):
 
 # YAML loader
 class YAMLLoader(Loader):
-    def __init__(self, filename: str, parent_paths_stack:list):
+    def __init__(self, filename: str, parent_paths_stack:list,use_fast_loader:bool):
         super().__init__(filename, parent_paths_stack)
+        self._loader = SafeLineLoader if not use_fast_loader else CLoader
+        self.use_fast_loader = use_fast_loader
 
     def load(self) -> Union[dict,list]:
         logger.log(logging.DEBUG, f"Loading YAML file '{self.path}'")
         with open(self.path) as file:
             try:
-                return self.expand(yaml.load(file,Loader=SafeLineLoader))
+                return self.expand(yaml.load(file,Loader=self._loader))
             except yaml.YAMLError as e:
                 raise PyAMLException(str(self.path) + ": " + str(e)) from e
 
 # JSON loader
 class JSONLoader(Loader):
-    def __init__(self, filename: str, parent_paths_stack:list):
+    def __init__(self, filename: str, parent_paths_stack:list,use_fast_loader:bool):
         super().__init__(filename, parent_paths_stack)
+        self.use_fast_loader = False
 
     def  load(self) -> Union[dict,list]:
         logger.log(logging.DEBUG, f"Loading JSON file '{self.path}'")

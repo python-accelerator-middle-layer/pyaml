@@ -7,9 +7,10 @@ from .common.element import Element
 from .lattice.simulator import Simulator
 from .arrays.array import ArrayConfig
 from pydantic import BaseModel,ConfigDict
+from .configuration import load_accelerator
 
 # Define the main class name for this module
-PYAMLCLASS = "Instrument"
+PYAMLCLASS = "Accelerator"
 
 class ConfigModel(BaseModel):
 
@@ -31,7 +32,7 @@ class ConfigModel(BaseModel):
     """Element list"""
 
 
-class Instrument(object):    
+class Accelerator(object):
     """PyAML top level class"""
     
     def __init__(self, cfg: ConfigModel):
@@ -85,3 +86,18 @@ class Instrument(object):
     @property
     def design(self) -> Simulator:
         return self.__design
+
+    @staticmethod
+    def load(filename:str, use_fast_loader:bool = False) -> "Accelerator":
+        """
+        Load an accelerator from a config file.
+
+        Parameters
+        ----------
+        filename : str
+            Configuration file name, yaml or json.
+        use_fast_loader : bool
+            Use fast yaml loader. When specified, no line number are reported in case of error, 
+            only the element name that triggered the error will be reported in the exception)
+        """
+        return load_accelerator(filename,use_fast_loader)
