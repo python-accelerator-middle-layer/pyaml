@@ -120,7 +120,7 @@ class LinearSerializedMagnetModel(MagnetModel):
                     else:
                         magnet_affectation.append(0)
                 mat.append(magnet_affectation)
-            self.__matrix = np.matrix(mat)
+            self.__matrix = np.array(mat)
         else:
             self.__matrix = cfg.matrix.get_matrix()
 
