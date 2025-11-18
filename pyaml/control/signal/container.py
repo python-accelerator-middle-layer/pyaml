@@ -84,10 +84,14 @@ class Setpoint:
     async def async_set(self, value):
         return await _recover_once(lambda: self._run_set(value),
                                    self._w_sig.connect, getattr(self._w_sig, "__rebuild__", None))
+    async def _complete_set(self, value):
+            status = await self.async_set(value)
+            await status  # Wait for completion before returning
+            return status
 
     def set(self, value):
         """Synchronous wrapper around `async_set()`."""
-        return arun(self.async_set(value))
+        return arun(self._complete_set(value))
 
     async def _reconnect_both(self) -> None:
         await asyncio.gather(self._w_sig.connect(),
