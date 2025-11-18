@@ -497,11 +497,11 @@
 <tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">hasToExpand</span></code>(value)</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../modules/configuration.html#pyaml.configuration.fileloader.load" title="pyaml.configuration.fileloader.load"><code class="xref py py-obj docutils literal notranslate"><span class="pre">load</span></code></a>(filename[, paths_stack])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="../modules/configuration.html#pyaml.configuration.fileloader.load" title="pyaml.configuration.fileloader.load"><code class="xref py py-obj docutils literal notranslate"><span class="pre">load</span></code></a>(filename[, paths_stack, use_fast_loader])</p></td>
 <td><p>Load recursively a configuration setup</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../modules/configuration.html#pyaml.configuration.fileloader.load_accelerator" title="pyaml.configuration.fileloader.load_accelerator"><code class="xref py py-obj docutils literal notranslate"><span class="pre">load_accelerator</span></code></a>(filename[, paths_stack])</p></td>
-<td><p>Load an instrument from file.</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="../modules/configuration.html#pyaml.configuration.fileloader.load_accelerator" title="pyaml.configuration.fileloader.load_accelerator"><code class="xref py py-obj docutils literal notranslate"><span class="pre">load_accelerator</span></code></a>(filename[, use_fast_loader])</p></td>
+<td><p>Load an accelerator from file.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="../modules/configuration.html#pyaml.configuration.fileloader.set_root_folder" title="pyaml.configuration.fileloader.set_root_folder"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_root_folder</span></code></a>(path)</p></td>
 <td><p>Set the root path for configuration files.</p></td>
@@ -512,7 +512,7 @@
 <p class="rubric">Classes</p>
 <div class="pst-scrollable-table-container"><table class="autosummary longtable table">
 <tbody>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">JSONLoader</span></code>(filename, parent_paths_stack)</p></td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">JSONLoader</span></code>(filename, parent_paths_stack, ...)</p></td>
 <td><p></p></td>
 </tr>
 <tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">Loader</span></code>(filename, parent_path_stack)</p></td>
@@ -521,7 +521,7 @@
 <tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">SafeLineLoader</span></code>(stream)</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">YAMLLoader</span></code>(filename, parent_paths_stack)</p></td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">YAMLLoader</span></code>(filename, parent_paths_stack, ...)</p></td>
 <td><p></p></td>
 </tr>
 </tbody>
