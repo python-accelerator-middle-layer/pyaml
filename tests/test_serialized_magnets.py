@@ -1,9 +1,8 @@
 import numpy as np
 import pytest
 
-from pyaml.pyaml import pyaml,PyAML
+from pyaml.accelerator import Accelerator
 from pyaml.configuration.factory import Factory
-from pyaml.instrument import Instrument
 
 
 def check_no_diff(array:list[np.float64]) -> bool:
@@ -25,8 +24,7 @@ def check_no_diff(array:list[np.float64]) -> bool:
     indirect=["install_test_package"],
 )
 def test_config_load(sr_file, install_test_package):
-    ml:PyAML = pyaml(sr_file)
-    sr:Instrument = ml.get('sr')
+    sr:Accelerator = Accelerator.load(sr_file)
     assert sr is not None
     magnets = [sr.design.get_element("QF8B-C04"),
                sr.design.get_element("QF8B-C04"),
