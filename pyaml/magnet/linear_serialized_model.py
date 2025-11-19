@@ -79,7 +79,10 @@ class LinearSerializedMagnetModel(MagnetModel):
 
         # Check config
         self.__nbMagnets: int = _get_max_length(cfg.curves, cfg.calibration_factors, cfg.calibration_offsets,
-                                               cfg.powerconverters, cfg.crosstalk)
+                                               cfg.crosstalk)
+        if cfg.matrix is not None:
+             self.__nbMagnets = max(self.__nbMagnets, np.shape(cfg.matrix.get_matrix())[0])
+
         self.__nbPS: int = _get_length(cfg.powerconverters)
 
         if cfg.calibration_factors is None:
