@@ -50,7 +50,7 @@ class SerializedMagnetsModel(Element):
         self.model = cfg.model
         self.polynom = None
         self.__virtuals:list[Magnet] = []
-
+        self.model.set_number_of_magnets(len(cfg.elements))
         if peer is None:
 
             # Configuration part

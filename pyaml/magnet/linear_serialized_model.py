@@ -1,4 +1,5 @@
 from ..configuration.curve import Curve
+from ..configuration.inline_curve import InlineCurve, ConfigModel as InlineCurveModel
 from ..configuration.matrix import Matrix
 from ..control.deviceaccess import DeviceAccess
 from .model import MagnetModel
@@ -26,14 +27,11 @@ class ConfigModel(BaseModel):
        Delfault: zeros"""
     crosstalk: float|list[float] = 1.0
     """Crosstalk factors"""
-    powerconverters: DeviceAccess | list[DeviceAccess]
+    powerconverter: DeviceAccess
     """
     The hardware can be a single power supply or a list of power supplies.
     If a list is provided, the same value will be affected to all of them.
     """
-    matrix: Matrix = None
-    """n x m matrix (n rows for n magnets , m columns for m currents) 
-       to handle magnets separations. Default: Identity"""
     unit: str
     """Strength unit: rad, m-1, m-2"""
 
@@ -80,82 +78,57 @@ class LinearSerializedMagnetModel(MagnetModel):
         # Check config
         self.__nbMagnets: int = _get_max_length(cfg.curves, cfg.calibration_factors, cfg.calibration_offsets,
                                                cfg.crosstalk)
-        if cfg.matrix is not None:
-             self.__nbMagnets = max(self.__nbMagnets, np.shape(cfg.matrix.get_matrix())[0])
+        self.__calibration_factors = np.ones(self.__nbMagnets)
+        self.__calibration_factors = np.ones(self.__nbMagnets)
+        self.__calibration_factors = np.ones(self.__nbMagnets)
+        self.__curves = _to_list_of_length(self._cfg.curves, self.__nbMagnets)
+        self.__sub_models:list[LinearMagnetModel] = []
 
-        self.__nbPS: int = _get_length(cfg.powerconverters)
-
-        if cfg.calibration_factors is None:
+    def __initialize(self):
+        if self._cfg.calibration_factors is None:
             self.__calibration_factors = np.ones(self.__nbMagnets)
         else:
-            self.__calibration_factors = _to_list_of_length(cfg.calibration_factors, self.__nbMagnets)
+            self.__calibration_factors = _to_list_of_length(self._cfg.calibration_factors, self.__nbMagnets)
 
-        if cfg.calibration_offsets is None:
+        if self._cfg.calibration_offsets is None:
             self.__calibration_offsets = np.zeros(self.__nbMagnets)
         else:
-            self.__calibration_offsets = _to_list_of_length(cfg.calibration_offsets, self.__nbMagnets)
+            self.__calibration_offsets = _to_list_of_length(self._cfg.calibration_offsets, self.__nbMagnets)
 
-        if cfg.crosstalk is None:
+        if self._cfg.crosstalk is None:
             self.__crosstalk = np.zeros(self.__nbMagnets)
         else:
-            self.__crosstalk = _to_list_of_length(cfg.crosstalk, self.__nbMagnets)
-        self.__curves = _to_list_of_length(cfg.curves, self.__nbMagnets)
-        powerconverters = _to_list_of_length(cfg.powerconverters, self.__nbPS)
+            self.__crosstalk = _to_list_of_length(self._cfg.crosstalk, self.__nbMagnets)
+        self.__curves = _to_list_of_length(self._cfg.curves, self.__nbMagnets)
+        if isinstance(self._cfg.curves, list):
+            self.__curves = self._cfg.curves
+        else:
+            self.__curves:list[Curve] = []
+            for _ in range(self.__nbMagnets):
+                curve = InlineCurve(InlineCurveModel(mat=self._cfg.curves.get_curve()))
+                self.__curves.append(curve)
 
         _check_len(self.__calibration_factors, "calibration_factors", self.__nbMagnets)
         _check_len(self.__calibration_offsets, "calibration_offsets", self.__nbMagnets)
         _check_len(self.__crosstalk, "crosstalk", self.__nbMagnets)
         _check_len(self.__curves, "curves", self.__nbMagnets)
-        _check_len(powerconverters, "powerconverters", self.__nbPS)
-
-        if 1 < self.__nbPS < self.__nbMagnets and cfg.matrix is None:
-            raise PyAMLException(
-                "Wrong number of powersupply<->magnets or a matrix must be provided."
-            )
-
-        if cfg.matrix is None:
-            mat:list[list[int]] = []
-            for magnet_idx in range(self.__nbMagnets):
-                magnet_affectation = []
-                for powerconverter_idx in range(self.__nbPS):
-                    if powerconverter_idx==magnet_idx or self.__nbPS==1:
-                        magnet_affectation.append(1)
-                    else:
-                        magnet_affectation.append(0)
-                mat.append(magnet_affectation)
-            self.__matrix = np.array(mat)
-        else:
-            self.__matrix = cfg.matrix.get_matrix()
-
-        _s = np.shape(self.__matrix)
-        sum_matrix = np.sum(self.__matrix)
-
-        if len(_s) != 2 or _s[0] != self.__nbMagnets or _s[1] != self.__nbPS:
-            raise PyAMLException(
-                "matrix wrong dimension "
-                f"({self.__nbMagnets}x{self.__nbPS} expected but got {_s[0]}x{_s[1]})"
-            )
-
-        if sum_matrix != self.__nbMagnets:
-            raise PyAMLException("Wrong matrix, the sum must equal the number of magnets")
 
         self.__sub_models:list[LinearMagnetModel] = []
-        for magnet_idx in range(_s[0]):
-            for powerconverter_idx in range(_s[1]):
-                if self.__matrix[magnet_idx, powerconverter_idx] != 0:
-                    sub_model = LinearConfigModel(curve=self.__curves[magnet_idx],
-                                                  calibration_factor=self.__calibration_factors[magnet_idx],
-                                                  calibration_offset= self.__calibration_offsets[magnet_idx],
-                                                  crosstalk=self.__crosstalk[magnet_idx],
-                                                  powerconverter=powerconverters[powerconverter_idx],
-                                                  unit=self._cfg.unit)
-                    self.__sub_models.append(LinearMagnetModel(sub_model))
+        for magnet_idx in range(self.__nbMagnets):
+            sub_model = LinearConfigModel(curve=self.__curves[magnet_idx],
+                                          calibration_factor=self.__calibration_factors[magnet_idx],
+                                          calibration_offset= self.__calibration_offsets[magnet_idx],
+                                          crosstalk=self.__crosstalk[magnet_idx],
+                                          powerconverter=self._cfg.powerconverter,
+                                          unit=self._cfg.unit)
+            self.__sub_models.append(LinearMagnetModel(sub_model))
+
+    def set_number_of_magnets(self, nb_magnets:int):
+        self.__nbMagnets = nb_magnets
+        self.__initialize()
 
     def get_sub_model(self, index:int) -> LinearMagnetModel:
-        if len(self.__sub_models) == 1:
-            return self.__sub_models[0]
-        else:
-            return self.__sub_models[index]
+        return self.__sub_models[index]
 
     def compute_hardware_values(self, strengths: np.array) -> np.array:
         return np.array([model.compute_hardware_values([strength]) for strength, model in zip(strengths, self.__sub_models)])
@@ -184,9 +157,6 @@ class LinearSerializedMagnetModel(MagnetModel):
 
     def set_magnet_rigidity(self, brho: np.double):
         [model.set_magnet_rigidity(brho) for model in self.__sub_models]
-
-    def has_hardware(self) -> bool:
-        return self.__nbPS >0
 
     def __repr__(self):
         return __pyaml_repr__(self)

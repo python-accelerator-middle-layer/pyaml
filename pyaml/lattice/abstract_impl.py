@@ -99,18 +99,18 @@ class RWSerializedHardware(abstract.ReadWriteFloatScalar):
 
 class RWSerializedStrength(abstract.ReadWriteFloatScalar):
 
-    def __init__(self, elements: list[RWStrengthScalar], elements_hardware: list[RWHardwareScalar], element_index: int):
-        self.__elements = elements
+    def __init__(self, element: RWStrengthScalar, elements_hardware: list[RWHardwareScalar], element_index: int):
+        self.__element = element
         self.__elements_hardware = elements_hardware
         self.__element_index = element_index
 
     # Gets the value
     def get(self) -> float:
-        return self.__elements[self.__element_index].get()
+        return self.__element.get()
 
     # Sets the value
     def set(self, value: float):
-        self.__elements[self.__element_index].set(value)
+        self.__element.set(value)
         hardware_value = self.__elements_hardware[self.__element_index].get()
         [element.set(hardware_value) for index, element in enumerate(self.__elements_hardware) if index!=self.__element_index]
 
@@ -120,7 +120,7 @@ class RWSerializedStrength(abstract.ReadWriteFloatScalar):
 
     # Gets the unit of the value
     def unit(self) -> str:
-        return self.__elements[self.__element_index].unit()
+        return self.__element.unit()
 
 
 class RWHardwareArray(abstract.ReadWriteFloatArray):

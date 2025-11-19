@@ -22,40 +22,7 @@ devices:
       calibration_offsets: 0.0
       unit: m-1
       curves: sr/magnet_models/quadcurve.yaml
-      powerconverters:
+      powerconverter:
         type: tango.pyaml.attribute
         attribute: srmag/ps-corr-sh1/c01-a-ch1/current
         unit: A
-  - sr/correctors/SH1AC01.yaml
-  - sr/correctors/SH1AC02.yaml
-  - type: pyaml.magnet.serialized_magnet
-    name: myOtherSeriesOfMagnets
-    function: B1
-    elements:   # name in the lattice and name of virtual magnet in pyaml
-      - QD2E-C01
-      - QD2E-C02
-      - QD2E-C04
-      - QF1A-C01
-      - QF1A-C02
-      - QF1A-C03
-    model:
-      type: pyaml.magnet.linear_serialized_model
-      calibration_factors: 1.00504
-      calibration_offsets: 0.0
-      unit: m-1
-      curves: sr/magnet_models/quadcurve.yaml    # 1 curve per magnet (6)
-      matrix:
-        type: pyaml.configuration.inline_matrix
-        mat: [ [ 1, 0 ],                             #  For QD2E and QF1A
-               [ 1, 0 ],
-               [ 1, 0 ],
-               [ 0, 1 ],
-               [ 0, 1 ],
-               [ 0, 1 ]]
-      powerconverters:                                             # 1 ps per set  (here 2)
-        - type: tango.pyaml.attribute
-          attribute: srmag/vps-qd2/e/current
-          unit: A
-        - type: tango.pyaml.attribute
-          attribute: srmag/vps-qf1/a/current
-          unit: A

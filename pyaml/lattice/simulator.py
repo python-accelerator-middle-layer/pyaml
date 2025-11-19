@@ -122,7 +122,7 @@ class Simulator(ElementHolder):
             linked_strengths = []
             for i in range(e.get_nb_magnets()):
                 current = RWSerializedHardware(currents, i) if e.model.has_hardware() else None
-                strength = RWSerializedStrength(strengths, currents, i) if e.model.has_physics() else None
+                strength = RWSerializedStrength(strengths[i], currents, i) if e.model.has_physics() else None
                 linked_currents.append(current)
                 linked_strengths.append(strength)
             ms = e.attach(self,linked_strengths,linked_currents)
