@@ -14,7 +14,7 @@ class ConfigModel(ElementConfigModel):
         model: BPMModel | None = None
         """Object in charge of BPM modeling"""
 
-
+   
 
 class BPM(Element):
     """
