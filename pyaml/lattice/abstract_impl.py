@@ -188,7 +188,7 @@ class BPMVScalarAggregator(BPMScalarAggregator):
     """
 
     def get(self) -> np.array:
-        _, orbit = at.find_orbit(self.__lattice, refpts=self.__refpts)
+        _, orbit = at.find_orbit(self._BPMScalarAggregator__lattice, refpts=self._BPMScalarAggregator__refpts)
         return orbit[:, 0]
 
 #------------------------------------------------------------------------------
@@ -199,7 +199,7 @@ class BPMHScalarAggregator(BPMScalarAggregator):
     """
 
     def get(self) -> np.array:
-        _, orbit = at.find_orbit(self.__lattice, refpts=self.__refpts)
+        _, orbit = at.find_orbit(self._BPMScalarAggregator__lattice, refpts=self._BPMScalarAggregator__refpts)
         return orbit[:, 2]
 
 #------------------------------------------------------------------------------
