@@ -119,14 +119,6 @@ html_theme = "pydata_sphinx_theme"
 # Theme options are theme-specific and customize the look and feel of a theme
 # further.  For a list of options available for each theme, see the
 # documentation.
-html_theme_options = {
-    'collapse_navigation': False,
-    'display_version': True,
-    'logo_only': True,
-    'navigation_depth': 6,
-    "rightsidebar": True,
-    "relbarbgcolor": "black"
-}
 
 
 # Name of an image file (path relative to the configuration directory)
@@ -136,7 +128,13 @@ html_theme_options = {
 html_logo = '_static/img/logo.png'
 html_copy_source = False
 html_theme_options = {
-    "github_url": "https://github.com/atcollab/at",
+    'collapse_navigation': False,
+    'display_version': True,
+    'logo_only': True,
+    'navigation_depth': 6,
+    "rightsidebar": True,
+    "relbarbgcolor": "black",
+    "github_url": "https://github.com/python-accelerator-middle-layer/pyaml",
     "logo": {
       "image_light": '_static/img/logo.png',
       "image_dark": '_static/img/dark.png',

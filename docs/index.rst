@@ -35,6 +35,7 @@ Documentation
     Load a configuration file <notebooks/load_configuration>
     Switch design live <notebooks/live_design>
     Select a control system <notebooks/control_system>
+    Arrays <notebooks/arrays>
 
 .. toctree::
    :caption: Modules:
