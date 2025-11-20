@@ -20,7 +20,7 @@ PYAMLCLASS = "SerializedMagnetsModel"
 class ConfigModel(ElementConfigModel):
     function: str
     """List of magnets"""
-    elements: list[str]
+    elements: list[str] | str
     """List of magnets"""
     model: MagnetModel | None = None
     """Object in charge of converting magnet strengths to currents"""
@@ -50,14 +50,15 @@ class SerializedMagnetsModel(Element):
         self.model = cfg.model
         self.polynom = None
         self.__virtuals:list[Magnet] = []
-        self.model.set_number_of_magnets(len(cfg.elements))
+        self.__elements = cfg.elements if isinstance(cfg.elements, list) else [cfg.elements]
+        self.model.set_number_of_magnets(len(self.__elements))
         if peer is None:
 
             # Configuration part
             self.polynom = function_map[self._cfg.function].polynom
             if not self._cfg.function in function_map:
                 raise PyAMLException(self._cfg.function + " not implemented for serialized magnet")
-            for element in self._cfg.elements:
+            for element in self.__elements:
                 # Check mapping validity
                 # Create the virtual magnet for the corresponding magnet
                 vm = self.__create_virtual_magnet(element)
@@ -75,7 +76,7 @@ class SerializedMagnetsModel(Element):
             return virtual
 
     def get_nb_magnets(self) -> int:
-        return len(self._cfg.elements)
+        return len(self.__elements)
 
     def get_magnets(self) -> list[Magnet]:
         return self.__virtuals
@@ -83,7 +84,7 @@ class SerializedMagnetsModel(Element):
     def attach(self, peer, strengths: list[abstract.ReadWriteFloatScalar], hardwares: list[abstract.ReadWriteFloatScalar]) -> list[Magnet]:
         l = []
         # Construct a single function magnet for each multipole of this combined function magnet
-        for idx, magnet in enumerate(self._cfg.elements):
+        for idx, magnet in enumerate(self.__elements):
             strength = strengths[idx]
             hardware = hardwares[idx] if self.model.has_hardware() else None
             l.append(self.__virtuals[idx].attach(peer, strength, hardware))

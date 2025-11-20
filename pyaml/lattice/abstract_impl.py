@@ -29,17 +29,17 @@ class RWHardwareScalar(abstract.ReadWriteFloatScalar):
     def get(self) -> float:
         s = self.__poly[self.__polyIdx] * self.__elements[0].Length
         return self.__model.compute_hardware_values([s])[0]
-    
+
     def set(self,value:float):
         s = self.__model.compute_strengths([value])[0]
         self.__poly[self.__polyIdx] = s / self.__elements[0].Length
 
     def set_and_wait(self, value:float):
         raise NotImplementedError("Not implemented yet.")
-        
+
     def unit(self) -> str:
         return self.__model.get_hardware_units()[0]
-    
+
 #------------------------------------------------------------------------------
 
 class RWStrengthScalar(abstract.ReadWriteFloatScalar):
@@ -71,6 +71,80 @@ class RWStrengthScalar(abstract.ReadWriteFloatScalar):
 
     def get_model(self) -> MagnetModel:
         return self.__model
+
+
+class RWHardwareIntegratedScalar(abstract.ReadWriteFloatScalar):
+    """
+    Class providing read write access to a magnet of a simulator in hardware unit.
+    Hardware unit is converted from strength using the magnet model
+    """
+
+    def __init__(self, elements: list[at.Element], poly: PolynomInfo, model: MagnetModel):
+        self.__model = model
+        self.__integrated_strength = RWStrengthIntegratedScalar(elements, poly, model)
+
+    def get(self) -> float:
+        s = self.__integrated_strength.get()
+        return self.__model.compute_hardware_values([s])[0]
+
+    def set(self, value: float):
+        s:float = self.__model.compute_strengths([value])[0]
+        self.__integrated_strength.set(s)
+
+    def set_and_wait(self, value: float):
+        raise NotImplementedError("Not implemented yet.")
+
+    def unit(self) -> str:
+        return self.__model.get_hardware_units()[0]
+
+
+# ------------------------------------------------------------------------------
+
+class RWStrengthIntegratedScalar(abstract.ReadWriteFloatScalar):
+    """
+    Class providing read write access to a strength of a simulator
+    """
+
+    def __init__(self, elements: list[at.Element], poly: PolynomInfo, model: MagnetModel):
+        self.__model = model
+        self.__elements = elements
+        self.__poly = [element.__getattribute__(poly.attName) for element in elements]
+        self.__polyIdx = poly.index
+        self.__lengths:list[float] = [element.Length for element in elements]
+
+    def __get_ks(self) -> list[float]:
+        if not all([hasattr(element, "K") for element in self.__elements]):
+            ks:list[float] = [element.K for element in self.__elements]
+        else:
+            ks: list[float] = [1.0] * len(self.__elements)
+        return ks
+
+    # Gets the value
+    def get(self) -> float:
+        ks = self.__get_ks()
+        k_lengths = [length*k for length, k in zip(self.__lengths, ks)]
+        return sum([poly[self.__polyIdx] * k_length for poly, k_length in zip(self.__poly, k_lengths)])
+
+    # Sets the value
+    def set(self, value: float):
+        ks = self.__get_ks()
+        k_lengths = [length*k for length, k in zip(self.__lengths, ks)]
+        full_k_length = sum(k_lengths)
+        ratios = [k_length/full_k_length for k_length in k_lengths]
+        for poly, ratio in zip(self.__poly, ratios):
+            poly[self.__polyIdx] = value * ratio
+
+    # Sets the value and wait that the read value reach the setpoint
+    def set_and_wait(self, value: float):
+        raise NotImplementedError("Not implemented yet.")
+
+    # Gets the unit of the value
+    def unit(self) -> str:
+        return self.__model.get_strength_units()[0]
+
+    def get_model(self) -> MagnetModel:
+        return self.__model
+
 
 #------------------------------------------------------------------------------
 
