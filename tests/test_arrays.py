@@ -116,12 +116,18 @@ def test_arrays(install_test_package):
 
     # Test BPMs array
 
-    # Using aggragtor
+    # Using aggregator
     pos = sr.design.get_bpms("BPMS").positions.get()
     assert np.abs(pos[0][0] + 7.21154171490481e-05) < 1e-10
     assert np.abs(pos[0][1] - 3.3988843436571406e-05) < 1e-10
     assert np.abs(pos[1][0] - 1.1681211772781844e-04) < 1e-10
     assert np.abs(pos[1][1] - 7.072972488250373e-06) < 1e-10
+
+    # Using aggregator (h and v)
+    pos_h = sr.design.get_bpms("BPMS").h.get()
+    pos_v = sr.design.get_bpms("BPMS").v.get()
+    assert np.all(np.isclose(pos[:, 0], pos_h, rtol=1e-15, atol=1e-15))
+    assert np.all(np.isclose(pos[:, 1], pos_v, rtol=1e-15, atol=1e-15))
 
     # No aggregator
     bpms = []

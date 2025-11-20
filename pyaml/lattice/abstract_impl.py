@@ -173,12 +173,12 @@ class BPMScalarAggregator(ScalarAggregator):
     BPM simulator aggregator
     """
 
-    def __init__(self, ring: at.Lattice):
-        self.__lattice = ring
-        self.__refpts = []
+    def __init__(self, ring:at.Lattice):
+        self.lattice = ring
+        self.refpts = []
 
-    def add_elem(self, elem: at.Element):
-        self.__refpts.append(self.__lattice.index(elem))
+    def add_elem(self,elem:at.Element):
+        self.refpts.append(self.lattice.index(elem))
 
     def set(self, value: NDArray[np.float64]):
         pass
@@ -187,7 +187,7 @@ class BPMScalarAggregator(ScalarAggregator):
         pass
 
     def get(self) -> np.array:
-        _, orbit = at.find_orbit(self.__lattice, refpts=self.__refpts)
+        _, orbit = at.find_orbit(self.lattice, refpts=self.refpts)
         return orbit[:, [0, 2]].flatten()
 
     def readback(self) -> np.array:
@@ -200,26 +200,26 @@ class BPMScalarAggregator(ScalarAggregator):
 # ------------------------------------------------------------------------------
 
 
-class BPMVScalarAggregator(BPMScalarAggregator):
+class BPMHScalarAggregator(BPMScalarAggregator):
     """
     Vertical BPM simulator aggregator
     """
 
     def get(self) -> np.array:
-        _, orbit = at.find_orbit(self.__lattice, refpts=self.__refpts)
+        _, orbit = at.find_orbit(self.lattice, refpts=self.refpts)
         return orbit[:, 0]
 
 
 # ------------------------------------------------------------------------------
 
 
-class BPMHScalarAggregator(BPMScalarAggregator):
+class BPMVScalarAggregator(BPMScalarAggregator):
     """
     Horizontal BPM simulator aggregator
     """
 
     def get(self) -> np.array:
-        _, orbit = at.find_orbit(self.__lattice, refpts=self.__refpts)
+        _, orbit = at.find_orbit(self.lattice, refpts=self.refpts)
         return orbit[:, 2]
 
 
