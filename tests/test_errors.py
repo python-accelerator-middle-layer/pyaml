@@ -34,7 +34,7 @@ def test_tune(install_test_package):
     with pytest.raises(PyAMLException) as exc:
         ma = MagnetArray("Test", [m1, m2])
     assert (
-        "MagnetArray Test:  All elements must be attached to the same instance"
+        "MagnetArray Test: All elements must be attached to the same instance"
         in str(exc)
     )
 

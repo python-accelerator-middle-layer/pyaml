@@ -54,7 +54,7 @@ class ElementHolder(object):
                 ) from None
             if m in a:
                 raise PyAMLException(
-                    f"{constructor.__name__} {arrayName} :"
+                    f"{constructor.__name__} {arrayName} : "
                     f"duplicate name {name} @index {len(a)}"
                 ) from None
             a.append(m)
@@ -63,7 +63,7 @@ class ElementHolder(object):
     def __add(self, array, element: Element):
         if element.get_name() in self.__ALL:  # Ensure name unicity
             raise PyAMLException(
-                f"Duplicate element {element.__class__.__name__}"
+                f"Duplicate element {element.__class__.__name__} "
                 "name {element.get_name()}"
             ) from None
         array[element.get_name()] = element

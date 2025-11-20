@@ -34,8 +34,8 @@ class ElementArray(list[Element]):
         self.__use_aggretator = use_aggregator
         if self.__peer is None or any([m._peer != self.__peer for m in self]):
             raise PyAMLException(
-                f"{self.__class__.__name__} {self.get_name()}:"
-                "All elements must be attached to the same instance"
+                f"{self.__class__.__name__} {self.get_name()}: "
+                "All elements must be attached to the same instance "
                 "of either a Simulator or a ControlSystem"
             )
 

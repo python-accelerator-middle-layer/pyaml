@@ -47,8 +47,8 @@ class PyAMLConfigCyclingException(PyAMLException):
         self.error_filename = error_filename
         parent_file_stack = [parent_path.name for parent_path in path_stack]
         super().__init__(
-            f"Circular file inclusion of {error_filename}."
-            "File list before reaching it: {parent_file_stack}"
+            f"Circular file inclusion of {error_filename}. "
+            f"File list before reaching it: {parent_file_stack}"
         )
 
     pass
@@ -124,7 +124,7 @@ class Loader:
                         file, line, col = location
                     location_str = f" in {file} at line {line}, column {col}"
                 raise PyAMLException(
-                    "Circular file inclusion of{pyaml_ex.error_filename}{location_str}"
+                    f"Circular file inclusionof {pyaml_ex.error_filename}{location_str}"
                 ) from pyaml_ex
 
     # Recursively expand a list
