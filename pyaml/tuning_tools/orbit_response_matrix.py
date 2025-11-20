@@ -3,8 +3,9 @@ from pydantic import BaseModel, ConfigDict
 from pyaml.external.pySC import pySC
 from pyaml.external.pySC_interface import pySCInterface
 from pyaml.external.pySC.pySC.apps import measure_ORM
-
+from pathlib import Path
 import logging
+import json
 
 logger = logging.getLogger(__name__)
 
@@ -46,8 +47,12 @@ class OrbitResponseMatrix(object):
             logger.info(f'Measured response of {measurement.last_input}.')
 
         response_data = measurement.response_data # contains also pre-processed data
-        response_data.input_names = self.element_holder.get_bpms(self.bpm_array_name).names()
+        response_data.output_names = self.element_holder.get_bpms(self.bpm_array_name).names()
         self.latest_measurement = response_data
 
     def get(self):
         return self.latest_measurement
+
+    def save(self, save_path: Path):
+        data = self.latest_measurement.model_dump()
+        json.dump(data, open(save_path, 'w'), indent=4)
