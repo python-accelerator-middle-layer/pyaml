@@ -713,11 +713,11 @@
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ring</span><span class="p">:</span><span class="n">at</span><span class="o">.</span><span class="n">Lattice</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">__lattice</span> <span class="o">=</span> <span class="n">ring</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">__refpts</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lattice</span> <span class="o">=</span> <span class="n">ring</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">refpts</span> <span class="o">=</span> <span class="p">[]</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">add_elem</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">elem</span><span class="p">:</span><span class="n">at</span><span class="o">.</span><span class="n">Element</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">__refpts</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__lattice</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">elem</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">refpts</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">lattice</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">elem</span><span class="p">))</span>
 
 <div class="viewcode-block" id="BPMScalarAggregator.set">
 <a class="viewcode-back" href="../../../modules/lattice.html#pyaml.lattice.abstract_impl.BPMScalarAggregator.set">[docs]</a>
@@ -734,7 +734,7 @@
 <div class="viewcode-block" id="BPMScalarAggregator.get">
 <a class="viewcode-back" href="../../../modules/lattice.html#pyaml.lattice.abstract_impl.BPMScalarAggregator.get">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">:</span>
-        <span class="n">_</span><span class="p">,</span> <span class="n">orbit</span> <span class="o">=</span> <span class="n">at</span><span class="o">.</span><span class="n">find_orbit</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__lattice</span><span class="p">,</span> <span class="n">refpts</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">__refpts</span><span class="p">)</span>
+        <span class="n">_</span><span class="p">,</span> <span class="n">orbit</span> <span class="o">=</span> <span class="n">at</span><span class="o">.</span><span class="n">find_orbit</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">lattice</span><span class="p">,</span> <span class="n">refpts</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">refpts</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">orbit</span><span class="p">[:,</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">]]</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span></div>
 
 
@@ -753,34 +753,34 @@
     
 <span class="c1">#------------------------------------------------------------------------------</span>
 
-<div class="viewcode-block" id="BPMVScalarAggregator">
-<a class="viewcode-back" href="../../../modules/lattice.html#pyaml.lattice.abstract_impl.BPMVScalarAggregator">[docs]</a>
-<span class="k">class</span><span class="w"> </span><span class="nc">BPMVScalarAggregator</span><span class="p">(</span><span class="n">BPMScalarAggregator</span><span class="p">):</span>
+<div class="viewcode-block" id="BPMHScalarAggregator">
+<a class="viewcode-back" href="../../../modules/lattice.html#pyaml.lattice.abstract_impl.BPMHScalarAggregator">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">BPMHScalarAggregator</span><span class="p">(</span><span class="n">BPMScalarAggregator</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Vertical BPM simulator aggregator</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-<div class="viewcode-block" id="BPMVScalarAggregator.get">
-<a class="viewcode-back" href="../../../modules/lattice.html#pyaml.lattice.abstract_impl.BPMVScalarAggregator.get">[docs]</a>
+<div class="viewcode-block" id="BPMHScalarAggregator.get">
+<a class="viewcode-back" href="../../../modules/lattice.html#pyaml.lattice.abstract_impl.BPMHScalarAggregator.get">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">:</span>
-        <span class="n">_</span><span class="p">,</span> <span class="n">orbit</span> <span class="o">=</span> <span class="n">at</span><span class="o">.</span><span class="n">find_orbit</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__lattice</span><span class="p">,</span> <span class="n">refpts</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">__refpts</span><span class="p">)</span>
+        <span class="n">_</span><span class="p">,</span> <span class="n">orbit</span> <span class="o">=</span> <span class="n">at</span><span class="o">.</span><span class="n">find_orbit</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">lattice</span><span class="p">,</span> <span class="n">refpts</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">refpts</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">orbit</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span></div>
 </div>
 
 
 <span class="c1">#------------------------------------------------------------------------------</span>
 
-<div class="viewcode-block" id="BPMHScalarAggregator">
-<a class="viewcode-back" href="../../../modules/lattice.html#pyaml.lattice.abstract_impl.BPMHScalarAggregator">[docs]</a>
-<span class="k">class</span><span class="w"> </span><span class="nc">BPMHScalarAggregator</span><span class="p">(</span><span class="n">BPMScalarAggregator</span><span class="p">):</span>
+<div class="viewcode-block" id="BPMVScalarAggregator">
+<a class="viewcode-back" href="../../../modules/lattice.html#pyaml.lattice.abstract_impl.BPMVScalarAggregator">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">BPMVScalarAggregator</span><span class="p">(</span><span class="n">BPMScalarAggregator</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Horizontal BPM simulator aggregator</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-<div class="viewcode-block" id="BPMHScalarAggregator.get">
-<a class="viewcode-back" href="../../../modules/lattice.html#pyaml.lattice.abstract_impl.BPMHScalarAggregator.get">[docs]</a>
+<div class="viewcode-block" id="BPMVScalarAggregator.get">
+<a class="viewcode-back" href="../../../modules/lattice.html#pyaml.lattice.abstract_impl.BPMVScalarAggregator.get">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">:</span>
-        <span class="n">_</span><span class="p">,</span> <span class="n">orbit</span> <span class="o">=</span> <span class="n">at</span><span class="o">.</span><span class="n">find_orbit</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__lattice</span><span class="p">,</span> <span class="n">refpts</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">__refpts</span><span class="p">)</span>
+        <span class="n">_</span><span class="p">,</span> <span class="n">orbit</span> <span class="o">=</span> <span class="n">at</span><span class="o">.</span><span class="n">find_orbit</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">lattice</span><span class="p">,</span> <span class="n">refpts</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">refpts</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">orbit</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">]</span></div>
 </div>
 
