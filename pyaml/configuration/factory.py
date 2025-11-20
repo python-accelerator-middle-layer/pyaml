@@ -169,7 +169,7 @@ class PyAMLFactory:
             return self.build_object(d)
 
         raise PyAMLConfigException(
-            "Unexpected element found. 'dict' or 'list' expected"
+            "Unexpected element found. 'dict' or 'list' expected "
             "but got '{d.__class__.__name__}'"
         )
 

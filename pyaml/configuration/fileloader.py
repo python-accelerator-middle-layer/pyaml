@@ -124,7 +124,8 @@ class Loader:
                         file, line, col = location
                     location_str = f" in {file} at line {line}, column {col}"
                 raise PyAMLException(
-                    f"Circular file inclusionof {pyaml_ex.error_filename}{location_str}"
+                    "Circular file inclusion "
+                    f"of {pyaml_ex.error_filename}{location_str}"
                 ) from pyaml_ex
 
     # Recursively expand a list
