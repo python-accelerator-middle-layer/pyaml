@@ -88,6 +88,8 @@ ignore = [
     "E203",  # so it's compatible with black-style formatting
     "F401",  # unused imports
     "F841",  # unused local variables
+    "E741",  # ambiguous variable name
+    "B024",  # abstract class with no methods
 ]
 
 [tool.ruff.format]

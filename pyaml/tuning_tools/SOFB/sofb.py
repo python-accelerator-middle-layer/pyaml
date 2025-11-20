@@ -1,4 +1,4 @@
-class slow_orbit_feeback():
+class slow_orbit_feeback:
     """slow orbit feedback help"""
 
     def run():

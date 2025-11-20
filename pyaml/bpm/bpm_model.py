@@ -1,13 +1,17 @@
 from abc import ABCMeta, abstractmethod
+
 import numpy as np
 from numpy.typing import NDArray
+
 from ..control.deviceaccess import DeviceAccess
+
 
 class BPMModel(metaclass=ABCMeta):
     """
     Abstract class providing interface to accessing BPM positions, offsets,
     tilts.
     """
+
     @abstractmethod
     def read_position(self) -> NDArray[np.float64]:
         """
@@ -19,7 +23,7 @@ class BPMModel(metaclass=ABCMeta):
             positions
         """
         pass
-    
+
     @abstractmethod
     def read_tilt(self) -> float:
         """
@@ -73,7 +77,7 @@ class BPMModel(metaclass=ABCMeta):
     def get_pos_devices(self) -> list[DeviceAccess]:
         """
         Get device handles used for position reading
-        
+
         Returns
         -------
         list[DeviceAccess]
@@ -85,7 +89,7 @@ class BPMModel(metaclass=ABCMeta):
     def get_tilt_device(self) -> DeviceAccess:
         """
         Get device handle used for tilt access
-        
+
         Returns
         -------
         list[DeviceAccess]
@@ -97,7 +101,7 @@ class BPMModel(metaclass=ABCMeta):
     def get_offset_devices(self) -> list[DeviceAccess]:
         """
         Get device handles used for offset access
-        
+
         Returns
         -------
         list[DeviceAccess]

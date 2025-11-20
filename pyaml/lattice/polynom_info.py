@@ -2,15 +2,16 @@
 Class providing polynom information
 """
 
+
 class PolynomInfo:
     """
     Polynom information
     """
 
-    def __init__(self,attName:str,index:int):
+    def __init__(self, attName: str, index: int):
         """
         Construct a polynom information object
-        
+
         Parameters
         ----------
         attName : str

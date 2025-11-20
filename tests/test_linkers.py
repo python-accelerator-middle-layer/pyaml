@@ -2,28 +2,31 @@ import pytest
 
 from pyaml import PyAMLException
 from pyaml.accelerator import Accelerator
-
+from pyaml.lattice.attribute_linker import (
+    ConfigModel as AttrConfigModel,
+)
 from pyaml.lattice.attribute_linker import (
     PyAtAttributeElementsLinker,
     PyAtAttributeIdentifier,
-    ConfigModel as AttrConfigModel,
 )
-
 
 # -----------------------
 # Dummy PyAML Element
 # -----------------------
 
+
 class DummyPyAMLElement:
     """Minimal stand-in for a PyAML Element: only provides .name."""
+
     def __init__(self, name: str):
         self._name = name
+
     def get_name(self) -> str:
         return self._name
 
 
 def test_conf_with_linker():
-    sr:Accelerator = Accelerator.load("tests/config/sr-attribute-linker.yaml")
+    sr: Accelerator = Accelerator.load("tests/config/sr-attribute-linker.yaml")
     assert sr is not None
     magnet = sr.design.get_magnet("SH1A-C01-H")
     assert magnet is not None
@@ -33,11 +36,13 @@ def test_conf_with_linker():
 # PyAtAttributeElementsLinker tests
 # -----------------------
 
+
 def test_attribute_identifier_from_pyaml_name(lattice_with_custom_attr):
-    # We bind to AT element attribute 'Tag'; identifier value comes from PyAML element .name
+    """We bind to AT element attribute 'Tag';
+    identifier value comes from PyAML element .name"""
     linker = PyAtAttributeElementsLinker(AttrConfigModel(attribute_name="Tag"))
     linker.set_lattice(lattice_with_custom_attr)
-    pyaml_elem = DummyPyAMLElement(name="QF")   # identifier="QF"
+    pyaml_elem = DummyPyAMLElement(name="QF")  # identifier="QF"
     ident = linker.get_element_identifier(pyaml_elem)
     assert isinstance(ident, PyAtAttributeIdentifier)
     assert ident.attribute_name == "Tag"

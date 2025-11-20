@@ -1,7 +1,8 @@
-from ..common.element import Element, ElementConfigModel
-from ..lattice.abstract_impl import RBpmArray, RWBpmOffsetArray, RWBpmTiltScalar
 from ..bpm.bpm_model import BPMModel
+from ..common.element import Element, ElementConfigModel
 from ..common.exception import PyAMLException
+from ..lattice.abstract_impl import RBpmArray, RWBpmOffsetArray, RWBpmTiltScalar
+
 try:
     from typing import Self  # Python 3.11+
 except ImportError:
@@ -9,12 +10,11 @@ except ImportError:
 
 PYAMLCLASS = "BPM"
 
+
 class ConfigModel(ElementConfigModel):
+    model: BPMModel | None = None
+    """Object in charge of BPM modeling"""
 
-        model: BPMModel | None = None
-        """Object in charge of BPM modeling"""
-
-   
 
 class BPM(Element):
     """
@@ -34,7 +34,7 @@ class BPM(Element):
         model : BPMModel
             BPM model in charge of computing beam position
         """
-        
+
         super().__init__(cfg.name)
 
         self.__model = cfg.model if hasattr(cfg, "model") else None
@@ -45,12 +45,12 @@ class BPM(Element):
 
     @property
     def model(self) -> BPMModel:
-         return self.__model
+        return self.__model
 
     @property
     def positions(self) -> RBpmArray:
         if self.__positions is None:
-            raise PyAMLException(f"{str(self)} has no attached positions") 
+            raise PyAMLException(f"{str(self)} has no attached positions")
         return self.__positions
 
     @property
@@ -65,8 +65,13 @@ class BPM(Element):
             raise PyAMLException(f"{str(self)} has no attached tilt")
         return self.__tilt
 
-    def attach(self, peer, positions: RBpmArray , offset: RWBpmOffsetArray,
-               tilt: RWBpmTiltScalar) -> Self:
+    def attach(
+        self,
+        peer,
+        positions: RBpmArray,
+        offset: RWBpmOffsetArray,
+        tilt: RWBpmTiltScalar,
+    ) -> Self:
         # Attach positions, offset and tilt attributes and returns a new
         # reference
         obj = self.__class__(self._cfg)
@@ -76,4 +81,3 @@ class BPM(Element):
         obj.__tilt = tilt
         obj._peer = peer
         return obj
-        
