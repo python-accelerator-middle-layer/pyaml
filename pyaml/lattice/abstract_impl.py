@@ -182,7 +182,7 @@ class BPMScalarAggregator(ScalarAggregator):
     
 #------------------------------------------------------------------------------
 
-class BPMVScalarAggregator(BPMScalarAggregator):
+class BPMHScalarAggregator(BPMScalarAggregator):
     """
     Vertical BPM simulator aggregator
     """
@@ -193,7 +193,7 @@ class BPMVScalarAggregator(BPMScalarAggregator):
 
 #------------------------------------------------------------------------------
 
-class BPMHScalarAggregator(BPMScalarAggregator):
+class BPMVScalarAggregator(BPMScalarAggregator):
     """
     Horizontal BPM simulator aggregator
     """
