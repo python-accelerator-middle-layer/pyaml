@@ -15,17 +15,16 @@ class ConfigModel(BaseModel):
 
     model_config = ConfigDict(arbitrary_types_allowed=True, extra="forbid")
 
-    element_holder: ElementHolder
     bpm_array_name: str
     hcorr_array_name: str
     vcorr_array_name: str
     corrector_delta: float
 
 class OrbitResponseMatrix(object):
-    def __init__(self, cfg: ConfigModel):
+    def __init__(self, element_holder: ElementHolder, cfg: ConfigModel):
         self._cfg = cfg
 
-        self.element_holder = cfg.element_holder
+        self.element_holder = element_holder
         self.bpm_array_name = cfg.bpm_array_name
         self.hcorr_array_name = cfg.hcorr_array_name
         self.vcorr_array_name = cfg.vcorr_array_name
