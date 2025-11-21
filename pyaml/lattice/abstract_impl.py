@@ -110,30 +110,18 @@ class RWStrengthIntegratedScalar(abstract.ReadWriteFloatScalar):
         self.__elements = elements
         self.__poly = [element.__getattribute__(poly.attName) for element in elements]
         self.__polyIdx = poly.index
-        self.__lengths:list[float] = [element.Length for element in elements]
-
-    def __get_ks(self) -> list[float]:
-        if not all([hasattr(element, "K") for element in self.__elements]):
-            ks:list[float] = [element.K for element in self.__elements]
-        else:
-            ks: list[float] = [1.0] * len(self.__elements)
-        return ks
+        lengths:list[float] = [element.Length for element in elements]
+        self.__full_length = sum(lengths)
+        self.__ratios = [length/self.__full_length for length in lengths]
 
     # Gets the value
     def get(self) -> float:
-        ks = self.__get_ks()
-        k_lengths = [length*k for length, k in zip(self.__lengths, ks)]
-        full_k_length = sum(k_lengths)
-        return sum([poly[self.__polyIdx] for poly in self.__poly]) * full_k_length
+        return sum([poly[self.__polyIdx] for poly in self.__poly]) * self.__full_length
 
     # Sets the value
     def set(self, value: float):
-        ks = self.__get_ks()
-        k_lengths = [length*k for length, k in zip(self.__lengths, ks)]
-        full_k_length = sum(k_lengths)
-        ratios = [k_length/full_k_length for k_length in k_lengths]
-        for poly, ratio in zip(self.__poly, ratios):
-            poly[self.__polyIdx] = (value / full_k_length) * ratio
+        for poly, ratio in zip(self.__poly, self.__ratios):
+            poly[self.__polyIdx] = (value / self.__full_length) * ratio
 
     # Sets the value and wait that the read value reach the setpoint
     def set_and_wait(self, value: float):
