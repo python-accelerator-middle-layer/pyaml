@@ -176,6 +176,9 @@ def test_arrays(install_test_package):
     assert(np.abs(strHVSQ[4] + 0.000017)<1e-10)   # V
     assert(np.abs(strHVSQ[5] - 1e-6)<1e-10)        # SQ
 
+    bpmsLive = BPMArray("",sr.live.get_all_bpms())
+    bpmsLive.positions.get()
+
     Factory.clear()
 
     # Test dynamic arrays
