@@ -1,4 +1,3 @@
-type: pyaml.pyaml
 type: pyaml.accelerator
 name: sr
 energy: 6e9

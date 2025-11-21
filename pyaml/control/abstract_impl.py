@@ -38,7 +38,7 @@ class CSScalarAggregator(ScalarAggregator):
 
     def unit(self) -> str:
         return self._devs.unit()
-    
+
     def nb_device(self) -> int:
         return self._devs.__len__()
 
@@ -48,7 +48,7 @@ class CSStrengthScalarAggregator(CSScalarAggregator):
     """
     Control system aggregator for a list of magnet strengths.
     This aggregator is in charge of computing hardware setpoints and applying them without overlap.
-    When virtual magnets exported from combined function mangets are present (RWMapper), 
+    When virtual magnets exported from combined function mangets are present (RWMapper),
     the aggregator prevents to apply several times the same power supply setpoint.
     """
 
@@ -275,7 +275,7 @@ class RWBpmOffsetArray(abstract.ReadWriteFloatArray):
 
     # Sets the value
     def set(self, value: NDArray[np.float64]):
-        self.__model.set_offset(value) 
+        self.__model.set_offset(value)
     def set_and_wait(self, value: NDArray[np.float64]):
         raise NotImplementedError("Not implemented yet.")
     # Gets the unit of the value
@@ -292,15 +292,15 @@ class RWRFVoltageScalar(abstract.ReadWriteFloatScalar):
     def __init__(self, transmitter:RFTransmitter):
         self.__transmitter = transmitter
 
-    def get(self) -> float:        
+    def get(self) -> float:
         return self.__transmitter._cfg.voltage.get()
-    
+
     def set(self,value:float):
         return self.__transmitter._cfg.voltage.set(value)
 
     def set_and_wait(self, value:float):
         raise NotImplementedError("Not implemented yet.")
-        
+
     def unit(self) -> str:
         return self.__transmitter._cfg.voltage.unit()
 
@@ -314,18 +314,18 @@ class RWRFPhaseScalar(abstract.ReadWriteFloatScalar):
     def __init__(self, transmitter:RFTransmitter):
         self.__transmitter = transmitter
 
-    def get(self) -> float:        
+    def get(self) -> float:
         return self.__transmitter._cfg.phase.get()
-    
+
     def set(self,value:float):
         return self.__transmitter._cfg.phase.set(value)
 
     def set_and_wait(self, value:float):
         raise NotImplementedError("Not implemented yet.")
-        
+
     def unit(self) -> str:
         return self.__transmitter._cfg.phase.unit()
-    
+
 #------------------------------------------------------------------------------
 
 class RWRFFrequencyScalar(abstract.ReadWriteFloatScalar):
@@ -361,7 +361,7 @@ class RBetatronTuneArray(abstract.ReadFloatArray):
 
     def get(self) -> NDArray:
         # Return horizontal and vertical betatron tunes as a NumPy array
-        return np.array([self.__tune_monitor._cfg.tune_h.get(), 
+        return np.array([self.__tune_monitor._cfg.tune_h.get(),
                self.__tune_monitor._cfg.tune_v.get()])
 
     def unit(self) -> str:

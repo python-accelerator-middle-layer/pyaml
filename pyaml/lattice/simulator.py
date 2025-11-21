@@ -6,9 +6,11 @@ from ..magnet.magnet import Magnet
 from ..bpm.bpm import BPM
 from ..diagnostics.tune_monitor import BetatronTuneMonitor
 from ..magnet.cfm_magnet import CombinedFunctionMagnet
+from ..magnet.serialized_magnet import SerializedMagnetsModel
 from ..rf.rf_plant import RFPlant,RWTotalVoltage
 from ..rf.rf_transmitter import RFTransmitter
-from ..lattice.abstract_impl import RWHardwareScalar,RWHardwareArray
+from ..lattice.abstract_impl import RWHardwareScalar, RWHardwareArray, RWSerializedHardware, RWSerializedStrength, \
+    RWHardwareIntegratedScalar, RWStrengthIntegratedScalar
 from ..lattice.abstract_impl import RWStrengthScalar,RWStrengthArray
 from ..lattice.abstract_impl import RWRFFrequencyScalar,RWRFVoltageScalar,RWRFPhaseScalar
 from ..lattice.abstract_impl import RWRFATFrequencyScalar,RWRFATotalVoltageScalar
@@ -68,12 +70,12 @@ class Simulator(ElementHolder):
       # Needed by energy dependant element (i.e. magnet coil current calculation)
       for m in self.get_all_elements():
         m.set_energy(E)
- 
+
     def create_magnet_strength_aggregator(self,magnets:list[Magnet]) -> ScalarAggregator:
         # No magnet aggregator for simulator
         return None
- 
-    def create_magnet_harddware_aggregator(self,magnets:list[Magnet]) -> ScalarAggregator:
+
+    def create_magnet_hardware_aggregator(self,magnets:list[Magnet]) -> ScalarAggregator:
         # No magnet aggregator for simulator
         return None
 
@@ -106,9 +108,30 @@ class Simulator(ElementHolder):
             self.add_cfm_magnet(ms[0])
             for m in ms[1:]:
               self.add_magnet(m)
-              
+
+          elif isinstance(e,SerializedMagnetsModel):
+            currents = []
+            strengths = []
+            # Create unique refs the series and each of its function for this control system
+            # Link hardware to strengths and bind strength together
+            for index, magnet in enumerate(e.get_magnets()):
+                current = RWHardwareIntegratedScalar(self.get_at_elems(magnet),e.polynom,e.model.get_sub_model(index)) if e.model.has_hardware() else None
+                strength = RWStrengthIntegratedScalar(self.get_at_elems(magnet),e.polynom,e.model.get_sub_model(index)) if e.model.has_physics() else None
+                currents.append(current)
+                strengths.append(strength)
+            linked_currents = []
+            linked_strengths = []
+            for i in range(e.get_nb_magnets()):
+                current = RWSerializedHardware(currents, i) if e.model.has_hardware() else None
+                strength = RWSerializedStrength(strengths[i], currents, i) if e.model.has_physics() else None
+                linked_currents.append(current)
+                linked_strengths.append(strength)
+            ms = e.attach(self,linked_strengths,linked_currents)
+            for m in ms:
+              self.add_magnet(m)
+
           elif isinstance(e,BPM):
-            # This assumes unique BPM names in the pyAT lattice  
+            # This assumes unique BPM names in the pyAT lattice
             tilt = RWBpmTiltScalar(self.get_at_elems(e)[0])
             offsets = RWBpmOffsetArray(self.get_at_elems(e)[0])
             positions = RBpmArray(self.get_at_elems(e)[0],self.ring)
@@ -141,7 +164,7 @@ class Simulator(ElementHolder):
               frequency = RWRFFrequencyScalar(cavs,harmonics)
               voltage = RWTotalVoltage(attachedTrans)
               ne = e.attach(self,frequency,voltage)
-              self.add_rf_plant(ne)             
+              self.add_rf_plant(ne)
             else:
               # No transmitter defined switch to AT methods
               frequency = RWRFATFrequencyScalar(self.ring)
@@ -153,8 +176,8 @@ class Simulator(ElementHolder):
              betatron_tune = RBetatronTuneArray(self.ring)
              e = e.attach(self,betatron_tune)
              self.add_betatron_tune_monitor(e)
-             
-    
+
+
     def get_at_elems(self,element:Element) -> list[at.Element]:
        identifier = self._linker.get_element_identifier(element)
        element_list = self._linker.get_at_elements(identifier)

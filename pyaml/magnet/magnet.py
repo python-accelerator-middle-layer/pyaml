@@ -66,7 +66,7 @@ class Magnet(Element):
 
   def attach(self, peer, strength: abstract.ReadWriteFloatScalar, hardware: abstract.ReadWriteFloatScalar) -> Self:
     """
-    Create a new reference to attach this magnet to a simulator or a control systemand.    
+    Create a new reference to attach this magnet to a simulator or a control systemand.
     """
     obj = self.__class__(self._cfg)
     obj.__modelName = self.__modelName
@@ -100,5 +100,5 @@ class Magnet(Element):
           self.get_peer(),
           self.get_name(),
           self.__modelName,
-          repr(self.__model)                    
+          repr(self.__model)
       )
