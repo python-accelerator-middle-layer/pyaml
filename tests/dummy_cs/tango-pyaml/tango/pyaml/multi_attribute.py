@@ -66,10 +66,10 @@ class MultiAttribute(DeviceAccessList):
 
     def get(self) -> npt.NDArray[np.float64]:
         print(f"MultiAttribute.get({len(self)} values)")
-        return [a.get() for a in self]
+        return np.array([a.get() for a in self])
 
     def readback(self) -> np.array:
-        return []
+        return np.array([])
 
     def unit(self) -> list[str]:
         return [a.unit() for a in self]
