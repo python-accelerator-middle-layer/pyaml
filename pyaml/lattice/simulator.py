@@ -9,7 +9,8 @@ from ..magnet.cfm_magnet import CombinedFunctionMagnet
 from ..magnet.serialized_magnet import SerializedMagnetsModel
 from ..rf.rf_plant import RFPlant,RWTotalVoltage
 from ..rf.rf_transmitter import RFTransmitter
-from ..lattice.abstract_impl import RWHardwareScalar, RWHardwareArray, RWSerializedHardware, RWSerializedStrength
+from ..lattice.abstract_impl import RWHardwareScalar, RWHardwareArray, RWSerializedHardware, RWSerializedStrength, \
+    RWHardwareIntegratedScalar, RWStrengthIntegratedScalar
 from ..lattice.abstract_impl import RWStrengthScalar,RWStrengthArray
 from ..lattice.abstract_impl import RWRFFrequencyScalar,RWRFVoltageScalar,RWRFPhaseScalar
 from ..lattice.abstract_impl import RWRFATFrequencyScalar,RWRFATotalVoltageScalar
@@ -114,8 +115,8 @@ class Simulator(ElementHolder):
             # Create unique refs the series and each of its function for this control system
             # Link hardware to strengths and bind strength together
             for index, magnet in enumerate(e.get_magnets()):
-                current = RWHardwareScalar(self.get_at_elems(magnet),e.polynom,e.model.get_sub_model(index)) if e.model.has_hardware() else None
-                strength = RWStrengthScalar(self.get_at_elems(magnet),e.polynom,e.model.get_sub_model(index)) if e.model.has_physics() else None
+                current = RWHardwareIntegratedScalar(self.get_at_elems(magnet),e.polynom,e.model.get_sub_model(index)) if e.model.has_hardware() else None
+                strength = RWStrengthIntegratedScalar(self.get_at_elems(magnet),e.polynom,e.model.get_sub_model(index)) if e.model.has_physics() else None
                 currents.append(current)
                 strengths.append(strength)
             linked_currents = []
