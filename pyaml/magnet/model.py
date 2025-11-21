@@ -1,22 +1,29 @@
 from abc import ABCMeta, abstractmethod
+
 import numpy as np
 import numpy.typing as npt
+
 from ..control.deviceaccess import DeviceAccess
+
 
 class MagnetModel(metaclass=ABCMeta):
     """
-    Abstract class providing strength to coil current conversion and access to underlying power supplies
+    Abstract class providing strength to coil current conversion
+    and access to underlying power supplies
     """
 
     @abstractmethod
-    def compute_hardware_values(self, strengths: npt.NDArray[np.float64]) -> npt.NDArray[np.float64]:
+    def compute_hardware_values(
+        self, strengths: npt.NDArray[np.float64]
+    ) -> npt.NDArray[np.float64]:
         """
         Compute hardware value(s) from magnet strength(s)
 
         Parameters
         ----------
         strengths : npt.NDArray[np.float64]
-            Array of strengths. For a single multipole, strengths is an array of 1 item.
+            Array of strengths. For a single multipole,
+            strengths is an array of 1 item.
 
         Returns
         -------
@@ -26,19 +33,22 @@ class MagnetModel(metaclass=ABCMeta):
         pass
 
     @abstractmethod
-    def compute_strengths(self, hardware_values: npt.NDArray[np.float64]) -> npt.NDArray[np.float64]:
+    def compute_strengths(
+        self, hardware_values: npt.NDArray[np.float64]
+    ) -> npt.NDArray[np.float64]:
         """
         Compute magnet strength(s) from hardware value(s)
-        
+
         Parameters
         ----------
         hardware_values : npt.NDArray[np.float64]
-            Array of hardware values (i.e. currents or voltages)       
+            Array of hardware values (i.e. currents or voltages)
 
         Returns
         -------
         npt.NDArray[np.float64]
-            Array of strengths. For a single multipole, returns an array of 1 item
+            Array of strengths. For a single multipole,
+            returns an array of 1 item
         """
         pass
 
@@ -50,7 +60,8 @@ class MagnetModel(metaclass=ABCMeta):
         Returns
         -------
         list[str]
-            Array of strength units. For a single multipole, returns a list of 1 item
+            Array of strength units. For a single multipole,
+            returns a list of 1 item
         """
         pass
 
@@ -58,11 +69,12 @@ class MagnetModel(metaclass=ABCMeta):
     def get_hardware_units(self) -> list[str]:
         """
         Get hardware units
-        
+
         Returns
         -------
         list[str]
-            Array of hardware units. For a single multipole, returns a list of 1 item        
+            Array of hardware units. For a single multipole,
+            returns a list of 1 item
         """
         pass
 
@@ -74,7 +86,7 @@ class MagnetModel(metaclass=ABCMeta):
         Returns
         -------
         npt.NDArray[np.float64]
-            Array of hardware values (i.e. currents or voltages)       
+            Array of hardware values (i.e. currents or voltages)
         """
         pass
 
@@ -82,11 +94,11 @@ class MagnetModel(metaclass=ABCMeta):
     def readback_hardware_values(self) -> npt.NDArray[np.float64]:
         """
         Get power supply harware value(s) measurements from control system
-        
+
         Returns
         -------
         npt.NDArray[np.float64]
-            Array of hardware values (i.e. currents or voltages)     
+            Array of hardware values (i.e. currents or voltages)
         """
         pass
 
@@ -94,11 +106,11 @@ class MagnetModel(metaclass=ABCMeta):
     def send_hardware_values(self, hardware_values: npt.NDArray[np.float64]):
         """
         Send power supply value(s) to control system
-        
+
         Parameters
         ----------
         hardware_values : npt.NDArray[np.float64]
-            Array of hardware values (i.e. currents or voltages)  
+            Array of hardware values (i.e. currents or voltages)
         """
         pass
 
@@ -106,7 +118,7 @@ class MagnetModel(metaclass=ABCMeta):
     def get_devices(self) -> list[DeviceAccess]:
         """
         Get device handles
-        
+
         Returns
         -------
         list[DeviceAccess]
@@ -126,7 +138,6 @@ class MagnetModel(metaclass=ABCMeta):
         """
         pass
 
-
     def has_hardware(self) -> bool:
         """
         Tells if the model allows to work in hardware unit.
@@ -137,7 +148,7 @@ class MagnetModel(metaclass=ABCMeta):
             True if the model supports hardware unit
         """
         return True
-    
+
     def has_physics(self) -> bool:
         """
         Tells if the model allows to work in physics unit.

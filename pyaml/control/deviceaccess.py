@@ -2,7 +2,9 @@ from abc import ABCMeta, abstractmethod
 from typing import Union
 
 import numpy.typing as npt
+
 from .readback_value import Value
+
 
 class DeviceAccess(metaclass=ABCMeta):
     """

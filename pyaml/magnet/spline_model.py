@@ -1,18 +1,18 @@
 import numpy as np
-from pydantic import BaseModel,ConfigDict
+from pydantic import BaseModel, ConfigDict
 from scipy.interpolate import make_smoothing_spline
 
-from .model import MagnetModel
+from ..common.element import __pyaml_repr__
 from ..configuration.curve import Curve
 from ..control.deviceaccess import DeviceAccess
-from ..common.element import __pyaml_repr__
+from .model import MagnetModel
 
 # Define the main class name for this module
 PYAMLCLASS = "SplineMagnetModel"
 
-class ConfigModel(BaseModel):
 
-    model_config = ConfigDict(arbitrary_types_allowed=True,extra="forbid")
+class ConfigModel(BaseModel):
+    model_config = ConfigDict(arbitrary_types_allowed=True, extra="forbid")
 
     curve: Curve
     """Curve object used for interpolation"""
@@ -27,25 +27,31 @@ class ConfigModel(BaseModel):
     unit: str
     """Unit of the strength (i.e. 1/m or m-1)"""
     alpha: float = 0.0
-    """Regularization parameter (alpha>=0), aplha=0 the interpolation pass through all the points of the curve"""
+    """Regularization parameter (alpha>=0), aplha=0 the interpolation
+       pass through all the points of the curve"""
+
 
 class SplineMagnetModel(MagnetModel):
     """
-    Class that handle manget current/strength conversion using spline interpolation for a single function magnet
+    Class that handle manget current/strength conversion using
+    spline interpolation for a single function magnet
     """
 
     def __init__(self, cfg: ConfigModel):
         self._cfg = cfg
         self.__curve = cfg.curve.get_curve()
         self.__curve[:, 1] = (
-            self.__curve[:, 1] * cfg.calibration_factor * cfg.crosstalk + cfg.calibration_offset
+            self.__curve[:, 1] * cfg.calibration_factor * cfg.crosstalk
+            + cfg.calibration_offset
         )
         rcurve = Curve.inverse(self.__curve)
         self.__strength_unit = cfg.unit
         self.__hardware_unit = cfg.powerconverter.unit()
         self.__brho = np.nan
         self.__ps = cfg.powerconverter
-        self.__spl = make_smoothing_spline(self.__curve[:, 0], self.__curve[:, 1], lam=cfg.alpha)
+        self.__spl = make_smoothing_spline(
+            self.__curve[:, 0], self.__curve[:, 1], lam=cfg.alpha
+        )
         self.__rspl = make_smoothing_spline(rcurve[:, 0], rcurve[:, 1], lam=cfg.alpha)
 
     def compute_hardware_values(self, strengths: np.array) -> np.array:
@@ -79,4 +85,3 @@ class SplineMagnetModel(MagnetModel):
 
     def __repr__(self):
         return __pyaml_repr__(self)
-

@@ -1,8 +1,8 @@
+import importlib
+import json
+import types
 from pathlib import Path
 from typing import Dict, List, Tuple
-import json
-import importlib
-import types
 
 import yaml
 from pydantic import BaseModel, Field, model_validator
@@ -14,15 +14,14 @@ class PyAmlBaseModel(BaseModel):
     module_path: str = Field(validation_alias="type", default="")
 
     model_config = {
-        "populate_by_name": True,  # allows setting "module_path" instead of `type` directly
+        "populate_by_name": True,
+        # allows setting "module_path" instead of `type` directly
     }
 
 
 class ConfigBase(PyAmlBaseModel):
-
     @staticmethod
     def load_config_from_file(path: str | Path):
-
         path = Path(path).resolve()
 
         match path.suffix:
@@ -33,7 +32,8 @@ class ConfigBase(PyAmlBaseModel):
                 data = json.loads(path.read_text())
             case _:
                 raise ValueError(
-                    f"Unsupported file type: {path.suffix}. Expected .yaml, .yml, or .json."
+                    f"Unsupported file type: {path.suffix}."
+                    "Expected .yaml, .yml, or .json."
                 )
 
         if isinstance(data, list):
@@ -63,17 +63,18 @@ class ConfigBase(PyAmlBaseModel):
             cfg = cls.load_config_from_file(full_path)
             if not isinstance(cfg, expected_class):
                 raise ValueError(
-                    f"Invalid type for '{field_name}': {type(cfg)}. Expected {expected_class}."
+                    f"Invalid type for '{field_name}': {type(cfg)}."
+                    "Expected {expected_class}."
                 )
             return cfg
         else:
             raise ValueError(
-                f"Invalid type for '{field_name}': {type(v)}. Expected str or a type inherited from {expected_class}."
+                f"Invalid type for '{field_name}': {type(v)}."
+                "Expected str or a type inherited from {expected_class}."
             )
 
 
 def _parse_yaml_file(path: str | Path) -> Tuple[Path, Dict | List]:
-
     path = get_config_file_path(path)
     with path.open() as f:
         data = yaml.safe_load(f)
@@ -82,7 +83,6 @@ def _parse_yaml_file(path: str | Path) -> Tuple[Path, Dict | List]:
 
 
 def _parse_json_file(path: str | Path) -> Tuple[Path, Dict | List]:
-
     path = get_config_file_path(path)
     data = json.loads(Path(path).read_text())
 
@@ -92,7 +92,6 @@ def _parse_json_file(path: str | Path) -> Tuple[Path, Dict | List]:
 def construct_config_from_dict(
     path: Path, data: Dict
 ) -> Tuple[str, types.ModuleType, ConfigBase]:
-
     module_path = data.get("type")
     if not module_path:
         raise ValueError(f"No 'type' field found in {path}")
@@ -110,7 +109,6 @@ def construct_config_from_dict(
 def construct_element(
     path: Path, module_path: str, module: types.ModuleType, cfg: ConfigBase
 ):
-
     elem_class_name = module_path.split(".")[-1]
     elem_cls = getattr(module, elem_class_name, None)
     if elem_cls is None:
@@ -129,7 +127,6 @@ def recursively_construct_element_from_cfg(cfg: ConfigBase):
 
 
 def construct_element_from_dict(path: Path, data: Dict) -> BaseModel:
-
     module_path, module, cfg = construct_config_from_dict(path, data)
 
     elem = construct_element(path, module_path, module, cfg)

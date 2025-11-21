@@ -1,14 +1,17 @@
-from .magnet import Magnet,MagnetConfigModel
 from ..lattice.polynom_info import PolynomInfo
+from .magnet import Magnet, MagnetConfigModel
 
 # Define the main class name for this module
 PYAMLCLASS = "HCorrector"
 
-class ConfigModel(MagnetConfigModel):...
+
+class ConfigModel(MagnetConfigModel): ...
+
 
 class HCorrector(Magnet):
     """Horizontal Corrector class"""
-    polynom = PolynomInfo('PolynomB',0)
+
+    polynom = PolynomInfo("PolynomB", 0)
 
     def __init__(self, cfg: ConfigModel):
         super().__init__(
@@ -16,4 +19,3 @@ class HCorrector(Magnet):
             cfg.model if hasattr(cfg, "model") else None,
         )
         self._cfg = cfg
-

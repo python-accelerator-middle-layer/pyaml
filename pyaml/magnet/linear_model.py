@@ -1,17 +1,17 @@
-from .model import MagnetModel
+import numpy as np
+from pydantic import BaseModel, ConfigDict
+
+from ..common.element import __pyaml_repr__
 from ..configuration.curve import Curve
 from ..control.deviceaccess import DeviceAccess
-from ..common.element import __pyaml_repr__
-
-import numpy as np
-from pydantic import BaseModel,ConfigDict
+from .model import MagnetModel
 
 # Define the main class name for this module
 PYAMLCLASS = "LinearMagnetModel"
 
-class ConfigModel(BaseModel):
 
-    model_config = ConfigDict(arbitrary_types_allowed=True,extra="forbid")
+class ConfigModel(BaseModel):
+    model_config = ConfigDict(arbitrary_types_allowed=True, extra="forbid")
 
     curve: Curve
     """Curve object used for interpolation"""
@@ -26,16 +26,19 @@ class ConfigModel(BaseModel):
     unit: str
     """Unit of the strength (i.e. 1/m or m-1)"""
 
+
 class LinearMagnetModel(MagnetModel):
     """
-    Class that handle manget current/strength conversion using linear interpolation for a single function magnet
+    Class that handle manget current/strength conversion using
+    linear interpolation for a single function magnet
     """
 
     def __init__(self, cfg: ConfigModel):
         self._cfg = cfg
         self.__curve = cfg.curve.get_curve()
         self.__curve[:, 1] = (
-            self.__curve[:, 1] * cfg.calibration_factor * cfg.crosstalk + cfg.calibration_offset
+            self.__curve[:, 1] * cfg.calibration_factor * cfg.crosstalk
+            + cfg.calibration_offset
         )
         self.__rcurve = Curve.inverse(self.__curve)
         self.__strength_unit = cfg.unit
@@ -78,5 +81,3 @@ class LinearMagnetModel(MagnetModel):
 
     def __repr__(self):
         return __pyaml_repr__(self)
-
-    

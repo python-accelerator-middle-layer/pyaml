@@ -1,14 +1,15 @@
+import pathlib
+import subprocess
+import sys
 import types
 
 import at
-import pytest
-import subprocess
-import sys
-import pathlib
 import numpy as np
-from pyaml.control.readback_value import Value
+import pytest
 from pydantic import BaseModel
-from pyaml.configuration.factory import Factory,BuildStrategy
+
+from pyaml.configuration.factory import BuildStrategy, Factory
+from pyaml.control.readback_value import Value
 
 
 @pytest.fixture
@@ -18,7 +19,8 @@ def install_test_package(request):
 
     The test must provide a dictionary as parameter with:
     - 'name': name of the installable package (used for pip uninstall)
-    - 'path': relative path to the package folder (e.g. 'tests/my_dir'). Optional, replaced by package name if absent.
+    - 'path': relative path to the package folder (e.g. 'tests/my_dir').
+      Optional, replaced by package name if absent.
 
     Example:
     --------
@@ -40,25 +42,29 @@ def install_test_package(request):
         package_path = pathlib.Path(info["path"]).resolve()
         if not package_path.exists():
             raise FileNotFoundError(f"Package path not found: {package_path}")
-        
+
     if package_path is None:
-        raise RuntimeError(f"No package_path defined for install_test_package fixture")
+        raise RuntimeError("No package_path defined for install_test_package fixture")
 
-    if not ((package_path / "pyproject.toml").exists() or (package_path / "setup.py").exists()):
-        raise RuntimeError(f"No pyproject.toml or setup.py found in {package_path}")    
+    if not (
+        (package_path / "pyproject.toml").exists()
+        or (package_path / "setup.py").exists()
+    ):
+        raise RuntimeError(f"No pyproject.toml or setup.py found in {package_path}")
 
-    # Install package in a classis way, `--editable` create a .pth entry in conda env which is imcompatible with submodule
+    """Install package in a classis way, `--editable` create a .pth entry
+    in conda env which is imcompatible with submodule"""
     if package_path is not None:
-        subprocess.check_call([
-            sys.executable, "-m", "pip", "--quiet", "install", str(package_path)
-        ])
+        subprocess.check_call(
+            [sys.executable, "-m", "pip", "--quiet", "install", str(package_path)]
+        )
 
     yield package_name
 
     # Do not uninstall package at the end to speed up tests a bit
-    #subprocess.call([
+    # subprocess.call([
     #    sys.executable, "-m", "pip", "uninstall", "-y", package_name
-    #])
+    # ])
 
 
 @pytest.fixture
@@ -105,12 +111,15 @@ def broadcast_matrix():
 
 # ────────────── Simulated module ──────────────
 
+
 class MockConfig(BaseModel):
     name: str
+
 
 class MockElement:
     def __init__(self, config):
         self.name = config.name
+
 
 mock_module = types.ModuleType("mock_module")
 mock_module.ConfigModel = MockConfig
@@ -119,6 +128,7 @@ mock_module.MockElement = MockElement
 
 
 # ────────────── Custom strategy ──────────────
+
 
 class MockStrategy(BuildStrategy):
     def can_handle(self, module, config_dict):
@@ -130,6 +140,7 @@ class MockStrategy(BuildStrategy):
 
 
 # ────────────── Pytest fixtures ──────────────
+
 
 @pytest.fixture(scope="module", autouse=True)
 def inject_mock_module():
@@ -164,17 +175,24 @@ def register_mock_strategy():
 @pytest.fixture
 def lattice_with_famnames() -> at.Lattice:
     """Lattice with duplicate FamName to test multi-match and first-element behavior."""
-    qf1 = at.elements.Quadrupole('QF_1', 0.2); qf1.FamName = 'QF'
-    qf2 = at.elements.Quadrupole('QF_2', 0.25); qf2.FamName = 'QF'
-    qd1 = at.elements.Quadrupole('QD_1', 0.3); qd1.FamName = 'QD'
+    qf1 = at.elements.Quadrupole("QF_1", 0.2)
+    qf1.FamName = "QF"
+    qf2 = at.elements.Quadrupole("QF_2", 0.25)
+    qf2.FamName = "QF"
+    qd1 = at.elements.Quadrupole("QD_1", 0.3)
+    qd1.FamName = "QD"
     return at.Lattice([qf1, qf2, qd1], energy=3e9)
 
 
 @pytest.fixture
 def lattice_with_custom_attr() -> at.Lattice:
     """Lattice where a custom attribute (e.g., 'Tag') is set on elements."""
-    d1 = at.elements.Drift('D1', 1.0);         setattr(d1, "Tag", "D1")
-    qf = at.elements.Quadrupole('QF', 0.2);    setattr(qf, "Tag", "QF")
-    qf2 = at.elements.Quadrupole('QF2', 0.2);  setattr(qf2, "Tag", "QF")
-    qd = at.elements.Quadrupole('QD', 0.3);    setattr(qd, "Tag", "QD")
+    d1 = at.elements.Drift("D1", 1.0)
+    d1.Tag = "D1"
+    qf = at.elements.Quadrupole("QF", 0.2)
+    qf.Tag = "QF"
+    qf2 = at.elements.Quadrupole("QF2", 0.2)
+    qf2.Tag = "QF"
+    qd = at.elements.Quadrupole("QD", 0.3)
+    qd.Tag = "QD"
     return at.Lattice([d1, qf, qf2, qd], energy=3e9)

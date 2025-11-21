@@ -1,14 +1,17 @@
-from .magnet import Magnet,MagnetConfigModel
 from ..lattice.polynom_info import PolynomInfo
+from .magnet import Magnet, MagnetConfigModel
 
 # Define the main class name for this module
 PYAMLCLASS = "VCorrector"
 
-class ConfigModel(MagnetConfigModel):...
 
-class VCorrector(Magnet):    
+class ConfigModel(MagnetConfigModel): ...
+
+
+class VCorrector(Magnet):
     """Vertical Corrector class"""
-    polynom = PolynomInfo('PolynomA',0)
+
+    polynom = PolynomInfo("PolynomA", 0)
 
     def __init__(self, cfg: ConfigModel):
         super().__init__(
@@ -16,6 +19,3 @@ class VCorrector(Magnet):
             cfg.model if hasattr(cfg, "model") else None,
         )
         self._cfg = cfg
-
-
-

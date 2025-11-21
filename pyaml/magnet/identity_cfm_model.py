@@ -1,17 +1,17 @@
 import numpy as np
-from pydantic import BaseModel,ConfigDict
+from pydantic import BaseModel, ConfigDict
 
-from .model import MagnetModel
 from .. import PyAMLException
-from ..control.deviceaccess import DeviceAccess
 from ..common.element import __pyaml_repr__
+from ..control.deviceaccess import DeviceAccess
+from .model import MagnetModel
 
 # Define the main class name for this module
 PYAMLCLASS = "IdentityCFMagnetModel"
 
-class ConfigModel(BaseModel):
 
-    model_config = ConfigDict(arbitrary_types_allowed=True,extra="forbid")
+class ConfigModel(BaseModel):
+    model_config = ConfigDict(arbitrary_types_allowed=True, extra="forbid")
 
     multipoles: list[str]
     """List of supported functions: A0,B0,A1,B1,etc (i.e. [B0,A1,B2])"""
@@ -21,6 +21,7 @@ class ConfigModel(BaseModel):
     """Magnet device to apply strength"""
     units: list[str]
     """List of strength unit (i.e. ['rad','m-1','m-2'])"""
+
 
 class IdentityCFMagnetModel(MagnetModel):
     """
@@ -34,9 +35,15 @@ class IdentityCFMagnetModel(MagnetModel):
         self.__nbFunction: int = len(cfg.multipoles)
 
         if cfg.physics is None and cfg.powerconverters is None:
-            raise PyAMLException("Invalid IdentityCFMagnetModel configuration, physics or powerconverters device required")
+            raise PyAMLException(
+                "Invalid IdentityCFMagnetModel configuration,"
+                "physics or powerconverters device required"
+            )
         if cfg.physics is not None and cfg.powerconverters is not None:
-            raise PyAMLException("Invalid IdentityCFMagnetModel configuration, physics or powerconverters device required but not both")
+            raise PyAMLException(
+                "Invalid IdentityCFMagnetModel configuration,"
+                "physics or powerconverters device required but not both"
+            )
         if cfg.physics:
             self.__devices = cfg.physics
         else:
@@ -44,15 +51,15 @@ class IdentityCFMagnetModel(MagnetModel):
 
         self.__nbDev: int = len(self.__devices)
 
-        self.__check_len(cfg.units,"units",self.__nbFunction)
+        self.__check_len(cfg.units, "units", self.__nbFunction)
 
-    def __check_len(self,obj,name,expected_len):
-        lgth = len(obj) 
+    def __check_len(self, obj, name, expected_len):
+        lgth = len(obj)
         if lgth != expected_len:
             raise PyAMLException(
                 f"{name} does not have the expected "
                 f"number of items ({expected_len} items expected but got {lgth})"
-            )    
+            )
 
     def compute_hardware_values(self, strengths: np.array) -> np.array:
         return strengths

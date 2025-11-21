@@ -1,17 +1,19 @@
 import os
-from pydantic import BaseModel,ConfigDict
+
+from pydantic import BaseModel, ConfigDict
+
 from pyaml.control.controlsystem import ControlSystem
 
-PYAMLCLASS : str = "TangoControlSystem"
+PYAMLCLASS: str = "TangoControlSystem"
 
 
 class ConfigModel(BaseModel):
-
-    model_config = ConfigDict(arbitrary_types_allowed=True,extra="forbid")
+    model_config = ConfigDict(arbitrary_types_allowed=True, extra="forbid")
 
     name: str
     tango_host: str
-    debug_level: str=None
+    debug_level: str = None
+
 
 class TangoControlSystem(ControlSystem):
     def __init__(self, cfg: ConfigModel):
@@ -32,4 +34,4 @@ class TangoControlSystem(ControlSystem):
         return None
 
     def __repr__(self):
-       return repr(self._cfg).replace("ConfigModel",self.__class__.__name__)
+        return repr(self._cfg).replace("ConfigModel", self.__class__.__name__)

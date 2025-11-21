@@ -1,19 +1,19 @@
 from pathlib import Path
 
 import numpy as np
-from pydantic import BaseModel,ConfigDict
+from pydantic import BaseModel, ConfigDict
 from scipy.constants import speed_of_light
 
+from pyaml.configuration import get_root_folder
 from pyaml.configuration.curve import Curve
 from pyaml.control.deviceaccess import DeviceAccess
 from pyaml.control.readback_value import Value
-from pyaml.configuration import get_root_folder
 
-PYAMLCLASS : str = "AttributeWithTangoMockingBehaviour"
+PYAMLCLASS: str = "AttributeWithTangoMockingBehaviour"
+
 
 class ConfigModel(BaseModel):
-
-    model_config = ConfigDict(arbitrary_types_allowed=True,extra="forbid")
+    model_config = ConfigDict(arbitrary_types_allowed=True, extra="forbid")
 
     attribute: str
     calibration_factor: float = 1.0
@@ -26,12 +26,13 @@ class ConfigModel(BaseModel):
     curve: str = None
     unit: str = ""
 
+
 class TangoDevice:
     def __init__(self, name: str):
         self.name = name
-        self._current:float = 0.0
-        self._strength:float = 0.0
-        self._attributes:dict[str, float] = {}
+        self._current: float = 0.0
+        self._strength: float = 0.0
+        self._attributes: dict[str, float] = {}
         self.__calibration_factor: float = 1.0
         self.__calibration_offset: float = 0.0
         self.__brho: float = np.nan
@@ -80,12 +81,19 @@ class TangoDevice:
         )
         return np.array([_strength])
 
-    def set_magnet_model_data(self: float, calibration_factor, calibration_offset: float, crosstalk: float, magnet_energy: float, curve_file: str):
+    def set_magnet_model_data(
+        self: float,
+        calibration_factor,
+        calibration_offset: float,
+        crosstalk: float,
+        magnet_energy: float,
+        curve_file: str,
+    ):
         self.__calibration_factor = calibration_factor
         self.__calibration_offset = calibration_offset
         self.__brho = magnet_energy / speed_of_light
         self._curve_file = curve_file
-        path:Path = get_root_folder() / curve_file
+        path: Path = get_root_folder() / curve_file
         self.__curve = np.genfromtxt(path, delimiter=",", dtype=float)
         _s = np.shape(self.__curve)
         if len(_s) != 2 or _s[1] != 2:
@@ -96,7 +104,8 @@ class TangoDevice:
         self.__rcurve = Curve.inverse(self.__curve)
 
 
-TANGO_DEVICES:dict[str, TangoDevice] = {}
+TANGO_DEVICES: dict[str, TangoDevice] = {}
+
 
 def get_device(name: str) -> TangoDevice:
     if name in TANGO_DEVICES:
@@ -106,11 +115,13 @@ def get_device(name: str) -> TangoDevice:
         TANGO_DEVICES[name] = device
     return device
 
+
 class AttributeWithTangoMockingBehaviour(DeviceAccess):
     """
-    Class that implements a default device class that just prints out 
+    Class that implements a default device class that just prints out
     values (Debugging purpose)
     """
+
     def __init__(self, cfg: ConfigModel):
         super().__init__()
         self._cfg = cfg
@@ -120,7 +131,13 @@ class AttributeWithTangoMockingBehaviour(DeviceAccess):
         self._device_name, self._attribute_name = cfg.attribute.rsplit("/", 1)
         self._device = get_device(self._device_name)
         if cfg.curve is not None:
-            self._device.set_magnet_model_data(cfg.calibration_factor, cfg.calibration_offset, cfg.crosstalk, cfg.magnet_energy, cfg.curve)
+            self._device.set_magnet_model_data(
+                cfg.calibration_factor,
+                cfg.calibration_offset,
+                cfg.crosstalk,
+                cfg.magnet_energy,
+                cfg.curve,
+            )
 
     def name(self) -> str:
         return self._setpoint

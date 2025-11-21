@@ -4,6 +4,7 @@ class PyAMLException(Exception):
     Attributes:
         message -- explanation of the error
     """
+
     def __init__(self, message):
         super().__init__(message)
         self.message = message
@@ -15,6 +16,7 @@ class PyAMLConfigException(Exception):
     Attributes:
         message -- explanation of the error
     """
+
     def __init__(self, message):
         super().__init__(message)
         self.message = message

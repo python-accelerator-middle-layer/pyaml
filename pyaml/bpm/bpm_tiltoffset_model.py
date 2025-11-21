@@ -1,17 +1,19 @@
+import numpy as np
+from numpy.typing import NDArray
+from pydantic import BaseModel, ConfigDict
+
 from pyaml.bpm.bpm_model import BPMModel
 from pyaml.bpm.bpm_simple_model import BPMSimpleModel
-from pydantic import BaseModel,ConfigDict
-import numpy as np
-from ..control.deviceaccess import DeviceAccess
-from ..common.element import __pyaml_repr__
 
-from numpy.typing import NDArray
+from ..common.element import __pyaml_repr__
+from ..control.deviceaccess import DeviceAccess
+
 # Define the main class name for this module
 PYAMLCLASS = "BPMTiltOffsetModel"
 
-class ConfigModel(BaseModel):
 
-    model_config = ConfigDict(arbitrary_types_allowed=True,extra="forbid")
+class ConfigModel(BaseModel):
+    model_config = ConfigDict(arbitrary_types_allowed=True, extra="forbid")
 
     x_pos: DeviceAccess
     """Horizontal position"""
@@ -24,13 +26,15 @@ class ConfigModel(BaseModel):
     tilt: DeviceAccess
     """BPM tilt"""
 
+
 class BPMTiltOffsetModel(BPMSimpleModel):
     """
     Concrete implementation of BPMModel that simulates a BPM with tilt and
     offset values.
     """
+
     def __init__(self, cfg: ConfigModel):
-        super().__init__(cfg) 
+        super().__init__(cfg)
         self.__x_pos = cfg.x_pos
         self.__y_pos = cfg.y_pos
         self.__x_offset = cfg.x_offset
@@ -46,7 +50,7 @@ class BPMTiltOffsetModel(BPMSimpleModel):
             The tilt value of the BPM
         """
         return self.__tilt.get()
-    
+
     def read_offset(self) -> NDArray:
         """
         Simulate reading the offset values from a BPM.
@@ -57,7 +61,7 @@ class BPMTiltOffsetModel(BPMSimpleModel):
             offsets
         """
         return np.array([self.__x_offset.get(), self.__y_offset.get()])
-    
+
     def set_tilt(self, tilt: float):
         """
         Simulate setting the tilt value of a BPM.
@@ -70,7 +74,7 @@ class BPMTiltOffsetModel(BPMSimpleModel):
         None
         """
         self.__tilt.set(tilt)
-    
+
     def set_offset(self, offset_values: np.ndarray):
         """
         Simulate setting the offset values of a BPM
@@ -82,22 +86,22 @@ class BPMTiltOffsetModel(BPMSimpleModel):
         """
         self.__x_offset.set(offset_values[0])
         self.__y_offset.set(offset_values[1])
-    
+
     def get_pos_devices(self) -> list[DeviceAccess]:
         """
         Get device handles used for position reading
-        
+
         Returns
         -------
         list[DeviceAccess]
             Array of DeviceAcess
         """
-        return [self.__x_pos,self.__y_pos]
+        return [self.__x_pos, self.__y_pos]
 
     def get_tilt_device(self) -> DeviceAccess:
         """
         Get device handle used for tilt access
-        
+
         Returns
         -------
         DeviceAccess
@@ -108,13 +112,13 @@ class BPMTiltOffsetModel(BPMSimpleModel):
     def get_offset_devices(self) -> list[DeviceAccess]:
         """
         Get device handles used for offset access
-        
+
         Returns
         -------
         list[DeviceAccess]
             Array of DeviceAcess
         """
-        return [self.__x_offset,self.__y_offset]
+        return [self.__x_offset, self.__y_offset]
 
     def __repr__(self):
         return __pyaml_repr__(self)

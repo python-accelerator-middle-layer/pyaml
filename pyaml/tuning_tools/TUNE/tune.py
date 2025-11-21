@@ -1,4 +1,4 @@
-class tune_correction():
+class tune_correction:
     """tune correction help"""
 
     def run():

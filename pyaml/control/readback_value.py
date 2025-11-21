@@ -1,10 +1,9 @@
-
 from datetime import datetime
+from enum import Enum, auto
 from typing import Union
 
-from enum import Enum, auto
-
 import numpy as np
+
 
 class Quality(Enum):
     VALID = auto()
@@ -12,8 +11,10 @@ class Quality(Enum):
     ALARM = auto()
     CHANGING = auto()
     WARNING = auto()
+
     def __str__(self):
         return self.name
+
 
 class Value:
     """
@@ -32,7 +33,12 @@ class Value:
         Timestamp associated with the value. Defaults to current time.
     """
 
-    def __init__(self, value: Union[float, int, np.ndarray], quality: Quality = Quality.VALID, timestamp: datetime = None):
+    def __init__(
+        self,
+        value: Union[float, int, np.ndarray],
+        quality: Quality = Quality.VALID,
+        timestamp: datetime = None,
+    ):
         self.value = value
         self.quality = quality
         self.timestamp = timestamp or datetime.now()
@@ -46,7 +52,10 @@ class Value:
         str
             Human-readable representation.
         """
-        return f"Value({self.value}, quality='{self.quality}', timestamp='{self.timestamp}')"
+        return (
+            f"Value({self.value}, quality='{self.quality}',"
+            + f"timestamp='{self.timestamp}')"
+        )
 
     def __float__(self):
         """

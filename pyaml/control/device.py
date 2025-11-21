@@ -1,5 +1,5 @@
 import numpy as np
-from pydantic import BaseModel,Field
+from pydantic import BaseModel, Field
 
 from .deviceaccess import DeviceAccess
 from .readback_value import Value
@@ -7,8 +7,8 @@ from .readback_value import Value
 # Define the main class name for this module
 PYAMLCLASS = "Device"
 
-class ConfigModel(BaseModel):
 
+class ConfigModel(BaseModel):
     setpoint: str
     """Name of control system device value (i.e. a power supply current)"""
     readback: str
@@ -16,9 +16,10 @@ class ConfigModel(BaseModel):
     unit: str
     """Value unit"""
 
+
 class Device(DeviceAccess):
     """
-    Class that implements a default device class that just prints out 
+    Class that implements a default device class that just prints out
     values (Debugging purpose)
     """
 

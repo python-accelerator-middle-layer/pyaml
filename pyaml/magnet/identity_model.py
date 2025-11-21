@@ -1,24 +1,25 @@
-from .model import MagnetModel
-from .. import PyAMLException
-from ..control.deviceaccess import DeviceAccess
-from ..common.element import __pyaml_repr__
-
 import numpy as np
-from pydantic import BaseModel,ConfigDict
+from pydantic import BaseModel, ConfigDict
+
+from .. import PyAMLException
+from ..common.element import __pyaml_repr__
+from ..control.deviceaccess import DeviceAccess
+from .model import MagnetModel
 
 # Define the main class name for this module
 PYAMLCLASS = "IdentityMagnetModel"
 
+
 class ConfigModel(BaseModel):
+    model_config = ConfigDict(arbitrary_types_allowed=True, extra="forbid")
 
-    model_config = ConfigDict(arbitrary_types_allowed=True,extra="forbid")
-
-    powerconverter: DeviceAccess|None = None
+    powerconverter: DeviceAccess | None = None
     """Power converter device to apply current"""
-    physics: DeviceAccess|None = None
+    physics: DeviceAccess | None = None
     """Magnet device to apply strength"""
     unit: str
     """Unit of the strength (i.e. 1/m or m-1)"""
+
 
 class IdentityMagnetModel(MagnetModel):
     """
@@ -29,9 +30,15 @@ class IdentityMagnetModel(MagnetModel):
         self._cfg = cfg
         self.__unit = cfg.unit
         if cfg.physics is None and cfg.powerconverter is None:
-            raise PyAMLException("Invalid IdentityMagnetModel configuration, physics or powerconverter device required")
+            raise PyAMLException(
+                "Invalid IdentityMagnetModel configuration,"
+                "physics or powerconverter device required"
+            )
         if cfg.physics is not None and cfg.powerconverter is not None:
-            raise PyAMLException("Invalid IdentityMagnetModel configuration, physics or powerconverter device required but not both")
+            raise PyAMLException(
+                "Invalid IdentityMagnetModel configuration,"
+                "physics or powerconverter device required but not both"
+            )
         if cfg.physics:
             self.__device = cfg.physics
         else:
@@ -71,4 +78,4 @@ class IdentityMagnetModel(MagnetModel):
         return self._cfg.powerconverter is not None
 
     def __repr__(self):
-       return __pyaml_repr__(self)
+        return __pyaml_repr__(self)

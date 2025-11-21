@@ -1,14 +1,17 @@
-from .magnet import Magnet,MagnetConfigModel
 from ..lattice.polynom_info import PolynomInfo
+from .magnet import Magnet, MagnetConfigModel
 
 # Define the main class name for this module
 PYAMLCLASS = "Octupole"
 
-class ConfigModel(MagnetConfigModel):...
 
-class Octupole(Magnet):    
+class ConfigModel(MagnetConfigModel): ...
+
+
+class Octupole(Magnet):
     """Octupole class"""
-    polynom = PolynomInfo('PolynomB',3)
+
+    polynom = PolynomInfo("PolynomB", 3)
 
     def __init__(self, cfg: ConfigModel):
         super().__init__(
