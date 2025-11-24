@@ -47,11 +47,11 @@ class OrbitResponseMatrix(object):
 
         response_data = measurement.response_data # contains also pre-processed data
         response_data.output_names = self.element_holder.get_bpms(self.bpm_array_name).names()
-        self.latest_measurement = response_data
+        self.latest_measurement = response_data.model_dump()
 
     def get(self):
         return self.latest_measurement
 
     def save(self, save_path: Path):
-        data = self.latest_measurement.model_dump()
+        data = self.latest_measurement
         json.dump(data, open(save_path, 'w'), indent=4)
