@@ -491,26 +491,27 @@
                 <article class="bd-article">
                   
   <h1>Source code for pyaml.arrays.magnet</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span><span class="w"> </span><span class="nn">.array</span><span class="w"> </span><span class="kn">import</span> <span class="n">ArrayConfigModel</span><span class="p">,</span><span class="n">ArrayConfig</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">..common.element_holder</span><span class="w"> </span><span class="kn">import</span> <span class="n">ElementHolder</span>
+<span></span><span class="kn">from</span><span class="w"> </span><span class="nn">..common.element_holder</span><span class="w"> </span><span class="kn">import</span> <span class="n">ElementHolder</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.array</span><span class="w"> </span><span class="kn">import</span> <span class="n">ArrayConfig</span><span class="p">,</span> <span class="n">ArrayConfigModel</span>
 
 <span class="c1"># Define the main class name for this module</span>
 <span class="n">PYAMLCLASS</span> <span class="o">=</span> <span class="s2">&quot;Magnet&quot;</span>
 
+
 <div class="viewcode-block" id="ConfigModel">
 <a class="viewcode-back" href="../../../modules/arrays.html#pyaml.arrays.magnet.ConfigModel">[docs]</a>
-<span class="k">class</span><span class="w"> </span><span class="nc">ConfigModel</span><span class="p">(</span><span class="n">ArrayConfigModel</span><span class="p">):</span><span class="o">...</span></div>
+<span class="k">class</span><span class="w"> </span><span class="nc">ConfigModel</span><span class="p">(</span><span class="n">ArrayConfigModel</span><span class="p">):</span> <span class="o">...</span></div>
+
 
 
 <div class="viewcode-block" id="Magnet">
 <a class="viewcode-back" href="../../../modules/arrays.html#pyaml.arrays.magnet.Magnet">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">Magnet</span><span class="p">(</span><span class="n">ArrayConfig</span><span class="p">):</span>
-
-   <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cfg</span><span class="p">:</span> <span class="n">ArrayConfigModel</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cfg</span><span class="p">:</span> <span class="n">ArrayConfigModel</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">cfg</span><span class="p">)</span>
 
-   <span class="k">def</span><span class="w"> </span><span class="nf">fill_array</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">holder</span><span class="p">:</span><span class="n">ElementHolder</span><span class="p">):</span>   
-        <span class="n">holder</span><span class="o">.</span><span class="n">fill_magnet_array</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_cfg</span><span class="o">.</span><span class="n">name</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">_cfg</span><span class="o">.</span><span class="n">elements</span><span class="p">)</span></div>
+    <span class="k">def</span><span class="w"> </span><span class="nf">fill_array</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">holder</span><span class="p">:</span> <span class="n">ElementHolder</span><span class="p">):</span>
+        <span class="n">holder</span><span class="o">.</span><span class="n">fill_magnet_array</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_cfg</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cfg</span><span class="o">.</span><span class="n">elements</span><span class="p">)</span></div>
 
 </pre></div>
 

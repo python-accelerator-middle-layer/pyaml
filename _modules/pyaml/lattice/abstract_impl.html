@@ -491,22 +491,23 @@
                 <article class="bd-article">
                   
   <h1>Source code for pyaml.lattice.abstract_impl</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span><span class="w"> </span><span class="nn">..common</span><span class="w"> </span><span class="kn">import</span> <span class="n">abstract</span>
+<span></span><span class="kn">import</span><span class="w"> </span><span class="nn">at</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">numpy.typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">NDArray</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">scipy.constants</span><span class="w"> </span><span class="kn">import</span> <span class="n">speed_of_light</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">..common</span><span class="w"> </span><span class="kn">import</span> <span class="n">abstract</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">..common.abstract_aggregator</span><span class="w"> </span><span class="kn">import</span> <span class="n">ScalarAggregator</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">..common.exception</span><span class="w"> </span><span class="kn">import</span> <span class="n">PyAMLException</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">..magnet.model</span><span class="w"> </span><span class="kn">import</span> <span class="n">MagnetModel</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">.polynom_info</span><span class="w"> </span><span class="kn">import</span> <span class="n">PolynomInfo</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">..rf.rf_plant</span><span class="w"> </span><span class="kn">import</span> <span class="n">RFPlant</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">..rf.rf_transmitter</span><span class="w"> </span><span class="kn">import</span> <span class="n">RFTransmitter</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">..common.abstract_aggregator</span><span class="w"> </span><span class="kn">import</span> <span class="n">ScalarAggregator</span>
-
-<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">at</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">scipy.constants</span><span class="w"> </span><span class="kn">import</span> <span class="n">speed_of_light</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">numpy.typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">NDArray</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.polynom_info</span><span class="w"> </span><span class="kn">import</span> <span class="n">PolynomInfo</span>
 
 <span class="c1"># TODO handle serialized magnets</span>
 
-<span class="c1">#------------------------------------------------------------------------------</span>
+<span class="c1"># ------------------------------------------------------------------------------</span>
+
 
 <div class="viewcode-block" id="RWHardwareScalar">
 <a class="viewcode-back" href="../../../modules/lattice.html#pyaml.lattice.abstract_impl.RWHardwareScalar">[docs]</a>
@@ -516,7 +517,9 @@
 <span class="sd">    Hardware unit is converted from strength using the magnet model</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">elements</span><span class="p">:</span><span class="nb">list</span><span class="p">[</span><span class="n">at</span><span class="o">.</span><span class="n">Element</span><span class="p">],</span> <span class="n">poly</span><span class="p">:</span><span class="n">PolynomInfo</span><span class="p">,</span> <span class="n">model</span><span class="p">:</span><span class="n">MagnetModel</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">elements</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">at</span><span class="o">.</span><span class="n">Element</span><span class="p">],</span> <span class="n">poly</span><span class="p">:</span> <span class="n">PolynomInfo</span><span class="p">,</span> <span class="n">model</span><span class="p">:</span> <span class="n">MagnetModel</span>
+    <span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__model</span> <span class="o">=</span> <span class="n">model</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__elements</span> <span class="o">=</span> <span class="n">elements</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__poly</span> <span class="o">=</span> <span class="n">elements</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="fm">__getattribute__</span><span class="p">(</span><span class="n">poly</span><span class="o">.</span><span class="n">attName</span><span class="p">)</span>
@@ -528,28 +531,30 @@
         <span class="n">s</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__poly</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">__polyIdx</span><span class="p">]</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">__elements</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">Length</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__model</span><span class="o">.</span><span class="n">compute_hardware_values</span><span class="p">([</span><span class="n">s</span><span class="p">])[</span><span class="mi">0</span><span class="p">]</span></div>
 
-    
+
 <div class="viewcode-block" id="RWHardwareScalar.set">
 <a class="viewcode-back" href="../../../modules/lattice.html#pyaml.lattice.abstract_impl.RWHardwareScalar.set">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">set</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">value</span><span class="p">:</span><span class="nb">float</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">set</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="nb">float</span><span class="p">):</span>
         <span class="n">s</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__model</span><span class="o">.</span><span class="n">compute_strengths</span><span class="p">([</span><span class="n">value</span><span class="p">])[</span><span class="mi">0</span><span class="p">]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__poly</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">__polyIdx</span><span class="p">]</span> <span class="o">=</span> <span class="n">s</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">__elements</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">Length</span></div>
 
 
 <div class="viewcode-block" id="RWHardwareScalar.set_and_wait">
 <a class="viewcode-back" href="../../../modules/lattice.html#pyaml.lattice.abstract_impl.RWHardwareScalar.set_and_wait">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">set_and_wait</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span><span class="nb">float</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">set_and_wait</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="nb">float</span><span class="p">):</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;Not implemented yet.&quot;</span><span class="p">)</span></div>
 
-        
+
 <div class="viewcode-block" id="RWHardwareScalar.unit">
 <a class="viewcode-back" href="../../../modules/lattice.html#pyaml.lattice.abstract_impl.RWHardwareScalar.unit">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">unit</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__model</span><span class="o">.</span><span class="n">get_hardware_units</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span></div>
 </div>
 
-    
-<span class="c1">#------------------------------------------------------------------------------</span>
+
+
+<span class="c1"># ------------------------------------------------------------------------------</span>
+
 
 <div class="viewcode-block" id="RWStrengthScalar">
 <a class="viewcode-back" href="../../../modules/lattice.html#pyaml.lattice.abstract_impl.RWStrengthScalar">[docs]</a>
@@ -558,7 +563,9 @@
 <span class="sd">    Class providing read write access to a strength of a simulator</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">elements</span><span class="p">:</span><span class="nb">list</span><span class="p">[</span><span class="n">at</span><span class="o">.</span><span class="n">Element</span><span class="p">],</span> <span class="n">poly</span><span class="p">:</span><span class="n">PolynomInfo</span><span class="p">,</span> <span class="n">model</span><span class="p">:</span><span class="n">MagnetModel</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">elements</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">at</span><span class="o">.</span><span class="n">Element</span><span class="p">],</span> <span class="n">poly</span><span class="p">:</span> <span class="n">PolynomInfo</span><span class="p">,</span> <span class="n">model</span><span class="p">:</span> <span class="n">MagnetModel</span>
+    <span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__model</span> <span class="o">=</span> <span class="n">model</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__elements</span> <span class="o">=</span> <span class="n">elements</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__poly</span> <span class="o">=</span> <span class="n">elements</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="fm">__getattribute__</span><span class="p">(</span><span class="n">poly</span><span class="o">.</span><span class="n">attName</span><span class="p">)</span>
@@ -574,14 +581,14 @@
     <span class="c1"># Sets the value</span>
 <div class="viewcode-block" id="RWStrengthScalar.set">
 <a class="viewcode-back" href="../../../modules/lattice.html#pyaml.lattice.abstract_impl.RWStrengthScalar.set">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">set</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span><span class="nb">float</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">set</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="nb">float</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__poly</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">__polyIdx</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">__elements</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">Length</span></div>
 
 
     <span class="c1"># Sets the value and wait that the read value reach the setpoint</span>
 <div class="viewcode-block" id="RWStrengthScalar.set_and_wait">
 <a class="viewcode-back" href="../../../modules/lattice.html#pyaml.lattice.abstract_impl.RWStrengthScalar.set_and_wait">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">set_and_wait</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span><span class="nb">float</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">set_and_wait</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="nb">float</span><span class="p">):</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;Not implemented yet.&quot;</span><span class="p">)</span></div>
 
 
@@ -593,7 +600,9 @@
 </div>
 
 
-<span class="c1">#------------------------------------------------------------------------------</span>
+
+<span class="c1"># ------------------------------------------------------------------------------</span>
+
 
 <div class="viewcode-block" id="RWHardwareArray">
 <a class="viewcode-back" href="../../../modules/lattice.html#pyaml.lattice.abstract_impl.RWHardwareArray">[docs]</a>
@@ -603,7 +612,9 @@
 <span class="sd">    Hardware units are converted from strengths using the magnet model</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">elements</span><span class="p">:</span><span class="nb">list</span><span class="p">[</span><span class="n">at</span><span class="o">.</span><span class="n">Element</span><span class="p">],</span> <span class="n">poly</span><span class="p">:</span><span class="nb">list</span><span class="p">[</span><span class="n">PolynomInfo</span><span class="p">],</span> <span class="n">model</span><span class="p">:</span><span class="n">MagnetModel</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">elements</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">at</span><span class="o">.</span><span class="n">Element</span><span class="p">],</span> <span class="n">poly</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">PolynomInfo</span><span class="p">],</span> <span class="n">model</span><span class="p">:</span> <span class="n">MagnetModel</span>
+    <span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__elements</span> <span class="o">=</span> <span class="n">elements</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__poly</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__polyIdx</span> <span class="o">=</span> <span class="p">[]</span>
@@ -615,7 +626,7 @@
     <span class="c1"># Gets the value</span>
 <div class="viewcode-block" id="RWHardwareArray.get">
 <a class="viewcode-back" href="../../../modules/lattice.html#pyaml.lattice.abstract_impl.RWHardwareArray.get">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">:</span>  
+    <span class="k">def</span><span class="w"> </span><span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">:</span>
         <span class="n">nbStrength</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__poly</span><span class="p">)</span>
         <span class="n">s</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">nbStrength</span><span class="p">)</span>
         <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nbStrength</span><span class="p">):</span>
@@ -626,7 +637,7 @@
     <span class="c1"># Sets the value</span>
 <div class="viewcode-block" id="RWHardwareArray.set">
 <a class="viewcode-back" href="../../../modules/lattice.html#pyaml.lattice.abstract_impl.RWHardwareArray.set">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">set</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">set</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">):</span>
         <span class="n">nbStrength</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__poly</span><span class="p">)</span>
         <span class="n">s</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__model</span><span class="o">.</span><span class="n">compute_strengths</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
         <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nbStrength</span><span class="p">):</span>
@@ -636,7 +647,7 @@
     <span class="c1"># Sets the value and wait that the read value reach the setpoint</span>
 <div class="viewcode-block" id="RWHardwareArray.set_and_wait">
 <a class="viewcode-back" href="../../../modules/lattice.html#pyaml.lattice.abstract_impl.RWHardwareArray.set_and_wait">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">set_and_wait</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">set_and_wait</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">):</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;Not implemented yet.&quot;</span><span class="p">)</span></div>
 
 
@@ -648,7 +659,9 @@
 </div>
 
 
-<span class="c1">#------------------------------------------------------------------------------</span>
+
+<span class="c1"># ------------------------------------------------------------------------------</span>
+
 
 <div class="viewcode-block" id="RWStrengthArray">
 <a class="viewcode-back" href="../../../modules/lattice.html#pyaml.lattice.abstract_impl.RWStrengthArray">[docs]</a>
@@ -657,7 +670,9 @@
 <span class="sd">    Class providing read write access to a strength (array) of a simulator</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">elements</span><span class="p">:</span><span class="nb">list</span><span class="p">[</span><span class="n">at</span><span class="o">.</span><span class="n">Element</span><span class="p">],</span> <span class="n">poly</span><span class="p">:</span><span class="nb">list</span><span class="p">[</span><span class="n">PolynomInfo</span><span class="p">],</span> <span class="n">model</span><span class="p">:</span><span class="n">MagnetModel</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">elements</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">at</span><span class="o">.</span><span class="n">Element</span><span class="p">],</span> <span class="n">poly</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">PolynomInfo</span><span class="p">],</span> <span class="n">model</span><span class="p">:</span> <span class="n">MagnetModel</span>
+    <span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__elements</span> <span class="o">=</span> <span class="n">elements</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__poly</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__polyIdx</span> <span class="o">=</span> <span class="p">[]</span>
@@ -669,7 +684,7 @@
     <span class="c1"># Gets the value</span>
 <div class="viewcode-block" id="RWStrengthArray.get">
 <a class="viewcode-back" href="../../../modules/lattice.html#pyaml.lattice.abstract_impl.RWStrengthArray.get">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">:</span>  
+    <span class="k">def</span><span class="w"> </span><span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">:</span>
         <span class="n">nbStrength</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__poly</span><span class="p">)</span>
         <span class="n">s</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">nbStrength</span><span class="p">)</span>
         <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nbStrength</span><span class="p">):</span>
@@ -680,7 +695,7 @@
     <span class="c1"># Sets the value</span>
 <div class="viewcode-block" id="RWStrengthArray.set">
 <a class="viewcode-back" href="../../../modules/lattice.html#pyaml.lattice.abstract_impl.RWStrengthArray.set">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">set</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">set</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">):</span>
         <span class="n">nbStrength</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__poly</span><span class="p">)</span>
         <span class="n">s</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">nbStrength</span><span class="p">)</span>
         <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nbStrength</span><span class="p">):</span>
@@ -690,7 +705,7 @@
     <span class="c1"># Sets the value and wait that the read value reach the setpoint</span>
 <div class="viewcode-block" id="RWStrengthArray.set_and_wait">
 <a class="viewcode-back" href="../../../modules/lattice.html#pyaml.lattice.abstract_impl.RWStrengthArray.set_and_wait">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">set_and_wait</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">set_and_wait</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">):</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;Not implemented yet.&quot;</span><span class="p">)</span></div>
 
 
@@ -701,9 +716,10 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__model</span><span class="o">.</span><span class="n">get_strength_units</span><span class="p">()</span></div>
 </div>
 
-    
 
-<span class="c1">#------------------------------------------------------------------------------</span>
+
+<span class="c1"># ------------------------------------------------------------------------------</span>
+
 
 <div class="viewcode-block" id="BPMScalarAggregator">
 <a class="viewcode-back" href="../../../modules/lattice.html#pyaml.lattice.abstract_impl.BPMScalarAggregator">[docs]</a>
@@ -747,11 +763,13 @@
 <div class="viewcode-block" id="BPMScalarAggregator.unit">
 <a class="viewcode-back" href="../../../modules/lattice.html#pyaml.lattice.abstract_impl.BPMScalarAggregator.unit">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">unit</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-        <span class="k">return</span> <span class="s1">&#39;m&#39;</span></div>
+        <span class="k">return</span> <span class="s2">&quot;m&quot;</span></div>
 </div>
 
-    
-<span class="c1">#------------------------------------------------------------------------------</span>
+
+
+<span class="c1"># ------------------------------------------------------------------------------</span>
+
 
 <div class="viewcode-block" id="BPMHScalarAggregator">
 <a class="viewcode-back" href="../../../modules/lattice.html#pyaml.lattice.abstract_impl.BPMHScalarAggregator">[docs]</a>
@@ -768,7 +786,9 @@
 </div>
 
 
-<span class="c1">#------------------------------------------------------------------------------</span>
+
+<span class="c1"># ------------------------------------------------------------------------------</span>
+
 
 <div class="viewcode-block" id="BPMVScalarAggregator">
 <a class="viewcode-back" href="../../../modules/lattice.html#pyaml.lattice.abstract_impl.BPMVScalarAggregator">[docs]</a>
@@ -785,7 +805,9 @@
 </div>
 
 
-<span class="c1">#------------------------------------------------------------------------------</span>
+
+<span class="c1"># ------------------------------------------------------------------------------</span>
+
 
 <div class="viewcode-block" id="RBpmArray">
 <a class="viewcode-back" href="../../../modules/lattice.html#pyaml.lattice.abstract_impl.RBpmArray">[docs]</a>
@@ -800,7 +822,6 @@
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">element</span><span class="p">:</span> <span class="n">at</span><span class="o">.</span><span class="n">Element</span><span class="p">,</span> <span class="n">lattice</span><span class="p">:</span> <span class="n">at</span><span class="o">.</span><span class="n">Lattice</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__element</span> <span class="o">=</span> <span class="n">element</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__lattice</span> <span class="o">=</span> <span class="n">lattice</span>
-        
 
     <span class="c1"># Gets the value</span>
 <div class="viewcode-block" id="RBpmArray.get">
@@ -815,31 +836,33 @@
 <div class="viewcode-block" id="RBpmArray.unit">
 <a class="viewcode-back" href="../../../modules/lattice.html#pyaml.lattice.abstract_impl.RBpmArray.unit">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">unit</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-        <span class="k">return</span> <span class="s1">&#39;m&#39;</span></div>
+        <span class="k">return</span> <span class="s2">&quot;m&quot;</span></div>
 </div>
 
 
-<span class="c1">#------------------------------------------------------------------------------</span>
+
+<span class="c1"># ------------------------------------------------------------------------------</span>
+
 
 <div class="viewcode-block" id="RWBpmOffsetArray">
 <a class="viewcode-back" href="../../../modules/lattice.html#pyaml.lattice.abstract_impl.RWBpmOffsetArray">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">RWBpmOffsetArray</span><span class="p">(</span><span class="n">abstract</span><span class="o">.</span><span class="n">ReadWriteFloatArray</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Class providing read write access to a BPM offset (array) of a simulator. </span>
+<span class="sd">    Class providing read write access to a BPM offset (array) of a simulator.</span>
 <span class="sd">    Offset in pyAT is defined in Offset attribute as a 2-element array.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">element</span><span class="p">:</span><span class="n">at</span><span class="o">.</span><span class="n">Element</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">element</span><span class="p">:</span> <span class="n">at</span><span class="o">.</span><span class="n">Element</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__element</span> <span class="o">=</span> <span class="n">element</span>
         <span class="k">try</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">__offset</span> <span class="o">=</span> <span class="n">element</span><span class="o">.</span><span class="fm">__getattribute__</span><span class="p">(</span><span class="s1">&#39;Offset&#39;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">__offset</span> <span class="o">=</span> <span class="n">element</span><span class="o">.</span><span class="fm">__getattribute__</span><span class="p">(</span><span class="s2">&quot;Offset&quot;</span><span class="p">)</span>
         <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">__offset</span> <span class="o">=</span> <span class="kc">None</span>
 
     <span class="c1"># Gets the value</span>
 <div class="viewcode-block" id="RWBpmOffsetArray.get">
 <a class="viewcode-back" href="../../../modules/lattice.html#pyaml.lattice.abstract_impl.RWBpmOffsetArray.get">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">:</span>  
+    <span class="k">def</span><span class="w"> </span><span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">:</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__offset</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">raise</span> <span class="n">PyAMLException</span><span class="p">(</span><span class="s2">&quot;Element does not have an Offset attribute.&quot;</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__offset</span></div>
@@ -848,7 +871,7 @@
     <span class="c1"># Sets the value</span>
 <div class="viewcode-block" id="RWBpmOffsetArray.set">
 <a class="viewcode-back" href="../../../modules/lattice.html#pyaml.lattice.abstract_impl.RWBpmOffsetArray.set">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">set</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">set</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">):</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__offset</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">raise</span> <span class="n">PyAMLException</span><span class="p">(</span><span class="s2">&quot;Element does not have an Offset attribute.&quot;</span><span class="p">)</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">value</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">2</span><span class="p">:</span>
@@ -859,7 +882,7 @@
     <span class="c1"># Sets the value and wait that the read value reach the setpoint</span>
 <div class="viewcode-block" id="RWBpmOffsetArray.set_and_wait">
 <a class="viewcode-back" href="../../../modules/lattice.html#pyaml.lattice.abstract_impl.RWBpmOffsetArray.set_and_wait">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">set_and_wait</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">set_and_wait</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">):</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;Not implemented yet.&quot;</span><span class="p">)</span></div>
 
 
@@ -867,11 +890,13 @@
 <div class="viewcode-block" id="RWBpmOffsetArray.unit">
 <a class="viewcode-back" href="../../../modules/lattice.html#pyaml.lattice.abstract_impl.RWBpmOffsetArray.unit">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">unit</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-        <span class="k">return</span> <span class="s1">&#39;m&#39;</span>  <span class="c1"># Assuming all offsets are in m</span></div>
+        <span class="k">return</span> <span class="s2">&quot;m&quot;</span>  <span class="c1"># Assuming all offsets are in m</span></div>
 </div>
 
 
-<span class="c1">#------------------------------------------------------------------------------</span>
+
+<span class="c1"># ------------------------------------------------------------------------------</span>
+
 
 <div class="viewcode-block" id="RWBpmTiltScalar">
 <a class="viewcode-back" href="../../../modules/lattice.html#pyaml.lattice.abstract_impl.RWBpmTiltScalar">[docs]</a>
@@ -881,10 +906,10 @@
 <span class="sd">    pyAT is defined in Rotation attribute as a first element.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">element</span><span class="p">:</span><span class="n">at</span><span class="o">.</span><span class="n">Element</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">element</span><span class="p">:</span> <span class="n">at</span><span class="o">.</span><span class="n">Element</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__element</span> <span class="o">=</span> <span class="n">element</span>
         <span class="k">try</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">__tilt</span> <span class="o">=</span> <span class="n">element</span><span class="o">.</span><span class="fm">__getattribute__</span><span class="p">(</span><span class="s1">&#39;Rotation&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">__tilt</span> <span class="o">=</span> <span class="n">element</span><span class="o">.</span><span class="fm">__getattribute__</span><span class="p">(</span><span class="s2">&quot;Rotation&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
         <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">__tilt</span> <span class="o">=</span> <span class="kc">None</span>
 
@@ -900,15 +925,18 @@
     <span class="c1"># Sets the value</span>
 <div class="viewcode-block" id="RWBpmTiltScalar.set">
 <a class="viewcode-back" href="../../../modules/lattice.html#pyaml.lattice.abstract_impl.RWBpmTiltScalar.set">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">set</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span><span class="nb">float</span><span class="p">,</span> <span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">set</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">value</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+    <span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__tilt</span> <span class="o">=</span> <span class="n">value</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">__element</span><span class="o">.</span><span class="fm">__setattr__</span><span class="p">(</span><span class="s1">&#39;Rotation&#39;</span><span class="p">,</span> <span class="p">[</span><span class="n">value</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">])</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__element</span><span class="o">.</span><span class="fm">__setattr__</span><span class="p">(</span><span class="s2">&quot;Rotation&quot;</span><span class="p">,</span> <span class="p">[</span><span class="n">value</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">])</span></div>
 
 
     <span class="c1"># Sets the value and wait that the read value reach the setpoint</span>
 <div class="viewcode-block" id="RWBpmTiltScalar.set_and_wait">
 <a class="viewcode-back" href="../../../modules/lattice.html#pyaml.lattice.abstract_impl.RWBpmTiltScalar.set_and_wait">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">set_and_wait</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span><span class="nb">float</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">set_and_wait</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="nb">float</span><span class="p">):</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;Not implemented yet.&quot;</span><span class="p">)</span></div>
 
 
@@ -916,34 +944,37 @@
 <div class="viewcode-block" id="RWBpmTiltScalar.unit">
 <a class="viewcode-back" href="../../../modules/lattice.html#pyaml.lattice.abstract_impl.RWBpmTiltScalar.unit">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">unit</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-        <span class="k">return</span> <span class="s1">&#39;rad&#39;</span>  <span class="c1"># Assuming BPM tilts are in rad</span></div>
+        <span class="k">return</span> <span class="s2">&quot;rad&quot;</span>  <span class="c1"># Assuming BPM tilts are in rad</span></div>
 </div>
 
 
-<span class="c1">#------------------------------------------------------------------------------</span>
+
+<span class="c1"># ------------------------------------------------------------------------------</span>
+
 
 <div class="viewcode-block" id="RWRFVoltageScalar">
 <a class="viewcode-back" href="../../../modules/lattice.html#pyaml.lattice.abstract_impl.RWRFVoltageScalar">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">RWRFVoltageScalar</span><span class="p">(</span><span class="n">abstract</span><span class="o">.</span><span class="n">ReadWriteFloatScalar</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Class providing read write access to a cavity voltage of a simulator for a given RF trasnmitter.</span>
+<span class="sd">    Class providing read write access to a cavity voltage</span>
+<span class="sd">    of a simulator for a given RF trasnmitter.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">elements</span><span class="p">:</span><span class="nb">list</span><span class="p">[</span><span class="n">at</span><span class="o">.</span><span class="n">Element</span><span class="p">]):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">elements</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">at</span><span class="o">.</span><span class="n">Element</span><span class="p">]):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__elements</span> <span class="o">=</span> <span class="n">elements</span>
 
 <div class="viewcode-block" id="RWRFVoltageScalar.get">
 <a class="viewcode-back" href="../../../modules/lattice.html#pyaml.lattice.abstract_impl.RWRFVoltageScalar.get">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
         <span class="nb">sum</span> <span class="o">=</span> <span class="mi">0</span>
-        <span class="k">for</span> <span class="n">idx</span><span class="p">,</span><span class="n">e</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__elements</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">_idx</span><span class="p">,</span> <span class="n">e</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__elements</span><span class="p">):</span>
             <span class="nb">sum</span> <span class="o">+=</span> <span class="n">e</span><span class="o">.</span><span class="n">Voltage</span>
         <span class="k">return</span> <span class="nb">sum</span></div>
 
-    
+
 <div class="viewcode-block" id="RWRFVoltageScalar.set">
 <a class="viewcode-back" href="../../../modules/lattice.html#pyaml.lattice.abstract_impl.RWRFVoltageScalar.set">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">set</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">value</span><span class="p">:</span><span class="nb">float</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">set</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="nb">float</span><span class="p">):</span>
         <span class="n">v</span> <span class="o">=</span> <span class="n">value</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__elements</span><span class="p">)</span>
         <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">__elements</span><span class="p">:</span>
             <span class="n">e</span><span class="o">.</span><span class="n">Voltage</span> <span class="o">=</span> <span class="n">v</span></div>
@@ -951,10 +982,10 @@
 
 <div class="viewcode-block" id="RWRFVoltageScalar.set_and_wait">
 <a class="viewcode-back" href="../../../modules/lattice.html#pyaml.lattice.abstract_impl.RWRFVoltageScalar.set_and_wait">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">set_and_wait</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span><span class="nb">float</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">set_and_wait</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="nb">float</span><span class="p">):</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;Not implemented yet.&quot;</span><span class="p">)</span></div>
 
-        
+
 <div class="viewcode-block" id="RWRFVoltageScalar.unit">
 <a class="viewcode-back" href="../../../modules/lattice.html#pyaml.lattice.abstract_impl.RWRFVoltageScalar.unit">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">unit</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
@@ -962,29 +993,33 @@
 </div>
 
 
-<span class="c1">#------------------------------------------------------------------------------</span>
+
+<span class="c1"># ------------------------------------------------------------------------------</span>
+
 
 <div class="viewcode-block" id="RWRFPhaseScalar">
 <a class="viewcode-back" href="../../../modules/lattice.html#pyaml.lattice.abstract_impl.RWRFPhaseScalar">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">RWRFPhaseScalar</span><span class="p">(</span><span class="n">abstract</span><span class="o">.</span><span class="n">ReadWriteFloatScalar</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Class providing read write access to a cavity phase of a simulator for a given RF trasnmitter.</span>
+<span class="sd">    Class providing read write access to a cavity phase of</span>
+<span class="sd">    a simulator for a given RF trasnmitter.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">elements</span><span class="p">:</span><span class="nb">list</span><span class="p">[</span><span class="n">at</span><span class="o">.</span><span class="n">Element</span><span class="p">]):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">elements</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">at</span><span class="o">.</span><span class="n">Element</span><span class="p">]):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__elements</span> <span class="o">=</span> <span class="n">elements</span>
 
 <div class="viewcode-block" id="RWRFPhaseScalar.get">
 <a class="viewcode-back" href="../../../modules/lattice.html#pyaml.lattice.abstract_impl.RWRFPhaseScalar.get">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
-        <span class="c1"># Assume that all cavities of this transmitter have the same Time Lag and Frequency</span>
-        <span class="n">wavelength</span> <span class="o">=</span> <span class="n">speed_of_light</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">__elements</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">Frequency</span>        
-        <span class="k">return</span> <span class="p">(</span><span class="n">wavelength</span> <span class="o">/</span>  <span class="bp">self</span><span class="o">.</span><span class="n">__elements</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">TimeLag</span><span class="p">)</span> <span class="o">*</span> <span class="mf">2.0</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span></div>
+        <span class="c1"># Assume that all cavities of this transmitter</span>
+        <span class="c1"># have the same Time Lag and Frequency</span>
+        <span class="n">wavelength</span> <span class="o">=</span> <span class="n">speed_of_light</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">__elements</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">Frequency</span>
+        <span class="k">return</span> <span class="p">(</span><span class="n">wavelength</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">__elements</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">TimeLag</span><span class="p">)</span> <span class="o">*</span> <span class="mf">2.0</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span></div>
 
-    
+
 <div class="viewcode-block" id="RWRFPhaseScalar.set">
 <a class="viewcode-back" href="../../../modules/lattice.html#pyaml.lattice.abstract_impl.RWRFPhaseScalar.set">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">set</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">value</span><span class="p">:</span><span class="nb">float</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">set</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="nb">float</span><span class="p">):</span>
         <span class="n">wavelength</span> <span class="o">=</span> <span class="n">speed_of_light</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">__elements</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">Frequency</span>
         <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">__elements</span><span class="p">:</span>
             <span class="n">e</span><span class="o">.</span><span class="n">TimeLag</span> <span class="o">=</span> <span class="n">wavelength</span> <span class="o">*</span> <span class="n">value</span> <span class="o">/</span> <span class="p">(</span><span class="mf">2.0</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">)</span></div>
@@ -992,18 +1027,20 @@
 
 <div class="viewcode-block" id="RWRFPhaseScalar.set_and_wait">
 <a class="viewcode-back" href="../../../modules/lattice.html#pyaml.lattice.abstract_impl.RWRFPhaseScalar.set_and_wait">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">set_and_wait</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span><span class="nb">float</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">set_and_wait</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="nb">float</span><span class="p">):</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;Not implemented yet.&quot;</span><span class="p">)</span></div>
 
-        
+
 <div class="viewcode-block" id="RWRFPhaseScalar.unit">
 <a class="viewcode-back" href="../../../modules/lattice.html#pyaml.lattice.abstract_impl.RWRFPhaseScalar.unit">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">unit</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
         <span class="k">return</span> <span class="s2">&quot;rad&quot;</span></div>
 </div>
 
-    
-<span class="c1">#------------------------------------------------------------------------------</span>
+
+
+<span class="c1"># ------------------------------------------------------------------------------</span>
+
 
 <div class="viewcode-block" id="RWRFFrequencyScalar">
 <a class="viewcode-back" href="../../../modules/lattice.html#pyaml.lattice.abstract_impl.RWRFFrequencyScalar">[docs]</a>
@@ -1012,7 +1049,7 @@
 <span class="sd">    Class providing read write access to RF frequency of a simulator.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">elements</span><span class="p">:</span><span class="nb">list</span><span class="p">[</span><span class="n">at</span><span class="o">.</span><span class="n">Element</span><span class="p">],</span> <span class="n">harmonics</span><span class="p">:</span><span class="nb">list</span><span class="p">[</span><span class="nb">float</span><span class="p">]):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">elements</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">at</span><span class="o">.</span><span class="n">Element</span><span class="p">],</span> <span class="n">harmonics</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">float</span><span class="p">]):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__elements</span> <span class="o">=</span> <span class="n">elements</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__harm</span> <span class="o">=</span> <span class="n">harmonics</span>
 
@@ -1022,20 +1059,20 @@
         <span class="c1"># Serialized cavity has the same frequency</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__elements</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">Frequency</span></div>
 
-    
+
 <div class="viewcode-block" id="RWRFFrequencyScalar.set">
 <a class="viewcode-back" href="../../../modules/lattice.html#pyaml.lattice.abstract_impl.RWRFFrequencyScalar.set">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">set</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">value</span><span class="p">:</span><span class="nb">float</span><span class="p">):</span>
-        <span class="k">for</span> <span class="n">idx</span><span class="p">,</span><span class="n">e</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__elements</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">set</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="nb">float</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">e</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__elements</span><span class="p">):</span>
             <span class="n">e</span><span class="o">.</span><span class="n">Frequency</span> <span class="o">=</span> <span class="n">value</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">__harm</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span></div>
 
 
 <div class="viewcode-block" id="RWRFFrequencyScalar.set_and_wait">
 <a class="viewcode-back" href="../../../modules/lattice.html#pyaml.lattice.abstract_impl.RWRFFrequencyScalar.set_and_wait">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">set_and_wait</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span><span class="nb">float</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">set_and_wait</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="nb">float</span><span class="p">):</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;Not implemented yet.&quot;</span><span class="p">)</span></div>
 
-        
+
 <div class="viewcode-block" id="RWRFFrequencyScalar.unit">
 <a class="viewcode-back" href="../../../modules/lattice.html#pyaml.lattice.abstract_impl.RWRFFrequencyScalar.unit">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">unit</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
@@ -1043,7 +1080,9 @@
 </div>
 
 
-<span class="c1">#------------------------------------------------------------------------------</span>
+
+<span class="c1"># ------------------------------------------------------------------------------</span>
+
 
 <div class="viewcode-block" id="RWRFATFrequencyScalar">
 <a class="viewcode-back" href="../../../modules/lattice.html#pyaml.lattice.abstract_impl.RWRFATFrequencyScalar">[docs]</a>
@@ -1061,27 +1100,29 @@
     <span class="k">def</span><span class="w"> </span><span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__ring</span><span class="o">.</span><span class="n">get_rf_frequency</span><span class="p">()</span></div>
 
-    
+
 <div class="viewcode-block" id="RWRFATFrequencyScalar.set">
 <a class="viewcode-back" href="../../../modules/lattice.html#pyaml.lattice.abstract_impl.RWRFATFrequencyScalar.set">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">set</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">value</span><span class="p">:</span><span class="nb">float</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">set</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="nb">float</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__ring</span><span class="o">.</span><span class="n">set_rf_frequency</span><span class="p">(</span><span class="n">value</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="RWRFATFrequencyScalar.set_and_wait">
 <a class="viewcode-back" href="../../../modules/lattice.html#pyaml.lattice.abstract_impl.RWRFATFrequencyScalar.set_and_wait">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">set_and_wait</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span><span class="nb">float</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">set_and_wait</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="nb">float</span><span class="p">):</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;Not implemented yet.&quot;</span><span class="p">)</span></div>
 
-        
+
 <div class="viewcode-block" id="RWRFATFrequencyScalar.unit">
 <a class="viewcode-back" href="../../../modules/lattice.html#pyaml.lattice.abstract_impl.RWRFATFrequencyScalar.unit">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">unit</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-        <span class="k">return</span> <span class="s1">&#39;Hz&#39;</span></div>
+        <span class="k">return</span> <span class="s2">&quot;Hz&quot;</span></div>
 </div>
 
-    
-<span class="c1">#------------------------------------------------------------------------------</span>
+
+
+<span class="c1"># ------------------------------------------------------------------------------</span>
+
 
 <div class="viewcode-block" id="RWRFATotalVoltageScalar">
 <a class="viewcode-back" href="../../../modules/lattice.html#pyaml.lattice.abstract_impl.RWRFATotalVoltageScalar">[docs]</a>
@@ -1098,27 +1139,29 @@
     <span class="k">def</span><span class="w"> </span><span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__ring</span><span class="o">.</span><span class="n">get_rf_voltage</span><span class="p">()</span></div>
 
-    
+
 <div class="viewcode-block" id="RWRFATotalVoltageScalar.set">
 <a class="viewcode-back" href="../../../modules/lattice.html#pyaml.lattice.abstract_impl.RWRFATotalVoltageScalar.set">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">set</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">value</span><span class="p">:</span><span class="nb">float</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">set</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="nb">float</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__ring</span><span class="o">.</span><span class="n">set_rf_voltage</span><span class="p">(</span><span class="n">value</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="RWRFATotalVoltageScalar.set_and_wait">
 <a class="viewcode-back" href="../../../modules/lattice.html#pyaml.lattice.abstract_impl.RWRFATotalVoltageScalar.set_and_wait">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">set_and_wait</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span><span class="nb">float</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">set_and_wait</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="nb">float</span><span class="p">):</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;Not implemented yet.&quot;</span><span class="p">)</span></div>
 
-        
+
 <div class="viewcode-block" id="RWRFATotalVoltageScalar.unit">
 <a class="viewcode-back" href="../../../modules/lattice.html#pyaml.lattice.abstract_impl.RWRFATotalVoltageScalar.unit">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">unit</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-        <span class="k">return</span> <span class="s1">&#39;V&#39;</span></div>
+        <span class="k">return</span> <span class="s2">&quot;V&quot;</span></div>
 </div>
 
 
-<span class="c1">#------------------------------------------------------------------------------</span>
+
+<span class="c1"># ------------------------------------------------------------------------------</span>
+
 
 <div class="viewcode-block" id="RBetatronTuneArray">
 <a class="viewcode-back" href="../../../modules/lattice.html#pyaml.lattice.abstract_impl.RBetatronTuneArray">[docs]</a>
@@ -1129,7 +1172,7 @@
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ring</span><span class="p">:</span> <span class="n">at</span><span class="o">.</span><span class="n">Lattice</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__ring</span> <span class="o">=</span> <span class="n">ring</span>
-        
+
 <div class="viewcode-block" id="RBetatronTuneArray.get">
 <a class="viewcode-back" href="../../../modules/lattice.html#pyaml.lattice.abstract_impl.RBetatronTuneArray.get">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
@@ -1139,9 +1182,8 @@
 <div class="viewcode-block" id="RBetatronTuneArray.unit">
 <a class="viewcode-back" href="../../../modules/lattice.html#pyaml.lattice.abstract_impl.RBetatronTuneArray.unit">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">unit</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-        <span class="k">return</span> <span class="s1">&#39;1&#39;</span></div>
+        <span class="k">return</span> <span class="s2">&quot;1&quot;</span></div>
 </div>
-
 
 </pre></div>
 

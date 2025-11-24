@@ -510,12 +510,21 @@
 <em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyaml.control.controlsystem.</span></span><span class="sig-name descname"><span class="pre">ControlSystem</span></span><a class="reference internal" href="../_modules/pyaml/control/controlsystem.html#ControlSystem"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.control.controlsystem.ControlSystem" title="Link to this definition">#</a></dt>
 <dd><p>Abstract class providing access to a control system float variable</p>
 <dl class="py method">
+<dt class="sig sig-object py" id="pyaml.control.controlsystem.ControlSystem.create_magnet_harddware_aggregator">
+<span class="sig-name descname"><span class="pre">create_magnet_harddware_aggregator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">magnets</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">Magnet</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ScalarAggregator</span></span></span><a class="reference internal" href="../_modules/pyaml/control/controlsystem.html#ControlSystem.create_magnet_harddware_aggregator"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.control.controlsystem.ControlSystem.create_magnet_harddware_aggregator" title="Link to this definition">#</a></dt>
+<dd><p>When working in hardware space, 1 single power
+supply device per multipolar strength is required</p>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="pyaml.control.controlsystem.ControlSystem.fill_device">
 <span class="sig-name descname"><span class="pre">fill_device</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">elements</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">Element</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/control/controlsystem.html#ControlSystem.fill_device"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.control.controlsystem.ControlSystem.fill_device" title="Link to this definition">#</a></dt>
-<dd><p>Fill device of this control system with Element coming from the configuration file</p>
+<dd><p>Fill device of this control system with Element
+coming from the configuration file</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>elements</strong> (<em>list</em><em>[</em><em>Element</em><em>]</em>) -- List of elements coming from the configuration file to attach to this control system</p>
+<dd class="field-odd"><p><strong>elements</strong> (<em>list</em><em>[</em><em>Element</em><em>]</em>) -- List of elements coming from the configuration
+file to attach to this control system</p>
 </dd>
 </dl>
 </dd></dl>
@@ -675,7 +684,8 @@ values (Debugging purpose)</p>
 <dt class="sig sig-object py" id="pyaml.control.abstract_impl.CSStrengthScalarAggregator">
 <em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyaml.control.abstract_impl.</span></span><span class="sig-name descname"><span class="pre">CSStrengthScalarAggregator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">peer</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#pyaml.control.abstract_impl.CSScalarAggregator" title="pyaml.control.abstract_impl.CSScalarAggregator"><span class="pre">CSScalarAggregator</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/control/abstract_impl.html#CSStrengthScalarAggregator"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.control.abstract_impl.CSStrengthScalarAggregator" title="Link to this definition">#</a></dt>
 <dd><p>Control system aggregator for a list of magnet strengths.
-This aggregator is in charge of computing hardware setpoints and applying them without overlap.
+This aggregator is in charge of computing hardware setpoints
+and applying them without overlap.
 When virtual magnets exported from combined function mangets are present (RWMapper),
 the aggregator prevents to apply several times the same power supply setpoint.</p>
 <dl class="py method">
@@ -797,7 +807,8 @@ the aggregator prevents to apply several times the same power supply setpoint.</
 <dl class="py class">
 <dt class="sig sig-object py" id="pyaml.control.abstract_impl.RWHardwareArray">
 <em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyaml.control.abstract_impl.</span></span><span class="sig-name descname"><span class="pre">RWHardwareArray</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">MagnetModel</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/control/abstract_impl.html#RWHardwareArray"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.control.abstract_impl.RWHardwareArray" title="Link to this definition">#</a></dt>
-<dd><p>Class providing read write access to a magnet array of a control system (in hardware units)</p>
+<dd><p>Class providing read write access to a magnet array
+of a control system (in hardware units)</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="pyaml.control.abstract_impl.RWHardwareArray.get">
 <span class="sig-name descname"><span class="pre">get</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">array</span></span></span><a class="reference internal" href="../_modules/pyaml/control/abstract_impl.html#RWHardwareArray.get"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.control.abstract_impl.RWHardwareArray.get" title="Link to this definition">#</a></dt>
@@ -827,7 +838,8 @@ the aggregator prevents to apply several times the same power supply setpoint.</
 <dl class="py class">
 <dt class="sig sig-object py" id="pyaml.control.abstract_impl.RWHardwareScalar">
 <em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyaml.control.abstract_impl.</span></span><span class="sig-name descname"><span class="pre">RWHardwareScalar</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">MagnetModel</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/control/abstract_impl.html#RWHardwareScalar"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.control.abstract_impl.RWHardwareScalar" title="Link to this definition">#</a></dt>
-<dd><p>Class providing read write access to a magnet of a control system (in hardware units)</p>
+<dd><p>Class providing read write access to a magnet
+of a control system (in hardware units)</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="pyaml.control.abstract_impl.RWHardwareScalar.get">
 <span class="sig-name descname"><span class="pre">get</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="reference internal" href="../_modules/pyaml/control/abstract_impl.html#RWHardwareScalar.get"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.control.abstract_impl.RWHardwareScalar.get" title="Link to this definition">#</a></dt>
@@ -887,7 +899,8 @@ the aggregator prevents to apply several times the same power supply setpoint.</
 <dl class="py class">
 <dt class="sig sig-object py" id="pyaml.control.abstract_impl.RWRFPhaseScalar">
 <em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyaml.control.abstract_impl.</span></span><span class="sig-name descname"><span class="pre">RWRFPhaseScalar</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">transmitter</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="rf.html#pyaml.rf.rf_transmitter.RFTransmitter" title="pyaml.rf.rf_transmitter.RFTransmitter"><span class="pre">RFTransmitter</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/control/abstract_impl.html#RWRFPhaseScalar"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.control.abstract_impl.RWRFPhaseScalar" title="Link to this definition">#</a></dt>
-<dd><p>Class providing read write access to cavity phase for a transmitter of a control system.</p>
+<dd><p>Class providing read write access to cavity phase
+for a transmitter of a control system.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="pyaml.control.abstract_impl.RWRFPhaseScalar.get">
 <span class="sig-name descname"><span class="pre">get</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="reference internal" href="../_modules/pyaml/control/abstract_impl.html#RWRFPhaseScalar.get"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.control.abstract_impl.RWRFPhaseScalar.get" title="Link to this definition">#</a></dt>
@@ -917,7 +930,8 @@ the aggregator prevents to apply several times the same power supply setpoint.</
 <dl class="py class">
 <dt class="sig sig-object py" id="pyaml.control.abstract_impl.RWRFVoltageScalar">
 <em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyaml.control.abstract_impl.</span></span><span class="sig-name descname"><span class="pre">RWRFVoltageScalar</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">transmitter</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="rf.html#pyaml.rf.rf_transmitter.RFTransmitter" title="pyaml.rf.rf_transmitter.RFTransmitter"><span class="pre">RFTransmitter</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/control/abstract_impl.html#RWRFVoltageScalar"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.control.abstract_impl.RWRFVoltageScalar" title="Link to this definition">#</a></dt>
-<dd><p>Class providing read write access to cavity voltage for a transmitter of a control system.</p>
+<dd><p>Class providing read write access to cavity voltage
+for a transmitter of a control system.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="pyaml.control.abstract_impl.RWRFVoltageScalar.get">
 <span class="sig-name descname"><span class="pre">get</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="reference internal" href="../_modules/pyaml/control/abstract_impl.html#RWRFVoltageScalar.get"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.control.abstract_impl.RWRFVoltageScalar.get" title="Link to this definition">#</a></dt>
@@ -1083,7 +1097,8 @@ the aggregator prevents to apply several times the same power supply setpoint.</
 <dl class="py method">
 <dt class="sig sig-object py" id="pyaml.control.deviceaccesslist.DeviceAccessList.set">
 <em class="property"><span class="k"><span class="pre">abstractmethod</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">set</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span><span class="p"><span class="pre">[</span></span><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">dtype</span><span class="p"><span class="pre">[</span></span><span class="pre">float64</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/control/deviceaccesslist.html#DeviceAccessList.set"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.control.deviceaccesslist.DeviceAccessList.set" title="Link to this definition">#</a></dt>
-<dd><p>Write a list of control system device variable (i.e. a power supply currents)</p>
+<dd><p>Write a list of control system device variable
+(i.e. a power supply currents)</p>
 </dd></dl>
 
 <dl class="py method">
@@ -1186,6 +1201,7 @@ operations and comparisons. It also retains metadata like quality and timestamp.
   <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.control.controlsystem.ControlSystem"><code class="docutils literal notranslate"><span class="pre">ControlSystem</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.control.controlsystem.ControlSystem.create_magnet_harddware_aggregator"><code class="docutils literal notranslate"><span class="pre">ControlSystem.create_magnet_harddware_aggregator()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.control.controlsystem.ControlSystem.fill_device"><code class="docutils literal notranslate"><span class="pre">ControlSystem.fill_device()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.control.controlsystem.ControlSystem.init_cs"><code class="docutils literal notranslate"><span class="pre">ControlSystem.init_cs()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.control.controlsystem.ControlSystem.name"><code class="docutils literal notranslate"><span class="pre">ControlSystem.name()</span></code></a></li>

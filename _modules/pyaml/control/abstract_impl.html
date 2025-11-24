@@ -491,20 +491,22 @@
                 <article class="bd-article">
                   
   <h1>Source code for pyaml.control.abstract_impl</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span><span class="w"> </span><span class="nn">..common</span><span class="w"> </span><span class="kn">import</span> <span class="n">abstract</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">..control.deviceaccesslist</span><span class="w"> </span><span class="kn">import</span> <span class="n">DeviceAccessList</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">..control.deviceaccess</span><span class="w"> </span><span class="kn">import</span> <span class="n">DeviceAccess</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">..magnet.model</span><span class="w"> </span><span class="kn">import</span> <span class="n">MagnetModel</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">..magnet.magnet</span><span class="w"> </span><span class="kn">import</span> <span class="n">Magnet</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">..bpm.bpm_model</span><span class="w"> </span><span class="kn">import</span> <span class="n">BPMModel</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">..rf.rf_plant</span><span class="w"> </span><span class="kn">import</span> <span class="n">RFPlant</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">..rf.rf_transmitter</span><span class="w"> </span><span class="kn">import</span> <span class="n">RFTransmitter</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">..common.abstract_aggregator</span><span class="w"> </span><span class="kn">import</span> <span class="n">ScalarAggregator</span>
+<span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="kn">import</span> <span class="n">double</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">numpy.typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">NDArray</span>
 
-<span class="c1">#------------------------------------------------------------------------------</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">..bpm.bpm_model</span><span class="w"> </span><span class="kn">import</span> <span class="n">BPMModel</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">..common</span><span class="w"> </span><span class="kn">import</span> <span class="n">abstract</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">..common.abstract_aggregator</span><span class="w"> </span><span class="kn">import</span> <span class="n">ScalarAggregator</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">..control.deviceaccess</span><span class="w"> </span><span class="kn">import</span> <span class="n">DeviceAccess</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">..control.deviceaccesslist</span><span class="w"> </span><span class="kn">import</span> <span class="n">DeviceAccessList</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">..magnet.magnet</span><span class="w"> </span><span class="kn">import</span> <span class="n">Magnet</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">..magnet.model</span><span class="w"> </span><span class="kn">import</span> <span class="n">MagnetModel</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">..rf.rf_plant</span><span class="w"> </span><span class="kn">import</span> <span class="n">RFPlant</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">..rf.rf_transmitter</span><span class="w"> </span><span class="kn">import</span> <span class="n">RFTransmitter</span>
+
+<span class="c1"># ------------------------------------------------------------------------------</span>
+
 
 <div class="viewcode-block" id="CSScalarAggregator">
 <a class="viewcode-back" href="../../../modules/control.html#pyaml.control.abstract_impl.CSScalarAggregator">[docs]</a>
@@ -513,10 +515,10 @@
 <span class="sd">    Basic control system aggregator for a list of scalar values</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">devs</span><span class="p">:</span><span class="n">DeviceAccessList</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">devs</span><span class="p">:</span> <span class="n">DeviceAccessList</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_devs</span> <span class="o">=</span> <span class="n">devs</span>
 
-    <span class="k">def</span><span class="w"> </span><span class="nf">add_devices</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">devices</span><span class="p">:</span><span class="n">DeviceAccess</span> <span class="o">|</span> <span class="nb">list</span><span class="p">[</span><span class="n">DeviceAccess</span><span class="p">]</span> <span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">add_devices</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">devices</span><span class="p">:</span> <span class="n">DeviceAccess</span> <span class="o">|</span> <span class="nb">list</span><span class="p">[</span><span class="n">DeviceAccess</span><span class="p">]):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_devs</span><span class="o">.</span><span class="n">add_devices</span><span class="p">(</span><span class="n">devices</span><span class="p">)</span>
 
 <div class="viewcode-block" id="CSScalarAggregator.set">
@@ -548,56 +550,68 @@
     <span class="k">def</span><span class="w"> </span><span class="nf">unit</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_devs</span><span class="o">.</span><span class="n">unit</span><span class="p">()</span></div>
 
-    
+
     <span class="k">def</span><span class="w"> </span><span class="nf">nb_device</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_devs</span><span class="o">.</span><span class="fm">__len__</span><span class="p">()</span></div>
 
 
-<span class="c1">#------------------------------------------------------------------------------</span>
+
+<span class="c1"># ------------------------------------------------------------------------------</span>
+
 
 <div class="viewcode-block" id="CSStrengthScalarAggregator">
 <a class="viewcode-back" href="../../../modules/control.html#pyaml.control.abstract_impl.CSStrengthScalarAggregator">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">CSStrengthScalarAggregator</span><span class="p">(</span><span class="n">CSScalarAggregator</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Control system aggregator for a list of magnet strengths.</span>
-<span class="sd">    This aggregator is in charge of computing hardware setpoints and applying them without overlap.</span>
-<span class="sd">    When virtual magnets exported from combined function mangets are present (RWMapper), </span>
+<span class="sd">    This aggregator is in charge of computing hardware setpoints</span>
+<span class="sd">    and applying them without overlap.</span>
+<span class="sd">    When virtual magnets exported from combined function mangets are present (RWMapper),</span>
 <span class="sd">    the aggregator prevents to apply several times the same power supply setpoint.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">peer</span><span class="p">:</span><span class="n">CSScalarAggregator</span><span class="p">):</span>
-        <span class="n">CSScalarAggregator</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">peer</span><span class="o">.</span><span class="n">_devs</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">__models</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">MagnetModel</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>                   <span class="c1"># List of magnet model</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">__modelToMagnet</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span><span class="nb">int</span><span class="p">]]]</span> <span class="o">=</span> <span class="p">[]</span>   <span class="c1"># strengths indexing</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">__nbMagnet</span> <span class="o">=</span> <span class="mi">0</span>                                     <span class="c1"># Number of magnet strengths</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">peer</span><span class="p">:</span> <span class="n">CSScalarAggregator</span><span class="p">):</span>
+        <span class="n">CSScalarAggregator</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">peer</span><span class="o">.</span><span class="n">_devs</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__models</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">MagnetModel</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>  <span class="c1"># List of magnet model</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__modelToMagnet</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]]]</span> <span class="o">=</span> <span class="p">[]</span>  <span class="c1"># strengths indexing</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__nbMagnet</span> <span class="o">=</span> <span class="mi">0</span>  <span class="c1"># Number of magnet strengths</span>
 
-    <span class="k">def</span><span class="w"> </span><span class="nf">add_magnet</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">magnet</span><span class="p">:</span><span class="n">Magnet</span><span class="p">):</span>
-        <span class="c1"># Incoming magnet can be a magnet exported from a CombinedFunctionMagnet or simple magnet.</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">add_magnet</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">magnet</span><span class="p">:</span> <span class="n">Magnet</span><span class="p">):</span>
+        <span class="c1"># Incoming magnet can be a magnet exported from</span>
+        <span class="c1"># a CombinedFunctionMagnet or simple magnet.</span>
         <span class="c1"># All magnets exported from a same CombinedFunctionMagnet share the same model</span>
         <span class="c1"># TODO: check that strength is supported (m.strength may be None)</span>
-        <span class="n">strengthIndex</span> <span class="o">=</span> <span class="n">magnet</span><span class="o">.</span><span class="n">strength</span><span class="o">.</span><span class="n">index</span><span class="p">()</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">magnet</span><span class="o">.</span><span class="n">strength</span><span class="p">,</span><span class="n">abstract</span><span class="o">.</span><span class="n">RWMapper</span><span class="p">)</span> <span class="k">else</span> <span class="mi">0</span>
+        <span class="n">strengthIndex</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">magnet</span><span class="o">.</span><span class="n">strength</span><span class="o">.</span><span class="n">index</span><span class="p">()</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">magnet</span><span class="o">.</span><span class="n">strength</span><span class="p">,</span> <span class="n">abstract</span><span class="o">.</span><span class="n">RWMapper</span><span class="p">)</span>
+            <span class="k">else</span> <span class="mi">0</span>
+        <span class="p">)</span>
         <span class="k">if</span> <span class="n">magnet</span><span class="o">.</span><span class="n">model</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">__models</span><span class="p">:</span>
             <span class="n">index</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__models</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">__models</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">magnet</span><span class="o">.</span><span class="n">model</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">__modelToMagnet</span><span class="o">.</span><span class="n">append</span><span class="p">([(</span><span class="bp">self</span><span class="o">.</span><span class="n">__nbMagnet</span><span class="p">,</span><span class="n">strengthIndex</span><span class="p">)])</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">__modelToMagnet</span><span class="o">.</span><span class="n">append</span><span class="p">([(</span><span class="bp">self</span><span class="o">.</span><span class="n">__nbMagnet</span><span class="p">,</span> <span class="n">strengthIndex</span><span class="p">)])</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_devs</span><span class="o">.</span><span class="n">add_devices</span><span class="p">(</span><span class="n">magnet</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">get_devices</span><span class="p">())</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">index</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__models</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">magnet</span><span class="o">.</span><span class="n">model</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">__modelToMagnet</span><span class="p">[</span><span class="n">index</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">__nbMagnet</span><span class="p">,</span><span class="n">strengthIndex</span><span class="p">))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">__modelToMagnet</span><span class="p">[</span><span class="n">index</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">__nbMagnet</span><span class="p">,</span> <span class="n">strengthIndex</span><span class="p">))</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__nbMagnet</span> <span class="o">+=</span> <span class="mi">1</span>
 
 <div class="viewcode-block" id="CSStrengthScalarAggregator.set">
 <a class="viewcode-back" href="../../../modules/control.html#pyaml.control.abstract_impl.CSStrengthScalarAggregator.set">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">set</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">]):</span>
-        <span class="n">allHardwareValues</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_devs</span><span class="o">.</span><span class="n">get</span><span class="p">()</span> <span class="c1"># Read all hardware setpoints</span>
+        <span class="n">allHardwareValues</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_devs</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>  <span class="c1"># Read all hardware setpoints</span>
         <span class="n">newHardwareValues</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nb_device</span><span class="p">())</span>
         <span class="n">hardwareIndex</span> <span class="o">=</span> <span class="mi">0</span>
-        <span class="k">for</span> <span class="n">modelIndex</span><span class="p">,</span><span class="n">model</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__models</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">modelIndex</span><span class="p">,</span> <span class="n">model</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__models</span><span class="p">):</span>
             <span class="n">nbDev</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">get_devices</span><span class="p">())</span>
-            <span class="n">mStrengths</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">compute_strengths</span><span class="p">(</span> <span class="n">allHardwareValues</span><span class="p">[</span><span class="n">hardwareIndex</span><span class="p">:</span><span class="n">hardwareIndex</span><span class="o">+</span><span class="n">nbDev</span><span class="p">]</span> <span class="p">)</span>
-            <span class="k">for</span> <span class="p">(</span><span class="n">valueIdx</span><span class="p">,</span><span class="n">strengthIdx</span><span class="p">)</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">__modelToMagnet</span><span class="p">[</span><span class="n">modelIndex</span><span class="p">]:</span>
+            <span class="n">mStrengths</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">compute_strengths</span><span class="p">(</span>
+                <span class="n">allHardwareValues</span><span class="p">[</span><span class="n">hardwareIndex</span> <span class="p">:</span> <span class="n">hardwareIndex</span> <span class="o">+</span> <span class="n">nbDev</span><span class="p">]</span>
+            <span class="p">)</span>
+            <span class="k">for</span> <span class="n">valueIdx</span><span class="p">,</span> <span class="n">strengthIdx</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">__modelToMagnet</span><span class="p">[</span><span class="n">modelIndex</span><span class="p">]:</span>
                 <span class="n">mStrengths</span><span class="p">[</span><span class="n">strengthIdx</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span><span class="p">[</span><span class="n">valueIdx</span><span class="p">]</span>
-            <span class="n">newHardwareValues</span><span class="p">[</span><span class="n">hardwareIndex</span><span class="p">:</span><span class="n">hardwareIndex</span><span class="o">+</span><span class="n">nbDev</span><span class="p">]</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">compute_hardware_values</span><span class="p">(</span><span class="n">mStrengths</span><span class="p">)</span>
+            <span class="n">newHardwareValues</span><span class="p">[</span><span class="n">hardwareIndex</span> <span class="p">:</span> <span class="n">hardwareIndex</span> <span class="o">+</span> <span class="n">nbDev</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="n">model</span><span class="o">.</span><span class="n">compute_hardware_values</span><span class="p">(</span><span class="n">mStrengths</span><span class="p">)</span>
+            <span class="p">)</span>
             <span class="n">hardwareIndex</span> <span class="o">+=</span> <span class="n">nbDev</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_devs</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">newHardwareValues</span><span class="p">)</span></div>
 
@@ -611,13 +625,15 @@
 <div class="viewcode-block" id="CSStrengthScalarAggregator.get">
 <a class="viewcode-back" href="../../../modules/control.html#pyaml.control.abstract_impl.CSStrengthScalarAggregator.get">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">]:</span>
-        <span class="n">allHardwareValues</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_devs</span><span class="o">.</span><span class="n">get</span><span class="p">()</span> <span class="c1"># Read all hardware setpoints</span>
+        <span class="n">allHardwareValues</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_devs</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>  <span class="c1"># Read all hardware setpoints</span>
         <span class="n">allStrength</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__nbMagnet</span><span class="p">)</span>
         <span class="n">hardwareIndex</span> <span class="o">=</span> <span class="mi">0</span>
-        <span class="k">for</span> <span class="n">modelIndex</span><span class="p">,</span><span class="n">model</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__models</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">modelIndex</span><span class="p">,</span> <span class="n">model</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__models</span><span class="p">):</span>
             <span class="n">nbDev</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">get_devices</span><span class="p">())</span>
-            <span class="n">mStrengths</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">compute_strengths</span><span class="p">(</span> <span class="n">allHardwareValues</span><span class="p">[</span><span class="n">hardwareIndex</span><span class="p">:</span><span class="n">hardwareIndex</span><span class="o">+</span><span class="n">nbDev</span><span class="p">]</span> <span class="p">)</span>
-            <span class="k">for</span> <span class="p">(</span><span class="n">valueIdx</span><span class="p">,</span><span class="n">strengthIdx</span><span class="p">)</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">__modelToMagnet</span><span class="p">[</span><span class="n">modelIndex</span><span class="p">]:</span>
+            <span class="n">mStrengths</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">compute_strengths</span><span class="p">(</span>
+                <span class="n">allHardwareValues</span><span class="p">[</span><span class="n">hardwareIndex</span> <span class="p">:</span> <span class="n">hardwareIndex</span> <span class="o">+</span> <span class="n">nbDev</span><span class="p">]</span>
+            <span class="p">)</span>
+            <span class="k">for</span> <span class="n">valueIdx</span><span class="p">,</span> <span class="n">strengthIdx</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">__modelToMagnet</span><span class="p">[</span><span class="n">modelIndex</span><span class="p">]:</span>
                 <span class="n">allStrength</span><span class="p">[</span><span class="n">valueIdx</span><span class="p">]</span> <span class="o">=</span> <span class="n">mStrengths</span><span class="p">[</span><span class="n">strengthIdx</span><span class="p">]</span>
             <span class="n">hardwareIndex</span> <span class="o">+=</span> <span class="n">nbDev</span>
         <span class="k">return</span> <span class="n">allStrength</span></div>
@@ -626,13 +642,15 @@
 <div class="viewcode-block" id="CSStrengthScalarAggregator.readback">
 <a class="viewcode-back" href="../../../modules/control.html#pyaml.control.abstract_impl.CSStrengthScalarAggregator.readback">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">readback</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">:</span>
-        <span class="n">allHardwareValues</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_devs</span><span class="o">.</span><span class="n">readback</span><span class="p">()</span> <span class="c1"># Read all hardware readback</span>
+        <span class="n">allHardwareValues</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_devs</span><span class="o">.</span><span class="n">readback</span><span class="p">()</span>  <span class="c1"># Read all hardware readback</span>
         <span class="n">allStrength</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__nbMagnet</span><span class="p">)</span>
         <span class="n">hardwareIndex</span> <span class="o">=</span> <span class="mi">0</span>
-        <span class="k">for</span> <span class="n">modelIndex</span><span class="p">,</span><span class="n">model</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__models</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">modelIndex</span><span class="p">,</span> <span class="n">model</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__models</span><span class="p">):</span>
             <span class="n">nbDev</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">get_devices</span><span class="p">())</span>
-            <span class="n">mStrengths</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">compute_strengths</span><span class="p">(</span> <span class="n">allHardwareValues</span><span class="p">[</span><span class="n">hardwareIndex</span><span class="p">:</span><span class="n">hardwareIndex</span><span class="o">+</span><span class="n">nbDev</span><span class="p">]</span> <span class="p">)</span>
-            <span class="k">for</span> <span class="p">(</span><span class="n">valueIdx</span><span class="p">,</span><span class="n">strengthIdx</span><span class="p">)</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">__modelToMagnet</span><span class="p">[</span><span class="n">modelIndex</span><span class="p">]:</span>
+            <span class="n">mStrengths</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">compute_strengths</span><span class="p">(</span>
+                <span class="n">allHardwareValues</span><span class="p">[</span><span class="n">hardwareIndex</span> <span class="p">:</span> <span class="n">hardwareIndex</span> <span class="o">+</span> <span class="n">nbDev</span><span class="p">]</span>
+            <span class="p">)</span>
+            <span class="k">for</span> <span class="n">valueIdx</span><span class="p">,</span> <span class="n">strengthIdx</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">__modelToMagnet</span><span class="p">[</span><span class="n">modelIndex</span><span class="p">]:</span>
                 <span class="n">allStrength</span><span class="p">[</span><span class="n">valueIdx</span><span class="p">]</span> <span class="o">=</span> <span class="n">mStrengths</span><span class="p">[</span><span class="n">strengthIdx</span><span class="p">]</span>
             <span class="n">hardwareIndex</span> <span class="o">+=</span> <span class="n">nbDev</span>
         <span class="k">return</span> <span class="n">allStrength</span></div>
@@ -646,16 +664,18 @@
 
 
 
-<span class="c1">#------------------------------------------------------------------------------</span>
+<span class="c1"># ------------------------------------------------------------------------------</span>
+
 
 <div class="viewcode-block" id="RWHardwareScalar">
 <a class="viewcode-back" href="../../../modules/control.html#pyaml.control.abstract_impl.RWHardwareScalar">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">RWHardwareScalar</span><span class="p">(</span><span class="n">abstract</span><span class="o">.</span><span class="n">ReadWriteFloatScalar</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Class providing read write access to a magnet of a control system (in hardware units)</span>
+<span class="sd">    Class providing read write access to a magnet</span>
+<span class="sd">    of a control system (in hardware units)</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">model</span><span class="p">:</span><span class="n">MagnetModel</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">model</span><span class="p">:</span> <span class="n">MagnetModel</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__model</span> <span class="o">=</span> <span class="n">model</span>
 
 <div class="viewcode-block" id="RWHardwareScalar.get">
@@ -663,10 +683,10 @@
     <span class="k">def</span><span class="w"> </span><span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__model</span><span class="o">.</span><span class="n">read_hardware_values</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span></div>
 
-    
+
 <div class="viewcode-block" id="RWHardwareScalar.set">
 <a class="viewcode-back" href="../../../modules/control.html#pyaml.control.abstract_impl.RWHardwareScalar.set">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">set</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span><span class="nb">float</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">set</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="nb">float</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__model</span><span class="o">.</span><span class="n">send_hardware_values</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">value</span><span class="p">]))</span></div>
 
 
@@ -683,7 +703,9 @@
 </div>
 
 
-<span class="c1">#------------------------------------------------------------------------------</span>
+
+<span class="c1"># ------------------------------------------------------------------------------</span>
+
 
 <div class="viewcode-block" id="RWStrengthScalar">
 <a class="viewcode-back" href="../../../modules/control.html#pyaml.control.abstract_impl.RWStrengthScalar">[docs]</a>
@@ -692,7 +714,7 @@
 <span class="sd">    Class providing read write access to a strength of a control system</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">model</span><span class="p">:</span><span class="n">MagnetModel</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">model</span><span class="p">:</span> <span class="n">MagnetModel</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__model</span> <span class="o">=</span> <span class="n">model</span>
 
     <span class="c1"># Gets the value</span>
@@ -706,7 +728,7 @@
     <span class="c1"># Sets the value</span>
 <div class="viewcode-block" id="RWStrengthScalar.set">
 <a class="viewcode-back" href="../../../modules/control.html#pyaml.control.abstract_impl.RWStrengthScalar.set">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">set</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span><span class="nb">float</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">set</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="nb">float</span><span class="p">):</span>
         <span class="n">current</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__model</span><span class="o">.</span><span class="n">compute_hardware_values</span><span class="p">([</span><span class="n">value</span><span class="p">])</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__model</span><span class="o">.</span><span class="n">send_hardware_values</span><span class="p">(</span><span class="n">current</span><span class="p">)</span></div>
 
@@ -714,7 +736,7 @@
     <span class="c1"># Sets the value and wait that the read value reach the setpoint</span>
 <div class="viewcode-block" id="RWStrengthScalar.set_and_wait">
 <a class="viewcode-back" href="../../../modules/control.html#pyaml.control.abstract_impl.RWStrengthScalar.set_and_wait">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">set_and_wait</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span><span class="nb">float</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">set_and_wait</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="nb">float</span><span class="p">):</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;Not implemented yet.&quot;</span><span class="p">)</span></div>
 
 
@@ -726,15 +748,19 @@
 </div>
 
 
-<span class="c1">#------------------------------------------------------------------------------</span>
+
+<span class="c1"># ------------------------------------------------------------------------------</span>
+
 
 <div class="viewcode-block" id="RWHardwareArray">
 <a class="viewcode-back" href="../../../modules/control.html#pyaml.control.abstract_impl.RWHardwareArray">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">RWHardwareArray</span><span class="p">(</span><span class="n">abstract</span><span class="o">.</span><span class="n">ReadWriteFloatArray</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Class providing read write access to a magnet array of a control system (in hardware units)</span>
+<span class="sd">    Class providing read write access to a magnet array</span>
+<span class="sd">    of a control system (in hardware units)</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">model</span><span class="p">:</span><span class="n">MagnetModel</span><span class="p">):</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">model</span><span class="p">:</span> <span class="n">MagnetModel</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__model</span> <span class="o">=</span> <span class="n">model</span>
 
     <span class="c1"># Gets the value</span>
@@ -747,16 +773,15 @@
     <span class="c1"># Sets the value</span>
 <div class="viewcode-block" id="RWHardwareArray.set">
 <a class="viewcode-back" href="../../../modules/control.html#pyaml.control.abstract_impl.RWHardwareArray.set">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">set</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">set</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__model</span><span class="o">.</span><span class="n">send_hardware_values</span><span class="p">(</span><span class="n">value</span><span class="p">)</span></div>
 
-        
+
     <span class="c1"># Sets the value and waits that the read value reach the setpoint</span>
 <div class="viewcode-block" id="RWHardwareArray.set_and_wait">
 <a class="viewcode-back" href="../../../modules/control.html#pyaml.control.abstract_impl.RWHardwareArray.set_and_wait">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">set_and_wait</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">set_and_wait</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">):</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;Not implemented yet.&quot;</span><span class="p">)</span></div>
-
 
 
     <span class="c1"># Gets the unit of the value</span>
@@ -767,7 +792,9 @@
 </div>
 
 
-<span class="c1">#------------------------------------------------------------------------------</span>
+
+<span class="c1"># ------------------------------------------------------------------------------</span>
+
 
 <div class="viewcode-block" id="RWStrengthArray">
 <a class="viewcode-back" href="../../../modules/control.html#pyaml.control.abstract_impl.RWStrengthArray">[docs]</a>
@@ -775,7 +802,8 @@
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Class providing read write access to magnet strengths of a control system</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">model</span><span class="p">:</span><span class="n">MagnetModel</span><span class="p">):</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">model</span><span class="p">:</span> <span class="n">MagnetModel</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__model</span> <span class="o">=</span> <span class="n">model</span>
 
     <span class="c1"># Gets the value</span>
@@ -790,7 +818,7 @@
     <span class="c1"># Sets the value</span>
 <div class="viewcode-block" id="RWStrengthArray.set">
 <a class="viewcode-back" href="../../../modules/control.html#pyaml.control.abstract_impl.RWStrengthArray.set">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">set</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">set</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">):</span>
         <span class="n">cur</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__model</span><span class="o">.</span><span class="n">compute_hardware_values</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__model</span><span class="o">.</span><span class="n">send_hardware_values</span><span class="p">(</span><span class="n">cur</span><span class="p">)</span></div>
 
@@ -798,7 +826,7 @@
     <span class="c1"># Sets the value and waits that the read value reach the setpoint</span>
 <div class="viewcode-block" id="RWStrengthArray.set_and_wait">
 <a class="viewcode-back" href="../../../modules/control.html#pyaml.control.abstract_impl.RWStrengthArray.set_and_wait">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">set_and_wait</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">set_and_wait</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">):</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;Not implemented yet.&quot;</span><span class="p">)</span></div>
 
 
@@ -810,7 +838,9 @@
 </div>
 
 
-<span class="c1">#------------------------------------------------------------------------------</span>
+
+<span class="c1"># ------------------------------------------------------------------------------</span>
+
 
 <div class="viewcode-block" id="RBpmArray">
 <a class="viewcode-back" href="../../../modules/control.html#pyaml.control.abstract_impl.RBpmArray">[docs]</a>
@@ -818,7 +848,8 @@
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Class providing read access to a BPM array of a control system</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">model</span><span class="p">:</span><span class="n">BPMModel</span><span class="p">):</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">model</span><span class="p">:</span> <span class="n">BPMModel</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__model</span> <span class="o">=</span> <span class="n">model</span>
 
     <span class="c1"># Gets the value</span>
@@ -836,7 +867,9 @@
 </div>
 
 
-<span class="c1">#------------------------------------------------------------------------------</span>
+
+<span class="c1"># ------------------------------------------------------------------------------</span>
+
 
 <div class="viewcode-block" id="RWBpmTiltScalar">
 <a class="viewcode-back" href="../../../modules/control.html#pyaml.control.abstract_impl.RWBpmTiltScalar">[docs]</a>
@@ -844,7 +877,8 @@
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Class providing read access to a BPM tilt of a control system</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">model</span><span class="p">:</span><span class="n">BPMModel</span><span class="p">):</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">model</span><span class="p">:</span> <span class="n">BPMModel</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__model</span> <span class="o">=</span> <span class="n">model</span>
 
     <span class="c1"># Gets the value</span>
@@ -854,11 +888,12 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__model</span><span class="o">.</span><span class="n">read_tilt</span><span class="p">()</span></div>
 
 
-    <span class="k">def</span><span class="w"> </span><span class="nf">set</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span><span class="nb">float</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">set</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="nb">float</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__model</span><span class="o">.</span><span class="n">set_tilt</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">set_and_wait</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">]):</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;Not implemented yet.&quot;</span><span class="p">)</span>
+
     <span class="c1"># Gets the unit of the value</span>
 <div class="viewcode-block" id="RWBpmTiltScalar.unit">
 <a class="viewcode-back" href="../../../modules/control.html#pyaml.control.abstract_impl.RWBpmTiltScalar.unit">[docs]</a>
@@ -867,7 +902,9 @@
 </div>
 
 
-<span class="c1">#------------------------------------------------------------------------------</span>
+
+<span class="c1"># ------------------------------------------------------------------------------</span>
+
 
 <div class="viewcode-block" id="RWBpmOffsetArray">
 <a class="viewcode-back" href="../../../modules/control.html#pyaml.control.abstract_impl.RWBpmOffsetArray">[docs]</a>
@@ -875,6 +912,7 @@
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Class providing read write access to a BPM offset of a control system</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">model</span><span class="p">:</span> <span class="n">BPMModel</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__model</span> <span class="o">=</span> <span class="n">model</span>
 
@@ -889,12 +927,14 @@
 <div class="viewcode-block" id="RWBpmOffsetArray.set">
 <a class="viewcode-back" href="../../../modules/control.html#pyaml.control.abstract_impl.RWBpmOffsetArray.set">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">set</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">]):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">__model</span><span class="o">.</span><span class="n">set_offset</span><span class="p">(</span><span class="n">value</span><span class="p">)</span> </div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__model</span><span class="o">.</span><span class="n">set_offset</span><span class="p">(</span><span class="n">value</span><span class="p">)</span></div>
+
 
 <div class="viewcode-block" id="RWBpmOffsetArray.set_and_wait">
 <a class="viewcode-back" href="../../../modules/control.html#pyaml.control.abstract_impl.RWBpmOffsetArray.set_and_wait">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">set_and_wait</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">]):</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;Not implemented yet.&quot;</span><span class="p">)</span></div>
+
 
     <span class="c1"># Gets the unit of the value</span>
 <div class="viewcode-block" id="RWBpmOffsetArray.unit">
@@ -904,36 +944,39 @@
 </div>
 
 
-<span class="c1">#------------------------------------------------------------------------------</span>
+
+<span class="c1"># ------------------------------------------------------------------------------</span>
+
 
 <div class="viewcode-block" id="RWRFVoltageScalar">
 <a class="viewcode-back" href="../../../modules/control.html#pyaml.control.abstract_impl.RWRFVoltageScalar">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">RWRFVoltageScalar</span><span class="p">(</span><span class="n">abstract</span><span class="o">.</span><span class="n">ReadWriteFloatScalar</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Class providing read write access to cavity voltage for a transmitter of a control system.</span>
+<span class="sd">    Class providing read write access to cavity voltage</span>
+<span class="sd">    for a transmitter of a control system.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">transmitter</span><span class="p">:</span><span class="n">RFTransmitter</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">transmitter</span><span class="p">:</span> <span class="n">RFTransmitter</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__transmitter</span> <span class="o">=</span> <span class="n">transmitter</span>
 
 <div class="viewcode-block" id="RWRFVoltageScalar.get">
 <a class="viewcode-back" href="../../../modules/control.html#pyaml.control.abstract_impl.RWRFVoltageScalar.get">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>        
+    <span class="k">def</span><span class="w"> </span><span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__transmitter</span><span class="o">.</span><span class="n">_cfg</span><span class="o">.</span><span class="n">voltage</span><span class="o">.</span><span class="n">get</span><span class="p">()</span></div>
 
-    
+
 <div class="viewcode-block" id="RWRFVoltageScalar.set">
 <a class="viewcode-back" href="../../../modules/control.html#pyaml.control.abstract_impl.RWRFVoltageScalar.set">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">set</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">value</span><span class="p">:</span><span class="nb">float</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">set</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="nb">float</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__transmitter</span><span class="o">.</span><span class="n">_cfg</span><span class="o">.</span><span class="n">voltage</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">value</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="RWRFVoltageScalar.set_and_wait">
 <a class="viewcode-back" href="../../../modules/control.html#pyaml.control.abstract_impl.RWRFVoltageScalar.set_and_wait">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">set_and_wait</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span><span class="nb">float</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">set_and_wait</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="nb">float</span><span class="p">):</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;Not implemented yet.&quot;</span><span class="p">)</span></div>
 
-        
+
 <div class="viewcode-block" id="RWRFVoltageScalar.unit">
 <a class="viewcode-back" href="../../../modules/control.html#pyaml.control.abstract_impl.RWRFVoltageScalar.unit">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">unit</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
@@ -941,44 +984,49 @@
 </div>
 
 
-<span class="c1">#------------------------------------------------------------------------------</span>
+
+<span class="c1"># ------------------------------------------------------------------------------</span>
+
 
 <div class="viewcode-block" id="RWRFPhaseScalar">
 <a class="viewcode-back" href="../../../modules/control.html#pyaml.control.abstract_impl.RWRFPhaseScalar">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">RWRFPhaseScalar</span><span class="p">(</span><span class="n">abstract</span><span class="o">.</span><span class="n">ReadWriteFloatScalar</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Class providing read write access to cavity phase for a transmitter of a control system.</span>
+<span class="sd">    Class providing read write access to cavity phase</span>
+<span class="sd">    for a transmitter of a control system.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">transmitter</span><span class="p">:</span><span class="n">RFTransmitter</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">transmitter</span><span class="p">:</span> <span class="n">RFTransmitter</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__transmitter</span> <span class="o">=</span> <span class="n">transmitter</span>
 
 <div class="viewcode-block" id="RWRFPhaseScalar.get">
 <a class="viewcode-back" href="../../../modules/control.html#pyaml.control.abstract_impl.RWRFPhaseScalar.get">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>        
+    <span class="k">def</span><span class="w"> </span><span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__transmitter</span><span class="o">.</span><span class="n">_cfg</span><span class="o">.</span><span class="n">phase</span><span class="o">.</span><span class="n">get</span><span class="p">()</span></div>
 
-    
+
 <div class="viewcode-block" id="RWRFPhaseScalar.set">
 <a class="viewcode-back" href="../../../modules/control.html#pyaml.control.abstract_impl.RWRFPhaseScalar.set">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">set</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">value</span><span class="p">:</span><span class="nb">float</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">set</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="nb">float</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__transmitter</span><span class="o">.</span><span class="n">_cfg</span><span class="o">.</span><span class="n">phase</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">value</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="RWRFPhaseScalar.set_and_wait">
 <a class="viewcode-back" href="../../../modules/control.html#pyaml.control.abstract_impl.RWRFPhaseScalar.set_and_wait">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">set_and_wait</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span><span class="nb">float</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">set_and_wait</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="nb">float</span><span class="p">):</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;Not implemented yet.&quot;</span><span class="p">)</span></div>
 
-        
+
 <div class="viewcode-block" id="RWRFPhaseScalar.unit">
 <a class="viewcode-back" href="../../../modules/control.html#pyaml.control.abstract_impl.RWRFPhaseScalar.unit">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">unit</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__transmitter</span><span class="o">.</span><span class="n">_cfg</span><span class="o">.</span><span class="n">phase</span><span class="o">.</span><span class="n">unit</span><span class="p">()</span></div>
 </div>
 
-    
-<span class="c1">#------------------------------------------------------------------------------</span>
+
+
+<span class="c1"># ------------------------------------------------------------------------------</span>
+
 
 <div class="viewcode-block" id="RWRFFrequencyScalar">
 <a class="viewcode-back" href="../../../modules/control.html#pyaml.control.abstract_impl.RWRFFrequencyScalar">[docs]</a>
@@ -987,7 +1035,7 @@
 <span class="sd">    Class providing read write access to RF frequency of a control system.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rf</span><span class="p">:</span><span class="n">RFPlant</span> <span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rf</span><span class="p">:</span> <span class="n">RFPlant</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__rf</span> <span class="o">=</span> <span class="n">rf</span>
 
 <div class="viewcode-block" id="RWRFFrequencyScalar.get">
@@ -999,13 +1047,13 @@
 
 <div class="viewcode-block" id="RWRFFrequencyScalar.set">
 <a class="viewcode-back" href="../../../modules/control.html#pyaml.control.abstract_impl.RWRFFrequencyScalar.set">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">set</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">value</span><span class="p">:</span><span class="nb">float</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">set</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="nb">float</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__rf</span><span class="o">.</span><span class="n">_cfg</span><span class="o">.</span><span class="n">masterclock</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">value</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="RWRFFrequencyScalar.set_and_wait">
 <a class="viewcode-back" href="../../../modules/control.html#pyaml.control.abstract_impl.RWRFFrequencyScalar.set_and_wait">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">set_and_wait</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span><span class="nb">float</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">set_and_wait</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="nb">float</span><span class="p">):</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;Not implemented yet.&quot;</span><span class="p">)</span></div>
 
 
@@ -1016,7 +1064,9 @@
 </div>
 
 
-<span class="c1">#------------------------------------------------------------------------------</span>
+
+<span class="c1"># ------------------------------------------------------------------------------</span>
+
 
 <div class="viewcode-block" id="RBetatronTuneArray">
 <a class="viewcode-back" href="../../../modules/control.html#pyaml.control.abstract_impl.RBetatronTuneArray">[docs]</a>
@@ -1032,8 +1082,12 @@
 <a class="viewcode-back" href="../../../modules/control.html#pyaml.control.abstract_impl.RBetatronTuneArray.get">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">NDArray</span><span class="p">:</span>
         <span class="c1"># Return horizontal and vertical betatron tunes as a NumPy array</span>
-        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">__tune_monitor</span><span class="o">.</span><span class="n">_cfg</span><span class="o">.</span><span class="n">tune_h</span><span class="o">.</span><span class="n">get</span><span class="p">(),</span> 
-               <span class="bp">self</span><span class="o">.</span><span class="n">__tune_monitor</span><span class="o">.</span><span class="n">_cfg</span><span class="o">.</span><span class="n">tune_v</span><span class="o">.</span><span class="n">get</span><span class="p">()])</span></div>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
+            <span class="p">[</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">__tune_monitor</span><span class="o">.</span><span class="n">_cfg</span><span class="o">.</span><span class="n">tune_h</span><span class="o">.</span><span class="n">get</span><span class="p">(),</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">__tune_monitor</span><span class="o">.</span><span class="n">_cfg</span><span class="o">.</span><span class="n">tune_v</span><span class="o">.</span><span class="n">get</span><span class="p">(),</span>
+            <span class="p">]</span>
+        <span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="RBetatronTuneArray.unit">
@@ -1041,7 +1095,6 @@
     <span class="k">def</span><span class="w"> </span><span class="nf">unit</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__tune_monitor</span><span class="o">.</span><span class="n">_cfg</span><span class="o">.</span><span class="n">tune_v</span><span class="o">.</span><span class="n">unit</span><span class="p">()</span></div>
 </div>
-
 
 </pre></div>
 
