@@ -1,5 +1,6 @@
 from ..lattice.polynom_info import PolynomInfo
-from .magnet import Magnet, MagnetConfigModel
+from .corrector import RWCorrectorAngle
+from ..common import abstract
 
 # Define the main class name for this module
 PYAMLCLASS = "VCorrector"
@@ -19,3 +20,13 @@ class VCorrector(Magnet):
             cfg.model if hasattr(cfg, "model") else None,
         )
         self._cfg = cfg
+        self.__angle = RWCorrectorAngle(self)
+
+    @property
+    def angle(self) -> abstract.ReadWriteFloatScalar:
+        """
+        Set the kick angle.
+        """
+        return self.ange
+
+

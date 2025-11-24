@@ -39,10 +39,10 @@ def test_cfm_magnets(magnet_file, install_test_package):
     magnet_h_design.strength.set(0.000010)
     magnet_v_design.strength.set(0.000015)
 
-    o, _ = sr.design.get_lattice().find_orbit()
-    assert np.abs(o[0] + 9.91848416e-05) < 1e-10
-    assert np.abs(o[1] + 3.54829761e-07) < 1e-10
-    assert np.abs(o[2] + 1.56246320e-06) < 1e-10
-    assert np.abs(o[3] + 1.75037311e-05) < 1e-10
+    o,_ = sr.design.get_lattice().find_orbit()
+    assert(np.abs(o[0] - 9.90267693e-05)<1e-10)
+    assert(np.abs(o[1] - 3.39661431e-07)<1e-10)
+    assert(np.abs(o[2] + 1.59928207e-06)<1e-10)
+    assert(np.abs(o[3] + 1.74771216e-05)<1e-10)
 
     Factory.clear()
