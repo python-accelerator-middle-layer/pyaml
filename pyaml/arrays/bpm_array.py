@@ -1,40 +1,39 @@
-from ..common.abstract import ReadFloatArray
+import numpy as np
+
 from ..bpm.bpm import BPM
+from ..common.abstract import ReadFloatArray
 from ..control.deviceaccesslist import DeviceAccessList
 from .element_array import ElementArray
 
-import numpy as np
 
 class RWBPMPosition(ReadFloatArray):
-
-    def __init__(self, name:str, bpms:list[BPM]):
+    def __init__(self, name: str, bpms: list[BPM]):
         self.__bpms = bpms
         self.__name = name
-        self.__aggregator:DeviceAccessList = None
+        self.__aggregator: DeviceAccessList = None
 
     # Gets the values
     def get(self) -> np.array:
         if not self.__aggregator:
             return np.array([b.positions.get() for b in self.__bpms])
-        else:  
-            return self.__aggregator.get().reshape(len(self.__bpms),2)
+        else:
+            return self.__aggregator.get().reshape(len(self.__bpms), 2)
 
     # Gets the unit of the values
     def unit(self) -> list[str]:
         return [b.positions.unit() for b in self.__bpms]
 
     # Set the aggregator (Control system only)
-    def set_aggregator(self,agg:DeviceAccessList):
+    def set_aggregator(self, agg: DeviceAccessList):
         self.__aggregator = agg
 
 
 class RWBPMSinglePosition(ReadFloatArray):
-
-    def __init__(self, name:str, bpms:list[BPM],idx: int):
+    def __init__(self, name: str, bpms: list[BPM], idx: int):
         self.__bpms = bpms
         self.__name = name
         self.__idx = idx
-        self.__aggregator:DeviceAccessList = None
+        self.__aggregator: DeviceAccessList = None
 
     # Gets the values
     def get(self) -> np.array:
@@ -48,9 +47,8 @@ class RWBPMSinglePosition(ReadFloatArray):
         return [b.positions.unit() for b in self.__bpms]
 
     # Set the aggregator (Control system only)
-    def set_aggregator(self,agg:DeviceAccessList):
+    def set_aggregator(self, agg: DeviceAccessList):
         self.__aggregator = agg
-
 
 
 class BPMArray(ElementArray):
@@ -58,7 +56,7 @@ class BPMArray(ElementArray):
     Class that implements access to a BPM array
     """
 
-    def __init__(self,arrayName:str,bpms:list[BPM],use_aggregator = True):
+    def __init__(self, arrayName: str, bpms: list[BPM], use_aggregator=True):
         """
         Construct a BPM array
 
@@ -67,18 +65,19 @@ class BPMArray(ElementArray):
         arrayName : str
             Array name
         bpms: list[BPM]
-            BPM list, all elements must be attached to the same instance of 
+            BPM list, all elements must be attached to the same instance of
             either a Simulator or a ControlSystem.
         use_aggregator : bool
-            Use aggregator to increase performance by using paralell access to underlying devices.
+            Use aggregator to increase performance by using paralell
+            access to underlying devices.
         """
-        super().__init__(arrayName,bpms,use_aggregator)
+        super().__init__(arrayName, bpms, use_aggregator)
 
-        self.__hvpos = RWBPMPosition(arrayName,bpms)
-        self.__hpos = RWBPMSinglePosition(arrayName,bpms,0)
-        self.__vpos = RWBPMSinglePosition(arrayName,bpms,1)
+        self.__hvpos = RWBPMPosition(arrayName, bpms)
+        self.__hpos = RWBPMSinglePosition(arrayName, bpms, 0)
+        self.__vpos = RWBPMSinglePosition(arrayName, bpms, 1)
 
-        if use_aggregator:    
+        if use_aggregator:
             aggs = self.get_peer().create_bpm_aggregators(bpms)
             self.__hvpos.set_aggregator(aggs[0])
             self.__hpos.set_aggregator(aggs[1])
@@ -104,8 +103,3 @@ class BPMArray(ElementArray):
         Give access to bpm V posttions of each bpm of this array
         """
         return self.__vpos
-
-    
-
-
-    

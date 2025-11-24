@@ -14,8 +14,8 @@ __author_email__ = ""
 
 import logging.config
 import os
-from pyaml.common.exception import PyAMLException
-from pyaml.common.exception import PyAMLConfigException
+
+from pyaml.common.exception import PyAMLConfigException, PyAMLException
 
 __all__ = [__version__, PyAMLException, PyAMLConfigException]
 
@@ -27,5 +27,5 @@ if os.path.exists(config_file):
 
 logger = logging.getLogger("pyaml")
 level = os.getenv("PYAML_LOG_LEVEL", "").upper()
-if len(level)>0:
+if len(level) > 0:
     logger.setLevel(getattr(logging, level, logging.WARNING))

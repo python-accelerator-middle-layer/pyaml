@@ -1,21 +1,24 @@
-from pydantic import BaseModel,ConfigDict
+from pydantic import BaseModel, ConfigDict
+
 from pyaml.control.deviceaccess import DeviceAccess
 from pyaml.control.readback_value import Value
 
-PYAMLCLASS : str = "Attribute"
+PYAMLCLASS: str = "Attribute"
+
 
 class ConfigModel(BaseModel):
-
-    model_config = ConfigDict(arbitrary_types_allowed=True,extra="forbid")
+    model_config = ConfigDict(arbitrary_types_allowed=True, extra="forbid")
 
     attribute: str
     unit: str = ""
 
+
 class Attribute(DeviceAccess):
     """
-    Class that implements a default device class that just prints out 
+    Class that implements a default device class that just prints out
     values (Debugging purpose)
     """
+
     def __init__(self, cfg: ConfigModel):
         super().__init__()
         self._cfg = cfg
@@ -46,4 +49,4 @@ class Attribute(DeviceAccess):
         return self._unit
 
     def __repr__(self):
-       return repr(self._cfg).replace("ConfigModel",self.__class__.__name__)
+        return repr(self._cfg).replace("ConfigModel", self.__class__.__name__)
