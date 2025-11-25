@@ -10,7 +10,7 @@ controls:
     tango_host: ebs-simu-3:10000
     name: live
 data_folder: /data/store
-devices:    
+devices:
   - type: pyaml.rf.rf_plant
     name: RF
     masterclock:

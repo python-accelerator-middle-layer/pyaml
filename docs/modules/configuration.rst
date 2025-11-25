@@ -6,7 +6,7 @@ Configuration
 
 .. automodule:: pyaml.configuration.factory
     :members:
-    
+
 .. automodule:: pyaml.configuration.matrix
     :members:
 
@@ -18,7 +18,7 @@ Configuration
 
 .. automodule:: pyaml.configuration.matrix
     :members:
-    
+
 .. automodule:: pyaml.configuration.csvmatrix
     :members:
 
