@@ -523,12 +523,13 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">__model</span> <span class="o">=</span> <span class="n">model</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__elements</span> <span class="o">=</span> <span class="n">elements</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__poly</span> <span class="o">=</span> <span class="n">elements</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="fm">__getattribute__</span><span class="p">(</span><span class="n">poly</span><span class="o">.</span><span class="n">attName</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__sign</span> <span class="o">=</span> <span class="n">poly</span><span class="o">.</span><span class="n">sign</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__polyIdx</span> <span class="o">=</span> <span class="n">poly</span><span class="o">.</span><span class="n">index</span>
 
 <div class="viewcode-block" id="RWHardwareScalar.get">
 <a class="viewcode-back" href="../../../modules/lattice.html#pyaml.lattice.abstract_impl.RWHardwareScalar.get">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
-        <span class="n">s</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__poly</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">__polyIdx</span><span class="p">]</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">__elements</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">Length</span>
+        <span class="n">s</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__poly</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">__polyIdx</span><span class="p">]</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">__sign</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">__elements</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">Length</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__model</span><span class="o">.</span><span class="n">compute_hardware_values</span><span class="p">([</span><span class="n">s</span><span class="p">])[</span><span class="mi">0</span><span class="p">]</span></div>
 
 
@@ -536,7 +537,7 @@
 <a class="viewcode-back" href="../../../modules/lattice.html#pyaml.lattice.abstract_impl.RWHardwareScalar.set">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">set</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="nb">float</span><span class="p">):</span>
         <span class="n">s</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__model</span><span class="o">.</span><span class="n">compute_strengths</span><span class="p">([</span><span class="n">value</span><span class="p">])[</span><span class="mi">0</span><span class="p">]</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">__poly</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">__polyIdx</span><span class="p">]</span> <span class="o">=</span> <span class="n">s</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">__elements</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">Length</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__poly</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">__polyIdx</span><span class="p">]</span> <span class="o">=</span> <span class="n">s</span> <span class="o">/</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__elements</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">Length</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">__sign</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="RWHardwareScalar.set_and_wait">
@@ -569,20 +570,21 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">__model</span> <span class="o">=</span> <span class="n">model</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__elements</span> <span class="o">=</span> <span class="n">elements</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__poly</span> <span class="o">=</span> <span class="n">elements</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="fm">__getattribute__</span><span class="p">(</span><span class="n">poly</span><span class="o">.</span><span class="n">attName</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__sign</span> <span class="o">=</span> <span class="n">poly</span><span class="o">.</span><span class="n">sign</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__polyIdx</span> <span class="o">=</span> <span class="n">poly</span><span class="o">.</span><span class="n">index</span>
 
     <span class="c1"># Gets the value</span>
 <div class="viewcode-block" id="RWStrengthScalar.get">
 <a class="viewcode-back" href="../../../modules/lattice.html#pyaml.lattice.abstract_impl.RWStrengthScalar.get">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__poly</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">__polyIdx</span><span class="p">]</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">__elements</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">Length</span></div>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__poly</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">__polyIdx</span><span class="p">]</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">__sign</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">__elements</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">Length</span></div>
 
 
     <span class="c1"># Sets the value</span>
 <div class="viewcode-block" id="RWStrengthScalar.set">
 <a class="viewcode-back" href="../../../modules/lattice.html#pyaml.lattice.abstract_impl.RWStrengthScalar.set">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">set</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="nb">float</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">__poly</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">__polyIdx</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">__elements</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">Length</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__poly</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">__polyIdx</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span> <span class="o">/</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__elements</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">Length</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">__sign</span><span class="p">)</span></div>
 
 
     <span class="c1"># Sets the value and wait that the read value reach the setpoint</span>
@@ -618,10 +620,12 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">__elements</span> <span class="o">=</span> <span class="n">elements</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__poly</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__polyIdx</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__sign</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__model</span> <span class="o">=</span> <span class="n">model</span>
         <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">poly</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">__poly</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">elements</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="fm">__getattribute__</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">attName</span><span class="p">))</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">__polyIdx</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">index</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">__sign</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">sign</span><span class="p">)</span>
 
     <span class="c1"># Gets the value</span>
 <div class="viewcode-block" id="RWHardwareArray.get">
@@ -630,7 +634,11 @@
         <span class="n">nbStrength</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__poly</span><span class="p">)</span>
         <span class="n">s</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">nbStrength</span><span class="p">)</span>
         <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nbStrength</span><span class="p">):</span>
-            <span class="n">s</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__poly</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="bp">self</span><span class="o">.</span><span class="n">__polyIdx</span><span class="p">[</span><span class="n">i</span><span class="p">]]</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">__elements</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">Length</span>
+            <span class="n">s</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">__poly</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="bp">self</span><span class="o">.</span><span class="n">__polyIdx</span><span class="p">[</span><span class="n">i</span><span class="p">]]</span>
+                <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">__sign</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+                <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">__elements</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">Length</span>
+            <span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__model</span><span class="o">.</span><span class="n">compute_hardware_values</span><span class="p">(</span><span class="n">s</span><span class="p">)</span></div>
 
 
@@ -641,7 +649,9 @@
         <span class="n">nbStrength</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__poly</span><span class="p">)</span>
         <span class="n">s</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__model</span><span class="o">.</span><span class="n">compute_strengths</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
         <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nbStrength</span><span class="p">):</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">__poly</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="bp">self</span><span class="o">.</span><span class="n">__polyIdx</span><span class="p">[</span><span class="n">i</span><span class="p">]]</span> <span class="o">=</span> <span class="n">s</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">__elements</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">Length</span></div>
+            <span class="bp">self</span><span class="o">.</span><span class="n">__poly</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="bp">self</span><span class="o">.</span><span class="n">__polyIdx</span><span class="p">[</span><span class="n">i</span><span class="p">]]</span> <span class="o">=</span> <span class="n">s</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">/</span> <span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">__elements</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">Length</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">__sign</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+            <span class="p">)</span></div>
 
 
     <span class="c1"># Sets the value and wait that the read value reach the setpoint</span>
@@ -676,10 +686,12 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">__elements</span> <span class="o">=</span> <span class="n">elements</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__poly</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__polyIdx</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__sign</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__model</span> <span class="o">=</span> <span class="n">model</span>
         <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">poly</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">__poly</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">elements</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="fm">__getattribute__</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">attName</span><span class="p">))</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">__polyIdx</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">index</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">__sign</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">sign</span><span class="p">)</span>
 
     <span class="c1"># Gets the value</span>
 <div class="viewcode-block" id="RWStrengthArray.get">
@@ -688,7 +700,11 @@
         <span class="n">nbStrength</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__poly</span><span class="p">)</span>
         <span class="n">s</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">nbStrength</span><span class="p">)</span>
         <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nbStrength</span><span class="p">):</span>
-            <span class="n">s</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__poly</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="bp">self</span><span class="o">.</span><span class="n">__polyIdx</span><span class="p">[</span><span class="n">i</span><span class="p">]]</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">__elements</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">Length</span>
+            <span class="n">s</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">__poly</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="bp">self</span><span class="o">.</span><span class="n">__polyIdx</span><span class="p">[</span><span class="n">i</span><span class="p">]]</span>
+                <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">__sign</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+                <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">__elements</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">Length</span>
+            <span class="p">)</span>
         <span class="k">return</span> <span class="n">s</span></div>
 
 
@@ -699,7 +715,9 @@
         <span class="n">nbStrength</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__poly</span><span class="p">)</span>
         <span class="n">s</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">nbStrength</span><span class="p">)</span>
         <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nbStrength</span><span class="p">):</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">__poly</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="bp">self</span><span class="o">.</span><span class="n">__polyIdx</span><span class="p">[</span><span class="n">i</span><span class="p">]]</span> <span class="o">=</span> <span class="n">value</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">__elements</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">Length</span></div>
+            <span class="bp">self</span><span class="o">.</span><span class="n">__poly</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="bp">self</span><span class="o">.</span><span class="n">__polyIdx</span><span class="p">[</span><span class="n">i</span><span class="p">]]</span> <span class="o">=</span> <span class="n">value</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">/</span> <span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">__elements</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">Length</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">__sign</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+            <span class="p">)</span></div>
 
 
     <span class="c1"># Sets the value and wait that the read value reach the setpoint</span>
@@ -728,11 +746,11 @@
 <span class="sd">    BPM simulator aggregator</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ring</span><span class="p">:</span><span class="n">at</span><span class="o">.</span><span class="n">Lattice</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ring</span><span class="p">:</span> <span class="n">at</span><span class="o">.</span><span class="n">Lattice</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">lattice</span> <span class="o">=</span> <span class="n">ring</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">refpts</span> <span class="o">=</span> <span class="p">[]</span>
 
-    <span class="k">def</span><span class="w"> </span><span class="nf">add_elem</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">elem</span><span class="p">:</span><span class="n">at</span><span class="o">.</span><span class="n">Element</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">add_elem</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">elem</span><span class="p">:</span> <span class="n">at</span><span class="o">.</span><span class="n">Element</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">refpts</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">lattice</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">elem</span><span class="p">))</span>
 
 <div class="viewcode-block" id="BPMScalarAggregator.set">
