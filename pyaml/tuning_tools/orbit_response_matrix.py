@@ -3,6 +3,7 @@ from pydantic import BaseModel, ConfigDict
 from pyaml.external.pySC import pySC
 from pyaml.external.pySC_interface import pySCInterface
 from pyaml.external.pySC.pySC.apps import measure_ORM
+from pyaml.external.pySC.pySC.apps.codes import ResponseCode
 from pathlib import Path
 import logging
 import json
@@ -43,7 +44,8 @@ class OrbitResponseMatrix(object):
 
         pySC.disable_pySC_rich()
         for code, measurement in generator:
-            logger.info(f'Measured response of {measurement.last_input}.')
+            if code is ResponseCode.MEASURING:
+                logger.info(f'Measured response of {measurement.last_input}.')
 
         response_data = measurement.response_data # contains also pre-processed data
         response_data.output_names = self.element_holder.get_bpms(self.bpm_array_name).names()
