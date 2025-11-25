@@ -1,11 +1,11 @@
 from ..common.element_holder import ElementHolder
 from ..common.exception import PyAMLException
-from pydantic import BaseModel, ConfigDict
+from ..external.pySC import pySC
+from ..external.pySC_interface import pySCInterface
+from ..external.pySC.pySC.apps import measure_ORM
+from ..external.pySC.pySC.apps.codes import ResponseCode
 
-from pyaml.external.pySC import pySC
-from pyaml.external.pySC_interface import pySCInterface
-from pyaml.external.pySC.pySC.apps import measure_ORM
-from pyaml.external.pySC.pySC.apps.codes import ResponseCode
+from pydantic import BaseModel, ConfigDict
 from pathlib import Path
 import logging
 
