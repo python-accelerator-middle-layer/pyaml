@@ -1,12 +1,13 @@
 from ..common.element_holder import ElementHolder
+from ..common.exception import PyAMLException
 from pydantic import BaseModel, ConfigDict
+
 from pyaml.external.pySC import pySC
 from pyaml.external.pySC_interface import pySCInterface
 from pyaml.external.pySC.pySC.apps import measure_ORM
 from pyaml.external.pySC.pySC.apps.codes import ResponseCode
 from pathlib import Path
 import logging
-import json
 
 logger = logging.getLogger(__name__)
 
@@ -54,6 +55,18 @@ class OrbitResponseMatrix(object):
     def get(self):
         return self.latest_measurement
 
-    def save(self, save_path: Path):
-        data = self.latest_measurement
-        json.dump(data, open(save_path, 'w'), indent=4)
+    def save(self, save_path: Path, with_type='json'):
+        if with_type == 'json':
+            import json
+            data = self.latest_measurement
+            json.dump(data, open(save_path, 'w'), indent=4)
+        elif with_type == 'yaml':
+            import yaml
+            data = self.latest_measurement
+            yaml.safe_dump(data, open(save_path, 'w'))
+        elif with_type == 'npz':
+            import numpy as np
+            data = self.latest_measurement
+            np.savez(save_path.resolve(), **data)
+        else:
+            raise PyAMLException(f'ERROR: Unknown file type to save as: {with_type}.')

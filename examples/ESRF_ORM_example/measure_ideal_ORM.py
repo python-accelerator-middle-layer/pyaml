@@ -14,5 +14,7 @@ orm = OrbitResponseMatrix(cfg=ORM_ConfigModel(bpm_array_name='BPM', hcorr_array_
 
 orm.measure()
 orm.save(parent_folder / Path('ideal_orm.json'))
+orm.save(parent_folder / Path('ideal_orm.yaml'), with_type='yaml')
+orm.save(parent_folder / Path('ideal_orm.npz'), with_type='npz')
 
 ormdata = orm.get()
