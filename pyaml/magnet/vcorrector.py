@@ -1,7 +1,7 @@
-from ..lattice.polynom_info import PolynomInfo
-from .magnet import Magnet, MagnetConfigModel
-from .corrector import RWCorrectorAngle
 from ..common import abstract
+from ..lattice.polynom_info import PolynomInfo
+from .corrector import RWCorrectorAngle
+from .magnet import Magnet, MagnetConfigModel
 
 # Define the main class name for this module
 PYAMLCLASS = "VCorrector"
@@ -29,5 +29,3 @@ class VCorrector(Magnet):
         Set the kick angle.
         """
         return self.__angle
-
-

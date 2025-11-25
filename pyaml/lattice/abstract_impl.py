@@ -68,7 +68,7 @@ class RWStrengthScalar(abstract.ReadWriteFloatScalar):
         return self.__poly[self.__polyIdx] * self.__sign * self.__elements[0].Length
 
     # Sets the value
-    def set(self, value:float):
+    def set(self, value: float):
         self.__poly[self.__polyIdx] = value / (self.__elements[0].Length * self.__sign)
 
     # Sets the value and wait that the read value reach the setpoint
@@ -107,7 +107,11 @@ class RWHardwareArray(abstract.ReadWriteFloatArray):
         nbStrength = len(self.__poly)
         s = np.zeros(nbStrength)
         for i in range(nbStrength):
-            s[i] = self.__poly[i][self.__polyIdx[i]] * self.__sign[i] * self.__elements[0].Length
+            s[i] = (
+                self.__poly[i][self.__polyIdx[i]]
+                * self.__sign[i]
+                * self.__elements[0].Length
+            )
         return self.__model.compute_hardware_values(s)
 
     # Sets the value
@@ -115,7 +119,9 @@ class RWHardwareArray(abstract.ReadWriteFloatArray):
         nbStrength = len(self.__poly)
         s = self.__model.compute_strengths(value)
         for i in range(nbStrength):
-            self.__poly[i][self.__polyIdx[i]] = s[i] / (self.__elements[0].Length * self.__sign[i])
+            self.__poly[i][self.__polyIdx[i]] = s[i] / (
+                self.__elements[0].Length * self.__sign[i]
+            )
 
     # Sets the value and wait that the read value reach the setpoint
     def set_and_wait(self, value: np.array):
@@ -152,7 +158,11 @@ class RWStrengthArray(abstract.ReadWriteFloatArray):
         nbStrength = len(self.__poly)
         s = np.zeros(nbStrength)
         for i in range(nbStrength):
-            s[i] = self.__poly[i][self.__polyIdx[i]] * self.__sign[i] * self.__elements[0].Length
+            s[i] = (
+                self.__poly[i][self.__polyIdx[i]]
+                * self.__sign[i]
+                * self.__elements[0].Length
+            )
         return s
 
     # Sets the value
@@ -160,7 +170,9 @@ class RWStrengthArray(abstract.ReadWriteFloatArray):
         nbStrength = len(self.__poly)
         s = np.zeros(nbStrength)
         for i in range(nbStrength):
-            self.__poly[i][self.__polyIdx[i]] = value[i] / (self.__elements[0].Length * self.__sign[i])
+            self.__poly[i][self.__polyIdx[i]] = value[i] / (
+                self.__elements[0].Length * self.__sign[i]
+            )
 
     # Sets the value and wait that the read value reach the setpoint
     def set_and_wait(self, value: np.array):
@@ -179,11 +191,11 @@ class BPMScalarAggregator(ScalarAggregator):
     BPM simulator aggregator
     """
 
-    def __init__(self, ring:at.Lattice):
+    def __init__(self, ring: at.Lattice):
         self.lattice = ring
         self.refpts = []
 
-    def add_elem(self,elem:at.Element):
+    def add_elem(self, elem: at.Element):
         self.refpts.append(self.lattice.index(elem))
 
     def set(self, value: NDArray[np.float64]):

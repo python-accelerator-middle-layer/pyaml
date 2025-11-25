@@ -25,43 +25,43 @@ def test_arrays(install_test_package):
     sr.design.get_magnet("SH1A-C01-H").strength.set(0.000010)
     sr.design.get_magnet("SH1A-C01-V").strength.set(0.000015)
 
-    o,_ = sr.design.get_lattice().find_orbit()
-    assert(np.abs(o[0] - 9.90267693e-05)<1e-10)
-    assert(np.abs(o[1] - 3.39661431e-07)<1e-10)
-    assert(np.abs(o[2] + 1.59928207e-06)<1e-10)
-    assert(np.abs(o[3] + 1.74771216e-05)<1e-10)
+    o, _ = sr.design.get_lattice().find_orbit()
+    assert np.abs(o[0] - 9.90267693e-05) < 1e-10
+    assert np.abs(o[1] - 3.39661431e-07) < 1e-10
+    assert np.abs(o[2] + 1.59928207e-06) < 1e-10
+    assert np.abs(o[3] + 1.74771216e-05) < 1e-10
 
     sr.design.get_magnet("SH1A-C02-H").strength.set(-0.000008)
     sr.design.get_magnet("SH1A-C02-V").strength.set(-0.000017)
 
-    o,_ = sr.design.get_lattice().find_orbit()
-    assert(np.abs(o[0] - 1.60555804e-04)<1e-10)
-    assert(np.abs(o[1] + 2.37234366e-06)<1e-10)
-    assert(np.abs(o[2] - 3.62695844e-05)<1e-10)
-    assert(np.abs(o[3] + 5.97692290e-06)<1e-10)
+    o, _ = sr.design.get_lattice().find_orbit()
+    assert np.abs(o[0] - 1.60555804e-04) < 1e-10
+    assert np.abs(o[1] + 2.37234366e-06) < 1e-10
+    assert np.abs(o[2] - 3.62695844e-05) < 1e-10
+    assert np.abs(o[3] + 5.97692290e-06) < 1e-10
 
     sr.design.get_magnets("HCORR").strengths.set([0.000010, -0.000008])
     sr.design.get_magnets("VCORR").strengths.set([0.000015, -0.000017])
 
-    o,_ = sr.design.get_lattice().find_orbit()
-    assert(np.abs(o[0] - 1.60555804e-04)<1e-10)
-    assert(np.abs(o[1] + 2.37234366e-06)<1e-10)
-    assert(np.abs(o[2] - 3.62695844e-05)<1e-10)
-    assert(np.abs(o[3] + 5.97692290e-06)<1e-10)
+    o, _ = sr.design.get_lattice().find_orbit()
+    assert np.abs(o[0] - 1.60555804e-04) < 1e-10
+    assert np.abs(o[1] + 2.37234366e-06) < 1e-10
+    assert np.abs(o[2] - 3.62695844e-05) < 1e-10
+    assert np.abs(o[3] + 5.97692290e-06) < 1e-10
 
     p0 = o[0]
 
     # Test kick angle (small angle, no change from above)
     sr.design.get_magnet("SH1A-C02-H").angle.set(-0.000008)
-    o,_ = sr.design.get_lattice().find_orbit()
-    assert(np.abs(o[0] - 1.60555804e-04)<1e-10)
-    assert(np.abs(o[1] + 2.37234366e-06)<1e-10)
-    assert(np.abs(o[2] - 3.62695844e-05)<1e-10)
-    assert(np.abs(o[3] + 5.97692290e-06)<1e-10)
+    o, _ = sr.design.get_lattice().find_orbit()
+    assert np.abs(o[0] - 1.60555804e-04) < 1e-10
+    assert np.abs(o[1] + 2.37234366e-06) < 1e-10
+    assert np.abs(o[2] - 3.62695844e-05) < 1e-10
+    assert np.abs(o[3] + 5.97692290e-06) < 1e-10
 
     p1 = o[0]
     # Diff between small angle approximation and angle
-    assert(np.abs(p0-p1)-1.3504822260479443e-15 < 1e-20)
+    assert np.abs(p0 - p1) - 1.3504822260479443e-15 < 1e-20
 
     # Test on control system
 
@@ -132,10 +132,10 @@ def test_arrays(install_test_package):
 
     # Using aggregator
     pos = sr.design.get_bpms("BPMS").positions.get()
-    assert(np.abs(pos[0][0] - 7.22262850488348e-05)<1e-10)
-    assert(np.abs(pos[0][1] - 3.4291613955705856e-05)<1e-10)
-    assert(np.abs(pos[1][0] + 1.1696152238807462e-04)<1e-10)
-    assert(np.abs(pos[1][1] - 7.4265634524358045e-06)<1e-10)
+    assert np.abs(pos[0][0] - 7.22262850488348e-05) < 1e-10
+    assert np.abs(pos[0][1] - 3.4291613955705856e-05) < 1e-10
+    assert np.abs(pos[1][0] + 1.1696152238807462e-04) < 1e-10
+    assert np.abs(pos[1][1] - 7.4265634524358045e-06) < 1e-10
 
     # Using aggregator (h and v)
     pos_h = sr.design.get_bpms("BPMS").h.get()
@@ -150,10 +150,10 @@ def test_arrays(install_test_package):
 
     bpms = BPMArray("BPM_noagg", bpms, use_aggregator=False)
     pos = bpms.positions.get()
-    assert(np.abs(pos[0][0] - 7.22262850488348e-05)<1e-10)
-    assert(np.abs(pos[0][1] - 3.4291613955705856e-05)<1e-10)
-    assert(np.abs(pos[1][0] + 1.1696152238807462e-04)<1e-10)
-    assert(np.abs(pos[1][1] - 7.4265634524358045e-06)<1e-10)
+    assert np.abs(pos[0][0] - 7.22262850488348e-05) < 1e-10
+    assert np.abs(pos[0][1] - 3.4291613955705856e-05) < 1e-10
+    assert np.abs(pos[1][0] + 1.1696152238807462e-04) < 1e-10
+    assert np.abs(pos[1][1] - 7.4265634524358045e-06) < 1e-10
 
     # Radom array
     elts = sr.design.get_elemens("ElArray")
@@ -196,7 +196,7 @@ def test_arrays(install_test_package):
     assert np.abs(strHVSQ[4] + 0.000017) < 1e-10  # V
     assert np.abs(strHVSQ[5] - 1e-6) < 1e-10  # SQ
 
-    bpmsLive = BPMArray("",sr.live.get_all_bpms())
+    bpmsLive = BPMArray("", sr.live.get_all_bpms())
     bpmsLive.positions.get()
 
     Factory.clear()
