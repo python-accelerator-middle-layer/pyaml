@@ -8,4 +8,3 @@ model:
     setpoint: sr/ps-qf1/c01-a/strength
     readback: sr/ps-qf1/c01-a/strength
     unit: 1/m
-

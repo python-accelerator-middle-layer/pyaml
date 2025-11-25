@@ -1885,4 +1885,3 @@ devices:
     type: tango.pyaml.attribute_read_only
     attribute: srdiag/tune/tune_v
     unit: mm
-

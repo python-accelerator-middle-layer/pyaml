@@ -927,7 +927,7 @@ devices:
   tune_v:
     type: tango.pyaml.attribute_read_only
     attribute: sys/ringsimulator/ebs/Tune_v
-    unit: ""    
+    unit: ""
 - type: pyaml.rf.rf_plant
   name: RF
   masterclock:

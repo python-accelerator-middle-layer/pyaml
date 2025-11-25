@@ -8,7 +8,7 @@ class PolynomInfo:
     Polynom information
     """
 
-    def __init__(self, attName: str, index: int):
+    def __init__(self, attName: str, index: int, sign: float = 1.0):
         """
         Construct a polynom information object
 
@@ -21,3 +21,4 @@ class PolynomInfo:
         """
         self.attName = attName
         self.index = index
+        self.sign = sign

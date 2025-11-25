@@ -22,11 +22,11 @@ Describe the changes that had to be made to an existing functionality (if they w
 - [ ] ...
 
 ## Testing
- The following tests (compatible with pytest) were added: 
+ The following tests (compatible with pytest) were added:
  - [ ] first test
  - [ ] second test
  - ...
-   
+
 ## Verify that your checklist complies with the project
 - [ ] New and existing unit tests pass locally
 - [ ] Tests were added to prove that all features/changes are effective
