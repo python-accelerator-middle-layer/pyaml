@@ -2,4 +2,4 @@
 PyAML global constants
 """
 
-HORIZONATL_KICK_SIGN:float = -1.0
+HORIZONTAL_KICK_SIGN:float = -1.0

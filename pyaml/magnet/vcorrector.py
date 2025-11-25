@@ -1,4 +1,5 @@
 from ..lattice.polynom_info import PolynomInfo
+from .magnet import Magnet, MagnetConfigModel
 from .corrector import RWCorrectorAngle
 from ..common import abstract
 
@@ -27,6 +28,6 @@ class VCorrector(Magnet):
         """
         Set the kick angle.
         """
-        return self.ange
+        return self.__angle
 
 

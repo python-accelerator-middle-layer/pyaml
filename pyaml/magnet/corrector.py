@@ -8,9 +8,9 @@ class RWCorrectorAngle(abstract.ReadWriteFloatScalar):
     KickAngle sign convention is defined the a global PyAML constant (see pyaml.common.constant.HORIZONATL_KICK_SIGN).
     To change the convention, you have execute the code below prior to everything:
     import pyaml.common.constants
-    pyaml.common.constants.HORIZONATL_KICK_SIGN = -1.0
+    pyaml.common.constants.HORIZONTAL_KICK_SIGN = -1.0
     """
-    def __init__(self, corr:Magnet):
+    def __init__(self, corr:Magnet):        
         self._mag = corr
 
     def get(self) -> float:
