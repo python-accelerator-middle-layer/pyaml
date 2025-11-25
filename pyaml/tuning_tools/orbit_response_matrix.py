@@ -6,6 +6,7 @@ from ..external.pySC.pySC.apps import measure_ORM
 from ..external.pySC.pySC.apps.codes import ResponseCode
 
 from pydantic import BaseModel, ConfigDict
+from typing import List, Optional
 from pathlib import Path
 import logging
 
@@ -33,13 +34,15 @@ class OrbitResponseMatrix(object):
         self.corrector_delta = cfg.corrector_delta
         self.latest_measurement = None
 
-    def measure(self):
+    def measure(self, corrector_names: Optional[List[str]] = None):
         interface = pySCInterface(element_holder=self.element_holder, bpm_array_name=self.bpm_array_name,
                                   hcorr_array_name=self.hcorr_array_name, vcorr_array_name=self.vcorr_array_name)
 
-        hcorrector_names = self.element_holder.get_magnets(self.hcorr_array_name).names()
-        vcorrector_names = self.element_holder.get_magnets(self.vcorr_array_name).names()
-        corrector_names = hcorrector_names + vcorrector_names
+        if corrector_names is None:
+            logger.info(f'Measuring correctors from the default arrays: {self.hcorr_array_name} and {self.vcorr_array_name}.')
+            hcorrector_names = self.element_holder.get_magnets(self.hcorr_array_name).names()
+            vcorrector_names = self.element_holder.get_magnets(self.vcorr_array_name).names()
+            corrector_names = hcorrector_names + vcorrector_names
 
         generator = measure_ORM(interface=interface, corrector_names=corrector_names, delta=self.corrector_delta, skip_save=True)
 
@@ -55,7 +58,8 @@ class OrbitResponseMatrix(object):
     def get(self):
         return self.latest_measurement
 
-    def save(self, save_path: Path, with_type='json'):
+    def save(self, save_path: Path, with_type: str = 'json'):
+        # should we make a general pyaml saving/loading function for data?
         if with_type == 'json':
             import json
             data = self.latest_measurement
