@@ -1,13 +1,19 @@
-from pyaml.accelerator import Accelerator
-from pyaml.external.pySC_interface import pySCInterface
 from pathlib import Path
+
 import numpy as np
 
-config_path = Path(__file__).parent.parent.parent.joinpath('tests','config','EBSOrbit.yaml').resolve()
+from pyaml.accelerator import Accelerator
+from pyaml.external.pySC_interface import pySCInterface
+
+config_path = (
+    Path(__file__)
+    .parent.parent.parent.joinpath("tests", "config", "EBSOrbit.yaml")
+    .resolve()
+)
 sr = Accelerator.load(config_path)
 
-live_h = sr.live.get_bpms('BPM').h.get() # ok
-design_h = sr.design.get_bpms('BPM').h.get() # ok
+live_h = sr.live.get_bpms("BPM").h.get()  # ok
+design_h = sr.design.get_bpms("BPM").h.get()  # ok
 
 interface = pySCInterface(element_holder=sr.design)
 
@@ -23,4 +29,4 @@ interface.set_many(hcorr_setpoints)
 
 orbit_x2, orbit_y2 = interface.get_orbit()
 
-print(np.std(orbit_x2-orbit_x))
+print(np.std(orbit_x2 - orbit_x))
