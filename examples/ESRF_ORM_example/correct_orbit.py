@@ -45,7 +45,7 @@ print(
 response_matrix = ResponseMatrix.from_json(parent_folder / Path("ideal_orm.json"))
 interface = pySCInterface(element_holder=ebs)
 
-response_matrix.disable_inputs(["SH3E-C03-V"])
+# response_matrix.disable_inputs(["SH3E-C03-V"])
 
 for _ in range(5):
     trims = orbit_correction(
@@ -69,9 +69,7 @@ for _ in range(5):
         reference=reference,
     )
 
-print("SH3E-C03-V" in trims.keys())
-print("H std ", np.std(hcorr.strengths.get()))
-print("V std ", np.std(vcorr.strengths.get()))
+# print("SH3E-C03-V" in trims.keys())
 
 positions_ac = bpms.positions.get()
 std_ac = np.std(positions_ac, axis=0)
