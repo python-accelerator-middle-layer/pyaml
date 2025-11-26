@@ -24,6 +24,9 @@ hcorr = ebs.get_magnets("HCorr")
 vcorr = ebs.get_magnets("VCorr")
 bpms = ebs.get_bpms("BPM")
 
+x0, y0 = bpms.positions.get().T
+reference = np.concat([x0, y0])
+
 # mangle orbit
 hcorr.strengths.set(
     hcorr.strengths.get() + std_kick * np.random.normal(size=len(hcorr))
@@ -41,14 +44,34 @@ print(
 
 response_matrix = ResponseMatrix.from_json(parent_folder / Path("ideal_orm.json"))
 interface = pySCInterface(element_holder=ebs)
-trims = orbit_correction(
-    interface=interface,
-    response_matrix=response_matrix,
-    method="svd_cutoff",
-    parameter=1e-3,
-    zerosum=True,
-    apply=True,
-)
+
+response_matrix.disable_inputs(["SH3E-C03-V"])
+
+for _ in range(5):
+    trims = orbit_correction(
+        interface=interface,
+        response_matrix=response_matrix,
+        method="svd_values",
+        parameter=100,
+        zerosum=True,
+        apply=True,
+        plane="H",
+        reference=reference,
+    )
+    trims = orbit_correction(
+        interface=interface,
+        response_matrix=response_matrix,
+        method="svd_values",
+        parameter=100,
+        zerosum=False,
+        apply=True,
+        plane="V",
+        reference=reference,
+    )
+
+print("SH3E-C03-V" in trims.keys())
+print("H std ", np.std(hcorr.strengths.get()))
+print("V std ", np.std(vcorr.strengths.get()))
 
 positions_ac = bpms.positions.get()
 std_ac = np.std(positions_ac, axis=0)
@@ -57,16 +80,23 @@ print(
     f"{1e6 * std_ac[0]: .1f} µm, V: {1e6 * std_ac[1]: .1f} µm,"
 )
 
-
 fig = plt.figure()
-ax1 = fig.add_subplot(211)
-ax2 = fig.add_subplot(212)
+ax1 = fig.add_subplot(311)
+ax2 = fig.add_subplot(312)
+ax3 = fig.add_subplot(313)
 ax1.plot(positions_bc[:, 0] * 1e6, label="Orbit before correction")
 ax2.plot(positions_bc[:, 1] * 1e6, label="Orbit before correction")
 ax1.plot(positions_ac[:, 0] * 1e6, label="Orbit after correction")
 ax2.plot(positions_ac[:, 1] * 1e6, label="Orbit after correction")
 
+ax3.plot(hcorr.strengths.get())
+ax3.plot(vcorr.strengths.get())
+
 ax1.set_ylabel("Horizontal pos. [μm]")
 ax2.set_ylabel("Vertical pos. [μm]")
 ax2.set_xlabel("BPM number")
+ax3.set_ylabel("Strength (rad)")
+ax3.set_xlabel("Steerer number")
+fig.tight_layout()
+
 plt.show()
