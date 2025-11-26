@@ -77,7 +77,7 @@ class BPMArray(ElementArray):
         self.__hpos = RWBPMSinglePosition(arrayName, bpms, 0)
         self.__vpos = RWBPMSinglePosition(arrayName, bpms, 1)
 
-        if use_aggregator:
+        if use_aggregator and len(bpms) > 0:
             aggs = self.get_peer().create_bpm_aggregators(bpms)
             self.__hvpos.set_aggregator(aggs[0])
             self.__hpos.set_aggregator(aggs[1])

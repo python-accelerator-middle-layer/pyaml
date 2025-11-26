@@ -30,14 +30,15 @@ class ElementArray(list[Element]):
         """
         super().__init__(i for i in elements)
         self.__name = arrayName
-        self.__peer = self[0]._peer if len(self) > 0 else None
-        self.__use_aggretator = use_aggregator
-        if self.__peer is None or any([m._peer != self.__peer for m in self]):
-            raise PyAMLException(
-                f"{self.__class__.__name__} {self.get_name()}: "
-                "All elements must be attached to the same instance "
-                "of either a Simulator or a ControlSystem"
-            )
+        if len(elements) > 0:
+            self.__peer = self[0]._peer if len(self) > 0 else None
+            self.__use_aggretator = use_aggregator
+            if self.__peer is None or any([m._peer != self.__peer for m in self]):
+                raise PyAMLException(
+                    f"{self.__class__.__name__} {self.get_name()}: "
+                    "All elements must be attached to the same instance "
+                    "of either a Simulator or a ControlSystem"
+                )
 
     def get_peer(self):
         """
