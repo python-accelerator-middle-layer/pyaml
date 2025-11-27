@@ -13,6 +13,7 @@ class pySCInterface:
         bpm_array_name: str = "BPM",
         hcorr_array_name: str = "HCorr",
         vcorr_array_name: str = "VCorr",
+        rf_plant_name: str = "RF",
     ):
         self.element_holder = element_holder
 
@@ -37,6 +38,9 @@ class pySCInterface:
         self.vcorr_name_to_index = {
             name: ii for ii, name in enumerate(self.vcorr_names)
         }
+
+        self.rf_plant_name = rf_plant_name
+        self.rf_plant = element_holder.get_rf_plant(self.rf_plant_name)
 
     def get_orbit(self) -> Tuple[np.array, np.array]:
         # we should wait here somehow according to polling rate
@@ -153,4 +157,11 @@ class pySCInterface:
                 vcorr_strengths
             )  # ideally set_and_wait but not implemented
 
+        return
+
+    def get_rf_main_frequency(self) -> float:
+        return self.rf_plant.frequency.get()
+
+    def set_rf_main_frequency(self, value: float) -> None:
+        self.rf_plant.frequency.set(value)
         return
