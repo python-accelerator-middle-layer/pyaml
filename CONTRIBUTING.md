@@ -17,6 +17,9 @@ Thank you for your interest in contributing to [PyAML]! This document outlines h
 ### 3. Submitting Changes
 - **Fork & Branch:** Fork the repo and create a branch for your changes.
 - **Commits:** Write clear, atomic commit messages. Reference the issue number if applicable.
+- **Formatting:** Ensure your code adheres to the project’s style guidelines. Run tests locally before submitting. It is recommended to use `pre-commit` hooks for this purpose.
+Sometimes pre-commit hook will block you committing due to formatting issues. They may be fixed automatically or require manual intervention. If they are fixed automatically just re-stage the files and commit again.
+If manual intervention is required, please follow the instructions provided by the pre-commit tool.
 - **Pull Requests (PRs):**
   - Open a PR against the `main` branch.
   - Include a description of your changes and reference the relevant issue.

@@ -15,10 +15,17 @@ Disclaimer: the pyAML software is still under development.
    cd pyaml
    pip install -e .
    ```
-4. If you want to try the examples using the TANGO bindings you also need [tango-pyaml](https://github.com/python-accelerator-middle-layer/tango-pyaml).
+
+4. For developers: install the development dependencies and pre-commit hooks
+
+   ```
+   pip install -e .[dev]
+   pre-commit install
+   ```
+5. If you want to try the examples using the TANGO bindings you also need [tango-pyaml](https://github.com/python-accelerator-middle-layer/tango-pyaml).
    Clone that repository and install the package inside the same virtual environment as the `pyaml` package.
    tango-pyaml will automatically install pyaml, so step 3 can be skipped.
-5. For tests, you may want to install dummy-cs/tango available in
+6. For tests, you may want to install dummy-cs/tango available in
    tests/dummy-cs/tango
 
 #### Documentation
