@@ -131,10 +131,10 @@ html_logo = "_static/img/logo.png"
 html_copy_source = False
 
 html_theme_options = {
-    'collapse_navigation': False,
-    'display_version': True,
-    'logo_only': True,
-    'navigation_depth': 6,
+    "collapse_navigation": False,
+    "display_version": True,
+    "logo_only": True,
+    "navigation_depth": 6,
     "rightsidebar": True,
     "relbarbgcolor": "black",
     "github_url": "https://github.com/python-accelerator-middle-layer/pyaml",
