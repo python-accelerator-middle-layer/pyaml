@@ -13,14 +13,14 @@ permissions: write-all
 jobs:
   documentation:
     name: ${{ matrix.os }} / ${{ matrix.python-version }}
-    
+
     runs-on: ${{ matrix.os }}
-    
+
     strategy:
       matrix:  # only lowest supported Python on latest ubuntu
         os: [ubuntu-latest]
         python-version: [3.14]
-    
+
     permissions:
       issues: write
       pull-requests: write
@@ -49,7 +49,7 @@ jobs:
 
       - name: Install dependencies
         run: pip install -r ./docs/requirements.txt
-        
+
       - name: Build documentation
         run: python -m sphinx -b html docs ./docs/_build -d ./docs/_build
 
@@ -81,6 +81,3 @@ jobs:
       #   with:
       #     github_token: ${{ secrets.GITHUB_TOKEN }}
       #     publish_dir: docs/_build/html
-
-                
-     

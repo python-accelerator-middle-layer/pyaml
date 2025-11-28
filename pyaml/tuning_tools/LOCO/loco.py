@@ -1,4 +1,4 @@
-class loco():
+class loco:
     """loco help"""
 
     def run():

@@ -1,4 +1,5 @@
 [![Documentation Status](https://readthedocs.org/projects/pyaml/badge/?version=latest)](https://pyaml.readthedocs.io/en/latest/?badge=latest)
+![Current release](https://img.shields.io/github/v/tag/python-accelerator-middle-layer/pyaml)
 
 # pyAML: Python Accelerator Middle Layer
 
@@ -9,7 +10,7 @@ Disclaimer: the pyAML software is still under development.
 1. Clone the repository
 2. Create a virtual environment and activate it
 3. Install the package. For editable installation:
-   
+
    ```
    cd pyaml
    pip install -e .

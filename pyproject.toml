@@ -16,7 +16,7 @@ exclude = [
 packages = ["pyaml"]
 
 [project]
-name = "pyaml"
+name = "accelerator-middle-layer"
 description = "Python Accelerator Middle Layer"
 readme = "README.md"
 requires-python = ">=3.9"
@@ -58,7 +58,47 @@ doc = [
     "sphinx-rtd-theme"
 ]
 
+dev = [
+    "pre-commit",
+    "ruff",
+    "mypy",
+    "pytest",
+]
+
 [project.urls]
 Homepage = "https://github.com/python-accelerator-middle-layer/pyaml"
 Documentation = "https://python-accelerator-middle-layer.github.io/pyaml/"
 Repository = "https://github.com/python-accelerator-middle-layer/pyaml.git"
+
+[tool.ruff]
+line-length = 88
+target-version = "py311"
+
+[tool.ruff.lint]
+# Basic, sane default set: pycodestyle (E,W), pyflakes (F),
+# bugbear (B), imports (I), etc.
+select = [
+    "E",  # pycodestyle errors
+    "W",  # pycodestyle warnings
+    "F",  # pyflakes
+    "B",  # flake8-bugbear
+    "I",  # isort-style import sorting
+]
+ignore = [
+    "E203",  # so it's compatible with black-style formatting
+    "F401",  # unused imports
+    "F841",  # unused local variables
+    "E741",  # ambiguous variable name
+    "B024",  # abstract class with no methods
+]
+
+[tool.ruff.format]
+line-ending = "lf"
+quote-style = "double"
+indent-style = "space"
+skip-magic-trailing-comma = false
+
+[tool.mypy]
+python_version = "3.11"
+strict = false
+ignore_missing_imports = true

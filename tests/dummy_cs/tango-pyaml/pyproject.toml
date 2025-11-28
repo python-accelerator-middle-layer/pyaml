@@ -1,3 +1,14 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.version]
+path = "tango/pyaml/__init__.py"
+
+# Install tango-pyaml as a sub module of tango (to avoid __init__.py conflicts)
+[tool.hatch.build.targets.wheel]
+packages = ["tango"]
+
 [project]
 name = "tango-pyaml"
 description = "PyAML Tango CS mocking"

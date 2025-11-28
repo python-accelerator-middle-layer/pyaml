@@ -1,6 +1,6 @@
 pyAML documentation
 ===================
-    
+
 Introduction
 ------------
 
@@ -14,12 +14,12 @@ With pyAML, it WILL be possible to (the software is at conceptualization stage):
 - **compute statistical properties for several lattice instances with errors**
 - **flexible complex unit conversions**
 - **easy and friendly configuration**
-- many more features 
+- many more features
 
 Installation
 ------------
-pip support will be provided later. 
-for the time being: 
+pip support will be provided later.
+for the time being:
 
 git clone https://github.com/python-accelerator-middle-layer/pyaml.git
 
@@ -58,7 +58,7 @@ Discussion
 Shared documents
 ~~~~~~~~~~~~~~~~
 
-to access the shared documents please ask S.Liuzzo for access rigths. 
+to access the shared documents please ask S.Liuzzo for access rigths.
 
 The pyAML "software requirement specification" document is visible here:
 https://www.overleaf.com/read/hnrqzhfpbvpp#ef8935
@@ -77,4 +77,3 @@ Indices and tables
 * :ref:`genindex`
 * :ref:`modindex`
 * :ref:`search`
-

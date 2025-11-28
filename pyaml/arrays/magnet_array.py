@@ -1,16 +1,17 @@
-from ..common.abstract import ReadWriteFloatArray
-from ..magnet.magnet import Magnet
-from ..common.abstract_aggregator import ScalarAggregator
-from .element_array import get_peer_from_array
 import numpy as np
 
-class RWMagnetStrength(ReadWriteFloatArray):
+from ..common.abstract import ReadWriteFloatArray
+from ..common.abstract_aggregator import ScalarAggregator
+from ..magnet.magnet import Magnet
+from .element_array import ElementArray
 
-    def __init__(self, name:str, magnets:list[Magnet]):
+
+class RWMagnetStrength(ReadWriteFloatArray):
+    def __init__(self, name: str, magnets: list[Magnet]):
         self.__name = name
         self.__magnets = magnets
         self.__nb = len(self.__magnets)
-        self.__aggregator:ScalarAggregator = None
+        self.__aggregator: ScalarAggregator = None
 
     # Gets the values
     def get(self) -> np.array:
@@ -20,16 +21,16 @@ class RWMagnetStrength(ReadWriteFloatArray):
             return self.__aggregator.get()
 
     # Sets the values
-    def set(self, value:np.array):
-        nvalue = np.ones(self.__nb) * value if isinstance(value,float) else value        
+    def set(self, value: np.array):
+        nvalue = np.ones(self.__nb) * value if isinstance(value, float) else value
         if not self.__aggregator:
-            for idx,m in enumerate(self.__magnets):
+            for idx, m in enumerate(self.__magnets):
                 m.strength.set(nvalue[idx])
         else:
             self.__aggregator.set(nvalue)
-        
+
     # Sets the values and waits that the read values reach their setpoint
-    def set_and_wait(self, value:np.array):
+    def set_and_wait(self, value: np.array):
         raise NotImplementedError("Not implemented yet.")
 
     # Gets the unit of the values
@@ -37,16 +38,16 @@ class RWMagnetStrength(ReadWriteFloatArray):
         return [m.strength.unit() for m in self.__magnets]
 
     # Set the aggregator (Control system only)
-    def set_aggregator(self,agg:ScalarAggregator):
+    def set_aggregator(self, agg: ScalarAggregator):
         self.__aggregator = agg
 
-class RWMagnetHardware(ReadWriteFloatArray):
 
-    def __init__(self, name:str, magnets:list[Magnet]):
+class RWMagnetHardware(ReadWriteFloatArray):
+    def __init__(self, name: str, magnets: list[Magnet]):
         self.__name = name
         self.__magnets = magnets
         self.__nb = len(self.__magnets)
-        self.__aggregator:ScalarAggregator = None
+        self.__aggregator: ScalarAggregator = None
 
     # Gets the values
     def get(self) -> np.array:
@@ -56,16 +57,16 @@ class RWMagnetHardware(ReadWriteFloatArray):
             return self.__aggregator.get()
 
     # Sets the values
-    def set(self, value:np.array):
-        nvalue = np.ones(self.__nb) * value if isinstance(value,float) else value        
+    def set(self, value: np.array):
+        nvalue = np.ones(self.__nb) * value if isinstance(value, float) else value
         if not self.__aggregator:
-            for idx,m in enumerate(self.__magnets):
+            for idx, m in enumerate(self.__magnets):
                 m.hardware.set(value[idx])
         else:
             self.__aggregator.set(value)
-        
+
     # Sets the values and waits that the read values reach their setpoint
-    def set_and_wait(self, value:np.array):
+    def set_and_wait(self, value: np.array):
         raise NotImplementedError("Not implemented yet.")
 
     # Gets the unit of the values
@@ -73,15 +74,16 @@ class RWMagnetHardware(ReadWriteFloatArray):
         return [m.hardware.unit() for m in self.__magnets]
 
     # Set the aggregator
-    def set_aggregator(self,agg:ScalarAggregator):
+    def set_aggregator(self, agg: ScalarAggregator):
         self.__aggregator = agg
 
-class MagnetArray(list[Magnet]):
+
+class MagnetArray(ElementArray):
     """
     Class that implements access to a magnet array
     """
 
-    def __init__(self,arrayName:str,magnets:list[Magnet],use_aggregator = True):
+    def __init__(self, arrayName: str, magnets: list[Magnet], use_aggregator=True):
         """
         Construct a magnet array
 
@@ -90,28 +92,24 @@ class MagnetArray(list[Magnet]):
         arrayName : str
             Array name
         magnets: list[Magnet]
-            Magnet list, all elements must be attached to the same instance of 
+            Magnet list, all elements must be attached to the same instance of
             either a Simulator or a ControlSystem.
         use_aggregator : bool
-            Use aggregator to increase performance by using paralell access to underlying devices.
+            Use aggregator to increase performance by using
+            paralell access to underlying devices.
         """
-        super().__init__(i for i in magnets)
-        self.__name = arrayName
-        holder = get_peer_from_array(self)
-        
-        self.__rwstrengths = RWMagnetStrength(arrayName,magnets)
-        self.__rwhardwares = RWMagnetHardware(arrayName,magnets)
+        super().__init__(arrayName, magnets, use_aggregator)
 
-        if use_aggregator:
-            aggs = holder.create_magnet_strength_aggregator(magnets)
-            aggh = holder.create_magnet_harddware_aggregator(magnets)
+        self.__rwstrengths = RWMagnetStrength(arrayName, magnets)
+        self.__rwhardwares = RWMagnetHardware(arrayName, magnets)
+
+        if use_aggregator and len(magnets) > 0:
+            aggs = self.get_peer().create_magnet_strength_aggregator(magnets)
+            aggh = self.get_peer().create_magnet_harddware_aggregator(magnets)
             self.__rwstrengths.set_aggregator(aggs)
             self.__rwhardwares.set_aggregator(aggh)
 
-    def get_name(self) -> str:
-        return self.__name
-
-    @property        
+    @property
     def strengths(self) -> RWMagnetStrength:
         """
         Give access to strength of each magnet of this array
@@ -124,9 +122,3 @@ class MagnetArray(list[Magnet]):
         Give access to hardware value of each magnet of this array
         """
         return self.__rwhardwares
-
-
-    
-
-
-    

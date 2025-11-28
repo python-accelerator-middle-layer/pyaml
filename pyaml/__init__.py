@@ -8,14 +8,14 @@ pyAML
 __title__ = "pyAML"
 __description__ = "Python Accelerator Middle Layer"
 __url__ = "https://github.com/python-accelerator-middle-layer/pyaml"
-__version__ = "0.0.0"
+__version__ = "0.1.0"
 __author__ = "pyAML collaboration"
 __author_email__ = ""
 
 import logging.config
 import os
-from pyaml.common.exception import PyAMLException
-from pyaml.common.exception import PyAMLConfigException
+
+from pyaml.common.exception import PyAMLConfigException, PyAMLException
 
 __all__ = [__version__, PyAMLException, PyAMLConfigException]
 
@@ -27,5 +27,5 @@ if os.path.exists(config_file):
 
 logger = logging.getLogger("pyaml")
 level = os.getenv("PYAML_LOG_LEVEL", "").upper()
-if len(level)>0:
+if len(level) > 0:
     logger.setLevel(getattr(logging, level, logging.WARNING))
