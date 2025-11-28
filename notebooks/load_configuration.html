@@ -154,15 +154,15 @@
 
 
 <li class="nav-item ">
-  <a class="nav-link nav-internal" href="../modules/arrays.html">
-    ARRAYS
+  <a class="nav-link nav-internal" href="arrays.html">
+    Arrays
   </a>
 </li>
 
 
 <li class="nav-item ">
-  <a class="nav-link nav-internal" href="../modules/bpm.html">
-    BPMS
+  <a class="nav-link nav-internal" href="../modules/arrays.html">
+    ARRAYS
   </a>
 </li>
 
@@ -174,6 +174,13 @@
                 </button>
                 <ul id="pst-nav-more-links" class="dropdown-menu">
                     
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../modules/bpm.html">
+    BPMS
+  </a>
+</li>
+
+
 <li class=" ">
   <a class="nav-link dropdown-item nav-internal" href="../modules/configuration.html">
     Configuration
@@ -263,7 +270,7 @@
           
           
           
-          <a href="https://github.com/atcollab/at" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i>
+          <a href="https://github.com/python-accelerator-middle-layer/pyaml" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i>
             <span class="sr-only">GitHub</span></a>
         </li>
 </ul></div>
@@ -327,6 +334,13 @@
 <li class="nav-item ">
   <a class="nav-link nav-internal" href="control_system.html">
     Select a control system
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="arrays.html">
+    Arrays
   </a>
 </li>
 
@@ -422,7 +436,7 @@
           
           
           
-          <a href="https://github.com/atcollab/at" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i>
+          <a href="https://github.com/python-accelerator-middle-layer/pyaml" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i>
             <span class="sr-only">GitHub</span></a>
         </li>
 </ul></div>
@@ -503,9 +517,9 @@
 <h1>Configuration<a class="headerlink" href="#configuration" title="Link to this heading">#</a></h1>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">pyaml.pyaml</span><span class="w"> </span><span class="kn">import</span> <span class="n">PyAML</span><span class="p">,</span> <span class="n">pyaml</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">pyaml.accelerator</span><span class="w"> </span><span class="kn">import</span> <span class="n">Accelerator</span>
 
-<span class="n">ml</span><span class="p">:</span> <span class="n">PyAML</span> <span class="o">=</span> <span class="n">pyaml</span><span class="p">(</span><span class="s2">&quot;../../tests/config/EBSTune.yaml&quot;</span><span class="p">)</span>
+<span class="n">SR</span><span class="p">:</span> <span class="n">Accelerator</span> <span class="o">=</span> <span class="n">Accelerator</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s2">&quot;../../tests/config/EBSTune.yaml&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -522,59 +536,55 @@
 </li>
 </ul>
 <p>It looks like this:</p>
-<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>type: pyaml.pyaml
-instruments:
-  - type: pyaml.instrument
-    name: sr               
-    energy: 6e9
-    simulators:
-      - type: pyaml.lattice.simulator
-        lattice: sr/lattices/ebs.mat
-        name: design
-    controls:
-      - type: tango.pyaml.controlsystem
-        tango_host: ebs-simu-3:10000
-        name: live
-    data_folder: /data/store
-    arrays:
-      - type: pyaml.arrays.magnet
-        name: QForTune
-        elements:
-          - QD2E-C04
-          - QD2A-C05
-          - QD2E-C05
-          - QD2A-C06
-          - QD2E-C06
-          - QD2A-C07
-          - ...
-    devices: 
-    - type: pyaml.magnet.quadrupole
-      name: QD2A-C03
-      model:
-        type: pyaml.magnet.linear_model
-        calibration_factor: 1.002096389
-        crosstalk: 0.99912
-        curve:
-          type: pyaml.configuration.csvcurve
-          file: sr/magnet_models/QD2_strength.csv
-        unit: 1/m
-        powerconverter:
-          type: tango.pyaml.attribute
-          attribute: srmag/vps-qd2/c03-a/current
-          unit: A
-    - ... 
-    - ...
-    - ...
-    - type: pyaml.diagnostics.tune_monitor
-      name: BETATRON_TUNE
-      tune_h:
-        type: tango.pyaml.attribute_read_only
-        attribute: srdiag/tune/tune_h
-        unit: mm
-      tune_v:
-        type: tango.pyaml.attribute_read_only
-        attribute: srdiag/tune/tune_v
-        unit: mm
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>type: pyaml.accelerator
+name: sr
+energy: 6e9
+simulators:
+  - type: pyaml.lattice.simulator
+    lattice: sr/lattices/ebs.mat
+    name: design
+controls:
+  - type: tango.pyaml.controlsystem
+    tango_host: ebs-simu-3:10000
+    name: live
+
+data_folder: /data/store
+  arrays:
+    - type: pyaml.arrays.magnet
+      name: QForTune
+      elements:
+        - QD2A-C03
+        - QD2E-C04
+        - QD2A-C05
+        - ...
+  devices: 
+  - type: pyaml.magnet.quadrupole
+    name: QD2A-C03
+    model:
+      type: pyaml.magnet.linear_model
+      calibration_factor: 1.002096389
+      crosstalk: 0.99912
+      curve:
+        type: pyaml.configuration.csvcurve
+        file: sr/magnet_models/QD2_strength.csv
+      unit: 1/m
+      powerconverter:
+        type: tango.pyaml.attribute
+        attribute: srmag/vps-qd2/c03-a/current
+        unit: A
+  - ... 
+  - ...
+  - ...
+  - type: pyaml.diagnostics.tune_monitor
+    name: BETATRON_TUNE
+    tune_h:
+      type: tango.pyaml.attribute_read_only
+      attribute: srdiag/tune/tune_h
+      unit: mm
+    tune_v:
+      type: tango.pyaml.attribute_read_only
+      attribute: srdiag/tune/tune_v
+      unit: mm
 </pre></div>
 </div>
 </section>

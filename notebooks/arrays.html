@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>pyaml.lattice.polynom_info &#8212; pyAML 0.1.0 documentation</title>
+    <title>use of magnet arrays &#8212; pyAML 0.1.0 documentation</title>
   
   
   
@@ -43,9 +43,11 @@
     <script src="../_static/documentation_options.js?v=2caa9db7"></script>
     <script src="../_static/doctools.js?v=9bcbadda"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
-    <script>DOCUMENTATION_OPTIONS.pagename = 'generated/pyaml.lattice.polynom_info';</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'notebooks/arrays';</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="ARRAYS" href="../modules/arrays.html" />
+    <link rel="prev" title="Control System set up" href="control_system.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   <meta name="docsearch:version" content="0.1" />
@@ -131,28 +133,28 @@
   <ul class="bd-navbar-elements navbar-nav">
     
 <li class="nav-item ">
-  <a class="nav-link nav-internal" href="../notebooks/load_configuration.html">
+  <a class="nav-link nav-internal" href="load_configuration.html">
     Load a configuration file
   </a>
 </li>
 
 
 <li class="nav-item ">
-  <a class="nav-link nav-internal" href="../notebooks/live_design.html">
+  <a class="nav-link nav-internal" href="live_design.html">
     Switch design live
   </a>
 </li>
 
 
 <li class="nav-item ">
-  <a class="nav-link nav-internal" href="../notebooks/control_system.html">
+  <a class="nav-link nav-internal" href="control_system.html">
     Select a control system
   </a>
 </li>
 
 
-<li class="nav-item ">
-  <a class="nav-link nav-internal" href="../notebooks/arrays.html">
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="#">
     Arrays
   </a>
 </li>
@@ -316,28 +318,28 @@
   <ul class="bd-navbar-elements navbar-nav">
     
 <li class="nav-item ">
-  <a class="nav-link nav-internal" href="../notebooks/load_configuration.html">
+  <a class="nav-link nav-internal" href="load_configuration.html">
     Load a configuration file
   </a>
 </li>
 
 
 <li class="nav-item ">
-  <a class="nav-link nav-internal" href="../notebooks/live_design.html">
+  <a class="nav-link nav-internal" href="live_design.html">
     Switch design live
   </a>
 </li>
 
 
 <li class="nav-item ">
-  <a class="nav-link nav-internal" href="../notebooks/control_system.html">
+  <a class="nav-link nav-internal" href="control_system.html">
     Select a control system
   </a>
 </li>
 
 
-<li class="nav-item ">
-  <a class="nav-link nav-internal" href="../notebooks/arrays.html">
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="#">
     Arrays
   </a>
 </li>
@@ -445,6 +447,17 @@
   
     <div class="sidebar-primary-items__start sidebar-primary__section">
         <div class="sidebar-primary-item">
+  <div>
+    <h4>Previous topic</h4>
+    <p class="topless"><a href="control_system.html"
+                          title="previous chapter">Control System set up</a></p>
+  </div>
+  <div>
+    <h4>Next topic</h4>
+    <p class="topless"><a href="../modules/arrays.html"
+                          title="next chapter">ARRAYS</a></p>
+  </div></div>
+        <div class="sidebar-primary-item">
 <div id="searchbox"></div></div>
     </div>
   
@@ -483,7 +496,7 @@
         <i class="fa-solid fa-home"></i>
       </a>
     </li>
-    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">pyaml.lattice.polynom_info</span></li>
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">use of magnet arrays</span></li>
   </ul>
 </nav>
 </div>
@@ -500,18 +513,39 @@
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section id="module-pyaml.lattice.polynom_info">
-<span id="pyaml-lattice-polynom-info"></span><h1>pyaml.lattice.polynom_info<a class="headerlink" href="#module-pyaml.lattice.polynom_info" title="Link to this heading">#</a></h1>
-<p>Class providing polynom information</p>
-<p class="rubric">Classes</p>
-<div class="pst-scrollable-table-container"><table class="autosummary longtable table">
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="../modules/lattice.html#pyaml.lattice.polynom_info.PolynomInfo" title="pyaml.lattice.polynom_info.PolynomInfo"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PolynomInfo</span></code></a>(attName, index[, sign])</p></td>
-<td><p>Polynom information</p></td>
-</tr>
-</tbody>
-</table>
+  <section class="tex2jax_ignore mathjax_ignore" id="use-of-magnet-arrays">
+<h1>use of magnet arrays<a class="headerlink" href="#use-of-magnet-arrays" title="Link to this heading">#</a></h1>
+<p>In pyAML it is possible to configure magnet arrays (families of magnets)</p>
+<p>Some families are available by default:</p>
+<ul class="simple">
+<li><p>dipoles</p></li>
+<li><p>quadrupoles</p></li>
+<li><p>skewquadrupoles</p></li>
+<li><p>sextupoles</p></li>
+<li><p>horcorrectors</p></li>
+<li><p>vercorrectors</p></li>
+<li><p>octupoles</p></li>
+</ul>
+<p>Any other family (in the example my-family-of-quads) may be defined when configuring pyAML, using defined devices.</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>type: pyaml.accelerator
+name: sr
+arrays:
+  - type: pyaml.arrays.magnet
+    name: my-family-of-quads
+    elements:
+      - QD2A-C03
+      - QD2E-C04
+      - QD2A-C05
+devices: 
+  - type: pyaml.magnet.quadrupole
+    name: QD2A-C03
+  - type: pyaml.magnet.quadrupole
+    name: QD2E-C04
+  - type: pyaml.magnet.quadrupole
+    name: QD2A-C05
+</pre></div>
 </div>
+<p>Below some feature of magnets arrays is presented</p>
 </section>
 
 
@@ -524,6 +558,24 @@
                 <footer class="prev-next-footer d-print-none">
                   
 <div class="prev-next-area">
+    <a class="left-prev"
+       href="control_system.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Control System set up</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="../modules/arrays.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">ARRAYS</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
 </div>
                 </footer>
               

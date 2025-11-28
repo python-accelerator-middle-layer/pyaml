@@ -46,7 +46,7 @@
     <script>DOCUMENTATION_OPTIONS.pagename = 'notebooks/control_system';</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="ARRAYS" href="../modules/arrays.html" />
+    <link rel="next" title="use of magnet arrays" href="arrays.html" />
     <link rel="prev" title="Live/Design: control modes" href="live_design.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
@@ -154,15 +154,15 @@
 
 
 <li class="nav-item ">
-  <a class="nav-link nav-internal" href="../modules/arrays.html">
-    ARRAYS
+  <a class="nav-link nav-internal" href="arrays.html">
+    Arrays
   </a>
 </li>
 
 
 <li class="nav-item ">
-  <a class="nav-link nav-internal" href="../modules/bpm.html">
-    BPMS
+  <a class="nav-link nav-internal" href="../modules/arrays.html">
+    ARRAYS
   </a>
 </li>
 
@@ -174,6 +174,13 @@
                 </button>
                 <ul id="pst-nav-more-links" class="dropdown-menu">
                     
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../modules/bpm.html">
+    BPMS
+  </a>
+</li>
+
+
 <li class=" ">
   <a class="nav-link dropdown-item nav-internal" href="../modules/configuration.html">
     Configuration
@@ -263,7 +270,7 @@
           
           
           
-          <a href="https://github.com/atcollab/at" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i>
+          <a href="https://github.com/python-accelerator-middle-layer/pyaml" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i>
             <span class="sr-only">GitHub</span></a>
         </li>
 </ul></div>
@@ -327,6 +334,13 @@
 <li class="nav-item current active">
   <a class="nav-link nav-internal" href="#">
     Select a control system
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="arrays.html">
+    Arrays
   </a>
 </li>
 
@@ -422,7 +436,7 @@
           
           
           
-          <a href="https://github.com/atcollab/at" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i>
+          <a href="https://github.com/python-accelerator-middle-layer/pyaml" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i>
             <span class="sr-only">GitHub</span></a>
         </li>
 </ul></div>
@@ -440,8 +454,8 @@
   </div>
   <div>
     <h4>Next topic</h4>
-    <p class="topless"><a href="../modules/arrays.html"
-                          title="next chapter">ARRAYS</a></p>
+    <p class="topless"><a href="arrays.html"
+                          title="next chapter">use of magnet arrays</a></p>
   </div></div>
         <div class="sidebar-primary-item">
 <div id="searchbox"></div></div>
@@ -501,9 +515,56 @@
                   
   <section class="tex2jax_ignore mathjax_ignore" id="control-system-set-up">
 <h1>Control System set up<a class="headerlink" href="#control-system-set-up" title="Link to this heading">#</a></h1>
+<p>The control system interface is in a separated package from pyaml</p>
+<p>pyaml itself: <br />
+pip install accelerator-middle-layer</p>
+<p>tango interface to pyaml: <br />
+pip install tango-pyaml</p>
+<p>ophyd-asynch interface to pyaml: <br />
+pip install pyaml-oa-cs</p>
+<p>If the above packages are installed the examples below will work (also in the same script)</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">pyaml.pyaml</span><span class="w"> </span><span class="kn">import</span> <span class="n">PyAML</span><span class="p">,</span> <span class="n">pyaml</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">pyaml.accelerator</span><span class="w"> </span><span class="kn">import</span> <span class="n">Accelerator</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Assuming these lines are present in …/…/tests/config/EBSTune_TANGO.yaml</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>type: pyaml.accelerator
+name: sr
+energy: 6e9
+controls:
+  - type: tango.pyaml.controlsystem
+      tango_host: ebs-simu-3:10000
+      name: live
+...
+</pre></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># work with TANGO</span>
+<span class="n">SR_Tango</span><span class="p">:</span> <span class="n">Accelerator</span> <span class="o">=</span> <span class="n">Accelerator</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s2">&quot;../../tests/config/EBSTune_TANGO.yaml&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Assuming these lines are present in …/…/tests/config/EBSTune_OPHYDASYNCH.yaml</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>type: pyaml.accelerator
+name: sr
+energy: 6e9
+controls:
+  - type: pyaml-cs-oa.pyaml.controlsystem
+      name: live
+...
+</pre></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># work with Ophyd-Asynch</span>
+<span class="n">SR_OphydAsynch</span><span class="p">:</span> <span class="n">Accelerator</span> <span class="o">=</span> <span class="n">Accelerator</span><span class="o">.</span><span class="n">load</span><span class="p">(</span>
+    <span class="s2">&quot;../../tests/config/EBSTune_OPHYDASYNCH.yaml&quot;</span>
+<span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -530,11 +591,11 @@
       </div>
     </a>
     <a class="right-next"
-       href="../modules/arrays.html"
+       href="arrays.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">ARRAYS</p>
+        <p class="prev-next-title">use of magnet arrays</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
