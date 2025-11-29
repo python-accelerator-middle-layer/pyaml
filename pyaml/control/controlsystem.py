@@ -6,6 +6,7 @@ from ..common.abstract_aggregator import ScalarAggregator
 from ..common.element import Element
 from ..common.element_holder import ElementHolder
 from ..configuration.factory import Factory
+from ..tuning_tools.tune import Tune
 from ..control.abstract_impl import (
     CSScalarAggregator,
     CSStrengthScalarAggregator,
@@ -162,3 +163,7 @@ class ControlSystem(ElementHolder, metaclass=ABCMeta):
                 betatron_tune = RBetatronTuneArray(e)
                 e = e.attach(self, betatron_tune)
                 self.add_betatron_tune_monitor(e)
+
+            elif isinstance(e, Tune):
+                self.add_tune_tuning(e.attach(self))
+

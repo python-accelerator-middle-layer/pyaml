@@ -10,6 +10,7 @@ from ..common.element_holder import ElementHolder
 from ..common.exception import PyAMLException
 from ..configuration import get_root_folder
 from ..diagnostics.tune_monitor import BetatronTuneMonitor
+from ..tuning_tools.tune import Tune
 from ..lattice.abstract_impl import (
     BPMHScalarAggregator,
     BPMScalarAggregator,
@@ -202,6 +203,9 @@ class Simulator(ElementHolder):
                 betatron_tune = RBetatronTuneArray(self.ring)
                 e = e.attach(self, betatron_tune)
                 self.add_betatron_tune_monitor(e)
+
+            elif isinstance(e, Tune):
+                self.add_tune_tuning(e.attach(self))
 
     def get_at_elems(self, element: Element) -> list[at.Element]:
         identifier = self._linker.get_element_identifier(element)
