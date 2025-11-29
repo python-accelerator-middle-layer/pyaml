@@ -10,7 +10,6 @@ from ..common.element_holder import ElementHolder
 from ..common.exception import PyAMLException
 from ..configuration import get_root_folder
 from ..diagnostics.tune_monitor import BetatronTuneMonitor
-from ..tuning_tools.tune import Tune
 from ..lattice.abstract_impl import (
     BPMHScalarAggregator,
     BPMScalarAggregator,
@@ -33,6 +32,7 @@ from ..magnet.cfm_magnet import CombinedFunctionMagnet
 from ..magnet.magnet import Magnet
 from ..rf.rf_plant import RFPlant, RWTotalVoltage
 from ..rf.rf_transmitter import RFTransmitter
+from ..tuning_tools.tune import Tune
 from .attribute_linker import (
     ConfigModel as PyAtAttrLinkerConfigModel,
 )

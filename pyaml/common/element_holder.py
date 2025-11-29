@@ -13,8 +13,9 @@ from ..magnet.cfm_magnet import CombinedFunctionMagnet
 from ..magnet.magnet import Magnet
 from ..rf.rf_plant import RFPlant
 from ..rf.rf_transmitter import RFTransmitter
-from .element import Element
 from ..tuning_tools.tune import Tune
+from .element import Element
+
 
 class ElementHolder(object):
     """
@@ -186,4 +187,3 @@ class ElementHolder(object):
 
     def add_tune_tuning(self, tune: Element):
         self.__add(self.__TUNING_TOOLS, tune)
-
