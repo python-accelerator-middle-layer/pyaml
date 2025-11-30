@@ -18,7 +18,6 @@ from collections.abc import Callable
 from datetime import datetime
 
 import numpy as np
-from pydantic import BaseModel, ConfigDict
 
 # Define the main class name for this module
 PYAMLCLASS = "Tune"
@@ -156,12 +155,12 @@ class Tune(Element):
 
     def __init__(self, cfg: ConfigModel):
         """
-        Construct a Tune adjustmenet object.
+        Construct a Tune adjustment object.
 
         Parameters
         ----------
         cfg : ConfigModel
-            Configuration for the tune adjustement.
+            Configuration for the tune adjustment.
         """
         super().__init__(cfg.name)
         self._cfg = cfg
@@ -208,7 +207,7 @@ class Tune(Element):
     ) -> Self:
         """
         Create a new reference to attach this tune object to a simulator
-        or a control systemand.
+        or a control system.
         """
         obj = self.__class__(self._cfg)
         obj._peer = peer
