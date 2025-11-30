@@ -197,7 +197,7 @@ class Tune(Element):
         wait_time: float
             Time to wait in second between 2 iterations
         """
-        self.__setpoint = tune
+        self.__setpoint = np.array(tune)
         for _ in range(iter):
             diff_tune = tune - self.readback()
             str = self.__tr.quads().strengths.get()
