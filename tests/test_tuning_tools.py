@@ -21,7 +21,7 @@ def test_tuning_tools():
     tune_adjust.response.save_json("tunemat.json")
     tune_adjust.response.load_json("tunemat.json")
     tune_adjust.set([0.17, 0.32], iter=2)
-    tune = tune_adjust.get()
+    tune = tune_adjust.readback()
     assert np.abs(tune[0] - 0.17) < 1e-5
     assert np.abs(tune[1] - 0.32) < 1e-5
 

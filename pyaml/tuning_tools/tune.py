@@ -57,7 +57,7 @@ class TuneResponse(object):
         """
         quads = self.quads()  # Returns attached quad devices
         tunemat = np.zeros((len(quads), 2))
-        initial_tune = self.__parent.get()
+        initial_tune = self.__parent.readback()
         delta = self.__parent._cfg.delta  # TODO: handle delta array
         aborted = False
 
@@ -70,7 +70,7 @@ class TuneResponse(object):
                 aborted = True
                 break
 
-            tune = self.__parent.get()
+            tune = self.__parent.readback()
             dq = tune - initial_tune
             tunemat[idx] = dq / delta
 
@@ -166,10 +166,17 @@ class Tune(Element):
         self._cfg = cfg
         self.__tm = None
         self.__tr: TuneResponse = None
+        self.__setpoint = np.array([np.nan, np.nan])
 
     def get(self):
         """
-        Return the betatron tune
+        Return the betatron tune setpoint
+        """
+        return self.__setpoint
+
+    def readback(self):
+        """
+        Return the betatron tune measurement
         """
         self.check_peer()
         if not self.__tm:
@@ -190,8 +197,9 @@ class Tune(Element):
         wait_time: float
             Time to wait in second between 2 iterations
         """
+        self.__setpoint = tune
         for _ in range(iter):
-            diff_tune = tune - self.get()
+            diff_tune = tune - self.readback()
             str = self.__tr.quads().strengths.get()
             str += self.__tr.correct(diff_tune)
             self.__tr.quads().strengths.set(str)
