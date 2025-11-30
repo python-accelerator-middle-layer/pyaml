@@ -198,12 +198,14 @@ class Tune(Element):
             Time to wait in second between 2 iterations
         """
         self.__setpoint = np.array(tune)
-        for _ in range(iter):
+        for i in range(iter):
             diff_tune = tune - self.readback()
             str = self.__tr.quads().strengths.get()
             str += self.__tr.correct(diff_tune)
             self.__tr.quads().strengths.set(str)
-            time.sleep(wait_time)
+            if i < iter - 1:
+                # Does not wait on the last iter
+                time.sleep(wait_time)
 
     @property
     def response(self) -> TuneResponse:
