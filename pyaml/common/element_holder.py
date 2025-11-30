@@ -180,7 +180,7 @@ class ElementHolder(object):
     def add_betatron_tune_monitor(self, tune_monitor: Element):
         self.__add(self.__DIAG, tune_monitor)
 
-    # Tunig tools
+    # Tuning tools
 
     def get_tune_tuning(self, name: str) -> Tune:
         return self.__get("Tune tuning tool", name, self.__TUNING_TOOLS)
