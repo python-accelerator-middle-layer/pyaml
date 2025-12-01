@@ -533,6 +533,7 @@
 <span class="kn">from</span><span class="w"> </span><span class="nn">..magnet.magnet</span><span class="w"> </span><span class="kn">import</span> <span class="n">Magnet</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">..rf.rf_plant</span><span class="w"> </span><span class="kn">import</span> <span class="n">RFPlant</span><span class="p">,</span> <span class="n">RWTotalVoltage</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">..rf.rf_transmitter</span><span class="w"> </span><span class="kn">import</span> <span class="n">RFTransmitter</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">..tuning_tools.tune</span><span class="w"> </span><span class="kn">import</span> <span class="n">Tune</span>
 
 
 <div class="viewcode-block" id="ControlSystem">
@@ -690,7 +691,10 @@
             <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="n">BetatronTuneMonitor</span><span class="p">):</span>
                 <span class="n">betatron_tune</span> <span class="o">=</span> <span class="n">RBetatronTuneArray</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
                 <span class="n">e</span> <span class="o">=</span> <span class="n">e</span><span class="o">.</span><span class="n">attach</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">betatron_tune</span><span class="p">)</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">add_betatron_tune_monitor</span><span class="p">(</span><span class="n">e</span><span class="p">)</span></div>
+                <span class="bp">self</span><span class="o">.</span><span class="n">add_betatron_tune_monitor</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+
+            <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="n">Tune</span><span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">add_tune_tuning</span><span class="p">(</span><span class="n">e</span><span class="o">.</span><span class="n">attach</span><span class="p">(</span><span class="bp">self</span><span class="p">))</span></div>
 </div>
 
 </pre></div>
