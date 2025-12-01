@@ -13,6 +13,7 @@ from ..magnet.cfm_magnet import CombinedFunctionMagnet
 from ..magnet.magnet import Magnet
 from ..rf.rf_plant import RFPlant
 from ..rf.rf_transmitter import RFTransmitter
+from ..tuning_tools.tune import Tune
 from .element import Element
 
 
@@ -30,6 +31,7 @@ class ElementHolder(object):
         self.__RFPLANT: dict = {}
         self.__RFTRANSMITTER: dict = {}
         self.__DIAG: dict = {}
+        self.__TUNING_TOOLS = {}
         self.__ALL: dict = {}
 
         # Array handle
@@ -177,3 +179,11 @@ class ElementHolder(object):
 
     def add_betatron_tune_monitor(self, tune_monitor: Element):
         self.__add(self.__DIAG, tune_monitor)
+
+    # Tuning tools
+
+    def get_tune_tuning(self, name: str) -> Tune:
+        return self.__get("Tune tuning tool", name, self.__TUNING_TOOLS)
+
+    def add_tune_tuning(self, tune: Element):
+        self.__add(self.__TUNING_TOOLS, tune)

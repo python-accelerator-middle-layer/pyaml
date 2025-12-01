@@ -1879,9 +1879,14 @@ devices:
   name: BETATRON_TUNE
   tune_h:
     type: tango.pyaml.attribute_read_only
-    attribute: srdiag/tune/tune_h
+    attribute: srdiag/beam-tune/main/Qh
     unit: mm
   tune_v:
     type: tango.pyaml.attribute_read_only
-    attribute: srdiag/tune/tune_v
+    attribute: srdiag/beam-tune/main/Qv
     unit: mm
+- type: pyaml.tuning_tools.tune
+  name: TUNE
+  quad_array: QForTune
+  betatron_tune: BETATRON_TUNE
+  delta: 1e-4

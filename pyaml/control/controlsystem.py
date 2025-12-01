@@ -26,6 +26,7 @@ from ..magnet.cfm_magnet import CombinedFunctionMagnet
 from ..magnet.magnet import Magnet
 from ..rf.rf_plant import RFPlant, RWTotalVoltage
 from ..rf.rf_transmitter import RFTransmitter
+from ..tuning_tools.tune import Tune
 
 
 class ControlSystem(ElementHolder, metaclass=ABCMeta):
@@ -162,3 +163,6 @@ class ControlSystem(ElementHolder, metaclass=ABCMeta):
                 betatron_tune = RBetatronTuneArray(e)
                 e = e.attach(self, betatron_tune)
                 self.add_betatron_tune_monitor(e)
+
+            elif isinstance(e, Tune):
+                self.add_tune_tuning(e.attach(self))

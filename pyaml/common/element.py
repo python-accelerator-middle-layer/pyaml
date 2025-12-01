@@ -1,6 +1,11 @@
+from typing import TYPE_CHECKING
+
 from pydantic import BaseModel, ConfigDict
 
 from .exception import PyAMLException
+
+if TYPE_CHECKING:
+    from ..common.element_holder import ElementHolder
 
 
 def __pyaml_repr__(obj):
@@ -39,7 +44,7 @@ class Element(object):
 
     def __init__(self, name: str):
         self.__name: str = name
-        self._peer = None  # Peer: ControlSystem, Simulator
+        self._peer: "ElementHolder" = None  # Peer: ControlSystem, Simulator
 
     def get_name(self):
         """
