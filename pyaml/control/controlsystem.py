@@ -27,6 +27,7 @@ from ..magnet.magnet import Magnet
 from ..rf.rf_plant import RFPlant, RWTotalVoltage
 from ..rf.rf_transmitter import RFTransmitter
 from ..tuning_tools.tune import Tune
+from .deviceaccess import DeviceAccess
 
 
 class ControlSystem(ElementHolder, metaclass=ABCMeta):
@@ -38,8 +39,9 @@ class ControlSystem(ElementHolder, metaclass=ABCMeta):
         ElementHolder.__init__(self)
 
     @abstractmethod
-    def init_cs(self):
-        """Initialize control system"""
+    def connect(self, dev: DeviceAccess) -> DeviceAccess:
+        """Return a new instance of the DeviceAccess object
+        coming from configuration attached to this CS"""
         pass
 
     @abstractmethod
