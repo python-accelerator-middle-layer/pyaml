@@ -39,7 +39,7 @@ class ControlSystem(ElementHolder, metaclass=ABCMeta):
         ElementHolder.__init__(self)
 
     @abstractmethod
-    def connect(self, dev: DeviceAccess) -> DeviceAccess:
+    def attach(self, dev: DeviceAccess) -> DeviceAccess:
         """Return a new instance of the DeviceAccess object
         coming from configuration attached to this CS"""
         pass

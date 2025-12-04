@@ -23,7 +23,7 @@ class TangoControlSystem(ControlSystem):
         self._cfg = cfg
         print(f"Creating dummy TangoControlSystem: {cfg.name}")
 
-    def connect(self, dev: DeviceAccess) -> DeviceAccess:
+    def attach(self, dev: DeviceAccess) -> DeviceAccess:
         newDev = copy.copy(dev)  # Shallow copy the object
         newDev._cfg = copy.copy(
             dev._cfg
@@ -35,9 +35,6 @@ class TangoControlSystem(ControlSystem):
 
     def name(self) -> str:
         return self._cfg.name
-
-    def init_cs(self):
-        pass
 
     def scalar_aggregator(self) -> str | None:
         return "tango.pyaml.multi_attribute"
