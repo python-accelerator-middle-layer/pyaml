@@ -1,8 +1,10 @@
+import copy
 import os
 
 from pydantic import BaseModel, ConfigDict
 
 from pyaml.control.controlsystem import ControlSystem
+from pyaml.control.deviceaccess import DeviceAccess
 
 PYAMLCLASS: str = "TangoControlSystem"
 
@@ -20,6 +22,16 @@ class TangoControlSystem(ControlSystem):
         super().__init__()
         self._cfg = cfg
         print(f"Creating dummy TangoControlSystem: {cfg.name}")
+
+    def connect(self, dev: DeviceAccess) -> DeviceAccess:
+        newDev = copy.copy(dev)  # Shallow copy the object
+        newDev._cfg = copy.copy(
+            dev._cfg
+        )  # Shallow copy the config object to allow a new attribute name
+        newDev._cfg.attribute = (
+            "//" + self._cfg.tango_host + "/" + newDev._cfg.attribute
+        )
+        return newDev
 
     def name(self) -> str:
         return self._cfg.name

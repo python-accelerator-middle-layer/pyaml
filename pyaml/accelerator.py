@@ -50,7 +50,6 @@ class Accelerator(object):
                 else:
                     # Add as dynacmic attribute
                     setattr(self, c.name(), c)
-                c.init_cs()
                 c.fill_device(cfg.devices)
 
         if cfg.simulators is not None:
