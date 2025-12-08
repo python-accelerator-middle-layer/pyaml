@@ -420,3 +420,24 @@ class RBetatronTuneArray(abstract.ReadFloatArray):
 
     def unit(self) -> str:
         return self.__tune_monitor._cfg.tune_v.unit()
+# ------------------------------------------------------------------------------
+
+
+class RChromaticityArray(abstract.ReadFloatArray):
+    """
+    Class providing read write access to chromaticity of a control system.
+    """
+
+    def __init__(self, chromaticity_monitor):
+        self.__chromaticity_monitor = chromaticity_monitor
+
+    def _update_chromaticity_monitor(self, chromaticity_monitor):
+        """Use to attach the proper chromaticity_monitor and not the one used to create this instance"""
+        self.__chromaticity_monitor = chromaticity_monitor
+
+    def get(self) -> NDArray:
+        # Return horizontal and vertical chromaticity as a NumPy array
+        return self.__chromaticity_monitor._last_measured
+
+    def unit(self) -> str:
+        return "1"
