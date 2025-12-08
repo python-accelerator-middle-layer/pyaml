@@ -4,14 +4,10 @@ from pathlib import Path
 
 import matplotlib.pyplot as plt
 import numpy as np
-from pyaml.external.pySC.pySC.apps import orbit_correction
-from pyaml.external.pySC.pySC.tuning.response_matrix import ResponseMatrix
 
 from pyaml.accelerator import Accelerator
-from pyaml.external.pySC import pySC
-from pyaml.external.pySC_interface import pySCInterface
-
-logging.getLogger("pyaml.external.pySC").setLevel(logging.WARNING)
+from pyaml.tuning_tools.orbit import ConfigModel as Orbit_ConfigModel
+from pyaml.tuning_tools.orbit import Orbit
 
 parent_folder = Path(__file__).parent
 pyaml_folder = parent_folder.parent.parent
@@ -19,13 +15,30 @@ config_path = pyaml_folder.joinpath("tests/config/EBSOrbit.yaml").resolve()
 sr = Accelerator.load(config_path)
 ebs = sr.design
 
+orbit = Orbit(
+    element_holder=ebs,
+    cfg=Orbit_ConfigModel(
+        bpm_array_name="BPM",
+        hcorr_array_name="HCorr",
+        vcorr_array_name="VCorr",
+        singular_values=162,
+        response_matrix_file=str(
+            pyaml_folder.joinpath("examples/ESRF_ORM_example/ideal_orm.json").resolve()
+        ),
+    ),
+)
+
+## get reference
+ref_h, ref_v = orbit.element_holder.get_bpms("BPM").positions.get().T
+reference = np.concat((ref_h, ref_v))
+########################################################
+
+
+## generate some orbit
 std_kick = 1e-6
 hcorr = ebs.get_magnets("HCorr")
 vcorr = ebs.get_magnets("VCorr")
 bpms = ebs.get_bpms("BPM")
-
-x0, y0 = bpms.positions.get().T
-reference = np.concat([x0, y0])
 
 # mangle orbit
 hcorr.strengths.set(
@@ -41,36 +54,15 @@ print(
     "R.m.s. orbit before correction "
     f"H: {1e6 * std_bc[0]: .1f} µm, V: {1e6 * std_bc[1]: .1f} µm."
 )
+########################################################
 
-response_matrix = ResponseMatrix.from_json(parent_folder / Path("ideal_orm.json"))
-interface = pySCInterface(element_holder=ebs)
+## Correct the orbit
+orbit.correct(reference=reference)
+# orbit.correct(plane="H")
+# orbit.correct(plane="V")
+########################################################
 
-# response_matrix.disable_inputs(["SH3E-C03-V"])
-
-for _ in range(5):
-    trims = orbit_correction(
-        interface=interface,
-        response_matrix=response_matrix,
-        method="svd_values",
-        parameter=100,
-        zerosum=True,
-        apply=True,
-        plane="H",
-        reference=reference,
-    )
-    trims = orbit_correction(
-        interface=interface,
-        response_matrix=response_matrix,
-        method="svd_values",
-        parameter=100,
-        zerosum=False,
-        apply=True,
-        plane="V",
-        reference=reference,
-    )
-
-# print("SH3E-C03-V" in trims.keys())
-
+## inspect orbit correction
 positions_ac = bpms.positions.get()
 std_ac = np.std(positions_ac, axis=0)
 print(
