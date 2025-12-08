@@ -23,11 +23,6 @@ dispersion = Dispersion(
 )
 
 dispersion.measure()
-# orm.save(parent_folder / Path("ideal_orm.json"))
-# orm.save(parent_folder / Path("ideal_orm.yaml"), with_type="yaml")
-# orm.save(parent_folder / Path("ideal_orm.npz"), with_type="npz")
-
-# ormdata = orm.get()
 dispersion_data = dispersion.get()
 
 fig = plt.figure()
