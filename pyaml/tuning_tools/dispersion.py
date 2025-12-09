@@ -5,10 +5,7 @@ from typing import List, Optional
 from pydantic import BaseModel, ConfigDict
 
 from ..common.element_holder import ElementHolder
-from ..common.exception import PyAMLException
-from ..external.pySC import pySC
 from ..external.pySC.pySC.apps import measure_dispersion
-from ..external.pySC.pySC.apps.codes import DispersionCode
 from ..external.pySC_interface import pySCInterface
 
 logger = logging.getLogger(__name__)
@@ -47,7 +44,6 @@ class Dispersion(object):
             skip_save=True,
         )
 
-        # pySC.disable_pySC_rich()
         _, measurement = next(generator)
         for _, _ in generator:
             pass

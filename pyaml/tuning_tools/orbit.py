@@ -5,7 +5,6 @@ from typing import List, Literal, Optional
 from pydantic import BaseModel, ConfigDict
 
 from ..common.element_holder import ElementHolder
-from ..external.pySC import pySC
 from ..external.pySC.pySC import ResponseMatrix
 from ..external.pySC.pySC.apps import orbit_correction
 from ..external.pySC_interface import pySCInterface
