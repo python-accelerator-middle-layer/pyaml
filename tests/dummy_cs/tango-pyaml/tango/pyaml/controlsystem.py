@@ -8,6 +8,8 @@ from pyaml.control.deviceaccess import DeviceAccess
 
 PYAMLCLASS: str = "TangoControlSystem"
 
+DEVICES = {}
+
 
 class ConfigModel(BaseModel):
     model_config = ConfigDict(arbitrary_types_allowed=True, extra="forbid")
@@ -23,15 +25,24 @@ class TangoControlSystem(ControlSystem):
         self._cfg = cfg
         print(f"Creating dummy TangoControlSystem: {cfg.name}")
 
-    def attach(self, dev: DeviceAccess) -> DeviceAccess:
-        newDev = copy.copy(dev)  # Shallow copy the object
-        newDev._cfg = copy.copy(
-            dev._cfg
-        )  # Shallow copy the config object to allow a new attribute name
-        newDev._cfg.attribute = (
-            "//" + self._cfg.tango_host + "/" + newDev._cfg.attribute
-        )
-        return newDev
+    def attach(self, devs: list[DeviceAccess]) -> list[DeviceAccess]:
+        global DEVICES
+        newDevs = []
+        for d in devs:
+            if d is not None:
+                full_name = "//" + self._cfg.tango_host + "/" + d._cfg.attribute
+                if full_name not in DEVICES:
+                    # Shallow copy the object
+                    newDev = copy.copy(d)
+                    # Shallow copy the config object
+                    # to allow a new attribute name
+                    newDev._cfg = copy.copy(d._cfg)
+                    newDev._cfg.attribute = full_name
+                    DEVICES[full_name] = newDev
+                newDevs.append(DEVICES[full_name])
+            else:
+                newDevs.append(None)
+        return newDevs
 
     def name(self) -> str:
         return self._cfg.name

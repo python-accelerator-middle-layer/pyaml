@@ -41,52 +41,6 @@ class BPMTiltOffsetModel(BPMSimpleModel):
         self.__y_offset = cfg.y_offset
         self.__tilt = cfg.tilt
 
-    def read_tilt(self) -> float:
-        """
-        Simulate reading the tilt value from a BPM.
-        Returns
-        -------
-        float
-            The tilt value of the BPM
-        """
-        return self.__tilt.get()
-
-    def read_offset(self) -> NDArray:
-        """
-        Simulate reading the offset values from a BPM.
-        Returns
-        -------
-        np.ndarray
-            Array of shape (2,) containing the horizontal and vertical
-            offsets
-        """
-        return np.array([self.__x_offset.get(), self.__y_offset.get()])
-
-    def set_tilt(self, tilt: float):
-        """
-        Simulate setting the tilt value of a BPM.
-        Parameters
-        ----------
-        tilt : float
-            The tilt value to set for the BPM
-        Returns
-        -------
-        None
-        """
-        self.__tilt.set(tilt)
-
-    def set_offset(self, offset_values: np.ndarray):
-        """
-        Simulate setting the offset values of a BPM
-        Parameters
-        ----------
-        offset_values : np.ndarray
-            Array of shape (2,) containing the horizontal and vertical
-            offsets to set for the BPM
-        """
-        self.__x_offset.set(offset_values[0])
-        self.__y_offset.set(offset_values[1])
-
     def get_pos_devices(self) -> list[DeviceAccess]:
         """
         Get device handles used for position reading
@@ -107,7 +61,7 @@ class BPMTiltOffsetModel(BPMSimpleModel):
         DeviceAccess
             DeviceAcess
         """
-        return [self.__tilt]
+        return self.__tilt
 
     def get_offset_devices(self) -> list[DeviceAccess]:
         """

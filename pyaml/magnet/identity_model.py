@@ -56,15 +56,6 @@ class IdentityMagnetModel(MagnetModel):
     def get_hardware_units(self) -> list[str]:
         return [self.__unit]
 
-    def read_hardware_values(self) -> np.array:
-        return [self.__device.get()]
-
-    def readback_hardware_values(self) -> np.array:
-        return [self.__device.readback()]
-
-    def send_hardware_values(self, currents: np.array):
-        self.__device.set(currents[0])
-
     def get_devices(self) -> list[DeviceAccess]:
         return [self.__device]
 
