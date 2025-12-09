@@ -84,7 +84,7 @@ class ChomaticityMonitor(Element):
                                  Sleep_between_meas: float=None, 
                                  Sleep_between_RFvar: float=None,
                                  fit_method: str=None,
-                                 do_plot: bool=False):
+                                 do_plot: bool=None):
         """
         Main function for chromaticity measurment
 
@@ -131,13 +131,14 @@ class ChomaticityMonitor(Element):
             Sleep_between_RFvar = self._cfg.Sleep_between_RFvar
         if fit_method is None :
             fit_method = self._cfg.fit_method
-
+        if do_plot is None :
+            do_plot = self._cfg.do_plot
         if abs(E_delta) > abs(Max_E_delta):
             # TODO : Add logger to warm that E_delta is to large
             return np.array([None, None])
 
-        Delta, NuX, NuY = self.measure_tune_response(N_step=N_step, alphac=alphac, E_delta=E_delta, N_tune_meas=N_tune_meas, Sleep_between_meas=Sleep_between_meas, Sleep_between_RFvar=Sleep_between_RFvar)
-        chrom = self.fit_chromaticity(Delta, NuX, NuY, fit_method, do_plot)
+        delta, NuX, NuY = self.measure_tune_response(N_step=N_step, alphac=alphac, E_delta=E_delta, N_tune_meas=N_tune_meas, Sleep_between_meas=Sleep_between_meas, Sleep_between_RFvar=Sleep_between_RFvar)
+        chrom = self.fit_chromaticity(delta=delta, NuX=NuX, NuY=NuY, method=fit_method, do_plot=do_plot)
         return(chrom)
 
     def measure_tune_response(self, 
@@ -168,15 +169,17 @@ class ChomaticityMonitor(Element):
         rf = self._peer.get_rf_plant(self._cfg.RFfreq)
         
         f0 = rf.frequency.get()
-        delta_f = f0 * E_delta * alphac
-        Delta = np.linspace(f0 - delta_f, f0 + delta_f, N_step)
+
+        delta = np.linspace(-E_delta, E_delta, N_step)
+        delta_frec = delta * alphac * f0
 
         NuY = np.zeros((N_step, N_tune_meas))
         NuX = np.zeros((N_step, N_tune_meas))
 
         try: # ensure that, even if there is an issus, the script will finish by reseting the RF frequency
-            for i, f in enumerate(Delta):
-                rf.frequency.set_and_wait(f)
+            for i, f in enumerate(delta_frec):
+                # TODO : Use set_and_wait once it is implemented ! (and remove Sleep_between_RFvar ?)
+                rf.frequency.set(f0 + f)
                 sleep(Sleep_between_RFvar)
 
                 for j in range(N_tune_meas):
@@ -186,11 +189,13 @@ class ChomaticityMonitor(Element):
             # TODO : add proper exception
             print("NOK")
         finally:
-            rf.frequency.set_and_wait(f0)
-        return(Delta, NuX, NuY)    
+            # TODO : Use set_and_wait once it is implemented !
+            rf.frequency.set(f0)
+
+        return(delta, NuX, NuY)    
 
 
-    def fit_chromaticity(self, Delta, NuX, NuY, method, do_plot):
+    def fit_chromaticity(self, delta, NuX, NuY, method, do_plot):
         """
         Compute chromaticity from measurement data.
 
@@ -202,12 +207,11 @@ class ChomaticityMonitor(Element):
             Horizontal tune measured.
         NuZ : array of float
             Vertical tune measured.
-        method : {"lin" or "quad"}, optional
+        method : {"lin" or "quad"}
             "lin" uses a linear fit and "quad" a 2nd order polynomial.
-            The default is "lin".
         plot : bool, optional
             If True, plot the fit.
-            The default is False.
+            Plots are made but not shown. Use plt.show() to show it.
 
         Returns
         -------
@@ -215,123 +219,48 @@ class ChomaticityMonitor(Element):
             Array with horizontal and veritical chromaticity.
 
         """
-        Delta = -Delta
+        delta = -delta
         chro = []
-        N_step_delta = len(Delta)
+        N_step_delta = len(delta)
         for i, Nu in enumerate([NuX, NuY]):
-            if N_step_delta%2 == 0:
-                tune0 = np.mean(Nu[N_step_delta//2:N_step_delta//2+1,:])
-            else:
-                tune0 = np.mean(Nu[N_step_delta//2,:])
+            # if N_step_delta%2 == 0:
+            #     tune0 = np.mean((Nu[N_step_delta//2-1,:] + Nu[N_step_delta//2,:])/2.)
+            # else:
+            #     tune0 = np.mean(Nu[N_step_delta//2,:])
 
-            dtune = np.mean(Nu[:,:],1) - tune0
+            dtune = np.mean(Nu[:,:],1)
 
             if method=="lin":
                 def linear_fit(x, a, b):
                     return a*x + b
-                popt_lin, _ = curve_fit(linear_fit, Delta, dtune)
+                popt_lin, _ = curve_fit(linear_fit, delta, dtune)
                 chro.append(popt_lin[0])
             elif method=="quad":
                 def quad_fit(x, a, b, c):
                     return a*x**2 + b*x + c
-                popt_quad, _ = curve_fit(quad_fit, Delta, dtune)
+                popt_quad, _ = curve_fit(quad_fit, delta, dtune)
                 chro.append(popt_quad[1])
 
             if do_plot:
-                plt.figure()
-                plt.scatter(Delta, dtune)
+                fig = plt.figure("Chromaticity_measurement")
+                ax = fig.add_subplot(2,1,1+i)
+                ax.scatter(delta, dtune)
                 if method=="lin":
-                    plt.plot(Delta,
-                             linear_fit(Delta, popt_lin[0], popt_lin[1]),
-                             '--',
-                             label="fit: {:.4f}x+{:.8f}".format(*popt_lin))
+                    ax.plot(delta,
+                             linear_fit(delta, popt_lin[0], popt_lin[1]),
+                             '--')
+                    title = "{:.4f}dp/p+{:.8f}".format(*popt_lin) 
                 elif method=="quad":
-                    plt.plot(Delta, 
-                             quad_fit(Delta, popt_quad[0], popt_quad[1], popt_quad[2]),
-                             '--',
-                             label="fit: {:.4f}x2+{:.4f}x+{:.4f}".format(*popt_quad))
-                plt.xlabel('$\\delta$')
-                if i == 0:
-                    plt.title("Horizontal Chromaticity")
-                    plt.ylabel('$\\delta Q_x$')
-                else:
-                    plt.title("Vertical Chromaticity")
-                    plt.ylabel('$\\delta Q_y$')
-                plt.legend()
-
+                    ax.plot(delta, 
+                             quad_fit(delta, popt_quad[0], popt_quad[1], popt_quad[2]),
+                             '--',)
+                    title="{:.4f}(dp/p)$^2$+{:.4f}dp/p+{:.4f}".format(*popt_quad)
+                ax.set_title(title)
+                ax.set_xlabel('Momentum Shift, dp/p [%]')
+                ax.set_ylabel("%s Tune"%["Horizontal", "Vertical"][i])
+                # ax.legend()
         self._last_measured = np.array(chro)
 
         return self._last_measured
 
 
-
-
-
-# exit()
-# from ..common.element import Element, ElementConfigModel
-# from ..common.abstract import ReadFloatArray
-# from ..control.deviceaccess import DeviceAccess
-# from .tune_monitor import BetatronTuneMonitor
-# try:
-#     from typing import Self  # Python 3.11+
-# except ImportError:
-#     from typing_extensions import Self  # Python 3.10 and earlier
-# from pydantic import ConfigDict
-# from scipy.optimize import curve_fit
-# import matplotlib.pyplot as plt
-
-# PYAMLCLASS = "ChromaticityMonitor"
-
-# class ConfigModel(ElementConfigModel):
-
-#     model_config = ConfigDict(arbitrary_types_allowed=True,extra="forbid")
-#     # tune_monitor: str
-#     # """Betatron tune"""
-
-#     tune_h: DeviceAccess
-#     """Horizontal betatron tune"""
-#     tune_v: DeviceAccess
-#     """Vertical betatron tune"""
-
-
-# class ChromaticityMonitor(Element):
-#     """
-#     Class providing measurement of chromaticity using betatron tune monitor of a physical or simulated lattice.
-#     The monitor provides horizontal and vertical chromaticity (ksi) measurements.
-#     """
-
-#     def __init__(self, cfg: ConfigModel):
-#         """
-#         Construct a ChromaticityMonitor.
-#         Parameters
-#         ----------
-#         cfg : ConfigModel
-#             Configuration for the ChromaticityMonitor and BetatronTuneMonitor.
-#         """
-        
-#         super().__init__(cfg.name)
-#         self._cfg = cfg
-#         self.__RFfreq = None
-#         # self.__ksi = None
-
-#     @property
-#     def RFfreq(self) -> ReadFloatArray:
-#         self.check_peer()
-#         return self.__RFfreq
-
-#     # @property
-#     # def Ksi(self) -> ReadFloatArray:
-#     #     self.check_peer()
-#     #     return self.__ksi
-
-#     # @property
-#     # def chromaticity(self) -> ReadFloatArray:
-#     #     return self.Ksi
-
-#     def attach(self, peer, RFfreq: ReadFloatArray) -> Self:
-#         obj = self.__class__(self._cfg)
-#         obj.__RFfreq = RFfreq
-#         obj._peer = peer
-#         return obj
-
-#     # def 
