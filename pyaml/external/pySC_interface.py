@@ -158,3 +158,10 @@ class pySCInterface:
             )  # ideally set_and_wait but not implemented
 
         return
+
+    def get_rf_main_frequency(self) -> float:
+        return self.rf_plant.frequency.get()
+
+    def set_rf_main_frequency(self, value: float) -> None:
+        self.rf_plant.frequency.set(value)
+        return

@@ -47,7 +47,7 @@ class Dispersion(object):
             skip_save=True,
         )
 
-        pySC.disable_pySC_rich()
+        # pySC.disable_pySC_rich()
         _, measurement = next(generator)
         for _, _ in generator:
             pass
