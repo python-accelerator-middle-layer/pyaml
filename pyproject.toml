@@ -15,9 +15,6 @@ exclude = [
 [tool.hatch.build.targets.wheel]
 packages = ["pyaml"]
 
-[tool.hatch.envs.default]
-pre-install-commands = ["git submodule update --init --recursive”]
-
 [project]
 name = "accelerator-middle-layer"
 description = "Python Accelerator Middle Layer"
