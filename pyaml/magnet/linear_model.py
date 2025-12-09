@@ -64,15 +64,6 @@ class LinearMagnetModel(MagnetModel):
     def get_hardware_units(self) -> list[str]:
         return [self.__hardware_unit] if self.__hardware_unit is not None else [""]
 
-    def read_hardware_values(self) -> np.array:
-        return [self.__ps.get()]
-
-    def readback_hardware_values(self) -> np.array:
-        return [self.__ps.readback()]
-
-    def send_hardware_values(self, currents: np.array):
-        self.__ps.set(currents[0])
-
     def get_devices(self) -> list[DeviceAccess]:
         return [self.__ps]
 

@@ -4,7 +4,6 @@ model:
   type: pyaml.magnet.identity_model
   unit: 1/m
   physics:
-    type: pyaml.control.device
-    setpoint: sr/ps-qf1/c01-a/strength
-    readback: sr/ps-qf1/c01-a/strength
+    type: tango.pyaml.attribute
+    attribute: sr/ps-qf1/c01-a/strength
     unit: 1/m

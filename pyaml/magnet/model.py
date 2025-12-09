@@ -79,42 +79,6 @@ class MagnetModel(metaclass=ABCMeta):
         pass
 
     @abstractmethod
-    def read_hardware_values(self) -> npt.NDArray[np.float64]:
-        """
-        Get power supply current (or voltage) setpoint(s) from control system
-
-        Returns
-        -------
-        npt.NDArray[np.float64]
-            Array of hardware values (i.e. currents or voltages)
-        """
-        pass
-
-    @abstractmethod
-    def readback_hardware_values(self) -> npt.NDArray[np.float64]:
-        """
-        Get power supply harware value(s) measurements from control system
-
-        Returns
-        -------
-        npt.NDArray[np.float64]
-            Array of hardware values (i.e. currents or voltages)
-        """
-        pass
-
-    @abstractmethod
-    def send_hardware_values(self, hardware_values: npt.NDArray[np.float64]):
-        """
-        Send power supply value(s) to control system
-
-        Parameters
-        ----------
-        hardware_values : npt.NDArray[np.float64]
-            Array of hardware values (i.e. currents or voltages)
-        """
-        pass
-
-    @abstractmethod
     def get_devices(self) -> list[DeviceAccess]:
         """
         Get device handles
