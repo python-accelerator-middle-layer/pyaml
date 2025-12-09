@@ -26,11 +26,11 @@ class TangoControlSystem(ControlSystem):
         print(f"Creating dummy TangoControlSystem: {cfg.name}")
 
     def attach(self, devs: list[DeviceAccess]) -> list[DeviceAccess]:
-        global DEVICES
         newDevs = []
         for d in devs:
             if d is not None:
                 full_name = "//" + self._cfg.tango_host + "/" + d._cfg.attribute
+                global DEVICES
                 if full_name not in DEVICES:
                     # Shallow copy the object
                     newDev = copy.copy(d)
