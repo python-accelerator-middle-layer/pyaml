@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>ARRAYS &#8212; pyAML 0.1.0 documentation</title>
+    <title>Arrays configuration &#8212; pyAML 0.1.0 documentation</title>
   
   
   
@@ -162,7 +162,7 @@
 
 <li class="nav-item current active">
   <a class="nav-link nav-internal" href="#">
-    ARRAYS
+    Arrays configuration
   </a>
 </li>
 
@@ -351,7 +351,7 @@
 
 <li class="nav-item current active">
   <a class="nav-link nav-internal" href="#">
-    ARRAYS
+    Arrays configuration
   </a>
 </li>
 
@@ -500,7 +500,7 @@
         <i class="fa-solid fa-home"></i>
       </a>
     </li>
-    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">ARRAYS</span></li>
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">Arrays configuration</span></li>
   </ul>
 </nav>
 </div>
@@ -517,58 +517,230 @@
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section id="module-pyaml.arrays.array">
-<span id="arrays"></span><h1>ARRAYS<a class="headerlink" href="#module-pyaml.arrays.array" title="Link to this heading">#</a></h1>
-<p>Magnet array configuration</p>
+  <section id="arrays-configuration">
+<h1>Arrays configuration<a class="headerlink" href="#arrays-configuration" title="Link to this heading">#</a></h1>
+<p id="module-pyaml.arrays.array">Array configuration</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="pyaml.arrays.array.ArrayConfig">
 <em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyaml.arrays.array.</span></span><span class="sig-name descname"><span class="pre">ArrayConfig</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cfg</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#pyaml.arrays.array.ArrayConfigModel" title="pyaml.arrays.array.ArrayConfigModel"><span class="pre">ArrayConfigModel</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/arrays/array.html#ArrayConfig"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.arrays.array.ArrayConfig" title="Link to this definition">#</a></dt>
-<dd><p>Class that implements configuration for access to arrays (families)</p>
+<dd><p>Base class that implements configuration for access to arrays (families)</p>
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="pyaml.arrays.array.ArrayConfigModel">
 <em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyaml.arrays.array.</span></span><span class="sig-name descname"><span class="pre">ArrayConfigModel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">elements</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/arrays/array.html#ArrayConfigModel"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.arrays.array.ArrayConfigModel" title="Link to this definition">#</a></dt>
-<dd><dl class="py attribute">
-<dt class="sig sig-object py" id="pyaml.arrays.array.ArrayConfigModel.elements">
-<span class="sig-name descname"><span class="pre">elements</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#pyaml.arrays.array.ArrayConfigModel.elements" title="Link to this definition">#</a></dt>
-<dd><p>List of pyaml element names</p>
+<dd><p>Base class for array confirguration</p>
+<section id="parameters">
+<h2>Parameters:<a class="headerlink" href="#parameters" title="Link to this heading">#</a></h2>
+<dl class="simple">
+<dt>name: str</dt><dd><p>Family name</p>
+</dd>
+<dt>elements: list[str]</dt><dd><p>List of pyaml element names</p>
+</dd>
+</dl>
+</section>
 </dd></dl>
 
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pyaml.arrays.array.ArrayConfigModel.model_config">
-<span class="sig-name descname"><span class="pre">model_config</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">ConfigDict</span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'arbitrary_types_allowed':</span> <span class="pre">True,</span> <span class="pre">'extra':</span> <span class="pre">'forbid'}</span></em><a class="headerlink" href="#pyaml.arrays.array.ArrayConfigModel.model_config" title="Link to this definition">#</a></dt>
-<dd><p>Configuration for the model, should be a dictionary conforming to [<cite>ConfigDict</cite>][pydantic.config.ConfigDict].</p>
+<dl class="py class" id="module-pyaml.arrays.element">
+<dt class="sig sig-object py" id="pyaml.arrays.element.Element">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyaml.arrays.element.</span></span><span class="sig-name descname"><span class="pre">Element</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cfg</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#pyaml.arrays.array.ArrayConfigModel" title="pyaml.arrays.array.ArrayConfigModel"><span class="pre">ArrayConfigModel</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/arrays/element.html#Element"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.arrays.element.Element" title="Link to this definition">#</a></dt>
+<dd><p>Element array confirguration</p>
+<p class="rubric">Example</p>
+<p>An element array configuration can also be created by code using
+the following example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">pyaml.arrays.element</span><span class="w"> </span><span class="kn">import</span> <span class="n">Element</span><span class="p">,</span><span class="n">ConfigModel</span> <span class="k">as</span> <span class="n">ElementArrayConfigModel</span>
+<span class="n">elemArray</span> <span class="o">=</span> <span class="n">Element</span><span class="p">(</span>
+              <span class="n">ElementArrayConfigModel</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;MyArray&quot;</span><span class="p">,</span> <span class="n">elements</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;elt1&quot;</span><span class="p">,</span><span class="s2">&quot;elt2&quot;</span><span class="p">])</span>
+            <span class="p">)</span>
+</pre></div>
+</div>
 </dd></dl>
 
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pyaml.arrays.array.ArrayConfigModel.name">
-<span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#pyaml.arrays.array.ArrayConfigModel.name" title="Link to this definition">#</a></dt>
-<dd><p>Family name</p>
-</dd></dl>
-
+<dl class="py class" id="module-pyaml.arrays.bpm">
+<dt class="sig sig-object py" id="pyaml.arrays.bpm.BPM">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyaml.arrays.bpm.</span></span><span class="sig-name descname"><span class="pre">BPM</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cfg</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#pyaml.arrays.array.ArrayConfigModel" title="pyaml.arrays.array.ArrayConfigModel"><span class="pre">ArrayConfigModel</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/arrays/bpm.html#BPM"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.arrays.bpm.BPM" title="Link to this definition">#</a></dt>
+<dd><p>BPM array confirguration</p>
+<p class="rubric">Example</p>
+<p>A BPM array configuration can also be created by code using the following example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">pyaml.arrays.bpm</span><span class="w"> </span><span class="kn">import</span> <span class="n">BPM</span><span class="p">,</span><span class="n">ConfigModel</span> <span class="k">as</span> <span class="n">BPMArrayConfigModel</span>
+<span class="n">bpmArray</span> <span class="o">=</span> <span class="n">BPM</span><span class="p">(</span>
+             <span class="n">BPMArrayConfigModel</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;MyBPMs&quot;</span><span class="p">,</span> <span class="n">elements</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;bpm1&quot;</span><span class="p">,</span><span class="s2">&quot;bpm2&quot;</span><span class="p">])</span>
+           <span class="p">)</span>
+</pre></div>
+</div>
 </dd></dl>
 
 <dl class="py class" id="module-pyaml.arrays.magnet">
-<dt class="sig sig-object py" id="pyaml.arrays.magnet.ConfigModel">
-<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyaml.arrays.magnet.</span></span><span class="sig-name descname"><span class="pre">ConfigModel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">elements</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/arrays/magnet.html#ConfigModel"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.arrays.magnet.ConfigModel" title="Link to this definition">#</a></dt>
-<dd><dl class="py attribute">
-<dt class="sig sig-object py" id="pyaml.arrays.magnet.ConfigModel.model_config">
-<span class="sig-name descname"><span class="pre">model_config</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">ConfigDict</span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'arbitrary_types_allowed':</span> <span class="pre">True,</span> <span class="pre">'extra':</span> <span class="pre">'forbid'}</span></em><a class="headerlink" href="#pyaml.arrays.magnet.ConfigModel.model_config" title="Link to this definition">#</a></dt>
-<dd><p>Configuration for the model, should be a dictionary conforming to [<cite>ConfigDict</cite>][pydantic.config.ConfigDict].</p>
+<dt class="sig sig-object py" id="pyaml.arrays.magnet.Magnet">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyaml.arrays.magnet.</span></span><span class="sig-name descname"><span class="pre">Magnet</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cfg</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#pyaml.arrays.array.ArrayConfigModel" title="pyaml.arrays.array.ArrayConfigModel"><span class="pre">ArrayConfigModel</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/arrays/magnet.html#Magnet"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.arrays.magnet.Magnet" title="Link to this definition">#</a></dt>
+<dd><p>Magnet array confirguration</p>
+<p class="rubric">Example</p>
+<p>A magnet array configuration can also be created by code using
+the following example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">pyaml.arrays.magnet</span><span class="w"> </span><span class="kn">import</span> <span class="n">Magnet</span><span class="p">,</span><span class="n">ConfigModel</span> <span class="k">as</span> <span class="n">MagnetArrayConfigModel</span>
+<span class="n">magArray</span> <span class="o">=</span> <span class="n">Magnet</span><span class="p">(</span>
+             <span class="n">MagnetArrayConfigModel</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;MyMags&quot;</span><span class="p">,</span> <span class="n">elements</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;mag1&quot;</span><span class="p">,</span><span class="s2">&quot;mag2&quot;</span><span class="p">])</span>
+           <span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py class" id="module-pyaml.arrays.cfm_magnet">
+<dt class="sig sig-object py" id="pyaml.arrays.cfm_magnet.CombinedFunctionMagnet">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyaml.arrays.cfm_magnet.</span></span><span class="sig-name descname"><span class="pre">CombinedFunctionMagnet</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cfg</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#pyaml.arrays.array.ArrayConfigModel" title="pyaml.arrays.array.ArrayConfigModel"><span class="pre">ArrayConfigModel</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/arrays/cfm_magnet.html#CombinedFunctionMagnet"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.arrays.cfm_magnet.CombinedFunctionMagnet" title="Link to this definition">#</a></dt>
+<dd><p>Combined function magnet array confirguration</p>
+<p class="rubric">Example</p>
+<p>A magnet array configuration can also be created by code using
+the following example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">pyaml.arrays.cfm_magnet</span><span class="w"> </span><span class="kn">import</span> <span class="n">CombinedFunctionMagnet</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pyaml.arrays.cfm_magnet</span><span class="w"> </span><span class="kn">import</span> <span class="n">ConfigModel</span> <span class="k">as</span> <span class="n">CFMagnetConfigModel</span>
+<span class="n">magArray</span> <span class="o">=</span> <span class="n">CombinedFunctionMagnet</span><span class="p">(</span>
+             <span class="n">CFMagnetConfigModel</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;myCFM&quot;</span><span class="p">,</span> <span class="n">elements</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;mag1&quot;</span><span class="p">,</span><span class="s2">&quot;mag2&quot;</span><span class="p">])</span>
+           <span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</section>
+<section id="arrays-usage">
+<h1>Arrays usage<a class="headerlink" href="#arrays-usage" title="Link to this heading">#</a></h1>
+<dl class="py class" id="module-pyaml.arrays.element_array">
+<dt class="sig sig-object py" id="pyaml.arrays.element_array.ElementArray">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyaml.arrays.element_array.</span></span><span class="sig-name descname"><span class="pre">ElementArray</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">arrayName</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">elements</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">Element</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_aggregator</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/arrays/element_array.html#ElementArray"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.arrays.element_array.ElementArray" title="Link to this definition">#</a></dt>
+<dd><p>Class that implements access to an element array</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>arrayName</strong> (<em>str</em>) -- Array name</p></li>
+<li><p><strong>elements</strong> (<em>list</em><em>[</em><a class="reference internal" href="#pyaml.arrays.element.Element" title="pyaml.arrays.element.Element"><em>Element</em></a><em>]</em>) -- Element list, all elements must be attached to the same instance of
+either a Simulator or a ControlSystem.</p></li>
+<li><p><strong>use_aggregator</strong> (<em>bool</em>) -- Use aggregator to increase performance by using paralell
+access to underlying devices.</p></li>
+</ul>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<p>An array can be retrieved from the configuration as in the following example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sr</span> <span class="o">=</span> <span class="n">Accelerator</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s2">&quot;acc.yaml&quot;</span><span class="p">)</span>
+<span class="n">elts</span> <span class="o">=</span> <span class="n">sr</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">get_elemens</span><span class="p">(</span><span class="s2">&quot;QuadForTune&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaml.arrays.element_array.ElementArray.get_name">
+<span class="sig-name descname"><span class="pre">get_name</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../_modules/pyaml/arrays/element_array.html#ElementArray.get_name"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.arrays.element_array.ElementArray.get_name" title="Link to this definition">#</a></dt>
+<dd><p>Returns the array name</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaml.arrays.element_array.ElementArray.get_peer">
+<span class="sig-name descname"><span class="pre">get_peer</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/arrays/element_array.html#ElementArray.get_peer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.arrays.element_array.ElementArray.get_peer" title="Link to this definition">#</a></dt>
+<dd><p>Returns the peer (Simulator or ControlSystem) of an element list</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaml.arrays.element_array.ElementArray.names">
+<span class="sig-name descname"><span class="pre">names</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/pyaml/arrays/element_array.html#ElementArray.names"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.arrays.element_array.ElementArray.names" title="Link to this definition">#</a></dt>
+<dd><p>Returns the element names</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class" id="module-pyaml.arrays.bpm_array">
+<dt class="sig sig-object py" id="pyaml.arrays.bpm_array.BPMArray">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyaml.arrays.bpm_array.</span></span><span class="sig-name descname"><span class="pre">BPMArray</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">arrayName</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bpms</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="bpm.html#pyaml.bpm.bpm.BPM" title="pyaml.bpm.bpm.BPM"><span class="pre">BPM</span></a><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_aggregator</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/arrays/bpm_array.html#BPMArray"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.arrays.bpm_array.BPMArray" title="Link to this definition">#</a></dt>
+<dd><p>Class that implements access to a BPM array</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>arrayName</strong> (<em>str</em>) -- Array name</p></li>
+<li><p><strong>bpms</strong> (<em>list</em><em>[</em><a class="reference internal" href="#pyaml.arrays.bpm.BPM" title="pyaml.arrays.bpm.BPM"><em>BPM</em></a><em>]</em>) -- BPM list, all elements must be attached to the same instance of
+either a Simulator or a ControlSystem.</p></li>
+<li><p><strong>use_aggregator</strong> (<em>bool</em>) -- Use aggregator to increase performance by using paralell
+access to underlying devices.</p></li>
+</ul>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<p>An array can be retrieved from the configuration as in the following example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sr</span> <span class="o">=</span> <span class="n">Accelerator</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s2">&quot;acc.yaml&quot;</span><span class="p">)</span>
+<span class="n">bpms</span> <span class="o">=</span> <span class="n">sr</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">get_bpms</span><span class="p">(</span><span class="s2">&quot;BPMs&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<dl class="py property">
+<dt class="sig sig-object py" id="pyaml.arrays.bpm_array.BPMArray.h">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">h</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#pyaml.arrays.bpm_array.RWBPMSinglePosition" title="pyaml.arrays.bpm_array.RWBPMSinglePosition"><span class="pre">RWBPMSinglePosition</span></a></em><a class="headerlink" href="#pyaml.arrays.bpm_array.BPMArray.h" title="Link to this definition">#</a></dt>
+<dd><p>Returns horizontal position of each bpm of this array</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="pyaml.arrays.bpm_array.BPMArray.positions">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">positions</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#pyaml.arrays.bpm_array.RWBPMPosition" title="pyaml.arrays.bpm_array.RWBPMPosition"><span class="pre">RWBPMPosition</span></a></em><a class="headerlink" href="#pyaml.arrays.bpm_array.BPMArray.positions" title="Link to this definition">#</a></dt>
+<dd><p>Returns position of each bpm of this array</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="pyaml.arrays.bpm_array.BPMArray.v">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">v</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#pyaml.arrays.bpm_array.RWBPMSinglePosition" title="pyaml.arrays.bpm_array.RWBPMSinglePosition"><span class="pre">RWBPMSinglePosition</span></a></em><a class="headerlink" href="#pyaml.arrays.bpm_array.BPMArray.v" title="Link to this definition">#</a></dt>
+<dd><p>Returns vertical position of each bpm of this array</p>
 </dd></dl>
 
 </dd></dl>
 
 <dl class="py class">
-<dt class="sig sig-object py" id="pyaml.arrays.magnet.Magnet">
-<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyaml.arrays.magnet.</span></span><span class="sig-name descname"><span class="pre">Magnet</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cfg</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#pyaml.arrays.array.ArrayConfigModel" title="pyaml.arrays.array.ArrayConfigModel"><span class="pre">ArrayConfigModel</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/arrays/magnet.html#Magnet"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.arrays.magnet.Magnet" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dt class="sig sig-object py" id="pyaml.arrays.bpm_array.RWBPMPosition">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyaml.arrays.bpm_array.</span></span><span class="sig-name descname"><span class="pre">RWBPMPosition</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bpms</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="bpm.html#pyaml.bpm.bpm.BPM" title="pyaml.bpm.bpm.BPM"><span class="pre">BPM</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/arrays/bpm_array.html#RWBPMPosition"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.arrays.bpm_array.RWBPMPosition" title="Link to this definition">#</a></dt>
+<dd><dl class="py method">
+<dt class="sig sig-object py" id="pyaml.arrays.bpm_array.RWBPMPosition.get">
+<span class="sig-name descname"><span class="pre">get</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">array</span></span></span><a class="reference internal" href="../_modules/pyaml/arrays/bpm_array.html#RWBPMPosition.get"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.arrays.bpm_array.RWBPMPosition.get" title="Link to this definition">#</a></dt>
+<dd><p>Get the value</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaml.arrays.bpm_array.RWBPMPosition.unit">
+<span class="sig-name descname"><span class="pre">unit</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/pyaml/arrays/bpm_array.html#RWBPMPosition.unit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.arrays.bpm_array.RWBPMPosition.unit" title="Link to this definition">#</a></dt>
+<dd><p>Get the unit of the values</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="pyaml.arrays.bpm_array.RWBPMSinglePosition">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyaml.arrays.bpm_array.</span></span><span class="sig-name descname"><span class="pre">RWBPMSinglePosition</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bpms</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="bpm.html#pyaml.bpm.bpm.BPM" title="pyaml.bpm.bpm.BPM"><span class="pre">BPM</span></a><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">idx</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/arrays/bpm_array.html#RWBPMSinglePosition"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.arrays.bpm_array.RWBPMSinglePosition" title="Link to this definition">#</a></dt>
+<dd><dl class="py method">
+<dt class="sig sig-object py" id="pyaml.arrays.bpm_array.RWBPMSinglePosition.get">
+<span class="sig-name descname"><span class="pre">get</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">array</span></span></span><a class="reference internal" href="../_modules/pyaml/arrays/bpm_array.html#RWBPMSinglePosition.get"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.arrays.bpm_array.RWBPMSinglePosition.get" title="Link to this definition">#</a></dt>
+<dd><p>Get the value</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaml.arrays.bpm_array.RWBPMSinglePosition.unit">
+<span class="sig-name descname"><span class="pre">unit</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/pyaml/arrays/bpm_array.html#RWBPMSinglePosition.unit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.arrays.bpm_array.RWBPMSinglePosition.unit" title="Link to this definition">#</a></dt>
+<dd><p>Get the unit of the values</p>
+</dd></dl>
+
+</dd></dl>
 
 <dl class="py class" id="module-pyaml.arrays.magnet_array">
 <dt class="sig sig-object py" id="pyaml.arrays.magnet_array.MagnetArray">
 <em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyaml.arrays.magnet_array.</span></span><span class="sig-name descname"><span class="pre">MagnetArray</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">arrayName</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">magnets</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">Magnet</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_aggregator</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/arrays/magnet_array.html#MagnetArray"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.arrays.magnet_array.MagnetArray" title="Link to this definition">#</a></dt>
 <dd><p>Class that implements access to a magnet array</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>arrayName</strong> (<em>str</em>) -- Array name</p></li>
+<li><p><strong>magnets</strong> (<em>list</em><em>[</em><a class="reference internal" href="#pyaml.arrays.magnet.Magnet" title="pyaml.arrays.magnet.Magnet"><em>Magnet</em></a><em>]</em>) -- Magnet list, all elements must be attached to the same instance of
+either a Simulator or a ControlSystem.</p></li>
+<li><p><strong>use_aggregator</strong> (<em>bool</em>) -- Use aggregator to increase performance by using
+paralell access to underlying devices.</p></li>
+</ul>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<p>An array can be retrieved from the configuration as in the following example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sr</span> <span class="o">=</span> <span class="n">Accelerator</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s2">&quot;acc.yaml&quot;</span><span class="p">)</span>
+<span class="n">quads</span> <span class="o">=</span> <span class="n">sr</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">get_magnets</span><span class="p">(</span><span class="s2">&quot;QuadForTune&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
 <dl class="py property">
 <dt class="sig sig-object py" id="pyaml.arrays.magnet_array.MagnetArray.hardwares">
 <em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">hardwares</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#pyaml.arrays.magnet_array.RWMagnetHardware" title="pyaml.arrays.magnet_array.RWMagnetHardware"><span class="pre">RWMagnetHardware</span></a></em><a class="headerlink" href="#pyaml.arrays.magnet_array.MagnetArray.hardwares" title="Link to this definition">#</a></dt>
@@ -641,6 +813,93 @@
 
 </dd></dl>
 
+<dl class="py class" id="module-pyaml.arrays.cfm_magnet_array">
+<dt class="sig sig-object py" id="pyaml.arrays.cfm_magnet_array.CombinedFunctionMagnetArray">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyaml.arrays.cfm_magnet_array.</span></span><span class="sig-name descname"><span class="pre">CombinedFunctionMagnetArray</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">arrayName</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">magnets</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">CombinedFunctionMagnet</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_aggregator</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/arrays/cfm_magnet_array.html#CombinedFunctionMagnetArray"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.arrays.cfm_magnet_array.CombinedFunctionMagnetArray" title="Link to this definition">#</a></dt>
+<dd><p>Class that implements access to a combined function magnet array</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>arrayName</strong> (<em>str</em>) -- Array name</p></li>
+<li><p><strong>magnets</strong> (<em>list</em><em>[</em><a class="reference internal" href="#pyaml.arrays.magnet.Magnet" title="pyaml.arrays.magnet.Magnet"><em>Magnet</em></a><em>]</em>) -- Magnet list, all elements must be attached to the same instance of
+either a Simulator or a ControlSystem.</p></li>
+<li><p><strong>use_aggregator</strong> (<em>bool</em>) -- Use aggregator to increase performance by using paralell
+access to underlying devices.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py property">
+<dt class="sig sig-object py" id="pyaml.arrays.cfm_magnet_array.CombinedFunctionMagnetArray.hardwares">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">hardwares</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#pyaml.arrays.cfm_magnet_array.RWMagnetHardwares" title="pyaml.arrays.cfm_magnet_array.RWMagnetHardwares"><span class="pre">RWMagnetHardwares</span></a></em><a class="headerlink" href="#pyaml.arrays.cfm_magnet_array.CombinedFunctionMagnetArray.hardwares" title="Link to this definition">#</a></dt>
+<dd><p>Give access to hardware value of each magnet of this array</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="pyaml.arrays.cfm_magnet_array.CombinedFunctionMagnetArray.strengths">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">strengths</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#pyaml.arrays.cfm_magnet_array.RWMagnetStrengths" title="pyaml.arrays.cfm_magnet_array.RWMagnetStrengths"><span class="pre">RWMagnetStrengths</span></a></em><a class="headerlink" href="#pyaml.arrays.cfm_magnet_array.CombinedFunctionMagnetArray.strengths" title="Link to this definition">#</a></dt>
+<dd><p>Give access to strength of each magnet of this array</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="pyaml.arrays.cfm_magnet_array.RWMagnetHardwares">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyaml.arrays.cfm_magnet_array.</span></span><span class="sig-name descname"><span class="pre">RWMagnetHardwares</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">magnets</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">CombinedFunctionMagnet</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/arrays/cfm_magnet_array.html#RWMagnetHardwares"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.arrays.cfm_magnet_array.RWMagnetHardwares" title="Link to this definition">#</a></dt>
+<dd><dl class="py method">
+<dt class="sig sig-object py" id="pyaml.arrays.cfm_magnet_array.RWMagnetHardwares.get">
+<span class="sig-name descname"><span class="pre">get</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">array</span></span></span><a class="reference internal" href="../_modules/pyaml/arrays/cfm_magnet_array.html#RWMagnetHardwares.get"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.arrays.cfm_magnet_array.RWMagnetHardwares.get" title="Link to this definition">#</a></dt>
+<dd><p>Get the value</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaml.arrays.cfm_magnet_array.RWMagnetHardwares.set">
+<span class="sig-name descname"><span class="pre">set</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">array</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/arrays/cfm_magnet_array.html#RWMagnetHardwares.set"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.arrays.cfm_magnet_array.RWMagnetHardwares.set" title="Link to this definition">#</a></dt>
+<dd><p>Set the values</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaml.arrays.cfm_magnet_array.RWMagnetHardwares.set_and_wait">
+<span class="sig-name descname"><span class="pre">set_and_wait</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">array</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/arrays/cfm_magnet_array.html#RWMagnetHardwares.set_and_wait"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.arrays.cfm_magnet_array.RWMagnetHardwares.set_and_wait" title="Link to this definition">#</a></dt>
+<dd><p>Set the values and wait that setpoints are reached</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaml.arrays.cfm_magnet_array.RWMagnetHardwares.unit">
+<span class="sig-name descname"><span class="pre">unit</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/pyaml/arrays/cfm_magnet_array.html#RWMagnetHardwares.unit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.arrays.cfm_magnet_array.RWMagnetHardwares.unit" title="Link to this definition">#</a></dt>
+<dd><p>Get the unit of the value</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="pyaml.arrays.cfm_magnet_array.RWMagnetStrengths">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyaml.arrays.cfm_magnet_array.</span></span><span class="sig-name descname"><span class="pre">RWMagnetStrengths</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">magnets</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">CombinedFunctionMagnet</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/arrays/cfm_magnet_array.html#RWMagnetStrengths"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.arrays.cfm_magnet_array.RWMagnetStrengths" title="Link to this definition">#</a></dt>
+<dd><dl class="py method">
+<dt class="sig sig-object py" id="pyaml.arrays.cfm_magnet_array.RWMagnetStrengths.get">
+<span class="sig-name descname"><span class="pre">get</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">array</span></span></span><a class="reference internal" href="../_modules/pyaml/arrays/cfm_magnet_array.html#RWMagnetStrengths.get"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.arrays.cfm_magnet_array.RWMagnetStrengths.get" title="Link to this definition">#</a></dt>
+<dd><p>Get the value</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaml.arrays.cfm_magnet_array.RWMagnetStrengths.set">
+<span class="sig-name descname"><span class="pre">set</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">array</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/arrays/cfm_magnet_array.html#RWMagnetStrengths.set"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.arrays.cfm_magnet_array.RWMagnetStrengths.set" title="Link to this definition">#</a></dt>
+<dd><p>Set the values</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaml.arrays.cfm_magnet_array.RWMagnetStrengths.set_and_wait">
+<span class="sig-name descname"><span class="pre">set_and_wait</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">array</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/arrays/cfm_magnet_array.html#RWMagnetStrengths.set_and_wait"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.arrays.cfm_magnet_array.RWMagnetStrengths.set_and_wait" title="Link to this definition">#</a></dt>
+<dd><p>Set the values and wait that setpoints are reached</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaml.arrays.cfm_magnet_array.RWMagnetStrengths.unit">
+<span class="sig-name descname"><span class="pre">unit</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/pyaml/arrays/cfm_magnet_array.html#RWMagnetStrengths.unit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.arrays.cfm_magnet_array.RWMagnetStrengths.unit" title="Link to this definition">#</a></dt>
+<dd><p>Get the unit of the value</p>
+</dd></dl>
+
+</dd></dl>
+
 </section>
 
 
@@ -690,18 +949,38 @@
   </div>
   <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="visible nav section-nav flex-column">
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Arrays configuration</a><ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.arrays.array.ArrayConfig"><code class="docutils literal notranslate"><span class="pre">ArrayConfig</span></code></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.arrays.array.ArrayConfigModel"><code class="docutils literal notranslate"><span class="pre">ArrayConfigModel</span></code></a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.arrays.array.ArrayConfigModel.elements"><code class="docutils literal notranslate"><span class="pre">ArrayConfigModel.elements</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.arrays.array.ArrayConfigModel.model_config"><code class="docutils literal notranslate"><span class="pre">ArrayConfigModel.model_config</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.arrays.array.ArrayConfigModel.name"><code class="docutils literal notranslate"><span class="pre">ArrayConfigModel.name</span></code></a></li>
-</ul>
-</li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.arrays.magnet.ConfigModel"><code class="docutils literal notranslate"><span class="pre">ConfigModel</span></code></a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.arrays.magnet.ConfigModel.model_config"><code class="docutils literal notranslate"><span class="pre">ConfigModel.model_config</span></code></a></li>
-</ul>
-</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.arrays.array.ArrayConfigModel"><code class="docutils literal notranslate"><span class="pre">ArrayConfigModel</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.arrays.element.Element"><code class="docutils literal notranslate"><span class="pre">Element</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.arrays.bpm.BPM"><code class="docutils literal notranslate"><span class="pre">BPM</span></code></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.arrays.magnet.Magnet"><code class="docutils literal notranslate"><span class="pre">Magnet</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.arrays.cfm_magnet.CombinedFunctionMagnet"><code class="docutils literal notranslate"><span class="pre">CombinedFunctionMagnet</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#arrays-usage">Arrays usage</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.arrays.element_array.ElementArray"><code class="docutils literal notranslate"><span class="pre">ElementArray</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.arrays.element_array.ElementArray.get_name"><code class="docutils literal notranslate"><span class="pre">ElementArray.get_name()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.arrays.element_array.ElementArray.get_peer"><code class="docutils literal notranslate"><span class="pre">ElementArray.get_peer()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.arrays.element_array.ElementArray.names"><code class="docutils literal notranslate"><span class="pre">ElementArray.names()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.arrays.bpm_array.BPMArray"><code class="docutils literal notranslate"><span class="pre">BPMArray</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.arrays.bpm_array.BPMArray.h"><code class="docutils literal notranslate"><span class="pre">BPMArray.h</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.arrays.bpm_array.BPMArray.positions"><code class="docutils literal notranslate"><span class="pre">BPMArray.positions</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.arrays.bpm_array.BPMArray.v"><code class="docutils literal notranslate"><span class="pre">BPMArray.v</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.arrays.bpm_array.RWBPMPosition"><code class="docutils literal notranslate"><span class="pre">RWBPMPosition</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.arrays.bpm_array.RWBPMPosition.get"><code class="docutils literal notranslate"><span class="pre">RWBPMPosition.get()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.arrays.bpm_array.RWBPMPosition.unit"><code class="docutils literal notranslate"><span class="pre">RWBPMPosition.unit()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.arrays.bpm_array.RWBPMSinglePosition"><code class="docutils literal notranslate"><span class="pre">RWBPMSinglePosition</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.arrays.bpm_array.RWBPMSinglePosition.get"><code class="docutils literal notranslate"><span class="pre">RWBPMSinglePosition.get()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.arrays.bpm_array.RWBPMSinglePosition.unit"><code class="docutils literal notranslate"><span class="pre">RWBPMSinglePosition.unit()</span></code></a></li>
+</ul>
+</li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.arrays.magnet_array.MagnetArray"><code class="docutils literal notranslate"><span class="pre">MagnetArray</span></code></a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.arrays.magnet_array.MagnetArray.hardwares"><code class="docutils literal notranslate"><span class="pre">MagnetArray.hardwares</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.arrays.magnet_array.MagnetArray.strengths"><code class="docutils literal notranslate"><span class="pre">MagnetArray.strengths</span></code></a></li>
@@ -721,7 +1000,29 @@
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.arrays.magnet_array.RWMagnetStrength.unit"><code class="docutils literal notranslate"><span class="pre">RWMagnetStrength.unit()</span></code></a></li>
 </ul>
 </li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.arrays.cfm_magnet_array.CombinedFunctionMagnetArray"><code class="docutils literal notranslate"><span class="pre">CombinedFunctionMagnetArray</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.arrays.cfm_magnet_array.CombinedFunctionMagnetArray.hardwares"><code class="docutils literal notranslate"><span class="pre">CombinedFunctionMagnetArray.hardwares</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.arrays.cfm_magnet_array.CombinedFunctionMagnetArray.strengths"><code class="docutils literal notranslate"><span class="pre">CombinedFunctionMagnetArray.strengths</span></code></a></li>
 </ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.arrays.cfm_magnet_array.RWMagnetHardwares"><code class="docutils literal notranslate"><span class="pre">RWMagnetHardwares</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.arrays.cfm_magnet_array.RWMagnetHardwares.get"><code class="docutils literal notranslate"><span class="pre">RWMagnetHardwares.get()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.arrays.cfm_magnet_array.RWMagnetHardwares.set"><code class="docutils literal notranslate"><span class="pre">RWMagnetHardwares.set()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.arrays.cfm_magnet_array.RWMagnetHardwares.set_and_wait"><code class="docutils literal notranslate"><span class="pre">RWMagnetHardwares.set_and_wait()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.arrays.cfm_magnet_array.RWMagnetHardwares.unit"><code class="docutils literal notranslate"><span class="pre">RWMagnetHardwares.unit()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.arrays.cfm_magnet_array.RWMagnetStrengths"><code class="docutils literal notranslate"><span class="pre">RWMagnetStrengths</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.arrays.cfm_magnet_array.RWMagnetStrengths.get"><code class="docutils literal notranslate"><span class="pre">RWMagnetStrengths.get()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.arrays.cfm_magnet_array.RWMagnetStrengths.set"><code class="docutils literal notranslate"><span class="pre">RWMagnetStrengths.set()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.arrays.cfm_magnet_array.RWMagnetStrengths.set_and_wait"><code class="docutils literal notranslate"><span class="pre">RWMagnetStrengths.set_and_wait()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.arrays.cfm_magnet_array.RWMagnetStrengths.unit"><code class="docutils literal notranslate"><span class="pre">RWMagnetStrengths.unit()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
   </nav></div>
 
 </div></div>

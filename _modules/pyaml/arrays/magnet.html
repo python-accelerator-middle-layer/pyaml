@@ -159,7 +159,7 @@
 
 <li class="nav-item ">
   <a class="nav-link nav-internal" href="../../../modules/arrays.html">
-    ARRAYS
+    Arrays configuration
   </a>
 </li>
 
@@ -346,7 +346,7 @@
 
 <li class="nav-item ">
   <a class="nav-link nav-internal" href="../../../modules/arrays.html">
-    ARRAYS
+    Arrays configuration
   </a>
 </li>
 
@@ -512,15 +512,27 @@
 <span class="n">PYAMLCLASS</span> <span class="o">=</span> <span class="s2">&quot;Magnet&quot;</span>
 
 
-<div class="viewcode-block" id="ConfigModel">
-<a class="viewcode-back" href="../../../modules/arrays.html#pyaml.arrays.magnet.ConfigModel">[docs]</a>
-<span class="k">class</span><span class="w"> </span><span class="nc">ConfigModel</span><span class="p">(</span><span class="n">ArrayConfigModel</span><span class="p">):</span> <span class="o">...</span></div>
-
+<span class="k">class</span><span class="w"> </span><span class="nc">ConfigModel</span><span class="p">(</span><span class="n">ArrayConfigModel</span><span class="p">):</span> <span class="o">...</span>
 
 
 <div class="viewcode-block" id="Magnet">
 <a class="viewcode-back" href="../../../modules/arrays.html#pyaml.arrays.magnet.Magnet">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">Magnet</span><span class="p">(</span><span class="n">ArrayConfig</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Magnet array confirguration</span>
+
+<span class="sd">    Example</span>
+<span class="sd">    -------</span>
+
+<span class="sd">    A magnet array configuration can also be created by code using</span>
+<span class="sd">    the following example::</span>
+
+<span class="sd">        from pyaml.arrays.magnet import Magnet,ConfigModel as MagnetArrayConfigModel</span>
+<span class="sd">        magArray = Magnet(</span>
+<span class="sd">                     MagnetArrayConfigModel(name=&quot;MyMags&quot;, elements=[&quot;mag1&quot;,&quot;mag2&quot;])</span>
+<span class="sd">                   )</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cfg</span><span class="p">:</span> <span class="n">ArrayConfigModel</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">cfg</span><span class="p">)</span>
 

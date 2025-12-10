@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>pyaml.arrays.magnet_array &#8212; pyAML 0.1.0 documentation</title>
+    <title>pyaml.arrays.cfm_magnet_array &#8212; pyAML 0.1.0 documentation</title>
   
   
   
@@ -42,7 +42,7 @@
     <script src="../../../_static/documentation_options.js?v=2caa9db7"></script>
     <script src="../../../_static/doctools.js?v=9bcbadda"></script>
     <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
-    <script>DOCUMENTATION_OPTIONS.pagename = '_modules/pyaml/arrays/magnet_array';</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '_modules/pyaml/arrays/cfm_magnet_array';</script>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
@@ -487,7 +487,7 @@
     
     <li class="breadcrumb-item"><a href="../../index.html" class="nav-link">Module code</a></li>
     
-    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">pyaml.arrays.magnet_array</span></li>
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">pyaml.arrays.cfm_magnet_array</span></li>
   </ul>
 </nav>
 </div>
@@ -504,122 +504,122 @@
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <h1>Source code for pyaml.arrays.magnet_array</h1><div class="highlight"><pre>
+  <h1>Source code for pyaml.arrays.cfm_magnet_array</h1><div class="highlight"><pre>
 <span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">..common.abstract</span><span class="w"> </span><span class="kn">import</span> <span class="n">ReadWriteFloatArray</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">..common.abstract_aggregator</span><span class="w"> </span><span class="kn">import</span> <span class="n">ScalarAggregator</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">..magnet.magnet</span><span class="w"> </span><span class="kn">import</span> <span class="n">Magnet</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">..common.exception</span><span class="w"> </span><span class="kn">import</span> <span class="n">PyAMLException</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">..magnet.cfm_magnet</span><span class="w"> </span><span class="kn">import</span> <span class="n">CombinedFunctionMagnet</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">.element_array</span><span class="w"> </span><span class="kn">import</span> <span class="n">ElementArray</span>
 
+<span class="c1"># TODO handle aggregator for CFM</span>
 
-<div class="viewcode-block" id="RWMagnetStrength">
-<a class="viewcode-back" href="../../../modules/arrays.html#pyaml.arrays.magnet_array.RWMagnetStrength">[docs]</a>
-<span class="k">class</span><span class="w"> </span><span class="nc">RWMagnetStrength</span><span class="p">(</span><span class="n">ReadWriteFloatArray</span><span class="p">):</span>
-    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">magnets</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Magnet</span><span class="p">]):</span>
+
+<div class="viewcode-block" id="RWMagnetStrengths">
+<a class="viewcode-back" href="../../../modules/arrays.html#pyaml.arrays.cfm_magnet_array.RWMagnetStrengths">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">RWMagnetStrengths</span><span class="p">(</span><span class="n">ReadWriteFloatArray</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">magnets</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">CombinedFunctionMagnet</span><span class="p">]):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__name</span> <span class="o">=</span> <span class="n">name</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__magnets</span> <span class="o">=</span> <span class="n">magnets</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">__nb</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__magnets</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">__aggregator</span><span class="p">:</span> <span class="n">ScalarAggregator</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__nb</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">nb_multipole</span><span class="p">()</span> <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="n">magnets</span><span class="p">)</span>
 
     <span class="c1"># Gets the values</span>
-<div class="viewcode-block" id="RWMagnetStrength.get">
-<a class="viewcode-back" href="../../../modules/arrays.html#pyaml.arrays.magnet_array.RWMagnetStrength.get">[docs]</a>
+<div class="viewcode-block" id="RWMagnetStrengths.get">
+<a class="viewcode-back" href="../../../modules/arrays.html#pyaml.arrays.cfm_magnet_array.RWMagnetStrengths.get">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">:</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">__aggregator</span><span class="p">:</span>
-            <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">m</span><span class="o">.</span><span class="n">strength</span><span class="o">.</span><span class="n">get</span><span class="p">()</span> <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">__magnets</span><span class="p">])</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__aggregator</span><span class="o">.</span><span class="n">get</span><span class="p">()</span></div>
+        <span class="n">r</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__nb</span><span class="p">)</span>
+        <span class="n">idx</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">__magnets</span><span class="p">:</span>
+            <span class="n">r</span><span class="p">[</span><span class="n">idx</span> <span class="p">:</span> <span class="n">idx</span> <span class="o">+</span> <span class="n">m</span><span class="o">.</span><span class="n">nb_multipole</span><span class="p">()]</span> <span class="o">=</span> <span class="n">m</span><span class="o">.</span><span class="n">strengths</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+            <span class="n">idx</span> <span class="o">+=</span> <span class="n">m</span><span class="o">.</span><span class="n">nb_multipole</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">r</span></div>
 
 
     <span class="c1"># Sets the values</span>
-<div class="viewcode-block" id="RWMagnetStrength.set">
-<a class="viewcode-back" href="../../../modules/arrays.html#pyaml.arrays.magnet_array.RWMagnetStrength.set">[docs]</a>
+<div class="viewcode-block" id="RWMagnetStrengths.set">
+<a class="viewcode-back" href="../../../modules/arrays.html#pyaml.arrays.cfm_magnet_array.RWMagnetStrengths.set">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">set</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">):</span>
         <span class="n">nvalue</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__nb</span><span class="p">)</span> <span class="o">*</span> <span class="n">value</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">float</span><span class="p">)</span> <span class="k">else</span> <span class="n">value</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">__aggregator</span><span class="p">:</span>
-            <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">m</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__magnets</span><span class="p">):</span>
-                <span class="n">m</span><span class="o">.</span><span class="n">strength</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">nvalue</span><span class="p">[</span><span class="n">idx</span><span class="p">])</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">__aggregator</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">nvalue</span><span class="p">)</span></div>
+        <span class="n">idx</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">__magnets</span><span class="p">:</span>
+            <span class="n">m</span><span class="o">.</span><span class="n">strengths</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">nvalue</span><span class="p">[</span><span class="n">idx</span> <span class="p">:</span> <span class="n">idx</span> <span class="o">+</span> <span class="n">m</span><span class="o">.</span><span class="n">nb_multipole</span><span class="p">()])</span>
+            <span class="n">idx</span> <span class="o">+=</span> <span class="n">m</span><span class="o">.</span><span class="n">nb_multipole</span><span class="p">()</span></div>
 
 
     <span class="c1"># Sets the values and waits that the read values reach their setpoint</span>
-<div class="viewcode-block" id="RWMagnetStrength.set_and_wait">
-<a class="viewcode-back" href="../../../modules/arrays.html#pyaml.arrays.magnet_array.RWMagnetStrength.set_and_wait">[docs]</a>
+<div class="viewcode-block" id="RWMagnetStrengths.set_and_wait">
+<a class="viewcode-back" href="../../../modules/arrays.html#pyaml.arrays.cfm_magnet_array.RWMagnetStrengths.set_and_wait">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">set_and_wait</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">):</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;Not implemented yet.&quot;</span><span class="p">)</span></div>
 
 
     <span class="c1"># Gets the unit of the values</span>
-<div class="viewcode-block" id="RWMagnetStrength.unit">
-<a class="viewcode-back" href="../../../modules/arrays.html#pyaml.arrays.magnet_array.RWMagnetStrength.unit">[docs]</a>
+<div class="viewcode-block" id="RWMagnetStrengths.unit">
+<a class="viewcode-back" href="../../../modules/arrays.html#pyaml.arrays.cfm_magnet_array.RWMagnetStrengths.unit">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">unit</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
-        <span class="k">return</span> <span class="p">[</span><span class="n">m</span><span class="o">.</span><span class="n">strength</span><span class="o">.</span><span class="n">unit</span><span class="p">()</span> <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">__magnets</span><span class="p">]</span></div>
+        <span class="n">r</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">__magnets</span><span class="p">:</span>
+            <span class="n">r</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">strengths</span><span class="o">.</span><span class="n">unit</span><span class="p">())</span>
+        <span class="k">return</span> <span class="n">r</span></div>
+</div>
 
 
-    <span class="c1"># Set the aggregator (Control system only)</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">set_aggregator</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">agg</span><span class="p">:</span> <span class="n">ScalarAggregator</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">__aggregator</span> <span class="o">=</span> <span class="n">agg</span></div>
 
-
-
-<div class="viewcode-block" id="RWMagnetHardware">
-<a class="viewcode-back" href="../../../modules/arrays.html#pyaml.arrays.magnet_array.RWMagnetHardware">[docs]</a>
-<span class="k">class</span><span class="w"> </span><span class="nc">RWMagnetHardware</span><span class="p">(</span><span class="n">ReadWriteFloatArray</span><span class="p">):</span>
-    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">magnets</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Magnet</span><span class="p">]):</span>
+<div class="viewcode-block" id="RWMagnetHardwares">
+<a class="viewcode-back" href="../../../modules/arrays.html#pyaml.arrays.cfm_magnet_array.RWMagnetHardwares">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">RWMagnetHardwares</span><span class="p">(</span><span class="n">ReadWriteFloatArray</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">magnets</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">CombinedFunctionMagnet</span><span class="p">]):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__name</span> <span class="o">=</span> <span class="n">name</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__magnets</span> <span class="o">=</span> <span class="n">magnets</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">__nb</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__magnets</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">__aggregator</span><span class="p">:</span> <span class="n">ScalarAggregator</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__nb</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">nb_multipole</span><span class="p">()</span> <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="n">magnets</span><span class="p">)</span>
 
     <span class="c1"># Gets the values</span>
-<div class="viewcode-block" id="RWMagnetHardware.get">
-<a class="viewcode-back" href="../../../modules/arrays.html#pyaml.arrays.magnet_array.RWMagnetHardware.get">[docs]</a>
+<div class="viewcode-block" id="RWMagnetHardwares.get">
+<a class="viewcode-back" href="../../../modules/arrays.html#pyaml.arrays.cfm_magnet_array.RWMagnetHardwares.get">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">:</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">__aggregator</span><span class="p">:</span>
-            <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">m</span><span class="o">.</span><span class="n">hardware</span><span class="o">.</span><span class="n">get</span><span class="p">()</span> <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">__magnets</span><span class="p">])</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__aggregator</span><span class="o">.</span><span class="n">get</span><span class="p">()</span></div>
+        <span class="n">r</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__nb</span><span class="p">)</span>
+        <span class="n">idx</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">__magnets</span><span class="p">:</span>
+            <span class="n">r</span><span class="p">[</span><span class="n">idx</span> <span class="p">:</span> <span class="n">idx</span> <span class="o">+</span> <span class="n">m</span><span class="o">.</span><span class="n">nb_multipole</span><span class="p">()]</span> <span class="o">=</span> <span class="n">m</span><span class="o">.</span><span class="n">hardwares</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+            <span class="n">idx</span> <span class="o">+=</span> <span class="n">m</span><span class="o">.</span><span class="n">nb_multipole</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">r</span></div>
 
 
     <span class="c1"># Sets the values</span>
-<div class="viewcode-block" id="RWMagnetHardware.set">
-<a class="viewcode-back" href="../../../modules/arrays.html#pyaml.arrays.magnet_array.RWMagnetHardware.set">[docs]</a>
+<div class="viewcode-block" id="RWMagnetHardwares.set">
+<a class="viewcode-back" href="../../../modules/arrays.html#pyaml.arrays.cfm_magnet_array.RWMagnetHardwares.set">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">set</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">):</span>
         <span class="n">nvalue</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__nb</span><span class="p">)</span> <span class="o">*</span> <span class="n">value</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">float</span><span class="p">)</span> <span class="k">else</span> <span class="n">value</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">__aggregator</span><span class="p">:</span>
-            <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">m</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__magnets</span><span class="p">):</span>
-                <span class="n">m</span><span class="o">.</span><span class="n">hardware</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">value</span><span class="p">[</span><span class="n">idx</span><span class="p">])</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">__aggregator</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">value</span><span class="p">)</span></div>
+        <span class="n">idx</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">__magnets</span><span class="p">:</span>
+            <span class="n">m</span><span class="o">.</span><span class="n">hardwares</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">nvalue</span><span class="p">[</span><span class="n">idx</span> <span class="p">:</span> <span class="n">idx</span> <span class="o">+</span> <span class="n">m</span><span class="o">.</span><span class="n">nb_multipole</span><span class="p">()])</span>
+            <span class="n">idx</span> <span class="o">+=</span> <span class="n">m</span><span class="o">.</span><span class="n">nb_multipole</span><span class="p">()</span></div>
 
 
     <span class="c1"># Sets the values and waits that the read values reach their setpoint</span>
-<div class="viewcode-block" id="RWMagnetHardware.set_and_wait">
-<a class="viewcode-back" href="../../../modules/arrays.html#pyaml.arrays.magnet_array.RWMagnetHardware.set_and_wait">[docs]</a>
+<div class="viewcode-block" id="RWMagnetHardwares.set_and_wait">
+<a class="viewcode-back" href="../../../modules/arrays.html#pyaml.arrays.cfm_magnet_array.RWMagnetHardwares.set_and_wait">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">set_and_wait</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">):</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;Not implemented yet.&quot;</span><span class="p">)</span></div>
 
 
     <span class="c1"># Gets the unit of the values</span>
-<div class="viewcode-block" id="RWMagnetHardware.unit">
-<a class="viewcode-back" href="../../../modules/arrays.html#pyaml.arrays.magnet_array.RWMagnetHardware.unit">[docs]</a>
+<div class="viewcode-block" id="RWMagnetHardwares.unit">
+<a class="viewcode-back" href="../../../modules/arrays.html#pyaml.arrays.cfm_magnet_array.RWMagnetHardwares.unit">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">unit</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
-        <span class="k">return</span> <span class="p">[</span><span class="n">m</span><span class="o">.</span><span class="n">hardware</span><span class="o">.</span><span class="n">unit</span><span class="p">()</span> <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">__magnets</span><span class="p">]</span></div>
+        <span class="n">r</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">__magnets</span><span class="p">:</span>
+            <span class="n">r</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">hardwares</span><span class="o">.</span><span class="n">unit</span><span class="p">())</span>
+        <span class="k">return</span> <span class="n">r</span></div>
+</div>
 
 
-    <span class="c1"># Set the aggregator</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">set_aggregator</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">agg</span><span class="p">:</span> <span class="n">ScalarAggregator</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">__aggregator</span> <span class="o">=</span> <span class="n">agg</span></div>
 
-
-
-<div class="viewcode-block" id="MagnetArray">
-<a class="viewcode-back" href="../../../modules/arrays.html#pyaml.arrays.magnet_array.MagnetArray">[docs]</a>
-<span class="k">class</span><span class="w"> </span><span class="nc">MagnetArray</span><span class="p">(</span><span class="n">ElementArray</span><span class="p">):</span>
+<div class="viewcode-block" id="CombinedFunctionMagnetArray">
+<a class="viewcode-back" href="../../../modules/arrays.html#pyaml.arrays.cfm_magnet_array.CombinedFunctionMagnetArray">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">CombinedFunctionMagnetArray</span><span class="p">(</span><span class="n">ElementArray</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Class that implements access to a magnet array</span>
+<span class="sd">    Class that implements access to a combined function magnet array</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -629,40 +629,37 @@
 <span class="sd">        Magnet list, all elements must be attached to the same instance of</span>
 <span class="sd">        either a Simulator or a ControlSystem.</span>
 <span class="sd">    use_aggregator : bool</span>
-<span class="sd">        Use aggregator to increase performance by using</span>
-<span class="sd">        paralell access to underlying devices.</span>
-
-<span class="sd">    Example</span>
-<span class="sd">    -------</span>
-
-<span class="sd">    An array can be retrieved from the configuration as in the following example::</span>
-
-<span class="sd">        sr = Accelerator.load(&quot;acc.yaml&quot;)</span>
-<span class="sd">        quads = sr.design.get_magnets(&quot;QuadForTune&quot;)</span>
-
+<span class="sd">        Use aggregator to increase performance by using paralell</span>
+<span class="sd">        access to underlying devices.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">arrayName</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">magnets</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Magnet</span><span class="p">],</span> <span class="n">use_aggregator</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">arrayName</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">magnets</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">CombinedFunctionMagnet</span><span class="p">],</span>
+        <span class="n">use_aggregator</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="p">):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">arrayName</span><span class="p">,</span> <span class="n">magnets</span><span class="p">,</span> <span class="n">use_aggregator</span><span class="p">)</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">__rwstrengths</span> <span class="o">=</span> <span class="n">RWMagnetStrength</span><span class="p">(</span><span class="n">arrayName</span><span class="p">,</span> <span class="n">magnets</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">__rwhardwares</span> <span class="o">=</span> <span class="n">RWMagnetHardware</span><span class="p">(</span><span class="n">arrayName</span><span class="p">,</span> <span class="n">magnets</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__rwstrengths</span> <span class="o">=</span> <span class="n">RWMagnetStrengths</span><span class="p">(</span><span class="n">arrayName</span><span class="p">,</span> <span class="n">magnets</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__rwhardwares</span> <span class="o">=</span> <span class="n">RWMagnetHardwares</span><span class="p">(</span><span class="n">arrayName</span><span class="p">,</span> <span class="n">magnets</span><span class="p">)</span>
 
-        <span class="k">if</span> <span class="n">use_aggregator</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">magnets</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="n">aggs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_peer</span><span class="p">()</span><span class="o">.</span><span class="n">create_magnet_strength_aggregator</span><span class="p">(</span><span class="n">magnets</span><span class="p">)</span>
-            <span class="n">aggh</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_peer</span><span class="p">()</span><span class="o">.</span><span class="n">create_magnet_harddware_aggregator</span><span class="p">(</span><span class="n">magnets</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">__rwstrengths</span><span class="o">.</span><span class="n">set_aggregator</span><span class="p">(</span><span class="n">aggs</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">__rwhardwares</span><span class="o">.</span><span class="n">set_aggregator</span><span class="p">(</span><span class="n">aggh</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">use_aggregator</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="p">(</span>
+                <span class="n">PyAMLException</span><span class="p">(</span>
+                    <span class="s2">&quot;Aggregator not implemented for CombinedFunctionMagnetArray&quot;</span>
+                <span class="p">)</span>
+            <span class="p">)</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">strengths</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">RWMagnetStrength</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">strengths</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">RWMagnetStrengths</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Give access to strength of each magnet of this array</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__rwstrengths</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">hardwares</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">RWMagnetHardware</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">hardwares</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">RWMagnetHardwares</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Give access to hardware value of each magnet of this array</span>
 <span class="sd">        &quot;&quot;&quot;</span>
