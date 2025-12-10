@@ -81,23 +81,29 @@ class RWMagnetHardware(ReadWriteFloatArray):
 class MagnetArray(ElementArray):
     """
     Class that implements access to a magnet array
+
+    Parameters
+    ----------
+    arrayName : str
+        Array name
+    magnets: list[Magnet]
+        Magnet list, all elements must be attached to the same instance of
+        either a Simulator or a ControlSystem.
+    use_aggregator : bool
+        Use aggregator to increase performance by using
+        paralell access to underlying devices.
+
+    Example
+    -------
+
+    An array can be retrieved from the configuration as in the following example::
+
+        sr = Accelerator.load("acc.yaml")
+        quads = sr.design.get_magnets("QuadForTune")
+
     """
 
     def __init__(self, arrayName: str, magnets: list[Magnet], use_aggregator=True):
-        """
-        Construct a magnet array
-
-        Parameters
-        ----------
-        arrayName : str
-            Array name
-        magnets: list[Magnet]
-            Magnet list, all elements must be attached to the same instance of
-            either a Simulator or a ControlSystem.
-        use_aggregator : bool
-            Use aggregator to increase performance by using
-            paralell access to underlying devices.
-        """
         super().__init__(arrayName, magnets, use_aggregator)
 
         self.__rwstrengths = RWMagnetStrength(arrayName, magnets)

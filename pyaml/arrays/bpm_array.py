@@ -54,23 +54,30 @@ class RWBPMSinglePosition(ReadFloatArray):
 class BPMArray(ElementArray):
     """
     Class that implements access to a BPM array
+
+    Parameters
+    ----------
+    arrayName : str
+        Array name
+    bpms: list[BPM]
+        BPM list, all elements must be attached to the same instance of
+        either a Simulator or a ControlSystem.
+    use_aggregator : bool
+        Use aggregator to increase performance by using paralell
+        access to underlying devices.
+
+    Example
+    -------
+
+    An array can be retrieved from the configuration as in the following example::
+
+        sr = Accelerator.load("acc.yaml")
+        bpms = sr.design.get_bpms("BPMs")
+
+
     """
 
     def __init__(self, arrayName: str, bpms: list[BPM], use_aggregator=True):
-        """
-        Construct a BPM array
-
-        Parameters
-        ----------
-        arrayName : str
-            Array name
-        bpms: list[BPM]
-            BPM list, all elements must be attached to the same instance of
-            either a Simulator or a ControlSystem.
-        use_aggregator : bool
-            Use aggregator to increase performance by using paralell
-            access to underlying devices.
-        """
         super().__init__(arrayName, bpms, use_aggregator)
 
         self.__hvpos = RWBPMPosition(arrayName, bpms)
@@ -86,20 +93,20 @@ class BPMArray(ElementArray):
     @property
     def positions(self) -> RWBPMPosition:
         """
-        Give access to bpm posttions of each bpm of this array
+        Returns position of each bpm of this array
         """
         return self.__hvpos
 
     @property
     def h(self) -> RWBPMSinglePosition:
         """
-        Give access to bpm H posttions of each bpm of this array
+        Returns horizontal position of each bpm of this array
         """
         return self.__hpos
 
     @property
     def v(self) -> RWBPMSinglePosition:
         """
-        Give access to bpm V posttions of each bpm of this array
+        Returns vertical position of each bpm of this array
         """
         return self.__vpos

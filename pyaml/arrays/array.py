@@ -1,5 +1,5 @@
 """
-Magnet array configuration
+Array configuration
 """
 
 from pydantic import BaseModel, ConfigDict
@@ -10,17 +10,26 @@ from ..common.element_holder import ElementHolder
 
 
 class ArrayConfigModel(BaseModel):
+    """
+    Base class for array confirguration
+
+    Parameters:
+    -----------
+    name: str
+        Family name
+    elements: list[str]
+        List of pyaml element names
+    """
+
     model_config = ConfigDict(arbitrary_types_allowed=True, extra="forbid")
 
     name: str
-    """Family name"""
     elements: list[str]
-    """List of pyaml element names"""
 
 
 class ArrayConfig(object):
     """
-    Class that implements configuration for access to arrays (families)
+    Base class that implements configuration for access to arrays (families)
     """
 
     def __init__(self, cfg: ArrayConfigModel):

@@ -21,9 +21,3 @@ Configuration
 
 .. automodule:: pyaml.configuration.csvmatrix
     :members:
-
-.. automodule:: pyaml.configuration.models
-    :members:
-
-.. automodule:: pyaml.configuration.config_exception
-    :members:
