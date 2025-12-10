@@ -33,6 +33,7 @@ from ..magnet.magnet import Magnet
 from ..rf.rf_plant import RFPlant, RWTotalVoltage
 from ..rf.rf_transmitter import RFTransmitter
 from ..tuning_tools.tune import Tune
+from ..tuning_tools.orbit import Orbit
 from .attribute_linker import (
     ConfigModel as PyAtAttrLinkerConfigModel,
 )
@@ -206,6 +207,9 @@ class Simulator(ElementHolder):
 
             elif isinstance(e, Tune):
                 self.add_tune_tuning(e.attach(self))
+
+            elif isinstance(e, Orbit):
+                self.add_orbit_tuning(e.attach(self))
 
     def get_at_elems(self, element: Element) -> list[at.Element]:
         identifier = self._linker.get_element_identifier(element)

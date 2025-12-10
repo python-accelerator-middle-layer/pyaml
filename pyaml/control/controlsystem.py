@@ -27,6 +27,7 @@ from ..magnet.magnet import Magnet
 from ..rf.rf_plant import RFPlant, RWTotalVoltage
 from ..rf.rf_transmitter import RFTransmitter
 from ..tuning_tools.tune import Tune
+from ..tuning_tools.orbit import Orbit
 
 
 class ControlSystem(ElementHolder, metaclass=ABCMeta):
@@ -166,3 +167,6 @@ class ControlSystem(ElementHolder, metaclass=ABCMeta):
 
             elif isinstance(e, Tune):
                 self.add_tune_tuning(e.attach(self))
+
+            elif isinstance(e, Orbit):
+                self.add_orbit_tuning(e.attach(self))

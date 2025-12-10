@@ -14,6 +14,7 @@ from ..magnet.magnet import Magnet
 from ..rf.rf_plant import RFPlant
 from ..rf.rf_transmitter import RFTransmitter
 from ..tuning_tools.tune import Tune
+from ..tuning_tools.orbit import Orbit
 from .element import Element
 
 
@@ -194,3 +195,14 @@ class ElementHolder(object):
 
     def add_tune_tuning(self, tune: Element):
         self.__add(self.__TUNING_TOOLS, tune)
+
+    def get_orbit_tuning(self, name: str) -> Orbit:
+        return self.__get("Orbit tuning tool", name, self.__TUNING_TOOLS)
+
+    def add_orbit_tuning(self, orbit: Element):
+        orbit.element_holder = self
+        self.__add(self.__TUNING_TOOLS, orbit)
+
+    @property
+    def orbit(self) -> Orbit:
+        return self.get_orbit_tuning("DEFAULT_ORBIT_CORRECTION")

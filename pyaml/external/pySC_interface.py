@@ -1,8 +1,9 @@
-from typing import Dict, List, Tuple
+from typing import Dict, List, Tuple, TYPE_CHECKING
 
 import numpy as np
 
-from ..common.element_holder import ElementHolder
+if TYPE_CHECKING:
+    from ..common.element_holder import ElementHolder
 from ..common.exception import PyAMLException
 
 

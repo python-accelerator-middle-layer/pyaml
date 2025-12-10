@@ -1,13 +1,17 @@
 import logging
 from pathlib import Path
-from typing import List, Literal, Optional
+from typing import Literal, Optional, Self, TYPE_CHECKING
 
 from pydantic import BaseModel, ConfigDict
 
-from ..common.element_holder import ElementHolder
-from ..external.pySC.pySC import ResponseMatrix
+if TYPE_CHECKING:
+    from ..common.element_holder import ElementHolder
+#from ..external.pySC.pySC import ResponseMatrix as pySC_ResponseMatrix
+from ..common.element import Element, ElementConfigModel
+from ..external.pySC.pySC import ResponseMatrix as pySC_ResponseMatrix
 from ..external.pySC.pySC.apps import orbit_correction
 from ..external.pySC_interface import pySCInterface
+from .response_matrix import ResponseMatrix
 
 logger = logging.getLogger(__name__)
 logging.getLogger("pyaml.external.pySC").setLevel(logging.WARNING)
@@ -15,26 +19,29 @@ logging.getLogger("pyaml.external.pySC").setLevel(logging.WARNING)
 PYAMLCLASS = "Orbit"
 
 
-class ConfigModel(BaseModel):
+class ConfigModel(ElementConfigModel):
     model_config = ConfigDict(arbitrary_types_allowed=True, extra="forbid")
 
     bpm_array_name: str
     hcorr_array_name: str
     vcorr_array_name: str
     singular_values: int
-    response_matrix_file: str
+    response_matrix: Optional[ResponseMatrix]
 
 
-class Orbit(object):
-    def __init__(self, element_holder: ElementHolder, cfg: ConfigModel):
+class Orbit(Element):
+    def __init__(self, cfg: ConfigModel):
+        super().__init__(cfg.name)
         self._cfg = cfg
 
-        self.element_holder = element_holder
+        #self.element_holder = element_holder
         self.bpm_array_name = cfg.bpm_array_name
         self.hcorr_array_name = cfg.hcorr_array_name
         self.vcorr_array_name = cfg.vcorr_array_name
         self.singular_values = cfg.singular_values
-        self.response_matrix = ResponseMatrix.from_json(Path(cfg.response_matrix_file))
+        self.response_matrix = pySC_ResponseMatrix.model_validate(
+            cfg.response_matrix._cfg.model_dump()
+        )
 
     def correct(
         self,
@@ -87,3 +94,12 @@ class Orbit(object):
         interface.set_many(data_to_send)
 
         return
+
+    def attach(self, peer: "ElementHolder") -> Self:
+        """
+        Create a new reference to attach this Orbit object to a simulator
+        or a control system.
+        """
+        obj = self.__class__(self._cfg)
+        obj._peer = peer
+        return obj
