@@ -3,6 +3,8 @@ import os
 import numpy as np
 
 from pyaml.accelerator import Accelerator
+from pyaml.common.constants import ACTION_RESTORE
+from pyaml.magnet.magnet import Magnet
 
 # Get the directory of the current script
 script_dir = os.path.dirname(__file__)
@@ -16,37 +18,24 @@ absolute_path = os.path.abspath(relative_path)
 sr: Accelerator = Accelerator.load(absolute_path)
 sr.design.get_lattice().disable_6d()
 
-quadForTuneDesign = sr.design.get_magnets("QForTune")
-quadForTuneLive = sr.live.get_magnets("QForTune")
 
-# Build tune response matrix
-tune = sr.design.get_lattice().get_tune()
-print(tune)
-tunemat = np.zeros((len(quadForTuneDesign), 2))
+# Callback exectued after each magnet strenght setting
+# during the tune response matrix measurement
+def tune_callback(step: int, action: int, m: Magnet, dtune: np.array):
+    if action == ACTION_RESTORE:
+        # On action restore, the delta tune is passed as argument
+        print(f"Tune response: #{step} {m.get_name()} {dtune}")
+    return True
 
-for idx, m in enumerate(quadForTuneDesign):
-    str = m.strength.get()
-    m.strength.set(str + 1e-4)
-    dq = sr.design.get_lattice().get_tune() - tune
-    tunemat[idx] = dq * 1e4
-    m.strength.set(str)
 
-# Compute correction matrix
-correctionmat = np.linalg.pinv(tunemat.T)
+# Compute tune response matrix
+tune_adjust_design = sr.design.get_tune_tuning("TUNE")
+tune_adjust_design.response.measure(callback=tune_callback)
+tune_adjust_design.response.save_json("tunemat.json")
 
-# Correct tune
-strs = quadForTuneDesign.strengths.get()
-strs += np.matmul(correctionmat, [0.1, 0.05])  # Ask for correction [dqx,dqy]
-quadForTuneDesign.strengths.set(strs)
-newTune = sr.design.get_lattice().get_tune()
-diffTune = newTune - tune
-print(diffTune)
-assert np.abs(diffTune[0] - 0.1) < 1e-3
-assert np.abs(diffTune[1] - 0.05) < 1e-3
-
-if False:
-    # Correct the tune on live (need a Virutal Accelerator)
-    quadForTuneLive = sr.live.get_magnets("QForTune")
-    strs = quadForTuneLive.strengths.get()
-    strs += np.matmul(correctionmat, [0.1, 0.05])  # Ask for correction [dqx,dqy]
-    quadForTuneLive.strengths.set(strs)
+# Correct tune on live
+tune_adjust_live = sr.live.get_tune_tuning("TUNE")
+tune_adjust_live.response.load_json("tunemat.json")
+print(tune_adjust_live.readback())
+tune_adjust_live.set([0.17, 0.32], iter=2, wait_time=10)
+print(tune_adjust_live.readback())
