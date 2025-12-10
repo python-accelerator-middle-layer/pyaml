@@ -44,7 +44,9 @@ dependencies = [
     "scipy>=1.7.3",
     "accelerator-toolbox>=0.6.1",
     "PyYAML>=6.0.2",
-    "pydantic>=2.11.7"
+    "pydantic>=2.11.7",
+    "h5py",
+    "matplotlib"
 ]
 
 [project.optional-dependencies]
