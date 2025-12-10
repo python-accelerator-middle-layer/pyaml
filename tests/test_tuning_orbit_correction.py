@@ -47,14 +47,14 @@ def test_tuning_orm():
 
     positions_bc = bpms.positions.get()
     std_bc = np.std(positions_bc, axis=0)
-    assert std_bc[0] == 6.667876984477872e-05
-    assert std_bc[1] == 4.596925753632764e-05
+    assert np.isclose(std_bc[0], 6.667876984477872e-05, rtol=0, atol=1e-14)
+    assert np.isclose(std_bc[1], 4.596925753632764e-05, rtol=0, atol=1e-14)
 
     orbit.correct(reference=None)
 
     positions_ac = bpms.positions.get()
     std_ac = np.std(positions_ac, axis=0)
-    assert std_ac[0] == 5.041856471193712e-07
-    assert std_ac[1] == 4.789269566479167e-07
+    assert np.isclose(std_ac[0], 5.041856471193712e-07, rtol=0, atol=1e-14)
+    assert np.isclose(std_ac[1], 4.789269566479167e-07, rtol=0, atol=1e-14)
 
     Factory.clear()
