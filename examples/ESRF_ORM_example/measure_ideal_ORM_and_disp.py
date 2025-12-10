@@ -46,10 +46,11 @@ rf_response = (
 )
 
 ideal_ORM_data = {
+    "type": "pyaml.tuning_tools.response_matrix",
     "matrix": orm_data["matrix"],
     "input_names": orm_data["input_names"],
     "output_names": orm_data["output_names"],
     "rf_response": rf_response,
 }
 
-json.dump(ideal_ORM_data, open("ideal_orm_disp.json", "w"), indent=4)
+json.dump(ideal_ORM_data, open("ideal_orm_disp.json", "w"))
