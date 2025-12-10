@@ -15,21 +15,8 @@ config_path = pyaml_folder.joinpath("tests/config/EBSOrbit.yaml").resolve()
 sr = Accelerator.load(config_path)
 ebs = sr.design
 
-orbit = Orbit(
-    element_holder=ebs,
-    cfg=Orbit_ConfigModel(
-        bpm_array_name="BPM",
-        hcorr_array_name="HCorr",
-        vcorr_array_name="VCorr",
-        singular_values=162,
-        response_matrix_file=str(
-            pyaml_folder.joinpath("examples/ESRF_ORM_example/ideal_orm.json").resolve()
-        ),
-    ),
-)
-
 ## get reference
-ref_h, ref_v = orbit.element_holder.get_bpms("BPM").positions.get().T
+ref_h, ref_v = ebs.get_bpms("BPM").positions.get().T
 reference = np.concat((ref_h, ref_v))
 ########################################################
 
@@ -57,9 +44,9 @@ print(
 ########################################################
 
 ## Correct the orbit
-orbit.correct(reference=reference)
-# orbit.correct(plane="H")
-# orbit.correct(plane="V")
+ebs.orbit.correct(reference=reference)
+# ebs.orbit.correct(plane="H")
+# ebs.orbit.correct(plane="V")
 ########################################################
 
 ## inspect orbit correction
