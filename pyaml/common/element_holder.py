@@ -40,6 +40,13 @@ class ElementHolder(object):
         self.__BPM_ARRAYS: dict = {}
         self.__ELEMENT_ARRAYS: dict = {}
 
+    def post_init(self):
+        """
+        Method triggered after all initialisations are done
+        """
+        for e in self.get_all_elements():
+            e.post_init()
+
     def fill_device(self, elements: list[Element]):
         raise PyAMLException("ElementHolder.fill_device() is not subclassed")
 
