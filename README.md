@@ -5,28 +5,49 @@
 
 Disclaimer: the pyAML software is still under development.
 
-#### Installation
+#### User Installation
 
 1. Clone the repository
 2. Create a virtual environment and activate it
-3. Install the package. For editable installation:
+3. Install the package.
+
+   ```
+   cd pyaml
+   pip install .
+   ```
+   
+4. If you want to try the examples using the TANGO bindings you also need [tango-pyaml](https://github.com/python-accelerator-middle-layer/tango-pyaml).
+   Clone that repository and install the package inside the same virtual environment as the `pyaml` package.
+   tango-pyaml will automatically install pyaml, so step 3 can be skipped.
+
+#### Developer Installation
+
+1. Clone the repository. You need to also update the submodules.
+
+   ```
+   git submodule update --init --recursive
+   ```
+2. Create a virtual environment and activate it
+3. Install the package in editable mode:
 
    ```
    cd pyaml
    pip install -e .
    ```
-
-4. For developers: install the development dependencies and pre-commit hooks
-
+4. Install the development dependencies and pre-commit hooks
+   
    ```
    pip install -e .[dev]
    pre-commit install
    ```
+   
 5. If you want to try the examples using the TANGO bindings you also need [tango-pyaml](https://github.com/python-accelerator-middle-layer/tango-pyaml).
    Clone that repository and install the package inside the same virtual environment as the `pyaml` package.
    tango-pyaml will automatically install pyaml, so step 3 can be skipped.
-6. For tests, you may want to install dummy-cs/tango available in
+   
+7. For tests, you may want to install dummy-cs/tango available in
    tests/dummy-cs/tango
+
 
 #### Documentation
 
