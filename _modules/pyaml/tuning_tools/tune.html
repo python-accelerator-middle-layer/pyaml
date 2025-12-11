@@ -696,9 +696,6 @@
 <span class="sd">        Return the betatron tune measurement</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">check_peer</span><span class="p">()</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">__tm</span><span class="p">:</span>
-            <span class="c1"># Lazily attach the tune monitor</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">__tm</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_peer</span><span class="o">.</span><span class="n">get_betatron_tune_monitor</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_cfg</span><span class="o">.</span><span class="n">betatron_tune</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__tm</span><span class="o">.</span><span class="n">tune</span><span class="o">.</span><span class="n">get</span><span class="p">()</span></div>
 
 
@@ -731,6 +728,13 @@
     <span class="nd">@property</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">response</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">TuneResponse</span><span class="p">:</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__tr</span>
+
+<div class="viewcode-block" id="Tune.post_init">
+<a class="viewcode-back" href="../../../modules/tuning_tools.html#pyaml.tuning_tools.tune.Tune.post_init">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">post_init</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">check_peer</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__tm</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_peer</span><span class="o">.</span><span class="n">get_betatron_tune_monitor</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_cfg</span><span class="o">.</span><span class="n">betatron_tune</span><span class="p">)</span></div>
+
 
 <div class="viewcode-block" id="Tune.attach">
 <a class="viewcode-back" href="../../../modules/tuning_tools.html#pyaml.tuning_tools.tune.Tune.attach">[docs]</a>
