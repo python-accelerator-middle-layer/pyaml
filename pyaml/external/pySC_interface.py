@@ -1,4 +1,4 @@
-from typing import TYPE_CHECKING, Tuple, Optional
+from typing import TYPE_CHECKING, Optional, Tuple
 
 import numpy as np
 
