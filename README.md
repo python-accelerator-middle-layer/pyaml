@@ -25,13 +25,13 @@ Disclaimer: the pyAML software is still under development.
 1. Clone the repository. You need to also update the submodules.
 
    ```
+   cd pyaml
    git submodule update --init --recursive
    ```
 2. Create a virtual environment and activate it
 3. Install the package in editable mode:
 
    ```
-   cd pyaml
    pip install -e .
    ```
 4. Install the development dependencies and pre-commit hooks
