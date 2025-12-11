@@ -1,4 +1,5 @@
 from typing import Optional
+
 from pydantic import BaseModel, ConfigDict
 
 PYAMLCLASS = "ResponseMatrix"
@@ -11,6 +12,7 @@ class ConfigModel(BaseModel):
     input_names: Optional[list[str]]
     output_names: list[str]
     rf_response: Optional[list[float]]
+
 
 class ResponseMatrix(object):
     def __init__(self, cfg: ConfigModel):

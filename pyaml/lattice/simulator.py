@@ -32,8 +32,8 @@ from ..magnet.cfm_magnet import CombinedFunctionMagnet
 from ..magnet.magnet import Magnet
 from ..rf.rf_plant import RFPlant, RWTotalVoltage
 from ..rf.rf_transmitter import RFTransmitter
-from ..tuning_tools.tune import Tune
 from ..tuning_tools.orbit import Orbit
+from ..tuning_tools.tune import Tune
 from .attribute_linker import (
     ConfigModel as PyAtAttrLinkerConfigModel,
 )
