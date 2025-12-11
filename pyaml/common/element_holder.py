@@ -2,6 +2,8 @@
 Module handling element references for simulators and control system
 """
 
+from typing import TYPE_CHECKING
+
 from ..arrays.bpm_array import BPMArray
 from ..arrays.cfm_magnet_array import CombinedFunctionMagnetArray
 from ..arrays.element_array import ElementArray
@@ -13,9 +15,11 @@ from ..magnet.cfm_magnet import CombinedFunctionMagnet
 from ..magnet.magnet import Magnet
 from ..rf.rf_plant import RFPlant
 from ..rf.rf_transmitter import RFTransmitter
-from ..tuning_tools.tune import Tune
-from ..tuning_tools.orbit import Orbit
 from .element import Element
+
+if TYPE_CHECKING:
+    from ..tuning_tools.orbit import Orbit
+    from ..tuning_tools.tune import Tune
 
 
 class ElementHolder(object):
@@ -190,13 +194,13 @@ class ElementHolder(object):
 
     # Tuning tools
 
-    def get_tune_tuning(self, name: str) -> Tune:
+    def get_tune_tuning(self, name: str) -> "Tune":
         return self.__get("Tune tuning tool", name, self.__TUNING_TOOLS)
 
     def add_tune_tuning(self, tune: Element):
         self.__add(self.__TUNING_TOOLS, tune)
 
-    def get_orbit_tuning(self, name: str) -> Orbit:
+    def get_orbit_tuning(self, name: str) -> "Orbit":
         return self.__get("Orbit tuning tool", name, self.__TUNING_TOOLS)
 
     def add_orbit_tuning(self, orbit: Element):
@@ -204,5 +208,5 @@ class ElementHolder(object):
         self.__add(self.__TUNING_TOOLS, orbit)
 
     @property
-    def orbit(self) -> Orbit:
+    def orbit(self) -> "Orbit":
         return self.get_orbit_tuning("DEFAULT_ORBIT_CORRECTION")

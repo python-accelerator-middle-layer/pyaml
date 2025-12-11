@@ -1,4 +1,4 @@
-from typing import Dict, List, Tuple, TYPE_CHECKING
+from typing import TYPE_CHECKING, Dict, List, Tuple
 
 import numpy as np
 
@@ -10,7 +10,7 @@ from ..common.exception import PyAMLException
 class pySCInterface:
     def __init__(
         self,
-        element_holder: ElementHolder,
+        element_holder: "ElementHolder",
         bpm_array_name: str = "BPM",
         hcorr_array_name: str = "HCorr",
         vcorr_array_name: str = "VCorr",
