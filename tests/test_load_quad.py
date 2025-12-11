@@ -43,7 +43,9 @@ def test_quad_external_model(install_test_package, config_root_dir):
             "tango_host": "ebs-simu-3:10000",
         }
     )
-    hcorr_with_external_model: HCorrector = Factory.depth_first_build(cfg_hcorr_yaml)
+    hcorr_with_external_model: HCorrector = Factory.depth_first_build(
+        cfg_hcorr_yaml, False
+    )
     dev = cs.attach(hcorr_with_external_model.model.get_devices())[0]
     strength = RWStrengthScalar(hcorr_with_external_model.model, dev)
     hardware = RWHardwareScalar(hcorr_with_external_model.model, dev)
@@ -84,7 +86,7 @@ def test_quad_linear(magnet_file, install_test_package, config_root_dir):
             "tango_host": "ebs-simu-3:10000",
         }
     )
-    quad: Quadrupole = Factory.depth_first_build(cfg_quad)
+    quad: Quadrupole = Factory.depth_first_build(cfg_quad, False)
     dev = cs.attach(quad.model.get_devices())[0]
     hardware = RWHardwareScalar(quad.model, dev) if quad.model.has_hardware() else None
     strength = RWStrengthScalar(quad.model, dev) if quad.model.has_physics() else None
@@ -132,7 +134,7 @@ def test_combined_function_magnets(magnet_file, config_root_dir):
             "tango_host": "ebs-simu-3:10000",
         }
     )
-    sh: CombinedFunctionMagnet = Factory.depth_first_build(cfg_sh)
+    sh: CombinedFunctionMagnet = Factory.depth_first_build(cfg_sh, False)
     sh.model.set_magnet_rigidity(6e9 / speed_of_light)
     devs = cs.attach(sh.model.get_devices())
     currents = RWHardwareArray(sh.model, devs)
