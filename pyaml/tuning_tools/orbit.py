@@ -9,6 +9,7 @@ if TYPE_CHECKING:
 # from ..external.pySC.pySC import ResponseMatrix as pySC_ResponseMatrix
 from ..arrays.magnet_array import MagnetArray
 from ..common.element import Element, ElementConfigModel
+from ..common.exception import PyAMLException
 from ..external.pySC.pySC import ResponseMatrix as pySC_ResponseMatrix
 from ..external.pySC.pySC.apps import orbit_correction
 from ..external.pySC_interface import pySCInterface
@@ -84,24 +85,32 @@ class Orbit(Element):
             )
 
         if plane is None:
-            data_to_send_hv = self._hvcorr.strengths.get()
-            for idx, name in enumerate(trims_h.keys()):
-                data_to_send_hv[idx] += trims_h[name] * gain
-            l = len(trims_h.keys())
-            for idx, name in enumerate(trims_v.keys()):
-                data_to_send_hv[idx + l] += trims_v[name] * gain
-            self._hvcorr.strengths.set(data_to_send_hv)
+            trims = {**trims_h, **trims_v}
+            corr_array = self._hvcorr
         elif plane == "H":
-            data_to_send_h = self._hcorr.strengths.get()
-            for idx, name in enumerate(trims_h.keys()):
-                data_to_send_h[idx] += trims_h[name] * gain
-            self._hcorr.strengths.set(data_to_send_h)
+            trims = trims_h
+            corr_array = self._hcorr
         elif plane == "V":
-            data_to_send_v = self._vcorr.strengths.get()
-            for idx, name in enumerate(trims_v.keys()):
-                data_to_send_v[idx] += trims_v[name] * gain
-            self._vcorr.strengths.set(data_to_send_v)
+            trims = trims_v
+            corr_array = self._vcorr
 
+        corrector_was_used = {key: False for key in trims.keys()}
+        corrector_names = corr_array.names()
+        data_to_send = corr_array.strengths.get()
+        for idx, name in enumerate(corrector_names):
+            data_to_send[idx] += trims[name] * gain
+            corrector_was_used[name] = True
+
+        # check that all corrector trims will be sent
+        for key in trims.keys():
+            if not corrector_was_used[key]:
+                raise PyAMLException(
+                    f"Corrector {key} was not used in the orbit correction. "
+                    "There is an inconcistency between corrector arrays and "
+                    "response matrix."
+                )
+
+        corr_array.strengths.set(data_to_send)
         return
 
     def post_init(self):
