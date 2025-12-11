@@ -204,7 +204,6 @@ class ElementHolder(object):
         return self.__get("Orbit tuning tool", name, self.__TUNING_TOOLS)
 
     def add_orbit_tuning(self, orbit: Element):
-        orbit.element_holder = self
         self.__add(self.__TUNING_TOOLS, orbit)
 
     @property
