@@ -5,27 +5,14 @@
 
 Disclaimer: the pyAML software is still under development.
 
-This repository is pyAML core. It is control system independent and provides the main functionality of pyAML (device abstraction for magnets, bpms, etc.; access to simulator (pyAT) and abstract implementation for control system). It is intended to be used together with a package that implements control system specific interface (for example, tango-pyaml or pyaml-cs-oa). If you install tango-pyaml or pyaml-cs-oa it will install pyaml automatically (it is listed as a mandatory dependency for this packages).
+This repository is pyAML core. It is control system independent and provides the main functionality of pyAML (device abstraction for magnets, bpms, etc.; access to simulator (pyAT) and abstract implementation for control system). It is intended to be used together with a package that implements control system specific interface.
 
+If you want to only tests for your machine and not develop, you shouldn't install this package. Instead go to the package for the bindings and install that one. It will install this package automatically.
 
-#### User Installation
+Available packages for bindings:
 
-1. Clone the repository (optional)
-2. Create a virtual environment and activate it
-3. Install the package via pip
-
-   ```
-   cd pyaml
-   pip install .
-   # pip install accelerator-middle-layer #if you want to install from PyPi.org
-   ```
-   
-4. If you want to try the examples using the TANGO bindings you also need [tango-pyaml](https://github.com/python-accelerator-middle-layer/tango-pyaml).
-   Clone that repository and install the package inside the same virtual environment as the `pyaml` package.
-   tango-pyaml will automatically install pyaml with a correct version, so step 3 can be skipped.
-   ```
-   pip install .
-   ```
+TANGO: [tango-pyaml](https://github.com/python-accelerator-middle-layer/tango-pyaml)  
+TANGO or EPICS: [pyaml-cs-oa](https://github.com/python-accelerator-middle-layer/pyaml-cs-oa)
 
 #### Developer Installation
 
@@ -47,15 +34,13 @@ This repository is pyAML core. It is control system independent and provides the
    pip install -e .[dev]
    pre-commit install
    ```
-   
-5. If you want to try the examples using the TANGO bindings you also need [tango-pyaml](https://github.com/python-accelerator-middle-layer/tango-pyaml).
-   Clone that repository and install the package inside the same virtual environment as the `pyaml` package.
-   tango-pyaml will automatically install pyaml, so step 3 can be skipped.
-   
-7. If you want to run tests manually, you may want to install dummy-cs/tango available in
-   tests/dummy-cs/tango
 
-   dummy-cs package is the simplest emulation that allows to check the interface to the control system. (The implemented control system doesn't do anything, it is only intended for tests during the development)
+5. If you want to try the examples using the control system bindings you also need to install those. See:
+
+   TANGO: [tango-pyaml](https://github.com/python-accelerator-middle-layer/tango-pyaml)  
+   TANGO or EPICS: [pyaml-cs-oa](https://github.com/python-accelerator-middle-layer/pyaml-cs-oa)
+ 
+6. If you want to run tests manually using the TANGO bindings without requiring a live machine you can also install the the Dummy TANGO control system available in tests/dummy-cs/tango. It is a simple emulation that allows to check the interface to the control system. The implemented control system doesn't do anything but it is only intended for tests during the development.
 
 
 #### Documentation
