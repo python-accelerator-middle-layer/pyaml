@@ -15,15 +15,15 @@ PYAMLCLASS = "BPMTiltOffsetModel"
 class ConfigModel(BaseModel):
     model_config = ConfigDict(arbitrary_types_allowed=True, extra="forbid")
 
-    x_pos: DeviceAccess
+    x_pos: DeviceAccess | None
     """Horizontal position"""
-    y_pos: DeviceAccess
+    y_pos: DeviceAccess | None
     """Vertical position"""
-    x_offset: DeviceAccess
+    x_offset: DeviceAccess | None
     """Horizontal BPM offset"""
-    y_offset: DeviceAccess
+    y_offset: DeviceAccess | None
     """Vertical BPM offset"""
-    tilt: DeviceAccess
+    tilt: DeviceAccess | None
     """BPM tilt"""
 
 
@@ -41,7 +41,7 @@ class BPMTiltOffsetModel(BPMSimpleModel):
         self.__y_offset = cfg.y_offset
         self.__tilt = cfg.tilt
 
-    def get_pos_devices(self) -> list[DeviceAccess]:
+    def get_pos_devices(self) -> list[DeviceAccess | None]:
         """
         Get device handles used for position reading
 
@@ -52,7 +52,7 @@ class BPMTiltOffsetModel(BPMSimpleModel):
         """
         return [self.__x_pos, self.__y_pos]
 
-    def get_tilt_device(self) -> DeviceAccess:
+    def get_tilt_device(self) -> DeviceAccess | None:
         """
         Get device handle used for tilt access
 
@@ -63,7 +63,7 @@ class BPMTiltOffsetModel(BPMSimpleModel):
         """
         return self.__tilt
 
-    def get_offset_devices(self) -> list[DeviceAccess]:
+    def get_offset_devices(self) -> list[DeviceAccess | None]:
         """
         Get device handles used for offset access
 

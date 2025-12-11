@@ -14,9 +14,9 @@ PYAMLCLASS = "BetatronTuneMonitor"
 class ConfigModel(ElementConfigModel):
     model_config = ConfigDict(arbitrary_types_allowed=True, extra="forbid")
 
-    tune_h: DeviceAccess
+    tune_h: DeviceAccess | None
     """Horizontal betatron tune"""
-    tune_v: DeviceAccess
+    tune_v: DeviceAccess | None
     """Vertical betatron tune"""
 
 

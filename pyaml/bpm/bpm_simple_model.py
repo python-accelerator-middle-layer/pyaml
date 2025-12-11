@@ -14,9 +14,9 @@ PYAMLCLASS = "BPMSimpleModel"
 class ConfigModel(BaseModel):
     model_config = ConfigDict(arbitrary_types_allowed=True, extra="forbid")
 
-    x_pos: DeviceAccess
+    x_pos: DeviceAccess | None
     """Horizontal position"""
-    y_pos: DeviceAccess
+    y_pos: DeviceAccess | None
     """Vertical position"""
 
 
@@ -31,7 +31,7 @@ class BPMSimpleModel(BPMModel):
         self.__x_pos = cfg.x_pos
         self.__y_pos = cfg.y_pos
 
-    def get_pos_devices(self) -> list[DeviceAccess]:
+    def get_pos_devices(self) -> list[DeviceAccess | None]:
         """
         Get device handles used for position reading
 
@@ -42,7 +42,7 @@ class BPMSimpleModel(BPMModel):
         """
         return [self.__x_pos, self.__y_pos]
 
-    def get_tilt_device(self) -> DeviceAccess:
+    def get_tilt_device(self) -> DeviceAccess | None:
         """
         Get device handle used for tilt access
 
@@ -53,7 +53,7 @@ class BPMSimpleModel(BPMModel):
         """
         return None
 
-    def get_offset_devices(self) -> list[DeviceAccess]:
+    def get_offset_devices(self) -> list[DeviceAccess | None]:
         """
         Get device handles used for offset access
 

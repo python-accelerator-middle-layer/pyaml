@@ -13,7 +13,7 @@ class BPMModel(metaclass=ABCMeta):
     """
 
     @abstractmethod
-    def get_pos_devices(self) -> list[DeviceAccess]:
+    def get_pos_devices(self) -> list[DeviceAccess | None]:
         """
         Get device handles used for position reading
 
@@ -37,7 +37,7 @@ class BPMModel(metaclass=ABCMeta):
         pass
 
     @abstractmethod
-    def get_offset_devices(self) -> list[DeviceAccess]:
+    def get_offset_devices(self) -> list[DeviceAccess | None]:
         """
         Get device handles used for offset access
 

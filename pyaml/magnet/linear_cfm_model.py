@@ -31,7 +31,7 @@ class ConfigModel(BaseModel):
     pseudo_offsets: list[float] = None
     """Offsets applied to 'pseudo currents', 1 factor per function.
        Delfault: zeros"""
-    powerconverters: list[DeviceAccess]
+    powerconverters: list[DeviceAccess | None]
     """List of power converter devices to apply currrents (can be different
        from number of function)"""
     matrix: Matrix = None

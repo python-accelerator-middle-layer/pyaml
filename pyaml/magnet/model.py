@@ -79,7 +79,7 @@ class MagnetModel(metaclass=ABCMeta):
         pass
 
     @abstractmethod
-    def get_devices(self) -> list[DeviceAccess]:
+    def get_devices(self) -> list[DeviceAccess | None]:
         """
         Get device handles
 

@@ -15,7 +15,7 @@ class ConfigModel(BaseModel):
 
     curve: Curve
     """Curve object used for interpolation"""
-    powerconverter: DeviceAccess
+    powerconverter: DeviceAccess | None
     """Power converter device to apply currrent"""
     calibration_factor: float = 1.0
     """Correction factor applied to the curve"""
