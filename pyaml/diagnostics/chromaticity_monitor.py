@@ -131,8 +131,6 @@ class ChomaticityMonitor(Element):
             Sleep_between_RFvar = self._cfg.Sleep_between_RFvar
         if fit_method is None :
             fit_method = self._cfg.fit_method
-        if do_plot is None :
-            do_plot = self._cfg.do_plot
         if abs(E_delta) > abs(Max_E_delta):
             # TODO : Add logger to warm that E_delta is to large
             return np.array([None, None])
