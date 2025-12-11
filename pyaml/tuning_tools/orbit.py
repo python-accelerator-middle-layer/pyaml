@@ -119,5 +119,4 @@ class Orbit(Element):
         """
         obj = self.__class__(self._cfg)
         obj._peer = peer
-        obj.response_matrix = self.response_matrix  # Copy only ref
         return obj
