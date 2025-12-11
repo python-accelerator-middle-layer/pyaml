@@ -77,7 +77,7 @@ class Element(object):
             if self._peer is None
             else f"{self._peer.__class__.__name__}:{self._peer.name()}"
         )
-    
+
     def post_init(self):
         """
         Method triggered after all initialisations are done
