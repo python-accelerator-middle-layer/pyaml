@@ -179,9 +179,6 @@ class Tune(Element):
         Return the betatron tune measurement
         """
         self.check_peer()
-        if not self.__tm:
-            # Lazily attach the tune monitor
-            self.__tm = self._peer.get_betatron_tune_monitor(self._cfg.betatron_tune)
         return self.__tm.tune.get()
 
     def set(self, tune: np.array, iter: int = 1, wait_time: float = 0.0):
@@ -210,6 +207,10 @@ class Tune(Element):
     @property
     def response(self) -> TuneResponse:
         return self.__tr
+
+    def post_init(self):
+        self.check_peer()
+        self.__tm = self._peer.get_betatron_tune_monitor(self._cfg.betatron_tune)
 
     def attach(
         self,
