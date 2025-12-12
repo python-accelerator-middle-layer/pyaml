@@ -2,8 +2,6 @@ import os
 import time
 
 import numpy as np
-from pyaml.instrument import ConfigModel as InstrumentConfigModel
-from pyaml.instrument import Instrument
 from tango.pyaml.attribute import Attribute
 from tango.pyaml.attribute import ConfigModel as AttributeConfig
 from tango.pyaml.attribute_read_only import (
@@ -19,6 +17,8 @@ from tango.pyaml.controlsystem import (
     TangoControlSystem,
 )
 
+from pyaml.accelerator import Accelerator
+from pyaml.accelerator import ConfigModel as AcceleratorConfigModel
 from pyaml.arrays.magnet import ConfigModel as MagnetArrayConfigModel
 from pyaml.arrays.magnet import Magnet
 from pyaml.configuration import set_root_folder
@@ -50,7 +50,6 @@ set_root_folder(absolute_path)
 
 tangocs = ControlSystemConfig(name="live", tango_host="ebs-simu-3:10000")
 control = TangoControlSystem(tangocs)
-control.init_cs()
 
 qfCurve = CSVCurve(CSVCureveConfig(file="config/sr/magnet_models/QF1_strength.csv"))
 qdCurve = CSVCurve(CSVCureveConfig(file="config/sr/magnet_models/QD2_strength.csv"))
@@ -104,9 +103,10 @@ simulator = Simulator(
 
 quads = Magnet(MagnetArrayConfigModel(name="quadsForTune", elements=names))
 
-sr = Instrument(
-    InstrumentConfigModel(
-        name="sr",
+sr = Accelerator(
+    AcceleratorConfigModel(
+        machine="sr",
+        facility="ESRF",
         energy=6e9,
         controls=[control],
         simulators=[simulator],
@@ -137,11 +137,18 @@ for idx, m in enumerate(quadForTuneDesign):
 correctionmat = np.linalg.pinv(tunemat.T)
 
 # Correct tune on live
-qxAtt = AttributeReadOnly(
-    AttributeReadOnlyConfig(attribute="sys/ringsimulator/ebs/Tune_h", unit="")
-)
-qyAtt = AttributeReadOnly(
-    AttributeReadOnlyConfig(attribute="sys/ringsimulator/ebs/Tune_v", unit="")
+
+# Here ,as an example, instead of using the betatron tune monitor object,
+# we directly connect to th CS
+qxAtt, qyAtt = control.attach(
+    [
+        AttributeReadOnly(
+            AttributeReadOnlyConfig(attribute="sys/ringsimulator/ebs/Tune_h", unit="")
+        ),
+        AttributeReadOnly(
+            AttributeReadOnlyConfig(attribute="sys/ringsimulator/ebs/Tune_v", unit="")
+        ),
+    ]
 )
 
 print(f"Tune={qxAtt.readback()}, {qyAtt.readback()}")
