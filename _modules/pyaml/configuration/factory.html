@@ -587,7 +587,7 @@
 
 <div class="viewcode-block" id="PyAMLFactory.build_object">
 <a class="viewcode-back" href="../../../modules/configuration.html#pyaml.configuration.factory.PyAMLFactory.build_object">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">build_object</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">d</span><span class="p">:</span> <span class="nb">dict</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">build_object</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">d</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">ignore_external</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Build an object from the dict&quot;&quot;&quot;</span>
         <span class="n">location</span> <span class="o">=</span> <span class="n">d</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;__location__&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
         <span class="n">field_locations</span> <span class="o">=</span> <span class="n">d</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;__fieldlocations__&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
@@ -607,10 +607,14 @@
         <span class="k">try</span><span class="p">:</span>
             <span class="n">module</span> <span class="o">=</span> <span class="n">importlib</span><span class="o">.</span><span class="n">import_module</span><span class="p">(</span><span class="n">type_str</span><span class="p">)</span>
         <span class="k">except</span> <span class="ne">ModuleNotFoundError</span> <span class="k">as</span> <span class="n">ex</span><span class="p">:</span>
-            <span class="c1"># Discard module not found stack trace</span>
-            <span class="k">raise</span> <span class="n">PyAMLConfigException</span><span class="p">(</span>
-                <span class="sa">f</span><span class="s2">&quot;Module referenced in type cannot be found:&#39;</span><span class="si">{</span><span class="n">type_str</span><span class="si">}</span><span class="s2">&#39; </span><span class="si">{</span><span class="n">location_str</span><span class="si">}</span><span class="s2">&quot;</span>
-            <span class="p">)</span> <span class="kn">from</span><span class="w"> </span><span class="kc">None</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">ignore_external</span><span class="p">:</span>
+                <span class="c1"># Discard module not found stack trace</span>
+                <span class="k">raise</span> <span class="n">PyAMLConfigException</span><span class="p">(</span>
+                    <span class="s2">&quot;Module referenced in type cannot be found:&quot;</span>
+                    <span class="o">+</span> <span class="sa">f</span><span class="s2">&quot;&#39;</span><span class="si">{</span><span class="n">type_str</span><span class="si">}</span><span class="s2">&#39; </span><span class="si">{</span><span class="n">location_str</span><span class="si">}</span><span class="s2">&quot;</span>
+                <span class="p">)</span> <span class="kn">from</span><span class="w"> </span><span class="kc">None</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">return</span> <span class="kc">None</span>
 
         <span class="c1"># Try plugin strategies first</span>
         <span class="k">for</span> <span class="n">strategy</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_strategies</span><span class="p">:</span>
@@ -663,15 +667,22 @@
 
 <div class="viewcode-block" id="PyAMLFactory.depth_first_build">
 <a class="viewcode-back" href="../../../modules/configuration.html#pyaml.configuration.factory.PyAMLFactory.depth_first_build">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">depth_first_build</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">d</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Main factory function (Depth-first factory)&quot;&quot;&quot;</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">depth_first_build</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="n">ignore_external</span><span class="p">:</span> <span class="nb">bool</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Main factory function (Depth-first factory)</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        ignore_external: bool</span>
+<span class="sd">            Ignore `module not found` and return None when an object cannot be created</span>
+<span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
             <span class="c1"># list can be a list of objects or a list of native types</span>
             <span class="n">l</span> <span class="o">=</span> <span class="p">[]</span>
             <span class="k">for</span> <span class="n">_index</span><span class="p">,</span> <span class="n">e</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">d</span><span class="p">):</span>
                 <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="nb">dict</span><span class="p">)</span> <span class="ow">or</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
-                    <span class="n">obj</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">depth_first_build</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+                    <span class="n">obj</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">depth_first_build</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="n">ignore_external</span><span class="p">)</span>
                     <span class="n">l</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>
                 <span class="k">else</span><span class="p">:</span>
                     <span class="n">l</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
@@ -681,12 +692,12 @@
             <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">d</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
                 <span class="k">if</span> <span class="ow">not</span> <span class="n">key</span> <span class="o">==</span> <span class="s2">&quot;__fieldlocations__&quot;</span><span class="p">:</span>
                     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">dict</span><span class="p">)</span> <span class="ow">or</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
-                        <span class="n">obj</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">depth_first_build</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+                        <span class="n">obj</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">depth_first_build</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">ignore_external</span><span class="p">)</span>
                         <span class="c1"># Replace the inner dict by the object itself</span>
                         <span class="n">d</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">obj</span>
 
             <span class="c1"># We are now on leaf (no nested object), we can construct</span>
-            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">build_object</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">build_object</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">ignore_external</span><span class="p">)</span>
 
         <span class="k">raise</span> <span class="n">PyAMLConfigException</span><span class="p">(</span>
             <span class="s2">&quot;Unexpected element found. &#39;dict&#39; or &#39;list&#39; expected &quot;</span>
