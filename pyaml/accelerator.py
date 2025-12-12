@@ -109,6 +109,25 @@ class Accelerator(object):
         return self.__design
 
     @staticmethod
+    def from_dict(config_dict:dict, ignore_external=False):
+        """
+        Construct an accelerator from a config file.
+        Parameters
+        ----------
+        config_dict : str
+            Dictionnary conatining accelerator config
+        ignore_external: bool
+            Ignore external modules and return None for object that
+            cannot be created. pydantic schema that support that an
+            object is not created should handle None fields.
+
+        """
+        if ignore_external:
+            # control systems are external, so remove controls field
+            config_dict.pop("controls", None)
+        return Factory.depth_first_build(config_dict, ignore_external)
+    
+    @staticmethod
     def load(
         filename: str, use_fast_loader: bool = False, ignore_external=False
     ) -> "Accelerator":
@@ -135,9 +154,5 @@ class Accelerator(object):
             raise PyAMLConfigException(f"{filename} file not found")
         rootfolder = os.path.abspath(os.path.dirname(filename))
         set_root_folder(rootfolder)
-        config_dict = load(os.path.basename(filename), None, use_fast_loader)
-        if ignore_external:
-            # control systems are external, so remove controls field
-            config_dict.pop("controls", None)
-        aml = Factory.depth_first_build(config_dict, ignore_external)
-        return aml
+        config_dict = load(os.path.basename(filename), None, use_fast_loader)        
+        return Accelerator.from_dict(config_dict)
