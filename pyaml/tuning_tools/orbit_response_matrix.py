@@ -40,8 +40,6 @@ class OrbitResponseMatrix(object):
         interface = pySCInterface(
             element_holder=self.element_holder,
             bpm_array_name=self.bpm_array_name,
-            hcorr_array_name=self.hcorr_array_name,
-            vcorr_array_name=self.vcorr_array_name,
         )
 
         if corrector_names is None:
