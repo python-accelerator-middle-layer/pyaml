@@ -1,5 +1,5 @@
 """
-Instrument class
+Accelerator class
 """
 
 from pydantic import BaseModel, ConfigDict
@@ -17,13 +17,15 @@ PYAMLCLASS = "Accelerator"
 class ConfigModel(BaseModel):
     model_config = ConfigDict(arbitrary_types_allowed=True, extra="forbid")
 
-    name: str
-    """Instrument name"""
+    facility: str
+    "Facility name"
+    machine: str
+    """Accelerator name"""
     energy: float
-    """Instrument nominal energy, for ramped machine,
+    """Accelerator nominal energy, for ramped machine,
        this value can be dynamically set"""
     controls: list[ControlSystem] = None
-    """List of control system used, an instrument
+    """List of control system used, an accelerator
        can access several control systems"""
     simulators: list[Simulator] = None
     """Simulator list"""
