@@ -109,7 +109,7 @@ class Accelerator(object):
         return self.__design
 
     @staticmethod
-    def from_dict(config_dict: dict, ignore_external=False):
+    def from_dict(config_dict: dict, ignore_external=False) -> "Accelerator":
         """
         Construct an accelerator from a config file.
         Parameters
