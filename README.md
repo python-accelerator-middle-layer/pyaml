@@ -11,7 +11,7 @@ If you want to only tests for your machine and not develop, you shouldn't instal
 
 Available packages for bindings:
 
-TANGO: [tango-pyaml](https://github.com/python-accelerator-middle-layer/tango-pyaml)  
+TANGO: [tango-pyaml](https://github.com/python-accelerator-middle-layer/tango-pyaml)
 TANGO or EPICS: [pyaml-cs-oa](https://github.com/python-accelerator-middle-layer/pyaml-cs-oa)
 
 #### Developer Installation
@@ -29,7 +29,7 @@ TANGO or EPICS: [pyaml-cs-oa](https://github.com/python-accelerator-middle-layer
    pip install -e .
    ```
 4. Install the development dependencies and pre-commit hooks
-   
+
    ```
    pip install -e .[dev]
    pre-commit install
@@ -37,9 +37,9 @@ TANGO or EPICS: [pyaml-cs-oa](https://github.com/python-accelerator-middle-layer
 
 5. If you want to try the examples using the control system bindings you also need to install those. See:
 
-   TANGO: [tango-pyaml](https://github.com/python-accelerator-middle-layer/tango-pyaml)  
+   TANGO: [tango-pyaml](https://github.com/python-accelerator-middle-layer/tango-pyaml)
    TANGO or EPICS: [pyaml-cs-oa](https://github.com/python-accelerator-middle-layer/pyaml-cs-oa)
- 
+
 6. If you want to run tests manually using the TANGO bindings without requiring a live machine you can also install the the Dummy TANGO control system available in tests/dummy-cs/tango. It is a simple emulation that allows to check the interface to the control system. The implemented control system doesn't do anything but it is only intended for tests during the development.
 
 
