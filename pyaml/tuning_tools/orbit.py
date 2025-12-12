@@ -117,7 +117,7 @@ class Orbit(Element):
         hvElts = []
         hvElts.extend(self._hcorr)
         hvElts.extend(self._vcorr)
-        self._hvcorr = MagnetArray("HVCorr", hvElts)
+        self._hvcorr = MagnetArray("", hvElts)
 
     def attach(self, peer: "ElementHolder") -> Self:
         """
