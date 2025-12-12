@@ -81,8 +81,8 @@ def test_arrays(install_test_package):
 
     # Using aggregators
     sr.live.get_magnets("HCORR").strengths.set([0.000010, -0.000008])
-    ps1 = sr.live.get_magnet("SH1A-C01-H").model.read_hardware_values()
-    ps2 = sr.live.get_magnet("SH1A-C02-H").model.read_hardware_values()
+    ps1 = sr.live.get_cfm_magnet("SH1A-C01").hardwares.get()
+    ps2 = sr.live.get_cfm_magnet("SH1A-C02").hardwares.get()
     assert np.abs(ps1[0] - 0.02956737880874648) < 1e-10
     assert np.abs(ps1[1] - 0) < 1e-10
     assert np.abs(ps1[2] - 0) < 1e-10
@@ -90,8 +90,8 @@ def test_arrays(install_test_package):
     assert np.abs(ps2[1] - 0) < 1e-10
     assert np.abs(ps2[2] - 0) < 1e-10
     sr.live.get_magnets("VCORR").strengths.set([0.000015, -0.000017])
-    ps1 = sr.live.get_magnet("SH1A-C01-H").model.read_hardware_values()
-    ps2 = sr.live.get_magnet("SH1A-C02-H").model.read_hardware_values()
+    ps1 = sr.live.get_cfm_magnet("SH1A-C01").hardwares.get()
+    ps2 = sr.live.get_cfm_magnet("SH1A-C02").hardwares.get()
     assert np.abs(ps1[0] - 0.02956737880874648) < 1e-10
     assert np.abs(ps1[1] + 0.058240333933172066) < 1e-10
     assert np.abs(ps1[2] - 0.05601656539392866) < 1e-10
@@ -110,8 +110,8 @@ def test_arrays(install_test_package):
     ma.LAST_NB_WRITTEN = 0  # Total number of setpoints done by multi_attribute
     sr.live.get_magnets("HVCORR").strengths.set(0.0)
     assert ma.LAST_NB_WRITTEN == 6  # 6 power supply setpoints are needed
-    ps1 = sr.live.get_magnet("SH1A-C01-H").model.read_hardware_values()
-    ps2 = sr.live.get_magnet("SH1A-C02-H").model.read_hardware_values()
+    ps1 = sr.live.get_cfm_magnet("SH1A-C01").hardwares.get()
+    ps2 = sr.live.get_cfm_magnet("SH1A-C02").hardwares.get()
     assert np.abs(ps1[0]) < 1e-10
     assert np.abs(ps1[1]) < 1e-10
     assert np.abs(ps1[2]) < 1e-10
@@ -125,8 +125,8 @@ def test_arrays(install_test_package):
         mags.append(m)
     array = MagnetArray("HVCOOR_noagg", mags, use_aggregator=False)
     array.strengths.set([0.000010, -0.000008, 0.000015, -0.000017])
-    ps1 = sr.live.get_magnet("SH1A-C01-H").model.read_hardware_values()
-    ps2 = sr.live.get_magnet("SH1A-C02-H").model.read_hardware_values()
+    ps1 = sr.live.get_cfm_magnet("SH1A-C01").hardwares.get()
+    ps2 = sr.live.get_cfm_magnet("SH1A-C02").hardwares.get()
     assert np.abs(ps1[0] - 0.02956737880874648) < 1e-10
     assert np.abs(ps1[1] + 0.058240333933172066) < 1e-10
     assert np.abs(ps1[2] - 0.05601656539392866) < 1e-10

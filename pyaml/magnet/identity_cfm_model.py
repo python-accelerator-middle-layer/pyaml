@@ -15,9 +15,9 @@ class ConfigModel(BaseModel):
 
     multipoles: list[str]
     """List of supported functions: A0,B0,A1,B1,etc (i.e. [B0,A1,B2])"""
-    powerconverters: list[DeviceAccess] | None = None
+    powerconverters: list[DeviceAccess | None] | None = None
     """Power converter device to apply current"""
-    physics: list[DeviceAccess] | None = None
+    physics: list[DeviceAccess | None] | None = None
     """Magnet device to apply strength"""
     units: list[str]
     """List of strength unit (i.e. ['rad','m-1','m-2'])"""
@@ -73,17 +73,7 @@ class IdentityCFMagnetModel(MagnetModel):
     def get_hardware_units(self) -> list[str]:
         return self._cfg.units
 
-    def read_hardware_values(self) -> np.array:
-        return np.array([p.get() for p in self.__devices])
-
-    def readback_hardware_values(self) -> np.array:
-        return np.array([p.readback() for p in self.__devices])
-
-    def send_hardware_values(self, currents: np.array):
-        for idx, p in enumerate(self.__devices):
-            p.set(currents[idx])
-
-    def get_devices(self) -> list[DeviceAccess]:
+    def get_devices(self) -> list[DeviceAccess | None]:
         return self.__devices
 
     def set_magnet_rigidity(self, brho: np.double):

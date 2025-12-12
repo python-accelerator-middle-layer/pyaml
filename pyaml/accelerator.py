@@ -2,11 +2,15 @@
 Accelerator class
 """
 
+import os
+
 from pydantic import BaseModel, ConfigDict
 
 from .arrays.array import ArrayConfig
 from .common.element import Element
-from .configuration import load_accelerator
+from .common.exception import PyAMLConfigException
+from .configuration.factory import Factory
+from .configuration.fileloader import load, set_root_folder
 from .control.controlsystem import ControlSystem
 from .lattice.simulator import Simulator
 
@@ -52,7 +56,6 @@ class Accelerator(object):
                 else:
                     # Add as dynacmic attribute
                     setattr(self, c.name(), c)
-                c.init_cs()
                 c.fill_device(cfg.devices)
 
         if cfg.simulators is not None:
@@ -106,7 +109,9 @@ class Accelerator(object):
         return self.__design
 
     @staticmethod
-    def load(filename: str, use_fast_loader: bool = False) -> "Accelerator":
+    def load(
+        filename: str, use_fast_loader: bool = False, ignore_external=False
+    ) -> "Accelerator":
         """
         Load an accelerator from a config file.
 
@@ -119,5 +124,20 @@ class Accelerator(object):
             no line number are reported in case of error,
             only the element name that triggered the error
             will be reported in the exception)
+        ignore_external: bool
+            Ignore external modules and return None for object that
+            cannot be created. pydantic schema that support that an
+            object is not created should handle None fields.
         """
-        return load_accelerator(filename, use_fast_loader)
+        # Asume that all files are referenced from
+        # folder where main AML file is stored
+        if not os.path.exists(filename):
+            raise PyAMLConfigException(f"{filename} file not found")
+        rootfolder = os.path.abspath(os.path.dirname(filename))
+        set_root_folder(rootfolder)
+        config_dict = load(os.path.basename(filename), None, use_fast_loader)
+        if ignore_external:
+            # control systems are external, so remove controls field
+            config_dict.pop("controls", None)
+        aml = Factory.depth_first_build(config_dict, ignore_external)
+        return aml
