@@ -517,70 +517,9 @@
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section id="module-pyaml.control.controlsystem">
-<span id="control"></span><h1>Control<a class="headerlink" href="#module-pyaml.control.controlsystem" title="Link to this heading">#</a></h1>
+  <section id="module-pyaml.control.device">
+<span id="control"></span><h1>Control<a class="headerlink" href="#module-pyaml.control.device" title="Link to this heading">#</a></h1>
 <dl class="py class">
-<dt class="sig sig-object py" id="pyaml.control.controlsystem.ControlSystem">
-<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyaml.control.controlsystem.</span></span><span class="sig-name descname"><span class="pre">ControlSystem</span></span><a class="reference internal" href="../_modules/pyaml/control/controlsystem.html#ControlSystem"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.control.controlsystem.ControlSystem" title="Link to this definition">#</a></dt>
-<dd><p>Abstract class providing access to a control system float variable</p>
-<dl class="py method">
-<dt class="sig sig-object py" id="pyaml.control.controlsystem.ControlSystem.create_magnet_harddware_aggregator">
-<span class="sig-name descname"><span class="pre">create_magnet_harddware_aggregator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">magnets</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">Magnet</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ScalarAggregator</span></span></span><a class="reference internal" href="../_modules/pyaml/control/controlsystem.html#ControlSystem.create_magnet_harddware_aggregator"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.control.controlsystem.ControlSystem.create_magnet_harddware_aggregator" title="Link to this definition">#</a></dt>
-<dd><p>When working in hardware space, 1 single power
-supply device per multipolar strength is required</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pyaml.control.controlsystem.ControlSystem.fill_device">
-<span class="sig-name descname"><span class="pre">fill_device</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">elements</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">Element</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/control/controlsystem.html#ControlSystem.fill_device"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.control.controlsystem.ControlSystem.fill_device" title="Link to this definition">#</a></dt>
-<dd><p>Fill device of this control system with Element
-coming from the configuration file</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>elements</strong> (<em>list</em><em>[</em><a class="reference internal" href="arrays.html#pyaml.arrays.element.Element" title="pyaml.arrays.element.Element"><em>Element</em></a><em>]</em>) -- List of elements coming from the configuration
-file to attach to this control system</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pyaml.control.controlsystem.ControlSystem.init_cs">
-<em class="property"><span class="k"><span class="pre">abstractmethod</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">init_cs</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/control/controlsystem.html#ControlSystem.init_cs"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.control.controlsystem.ControlSystem.init_cs" title="Link to this definition">#</a></dt>
-<dd><p>Initialize control system</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pyaml.control.controlsystem.ControlSystem.name">
-<em class="property"><span class="k"><span class="pre">abstractmethod</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">name</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../_modules/pyaml/control/controlsystem.html#ControlSystem.name"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.control.controlsystem.ControlSystem.name" title="Link to this definition">#</a></dt>
-<dd><p>Return control system name (i.e. live)</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pyaml.control.controlsystem.ControlSystem.scalar_aggregator">
-<em class="property"><span class="k"><span class="pre">abstractmethod</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">scalar_aggregator</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/pyaml/control/controlsystem.html#ControlSystem.scalar_aggregator"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.control.controlsystem.ControlSystem.scalar_aggregator" title="Link to this definition">#</a></dt>
-<dd><p>Returns the module name used for handling aggregator of DeviceAccess</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pyaml.control.controlsystem.ControlSystem.set_energy">
-<span class="sig-name descname"><span class="pre">set_energy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">E</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/control/controlsystem.html#ControlSystem.set_energy"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.control.controlsystem.ControlSystem.set_energy" title="Link to this definition">#</a></dt>
-<dd><p>Sets the energy on magnets belonging to this control system</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>E</strong> (<em>float</em>) -- Energy in eV</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pyaml.control.controlsystem.ControlSystem.vector_aggregator">
-<em class="property"><span class="k"><span class="pre">abstractmethod</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">vector_aggregator</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/pyaml/control/controlsystem.html#ControlSystem.vector_aggregator"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.control.controlsystem.ControlSystem.vector_aggregator" title="Link to this definition">#</a></dt>
-<dd><p>Returns the module name used for handling aggregator of DeviceVectorAccess</p>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="py class" id="module-pyaml.control.device">
 <dt class="sig sig-object py" id="pyaml.control.device.ConfigModel">
 <em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyaml.control.device.</span></span><span class="sig-name descname"><span class="pre">ConfigModel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">setpoint</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">readback</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">unit</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/control/device.html#ConfigModel"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.control.device.ConfigModel" title="Link to this definition">#</a></dt>
 <dd><dl class="py attribute">
@@ -1214,16 +1153,6 @@ operations and comparisons. It also retains metadata like quality and timestamp.
   </div>
   <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.control.controlsystem.ControlSystem"><code class="docutils literal notranslate"><span class="pre">ControlSystem</span></code></a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.control.controlsystem.ControlSystem.create_magnet_harddware_aggregator"><code class="docutils literal notranslate"><span class="pre">ControlSystem.create_magnet_harddware_aggregator()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.control.controlsystem.ControlSystem.fill_device"><code class="docutils literal notranslate"><span class="pre">ControlSystem.fill_device()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.control.controlsystem.ControlSystem.init_cs"><code class="docutils literal notranslate"><span class="pre">ControlSystem.init_cs()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.control.controlsystem.ControlSystem.name"><code class="docutils literal notranslate"><span class="pre">ControlSystem.name()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.control.controlsystem.ControlSystem.scalar_aggregator"><code class="docutils literal notranslate"><span class="pre">ControlSystem.scalar_aggregator()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.control.controlsystem.ControlSystem.set_energy"><code class="docutils literal notranslate"><span class="pre">ControlSystem.set_energy()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.control.controlsystem.ControlSystem.vector_aggregator"><code class="docutils literal notranslate"><span class="pre">ControlSystem.vector_aggregator()</span></code></a></li>
-</ul>
-</li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.control.device.ConfigModel"><code class="docutils literal notranslate"><span class="pre">ConfigModel</span></code></a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.control.device.ConfigModel.model_config"><code class="docutils literal notranslate"><span class="pre">ConfigModel.model_config</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.control.device.ConfigModel.readback"><code class="docutils literal notranslate"><span class="pre">ConfigModel.readback</span></code></a></li>
