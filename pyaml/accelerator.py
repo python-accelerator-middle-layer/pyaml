@@ -111,7 +111,7 @@ class Accelerator(object):
     @staticmethod
     def from_dict(config_dict: dict, ignore_external=False) -> "Accelerator":
         """
-        Construct an accelerator from a config file.
+        Construct an accelerator from a dictionary.
         Parameters
         ----------
         config_dict : str
