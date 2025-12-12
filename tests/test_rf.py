@@ -86,9 +86,9 @@ def test_rf_multi(install_test_package):
     RFTRA_HARMONIC.voltage.set(300e3)
     RF.voltage.set(12e6)
 
-    assert np.isclose(RF1._cfg.voltage.get(), 10e6)
-    assert np.isclose(RF2._cfg.voltage.get(), 2e6)
-    assert np.isclose(RFTRA_HARMONIC._cfg.voltage.get(), 3e5)
+    assert np.isclose(RF1.voltage.get(), 10e6)
+    assert np.isclose(RF2.voltage.get(), 2e6)
+    assert np.isclose(RFTRA_HARMONIC.voltage.get(), 3e5)
 
     Factory.clear()
 

@@ -25,28 +25,37 @@ from pyaml.magnet.quadrupole import Quadrupole
 #    print(json.dumps(QuadrupoleConfigModel.model_json_schema(),indent=2))
 
 
-class DummyPeer:
-    def __init__(self):
-        pass
-
-    def name(self) -> str:
-        return "Dummy"
-
-
 @pytest.mark.parametrize(
     "install_test_package",
-    [{"name": "pyaml_external", "path": "tests/external"}],
+    [
+        {"name": "pyaml_external", "path": "tests/external"},
+        {"name": "tango-pyaml", "path": "tests/dummy_cs/tango-pyaml"},
+    ],
     indirect=True,
 )
 def test_quad_external_model(install_test_package, config_root_dir):
     set_root_folder(config_root_dir)
     cfg_hcorr_yaml = load("sr/custom_magnets/hidcorr.yaml")
-    hcorr_with_external_model: HCorrector = Factory.depth_first_build(cfg_hcorr_yaml)
-    strength = RWStrengthScalar(hcorr_with_external_model.model)
-    hardware = RWHardwareScalar(hcorr_with_external_model.model)
-    ref_corr = hcorr_with_external_model.attach(DummyPeer(), strength, hardware)
+    cs = Factory.build_object(
+        {
+            "type": "tango.pyaml.controlsystem",
+            "name": "live",
+            "tango_host": "ebs-simu-3:10000",
+        }
+    )
+    hcorr_with_external_model: HCorrector = Factory.depth_first_build(
+        cfg_hcorr_yaml, False
+    )
+    dev = cs.attach(hcorr_with_external_model.model.get_devices())[0]
+    strength = RWStrengthScalar(hcorr_with_external_model.model, dev)
+    hardware = RWHardwareScalar(hcorr_with_external_model.model, dev)
+    ref_corr = hcorr_with_external_model.attach(cs, strength, hardware)
+    ref_corr.hardware.set(10.0)
+    assert ref_corr.strength.get() == 1.0
+    assert ref_corr.hardware.get() == 10.0
     ref_corr.strength.set(10.0)
-    print(ref_corr.strength.get())
+    assert ref_corr.strength.get() == 10.0
+    assert ref_corr.hardware.get() == 100.0
     Factory.clear()
 
 
@@ -70,10 +79,18 @@ def test_quad_linear(magnet_file, install_test_package, config_root_dir):
     set_root_folder(config_root_dir)
     cfg_quad = load(magnet_file)
     print(f"Current file: {config_root_dir}/{magnet_file}")
-    quad: Quadrupole = Factory.depth_first_build(cfg_quad)
-    hardware = RWHardwareScalar(quad.model) if quad.model.has_hardware() else None
-    strength = RWStrengthScalar(quad.model) if quad.model.has_physics() else None
-    ref_quad = quad.attach(DummyPeer(), strength, hardware)
+    cs = Factory.build_object(
+        {
+            "type": "tango.pyaml.controlsystem",
+            "name": "live",
+            "tango_host": "ebs-simu-3:10000",
+        }
+    )
+    quad: Quadrupole = Factory.depth_first_build(cfg_quad, False)
+    dev = cs.attach(quad.model.get_devices())[0]
+    hardware = RWHardwareScalar(quad.model, dev) if quad.model.has_hardware() else None
+    strength = RWStrengthScalar(quad.model, dev) if quad.model.has_physics() else None
+    ref_quad = quad.attach(cs, strength, hardware)
     ref_quad.model.set_magnet_rigidity(6e9 / speed_of_light)
 
     try:
@@ -110,15 +127,23 @@ def test_quad_linear(magnet_file, install_test_package, config_root_dir):
 def test_combined_function_magnets(magnet_file, config_root_dir):
     set_root_folder(config_root_dir)
     cfg_sh = load(magnet_file)
-    sh: CombinedFunctionMagnet = Factory.depth_first_build(cfg_sh)
+    cs = Factory.build_object(
+        {
+            "type": "tango.pyaml.controlsystem",
+            "name": "live",
+            "tango_host": "ebs-simu-3:10000",
+        }
+    )
+    sh: CombinedFunctionMagnet = Factory.depth_first_build(cfg_sh, False)
     sh.model.set_magnet_rigidity(6e9 / speed_of_light)
-    currents = RWHardwareArray(sh.model)
-    strengths = RWStrengthArray(sh.model)
+    devs = cs.attach(sh.model.get_devices())
+    currents = RWHardwareArray(sh.model, devs)
+    strengths = RWStrengthArray(sh.model, devs)
     sUnits = sh.model.get_strength_units()
     hUnits = sh.model.get_hardware_units()
     assert sUnits[0] == "rad" and sUnits[1] == "rad" and sUnits[2] == "m-1"
     assert hUnits[0] == "A" and hUnits[1] == "A" and hUnits[2] == "A"
-    ms = sh.attach(DummyPeer(), strengths, currents)
+    ms = sh.attach(cs, strengths, currents)
     hCorr = ms[1]
     vCorr = ms[2]
     sqCorr = ms[3]

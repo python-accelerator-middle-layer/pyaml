@@ -34,6 +34,7 @@ class Attribute(DeviceAccess):
         return self._readback
 
     def set(self, value: float):
+        print(f"{self._cfg.attribute}:{value}")
         self._cache = value
 
     def set_and_wait(self, value: float):

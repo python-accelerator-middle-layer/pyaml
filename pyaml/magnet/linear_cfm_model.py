@@ -31,7 +31,7 @@ class ConfigModel(BaseModel):
     pseudo_offsets: list[float] = None
     """Offsets applied to 'pseudo currents', 1 factor per function.
        Delfault: zeros"""
-    powerconverters: list[DeviceAccess]
+    powerconverters: list[DeviceAccess | None]
     """List of power converter devices to apply currrents (can be different
        from number of function)"""
     matrix: Matrix = None
@@ -148,16 +148,6 @@ class LinearCFMagnetModel(MagnetModel):
 
     def get_hardware_units(self) -> list[str]:
         return np.array([p.unit() for p in self._cfg.powerconverters])
-
-    def read_hardware_values(self) -> np.array:
-        return np.array([p.get() for p in self._cfg.powerconverters])
-
-    def readback_hardware_values(self) -> np.array:
-        return np.array([p.readback() for p in self._cfg.powerconverters])
-
-    def send_hardware_values(self, currents: np.array):
-        for idx, p in enumerate(self._cfg.powerconverters):
-            p.set(currents[idx])
 
     def get_devices(self) -> list[DeviceAccess]:
         return self._cfg.powerconverters

@@ -7,7 +7,6 @@ model:
   curve: sr/magnet_models/quadcurve.yaml
   unit: 1/m
   powerconverter:
-    type: pyaml.control.device
-    setpoint: sr/ps-qf1/c01-a/current
-    readback: sr/ps-qf1/c01-a/current
+    type: tango.pyaml.attribute
+    attribute: sr/ps-qf1/c01-a/current
     unit: A

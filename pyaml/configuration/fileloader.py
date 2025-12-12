@@ -3,7 +3,6 @@ import collections.abc
 import io
 import json
 import logging
-import os
 from pathlib import Path
 from typing import TYPE_CHECKING, Union
 
@@ -52,22 +51,6 @@ class PyAMLConfigCyclingException(PyAMLException):
         )
 
     pass
-
-
-def load_accelerator(filename: str, use_fast_loader: bool = False) -> "Accelerator":
-    """Load an accelerator from file."""
-
-    # Asume that all files are referenced from
-    # folder where main AML file is stored
-    if not os.path.exists(filename):
-        raise PyAMLException(f"{filename} file not found")
-    rootfolder = os.path.abspath(os.path.dirname(filename))
-    set_root_folder(rootfolder)
-    config_dict = load(os.path.basename(filename), None, use_fast_loader)
-    aml = Factory.depth_first_build(config_dict)
-
-    Factory.clear()
-    return aml
 
 
 def load(

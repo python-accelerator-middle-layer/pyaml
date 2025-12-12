@@ -70,7 +70,7 @@ class PyAMLFactory:
             f"{globalMessage} for object: '{type_str}' {location_str}"
         ) from None
 
-    def build_object(self, d: dict):
+    def build_object(self, d: dict, ignore_external: bool = False):
         """Build an object from the dict"""
         location = d.pop("__location__", None)
         field_locations = d.pop("__fieldlocations__", None)
@@ -90,10 +90,14 @@ class PyAMLFactory:
         try:
             module = importlib.import_module(type_str)
         except ModuleNotFoundError as ex:
-            # Discard module not found stack trace
-            raise PyAMLConfigException(
-                f"Module referenced in type cannot be found:'{type_str}' {location_str}"
-            ) from None
+            if not ignore_external:
+                # Discard module not found stack trace
+                raise PyAMLConfigException(
+                    "Module referenced in type cannot be found:"
+                    + f"'{type_str}' {location_str}"
+                ) from None
+            else:
+                return None
 
         # Try plugin strategies first
         for strategy in self._strategies:
@@ -143,15 +147,22 @@ class PyAMLFactory:
 
         return obj
 
-    def depth_first_build(self, d):
-        """Main factory function (Depth-first factory)"""
+    def depth_first_build(self, d, ignore_external: bool):
+        """
+        Main factory function (Depth-first factory)
+
+        Parameters
+        ----------
+        ignore_external: bool
+            Ignore `module not found` and return None when an object cannot be created
+        """
 
         if isinstance(d, list):
             # list can be a list of objects or a list of native types
             l = []
             for _index, e in enumerate(d):
                 if isinstance(e, dict) or isinstance(e, list):
-                    obj = self.depth_first_build(e)
+                    obj = self.depth_first_build(e, ignore_external)
                     l.append(obj)
                 else:
                     l.append(e)
@@ -161,12 +172,12 @@ class PyAMLFactory:
             for key, value in d.items():
                 if not key == "__fieldlocations__":
                     if isinstance(value, dict) or isinstance(value, list):
-                        obj = self.depth_first_build(value)
+                        obj = self.depth_first_build(value, ignore_external)
                         # Replace the inner dict by the object itself
                         d[key] = obj
 
             # We are now on leaf (no nested object), we can construct
-            return self.build_object(d)
+            return self.build_object(d, ignore_external)
 
         raise PyAMLConfigException(
             "Unexpected element found. 'dict' or 'list' expected "
