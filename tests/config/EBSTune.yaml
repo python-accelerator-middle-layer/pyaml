@@ -1887,7 +1887,7 @@ devices:
     attribute: srdiag/beam-tune/main/Qv
     unit: mm
 - type: pyaml.tuning_tools.tune
-  name: TUNE
+  name: DEFAULT_TUNE_CORRECTION
   quad_array: QForTune
   betatron_tune: BETATRON_TUNE
   delta: 1e-4
