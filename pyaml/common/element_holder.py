@@ -200,6 +200,10 @@ class ElementHolder(object):
     def add_tune_tuning(self, tune: Element):
         self.__add(self.__TUNING_TOOLS, tune)
 
+    @property
+    def tune(self) -> "Tune":
+        return self.get_tune_tuning("DEFAULT_TUNE_CORRECTION")
+
     def get_orbit_tuning(self, name: str) -> "Orbit":
         return self.__get("Orbit tuning tool", name, self.__TUNING_TOOLS)
 
