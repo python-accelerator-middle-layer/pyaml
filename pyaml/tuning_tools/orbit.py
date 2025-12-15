@@ -1,6 +1,12 @@
 import logging
 from pathlib import Path
-from typing import TYPE_CHECKING, Literal, Optional, Self
+from typing import TYPE_CHECKING, Literal, Optional
+
+try:
+    from typing import Self  # Python 3.11+
+except ImportError:
+    from typing_extensions import Self  # Python 3.10 and earlier
+
 
 from pydantic import BaseModel, ConfigDict
 
