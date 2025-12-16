@@ -3,6 +3,7 @@ import collections.abc
 import io
 import json
 import logging
+import os
 from pathlib import Path
 from typing import TYPE_CHECKING, Union
 
@@ -39,6 +40,18 @@ def get_root_folder() -> Path:
     Get the root path for configuration files.
     """
     return ROOT["path"]
+
+
+def get_path(p: Path) -> Path:
+    """
+    Return unchanged input path if it is an absolute path,
+    path relative to root folder otherwise.
+    """
+    if os.path.isabs(p):
+        return p
+    else:
+        root = get_root_folder()
+        return root / p
 
 
 class PyAMLConfigCyclingException(PyAMLException):
@@ -78,7 +91,7 @@ def hasToExpand(value):
 # Loader base class (nested files expansion)
 class Loader:
     def __init__(self, filename: str, parent_path_stack: list[Path]):
-        self.path: Path = get_root_folder() / filename
+        self.path: Path = get_path(filename)
         self.files_stack: list[Path] = []
         if parent_path_stack:
             if any(
