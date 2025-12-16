@@ -24,6 +24,11 @@ def test_tuning_orm():
     vcorr = element_holder.get_magnets("VCorr")
     bpms = element_holder.get_bpms("BPM")
 
+    x, y = bpms.positions.get().T  # get reference orbit
+    reference = np.concat((x, y))
+    # there should be nothing to correct, but still work
+    element_holder.orbit.correct(reference=reference)
+
     # mangle orbit
     hcorr.strengths.set(
         hcorr.strengths.get() + std_kick * np.random.normal(size=len(hcorr))
