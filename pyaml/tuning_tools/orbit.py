@@ -98,21 +98,18 @@ class Orbit(Element):
             trims = trims_v
             corr_array = self._vcorr
 
-        corrector_was_used = {key: False for key in trims.keys()}
         corrector_names = corr_array.names()
+        corrector_to_index = {name: idx for idx, name in enumerate(corrector_names)}
         data_to_send = corr_array.strengths.get()
-        for idx, name in enumerate(corrector_names):
-            data_to_send[idx] += trims[name] * gain
-            corrector_was_used[name] = True
-
-        # check that all corrector trims will be sent
-        for key in trims.keys():
-            if not corrector_was_used[key]:
+        for name in trims.keys():
+            idx = corrector_to_index.get(name, None)
+            if idx is None:
                 raise PyAMLException(
-                    f"Corrector {key} was not used in the orbit correction. "
-                    "There is an inconcistency between corrector arrays and "
+                    f"Corrector {name} not found in the magnet array for orbit corr. "
+                    "Possible inconcistency between corrector arrays and "
                     "response matrix."
                 )
+            data_to_send[idx] += trims[name] * gain
 
         corr_array.strengths.set(data_to_send)
         return
