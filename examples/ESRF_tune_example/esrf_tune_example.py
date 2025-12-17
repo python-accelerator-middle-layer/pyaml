@@ -16,9 +16,13 @@ relative_path = os.path.join(script_dir, "..", "..", "tests", "config", "EBSTune
 absolute_path = os.path.abspath(relative_path)
 
 sr: Accelerator = Accelerator.load(absolute_path)
-sr.design.get_lattice().disable_6d()
 
+# switch design/live
+SR = sr.design
+# SR = sr.live
+print(SR)
 
+exit()
 # Callback exectued after each magnet strenght setting
 # during the tune response matrix measurement
 def tune_callback(step: int, action: int, m: Magnet, dtune: np.array):
@@ -27,15 +31,18 @@ def tune_callback(step: int, action: int, m: Magnet, dtune: np.array):
         print(f"Tune response: #{step} {m.get_name()} {dtune}")
     return True
 
-
-# Compute tune response matrix
-tune_adjust_design = sr.design.get_tune_tuning("TUNE")
+# Compute tune response matrix from lattice model (design)
+sr.design.get_lattice().disable_6d()
+tune_adjust_design = sr.design.tune
 tune_adjust_design.response.measure(callback=tune_callback)
 tune_adjust_design.response.save_json("tunemat.json")
 
 # Correct tune on live
-tune_adjust_live = sr.live.get_tune_tuning("TUNE")
+tune_adjust_live = SR.tune
 tune_adjust_live.response.load_json("tunemat.json")
+print('initial tune value')
 print(tune_adjust_live.readback())
+print('move tune to [0.17, 0.32] and wait 10s for 2 iterations')
 tune_adjust_live.set([0.17, 0.32], iter=2, wait_time=10)
+print('final measured tune value (expected [0.17, 0.32])')
 print(tune_adjust_live.readback())
