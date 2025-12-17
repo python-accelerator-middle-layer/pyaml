@@ -1,23 +1,25 @@
 Configuration
 *****************
 
-.. automodule:: pyaml.configuration.fileloader
+.. automodule:: pyaml.configuration.csvcurve
     :members:
 
-.. automodule:: pyaml.configuration.factory
-    :members:
-
-.. automodule:: pyaml.configuration.matrix
+.. automodule:: pyaml.configuration.csvmatrix
     :members:
 
 .. automodule:: pyaml.configuration.curve
     :members:
 
-.. automodule:: pyaml.configuration.csvcurve
+.. automodule:: pyaml.configuration.factory
+    :members:
+
+.. automodule:: pyaml.configuration.fileloader
     :members:
 
 .. automodule:: pyaml.configuration.matrix
     :members:
 
-.. automodule:: pyaml.configuration.csvmatrix
+.. automodule:: pyaml.configuration.models
     :members:
+
+
