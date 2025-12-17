@@ -16,45 +16,55 @@
 # sys.path.insert(0, os.path.abspath('../pyat'))
 # print(sys.path)
 
-import pathlib
-import sys
+import pyaml
 
-# ignore numpy warnings, see:
-# https://stackoverflow.com/questions/40845304/runtimewarning-numpy-dtype-size-changed-may-indicate-binary-incompatibility
-import warnings
+# import pathlib
+# import sys
 
-warnings.filterwarnings("ignore", message="numpy.dtype size changed")
-warnings.filterwarnings("ignore", message="numpy.ufunc size changed")
+# # ignore numpy warnings, see:
+# # https://stackoverflow.com/questions/40845304/runtimewarning-numpy-dtype-size-changed-may-indicate-binary-incompatibility
+# import warnings
+
+# warnings.filterwarnings("ignore", message="numpy.dtype size changed")
+# warnings.filterwarnings("ignore", message="numpy.ufunc size changed")
 
 
-TOPLEVEL_DIR = pathlib.Path(__file__).parent.parent.absolute()
-ABOUT_FILE = TOPLEVEL_DIR / "pyaml" / "__init__.py"
+# TOPLEVEL_DIR = pathlib.Path(__file__).parent.parent.absolute()
+# ABOUT_FILE = TOPLEVEL_DIR / "pyaml" / "__init__.py"
 
-if str(TOPLEVEL_DIR) not in sys.path:
-    sys.path.insert(0, str(TOPLEVEL_DIR))
+# if str(TOPLEVEL_DIR) not in sys.path:
+#     sys.path.insert(0, str(TOPLEVEL_DIR))
 
-ABOUT_PYAML: dict = {}
-with ABOUT_FILE.open("r") as f:
-    exec(f.read(), ABOUT_PYAML)
+# ABOUT_PYAML: dict = {}
+# with ABOUT_FILE.open("r") as f:
+#     exec(f.read(), ABOUT_PYAML)
 
 # -- Project information -----------------------------------------------------
 
-project = ABOUT_PYAML["__title__"]
-copyright_ = "2024, pyAML collaboration"
-author = ABOUT_PYAML["__author__"]
+project = "Python Accelerator Middle Layer"
+project_copyright = "2024, pyAML Collaboration"
+author = "pyAML Collaboration"
 
-rst_prolog = f"""
-:github_url: {ABOUT_PYAML["__url__"]}
-"""
+# The full version, including alpha/beta/rc tags
+release = ".".join(pyaml.__version__.split(".")[:3])
+version = ".".join(pyaml.__version__.split(".")[:2])
+
+# project = ABOUT_PYAML["__title__"]
+# copyright_ = "2024, pyAML collaboration"
+# author = ABOUT_PYAML["__author__"]
+
+# rst_prolog = f"""
+# :github_url: {ABOUT_PYAML["__url__"]}
+# """
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
 # built documents.
 #
-# The short X.Y version.
-version = ABOUT_PYAML["__version__"][:3]
-# The full version, including alpha/beta/rc tags.
-release = ABOUT_PYAML["__version__"]
+# # The short X.Y version.
+# version = ABOUT_PYAML["__version__"][:3]
+# # The full version, including alpha/beta/rc tags.
+# release = ABOUT_PYAML["__version__"]
 
 
 # -- General configuration ------------------------------------------------
