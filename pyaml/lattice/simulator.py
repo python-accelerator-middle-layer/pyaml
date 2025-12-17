@@ -67,13 +67,6 @@ class Simulator(ElementHolder):
     def __init__(self, cfg: ConfigModel):
         super().__init__()
         self._cfg = cfg
-        self._linker = (
-            cfg.linker
-            if cfg.linker
-            else PyAtAttributeElementsLinker(
-                PyAtAttrLinkerConfigModel(attribute_name="FamName")
-            )
-        )
         path: Path = get_root_folder() / cfg.lattice
 
         if self._cfg.mat_key is None:
@@ -81,7 +74,16 @@ class Simulator(ElementHolder):
         else:
             self.ring = at.load_lattice(path, mat_key=f"{self._cfg.mat_key}")
 
-        self._linker.set_lattice(self.ring)
+        self._linker = cfg.linker
+        if self._linker:
+            self._linker.set_lattice(self.ring)
+        else:
+            self._elements_indexing = {}
+            for e in self.ring:
+                if e.FamName in self._elements_indexing:
+                    self._elements_indexing[e.FamName].append(e)
+                else:
+                    self._elements_indexing[e.FamName] = [e]
 
     def name(self) -> str:
         return self._cfg.name
@@ -211,14 +213,102 @@ class Simulator(ElementHolder):
             elif isinstance(e, Orbit):
                 self.add_orbit_tuning(e.attach(self))
 
+    def get_names(self, element: Element) -> list[str] | None:
+        """
+        Parse element lattice_name syntax. see Element.ConfigModel.lattice_name.
+        """
+        pattern = element.get_lattice_names()
+        if pattern is None:
+            return None
+        if pattern.startswith("list("):
+            try:
+                return pattern[5:-1].rsplit(",")
+            except Exception as err:
+                strErr = f"{element.get_name()}: Invalid lattice_names syntax "
+                strErr += f"for {pattern}, {str(err)}"
+                raise PyAMLException(strErr) from err
+        return None
+
+    def get_indices(self, element: Element) -> (str | None, list[int] | None):
+        """
+        Parse element lattice_name syntax. see Element.ConfigModel.lattice_name.
+        """
+
+        pattern = element.get_lattice_names()
+        if pattern is None:
+            return (element.get_name(), None)
+
+        # [name]@idx[,idx] syntax
+        split = pattern.rfind("@")
+        if split >= 0:
+            try:
+                name = pattern[:split]
+                l = pattern[split + 1 :]
+                lidx = l.rsplit(",")
+                rlist = list(map(int, lidx))
+                return (name if len(name) > 0 else None, rlist)
+            except Exception as err:
+                strErr = f"{element.get_name()}: Invalid lattice_names syntax "
+                strErr += f"for {pattern}, {str(err)}"
+                raise PyAMLException(strErr) from err
+
+        # [name]#start_idx..end_idx syntax
+        split = pattern.rfind("#")
+        if split >= 0:
+            try:
+                name = pattern[:split]
+                l = pattern[split + 1 :]
+                lrange = l.rsplit("..")
+                sl = list(map(int, lrange))
+                rlist = range(sl[0], sl[1])
+                return (name if len(name) > 0 else None, rlist)
+            except Exception as err:
+                strErr = f"{element.get_name()}: Invalid lattice_names syntax "
+                strErr += f"for {pattern}, {str(err)}"
+                raise PyAMLException(strErr) from err
+
+        return (element.get_name(), None)
+
     def get_at_elems(self, element: Element) -> list[at.Element]:
-        identifier = self._linker.get_element_identifier(element)
-        element_list = self._linker.get_at_elements(identifier)
-        if not element_list:
-            raise PyAMLException(
-                f"{identifier} not found in lattice:{self._cfg.lattice}"
-            )
-        return element_list
+        if self._linker:
+            identifier = self._linker.get_element_identifier(element)
+            element_list = self._linker.get_at_elements(identifier)
+            if not element_list:
+                raise PyAMLException(
+                    f"{identifier} not found in lattice:{self._cfg.lattice}"
+                )
+            return element_list
+        else:
+            # By list
+            nameList = self.get_names(element)
+
+            if nameList is not None:
+                names = []
+                for name in nameList:
+                    if name not in self._elements_indexing:
+                        raise PyAMLException(
+                            f"{name} not found in lattice:{self._cfg.lattice}"
+                        )
+                    elts = self._elements_indexing[name]
+                    names.extend(elts)
+                return names
+
+            # By name or indices
+            name, indices = self.get_indices(element)
+
+            if name is None:
+                # Direct indexing in the ring
+                return [self.ring[idx] for idx in indices]
+            else:
+                if name not in self._elements_indexing:
+                    raise PyAMLException(
+                        f"{name} not found in lattice:{self._cfg.lattice}"
+                    )
+                elts = self._elements_indexing[name]
+                if indices is None:
+                    return elts
+                else:
+                    return [elts[idx] for idx in indices]
 
     def __repr__(self):
         return repr(self._cfg).replace("ConfigModel", self.__class__.__name__)
