@@ -19,7 +19,7 @@ packages = ["pyaml"]
 name = "accelerator-middle-layer"
 description = "Python Accelerator Middle Layer"
 readme = "README.md"
-requires-python = ">=3.9"
+requires-python = ">=3.11"
 dynamic = ["version"]
 #license = {file = "LICENSE"}
 keywords = ["Accelerator", "Synchrotron", "Operation", "Tuning", "Digital Twin", "Commissioning", ]
