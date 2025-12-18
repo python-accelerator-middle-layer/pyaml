@@ -36,6 +36,7 @@ Documentation
     Switch design live <notebooks/live_design>
     Select a control system <notebooks/control_system>
     Arrays <notebooks/arrays>
+    Developper <notebooks/developper_install_instructions>
 
 .. toctree::
    :caption: Modules:
