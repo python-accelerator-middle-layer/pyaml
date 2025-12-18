@@ -11,7 +11,7 @@ from ..rf.rf_plant import RFPlant
 from ..rf.rf_transmitter import RFTransmitter
 from .polynom_info import PolynomInfo
 
-# TODO handle serialized magnets
+# TODO handle serialized magnets for magnet array
 
 # ------------------------------------------------------------------------------
 
@@ -27,17 +27,23 @@ class RWHardwareScalar(abstract.ReadWriteFloatScalar):
     ):
         self.__model = model
         self.__elements = elements
-        self.__poly = elements[0].__getattribute__(poly.attName)
+        self.__poly = [e.__getattribute__(poly.attName) for e in elements]
         self.__sign = poly.sign
         self.__polyIdx = poly.index
+        self.__length = 0
+        for e in elements:
+            self.__length += e.Length
 
     def get(self) -> float:
-        s = self.__poly[self.__polyIdx] * self.__sign * self.__elements[0].Length
+        s = 0
+        for idx, e in enumerate(self.__elements):
+            s += self.__poly[idx][self.__polyIdx] * self.__sign * e.Length
         return self.__model.compute_hardware_values([s])[0]
 
     def set(self, value: float):
         s = self.__model.compute_strengths([value])[0]
-        self.__poly[self.__polyIdx] = s / (self.__elements[0].Length * self.__sign)
+        for idx, _ in enumerate(self.__elements):
+            self.__poly[idx][self.__polyIdx] = s / (self.__length * self.__sign)
 
     def set_and_wait(self, value: float):
         raise NotImplementedError("Not implemented yet.")
@@ -59,17 +65,24 @@ class RWStrengthScalar(abstract.ReadWriteFloatScalar):
     ):
         self.__model = model
         self.__elements = elements
-        self.__poly = elements[0].__getattribute__(poly.attName)
+        self.__poly = [e.__getattribute__(poly.attName) for e in elements]
         self.__sign = poly.sign
         self.__polyIdx = poly.index
+        self.__length = 0
+        for e in elements:
+            self.__length += e.Length
 
     # Gets the value
     def get(self) -> float:
-        return self.__poly[self.__polyIdx] * self.__sign * self.__elements[0].Length
+        s = 0
+        for idx, e in enumerate(self.__elements):
+            s += self.__poly[idx][self.__polyIdx] * self.__sign * e.Length
+        return s
 
     # Sets the value
     def set(self, value: float):
-        self.__poly[self.__polyIdx] = value / (self.__elements[0].Length * self.__sign)
+        for idx, _ in enumerate(self.__elements):
+            self.__poly[idx][self.__polyIdx] = value / (self.__length * self.__sign)
 
     # Sets the value and wait that the read value reach the setpoint
     def set_and_wait(self, value: float):
