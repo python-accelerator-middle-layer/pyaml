@@ -1,21 +1,25 @@
-from pydantic import BaseModel,ConfigDict
-from .attribute import Attribute
+from pydantic import BaseModel, ConfigDict
+
 from pyaml.control.readback_value import Value
 
-PYAMLCLASS : str = "AttributeReadOnly"
+from .attribute import Attribute
+
+PYAMLCLASS: str = "AttributeReadOnly"
+
 
 class ConfigModel(BaseModel):
-
-    model_config = ConfigDict(arbitrary_types_allowed=True,extra="forbid")
+    model_config = ConfigDict(arbitrary_types_allowed=True, extra="forbid")
 
     attribute: str
     unit: str = ""
 
+
 class AttributeReadOnly(Attribute):
     """
-    Class that implements a default device class that just prints out 
+    Class that implements a default device class that just prints out
     values (Debugging purpose)
     """
+
     def __init__(self, cfg: ConfigModel):
         super().__init__(cfg)
         self._cfg = cfg

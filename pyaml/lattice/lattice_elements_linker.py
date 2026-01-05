@@ -23,7 +23,8 @@ class LinkerConfigModel(BaseModel):
         Pydantic configuration allowing arbitrary field types and forbidding
         unexpected extra keys.
     """
-    model_config = ConfigDict(arbitrary_types_allowed=True,extra="forbid")
+
+    model_config = ConfigDict(arbitrary_types_allowed=True, extra="forbid")
 
 
 class LinkerIdentifier(metaclass=ABCMeta):
@@ -36,6 +37,7 @@ class LinkerIdentifier(metaclass=ABCMeta):
     Subclasses should define the fields and logic necessary to represent
     a unique reference to one or more PyAT elements.
     """
+
     pass
 
 
@@ -57,19 +59,21 @@ class LatticeElementsLinker(metaclass=ABCMeta):
         Reference to the PyAT lattice handled by this linker.
     """
 
-    def __init__(self, linker_config_model:LinkerConfigModel):
+    def __init__(self, linker_config_model: LinkerConfigModel):
         self.linker_config_model = linker_config_model
-        self.lattice:Lattice = None
+        self.lattice: Lattice = None
 
-    def set_lattice(self, lattice:Lattice):
+    def set_lattice(self, lattice: Lattice):
         self.lattice = lattice
 
     @abstractmethod
-    def _test_at_element(self, identifier: LinkerIdentifier, element:at.Element) -> bool:
+    def _test_at_element(
+        self, identifier: LinkerIdentifier, element: at.Element
+    ) -> bool:
         pass
 
     @abstractmethod
-    def get_element_identifier(self, element:Element) -> LinkerIdentifier:
+    def get_element_identifier(self, element: Element) -> LinkerIdentifier:
         pass
 
     def _iter_matches(self, identifier: LinkerIdentifier) -> Iterable[at.Element]:
@@ -78,7 +82,9 @@ class LatticeElementsLinker(metaclass=ABCMeta):
             if self._test_at_element(identifier, elem):
                 yield elem
 
-    def get_at_elements(self,element_id:LinkerIdentifier|list[LinkerIdentifier]) -> list[at.Element]:
+    def get_at_elements(
+        self, element_id: LinkerIdentifier | list[LinkerIdentifier]
+    ) -> list[at.Element]:
         """Return a list of PyAT elements matching the given identifiers.
 
         This method should resolve one or multiple PyAML identifiers
@@ -117,7 +123,7 @@ class LatticeElementsLinker(metaclass=ABCMeta):
             )
         return results
 
-    def get_at_element(self, element_id:LinkerIdentifier) -> at.Element:
+    def get_at_element(self, element_id: LinkerIdentifier) -> at.Element:
         """Return a single PyAT element matching the given identifier.
 
         Parameters
@@ -137,4 +143,6 @@ class LatticeElementsLinker(metaclass=ABCMeta):
         """
         for elem in self._iter_matches(element_id):
             return elem
-        raise PyAMLException(f"No PyAT element found for FamName: {element_id.__repr__()}")
+        raise PyAMLException(
+            f"No PyAT element found for FamName: {element_id.__repr__()}"
+        )

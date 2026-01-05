@@ -6,7 +6,7 @@ lattice
 
 .. automodule:: pyaml.lattice.attribute_linker
     :members:
-    
+
 .. automodule:: pyaml.lattice.element_holder
     :members:
 
@@ -21,5 +21,3 @@ lattice
 
 .. automodule:: pyaml.lattice.simulator
     :members:
-
-

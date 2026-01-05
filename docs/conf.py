@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# pyAML documentation build configuration file, 
+# pyAML documentation build configuration file,
 #
 # This file is execfile()d with the current directory set to its
 # containing dir.
@@ -17,6 +17,7 @@
 #
 import pathlib
 import sys
+
 # ignore numpy warnings, see:
 # https://stackoverflow.com/questions/40845304/runtimewarning-numpy-dtype-size-changed-may-indicate-binary-incompatibility
 import warnings
@@ -44,18 +45,19 @@ with ABOUT_FILE.open("r") as f:
 # Add any Sphinx extension module names here, as strings. They can be
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
-extensions = ['sphinx.ext.autodoc',
-              'sphinx.ext.doctest',
-              'sphinx.ext.todo',
-              'sphinx.ext.coverage',
-              'sphinx.ext.mathjax',
-              'sphinx.ext.viewcode',
-              'sphinx.ext.githubpages',
-              'sphinx.ext.napoleon',
-              'sphinx.ext.autosectionlabel',
-              'sphinx.ext.autosummary',
-              'myst_nb'
-              ]
+extensions = [
+    "sphinx.ext.autodoc",
+    "sphinx.ext.doctest",
+    "sphinx.ext.todo",
+    "sphinx.ext.coverage",
+    "sphinx.ext.mathjax",
+    "sphinx.ext.viewcode",
+    "sphinx.ext.githubpages",
+    "sphinx.ext.napoleon",
+    "sphinx.ext.autosectionlabel",
+    "sphinx.ext.autosummary",
+    "myst_nb",
+]
 autosectionlabel_prefix_document = True
 autosectionlabel_maxdepth = 2
 
@@ -66,18 +68,18 @@ autosectionlabel_maxdepth = 2
 # You can specify multiple suffix as a list of string:
 #
 # source_suffix = ['.rst', '.md']
-source_suffix = '.rst'
+source_suffix = ".rst"
 
 # The master toctree document.
-master_doc = 'index'
+master_doc = "index"
 
 # General information about the project.
 project = ABOUT_PYAML["__title__"]
-copyright_ = '2024, pyAML collaboration'
+copyright_ = "2024, pyAML collaboration"
 author = ABOUT_PYAML["__author__"]
 
 rst_prolog = f"""
-:github_url: {ABOUT_PYAML['__url__']}
+:github_url: {ABOUT_PYAML["__url__"]}
 """
 
 # The version info for the project you're documenting, acts as replacement for
@@ -94,7 +96,7 @@ release = ABOUT_PYAML["__version__"]
 #
 # This is also used if you do content translation via gettext catalogs.
 # Usually you set "language" from the command line for these cases.
-language = 'en'
+language = "en"
 
 # List of patterns, relative to source directory, that match files and
 # directories to ignore when looking for source files.
@@ -102,7 +104,7 @@ language = 'en'
 exclude_patterns = []
 
 # The name of the Pygments (syntax highlighting) style to use.
-pygments_style = 'sphinx'
+pygments_style = "sphinx"
 
 # If true, `todo` and `todoList` produce output, else they produce nothing.
 todo_include_todos = True
@@ -119,45 +121,44 @@ html_theme = "pydata_sphinx_theme"
 # Theme options are theme-specific and customize the look and feel of a theme
 # further.  For a list of options available for each theme, see the
 # documentation.
-html_theme_options = {
-    'collapse_navigation': False,
-    'display_version': True,
-    'logo_only': True,
-    'navigation_depth': 6,
-    "rightsidebar": True,
-    "relbarbgcolor": "black"
-}
 
 
 # Name of an image file (path relative to the configuration directory)
 # that is the logo of the docs, or URL that points an image file for the logo.
 # It is placed at the top of the sidebar;
 # its width should therefore not exceed 200 pixels.
-html_logo = '_static/img/logo.png'
+html_logo = "_static/img/logo.png"
 html_copy_source = False
+
 html_theme_options = {
-    "github_url": "https://github.com/atcollab/at",
+    "collapse_navigation": False,
+    "display_version": True,
+    "logo_only": True,
+    "navigation_depth": 6,
+    "rightsidebar": True,
+    "relbarbgcolor": "black",
+    "github_url": "https://github.com/python-accelerator-middle-layer/pyaml",
     "logo": {
-      "image_light": '_static/img/logo.png',
-      "image_dark": '_static/img/dark.png',
-   }
+        "image_light": "_static/img/logo.png",
+        "image_dark": "_static/img/dark.png",
+    },
 }
 
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
 # so a file named "default.css" will overwrite the builtin "default.css".
 #
-html_static_path = ['_static']
+html_static_path = ["_static"]
 
 # A dictionary of values to pass into the template engine’s context for all
 # pages. Single values can also be put in this dictionary using the
 # -A command-line option of sphinx-build.
 html_context = {
-    'display_github': True,
+    "display_github": True,
     # the following are only needed if :github_url: is not set
-    'github_user': author,
-    'github_repo': project,
-    'github_version': 'main/docs/',
+    "github_user": author,
+    "github_repo": project,
+    "github_version": "main/docs/",
 }
 
 # A list of CSS files. The entry must be a filename string or a tuple
@@ -169,7 +170,9 @@ html_context = {
 #
 html_css_files = ["css/custom.css"]
 
-smartquotes_action = "qe"  # renders only quotes and ellipses (...) but not dashes (option: D)
+smartquotes_action = (
+    "qe"  # renders only quotes and ellipses (...) but not dashes (option: D)
+)
 
 # Custom sidebar templates, must be a dictionary that maps document names
 # to template names.
@@ -177,9 +180,9 @@ smartquotes_action = "qe"  # renders only quotes and ellipses (...) but not dash
 # This is required for the alabaster theme
 # refs: http://alabaster.readthedocs.io/en/latest/installation.html#sidebars
 html_sidebars = {
-    '**': [
-        'relations.html',  # needs 'show_related': True theme option to display
-        'searchbox.html',
+    "**": [
+        "relations.html",  # needs 'show_related': True theme option to display
+        "searchbox.html",
     ],
     "index": [],
     "common/about": [],
@@ -189,7 +192,7 @@ html_sidebars = {
 # -- Options for HTMLHelp output ------------------------------------------
 
 # Output file base name for HTML help builder.
-htmlhelp_basename = 'pyamldoc'
+htmlhelp_basename = "pyamldoc"
 
 # -- Options for LaTeX output ---------------------------------------------
 
@@ -197,15 +200,12 @@ latex_elements = {
     # The paper size ('letterpaper' or 'a4paper').
     #
     # 'papersize': 'letterpaper',
-
     # The font size ('10pt', '11pt' or '12pt').
     #
     # 'pointsize': '10pt',
-
     # Additional stuff for the LaTeX preamble.
     #
     # 'preamble': '',
-
     # Latex figure (float) alignment
     #
     # 'figure_align': 'htbp',
@@ -215,18 +215,14 @@ latex_elements = {
 # (source start file, target name, title,
 #  author, documentclass [howto, manual, or own class]).
 latex_documents = [
-    (master_doc, 'pyaml.tex', u'pyAML Documentation',
-     u'pyAML collaboration', 'manual'),
+    (master_doc, "pyaml.tex", "pyAML Documentation", "pyAML collaboration", "manual"),
 ]
 
 # -- Options for manual page output ---------------------------------------
 
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
-man_pages = [
-    (master_doc, 'pyaml', u'pyAML Documentation',
-     [author], 1)
-]
+man_pages = [(master_doc, "pyaml", "pyAML Documentation", [author], 1)]
 
 # -- Options for Texinfo output -------------------------------------------
 
@@ -234,18 +230,28 @@ man_pages = [
 # (source start file, target name, title, author,
 #  dir menu entry, description, category)
 texinfo_documents = [
-    (master_doc, 'pyaml', u'pyAML Documentation',
-     author, 'pyaml', 'One line description of project.',
-     'Miscellaneous'),
+    (
+        master_doc,
+        "pyaml",
+        "pyAML Documentation",
+        author,
+        "pyaml",
+        "One line description of project.",
+        "Miscellaneous",
+    ),
 ]
 
 # -- Autodoc Configuration ---------------------------------------------------
 
 # Add here all modules to be mocked up. When the dependencies are not met
 # at building time. Here used to have PyQT mocked.
-autodoc_mock_imports = ['PyQt5', 'PyQt5.QtGui', 'PyQt5.QtCore', 'PyQt5.QtWidgets',
-                        "matplotlib.backends.backend_qt5agg",
-                        ]
+autodoc_mock_imports = [
+    "PyQt5",
+    "PyQt5.QtGui",
+    "PyQt5.QtCore",
+    "PyQt5.QtWidgets",
+    "matplotlib.backends.backend_qt5agg",
+]
 
 # -- Options for the myst markdown parser ------------------------------------
 
@@ -257,5 +263,5 @@ myst_enable_extensions = [
     "deflist",
 ]
 myst_heading_anchors = 3
-nb_execution_mode = "off" #"auto"
+nb_execution_mode = "off"  # "auto"
 nb_execution_allow_errors = True

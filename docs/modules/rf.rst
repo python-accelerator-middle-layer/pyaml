@@ -6,4 +6,3 @@ RF
 
 .. automodule:: pyaml.rf.rf_transmitter
     :members:
-

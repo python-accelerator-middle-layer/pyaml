@@ -59,7 +59,7 @@ coverage.xml
 .pytest_cache/
 cover/
 
-# DS 
+# DS
 **/.DS_Store
 
 # Translations
@@ -81,6 +81,8 @@ instance/
 
 # Sphinx documentation
 docs/_build/
+docs/generated/
+docs/jupyter_execute/
 
 # PyBuilder
 .pybuilder/

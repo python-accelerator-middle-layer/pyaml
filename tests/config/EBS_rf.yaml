@@ -1,5 +1,6 @@
 type: pyaml.accelerator
-name: sr
+facility: ESRF
+machine: sr
 energy: 6e9
 simulators:
   - type: pyaml.lattice.simulator
@@ -8,9 +9,9 @@ simulators:
 controls:
   - type: tango.pyaml.controlsystem
     tango_host: ebs-simu-3:10000
-    name: live        
+    name: live
 data_folder: /data/store
-devices:    
+devices:
   - type: pyaml.rf.rf_plant
     name: RF
     masterclock:

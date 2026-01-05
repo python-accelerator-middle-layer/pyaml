@@ -1,8 +1,8 @@
-from pydantic import BaseModel,ConfigDict
 import numpy as np
-from pyaml.magnet.model import MagnetModel
-from pyaml.control.deviceaccess import DeviceAccess
+from pydantic import BaseModel, ConfigDict
 
+from pyaml.control.deviceaccess import DeviceAccess
+from pyaml.magnet.model import MagnetModel
 
 # Define the main class name for this module (mandatory)
 PYAMLCLASS = "ExternalMagnetModel"
@@ -12,72 +12,56 @@ PYAMLCLASS = "ExternalMagnetModel"
 # configuration file. Parameters with a default value are optional.
 # The ConfigModel structure is then passed to the constructor of the above class
 
-class ConfigModel(BaseModel):
 
-    model_config = ConfigDict(arbitrary_types_allowed=True,extra="forbid")
+class ConfigModel(BaseModel):
+    model_config = ConfigDict(arbitrary_types_allowed=True, extra="forbid")
 
     powersupply: DeviceAccess
-    id: DeviceAccess
     param: str = None
 
+
 # ConfigModel inherits from pydantic BaseModel
-# Take care of having all your private fields prefixed by an `_`
+# Take care of copying yout cfg in `_cfg` field
+
 
 class ExternalMagnetModel(MagnetModel):
     """
-    Class example proving manget current/strength conversion
+    Class example proving custom manget current/strength conversion.
     """
 
     def __init__(self, cfg: ConfigModel):
-        print("ExternalMagnetModel:\n  powersupply:%s\n  id:%s\n  param:%s" 
-              % (cfg.powersupply.name(),cfg.id.name(),cfg.param))
-        self._ps = cfg.powersupply
-        self._id = cfg.id
-        self._id.set(10) # Mimic a default value for the gap
- 
-    # Implementation of the UnitConv abstract class
+        print(
+            "ExternalMagnetModel:\n  powersupply:%s\n  param:%s"
+            % (cfg.powersupply.name(), cfg.param)
+        )
+        self._cfg = cfg
 
-    # Get coil current(s) from magnet strength(s)
-    def compute_hardware_values(self,strengths:np.array) -> np.array:
+    # Implementation of the MagnetModel abstract class
+
+    # Get hardware value(s) from magnet strength(s)
+    def compute_hardware_values(self, strengths: np.array) -> np.array:
         print("ExternalMagnetModel.compute_hardware_values(%f)" % (strengths[0]))
-        _gap = self._id.get()
-        return np.array([strengths[0]*_gap])
+        return np.array([strengths[0] * 10.0])
 
-    # Get magnet strength(s) from coil current(s)
-    def compute_strengths(self,currents:np.array) -> np.array:
+    # Get magnet strength(s) from hardware values
+    def compute_strengths(self, currents: np.array) -> np.array:
         print("ExternalMagnetModel.compute_strengths(%f)" % (currents[0]))
-        _gap = self._id.get()
-        return np.array([currents[0]/_gap])
+        return np.array([currents[0] / 10.0])
 
     # Get strength units
     def get_strength_units(self) -> list[str]:
-        return["rad"]
+        return ["rad"]
 
     # Get current units
     def get_hardware_units(self) -> list[str]:
-        return["A"]
-
-    # Get power supply current setpoint(s) from control system
-    def read_hardware_values(self) -> np.array:
-        return self._ps.get()
-
-    # Get power supply current(s) from control system
-    def readback_hardware_values(self) -> np.array:
-        pass
-
-    # Send power supply current(s) to control system
-    def send_hardware_values(self, currents:np.array):
-        self._ps.set(currents)
-        pass
+        return ["A"]
 
     def get_devices(self) -> list[DeviceAccess]:
-        return [self._ps,self.id]
-    
+        return [self._cfg.powersupply]
+
     def has_hardware(self) -> bool:
-        # No trivial conversion between strength and hardware unit
-        return False
+        return True
 
     # Set magnet rigidity
-    def set_magnet_rigidity(self,brho:np.double):
+    def set_magnet_rigidity(self, brho: np.double):
         pass
-
