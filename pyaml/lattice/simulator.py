@@ -108,7 +108,7 @@ class Simulator(ElementHolder):
         # No magnet aggregator for simulator
         return None
 
-    def create_magnet_harddware_aggregator(
+    def create_magnet_hardware_aggregator(
         self, magnets: list[Magnet]
     ) -> ScalarAggregator:
         # No magnet aggregator for simulator

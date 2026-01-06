@@ -1,5 +1,6 @@
 type: pyaml.accelerator
-name: sr
+facility: ESRF
+machine: sr
 energy: 6e9
 simulators:
   - type: pyaml.lattice.simulator
