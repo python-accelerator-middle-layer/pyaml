@@ -354,7 +354,7 @@ class RWRFVoltageScalar(abstract.ReadWriteFloatScalar):
 
     def set_and_wait(self, value: float):
         raise NotImplementedError("Not implemented yet.")
-        
+
     def unit(self) -> str:
         return self.__transmitter._cfg.voltage.unit()
 
@@ -380,7 +380,7 @@ class RWRFPhaseScalar(abstract.ReadWriteFloatScalar):
 
     def set_and_wait(self, value: float):
         raise NotImplementedError("Not implemented yet.")
-        
+
     def unit(self) -> str:
         return self.__transmitter._cfg.phase.unit()
 

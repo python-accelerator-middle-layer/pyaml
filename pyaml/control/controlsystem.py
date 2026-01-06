@@ -23,9 +23,9 @@ from ..control.abstract_impl import (
 )
 from ..diagnostics.tune_monitor import BetatronTuneMonitor
 from ..magnet.cfm_magnet import CombinedFunctionMagnet
-from ..magnet.serialized_magnet import SerializedMagnetsModel
 from ..magnet.magnet import Magnet
-from ..rf.rf_plant import RFPlant,RWTotalVoltage
+from ..magnet.serialized_magnet import SerializedMagnetsModel
+from ..rf.rf_plant import RFPlant, RWTotalVoltage
 from ..rf.rf_transmitter import RFTransmitter
 from ..tuning_tools.orbit import Orbit
 from ..tuning_tools.tune import Tune
@@ -147,27 +147,35 @@ class ControlSystem(ElementHolder, metaclass=ABCMeta):
                 self.add_cfm_magnet(ms[0])
                 for m in ms[1:]:
                     self.add_magnet(m)
-            elif isinstance(e,CombinedFunctionMagnet):
-              currents = RWHardwareArray(e.model) if e.model.has_hardware() else None
-              strengths = RWStrengthArray(e.model) if e.model.has_physics() else None
-              # Create unique refs the cfm and each of its function for this control system
-              ms = e.attach(self,strengths,currents)
-              self.add_cfm_magnet(ms[0])
-              for m in ms[1:]:
-                self.add_magnet(m)
+            elif isinstance(e, CombinedFunctionMagnet):
+                currents = RWHardwareArray(e.model) if e.model.has_hardware() else None
+                strengths = RWStrengthArray(e.model) if e.model.has_physics() else None
+                # Create unique refs the cfm and each of its function for this control system
+                ms = e.attach(self, strengths, currents)
+                self.add_cfm_magnet(ms[0])
+                for m in ms[1:]:
+                    self.add_magnet(m)
 
-            elif isinstance(e,SerializedMagnetsModel):
-              currents = []
-              strengths = []
-              # Create unique refs the series and each of its function for this control system
-              for i in range(e.get_nb_magnets()):
-                  current = RWHardwareScalar(e.model.get_sub_model(i)) if e.model.has_hardware() else None
-                  strength = RWStrengthScalar(e.model.get_sub_model(i)) if e.model.has_physics() else None
-                  currents.append(current)
-                  strengths.append(strength)
-              ms = e.attach(self,strengths,currents)
-              for m in ms:
-                self.add_magnet(m)
+            elif isinstance(e, SerializedMagnetsModel):
+                currents = []
+                strengths = []
+                # Create unique refs the series and each of its function for this control system
+                for i in range(e.get_nb_magnets()):
+                    current = (
+                        RWHardwareScalar(e.model.get_sub_model(i))
+                        if e.model.has_hardware()
+                        else None
+                    )
+                    strength = (
+                        RWStrengthScalar(e.model.get_sub_model(i))
+                        if e.model.has_physics()
+                        else None
+                    )
+                    currents.append(current)
+                    strengths.append(strength)
+                ms = e.attach(self, strengths, currents)
+                for m in ms:
+                    self.add_magnet(m)
 
             elif isinstance(e, BPM):
                 tiltDev = self.attach([e.model.get_tilt_device()])[0]

@@ -7,13 +7,13 @@ from pyaml.magnet.skewquad import SkewQuad
 from pyaml.magnet.skewsext import SkewSext
 from pyaml.magnet.vcorrector import VCorrector
 
-function_map:dict = {
-    "B0":HCorrector,
-    "A0":VCorrector,
-    "B1":Quadrupole,
-    "A1":SkewQuad,
-    "B2":Sextupole,
-    "A2":SkewSext,
-    "B3":Octupole,
-    "A3":SkewOctu
+function_map: dict = {
+    "B0": HCorrector,
+    "A0": VCorrector,
+    "B1": Quadrupole,
+    "A1": SkewQuad,
+    "B2": Sextupole,
+    "A2": SkewSext,
+    "B3": Octupole,
+    "A3": SkewOctu,
 }

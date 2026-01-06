@@ -151,4 +151,3 @@ class CombinedFunctionMagnet(Element):
 
     def __repr__(self):
         return __pyaml_repr__(self)
-

@@ -1,18 +1,18 @@
-from .matrix import Matrix
-
-from pydantic import BaseModel,ConfigDict
 import numpy as np
+from pydantic import BaseModel, ConfigDict
 
+from .matrix import Matrix
 
 # Define the main class name for this module
 PYAMLCLASS = "InlineMatrix"
 
-class ConfigModel(BaseModel):
 
-    model_config = ConfigDict(arbitrary_types_allowed=True,extra="forbid")
+class ConfigModel(BaseModel):
+    model_config = ConfigDict(arbitrary_types_allowed=True, extra="forbid")
 
     mat: list[list[float]]
     """The matrix"""
+
 
 class InlineMatrix(Matrix):
     """
@@ -28,4 +28,4 @@ class InlineMatrix(Matrix):
         return self._mat
 
     def __repr__(self):
-       return repr(self._cfg).replace("ConfigModel",self.__class__.__name__)
+        return repr(self._cfg).replace("ConfigModel", self.__class__.__name__)
