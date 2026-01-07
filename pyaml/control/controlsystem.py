@@ -147,27 +147,20 @@ class ControlSystem(ElementHolder, metaclass=ABCMeta):
                 self.add_cfm_magnet(ms[0])
                 for m in ms[1:]:
                     self.add_magnet(m)
-            elif isinstance(e, CombinedFunctionMagnet):
-                currents = RWHardwareArray(e.model) if e.model.has_hardware() else None
-                strengths = RWStrengthArray(e.model) if e.model.has_physics() else None
-                # Create unique refs the cfm and each of its function for this control system
-                ms = e.attach(self, strengths, currents)
-                self.add_cfm_magnet(ms[0])
-                for m in ms[1:]:
-                    self.add_magnet(m)
 
             elif isinstance(e, SerializedMagnetsModel):
+                devs = self.attach(e.model.get_devices())
                 currents = []
                 strengths = []
                 # Create unique refs the series and each of its function for this control system
                 for i in range(e.get_nb_magnets()):
                     current = (
-                        RWHardwareScalar(e.model.get_sub_model(i))
+                        RWHardwareScalar(e.model.get_sub_model(i), devs[i])
                         if e.model.has_hardware()
                         else None
                     )
                     strength = (
-                        RWStrengthScalar(e.model.get_sub_model(i))
+                        RWStrengthScalar(e.model.get_sub_model(i), devs[i])
                         if e.model.has_physics()
                         else None
                     )

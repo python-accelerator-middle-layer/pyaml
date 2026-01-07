@@ -163,16 +163,6 @@ class LinearSerializedMagnetModel(MagnetModel):
     def get_hardware_units(self) -> list[str]:
         return [p.unit() for p in self._cfg.__sub_models]
 
-    def read_hardware_values(self) -> np.array:
-        return np.array([p.get() for p in self._cfg.__sub_models])
-
-    def readback_hardware_values(self) -> np.array:
-        return np.array([p.readback() for p in self._cfg.__sub_models])
-
-    def send_hardware_values(self, currents: np.array):
-        for idx, p in enumerate(self._cfg.__sub_models):
-            p.set(currents[idx])
-
     def get_devices(self) -> list[DeviceAccess]:
         return self._cfg.powerconverters
 
