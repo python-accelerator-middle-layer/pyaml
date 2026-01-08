@@ -51,6 +51,9 @@ class RWHardwareScalar(abstract.ReadWriteFloatScalar):
     def unit(self) -> str:
         return self.__model.get_hardware_units()[0]
 
+    def get_model(self) -> MagnetModel:
+        return self.__model
+
 
 # ------------------------------------------------------------------------------
 
@@ -97,73 +100,6 @@ class RWStrengthScalar(abstract.ReadWriteFloatScalar):
         return self.__model
 
 
-class RWHardwareIntegratedScalar(abstract.ReadWriteFloatScalar):
-    """
-    Class providing read write access to a magnet of a simulator in hardware unit.
-    Hardware unit is converted from strength using the magnet model
-    """
-
-    def __init__(
-        self, elements: list[at.Element], poly: PolynomInfo, model: MagnetModel
-    ):
-        self.__model = model
-        self.__integrated_strength = RWStrengthIntegratedScalar(elements, poly, model)
-
-    def get(self) -> float:
-        s = self.__integrated_strength.get()
-        return self.__model.compute_hardware_values([s])[0]
-
-    def set(self, value: float):
-        s: float = self.__model.compute_strengths([value])[0]
-        self.__integrated_strength.set(s)
-
-    def set_and_wait(self, value: float):
-        raise NotImplementedError("Not implemented yet.")
-
-    def unit(self) -> str:
-        return self.__model.get_hardware_units()[0]
-
-
-# ------------------------------------------------------------------------------
-
-
-class RWStrengthIntegratedScalar(abstract.ReadWriteFloatScalar):
-    """
-    Class providing read write access to a strength of a simulator
-    """
-
-    def __init__(
-        self, elements: list[at.Element], poly: PolynomInfo, model: MagnetModel
-    ):
-        self.__model = model
-        self.__elements = elements
-        self.__poly = [element.__getattribute__(poly.attName) for element in elements]
-        self.__polyIdx = poly.index
-        lengths: list[float] = [element.Length for element in elements]
-        self.__full_length = sum(lengths)
-        self.__ratios = [length / self.__full_length for length in lengths]
-
-    # Gets the value
-    def get(self) -> float:
-        return sum([poly[self.__polyIdx] for poly in self.__poly]) * self.__full_length
-
-    # Sets the value
-    def set(self, value: float):
-        for poly, ratio in zip(self.__poly, self.__ratios):
-            poly[self.__polyIdx] = (value / self.__full_length) * ratio
-
-    # Sets the value and wait that the read value reach the setpoint
-    def set_and_wait(self, value: float):
-        raise NotImplementedError("Not implemented yet.")
-
-    # Gets the unit of the value
-    def unit(self) -> str:
-        return self.__model.get_strength_units()[0]
-
-    def get_model(self) -> MagnetModel:
-        return self.__model
-
-
 # ------------------------------------------------------------------------------
 
 
@@ -187,6 +123,9 @@ class RWSerializedHardware(abstract.ReadWriteFloatScalar):
     # Gets the unit of the value
     def unit(self) -> str:
         return self.__elements[self.__element_index].unit()
+
+    def set_magnet_rigidity(self, brho: np.double):
+        [element.get_model().set_magnet_rigidity(brho) for element in self.__elements]
 
 
 class RWSerializedStrength(abstract.ReadWriteFloatScalar):
@@ -221,6 +160,9 @@ class RWSerializedStrength(abstract.ReadWriteFloatScalar):
     # Gets the unit of the value
     def unit(self) -> str:
         return self.__element.unit()
+
+    def set_magnet_rigidity(self, brho: np.double):
+        pass
 
 
 class RWHardwareArray(abstract.ReadWriteFloatArray):

@@ -7,6 +7,11 @@ simulators:
     lattice: sr/lattices/ebs.mat
     name: design
 data_folder: /data/store
+arrays:
+  - type: pyaml.arrays.serialized_magnet
+    name: series
+    elements:
+      - mySeriesOfMagnets
 devices:
   - type: pyaml.magnet.serialized_magnet
     name: mySeriesOfMagnets

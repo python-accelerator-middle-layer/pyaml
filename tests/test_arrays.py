@@ -162,7 +162,7 @@ def test_arrays(install_test_package):
     assert np.abs(pos[1][1] - 7.4265634524358045e-06) < 1e-10
 
     # Radom array
-    elts = sr.design.get_elemens("ElArray")
+    elts = sr.design.get_elements("ElArray")
 
     # Create an array that contains all elements
     allElts = ElementArray("AllElements", sr.design.get_all_elements())
@@ -245,3 +245,22 @@ def test_arrays(install_test_package):
     assert np.shape(v) == (0,)
 
     Factory.clear()
+
+@pytest.mark.parametrize(
+    "sr_file",
+    [
+        "tests/config/sr_serialized_magnets.yaml",
+    ],
+)
+def test_serialized_magnets_arrays(sr_file):
+    sr: Accelerator = Accelerator.load(sr_file, use_fast_loader=True, ignore_external=True)
+    the_serie = sr.design.get_serialized_magnets("series")
+    strength = the_serie.strengths.get()
+    assert len(strength) == 5
+    print(strength)
+    the_serie.strengths.set([0.000010])
+    hardwares = the_serie.hardwares.get()
+    assert len(hardwares) == 5
+    print(hardwares)
+    the_serie.hardwares.set([10])
+

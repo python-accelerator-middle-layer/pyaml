@@ -24,7 +24,7 @@ from ..control.abstract_impl import (
 from ..diagnostics.tune_monitor import BetatronTuneMonitor
 from ..magnet.cfm_magnet import CombinedFunctionMagnet
 from ..magnet.magnet import Magnet
-from ..magnet.serialized_magnet import SerializedMagnetsModel
+from ..magnet.serialized_magnet import SerializedMagnets
 from ..rf.rf_plant import RFPlant, RWTotalVoltage
 from ..rf.rf_transmitter import RFTransmitter
 from ..tuning_tools.orbit import Orbit
@@ -148,7 +148,7 @@ class ControlSystem(ElementHolder, metaclass=ABCMeta):
                 for m in ms[1:]:
                     self.add_magnet(m)
 
-            elif isinstance(e, SerializedMagnetsModel):
+            elif isinstance(e, SerializedMagnets):
                 devs = self.attach(e.model.get_devices())
                 currents = []
                 strengths = []
@@ -167,7 +167,8 @@ class ControlSystem(ElementHolder, metaclass=ABCMeta):
                     currents.append(current)
                     strengths.append(strength)
                 ms = e.attach(self, strengths, currents)
-                for m in ms:
+                self.add_serialized_magnet(ms[0])
+                for m in ms[1:]:
                     self.add_magnet(m)
 
             elif isinstance(e, BPM):

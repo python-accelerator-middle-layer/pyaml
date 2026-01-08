@@ -18,17 +18,13 @@ def check_no_diff(array: list[np.float64]) -> bool:
 
 
 @pytest.mark.parametrize(
-    ("sr_file", "install_test_package"),
+    "sr_file",
     [
-        (
-            "tests/config/sr_serialized_magnets.yaml",
-            {"name": "tango-pyaml", "path": "tests/dummy_cs/tango-pyaml"},
-        ),
+        "tests/config/sr_serialized_magnets.yaml",
     ],
-    indirect=["install_test_package"],
 )
-def test_config_load(sr_file, install_test_package):
-    sr: Accelerator = Accelerator.load(sr_file)
+def test_config_load(sr_file):
+    sr: Accelerator = Accelerator.load(sr_file, use_fast_loader=True, ignore_external=True)
     assert sr is not None
     magnets = [
         sr.design.get_element("QF8B-C04"),

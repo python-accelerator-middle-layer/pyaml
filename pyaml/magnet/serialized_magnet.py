@@ -1,11 +1,8 @@
 import numpy as np
-from numpy import typing as npt
-from pydantic import BaseModel, ConfigDict
 from scipy.constants import speed_of_light
 
 from .. import PyAMLException
 from ..common import abstract
-from ..common.abstract import RWMapper
 from ..common.element import Element, ElementConfigModel, __pyaml_repr__
 from ..configuration import Factory
 from ..control.deviceaccess import DeviceAccess
@@ -14,7 +11,7 @@ from .magnet import Magnet, MagnetConfigModel
 from .model import MagnetModel
 
 # Define the main class name for this module
-PYAMLCLASS = "SerializedMagnetsModel"
+PYAMLCLASS = "SerializedMagnets"
 
 
 class ConfigModel(ElementConfigModel):
@@ -26,7 +23,45 @@ class ConfigModel(ElementConfigModel):
     """Object in charge of converting magnet strengths to currents"""
 
 
-class SerializedMagnetsModel(Element):
+class ReadWriteSerializedStrengths(abstract.ReadWriteFloatScalar):
+    def __init__(self, cfg: ConfigModel, elements: list[abstract.ReadWriteFloatScalar]):
+        self.elements = elements
+        self._cfg = cfg
+
+    def get(self) -> float:
+        return self.elements[0].get()
+
+    def set(self, value: float):
+        self.elements[0].set(value)
+
+    def set_and_wait(self, value: float):
+        raise NotImplementedError("Not implemented yet.")
+
+    def unit(self) -> str:
+        return self._cfg.model.get_strength_units()[0]
+
+    def get_model(self) -> MagnetModel:
+        return self._cfg.model
+
+    def get_elements(self):
+        return self.elements
+
+    def set_magnet_rigidity(self, brho: np.double):
+        [element.set_magnet_rigidity(brho) for element in self.elements]
+
+
+class ReadWriteSerializedHardwares(ReadWriteSerializedStrengths):
+    def __init__(self, cfg: ConfigModel, elements: list[abstract.ReadWriteFloatScalar]):
+        super().__init__(cfg, elements)
+
+    def unit(self) -> str:
+        return self._cfg.model.get_hardware_units()[0]
+
+    def set_magnet_rigidity(self, brho: np.double):
+        [element.set_magnet_rigidity(brho) for element in self.elements]
+
+
+class SerializedMagnets(Element):
     """
     Class managing serialized magnets: a set of magnet with the same set point.
     The set point is usually managed by only one power supply but it can be covered by several ones.
@@ -49,6 +84,8 @@ class SerializedMagnetsModel(Element):
         self._cfg = cfg
         self.model = cfg.model
         self.polynom = None
+        self.__strengths = None
+        self.__hardwares = None
         self.__virtuals: list[Magnet] = []
         self.__elements = (
             cfg.elements if isinstance(cfg.elements, list) else [cfg.elements]
@@ -91,6 +128,10 @@ class SerializedMagnetsModel(Element):
         hardwares: list[abstract.ReadWriteFloatScalar],
     ) -> list[Magnet]:
         l = []
+        n_ser_mag = SerializedMagnets(self._cfg, peer)
+        n_ser_mag.__strengths = ReadWriteSerializedStrengths(self._cfg, strengths)
+        n_ser_mag.__hardwares = ReadWriteSerializedHardwares(self._cfg, hardwares)
+        l.append(n_ser_mag)
         # Construct a single function magnet for each multipole of this combined function magnet
         for idx, magnet in enumerate(self.__elements):
             strength = strengths[idx]
@@ -123,8 +164,13 @@ class SerializedMagnetsModel(Element):
         return self.__hardwares
 
     def set_energy(self, energy: float):
+        brho = energy / speed_of_light
         if self.model is not None:
-            self.model.set_magnet_rigidity(energy / speed_of_light)
+            self.model.set_magnet_rigidity(brho)
+        if self.__hardwares is not None:
+            self.__hardwares.set_magnet_rigidity(brho)
+        if self.__strengths is not None:
+            self.__strengths.set_magnet_rigidity(brho)
 
     def __repr__(self):
         return __pyaml_repr__(self)
