@@ -1,15 +1,19 @@
 Arrays configuration
-********
+********************
 
 .. automodule:: pyaml.arrays.array
     :members:
     :exclude-members: model_config
 
-.. automodule:: pyaml.arrays.element
+.. automodule:: pyaml.arrays.bpm
     :members:
     :exclude-members: model_config, ConfigModel
 
-.. automodule:: pyaml.arrays.bpm
+.. automodule:: pyaml.arrays.cfm_magnet
+    :members:
+    :exclude-members: model_config, ConfigModel        
+
+.. automodule:: pyaml.arrays.element
     :members:
     :exclude-members: model_config, ConfigModel
 
@@ -17,22 +21,17 @@ Arrays configuration
     :members:
     :exclude-members: model_config, ConfigModel
 
-.. automodule:: pyaml.arrays.cfm_magnet
-    :members:
-    :exclude-members: model_config, ConfigModel
-
-
 Arrays usage
-********
-
-.. automodule:: pyaml.arrays.element_array
-    :members:
+************
 
 .. automodule:: pyaml.arrays.bpm_array
     :members:
 
-.. automodule:: pyaml.arrays.magnet_array
+.. automodule:: pyaml.arrays.cfm_magnet_array
     :members:
 
-.. automodule:: pyaml.arrays.cfm_magnet_array
+.. automodule:: pyaml.arrays.element_array
+    :members:    
+
+.. automodule:: pyaml.arrays.magnet_array
     :members:

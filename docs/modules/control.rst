@@ -1,16 +1,10 @@
 Control
 *********
 
-.. automodule:: pyaml.control.controlsystem
-    :members:
-
-.. automodule:: pyaml.control.device
-    :members:
-
 .. automodule:: pyaml.control.abstract_impl
     :members:
 
-.. automodule:: pyaml.control.abstract
+.. automodule:: pyaml.control.controlsystem
     :members:
 
 .. automodule:: pyaml.control.deviceaccess
