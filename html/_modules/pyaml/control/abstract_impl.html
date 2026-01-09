@@ -729,7 +729,10 @@
 <a class="viewcode-back" href="../../../modules/control.html#pyaml.control.abstract_impl.RWHardwareScalar.unit">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">unit</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__model</span><span class="o">.</span><span class="n">get_hardware_units</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span></div>
-</div>
+
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">set_magnet_rigidity</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">brho</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">double</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__model</span><span class="o">.</span><span class="n">set_magnet_rigidity</span><span class="p">(</span><span class="n">brho</span><span class="p">)</span></div>
 
 
 
@@ -775,7 +778,10 @@
 <a class="viewcode-back" href="../../../modules/control.html#pyaml.control.abstract_impl.RWStrengthScalar.unit">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">unit</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__model</span><span class="o">.</span><span class="n">get_strength_units</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span></div>
-</div>
+
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">set_magnet_rigidity</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">brho</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">double</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__model</span><span class="o">.</span><span class="n">set_magnet_rigidity</span><span class="p">(</span><span class="n">brho</span><span class="p">)</span></div>
 
 
 

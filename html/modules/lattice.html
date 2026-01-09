@@ -910,6 +910,64 @@ of a simulator for a given RF trasnmitter.</p>
 </dd></dl>
 
 <dl class="py class">
+<dt class="sig sig-object py" id="pyaml.lattice.abstract_impl.RWSerializedHardware">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyaml.lattice.abstract_impl.</span></span><span class="sig-name descname"><span class="pre">RWSerializedHardware</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">elements</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#pyaml.lattice.abstract_impl.RWHardwareScalar" title="pyaml.lattice.abstract_impl.RWHardwareScalar"><span class="pre">RWHardwareScalar</span></a><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">element_index</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/lattice/abstract_impl.html#RWSerializedHardware"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.lattice.abstract_impl.RWSerializedHardware" title="Link to this definition">#</a></dt>
+<dd><dl class="py method">
+<dt class="sig sig-object py" id="pyaml.lattice.abstract_impl.RWSerializedHardware.get">
+<span class="sig-name descname"><span class="pre">get</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="reference internal" href="../_modules/pyaml/lattice/abstract_impl.html#RWSerializedHardware.get"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.lattice.abstract_impl.RWSerializedHardware.get" title="Link to this definition">#</a></dt>
+<dd><p>Get the value</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaml.lattice.abstract_impl.RWSerializedHardware.set">
+<span class="sig-name descname"><span class="pre">set</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/lattice/abstract_impl.html#RWSerializedHardware.set"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.lattice.abstract_impl.RWSerializedHardware.set" title="Link to this definition">#</a></dt>
+<dd><p>Set the value</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaml.lattice.abstract_impl.RWSerializedHardware.set_and_wait">
+<span class="sig-name descname"><span class="pre">set_and_wait</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/lattice/abstract_impl.html#RWSerializedHardware.set_and_wait"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.lattice.abstract_impl.RWSerializedHardware.set_and_wait" title="Link to this definition">#</a></dt>
+<dd><p>Set the value and wait that setpoint is reached</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaml.lattice.abstract_impl.RWSerializedHardware.unit">
+<span class="sig-name descname"><span class="pre">unit</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../_modules/pyaml/lattice/abstract_impl.html#RWSerializedHardware.unit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.lattice.abstract_impl.RWSerializedHardware.unit" title="Link to this definition">#</a></dt>
+<dd><p>Get the unit of the value</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="pyaml.lattice.abstract_impl.RWSerializedStrength">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyaml.lattice.abstract_impl.</span></span><span class="sig-name descname"><span class="pre">RWSerializedStrength</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">element</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#pyaml.lattice.abstract_impl.RWStrengthScalar" title="pyaml.lattice.abstract_impl.RWStrengthScalar"><span class="pre">RWStrengthScalar</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">elements_hardware</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#pyaml.lattice.abstract_impl.RWHardwareScalar" title="pyaml.lattice.abstract_impl.RWHardwareScalar"><span class="pre">RWHardwareScalar</span></a><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">element_index</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/lattice/abstract_impl.html#RWSerializedStrength"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.lattice.abstract_impl.RWSerializedStrength" title="Link to this definition">#</a></dt>
+<dd><dl class="py method">
+<dt class="sig sig-object py" id="pyaml.lattice.abstract_impl.RWSerializedStrength.get">
+<span class="sig-name descname"><span class="pre">get</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="reference internal" href="../_modules/pyaml/lattice/abstract_impl.html#RWSerializedStrength.get"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.lattice.abstract_impl.RWSerializedStrength.get" title="Link to this definition">#</a></dt>
+<dd><p>Get the value</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaml.lattice.abstract_impl.RWSerializedStrength.set">
+<span class="sig-name descname"><span class="pre">set</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/lattice/abstract_impl.html#RWSerializedStrength.set"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.lattice.abstract_impl.RWSerializedStrength.set" title="Link to this definition">#</a></dt>
+<dd><p>Set the value</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaml.lattice.abstract_impl.RWSerializedStrength.set_and_wait">
+<span class="sig-name descname"><span class="pre">set_and_wait</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/lattice/abstract_impl.html#RWSerializedStrength.set_and_wait"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.lattice.abstract_impl.RWSerializedStrength.set_and_wait" title="Link to this definition">#</a></dt>
+<dd><p>Set the value and wait that setpoint is reached</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaml.lattice.abstract_impl.RWSerializedStrength.unit">
+<span class="sig-name descname"><span class="pre">unit</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../_modules/pyaml/lattice/abstract_impl.html#RWSerializedStrength.unit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.lattice.abstract_impl.RWSerializedStrength.unit" title="Link to this definition">#</a></dt>
+<dd><p>Get the unit of the value</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
 <dt class="sig sig-object py" id="pyaml.lattice.abstract_impl.RWStrengthArray">
 <em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyaml.lattice.abstract_impl.</span></span><span class="sig-name descname"><span class="pre">RWStrengthArray</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">elements</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">Element</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">poly</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#pyaml.lattice.polynom_info.PolynomInfo" title="pyaml.lattice.polynom_info.PolynomInfo"><span class="pre">PolynomInfo</span></a><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">MagnetModel</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/lattice/abstract_impl.html#RWStrengthArray"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.lattice.abstract_impl.RWStrengthArray" title="Link to this definition">#</a></dt>
 <dd><p>Class providing read write access to a strength (array) of a simulator</p>
@@ -1273,6 +1331,20 @@ a unique reference to one or more PyAT elements.</p>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.lattice.abstract_impl.RWRFVoltageScalar.set"><code class="docutils literal notranslate"><span class="pre">RWRFVoltageScalar.set()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.lattice.abstract_impl.RWRFVoltageScalar.set_and_wait"><code class="docutils literal notranslate"><span class="pre">RWRFVoltageScalar.set_and_wait()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.lattice.abstract_impl.RWRFVoltageScalar.unit"><code class="docutils literal notranslate"><span class="pre">RWRFVoltageScalar.unit()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.lattice.abstract_impl.RWSerializedHardware"><code class="docutils literal notranslate"><span class="pre">RWSerializedHardware</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.lattice.abstract_impl.RWSerializedHardware.get"><code class="docutils literal notranslate"><span class="pre">RWSerializedHardware.get()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.lattice.abstract_impl.RWSerializedHardware.set"><code class="docutils literal notranslate"><span class="pre">RWSerializedHardware.set()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.lattice.abstract_impl.RWSerializedHardware.set_and_wait"><code class="docutils literal notranslate"><span class="pre">RWSerializedHardware.set_and_wait()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.lattice.abstract_impl.RWSerializedHardware.unit"><code class="docutils literal notranslate"><span class="pre">RWSerializedHardware.unit()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.lattice.abstract_impl.RWSerializedStrength"><code class="docutils literal notranslate"><span class="pre">RWSerializedStrength</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.lattice.abstract_impl.RWSerializedStrength.get"><code class="docutils literal notranslate"><span class="pre">RWSerializedStrength.get()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.lattice.abstract_impl.RWSerializedStrength.set"><code class="docutils literal notranslate"><span class="pre">RWSerializedStrength.set()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.lattice.abstract_impl.RWSerializedStrength.set_and_wait"><code class="docutils literal notranslate"><span class="pre">RWSerializedStrength.set_and_wait()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.lattice.abstract_impl.RWSerializedStrength.unit"><code class="docutils literal notranslate"><span class="pre">RWSerializedStrength.unit()</span></code></a></li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.lattice.abstract_impl.RWStrengthArray"><code class="docutils literal notranslate"><span class="pre">RWStrengthArray</span></code></a><ul class="nav section-nav flex-column">

@@ -664,7 +664,7 @@
 
         <span class="k">if</span> <span class="n">use_aggregator</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">magnets</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
             <span class="n">aggs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_peer</span><span class="p">()</span><span class="o">.</span><span class="n">create_magnet_strength_aggregator</span><span class="p">(</span><span class="n">magnets</span><span class="p">)</span>
-            <span class="n">aggh</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_peer</span><span class="p">()</span><span class="o">.</span><span class="n">create_magnet_harddware_aggregator</span><span class="p">(</span><span class="n">magnets</span><span class="p">)</span>
+            <span class="n">aggh</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_peer</span><span class="p">()</span><span class="o">.</span><span class="n">create_magnet_hardware_aggregator</span><span class="p">(</span><span class="n">magnets</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">__rwstrengths</span><span class="o">.</span><span class="n">set_aggregator</span><span class="p">(</span><span class="n">aggs</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">__rwhardwares</span><span class="o">.</span><span class="n">set_aggregator</span><span class="p">(</span><span class="n">aggh</span><span class="p">)</span>
 
