@@ -1,0 +1,952 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Common elements &#8212; Python Accelerator Middle Layer 0.1.1 documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/css/custom.css" />
+  
+  <!-- So that users can add custom icons -->
+  <script src="../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
+
+    <script src="../_static/documentation_options.js?v=48654df3"></script>
+    <script src="../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'modules/common';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Configuration" href="configuration.html" />
+    <link rel="prev" title="BPMS" href="bpm.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="0.1" />
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/logo.png" class="logo__image only-light" alt="Python Accelerator Middle Layer 0.1.1 documentation - Home"/>
+    <img src="../_static/dark.png" class="logo__image only-dark pst-js-only" alt="Python Accelerator Middle Layer 0.1.1 documentation - Home"/>
+  
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../notebooks/load_configuration.html">
+    Load a configuration file
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../notebooks/live_design.html">
+    Switch design live
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../notebooks/control_system.html">
+    Select a control system
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../notebooks/arrays.html">
+    Arrays
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="arrays.html">
+    Arrays configuration
+  </a>
+</li>
+
+            <li class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button"
+                data-bs-toggle="dropdown" aria-expanded="false"
+                aria-controls="pst-nav-more-links">
+                    More
+                </button>
+                <ul id="pst-nav-more-links" class="dropdown-menu">
+                    
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="bpm.html">
+    BPMS
+  </a>
+</li>
+
+
+<li class=" current active">
+  <a class="nav-link dropdown-item nav-internal" href="#">
+    Common elements
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="configuration.html">
+    Configuration
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="control.html">
+    Control
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="lattice.html">
+    lattice
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="magnet.html">
+    magnets
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="pyaml.html">
+    pyaml
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="rf.html">
+    RF
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="tuning_tools.html">
+    Tuning tools
+  </a>
+</li>
+
+                </ul>
+            </li>
+            
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+        <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+      
+        <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/python-accelerator-middle-layer/pyaml" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+</ul></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../notebooks/load_configuration.html">
+    Load a configuration file
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../notebooks/live_design.html">
+    Switch design live
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../notebooks/control_system.html">
+    Select a control system
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../notebooks/arrays.html">
+    Arrays
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="arrays.html">
+    Arrays configuration
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="bpm.html">
+    BPMS
+  </a>
+</li>
+
+
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="#">
+    Common elements
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="configuration.html">
+    Configuration
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="control.html">
+    Control
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="lattice.html">
+    lattice
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="magnet.html">
+    magnets
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="pyaml.html">
+    pyaml
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="rf.html">
+    RF
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="tuning_tools.html">
+    Tuning tools
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+        
+          <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/python-accelerator-middle-layer/pyaml" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+</ul></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+  <div>
+    <h4>Previous topic</h4>
+    <p class="topless"><a href="bpm.html"
+                          title="previous chapter">BPMS</a></p>
+  </div>
+  <div>
+    <h4>Next topic</h4>
+    <p class="topless"><a href="configuration.html"
+                          title="next chapter">Configuration</a></p>
+  </div></div>
+        <div class="sidebar-primary-item">
+<div id="searchbox"></div></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">Common elements</span></li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="module-pyaml.common.abstract">
+<span id="common-elements"></span><h1>Common elements<a class="headerlink" href="#module-pyaml.common.abstract" title="Link to this heading">#</a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="pyaml.common.abstract.RWMapper">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyaml.common.abstract.</span></span><span class="sig-name descname"><span class="pre">RWMapper</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">bind</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">idx</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/common/abstract.html#RWMapper"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.common.abstract.RWMapper" title="Link to this definition">#</a></dt>
+<dd><p>Class mapping a scalar to an element of an array</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaml.common.abstract.RWMapper.get">
+<span class="sig-name descname"><span class="pre">get</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="reference internal" href="../_modules/pyaml/common/abstract.html#RWMapper.get"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.common.abstract.RWMapper.get" title="Link to this definition">#</a></dt>
+<dd><p>Get the value</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaml.common.abstract.RWMapper.set">
+<span class="sig-name descname"><span class="pre">set</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/common/abstract.html#RWMapper.set"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.common.abstract.RWMapper.set" title="Link to this definition">#</a></dt>
+<dd><p>Set the value</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaml.common.abstract.RWMapper.set_and_wait">
+<span class="sig-name descname"><span class="pre">set_and_wait</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/common/abstract.html#RWMapper.set_and_wait"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.common.abstract.RWMapper.set_and_wait" title="Link to this definition">#</a></dt>
+<dd><p>Set the value and wait that setpoint is reached</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaml.common.abstract.RWMapper.unit">
+<span class="sig-name descname"><span class="pre">unit</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../_modules/pyaml/common/abstract.html#RWMapper.unit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.common.abstract.RWMapper.unit" title="Link to this definition">#</a></dt>
+<dd><p>Get the unit of the value</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="pyaml.common.abstract.ReadFloatArray">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyaml.common.abstract.</span></span><span class="sig-name descname"><span class="pre">ReadFloatArray</span></span><a class="reference internal" href="../_modules/pyaml/common/abstract.html#ReadFloatArray"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.common.abstract.ReadFloatArray" title="Link to this definition">#</a></dt>
+<dd><p>Abstract class providing read access to a vector of float</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaml.common.abstract.ReadFloatArray.get">
+<em class="property"><span class="k"><span class="pre">abstractmethod</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">array</span></span></span><a class="reference internal" href="../_modules/pyaml/common/abstract.html#ReadFloatArray.get"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.common.abstract.ReadFloatArray.get" title="Link to this definition">#</a></dt>
+<dd><p>Get the value</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaml.common.abstract.ReadFloatArray.unit">
+<em class="property"><span class="k"><span class="pre">abstractmethod</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">unit</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/pyaml/common/abstract.html#ReadFloatArray.unit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.common.abstract.ReadFloatArray.unit" title="Link to this definition">#</a></dt>
+<dd><p>Get the unit of the values</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="pyaml.common.abstract.ReadFloatScalar">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyaml.common.abstract.</span></span><span class="sig-name descname"><span class="pre">ReadFloatScalar</span></span><a class="reference internal" href="../_modules/pyaml/common/abstract.html#ReadFloatScalar"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.common.abstract.ReadFloatScalar" title="Link to this definition">#</a></dt>
+<dd><p>Abstract class providing read access to a scalar double</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaml.common.abstract.ReadFloatScalar.get">
+<em class="property"><span class="k"><span class="pre">abstractmethod</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float64</span></span></span><a class="reference internal" href="../_modules/pyaml/common/abstract.html#ReadFloatScalar.get"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.common.abstract.ReadFloatScalar.get" title="Link to this definition">#</a></dt>
+<dd><p>Get the value</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaml.common.abstract.ReadFloatScalar.unit">
+<em class="property"><span class="k"><span class="pre">abstractmethod</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">unit</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../_modules/pyaml/common/abstract.html#ReadFloatScalar.unit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.common.abstract.ReadFloatScalar.unit" title="Link to this definition">#</a></dt>
+<dd><p>Get the unit of the value</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="pyaml.common.abstract.ReadWriteFloatArray">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyaml.common.abstract.</span></span><span class="sig-name descname"><span class="pre">ReadWriteFloatArray</span></span><a class="reference internal" href="../_modules/pyaml/common/abstract.html#ReadWriteFloatArray"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.common.abstract.ReadWriteFloatArray" title="Link to this definition">#</a></dt>
+<dd><p>Abstract class providing read write access to a vector of double</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaml.common.abstract.ReadWriteFloatArray.set">
+<em class="property"><span class="k"><span class="pre">abstractmethod</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">set</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">array</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/common/abstract.html#ReadWriteFloatArray.set"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.common.abstract.ReadWriteFloatArray.set" title="Link to this definition">#</a></dt>
+<dd><p>Set the values</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaml.common.abstract.ReadWriteFloatArray.set_and_wait">
+<em class="property"><span class="k"><span class="pre">abstractmethod</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">set_and_wait</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">array</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/common/abstract.html#ReadWriteFloatArray.set_and_wait"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.common.abstract.ReadWriteFloatArray.set_and_wait" title="Link to this definition">#</a></dt>
+<dd><p>Set the values and wait that setpoints are reached</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="pyaml.common.abstract.ReadWriteFloatScalar">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyaml.common.abstract.</span></span><span class="sig-name descname"><span class="pre">ReadWriteFloatScalar</span></span><a class="reference internal" href="../_modules/pyaml/common/abstract.html#ReadWriteFloatScalar"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.common.abstract.ReadWriteFloatScalar" title="Link to this definition">#</a></dt>
+<dd><p>Abstract class providing read write access to a scalar double</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaml.common.abstract.ReadWriteFloatScalar.set">
+<em class="property"><span class="k"><span class="pre">abstractmethod</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">set</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float64</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/common/abstract.html#ReadWriteFloatScalar.set"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.common.abstract.ReadWriteFloatScalar.set" title="Link to this definition">#</a></dt>
+<dd><p>Set the value</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaml.common.abstract.ReadWriteFloatScalar.set_and_wait">
+<em class="property"><span class="k"><span class="pre">abstractmethod</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">set_and_wait</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float64</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/common/abstract.html#ReadWriteFloatScalar.set_and_wait"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.common.abstract.ReadWriteFloatScalar.set_and_wait" title="Link to this definition">#</a></dt>
+<dd><p>Set the value and wait that setpoint is reached</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class" id="module-pyaml.common.abstract_aggregator">
+<dt class="sig sig-object py" id="pyaml.common.abstract_aggregator.ScalarAggregator">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyaml.common.abstract_aggregator.</span></span><span class="sig-name descname"><span class="pre">ScalarAggregator</span></span><a class="reference internal" href="../_modules/pyaml/common/abstract_aggregator.html#ScalarAggregator"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.common.abstract_aggregator.ScalarAggregator" title="Link to this definition">#</a></dt>
+<dd><p>Abstract class providing access to a list of scalar variables</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaml.common.abstract_aggregator.ScalarAggregator.get">
+<em class="property"><span class="k"><span class="pre">abstractmethod</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ndarray</span><span class="p"><span class="pre">[</span></span><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">dtype</span><span class="p"><span class="pre">[</span></span><span class="pre">float64</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/pyaml/common/abstract_aggregator.html#ScalarAggregator.get"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.common.abstract_aggregator.ScalarAggregator.get" title="Link to this definition">#</a></dt>
+<dd><p>Return a list variables</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaml.common.abstract_aggregator.ScalarAggregator.readback">
+<em class="property"><span class="k"><span class="pre">abstractmethod</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">readback</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">array</span></span></span><a class="reference internal" href="../_modules/pyaml/common/abstract_aggregator.html#ScalarAggregator.readback"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.common.abstract_aggregator.ScalarAggregator.readback" title="Link to this definition">#</a></dt>
+<dd><p>Return  a list variables (measurements)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaml.common.abstract_aggregator.ScalarAggregator.set">
+<em class="property"><span class="k"><span class="pre">abstractmethod</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">set</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span><span class="p"><span class="pre">[</span></span><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">dtype</span><span class="p"><span class="pre">[</span></span><span class="pre">float64</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/common/abstract_aggregator.html#ScalarAggregator.set"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.common.abstract_aggregator.ScalarAggregator.set" title="Link to this definition">#</a></dt>
+<dd><p>Write a list of variable</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaml.common.abstract_aggregator.ScalarAggregator.set_and_wait">
+<em class="property"><span class="k"><span class="pre">abstractmethod</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">set_and_wait</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span><span class="p"><span class="pre">[</span></span><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">dtype</span><span class="p"><span class="pre">[</span></span><span class="pre">float64</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/common/abstract_aggregator.html#ScalarAggregator.set_and_wait"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.common.abstract_aggregator.ScalarAggregator.set_and_wait" title="Link to this definition">#</a></dt>
+<dd><p>Write a list of variable and wait that setpoint are reached</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaml.common.abstract_aggregator.ScalarAggregator.unit">
+<em class="property"><span class="k"><span class="pre">abstractmethod</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">unit</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../_modules/pyaml/common/abstract_aggregator.html#ScalarAggregator.unit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.common.abstract_aggregator.ScalarAggregator.unit" title="Link to this definition">#</a></dt>
+<dd><p>Return the variables unit</p>
+</dd></dl>
+
+</dd></dl>
+
+<p id="module-pyaml.common.constants">PyAML global constants</p>
+<dl class="py class" id="module-pyaml.common.element">
+<dt class="sig sig-object py" id="pyaml.common.element.Element">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyaml.common.element.</span></span><span class="sig-name descname"><span class="pre">Element</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/common/element.html#Element"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.common.element.Element" title="Link to this definition">#</a></dt>
+<dd><p>Class providing access to one element of a physical or simulated lattice</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyaml.common.element.Element.name">
+<span class="sig-name descname"><span class="pre">name</span></span><a class="headerlink" href="#pyaml.common.element.Element.name" title="Link to this definition">#</a></dt>
+<dd><p>str
+The unique name identifying the element in the configuration file</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaml.common.element.Element.check_peer">
+<span class="sig-name descname"><span class="pre">check_peer</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/common/element.html#Element.check_peer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.common.element.Element.check_peer" title="Link to this definition">#</a></dt>
+<dd><p>Throws an exception if the element is not attacched
+to a simulator or to a control system</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaml.common.element.Element.get_lattice_names">
+<span class="sig-name descname"><span class="pre">get_lattice_names</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../_modules/pyaml/common/element.html#Element.get_lattice_names"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.common.element.Element.get_lattice_names" title="Link to this definition">#</a></dt>
+<dd><p>Returns the name of associated lattice element(s)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaml.common.element.Element.get_name">
+<span class="sig-name descname"><span class="pre">get_name</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../_modules/pyaml/common/element.html#Element.get_name"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.common.element.Element.get_name" title="Link to this definition">#</a></dt>
+<dd><p>Returns the name of the element</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaml.common.element.Element.get_peer">
+<span class="sig-name descname"><span class="pre">get_peer</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../_modules/pyaml/common/element.html#Element.get_peer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.common.element.Element.get_peer" title="Link to this definition">#</a></dt>
+<dd><p>Returns a string representation of peer simulator or control system</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaml.common.element.Element.post_init">
+<span class="sig-name descname"><span class="pre">post_init</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/common/element.html#Element.post_init"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.common.element.Element.post_init" title="Link to this definition">#</a></dt>
+<dd><p>Method triggered after all initialisations are done</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaml.common.element.Element.set_energy">
+<span class="sig-name descname"><span class="pre">set_energy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">E</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/common/element.html#Element.set_energy"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.common.element.Element.set_energy" title="Link to this definition">#</a></dt>
+<dd><p>Set the instrument energy on this element</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="pyaml.common.element.ElementConfigModel">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyaml.common.element.</span></span><span class="sig-name descname"><span class="pre">ElementConfigModel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lattice_names</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/common/element.html#ElementConfigModel"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.common.element.ElementConfigModel" title="Link to this definition">#</a></dt>
+<dd><p>Base class for element configuration.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> (<em>str</em>) -- The name of the PyAML element.</p></li>
+<li><p><strong>lattice_names</strong> (<em>str</em><em> | </em><em>None</em>) -- The name(s) of the associated element(s) in the lattice. By default,
+the PyAML element name is used. lattice_name accept the following
+syntax:
+- list(name,[name]) : Element names
+- [name]&#64;idx[,idx] : Element indices in the subset formed by name.
+- [name]#start_idx..end_idx : Element range in the subset formed by name.
+In the above syntax, if the name is not specficied, the whole set
+of lattice element is used for indexing.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyaml.common.element.ElementConfigModel.model_config">
+<span class="sig-name descname"><span class="pre">model_config</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">ConfigDict</span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'arbitrary_types_allowed':</span> <span class="pre">True,</span> <span class="pre">'extra':</span> <span class="pre">'forbid'}</span></em><a class="headerlink" href="#pyaml.common.element.ElementConfigModel.model_config" title="Link to this definition">#</a></dt>
+<dd><p>Configuration for the model, should be a dictionary conforming to [<cite>ConfigDict</cite>][pydantic.config.ConfigDict].</p>
+</dd></dl>
+
+</dd></dl>
+
+<p id="module-pyaml.common.element_holder">Module handling element references for simulators and control system</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="pyaml.common.element_holder.ElementHolder">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyaml.common.element_holder.</span></span><span class="sig-name descname"><span class="pre">ElementHolder</span></span><a class="reference internal" href="../_modules/pyaml/common/element_holder.html#ElementHolder"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.common.element_holder.ElementHolder" title="Link to this definition">#</a></dt>
+<dd><p>Class that store references of objects used from both
+simulators and control system</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaml.common.element_holder.ElementHolder.post_init">
+<span class="sig-name descname"><span class="pre">post_init</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/common/element_holder.html#ElementHolder.post_init"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.common.element_holder.ElementHolder.post_init" title="Link to this definition">#</a></dt>
+<dd><p>Method triggered after all initialisations are done</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py exception" id="module-pyaml.common.exception">
+<dt class="sig sig-object py" id="pyaml.common.exception.PyAMLConfigException">
+<em class="property"><span class="k"><span class="pre">exception</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyaml.common.exception.</span></span><span class="sig-name descname"><span class="pre">PyAMLConfigException</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">message</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/common/exception.html#PyAMLConfigException"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.common.exception.PyAMLConfigException" title="Link to this definition">#</a></dt>
+<dd><p>Exception raised for PyAML configuration error scenarios.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">message</span> <span class="pre">--</span> <span class="pre">explanation</span> <span class="pre">of</span> <span class="pre">the</span> <span class="pre">error</span></span></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="pyaml.common.exception.PyAMLException">
+<em class="property"><span class="k"><span class="pre">exception</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyaml.common.exception.</span></span><span class="sig-name descname"><span class="pre">PyAMLException</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">message</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/common/exception.html#PyAMLException"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.common.exception.PyAMLException" title="Link to this definition">#</a></dt>
+<dd><p>Exception raised for PyAML error scenarios.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">message</span> <span class="pre">--</span> <span class="pre">explanation</span> <span class="pre">of</span> <span class="pre">the</span> <span class="pre">error</span></span></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="bpm.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">BPMS</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="configuration.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Configuration</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.common.abstract.RWMapper"><code class="docutils literal notranslate"><span class="pre">RWMapper</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.common.abstract.RWMapper.get"><code class="docutils literal notranslate"><span class="pre">RWMapper.get()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.common.abstract.RWMapper.set"><code class="docutils literal notranslate"><span class="pre">RWMapper.set()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.common.abstract.RWMapper.set_and_wait"><code class="docutils literal notranslate"><span class="pre">RWMapper.set_and_wait()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.common.abstract.RWMapper.unit"><code class="docutils literal notranslate"><span class="pre">RWMapper.unit()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.common.abstract.ReadFloatArray"><code class="docutils literal notranslate"><span class="pre">ReadFloatArray</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.common.abstract.ReadFloatArray.get"><code class="docutils literal notranslate"><span class="pre">ReadFloatArray.get()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.common.abstract.ReadFloatArray.unit"><code class="docutils literal notranslate"><span class="pre">ReadFloatArray.unit()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.common.abstract.ReadFloatScalar"><code class="docutils literal notranslate"><span class="pre">ReadFloatScalar</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.common.abstract.ReadFloatScalar.get"><code class="docutils literal notranslate"><span class="pre">ReadFloatScalar.get()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.common.abstract.ReadFloatScalar.unit"><code class="docutils literal notranslate"><span class="pre">ReadFloatScalar.unit()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.common.abstract.ReadWriteFloatArray"><code class="docutils literal notranslate"><span class="pre">ReadWriteFloatArray</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.common.abstract.ReadWriteFloatArray.set"><code class="docutils literal notranslate"><span class="pre">ReadWriteFloatArray.set()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.common.abstract.ReadWriteFloatArray.set_and_wait"><code class="docutils literal notranslate"><span class="pre">ReadWriteFloatArray.set_and_wait()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.common.abstract.ReadWriteFloatScalar"><code class="docutils literal notranslate"><span class="pre">ReadWriteFloatScalar</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.common.abstract.ReadWriteFloatScalar.set"><code class="docutils literal notranslate"><span class="pre">ReadWriteFloatScalar.set()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.common.abstract.ReadWriteFloatScalar.set_and_wait"><code class="docutils literal notranslate"><span class="pre">ReadWriteFloatScalar.set_and_wait()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.common.abstract_aggregator.ScalarAggregator"><code class="docutils literal notranslate"><span class="pre">ScalarAggregator</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.common.abstract_aggregator.ScalarAggregator.get"><code class="docutils literal notranslate"><span class="pre">ScalarAggregator.get()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.common.abstract_aggregator.ScalarAggregator.readback"><code class="docutils literal notranslate"><span class="pre">ScalarAggregator.readback()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.common.abstract_aggregator.ScalarAggregator.set"><code class="docutils literal notranslate"><span class="pre">ScalarAggregator.set()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.common.abstract_aggregator.ScalarAggregator.set_and_wait"><code class="docutils literal notranslate"><span class="pre">ScalarAggregator.set_and_wait()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.common.abstract_aggregator.ScalarAggregator.unit"><code class="docutils literal notranslate"><span class="pre">ScalarAggregator.unit()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.common.element.Element"><code class="docutils literal notranslate"><span class="pre">Element</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.common.element.Element.name"><code class="docutils literal notranslate"><span class="pre">Element.name</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.common.element.Element.check_peer"><code class="docutils literal notranslate"><span class="pre">Element.check_peer()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.common.element.Element.get_lattice_names"><code class="docutils literal notranslate"><span class="pre">Element.get_lattice_names()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.common.element.Element.get_name"><code class="docutils literal notranslate"><span class="pre">Element.get_name()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.common.element.Element.get_peer"><code class="docutils literal notranslate"><span class="pre">Element.get_peer()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.common.element.Element.post_init"><code class="docutils literal notranslate"><span class="pre">Element.post_init()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.common.element.Element.set_energy"><code class="docutils literal notranslate"><span class="pre">Element.set_energy()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.common.element.ElementConfigModel"><code class="docutils literal notranslate"><span class="pre">ElementConfigModel</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.common.element.ElementConfigModel.model_config"><code class="docutils literal notranslate"><span class="pre">ElementConfigModel.model_config</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.common.element_holder.ElementHolder"><code class="docutils literal notranslate"><span class="pre">ElementHolder</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.common.element_holder.ElementHolder.post_init"><code class="docutils literal notranslate"><span class="pre">ElementHolder.post_init()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.common.exception.PyAMLConfigException"><code class="docutils literal notranslate"><span class="pre">PyAMLConfigException</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.common.exception.PyAMLException"><code class="docutils literal notranslate"><span class="pre">PyAMLException</span></code></a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="copyright">
+    
+      © Copyright 2024, pyAML Collaboration.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.2.3.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+<p class="theme-version">
+  <!-- # L10n: Setting the PST URL as an argument as this does not need to be localized -->
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.16.1.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>
