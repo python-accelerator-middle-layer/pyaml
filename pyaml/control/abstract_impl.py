@@ -160,6 +160,9 @@ class RWHardwareScalar(abstract.ReadWriteFloatScalar):
     def unit(self) -> str:
         return self.__model.get_hardware_units()[0]
 
+    def set_magnet_rigidity(self, brho: np.double):
+        self.__model.set_magnet_rigidity(brho)
+
 
 # ------------------------------------------------------------------------------
 
@@ -190,6 +193,9 @@ class RWStrengthScalar(abstract.ReadWriteFloatScalar):
     # Gets the unit of the value
     def unit(self) -> str:
         return self.__model.get_strength_units()[0]
+
+    def set_magnet_rigidity(self, brho: np.double):
+        self.__model.set_magnet_rigidity(brho)
 
 
 # ------------------------------------------------------------------------------

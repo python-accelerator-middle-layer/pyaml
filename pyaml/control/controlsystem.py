@@ -24,6 +24,7 @@ from ..control.abstract_impl import (
 from ..diagnostics.tune_monitor import BetatronTuneMonitor
 from ..magnet.cfm_magnet import CombinedFunctionMagnet
 from ..magnet.magnet import Magnet
+from ..magnet.serialized_magnet import SerializedMagnets
 from ..rf.rf_plant import RFPlant, RWTotalVoltage
 from ..rf.rf_transmitter import RFTransmitter
 from ..tuning_tools.orbit import Orbit
@@ -74,7 +75,7 @@ class ControlSystem(ElementHolder, metaclass=ABCMeta):
             agg.add_magnet(m, devs)
         return agg
 
-    def create_magnet_harddware_aggregator(
+    def create_magnet_hardware_aggregator(
         self, magnets: list[Magnet]
     ) -> ScalarAggregator:
         """When working in hardware space, 1 single power
@@ -144,6 +145,29 @@ class ControlSystem(ElementHolder, metaclass=ABCMeta):
                 # each of its function for this control system
                 ms = e.attach(self, strengths, currents)
                 self.add_cfm_magnet(ms[0])
+                for m in ms[1:]:
+                    self.add_magnet(m)
+
+            elif isinstance(e, SerializedMagnets):
+                devs = self.attach(e.model.get_devices())
+                currents = []
+                strengths = []
+                # Create unique refs the series and each of its function for this control system
+                for i in range(e.get_nb_magnets()):
+                    current = (
+                        RWHardwareScalar(e.model.get_sub_model(i), devs[i])
+                        if e.model.has_hardware()
+                        else None
+                    )
+                    strength = (
+                        RWStrengthScalar(e.model.get_sub_model(i), devs[i])
+                        if e.model.has_physics()
+                        else None
+                    )
+                    currents.append(current)
+                    strengths.append(strength)
+                ms = e.attach(self, strengths, currents)
+                self.add_serialized_magnet(ms[0])
                 for m in ms[1:]:
                     self.add_magnet(m)
 

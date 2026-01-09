@@ -111,7 +111,7 @@ class MagnetArray(ElementArray):
 
         if use_aggregator and len(magnets) > 0:
             aggs = self.get_peer().create_magnet_strength_aggregator(magnets)
-            aggh = self.get_peer().create_magnet_harddware_aggregator(magnets)
+            aggh = self.get_peer().create_magnet_hardware_aggregator(magnets)
             self.__rwstrengths.set_aggregator(aggs)
             self.__rwhardwares.set_aggregator(aggh)
 

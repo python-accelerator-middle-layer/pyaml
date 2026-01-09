@@ -51,6 +51,9 @@ class RWHardwareScalar(abstract.ReadWriteFloatScalar):
     def unit(self) -> str:
         return self.__model.get_hardware_units()[0]
 
+    def get_model(self) -> MagnetModel:
+        return self.__model
+
 
 # ------------------------------------------------------------------------------
 
@@ -92,8 +95,74 @@ class RWStrengthScalar(abstract.ReadWriteFloatScalar):
     def unit(self) -> str:
         return self.__model.get_strength_units()[0]
 
+    # ------------------------------------------------------------------------------
+    def get_model(self) -> MagnetModel:
+        return self.__model
+
 
 # ------------------------------------------------------------------------------
+
+
+class RWSerializedHardware(abstract.ReadWriteFloatScalar):
+    def __init__(self, elements: list[RWHardwareScalar], element_index: int):
+        self.__elements = elements
+        self.__element_index = element_index
+
+    # Gets the value
+    def get(self) -> float:
+        return self.__elements[self.__element_index].get()
+
+    # Sets the value
+    def set(self, value: float):
+        [element.set(value) for element in self.__elements]
+
+    # Sets the value and wait that the read value reach the setpoint
+    def set_and_wait(self, value: float):
+        raise NotImplementedError("Not implemented yet.")
+
+    # Gets the unit of the value
+    def unit(self) -> str:
+        return self.__elements[self.__element_index].unit()
+
+    def set_magnet_rigidity(self, brho: np.double):
+        [element.get_model().set_magnet_rigidity(brho) for element in self.__elements]
+
+
+class RWSerializedStrength(abstract.ReadWriteFloatScalar):
+    def __init__(
+        self,
+        element: RWStrengthScalar,
+        elements_hardware: list[RWHardwareScalar],
+        element_index: int,
+    ):
+        self.__element = element
+        self.__elements_hardware = elements_hardware
+        self.__element_index = element_index
+
+    # Gets the value
+    def get(self) -> float:
+        return self.__element.get()
+
+    # Sets the value
+    def set(self, value: float):
+        self.__element.set(value)
+        hardware_value = self.__elements_hardware[self.__element_index].get()
+        [
+            element.set(hardware_value)
+            for index, element in enumerate(self.__elements_hardware)
+            if index != self.__element_index
+        ]
+
+    # Sets the value and wait that the read value reach the setpoint
+    def set_and_wait(self, value: float):
+        raise NotImplementedError("Not implemented yet.")
+
+    # Gets the unit of the value
+    def unit(self) -> str:
+        return self.__element.unit()
+
+    def set_magnet_rigidity(self, brho: np.double):
+        pass
 
 
 class RWHardwareArray(abstract.ReadWriteFloatArray):
