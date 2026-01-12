@@ -1,12 +1,11 @@
 API
 ===
 
-.. .. autosummary::
-..    :toctree: generated
-..    :recursive:
+.. autosummary::
+   :toctree: generated
+   :recursive:
 
-..    pyaml
-
+   pyaml
 
 Detailed API documentation for pyAML.
 
@@ -15,4 +14,4 @@ Detailed API documentation for pyAML.
    :hidden:
    :maxdepth: 2
 
-   modules/*
+   generated/*
