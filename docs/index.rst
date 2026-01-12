@@ -28,21 +28,31 @@ Documentation
 -------------
 
 .. toctree::
-    :maxdepth: 1
-    :caption: How to:
-    :glob:
-
-    Load a configuration file <notebooks/load_configuration>
-    Switch design live <notebooks/live_design>
-    Select a control system <notebooks/control_system>
-    Arrays <notebooks/arrays>
-
-.. toctree::
-   :caption: Modules:
    :maxdepth: 1
-   :glob:
 
-   modules/*
+   How to/Load a configuration file <notebooks/load_configuration>
+   How to/Switch design live <notebooks/live_design>
+   How to/Select a control system <notebooks/control_system>
+   How to/Arrays <notebooks/arrays>
+
+   api
+
+.. .. toctree::
+..     :maxdepth: 1
+..     :caption: How to:
+..     :glob:
+
+..     Load a configuration file <notebooks/load_configuration>
+..     Switch design live <notebooks/live_design>
+..     Select a control system <notebooks/control_system>
+..     Arrays <notebooks/arrays>
+
+.. .. toctree::
+..    :caption: Modules:
+..    :maxdepth: 1
+..    :glob:
+
+..    modules/*
 
 
 Collaboration community
