@@ -1,16 +1,21 @@
 from abc import ABCMeta, abstractmethod
 
 from ..bpm.bpm import BPM
+from ..bpm.bpm_array_model import BPMArrayModel
+from ..bpm.bpm_model import BPMModel
 from ..common.abstract import RWMapper
 from ..common.abstract_aggregator import ScalarAggregator
 from ..common.element import Element
 from ..common.element_holder import ElementHolder
+from ..common.exception import PyAMLException
 from ..configuration.factory import Factory
 from ..control.abstract_impl import (
+    CSBPMArrayMapper,
     CSScalarAggregator,
     CSStrengthScalarAggregator,
     RBetatronTuneArray,
     RBpmArray,
+    RBpmsArray,
     RWBpmOffsetArray,
     RWBpmTiltScalar,
     RWHardwareArray,
@@ -42,6 +47,12 @@ class ControlSystem(ElementHolder, metaclass=ABCMeta):
 
     @abstractmethod
     def attach(self, dev: list[DeviceAccess]) -> list[DeviceAccess]:
+        """Return new instances of DeviceAccess objects
+        coming from configuration attached to this CS"""
+        pass
+
+    @abstractmethod
+    def attach_array(self, dev: list[DeviceAccess]) -> list[DeviceAccess]:
         """Return new instances of DeviceAccess objects
         coming from configuration attached to this CS"""
         pass
@@ -90,15 +101,44 @@ class ControlSystem(ElementHolder, metaclass=ABCMeta):
         return agg
 
     def create_bpm_aggregators(self, bpms: list[BPM]) -> list[ScalarAggregator]:
-        agg = self.create_scalar_aggregator()
-        aggh = self.create_scalar_aggregator()
-        aggv = self.create_scalar_aggregator()
-        for b in bpms:
-            devs = self.attach(b.model.get_pos_devices())
-            agg.add_devices(devs)
-            aggh.add_devices(devs[0])
-            aggv.add_devices(devs[1])
-        return [agg, aggh, aggv]
+        if len(bpms) == 0:
+            return None
+
+        if any([isinstance(b.model, BPMModel) for b in bpms]):
+            # simple bpm aggregator
+            agg = self.create_scalar_aggregator()
+            aggh = self.create_scalar_aggregator()
+            aggv = self.create_scalar_aggregator()
+            for b in bpms:
+                devs = self.attach(b.model.get_pos_devices())
+                agg.add_devices(devs)
+                aggh.add_devices(devs[0])
+                aggv.add_devices(devs[1])
+            return [agg, aggh, aggv]
+        elif any([isinstance(b.model, BPMArrayModel) for b in bpms]):
+            # Mapper to a native CS aggregator
+            dev = self.attach_array([bpms[0].model.get_pos_device()])[0]
+            if any(
+                [self.attach_array([b.model.get_pos_device()])[0] != dev for b in bpms]
+            ):
+                raise PyAMLException("BPMArrayModel must share the same CS device")
+            # CS BPM aggregator
+            hv_idx = []
+            h_idx = []
+            v_idx = []
+            for b in bpms:
+                hv_idx.append(b.model.get_h_index())
+                hv_idx.append(b.model.get_v_index())
+                h_idx.append(b.model.get_h_index())
+                v_idx.append(b.model.get_v_index())
+            agg = CSBPMArrayMapper(dev, hv_idx)
+            aggh = CSBPMArrayMapper(dev, h_idx)
+            aggv = CSBPMArrayMapper(dev, v_idx)
+            return [agg, aggh, aggv]
+        else:
+            raise PyAMLException(
+                "BPMArrayModel and BPMModel cannot be mixed in the same array"
+            )
 
     def set_energy(self, E: float):
         """
@@ -152,7 +192,8 @@ class ControlSystem(ElementHolder, metaclass=ABCMeta):
                 devs = self.attach(e.model.get_devices())
                 currents = []
                 strengths = []
-                # Create unique refs the series and each of its function for this control system
+                # Create unique refs the series and each of its function for this
+                # control system
                 for i in range(e.get_nb_magnets()):
                     current = (
                         RWHardwareScalar(e.model.get_sub_model(i), devs[i])
@@ -172,14 +213,21 @@ class ControlSystem(ElementHolder, metaclass=ABCMeta):
                     self.add_magnet(m)
 
             elif isinstance(e, BPM):
-                tiltDev = self.attach([e.model.get_tilt_device()])[0]
-                offsetsDevs = self.attach(e.model.get_offset_devices())
-                posDevs = self.attach(e.model.get_pos_devices())
-                tilt = RWBpmTiltScalar(e.model, tiltDev)
-                offsets = RWBpmOffsetArray(e.model, offsetsDevs)
-                positions = RBpmArray(e.model, posDevs)
-                e = e.attach(self, positions, offsets, tilt)
-                self.add_bpm(e)
+                if isinstance(e.model, BPMArrayModel):
+                    # TODO: Handle tilt and offset
+                    posDev = self.attach_array([e.model.get_pos_device()])[0]
+                    positions = RBpmsArray(e.model, posDev)
+                    e = e.attach(self, positions, None, None)
+                    self.add_bpm(e)
+                else:
+                    tiltDev = self.attach([e.model.get_tilt_device()])[0]
+                    offsetsDevs = self.attach(e.model.get_offset_devices())
+                    posDevs = self.attach(e.model.get_pos_devices())
+                    tilt = RWBpmTiltScalar(e.model, tiltDev)
+                    offsets = RWBpmOffsetArray(e.model, offsetsDevs)
+                    positions = RBpmArray(e.model, posDevs)
+                    e = e.attach(self, positions, offsets, tilt)
+                    self.add_bpm(e)
 
             elif isinstance(e, RFPlant):
                 attachedTrans: list[RFTransmitter] = []

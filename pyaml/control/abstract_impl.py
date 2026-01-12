@@ -2,6 +2,7 @@ import numpy as np
 from numpy import double
 from numpy.typing import NDArray
 
+from ..bpm.bpm_array_model import BPMArrayModel
 from ..bpm.bpm_model import BPMModel
 from ..common import abstract
 from ..common.abstract_aggregator import ScalarAggregator
@@ -138,6 +139,32 @@ class CSStrengthScalarAggregator(CSScalarAggregator):
 # ------------------------------------------------------------------------------
 
 
+class CSBPMArrayMapper(CSScalarAggregator):
+    """
+    Wrapper to a native CS aggregator for BPM
+    """
+
+    def __init__(self, dev: DeviceAccess, _indices: list[int]):
+        self._indices = _indices
+        self._dev = dev
+
+    def set(self, value: NDArray[np.float64]):
+        raise Exception("BPM are not writable")
+
+    def get(self) -> NDArray[np.float64]:
+        allValues: np.array = self._dev.get()
+        return allValues[self._indices]
+
+    def readback(self) -> np.array:
+        return self.get()
+
+    def unit(self) -> str:
+        return self._dev.unit()
+
+
+# ------------------------------------------------------------------------------
+
+
 class RWHardwareScalar(abstract.ReadWriteFloatScalar):
     """
     Class providing read write access to a magnet
@@ -267,7 +294,7 @@ class RWStrengthArray(abstract.ReadWriteFloatArray):
 
 class RBpmArray(abstract.ReadFloatArray):
     """
-    Class providing read access to a BPM array of a control system
+    Class providing read access to a BPM position (x,y) of a control system
     """
 
     def __init__(self, model: BPMModel, devs: list[DeviceAccess]):
@@ -281,6 +308,30 @@ class RBpmArray(abstract.ReadFloatArray):
     # Gets the unit of the value Assume that x and y has the same unit
     def unit(self) -> str:
         return self.__model.get_pos_devices()[0].unit()
+
+
+# ------------------------------------------------------------------------------
+
+
+class RBpmsArray(abstract.ReadFloatArray):
+    """
+    Class providing read access to a BPM positions array of a control system
+    """
+
+    def __init__(self, model: BPMArrayModel, dev: DeviceAccess):
+        self._model = model
+        self._h_idx = model.get_h_index()
+        self._v_idx = model.get_v_index()
+        self.__dev = dev
+
+    # Gets the values
+    def get(self) -> np.array:
+        allPos = self.__dev.get()
+        return np.array([allPos[self._h_idx], allPos[self._v_idx]])
+
+    # Gets the unit of the value Assume that x and y has the same unit
+    def unit(self) -> str:
+        return self.__model.get_pos_device().unit()
 
 
 # ------------------------------------------------------------------------------

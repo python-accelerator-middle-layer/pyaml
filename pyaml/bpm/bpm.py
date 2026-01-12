@@ -1,3 +1,4 @@
+from ..bpm.bpm_array_model import BPMArrayModel
 from ..bpm.bpm_model import BPMModel
 from ..common.element import Element, ElementConfigModel
 from ..common.exception import PyAMLException
@@ -12,7 +13,7 @@ PYAMLCLASS = "BPM"
 
 
 class ConfigModel(ElementConfigModel):
-    model: BPMModel | None = None
+    model: BPMModel | BPMArrayModel | None = None
     """Object in charge of BPM modeling"""
 
 
@@ -29,10 +30,6 @@ class BPM(Element):
         ----------
         name : str
             Element name
-        hardware : DeviceAccess
-            Direct access to a hardware (bypass the BPM model)
-        model : BPMModel
-            BPM model in charge of computing beam position
         """
 
         super().__init__(cfg.name)
@@ -44,7 +41,7 @@ class BPM(Element):
         self.__tilt = None
 
     @property
-    def model(self) -> BPMModel:
+    def model(self) -> BPMModel | BPMArrayModel:
         return self.__model
 
     @property
