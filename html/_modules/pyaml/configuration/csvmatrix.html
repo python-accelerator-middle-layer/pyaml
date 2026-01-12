@@ -535,10 +535,18 @@
 <div class="viewcode-block" id="ConfigModel">
 <a class="viewcode-back" href="../../../modules/configuration.html#pyaml.configuration.csvmatrix.ConfigModel">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">ConfigModel</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Configuration model for CSV matrix</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    file : str</span>
+<span class="sd">        CSV file that contains the matrix</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
     <span class="n">model_config</span> <span class="o">=</span> <span class="n">ConfigDict</span><span class="p">(</span><span class="n">arbitrary_types_allowed</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">extra</span><span class="o">=</span><span class="s2">&quot;forbid&quot;</span><span class="p">)</span>
 
-    <span class="n">file</span><span class="p">:</span> <span class="nb">str</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;CSV file that contains the matrix&quot;&quot;&quot;</span></div>
+    <span class="n">file</span><span class="p">:</span> <span class="nb">str</span></div>
 
 
 

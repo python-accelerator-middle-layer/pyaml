@@ -549,12 +549,12 @@ Curve is expected to be monotonic (non-decreasing or non-increasing).</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="pyaml.configuration.csvcurve.ConfigModel">
 <em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyaml.configuration.csvcurve.</span></span><span class="sig-name descname"><span class="pre">ConfigModel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">file</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/configuration/csvcurve.html#ConfigModel"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.configuration.csvcurve.ConfigModel" title="Link to this definition">#</a></dt>
-<dd><dl class="py attribute">
-<dt class="sig sig-object py" id="pyaml.configuration.csvcurve.ConfigModel.file">
-<span class="sig-name descname"><span class="pre">file</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#pyaml.configuration.csvcurve.ConfigModel.file" title="Link to this definition">#</a></dt>
-<dd><p>CSV file that contains the curve (n rows,2 columns)</p>
-</dd></dl>
-
+<dd><p>Configuration model for CSV curve</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>file</strong> (<em>str</em>) -- CSV file that contains the curve (n rows, 2 columns)</p>
+</dd>
+</dl>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="pyaml.configuration.csvcurve.ConfigModel.model_config">
 <span class="sig-name descname"><span class="pre">model_config</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">ConfigDict</span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'arbitrary_types_allowed':</span> <span class="pre">True,</span> <span class="pre">'extra':</span> <span class="pre">'forbid'}</span></em><a class="headerlink" href="#pyaml.configuration.csvcurve.ConfigModel.model_config" title="Link to this definition">#</a></dt>
@@ -578,12 +578,12 @@ Curve is expected to be monotonic (non-decreasing or non-increasing).</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="pyaml.configuration.csvmatrix.ConfigModel">
 <em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyaml.configuration.csvmatrix.</span></span><span class="sig-name descname"><span class="pre">ConfigModel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">file</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/configuration/csvmatrix.html#ConfigModel"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.configuration.csvmatrix.ConfigModel" title="Link to this definition">#</a></dt>
-<dd><dl class="py attribute">
-<dt class="sig sig-object py" id="pyaml.configuration.csvmatrix.ConfigModel.file">
-<span class="sig-name descname"><span class="pre">file</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#pyaml.configuration.csvmatrix.ConfigModel.file" title="Link to this definition">#</a></dt>
-<dd><p>CSV file that contains the matrix</p>
-</dd></dl>
-
+<dd><p>Configuration model for CSV matrix</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>file</strong> (<em>str</em>) -- CSV file that contains the matrix</p>
+</dd>
+</dl>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="pyaml.configuration.csvmatrix.ConfigModel.model_config">
 <span class="sig-name descname"><span class="pre">model_config</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">ConfigDict</span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'arbitrary_types_allowed':</span> <span class="pre">True,</span> <span class="pre">'extra':</span> <span class="pre">'forbid'}</span></em><a class="headerlink" href="#pyaml.configuration.csvmatrix.ConfigModel.model_config" title="Link to this definition">#</a></dt>
@@ -748,7 +748,6 @@ path relative to root folder otherwise.</p>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.configuration.csvcurve.ConfigModel"><code class="docutils literal notranslate"><span class="pre">ConfigModel</span></code></a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.configuration.csvcurve.ConfigModel.file"><code class="docutils literal notranslate"><span class="pre">ConfigModel.file</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.configuration.csvcurve.ConfigModel.model_config"><code class="docutils literal notranslate"><span class="pre">ConfigModel.model_config</span></code></a></li>
 </ul>
 </li>
@@ -757,7 +756,6 @@ path relative to root folder otherwise.</p>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.configuration.csvmatrix.ConfigModel"><code class="docutils literal notranslate"><span class="pre">ConfigModel</span></code></a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.configuration.csvmatrix.ConfigModel.file"><code class="docutils literal notranslate"><span class="pre">ConfigModel.file</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.configuration.csvmatrix.ConfigModel.model_config"><code class="docutils literal notranslate"><span class="pre">ConfigModel.model_config</span></code></a></li>
 </ul>
 </li>

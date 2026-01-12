@@ -547,12 +547,22 @@
 <div class="viewcode-block" id="ConfigModel">
 <a class="viewcode-back" href="../../../modules/tuning_tools.html#pyaml.tuning_tools.tune.ConfigModel">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">ConfigModel</span><span class="p">(</span><span class="n">ElementConfigModel</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Configuration model for Tune</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    quad_array : str</span>
+<span class="sd">        Array name of quad used to adjust the tune</span>
+<span class="sd">    betatron_tune : str</span>
+<span class="sd">        Name of the diagnostic pyaml device for measuring the tune</span>
+<span class="sd">    delta : float</span>
+<span class="sd">        Delta strength used to get the response matrix</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
     <span class="n">quad_array</span><span class="p">:</span> <span class="nb">str</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Array name of quad used to adjust the tune&quot;&quot;&quot;</span>
     <span class="n">betatron_tune</span><span class="p">:</span> <span class="nb">str</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Name of the diagnostic pyaml device for measuring the tune&quot;&quot;&quot;</span>
-    <span class="n">delta</span><span class="p">:</span> <span class="nb">float</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Delta strength used to get the response matrix&quot;&quot;&quot;</span></div>
+    <span class="n">delta</span><span class="p">:</span> <span class="nb">float</span></div>
 
 
 
@@ -573,7 +583,7 @@
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        callback: Callable</span>
+<span class="sd">        callback : Callable, optional</span>
 <span class="sd">            tune_callback(step:int,action:int,m:Magnet,dtune:np.array)</span>
 <span class="sd">            Callback executed after each strength setting. The magnet and step are</span>
 <span class="sd">            passed as input arguement of the callback.</span>
@@ -635,7 +645,7 @@
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        filename: str</span>
+<span class="sd">        filename : str</span>
 <span class="sd">            File name to load</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
@@ -657,7 +667,7 @@
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        dtune: np.array</span>
+<span class="sd">        dtune : np.array</span>
 <span class="sd">            Delta tune</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__respmatrix</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
@@ -721,11 +731,11 @@
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        tune: np.array</span>
+<span class="sd">        tune : np.array</span>
 <span class="sd">            Tune setpoint</span>
-<span class="sd">        iter_nb: int</span>
+<span class="sd">        iter_nb : int</span>
 <span class="sd">            Number of iteration</span>
-<span class="sd">        wait_time: float</span>
+<span class="sd">        wait_time : float</span>
 <span class="sd">            Time to wait in second between 2 iterations</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__setpoint</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">tune</span><span class="p">)</span>

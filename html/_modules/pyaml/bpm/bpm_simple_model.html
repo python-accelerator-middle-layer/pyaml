@@ -535,12 +535,21 @@
 <div class="viewcode-block" id="ConfigModel">
 <a class="viewcode-back" href="../../../modules/bpm.html#pyaml.bpm.bpm_simple_model.ConfigModel">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">ConfigModel</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Configuration model for BPM simple model</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    x_pos : DeviceAccess, optional</span>
+<span class="sd">        Horizontal position device</span>
+<span class="sd">    y_pos : DeviceAccess, optional</span>
+<span class="sd">        Vertical position device</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
     <span class="n">model_config</span> <span class="o">=</span> <span class="n">ConfigDict</span><span class="p">(</span><span class="n">arbitrary_types_allowed</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">extra</span><span class="o">=</span><span class="s2">&quot;forbid&quot;</span><span class="p">)</span>
 
     <span class="n">x_pos</span><span class="p">:</span> <span class="n">DeviceAccess</span> <span class="o">|</span> <span class="kc">None</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Horizontal position&quot;&quot;&quot;</span>
-    <span class="n">y_pos</span><span class="p">:</span> <span class="n">DeviceAccess</span> <span class="o">|</span> <span class="kc">None</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Vertical position&quot;&quot;&quot;</span></div>
+    <span class="n">y_pos</span><span class="p">:</span> <span class="n">DeviceAccess</span> <span class="o">|</span> <span class="kc">None</span></div>
 
 
 
