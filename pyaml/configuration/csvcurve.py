@@ -12,10 +12,18 @@ PYAMLCLASS = "CSVCurve"
 
 
 class ConfigModel(BaseModel):
+    """
+    Configuration model for CSV curve
+
+    Parameters
+    ----------
+    file : str
+        CSV file that contains the curve (n rows, 2 columns)
+    """
+
     model_config = ConfigDict(arbitrary_types_allowed=True, extra="forbid")
 
     file: str
-    """CSV file that contains the curve (n rows,2 columns)"""
 
 
 class CSVCurve(Curve):

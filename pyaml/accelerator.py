@@ -19,26 +19,41 @@ PYAMLCLASS = "Accelerator"
 
 
 class ConfigModel(BaseModel):
+    """
+    Configuration model for Accelerator
+
+    Parameters
+    ----------
+    facility : str
+        Facility name
+    machine : str
+        Accelerator name
+    energy : float
+        Accelerator nominal energy. For ramped machine,
+        this value can be dynamically set
+    controls : list[ControlSystem], optional
+        List of control system used. An accelerator
+        can access several control systems
+    simulators : list[Simulator], optional
+        Simulator list
+    data_folder : str
+        Data folder
+    arrays : list[ArrayConfig], optional
+        Element family
+    devices : list[Element]
+        Element list
+    """
+
     model_config = ConfigDict(arbitrary_types_allowed=True, extra="forbid")
 
     facility: str
-    "Facility name"
     machine: str
-    """Accelerator name"""
     energy: float
-    """Accelerator nominal energy, for ramped machine,
-       this value can be dynamically set"""
     controls: list[ControlSystem] = None
-    """List of control system used, an accelerator
-       can access several control systems"""
     simulators: list[Simulator] = None
-    """Simulator list"""
     data_folder: str
-    """Data folder"""
     arrays: list[ArrayConfig] = None
-    """Element family"""
     devices: list[Element]
-    """Element list"""
 
 
 class Accelerator(object):

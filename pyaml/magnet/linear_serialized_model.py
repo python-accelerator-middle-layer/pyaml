@@ -17,25 +17,36 @@ PYAMLCLASS = "LinearSerializedMagnetModel"
 
 
 class ConfigModel(BaseModel):
+    """
+    Configuration model for linear serialized magnet model
+
+    Parameters
+    ----------
+    curves : Curve or list[Curve]
+        Excitation curves, 1 curve for all or 1 curve per magnet
+    calibration_factors : float or list[float], optional
+        Correction factor applied to curves, 1 factor for all or 1 factor per magnet.
+        Default: ones
+    calibration_offsets : float or list[float], optional
+        Correction offset applied to curves, 1 offset for all or 1 offset per magnet.
+        Default: zeros
+    crosstalk : float or list[float], optional
+        Crosstalk factors. Default: 1.0
+    powerconverter : DeviceAccess
+        The hardware can be a single power supply or a list of power supplies.
+        If a list is provided, the same value will be affected to all of them
+    unit : str
+        Strength unit: rad, m-1, m-2
+    """
+
     model_config = ConfigDict(arbitrary_types_allowed=True, extra="forbid")
 
     curves: Curve | list[Curve]
-    """Excitation curves, 1 curve for all or 1 curve per magnet"""
     calibration_factors: float | list[float] = None
-    """Correction factor applied to curves, 1 factor for all or 1 factor per magnet
-       Delfault: ones"""
     calibration_offsets: float | list[float] = None
-    """Correction offset applied to curves, 1 offset for all or 1 offset per magnet
-       Delfault: zeros"""
     crosstalk: float | list[float] = 1.0
-    """Crosstalk factors"""
     powerconverter: DeviceAccess
-    """
-    The hardware can be a single power supply or a list of power supplies.
-    If a list is provided, the same value will be affected to all of them.
-    """
     unit: str
-    """Strength unit: rad, m-1, m-2"""
 
 
 def _get_length(elem) -> int:

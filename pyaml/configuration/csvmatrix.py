@@ -12,10 +12,18 @@ PYAMLCLASS = "CSVMatrix"
 
 
 class ConfigModel(BaseModel):
+    """
+    Configuration model for CSV matrix
+
+    Parameters
+    ----------
+    file : str
+        CSV file that contains the matrix
+    """
+
     model_config = ConfigDict(arbitrary_types_allowed=True, extra="forbid")
 
     file: str
-    """CSV file that contains the matrix"""
 
 
 class CSVMatrix(Matrix):

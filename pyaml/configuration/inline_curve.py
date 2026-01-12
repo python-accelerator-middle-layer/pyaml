@@ -12,10 +12,18 @@ PYAMLCLASS = "InlineCurve"
 
 
 class ConfigModel(BaseModel):
+    """
+    Configuration model for inline curve
+
+    Parameters
+    ----------
+    mat : list[list[float]]
+        Curve data (n rows, 2 columns)
+    """
+
     model_config = ConfigDict(arbitrary_types_allowed=True, extra="forbid")
 
     mat: list[list[float]]
-    """CSV file that contains the curve (n rows,2 columns)"""
 
 
 class InlineCurve(Curve):
