@@ -16,7 +16,7 @@ class ElementArray(list[Element]):
     ----------
     arrayName : str
         Array name
-    elements: list[Element]
+    elements : list[Element]
         Element list, all elements must be attached to the same instance of
         either a Simulator or a ControlSystem.
     use_aggregator : bool
