@@ -139,7 +139,7 @@ class Accelerator(object):
             no line number are reported in case of error,
             only the element name that triggered the error
             will be reported in the exception)
-        ignore_external: bool
+        ignore_external : bool
             Ignore external modules and return None for object that
             cannot be created. pydantic schema that support that an
             object is not created should handle None fields.
