@@ -30,11 +30,7 @@ Documentation
 .. toctree::
    :maxdepth: 1
 
-   How to/Load a configuration file <notebooks/load_configuration>
-   How to/Switch design live <notebooks/live_design>
-   How to/Select a control system <notebooks/control_system>
-   How to/Arrays <notebooks/arrays>
-
+   howto
    api
 
 .. .. toctree::
