@@ -24,12 +24,22 @@ PYAMLCLASS = "Tune"
 
 
 class ConfigModel(ElementConfigModel):
+    """
+    Configuration model for Tune
+
+    Parameters
+    ----------
+    quad_array : str
+        Array name of quad used to adjust the tune
+    betatron_tune : str
+        Name of the diagnostic pyaml device for measuring the tune
+    delta : float
+        Delta strength used to get the response matrix
+    """
+
     quad_array: str
-    """Array name of quad used to adjust the tune"""
     betatron_tune: str
-    """Name of the diagnostic pyaml device for measuring the tune"""
     delta: float
-    """Delta strength used to get the response matrix"""
 
 
 class TuneResponse(object):
@@ -49,7 +59,7 @@ class TuneResponse(object):
 
         Parameters
         ----------
-        callback: Callable
+        callback : Callable, optional
             tune_callback(step:int,action:int,m:Magnet,dtune:np.array)
             Callback executed after each strength setting. The magnet and step are
             passed as input arguement of the callback.
@@ -111,7 +121,7 @@ class TuneResponse(object):
 
         Parameters
         ----------
-        filename: str
+        filename : str
             File name to load
         """
         with open(filename) as f:
@@ -133,7 +143,7 @@ class TuneResponse(object):
 
         Parameters
         ----------
-        dtune: np.array
+        dtune : np.array
             Delta tune
         """
         if self.__respmatrix is None:
@@ -187,11 +197,11 @@ class Tune(Element):
 
         Parameters
         ----------
-        tune: np.array
+        tune : np.array
             Tune setpoint
-        iter_nb: int
+        iter_nb : int
             Number of iteration
-        wait_time: float
+        wait_time : float
             Time to wait in second between 2 iterations
         """
         self.__setpoint = np.array(tune)

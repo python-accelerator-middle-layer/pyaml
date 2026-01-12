@@ -35,9 +35,9 @@ class ElementConfigModel(BaseModel):
 
     Parameters
     ----------
-    name: str
+    name : str
         The name of the PyAML element.
-    lattice_names: str | None
+    lattice_names : str or None, optional
         The name(s) of the associated element(s) in the lattice. By default,
         the PyAML element name is used. lattice_name accept the following
         syntax:

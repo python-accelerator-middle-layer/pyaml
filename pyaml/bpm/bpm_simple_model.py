@@ -12,12 +12,21 @@ PYAMLCLASS = "BPMSimpleModel"
 
 
 class ConfigModel(BaseModel):
+    """
+    Configuration model for BPM simple model
+
+    Parameters
+    ----------
+    x_pos : DeviceAccess, optional
+        Horizontal position device
+    y_pos : DeviceAccess, optional
+        Vertical position device
+    """
+
     model_config = ConfigDict(arbitrary_types_allowed=True, extra="forbid")
 
     x_pos: DeviceAccess | None
-    """Horizontal position"""
     y_pos: DeviceAccess | None
-    """Vertical position"""
 
 
 class BPMSimpleModel(BPMModel):

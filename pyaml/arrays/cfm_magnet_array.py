@@ -86,7 +86,7 @@ class CombinedFunctionMagnetArray(ElementArray):
     ----------
     arrayName : str
         Array name
-    magnets: list[Magnet]
+    magnets : list[Magnet]
         Magnet list, all elements must be attached to the same instance of
         either a Simulator or a ControlSystem.
     use_aggregator : bool

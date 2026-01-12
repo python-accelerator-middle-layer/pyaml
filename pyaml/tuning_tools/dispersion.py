@@ -14,6 +14,19 @@ PYAMLCLASS = "OrbitResponseMatrix"
 
 
 class ConfigModel(BaseModel):
+    """
+    Configuration model for dispersion measurement
+
+    Parameters
+    ----------
+    bpm_array_name : str
+        BPM array name
+    rf_plant_name : str
+        RF plant name
+    frequency_delta : float
+        Frequency delta for measurement
+    """
+
     model_config = ConfigDict(arbitrary_types_allowed=True, extra="forbid")
 
     bpm_array_name: str

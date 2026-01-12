@@ -16,19 +16,18 @@ class ConfigModel(BaseModel):
 
     Parameters
     ----------
-
-    curve: Curve | None
+    curve : Curve or None, optional
         Curve object used for interpolation. By default,
         identity curve is used.
-    powerconverter: DeviceAccess | None
+    powerconverter : DeviceAccess or None, optional
         Power converter device to apply currrent
-    calibration_factor: float = 1.0
-        Correction factor applied to the curve
-    calibration_offset: float = 0.0
-        Correction offset applied to the curve
-    crosstalk: float = 1.0
-        Crosstalk factor
-    unit: str
+    calibration_factor : float, optional
+        Correction factor applied to the curve. Default: 1.0
+    calibration_offset : float, optional
+        Correction offset applied to the curve. Default: 0.0
+    crosstalk : float, optional
+        Crosstalk factor. Default: 1.0
+    unit : str
         Unit of the strength (i.e. 1/m or m-1)
 
     """

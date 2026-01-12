@@ -8,10 +8,18 @@ PYAMLCLASS = "InlineMatrix"
 
 
 class ConfigModel(BaseModel):
+    """
+    Configuration model for inline matrix
+
+    Parameters
+    ----------
+    mat : list[list[float]]
+        The matrix
+    """
+
     model_config = ConfigDict(arbitrary_types_allowed=True, extra="forbid")
 
     mat: list[list[float]]
-    """The matrix"""
 
 
 class InlineMatrix(Matrix):
