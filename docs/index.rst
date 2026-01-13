@@ -23,7 +23,7 @@ For installation instructions see :doc:`getting-started/installation`.
 
    getting-started/index
    how-to/index
-   api/index
+   api
 
 Indices
 ------------
