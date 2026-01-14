@@ -2,7 +2,6 @@ import numpy as np
 from numpy import double
 from numpy.typing import NDArray
 
-from ..bpm.bpm_array_model import BPMArrayModel
 from ..bpm.bpm_model import BPMModel
 from ..common import abstract
 from ..common.abstract_aggregator import ScalarAggregator
@@ -144,16 +143,20 @@ class CSBPMArrayMapper(CSScalarAggregator):
     Wrapper to a native CS aggregator for BPM
     """
 
-    def __init__(self, dev: DeviceAccess, _indices: list[int]):
-        self._indices = _indices
-        self._dev = dev
+    def __init__(self, devs: list[DeviceAccess], indices: list[list[int]]):
+        self._indices = indices
+        self._devs = devs
 
     def set(self, value: NDArray[np.float64]):
         raise Exception("BPM are not writable")
 
     def get(self) -> NDArray[np.float64]:
-        allValues: np.array = self._dev.get()
-        return allValues[self._indices]
+        # TODO read using DeviceAccessList
+        allValues = []
+        for i, d in enumerate(self._devs):
+            v = d.get()
+            allValues.extend(v[self._indices[i]])
+        return np.array(allValues)
 
     def readback(self) -> np.array:
         return self.get()
@@ -294,44 +297,35 @@ class RWStrengthArray(abstract.ReadWriteFloatArray):
 
 class RBpmArray(abstract.ReadFloatArray):
     """
-    Class providing read access to a BPM position (x,y) of a control system
+    Class providing read access to a BPM position or offset [x,y] of a control system
     """
 
-    def __init__(self, model: BPMModel, devs: list[DeviceAccess]):
-        self.__model = model
-        self.__devs = devs
-
-    # Gets the values
-    def get(self) -> np.array:
-        return np.array([self.__devs[0].get(), self.__devs[1].get()])
-
-    # Gets the unit of the value Assume that x and y has the same unit
-    def unit(self) -> str:
-        return self.__model.get_pos_devices()[0].unit()
-
-
-# ------------------------------------------------------------------------------
-
-
-class RBpmsArray(abstract.ReadFloatArray):
-    """
-    Class providing read access to a BPM positions array of a control system
-    """
-
-    def __init__(self, model: BPMArrayModel, dev: DeviceAccess):
+    def __init__(self, model: BPMModel, hDev: DeviceAccess, vDev: DeviceAccess):
         self._model = model
-        self._h_idx = model.get_h_index()
-        self._v_idx = model.get_v_index()
-        self.__dev = dev
+        self._hDev = hDev
+        self._vDev = vDev
+        self._hIdx = self._model.x_pos_index()
+        self._vIdx = self._model.y_pos_index()
 
     # Gets the values
     def get(self) -> np.array:
-        allPos = self.__dev.get()
-        return np.array([allPos[self._h_idx], allPos[self._v_idx]])
+        if self._hDev != self._vDev:
+            allhVal = self._hDev.get()
+            allvVal = self._vDev.get()
+            hVal = allhVal if self._hIdx is None else allhVal[self._hIdx]
+            vVal = allvVal if self._vIdx is None else allvVal[self._vIdx]
+        else:
+            # When h and v devices are identical, indexed
+            # values are expected
+            allVal = self._hDev.get()
+            hVal = allVal[self._hIdx]
+            vVal = allVal[self._vIdx]
+        return np.array([hVal, vVal])
 
-    # Gets the unit of the value Assume that x and y has the same unit
+    # Gets the unit of the value Assume that x and y, offsets and positions
+    # have the same unit
     def unit(self) -> str:
-        return self.__model.get_pos_device().unit()
+        return self._model.get_pos_devices()[0].unit()
 
 
 # ------------------------------------------------------------------------------
@@ -343,51 +337,27 @@ class RWBpmTiltScalar(abstract.ReadFloatScalar):
     """
 
     def __init__(self, model: BPMModel, dev: DeviceAccess):
-        self.__model = model
-        self.__dev = dev
+        self._model = model
+        self._dev = dev
+        self._idx = model.tilt_index()
 
     # Gets the value
     def get(self) -> float:
-        return self.__dev.get()
+        allTilt = self._dev.get()
+        if self._idx is not None:
+            return allTilt[self._idx]
+        else:
+            return allTilt
 
     def set(self, value: float):
-        self.__dev.set(value)
+        self._dev.set(value)
 
     def set_and_wait(self, value: NDArray[np.float64]):
         raise NotImplementedError("Not implemented yet.")
 
     # Gets the unit of the value
     def unit(self) -> str:
-        return self.__model.get_tilt_device().unit()
-
-
-# ------------------------------------------------------------------------------
-
-
-class RWBpmOffsetArray(abstract.ReadWriteFloatArray):
-    """
-    Class providing read write access to a BPM offset of a control system
-    """
-
-    def __init__(self, model: BPMModel, devs: list[DeviceAccess]):
-        self.__model = model
-        self.__devs = devs
-
-    # Gets the value
-    def get(self) -> NDArray[np.float64]:
-        return np.array([self.__devs[0].get(), self.__devs[1].get()])
-
-    # Sets the value
-    def set(self, value: NDArray[np.float64]):
-        self.__devs[0].set(value[0])
-        self.__devs[1].set(value[1])
-
-    def set_and_wait(self, value: NDArray[np.float64]):
-        raise NotImplementedError("Not implemented yet.")
-
-    # Gets the unit of the value
-    def unit(self) -> str:
-        return self.__model.get_offset_devices()[0].unit()
+        return self._model.get_tilt_device().unit()
 
 
 # ------------------------------------------------------------------------------

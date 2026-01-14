@@ -1,4 +1,3 @@
-from ..bpm.bpm_array_model import BPMArrayModel
 from ..bpm.bpm_model import BPMModel
 from ..common.element import Element, ElementConfigModel
 from ..common.exception import PyAMLException
@@ -13,7 +12,7 @@ PYAMLCLASS = "BPM"
 
 
 class ConfigModel(ElementConfigModel):
-    model: BPMModel | BPMArrayModel | None = None
+    model: BPMModel | None = None
     """Object in charge of BPM modeling"""
 
 
@@ -41,7 +40,7 @@ class BPM(Element):
         self.__tilt = None
 
     @property
-    def model(self) -> BPMModel | BPMArrayModel:
+    def model(self) -> BPMModel:
         return self.__model
 
     @property

@@ -21,12 +21,20 @@ class ConfigModel(BaseModel):
         Horizontal position device
     y_pos : DeviceAccess, optional
         Vertical position device
+    x_pos_index : int, optional
+        Index in the array when specified, otherwise scalar
+        value is expected
+    y_pos_index : int, optional
+        Index in the array when specified, otherwise scalar
+        value is expected
     """
 
     model_config = ConfigDict(arbitrary_types_allowed=True, extra="forbid")
 
     x_pos: DeviceAccess | None
     y_pos: DeviceAccess | None
+    x_pos_index: int | None
+    y_pos_index: int | None
 
 
 class BPMSimpleModel(BPMModel):
@@ -72,6 +80,32 @@ class BPMSimpleModel(BPMModel):
             Array of DeviceAcess
         """
         return [None, None]
+
+    def x_pos_index(self) -> int | None:
+        """
+        Returns the index of the horizontal position in
+        an array, otherwise a scalar value is expected from the
+        corresponding DeviceAccess
+
+        Returns
+        -------
+        int
+            Index in the array, None for a scalar value
+        """
+        return self._cfg.x_pos_index
+
+    def y_pos_index(self) -> int | None:
+        """
+        Returns the index of the veritcal position in
+        an array, otherwise a scalar value is expected from the
+        corresponding DeviceAccess
+
+        Returns
+        -------
+        int
+            Index in the array, None for a scalar value
+        """
+        return self._cfg.y_pos_index
 
     def __repr__(self):
         return __pyaml_repr__(self)
