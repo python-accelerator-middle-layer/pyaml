@@ -17,7 +17,7 @@ import os
 
 from pyaml.common.exception import PyAMLConfigException, PyAMLException
 
-__all__ = [__version__, PyAMLException, PyAMLConfigException]
+__all__ = [__version__, "PyAMLException", "PyAMLConfigException"]
 
 
 config_file = os.getenv("PYAML_LOG_CONFIG", "pyaml_logging.conf")
