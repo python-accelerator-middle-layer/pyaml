@@ -29,6 +29,8 @@ class BPM(Element):
         ----------
         name : str
             Element name
+        model : BPMModel
+            BPM model in charge of computing beam position
         """
 
         super().__init__(cfg.name)
