@@ -24,6 +24,9 @@ class TangoControlSystem(ControlSystem):
         print(f"Creating dummy TangoControlSystem: {cfg.name}")
         self.__DEVICES = {}
 
+    def attach_array(self, devs: list[DeviceAccess]) -> list[DeviceAccess]:
+        return self.attach(devs)
+
     def attach(self, devs: list[DeviceAccess]) -> list[DeviceAccess]:
         newDevs = []
         for d in devs:

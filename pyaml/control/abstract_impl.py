@@ -297,7 +297,7 @@ class RWStrengthArray(abstract.ReadWriteFloatArray):
 
 class RBpmArray(abstract.ReadFloatArray):
     """
-    Class providing read access to a BPM position or offset [x,y] of a control system
+    Class providing read access to a BPM position [x,y] of a control system
     """
 
     def __init__(self, model: BPMModel, hDev: DeviceAccess, vDev: DeviceAccess):
@@ -358,6 +358,58 @@ class RWBpmTiltScalar(abstract.ReadFloatScalar):
     # Gets the unit of the value
     def unit(self) -> str:
         return self._model.get_tilt_device().unit()
+
+
+# ------------------------------------------------------------------------------
+
+
+class RWBpmOffsetArray(abstract.ReadWriteFloatArray):
+    """
+    Class providing read write access to a BPM offset [x,y] of a control system
+    """
+
+    def __init__(self, model: BPMModel, hDev: DeviceAccess, vDev: DeviceAccess):
+        self._model = model
+        self._hDev = hDev
+        self._vDev = vDev
+        self._hIdx = self._model.x_pos_index()
+        self._vIdx = self._model.y_pos_index()
+
+    # Gets the values
+    def get(self) -> np.array:
+        if self._hDev != self._vDev:
+            allhVal = self._hDev.get()
+            allvVal = self._vDev.get()
+            hVal = allhVal if self._hIdx is None else allhVal[self._hIdx]
+            vVal = allvVal if self._vIdx is None else allvVal[self._vIdx]
+        else:
+            # When h and v devices are identical, indexed
+            # values are expected
+            allVal = self._hDev.get()
+            hVal = allVal[self._hIdx]
+            vVal = allVal[self._vIdx]
+        return np.array([hVal, vVal])
+
+    # Sets the values
+    def set(self, value: NDArray[np.float64]):
+        if self._hDev != self._vDev:
+            self._hDev.set(value[0])
+            self._vDev.set(value[1])
+        else:
+            # When h and v devices are identical, indexed
+            # values are expected
+            newValue = self._hDev.get()
+            newValue[self._hIdx] = value[0]
+            newValue[self._vIdx] = value[1]
+            self._hDev.set(newValue)
+
+    def set_and_wait(self, value: NDArray[np.float64]):
+        raise NotImplementedError("Not implemented yet.")
+
+    # Gets the unit of the value Assume that x and y, offsets and positions
+    # have the same unit
+    def unit(self) -> str:
+        return self._model.get_pos_devices()[0].unit()
 
 
 # ------------------------------------------------------------------------------

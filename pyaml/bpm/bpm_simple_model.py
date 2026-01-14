@@ -33,8 +33,8 @@ class ConfigModel(BaseModel):
 
     x_pos: DeviceAccess | None
     y_pos: DeviceAccess | None
-    x_pos_index: int | None
-    y_pos_index: int | None
+    x_pos_index: int | None = None
+    y_pos_index: int | None = None
 
 
 class BPMSimpleModel(BPMModel):

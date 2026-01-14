@@ -15,6 +15,7 @@ from ..control.abstract_impl import (
     CSStrengthScalarAggregator,
     RBetatronTuneArray,
     RBpmArray,
+    RWBpmOffsetArray,
     RWBpmTiltScalar,
     RWHardwareArray,
     RWHardwareScalar,
@@ -255,7 +256,7 @@ class ControlSystem(ElementHolder, metaclass=ABCMeta):
                 avOffsetDev = self.attach_indexed(vOffsetDev, e.model.y_offset_index())
                 positions = RBpmArray(e.model, ahDev, avDev)
                 tilt = RWBpmTiltScalar(e.model, atiltDev)
-                offsets = RBpmArray(e.model, ahOffsetDev, ahOffsetDev)
+                offsets = RWBpmOffsetArray(e.model, ahOffsetDev, avOffsetDev)
                 e = e.attach(self, positions, offsets, tilt)
                 self.add_bpm(e)
 
