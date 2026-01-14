@@ -29,8 +29,10 @@
   <link href="../../../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
 <link href="../../../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
 
-    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=8f2a1f02" />
     <link rel="stylesheet" type="text/css" href="../../../_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-design.min.css?v=95c83b7e" />
     <link rel="stylesheet" type="text/css" href="../../../_static/css/custom.css" />
   
   <!-- So that users can add custom icons -->
@@ -42,6 +44,9 @@
     <script src="../../../_static/documentation_options.js?v=48654df3"></script>
     <script src="../../../_static/doctools.js?v=9bcbadda"></script>
     <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../../_static/copybutton.js?v=fd10adb8"></script>
+    <script src="../../../_static/design-tabs.js?v=f930bc37"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = '_modules/pyaml/lattice/lattice_elements_linker';</script>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" />
@@ -130,112 +135,25 @@
   <ul class="bd-navbar-elements navbar-nav">
     
 <li class="nav-item ">
-  <a class="nav-link nav-internal" href="../../../notebooks/load_configuration.html">
-    Load a configuration file
+  <a class="nav-link nav-internal" href="../../../getting-started/index.html">
+    Getting Started
   </a>
 </li>
 
 
 <li class="nav-item ">
-  <a class="nav-link nav-internal" href="../../../notebooks/live_design.html">
-    Switch design live
+  <a class="nav-link nav-internal" href="../../../how-to/index.html">
+    How to Guides
   </a>
 </li>
 
 
 <li class="nav-item ">
-  <a class="nav-link nav-internal" href="../../../notebooks/control_system.html">
-    Select a control system
+  <a class="nav-link nav-internal" href="../../../api.html">
+    API Reference
   </a>
 </li>
 
-
-<li class="nav-item ">
-  <a class="nav-link nav-internal" href="../../../notebooks/arrays.html">
-    Arrays
-  </a>
-</li>
-
-
-<li class="nav-item ">
-  <a class="nav-link nav-internal" href="../../../modules/arrays.html">
-    Arrays configuration
-  </a>
-</li>
-
-            <li class="nav-item dropdown">
-                <button class="btn dropdown-toggle nav-item" type="button"
-                data-bs-toggle="dropdown" aria-expanded="false"
-                aria-controls="pst-nav-more-links">
-                    More
-                </button>
-                <ul id="pst-nav-more-links" class="dropdown-menu">
-                    
-<li class=" ">
-  <a class="nav-link dropdown-item nav-internal" href="../../../modules/bpm.html">
-    BPMS
-  </a>
-</li>
-
-
-<li class=" ">
-  <a class="nav-link dropdown-item nav-internal" href="../../../modules/common.html">
-    Common elements
-  </a>
-</li>
-
-
-<li class=" ">
-  <a class="nav-link dropdown-item nav-internal" href="../../../modules/configuration.html">
-    Configuration
-  </a>
-</li>
-
-
-<li class=" ">
-  <a class="nav-link dropdown-item nav-internal" href="../../../modules/control.html">
-    Control
-  </a>
-</li>
-
-
-<li class=" ">
-  <a class="nav-link dropdown-item nav-internal" href="../../../modules/lattice.html">
-    lattice
-  </a>
-</li>
-
-
-<li class=" ">
-  <a class="nav-link dropdown-item nav-internal" href="../../../modules/magnet.html">
-    magnets
-  </a>
-</li>
-
-
-<li class=" ">
-  <a class="nav-link dropdown-item nav-internal" href="../../../modules/pyaml.html">
-    pyaml
-  </a>
-</li>
-
-
-<li class=" ">
-  <a class="nav-link dropdown-item nav-internal" href="../../../modules/rf.html">
-    RF
-  </a>
-</li>
-
-
-<li class=" ">
-  <a class="nav-link dropdown-item nav-internal" href="../../../modules/tuning_tools.html">
-    Tuning tools
-  </a>
-</li>
-
-                </ul>
-            </li>
-            
   </ul>
 </nav></div>
       
@@ -308,7 +226,7 @@
         
       
       <dialog id="pst-primary-sidebar-modal"></dialog>
-      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar hide-on-wide">
         
 
   
@@ -324,99 +242,22 @@
   <ul class="bd-navbar-elements navbar-nav">
     
 <li class="nav-item ">
-  <a class="nav-link nav-internal" href="../../../notebooks/load_configuration.html">
-    Load a configuration file
+  <a class="nav-link nav-internal" href="../../../getting-started/index.html">
+    Getting Started
   </a>
 </li>
 
 
 <li class="nav-item ">
-  <a class="nav-link nav-internal" href="../../../notebooks/live_design.html">
-    Switch design live
+  <a class="nav-link nav-internal" href="../../../how-to/index.html">
+    How to Guides
   </a>
 </li>
 
 
 <li class="nav-item ">
-  <a class="nav-link nav-internal" href="../../../notebooks/control_system.html">
-    Select a control system
-  </a>
-</li>
-
-
-<li class="nav-item ">
-  <a class="nav-link nav-internal" href="../../../notebooks/arrays.html">
-    Arrays
-  </a>
-</li>
-
-
-<li class="nav-item ">
-  <a class="nav-link nav-internal" href="../../../modules/arrays.html">
-    Arrays configuration
-  </a>
-</li>
-
-
-<li class="nav-item ">
-  <a class="nav-link nav-internal" href="../../../modules/bpm.html">
-    BPMS
-  </a>
-</li>
-
-
-<li class="nav-item ">
-  <a class="nav-link nav-internal" href="../../../modules/common.html">
-    Common elements
-  </a>
-</li>
-
-
-<li class="nav-item ">
-  <a class="nav-link nav-internal" href="../../../modules/configuration.html">
-    Configuration
-  </a>
-</li>
-
-
-<li class="nav-item ">
-  <a class="nav-link nav-internal" href="../../../modules/control.html">
-    Control
-  </a>
-</li>
-
-
-<li class="nav-item ">
-  <a class="nav-link nav-internal" href="../../../modules/lattice.html">
-    lattice
-  </a>
-</li>
-
-
-<li class="nav-item ">
-  <a class="nav-link nav-internal" href="../../../modules/magnet.html">
-    magnets
-  </a>
-</li>
-
-
-<li class="nav-item ">
-  <a class="nav-link nav-internal" href="../../../modules/pyaml.html">
-    pyaml
-  </a>
-</li>
-
-
-<li class="nav-item ">
-  <a class="nav-link nav-internal" href="../../../modules/rf.html">
-    RF
-  </a>
-</li>
-
-
-<li class="nav-item ">
-  <a class="nav-link nav-internal" href="../../../modules/tuning_tools.html">
-    Tuning tools
+  <a class="nav-link nav-internal" href="../../../api.html">
+    API Reference
   </a>
 </li>
 
@@ -457,11 +298,6 @@
       </div>
     
   </div>
-  
-    <div class="sidebar-primary-items__start sidebar-primary__section">
-        <div class="sidebar-primary-item">
-<div id="searchbox"></div></div>
-    </div>
   
   
   <div class="sidebar-primary-items__end sidebar-primary__section">
@@ -531,7 +367,7 @@
 
 
 <div class="viewcode-block" id="LinkerConfigModel">
-<a class="viewcode-back" href="../../../modules/lattice.html#pyaml.lattice.lattice_elements_linker.LinkerConfigModel">[docs]</a>
+<a class="viewcode-back" href="../../../api/pyaml.lattice.lattice_elements_linker.html#pyaml.lattice.lattice_elements_linker.LinkerConfigModel">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">LinkerConfigModel</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Base configuration model for linker definitions.</span>
 
@@ -552,7 +388,7 @@
 
 
 <div class="viewcode-block" id="LinkerIdentifier">
-<a class="viewcode-back" href="../../../modules/lattice.html#pyaml.lattice.lattice_elements_linker.LinkerIdentifier">[docs]</a>
+<a class="viewcode-back" href="../../../api/pyaml.lattice.lattice_elements_linker.html#pyaml.lattice.lattice_elements_linker.LinkerIdentifier">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">LinkerIdentifier</span><span class="p">(</span><span class="n">metaclass</span><span class="o">=</span><span class="n">ABCMeta</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Abstract base class for identifiers used to match PyAML and PyAT elements.</span>
 
@@ -569,7 +405,7 @@
 
 
 <div class="viewcode-block" id="LatticeElementsLinker">
-<a class="viewcode-back" href="../../../modules/lattice.html#pyaml.lattice.lattice_elements_linker.LatticeElementsLinker">[docs]</a>
+<a class="viewcode-back" href="../../../api/pyaml.lattice.lattice_elements_linker.html#pyaml.lattice.lattice_elements_linker.LatticeElementsLinker">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">LatticeElementsLinker</span><span class="p">(</span><span class="n">metaclass</span><span class="o">=</span><span class="n">ABCMeta</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Abstract base class defining the interface for PyAT–PyAML element linking.</span>
 
@@ -592,8 +428,11 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">linker_config_model</span> <span class="o">=</span> <span class="n">linker_config_model</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">lattice</span><span class="p">:</span> <span class="n">Lattice</span> <span class="o">=</span> <span class="kc">None</span>
 
+<div class="viewcode-block" id="LatticeElementsLinker.set_lattice">
+<a class="viewcode-back" href="../../../api/pyaml.lattice.lattice_elements_linker.html#pyaml.lattice.lattice_elements_linker.LatticeElementsLinker.set_lattice">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">set_lattice</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lattice</span><span class="p">:</span> <span class="n">Lattice</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">lattice</span> <span class="o">=</span> <span class="n">lattice</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lattice</span> <span class="o">=</span> <span class="n">lattice</span></div>
+
 
     <span class="nd">@abstractmethod</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">_test_at_element</span><span class="p">(</span>
@@ -601,9 +440,12 @@
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
         <span class="k">pass</span>
 
+<div class="viewcode-block" id="LatticeElementsLinker.get_element_identifier">
+<a class="viewcode-back" href="../../../api/pyaml.lattice.lattice_elements_linker.html#pyaml.lattice.lattice_elements_linker.LatticeElementsLinker.get_element_identifier">[docs]</a>
     <span class="nd">@abstractmethod</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">get_element_identifier</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">element</span><span class="p">:</span> <span class="n">Element</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">LinkerIdentifier</span><span class="p">:</span>
-        <span class="k">pass</span>
+        <span class="k">pass</span></div>
+
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_iter_matches</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">identifier</span><span class="p">:</span> <span class="n">LinkerIdentifier</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">at</span><span class="o">.</span><span class="n">Element</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Yield all elements in the lattice whose matches the identifier.&quot;&quot;&quot;</span>
@@ -612,7 +454,7 @@
                 <span class="k">yield</span> <span class="n">elem</span>
 
 <div class="viewcode-block" id="LatticeElementsLinker.get_at_elements">
-<a class="viewcode-back" href="../../../modules/lattice.html#pyaml.lattice.lattice_elements_linker.LatticeElementsLinker.get_at_elements">[docs]</a>
+<a class="viewcode-back" href="../../../api/pyaml.lattice.lattice_elements_linker.html#pyaml.lattice.lattice_elements_linker.LatticeElementsLinker.get_at_elements">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">get_at_elements</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">element_id</span><span class="p">:</span> <span class="n">LinkerIdentifier</span> <span class="o">|</span> <span class="nb">list</span><span class="p">[</span><span class="n">LinkerIdentifier</span><span class="p">]</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">at</span><span class="o">.</span><span class="n">Element</span><span class="p">]:</span>
@@ -656,7 +498,7 @@
 
 
 <div class="viewcode-block" id="LatticeElementsLinker.get_at_element">
-<a class="viewcode-back" href="../../../modules/lattice.html#pyaml.lattice.lattice_elements_linker.LatticeElementsLinker.get_at_element">[docs]</a>
+<a class="viewcode-back" href="../../../api/pyaml.lattice.lattice_elements_linker.html#pyaml.lattice.lattice_elements_linker.LatticeElementsLinker.get_at_element">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">get_at_element</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">element_id</span><span class="p">:</span> <span class="n">LinkerIdentifier</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">at</span><span class="o">.</span><span class="n">Element</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Return a single PyAT element matching the given identifier.</span>
 

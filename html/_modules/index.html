@@ -29,8 +29,10 @@
   <link href="../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
 <link href="../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
 
-    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=8f2a1f02" />
     <link rel="stylesheet" type="text/css" href="../_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
     <link rel="stylesheet" type="text/css" href="../_static/css/custom.css" />
   
   <!-- So that users can add custom icons -->
@@ -42,6 +44,9 @@
     <script src="../_static/documentation_options.js?v=48654df3"></script>
     <script src="../_static/doctools.js?v=9bcbadda"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=fd10adb8"></script>
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = '_modules/index';</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -130,112 +135,25 @@
   <ul class="bd-navbar-elements navbar-nav">
     
 <li class="nav-item ">
-  <a class="nav-link nav-internal" href="../notebooks/load_configuration.html">
-    Load a configuration file
+  <a class="nav-link nav-internal" href="../getting-started/index.html">
+    Getting Started
   </a>
 </li>
 
 
 <li class="nav-item ">
-  <a class="nav-link nav-internal" href="../notebooks/live_design.html">
-    Switch design live
+  <a class="nav-link nav-internal" href="../how-to/index.html">
+    How to Guides
   </a>
 </li>
 
 
 <li class="nav-item ">
-  <a class="nav-link nav-internal" href="../notebooks/control_system.html">
-    Select a control system
+  <a class="nav-link nav-internal" href="../api.html">
+    API Reference
   </a>
 </li>
 
-
-<li class="nav-item ">
-  <a class="nav-link nav-internal" href="../notebooks/arrays.html">
-    Arrays
-  </a>
-</li>
-
-
-<li class="nav-item ">
-  <a class="nav-link nav-internal" href="../modules/arrays.html">
-    Arrays configuration
-  </a>
-</li>
-
-            <li class="nav-item dropdown">
-                <button class="btn dropdown-toggle nav-item" type="button"
-                data-bs-toggle="dropdown" aria-expanded="false"
-                aria-controls="pst-nav-more-links">
-                    More
-                </button>
-                <ul id="pst-nav-more-links" class="dropdown-menu">
-                    
-<li class=" ">
-  <a class="nav-link dropdown-item nav-internal" href="../modules/bpm.html">
-    BPMS
-  </a>
-</li>
-
-
-<li class=" ">
-  <a class="nav-link dropdown-item nav-internal" href="../modules/common.html">
-    Common elements
-  </a>
-</li>
-
-
-<li class=" ">
-  <a class="nav-link dropdown-item nav-internal" href="../modules/configuration.html">
-    Configuration
-  </a>
-</li>
-
-
-<li class=" ">
-  <a class="nav-link dropdown-item nav-internal" href="../modules/control.html">
-    Control
-  </a>
-</li>
-
-
-<li class=" ">
-  <a class="nav-link dropdown-item nav-internal" href="../modules/lattice.html">
-    lattice
-  </a>
-</li>
-
-
-<li class=" ">
-  <a class="nav-link dropdown-item nav-internal" href="../modules/magnet.html">
-    magnets
-  </a>
-</li>
-
-
-<li class=" ">
-  <a class="nav-link dropdown-item nav-internal" href="../modules/pyaml.html">
-    pyaml
-  </a>
-</li>
-
-
-<li class=" ">
-  <a class="nav-link dropdown-item nav-internal" href="../modules/rf.html">
-    RF
-  </a>
-</li>
-
-
-<li class=" ">
-  <a class="nav-link dropdown-item nav-internal" href="../modules/tuning_tools.html">
-    Tuning tools
-  </a>
-</li>
-
-                </ul>
-            </li>
-            
   </ul>
 </nav></div>
       
@@ -308,7 +226,7 @@
         
       
       <dialog id="pst-primary-sidebar-modal"></dialog>
-      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar hide-on-wide">
         
 
   
@@ -324,99 +242,22 @@
   <ul class="bd-navbar-elements navbar-nav">
     
 <li class="nav-item ">
-  <a class="nav-link nav-internal" href="../notebooks/load_configuration.html">
-    Load a configuration file
+  <a class="nav-link nav-internal" href="../getting-started/index.html">
+    Getting Started
   </a>
 </li>
 
 
 <li class="nav-item ">
-  <a class="nav-link nav-internal" href="../notebooks/live_design.html">
-    Switch design live
+  <a class="nav-link nav-internal" href="../how-to/index.html">
+    How to Guides
   </a>
 </li>
 
 
 <li class="nav-item ">
-  <a class="nav-link nav-internal" href="../notebooks/control_system.html">
-    Select a control system
-  </a>
-</li>
-
-
-<li class="nav-item ">
-  <a class="nav-link nav-internal" href="../notebooks/arrays.html">
-    Arrays
-  </a>
-</li>
-
-
-<li class="nav-item ">
-  <a class="nav-link nav-internal" href="../modules/arrays.html">
-    Arrays configuration
-  </a>
-</li>
-
-
-<li class="nav-item ">
-  <a class="nav-link nav-internal" href="../modules/bpm.html">
-    BPMS
-  </a>
-</li>
-
-
-<li class="nav-item ">
-  <a class="nav-link nav-internal" href="../modules/common.html">
-    Common elements
-  </a>
-</li>
-
-
-<li class="nav-item ">
-  <a class="nav-link nav-internal" href="../modules/configuration.html">
-    Configuration
-  </a>
-</li>
-
-
-<li class="nav-item ">
-  <a class="nav-link nav-internal" href="../modules/control.html">
-    Control
-  </a>
-</li>
-
-
-<li class="nav-item ">
-  <a class="nav-link nav-internal" href="../modules/lattice.html">
-    lattice
-  </a>
-</li>
-
-
-<li class="nav-item ">
-  <a class="nav-link nav-internal" href="../modules/magnet.html">
-    magnets
-  </a>
-</li>
-
-
-<li class="nav-item ">
-  <a class="nav-link nav-internal" href="../modules/pyaml.html">
-    pyaml
-  </a>
-</li>
-
-
-<li class="nav-item ">
-  <a class="nav-link nav-internal" href="../modules/rf.html">
-    RF
-  </a>
-</li>
-
-
-<li class="nav-item ">
-  <a class="nav-link nav-internal" href="../modules/tuning_tools.html">
-    Tuning tools
+  <a class="nav-link nav-internal" href="../api.html">
+    API Reference
   </a>
 </li>
 
@@ -457,11 +298,6 @@
       </div>
     
   </div>
-  
-    <div class="sidebar-primary-items__start sidebar-primary__section">
-        <div class="sidebar-primary-item">
-<div id="searchbox"></div></div>
-    </div>
   
   
   <div class="sidebar-primary-items__end sidebar-primary__section">
@@ -525,6 +361,8 @@
 <li><a href="pyaml/arrays/element_array.html">pyaml.arrays.element_array</a></li>
 <li><a href="pyaml/arrays/magnet.html">pyaml.arrays.magnet</a></li>
 <li><a href="pyaml/arrays/magnet_array.html">pyaml.arrays.magnet_array</a></li>
+<li><a href="pyaml/arrays/serialized_magnet.html">pyaml.arrays.serialized_magnet</a></li>
+<li><a href="pyaml/arrays/serialized_magnet_array.html">pyaml.arrays.serialized_magnet_array</a></li>
 <li><a href="pyaml/bpm/bpm.html">pyaml.bpm.bpm</a></li>
 <li><a href="pyaml/bpm/bpm_model.html">pyaml.bpm.bpm_model</a></li>
 <li><a href="pyaml/bpm/bpm_simple_model.html">pyaml.bpm.bpm_simple_model</a></li>
@@ -539,19 +377,40 @@
 <li><a href="pyaml/configuration/curve.html">pyaml.configuration.curve</a></li>
 <li><a href="pyaml/configuration/factory.html">pyaml.configuration.factory</a></li>
 <li><a href="pyaml/configuration/fileloader.html">pyaml.configuration.fileloader</a></li>
+<li><a href="pyaml/configuration/inline_curve.html">pyaml.configuration.inline_curve</a></li>
+<li><a href="pyaml/configuration/inline_matrix.html">pyaml.configuration.inline_matrix</a></li>
 <li><a href="pyaml/configuration/matrix.html">pyaml.configuration.matrix</a></li>
 <li><a href="pyaml/control/abstract_impl.html">pyaml.control.abstract_impl</a></li>
 <li><a href="pyaml/control/deviceaccess.html">pyaml.control.deviceaccess</a></li>
 <li><a href="pyaml/control/deviceaccesslist.html">pyaml.control.deviceaccesslist</a></li>
 <li><a href="pyaml/control/readback_value.html">pyaml.control.readback_value</a></li>
+<li><a href="pyaml/diagnostics/tune_monitor.html">pyaml.diagnostics.tune_monitor</a></li>
+<li><a href="pyaml/external/pySC_interface.html">pyaml.external.pySC_interface</a></li>
 <li><a href="pyaml/lattice/abstract_impl.html">pyaml.lattice.abstract_impl</a></li>
 <li><a href="pyaml/lattice/attribute_linker.html">pyaml.lattice.attribute_linker</a></li>
 <li><a href="pyaml/lattice/lattice_elements_linker.html">pyaml.lattice.lattice_elements_linker</a></li>
 <li><a href="pyaml/lattice/polynom_info.html">pyaml.lattice.polynom_info</a></li>
+<li><a href="pyaml/magnet/cfm_magnet.html">pyaml.magnet.cfm_magnet</a></li>
+<li><a href="pyaml/magnet/corrector.html">pyaml.magnet.corrector</a></li>
+<li><a href="pyaml/magnet/hcorrector.html">pyaml.magnet.hcorrector</a></li>
+<li><a href="pyaml/magnet/identity_cfm_model.html">pyaml.magnet.identity_cfm_model</a></li>
+<li><a href="pyaml/magnet/identity_model.html">pyaml.magnet.identity_model</a></li>
+<li><a href="pyaml/magnet/linear_cfm_model.html">pyaml.magnet.linear_cfm_model</a></li>
+<li><a href="pyaml/magnet/linear_model.html">pyaml.magnet.linear_model</a></li>
+<li><a href="pyaml/magnet/linear_serialized_model.html">pyaml.magnet.linear_serialized_model</a></li>
+<li><a href="pyaml/magnet/magnet.html">pyaml.magnet.magnet</a></li>
+<li><a href="pyaml/magnet/model.html">pyaml.magnet.model</a></li>
+<li><a href="pyaml/magnet/octupole.html">pyaml.magnet.octupole</a></li>
+<li><a href="pyaml/magnet/quadrupole.html">pyaml.magnet.quadrupole</a></li>
+<li><a href="pyaml/magnet/serialized_magnet.html">pyaml.magnet.serialized_magnet</a></li>
+<li><a href="pyaml/magnet/sextupole.html">pyaml.magnet.sextupole</a></li>
+<li><a href="pyaml/magnet/skewoctu.html">pyaml.magnet.skewoctu</a></li>
+<li><a href="pyaml/magnet/skewquad.html">pyaml.magnet.skewquad</a></li>
+<li><a href="pyaml/magnet/skewsext.html">pyaml.magnet.skewsext</a></li>
+<li><a href="pyaml/magnet/spline_model.html">pyaml.magnet.spline_model</a></li>
+<li><a href="pyaml/magnet/vcorrector.html">pyaml.magnet.vcorrector</a></li>
 <li><a href="pyaml/rf/rf_plant.html">pyaml.rf.rf_plant</a></li>
 <li><a href="pyaml/rf/rf_transmitter.html">pyaml.rf.rf_transmitter</a></li>
-<li><a href="pyaml/tuning_tools/SOFB/sofb.html">pyaml.tuning_tools.SOFB.sofb</a></li>
-<li><a href="pyaml/tuning_tools/tune.html">pyaml.tuning_tools.tune</a></li>
 </ul>
 
                 </article>

@@ -30,8 +30,10 @@
   <link href="../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
 <link href="../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
 
-    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=8f2a1f02" />
     <link rel="stylesheet" type="text/css" href="../_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
     <link rel="stylesheet" type="text/css" href="../_static/css/custom.css" />
   
   <!-- So that users can add custom icons -->
@@ -43,11 +45,14 @@
     <script src="../_static/documentation_options.js?v=48654df3"></script>
     <script src="../_static/doctools.js?v=9bcbadda"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=fd10adb8"></script>
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'notebooks/load_configuration';</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Live/Design: control modes" href="live_design.html" />
-    <link rel="prev" title="pyAML documentation" href="../index.html" />
+    <link rel="prev" title="How to Guides" href="../how-to/index.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   <meta name="docsearch:version" content="0.1" />
@@ -132,113 +137,26 @@
 <nav>
   <ul class="bd-navbar-elements navbar-nav">
     
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../getting-started/index.html">
+    Getting Started
+  </a>
+</li>
+
+
 <li class="nav-item current active">
-  <a class="nav-link nav-internal" href="#">
-    Load a configuration file
+  <a class="nav-link nav-internal" href="../how-to/index.html">
+    How to Guides
   </a>
 </li>
 
 
 <li class="nav-item ">
-  <a class="nav-link nav-internal" href="live_design.html">
-    Switch design live
+  <a class="nav-link nav-internal" href="../api.html">
+    API Reference
   </a>
 </li>
 
-
-<li class="nav-item ">
-  <a class="nav-link nav-internal" href="control_system.html">
-    Select a control system
-  </a>
-</li>
-
-
-<li class="nav-item ">
-  <a class="nav-link nav-internal" href="arrays.html">
-    Arrays
-  </a>
-</li>
-
-
-<li class="nav-item ">
-  <a class="nav-link nav-internal" href="../modules/arrays.html">
-    Arrays configuration
-  </a>
-</li>
-
-            <li class="nav-item dropdown">
-                <button class="btn dropdown-toggle nav-item" type="button"
-                data-bs-toggle="dropdown" aria-expanded="false"
-                aria-controls="pst-nav-more-links">
-                    More
-                </button>
-                <ul id="pst-nav-more-links" class="dropdown-menu">
-                    
-<li class=" ">
-  <a class="nav-link dropdown-item nav-internal" href="../modules/bpm.html">
-    BPMS
-  </a>
-</li>
-
-
-<li class=" ">
-  <a class="nav-link dropdown-item nav-internal" href="../modules/common.html">
-    Common elements
-  </a>
-</li>
-
-
-<li class=" ">
-  <a class="nav-link dropdown-item nav-internal" href="../modules/configuration.html">
-    Configuration
-  </a>
-</li>
-
-
-<li class=" ">
-  <a class="nav-link dropdown-item nav-internal" href="../modules/control.html">
-    Control
-  </a>
-</li>
-
-
-<li class=" ">
-  <a class="nav-link dropdown-item nav-internal" href="../modules/lattice.html">
-    lattice
-  </a>
-</li>
-
-
-<li class=" ">
-  <a class="nav-link dropdown-item nav-internal" href="../modules/magnet.html">
-    magnets
-  </a>
-</li>
-
-
-<li class=" ">
-  <a class="nav-link dropdown-item nav-internal" href="../modules/pyaml.html">
-    pyaml
-  </a>
-</li>
-
-
-<li class=" ">
-  <a class="nav-link dropdown-item nav-internal" href="../modules/rf.html">
-    RF
-  </a>
-</li>
-
-
-<li class=" ">
-  <a class="nav-link dropdown-item nav-internal" href="../modules/tuning_tools.html">
-    Tuning tools
-  </a>
-</li>
-
-                </ul>
-            </li>
-            
   </ul>
 </nav></div>
       
@@ -324,100 +242,23 @@
 <nav>
   <ul class="bd-navbar-elements navbar-nav">
     
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../getting-started/index.html">
+    Getting Started
+  </a>
+</li>
+
+
 <li class="nav-item current active">
-  <a class="nav-link nav-internal" href="#">
-    Load a configuration file
+  <a class="nav-link nav-internal" href="../how-to/index.html">
+    How to Guides
   </a>
 </li>
 
 
 <li class="nav-item ">
-  <a class="nav-link nav-internal" href="live_design.html">
-    Switch design live
-  </a>
-</li>
-
-
-<li class="nav-item ">
-  <a class="nav-link nav-internal" href="control_system.html">
-    Select a control system
-  </a>
-</li>
-
-
-<li class="nav-item ">
-  <a class="nav-link nav-internal" href="arrays.html">
-    Arrays
-  </a>
-</li>
-
-
-<li class="nav-item ">
-  <a class="nav-link nav-internal" href="../modules/arrays.html">
-    Arrays configuration
-  </a>
-</li>
-
-
-<li class="nav-item ">
-  <a class="nav-link nav-internal" href="../modules/bpm.html">
-    BPMS
-  </a>
-</li>
-
-
-<li class="nav-item ">
-  <a class="nav-link nav-internal" href="../modules/common.html">
-    Common elements
-  </a>
-</li>
-
-
-<li class="nav-item ">
-  <a class="nav-link nav-internal" href="../modules/configuration.html">
-    Configuration
-  </a>
-</li>
-
-
-<li class="nav-item ">
-  <a class="nav-link nav-internal" href="../modules/control.html">
-    Control
-  </a>
-</li>
-
-
-<li class="nav-item ">
-  <a class="nav-link nav-internal" href="../modules/lattice.html">
-    lattice
-  </a>
-</li>
-
-
-<li class="nav-item ">
-  <a class="nav-link nav-internal" href="../modules/magnet.html">
-    magnets
-  </a>
-</li>
-
-
-<li class="nav-item ">
-  <a class="nav-link nav-internal" href="../modules/pyaml.html">
-    pyaml
-  </a>
-</li>
-
-
-<li class="nav-item ">
-  <a class="nav-link nav-internal" href="../modules/rf.html">
-    RF
-  </a>
-</li>
-
-
-<li class="nav-item ">
-  <a class="nav-link nav-internal" href="../modules/tuning_tools.html">
-    Tuning tools
+  <a class="nav-link nav-internal" href="../api.html">
+    API Reference
   </a>
 </li>
 
@@ -461,18 +302,17 @@
   
     <div class="sidebar-primary-items__start sidebar-primary__section">
         <div class="sidebar-primary-item">
-  <div>
-    <h4>Previous topic</h4>
-    <p class="topless"><a href="../index.html"
-                          title="previous chapter">pyAML documentation</a></p>
-  </div>
-  <div>
-    <h4>Next topic</h4>
-    <p class="topless"><a href="live_design.html"
-                          title="next chapter">Live/Design: control modes</a></p>
-  </div></div>
-        <div class="sidebar-primary-item">
-<div id="searchbox"></div></div>
+<nav class="bd-docs-nav bd-links"
+     aria-label="Section Navigation">
+  <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
+  <div class="bd-toc-item navbar-nav"><ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Load Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="live_design.html">Control Modes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="control_system.html">Control System</a></li>
+<li class="toctree-l1"><a class="reference internal" href="arrays.html">Use Arrays</a></li>
+</ul>
+</div>
+</nav></div>
     </div>
   
   
@@ -510,6 +350,9 @@
         <i class="fa-solid fa-home"></i>
       </a>
     </li>
+    
+    <li class="breadcrumb-item"><a href="../how-to/index.html" class="nav-link">How to Guides</a></li>
+    
     <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">Configuration</span></li>
   </ul>
 </nav>
@@ -534,6 +377,38 @@
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">pyaml.accelerator</span><span class="w"> </span><span class="kn">import</span> <span class="n">Accelerator</span>
 
 <span class="n">SR</span><span class="p">:</span> <span class="n">Accelerator</span> <span class="o">=</span> <span class="n">Accelerator</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s2">&quot;../../tests/config/EBSTune.yaml&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
+<span class="ne">ModuleNotFoundError</span><span class="g g-Whitespace">                       </span>Traceback (most recent call last)
+<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">line</span> <span class="mi">1</span>
+<span class="ne">----&gt; </span><span class="mi">1</span> <span class="kn">from</span><span class="w"> </span><span class="nn">pyaml.accelerator</span><span class="w"> </span><span class="kn">import</span> <span class="n">Accelerator</span>
+<span class="g g-Whitespace">      </span><span class="mi">3</span> <span class="n">SR</span><span class="p">:</span> <span class="n">Accelerator</span> <span class="o">=</span> <span class="n">Accelerator</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s2">&quot;../../tests/config/EBSTune.yaml&quot;</span><span class="p">)</span>
+
+<span class="n">File</span> <span class="o">/</span><span class="n">opt</span><span class="o">/</span><span class="n">hostedtoolcache</span><span class="o">/</span><span class="n">Python</span><span class="o">/</span><span class="mf">3.14.2</span><span class="o">/</span><span class="n">x64</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">python3</span><span class="mf">.14</span><span class="o">/</span><span class="n">site</span><span class="o">-</span><span class="n">packages</span><span class="o">/</span><span class="n">pyaml</span><span class="o">/</span><span class="n">accelerator</span><span class="o">.</span><span class="n">py</span><span class="p">:</span><span class="mi">14</span>
+<span class="g g-Whitespace">     </span><span class="mi">12</span> <span class="kn">from</span><span class="w"> </span><span class="nn">.configuration.factory</span><span class="w"> </span><span class="kn">import</span> <span class="n">Factory</span>
+<span class="g g-Whitespace">     </span><span class="mi">13</span> <span class="kn">from</span><span class="w"> </span><span class="nn">.configuration.fileloader</span><span class="w"> </span><span class="kn">import</span> <span class="n">load</span><span class="p">,</span> <span class="n">set_root_folder</span>
+<span class="ne">---&gt; </span><span class="mi">14</span> <span class="kn">from</span><span class="w"> </span><span class="nn">.control.controlsystem</span><span class="w"> </span><span class="kn">import</span> <span class="n">ControlSystem</span>
+<span class="g g-Whitespace">     </span><span class="mi">15</span> <span class="kn">from</span><span class="w"> </span><span class="nn">.lattice.simulator</span><span class="w"> </span><span class="kn">import</span> <span class="n">Simulator</span>
+<span class="g g-Whitespace">     </span><span class="mi">17</span> <span class="c1"># Define the main class name for this module</span>
+
+<span class="n">File</span> <span class="o">/</span><span class="n">opt</span><span class="o">/</span><span class="n">hostedtoolcache</span><span class="o">/</span><span class="n">Python</span><span class="o">/</span><span class="mf">3.14.2</span><span class="o">/</span><span class="n">x64</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">python3</span><span class="mf">.14</span><span class="o">/</span><span class="n">site</span><span class="o">-</span><span class="n">packages</span><span class="o">/</span><span class="n">pyaml</span><span class="o">/</span><span class="n">control</span><span class="o">/</span><span class="n">controlsystem</span><span class="o">.</span><span class="n">py</span><span class="p">:</span><span class="mi">30</span>
+<span class="g g-Whitespace">     </span><span class="mi">28</span> <span class="kn">from</span><span class="w"> </span><span class="nn">..rf.rf_plant</span><span class="w"> </span><span class="kn">import</span> <span class="n">RFPlant</span><span class="p">,</span> <span class="n">RWTotalVoltage</span>
+<span class="g g-Whitespace">     </span><span class="mi">29</span> <span class="kn">from</span><span class="w"> </span><span class="nn">..rf.rf_transmitter</span><span class="w"> </span><span class="kn">import</span> <span class="n">RFTransmitter</span>
+<span class="ne">---&gt; </span><span class="mi">30</span> <span class="kn">from</span><span class="w"> </span><span class="nn">..tuning_tools.orbit</span><span class="w"> </span><span class="kn">import</span> <span class="n">Orbit</span>
+<span class="g g-Whitespace">     </span><span class="mi">31</span> <span class="kn">from</span><span class="w"> </span><span class="nn">..tuning_tools.tune</span><span class="w"> </span><span class="kn">import</span> <span class="n">Tune</span>
+<span class="g g-Whitespace">     </span><span class="mi">32</span> <span class="kn">from</span><span class="w"> </span><span class="nn">.deviceaccess</span><span class="w"> </span><span class="kn">import</span> <span class="n">DeviceAccess</span>
+
+<span class="n">File</span> <span class="o">/</span><span class="n">opt</span><span class="o">/</span><span class="n">hostedtoolcache</span><span class="o">/</span><span class="n">Python</span><span class="o">/</span><span class="mf">3.14.2</span><span class="o">/</span><span class="n">x64</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">python3</span><span class="mf">.14</span><span class="o">/</span><span class="n">site</span><span class="o">-</span><span class="n">packages</span><span class="o">/</span><span class="n">pyaml</span><span class="o">/</span><span class="n">tuning_tools</span><span class="o">/</span><span class="n">orbit</span><span class="o">.</span><span class="n">py</span><span class="p">:</span><span class="mi">19</span>
+<span class="g g-Whitespace">     </span><span class="mi">17</span> <span class="kn">from</span><span class="w"> </span><span class="nn">..common.element</span><span class="w"> </span><span class="kn">import</span> <span class="n">Element</span><span class="p">,</span> <span class="n">ElementConfigModel</span>
+<span class="g g-Whitespace">     </span><span class="mi">18</span> <span class="kn">from</span><span class="w"> </span><span class="nn">..common.exception</span><span class="w"> </span><span class="kn">import</span> <span class="n">PyAMLException</span>
+<span class="ne">---&gt; </span><span class="mi">19</span> <span class="kn">from</span><span class="w"> </span><span class="nn">..external.pySC.pySC</span><span class="w"> </span><span class="kn">import</span> <span class="n">ResponseMatrix</span> <span class="k">as</span> <span class="n">pySC_ResponseMatrix</span>
+<span class="g g-Whitespace">     </span><span class="mi">20</span> <span class="kn">from</span><span class="w"> </span><span class="nn">..external.pySC.pySC.apps</span><span class="w"> </span><span class="kn">import</span> <span class="n">orbit_correction</span>
+<span class="g g-Whitespace">     </span><span class="mi">21</span> <span class="kn">from</span><span class="w"> </span><span class="nn">..external.pySC_interface</span><span class="w"> </span><span class="kn">import</span> <span class="n">pySCInterface</span>
+
+<span class="ne">ModuleNotFoundError</span>: No module named &#39;pyaml.external.pySC&#39;
 </pre></div>
 </div>
 </div>
@@ -614,12 +489,12 @@
                   
 <div class="prev-next-area">
     <a class="left-prev"
-       href="../index.html"
+       href="../how-to/index.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">pyAML documentation</p>
+        <p class="prev-next-title">How to Guides</p>
       </div>
     </a>
     <a class="right-next"

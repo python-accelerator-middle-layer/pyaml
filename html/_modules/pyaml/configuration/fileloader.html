@@ -29,8 +29,10 @@
   <link href="../../../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
 <link href="../../../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
 
-    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=8f2a1f02" />
     <link rel="stylesheet" type="text/css" href="../../../_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-design.min.css?v=95c83b7e" />
     <link rel="stylesheet" type="text/css" href="../../../_static/css/custom.css" />
   
   <!-- So that users can add custom icons -->
@@ -42,6 +44,9 @@
     <script src="../../../_static/documentation_options.js?v=48654df3"></script>
     <script src="../../../_static/doctools.js?v=9bcbadda"></script>
     <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../../_static/copybutton.js?v=fd10adb8"></script>
+    <script src="../../../_static/design-tabs.js?v=f930bc37"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = '_modules/pyaml/configuration/fileloader';</script>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" />
@@ -130,112 +135,25 @@
   <ul class="bd-navbar-elements navbar-nav">
     
 <li class="nav-item ">
-  <a class="nav-link nav-internal" href="../../../notebooks/load_configuration.html">
-    Load a configuration file
+  <a class="nav-link nav-internal" href="../../../getting-started/index.html">
+    Getting Started
   </a>
 </li>
 
 
 <li class="nav-item ">
-  <a class="nav-link nav-internal" href="../../../notebooks/live_design.html">
-    Switch design live
+  <a class="nav-link nav-internal" href="../../../how-to/index.html">
+    How to Guides
   </a>
 </li>
 
 
 <li class="nav-item ">
-  <a class="nav-link nav-internal" href="../../../notebooks/control_system.html">
-    Select a control system
+  <a class="nav-link nav-internal" href="../../../api.html">
+    API Reference
   </a>
 </li>
 
-
-<li class="nav-item ">
-  <a class="nav-link nav-internal" href="../../../notebooks/arrays.html">
-    Arrays
-  </a>
-</li>
-
-
-<li class="nav-item ">
-  <a class="nav-link nav-internal" href="../../../modules/arrays.html">
-    Arrays configuration
-  </a>
-</li>
-
-            <li class="nav-item dropdown">
-                <button class="btn dropdown-toggle nav-item" type="button"
-                data-bs-toggle="dropdown" aria-expanded="false"
-                aria-controls="pst-nav-more-links">
-                    More
-                </button>
-                <ul id="pst-nav-more-links" class="dropdown-menu">
-                    
-<li class=" ">
-  <a class="nav-link dropdown-item nav-internal" href="../../../modules/bpm.html">
-    BPMS
-  </a>
-</li>
-
-
-<li class=" ">
-  <a class="nav-link dropdown-item nav-internal" href="../../../modules/common.html">
-    Common elements
-  </a>
-</li>
-
-
-<li class=" ">
-  <a class="nav-link dropdown-item nav-internal" href="../../../modules/configuration.html">
-    Configuration
-  </a>
-</li>
-
-
-<li class=" ">
-  <a class="nav-link dropdown-item nav-internal" href="../../../modules/control.html">
-    Control
-  </a>
-</li>
-
-
-<li class=" ">
-  <a class="nav-link dropdown-item nav-internal" href="../../../modules/lattice.html">
-    lattice
-  </a>
-</li>
-
-
-<li class=" ">
-  <a class="nav-link dropdown-item nav-internal" href="../../../modules/magnet.html">
-    magnets
-  </a>
-</li>
-
-
-<li class=" ">
-  <a class="nav-link dropdown-item nav-internal" href="../../../modules/pyaml.html">
-    pyaml
-  </a>
-</li>
-
-
-<li class=" ">
-  <a class="nav-link dropdown-item nav-internal" href="../../../modules/rf.html">
-    RF
-  </a>
-</li>
-
-
-<li class=" ">
-  <a class="nav-link dropdown-item nav-internal" href="../../../modules/tuning_tools.html">
-    Tuning tools
-  </a>
-</li>
-
-                </ul>
-            </li>
-            
   </ul>
 </nav></div>
       
@@ -308,7 +226,7 @@
         
       
       <dialog id="pst-primary-sidebar-modal"></dialog>
-      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar hide-on-wide">
         
 
   
@@ -324,99 +242,22 @@
   <ul class="bd-navbar-elements navbar-nav">
     
 <li class="nav-item ">
-  <a class="nav-link nav-internal" href="../../../notebooks/load_configuration.html">
-    Load a configuration file
+  <a class="nav-link nav-internal" href="../../../getting-started/index.html">
+    Getting Started
   </a>
 </li>
 
 
 <li class="nav-item ">
-  <a class="nav-link nav-internal" href="../../../notebooks/live_design.html">
-    Switch design live
+  <a class="nav-link nav-internal" href="../../../how-to/index.html">
+    How to Guides
   </a>
 </li>
 
 
 <li class="nav-item ">
-  <a class="nav-link nav-internal" href="../../../notebooks/control_system.html">
-    Select a control system
-  </a>
-</li>
-
-
-<li class="nav-item ">
-  <a class="nav-link nav-internal" href="../../../notebooks/arrays.html">
-    Arrays
-  </a>
-</li>
-
-
-<li class="nav-item ">
-  <a class="nav-link nav-internal" href="../../../modules/arrays.html">
-    Arrays configuration
-  </a>
-</li>
-
-
-<li class="nav-item ">
-  <a class="nav-link nav-internal" href="../../../modules/bpm.html">
-    BPMS
-  </a>
-</li>
-
-
-<li class="nav-item ">
-  <a class="nav-link nav-internal" href="../../../modules/common.html">
-    Common elements
-  </a>
-</li>
-
-
-<li class="nav-item ">
-  <a class="nav-link nav-internal" href="../../../modules/configuration.html">
-    Configuration
-  </a>
-</li>
-
-
-<li class="nav-item ">
-  <a class="nav-link nav-internal" href="../../../modules/control.html">
-    Control
-  </a>
-</li>
-
-
-<li class="nav-item ">
-  <a class="nav-link nav-internal" href="../../../modules/lattice.html">
-    lattice
-  </a>
-</li>
-
-
-<li class="nav-item ">
-  <a class="nav-link nav-internal" href="../../../modules/magnet.html">
-    magnets
-  </a>
-</li>
-
-
-<li class="nav-item ">
-  <a class="nav-link nav-internal" href="../../../modules/pyaml.html">
-    pyaml
-  </a>
-</li>
-
-
-<li class="nav-item ">
-  <a class="nav-link nav-internal" href="../../../modules/rf.html">
-    RF
-  </a>
-</li>
-
-
-<li class="nav-item ">
-  <a class="nav-link nav-internal" href="../../../modules/tuning_tools.html">
-    Tuning tools
+  <a class="nav-link nav-internal" href="../../../api.html">
+    API Reference
   </a>
 </li>
 
@@ -457,11 +298,6 @@
       </div>
     
   </div>
-  
-    <div class="sidebar-primary-items__start sidebar-primary__section">
-        <div class="sidebar-primary-item">
-<div id="searchbox"></div></div>
-    </div>
   
   
   <div class="sidebar-primary-items__end sidebar-primary__section">
@@ -550,7 +386,7 @@
 
 
 <div class="viewcode-block" id="set_root_folder">
-<a class="viewcode-back" href="../../../modules/configuration.html#pyaml.configuration.fileloader.set_root_folder">[docs]</a>
+<a class="viewcode-back" href="../../../api/pyaml.configuration.fileloader.html#pyaml.configuration.fileloader.set_root_folder">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">set_root_folder</span><span class="p">(</span><span class="n">path</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Path</span><span class="p">]):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Set the root path for configuration files.</span>
@@ -560,7 +396,7 @@
 
 
 <div class="viewcode-block" id="get_root_folder">
-<a class="viewcode-back" href="../../../modules/configuration.html#pyaml.configuration.fileloader.get_root_folder">[docs]</a>
+<a class="viewcode-back" href="../../../api/pyaml.configuration.fileloader.html#pyaml.configuration.fileloader.get_root_folder">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">get_root_folder</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">Path</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Get the root path for configuration files.</span>
@@ -570,7 +406,7 @@
 
 
 <div class="viewcode-block" id="get_path">
-<a class="viewcode-back" href="../../../modules/configuration.html#pyaml.configuration.fileloader.get_path">[docs]</a>
+<a class="viewcode-back" href="../../../api/pyaml.configuration.fileloader.html#pyaml.configuration.fileloader.get_path">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">get_path</span><span class="p">(</span><span class="n">p</span><span class="p">:</span> <span class="n">Path</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Path</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Return unchanged input path if it is an absolute path,</span>
@@ -585,7 +421,7 @@
 
 
 <div class="viewcode-block" id="PyAMLConfigCyclingException">
-<a class="viewcode-back" href="../../../modules/configuration.html#pyaml.configuration.fileloader.PyAMLConfigCyclingException">[docs]</a>
+<a class="viewcode-back" href="../../../api/pyaml.configuration.fileloader.html#pyaml.configuration.fileloader.PyAMLConfigCyclingException">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">PyAMLConfigCyclingException</span><span class="p">(</span><span class="n">PyAMLException</span><span class="p">):</span>
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">error_filename</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">path_stack</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Path</span><span class="p">]):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">error_filename</span> <span class="o">=</span> <span class="n">error_filename</span>
@@ -600,7 +436,7 @@
 
 
 <div class="viewcode-block" id="load">
-<a class="viewcode-back" href="../../../modules/configuration.html#pyaml.configuration.fileloader.load">[docs]</a>
+<a class="viewcode-back" href="../../../api/pyaml.configuration.fileloader.html#pyaml.configuration.fileloader.load">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">load</span><span class="p">(</span>
     <span class="n">filename</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">paths_stack</span><span class="p">:</span> <span class="nb">list</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">use_fast_loader</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="nb">dict</span><span class="p">,</span> <span class="nb">list</span><span class="p">]:</span>
@@ -618,13 +454,18 @@
 
 
 <span class="c1"># Expand condition</span>
+<div class="viewcode-block" id="hasToExpand">
+<a class="viewcode-back" href="../../../api/pyaml.configuration.fileloader.html#pyaml.configuration.fileloader.hasToExpand">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">hasToExpand</span><span class="p">(</span><span class="n">value</span><span class="p">):</span>
     <span class="k">return</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">any</span><span class="p">(</span>
         <span class="n">value</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="n">suffix</span><span class="p">)</span> <span class="k">for</span> <span class="n">suffix</span> <span class="ow">in</span> <span class="n">accepted_suffixes</span>
-    <span class="p">)</span>
+    <span class="p">)</span></div>
+
 
 
 <span class="c1"># Loader base class (nested files expansion)</span>
+<div class="viewcode-block" id="Loader">
+<a class="viewcode-back" href="../../../api/pyaml.configuration.fileloader.html#pyaml.configuration.fileloader.Loader">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">Loader</span><span class="p">:</span>
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">parent_path_stack</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Path</span><span class="p">]):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">:</span> <span class="n">Path</span> <span class="o">=</span> <span class="n">get_path</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
@@ -638,6 +479,8 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">files_stack</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">)</span>
 
     <span class="c1"># Recursively expand a dict</span>
+<div class="viewcode-block" id="Loader.expand_dict">
+<a class="viewcode-back" href="../../../api/pyaml.configuration.fileloader.html#pyaml.configuration.fileloader.Loader.expand_dict">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">expand_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">d</span><span class="p">:</span> <span class="nb">dict</span><span class="p">):</span>
         <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">d</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
             <span class="k">try</span><span class="p">:</span>
@@ -658,34 +501,49 @@
                 <span class="k">raise</span> <span class="n">PyAMLException</span><span class="p">(</span>
                     <span class="s2">&quot;Circular file inclusion &quot;</span>
                     <span class="sa">f</span><span class="s2">&quot;of </span><span class="si">{</span><span class="n">pyaml_ex</span><span class="o">.</span><span class="n">error_filename</span><span class="si">}{</span><span class="n">location_str</span><span class="si">}</span><span class="s2">&quot;</span>
-                <span class="p">)</span> <span class="kn">from</span><span class="w"> </span><span class="nn">pyaml_ex</span>
+                <span class="p">)</span> <span class="kn">from</span><span class="w"> </span><span class="nn">pyaml_ex</span></div>
+
 
     <span class="c1"># Recursively expand a list</span>
+<div class="viewcode-block" id="Loader.expand_list">
+<a class="viewcode-back" href="../../../api/pyaml.configuration.fileloader.html#pyaml.configuration.fileloader.Loader.expand_list">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">expand_list</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">l</span><span class="p">:</span> <span class="nb">list</span><span class="p">):</span>
         <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">l</span><span class="p">):</span>
             <span class="k">if</span> <span class="n">hasToExpand</span><span class="p">(</span><span class="n">value</span><span class="p">):</span>
                 <span class="n">l</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span> <span class="o">=</span> <span class="n">load</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">files_stack</span><span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">expand</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">expand</span><span class="p">(</span><span class="n">value</span><span class="p">)</span></div>
+
 
     <span class="c1"># Recursively expand an object</span>
+<div class="viewcode-block" id="Loader.expand">
+<a class="viewcode-back" href="../../../api/pyaml.configuration.fileloader.html#pyaml.configuration.fileloader.Loader.expand">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">expand</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">dict</span><span class="p">,</span> <span class="nb">list</span><span class="p">]):</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">expand_dict</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>
         <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">expand_list</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">obj</span>
+        <span class="k">return</span> <span class="n">obj</span></div>
+
 
     <span class="c1"># Load a file</span>
+<div class="viewcode-block" id="Loader.load">
+<a class="viewcode-back" href="../../../api/pyaml.configuration.fileloader.html#pyaml.configuration.fileloader.Loader.load">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">load</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="nb">dict</span><span class="p">,</span> <span class="nb">list</span><span class="p">]:</span>
-        <span class="k">raise</span> <span class="n">PyAMLException</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;: load() method not implemented&quot;</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="n">PyAMLException</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;: load() method not implemented&quot;</span><span class="p">)</span></div>
+</div>
 
 
+
+<div class="viewcode-block" id="SafeLineLoader">
+<a class="viewcode-back" href="../../../api/pyaml.configuration.fileloader.html#pyaml.configuration.fileloader.SafeLineLoader">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">SafeLineLoader</span><span class="p">(</span><span class="n">SafeLoader</span><span class="p">):</span>
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">stream</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">stream</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">filename</span> <span class="o">=</span> <span class="n">stream</span><span class="o">.</span><span class="n">name</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">stream</span><span class="p">,</span> <span class="n">io</span><span class="o">.</span><span class="n">TextIOWrapper</span><span class="p">)</span> <span class="k">else</span> <span class="s2">&quot;&quot;</span>
 
+<div class="viewcode-block" id="SafeLineLoader.construct_mapping">
+<a class="viewcode-back" href="../../../api/pyaml.configuration.fileloader.html#pyaml.configuration.fileloader.SafeLineLoader.construct_mapping">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">construct_mapping</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">,</span> <span class="n">deep</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
         <span class="n">mapping</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="n">field_mapping</span> <span class="o">=</span> <span class="p">{}</span>
@@ -714,38 +572,52 @@
             <span class="n">node</span><span class="o">.</span><span class="n">start_mark</span><span class="o">.</span><span class="n">column</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span>
         <span class="p">)</span>
         <span class="n">mapping</span><span class="p">[</span><span class="s2">&quot;__fieldlocations__&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">field_mapping</span>
-        <span class="k">return</span> <span class="n">mapping</span>
+        <span class="k">return</span> <span class="n">mapping</span></div>
+</div>
+
 
 
 <span class="c1"># YAML loader</span>
+<div class="viewcode-block" id="YAMLLoader">
+<a class="viewcode-back" href="../../../api/pyaml.configuration.fileloader.html#pyaml.configuration.fileloader.YAMLLoader">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">YAMLLoader</span><span class="p">(</span><span class="n">Loader</span><span class="p">):</span>
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">parent_paths_stack</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span> <span class="n">use_fast_loader</span><span class="p">:</span> <span class="nb">bool</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">parent_paths_stack</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_loader</span> <span class="o">=</span> <span class="n">SafeLineLoader</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">use_fast_loader</span> <span class="k">else</span> <span class="n">CLoader</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">use_fast_loader</span> <span class="o">=</span> <span class="n">use_fast_loader</span>
 
+<div class="viewcode-block" id="YAMLLoader.load">
+<a class="viewcode-back" href="../../../api/pyaml.configuration.fileloader.html#pyaml.configuration.fileloader.YAMLLoader.load">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">load</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="nb">dict</span><span class="p">,</span> <span class="nb">list</span><span class="p">]:</span>
         <span class="n">logger</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">logging</span><span class="o">.</span><span class="n">DEBUG</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;Loading YAML file &#39;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="si">}</span><span class="s2">&#39;&quot;</span><span class="p">)</span>
         <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">)</span> <span class="k">as</span> <span class="n">file</span><span class="p">:</span>
             <span class="k">try</span><span class="p">:</span>
                 <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">expand</span><span class="p">(</span><span class="n">yaml</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">file</span><span class="p">,</span> <span class="n">Loader</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_loader</span><span class="p">))</span>
             <span class="k">except</span> <span class="n">yaml</span><span class="o">.</span><span class="n">YAMLError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="n">PyAMLException</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;: &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">))</span> <span class="kn">from</span><span class="w"> </span><span class="nn">e</span>
+                <span class="k">raise</span> <span class="n">PyAMLException</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;: &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">))</span> <span class="kn">from</span><span class="w"> </span><span class="nn">e</span></div>
+</div>
+
 
 
 <span class="c1"># JSON loader</span>
+<div class="viewcode-block" id="JSONLoader">
+<a class="viewcode-back" href="../../../api/pyaml.configuration.fileloader.html#pyaml.configuration.fileloader.JSONLoader">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">JSONLoader</span><span class="p">(</span><span class="n">Loader</span><span class="p">):</span>
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">parent_paths_stack</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span> <span class="n">use_fast_loader</span><span class="p">:</span> <span class="nb">bool</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">parent_paths_stack</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">use_fast_loader</span> <span class="o">=</span> <span class="kc">False</span>
 
+<div class="viewcode-block" id="JSONLoader.load">
+<a class="viewcode-back" href="../../../api/pyaml.configuration.fileloader.html#pyaml.configuration.fileloader.JSONLoader.load">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">load</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="nb">dict</span><span class="p">,</span> <span class="nb">list</span><span class="p">]:</span>
         <span class="n">logger</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">logging</span><span class="o">.</span><span class="n">DEBUG</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;Loading JSON file &#39;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="si">}</span><span class="s2">&#39;&quot;</span><span class="p">)</span>
         <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">)</span> <span class="k">as</span> <span class="n">file</span><span class="p">:</span>
             <span class="k">try</span><span class="p">:</span>
                 <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">expand</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">file</span><span class="p">))</span>
             <span class="k">except</span> <span class="n">json</span><span class="o">.</span><span class="n">JSONDecodeError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="n">PyAMLException</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;: &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">))</span> <span class="kn">from</span><span class="w"> </span><span class="nn">e</span>
+                <span class="k">raise</span> <span class="n">PyAMLException</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;: &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">))</span> <span class="kn">from</span><span class="w"> </span><span class="nn">e</span></div>
+</div>
+
 </pre></div>
 
                 </article>

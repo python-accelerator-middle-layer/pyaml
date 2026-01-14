@@ -29,8 +29,10 @@
   <link href="../../../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
 <link href="../../../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
 
-    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=8f2a1f02" />
     <link rel="stylesheet" type="text/css" href="../../../_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-design.min.css?v=95c83b7e" />
     <link rel="stylesheet" type="text/css" href="../../../_static/css/custom.css" />
   
   <!-- So that users can add custom icons -->
@@ -42,6 +44,9 @@
     <script src="../../../_static/documentation_options.js?v=48654df3"></script>
     <script src="../../../_static/doctools.js?v=9bcbadda"></script>
     <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../../_static/copybutton.js?v=fd10adb8"></script>
+    <script src="../../../_static/design-tabs.js?v=f930bc37"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = '_modules/pyaml/configuration/factory';</script>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" />
@@ -130,112 +135,25 @@
   <ul class="bd-navbar-elements navbar-nav">
     
 <li class="nav-item ">
-  <a class="nav-link nav-internal" href="../../../notebooks/load_configuration.html">
-    Load a configuration file
+  <a class="nav-link nav-internal" href="../../../getting-started/index.html">
+    Getting Started
   </a>
 </li>
 
 
 <li class="nav-item ">
-  <a class="nav-link nav-internal" href="../../../notebooks/live_design.html">
-    Switch design live
+  <a class="nav-link nav-internal" href="../../../how-to/index.html">
+    How to Guides
   </a>
 </li>
 
 
 <li class="nav-item ">
-  <a class="nav-link nav-internal" href="../../../notebooks/control_system.html">
-    Select a control system
+  <a class="nav-link nav-internal" href="../../../api.html">
+    API Reference
   </a>
 </li>
 
-
-<li class="nav-item ">
-  <a class="nav-link nav-internal" href="../../../notebooks/arrays.html">
-    Arrays
-  </a>
-</li>
-
-
-<li class="nav-item ">
-  <a class="nav-link nav-internal" href="../../../modules/arrays.html">
-    Arrays configuration
-  </a>
-</li>
-
-            <li class="nav-item dropdown">
-                <button class="btn dropdown-toggle nav-item" type="button"
-                data-bs-toggle="dropdown" aria-expanded="false"
-                aria-controls="pst-nav-more-links">
-                    More
-                </button>
-                <ul id="pst-nav-more-links" class="dropdown-menu">
-                    
-<li class=" ">
-  <a class="nav-link dropdown-item nav-internal" href="../../../modules/bpm.html">
-    BPMS
-  </a>
-</li>
-
-
-<li class=" ">
-  <a class="nav-link dropdown-item nav-internal" href="../../../modules/common.html">
-    Common elements
-  </a>
-</li>
-
-
-<li class=" ">
-  <a class="nav-link dropdown-item nav-internal" href="../../../modules/configuration.html">
-    Configuration
-  </a>
-</li>
-
-
-<li class=" ">
-  <a class="nav-link dropdown-item nav-internal" href="../../../modules/control.html">
-    Control
-  </a>
-</li>
-
-
-<li class=" ">
-  <a class="nav-link dropdown-item nav-internal" href="../../../modules/lattice.html">
-    lattice
-  </a>
-</li>
-
-
-<li class=" ">
-  <a class="nav-link dropdown-item nav-internal" href="../../../modules/magnet.html">
-    magnets
-  </a>
-</li>
-
-
-<li class=" ">
-  <a class="nav-link dropdown-item nav-internal" href="../../../modules/pyaml.html">
-    pyaml
-  </a>
-</li>
-
-
-<li class=" ">
-  <a class="nav-link dropdown-item nav-internal" href="../../../modules/rf.html">
-    RF
-  </a>
-</li>
-
-
-<li class=" ">
-  <a class="nav-link dropdown-item nav-internal" href="../../../modules/tuning_tools.html">
-    Tuning tools
-  </a>
-</li>
-
-                </ul>
-            </li>
-            
   </ul>
 </nav></div>
       
@@ -308,7 +226,7 @@
         
       
       <dialog id="pst-primary-sidebar-modal"></dialog>
-      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar hide-on-wide">
         
 
   
@@ -324,99 +242,22 @@
   <ul class="bd-navbar-elements navbar-nav">
     
 <li class="nav-item ">
-  <a class="nav-link nav-internal" href="../../../notebooks/load_configuration.html">
-    Load a configuration file
+  <a class="nav-link nav-internal" href="../../../getting-started/index.html">
+    Getting Started
   </a>
 </li>
 
 
 <li class="nav-item ">
-  <a class="nav-link nav-internal" href="../../../notebooks/live_design.html">
-    Switch design live
+  <a class="nav-link nav-internal" href="../../../how-to/index.html">
+    How to Guides
   </a>
 </li>
 
 
 <li class="nav-item ">
-  <a class="nav-link nav-internal" href="../../../notebooks/control_system.html">
-    Select a control system
-  </a>
-</li>
-
-
-<li class="nav-item ">
-  <a class="nav-link nav-internal" href="../../../notebooks/arrays.html">
-    Arrays
-  </a>
-</li>
-
-
-<li class="nav-item ">
-  <a class="nav-link nav-internal" href="../../../modules/arrays.html">
-    Arrays configuration
-  </a>
-</li>
-
-
-<li class="nav-item ">
-  <a class="nav-link nav-internal" href="../../../modules/bpm.html">
-    BPMS
-  </a>
-</li>
-
-
-<li class="nav-item ">
-  <a class="nav-link nav-internal" href="../../../modules/common.html">
-    Common elements
-  </a>
-</li>
-
-
-<li class="nav-item ">
-  <a class="nav-link nav-internal" href="../../../modules/configuration.html">
-    Configuration
-  </a>
-</li>
-
-
-<li class="nav-item ">
-  <a class="nav-link nav-internal" href="../../../modules/control.html">
-    Control
-  </a>
-</li>
-
-
-<li class="nav-item ">
-  <a class="nav-link nav-internal" href="../../../modules/lattice.html">
-    lattice
-  </a>
-</li>
-
-
-<li class="nav-item ">
-  <a class="nav-link nav-internal" href="../../../modules/magnet.html">
-    magnets
-  </a>
-</li>
-
-
-<li class="nav-item ">
-  <a class="nav-link nav-internal" href="../../../modules/pyaml.html">
-    pyaml
-  </a>
-</li>
-
-
-<li class="nav-item ">
-  <a class="nav-link nav-internal" href="../../../modules/rf.html">
-    RF
-  </a>
-</li>
-
-
-<li class="nav-item ">
-  <a class="nav-link nav-internal" href="../../../modules/tuning_tools.html">
-    Tuning tools
+  <a class="nav-link nav-internal" href="../../../api.html">
+    API Reference
   </a>
 </li>
 
@@ -457,11 +298,6 @@
       </div>
     
   </div>
-  
-    <div class="sidebar-primary-items__start sidebar-primary__section">
-        <div class="sidebar-primary-item">
-<div id="searchbox"></div></div>
-    </div>
   
   
   <div class="sidebar-primary-items__end sidebar-primary__section">
@@ -530,18 +366,27 @@
 <span class="kn">from</span><span class="w"> </span><span class="nn">..common.exception</span><span class="w"> </span><span class="kn">import</span> <span class="n">PyAMLConfigException</span>
 
 
+<div class="viewcode-block" id="BuildStrategy">
+<a class="viewcode-back" href="../../../api/pyaml.configuration.factory.html#pyaml.configuration.factory.BuildStrategy">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">BuildStrategy</span><span class="p">:</span>
+<div class="viewcode-block" id="BuildStrategy.can_handle">
+<a class="viewcode-back" href="../../../api/pyaml.configuration.factory.html#pyaml.configuration.factory.BuildStrategy.can_handle">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">can_handle</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">module</span><span class="p">:</span> <span class="nb">object</span><span class="p">,</span> <span class="n">config_dict</span><span class="p">:</span> <span class="nb">dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Return True if this strategy can handle the module/config.&quot;&quot;&quot;</span>
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
 
+
+<div class="viewcode-block" id="BuildStrategy.build">
+<a class="viewcode-back" href="../../../api/pyaml.configuration.factory.html#pyaml.configuration.factory.BuildStrategy.build">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">build</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">module</span><span class="p">:</span> <span class="nb">object</span><span class="p">,</span> <span class="n">config_dict</span><span class="p">:</span> <span class="nb">dict</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Build the object according to custom logic.&quot;&quot;&quot;</span>
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
+</div>
+
 
 
 <div class="viewcode-block" id="PyAMLFactory">
-<a class="viewcode-back" href="../../../modules/configuration.html#pyaml.configuration.factory.PyAMLFactory">[docs]</a>
+<a class="viewcode-back" href="../../../api/pyaml.configuration.factory.html#pyaml.configuration.factory.PyAMLFactory">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">PyAMLFactory</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Singleton factory to build PyAML elements with future compatibility logic.&quot;&quot;&quot;</span>
 
@@ -561,19 +406,21 @@
             <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_instance</span>
 
 <div class="viewcode-block" id="PyAMLFactory.register_strategy">
-<a class="viewcode-back" href="../../../modules/configuration.html#pyaml.configuration.factory.PyAMLFactory.register_strategy">[docs]</a>
+<a class="viewcode-back" href="../../../api/pyaml.configuration.factory.html#pyaml.configuration.factory.PyAMLFactory.register_strategy">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">register_strategy</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">strategy</span><span class="p">:</span> <span class="n">BuildStrategy</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Register a plugin-based strategy for object creation.&quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_strategies</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">strategy</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="PyAMLFactory.remove_strategy">
-<a class="viewcode-back" href="../../../modules/configuration.html#pyaml.configuration.factory.PyAMLFactory.remove_strategy">[docs]</a>
+<a class="viewcode-back" href="../../../api/pyaml.configuration.factory.html#pyaml.configuration.factory.PyAMLFactory.remove_strategy">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">remove_strategy</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">strategy</span><span class="p">:</span> <span class="n">BuildStrategy</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Register a plugin-based strategy for object creation.&quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_strategies</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">strategy</span><span class="p">)</span></div>
 
 
+<div class="viewcode-block" id="PyAMLFactory.handle_validation_error">
+<a class="viewcode-back" href="../../../api/pyaml.configuration.factory.html#pyaml.configuration.factory.PyAMLFactory.handle_validation_error">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">handle_validation_error</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">e</span><span class="p">,</span> <span class="n">type_str</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">location_str</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">field_locations</span><span class="p">:</span> <span class="nb">dict</span>
     <span class="p">):</span>
@@ -597,10 +444,11 @@
         <span class="c1"># Discard pydantic stack trace</span>
         <span class="k">raise</span> <span class="n">PyAMLConfigException</span><span class="p">(</span>
             <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">globalMessage</span><span class="si">}</span><span class="s2"> for object: &#39;</span><span class="si">{</span><span class="n">type_str</span><span class="si">}</span><span class="s2">&#39; </span><span class="si">{</span><span class="n">location_str</span><span class="si">}</span><span class="s2">&quot;</span>
-        <span class="p">)</span> <span class="kn">from</span><span class="w"> </span><span class="kc">None</span>
+        <span class="p">)</span> <span class="kn">from</span><span class="w"> </span><span class="kc">None</span></div>
+
 
 <div class="viewcode-block" id="PyAMLFactory.build_object">
-<a class="viewcode-back" href="../../../modules/configuration.html#pyaml.configuration.factory.PyAMLFactory.build_object">[docs]</a>
+<a class="viewcode-back" href="../../../api/pyaml.configuration.factory.html#pyaml.configuration.factory.PyAMLFactory.build_object">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">build_object</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">d</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">ignore_external</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Build an object from the dict&quot;&quot;&quot;</span>
         <span class="n">location</span> <span class="o">=</span> <span class="n">d</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;__location__&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
@@ -680,7 +528,7 @@
 
 
 <div class="viewcode-block" id="PyAMLFactory.depth_first_build">
-<a class="viewcode-back" href="../../../modules/configuration.html#pyaml.configuration.factory.PyAMLFactory.depth_first_build">[docs]</a>
+<a class="viewcode-back" href="../../../api/pyaml.configuration.factory.html#pyaml.configuration.factory.PyAMLFactory.depth_first_build">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">depth_first_build</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="n">ignore_external</span><span class="p">:</span> <span class="nb">bool</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Main factory function (Depth-first factory)</span>
@@ -719,26 +567,41 @@
         <span class="p">)</span></div>
 
 
+<div class="viewcode-block" id="PyAMLFactory.register_element">
+<a class="viewcode-back" href="../../../api/pyaml.configuration.factory.html#pyaml.configuration.factory.PyAMLFactory.register_element">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">register_element</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">elt</span><span class="p">):</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">elt</span><span class="p">,</span> <span class="n">Element</span><span class="p">):</span>
             <span class="n">name</span> <span class="o">=</span> <span class="n">elt</span><span class="o">.</span><span class="n">get_name</span><span class="p">()</span>
             <span class="k">if</span> <span class="n">name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_elements</span><span class="p">:</span>
                 <span class="k">raise</span> <span class="n">PyAMLConfigException</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;element </span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2"> already defined&quot;</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_elements</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">elt</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_elements</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">elt</span></div>
 
+
+<div class="viewcode-block" id="PyAMLFactory.get_element">
+<a class="viewcode-back" href="../../../api/pyaml.configuration.factory.html#pyaml.configuration.factory.PyAMLFactory.get_element">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">get_element</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
         <span class="k">if</span> <span class="n">name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_elements</span><span class="p">:</span>
             <span class="k">raise</span> <span class="n">PyAMLConfigException</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;element </span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2"> not defined&quot;</span><span class="p">)</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_elements</span><span class="p">[</span><span class="n">name</span><span class="p">]</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_elements</span><span class="p">[</span><span class="n">name</span><span class="p">]</span></div>
 
+
+<div class="viewcode-block" id="PyAMLFactory.get_elements_by_name">
+<a class="viewcode-back" href="../../../api/pyaml.configuration.factory.html#pyaml.configuration.factory.PyAMLFactory.get_elements_by_name">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">get_elements_by_name</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">wildcard</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">Element</span><span class="p">]:</span>
-        <span class="k">return</span> <span class="p">[</span><span class="n">e</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">e</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_elements</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">if</span> <span class="n">fnmatch</span><span class="o">.</span><span class="n">fnmatch</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">wildcard</span><span class="p">)]</span>
+        <span class="k">return</span> <span class="p">[</span><span class="n">e</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">e</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_elements</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">if</span> <span class="n">fnmatch</span><span class="o">.</span><span class="n">fnmatch</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">wildcard</span><span class="p">)]</span></div>
 
+
+<div class="viewcode-block" id="PyAMLFactory.get_elements_by_type">
+<a class="viewcode-back" href="../../../api/pyaml.configuration.factory.html#pyaml.configuration.factory.PyAMLFactory.get_elements_by_type">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">get_elements_by_type</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">type</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">Element</span><span class="p">]:</span>
-        <span class="k">return</span> <span class="p">[</span><span class="n">e</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">e</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_elements</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="nb">type</span><span class="p">)]</span>
+        <span class="k">return</span> <span class="p">[</span><span class="n">e</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">e</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_elements</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="nb">type</span><span class="p">)]</span></div>
 
+
+<div class="viewcode-block" id="PyAMLFactory.clear">
+<a class="viewcode-back" href="../../../api/pyaml.configuration.factory.html#pyaml.configuration.factory.PyAMLFactory.clear">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">clear</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_elements</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span></div>
+</div>
 
 
 

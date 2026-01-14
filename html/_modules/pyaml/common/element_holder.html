@@ -29,8 +29,10 @@
   <link href="../../../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
 <link href="../../../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
 
-    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=8f2a1f02" />
     <link rel="stylesheet" type="text/css" href="../../../_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-design.min.css?v=95c83b7e" />
     <link rel="stylesheet" type="text/css" href="../../../_static/css/custom.css" />
   
   <!-- So that users can add custom icons -->
@@ -42,6 +44,9 @@
     <script src="../../../_static/documentation_options.js?v=48654df3"></script>
     <script src="../../../_static/doctools.js?v=9bcbadda"></script>
     <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../../_static/copybutton.js?v=fd10adb8"></script>
+    <script src="../../../_static/design-tabs.js?v=f930bc37"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = '_modules/pyaml/common/element_holder';</script>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" />
@@ -130,112 +135,25 @@
   <ul class="bd-navbar-elements navbar-nav">
     
 <li class="nav-item ">
-  <a class="nav-link nav-internal" href="../../../notebooks/load_configuration.html">
-    Load a configuration file
+  <a class="nav-link nav-internal" href="../../../getting-started/index.html">
+    Getting Started
   </a>
 </li>
 
 
 <li class="nav-item ">
-  <a class="nav-link nav-internal" href="../../../notebooks/live_design.html">
-    Switch design live
+  <a class="nav-link nav-internal" href="../../../how-to/index.html">
+    How to Guides
   </a>
 </li>
 
 
 <li class="nav-item ">
-  <a class="nav-link nav-internal" href="../../../notebooks/control_system.html">
-    Select a control system
+  <a class="nav-link nav-internal" href="../../../api.html">
+    API Reference
   </a>
 </li>
 
-
-<li class="nav-item ">
-  <a class="nav-link nav-internal" href="../../../notebooks/arrays.html">
-    Arrays
-  </a>
-</li>
-
-
-<li class="nav-item ">
-  <a class="nav-link nav-internal" href="../../../modules/arrays.html">
-    Arrays configuration
-  </a>
-</li>
-
-            <li class="nav-item dropdown">
-                <button class="btn dropdown-toggle nav-item" type="button"
-                data-bs-toggle="dropdown" aria-expanded="false"
-                aria-controls="pst-nav-more-links">
-                    More
-                </button>
-                <ul id="pst-nav-more-links" class="dropdown-menu">
-                    
-<li class=" ">
-  <a class="nav-link dropdown-item nav-internal" href="../../../modules/bpm.html">
-    BPMS
-  </a>
-</li>
-
-
-<li class=" ">
-  <a class="nav-link dropdown-item nav-internal" href="../../../modules/common.html">
-    Common elements
-  </a>
-</li>
-
-
-<li class=" ">
-  <a class="nav-link dropdown-item nav-internal" href="../../../modules/configuration.html">
-    Configuration
-  </a>
-</li>
-
-
-<li class=" ">
-  <a class="nav-link dropdown-item nav-internal" href="../../../modules/control.html">
-    Control
-  </a>
-</li>
-
-
-<li class=" ">
-  <a class="nav-link dropdown-item nav-internal" href="../../../modules/lattice.html">
-    lattice
-  </a>
-</li>
-
-
-<li class=" ">
-  <a class="nav-link dropdown-item nav-internal" href="../../../modules/magnet.html">
-    magnets
-  </a>
-</li>
-
-
-<li class=" ">
-  <a class="nav-link dropdown-item nav-internal" href="../../../modules/pyaml.html">
-    pyaml
-  </a>
-</li>
-
-
-<li class=" ">
-  <a class="nav-link dropdown-item nav-internal" href="../../../modules/rf.html">
-    RF
-  </a>
-</li>
-
-
-<li class=" ">
-  <a class="nav-link dropdown-item nav-internal" href="../../../modules/tuning_tools.html">
-    Tuning tools
-  </a>
-</li>
-
-                </ul>
-            </li>
-            
   </ul>
 </nav></div>
       
@@ -308,7 +226,7 @@
         
       
       <dialog id="pst-primary-sidebar-modal"></dialog>
-      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar hide-on-wide">
         
 
   
@@ -324,99 +242,22 @@
   <ul class="bd-navbar-elements navbar-nav">
     
 <li class="nav-item ">
-  <a class="nav-link nav-internal" href="../../../notebooks/load_configuration.html">
-    Load a configuration file
+  <a class="nav-link nav-internal" href="../../../getting-started/index.html">
+    Getting Started
   </a>
 </li>
 
 
 <li class="nav-item ">
-  <a class="nav-link nav-internal" href="../../../notebooks/live_design.html">
-    Switch design live
+  <a class="nav-link nav-internal" href="../../../how-to/index.html">
+    How to Guides
   </a>
 </li>
 
 
 <li class="nav-item ">
-  <a class="nav-link nav-internal" href="../../../notebooks/control_system.html">
-    Select a control system
-  </a>
-</li>
-
-
-<li class="nav-item ">
-  <a class="nav-link nav-internal" href="../../../notebooks/arrays.html">
-    Arrays
-  </a>
-</li>
-
-
-<li class="nav-item ">
-  <a class="nav-link nav-internal" href="../../../modules/arrays.html">
-    Arrays configuration
-  </a>
-</li>
-
-
-<li class="nav-item ">
-  <a class="nav-link nav-internal" href="../../../modules/bpm.html">
-    BPMS
-  </a>
-</li>
-
-
-<li class="nav-item ">
-  <a class="nav-link nav-internal" href="../../../modules/common.html">
-    Common elements
-  </a>
-</li>
-
-
-<li class="nav-item ">
-  <a class="nav-link nav-internal" href="../../../modules/configuration.html">
-    Configuration
-  </a>
-</li>
-
-
-<li class="nav-item ">
-  <a class="nav-link nav-internal" href="../../../modules/control.html">
-    Control
-  </a>
-</li>
-
-
-<li class="nav-item ">
-  <a class="nav-link nav-internal" href="../../../modules/lattice.html">
-    lattice
-  </a>
-</li>
-
-
-<li class="nav-item ">
-  <a class="nav-link nav-internal" href="../../../modules/magnet.html">
-    magnets
-  </a>
-</li>
-
-
-<li class="nav-item ">
-  <a class="nav-link nav-internal" href="../../../modules/pyaml.html">
-    pyaml
-  </a>
-</li>
-
-
-<li class="nav-item ">
-  <a class="nav-link nav-internal" href="../../../modules/rf.html">
-    RF
-  </a>
-</li>
-
-
-<li class="nav-item ">
-  <a class="nav-link nav-internal" href="../../../modules/tuning_tools.html">
-    Tuning tools
+  <a class="nav-link nav-internal" href="../../../api.html">
+    API Reference
   </a>
 </li>
 
@@ -457,11 +298,6 @@
       </div>
     
   </div>
-  
-    <div class="sidebar-primary-items__start sidebar-primary__section">
-        <div class="sidebar-primary-item">
-<div id="searchbox"></div></div>
-    </div>
   
   
   <div class="sidebar-primary-items__end sidebar-primary__section">
@@ -546,7 +382,7 @@
 
 
 <div class="viewcode-block" id="ElementHolder">
-<a class="viewcode-back" href="../../../modules/common.html#pyaml.common.element_holder.ElementHolder">[docs]</a>
+<a class="viewcode-back" href="../../../api/pyaml.common.element_holder.html#pyaml.common.element_holder.ElementHolder">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">ElementHolder</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Class that store references of objects used from both</span>
@@ -573,7 +409,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">__ELEMENT_ARRAYS</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="p">{}</span>
 
 <div class="viewcode-block" id="ElementHolder.post_init">
-<a class="viewcode-back" href="../../../modules/common.html#pyaml.common.element_holder.ElementHolder.post_init">[docs]</a>
+<a class="viewcode-back" href="../../../api/pyaml.common.element_holder.html#pyaml.common.element_holder.ElementHolder.post_init">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">post_init</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Method triggered after all initialisations are done</span>
@@ -582,9 +418,14 @@
             <span class="n">e</span><span class="o">.</span><span class="n">post_init</span><span class="p">()</span></div>
 
 
+<div class="viewcode-block" id="ElementHolder.fill_device">
+<a class="viewcode-back" href="../../../api/pyaml.common.element_holder.html#pyaml.common.element_holder.ElementHolder.fill_device">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">fill_device</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">elements</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Element</span><span class="p">]):</span>
-        <span class="k">raise</span> <span class="n">PyAMLException</span><span class="p">(</span><span class="s2">&quot;ElementHolder.fill_device() is not subclassed&quot;</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="n">PyAMLException</span><span class="p">(</span><span class="s2">&quot;ElementHolder.fill_device() is not subclassed&quot;</span><span class="p">)</span></div>
 
+
+<div class="viewcode-block" id="ElementHolder.fill_array">
+<a class="viewcode-back" href="../../../api/pyaml.common.element_holder.html#pyaml.common.element_holder.ElementHolder.fill_array">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">fill_array</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">arrayName</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">elementNames</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">get_func</span><span class="p">,</span> <span class="n">constructor</span><span class="p">,</span> <span class="n">ARR</span><span class="p">:</span> <span class="nb">dict</span>
     <span class="p">):</span>
@@ -602,7 +443,8 @@
                     <span class="sa">f</span><span class="s2">&quot;duplicate name </span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2"> @index </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">a</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
                 <span class="p">)</span> <span class="kn">from</span><span class="w"> </span><span class="kc">None</span>
             <span class="n">a</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">m</span><span class="p">)</span>
-        <span class="n">ARR</span><span class="p">[</span><span class="n">arrayName</span><span class="p">]</span> <span class="o">=</span> <span class="n">constructor</span><span class="p">(</span><span class="n">arrayName</span><span class="p">,</span> <span class="n">a</span><span class="p">)</span>
+        <span class="n">ARR</span><span class="p">[</span><span class="n">arrayName</span><span class="p">]</span> <span class="o">=</span> <span class="n">constructor</span><span class="p">(</span><span class="n">arrayName</span><span class="p">,</span> <span class="n">a</span><span class="p">)</span></div>
+
 
     <span class="k">def</span><span class="w"> </span><span class="nf">__add</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">array</span><span class="p">,</span> <span class="n">element</span><span class="p">:</span> <span class="n">Element</span><span class="p">):</span>
         <span class="k">if</span> <span class="n">element</span><span class="o">.</span><span class="n">get_name</span><span class="p">()</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">__ALL</span><span class="p">:</span>  <span class="c1"># Ensure name unicity</span>
@@ -619,6 +461,8 @@
         <span class="k">return</span> <span class="n">array</span><span class="p">[</span><span class="n">name</span><span class="p">]</span>
 
     <span class="c1"># Generic elements</span>
+<div class="viewcode-block" id="ElementHolder.fill_element_array">
+<a class="viewcode-back" href="../../../api/pyaml.common.element_holder.html#pyaml.common.element_holder.ElementHolder.fill_element_array">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">fill_element_array</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">arrayName</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">elementNames</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">fill_array</span><span class="p">(</span>
             <span class="n">arrayName</span><span class="p">,</span>
@@ -626,38 +470,65 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">get_element</span><span class="p">,</span>
             <span class="n">ElementArray</span><span class="p">,</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">__ELEMENT_ARRAYS</span><span class="p">,</span>
-        <span class="p">)</span>
+        <span class="p">)</span></div>
 
+
+<div class="viewcode-block" id="ElementHolder.get_element">
+<a class="viewcode-back" href="../../../api/pyaml.common.element_holder.html#pyaml.common.element_holder.ElementHolder.get_element">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">get_element</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Element</span><span class="p">:</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__get</span><span class="p">(</span><span class="s2">&quot;Element&quot;</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__ALL</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__get</span><span class="p">(</span><span class="s2">&quot;Element&quot;</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__ALL</span><span class="p">)</span></div>
 
+
+<div class="viewcode-block" id="ElementHolder.get_elements">
+<a class="viewcode-back" href="../../../api/pyaml.common.element_holder.html#pyaml.common.element_holder.ElementHolder.get_elements">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">get_elements</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ElementArray</span><span class="p">:</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__get</span><span class="p">(</span><span class="s2">&quot;Element array&quot;</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__ELEMENT_ARRAYS</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__get</span><span class="p">(</span><span class="s2">&quot;Element array&quot;</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__ELEMENT_ARRAYS</span><span class="p">)</span></div>
 
+
+<div class="viewcode-block" id="ElementHolder.get_all_elements">
+<a class="viewcode-back" href="../../../api/pyaml.common.element_holder.html#pyaml.common.element_holder.ElementHolder.get_all_elements">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">get_all_elements</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">Element</span><span class="p">]:</span>
-        <span class="k">return</span> <span class="p">[</span><span class="n">value</span> <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">__ALL</span><span class="o">.</span><span class="n">items</span><span class="p">()]</span>
+        <span class="k">return</span> <span class="p">[</span><span class="n">value</span> <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">__ALL</span><span class="o">.</span><span class="n">items</span><span class="p">()]</span></div>
+
 
     <span class="c1"># Magnets</span>
 
+<div class="viewcode-block" id="ElementHolder.fill_magnet_array">
+<a class="viewcode-back" href="../../../api/pyaml.common.element_holder.html#pyaml.common.element_holder.ElementHolder.fill_magnet_array">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">fill_magnet_array</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">arrayName</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">elementNames</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">fill_array</span><span class="p">(</span>
             <span class="n">arrayName</span><span class="p">,</span> <span class="n">elementNames</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_magnet</span><span class="p">,</span> <span class="n">MagnetArray</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__MAGNET_ARRAYS</span>
-        <span class="p">)</span>
+        <span class="p">)</span></div>
 
+
+<div class="viewcode-block" id="ElementHolder.get_magnet">
+<a class="viewcode-back" href="../../../api/pyaml.common.element_holder.html#pyaml.common.element_holder.ElementHolder.get_magnet">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">get_magnet</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Magnet</span><span class="p">:</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__get</span><span class="p">(</span><span class="s2">&quot;Magnet&quot;</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__MAGNETS</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__get</span><span class="p">(</span><span class="s2">&quot;Magnet&quot;</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__MAGNETS</span><span class="p">)</span></div>
 
+
+<div class="viewcode-block" id="ElementHolder.add_magnet">
+<a class="viewcode-back" href="../../../api/pyaml.common.element_holder.html#pyaml.common.element_holder.ElementHolder.add_magnet">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">add_magnet</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">m</span><span class="p">:</span> <span class="n">Magnet</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">__add</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__MAGNETS</span><span class="p">,</span> <span class="n">m</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__add</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__MAGNETS</span><span class="p">,</span> <span class="n">m</span><span class="p">)</span></div>
 
+
+<div class="viewcode-block" id="ElementHolder.get_magnets">
+<a class="viewcode-back" href="../../../api/pyaml.common.element_holder.html#pyaml.common.element_holder.ElementHolder.get_magnets">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">get_magnets</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">MagnetArray</span><span class="p">:</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__get</span><span class="p">(</span><span class="s2">&quot;Magnet array&quot;</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__MAGNET_ARRAYS</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__get</span><span class="p">(</span><span class="s2">&quot;Magnet array&quot;</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__MAGNET_ARRAYS</span><span class="p">)</span></div>
 
+
+<div class="viewcode-block" id="ElementHolder.get_all_magnets">
+<a class="viewcode-back" href="../../../api/pyaml.common.element_holder.html#pyaml.common.element_holder.ElementHolder.get_all_magnets">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">get_all_magnets</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">Magnet</span><span class="p">]:</span>
-        <span class="k">return</span> <span class="p">[</span><span class="n">value</span> <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">__MAGNETS</span><span class="o">.</span><span class="n">items</span><span class="p">()]</span>
+        <span class="k">return</span> <span class="p">[</span><span class="n">value</span> <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">__MAGNETS</span><span class="o">.</span><span class="n">items</span><span class="p">()]</span></div>
+
 
     <span class="c1"># Combined Function Magnets</span>
 
+<div class="viewcode-block" id="ElementHolder.fill_cfm_magnet_array">
+<a class="viewcode-back" href="../../../api/pyaml.common.element_holder.html#pyaml.common.element_holder.ElementHolder.fill_cfm_magnet_array">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">fill_cfm_magnet_array</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">arrayName</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">elementNames</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">fill_array</span><span class="p">(</span>
             <span class="n">arrayName</span><span class="p">,</span>
@@ -665,24 +536,39 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">get_cfm_magnet</span><span class="p">,</span>
             <span class="n">CombinedFunctionMagnetArray</span><span class="p">,</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">__CFM_MAGNET_ARRAYS</span><span class="p">,</span>
-        <span class="p">)</span>
+        <span class="p">)</span></div>
 
+
+<div class="viewcode-block" id="ElementHolder.get_cfm_magnet">
+<a class="viewcode-back" href="../../../api/pyaml.common.element_holder.html#pyaml.common.element_holder.ElementHolder.get_cfm_magnet">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">get_cfm_magnet</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Magnet</span><span class="p">:</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__get</span><span class="p">(</span><span class="s2">&quot;CombinedFunctionMagnet&quot;</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__CFM_MAGNETS</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__get</span><span class="p">(</span><span class="s2">&quot;CombinedFunctionMagnet&quot;</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__CFM_MAGNETS</span><span class="p">)</span></div>
 
+
+<div class="viewcode-block" id="ElementHolder.add_cfm_magnet">
+<a class="viewcode-back" href="../../../api/pyaml.common.element_holder.html#pyaml.common.element_holder.ElementHolder.add_cfm_magnet">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">add_cfm_magnet</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">m</span><span class="p">:</span> <span class="n">Magnet</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">__add</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__CFM_MAGNETS</span><span class="p">,</span> <span class="n">m</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__add</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__CFM_MAGNETS</span><span class="p">,</span> <span class="n">m</span><span class="p">)</span></div>
 
+
+<div class="viewcode-block" id="ElementHolder.get_cfm_magnets">
+<a class="viewcode-back" href="../../../api/pyaml.common.element_holder.html#pyaml.common.element_holder.ElementHolder.get_cfm_magnets">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">get_cfm_magnets</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">CombinedFunctionMagnetArray</span><span class="p">:</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__get</span><span class="p">(</span>
             <span class="s2">&quot;CombinedFunctionMagnet array&quot;</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__CFM_MAGNET_ARRAYS</span>
-        <span class="p">)</span>
+        <span class="p">)</span></div>
 
+
+<div class="viewcode-block" id="ElementHolder.get_all_cfm_magnets">
+<a class="viewcode-back" href="../../../api/pyaml.common.element_holder.html#pyaml.common.element_holder.ElementHolder.get_all_cfm_magnets">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">get_all_cfm_magnets</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">CombinedFunctionMagnet</span><span class="p">]:</span>
-        <span class="k">return</span> <span class="p">[</span><span class="n">value</span> <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">__CFM_MAGNETS</span><span class="o">.</span><span class="n">items</span><span class="p">()]</span>
+        <span class="k">return</span> <span class="p">[</span><span class="n">value</span> <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">__CFM_MAGNETS</span><span class="o">.</span><span class="n">items</span><span class="p">()]</span></div>
+
 
     <span class="c1"># Serialized magnets</span>
 
+<div class="viewcode-block" id="ElementHolder.fill_serialized_magnet_array">
+<a class="viewcode-back" href="../../../api/pyaml.common.element_holder.html#pyaml.common.element_holder.ElementHolder.fill_serialized_magnet_array">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">fill_serialized_magnet_array</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">arrayName</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">elementNames</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">fill_array</span><span class="p">(</span>
             <span class="n">arrayName</span><span class="p">,</span>
@@ -690,80 +576,138 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">get_serialized_magnet</span><span class="p">,</span>
             <span class="n">SerializedMagnetsArray</span><span class="p">,</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">__SERIALIZED_MAGNETS_ARRAYS</span><span class="p">,</span>
-        <span class="p">)</span>
+        <span class="p">)</span></div>
 
+
+<div class="viewcode-block" id="ElementHolder.get_serialized_magnet">
+<a class="viewcode-back" href="../../../api/pyaml.common.element_holder.html#pyaml.common.element_holder.ElementHolder.get_serialized_magnet">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">get_serialized_magnet</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Magnet</span><span class="p">:</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__get</span><span class="p">(</span><span class="s2">&quot;SerializedMagnets&quot;</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__SERIALIZED_MAGNETS</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__get</span><span class="p">(</span><span class="s2">&quot;SerializedMagnets&quot;</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__SERIALIZED_MAGNETS</span><span class="p">)</span></div>
 
+
+<div class="viewcode-block" id="ElementHolder.add_serialized_magnet">
+<a class="viewcode-back" href="../../../api/pyaml.common.element_holder.html#pyaml.common.element_holder.ElementHolder.add_serialized_magnet">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">add_serialized_magnet</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">m</span><span class="p">:</span> <span class="n">Magnet</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">__add</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__SERIALIZED_MAGNETS</span><span class="p">,</span> <span class="n">m</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__add</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__SERIALIZED_MAGNETS</span><span class="p">,</span> <span class="n">m</span><span class="p">)</span></div>
 
+
+<div class="viewcode-block" id="ElementHolder.get_serialized_magnets">
+<a class="viewcode-back" href="../../../api/pyaml.common.element_holder.html#pyaml.common.element_holder.ElementHolder.get_serialized_magnets">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">get_serialized_magnets</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">SerializedMagnetsArray</span><span class="p">:</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__get</span><span class="p">(</span>
             <span class="s2">&quot;SerializedMagnets array&quot;</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__SERIALIZED_MAGNETS_ARRAYS</span>
-        <span class="p">)</span>
+        <span class="p">)</span></div>
 
+
+<div class="viewcode-block" id="ElementHolder.get_all_serialized_magnets">
+<a class="viewcode-back" href="../../../api/pyaml.common.element_holder.html#pyaml.common.element_holder.ElementHolder.get_all_serialized_magnets">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">get_all_serialized_magnets</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">SerializedMagnets</span><span class="p">]:</span>
-        <span class="k">return</span> <span class="p">[</span><span class="n">value</span> <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">__SERIALIZED_MAGNETS</span><span class="o">.</span><span class="n">items</span><span class="p">()]</span>
+        <span class="k">return</span> <span class="p">[</span><span class="n">value</span> <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">__SERIALIZED_MAGNETS</span><span class="o">.</span><span class="n">items</span><span class="p">()]</span></div>
+
 
     <span class="c1"># BPMs</span>
 
+<div class="viewcode-block" id="ElementHolder.fill_bpm_array">
+<a class="viewcode-back" href="../../../api/pyaml.common.element_holder.html#pyaml.common.element_holder.ElementHolder.fill_bpm_array">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">fill_bpm_array</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">arrayName</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">elementNames</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">fill_array</span><span class="p">(</span>
             <span class="n">arrayName</span><span class="p">,</span> <span class="n">elementNames</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_bpm</span><span class="p">,</span> <span class="n">BPMArray</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__BPM_ARRAYS</span>
-        <span class="p">)</span>
+        <span class="p">)</span></div>
 
+
+<div class="viewcode-block" id="ElementHolder.get_bpm">
+<a class="viewcode-back" href="../../../api/pyaml.common.element_holder.html#pyaml.common.element_holder.ElementHolder.get_bpm">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">get_bpm</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Element</span><span class="p">:</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__get</span><span class="p">(</span><span class="s2">&quot;BPM&quot;</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__BPMS</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__get</span><span class="p">(</span><span class="s2">&quot;BPM&quot;</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__BPMS</span><span class="p">)</span></div>
 
+
+<div class="viewcode-block" id="ElementHolder.add_bpm">
+<a class="viewcode-back" href="../../../api/pyaml.common.element_holder.html#pyaml.common.element_holder.ElementHolder.add_bpm">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">add_bpm</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">bpm</span><span class="p">:</span> <span class="n">BPM</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">__add</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__BPMS</span><span class="p">,</span> <span class="n">bpm</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__add</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__BPMS</span><span class="p">,</span> <span class="n">bpm</span><span class="p">)</span></div>
 
+
+<div class="viewcode-block" id="ElementHolder.get_bpms">
+<a class="viewcode-back" href="../../../api/pyaml.common.element_holder.html#pyaml.common.element_holder.ElementHolder.get_bpms">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">get_bpms</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">BPMArray</span><span class="p">:</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__get</span><span class="p">(</span><span class="s2">&quot;BPM array&quot;</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__BPM_ARRAYS</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__get</span><span class="p">(</span><span class="s2">&quot;BPM array&quot;</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__BPM_ARRAYS</span><span class="p">)</span></div>
 
+
+<div class="viewcode-block" id="ElementHolder.get_all_bpms">
+<a class="viewcode-back" href="../../../api/pyaml.common.element_holder.html#pyaml.common.element_holder.ElementHolder.get_all_bpms">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">get_all_bpms</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">BPM</span><span class="p">]:</span>
-        <span class="k">return</span> <span class="p">[</span><span class="n">value</span> <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">__BPMS</span><span class="o">.</span><span class="n">items</span><span class="p">()]</span>
+        <span class="k">return</span> <span class="p">[</span><span class="n">value</span> <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">__BPMS</span><span class="o">.</span><span class="n">items</span><span class="p">()]</span></div>
+
 
     <span class="c1"># RF</span>
 
+<div class="viewcode-block" id="ElementHolder.get_rf_plant">
+<a class="viewcode-back" href="../../../api/pyaml.common.element_holder.html#pyaml.common.element_holder.ElementHolder.get_rf_plant">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">get_rf_plant</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">RFPlant</span><span class="p">:</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__get</span><span class="p">(</span><span class="s2">&quot;RFPlant&quot;</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__RFPLANT</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__get</span><span class="p">(</span><span class="s2">&quot;RFPlant&quot;</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__RFPLANT</span><span class="p">)</span></div>
 
+
+<div class="viewcode-block" id="ElementHolder.add_rf_plant">
+<a class="viewcode-back" href="../../../api/pyaml.common.element_holder.html#pyaml.common.element_holder.ElementHolder.add_rf_plant">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">add_rf_plant</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rf</span><span class="p">:</span> <span class="n">RFPlant</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">__add</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__RFPLANT</span><span class="p">,</span> <span class="n">rf</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__add</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__RFPLANT</span><span class="p">,</span> <span class="n">rf</span><span class="p">)</span></div>
 
+
+<div class="viewcode-block" id="ElementHolder.add_rf_transnmitter">
+<a class="viewcode-back" href="../../../api/pyaml.common.element_holder.html#pyaml.common.element_holder.ElementHolder.add_rf_transnmitter">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">add_rf_transnmitter</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rf</span><span class="p">:</span> <span class="n">RFTransmitter</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">__add</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__RFTRANSMITTER</span><span class="p">,</span> <span class="n">rf</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__add</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__RFTRANSMITTER</span><span class="p">,</span> <span class="n">rf</span><span class="p">)</span></div>
 
+
+<div class="viewcode-block" id="ElementHolder.get_rf_trasnmitter">
+<a class="viewcode-back" href="../../../api/pyaml.common.element_holder.html#pyaml.common.element_holder.ElementHolder.get_rf_trasnmitter">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">get_rf_trasnmitter</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">RFTransmitter</span><span class="p">:</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__get</span><span class="p">(</span><span class="s2">&quot;RFTransmitter&quot;</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__RFTRANSMITTER</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__get</span><span class="p">(</span><span class="s2">&quot;RFTransmitter&quot;</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__RFTRANSMITTER</span><span class="p">)</span></div>
+
 
     <span class="c1"># Tune monitor</span>
 
+<div class="viewcode-block" id="ElementHolder.get_betatron_tune_monitor">
+<a class="viewcode-back" href="../../../api/pyaml.common.element_holder.html#pyaml.common.element_holder.ElementHolder.get_betatron_tune_monitor">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">get_betatron_tune_monitor</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">BetatronTuneMonitor</span><span class="p">:</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__get</span><span class="p">(</span><span class="s2">&quot;Diagnostic&quot;</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__DIAG</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__get</span><span class="p">(</span><span class="s2">&quot;Diagnostic&quot;</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__DIAG</span><span class="p">)</span></div>
 
+
+<div class="viewcode-block" id="ElementHolder.add_betatron_tune_monitor">
+<a class="viewcode-back" href="../../../api/pyaml.common.element_holder.html#pyaml.common.element_holder.ElementHolder.add_betatron_tune_monitor">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">add_betatron_tune_monitor</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tune_monitor</span><span class="p">:</span> <span class="n">Element</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">__add</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__DIAG</span><span class="p">,</span> <span class="n">tune_monitor</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__add</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__DIAG</span><span class="p">,</span> <span class="n">tune_monitor</span><span class="p">)</span></div>
+
 
     <span class="c1"># Tuning tools</span>
 
+<div class="viewcode-block" id="ElementHolder.get_tune_tuning">
+<a class="viewcode-back" href="../../../api/pyaml.common.element_holder.html#pyaml.common.element_holder.ElementHolder.get_tune_tuning">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">get_tune_tuning</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;Tune&quot;</span><span class="p">:</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__get</span><span class="p">(</span><span class="s2">&quot;Tune tuning tool&quot;</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__TUNING_TOOLS</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__get</span><span class="p">(</span><span class="s2">&quot;Tune tuning tool&quot;</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__TUNING_TOOLS</span><span class="p">)</span></div>
 
+
+<div class="viewcode-block" id="ElementHolder.add_tune_tuning">
+<a class="viewcode-back" href="../../../api/pyaml.common.element_holder.html#pyaml.common.element_holder.ElementHolder.add_tune_tuning">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">add_tune_tuning</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tune</span><span class="p">:</span> <span class="n">Element</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">__add</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__TUNING_TOOLS</span><span class="p">,</span> <span class="n">tune</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__add</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__TUNING_TOOLS</span><span class="p">,</span> <span class="n">tune</span><span class="p">)</span></div>
+
 
     <span class="nd">@property</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">tune</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;Tune&quot;</span><span class="p">:</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_tune_tuning</span><span class="p">(</span><span class="s2">&quot;DEFAULT_TUNE_CORRECTION&quot;</span><span class="p">)</span>
 
+<div class="viewcode-block" id="ElementHolder.get_orbit_tuning">
+<a class="viewcode-back" href="../../../api/pyaml.common.element_holder.html#pyaml.common.element_holder.ElementHolder.get_orbit_tuning">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">get_orbit_tuning</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;Orbit&quot;</span><span class="p">:</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__get</span><span class="p">(</span><span class="s2">&quot;Orbit tuning tool&quot;</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__TUNING_TOOLS</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__get</span><span class="p">(</span><span class="s2">&quot;Orbit tuning tool&quot;</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__TUNING_TOOLS</span><span class="p">)</span></div>
 
+
+<div class="viewcode-block" id="ElementHolder.add_orbit_tuning">
+<a class="viewcode-back" href="../../../api/pyaml.common.element_holder.html#pyaml.common.element_holder.ElementHolder.add_orbit_tuning">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">add_orbit_tuning</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">orbit</span><span class="p">:</span> <span class="n">Element</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">__add</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__TUNING_TOOLS</span><span class="p">,</span> <span class="n">orbit</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__add</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__TUNING_TOOLS</span><span class="p">,</span> <span class="n">orbit</span><span class="p">)</span></div>
+
 
     <span class="nd">@property</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">orbit</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;Orbit&quot;</span><span class="p">:</span>

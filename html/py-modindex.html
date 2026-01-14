@@ -29,8 +29,10 @@
   <link href="_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
 <link href="_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
 
-    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=8f2a1f02" />
     <link rel="stylesheet" type="text/css" href="_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-design.min.css?v=95c83b7e" />
     <link rel="stylesheet" type="text/css" href="_static/css/custom.css" />
   
   <!-- So that users can add custom icons -->
@@ -42,6 +44,9 @@
     <script src="_static/documentation_options.js?v=48654df3"></script>
     <script src="_static/doctools.js?v=9bcbadda"></script>
     <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="_static/copybutton.js?v=fd10adb8"></script>
+    <script src="_static/design-tabs.js?v=f930bc37"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'py-modindex';</script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
@@ -133,112 +138,25 @@
   <ul class="bd-navbar-elements navbar-nav">
     
 <li class="nav-item ">
-  <a class="nav-link nav-internal" href="notebooks/load_configuration.html">
-    Load a configuration file
+  <a class="nav-link nav-internal" href="getting-started/index.html">
+    Getting Started
   </a>
 </li>
 
 
 <li class="nav-item ">
-  <a class="nav-link nav-internal" href="notebooks/live_design.html">
-    Switch design live
+  <a class="nav-link nav-internal" href="how-to/index.html">
+    How to Guides
   </a>
 </li>
 
 
 <li class="nav-item ">
-  <a class="nav-link nav-internal" href="notebooks/control_system.html">
-    Select a control system
+  <a class="nav-link nav-internal" href="api.html">
+    API Reference
   </a>
 </li>
 
-
-<li class="nav-item ">
-  <a class="nav-link nav-internal" href="notebooks/arrays.html">
-    Arrays
-  </a>
-</li>
-
-
-<li class="nav-item ">
-  <a class="nav-link nav-internal" href="modules/arrays.html">
-    Arrays configuration
-  </a>
-</li>
-
-            <li class="nav-item dropdown">
-                <button class="btn dropdown-toggle nav-item" type="button"
-                data-bs-toggle="dropdown" aria-expanded="false"
-                aria-controls="pst-nav-more-links">
-                    More
-                </button>
-                <ul id="pst-nav-more-links" class="dropdown-menu">
-                    
-<li class=" ">
-  <a class="nav-link dropdown-item nav-internal" href="modules/bpm.html">
-    BPMS
-  </a>
-</li>
-
-
-<li class=" ">
-  <a class="nav-link dropdown-item nav-internal" href="modules/common.html">
-    Common elements
-  </a>
-</li>
-
-
-<li class=" ">
-  <a class="nav-link dropdown-item nav-internal" href="modules/configuration.html">
-    Configuration
-  </a>
-</li>
-
-
-<li class=" ">
-  <a class="nav-link dropdown-item nav-internal" href="modules/control.html">
-    Control
-  </a>
-</li>
-
-
-<li class=" ">
-  <a class="nav-link dropdown-item nav-internal" href="modules/lattice.html">
-    lattice
-  </a>
-</li>
-
-
-<li class=" ">
-  <a class="nav-link dropdown-item nav-internal" href="modules/magnet.html">
-    magnets
-  </a>
-</li>
-
-
-<li class=" ">
-  <a class="nav-link dropdown-item nav-internal" href="modules/pyaml.html">
-    pyaml
-  </a>
-</li>
-
-
-<li class=" ">
-  <a class="nav-link dropdown-item nav-internal" href="modules/rf.html">
-    RF
-  </a>
-</li>
-
-
-<li class=" ">
-  <a class="nav-link dropdown-item nav-internal" href="modules/tuning_tools.html">
-    Tuning tools
-  </a>
-</li>
-
-                </ul>
-            </li>
-            
   </ul>
 </nav></div>
       
@@ -311,7 +229,7 @@
         
       
       <dialog id="pst-primary-sidebar-modal"></dialog>
-      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar hide-on-wide">
         
 
   
@@ -327,99 +245,22 @@
   <ul class="bd-navbar-elements navbar-nav">
     
 <li class="nav-item ">
-  <a class="nav-link nav-internal" href="notebooks/load_configuration.html">
-    Load a configuration file
+  <a class="nav-link nav-internal" href="getting-started/index.html">
+    Getting Started
   </a>
 </li>
 
 
 <li class="nav-item ">
-  <a class="nav-link nav-internal" href="notebooks/live_design.html">
-    Switch design live
+  <a class="nav-link nav-internal" href="how-to/index.html">
+    How to Guides
   </a>
 </li>
 
 
 <li class="nav-item ">
-  <a class="nav-link nav-internal" href="notebooks/control_system.html">
-    Select a control system
-  </a>
-</li>
-
-
-<li class="nav-item ">
-  <a class="nav-link nav-internal" href="notebooks/arrays.html">
-    Arrays
-  </a>
-</li>
-
-
-<li class="nav-item ">
-  <a class="nav-link nav-internal" href="modules/arrays.html">
-    Arrays configuration
-  </a>
-</li>
-
-
-<li class="nav-item ">
-  <a class="nav-link nav-internal" href="modules/bpm.html">
-    BPMS
-  </a>
-</li>
-
-
-<li class="nav-item ">
-  <a class="nav-link nav-internal" href="modules/common.html">
-    Common elements
-  </a>
-</li>
-
-
-<li class="nav-item ">
-  <a class="nav-link nav-internal" href="modules/configuration.html">
-    Configuration
-  </a>
-</li>
-
-
-<li class="nav-item ">
-  <a class="nav-link nav-internal" href="modules/control.html">
-    Control
-  </a>
-</li>
-
-
-<li class="nav-item ">
-  <a class="nav-link nav-internal" href="modules/lattice.html">
-    lattice
-  </a>
-</li>
-
-
-<li class="nav-item ">
-  <a class="nav-link nav-internal" href="modules/magnet.html">
-    magnets
-  </a>
-</li>
-
-
-<li class="nav-item ">
-  <a class="nav-link nav-internal" href="modules/pyaml.html">
-    pyaml
-  </a>
-</li>
-
-
-<li class="nav-item ">
-  <a class="nav-link nav-internal" href="modules/rf.html">
-    RF
-  </a>
-</li>
-
-
-<li class="nav-item ">
-  <a class="nav-link nav-internal" href="modules/tuning_tools.html">
-    Tuning tools
+  <a class="nav-link nav-internal" href="api.html">
+    API Reference
   </a>
 </li>
 
@@ -460,11 +301,6 @@
       </div>
     
   </div>
-  
-    <div class="sidebar-primary-items__start sidebar-primary__section">
-        <div class="sidebar-primary-item">
-<div id="searchbox"></div></div>
-    </div>
   
   
   <div class="sidebar-primary-items__end sidebar-primary__section">
@@ -509,362 +345,372 @@
        <td><img src="_static/minus.png" class="toggler"
               id="toggle-1" style="display: none" alt="-" /></td>
        <td>
-       <a href="generated/pyaml.html#module-pyaml"><code class="xref">pyaml</code></a></td><td>
+       <code class="xref">pyaml</code></td><td>
        <em></em></td></tr>
      <tr class="cg-1">
        <td></td>
        <td>&#160;&#160;&#160;
-       <a href="modules/arrays.html#module-pyaml.arrays.array"><code class="xref">pyaml.arrays.array</code></a></td><td>
+       <a href="api/pyaml.arrays.html#module-pyaml.arrays"><code class="xref">pyaml.arrays</code></a></td><td>
        <em></em></td></tr>
      <tr class="cg-1">
        <td></td>
        <td>&#160;&#160;&#160;
-       <a href="modules/arrays.html#module-pyaml.arrays.bpm"><code class="xref">pyaml.arrays.bpm</code></a></td><td>
+       <a href="api/pyaml.arrays.array.html#module-pyaml.arrays.array"><code class="xref">pyaml.arrays.array</code></a></td><td>
        <em></em></td></tr>
      <tr class="cg-1">
        <td></td>
        <td>&#160;&#160;&#160;
-       <a href="modules/arrays.html#module-pyaml.arrays.bpm_array"><code class="xref">pyaml.arrays.bpm_array</code></a></td><td>
+       <a href="api/pyaml.arrays.bpm.html#module-pyaml.arrays.bpm"><code class="xref">pyaml.arrays.bpm</code></a></td><td>
        <em></em></td></tr>
      <tr class="cg-1">
        <td></td>
        <td>&#160;&#160;&#160;
-       <a href="modules/arrays.html#module-pyaml.arrays.cfm_magnet"><code class="xref">pyaml.arrays.cfm_magnet</code></a></td><td>
+       <a href="api/pyaml.arrays.bpm_array.html#module-pyaml.arrays.bpm_array"><code class="xref">pyaml.arrays.bpm_array</code></a></td><td>
        <em></em></td></tr>
      <tr class="cg-1">
        <td></td>
        <td>&#160;&#160;&#160;
-       <a href="modules/arrays.html#module-pyaml.arrays.cfm_magnet_array"><code class="xref">pyaml.arrays.cfm_magnet_array</code></a></td><td>
+       <a href="api/pyaml.arrays.cfm_magnet.html#module-pyaml.arrays.cfm_magnet"><code class="xref">pyaml.arrays.cfm_magnet</code></a></td><td>
        <em></em></td></tr>
      <tr class="cg-1">
        <td></td>
        <td>&#160;&#160;&#160;
-       <a href="modules/arrays.html#module-pyaml.arrays.element"><code class="xref">pyaml.arrays.element</code></a></td><td>
+       <a href="api/pyaml.arrays.cfm_magnet_array.html#module-pyaml.arrays.cfm_magnet_array"><code class="xref">pyaml.arrays.cfm_magnet_array</code></a></td><td>
        <em></em></td></tr>
      <tr class="cg-1">
        <td></td>
        <td>&#160;&#160;&#160;
-       <a href="modules/arrays.html#module-pyaml.arrays.element_array"><code class="xref">pyaml.arrays.element_array</code></a></td><td>
+       <a href="api/pyaml.arrays.element.html#module-pyaml.arrays.element"><code class="xref">pyaml.arrays.element</code></a></td><td>
        <em></em></td></tr>
      <tr class="cg-1">
        <td></td>
        <td>&#160;&#160;&#160;
-       <a href="modules/arrays.html#module-pyaml.arrays.magnet"><code class="xref">pyaml.arrays.magnet</code></a></td><td>
+       <a href="api/pyaml.arrays.element_array.html#module-pyaml.arrays.element_array"><code class="xref">pyaml.arrays.element_array</code></a></td><td>
        <em></em></td></tr>
      <tr class="cg-1">
        <td></td>
        <td>&#160;&#160;&#160;
-       <a href="modules/arrays.html#module-pyaml.arrays.magnet_array"><code class="xref">pyaml.arrays.magnet_array</code></a></td><td>
+       <a href="api/pyaml.arrays.magnet.html#module-pyaml.arrays.magnet"><code class="xref">pyaml.arrays.magnet</code></a></td><td>
        <em></em></td></tr>
      <tr class="cg-1">
        <td></td>
        <td>&#160;&#160;&#160;
-       <a href="modules/bpm.html#module-pyaml.bpm.bpm"><code class="xref">pyaml.bpm.bpm</code></a></td><td>
+       <a href="api/pyaml.arrays.magnet_array.html#module-pyaml.arrays.magnet_array"><code class="xref">pyaml.arrays.magnet_array</code></a></td><td>
        <em></em></td></tr>
      <tr class="cg-1">
        <td></td>
        <td>&#160;&#160;&#160;
-       <a href="modules/bpm.html#module-pyaml.bpm.bpm_model"><code class="xref">pyaml.bpm.bpm_model</code></a></td><td>
+       <a href="api/pyaml.arrays.serialized_magnet.html#module-pyaml.arrays.serialized_magnet"><code class="xref">pyaml.arrays.serialized_magnet</code></a></td><td>
        <em></em></td></tr>
      <tr class="cg-1">
        <td></td>
        <td>&#160;&#160;&#160;
-       <a href="modules/bpm.html#module-pyaml.bpm.bpm_simple_model"><code class="xref">pyaml.bpm.bpm_simple_model</code></a></td><td>
+       <a href="api/pyaml.arrays.serialized_magnet_array.html#module-pyaml.arrays.serialized_magnet_array"><code class="xref">pyaml.arrays.serialized_magnet_array</code></a></td><td>
        <em></em></td></tr>
      <tr class="cg-1">
        <td></td>
        <td>&#160;&#160;&#160;
-       <a href="modules/bpm.html#module-pyaml.bpm.bpm_tiltoffset_model"><code class="xref">pyaml.bpm.bpm_tiltoffset_model</code></a></td><td>
+       <a href="api/pyaml.bpm.html#module-pyaml.bpm"><code class="xref">pyaml.bpm</code></a></td><td>
        <em></em></td></tr>
      <tr class="cg-1">
        <td></td>
        <td>&#160;&#160;&#160;
-       <a href="generated/pyaml.common.html#module-pyaml.common"><code class="xref">pyaml.common</code></a></td><td>
+       <a href="api/pyaml.bpm.bpm.html#module-pyaml.bpm.bpm"><code class="xref">pyaml.bpm.bpm</code></a></td><td>
        <em></em></td></tr>
      <tr class="cg-1">
        <td></td>
        <td>&#160;&#160;&#160;
-       <a href="modules/common.html#module-pyaml.common.abstract"><code class="xref">pyaml.common.abstract</code></a></td><td>
+       <a href="api/pyaml.bpm.bpm_model.html#module-pyaml.bpm.bpm_model"><code class="xref">pyaml.bpm.bpm_model</code></a></td><td>
        <em></em></td></tr>
      <tr class="cg-1">
        <td></td>
        <td>&#160;&#160;&#160;
-       <a href="modules/common.html#module-pyaml.common.abstract_aggregator"><code class="xref">pyaml.common.abstract_aggregator</code></a></td><td>
+       <a href="api/pyaml.bpm.bpm_simple_model.html#module-pyaml.bpm.bpm_simple_model"><code class="xref">pyaml.bpm.bpm_simple_model</code></a></td><td>
        <em></em></td></tr>
      <tr class="cg-1">
        <td></td>
        <td>&#160;&#160;&#160;
-       <a href="modules/common.html#module-pyaml.common.constants"><code class="xref">pyaml.common.constants</code></a></td><td>
+       <a href="api/pyaml.bpm.bpm_tiltoffset_model.html#module-pyaml.bpm.bpm_tiltoffset_model"><code class="xref">pyaml.bpm.bpm_tiltoffset_model</code></a></td><td>
        <em></em></td></tr>
      <tr class="cg-1">
        <td></td>
        <td>&#160;&#160;&#160;
-       <a href="modules/common.html#module-pyaml.common.element"><code class="xref">pyaml.common.element</code></a></td><td>
+       <a href="api/pyaml.common.html#module-pyaml.common"><code class="xref">pyaml.common</code></a></td><td>
        <em></em></td></tr>
      <tr class="cg-1">
        <td></td>
        <td>&#160;&#160;&#160;
-       <a href="modules/common.html#module-pyaml.common.element_holder"><code class="xref">pyaml.common.element_holder</code></a></td><td>
+       <a href="api/pyaml.common.abstract.html#module-pyaml.common.abstract"><code class="xref">pyaml.common.abstract</code></a></td><td>
        <em></em></td></tr>
      <tr class="cg-1">
        <td></td>
        <td>&#160;&#160;&#160;
-       <a href="modules/common.html#module-pyaml.common.exception"><code class="xref">pyaml.common.exception</code></a></td><td>
+       <a href="api/pyaml.common.abstract_aggregator.html#module-pyaml.common.abstract_aggregator"><code class="xref">pyaml.common.abstract_aggregator</code></a></td><td>
        <em></em></td></tr>
      <tr class="cg-1">
        <td></td>
        <td>&#160;&#160;&#160;
-       <a href="generated/pyaml.configuration.html#module-pyaml.configuration"><code class="xref">pyaml.configuration</code></a></td><td>
+       <a href="api/pyaml.common.constants.html#module-pyaml.common.constants"><code class="xref">pyaml.common.constants</code></a></td><td>
        <em></em></td></tr>
      <tr class="cg-1">
        <td></td>
        <td>&#160;&#160;&#160;
-       <a href="modules/configuration.html#module-pyaml.configuration.csvcurve"><code class="xref">pyaml.configuration.csvcurve</code></a></td><td>
+       <a href="api/pyaml.common.element.html#module-pyaml.common.element"><code class="xref">pyaml.common.element</code></a></td><td>
        <em></em></td></tr>
      <tr class="cg-1">
        <td></td>
        <td>&#160;&#160;&#160;
-       <a href="modules/configuration.html#module-pyaml.configuration.csvmatrix"><code class="xref">pyaml.configuration.csvmatrix</code></a></td><td>
+       <a href="api/pyaml.common.element_holder.html#module-pyaml.common.element_holder"><code class="xref">pyaml.common.element_holder</code></a></td><td>
        <em></em></td></tr>
      <tr class="cg-1">
        <td></td>
        <td>&#160;&#160;&#160;
-       <a href="modules/configuration.html#module-pyaml.configuration.curve"><code class="xref">pyaml.configuration.curve</code></a></td><td>
+       <a href="api/pyaml.common.exception.html#module-pyaml.common.exception"><code class="xref">pyaml.common.exception</code></a></td><td>
        <em></em></td></tr>
      <tr class="cg-1">
        <td></td>
        <td>&#160;&#160;&#160;
-       <a href="modules/configuration.html#module-pyaml.configuration.factory"><code class="xref">pyaml.configuration.factory</code></a></td><td>
+       <a href="api/pyaml.configuration.html#module-pyaml.configuration"><code class="xref">pyaml.configuration</code></a></td><td>
        <em></em></td></tr>
      <tr class="cg-1">
        <td></td>
        <td>&#160;&#160;&#160;
-       <a href="modules/configuration.html#module-pyaml.configuration.fileloader"><code class="xref">pyaml.configuration.fileloader</code></a></td><td>
+       <a href="api/pyaml.configuration.csvcurve.html#module-pyaml.configuration.csvcurve"><code class="xref">pyaml.configuration.csvcurve</code></a></td><td>
        <em></em></td></tr>
      <tr class="cg-1">
        <td></td>
        <td>&#160;&#160;&#160;
-       <a href="generated/pyaml.configuration.inline_curve.html#module-pyaml.configuration.inline_curve"><code class="xref">pyaml.configuration.inline_curve</code></a></td><td>
+       <a href="api/pyaml.configuration.csvmatrix.html#module-pyaml.configuration.csvmatrix"><code class="xref">pyaml.configuration.csvmatrix</code></a></td><td>
        <em></em></td></tr>
      <tr class="cg-1">
        <td></td>
        <td>&#160;&#160;&#160;
-       <a href="generated/pyaml.configuration.inline_matrix.html#module-pyaml.configuration.inline_matrix"><code class="xref">pyaml.configuration.inline_matrix</code></a></td><td>
+       <a href="api/pyaml.configuration.curve.html#module-pyaml.configuration.curve"><code class="xref">pyaml.configuration.curve</code></a></td><td>
        <em></em></td></tr>
      <tr class="cg-1">
        <td></td>
        <td>&#160;&#160;&#160;
-       <a href="modules/configuration.html#module-pyaml.configuration.matrix"><code class="xref">pyaml.configuration.matrix</code></a></td><td>
+       <a href="api/pyaml.configuration.factory.html#module-pyaml.configuration.factory"><code class="xref">pyaml.configuration.factory</code></a></td><td>
        <em></em></td></tr>
      <tr class="cg-1">
        <td></td>
        <td>&#160;&#160;&#160;
-       <a href="generated/pyaml.control.html#module-pyaml.control"><code class="xref">pyaml.control</code></a></td><td>
+       <a href="api/pyaml.configuration.fileloader.html#module-pyaml.configuration.fileloader"><code class="xref">pyaml.configuration.fileloader</code></a></td><td>
        <em></em></td></tr>
      <tr class="cg-1">
        <td></td>
        <td>&#160;&#160;&#160;
-       <a href="modules/control.html#module-pyaml.control.abstract_impl"><code class="xref">pyaml.control.abstract_impl</code></a></td><td>
+       <a href="api/pyaml.configuration.inline_curve.html#module-pyaml.configuration.inline_curve"><code class="xref">pyaml.configuration.inline_curve</code></a></td><td>
        <em></em></td></tr>
      <tr class="cg-1">
        <td></td>
        <td>&#160;&#160;&#160;
-       <a href="modules/control.html#module-pyaml.control.deviceaccess"><code class="xref">pyaml.control.deviceaccess</code></a></td><td>
+       <a href="api/pyaml.configuration.inline_matrix.html#module-pyaml.configuration.inline_matrix"><code class="xref">pyaml.configuration.inline_matrix</code></a></td><td>
        <em></em></td></tr>
      <tr class="cg-1">
        <td></td>
        <td>&#160;&#160;&#160;
-       <a href="modules/control.html#module-pyaml.control.deviceaccesslist"><code class="xref">pyaml.control.deviceaccesslist</code></a></td><td>
+       <a href="api/pyaml.configuration.matrix.html#module-pyaml.configuration.matrix"><code class="xref">pyaml.configuration.matrix</code></a></td><td>
        <em></em></td></tr>
      <tr class="cg-1">
        <td></td>
        <td>&#160;&#160;&#160;
-       <a href="modules/control.html#module-pyaml.control.readback_value"><code class="xref">pyaml.control.readback_value</code></a></td><td>
+       <a href="api/pyaml.control.html#module-pyaml.control"><code class="xref">pyaml.control</code></a></td><td>
        <em></em></td></tr>
      <tr class="cg-1">
        <td></td>
        <td>&#160;&#160;&#160;
-       <a href="generated/pyaml.lattice.html#module-pyaml.lattice"><code class="xref">pyaml.lattice</code></a></td><td>
+       <a href="api/pyaml.control.abstract_impl.html#module-pyaml.control.abstract_impl"><code class="xref">pyaml.control.abstract_impl</code></a></td><td>
        <em></em></td></tr>
      <tr class="cg-1">
        <td></td>
        <td>&#160;&#160;&#160;
-       <a href="modules/lattice.html#module-pyaml.lattice.abstract_impl"><code class="xref">pyaml.lattice.abstract_impl</code></a></td><td>
+       <a href="api/pyaml.control.deviceaccess.html#module-pyaml.control.deviceaccess"><code class="xref">pyaml.control.deviceaccess</code></a></td><td>
        <em></em></td></tr>
      <tr class="cg-1">
        <td></td>
        <td>&#160;&#160;&#160;
-       <a href="modules/lattice.html#module-pyaml.lattice.attribute_linker"><code class="xref">pyaml.lattice.attribute_linker</code></a></td><td>
+       <a href="api/pyaml.control.deviceaccesslist.html#module-pyaml.control.deviceaccesslist"><code class="xref">pyaml.control.deviceaccesslist</code></a></td><td>
        <em></em></td></tr>
      <tr class="cg-1">
        <td></td>
        <td>&#160;&#160;&#160;
-       <a href="generated/pyaml.lattice.element.html#module-pyaml.lattice.element"><code class="xref">pyaml.lattice.element</code></a></td><td>
+       <a href="api/pyaml.control.readback_value.html#module-pyaml.control.readback_value"><code class="xref">pyaml.control.readback_value</code></a></td><td>
        <em></em></td></tr>
      <tr class="cg-1">
        <td></td>
        <td>&#160;&#160;&#160;
-       <a href="modules/lattice.html#module-pyaml.lattice.lattice_elements_linker"><code class="xref">pyaml.lattice.lattice_elements_linker</code></a></td><td>
+       <a href="api/pyaml.diagnostics.html#module-pyaml.diagnostics"><code class="xref">pyaml.diagnostics</code></a></td><td>
        <em></em></td></tr>
      <tr class="cg-1">
        <td></td>
        <td>&#160;&#160;&#160;
-       <a href="modules/lattice.html#module-pyaml.lattice.polynom_info"><code class="xref">pyaml.lattice.polynom_info</code></a></td><td>
+       <a href="api/pyaml.diagnostics.tune_monitor.html#module-pyaml.diagnostics.tune_monitor"><code class="xref">pyaml.diagnostics.tune_monitor</code></a></td><td>
        <em></em></td></tr>
      <tr class="cg-1">
        <td></td>
        <td>&#160;&#160;&#160;
-       <a href="modules/magnet.html#module-pyaml.magnet"><code class="xref">pyaml.magnet</code></a></td><td>
+       <a href="api/pyaml.external.html#module-pyaml.external"><code class="xref">pyaml.external</code></a></td><td>
        <em></em></td></tr>
      <tr class="cg-1">
        <td></td>
        <td>&#160;&#160;&#160;
-       <a href="generated/pyaml.magnet.cfm_magnet.html#module-pyaml.magnet.cfm_magnet"><code class="xref">pyaml.magnet.cfm_magnet</code></a></td><td>
+       <a href="api/pyaml.external.pySC_interface.html#module-pyaml.external.pySC_interface"><code class="xref">pyaml.external.pySC_interface</code></a></td><td>
        <em></em></td></tr>
      <tr class="cg-1">
        <td></td>
        <td>&#160;&#160;&#160;
-       <a href="generated/pyaml.magnet.corrector.html#module-pyaml.magnet.corrector"><code class="xref">pyaml.magnet.corrector</code></a></td><td>
+       <a href="api/pyaml.lattice.html#module-pyaml.lattice"><code class="xref">pyaml.lattice</code></a></td><td>
        <em></em></td></tr>
      <tr class="cg-1">
        <td></td>
        <td>&#160;&#160;&#160;
-       <a href="generated/pyaml.magnet.function_mapping.html#module-pyaml.magnet.function_mapping"><code class="xref">pyaml.magnet.function_mapping</code></a></td><td>
+       <a href="api/pyaml.lattice.abstract_impl.html#module-pyaml.lattice.abstract_impl"><code class="xref">pyaml.lattice.abstract_impl</code></a></td><td>
        <em></em></td></tr>
      <tr class="cg-1">
        <td></td>
        <td>&#160;&#160;&#160;
-       <a href="generated/pyaml.magnet.hcorrector.html#module-pyaml.magnet.hcorrector"><code class="xref">pyaml.magnet.hcorrector</code></a></td><td>
+       <a href="api/pyaml.lattice.attribute_linker.html#module-pyaml.lattice.attribute_linker"><code class="xref">pyaml.lattice.attribute_linker</code></a></td><td>
        <em></em></td></tr>
      <tr class="cg-1">
        <td></td>
        <td>&#160;&#160;&#160;
-       <a href="generated/pyaml.magnet.identity_cfm_model.html#module-pyaml.magnet.identity_cfm_model"><code class="xref">pyaml.magnet.identity_cfm_model</code></a></td><td>
+       <a href="api/pyaml.lattice.element.html#module-pyaml.lattice.element"><code class="xref">pyaml.lattice.element</code></a></td><td>
        <em></em></td></tr>
      <tr class="cg-1">
        <td></td>
        <td>&#160;&#160;&#160;
-       <a href="generated/pyaml.magnet.identity_model.html#module-pyaml.magnet.identity_model"><code class="xref">pyaml.magnet.identity_model</code></a></td><td>
+       <a href="api/pyaml.lattice.lattice_elements_linker.html#module-pyaml.lattice.lattice_elements_linker"><code class="xref">pyaml.lattice.lattice_elements_linker</code></a></td><td>
        <em></em></td></tr>
      <tr class="cg-1">
        <td></td>
        <td>&#160;&#160;&#160;
-       <a href="generated/pyaml.magnet.linear_cfm_model.html#module-pyaml.magnet.linear_cfm_model"><code class="xref">pyaml.magnet.linear_cfm_model</code></a></td><td>
+       <a href="api/pyaml.lattice.polynom_info.html#module-pyaml.lattice.polynom_info"><code class="xref">pyaml.lattice.polynom_info</code></a></td><td>
        <em></em></td></tr>
      <tr class="cg-1">
        <td></td>
        <td>&#160;&#160;&#160;
-       <a href="generated/pyaml.magnet.linear_model.html#module-pyaml.magnet.linear_model"><code class="xref">pyaml.magnet.linear_model</code></a></td><td>
+       <a href="api/pyaml.magnet.html#module-pyaml.magnet"><code class="xref">pyaml.magnet</code></a></td><td>
        <em></em></td></tr>
      <tr class="cg-1">
        <td></td>
        <td>&#160;&#160;&#160;
-       <a href="generated/pyaml.magnet.linear_serialized_model.html#module-pyaml.magnet.linear_serialized_model"><code class="xref">pyaml.magnet.linear_serialized_model</code></a></td><td>
+       <a href="api/pyaml.magnet.cfm_magnet.html#module-pyaml.magnet.cfm_magnet"><code class="xref">pyaml.magnet.cfm_magnet</code></a></td><td>
        <em></em></td></tr>
      <tr class="cg-1">
        <td></td>
        <td>&#160;&#160;&#160;
-       <a href="generated/pyaml.magnet.magnet.html#module-pyaml.magnet.magnet"><code class="xref">pyaml.magnet.magnet</code></a></td><td>
+       <a href="api/pyaml.magnet.corrector.html#module-pyaml.magnet.corrector"><code class="xref">pyaml.magnet.corrector</code></a></td><td>
        <em></em></td></tr>
      <tr class="cg-1">
        <td></td>
        <td>&#160;&#160;&#160;
-       <a href="generated/pyaml.magnet.model.html#module-pyaml.magnet.model"><code class="xref">pyaml.magnet.model</code></a></td><td>
+       <a href="api/pyaml.magnet.function_mapping.html#module-pyaml.magnet.function_mapping"><code class="xref">pyaml.magnet.function_mapping</code></a></td><td>
        <em></em></td></tr>
      <tr class="cg-1">
        <td></td>
        <td>&#160;&#160;&#160;
-       <a href="generated/pyaml.magnet.octupole.html#module-pyaml.magnet.octupole"><code class="xref">pyaml.magnet.octupole</code></a></td><td>
+       <a href="api/pyaml.magnet.hcorrector.html#module-pyaml.magnet.hcorrector"><code class="xref">pyaml.magnet.hcorrector</code></a></td><td>
        <em></em></td></tr>
      <tr class="cg-1">
        <td></td>
        <td>&#160;&#160;&#160;
-       <a href="generated/pyaml.magnet.quadrupole.html#module-pyaml.magnet.quadrupole"><code class="xref">pyaml.magnet.quadrupole</code></a></td><td>
+       <a href="api/pyaml.magnet.identity_cfm_model.html#module-pyaml.magnet.identity_cfm_model"><code class="xref">pyaml.magnet.identity_cfm_model</code></a></td><td>
        <em></em></td></tr>
      <tr class="cg-1">
        <td></td>
        <td>&#160;&#160;&#160;
-       <a href="generated/pyaml.magnet.serialized_magnet.html#module-pyaml.magnet.serialized_magnet"><code class="xref">pyaml.magnet.serialized_magnet</code></a></td><td>
+       <a href="api/pyaml.magnet.identity_model.html#module-pyaml.magnet.identity_model"><code class="xref">pyaml.magnet.identity_model</code></a></td><td>
        <em></em></td></tr>
      <tr class="cg-1">
        <td></td>
        <td>&#160;&#160;&#160;
-       <a href="generated/pyaml.magnet.sextupole.html#module-pyaml.magnet.sextupole"><code class="xref">pyaml.magnet.sextupole</code></a></td><td>
+       <a href="api/pyaml.magnet.linear_cfm_model.html#module-pyaml.magnet.linear_cfm_model"><code class="xref">pyaml.magnet.linear_cfm_model</code></a></td><td>
        <em></em></td></tr>
      <tr class="cg-1">
        <td></td>
        <td>&#160;&#160;&#160;
-       <a href="generated/pyaml.magnet.skewoctu.html#module-pyaml.magnet.skewoctu"><code class="xref">pyaml.magnet.skewoctu</code></a></td><td>
+       <a href="api/pyaml.magnet.linear_model.html#module-pyaml.magnet.linear_model"><code class="xref">pyaml.magnet.linear_model</code></a></td><td>
        <em></em></td></tr>
      <tr class="cg-1">
        <td></td>
        <td>&#160;&#160;&#160;
-       <a href="generated/pyaml.magnet.skewquad.html#module-pyaml.magnet.skewquad"><code class="xref">pyaml.magnet.skewquad</code></a></td><td>
+       <a href="api/pyaml.magnet.linear_serialized_model.html#module-pyaml.magnet.linear_serialized_model"><code class="xref">pyaml.magnet.linear_serialized_model</code></a></td><td>
        <em></em></td></tr>
      <tr class="cg-1">
        <td></td>
        <td>&#160;&#160;&#160;
-       <a href="generated/pyaml.magnet.skewsext.html#module-pyaml.magnet.skewsext"><code class="xref">pyaml.magnet.skewsext</code></a></td><td>
+       <a href="api/pyaml.magnet.magnet.html#module-pyaml.magnet.magnet"><code class="xref">pyaml.magnet.magnet</code></a></td><td>
        <em></em></td></tr>
      <tr class="cg-1">
        <td></td>
        <td>&#160;&#160;&#160;
-       <a href="generated/pyaml.magnet.spline_model.html#module-pyaml.magnet.spline_model"><code class="xref">pyaml.magnet.spline_model</code></a></td><td>
+       <a href="api/pyaml.magnet.model.html#module-pyaml.magnet.model"><code class="xref">pyaml.magnet.model</code></a></td><td>
        <em></em></td></tr>
      <tr class="cg-1">
        <td></td>
        <td>&#160;&#160;&#160;
-       <a href="generated/pyaml.magnet.vcorrector.html#module-pyaml.magnet.vcorrector"><code class="xref">pyaml.magnet.vcorrector</code></a></td><td>
+       <a href="api/pyaml.magnet.octupole.html#module-pyaml.magnet.octupole"><code class="xref">pyaml.magnet.octupole</code></a></td><td>
        <em></em></td></tr>
      <tr class="cg-1">
        <td></td>
        <td>&#160;&#160;&#160;
-       <a href="generated/pyaml.rf.html#module-pyaml.rf"><code class="xref">pyaml.rf</code></a></td><td>
+       <a href="api/pyaml.magnet.quadrupole.html#module-pyaml.magnet.quadrupole"><code class="xref">pyaml.magnet.quadrupole</code></a></td><td>
        <em></em></td></tr>
      <tr class="cg-1">
        <td></td>
        <td>&#160;&#160;&#160;
-       <a href="modules/rf.html#module-pyaml.rf.rf_plant"><code class="xref">pyaml.rf.rf_plant</code></a></td><td>
+       <a href="api/pyaml.magnet.serialized_magnet.html#module-pyaml.magnet.serialized_magnet"><code class="xref">pyaml.magnet.serialized_magnet</code></a></td><td>
        <em></em></td></tr>
      <tr class="cg-1">
        <td></td>
        <td>&#160;&#160;&#160;
-       <a href="modules/rf.html#module-pyaml.rf.rf_transmitter"><code class="xref">pyaml.rf.rf_transmitter</code></a></td><td>
+       <a href="api/pyaml.magnet.sextupole.html#module-pyaml.magnet.sextupole"><code class="xref">pyaml.magnet.sextupole</code></a></td><td>
        <em></em></td></tr>
      <tr class="cg-1">
        <td></td>
        <td>&#160;&#160;&#160;
-       <a href="generated/pyaml.tuning_tools.html#module-pyaml.tuning_tools"><code class="xref">pyaml.tuning_tools</code></a></td><td>
+       <a href="api/pyaml.magnet.skewoctu.html#module-pyaml.magnet.skewoctu"><code class="xref">pyaml.magnet.skewoctu</code></a></td><td>
        <em></em></td></tr>
      <tr class="cg-1">
        <td></td>
        <td>&#160;&#160;&#160;
-       <a href="generated/pyaml.tuning_tools.LOCO.html#module-pyaml.tuning_tools.LOCO"><code class="xref">pyaml.tuning_tools.LOCO</code></a></td><td>
+       <a href="api/pyaml.magnet.skewquad.html#module-pyaml.magnet.skewquad"><code class="xref">pyaml.magnet.skewquad</code></a></td><td>
        <em></em></td></tr>
      <tr class="cg-1">
        <td></td>
        <td>&#160;&#160;&#160;
-       <a href="generated/pyaml.tuning_tools.LOCO.loco.html#module-pyaml.tuning_tools.LOCO.loco"><code class="xref">pyaml.tuning_tools.LOCO.loco</code></a></td><td>
+       <a href="api/pyaml.magnet.skewsext.html#module-pyaml.magnet.skewsext"><code class="xref">pyaml.magnet.skewsext</code></a></td><td>
        <em></em></td></tr>
      <tr class="cg-1">
        <td></td>
        <td>&#160;&#160;&#160;
-       <a href="generated/pyaml.tuning_tools.response_matrix.html#module-pyaml.tuning_tools.response_matrix"><code class="xref">pyaml.tuning_tools.response_matrix</code></a></td><td>
+       <a href="api/pyaml.magnet.spline_model.html#module-pyaml.magnet.spline_model"><code class="xref">pyaml.magnet.spline_model</code></a></td><td>
        <em></em></td></tr>
      <tr class="cg-1">
        <td></td>
        <td>&#160;&#160;&#160;
-       <a href="generated/pyaml.tuning_tools.SOFB.html#module-pyaml.tuning_tools.SOFB"><code class="xref">pyaml.tuning_tools.SOFB</code></a></td><td>
+       <a href="api/pyaml.magnet.vcorrector.html#module-pyaml.magnet.vcorrector"><code class="xref">pyaml.magnet.vcorrector</code></a></td><td>
        <em></em></td></tr>
      <tr class="cg-1">
        <td></td>
        <td>&#160;&#160;&#160;
-       <a href="modules/tuning_tools.html#module-pyaml.tuning_tools.SOFB.sofb"><code class="xref">pyaml.tuning_tools.SOFB.sofb</code></a></td><td>
+       <a href="api/pyaml.rf.html#module-pyaml.rf"><code class="xref">pyaml.rf</code></a></td><td>
        <em></em></td></tr>
      <tr class="cg-1">
        <td></td>
        <td>&#160;&#160;&#160;
-       <a href="modules/tuning_tools.html#module-pyaml.tuning_tools.tune"><code class="xref">pyaml.tuning_tools.tune</code></a></td><td>
+       <a href="api/pyaml.rf.rf_plant.html#module-pyaml.rf.rf_plant"><code class="xref">pyaml.rf.rf_plant</code></a></td><td>
+       <em></em></td></tr>
+     <tr class="cg-1">
+       <td></td>
+       <td>&#160;&#160;&#160;
+       <a href="api/pyaml.rf.rf_transmitter.html#module-pyaml.rf.rf_transmitter"><code class="xref">pyaml.rf.rf_transmitter</code></a></td><td>
+       <em></em></td></tr>
+     <tr class="cg-1">
+       <td></td>
+       <td>&#160;&#160;&#160;
+       <a href="api/pyaml.tuning_tools.html#module-pyaml.tuning_tools"><code class="xref">pyaml.tuning_tools</code></a></td><td>
        <em></em></td></tr>
    </table>
 

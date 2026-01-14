@@ -1,0 +1,765 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>pyaml.magnet.spline_model &#8212; Python Accelerator Middle Layer 0.1.1 documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../_static/css/custom.css" />
+  
+  <!-- So that users can add custom icons -->
+  <script src="../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
+
+    <script src="../_static/documentation_options.js?v=48654df3"></script>
+    <script src="../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=fd10adb8"></script>
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'api/pyaml.magnet.spline_model';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="pyaml.magnet.vcorrector" href="pyaml.magnet.vcorrector.html" />
+    <link rel="prev" title="pyaml.magnet.skewsext" href="pyaml.magnet.skewsext.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="0.1" />
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/logo.png" class="logo__image only-light" alt="Python Accelerator Middle Layer 0.1.1 documentation - Home"/>
+    <img src="../_static/dark.png" class="logo__image only-dark pst-js-only" alt="Python Accelerator Middle Layer 0.1.1 documentation - Home"/>
+  
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../getting-started/index.html">
+    Getting Started
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../how-to/index.html">
+    How to Guides
+  </a>
+</li>
+
+
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="../api.html">
+    API Reference
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+        <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+      
+        <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/python-accelerator-middle-layer/pyaml" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+</ul></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../getting-started/index.html">
+    Getting Started
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../how-to/index.html">
+    How to Guides
+  </a>
+</li>
+
+
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="../api.html">
+    API Reference
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+        
+          <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/python-accelerator-middle-layer/pyaml" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+</ul></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+<nav class="bd-docs-nav bd-links"
+     aria-label="Section Navigation">
+  <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
+  <div class="bd-toc-item navbar-nav"><p aria-level="2" class="caption" role="heading"><span class="caption-text">Packages:</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="pyaml.arrays.html">pyaml.arrays</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="pyaml.arrays.array.html">pyaml.arrays.array</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyaml.arrays.bpm.html">pyaml.arrays.bpm</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyaml.arrays.bpm_array.html">pyaml.arrays.bpm_array</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyaml.arrays.cfm_magnet.html">pyaml.arrays.cfm_magnet</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyaml.arrays.cfm_magnet_array.html">pyaml.arrays.cfm_magnet_array</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyaml.arrays.element.html">pyaml.arrays.element</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyaml.arrays.element_array.html">pyaml.arrays.element_array</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyaml.arrays.magnet.html">pyaml.arrays.magnet</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyaml.arrays.magnet_array.html">pyaml.arrays.magnet_array</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyaml.arrays.serialized_magnet.html">pyaml.arrays.serialized_magnet</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyaml.arrays.serialized_magnet_array.html">pyaml.arrays.serialized_magnet_array</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="pyaml.bpm.html">pyaml.bpm</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="pyaml.bpm.bpm.html">pyaml.bpm.bpm</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyaml.bpm.bpm_model.html">pyaml.bpm.bpm_model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyaml.bpm.bpm_simple_model.html">pyaml.bpm.bpm_simple_model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyaml.bpm.bpm_tiltoffset_model.html">pyaml.bpm.bpm_tiltoffset_model</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="pyaml.common.html">pyaml.common</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="pyaml.common.abstract.html">pyaml.common.abstract</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyaml.common.abstract_aggregator.html">pyaml.common.abstract_aggregator</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyaml.common.constants.html">pyaml.common.constants</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyaml.common.element.html">pyaml.common.element</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyaml.common.element_holder.html">pyaml.common.element_holder</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyaml.common.exception.html">pyaml.common.exception</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="pyaml.configuration.html">pyaml.configuration</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="pyaml.configuration.csvcurve.html">pyaml.configuration.csvcurve</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyaml.configuration.csvmatrix.html">pyaml.configuration.csvmatrix</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyaml.configuration.curve.html">pyaml.configuration.curve</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyaml.configuration.factory.html">pyaml.configuration.factory</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyaml.configuration.fileloader.html">pyaml.configuration.fileloader</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyaml.configuration.inline_curve.html">pyaml.configuration.inline_curve</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyaml.configuration.inline_matrix.html">pyaml.configuration.inline_matrix</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyaml.configuration.matrix.html">pyaml.configuration.matrix</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="pyaml.control.html">pyaml.control</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="pyaml.control.abstract_impl.html">pyaml.control.abstract_impl</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyaml.control.deviceaccess.html">pyaml.control.deviceaccess</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyaml.control.deviceaccesslist.html">pyaml.control.deviceaccesslist</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyaml.control.readback_value.html">pyaml.control.readback_value</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="pyaml.diagnostics.html">pyaml.diagnostics</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="pyaml.diagnostics.tune_monitor.html">pyaml.diagnostics.tune_monitor</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="pyaml.external.html">pyaml.external</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="pyaml.external.pySC_interface.html">pyaml.external.pySC_interface</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="pyaml.lattice.html">pyaml.lattice</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="pyaml.lattice.abstract_impl.html">pyaml.lattice.abstract_impl</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyaml.lattice.attribute_linker.html">pyaml.lattice.attribute_linker</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyaml.lattice.element.html">pyaml.lattice.element</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyaml.lattice.lattice_elements_linker.html">pyaml.lattice.lattice_elements_linker</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyaml.lattice.polynom_info.html">pyaml.lattice.polynom_info</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="pyaml.magnet.html">pyaml.magnet</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="pyaml.magnet.cfm_magnet.html">pyaml.magnet.cfm_magnet</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyaml.magnet.corrector.html">pyaml.magnet.corrector</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyaml.magnet.function_mapping.html">pyaml.magnet.function_mapping</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyaml.magnet.hcorrector.html">pyaml.magnet.hcorrector</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyaml.magnet.identity_cfm_model.html">pyaml.magnet.identity_cfm_model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyaml.magnet.identity_model.html">pyaml.magnet.identity_model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyaml.magnet.linear_cfm_model.html">pyaml.magnet.linear_cfm_model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyaml.magnet.linear_model.html">pyaml.magnet.linear_model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyaml.magnet.linear_serialized_model.html">pyaml.magnet.linear_serialized_model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyaml.magnet.magnet.html">pyaml.magnet.magnet</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyaml.magnet.model.html">pyaml.magnet.model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyaml.magnet.octupole.html">pyaml.magnet.octupole</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyaml.magnet.quadrupole.html">pyaml.magnet.quadrupole</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyaml.magnet.serialized_magnet.html">pyaml.magnet.serialized_magnet</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyaml.magnet.sextupole.html">pyaml.magnet.sextupole</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyaml.magnet.skewoctu.html">pyaml.magnet.skewoctu</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyaml.magnet.skewquad.html">pyaml.magnet.skewquad</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyaml.magnet.skewsext.html">pyaml.magnet.skewsext</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">pyaml.magnet.spline_model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyaml.magnet.vcorrector.html">pyaml.magnet.vcorrector</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="pyaml.rf.html">pyaml.rf</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="pyaml.rf.rf_plant.html">pyaml.rf.rf_plant</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyaml.rf.rf_transmitter.html">pyaml.rf.rf_transmitter</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="pyaml.tuning_tools.html">pyaml.tuning_tools</a></li>
+</ul>
+</div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="../api.html" class="nav-link">API Reference</a></li>
+    
+    
+    <li class="breadcrumb-item"><a href="pyaml.magnet.html" class="nav-link">pyaml.magnet</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">pyaml.magnet.spline_model</span></li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="module-pyaml.magnet.spline_model">
+<span id="pyaml-magnet-spline-model"></span><h1>pyaml.magnet.spline_model<a class="headerlink" href="#module-pyaml.magnet.spline_model" title="Link to this heading">#</a></h1>
+<p class="rubric">Classes</p>
+<div class="pst-scrollable-table-container"><table class="autosummary longtable table">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#pyaml.magnet.spline_model.ConfigModel" title="pyaml.magnet.spline_model.ConfigModel"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ConfigModel</span></code></a>(*, curve, powerconverter[, ...])</p></td>
+<td><p>Configuration model for spline magnet model</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#pyaml.magnet.spline_model.SplineMagnetModel" title="pyaml.magnet.spline_model.SplineMagnetModel"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SplineMagnetModel</span></code></a>(cfg)</p></td>
+<td><p>Class that handle manget current/strength conversion using spline interpolation for a single function magnet</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<dl class="py class">
+<dt class="sig sig-object py" id="pyaml.magnet.spline_model.ConfigModel">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ConfigModel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">curve</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">powerconverter</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">calibration_factor</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">calibration_offset</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">crosstalk</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">unit</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alpha</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/magnet/spline_model.html#ConfigModel"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.magnet.spline_model.ConfigModel" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">BaseModel</span></code></p>
+<p>Configuration model for spline magnet model</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>curve</strong> (<a class="reference internal" href="pyaml.configuration.curve.html#pyaml.configuration.curve.Curve" title="pyaml.configuration.curve.Curve"><em>Curve</em></a>) – Curve object used for interpolation</p></li>
+<li><p><strong>powerconverter</strong> (<a class="reference internal" href="pyaml.control.deviceaccess.html#pyaml.control.deviceaccess.DeviceAccess" title="pyaml.control.deviceaccess.DeviceAccess"><em>DeviceAccess</em></a><em>, </em><em>optional</em>) – Power converter device to apply current</p></li>
+<li><p><strong>calibration_factor</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><em>float</em></a><em>, </em><em>optional</em>) – Correction factor applied to the curve. Default: 1.0</p></li>
+<li><p><strong>calibration_offset</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><em>float</em></a><em>, </em><em>optional</em>) – Correction offset applied to the curve. Default: 0.0</p></li>
+<li><p><strong>crosstalk</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><em>float</em></a><em>, </em><em>optional</em>) – Crosstalk factor. Default: 1.0</p></li>
+<li><p><strong>unit</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>) – Unit of the strength (i.e. 1/m or m-1)</p></li>
+<li><p><strong>alpha</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><em>float</em></a><em>, </em><em>optional</em>) – Regularization parameter (alpha &gt;= 0). alpha = 0 means the interpolation
+passes through all the points of the curve. Default: 0.0</p></li>
+</ul>
+</dd>
+</dl>
+<p>Create a new model by parsing and validating input data from keyword arguments.</p>
+<p>Raises [<cite>ValidationError</cite>][pydantic_core.ValidationError] if the input data cannot be
+validated to form a valid model.</p>
+<p><cite>self</cite> is explicitly positional-only to allow <cite>self</cite> as a field name.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyaml.magnet.spline_model.ConfigModel.alpha">
+<span class="sig-name descname"><span class="pre">alpha</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><span class="pre">float</span></a></em><a class="headerlink" href="#pyaml.magnet.spline_model.ConfigModel.alpha" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyaml.magnet.spline_model.ConfigModel.calibration_factor">
+<span class="sig-name descname"><span class="pre">calibration_factor</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><span class="pre">float</span></a></em><a class="headerlink" href="#pyaml.magnet.spline_model.ConfigModel.calibration_factor" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyaml.magnet.spline_model.ConfigModel.calibration_offset">
+<span class="sig-name descname"><span class="pre">calibration_offset</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><span class="pre">float</span></a></em><a class="headerlink" href="#pyaml.magnet.spline_model.ConfigModel.calibration_offset" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyaml.magnet.spline_model.ConfigModel.crosstalk">
+<span class="sig-name descname"><span class="pre">crosstalk</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><span class="pre">float</span></a></em><a class="headerlink" href="#pyaml.magnet.spline_model.ConfigModel.crosstalk" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyaml.magnet.spline_model.ConfigModel.curve">
+<span class="sig-name descname"><span class="pre">curve</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="pyaml.configuration.curve.html#pyaml.configuration.curve.Curve" title="pyaml.configuration.curve.Curve"><span class="pre">Curve</span></a></em><a class="headerlink" href="#pyaml.magnet.spline_model.ConfigModel.curve" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyaml.magnet.spline_model.ConfigModel.model_config">
+<span class="sig-name descname"><span class="pre">model_config</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">ConfigDict</span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'arbitrary_types_allowed':</span> <span class="pre">True,</span> <span class="pre">'extra':</span> <span class="pre">'forbid'}</span></em><a class="headerlink" href="#pyaml.magnet.spline_model.ConfigModel.model_config" title="Link to this definition">#</a></dt>
+<dd><p>Configuration for the model, should be a dictionary conforming to [<cite>ConfigDict</cite>][pydantic.config.ConfigDict].</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyaml.magnet.spline_model.ConfigModel.powerconverter">
+<span class="sig-name descname"><span class="pre">powerconverter</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="pyaml.control.deviceaccess.html#pyaml.control.deviceaccess.DeviceAccess" title="pyaml.control.deviceaccess.DeviceAccess"><span class="pre">DeviceAccess</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></em><a class="headerlink" href="#pyaml.magnet.spline_model.ConfigModel.powerconverter" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyaml.magnet.spline_model.ConfigModel.unit">
+<span class="sig-name descname"><span class="pre">unit</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></em><a class="headerlink" href="#pyaml.magnet.spline_model.ConfigModel.unit" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="pyaml.magnet.spline_model.SplineMagnetModel">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">SplineMagnetModel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cfg</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/magnet/spline_model.html#SplineMagnetModel"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.magnet.spline_model.SplineMagnetModel" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="pyaml.magnet.model.html#pyaml.magnet.model.MagnetModel" title="pyaml.magnet.model.MagnetModel"><code class="xref py py-class docutils literal notranslate"><span class="pre">MagnetModel</span></code></a></p>
+<p>Class that handle manget current/strength conversion using
+spline interpolation for a single function magnet</p>
+<dl class="field-list simple">
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaml.magnet.spline_model.SplineMagnetModel.compute_hardware_values">
+<span class="sig-name descname"><span class="pre">compute_hardware_values</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">strengths</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/magnet/spline_model.html#SplineMagnetModel.compute_hardware_values"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.magnet.spline_model.SplineMagnetModel.compute_hardware_values" title="Link to this definition">#</a></dt>
+<dd><p>Compute hardware value(s) from magnet strength(s)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>strengths</strong> (<em>npt.NDArray</em><em>[</em><em>np.float64</em><em>]</em>) – Array of strengths. For a single multipole,
+strengths is an array of 1 item.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>npt.NDArray[np.float64]</strong> – Array of hardware values (i.e. currents or voltages).</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaml.magnet.spline_model.SplineMagnetModel.compute_strengths">
+<span class="sig-name descname"><span class="pre">compute_strengths</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">currents</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/magnet/spline_model.html#SplineMagnetModel.compute_strengths"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.magnet.spline_model.SplineMagnetModel.compute_strengths" title="Link to this definition">#</a></dt>
+<dd><p>Compute magnet strength(s) from hardware value(s)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>hardware_values</strong> (<em>npt.NDArray</em><em>[</em><em>np.float64</em><em>]</em>) – Array of hardware values (i.e. currents or voltages)</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>npt.NDArray[np.float64]</strong> – Array of strengths. For a single multipole,
+returns an array of 1 item</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaml.magnet.spline_model.SplineMagnetModel.get_devices">
+<span class="sig-name descname"><span class="pre">get_devices</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/magnet/spline_model.html#SplineMagnetModel.get_devices"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.magnet.spline_model.SplineMagnetModel.get_devices" title="Link to this definition">#</a></dt>
+<dd><p>Get device handles</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>list[DeviceAccess]</strong> – Array of DeviceAcess</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaml.magnet.spline_model.SplineMagnetModel.get_hardware_units">
+<span class="sig-name descname"><span class="pre">get_hardware_units</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/magnet/spline_model.html#SplineMagnetModel.get_hardware_units"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.magnet.spline_model.SplineMagnetModel.get_hardware_units" title="Link to this definition">#</a></dt>
+<dd><p>Get hardware units</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>list[str]</strong> – Array of hardware units. For a single multipole,
+returns a list of 1 item</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaml.magnet.spline_model.SplineMagnetModel.get_strength_units">
+<span class="sig-name descname"><span class="pre">get_strength_units</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/magnet/spline_model.html#SplineMagnetModel.get_strength_units"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.magnet.spline_model.SplineMagnetModel.get_strength_units" title="Link to this definition">#</a></dt>
+<dd><p>Get strength units</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>list[str]</strong> – Array of strength units. For a single multipole,
+returns a list of 1 item</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaml.magnet.spline_model.SplineMagnetModel.set_magnet_rigidity">
+<span class="sig-name descname"><span class="pre">set_magnet_rigidity</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">brho</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/magnet/spline_model.html#SplineMagnetModel.set_magnet_rigidity"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.magnet.spline_model.SplineMagnetModel.set_magnet_rigidity" title="Link to this definition">#</a></dt>
+<dd><p>Set magnet rigidity</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>brho</strong> (<em>np.double</em>) – Magnet rigidity used to calculate power supply setpoints</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="pyaml.magnet.skewsext.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">pyaml.magnet.skewsext</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="pyaml.magnet.vcorrector.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">pyaml.magnet.vcorrector</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.magnet.spline_model.ConfigModel"><code class="docutils literal notranslate"><span class="pre">ConfigModel</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.magnet.spline_model.ConfigModel.alpha"><code class="docutils literal notranslate"><span class="pre">ConfigModel.alpha</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.magnet.spline_model.ConfigModel.calibration_factor"><code class="docutils literal notranslate"><span class="pre">ConfigModel.calibration_factor</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.magnet.spline_model.ConfigModel.calibration_offset"><code class="docutils literal notranslate"><span class="pre">ConfigModel.calibration_offset</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.magnet.spline_model.ConfigModel.crosstalk"><code class="docutils literal notranslate"><span class="pre">ConfigModel.crosstalk</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.magnet.spline_model.ConfigModel.curve"><code class="docutils literal notranslate"><span class="pre">ConfigModel.curve</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.magnet.spline_model.ConfigModel.model_config"><code class="docutils literal notranslate"><span class="pre">ConfigModel.model_config</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.magnet.spline_model.ConfigModel.powerconverter"><code class="docutils literal notranslate"><span class="pre">ConfigModel.powerconverter</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.magnet.spline_model.ConfigModel.unit"><code class="docutils literal notranslate"><span class="pre">ConfigModel.unit</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.magnet.spline_model.SplineMagnetModel"><code class="docutils literal notranslate"><span class="pre">SplineMagnetModel</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.magnet.spline_model.SplineMagnetModel.compute_hardware_values"><code class="docutils literal notranslate"><span class="pre">SplineMagnetModel.compute_hardware_values()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.magnet.spline_model.SplineMagnetModel.compute_strengths"><code class="docutils literal notranslate"><span class="pre">SplineMagnetModel.compute_strengths()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.magnet.spline_model.SplineMagnetModel.get_devices"><code class="docutils literal notranslate"><span class="pre">SplineMagnetModel.get_devices()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.magnet.spline_model.SplineMagnetModel.get_hardware_units"><code class="docutils literal notranslate"><span class="pre">SplineMagnetModel.get_hardware_units()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.magnet.spline_model.SplineMagnetModel.get_strength_units"><code class="docutils literal notranslate"><span class="pre">SplineMagnetModel.get_strength_units()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.magnet.spline_model.SplineMagnetModel.set_magnet_rigidity"><code class="docutils literal notranslate"><span class="pre">SplineMagnetModel.set_magnet_rigidity()</span></code></a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="copyright">
+    
+      © Copyright 2024, pyAML Collaboration.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.2.3.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+<p class="theme-version">
+  <!-- # L10n: Setting the PST URL as an argument as this does not need to be localized -->
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.16.1.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

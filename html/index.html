@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>pyAML documentation &#8212; Python Accelerator Middle Layer 0.1.1 documentation</title>
+    <title>Python Accelerator Middle Layer &#8212; Python Accelerator Middle Layer 0.1.1 documentation</title>
   
   
   
@@ -30,8 +30,10 @@
   <link href="_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
 <link href="_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
 
-    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=8f2a1f02" />
     <link rel="stylesheet" type="text/css" href="_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-design.min.css?v=95c83b7e" />
     <link rel="stylesheet" type="text/css" href="_static/css/custom.css" />
   
   <!-- So that users can add custom icons -->
@@ -43,10 +45,13 @@
     <script src="_static/documentation_options.js?v=48654df3"></script>
     <script src="_static/doctools.js?v=9bcbadda"></script>
     <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="_static/copybutton.js?v=fd10adb8"></script>
+    <script src="_static/design-tabs.js?v=f930bc37"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'index';</script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Configuration" href="notebooks/load_configuration.html" />
+    <link rel="next" title="Getting Started" href="getting-started/index.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   <meta name="docsearch:version" content="0.1" />
@@ -132,112 +137,25 @@
   <ul class="bd-navbar-elements navbar-nav">
     
 <li class="nav-item ">
-  <a class="nav-link nav-internal" href="notebooks/load_configuration.html">
-    Load a configuration file
+  <a class="nav-link nav-internal" href="getting-started/index.html">
+    Getting Started
   </a>
 </li>
 
 
 <li class="nav-item ">
-  <a class="nav-link nav-internal" href="notebooks/live_design.html">
-    Switch design live
+  <a class="nav-link nav-internal" href="how-to/index.html">
+    How to Guides
   </a>
 </li>
 
 
 <li class="nav-item ">
-  <a class="nav-link nav-internal" href="notebooks/control_system.html">
-    Select a control system
+  <a class="nav-link nav-internal" href="api.html">
+    API Reference
   </a>
 </li>
 
-
-<li class="nav-item ">
-  <a class="nav-link nav-internal" href="notebooks/arrays.html">
-    Arrays
-  </a>
-</li>
-
-
-<li class="nav-item ">
-  <a class="nav-link nav-internal" href="modules/arrays.html">
-    Arrays configuration
-  </a>
-</li>
-
-            <li class="nav-item dropdown">
-                <button class="btn dropdown-toggle nav-item" type="button"
-                data-bs-toggle="dropdown" aria-expanded="false"
-                aria-controls="pst-nav-more-links">
-                    More
-                </button>
-                <ul id="pst-nav-more-links" class="dropdown-menu">
-                    
-<li class=" ">
-  <a class="nav-link dropdown-item nav-internal" href="modules/bpm.html">
-    BPMS
-  </a>
-</li>
-
-
-<li class=" ">
-  <a class="nav-link dropdown-item nav-internal" href="modules/common.html">
-    Common elements
-  </a>
-</li>
-
-
-<li class=" ">
-  <a class="nav-link dropdown-item nav-internal" href="modules/configuration.html">
-    Configuration
-  </a>
-</li>
-
-
-<li class=" ">
-  <a class="nav-link dropdown-item nav-internal" href="modules/control.html">
-    Control
-  </a>
-</li>
-
-
-<li class=" ">
-  <a class="nav-link dropdown-item nav-internal" href="modules/lattice.html">
-    lattice
-  </a>
-</li>
-
-
-<li class=" ">
-  <a class="nav-link dropdown-item nav-internal" href="modules/magnet.html">
-    magnets
-  </a>
-</li>
-
-
-<li class=" ">
-  <a class="nav-link dropdown-item nav-internal" href="modules/pyaml.html">
-    pyaml
-  </a>
-</li>
-
-
-<li class=" ">
-  <a class="nav-link dropdown-item nav-internal" href="modules/rf.html">
-    RF
-  </a>
-</li>
-
-
-<li class=" ">
-  <a class="nav-link dropdown-item nav-internal" href="modules/tuning_tools.html">
-    Tuning tools
-  </a>
-</li>
-
-                </ul>
-            </li>
-            
   </ul>
 </nav></div>
       
@@ -330,99 +248,22 @@
   <ul class="bd-navbar-elements navbar-nav">
     
 <li class="nav-item ">
-  <a class="nav-link nav-internal" href="notebooks/load_configuration.html">
-    Load a configuration file
+  <a class="nav-link nav-internal" href="getting-started/index.html">
+    Getting Started
   </a>
 </li>
 
 
 <li class="nav-item ">
-  <a class="nav-link nav-internal" href="notebooks/live_design.html">
-    Switch design live
+  <a class="nav-link nav-internal" href="how-to/index.html">
+    How to Guides
   </a>
 </li>
 
 
 <li class="nav-item ">
-  <a class="nav-link nav-internal" href="notebooks/control_system.html">
-    Select a control system
-  </a>
-</li>
-
-
-<li class="nav-item ">
-  <a class="nav-link nav-internal" href="notebooks/arrays.html">
-    Arrays
-  </a>
-</li>
-
-
-<li class="nav-item ">
-  <a class="nav-link nav-internal" href="modules/arrays.html">
-    Arrays configuration
-  </a>
-</li>
-
-
-<li class="nav-item ">
-  <a class="nav-link nav-internal" href="modules/bpm.html">
-    BPMS
-  </a>
-</li>
-
-
-<li class="nav-item ">
-  <a class="nav-link nav-internal" href="modules/common.html">
-    Common elements
-  </a>
-</li>
-
-
-<li class="nav-item ">
-  <a class="nav-link nav-internal" href="modules/configuration.html">
-    Configuration
-  </a>
-</li>
-
-
-<li class="nav-item ">
-  <a class="nav-link nav-internal" href="modules/control.html">
-    Control
-  </a>
-</li>
-
-
-<li class="nav-item ">
-  <a class="nav-link nav-internal" href="modules/lattice.html">
-    lattice
-  </a>
-</li>
-
-
-<li class="nav-item ">
-  <a class="nav-link nav-internal" href="modules/magnet.html">
-    magnets
-  </a>
-</li>
-
-
-<li class="nav-item ">
-  <a class="nav-link nav-internal" href="modules/pyaml.html">
-    pyaml
-  </a>
-</li>
-
-
-<li class="nav-item ">
-  <a class="nav-link nav-internal" href="modules/rf.html">
-    RF
-  </a>
-</li>
-
-
-<li class="nav-item ">
-  <a class="nav-link nav-internal" href="modules/tuning_tools.html">
-    Tuning tools
+  <a class="nav-link nav-internal" href="api.html">
+    API Reference
   </a>
 </li>
 
@@ -492,83 +333,32 @@
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section id="pyaml-documentation">
-<h1>pyAML documentation<a class="headerlink" href="#pyaml-documentation" title="Link to this heading">#</a></h1>
-<section id="introduction">
-<h2>Introduction<a class="headerlink" href="#introduction" title="Link to this heading">#</a></h2>
-<p>python Accelerator Middle Layer (pyAML) is a joint technology platform to develop common tools for control, tuning and development of storage rings, beam transport lines and linear accelerators.</p>
-<p>With pyAML, it WILL be possible to (the software is at conceptualization stage):</p>
+  <section id="python-accelerator-middle-layer">
+<h1>Python Accelerator Middle Layer<a class="headerlink" href="#python-accelerator-middle-layer" title="Link to this heading">#</a></h1>
+<p>Python Accelerator Middle Layer (pyAML) is a joint technology platform for design, commissioning and operation of particle accelerators.</p>
+<p>The code is still under development. The features include among others:</p>
 <ul class="simple">
-<li><p><strong>get/set instruments attributes</strong>: such as strengths of magnets and positions from BPMS</p></li>
-<li><p><strong>use the same tuning tools in any facility using pyAML</strong>,</p></li>
-<li><p><strong>compare data to it’s digital twin equivalent</strong>,</p></li>
-<li><p><strong>compute statistical properties for several lattice instances with errors</strong></p></li>
-<li><p><strong>flexible complex unit conversions</strong></p></li>
-<li><p><strong>easy and friendly configuration</strong></p></li>
-<li><p>many more features</p></li>
+<li><p>A control system agnostic interface to interact with the accelerator.</p></li>
+<li><p>Same interface to different backends: live accelerator, virtual accelerator and simulator.</p></li>
+<li><p>Machine independence allowing configuration of different type of accelerators and facility specific naming conventions.</p></li>
+<li><p>Unit conversions.</p></li>
+<li><p>Automatic generation of metadata and standardized format for measurement data.</p></li>
+<li><p>A set of standard applications and a framework for developing new applications.</p></li>
 </ul>
-</section>
 <section id="installation">
 <h2>Installation<a class="headerlink" href="#installation" title="Link to this heading">#</a></h2>
-<p>pip support will be provided later.
-for the time being:</p>
-<p>git clone <a class="github reference external" href="https://github.com/python-accelerator-middle-layer/pyaml.git">python-accelerator-middle-layer/pyaml.git</a></p>
-</section>
-<section id="documentation">
-<h2>Documentation<a class="headerlink" href="#documentation" title="Link to this heading">#</a></h2>
+<p>For installation instructions see <a class="reference internal" href="getting-started/installation.html"><span class="doc">Installation</span></a>.</p>
 <div class="toctree-wrapper compound">
-<p aria-level="2" class="caption" role="heading"><span class="caption-text">How to:</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="notebooks/load_configuration.html">Load a configuration file</a></li>
-<li class="toctree-l1"><a class="reference internal" href="notebooks/live_design.html">Switch design live</a></li>
-<li class="toctree-l1"><a class="reference internal" href="notebooks/control_system.html">Select a control system</a></li>
-<li class="toctree-l1"><a class="reference internal" href="notebooks/arrays.html">Arrays</a></li>
-</ul>
-</div>
-<div class="toctree-wrapper compound">
-<p aria-level="2" class="caption" role="heading"><span class="caption-text">Modules:</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="modules/arrays.html">Arrays configuration</a></li>
-<li class="toctree-l1"><a class="reference internal" href="modules/arrays.html#module-pyaml.arrays.bpm_array">Arrays usage</a></li>
-<li class="toctree-l1"><a class="reference internal" href="modules/bpm.html">BPMS</a></li>
-<li class="toctree-l1"><a class="reference internal" href="modules/common.html">Common elements</a></li>
-<li class="toctree-l1"><a class="reference internal" href="modules/configuration.html">Configuration</a></li>
-<li class="toctree-l1"><a class="reference internal" href="modules/control.html">Control</a></li>
-<li class="toctree-l1"><a class="reference internal" href="modules/lattice.html">lattice</a></li>
-<li class="toctree-l1"><a class="reference internal" href="modules/magnet.html">magnets</a></li>
-<li class="toctree-l1"><a class="reference internal" href="modules/pyaml.html">pyaml</a></li>
-<li class="toctree-l1"><a class="reference internal" href="modules/rf.html">RF</a></li>
-<li class="toctree-l1"><a class="reference internal" href="modules/tuning_tools.html">Tuning tools</a></li>
-</ul>
 </div>
 </section>
-<section id="collaboration-community">
-<h2>Collaboration community<a class="headerlink" href="#collaboration-community" title="Link to this heading">#</a></h2>
-<section id="discussion">
-<h3>Discussion<a class="headerlink" href="#discussion" title="Link to this heading">#</a></h3>
-<p><a class="reference external" href="https://mattermost.hzdr.de/accelerator-middle-layer/channels/town-square">Mattermost</a></p>
-<p>(please log in using Helmoltz ID, you will be prompt to access with your own lab/university credentials)</p>
-</section>
-<section id="shared-documents">
-<h3>Shared documents<a class="headerlink" href="#shared-documents" title="Link to this heading">#</a></h3>
-<p>to access the shared documents please ask S.Liuzzo for access rigths.</p>
-<p>The pyAML “software requirement specification” document is visible here:
-<a class="reference external" href="https://www.overleaf.com/read/hnrqzhfpbvpp#ef8935">https://www.overleaf.com/read/hnrqzhfpbvpp#ef8935</a></p>
-<p>to be added to editors list please write to S.Liuzzo</p>
-</section>
-<section id="mailing-list">
-<h3>Mailing list:<a class="headerlink" href="#mailing-list" title="Link to this heading">#</a></h3>
-<p>to be added to the pyAML mailing list please write to S.Liuzzo</p>
-</section>
-</section>
-</section>
-<section id="indices-and-tables">
-<h1>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Link to this heading">#</a></h1>
+<section id="indices">
+<h2>Indices<a class="headerlink" href="#indices" title="Link to this heading">#</a></h2>
 <ul class="simple">
 <li><p><a class="reference internal" href="genindex.html"><span class="std std-ref">Index</span></a></p></li>
 <li><p><a class="reference internal" href="py-modindex.html"><span class="std std-ref">Module Index</span></a></p></li>
 <li><p><a class="reference internal" href="search.html"><span class="std std-ref">Search Page</span></a></p></li>
 </ul>
+</section>
 </section>
 
 
@@ -582,11 +372,11 @@ for the time being:</p>
                   
 <div class="prev-next-area">
     <a class="right-next"
-       href="notebooks/load_configuration.html"
+       href="getting-started/index.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Configuration</p>
+        <p class="prev-next-title">Getting Started</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -609,23 +399,9 @@ for the time being:</p>
   </div>
   <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">pyAML documentation</a><ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#introduction">Introduction</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#installation">Installation</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#documentation">Documentation</a><ul class="nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#indices">Indices</a></li>
 </ul>
-</li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#collaboration-community">Collaboration community</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#discussion">Discussion</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#shared-documents">Shared documents</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mailing-list">Mailing list:</a></li>
-</ul>
-</li>
-</ul>
-</li>
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#indices-and-tables">Indices and tables</a></li>
-</ul>
-
   </nav></div>
 
 </div></div>

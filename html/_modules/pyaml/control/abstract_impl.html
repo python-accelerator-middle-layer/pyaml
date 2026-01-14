@@ -29,8 +29,10 @@
   <link href="../../../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
 <link href="../../../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
 
-    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=8f2a1f02" />
     <link rel="stylesheet" type="text/css" href="../../../_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-design.min.css?v=95c83b7e" />
     <link rel="stylesheet" type="text/css" href="../../../_static/css/custom.css" />
   
   <!-- So that users can add custom icons -->
@@ -42,6 +44,9 @@
     <script src="../../../_static/documentation_options.js?v=48654df3"></script>
     <script src="../../../_static/doctools.js?v=9bcbadda"></script>
     <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../../_static/copybutton.js?v=fd10adb8"></script>
+    <script src="../../../_static/design-tabs.js?v=f930bc37"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = '_modules/pyaml/control/abstract_impl';</script>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" />
@@ -130,112 +135,25 @@
   <ul class="bd-navbar-elements navbar-nav">
     
 <li class="nav-item ">
-  <a class="nav-link nav-internal" href="../../../notebooks/load_configuration.html">
-    Load a configuration file
+  <a class="nav-link nav-internal" href="../../../getting-started/index.html">
+    Getting Started
   </a>
 </li>
 
 
 <li class="nav-item ">
-  <a class="nav-link nav-internal" href="../../../notebooks/live_design.html">
-    Switch design live
+  <a class="nav-link nav-internal" href="../../../how-to/index.html">
+    How to Guides
   </a>
 </li>
 
 
 <li class="nav-item ">
-  <a class="nav-link nav-internal" href="../../../notebooks/control_system.html">
-    Select a control system
+  <a class="nav-link nav-internal" href="../../../api.html">
+    API Reference
   </a>
 </li>
 
-
-<li class="nav-item ">
-  <a class="nav-link nav-internal" href="../../../notebooks/arrays.html">
-    Arrays
-  </a>
-</li>
-
-
-<li class="nav-item ">
-  <a class="nav-link nav-internal" href="../../../modules/arrays.html">
-    Arrays configuration
-  </a>
-</li>
-
-            <li class="nav-item dropdown">
-                <button class="btn dropdown-toggle nav-item" type="button"
-                data-bs-toggle="dropdown" aria-expanded="false"
-                aria-controls="pst-nav-more-links">
-                    More
-                </button>
-                <ul id="pst-nav-more-links" class="dropdown-menu">
-                    
-<li class=" ">
-  <a class="nav-link dropdown-item nav-internal" href="../../../modules/bpm.html">
-    BPMS
-  </a>
-</li>
-
-
-<li class=" ">
-  <a class="nav-link dropdown-item nav-internal" href="../../../modules/common.html">
-    Common elements
-  </a>
-</li>
-
-
-<li class=" ">
-  <a class="nav-link dropdown-item nav-internal" href="../../../modules/configuration.html">
-    Configuration
-  </a>
-</li>
-
-
-<li class=" ">
-  <a class="nav-link dropdown-item nav-internal" href="../../../modules/control.html">
-    Control
-  </a>
-</li>
-
-
-<li class=" ">
-  <a class="nav-link dropdown-item nav-internal" href="../../../modules/lattice.html">
-    lattice
-  </a>
-</li>
-
-
-<li class=" ">
-  <a class="nav-link dropdown-item nav-internal" href="../../../modules/magnet.html">
-    magnets
-  </a>
-</li>
-
-
-<li class=" ">
-  <a class="nav-link dropdown-item nav-internal" href="../../../modules/pyaml.html">
-    pyaml
-  </a>
-</li>
-
-
-<li class=" ">
-  <a class="nav-link dropdown-item nav-internal" href="../../../modules/rf.html">
-    RF
-  </a>
-</li>
-
-
-<li class=" ">
-  <a class="nav-link dropdown-item nav-internal" href="../../../modules/tuning_tools.html">
-    Tuning tools
-  </a>
-</li>
-
-                </ul>
-            </li>
-            
   </ul>
 </nav></div>
       
@@ -308,7 +226,7 @@
         
       
       <dialog id="pst-primary-sidebar-modal"></dialog>
-      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar hide-on-wide">
         
 
   
@@ -324,99 +242,22 @@
   <ul class="bd-navbar-elements navbar-nav">
     
 <li class="nav-item ">
-  <a class="nav-link nav-internal" href="../../../notebooks/load_configuration.html">
-    Load a configuration file
+  <a class="nav-link nav-internal" href="../../../getting-started/index.html">
+    Getting Started
   </a>
 </li>
 
 
 <li class="nav-item ">
-  <a class="nav-link nav-internal" href="../../../notebooks/live_design.html">
-    Switch design live
+  <a class="nav-link nav-internal" href="../../../how-to/index.html">
+    How to Guides
   </a>
 </li>
 
 
 <li class="nav-item ">
-  <a class="nav-link nav-internal" href="../../../notebooks/control_system.html">
-    Select a control system
-  </a>
-</li>
-
-
-<li class="nav-item ">
-  <a class="nav-link nav-internal" href="../../../notebooks/arrays.html">
-    Arrays
-  </a>
-</li>
-
-
-<li class="nav-item ">
-  <a class="nav-link nav-internal" href="../../../modules/arrays.html">
-    Arrays configuration
-  </a>
-</li>
-
-
-<li class="nav-item ">
-  <a class="nav-link nav-internal" href="../../../modules/bpm.html">
-    BPMS
-  </a>
-</li>
-
-
-<li class="nav-item ">
-  <a class="nav-link nav-internal" href="../../../modules/common.html">
-    Common elements
-  </a>
-</li>
-
-
-<li class="nav-item ">
-  <a class="nav-link nav-internal" href="../../../modules/configuration.html">
-    Configuration
-  </a>
-</li>
-
-
-<li class="nav-item ">
-  <a class="nav-link nav-internal" href="../../../modules/control.html">
-    Control
-  </a>
-</li>
-
-
-<li class="nav-item ">
-  <a class="nav-link nav-internal" href="../../../modules/lattice.html">
-    lattice
-  </a>
-</li>
-
-
-<li class="nav-item ">
-  <a class="nav-link nav-internal" href="../../../modules/magnet.html">
-    magnets
-  </a>
-</li>
-
-
-<li class="nav-item ">
-  <a class="nav-link nav-internal" href="../../../modules/pyaml.html">
-    pyaml
-  </a>
-</li>
-
-
-<li class="nav-item ">
-  <a class="nav-link nav-internal" href="../../../modules/rf.html">
-    RF
-  </a>
-</li>
-
-
-<li class="nav-item ">
-  <a class="nav-link nav-internal" href="../../../modules/tuning_tools.html">
-    Tuning tools
+  <a class="nav-link nav-internal" href="../../../api.html">
+    API Reference
   </a>
 </li>
 
@@ -457,11 +298,6 @@
       </div>
     
   </div>
-  
-    <div class="sidebar-primary-items__start sidebar-primary__section">
-        <div class="sidebar-primary-item">
-<div id="searchbox"></div></div>
-    </div>
   
   
   <div class="sidebar-primary-items__end sidebar-primary__section">
@@ -537,7 +373,7 @@
 
 
 <div class="viewcode-block" id="CSScalarAggregator">
-<a class="viewcode-back" href="../../../modules/control.html#pyaml.control.abstract_impl.CSScalarAggregator">[docs]</a>
+<a class="viewcode-back" href="../../../api/pyaml.control.abstract_impl.html#pyaml.control.abstract_impl.CSScalarAggregator">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">CSScalarAggregator</span><span class="p">(</span><span class="n">ScalarAggregator</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Basic control system aggregator for a list of scalar values</span>
@@ -546,41 +382,47 @@
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">devs</span><span class="p">:</span> <span class="n">DeviceAccessList</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_devs</span> <span class="o">=</span> <span class="n">devs</span>
 
+<div class="viewcode-block" id="CSScalarAggregator.add_devices">
+<a class="viewcode-back" href="../../../api/pyaml.control.abstract_impl.html#pyaml.control.abstract_impl.CSScalarAggregator.add_devices">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">add_devices</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">devices</span><span class="p">:</span> <span class="n">DeviceAccess</span> <span class="o">|</span> <span class="nb">list</span><span class="p">[</span><span class="n">DeviceAccess</span><span class="p">]):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_devs</span><span class="o">.</span><span class="n">add_devices</span><span class="p">(</span><span class="n">devices</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_devs</span><span class="o">.</span><span class="n">add_devices</span><span class="p">(</span><span class="n">devices</span><span class="p">)</span></div>
+
 
 <div class="viewcode-block" id="CSScalarAggregator.set">
-<a class="viewcode-back" href="../../../modules/control.html#pyaml.control.abstract_impl.CSScalarAggregator.set">[docs]</a>
+<a class="viewcode-back" href="../../../api/pyaml.control.abstract_impl.html#pyaml.control.abstract_impl.CSScalarAggregator.set">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">set</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">]):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_devs</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">value</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="CSScalarAggregator.set_and_wait">
-<a class="viewcode-back" href="../../../modules/control.html#pyaml.control.abstract_impl.CSScalarAggregator.set_and_wait">[docs]</a>
+<a class="viewcode-back" href="../../../api/pyaml.control.abstract_impl.html#pyaml.control.abstract_impl.CSScalarAggregator.set_and_wait">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">set_and_wait</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">]):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_devs</span><span class="o">.</span><span class="n">set_and_wait</span><span class="p">(</span><span class="n">value</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="CSScalarAggregator.get">
-<a class="viewcode-back" href="../../../modules/control.html#pyaml.control.abstract_impl.CSScalarAggregator.get">[docs]</a>
+<a class="viewcode-back" href="../../../api/pyaml.control.abstract_impl.html#pyaml.control.abstract_impl.CSScalarAggregator.get">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">]:</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_devs</span><span class="o">.</span><span class="n">get</span><span class="p">()</span></div>
 
 
 <div class="viewcode-block" id="CSScalarAggregator.readback">
-<a class="viewcode-back" href="../../../modules/control.html#pyaml.control.abstract_impl.CSScalarAggregator.readback">[docs]</a>
+<a class="viewcode-back" href="../../../api/pyaml.control.abstract_impl.html#pyaml.control.abstract_impl.CSScalarAggregator.readback">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">readback</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">:</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_devs</span><span class="o">.</span><span class="n">readback</span><span class="p">()</span></div>
 
 
 <div class="viewcode-block" id="CSScalarAggregator.unit">
-<a class="viewcode-back" href="../../../modules/control.html#pyaml.control.abstract_impl.CSScalarAggregator.unit">[docs]</a>
+<a class="viewcode-back" href="../../../api/pyaml.control.abstract_impl.html#pyaml.control.abstract_impl.CSScalarAggregator.unit">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">unit</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_devs</span><span class="o">.</span><span class="n">unit</span><span class="p">()</span></div>
 
 
+<div class="viewcode-block" id="CSScalarAggregator.nb_device">
+<a class="viewcode-back" href="../../../api/pyaml.control.abstract_impl.html#pyaml.control.abstract_impl.CSScalarAggregator.nb_device">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">nb_device</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_devs</span><span class="o">.</span><span class="fm">__len__</span><span class="p">()</span></div>
+</div>
 
 
 
@@ -588,7 +430,7 @@
 
 
 <div class="viewcode-block" id="CSStrengthScalarAggregator">
-<a class="viewcode-back" href="../../../modules/control.html#pyaml.control.abstract_impl.CSStrengthScalarAggregator">[docs]</a>
+<a class="viewcode-back" href="../../../api/pyaml.control.abstract_impl.html#pyaml.control.abstract_impl.CSStrengthScalarAggregator">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">CSStrengthScalarAggregator</span><span class="p">(</span><span class="n">CSScalarAggregator</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Control system aggregator for a list of magnet strengths.</span>
@@ -604,6 +446,8 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">__modelToMagnet</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]]]</span> <span class="o">=</span> <span class="p">[]</span>  <span class="c1"># strengths indexing</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__nbMagnet</span> <span class="o">=</span> <span class="mi">0</span>  <span class="c1"># Number of magnet strengths</span>
 
+<div class="viewcode-block" id="CSStrengthScalarAggregator.add_magnet">
+<a class="viewcode-back" href="../../../api/pyaml.control.abstract_impl.html#pyaml.control.abstract_impl.CSStrengthScalarAggregator.add_magnet">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">add_magnet</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">magnet</span><span class="p">:</span> <span class="n">Magnet</span><span class="p">,</span> <span class="n">devs</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">DeviceAccess</span><span class="p">]):</span>
         <span class="c1"># Incoming magnet can be a magnet exported from</span>
         <span class="c1"># a CombinedFunctionMagnet or simple magnet.</span>
@@ -622,10 +466,11 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="n">index</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__models</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">magnet</span><span class="o">.</span><span class="n">model</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">__modelToMagnet</span><span class="p">[</span><span class="n">index</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">__nbMagnet</span><span class="p">,</span> <span class="n">strengthIndex</span><span class="p">))</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">__nbMagnet</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__nbMagnet</span> <span class="o">+=</span> <span class="mi">1</span></div>
+
 
 <div class="viewcode-block" id="CSStrengthScalarAggregator.set">
-<a class="viewcode-back" href="../../../modules/control.html#pyaml.control.abstract_impl.CSStrengthScalarAggregator.set">[docs]</a>
+<a class="viewcode-back" href="../../../api/pyaml.control.abstract_impl.html#pyaml.control.abstract_impl.CSStrengthScalarAggregator.set">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">set</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">]):</span>
         <span class="n">allHardwareValues</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_devs</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>  <span class="c1"># Read all hardware setpoints</span>
         <span class="n">newHardwareValues</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nb_device</span><span class="p">())</span>
@@ -645,13 +490,13 @@
 
 
 <div class="viewcode-block" id="CSStrengthScalarAggregator.set_and_wait">
-<a class="viewcode-back" href="../../../modules/control.html#pyaml.control.abstract_impl.CSStrengthScalarAggregator.set_and_wait">[docs]</a>
+<a class="viewcode-back" href="../../../api/pyaml.control.abstract_impl.html#pyaml.control.abstract_impl.CSStrengthScalarAggregator.set_and_wait">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">set_and_wait</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">]):</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;Not implemented yet.&quot;</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="CSStrengthScalarAggregator.get">
-<a class="viewcode-back" href="../../../modules/control.html#pyaml.control.abstract_impl.CSStrengthScalarAggregator.get">[docs]</a>
+<a class="viewcode-back" href="../../../api/pyaml.control.abstract_impl.html#pyaml.control.abstract_impl.CSStrengthScalarAggregator.get">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">]:</span>
         <span class="n">allHardwareValues</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_devs</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>  <span class="c1"># Read all hardware setpoints</span>
         <span class="n">allStrength</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__nbMagnet</span><span class="p">)</span>
@@ -668,7 +513,7 @@
 
 
 <div class="viewcode-block" id="CSStrengthScalarAggregator.readback">
-<a class="viewcode-back" href="../../../modules/control.html#pyaml.control.abstract_impl.CSStrengthScalarAggregator.readback">[docs]</a>
+<a class="viewcode-back" href="../../../api/pyaml.control.abstract_impl.html#pyaml.control.abstract_impl.CSStrengthScalarAggregator.readback">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">readback</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">:</span>
         <span class="n">allHardwareValues</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_devs</span><span class="o">.</span><span class="n">readback</span><span class="p">()</span>  <span class="c1"># Read all hardware readback</span>
         <span class="n">allStrength</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__nbMagnet</span><span class="p">)</span>
@@ -685,7 +530,7 @@
 
 
 <div class="viewcode-block" id="CSStrengthScalarAggregator.unit">
-<a class="viewcode-back" href="../../../modules/control.html#pyaml.control.abstract_impl.CSStrengthScalarAggregator.unit">[docs]</a>
+<a class="viewcode-back" href="../../../api/pyaml.control.abstract_impl.html#pyaml.control.abstract_impl.CSStrengthScalarAggregator.unit">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">unit</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_devs</span><span class="o">.</span><span class="n">unit</span><span class="p">()</span></div>
 </div>
@@ -696,7 +541,7 @@
 
 
 <div class="viewcode-block" id="RWHardwareScalar">
-<a class="viewcode-back" href="../../../modules/control.html#pyaml.control.abstract_impl.RWHardwareScalar">[docs]</a>
+<a class="viewcode-back" href="../../../api/pyaml.control.abstract_impl.html#pyaml.control.abstract_impl.RWHardwareScalar">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">RWHardwareScalar</span><span class="p">(</span><span class="n">abstract</span><span class="o">.</span><span class="n">ReadWriteFloatScalar</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Class providing read write access to a magnet</span>
@@ -708,31 +553,34 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">__dev</span> <span class="o">=</span> <span class="n">dev</span>
 
 <div class="viewcode-block" id="RWHardwareScalar.get">
-<a class="viewcode-back" href="../../../modules/control.html#pyaml.control.abstract_impl.RWHardwareScalar.get">[docs]</a>
+<a class="viewcode-back" href="../../../api/pyaml.control.abstract_impl.html#pyaml.control.abstract_impl.RWHardwareScalar.get">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__dev</span><span class="o">.</span><span class="n">get</span><span class="p">()</span></div>
 
 
 <div class="viewcode-block" id="RWHardwareScalar.set">
-<a class="viewcode-back" href="../../../modules/control.html#pyaml.control.abstract_impl.RWHardwareScalar.set">[docs]</a>
+<a class="viewcode-back" href="../../../api/pyaml.control.abstract_impl.html#pyaml.control.abstract_impl.RWHardwareScalar.set">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">set</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="nb">float</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__dev</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">value</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="RWHardwareScalar.set_and_wait">
-<a class="viewcode-back" href="../../../modules/control.html#pyaml.control.abstract_impl.RWHardwareScalar.set_and_wait">[docs]</a>
+<a class="viewcode-back" href="../../../api/pyaml.control.abstract_impl.html#pyaml.control.abstract_impl.RWHardwareScalar.set_and_wait">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">set_and_wait</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">double</span><span class="p">):</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;Not implemented yet.&quot;</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="RWHardwareScalar.unit">
-<a class="viewcode-back" href="../../../modules/control.html#pyaml.control.abstract_impl.RWHardwareScalar.unit">[docs]</a>
+<a class="viewcode-back" href="../../../api/pyaml.control.abstract_impl.html#pyaml.control.abstract_impl.RWHardwareScalar.unit">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">unit</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__model</span><span class="o">.</span><span class="n">get_hardware_units</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span></div>
 
 
+<div class="viewcode-block" id="RWHardwareScalar.set_magnet_rigidity">
+<a class="viewcode-back" href="../../../api/pyaml.control.abstract_impl.html#pyaml.control.abstract_impl.RWHardwareScalar.set_magnet_rigidity">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">set_magnet_rigidity</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">brho</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">double</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__model</span><span class="o">.</span><span class="n">set_magnet_rigidity</span><span class="p">(</span><span class="n">brho</span><span class="p">)</span></div>
+</div>
 
 
 
@@ -740,7 +588,7 @@
 
 
 <div class="viewcode-block" id="RWStrengthScalar">
-<a class="viewcode-back" href="../../../modules/control.html#pyaml.control.abstract_impl.RWStrengthScalar">[docs]</a>
+<a class="viewcode-back" href="../../../api/pyaml.control.abstract_impl.html#pyaml.control.abstract_impl.RWStrengthScalar">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">RWStrengthScalar</span><span class="p">(</span><span class="n">abstract</span><span class="o">.</span><span class="n">ReadWriteFloatScalar</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Class providing read write access to a strength of a control system</span>
@@ -752,7 +600,7 @@
 
     <span class="c1"># Gets the value</span>
 <div class="viewcode-block" id="RWStrengthScalar.get">
-<a class="viewcode-back" href="../../../modules/control.html#pyaml.control.abstract_impl.RWStrengthScalar.get">[docs]</a>
+<a class="viewcode-back" href="../../../api/pyaml.control.abstract_impl.html#pyaml.control.abstract_impl.RWStrengthScalar.get">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
         <span class="n">current</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__dev</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__model</span><span class="o">.</span><span class="n">compute_strengths</span><span class="p">([</span><span class="n">current</span><span class="p">])[</span><span class="mi">0</span><span class="p">]</span></div>
@@ -760,7 +608,7 @@
 
     <span class="c1"># Sets the value</span>
 <div class="viewcode-block" id="RWStrengthScalar.set">
-<a class="viewcode-back" href="../../../modules/control.html#pyaml.control.abstract_impl.RWStrengthScalar.set">[docs]</a>
+<a class="viewcode-back" href="../../../api/pyaml.control.abstract_impl.html#pyaml.control.abstract_impl.RWStrengthScalar.set">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">set</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="nb">float</span><span class="p">):</span>
         <span class="n">current</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__model</span><span class="o">.</span><span class="n">compute_hardware_values</span><span class="p">([</span><span class="n">value</span><span class="p">])[</span><span class="mi">0</span><span class="p">]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__dev</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">current</span><span class="p">)</span></div>
@@ -768,20 +616,23 @@
 
     <span class="c1"># Sets the value and wait that the read value reach the setpoint</span>
 <div class="viewcode-block" id="RWStrengthScalar.set_and_wait">
-<a class="viewcode-back" href="../../../modules/control.html#pyaml.control.abstract_impl.RWStrengthScalar.set_and_wait">[docs]</a>
+<a class="viewcode-back" href="../../../api/pyaml.control.abstract_impl.html#pyaml.control.abstract_impl.RWStrengthScalar.set_and_wait">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">set_and_wait</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="nb">float</span><span class="p">):</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;Not implemented yet.&quot;</span><span class="p">)</span></div>
 
 
     <span class="c1"># Gets the unit of the value</span>
 <div class="viewcode-block" id="RWStrengthScalar.unit">
-<a class="viewcode-back" href="../../../modules/control.html#pyaml.control.abstract_impl.RWStrengthScalar.unit">[docs]</a>
+<a class="viewcode-back" href="../../../api/pyaml.control.abstract_impl.html#pyaml.control.abstract_impl.RWStrengthScalar.unit">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">unit</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__model</span><span class="o">.</span><span class="n">get_strength_units</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span></div>
 
 
+<div class="viewcode-block" id="RWStrengthScalar.set_magnet_rigidity">
+<a class="viewcode-back" href="../../../api/pyaml.control.abstract_impl.html#pyaml.control.abstract_impl.RWStrengthScalar.set_magnet_rigidity">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">set_magnet_rigidity</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">brho</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">double</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__model</span><span class="o">.</span><span class="n">set_magnet_rigidity</span><span class="p">(</span><span class="n">brho</span><span class="p">)</span></div>
+</div>
 
 
 
@@ -789,7 +640,7 @@
 
 
 <div class="viewcode-block" id="RWHardwareArray">
-<a class="viewcode-back" href="../../../modules/control.html#pyaml.control.abstract_impl.RWHardwareArray">[docs]</a>
+<a class="viewcode-back" href="../../../api/pyaml.control.abstract_impl.html#pyaml.control.abstract_impl.RWHardwareArray">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">RWHardwareArray</span><span class="p">(</span><span class="n">abstract</span><span class="o">.</span><span class="n">ReadWriteFloatArray</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Class providing read write access to a magnet array</span>
@@ -802,14 +653,14 @@
 
     <span class="c1"># Gets the value</span>
 <div class="viewcode-block" id="RWHardwareArray.get">
-<a class="viewcode-back" href="../../../modules/control.html#pyaml.control.abstract_impl.RWHardwareArray.get">[docs]</a>
+<a class="viewcode-back" href="../../../api/pyaml.control.abstract_impl.html#pyaml.control.abstract_impl.RWHardwareArray.get">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">p</span><span class="o">.</span><span class="n">get</span><span class="p">()</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">__devs</span><span class="p">])</span></div>
 
 
     <span class="c1"># Sets the value</span>
 <div class="viewcode-block" id="RWHardwareArray.set">
-<a class="viewcode-back" href="../../../modules/control.html#pyaml.control.abstract_impl.RWHardwareArray.set">[docs]</a>
+<a class="viewcode-back" href="../../../api/pyaml.control.abstract_impl.html#pyaml.control.abstract_impl.RWHardwareArray.set">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">set</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">):</span>
         <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">p</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__devs</span><span class="p">):</span>
             <span class="n">p</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">value</span><span class="p">[</span><span class="n">idx</span><span class="p">])</span></div>
@@ -817,14 +668,14 @@
 
     <span class="c1"># Sets the value and waits that the read value reach the setpoint</span>
 <div class="viewcode-block" id="RWHardwareArray.set_and_wait">
-<a class="viewcode-back" href="../../../modules/control.html#pyaml.control.abstract_impl.RWHardwareArray.set_and_wait">[docs]</a>
+<a class="viewcode-back" href="../../../api/pyaml.control.abstract_impl.html#pyaml.control.abstract_impl.RWHardwareArray.set_and_wait">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">set_and_wait</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">):</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;Not implemented yet.&quot;</span><span class="p">)</span></div>
 
 
     <span class="c1"># Gets the unit of the value</span>
 <div class="viewcode-block" id="RWHardwareArray.unit">
-<a class="viewcode-back" href="../../../modules/control.html#pyaml.control.abstract_impl.RWHardwareArray.unit">[docs]</a>
+<a class="viewcode-back" href="../../../api/pyaml.control.abstract_impl.html#pyaml.control.abstract_impl.RWHardwareArray.unit">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">unit</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__model</span><span class="o">.</span><span class="n">get_hardware_units</span><span class="p">()</span></div>
 </div>
@@ -835,7 +686,7 @@
 
 
 <div class="viewcode-block" id="RWStrengthArray">
-<a class="viewcode-back" href="../../../modules/control.html#pyaml.control.abstract_impl.RWStrengthArray">[docs]</a>
+<a class="viewcode-back" href="../../../api/pyaml.control.abstract_impl.html#pyaml.control.abstract_impl.RWStrengthArray">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">RWStrengthArray</span><span class="p">(</span><span class="n">abstract</span><span class="o">.</span><span class="n">ReadWriteFloatArray</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Class providing read write access to magnet strengths of a control system</span>
@@ -847,7 +698,7 @@
 
     <span class="c1"># Gets the value</span>
 <div class="viewcode-block" id="RWStrengthArray.get">
-<a class="viewcode-back" href="../../../modules/control.html#pyaml.control.abstract_impl.RWStrengthArray.get">[docs]</a>
+<a class="viewcode-back" href="../../../api/pyaml.control.abstract_impl.html#pyaml.control.abstract_impl.RWStrengthArray.get">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">:</span>
         <span class="n">r</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">p</span><span class="o">.</span><span class="n">get</span><span class="p">()</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">__devs</span><span class="p">])</span>
         <span class="nb">str</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__model</span><span class="o">.</span><span class="n">compute_strengths</span><span class="p">(</span><span class="n">r</span><span class="p">)</span>
@@ -856,7 +707,7 @@
 
     <span class="c1"># Sets the value</span>
 <div class="viewcode-block" id="RWStrengthArray.set">
-<a class="viewcode-back" href="../../../modules/control.html#pyaml.control.abstract_impl.RWStrengthArray.set">[docs]</a>
+<a class="viewcode-back" href="../../../api/pyaml.control.abstract_impl.html#pyaml.control.abstract_impl.RWStrengthArray.set">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">set</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">):</span>
         <span class="n">cur</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__model</span><span class="o">.</span><span class="n">compute_hardware_values</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
         <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">p</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__devs</span><span class="p">):</span>
@@ -865,14 +716,14 @@
 
     <span class="c1"># Sets the value and waits that the read value reach the setpoint</span>
 <div class="viewcode-block" id="RWStrengthArray.set_and_wait">
-<a class="viewcode-back" href="../../../modules/control.html#pyaml.control.abstract_impl.RWStrengthArray.set_and_wait">[docs]</a>
+<a class="viewcode-back" href="../../../api/pyaml.control.abstract_impl.html#pyaml.control.abstract_impl.RWStrengthArray.set_and_wait">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">set_and_wait</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">):</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;Not implemented yet.&quot;</span><span class="p">)</span></div>
 
 
     <span class="c1"># Gets the unit of the value</span>
 <div class="viewcode-block" id="RWStrengthArray.unit">
-<a class="viewcode-back" href="../../../modules/control.html#pyaml.control.abstract_impl.RWStrengthArray.unit">[docs]</a>
+<a class="viewcode-back" href="../../../api/pyaml.control.abstract_impl.html#pyaml.control.abstract_impl.RWStrengthArray.unit">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">unit</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__model</span><span class="o">.</span><span class="n">get_strength_units</span><span class="p">()</span></div>
 </div>
@@ -883,7 +734,7 @@
 
 
 <div class="viewcode-block" id="RBpmArray">
-<a class="viewcode-back" href="../../../modules/control.html#pyaml.control.abstract_impl.RBpmArray">[docs]</a>
+<a class="viewcode-back" href="../../../api/pyaml.control.abstract_impl.html#pyaml.control.abstract_impl.RBpmArray">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">RBpmArray</span><span class="p">(</span><span class="n">abstract</span><span class="o">.</span><span class="n">ReadFloatArray</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Class providing read access to a BPM array of a control system</span>
@@ -895,14 +746,14 @@
 
     <span class="c1"># Gets the values</span>
 <div class="viewcode-block" id="RBpmArray.get">
-<a class="viewcode-back" href="../../../modules/control.html#pyaml.control.abstract_impl.RBpmArray.get">[docs]</a>
+<a class="viewcode-back" href="../../../api/pyaml.control.abstract_impl.html#pyaml.control.abstract_impl.RBpmArray.get">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">__devs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(),</span> <span class="bp">self</span><span class="o">.</span><span class="n">__devs</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">()])</span></div>
 
 
     <span class="c1"># Gets the unit of the value Assume that x and y has the same unit</span>
 <div class="viewcode-block" id="RBpmArray.unit">
-<a class="viewcode-back" href="../../../modules/control.html#pyaml.control.abstract_impl.RBpmArray.unit">[docs]</a>
+<a class="viewcode-back" href="../../../api/pyaml.control.abstract_impl.html#pyaml.control.abstract_impl.RBpmArray.unit">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">unit</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__model</span><span class="o">.</span><span class="n">get_pos_devices</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">unit</span><span class="p">()</span></div>
 </div>
@@ -913,7 +764,7 @@
 
 
 <div class="viewcode-block" id="RWBpmTiltScalar">
-<a class="viewcode-back" href="../../../modules/control.html#pyaml.control.abstract_impl.RWBpmTiltScalar">[docs]</a>
+<a class="viewcode-back" href="../../../api/pyaml.control.abstract_impl.html#pyaml.control.abstract_impl.RWBpmTiltScalar">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">RWBpmTiltScalar</span><span class="p">(</span><span class="n">abstract</span><span class="o">.</span><span class="n">ReadFloatScalar</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Class providing read access to a BPM tilt of a control system</span>
@@ -925,20 +776,26 @@
 
     <span class="c1"># Gets the value</span>
 <div class="viewcode-block" id="RWBpmTiltScalar.get">
-<a class="viewcode-back" href="../../../modules/control.html#pyaml.control.abstract_impl.RWBpmTiltScalar.get">[docs]</a>
+<a class="viewcode-back" href="../../../api/pyaml.control.abstract_impl.html#pyaml.control.abstract_impl.RWBpmTiltScalar.get">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__dev</span><span class="o">.</span><span class="n">get</span><span class="p">()</span></div>
 
 
+<div class="viewcode-block" id="RWBpmTiltScalar.set">
+<a class="viewcode-back" href="../../../api/pyaml.control.abstract_impl.html#pyaml.control.abstract_impl.RWBpmTiltScalar.set">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">set</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="nb">float</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">__dev</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__dev</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">value</span><span class="p">)</span></div>
 
+
+<div class="viewcode-block" id="RWBpmTiltScalar.set_and_wait">
+<a class="viewcode-back" href="../../../api/pyaml.control.abstract_impl.html#pyaml.control.abstract_impl.RWBpmTiltScalar.set_and_wait">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">set_and_wait</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">]):</span>
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;Not implemented yet.&quot;</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;Not implemented yet.&quot;</span><span class="p">)</span></div>
+
 
     <span class="c1"># Gets the unit of the value</span>
 <div class="viewcode-block" id="RWBpmTiltScalar.unit">
-<a class="viewcode-back" href="../../../modules/control.html#pyaml.control.abstract_impl.RWBpmTiltScalar.unit">[docs]</a>
+<a class="viewcode-back" href="../../../api/pyaml.control.abstract_impl.html#pyaml.control.abstract_impl.RWBpmTiltScalar.unit">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">unit</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__model</span><span class="o">.</span><span class="n">get_tilt_device</span><span class="p">()</span><span class="o">.</span><span class="n">unit</span><span class="p">()</span></div>
 </div>
@@ -949,7 +806,7 @@
 
 
 <div class="viewcode-block" id="RWBpmOffsetArray">
-<a class="viewcode-back" href="../../../modules/control.html#pyaml.control.abstract_impl.RWBpmOffsetArray">[docs]</a>
+<a class="viewcode-back" href="../../../api/pyaml.control.abstract_impl.html#pyaml.control.abstract_impl.RWBpmOffsetArray">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">RWBpmOffsetArray</span><span class="p">(</span><span class="n">abstract</span><span class="o">.</span><span class="n">ReadWriteFloatArray</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Class providing read write access to a BPM offset of a control system</span>
@@ -961,28 +818,28 @@
 
     <span class="c1"># Gets the value</span>
 <div class="viewcode-block" id="RWBpmOffsetArray.get">
-<a class="viewcode-back" href="../../../modules/control.html#pyaml.control.abstract_impl.RWBpmOffsetArray.get">[docs]</a>
+<a class="viewcode-back" href="../../../api/pyaml.control.abstract_impl.html#pyaml.control.abstract_impl.RWBpmOffsetArray.get">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">]:</span>
         <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">__devs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(),</span> <span class="bp">self</span><span class="o">.</span><span class="n">__devs</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">()])</span></div>
 
 
     <span class="c1"># Sets the value</span>
 <div class="viewcode-block" id="RWBpmOffsetArray.set">
-<a class="viewcode-back" href="../../../modules/control.html#pyaml.control.abstract_impl.RWBpmOffsetArray.set">[docs]</a>
+<a class="viewcode-back" href="../../../api/pyaml.control.abstract_impl.html#pyaml.control.abstract_impl.RWBpmOffsetArray.set">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">set</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">]):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__devs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">value</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__devs</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">value</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span></div>
 
 
 <div class="viewcode-block" id="RWBpmOffsetArray.set_and_wait">
-<a class="viewcode-back" href="../../../modules/control.html#pyaml.control.abstract_impl.RWBpmOffsetArray.set_and_wait">[docs]</a>
+<a class="viewcode-back" href="../../../api/pyaml.control.abstract_impl.html#pyaml.control.abstract_impl.RWBpmOffsetArray.set_and_wait">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">set_and_wait</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">]):</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;Not implemented yet.&quot;</span><span class="p">)</span></div>
 
 
     <span class="c1"># Gets the unit of the value</span>
 <div class="viewcode-block" id="RWBpmOffsetArray.unit">
-<a class="viewcode-back" href="../../../modules/control.html#pyaml.control.abstract_impl.RWBpmOffsetArray.unit">[docs]</a>
+<a class="viewcode-back" href="../../../api/pyaml.control.abstract_impl.html#pyaml.control.abstract_impl.RWBpmOffsetArray.unit">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">unit</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__model</span><span class="o">.</span><span class="n">get_offset_devices</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">unit</span><span class="p">()</span></div>
 </div>
@@ -993,7 +850,7 @@
 
 
 <div class="viewcode-block" id="RWRFVoltageScalar">
-<a class="viewcode-back" href="../../../modules/control.html#pyaml.control.abstract_impl.RWRFVoltageScalar">[docs]</a>
+<a class="viewcode-back" href="../../../api/pyaml.control.abstract_impl.html#pyaml.control.abstract_impl.RWRFVoltageScalar">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">RWRFVoltageScalar</span><span class="p">(</span><span class="n">abstract</span><span class="o">.</span><span class="n">ReadWriteFloatScalar</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Class providing read write access to cavity voltage</span>
@@ -1005,25 +862,25 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">__dev</span> <span class="o">=</span> <span class="n">dev</span>
 
 <div class="viewcode-block" id="RWRFVoltageScalar.get">
-<a class="viewcode-back" href="../../../modules/control.html#pyaml.control.abstract_impl.RWRFVoltageScalar.get">[docs]</a>
+<a class="viewcode-back" href="../../../api/pyaml.control.abstract_impl.html#pyaml.control.abstract_impl.RWRFVoltageScalar.get">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__dev</span><span class="o">.</span><span class="n">get</span><span class="p">()</span></div>
 
 
 <div class="viewcode-block" id="RWRFVoltageScalar.set">
-<a class="viewcode-back" href="../../../modules/control.html#pyaml.control.abstract_impl.RWRFVoltageScalar.set">[docs]</a>
+<a class="viewcode-back" href="../../../api/pyaml.control.abstract_impl.html#pyaml.control.abstract_impl.RWRFVoltageScalar.set">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">set</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="nb">float</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__dev</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">value</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="RWRFVoltageScalar.set_and_wait">
-<a class="viewcode-back" href="../../../modules/control.html#pyaml.control.abstract_impl.RWRFVoltageScalar.set_and_wait">[docs]</a>
+<a class="viewcode-back" href="../../../api/pyaml.control.abstract_impl.html#pyaml.control.abstract_impl.RWRFVoltageScalar.set_and_wait">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">set_and_wait</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="nb">float</span><span class="p">):</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;Not implemented yet.&quot;</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="RWRFVoltageScalar.unit">
-<a class="viewcode-back" href="../../../modules/control.html#pyaml.control.abstract_impl.RWRFVoltageScalar.unit">[docs]</a>
+<a class="viewcode-back" href="../../../api/pyaml.control.abstract_impl.html#pyaml.control.abstract_impl.RWRFVoltageScalar.unit">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">unit</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__transmitter</span><span class="o">.</span><span class="n">_cfg</span><span class="o">.</span><span class="n">voltage</span><span class="o">.</span><span class="n">unit</span><span class="p">()</span></div>
 </div>
@@ -1034,7 +891,7 @@
 
 
 <div class="viewcode-block" id="RWRFPhaseScalar">
-<a class="viewcode-back" href="../../../modules/control.html#pyaml.control.abstract_impl.RWRFPhaseScalar">[docs]</a>
+<a class="viewcode-back" href="../../../api/pyaml.control.abstract_impl.html#pyaml.control.abstract_impl.RWRFPhaseScalar">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">RWRFPhaseScalar</span><span class="p">(</span><span class="n">abstract</span><span class="o">.</span><span class="n">ReadWriteFloatScalar</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Class providing read write access to cavity phase</span>
@@ -1046,25 +903,25 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">__dev</span> <span class="o">=</span> <span class="n">dev</span>
 
 <div class="viewcode-block" id="RWRFPhaseScalar.get">
-<a class="viewcode-back" href="../../../modules/control.html#pyaml.control.abstract_impl.RWRFPhaseScalar.get">[docs]</a>
+<a class="viewcode-back" href="../../../api/pyaml.control.abstract_impl.html#pyaml.control.abstract_impl.RWRFPhaseScalar.get">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__dev</span><span class="o">.</span><span class="n">get</span><span class="p">()</span></div>
 
 
 <div class="viewcode-block" id="RWRFPhaseScalar.set">
-<a class="viewcode-back" href="../../../modules/control.html#pyaml.control.abstract_impl.RWRFPhaseScalar.set">[docs]</a>
+<a class="viewcode-back" href="../../../api/pyaml.control.abstract_impl.html#pyaml.control.abstract_impl.RWRFPhaseScalar.set">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">set</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="nb">float</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__dev</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">value</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="RWRFPhaseScalar.set_and_wait">
-<a class="viewcode-back" href="../../../modules/control.html#pyaml.control.abstract_impl.RWRFPhaseScalar.set_and_wait">[docs]</a>
+<a class="viewcode-back" href="../../../api/pyaml.control.abstract_impl.html#pyaml.control.abstract_impl.RWRFPhaseScalar.set_and_wait">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">set_and_wait</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="nb">float</span><span class="p">):</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;Not implemented yet.&quot;</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="RWRFPhaseScalar.unit">
-<a class="viewcode-back" href="../../../modules/control.html#pyaml.control.abstract_impl.RWRFPhaseScalar.unit">[docs]</a>
+<a class="viewcode-back" href="../../../api/pyaml.control.abstract_impl.html#pyaml.control.abstract_impl.RWRFPhaseScalar.unit">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">unit</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__transmitter</span><span class="o">.</span><span class="n">_cfg</span><span class="o">.</span><span class="n">phase</span><span class="o">.</span><span class="n">unit</span><span class="p">()</span></div>
 </div>
@@ -1075,7 +932,7 @@
 
 
 <div class="viewcode-block" id="RWRFFrequencyScalar">
-<a class="viewcode-back" href="../../../modules/control.html#pyaml.control.abstract_impl.RWRFFrequencyScalar">[docs]</a>
+<a class="viewcode-back" href="../../../api/pyaml.control.abstract_impl.html#pyaml.control.abstract_impl.RWRFFrequencyScalar">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">RWRFFrequencyScalar</span><span class="p">(</span><span class="n">abstract</span><span class="o">.</span><span class="n">ReadWriteFloatScalar</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Class providing read write access to RF frequency of a control system.</span>
@@ -1086,26 +943,26 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">__dev</span> <span class="o">=</span> <span class="n">dev</span>
 
 <div class="viewcode-block" id="RWRFFrequencyScalar.get">
-<a class="viewcode-back" href="../../../modules/control.html#pyaml.control.abstract_impl.RWRFFrequencyScalar.get">[docs]</a>
+<a class="viewcode-back" href="../../../api/pyaml.control.abstract_impl.html#pyaml.control.abstract_impl.RWRFFrequencyScalar.get">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
         <span class="c1"># Serialized cavity has the same frequency</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__dev</span><span class="o">.</span><span class="n">get</span><span class="p">()</span></div>
 
 
 <div class="viewcode-block" id="RWRFFrequencyScalar.set">
-<a class="viewcode-back" href="../../../modules/control.html#pyaml.control.abstract_impl.RWRFFrequencyScalar.set">[docs]</a>
+<a class="viewcode-back" href="../../../api/pyaml.control.abstract_impl.html#pyaml.control.abstract_impl.RWRFFrequencyScalar.set">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">set</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="nb">float</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__dev</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">value</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="RWRFFrequencyScalar.set_and_wait">
-<a class="viewcode-back" href="../../../modules/control.html#pyaml.control.abstract_impl.RWRFFrequencyScalar.set_and_wait">[docs]</a>
+<a class="viewcode-back" href="../../../api/pyaml.control.abstract_impl.html#pyaml.control.abstract_impl.RWRFFrequencyScalar.set_and_wait">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">set_and_wait</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="nb">float</span><span class="p">):</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;Not implemented yet.&quot;</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="RWRFFrequencyScalar.unit">
-<a class="viewcode-back" href="../../../modules/control.html#pyaml.control.abstract_impl.RWRFFrequencyScalar.unit">[docs]</a>
+<a class="viewcode-back" href="../../../api/pyaml.control.abstract_impl.html#pyaml.control.abstract_impl.RWRFFrequencyScalar.unit">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">unit</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__rf</span><span class="o">.</span><span class="n">_cfg</span><span class="o">.</span><span class="n">masterclock</span><span class="o">.</span><span class="n">unit</span><span class="p">()</span></div>
 </div>
@@ -1116,7 +973,7 @@
 
 
 <div class="viewcode-block" id="RBetatronTuneArray">
-<a class="viewcode-back" href="../../../modules/control.html#pyaml.control.abstract_impl.RBetatronTuneArray">[docs]</a>
+<a class="viewcode-back" href="../../../api/pyaml.control.abstract_impl.html#pyaml.control.abstract_impl.RBetatronTuneArray">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">RBetatronTuneArray</span><span class="p">(</span><span class="n">abstract</span><span class="o">.</span><span class="n">ReadFloatArray</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Class providing read write access to betatron tune of a control system.</span>
@@ -1127,7 +984,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">__devs</span> <span class="o">=</span> <span class="n">devs</span>
 
 <div class="viewcode-block" id="RBetatronTuneArray.get">
-<a class="viewcode-back" href="../../../modules/control.html#pyaml.control.abstract_impl.RBetatronTuneArray.get">[docs]</a>
+<a class="viewcode-back" href="../../../api/pyaml.control.abstract_impl.html#pyaml.control.abstract_impl.RBetatronTuneArray.get">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">NDArray</span><span class="p">:</span>
         <span class="c1"># Return horizontal and vertical betatron tunes as a NumPy array</span>
         <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
@@ -1139,7 +996,7 @@
 
 
 <div class="viewcode-block" id="RBetatronTuneArray.unit">
-<a class="viewcode-back" href="../../../modules/control.html#pyaml.control.abstract_impl.RBetatronTuneArray.unit">[docs]</a>
+<a class="viewcode-back" href="../../../api/pyaml.control.abstract_impl.html#pyaml.control.abstract_impl.RBetatronTuneArray.unit">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">unit</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__tune_monitor</span><span class="o">.</span><span class="n">_cfg</span><span class="o">.</span><span class="n">tune_v</span><span class="o">.</span><span class="n">unit</span><span class="p">()</span></div>
 </div>
