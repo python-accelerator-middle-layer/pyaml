@@ -475,7 +475,7 @@
 <tr class="row-odd"><td><p><a class="reference internal" href="#pyaml.bpm.bpm_tiltoffset_model.BPMTiltOffsetModel" title="pyaml.bpm.bpm_tiltoffset_model.BPMTiltOffsetModel"><code class="xref py py-obj docutils literal notranslate"><span class="pre">BPMTiltOffsetModel</span></code></a>(cfg)</p></td>
 <td><p>Concrete implementation of BPMModel that simulates a BPM with tilt and offset values.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#pyaml.bpm.bpm_tiltoffset_model.ConfigModel" title="pyaml.bpm.bpm_tiltoffset_model.ConfigModel"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ConfigModel</span></code></a>(*, x_pos, y_pos, x_offset, ...)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#pyaml.bpm.bpm_tiltoffset_model.ConfigModel" title="pyaml.bpm.bpm_tiltoffset_model.ConfigModel"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ConfigModel</span></code></a>(*, x_pos, y_pos[, x_pos_index, ...])</p></td>
 <td><p>Configuration model for BPM with tilt and offset</p></td>
 </tr>
 </tbody>
@@ -526,7 +526,7 @@ offset values.</p>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="pyaml.bpm.bpm_tiltoffset_model.ConfigModel">
-<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ConfigModel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">x_pos</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_pos</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x_offset</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_offset</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tilt</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/bpm/bpm_tiltoffset_model.html#ConfigModel"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.bpm.bpm_tiltoffset_model.ConfigModel" title="Link to this definition">#</a></dt>
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ConfigModel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">x_pos</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_pos</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x_pos_index</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_pos_index</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x_offset</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_offset</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tilt</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/bpm/bpm_tiltoffset_model.html#ConfigModel"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.bpm.bpm_tiltoffset_model.ConfigModel" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">BaseModel</span></code></p>
 <p>Configuration model for BPM with tilt and offset</p>
 <dl class="field-list simple">
@@ -566,6 +566,11 @@ validated to form a valid model.</p>
 <dd></dd></dl>
 
 <dl class="py attribute">
+<dt class="sig sig-object py" id="pyaml.bpm.bpm_tiltoffset_model.ConfigModel.x_pos_index">
+<span class="sig-name descname"><span class="pre">x_pos_index</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></em><a class="headerlink" href="#pyaml.bpm.bpm_tiltoffset_model.ConfigModel.x_pos_index" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
 <dt class="sig sig-object py" id="pyaml.bpm.bpm_tiltoffset_model.ConfigModel.y_offset">
 <span class="sig-name descname"><span class="pre">y_offset</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="pyaml.control.deviceaccess.html#pyaml.control.deviceaccess.DeviceAccess" title="pyaml.control.deviceaccess.DeviceAccess"><span class="pre">DeviceAccess</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></em><a class="headerlink" href="#pyaml.bpm.bpm_tiltoffset_model.ConfigModel.y_offset" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
@@ -573,6 +578,11 @@ validated to form a valid model.</p>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="pyaml.bpm.bpm_tiltoffset_model.ConfigModel.y_pos">
 <span class="sig-name descname"><span class="pre">y_pos</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="pyaml.control.deviceaccess.html#pyaml.control.deviceaccess.DeviceAccess" title="pyaml.control.deviceaccess.DeviceAccess"><span class="pre">DeviceAccess</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></em><a class="headerlink" href="#pyaml.bpm.bpm_tiltoffset_model.ConfigModel.y_pos" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyaml.bpm.bpm_tiltoffset_model.ConfigModel.y_pos_index">
+<span class="sig-name descname"><span class="pre">y_pos_index</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></em><a class="headerlink" href="#pyaml.bpm.bpm_tiltoffset_model.ConfigModel.y_pos_index" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
@@ -637,8 +647,10 @@ validated to form a valid model.</p>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.bpm.bpm_tiltoffset_model.ConfigModel.tilt"><code class="docutils literal notranslate"><span class="pre">ConfigModel.tilt</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.bpm.bpm_tiltoffset_model.ConfigModel.x_offset"><code class="docutils literal notranslate"><span class="pre">ConfigModel.x_offset</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.bpm.bpm_tiltoffset_model.ConfigModel.x_pos"><code class="docutils literal notranslate"><span class="pre">ConfigModel.x_pos</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.bpm.bpm_tiltoffset_model.ConfigModel.x_pos_index"><code class="docutils literal notranslate"><span class="pre">ConfigModel.x_pos_index</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.bpm.bpm_tiltoffset_model.ConfigModel.y_offset"><code class="docutils literal notranslate"><span class="pre">ConfigModel.y_offset</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.bpm.bpm_tiltoffset_model.ConfigModel.y_pos"><code class="docutils literal notranslate"><span class="pre">ConfigModel.y_pos</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.bpm.bpm_tiltoffset_model.ConfigModel.y_pos_index"><code class="docutils literal notranslate"><span class="pre">ConfigModel.y_pos_index</span></code></a></li>
 </ul>
 </li>
 </ul>

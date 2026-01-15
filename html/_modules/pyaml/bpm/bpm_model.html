@@ -381,7 +381,7 @@
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        list[DeviceAccess]</span>
-<span class="sd">            Array of DeviceAcess</span>
+<span class="sd">            h and v position devices</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">pass</span></div>
 
@@ -396,7 +396,7 @@
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        list[DeviceAccess]</span>
-<span class="sd">            Array of DeviceAcess</span>
+<span class="sd">            tilt device</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">pass</span></div>
 
@@ -411,9 +411,107 @@
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        list[DeviceAccess]</span>
-<span class="sd">            Array of DeviceAcess</span>
+<span class="sd">            h and v offset devices</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">pass</span></div>
+
+
+<div class="viewcode-block" id="BPMModel.x_pos_index">
+<a class="viewcode-back" href="../../../api/pyaml.bpm.bpm_model.html#pyaml.bpm.bpm_model.BPMModel.x_pos_index">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">x_pos_index</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns the index of the horizontal position in</span>
+<span class="sd">        an array, otherwise a scalar value is expected from the</span>
+<span class="sd">        corresponding DeviceAccess</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        int</span>
+<span class="sd">            Index in the array, None for a scalar value</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="kc">None</span></div>
+
+
+<div class="viewcode-block" id="BPMModel.y_pos_index">
+<a class="viewcode-back" href="../../../api/pyaml.bpm.bpm_model.html#pyaml.bpm.bpm_model.BPMModel.y_pos_index">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">y_pos_index</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns the index of the veritcal position in</span>
+<span class="sd">        an array, otherwise a scalar value is expected from the</span>
+<span class="sd">        corresponding DeviceAccess</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        int</span>
+<span class="sd">            Index in the array, None for a scalar value</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="kc">None</span></div>
+
+
+<div class="viewcode-block" id="BPMModel.is_pos_indexed">
+<a class="viewcode-back" href="../../../api/pyaml.bpm.bpm_model.html#pyaml.bpm.bpm_model.BPMModel.is_pos_indexed">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">is_pos_indexed</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">x_pos_index</span><span class="p">()</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">y_pos_index</span><span class="p">()</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span></div>
+
+
+<div class="viewcode-block" id="BPMModel.tilt_index">
+<a class="viewcode-back" href="../../../api/pyaml.bpm.bpm_model.html#pyaml.bpm.bpm_model.BPMModel.tilt_index">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">tilt_index</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns the index of the tilt angle in</span>
+<span class="sd">        an array, otherwise a scalar value is expected from the</span>
+<span class="sd">        corresponding DeviceAccess</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        int</span>
+<span class="sd">            Index in the array, None for a scalar value</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="kc">None</span></div>
+
+
+<div class="viewcode-block" id="BPMModel.is_tilt_indexed">
+<a class="viewcode-back" href="../../../api/pyaml.bpm.bpm_model.html#pyaml.bpm.bpm_model.BPMModel.is_tilt_indexed">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">is_tilt_indexed</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">tilt_index</span><span class="p">()</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span></div>
+
+
+<div class="viewcode-block" id="BPMModel.x_offset_index">
+<a class="viewcode-back" href="../../../api/pyaml.bpm.bpm_model.html#pyaml.bpm.bpm_model.BPMModel.x_offset_index">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">x_offset_index</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns the index of the horizontal offset in</span>
+<span class="sd">        an array, otherwise a scalar value is expected from the</span>
+<span class="sd">        corresponding DeviceAccess</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        int</span>
+<span class="sd">            Index in the array, None for a scalar value</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="kc">None</span></div>
+
+
+<div class="viewcode-block" id="BPMModel.y_offset_index">
+<a class="viewcode-back" href="../../../api/pyaml.bpm.bpm_model.html#pyaml.bpm.bpm_model.BPMModel.y_offset_index">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">y_offset_index</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns the index of the veritcal offset in</span>
+<span class="sd">        an array, otherwise a scalar value is expected from the</span>
+<span class="sd">        corresponding DeviceAccess</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        int</span>
+<span class="sd">            Index in the array, None for a scalar value</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="kc">None</span></div>
+
+
+<div class="viewcode-block" id="BPMModel.is_offset_indexed">
+<a class="viewcode-back" href="../../../api/pyaml.bpm.bpm_model.html#pyaml.bpm.bpm_model.BPMModel.is_offset_indexed">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">is_offset_indexed</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">x_offset_index</span><span class="p">()</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">y_offset_index</span><span class="p">()</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span></div>
 </div>
 
 </pre></div>

@@ -356,18 +356,15 @@
                   
   <h1>Source code for pyaml.control.deviceaccess</h1><div class="highlight"><pre>
 <span></span><span class="kn">from</span><span class="w"> </span><span class="nn">abc</span><span class="w"> </span><span class="kn">import</span> <span class="n">ABCMeta</span><span class="p">,</span> <span class="n">abstractmethod</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Union</span>
 
-<span class="kn">import</span><span class="w"> </span><span class="nn">numpy.typing</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">npt</span>
-
-<span class="kn">from</span><span class="w"> </span><span class="nn">.readback_value</span><span class="w"> </span><span class="kn">import</span> <span class="n">Value</span>
+<span class="c1"># TODO: correctly type value</span>
 
 
 <div class="viewcode-block" id="DeviceAccess">
 <a class="viewcode-back" href="../../../api/pyaml.control.deviceaccess.html#pyaml.control.deviceaccess.DeviceAccess">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">DeviceAccess</span><span class="p">(</span><span class="n">metaclass</span><span class="o">=</span><span class="n">ABCMeta</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Abstract class providing access to a control system float variable</span>
+<span class="sd">    Abstract class providing access to a control system variable</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
 <div class="viewcode-block" id="DeviceAccess.name">
@@ -389,7 +386,7 @@
 <div class="viewcode-block" id="DeviceAccess.set">
 <a class="viewcode-back" href="../../../api/pyaml.control.deviceaccess.html#pyaml.control.deviceaccess.DeviceAccess.set">[docs]</a>
     <span class="nd">@abstractmethod</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">set</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="nb">float</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">set</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Write a control system device variable (i.e. a power supply current)&quot;&quot;&quot;</span>
         <span class="k">pass</span></div>
 
@@ -397,7 +394,7 @@
 <div class="viewcode-block" id="DeviceAccess.set_and_wait">
 <a class="viewcode-back" href="../../../api/pyaml.control.deviceaccess.html#pyaml.control.deviceaccess.DeviceAccess.set_and_wait">[docs]</a>
     <span class="nd">@abstractmethod</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">set_and_wait</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="nb">float</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">set_and_wait</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Write a control system device variable (i.e. a power supply current)&quot;&quot;&quot;</span>
         <span class="k">pass</span></div>
 
@@ -405,15 +402,15 @@
 <div class="viewcode-block" id="DeviceAccess.get">
 <a class="viewcode-back" href="../../../api/pyaml.control.deviceaccess.html#pyaml.control.deviceaccess.DeviceAccess.get">[docs]</a>
     <span class="nd">@abstractmethod</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return the setpoint of a control system device variable&quot;&quot;&quot;</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return the setpoint(s) of a control system device variable&quot;&quot;&quot;</span>
         <span class="k">pass</span></div>
 
 
 <div class="viewcode-block" id="DeviceAccess.readback">
 <a class="viewcode-back" href="../../../api/pyaml.control.deviceaccess.html#pyaml.control.deviceaccess.DeviceAccess.readback">[docs]</a>
     <span class="nd">@abstractmethod</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">readback</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="n">Value</span><span class="p">,</span> <span class="n">npt</span><span class="o">.</span><span class="n">NDArray</span><span class="p">[</span><span class="n">Value</span><span class="p">]]:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">readback</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Return the measured variable&quot;&quot;&quot;</span>
         <span class="k">pass</span></div>
 

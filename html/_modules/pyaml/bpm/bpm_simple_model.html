@@ -380,12 +380,20 @@
 <span class="sd">        Horizontal position device</span>
 <span class="sd">    y_pos : DeviceAccess, optional</span>
 <span class="sd">        Vertical position device</span>
+<span class="sd">    x_pos_index : int, optional</span>
+<span class="sd">        Index in the array when specified, otherwise scalar</span>
+<span class="sd">        value is expected</span>
+<span class="sd">    y_pos_index : int, optional</span>
+<span class="sd">        Index in the array when specified, otherwise scalar</span>
+<span class="sd">        value is expected</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">model_config</span> <span class="o">=</span> <span class="n">ConfigDict</span><span class="p">(</span><span class="n">arbitrary_types_allowed</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">extra</span><span class="o">=</span><span class="s2">&quot;forbid&quot;</span><span class="p">)</span>
 
     <span class="n">x_pos</span><span class="p">:</span> <span class="n">DeviceAccess</span> <span class="o">|</span> <span class="kc">None</span>
-    <span class="n">y_pos</span><span class="p">:</span> <span class="n">DeviceAccess</span> <span class="o">|</span> <span class="kc">None</span></div>
+    <span class="n">y_pos</span><span class="p">:</span> <span class="n">DeviceAccess</span> <span class="o">|</span> <span class="kc">None</span>
+    <span class="n">x_pos_index</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">y_pos_index</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span></div>
 
 
 
@@ -442,6 +450,38 @@
 <span class="sd">            Array of DeviceAcess</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span></div>
+
+
+<div class="viewcode-block" id="BPMSimpleModel.x_pos_index">
+<a class="viewcode-back" href="../../../api/pyaml.bpm.bpm_simple_model.html#pyaml.bpm.bpm_simple_model.BPMSimpleModel.x_pos_index">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">x_pos_index</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns the index of the horizontal position in</span>
+<span class="sd">        an array, otherwise a scalar value is expected from the</span>
+<span class="sd">        corresponding DeviceAccess</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        int</span>
+<span class="sd">            Index in the array, None for a scalar value</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cfg</span><span class="o">.</span><span class="n">x_pos_index</span></div>
+
+
+<div class="viewcode-block" id="BPMSimpleModel.y_pos_index">
+<a class="viewcode-back" href="../../../api/pyaml.bpm.bpm_simple_model.html#pyaml.bpm.bpm_simple_model.BPMSimpleModel.y_pos_index">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">y_pos_index</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns the index of the veritcal position in</span>
+<span class="sd">        an array, otherwise a scalar value is expected from the</span>
+<span class="sd">        corresponding DeviceAccess</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        int</span>
+<span class="sd">            Index in the array, None for a scalar value</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cfg</span><span class="o">.</span><span class="n">y_pos_index</span></div>
 
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>

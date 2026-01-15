@@ -596,6 +596,8 @@
 </li>
       <li><a href="api/pyaml.magnet.linear_model.html#pyaml.magnet.linear_model.ConfigModel.crosstalk">crosstalk (ConfigModel attribute)</a>, <a href="api/pyaml.magnet.linear_serialized_model.html#pyaml.magnet.linear_serialized_model.ConfigModel.crosstalk">[1]</a>, <a href="api/pyaml.magnet.spline_model.html#pyaml.magnet.spline_model.ConfigModel.crosstalk">[2]</a>
 </li>
+      <li><a href="api/pyaml.control.abstract_impl.html#pyaml.control.abstract_impl.CSBPMArrayMapper">CSBPMArrayMapper (class in pyaml.control.abstract_impl)</a>
+</li>
       <li><a href="api/pyaml.control.abstract_impl.html#pyaml.control.abstract_impl.CSScalarAggregator">CSScalarAggregator (class in pyaml.control.abstract_impl)</a>
 </li>
       <li><a href="api/pyaml.control.abstract_impl.html#pyaml.control.abstract_impl.CSStrengthScalarAggregator">CSStrengthScalarAggregator (class in pyaml.control.abstract_impl)</a>
@@ -712,6 +714,8 @@
         <li><a href="api/pyaml.lattice.abstract_impl.html#pyaml.lattice.abstract_impl.BPMScalarAggregator.get">(BPMScalarAggregator method)</a>
 </li>
         <li><a href="api/pyaml.lattice.abstract_impl.html#pyaml.lattice.abstract_impl.BPMVScalarAggregator.get">(BPMVScalarAggregator method)</a>
+</li>
+        <li><a href="api/pyaml.control.abstract_impl.html#pyaml.control.abstract_impl.CSBPMArrayMapper.get">(CSBPMArrayMapper method)</a>
 </li>
         <li><a href="api/pyaml.control.abstract_impl.html#pyaml.control.abstract_impl.CSScalarAggregator.get">(CSScalarAggregator method)</a>
 </li>
@@ -1046,15 +1050,21 @@
 </li>
       <li><a href="api/pyaml.configuration.inline_curve.html#pyaml.configuration.inline_curve.InlineCurve">InlineCurve (class in pyaml.configuration.inline_curve)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/pyaml.configuration.inline_matrix.html#pyaml.configuration.inline_matrix.InlineMatrix">InlineMatrix (class in pyaml.configuration.inline_matrix)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/pyaml.control.readback_value.html#pyaml.control.readback_value.Quality.INVALID">INVALID (Quality attribute)</a>
 </li>
       <li><a href="api/pyaml.configuration.curve.html#pyaml.configuration.curve.Curve.inverse">inverse() (Curve class method)</a>
 </li>
       <li><a href="api/pyaml.control.readback_value.html#pyaml.control.readback_value.Value.is_good">is_good() (Value method)</a>
+</li>
+      <li><a href="api/pyaml.bpm.bpm_model.html#pyaml.bpm.bpm_model.BPMModel.is_offset_indexed">is_offset_indexed() (BPMModel method)</a>
+</li>
+      <li><a href="api/pyaml.bpm.bpm_model.html#pyaml.bpm.bpm_model.BPMModel.is_pos_indexed">is_pos_indexed() (BPMModel method)</a>
+</li>
+      <li><a href="api/pyaml.bpm.bpm_model.html#pyaml.bpm.bpm_model.BPMModel.is_tilt_indexed">is_tilt_indexed() (BPMModel method)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -1959,6 +1969,8 @@
       <li><a href="api/pyaml.lattice.abstract_impl.html#pyaml.lattice.abstract_impl.BPMScalarAggregator.readback">readback() (BPMScalarAggregator method)</a>
 
       <ul>
+        <li><a href="api/pyaml.control.abstract_impl.html#pyaml.control.abstract_impl.CSBPMArrayMapper.readback">(CSBPMArrayMapper method)</a>
+</li>
         <li><a href="api/pyaml.control.abstract_impl.html#pyaml.control.abstract_impl.CSScalarAggregator.readback">(CSScalarAggregator method)</a>
 </li>
         <li><a href="api/pyaml.control.abstract_impl.html#pyaml.control.abstract_impl.CSStrengthScalarAggregator.readback">(CSStrengthScalarAggregator method)</a>
@@ -2103,6 +2115,8 @@
       <li><a href="api/pyaml.lattice.abstract_impl.html#pyaml.lattice.abstract_impl.BPMScalarAggregator.set">set() (BPMScalarAggregator method)</a>
 
       <ul>
+        <li><a href="api/pyaml.control.abstract_impl.html#pyaml.control.abstract_impl.CSBPMArrayMapper.set">(CSBPMArrayMapper method)</a>
+</li>
         <li><a href="api/pyaml.control.abstract_impl.html#pyaml.control.abstract_impl.CSScalarAggregator.set">(CSScalarAggregator method)</a>
 </li>
         <li><a href="api/pyaml.control.abstract_impl.html#pyaml.control.abstract_impl.CSStrengthScalarAggregator.set">(CSStrengthScalarAggregator method)</a>
@@ -2318,6 +2332,8 @@
         <li><a href="api/pyaml.bpm.bpm_tiltoffset_model.html#pyaml.bpm.bpm_tiltoffset_model.ConfigModel.tilt">(ConfigModel attribute)</a>
 </li>
       </ul></li>
+      <li><a href="api/pyaml.bpm.bpm_model.html#pyaml.bpm.bpm_model.BPMModel.tilt_index">tilt_index() (BPMModel method)</a>
+</li>
       <li><a href="api/pyaml.rf.rf_plant.html#pyaml.rf.rf_plant.ConfigModel.transmitters">transmitters (ConfigModel attribute)</a>
 </li>
   </ul></td>
@@ -2343,6 +2359,8 @@
       <li><a href="api/pyaml.lattice.abstract_impl.html#pyaml.lattice.abstract_impl.BPMScalarAggregator.unit">unit() (BPMScalarAggregator method)</a>
 
       <ul>
+        <li><a href="api/pyaml.control.abstract_impl.html#pyaml.control.abstract_impl.CSBPMArrayMapper.unit">(CSBPMArrayMapper method)</a>
+</li>
         <li><a href="api/pyaml.control.abstract_impl.html#pyaml.control.abstract_impl.CSScalarAggregator.unit">(CSScalarAggregator method)</a>
 </li>
         <li><a href="api/pyaml.control.abstract_impl.html#pyaml.control.abstract_impl.CSStrengthScalarAggregator.unit">(CSStrengthScalarAggregator method)</a>
@@ -2454,10 +2472,20 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/pyaml.bpm.bpm_tiltoffset_model.html#pyaml.bpm.bpm_tiltoffset_model.ConfigModel.x_offset">x_offset (ConfigModel attribute)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/pyaml.bpm.bpm_model.html#pyaml.bpm.bpm_model.BPMModel.x_offset_index">x_offset_index() (BPMModel method)</a>
+</li>
       <li><a href="api/pyaml.bpm.bpm_simple_model.html#pyaml.bpm.bpm_simple_model.ConfigModel.x_pos">x_pos (ConfigModel attribute)</a>, <a href="api/pyaml.bpm.bpm_tiltoffset_model.html#pyaml.bpm.bpm_tiltoffset_model.ConfigModel.x_pos">[1]</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/pyaml.bpm.bpm_simple_model.html#pyaml.bpm.bpm_simple_model.ConfigModel.x_pos_index">x_pos_index (ConfigModel attribute)</a>, <a href="api/pyaml.bpm.bpm_tiltoffset_model.html#pyaml.bpm.bpm_tiltoffset_model.ConfigModel.x_pos_index">[1]</a>
+</li>
+      <li><a href="api/pyaml.bpm.bpm_model.html#pyaml.bpm.bpm_model.BPMModel.x_pos_index">x_pos_index() (BPMModel method)</a>
+
+      <ul>
+        <li><a href="api/pyaml.bpm.bpm_simple_model.html#pyaml.bpm.bpm_simple_model.BPMSimpleModel.x_pos_index">(BPMSimpleModel method)</a>
+</li>
+      </ul></li>
   </ul></td>
 </tr></table>
 
@@ -2466,10 +2494,20 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/pyaml.bpm.bpm_tiltoffset_model.html#pyaml.bpm.bpm_tiltoffset_model.ConfigModel.y_offset">y_offset (ConfigModel attribute)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/pyaml.bpm.bpm_model.html#pyaml.bpm.bpm_model.BPMModel.y_offset_index">y_offset_index() (BPMModel method)</a>
+</li>
       <li><a href="api/pyaml.bpm.bpm_simple_model.html#pyaml.bpm.bpm_simple_model.ConfigModel.y_pos">y_pos (ConfigModel attribute)</a>, <a href="api/pyaml.bpm.bpm_tiltoffset_model.html#pyaml.bpm.bpm_tiltoffset_model.ConfigModel.y_pos">[1]</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/pyaml.bpm.bpm_simple_model.html#pyaml.bpm.bpm_simple_model.ConfigModel.y_pos_index">y_pos_index (ConfigModel attribute)</a>, <a href="api/pyaml.bpm.bpm_tiltoffset_model.html#pyaml.bpm.bpm_tiltoffset_model.ConfigModel.y_pos_index">[1]</a>
+</li>
+      <li><a href="api/pyaml.bpm.bpm_model.html#pyaml.bpm.bpm_model.BPMModel.y_pos_index">y_pos_index() (BPMModel method)</a>
+
+      <ul>
+        <li><a href="api/pyaml.bpm.bpm_simple_model.html#pyaml.bpm.bpm_simple_model.BPMSimpleModel.y_pos_index">(BPMSimpleModel method)</a>
+</li>
+      </ul></li>
       <li><a href="api/pyaml.configuration.fileloader.html#pyaml.configuration.fileloader.YAMLLoader">YAMLLoader (class in pyaml.configuration.fileloader)</a>
 </li>
   </ul></td>

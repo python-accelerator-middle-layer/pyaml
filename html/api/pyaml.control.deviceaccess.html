@@ -473,7 +473,7 @@
 <div class="pst-scrollable-table-container"><table class="autosummary longtable table">
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="#pyaml.control.deviceaccess.DeviceAccess" title="pyaml.control.deviceaccess.DeviceAccess"><code class="xref py py-obj docutils literal notranslate"><span class="pre">DeviceAccess</span></code></a>()</p></td>
-<td><p>Abstract class providing access to a control system float variable</p></td>
+<td><p>Abstract class providing access to a control system variable</p></td>
 </tr>
 </tbody>
 </table>
@@ -482,13 +482,11 @@
 <dt class="sig sig-object py" id="pyaml.control.deviceaccess.DeviceAccess">
 <em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">DeviceAccess</span></span><a class="reference internal" href="../_modules/pyaml/control/deviceaccess.html#DeviceAccess"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.control.deviceaccess.DeviceAccess" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
-<p>Abstract class providing access to a control system float variable</p>
+<p>Abstract class providing access to a control system variable</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="pyaml.control.deviceaccess.DeviceAccess.get">
 <em class="property"><span class="k"><span class="pre">abstractmethod</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/control/deviceaccess.html#DeviceAccess.get"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.control.deviceaccess.DeviceAccess.get" title="Link to this definition">#</a></dt>
-<dd><p>Return the setpoint of a control system device variable</p>
-<dl class="field-list simple">
-</dl>
+<dd><p>Return the setpoint(s) of a control system device variable</p>
 </dd></dl>
 
 <dl class="py method">
@@ -511,24 +509,18 @@
 <dt class="sig sig-object py" id="pyaml.control.deviceaccess.DeviceAccess.readback">
 <em class="property"><span class="k"><span class="pre">abstractmethod</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">readback</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/control/deviceaccess.html#DeviceAccess.readback"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.control.deviceaccess.DeviceAccess.readback" title="Link to this definition">#</a></dt>
 <dd><p>Return the measured variable</p>
-<dl class="field-list simple">
-</dl>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pyaml.control.deviceaccess.DeviceAccess.set">
 <em class="property"><span class="k"><span class="pre">abstractmethod</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">set</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/control/deviceaccess.html#DeviceAccess.set"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.control.deviceaccess.DeviceAccess.set" title="Link to this definition">#</a></dt>
 <dd><p>Write a control system device variable (i.e. a power supply current)</p>
-<dl class="field-list simple">
-</dl>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pyaml.control.deviceaccess.DeviceAccess.set_and_wait">
 <em class="property"><span class="k"><span class="pre">abstractmethod</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">set_and_wait</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/control/deviceaccess.html#DeviceAccess.set_and_wait"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.control.deviceaccess.DeviceAccess.set_and_wait" title="Link to this definition">#</a></dt>
 <dd><p>Write a control system device variable (i.e. a power supply current)</p>
-<dl class="field-list simple">
-</dl>
 </dd></dl>
 
 <dl class="py method">

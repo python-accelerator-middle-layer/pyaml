@@ -475,7 +475,7 @@
 <tr class="row-odd"><td><p><a class="reference internal" href="#pyaml.bpm.bpm_simple_model.BPMSimpleModel" title="pyaml.bpm.bpm_simple_model.BPMSimpleModel"><code class="xref py py-obj docutils literal notranslate"><span class="pre">BPMSimpleModel</span></code></a>(cfg)</p></td>
 <td><p>Concrete implementation of BPMModel that simulates a BPM with tilt and offset values.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#pyaml.bpm.bpm_simple_model.ConfigModel" title="pyaml.bpm.bpm_simple_model.ConfigModel"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ConfigModel</span></code></a>(*, x_pos, y_pos)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#pyaml.bpm.bpm_simple_model.ConfigModel" title="pyaml.bpm.bpm_simple_model.ConfigModel"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ConfigModel</span></code></a>(*, x_pos, y_pos[, x_pos_index, ...])</p></td>
 <td><p>Configuration model for BPM simple model</p></td>
 </tr>
 </tbody>
@@ -522,11 +522,37 @@ offset values.</p>
 </dl>
 </dd></dl>
 
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaml.bpm.bpm_simple_model.BPMSimpleModel.x_pos_index">
+<span class="sig-name descname"><span class="pre">x_pos_index</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/bpm/bpm_simple_model.html#BPMSimpleModel.x_pos_index"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.bpm.bpm_simple_model.BPMSimpleModel.x_pos_index" title="Link to this definition">#</a></dt>
+<dd><p>Returns the index of the horizontal position in
+an array, otherwise a scalar value is expected from the
+corresponding DeviceAccess</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>int</strong> – Index in the array, None for a scalar value</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaml.bpm.bpm_simple_model.BPMSimpleModel.y_pos_index">
+<span class="sig-name descname"><span class="pre">y_pos_index</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/bpm/bpm_simple_model.html#BPMSimpleModel.y_pos_index"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.bpm.bpm_simple_model.BPMSimpleModel.y_pos_index" title="Link to this definition">#</a></dt>
+<dd><p>Returns the index of the veritcal position in
+an array, otherwise a scalar value is expected from the
+corresponding DeviceAccess</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>int</strong> – Index in the array, None for a scalar value</p>
+</dd>
+</dl>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="pyaml.bpm.bpm_simple_model.ConfigModel">
-<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ConfigModel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">x_pos</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_pos</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/bpm/bpm_simple_model.html#ConfigModel"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.bpm.bpm_simple_model.ConfigModel" title="Link to this definition">#</a></dt>
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ConfigModel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">x_pos</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_pos</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x_pos_index</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_pos_index</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/bpm/bpm_simple_model.html#ConfigModel"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.bpm.bpm_simple_model.ConfigModel" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">BaseModel</span></code></p>
 <p>Configuration model for BPM simple model</p>
 <dl class="field-list simple">
@@ -534,6 +560,10 @@ offset values.</p>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>x_pos</strong> (<a class="reference internal" href="pyaml.control.deviceaccess.html#pyaml.control.deviceaccess.DeviceAccess" title="pyaml.control.deviceaccess.DeviceAccess"><em>DeviceAccess</em></a><em>, </em><em>optional</em>) – Horizontal position device</p></li>
 <li><p><strong>y_pos</strong> (<a class="reference internal" href="pyaml.control.deviceaccess.html#pyaml.control.deviceaccess.DeviceAccess" title="pyaml.control.deviceaccess.DeviceAccess"><em>DeviceAccess</em></a><em>, </em><em>optional</em>) – Vertical position device</p></li>
+<li><p><strong>x_pos_index</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><em>int</em></a><em>, </em><em>optional</em>) – Index in the array when specified, otherwise scalar
+value is expected</p></li>
+<li><p><strong>y_pos_index</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><em>int</em></a><em>, </em><em>optional</em>) – Index in the array when specified, otherwise scalar
+value is expected</p></li>
 </ul>
 </dd>
 </dl>
@@ -553,8 +583,18 @@ validated to form a valid model.</p>
 <dd></dd></dl>
 
 <dl class="py attribute">
+<dt class="sig sig-object py" id="pyaml.bpm.bpm_simple_model.ConfigModel.x_pos_index">
+<span class="sig-name descname"><span class="pre">x_pos_index</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></em><a class="headerlink" href="#pyaml.bpm.bpm_simple_model.ConfigModel.x_pos_index" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
 <dt class="sig sig-object py" id="pyaml.bpm.bpm_simple_model.ConfigModel.y_pos">
 <span class="sig-name descname"><span class="pre">y_pos</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="pyaml.control.deviceaccess.html#pyaml.control.deviceaccess.DeviceAccess" title="pyaml.control.deviceaccess.DeviceAccess"><span class="pre">DeviceAccess</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></em><a class="headerlink" href="#pyaml.bpm.bpm_simple_model.ConfigModel.y_pos" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyaml.bpm.bpm_simple_model.ConfigModel.y_pos_index">
+<span class="sig-name descname"><span class="pre">y_pos_index</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></em><a class="headerlink" href="#pyaml.bpm.bpm_simple_model.ConfigModel.y_pos_index" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
@@ -612,12 +652,16 @@ validated to form a valid model.</p>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.bpm.bpm_simple_model.BPMSimpleModel.get_offset_devices"><code class="docutils literal notranslate"><span class="pre">BPMSimpleModel.get_offset_devices()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.bpm.bpm_simple_model.BPMSimpleModel.get_pos_devices"><code class="docutils literal notranslate"><span class="pre">BPMSimpleModel.get_pos_devices()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.bpm.bpm_simple_model.BPMSimpleModel.get_tilt_device"><code class="docutils literal notranslate"><span class="pre">BPMSimpleModel.get_tilt_device()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.bpm.bpm_simple_model.BPMSimpleModel.x_pos_index"><code class="docutils literal notranslate"><span class="pre">BPMSimpleModel.x_pos_index()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.bpm.bpm_simple_model.BPMSimpleModel.y_pos_index"><code class="docutils literal notranslate"><span class="pre">BPMSimpleModel.y_pos_index()</span></code></a></li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.bpm.bpm_simple_model.ConfigModel"><code class="docutils literal notranslate"><span class="pre">ConfigModel</span></code></a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.bpm.bpm_simple_model.ConfigModel.model_config"><code class="docutils literal notranslate"><span class="pre">ConfigModel.model_config</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.bpm.bpm_simple_model.ConfigModel.x_pos"><code class="docutils literal notranslate"><span class="pre">ConfigModel.x_pos</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.bpm.bpm_simple_model.ConfigModel.x_pos_index"><code class="docutils literal notranslate"><span class="pre">ConfigModel.x_pos_index</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.bpm.bpm_simple_model.ConfigModel.y_pos"><code class="docutils literal notranslate"><span class="pre">ConfigModel.y_pos</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.bpm.bpm_simple_model.ConfigModel.y_pos_index"><code class="docutils literal notranslate"><span class="pre">ConfigModel.y_pos_index</span></code></a></li>
 </ul>
 </li>
 </ul>
