@@ -11,6 +11,8 @@ from ..control.deviceaccess import DeviceAccess
 # Define the main class name for this module
 PYAMLCLASS = "BPMTiltOffsetModel"
 
+# TODO: Implepement indexed offset and tilt
+
 
 class ConfigModel(BaseModel):
     """
@@ -34,6 +36,8 @@ class ConfigModel(BaseModel):
 
     x_pos: DeviceAccess | None
     y_pos: DeviceAccess | None
+    x_pos_index: int | None = None
+    y_pos_index: int | None = None
     x_offset: DeviceAccess | None
     y_offset: DeviceAccess | None
     tilt: DeviceAccess | None
