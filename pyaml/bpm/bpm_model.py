@@ -90,7 +90,7 @@ class BPMModel(metaclass=ABCMeta):
         """
         return None
 
-    def is_titl_indexed(self) -> bool:
+    def is_tilt_indexed(self) -> bool:
         return self.tilt_index() is not None
 
     def x_offset_index(self) -> int | None:
