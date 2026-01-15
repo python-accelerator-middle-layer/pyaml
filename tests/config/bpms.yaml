@@ -68,7 +68,7 @@ devices:
     y_pos_index: 1
     x_pos:
       type: tango.pyaml.attribute_read_only
-      attribute: srdiag/bpm/c01-04Position
+      attribute: srdiag/bpm/c01-04/Position
       unit: mm
     y_pos:
       type: tango.pyaml.attribute_read_only
