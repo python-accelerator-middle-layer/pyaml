@@ -9,6 +9,7 @@ from ..common.element import Element
 from ..common.element_holder import ElementHolder
 from ..common.exception import PyAMLException
 from ..configuration import get_root_folder
+from ..diagnostics.chromaticity_monitor import ChomaticityMonitor
 from ..diagnostics.tune_monitor import BetatronTuneMonitor
 from ..lattice.abstract_impl import (
     BPMHScalarAggregator,
@@ -16,6 +17,7 @@ from ..lattice.abstract_impl import (
     BPMVScalarAggregator,
     RBetatronTuneArray,
     RBpmArray,
+    RChromaticityArray,
     RWBpmOffsetArray,
     RWBpmTiltScalar,
     RWHardwareArray,
@@ -266,6 +268,11 @@ class Simulator(ElementHolder):
                 betatron_tune = RBetatronTuneArray(self.ring)
                 e = e.attach(self, betatron_tune)
                 self.add_betatron_tune_monitor(e)
+
+            elif isinstance(e, ChomaticityMonitor):
+                betatron_tune = RChromaticityArray(self.ring)
+                e = e.attach(self, betatron_tune)
+                self.add_chromaticity_monitor(e)
 
             elif isinstance(e, Tune):
                 self.add_tune_tuning(e.attach(self))
