@@ -26,10 +26,13 @@ jobs:
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
+        git submodule update --init --recursive
         pip install numpy
         pip install scipy
         pip install pydantic
         pip install accelerator-toolbox
+        pip install matplotlib
+        pip install h5py
         pip install pyaml
         pip install flake8 pytest
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi

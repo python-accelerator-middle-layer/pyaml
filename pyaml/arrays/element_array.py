@@ -10,24 +10,30 @@ from ..magnet.magnet import Magnet
 
 class ElementArray(list[Element]):
     """
-    Class that implements access to a element array
+    Class that implements access to an element array
+
+    Parameters
+    ----------
+    arrayName : str
+        Array name
+    elements: list[Element]
+        Element list, all elements must be attached to the same instance of
+        either a Simulator or a ControlSystem.
+    use_aggregator : bool
+        Use aggregator to increase performance by using paralell
+        access to underlying devices.
+
+    Example
+    -------
+
+    An array can be retrieved from the configuration as in the following example::
+
+        sr = Accelerator.load("acc.yaml")
+        elts = sr.design.get_elemens("QuadForTune")
+
     """
 
     def __init__(self, arrayName: str, elements: list[Element], use_aggregator=True):
-        """
-        Construct an element array
-
-        Parameters
-        ----------
-        arrayName : str
-            Array name
-        elements: list[Element]
-            Element list, all elements must be attached to the same instance of
-            either a Simulator or a ControlSystem.
-        use_aggregator : bool
-            Use aggregator to increase performance by using paralell
-            access to underlying devices.
-        """
         super().__init__(i for i in elements)
         self.__name = arrayName
         if len(elements) > 0:
@@ -47,9 +53,15 @@ class ElementArray(list[Element]):
         return self.__peer
 
     def get_name(self) -> str:
+        """
+        Returns the array name
+        """
         return self.__name
 
     def names(self) -> list[str]:
+        """
+        Returns the element names
+        """
         return [e.get_name() for e in self]
 
     def __create_array(self, arrName: str, eltType: type, elements: list):

@@ -9,6 +9,23 @@ class ConfigModel(ArrayConfigModel): ...
 
 
 class Element(ArrayConfig):
+    """
+    Element array confirguration
+
+    Example
+    -------
+
+    An element array configuration can also be created by code using
+    the following example::
+
+        from pyaml.arrays.element import Element,ConfigModel as ElementArrayConfigModel
+        elemArray = Element(
+                      ElementArrayConfigModel(name="MyArray", elements=["elt1","elt2"])
+                    )
+
+
+    """
+
     def __init__(self, cfg: ArrayConfigModel):
         super().__init__(cfg)
 

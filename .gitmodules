@@ -1,0 +1,3 @@
+[submodule "pyaml/external/pySC"]
+	path = pyaml/external/pySC
+	url = https://github.com/kparasch/pySC.git

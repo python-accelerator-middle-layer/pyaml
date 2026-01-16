@@ -80,7 +80,18 @@ class RWMagnetHardwares(ReadWriteFloatArray):
 
 class CombinedFunctionMagnetArray(ElementArray):
     """
-    Class that implements access to a magnet array
+    Class that implements access to a combined function magnet array
+
+    Parameters
+    ----------
+    arrayName : str
+        Array name
+    magnets: list[Magnet]
+        Magnet list, all elements must be attached to the same instance of
+        either a Simulator or a ControlSystem.
+    use_aggregator : bool
+        Use aggregator to increase performance by using paralell
+        access to underlying devices.
     """
 
     def __init__(
@@ -89,20 +100,6 @@ class CombinedFunctionMagnetArray(ElementArray):
         magnets: list[CombinedFunctionMagnet],
         use_aggregator=False,
     ):
-        """
-        Construct a magnet array
-
-        Parameters
-        ----------
-        arrayName : str
-            Array name
-        magnets: list[Magnet]
-            Magnet list, all elements must be attached to the same instance of
-            either a Simulator or a ControlSystem.
-        use_aggregator : bool
-            Use aggregator to increase performance by using paralell
-            access to underlying devices.
-        """
         super().__init__(arrayName, magnets, use_aggregator)
 
         self.__rwstrengths = RWMagnetStrengths(arrayName, magnets)

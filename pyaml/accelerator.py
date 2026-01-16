@@ -74,6 +74,8 @@ class Accelerator(object):
         if cfg.energy is not None:
             self.set_energy(cfg.energy)
 
+        self.post_init()
+
     def set_energy(self, E: float):
         if self._cfg.simulators is not None:
             for s in self._cfg.simulators:
@@ -81,6 +83,17 @@ class Accelerator(object):
         if self._cfg.controls is not None:
             for c in self._cfg.controls:
                 c.set_energy(E)
+
+    def post_init(self):
+        """
+        Method triggered after all initialisations are done
+        """
+        if self._cfg.simulators is not None:
+            for s in self._cfg.simulators:
+                s.post_init()
+        if self._cfg.controls is not None:
+            for c in self._cfg.controls:
+                c.post_init()
 
     @property
     def live(self) -> ControlSystem:
