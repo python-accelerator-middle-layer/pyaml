@@ -54,4 +54,16 @@ def test_controlsystem_bpm_position(install_test_package):
     assert np.allclose(bpm.positions.get(), np.array([0.0, 0.0]))
     assert np.allclose(bpm_simple.positions.get(), np.array([0.0, 0.0]))
 
+
+@pytest.mark.parametrize(
+    "install_test_package",
+    [{"name": "tango-pyaml", "path": "tests/dummy_cs/tango-pyaml"}],
+    indirect=True,
+)
+def test_controlsystem_bpm_position_indexed(install_test_package):
+    sr: Accelerator = Accelerator.load("tests/config/bpms.yaml")
+    bpm = sr.live.get_bpm("BPM_C01-04")
+
+    assert np.allclose(bpm.positions.get(), np.array([0.0, 1.0]))
+
     Factory.clear()

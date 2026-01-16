@@ -4,7 +4,7 @@ import numpy as np
 from pydantic import BaseModel, ConfigDict
 
 from ..common.exception import PyAMLException
-from ..configuration import get_root_folder
+from ..configuration.fileloader import get_path
 from .curve import Curve
 
 # Define the main class name for this module
@@ -12,10 +12,18 @@ PYAMLCLASS = "CSVCurve"
 
 
 class ConfigModel(BaseModel):
+    """
+    Configuration model for CSV curve
+
+    Parameters
+    ----------
+    file : str
+        CSV file that contains the curve (n rows, 2 columns)
+    """
+
     model_config = ConfigDict(arbitrary_types_allowed=True, extra="forbid")
 
     file: str
-    """CSV file that contains the curve (n rows,2 columns)"""
 
 
 class CSVCurve(Curve):
@@ -27,7 +35,7 @@ class CSVCurve(Curve):
         self._cfg = cfg
 
         # Load CSV curve
-        path: Path = get_root_folder() / cfg.file
+        path = get_path(cfg.file)
         try:
             self._curve = np.genfromtxt(path, delimiter=",", dtype=float, loose=False)
         except ValueError as e:

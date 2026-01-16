@@ -22,15 +22,36 @@ def __pyaml_repr__(obj):
             # no peer
             return repr(obj._cfg).replace("ConfigModel", obj.__class__.__name__)
     else:
-        # Default to repr
-        return repr(obj)
+        # Object is not yet fully constructed
+        if isinstance(obj, Element):
+            return f"{obj.__class__.__name__}: {obj.get_name()}"
+        else:
+            return f"{obj.__class__.__name__}"
 
 
 class ElementConfigModel(BaseModel):
+    """
+    Base class for element configuration.
+
+    Parameters
+    ----------
+    name : str
+        The name of the PyAML element.
+    lattice_names : str or None, optional
+        The name(s) of the associated element(s) in the lattice. By default,
+        the PyAML element name is used. lattice_name accept the following
+        syntax:
+        - list(name,[name]) : Element names
+        - [name]@idx[,idx] : Element indices in the subset formed by name.
+        - [name]#start_idx..end_idx : Element range in the subset formed by name.
+        In the above syntax, if the name is not specficied, the whole set
+        of lattice element is used for indexing.
+    """
+
     model_config = ConfigDict(arbitrary_types_allowed=True, extra="forbid")
 
     name: str
-    """Element name"""
+    lattice_names: str | None = None
 
 
 class Element(object):
@@ -46,11 +67,20 @@ class Element(object):
         self.__name: str = name
         self._peer: "ElementHolder" = None  # Peer: ControlSystem, Simulator
 
-    def get_name(self):
+    def get_name(self) -> str:
         """
         Returns the name of the element
         """
         return self.__name
+
+    def get_lattice_names(self) -> str:
+        """
+        Returns the name of associated lattice element(s)
+        """
+        if not hasattr(self, "_cfg"):
+            return self.__name
+        else:
+            return self._cfg.lattice_names
 
     def set_energy(self, E: float):
         """

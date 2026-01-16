@@ -19,13 +19,16 @@ class Attribute(DeviceAccess):
     values (Debugging purpose)
     """
 
-    def __init__(self, cfg: ConfigModel):
+    def __init__(self, cfg: ConfigModel, is_array=False):
         super().__init__()
         self._cfg = cfg
         self._setpoint = cfg.attribute
         self._readback = cfg.attribute
         self._unit = cfg.unit
-        self._cache = 0.0
+
+    def set_array(self, is_array: bool):
+        self._is_array = is_array
+        self._cache = 0.0 if not is_array else [0.0, 1.0]
 
     def name(self) -> str:
         return self._setpoint
@@ -33,17 +36,21 @@ class Attribute(DeviceAccess):
     def measure_name(self) -> str:
         return self._readback
 
-    def set(self, value: float):
+    def set(self, value):
+        print(f"{self._cfg.attribute}:{value}")
         self._cache = value
 
-    def set_and_wait(self, value: float):
+    def set_and_wait(self, value):
         self.set(value)
 
-    def get(self) -> float:
+    def get(self):
         return self._cache
 
-    def readback(self) -> Value:
-        return Value(self._cache)
+    def readback(self):
+        if self._is_array:
+            return [Value(v) for v in self._cache]
+        else:
+            return Value(self._cache)
 
     def unit(self) -> str:
         return self._unit

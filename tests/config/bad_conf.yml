@@ -1,7 +1,8 @@
 type: pyaml.pyaml
 instruments:
   - type: pyaml.instrument
-    name: sr
+    facility: ESRF
+    machine: sr
     energy: 6e9
     simulators:
       - type: pyalkqln # Error here

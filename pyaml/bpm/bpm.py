@@ -29,8 +29,6 @@ class BPM(Element):
         ----------
         name : str
             Element name
-        hardware : DeviceAccess
-            Direct access to a hardware (bypass the BPM model)
         model : BPMModel
             BPM model in charge of computing beam position
         """

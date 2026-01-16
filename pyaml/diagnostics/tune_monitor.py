@@ -12,12 +12,21 @@ PYAMLCLASS = "BetatronTuneMonitor"
 
 
 class ConfigModel(ElementConfigModel):
+    """
+    Configuration model for BetatronTuneMonitor
+
+    Parameters
+    ----------
+    tune_h : DeviceAccess, optional
+        Horizontal betatron tune device
+    tune_v : DeviceAccess, optional
+        Vertical betatron tune device
+    """
+
     model_config = ConfigDict(arbitrary_types_allowed=True, extra="forbid")
 
-    tune_h: DeviceAccess
-    """Horizontal betatron tune"""
-    tune_v: DeviceAccess
-    """Vertical betatron tune"""
+    tune_h: DeviceAccess | None
+    tune_v: DeviceAccess | None
 
 
 class BetatronTuneMonitor(Element):
@@ -29,7 +38,8 @@ class BetatronTuneMonitor(Element):
 
     def __init__(self, cfg: ConfigModel):
         """
-        Construct a BetatronTuneMonitor.
+        Construct a BetatronTuneMonitor
+
         Parameters
         ----------
         cfg : ConfigModel

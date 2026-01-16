@@ -90,3 +90,114 @@ def test_attribute_multiple_identifiers_accumulate(lattice_with_custom_attr):
     tags = [getattr(e, "Tag", None) for e in res]
     assert tags.count("QF") == 2 and tags.count("QD") == 1
     assert len(res) == 3
+
+
+def check_index(ring, elts, indices):
+    for idx, e in enumerate(elts):
+        assert ring.index(e) == indices[idx]
+
+
+def test_various_naming_addressing():
+    sr = Accelerator.load("tests/config/EBSNames.yaml", ignore_external=True)
+    ring = sr.design.get_lattice()
+
+    elts = sr.design.get_magnet("QF1E").strength._RWStrengthScalar__elements
+    assert len(elts) == 31
+    check_index(
+        ring,
+        elts,
+        [
+            140,
+            290,
+            424,
+            576,
+            712,
+            848,
+            982,
+            1116,
+            1250,
+            1384,
+            1525,
+            1662,
+            1803,
+            1937,
+            2078,
+            2212,
+            2348,
+            2482,
+            2616,
+            2762,
+            2898,
+            3046,
+            3182,
+            3316,
+            3452,
+            3593,
+            3732,
+            3873,
+            4009,
+            4150,
+            4286,
+        ],
+    )
+
+    elts = sr.design.get_magnet("QF1E-ALL").strength._RWStrengthScalar__elements
+    assert len(elts) == 32
+    check_index(
+        ring,
+        elts,
+        [
+            140,
+            290,
+            424,
+            576,
+            712,
+            848,
+            982,
+            1116,
+            1250,
+            1384,
+            1525,
+            1662,
+            1803,
+            1937,
+            2078,
+            2212,
+            2348,
+            2482,
+            2616,
+            2762,
+            2898,
+            3046,
+            3182,
+            3316,
+            3452,
+            3593,
+            3732,
+            3873,
+            4009,
+            4150,
+            4286,
+            4430,
+        ],
+    )
+
+    elts = sr.design.get_magnet("QF1E-C05").strength._RWStrengthScalar__elements
+    assert len(elts) == 1
+    check_index(ring, elts, [290])
+
+    elts = sr.design.get_magnet("QF1E-C04-C05-C06").strength._RWStrengthScalar__elements
+    assert len(elts) == 3
+    check_index(ring, elts, [140, 290, 424])
+
+    elts = sr.design.get_magnet(
+        "QF1E-C04-C05-C06-2"
+    ).strength._RWStrengthScalar__elements
+    assert len(elts) == 3
+    check_index(ring, elts, [140, 290, 424])
+
+    elts = sr.design.get_magnet(
+        "QF1E-C04-C05-C06-3"
+    ).strength._RWStrengthScalar__elements
+    assert len(elts) == 3
+    check_index(ring, elts, [140, 290, 424])

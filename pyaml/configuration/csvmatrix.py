@@ -4,7 +4,7 @@ import numpy as np
 from pydantic import BaseModel, ConfigDict
 
 from ..common.exception import PyAMLException
-from ..configuration import get_root_folder
+from ..configuration.fileloader import get_path
 from .matrix import Matrix
 
 # Define the main class name for this module
@@ -12,10 +12,18 @@ PYAMLCLASS = "CSVMatrix"
 
 
 class ConfigModel(BaseModel):
+    """
+    Configuration model for CSV matrix
+
+    Parameters
+    ----------
+    file : str
+        CSV file that contains the matrix
+    """
+
     model_config = ConfigDict(arbitrary_types_allowed=True, extra="forbid")
 
     file: str
-    """CSV file that contains the matrix"""
 
 
 class CSVMatrix(Matrix):
@@ -26,7 +34,7 @@ class CSVMatrix(Matrix):
     def __init__(self, cfg: ConfigModel):
         self._cfg = cfg
         # Load CSV matrix
-        path: Path = get_root_folder() / cfg.file
+        path = get_path(cfg.file)
         try:
             self._mat = np.genfromtxt(path, delimiter=",", dtype=float, loose=False)
         except ValueError as e:

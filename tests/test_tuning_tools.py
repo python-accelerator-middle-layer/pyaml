@@ -16,12 +16,11 @@ def tune_callback(step: int, action: int, m: Magnet, dtune: np.array):
 def test_tuning_tools():
     sr = Accelerator.load("tests/config/EBSTune.yaml", use_fast_loader=False)
     sr.design.get_lattice().disable_6d()
-    tune_adjust = sr.design.get_tune_tuning("TUNE")
-    tune_adjust.response.measure(callback=tune_callback)
-    tune_adjust.response.save_json("tunemat.json")
-    tune_adjust.response.load_json("tunemat.json")
-    tune_adjust.set([0.17, 0.32], iter=2)
-    tune = tune_adjust.readback()
+    sr.design.tune.response.measure(callback=tune_callback)
+    sr.design.tune.response.save_json("tunemat.json")
+    sr.design.tune.response.load_json("tunemat.json")
+    sr.design.tune.set([0.17, 0.32], iter=2)
+    tune = sr.design.tune.readback()
     assert np.abs(tune[0] - 0.17) < 1e-5
     assert np.abs(tune[1] - 0.32) < 1e-5
 

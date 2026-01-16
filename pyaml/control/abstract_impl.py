@@ -63,7 +63,7 @@ class CSStrengthScalarAggregator(CSScalarAggregator):
         self.__modelToMagnet: list[list[tuple[int, int]]] = []  # strengths indexing
         self.__nbMagnet = 0  # Number of magnet strengths
 
-    def add_magnet(self, magnet: Magnet):
+    def add_magnet(self, magnet: Magnet, devs: list[DeviceAccess]):
         # Incoming magnet can be a magnet exported from
         # a CombinedFunctionMagnet or simple magnet.
         # All magnets exported from a same CombinedFunctionMagnet share the same model
@@ -77,7 +77,7 @@ class CSStrengthScalarAggregator(CSScalarAggregator):
             index = len(self.__models)
             self.__models.append(magnet.model)
             self.__modelToMagnet.append([(self.__nbMagnet, strengthIndex)])
-            self._devs.add_devices(magnet.model.get_devices())
+            self._devs.add_devices(devs)
         else:
             index = self.__models.index(magnet.model)
             self.__modelToMagnet[index].append((self.__nbMagnet, strengthIndex))
@@ -138,26 +138,60 @@ class CSStrengthScalarAggregator(CSScalarAggregator):
 # ------------------------------------------------------------------------------
 
 
+class CSBPMArrayMapper(CSScalarAggregator):
+    """
+    Wrapper to a native CS aggregator for BPM
+    """
+
+    def __init__(self, devs: list[DeviceAccess], indices: list[list[int]]):
+        self._indices = indices
+        self._devs = devs
+
+    def set(self, value: NDArray[np.float64]):
+        raise Exception("BPM are not writable")
+
+    def get(self) -> NDArray[np.float64]:
+        # TODO read using DeviceAccessList
+        allValues = []
+        for i, d in enumerate(self._devs):
+            v = d.get()
+            allValues.extend(v[self._indices[i]])
+        return np.array(allValues)
+
+    def readback(self) -> np.array:
+        return self.get()
+
+    def unit(self) -> str:
+        return self._dev.unit()
+
+
+# ------------------------------------------------------------------------------
+
+
 class RWHardwareScalar(abstract.ReadWriteFloatScalar):
     """
     Class providing read write access to a magnet
     of a control system (in hardware units)
     """
 
-    def __init__(self, model: MagnetModel):
+    def __init__(self, model: MagnetModel, dev: DeviceAccess):
         self.__model = model
+        self.__dev = dev
 
     def get(self) -> float:
-        return self.__model.read_hardware_values()[0]
+        return self.__dev.get()
 
     def set(self, value: float):
-        self.__model.send_hardware_values(np.array([value]))
+        self.__dev.set(value)
 
     def set_and_wait(self, value: double):
         raise NotImplementedError("Not implemented yet.")
 
     def unit(self) -> str:
         return self.__model.get_hardware_units()[0]
+
+    def set_magnet_rigidity(self, brho: np.double):
+        self.__model.set_magnet_rigidity(brho)
 
 
 # ------------------------------------------------------------------------------
@@ -168,18 +202,19 @@ class RWStrengthScalar(abstract.ReadWriteFloatScalar):
     Class providing read write access to a strength of a control system
     """
 
-    def __init__(self, model: MagnetModel):
+    def __init__(self, model: MagnetModel, dev: DeviceAccess):
         self.__model = model
+        self.__dev = dev
 
     # Gets the value
     def get(self) -> float:
-        currents = self.__model.read_hardware_values()
-        return self.__model.compute_strengths(currents)[0]
+        current = self.__dev.get()
+        return self.__model.compute_strengths([current])[0]
 
     # Sets the value
     def set(self, value: float):
-        current = self.__model.compute_hardware_values([value])
-        self.__model.send_hardware_values(current)
+        current = self.__model.compute_hardware_values([value])[0]
+        self.__dev.set(current)
 
     # Sets the value and wait that the read value reach the setpoint
     def set_and_wait(self, value: float):
@@ -188,6 +223,9 @@ class RWStrengthScalar(abstract.ReadWriteFloatScalar):
     # Gets the unit of the value
     def unit(self) -> str:
         return self.__model.get_strength_units()[0]
+
+    def set_magnet_rigidity(self, brho: np.double):
+        self.__model.set_magnet_rigidity(brho)
 
 
 # ------------------------------------------------------------------------------
@@ -199,16 +237,18 @@ class RWHardwareArray(abstract.ReadWriteFloatArray):
     of a control system (in hardware units)
     """
 
-    def __init__(self, model: MagnetModel):
+    def __init__(self, model: MagnetModel, devs: list[DeviceAccess]):
         self.__model = model
+        self.__devs = devs
 
     # Gets the value
     def get(self) -> np.array:
-        return self.__model.read_hardware_values()
+        return np.array([p.get() for p in self.__devs])
 
     # Sets the value
     def set(self, value: np.array):
-        self.__model.send_hardware_values(value)
+        for idx, p in enumerate(self.__devs):
+            p.set(value[idx])
 
     # Sets the value and waits that the read value reach the setpoint
     def set_and_wait(self, value: np.array):
@@ -227,19 +267,21 @@ class RWStrengthArray(abstract.ReadWriteFloatArray):
     Class providing read write access to magnet strengths of a control system
     """
 
-    def __init__(self, model: MagnetModel):
+    def __init__(self, model: MagnetModel, devs: list[DeviceAccess]):
         self.__model = model
+        self.__devs = devs
 
     # Gets the value
     def get(self) -> np.array:
-        r = self.__model.read_hardware_values()
+        r = np.array([p.get() for p in self.__devs])
         str = self.__model.compute_strengths(r)
         return str
 
     # Sets the value
     def set(self, value: np.array):
         cur = self.__model.compute_hardware_values(value)
-        self.__model.send_hardware_values(cur)
+        for idx, p in enumerate(self.__devs):
+            p.set(cur[idx])
 
     # Sets the value and waits that the read value reach the setpoint
     def set_and_wait(self, value: np.array):
@@ -255,19 +297,35 @@ class RWStrengthArray(abstract.ReadWriteFloatArray):
 
 class RBpmArray(abstract.ReadFloatArray):
     """
-    Class providing read access to a BPM array of a control system
+    Class providing read access to a BPM position [x,y] of a control system
     """
 
-    def __init__(self, model: BPMModel):
-        self.__model = model
+    def __init__(self, model: BPMModel, hDev: DeviceAccess, vDev: DeviceAccess):
+        self._model = model
+        self._hDev = hDev
+        self._vDev = vDev
+        self._hIdx = self._model.x_pos_index()
+        self._vIdx = self._model.y_pos_index()
 
-    # Gets the value
+    # Gets the values
     def get(self) -> np.array:
-        return self.__model.read_position()
+        if self._hDev != self._vDev:
+            allhVal = self._hDev.get()
+            allvVal = self._vDev.get()
+            hVal = allhVal if self._hIdx is None else allhVal[self._hIdx]
+            vVal = allvVal if self._vIdx is None else allvVal[self._vIdx]
+        else:
+            # When h and v devices are identical, indexed
+            # values are expected
+            allVal = self._hDev.get()
+            hVal = allVal[self._hIdx]
+            vVal = allVal[self._vIdx]
+        return np.array([hVal, vVal])
 
-    # Gets the unit of the value Assume that x and y has the same unit
+    # Gets the unit of the value Assume that x and y, offsets and positions
+    # have the same unit
     def unit(self) -> str:
-        return self.__model.get_pos_devices()[0].unit()
+        return self._model.get_pos_devices()[0].unit()
 
 
 # ------------------------------------------------------------------------------
@@ -278,22 +336,28 @@ class RWBpmTiltScalar(abstract.ReadFloatScalar):
     Class providing read access to a BPM tilt of a control system
     """
 
-    def __init__(self, model: BPMModel):
-        self.__model = model
+    def __init__(self, model: BPMModel, dev: DeviceAccess):
+        self._model = model
+        self._dev = dev
+        self._idx = model.tilt_index()
 
     # Gets the value
     def get(self) -> float:
-        return self.__model.read_tilt()
+        allTilt = self._dev.get()
+        if self._idx is not None:
+            return allTilt[self._idx]
+        else:
+            return allTilt
 
     def set(self, value: float):
-        self.__model.set_tilt(value)
+        self._dev.set(value)
 
     def set_and_wait(self, value: NDArray[np.float64]):
         raise NotImplementedError("Not implemented yet.")
 
     # Gets the unit of the value
     def unit(self) -> str:
-        return self.__model.get_tilt_device().unit()
+        return self._model.get_tilt_device().unit()
 
 
 # ------------------------------------------------------------------------------
@@ -301,26 +365,51 @@ class RWBpmTiltScalar(abstract.ReadFloatScalar):
 
 class RWBpmOffsetArray(abstract.ReadWriteFloatArray):
     """
-    Class providing read write access to a BPM offset of a control system
+    Class providing read write access to a BPM offset [x,y] of a control system
     """
 
-    def __init__(self, model: BPMModel):
-        self.__model = model
+    def __init__(self, model: BPMModel, hDev: DeviceAccess, vDev: DeviceAccess):
+        self._model = model
+        self._hDev = hDev
+        self._vDev = vDev
+        self._hIdx = self._model.x_pos_index()
+        self._vIdx = self._model.y_pos_index()
 
-    # Gets the value
-    def get(self) -> NDArray[np.float64]:
-        return self.__model.read_offset()
+    # Gets the values
+    def get(self) -> np.array:
+        if self._hDev != self._vDev:
+            allhVal = self._hDev.get()
+            allvVal = self._vDev.get()
+            hVal = allhVal if self._hIdx is None else allhVal[self._hIdx]
+            vVal = allvVal if self._vIdx is None else allvVal[self._vIdx]
+        else:
+            # When h and v devices are identical, indexed
+            # values are expected
+            allVal = self._hDev.get()
+            hVal = allVal[self._hIdx]
+            vVal = allVal[self._vIdx]
+        return np.array([hVal, vVal])
 
-    # Sets the value
+    # Sets the values
     def set(self, value: NDArray[np.float64]):
-        self.__model.set_offset(value)
+        if self._hDev != self._vDev:
+            self._hDev.set(value[0])
+            self._vDev.set(value[1])
+        else:
+            # When h and v devices are identical, indexed
+            # values are expected
+            newValue = self._hDev.get()
+            newValue[self._hIdx] = value[0]
+            newValue[self._vIdx] = value[1]
+            self._hDev.set(newValue)
 
     def set_and_wait(self, value: NDArray[np.float64]):
         raise NotImplementedError("Not implemented yet.")
 
-    # Gets the unit of the value
+    # Gets the unit of the value Assume that x and y, offsets and positions
+    # have the same unit
     def unit(self) -> str:
-        return self.__model.get_offset_devices()[0].unit()
+        return self._model.get_pos_devices()[0].unit()
 
 
 # ------------------------------------------------------------------------------
@@ -332,14 +421,15 @@ class RWRFVoltageScalar(abstract.ReadWriteFloatScalar):
     for a transmitter of a control system.
     """
 
-    def __init__(self, transmitter: RFTransmitter):
+    def __init__(self, transmitter: RFTransmitter, dev: DeviceAccess):
         self.__transmitter = transmitter
+        self.__dev = dev
 
     def get(self) -> float:
-        return self.__transmitter._cfg.voltage.get()
+        return self.__dev.get()
 
     def set(self, value: float):
-        return self.__transmitter._cfg.voltage.set(value)
+        self.__dev.set(value)
 
     def set_and_wait(self, value: float):
         raise NotImplementedError("Not implemented yet.")
@@ -357,14 +447,15 @@ class RWRFPhaseScalar(abstract.ReadWriteFloatScalar):
     for a transmitter of a control system.
     """
 
-    def __init__(self, transmitter: RFTransmitter):
+    def __init__(self, transmitter: RFTransmitter, dev: DeviceAccess):
         self.__transmitter = transmitter
+        self.__dev = dev
 
     def get(self) -> float:
-        return self.__transmitter._cfg.phase.get()
+        return self.__dev.get()
 
     def set(self, value: float):
-        return self.__transmitter._cfg.phase.set(value)
+        self.__dev.set(value)
 
     def set_and_wait(self, value: float):
         raise NotImplementedError("Not implemented yet.")
@@ -381,15 +472,16 @@ class RWRFFrequencyScalar(abstract.ReadWriteFloatScalar):
     Class providing read write access to RF frequency of a control system.
     """
 
-    def __init__(self, rf: RFPlant):
+    def __init__(self, rf: RFPlant, dev: DeviceAccess):
         self.__rf = rf
+        self.__dev = dev
 
     def get(self) -> float:
         # Serialized cavity has the same frequency
-        return self.__rf._cfg.masterclock.get()
+        return self.__dev.get()
 
     def set(self, value: float):
-        return self.__rf._cfg.masterclock.set(value)
+        self.__dev.set(value)
 
     def set_and_wait(self, value: float):
         raise NotImplementedError("Not implemented yet.")
@@ -406,15 +498,16 @@ class RBetatronTuneArray(abstract.ReadFloatArray):
     Class providing read write access to betatron tune of a control system.
     """
 
-    def __init__(self, tune_monitor):
+    def __init__(self, tune_monitor, devs: list[DeviceAccess]):
         self.__tune_monitor = tune_monitor
+        self.__devs = devs
 
     def get(self) -> NDArray:
         # Return horizontal and vertical betatron tunes as a NumPy array
         return np.array(
             [
-                self.__tune_monitor._cfg.tune_h.get(),
-                self.__tune_monitor._cfg.tune_v.get(),
+                self.__devs[0].get(),
+                self.__devs[1].get(),
             ]
         )
 

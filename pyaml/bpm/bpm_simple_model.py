@@ -12,12 +12,29 @@ PYAMLCLASS = "BPMSimpleModel"
 
 
 class ConfigModel(BaseModel):
+    """
+    Configuration model for BPM simple model
+
+    Parameters
+    ----------
+    x_pos : DeviceAccess, optional
+        Horizontal position device
+    y_pos : DeviceAccess, optional
+        Vertical position device
+    x_pos_index : int, optional
+        Index in the array when specified, otherwise scalar
+        value is expected
+    y_pos_index : int, optional
+        Index in the array when specified, otherwise scalar
+        value is expected
+    """
+
     model_config = ConfigDict(arbitrary_types_allowed=True, extra="forbid")
 
-    x_pos: DeviceAccess
-    """Horizontal position"""
-    y_pos: DeviceAccess
-    """Vertical position"""
+    x_pos: DeviceAccess | None
+    y_pos: DeviceAccess | None
+    x_pos_index: int | None = None
+    y_pos_index: int | None = None
 
 
 class BPMSimpleModel(BPMModel):
@@ -28,67 +45,10 @@ class BPMSimpleModel(BPMModel):
 
     def __init__(self, cfg: ConfigModel):
         self._cfg = cfg
-
         self.__x_pos = cfg.x_pos
         self.__y_pos = cfg.y_pos
 
-    def read_position(self) -> NDArray:
-        """
-        Simulate reading the position values from a BPM.
-        Returns
-        -------
-        np.ndarray
-            Array of shape (2,) containing the horizontal and vertical
-            positions
-        """
-        return np.array([self.__x_pos.get(), self.__y_pos.get()])
-
-    def read_tilt(self) -> float:
-        """
-        Simulate reading the tilt value from a BPM.
-        Returns
-        -------
-        float
-            The tilt value of the BPM
-        """
-        raise NotImplementedError("Tilt reading not implemented in this model.")
-
-    def read_offset(self) -> NDArray:
-        """
-        Simulate reading the offset values from a BPM.
-        Returns
-        -------
-        np.ndarray
-            Array of shape (2,) containing the horizontal and vertical
-            offsets
-        """
-        raise NotImplementedError("Offset reading not implemented in this model.")
-
-    def set_tilt(self, tilt: float):
-        """
-        Simulate setting the tilt value of a BPM.
-        Parameters
-        ----------
-        tilt : float
-            The tilt value to set for the BPM
-        Returns
-        -------
-        None
-        """
-        raise NotImplementedError("Tilt setting not implemented in this model.")
-
-    def set_offset(self, offset_values: np.ndarray):
-        """
-        Simulate setting the offset values of a BPM
-        Parameters
-        ----------
-        offset_values : np.ndarray
-            Array of shape (2,) containing the horizontal and vertical
-            offsets to set for the BPM
-        """
-        raise NotImplementedError("Offset setting not implemented in this model.")
-
-    def get_pos_devices(self) -> list[DeviceAccess]:
+    def get_pos_devices(self) -> list[DeviceAccess | None]:
         """
         Get device handles used for position reading
 
@@ -99,7 +59,7 @@ class BPMSimpleModel(BPMModel):
         """
         return [self.__x_pos, self.__y_pos]
 
-    def get_tilt_device(self) -> DeviceAccess:
+    def get_tilt_device(self) -> DeviceAccess | None:
         """
         Get device handle used for tilt access
 
@@ -108,9 +68,9 @@ class BPMSimpleModel(BPMModel):
         list[DeviceAccess]
             Array of DeviceAcess
         """
-        return []
+        return None
 
-    def get_offset_devices(self) -> list[DeviceAccess]:
+    def get_offset_devices(self) -> list[DeviceAccess | None]:
         """
         Get device handles used for offset access
 
@@ -119,7 +79,33 @@ class BPMSimpleModel(BPMModel):
         list[DeviceAccess]
             Array of DeviceAcess
         """
-        return []
+        return [None, None]
+
+    def x_pos_index(self) -> int | None:
+        """
+        Returns the index of the horizontal position in
+        an array, otherwise a scalar value is expected from the
+        corresponding DeviceAccess
+
+        Returns
+        -------
+        int
+            Index in the array, None for a scalar value
+        """
+        return self._cfg.x_pos_index
+
+    def y_pos_index(self) -> int | None:
+        """
+        Returns the index of the veritcal position in
+        an array, otherwise a scalar value is expected from the
+        corresponding DeviceAccess
+
+        Returns
+        -------
+        int
+            Index in the array, None for a scalar value
+        """
+        return self._cfg.y_pos_index
 
     def __repr__(self):
         return __pyaml_repr__(self)

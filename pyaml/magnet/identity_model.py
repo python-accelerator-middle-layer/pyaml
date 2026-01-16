@@ -11,14 +11,24 @@ PYAMLCLASS = "IdentityMagnetModel"
 
 
 class ConfigModel(BaseModel):
+    """
+    Configuration model for identity magnet model
+
+    Parameters
+    ----------
+    powerconverter : DeviceAccess, optional
+        Power converter device to apply current
+    physics : DeviceAccess, optional
+        Magnet device to apply strength
+    unit : str
+        Unit of the strength (i.e. 1/m or m-1)
+    """
+
     model_config = ConfigDict(arbitrary_types_allowed=True, extra="forbid")
 
     powerconverter: DeviceAccess | None = None
-    """Power converter device to apply current"""
     physics: DeviceAccess | None = None
-    """Magnet device to apply strength"""
     unit: str
-    """Unit of the strength (i.e. 1/m or m-1)"""
 
 
 class IdentityMagnetModel(MagnetModel):
@@ -55,15 +65,6 @@ class IdentityMagnetModel(MagnetModel):
 
     def get_hardware_units(self) -> list[str]:
         return [self.__unit]
-
-    def read_hardware_values(self) -> np.array:
-        return [self.__device.get()]
-
-    def readback_hardware_values(self) -> np.array:
-        return [self.__device.readback()]
-
-    def send_hardware_values(self, currents: np.array):
-        self.__device.set(currents[0])
 
     def get_devices(self) -> list[DeviceAccess]:
         return [self.__device]

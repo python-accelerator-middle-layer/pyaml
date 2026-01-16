@@ -1,0 +1,103 @@
+type: pyaml.accelerator
+facility: ESRF
+machine: sr
+energy: 6e9
+simulators:
+  - type: pyaml.lattice.simulator
+    lattice: sr/lattices/ebs-original-names.mat
+    name: design
+controls:
+  - type: tango.pyaml.controlsystem
+    tango_host: ebs-simu-3:10000
+    name: live
+data_folder: /data/store
+devices:
+- type: pyaml.magnet.quadrupole
+  name: QF1E
+  model:
+    type: pyaml.magnet.linear_model
+    calibration_factor: 1.00054
+    crosstalk: 1.0
+    curve:
+      type: pyaml.configuration.csvcurve
+      file: sr/magnet_models/QF1_strength.csv
+    unit: 1/m
+    powerconverter:
+      type: tango.pyaml.attribute
+      attribute: srmag/vps-qf1/c04-e/current
+      unit: A
+- type: pyaml.magnet.quadrupole
+  name: QF1E-ALL
+  lattice_names: list(QF1E,QF1I)
+  model:
+    type: pyaml.magnet.linear_model
+    calibration_factor: 1.00054
+    crosstalk: 1.0
+    curve:
+      type: pyaml.configuration.csvcurve
+      file: sr/magnet_models/QF1_strength.csv
+    unit: 1/m
+    powerconverter:
+      type: tango.pyaml.attribute
+      attribute: srmag/vps-qf1/c04-e/current
+      unit: A
+- type: pyaml.magnet.quadrupole
+  name: QF1E-C05
+  lattice_names: QF1E@1
+  model:
+    type: pyaml.magnet.linear_model
+    calibration_factor: 0.996841
+    crosstalk: 1.0
+    curve:
+      type: pyaml.configuration.csvcurve
+      file: sr/magnet_models/QF1_strength.csv
+    unit: 1/m
+    powerconverter:
+      type: tango.pyaml.attribute
+      attribute: srmag/vps-qf1/c05-a/current
+      unit: A
+- type: pyaml.magnet.quadrupole
+  name: QF1E-C04-C05-C06
+  lattice_names: QF1E@0,1,2
+  model:
+    type: pyaml.magnet.linear_model
+    calibration_factor: 1.00191
+    crosstalk: 1.0
+    curve:
+      type: pyaml.configuration.csvcurve
+      file: sr/magnet_models/QF1_strength.csv
+    unit: 1/m
+    powerconverter:
+      type: tango.pyaml.attribute
+      attribute: srmag/vps-qf1/c05-e/current
+      unit: A
+- type: pyaml.magnet.quadrupole
+  name: QF1E-C04-C05-C06-2
+  lattice_names: "@140,290,424"
+  model:
+    type: pyaml.magnet.linear_model
+    calibration_factor: 1.00191
+    crosstalk: 1.0
+    curve:
+      type: pyaml.configuration.csvcurve
+      file: sr/magnet_models/QF1_strength.csv
+    unit: 1/m
+    powerconverter:
+      type: tango.pyaml.attribute
+      attribute: srmag/vps-qf1/c05-e/current
+      unit: A
+- type: pyaml.magnet.quadrupole
+  name: QF1E-C04-C05-C06-3
+  lattice_names: QF1E#0..3
+  model:
+    type: pyaml.magnet.linear_model
+    calibration_factor: 1.00191
+    crosstalk: 1.0
+    curve:
+      type: pyaml.configuration.csvcurve
+      file: sr/magnet_models/QF1_strength.csv
+    unit: 1/m
+    powerconverter:
+      type: tango.pyaml.attribute
+      attribute: srmag/vps-qf1/c05-e/current
+      unit: A

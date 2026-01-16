@@ -13,43 +13,60 @@ PYAMLCLASS = "LinearCFMagnetModel"
 
 
 class ConfigModel(BaseModel):
+    """
+    Configuration model for linear combined function magnet model
+
+    Parameters
+    ----------
+    multipoles : list[str]
+        List of supported functions: A0, B0, A1, B1, etc (i.e. [B0, A1, B2])
+    curves : list[Curve]
+        Excitation curves, 1 curve per function
+    calibration_factors : list[float], optional
+        Correction factor applied to curves, 1 factor per function.
+        Default: ones
+    calibration_offsets : list[float], optional
+        Correction offset applied to curves, 1 offset per function.
+        Default: zeros
+    pseudo_factors : list[float], optional
+        Factors applied to 'pseudo currents', 1 factor per function.
+        Default: ones
+    pseudo_offsets : list[float], optional
+        Offsets applied to 'pseudo currents', 1 offset per function.
+        Default: zeros
+    powerconverters : list[DeviceAccess]
+        List of power converter devices to apply currents (can be different
+        from number of functions)
+    matrix : Matrix, optional
+        n x m matrix (n rows for n functions, m columns for m currents)
+        to handle multipoles separation. Default: Identity
+    units : list[str]
+        List of strength units (i.e. ['rad', 'm-1', 'm-2'])
+    """
+
     model_config = ConfigDict(arbitrary_types_allowed=True, extra="forbid")
 
     multipoles: list[str]
-    """List of supported functions: A0,B0,A1,B1,etc (i.e. [B0,A1,B2])"""
     curves: list[Curve]
-    """Exitacion curves, 1 curve per function"""
     calibration_factors: list[float] = None
-    """Correction factor applied to curves, 1 factor per function
-       Delfault: ones"""
     calibration_offsets: list[float] = None
-    """Correction offset applied to curves, 1 offset per function
-       Delfault: zeros"""
     pseudo_factors: list[float] = None
-    """Factors applied to 'pseudo currents', 1 factor per function.
-       Delfault: ones"""
     pseudo_offsets: list[float] = None
-    """Offsets applied to 'pseudo currents', 1 factor per function.
-       Delfault: zeros"""
-    powerconverters: list[DeviceAccess]
-    """List of power converter devices to apply currrents (can be different
-       from number of function)"""
+    powerconverters: list[DeviceAccess | None]
     matrix: Matrix = None
-    """n x m matrix (n rows for n function , m columns for m currents)
-       to handle multipoles separation. Default: Identity"""
     units: list[str]
-    """List of strength unit (i.e. ['rad','m-1','m-2'])"""
 
 
 class LinearCFMagnetModel(MagnetModel):
     """
     Class providing a simple linear model for combined function magnets. A matrix
     can handle separation of multipoles. A pseudo current is a linear combination
-    of power supply currents assiociated to a single function.
+    of power supply currents associated to a single function.
     """
 
     def __init__(self, cfg: ConfigModel):
         self._cfg = cfg
+        self._brho = np.nan
 
         # Check config
         self.__nbFunction: int = len(cfg.multipoles)
@@ -148,16 +165,6 @@ class LinearCFMagnetModel(MagnetModel):
 
     def get_hardware_units(self) -> list[str]:
         return np.array([p.unit() for p in self._cfg.powerconverters])
-
-    def read_hardware_values(self) -> np.array:
-        return np.array([p.get() for p in self._cfg.powerconverters])
-
-    def readback_hardware_values(self) -> np.array:
-        return np.array([p.readback() for p in self._cfg.powerconverters])
-
-    def send_hardware_values(self, currents: np.array):
-        for idx, p in enumerate(self._cfg.powerconverters):
-            p.set(currents[idx])
 
     def get_devices(self) -> list[DeviceAccess]:
         return self._cfg.powerconverters

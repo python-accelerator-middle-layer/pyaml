@@ -2,20 +2,27 @@
 Module handling element references for simulators and control system
 """
 
+from typing import TYPE_CHECKING
+
 from ..arrays.bpm_array import BPMArray
 from ..arrays.cfm_magnet_array import CombinedFunctionMagnetArray
 from ..arrays.element_array import ElementArray
 from ..arrays.magnet_array import MagnetArray
+from ..arrays.serialized_magnet_array import SerializedMagnetsArray
 from ..bpm.bpm import BPM
 from ..common.exception import PyAMLException
 from ..diagnostics.chromaticity_monitor import ChomaticityMonitor
 from ..diagnostics.tune_monitor import BetatronTuneMonitor
 from ..magnet.cfm_magnet import CombinedFunctionMagnet
 from ..magnet.magnet import Magnet
+from ..magnet.serialized_magnet import SerializedMagnets
 from ..rf.rf_plant import RFPlant
 from ..rf.rf_transmitter import RFTransmitter
-from ..tuning_tools.tune import Tune
 from .element import Element
+
+if TYPE_CHECKING:
+    from ..tuning_tools.orbit import Orbit
+    from ..tuning_tools.tune import Tune
 
 
 class ElementHolder(object):
@@ -28,6 +35,7 @@ class ElementHolder(object):
         # Device handle
         self.__MAGNETS: dict = {}
         self.__CFM_MAGNETS: dict = {}
+        self.__SERIALIZED_MAGNETS: dict = {}
         self.__BPMS: dict = {}
         self.__RFPLANT: dict = {}
         self.__RFTRANSMITTER: dict = {}
@@ -38,6 +46,7 @@ class ElementHolder(object):
         # Array handle
         self.__MAGNET_ARRAYS: dict = {}
         self.__CFM_MAGNET_ARRAYS: dict = {}
+        self.__SERIALIZED_MAGNETS_ARRAYS: dict = {}
         self.__BPM_ARRAYS: dict = {}
         self.__ELEMENT_ARRAYS: dict = {}
 
@@ -97,7 +106,7 @@ class ElementHolder(object):
     def get_element(self, name: str) -> Element:
         return self.__get("Element", name, self.__ALL)
 
-    def get_elemens(self, name: str) -> ElementArray:
+    def get_elements(self, name: str) -> ElementArray:
         return self.__get("Element array", name, self.__ELEMENT_ARRAYS)
 
     def get_all_elements(self) -> list[Element]:
@@ -146,6 +155,31 @@ class ElementHolder(object):
 
     def get_all_cfm_magnets(self) -> list[CombinedFunctionMagnet]:
         return [value for key, value in self.__CFM_MAGNETS.items()]
+
+    # Serialized magnets
+
+    def fill_serialized_magnet_array(self, arrayName: str, elementNames: list[str]):
+        self.fill_array(
+            arrayName,
+            elementNames,
+            self.get_serialized_magnet,
+            SerializedMagnetsArray,
+            self.__SERIALIZED_MAGNETS_ARRAYS,
+        )
+
+    def get_serialized_magnet(self, name: str) -> Magnet:
+        return self.__get("SerializedMagnets", name, self.__SERIALIZED_MAGNETS)
+
+    def add_serialized_magnet(self, m: Magnet):
+        self.__add(self.__SERIALIZED_MAGNETS, m)
+
+    def get_serialized_magnets(self, name: str) -> SerializedMagnetsArray:
+        return self.__get(
+            "SerializedMagnets array", name, self.__SERIALIZED_MAGNETS_ARRAYS
+        )
+
+    def get_all_serialized_magnets(self) -> list[SerializedMagnets]:
+        return [value for key, value in self.__SERIALIZED_MAGNETS.items()]
 
     # BPMs
 
@@ -199,8 +233,22 @@ class ElementHolder(object):
 
     # Tuning tools
 
-    def get_tune_tuning(self, name: str) -> Tune:
+    def get_tune_tuning(self, name: str) -> "Tune":
         return self.__get("Tune tuning tool", name, self.__TUNING_TOOLS)
 
     def add_tune_tuning(self, tune: Element):
         self.__add(self.__TUNING_TOOLS, tune)
+
+    @property
+    def tune(self) -> "Tune":
+        return self.get_tune_tuning("DEFAULT_TUNE_CORRECTION")
+
+    def get_orbit_tuning(self, name: str) -> "Orbit":
+        return self.__get("Orbit tuning tool", name, self.__TUNING_TOOLS)
+
+    def add_orbit_tuning(self, orbit: Element):
+        self.__add(self.__TUNING_TOOLS, orbit)
+
+    @property
+    def orbit(self) -> "Orbit":
+        return self.get_orbit_tuning("DEFAULT_ORBIT_CORRECTION")

@@ -1,5 +1,6 @@
 type: pyaml.accelerator
-name: sr
+facility: ESRF
+machine: sr
 energy: 6e9
 simulators:
   - type: pyaml.lattice.simulator
@@ -24,9 +25,8 @@ devices:
         harmonic: 1
         distribution: 0.83333333333
         voltage:
-          type: pyaml.control.device
-          setpoint: sr/tra/1/RfVoltage
-          readback: sr/tra/1/RfVoltage
+          type: tango.pyaml.attribute
+          attribute: sr/tra/1/RfVoltage
           unit: V
       - type: pyaml.rf.rf_transmitter
         name: RFTRA2
@@ -34,16 +34,14 @@ devices:
         harmonic: 1
         distribution: 0.16666666666
         voltage:
-          type: pyaml.control.device
-          setpoint: sr/tra/2/RfVoltage
-          readback: sr/tra/2/RfVoltage
+          type: tango.pyaml.attribute
+          attribute: sr/tra/2/RfVoltage
           unit: V
       - type: pyaml.rf.rf_transmitter
         name: RFTRA_HARMONIC
         cavities: [CAV_C25_03]
         harmonic: 4
         voltage:
-          type: pyaml.control.device
-          setpoint: sr/tra/harm/RfVoltage
-          readback: sr/tra/harm/RfVoltage
+          type: tango.pyaml.attribute
+          attribute: sr/tra/harm/RfVoltage
           unit: V

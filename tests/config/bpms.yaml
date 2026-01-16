@@ -1,5 +1,6 @@
 type: pyaml.accelerator
-name: sr
+facility: ESRF
+machine: sr
 energy: 6e9
 simulators:
   - type: pyaml.lattice.simulator
@@ -58,6 +59,20 @@ devices:
     y_pos:
       type: tango.pyaml.attribute_read_only
       attribute: srdiag/bpm/c01-03/SA_VPosition
+      unit: mm
+- type: pyaml.bpm.bpm
+  name: BPM_C01-04
+  model:
+    type: pyaml.bpm.bpm_simple_model
+    x_pos_index: 0
+    y_pos_index: 1
+    x_pos:
+      type: tango.pyaml.attribute_read_only
+      attribute: srdiag/bpm/c01-04/Position
+      unit: mm
+    y_pos:
+      type: tango.pyaml.attribute_read_only
+      attribute: srdiag/bpm/c01-04/Position
       unit: mm
 - type: pyaml.magnet.cfm_magnet
   name: SH1A-C01         #Name of the element in the lattice model

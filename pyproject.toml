@@ -19,7 +19,7 @@ packages = ["pyaml"]
 name = "accelerator-middle-layer"
 description = "Python Accelerator Middle Layer"
 readme = "README.md"
-requires-python = ">=3.9"
+requires-python = ">=3.11"
 dynamic = ["version"]
 #license = {file = "LICENSE"}
 keywords = ["Accelerator", "Synchrotron", "Operation", "Tuning", "Digital Twin", "Commissioning", ]
@@ -55,11 +55,13 @@ test = [
     "pytest-cov>=3.0",
 ]
 doc = [
-    "sphinx",
-    "travis-sphinx",
-    "sphinx-rtd-theme"
+    "sphinx ~= 8.1",
+    "myst-parser",
+    "myst-nb",
+    "pydata-sphinx-theme",
+    "sphinx_design",
+    "sphinx-copybutton",
 ]
-
 dev = [
     "pre-commit",
     "ruff",

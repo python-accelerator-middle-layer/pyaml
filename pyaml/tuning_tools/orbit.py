@@ -1,13 +1,25 @@
 import logging
 from pathlib import Path
-from typing import List, Literal, Optional
+from typing import TYPE_CHECKING, Literal, Optional
+
+try:
+    from typing import Self  # Python 3.11+
+except ImportError:
+    from typing_extensions import Self  # Python 3.10 and earlier
+
 
 from pydantic import BaseModel, ConfigDict
 
-from ..common.element_holder import ElementHolder
-from ..external.pySC.pySC import ResponseMatrix
+if TYPE_CHECKING:
+    from ..common.element_holder import ElementHolder
+# from ..external.pySC.pySC import ResponseMatrix as pySC_ResponseMatrix
+from ..arrays.magnet_array import MagnetArray
+from ..common.element import Element, ElementConfigModel
+from ..common.exception import PyAMLException
+from ..external.pySC.pySC import ResponseMatrix as pySC_ResponseMatrix
 from ..external.pySC.pySC.apps import orbit_correction
 from ..external.pySC_interface import pySCInterface
+from .response_matrix import ResponseMatrix
 
 logger = logging.getLogger(__name__)
 logging.getLogger("pyaml.external.pySC").setLevel(logging.WARNING)
@@ -15,26 +27,31 @@ logging.getLogger("pyaml.external.pySC").setLevel(logging.WARNING)
 PYAMLCLASS = "Orbit"
 
 
-class ConfigModel(BaseModel):
+class ConfigModel(ElementConfigModel):
     model_config = ConfigDict(arbitrary_types_allowed=True, extra="forbid")
 
     bpm_array_name: str
     hcorr_array_name: str
     vcorr_array_name: str
     singular_values: int
-    response_matrix_file: str
+    response_matrix: Optional[ResponseMatrix]
 
 
-class Orbit(object):
-    def __init__(self, element_holder: ElementHolder, cfg: ConfigModel):
+class Orbit(Element):
+    def __init__(self, cfg: ConfigModel):
+        super().__init__(cfg.name)
         self._cfg = cfg
 
-        self.element_holder = element_holder
         self.bpm_array_name = cfg.bpm_array_name
         self.hcorr_array_name = cfg.hcorr_array_name
         self.vcorr_array_name = cfg.vcorr_array_name
         self.singular_values = cfg.singular_values
-        self.response_matrix = ResponseMatrix.from_json(Path(cfg.response_matrix_file))
+        self.response_matrix = pySC_ResponseMatrix.model_validate(
+            cfg.response_matrix._cfg.model_dump()
+        )
+        self._hcorr: MagnetArray = None
+        self._vcorr: MagnetArray = None
+        self._hvcorr: MagnetArray = None
 
     def correct(
         self,
@@ -43,10 +60,8 @@ class Orbit(object):
         plane: Optional[Literal["H", "V"]] = None,
     ):
         interface = pySCInterface(
-            element_holder=self.element_holder,
+            element_holder=self._peer,
             bpm_array_name=self.bpm_array_name,
-            hcorr_array_name=self.hcorr_array_name,
-            vcorr_array_name=self.vcorr_array_name,
         )
 
         if plane is None or plane == "H":
@@ -73,17 +88,45 @@ class Orbit(object):
                 reference=reference,
             )
 
-        # this is now the only place where interface.set_many and get_many are used.
-        # if we can remove it from here then the pySCInterface will be even simpler.
-        correctors = self.response_matrix.input_names
-        data_to_send = interface.get_many(correctors)
-        if plane is None or plane == "H":
-            for name in trims_h.keys():
-                data_to_send[name] += trims_h[name] * gain
-        if plane is None or plane == "V":
-            for name in trims_v.keys():
-                data_to_send[name] += trims_v[name] * gain
+        if plane is None:
+            trims = {**trims_h, **trims_v}
+            corr_array = self._hvcorr
+        elif plane == "H":
+            trims = trims_h
+            corr_array = self._hcorr
+        elif plane == "V":
+            trims = trims_v
+            corr_array = self._vcorr
 
-        interface.set_many(data_to_send)
+        corrector_names = corr_array.names()
+        corrector_to_index = {name: idx for idx, name in enumerate(corrector_names)}
+        data_to_send = corr_array.strengths.get()
+        for name in trims.keys():
+            idx = corrector_to_index.get(name, None)
+            if idx is None:
+                raise PyAMLException(
+                    f"Corrector {name} not found in the magnet array for orbit corr. "
+                    "Possible inconcistency between corrector arrays and "
+                    "response matrix."
+                )
+            data_to_send[idx] += trims[name] * gain
 
+        corr_array.strengths.set(data_to_send)
         return
+
+    def post_init(self):
+        self._hcorr = self._peer.get_magnets(self._cfg.hcorr_array_name)
+        self._vcorr = self._peer.get_magnets(self._cfg.vcorr_array_name)
+        hvElts = []
+        hvElts.extend(self._hcorr)
+        hvElts.extend(self._vcorr)
+        self._hvcorr = MagnetArray("", hvElts)
+
+    def attach(self, peer: "ElementHolder") -> Self:
+        """
+        Create a new reference to attach this Orbit object to a simulator
+        or a control system.
+        """
+        obj = self.__class__(self._cfg)
+        obj._peer = peer
+        return obj

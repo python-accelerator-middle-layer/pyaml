@@ -1,8 +1,10 @@
+import copy
 import os
 
 from pydantic import BaseModel, ConfigDict
 
 from pyaml.control.controlsystem import ControlSystem
+from pyaml.control.deviceaccess import DeviceAccess
 
 PYAMLCLASS: str = "TangoControlSystem"
 
@@ -20,12 +22,35 @@ class TangoControlSystem(ControlSystem):
         super().__init__()
         self._cfg = cfg
         print(f"Creating dummy TangoControlSystem: {cfg.name}")
+        self.__DEVICES = {}
+
+    def attach_array(self, devs: list[DeviceAccess]) -> list[DeviceAccess]:
+        return self._attach(devs, True)
+
+    def attach(self, devs: list[DeviceAccess]) -> list[DeviceAccess]:
+        return self._attach(devs, False)
+
+    def _attach(self, devs: list[DeviceAccess], is_array: bool) -> list[DeviceAccess]:
+        newDevs = []
+        for d in devs:
+            if d is not None:
+                full_name = "//" + self._cfg.tango_host + "/" + d._cfg.attribute
+                if full_name not in self.__DEVICES:
+                    # Shallow copy the object
+                    newDev = copy.copy(d)
+                    # Shallow copy the config object
+                    # to allow a new attribute name
+                    newDev._cfg = copy.copy(d._cfg)
+                    newDev._cfg.attribute = full_name
+                    newDev.set_array(is_array)
+                    self.__DEVICES[full_name] = newDev
+                newDevs.append(self.__DEVICES[full_name])
+            else:
+                newDevs.append(None)
+        return newDevs
 
     def name(self) -> str:
         return self._cfg.name
-
-    def init_cs(self):
-        pass
 
     def scalar_aggregator(self) -> str | None:
         return "tango.pyaml.multi_attribute"

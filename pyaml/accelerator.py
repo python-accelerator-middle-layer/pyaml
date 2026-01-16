@@ -1,12 +1,16 @@
 """
-Instrument class
+Accelerator class
 """
+
+import os
 
 from pydantic import BaseModel, ConfigDict
 
 from .arrays.array import ArrayConfig
 from .common.element import Element
-from .configuration import load_accelerator
+from .common.exception import PyAMLConfigException
+from .configuration.factory import Factory
+from .configuration.fileloader import load, set_root_folder
 from .control.controlsystem import ControlSystem
 from .lattice.simulator import Simulator
 
@@ -15,24 +19,41 @@ PYAMLCLASS = "Accelerator"
 
 
 class ConfigModel(BaseModel):
+    """
+    Configuration model for Accelerator
+
+    Parameters
+    ----------
+    facility : str
+        Facility name
+    machine : str
+        Accelerator name
+    energy : float
+        Accelerator nominal energy. For ramped machine,
+        this value can be dynamically set
+    controls : list[ControlSystem], optional
+        List of control system used. An accelerator
+        can access several control systems
+    simulators : list[Simulator], optional
+        Simulator list
+    data_folder : str
+        Data folder
+    arrays : list[ArrayConfig], optional
+        Element family
+    devices : list[Element]
+        Element list
+    """
+
     model_config = ConfigDict(arbitrary_types_allowed=True, extra="forbid")
 
-    name: str
-    """Instrument name"""
+    facility: str
+    machine: str
     energy: float
-    """Instrument nominal energy, for ramped machine,
-       this value can be dynamically set"""
     controls: list[ControlSystem] = None
-    """List of control system used, an instrument
-       can access several control systems"""
     simulators: list[Simulator] = None
-    """Simulator list"""
     data_folder: str
-    """Data folder"""
     arrays: list[ArrayConfig] = None
-    """Element family"""
     devices: list[Element]
-    """Element list"""
 
 
 class Accelerator(object):
@@ -50,7 +71,6 @@ class Accelerator(object):
                 else:
                     # Add as dynacmic attribute
                     setattr(self, c.name(), c)
-                c.init_cs()
                 c.fill_device(cfg.devices)
 
         if cfg.simulators is not None:
@@ -104,7 +124,28 @@ class Accelerator(object):
         return self.__design
 
     @staticmethod
-    def load(filename: str, use_fast_loader: bool = False) -> "Accelerator":
+    def from_dict(config_dict: dict, ignore_external=False) -> "Accelerator":
+        """
+        Construct an accelerator from a dictionary.
+        Parameters
+        ----------
+        config_dict : str
+            Dictionnary conatining accelerator config
+        ignore_external: bool
+            Ignore external modules and return None for object that
+            cannot be created. pydantic schema that support that an
+            object is not created should handle None fields.
+
+        """
+        if ignore_external:
+            # control systems are external, so remove controls field
+            config_dict.pop("controls", None)
+        return Factory.depth_first_build(config_dict, ignore_external)
+
+    @staticmethod
+    def load(
+        filename: str, use_fast_loader: bool = False, ignore_external=False
+    ) -> "Accelerator":
         """
         Load an accelerator from a config file.
 
@@ -117,5 +158,16 @@ class Accelerator(object):
             no line number are reported in case of error,
             only the element name that triggered the error
             will be reported in the exception)
+        ignore_external : bool
+            Ignore external modules and return None for object that
+            cannot be created. pydantic schema that support that an
+            object is not created should handle None fields.
         """
-        return load_accelerator(filename, use_fast_loader)
+        # Asume that all files are referenced from
+        # folder where main AML file is stored
+        if not os.path.exists(filename):
+            raise PyAMLConfigException(f"{filename} file not found")
+        rootfolder = os.path.abspath(os.path.dirname(filename))
+        set_root_folder(rootfolder)
+        config_dict = load(os.path.basename(filename), None, use_fast_loader)
+        return Accelerator.from_dict(config_dict)

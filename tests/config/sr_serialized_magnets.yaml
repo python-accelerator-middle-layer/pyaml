@@ -1,0 +1,34 @@
+type: pyaml.accelerator
+facility: ESRF
+machine: sr
+energy: 6e9
+simulators:
+  - type: pyaml.lattice.simulator
+    lattice: sr/lattices/ebs.mat
+    name: design
+data_folder: /data/store
+arrays:
+  - type: pyaml.arrays.serialized_magnet
+    name: series
+    elements:
+      - mySeriesOfMagnets
+devices:
+  - type: pyaml.magnet.serialized_magnet
+    name: mySeriesOfMagnets
+    function: B1
+    elements:
+      - QF8B-C04
+      - QF8D-C04
+      - QD5D-C04
+      - QF6D-C04
+      - QF4D-C04
+    model:
+      type: pyaml.magnet.linear_serialized_model
+      calibration_factors: 1.00504
+      calibration_offsets: 0.0
+      unit: m-1
+      curves: sr/magnet_models/quadcurve.yaml
+      powerconverter:
+        type: tango.pyaml.attribute
+        attribute: srmag/ps-corr-sh1/c01-a-ch1/current
+        unit: A

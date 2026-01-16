@@ -42,6 +42,18 @@ def get_root_folder() -> Path:
     return ROOT["path"]
 
 
+def get_path(p: Path) -> Path:
+    """
+    Return unchanged input path if it is an absolute path,
+    path relative to root folder otherwise.
+    """
+    if os.path.isabs(p):
+        return p
+    else:
+        root = get_root_folder()
+        return root / p
+
+
 class PyAMLConfigCyclingException(PyAMLException):
     def __init__(self, error_filename: str, path_stack: list[Path]):
         self.error_filename = error_filename
@@ -52,22 +64,6 @@ class PyAMLConfigCyclingException(PyAMLException):
         )
 
     pass
-
-
-def load_accelerator(filename: str, use_fast_loader: bool = False) -> "Accelerator":
-    """Load an accelerator from file."""
-
-    # Asume that all files are referenced from
-    # folder where main AML file is stored
-    if not os.path.exists(filename):
-        raise PyAMLException(f"{filename} file not found")
-    rootfolder = os.path.abspath(os.path.dirname(filename))
-    set_root_folder(rootfolder)
-    config_dict = load(os.path.basename(filename), None, use_fast_loader)
-    aml = Factory.depth_first_build(config_dict)
-
-    Factory.clear()
-    return aml
 
 
 def load(
@@ -95,7 +91,7 @@ def hasToExpand(value):
 # Loader base class (nested files expansion)
 class Loader:
     def __init__(self, filename: str, parent_path_stack: list[Path]):
-        self.path: Path = get_root_folder() / filename
+        self.path: Path = get_path(filename)
         self.files_stack: list[Path] = []
         if parent_path_stack:
             if any(

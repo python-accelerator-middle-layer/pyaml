@@ -59,7 +59,7 @@ class BPMArray(ElementArray):
     ----------
     arrayName : str
         Array name
-    bpms: list[BPM]
+    bpms : list[BPM]
         BPM list, all elements must be attached to the same instance of
         either a Simulator or a ControlSystem.
     use_aggregator : bool

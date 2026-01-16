@@ -17,6 +17,21 @@ PYAMLCLASS = "OrbitResponseMatrix"
 
 
 class ConfigModel(BaseModel):
+    """
+    Configuration model for orbit response matrix measurement
+
+    Parameters
+    ----------
+    bpm_array_name : str
+        BPM array name
+    hcorr_array_name : str
+        Horizontal corrector array name
+    vcorr_array_name : str
+        Vertical corrector array name
+    corrector_delta : float
+        Corrector delta for measurement
+    """
+
     model_config = ConfigDict(arbitrary_types_allowed=True, extra="forbid")
 
     bpm_array_name: str
@@ -40,8 +55,6 @@ class OrbitResponseMatrix(object):
         interface = pySCInterface(
             element_holder=self.element_holder,
             bpm_array_name=self.bpm_array_name,
-            hcorr_array_name=self.hcorr_array_name,
-            vcorr_array_name=self.vcorr_array_name,
         )
 
         if corrector_names is None:
