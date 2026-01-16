@@ -12,6 +12,124 @@ controls:
     name: live
 data_folder: /data/store
 arrays:
+  - type: pyaml.arrays.magnet
+    name: HCorr
+    elements:
+      - HS4M2D1R
+      - HS1MT1R
+      - HS4M1T1R
+      - HS4M2T1R
+      - HS1MD2R
+      - HS4M1D2R
+      - HS4M2D2R
+      - HS1MT2R
+      - HS4M1T2R
+      - HS4M2T2R
+      - HS1MD3R
+      - HS4M1D3R
+      - HS4M2D3R
+      - HS1MT3R
+      - HS4M1T3R
+      - HS4M2T3R
+      - HS1MD4R
+      - HS4M1D4R
+      - HS4M2D4R
+      - HS1MT4R
+      - HS4M1T4R
+      - HS4M2T4R
+      - HS1MD5R
+      - HS4M1D5R
+      - HS4M2D5R
+      - HS1MT5R
+      - HS4M1T5R
+      - HS4M2T5R
+      - HS1MD6R
+      - HS4M1D6R
+      - HS4M2D6R
+      - HS1MT6R
+      - HS4M1T6R
+      - HS4M2T6R
+      - HS1MD7R
+      - HS4M1D7R
+      - HS4M2D7R
+      - HS1MT7R
+      - HS4M1T7R
+      - HS4M2T7R
+      - HS1MD8R
+      - HS4M1D8R
+      - HS4M2D8R
+      - HS1MT8R
+      - HS4M1T8R
+      - HS4M2T8R
+      - HS1MD1R
+      - HS4M1D1R
+  - type: pyaml.arrays.magnet
+    name: VCorr
+    elements:
+      - VS3M2D1R
+      - VS2M2D1R
+      - VS2M1T1R
+      - VS3M1T1R
+      - VS3M2T1R
+      - VS2M2T1R
+      - VS2M1D2R
+      - VS3M1D2R
+      - VS3M2D2R
+      - VS2M2D2R
+      - VS2M1T2R
+      - VS3M1T2R
+      - VS3M2T2R
+      - VS2M2T2R
+      - VS2M1D3R
+      - VS3M1D3R
+      - VS3M2D3R
+      - VS2M2D3R
+      - VS2M1T3R
+      - VS3M1T3R
+      - VS3M2T3R
+      - VS2M2T3R
+      - VS2M1D4R
+      - VS3M1D4R
+      - VS3M2D4R
+      - VS2M2D4R
+      - VS2M1T4R
+      - VS3M1T4R
+      - VS3M2T4R
+      - VS2M2T4R
+      - VS2M1D5R
+      - VS3M1D5R
+      - VS3M2D5R
+      - VS2M2D5R
+      - VS2M1T5R
+      - VS3M1T5R
+      - VS3M2T5R
+      - VS2M2T5R
+      - VS2M1D6R
+      - VS3M1D6R
+      - VS3M2D6R
+      - VS2M2D6R
+      - VS2M1T6R
+      - VS3M1T6R
+      - VS3M2T6R
+      - VS2M2T6R
+      - VS2M1D7R
+      - VS3M1D7R
+      - VS3M2D7R
+      - VS2M2D7R
+      - VS2M1T7R
+      - VS3M1T7R
+      - VS3M2T7R
+      - VS2M2T7R
+      - VS2M1D8R
+      - VS3M1D8R
+      - VS3M2D8R
+      - VS2M2D8R
+      - VS2M1T8R
+      - VS3M1T8R
+      - VS3M2T8R
+      - VS2M2T8R
+      - VS2M1D1R
+      - VS3M1D1R
   - type: pyaml.arrays.bpm
     name: BPM
     elements:
@@ -135,12 +253,1362 @@ arrays:
       - BPMZ4D1R
       - BPMZ42D1R
 devices:
+#- type: pyaml.tuning_tools.orbit
+#  bpm_array_name: BPM
+#  hcorr_array_name: HCorr
+#  vcorr_array_name: VCorr
+#  name: DEFAULT_ORBIT_CORRECTION
+#  singular_values: 64
 - type: pyaml.rf.rf_plant
   name: RF
   masterclock:
     type: pyaml_cs_oa.epicsW
     write_pvname: MCLKHX251C:freq
     unit: KHz
+- type: pyaml.magnet.hcorrector
+  name: HS4M2D1R
+  lattice_names: S4M2D1R@0
+  model:
+    type: pyaml.magnet.linear_model
+    calibration_factor: -7.120319999999999E-4
+    unit: 1/m
+    powerconverter:
+      type: pyaml_cs_oa.epicsRW
+      read_pvname: HS4P2D1R:rdbk
+      write_pvname: HS4P2D1R:set
+      unit: A
+- type: pyaml.magnet.hcorrector
+  name: HS1MT1R
+  lattice_names: S1MT1R@0
+  model:
+    type: pyaml.magnet.linear_model
+    calibration_factor: -0.0011622198
+    unit: 1/m
+    powerconverter:
+      type: pyaml_cs_oa.epicsRW
+      read_pvname: HS1PT1R:rdbk
+      write_pvname: HS1PT1R:set
+      unit: A
+- type: pyaml.magnet.hcorrector
+  name: HS4M1T1R
+  lattice_names: S4M1T1R@0
+  model:
+    type: pyaml.magnet.linear_model
+    calibration_factor: -7.120319999999999E-4
+    unit: 1/m
+    powerconverter:
+      type: pyaml_cs_oa.epicsRW
+      read_pvname: HS4P1T1R:rdbk
+      write_pvname: HS4P1T1R:set
+      unit: A
+- type: pyaml.magnet.hcorrector
+  name: HS4M2T1R
+  lattice_names: S4M2T1R@0
+  model:
+    type: pyaml.magnet.linear_model
+    calibration_factor: -7.120319999999999E-4
+    unit: 1/m
+    powerconverter:
+      type: pyaml_cs_oa.epicsRW
+      read_pvname: HS4P2T1R:rdbk
+      write_pvname: HS4P2T1R:set
+      unit: A
+- type: pyaml.magnet.hcorrector
+  name: HS1MD2R
+  lattice_names: S1MD2R@0
+  model:
+    type: pyaml.magnet.linear_model
+    calibration_factor: -0.0011622198
+    unit: 1/m
+    powerconverter:
+      type: pyaml_cs_oa.epicsRW
+      read_pvname: HS1PD2R:rdbk
+      write_pvname: HS1PD2R:set
+      unit: A
+- type: pyaml.magnet.hcorrector
+  name: HS4M1D2R
+  lattice_names: S4M1D2R@0
+  model:
+    type: pyaml.magnet.linear_model
+    calibration_factor: -7.120319999999999E-4
+    unit: 1/m
+    powerconverter:
+      type: pyaml_cs_oa.epicsRW
+      read_pvname: HS4P1D2R:rdbk
+      write_pvname: HS4P1D2R:set
+      unit: A
+- type: pyaml.magnet.hcorrector
+  name: HS4M2D2R
+  lattice_names: S4M2D2R@0
+  model:
+    type: pyaml.magnet.linear_model
+    calibration_factor: -7.120319999999999E-4
+    unit: 1/m
+    powerconverter:
+      type: pyaml_cs_oa.epicsRW
+      read_pvname: HS4P2D2R:rdbk
+      write_pvname: HS4P2D2R:set
+      unit: A
+- type: pyaml.magnet.hcorrector
+  name: HS1MT2R
+  lattice_names: S1MT2R@0
+  model:
+    type: pyaml.magnet.linear_model
+    calibration_factor: -0.0011622198
+    unit: 1/m
+    powerconverter:
+      type: pyaml_cs_oa.epicsRW
+      read_pvname: HS1PT2R:rdbk
+      write_pvname: HS1PT2R:set
+      unit: A
+- type: pyaml.magnet.hcorrector
+  name: HS4M1T2R
+  lattice_names: S4M1T2R@0
+  model:
+    type: pyaml.magnet.linear_model
+    calibration_factor: -7.120319999999999E-4
+    unit: 1/m
+    powerconverter:
+      type: pyaml_cs_oa.epicsRW
+      read_pvname: HS4P1T2R:rdbk
+      write_pvname: HS4P1T2R:set
+      unit: A
+- type: pyaml.magnet.hcorrector
+  name: HS4M2T2R
+  lattice_names: S4M2T2R@0
+  model:
+    type: pyaml.magnet.linear_model
+    calibration_factor: -7.120319999999999E-4
+    unit: 1/m
+    powerconverter:
+      type: pyaml_cs_oa.epicsRW
+      read_pvname: HS4P2T2R:rdbk
+      write_pvname: HS4P2T2R:set
+      unit: A
+- type: pyaml.magnet.hcorrector
+  name: HS1MD3R
+  lattice_names: S1MD3R@0
+  model:
+    type: pyaml.magnet.linear_model
+    calibration_factor: -0.0011622198
+    unit: 1/m
+    powerconverter:
+      type: pyaml_cs_oa.epicsRW
+      read_pvname: HS1PD3R:rdbk
+      write_pvname: HS1PD3R:set
+      unit: A
+- type: pyaml.magnet.hcorrector
+  name: HS4M1D3R
+  lattice_names: S4M1D3R@0
+  model:
+    type: pyaml.magnet.linear_model
+    calibration_factor: -7.120319999999999E-4
+    unit: 1/m
+    powerconverter:
+      type: pyaml_cs_oa.epicsRW
+      read_pvname: HS4P1D3R:rdbk
+      write_pvname: HS4P1D3R:set
+      unit: A
+- type: pyaml.magnet.hcorrector
+  name: HS4M2D3R
+  lattice_names: S4M2D3R@0
+  model:
+    type: pyaml.magnet.linear_model
+    calibration_factor: -7.120319999999999E-4
+    unit: 1/m
+    powerconverter:
+      type: pyaml_cs_oa.epicsRW
+      read_pvname: HS4P2D3R:rdbk
+      write_pvname: HS4P2D3R:set
+      unit: A
+- type: pyaml.magnet.hcorrector
+  name: HS1MT3R
+  lattice_names: S1MT3R@0
+  model:
+    type: pyaml.magnet.linear_model
+    calibration_factor: -0.0011622198
+    unit: 1/m
+    powerconverter:
+      type: pyaml_cs_oa.epicsRW
+      read_pvname: HS1PT3R:rdbk
+      write_pvname: HS1PT3R:set
+      unit: A
+- type: pyaml.magnet.hcorrector
+  name: HS4M1T3R
+  lattice_names: S4M1T3R@0
+  model:
+    type: pyaml.magnet.linear_model
+    calibration_factor: -7.120319999999999E-4
+    unit: 1/m
+    powerconverter:
+      type: pyaml_cs_oa.epicsRW
+      read_pvname: HS4P1T3R:rdbk
+      write_pvname: HS4P1T3R:set
+      unit: A
+- type: pyaml.magnet.hcorrector
+  name: HS4M2T3R
+  lattice_names: S4M2T3R@0
+  model:
+    type: pyaml.magnet.linear_model
+    calibration_factor: -7.120319999999999E-4
+    unit: 1/m
+    powerconverter:
+      type: pyaml_cs_oa.epicsRW
+      read_pvname: HS4P2T3R:rdbk
+      write_pvname: HS4P2T3R:set
+      unit: A
+- type: pyaml.magnet.hcorrector
+  name: HS1MD4R
+  lattice_names: S1MD4R@0
+  model:
+    type: pyaml.magnet.linear_model
+    calibration_factor: -0.0011622198
+    unit: 1/m
+    powerconverter:
+      type: pyaml_cs_oa.epicsRW
+      read_pvname: HS1PD4R:rdbk
+      write_pvname: HS1PD4R:set
+      unit: A
+- type: pyaml.magnet.hcorrector
+  name: HS4M1D4R
+  lattice_names: S4M1D4R@0
+  model:
+    type: pyaml.magnet.linear_model
+    calibration_factor: -7.120319999999999E-4
+    unit: 1/m
+    powerconverter:
+      type: pyaml_cs_oa.epicsRW
+      read_pvname: HS4P1D4R:rdbk
+      write_pvname: HS4P1D4R:set
+      unit: A
+- type: pyaml.magnet.hcorrector
+  name: HS4M2D4R
+  lattice_names: S4M2D4R@0
+  model:
+    type: pyaml.magnet.linear_model
+    calibration_factor: -7.120319999999999E-4
+    unit: 1/m
+    powerconverter:
+      type: pyaml_cs_oa.epicsRW
+      read_pvname: HS4P2D4R:rdbk
+      write_pvname: HS4P2D4R:set
+      unit: A
+- type: pyaml.magnet.hcorrector
+  name: HS1MT4R
+  lattice_names: S1MT4R@0
+  model:
+    type: pyaml.magnet.linear_model
+    calibration_factor: -0.0011622198
+    unit: 1/m
+    powerconverter:
+      type: pyaml_cs_oa.epicsRW
+      read_pvname: HS1PT4R:rdbk
+      write_pvname: HS1PT4R:set
+      unit: A
+- type: pyaml.magnet.hcorrector
+  name: HS4M1T4R
+  lattice_names: S4M1T4R@0
+  model:
+    type: pyaml.magnet.linear_model
+    calibration_factor: -7.120319999999999E-4
+    unit: 1/m
+    powerconverter:
+      type: pyaml_cs_oa.epicsRW
+      read_pvname: HS4P1T4R:rdbk
+      write_pvname: HS4P1T4R:set
+      unit: A
+- type: pyaml.magnet.hcorrector
+  name: HS4M2T4R
+  lattice_names: S4M2T4R@0
+  model:
+    type: pyaml.magnet.linear_model
+    calibration_factor: -7.120319999999999E-4
+    unit: 1/m
+    powerconverter:
+      type: pyaml_cs_oa.epicsRW
+      read_pvname: HS4P2T4R:rdbk
+      write_pvname: HS4P2T4R:set
+      unit: A
+- type: pyaml.magnet.hcorrector
+  name: HS1MD5R
+  lattice_names: S1MD5R@0
+  model:
+    type: pyaml.magnet.linear_model
+    calibration_factor: -0.0011622198
+    unit: 1/m
+    powerconverter:
+      type: pyaml_cs_oa.epicsRW
+      read_pvname: HS1PD5R:rdbk
+      write_pvname: HS1PD5R:set
+      unit: A
+- type: pyaml.magnet.hcorrector
+  name: HS4M1D5R
+  lattice_names: S4M1D5R@0
+  model:
+    type: pyaml.magnet.linear_model
+    calibration_factor: -7.120319999999999E-4
+    unit: 1/m
+    powerconverter:
+      type: pyaml_cs_oa.epicsRW
+      read_pvname: HS4P1D5R:rdbk
+      write_pvname: HS4P1D5R:set
+      unit: A
+- type: pyaml.magnet.hcorrector
+  name: HS4M2D5R
+  lattice_names: S4M2D5R@0
+  model:
+    type: pyaml.magnet.linear_model
+    calibration_factor: -7.120319999999999E-4
+    unit: 1/m
+    powerconverter:
+      type: pyaml_cs_oa.epicsRW
+      read_pvname: HS4P2D5R:rdbk
+      write_pvname: HS4P2D5R:set
+      unit: A
+- type: pyaml.magnet.hcorrector
+  name: HS1MT5R
+  lattice_names: S1MT5R@0
+  model:
+    type: pyaml.magnet.linear_model
+    calibration_factor: -0.0011622198
+    unit: 1/m
+    powerconverter:
+      type: pyaml_cs_oa.epicsRW
+      read_pvname: HS1PT5R:rdbk
+      write_pvname: HS1PT5R:set
+      unit: A
+- type: pyaml.magnet.hcorrector
+  name: HS4M1T5R
+  lattice_names: S4M1T5R@0
+  model:
+    type: pyaml.magnet.linear_model
+    calibration_factor: -7.120319999999999E-4
+    unit: 1/m
+    powerconverter:
+      type: pyaml_cs_oa.epicsRW
+      read_pvname: HS4P1T5R:rdbk
+      write_pvname: HS4P1T5R:set
+      unit: A
+- type: pyaml.magnet.hcorrector
+  name: HS4M2T5R
+  lattice_names: S4M2T5R@0
+  model:
+    type: pyaml.magnet.linear_model
+    calibration_factor: -7.120319999999999E-4
+    unit: 1/m
+    powerconverter:
+      type: pyaml_cs_oa.epicsRW
+      read_pvname: HS4P2T5R:rdbk
+      write_pvname: HS4P2T5R:set
+      unit: A
+- type: pyaml.magnet.hcorrector
+  name: HS1MD6R
+  lattice_names: S1MD6R@0
+  model:
+    type: pyaml.magnet.linear_model
+    calibration_factor: -0.0011622198
+    unit: 1/m
+    powerconverter:
+      type: pyaml_cs_oa.epicsRW
+      read_pvname: HS1PD6R:rdbk
+      write_pvname: HS1PD6R:set
+      unit: A
+- type: pyaml.magnet.hcorrector
+  name: HS4M1D6R
+  lattice_names: S4M1D6R@0
+  model:
+    type: pyaml.magnet.linear_model
+    calibration_factor: -7.120319999999999E-4
+    unit: 1/m
+    powerconverter:
+      type: pyaml_cs_oa.epicsRW
+      read_pvname: HS4P1D6R:rdbk
+      write_pvname: HS4P1D6R:set
+      unit: A
+- type: pyaml.magnet.hcorrector
+  name: HS4M2D6R
+  lattice_names: S4M2D6R@0
+  model:
+    type: pyaml.magnet.linear_model
+    calibration_factor: -7.120319999999999E-4
+    unit: 1/m
+    powerconverter:
+      type: pyaml_cs_oa.epicsRW
+      read_pvname: HS4P2D6R:rdbk
+      write_pvname: HS4P2D6R:set
+      unit: A
+- type: pyaml.magnet.hcorrector
+  name: HS1MT6R
+  lattice_names: S1MT6R@0
+  model:
+    type: pyaml.magnet.linear_model
+    calibration_factor: -0.0011622198
+    unit: 1/m
+    powerconverter:
+      type: pyaml_cs_oa.epicsRW
+      read_pvname: HS1PT6R:rdbk
+      write_pvname: HS1PT6R:set
+      unit: A
+- type: pyaml.magnet.hcorrector
+  name: HS4M1T6R
+  lattice_names: S4M1T6R@0
+  model:
+    type: pyaml.magnet.linear_model
+    calibration_factor: -7.120319999999999E-4
+    unit: 1/m
+    powerconverter:
+      type: pyaml_cs_oa.epicsRW
+      read_pvname: HS4P1T6R:rdbk
+      write_pvname: HS4P1T6R:set
+      unit: A
+- type: pyaml.magnet.hcorrector
+  name: HS4M2T6R
+  lattice_names: S4M2T6R@0
+  model:
+    type: pyaml.magnet.linear_model
+    calibration_factor: -7.120319999999999E-4
+    unit: 1/m
+    powerconverter:
+      type: pyaml_cs_oa.epicsRW
+      read_pvname: HS4P2T6R:rdbk
+      write_pvname: HS4P2T6R:set
+      unit: A
+- type: pyaml.magnet.hcorrector
+  name: HS1MD7R
+  lattice_names: S1MD7R@0
+  model:
+    type: pyaml.magnet.linear_model
+    calibration_factor: -0.0011622198
+    unit: 1/m
+    powerconverter:
+      type: pyaml_cs_oa.epicsRW
+      read_pvname: HS1PD7R:rdbk
+      write_pvname: HS1PD7R:set
+      unit: A
+- type: pyaml.magnet.hcorrector
+  name: HS4M1D7R
+  lattice_names: S4M1D7R@0
+  model:
+    type: pyaml.magnet.linear_model
+    calibration_factor: -7.120319999999999E-4
+    unit: 1/m
+    powerconverter:
+      type: pyaml_cs_oa.epicsRW
+      read_pvname: HS4P1D7R:rdbk
+      write_pvname: HS4P1D7R:set
+      unit: A
+- type: pyaml.magnet.hcorrector
+  name: HS4M2D7R
+  lattice_names: S4M2D7R@0
+  model:
+    type: pyaml.magnet.linear_model
+    calibration_factor: -7.120319999999999E-4
+    unit: 1/m
+    powerconverter:
+      type: pyaml_cs_oa.epicsRW
+      read_pvname: HS4P2D7R:rdbk
+      write_pvname: HS4P2D7R:set
+      unit: A
+- type: pyaml.magnet.hcorrector
+  name: HS1MT7R
+  lattice_names: S1MT7R@0
+  model:
+    type: pyaml.magnet.linear_model
+    calibration_factor: -0.0011622198
+    unit: 1/m
+    powerconverter:
+      type: pyaml_cs_oa.epicsRW
+      read_pvname: HS1PT7R:rdbk
+      write_pvname: HS1PT7R:set
+      unit: A
+- type: pyaml.magnet.hcorrector
+  name: HS4M1T7R
+  lattice_names: S4M1T7R@0
+  model:
+    type: pyaml.magnet.linear_model
+    calibration_factor: -7.120319999999999E-4
+    unit: 1/m
+    powerconverter:
+      type: pyaml_cs_oa.epicsRW
+      read_pvname: HS4P1T7R:rdbk
+      write_pvname: HS4P1T7R:set
+      unit: A
+- type: pyaml.magnet.hcorrector
+  name: HS4M2T7R
+  lattice_names: S4M2T7R@0
+  model:
+    type: pyaml.magnet.linear_model
+    calibration_factor: -7.120319999999999E-4
+    unit: 1/m
+    powerconverter:
+      type: pyaml_cs_oa.epicsRW
+      read_pvname: HS4P2T7R:rdbk
+      write_pvname: HS4P2T7R:set
+      unit: A
+- type: pyaml.magnet.hcorrector
+  name: HS1MD8R
+  lattice_names: S1MD8R@0
+  model:
+    type: pyaml.magnet.linear_model
+    calibration_factor: -0.0011622198
+    unit: 1/m
+    powerconverter:
+      type: pyaml_cs_oa.epicsRW
+      read_pvname: HS1PD8R:rdbk
+      write_pvname: HS1PD8R:set
+      unit: A
+- type: pyaml.magnet.hcorrector
+  name: HS4M1D8R
+  lattice_names: S4M1D8R@0
+  model:
+    type: pyaml.magnet.linear_model
+    calibration_factor: -7.120319999999999E-4
+    unit: 1/m
+    powerconverter:
+      type: pyaml_cs_oa.epicsRW
+      read_pvname: HS4P1D8R:rdbk
+      write_pvname: HS4P1D8R:set
+      unit: A
+- type: pyaml.magnet.hcorrector
+  name: HS4M2D8R
+  lattice_names: S4M2D8R@0
+  model:
+    type: pyaml.magnet.linear_model
+    calibration_factor: -7.120319999999999E-4
+    unit: 1/m
+    powerconverter:
+      type: pyaml_cs_oa.epicsRW
+      read_pvname: HS4P2D8R:rdbk
+      write_pvname: HS4P2D8R:set
+      unit: A
+- type: pyaml.magnet.hcorrector
+  name: HS1MT8R
+  lattice_names: S1MT8R@0
+  model:
+    type: pyaml.magnet.linear_model
+    calibration_factor: -0.0011622198
+    unit: 1/m
+    powerconverter:
+      type: pyaml_cs_oa.epicsRW
+      read_pvname: HS1PT8R:rdbk
+      write_pvname: HS1PT8R:set
+      unit: A
+- type: pyaml.magnet.hcorrector
+  name: HS4M1T8R
+  lattice_names: S4M1T8R@0
+  model:
+    type: pyaml.magnet.linear_model
+    calibration_factor: -7.120319999999999E-4
+    unit: 1/m
+    powerconverter:
+      type: pyaml_cs_oa.epicsRW
+      read_pvname: HS4P1T8R:rdbk
+      write_pvname: HS4P1T8R:set
+      unit: A
+- type: pyaml.magnet.hcorrector
+  name: HS4M2T8R
+  lattice_names: S4M2T8R@0
+  model:
+    type: pyaml.magnet.linear_model
+    calibration_factor: -7.120319999999999E-4
+    unit: 1/m
+    powerconverter:
+      type: pyaml_cs_oa.epicsRW
+      read_pvname: HS4P2T8R:rdbk
+      write_pvname: HS4P2T8R:set
+      unit: A
+- type: pyaml.magnet.hcorrector
+  name: HS1MD1R
+  lattice_names: S1MD1R@0
+  model:
+    type: pyaml.magnet.linear_model
+    calibration_factor: -0.0011622198
+    unit: 1/m
+    powerconverter:
+      type: pyaml_cs_oa.epicsRW
+      read_pvname: HS1PD1R:rdbk
+      write_pvname: HS1PD1R:set
+      unit: A
+- type: pyaml.magnet.hcorrector
+  name: HS4M1D1R
+  lattice_names: S4M1D1R@0
+  model:
+    type: pyaml.magnet.linear_model
+    calibration_factor: -7.120319999999999E-4
+    unit: 1/m
+    powerconverter:
+      type: pyaml_cs_oa.epicsRW
+      read_pvname: HS4P1D1R:rdbk
+      write_pvname: HS4P1D1R:set
+      unit: A
+- type: pyaml.magnet.vcorrector
+  name: VS3M2D1R
+  lattice_names: S3M2D1R@0
+  model:
+    type: pyaml.magnet.linear_model
+    calibration_factor: 4.761712E-4
+    unit: 1/m
+    powerconverter:
+      type: pyaml_cs_oa.epicsRW
+      read_pvname: VS3P2D1R:rdbk
+      write_pvname: VS3P2D1R:set
+      unit: A
+- type: pyaml.magnet.vcorrector
+  name: VS2M2D1R
+  lattice_names: S2M2D1R@0
+  model:
+    type: pyaml.magnet.linear_model
+    calibration_factor: 4.761712E-4
+    unit: 1/m
+    powerconverter:
+      type: pyaml_cs_oa.epicsRW
+      read_pvname: VS2P2D1R:rdbk
+      write_pvname: VS2P2D1R:set
+      unit: A
+- type: pyaml.magnet.vcorrector
+  name: VS2M1T1R
+  lattice_names: S2M1T1R@0
+  model:
+    type: pyaml.magnet.linear_model
+    calibration_factor: 4.761712E-4
+    unit: 1/m
+    powerconverter:
+      type: pyaml_cs_oa.epicsRW
+      read_pvname: VS2P1T1R:rdbk
+      write_pvname: VS2P1T1R:set
+      unit: A
+- type: pyaml.magnet.vcorrector
+  name: VS3M1T1R
+  lattice_names: S3M1T1R@0
+  model:
+    type: pyaml.magnet.linear_model
+    calibration_factor: 4.761712E-4
+    unit: 1/m
+    powerconverter:
+      type: pyaml_cs_oa.epicsRW
+      read_pvname: VS3P1T1R:rdbk
+      write_pvname: VS3P1T1R:set
+      unit: A
+- type: pyaml.magnet.vcorrector
+  name: VS3M2T1R
+  lattice_names: S3M2T1R@0
+  model:
+    type: pyaml.magnet.linear_model
+    calibration_factor: 4.761712E-4
+    unit: 1/m
+    powerconverter:
+      type: pyaml_cs_oa.epicsRW
+      read_pvname: VS3P2T1R:rdbk
+      write_pvname: VS3P2T1R:set
+      unit: A
+- type: pyaml.magnet.vcorrector
+  name: VS2M2T1R
+  lattice_names: S2M2T1R@0
+  model:
+    type: pyaml.magnet.linear_model
+    calibration_factor: 4.761712E-4
+    unit: 1/m
+    powerconverter:
+      type: pyaml_cs_oa.epicsRW
+      read_pvname: VS2P2T1R:rdbk
+      write_pvname: VS2P2T1R:set
+      unit: A
+- type: pyaml.magnet.vcorrector
+  name: VS2M1D2R
+  lattice_names: S2M1D2R@0
+  model:
+    type: pyaml.magnet.linear_model
+    calibration_factor: 4.761712E-4
+    unit: 1/m
+    powerconverter:
+      type: pyaml_cs_oa.epicsRW
+      read_pvname: VS2P1D2R:rdbk
+      write_pvname: VS2P1D2R:set
+      unit: A
+- type: pyaml.magnet.vcorrector
+  name: VS3M1D2R
+  lattice_names: S3M1D2R@0
+  model:
+    type: pyaml.magnet.linear_model
+    calibration_factor: 4.761712E-4
+    unit: 1/m
+    powerconverter:
+      type: pyaml_cs_oa.epicsRW
+      read_pvname: VS3P1D2R:rdbk
+      write_pvname: VS3P1D2R:set
+      unit: A
+- type: pyaml.magnet.vcorrector
+  name: VS3M2D2R
+  lattice_names: S3M2D2R@0
+  model:
+    type: pyaml.magnet.linear_model
+    calibration_factor: 4.761712E-4
+    unit: 1/m
+    powerconverter:
+      type: pyaml_cs_oa.epicsRW
+      read_pvname: VS3P2D2R:rdbk
+      write_pvname: VS3P2D2R:set
+      unit: A
+- type: pyaml.magnet.vcorrector
+  name: VS2M2D2R
+  lattice_names: S2M2D2R@0
+  model:
+    type: pyaml.magnet.linear_model
+    calibration_factor: 4.761712E-4
+    unit: 1/m
+    powerconverter:
+      type: pyaml_cs_oa.epicsRW
+      read_pvname: VS2P2D2R:rdbk
+      write_pvname: VS2P2D2R:set
+      unit: A
+- type: pyaml.magnet.vcorrector
+  name: VS2M1T2R
+  lattice_names: S2M1T2R@0
+  model:
+    type: pyaml.magnet.linear_model
+    calibration_factor: 4.761712E-4
+    unit: 1/m
+    powerconverter:
+      type: pyaml_cs_oa.epicsRW
+      read_pvname: VS2P1T2R:rdbk
+      write_pvname: VS2P1T2R:set
+      unit: A
+- type: pyaml.magnet.vcorrector
+  name: VS3M1T2R
+  lattice_names: S3M1T2R@0
+  model:
+    type: pyaml.magnet.linear_model
+    calibration_factor: 4.761712E-4
+    unit: 1/m
+    powerconverter:
+      type: pyaml_cs_oa.epicsRW
+      read_pvname: VS3P1T2R:rdbk
+      write_pvname: VS3P1T2R:set
+      unit: A
+- type: pyaml.magnet.vcorrector
+  name: VS3M2T2R
+  lattice_names: S3M2T2R@0
+  model:
+    type: pyaml.magnet.linear_model
+    calibration_factor: 4.761712E-4
+    unit: 1/m
+    powerconverter:
+      type: pyaml_cs_oa.epicsRW
+      read_pvname: VS3P2T2R:rdbk
+      write_pvname: VS3P2T2R:set
+      unit: A
+- type: pyaml.magnet.vcorrector
+  name: VS2M2T2R
+  lattice_names: S2M2T2R@0
+  model:
+    type: pyaml.magnet.linear_model
+    calibration_factor: 4.761712E-4
+    unit: 1/m
+    powerconverter:
+      type: pyaml_cs_oa.epicsRW
+      read_pvname: VS2P2T2R:rdbk
+      write_pvname: VS2P2T2R:set
+      unit: A
+- type: pyaml.magnet.vcorrector
+  name: VS2M1D3R
+  lattice_names: S2M1D3R@0
+  model:
+    type: pyaml.magnet.linear_model
+    calibration_factor: 4.761712E-4
+    unit: 1/m
+    powerconverter:
+      type: pyaml_cs_oa.epicsRW
+      read_pvname: VS2P1D3R:rdbk
+      write_pvname: VS2P1D3R:set
+      unit: A
+- type: pyaml.magnet.vcorrector
+  name: VS3M1D3R
+  lattice_names: S3M1D3R@0
+  model:
+    type: pyaml.magnet.linear_model
+    calibration_factor: 4.761712E-4
+    unit: 1/m
+    powerconverter:
+      type: pyaml_cs_oa.epicsRW
+      read_pvname: VS3P1D3R:rdbk
+      write_pvname: VS3P1D3R:set
+      unit: A
+- type: pyaml.magnet.vcorrector
+  name: VS3M2D3R
+  lattice_names: S3M2D3R@0
+  model:
+    type: pyaml.magnet.linear_model
+    calibration_factor: 4.761712E-4
+    unit: 1/m
+    powerconverter:
+      type: pyaml_cs_oa.epicsRW
+      read_pvname: VS3P2D3R:rdbk
+      write_pvname: VS3P2D3R:set
+      unit: A
+- type: pyaml.magnet.vcorrector
+  name: VS2M2D3R
+  lattice_names: S2M2D3R@0
+  model:
+    type: pyaml.magnet.linear_model
+    calibration_factor: 4.761712E-4
+    unit: 1/m
+    powerconverter:
+      type: pyaml_cs_oa.epicsRW
+      read_pvname: VS2P2D3R:rdbk
+      write_pvname: VS2P2D3R:set
+      unit: A
+- type: pyaml.magnet.vcorrector
+  name: VS2M1T3R
+  lattice_names: S2M1T3R@0
+  model:
+    type: pyaml.magnet.linear_model
+    calibration_factor: 4.761712E-4
+    unit: 1/m
+    powerconverter:
+      type: pyaml_cs_oa.epicsRW
+      read_pvname: VS2P1T3R:rdbk
+      write_pvname: VS2P1T3R:set
+      unit: A
+- type: pyaml.magnet.vcorrector
+  name: VS3M1T3R
+  lattice_names: S3M1T3R@0
+  model:
+    type: pyaml.magnet.linear_model
+    calibration_factor: 4.761712E-4
+    unit: 1/m
+    powerconverter:
+      type: pyaml_cs_oa.epicsRW
+      read_pvname: VS3P1T3R:rdbk
+      write_pvname: VS3P1T3R:set
+      unit: A
+- type: pyaml.magnet.vcorrector
+  name: VS3M2T3R
+  lattice_names: S3M2T3R@0
+  model:
+    type: pyaml.magnet.linear_model
+    calibration_factor: 4.761712E-4
+    unit: 1/m
+    powerconverter:
+      type: pyaml_cs_oa.epicsRW
+      read_pvname: VS3P2T3R:rdbk
+      write_pvname: VS3P2T3R:set
+      unit: A
+- type: pyaml.magnet.vcorrector
+  name: VS2M2T3R
+  lattice_names: S2M2T3R@0
+  model:
+    type: pyaml.magnet.linear_model
+    calibration_factor: 4.761712E-4
+    unit: 1/m
+    powerconverter:
+      type: pyaml_cs_oa.epicsRW
+      read_pvname: VS2P2T3R:rdbk
+      write_pvname: VS2P2T3R:set
+      unit: A
+- type: pyaml.magnet.vcorrector
+  name: VS2M1D4R
+  lattice_names: S2M1D4R@0
+  model:
+    type: pyaml.magnet.linear_model
+    calibration_factor: 4.761712E-4
+    unit: 1/m
+    powerconverter:
+      type: pyaml_cs_oa.epicsRW
+      read_pvname: VS2P1D4R:rdbk
+      write_pvname: VS2P1D4R:set
+      unit: A
+- type: pyaml.magnet.vcorrector
+  name: VS3M1D4R
+  lattice_names: S3M1D4R@0
+  model:
+    type: pyaml.magnet.linear_model
+    calibration_factor: 4.761712E-4
+    unit: 1/m
+    powerconverter:
+      type: pyaml_cs_oa.epicsRW
+      read_pvname: VS3P1D4R:rdbk
+      write_pvname: VS3P1D4R:set
+      unit: A
+- type: pyaml.magnet.vcorrector
+  name: VS3M2D4R
+  lattice_names: S3M2D4R@0
+  model:
+    type: pyaml.magnet.linear_model
+    calibration_factor: 4.761712E-4
+    unit: 1/m
+    powerconverter:
+      type: pyaml_cs_oa.epicsRW
+      read_pvname: VS3P2D4R:rdbk
+      write_pvname: VS3P2D4R:set
+      unit: A
+- type: pyaml.magnet.vcorrector
+  name: VS2M2D4R
+  lattice_names: S2M2D4R@0
+  model:
+    type: pyaml.magnet.linear_model
+    calibration_factor: 4.761712E-4
+    unit: 1/m
+    powerconverter:
+      type: pyaml_cs_oa.epicsRW
+      read_pvname: VS2P2D4R:rdbk
+      write_pvname: VS2P2D4R:set
+      unit: A
+- type: pyaml.magnet.vcorrector
+  name: VS2M1T4R
+  lattice_names: S2M1T4R@0
+  model:
+    type: pyaml.magnet.linear_model
+    calibration_factor: 4.761712E-4
+    unit: 1/m
+    powerconverter:
+      type: pyaml_cs_oa.epicsRW
+      read_pvname: VS2P1T4R:rdbk
+      write_pvname: VS2P1T4R:set
+      unit: A
+- type: pyaml.magnet.vcorrector
+  name: VS3M1T4R
+  lattice_names: S3M1T4R@0
+  model:
+    type: pyaml.magnet.linear_model
+    calibration_factor: 4.761712E-4
+    unit: 1/m
+    powerconverter:
+      type: pyaml_cs_oa.epicsRW
+      read_pvname: VS3P1T4R:rdbk
+      write_pvname: VS3P1T4R:set
+      unit: A
+- type: pyaml.magnet.vcorrector
+  name: VS3M2T4R
+  lattice_names: S3M2T4R@0
+  model:
+    type: pyaml.magnet.linear_model
+    calibration_factor: 4.761712E-4
+    unit: 1/m
+    powerconverter:
+      type: pyaml_cs_oa.epicsRW
+      read_pvname: VS3P2T4R:rdbk
+      write_pvname: VS3P2T4R:set
+      unit: A
+- type: pyaml.magnet.vcorrector
+  name: VS2M2T4R
+  lattice_names: S2M2T4R@0
+  model:
+    type: pyaml.magnet.linear_model
+    calibration_factor: 4.761712E-4
+    unit: 1/m
+    powerconverter:
+      type: pyaml_cs_oa.epicsRW
+      read_pvname: VS2P2T4R:rdbk
+      write_pvname: VS2P2T4R:set
+      unit: A
+- type: pyaml.magnet.vcorrector
+  name: VS2M1D5R
+  lattice_names: S2M1D5R@0
+  model:
+    type: pyaml.magnet.linear_model
+    calibration_factor: 4.761712E-4
+    unit: 1/m
+    powerconverter:
+      type: pyaml_cs_oa.epicsRW
+      read_pvname: VS2P1D5R:rdbk
+      write_pvname: VS2P1D5R:set
+      unit: A
+- type: pyaml.magnet.vcorrector
+  name: VS3M1D5R
+  lattice_names: S3M1D5R@0
+  model:
+    type: pyaml.magnet.linear_model
+    calibration_factor: 4.761712E-4
+    unit: 1/m
+    powerconverter:
+      type: pyaml_cs_oa.epicsRW
+      read_pvname: VS3P1D5R:rdbk
+      write_pvname: VS3P1D5R:set
+      unit: A
+- type: pyaml.magnet.vcorrector
+  name: VS3M2D5R
+  lattice_names: S3M2D5R@0
+  model:
+    type: pyaml.magnet.linear_model
+    calibration_factor: 4.761712E-4
+    unit: 1/m
+    powerconverter:
+      type: pyaml_cs_oa.epicsRW
+      read_pvname: VS3P2D5R:rdbk
+      write_pvname: VS3P2D5R:set
+      unit: A
+- type: pyaml.magnet.vcorrector
+  name: VS2M2D5R
+  lattice_names: S2M2D5R@0
+  model:
+    type: pyaml.magnet.linear_model
+    calibration_factor: 4.761712E-4
+    unit: 1/m
+    powerconverter:
+      type: pyaml_cs_oa.epicsRW
+      read_pvname: VS2P2D5R:rdbk
+      write_pvname: VS2P2D5R:set
+      unit: A
+- type: pyaml.magnet.vcorrector
+  name: VS2M1T5R
+  lattice_names: S2M1T5R@0
+  model:
+    type: pyaml.magnet.linear_model
+    calibration_factor: 4.761712E-4
+    unit: 1/m
+    powerconverter:
+      type: pyaml_cs_oa.epicsRW
+      read_pvname: VS2P1T5R:rdbk
+      write_pvname: VS2P1T5R:set
+      unit: A
+- type: pyaml.magnet.vcorrector
+  name: VS3M1T5R
+  lattice_names: S3M1T5R@0
+  model:
+    type: pyaml.magnet.linear_model
+    calibration_factor: 4.761712E-4
+    unit: 1/m
+    powerconverter:
+      type: pyaml_cs_oa.epicsRW
+      read_pvname: VS3P1T5R:rdbk
+      write_pvname: VS3P1T5R:set
+      unit: A
+- type: pyaml.magnet.vcorrector
+  name: VS3M2T5R
+  lattice_names: S3M2T5R@0
+  model:
+    type: pyaml.magnet.linear_model
+    calibration_factor: 4.761712E-4
+    unit: 1/m
+    powerconverter:
+      type: pyaml_cs_oa.epicsRW
+      read_pvname: VS3P2T5R:rdbk
+      write_pvname: VS3P2T5R:set
+      unit: A
+- type: pyaml.magnet.vcorrector
+  name: VS2M2T5R
+  lattice_names: S2M2T5R@0
+  model:
+    type: pyaml.magnet.linear_model
+    calibration_factor: 4.761712E-4
+    unit: 1/m
+    powerconverter:
+      type: pyaml_cs_oa.epicsRW
+      read_pvname: VS2P2T5R:rdbk
+      write_pvname: VS2P2T5R:set
+      unit: A
+- type: pyaml.magnet.vcorrector
+  name: VS2M1D6R
+  lattice_names: S2M1D6R@0
+  model:
+    type: pyaml.magnet.linear_model
+    calibration_factor: 4.761712E-4
+    unit: 1/m
+    powerconverter:
+      type: pyaml_cs_oa.epicsRW
+      read_pvname: VS2P1D6R:rdbk
+      write_pvname: VS2P1D6R:set
+      unit: A
+- type: pyaml.magnet.vcorrector
+  name: VS3M1D6R
+  lattice_names: S3M1D6R@0
+  model:
+    type: pyaml.magnet.linear_model
+    calibration_factor: 4.761712E-4
+    unit: 1/m
+    powerconverter:
+      type: pyaml_cs_oa.epicsRW
+      read_pvname: VS3P1D6R:rdbk
+      write_pvname: VS3P1D6R:set
+      unit: A
+- type: pyaml.magnet.vcorrector
+  name: VS3M2D6R
+  lattice_names: S3M2D6R@0
+  model:
+    type: pyaml.magnet.linear_model
+    calibration_factor: 4.761712E-4
+    unit: 1/m
+    powerconverter:
+      type: pyaml_cs_oa.epicsRW
+      read_pvname: VS3P2D6R:rdbk
+      write_pvname: VS3P2D6R:set
+      unit: A
+- type: pyaml.magnet.vcorrector
+  name: VS2M2D6R
+  lattice_names: S2M2D6R@0
+  model:
+    type: pyaml.magnet.linear_model
+    calibration_factor: 4.761712E-4
+    unit: 1/m
+    powerconverter:
+      type: pyaml_cs_oa.epicsRW
+      read_pvname: VS2P2D6R:rdbk
+      write_pvname: VS2P2D6R:set
+      unit: A
+- type: pyaml.magnet.vcorrector
+  name: VS2M1T6R
+  lattice_names: S2M1T6R@0
+  model:
+    type: pyaml.magnet.linear_model
+    calibration_factor: 4.761712E-4
+    unit: 1/m
+    powerconverter:
+      type: pyaml_cs_oa.epicsRW
+      read_pvname: VS2P1T6R:rdbk
+      write_pvname: VS2P1T6R:set
+      unit: A
+- type: pyaml.magnet.vcorrector
+  name: VS3M1T6R
+  lattice_names: S3M1T6R@0
+  model:
+    type: pyaml.magnet.linear_model
+    calibration_factor: 4.761712E-4
+    unit: 1/m
+    powerconverter:
+      type: pyaml_cs_oa.epicsRW
+      read_pvname: VS3P1T6R:rdbk
+      write_pvname: VS3P1T6R:set
+      unit: A
+- type: pyaml.magnet.vcorrector
+  name: VS3M2T6R
+  lattice_names: S3M2T6R@0
+  model:
+    type: pyaml.magnet.linear_model
+    calibration_factor: 4.761712E-4
+    unit: 1/m
+    powerconverter:
+      type: pyaml_cs_oa.epicsRW
+      read_pvname: VS3P2T6R:rdbk
+      write_pvname: VS3P2T6R:set
+      unit: A
+- type: pyaml.magnet.vcorrector
+  name: VS2M2T6R
+  lattice_names: S2M2T6R@0
+  model:
+    type: pyaml.magnet.linear_model
+    calibration_factor: 4.761712E-4
+    unit: 1/m
+    powerconverter:
+      type: pyaml_cs_oa.epicsRW
+      read_pvname: VS2P2T6R:rdbk
+      write_pvname: VS2P2T6R:set
+      unit: A
+- type: pyaml.magnet.vcorrector
+  name: VS2M1D7R
+  lattice_names: S2M1D7R@0
+  model:
+    type: pyaml.magnet.linear_model
+    calibration_factor: 4.761712E-4
+    unit: 1/m
+    powerconverter:
+      type: pyaml_cs_oa.epicsRW
+      read_pvname: VS2P1D7R:rdbk
+      write_pvname: VS2P1D7R:set
+      unit: A
+- type: pyaml.magnet.vcorrector
+  name: VS3M1D7R
+  lattice_names: S3M1D7R@0
+  model:
+    type: pyaml.magnet.linear_model
+    calibration_factor: 4.761712E-4
+    unit: 1/m
+    powerconverter:
+      type: pyaml_cs_oa.epicsRW
+      read_pvname: VS3P1D7R:rdbk
+      write_pvname: VS3P1D7R:set
+      unit: A
+- type: pyaml.magnet.vcorrector
+  name: VS3M2D7R
+  lattice_names: S3M2D7R@0
+  model:
+    type: pyaml.magnet.linear_model
+    calibration_factor: 4.761712E-4
+    unit: 1/m
+    powerconverter:
+      type: pyaml_cs_oa.epicsRW
+      read_pvname: VS3P2D7R:rdbk
+      write_pvname: VS3P2D7R:set
+      unit: A
+- type: pyaml.magnet.vcorrector
+  name: VS2M2D7R
+  lattice_names: S2M2D7R@0
+  model:
+    type: pyaml.magnet.linear_model
+    calibration_factor: 4.761712E-4
+    unit: 1/m
+    powerconverter:
+      type: pyaml_cs_oa.epicsRW
+      read_pvname: VS2P2D7R:rdbk
+      write_pvname: VS2P2D7R:set
+      unit: A
+- type: pyaml.magnet.vcorrector
+  name: VS2M1T7R
+  lattice_names: S2M1T7R@0
+  model:
+    type: pyaml.magnet.linear_model
+    calibration_factor: 4.761712E-4
+    unit: 1/m
+    powerconverter:
+      type: pyaml_cs_oa.epicsRW
+      read_pvname: VS2P1T7R:rdbk
+      write_pvname: VS2P1T7R:set
+      unit: A
+- type: pyaml.magnet.vcorrector
+  name: VS3M1T7R
+  lattice_names: S3M1T7R@0
+  model:
+    type: pyaml.magnet.linear_model
+    calibration_factor: 4.761712E-4
+    unit: 1/m
+    powerconverter:
+      type: pyaml_cs_oa.epicsRW
+      read_pvname: VS3P1T7R:rdbk
+      write_pvname: VS3P1T7R:set
+      unit: A
+- type: pyaml.magnet.vcorrector
+  name: VS3M2T7R
+  lattice_names: S3M2T7R@0
+  model:
+    type: pyaml.magnet.linear_model
+    calibration_factor: 4.761712E-4
+    unit: 1/m
+    powerconverter:
+      type: pyaml_cs_oa.epicsRW
+      read_pvname: VS3P2T7R:rdbk
+      write_pvname: VS3P2T7R:set
+      unit: A
+- type: pyaml.magnet.vcorrector
+  name: VS2M2T7R
+  lattice_names: S2M2T7R@0
+  model:
+    type: pyaml.magnet.linear_model
+    calibration_factor: 4.761712E-4
+    unit: 1/m
+    powerconverter:
+      type: pyaml_cs_oa.epicsRW
+      read_pvname: VS2P2T7R:rdbk
+      write_pvname: VS2P2T7R:set
+      unit: A
+- type: pyaml.magnet.vcorrector
+  name: VS2M1D8R
+  lattice_names: S2M1D8R@0
+  model:
+    type: pyaml.magnet.linear_model
+    calibration_factor: 4.761712E-4
+    unit: 1/m
+    powerconverter:
+      type: pyaml_cs_oa.epicsRW
+      read_pvname: VS2P1D8R:rdbk
+      write_pvname: VS2P1D8R:set
+      unit: A
+- type: pyaml.magnet.vcorrector
+  name: VS3M1D8R
+  lattice_names: S3M1D8R@0
+  model:
+    type: pyaml.magnet.linear_model
+    calibration_factor: 4.761712E-4
+    unit: 1/m
+    powerconverter:
+      type: pyaml_cs_oa.epicsRW
+      read_pvname: VS3P1D8R:rdbk
+      write_pvname: VS3P1D8R:set
+      unit: A
+- type: pyaml.magnet.vcorrector
+  name: VS3M2D8R
+  lattice_names: S3M2D8R@0
+  model:
+    type: pyaml.magnet.linear_model
+    calibration_factor: 4.761712E-4
+    unit: 1/m
+    powerconverter:
+      type: pyaml_cs_oa.epicsRW
+      read_pvname: VS3P2D8R:rdbk
+      write_pvname: VS3P2D8R:set
+      unit: A
+- type: pyaml.magnet.vcorrector
+  name: VS2M2D8R
+  lattice_names: S2M2D8R@0
+  model:
+    type: pyaml.magnet.linear_model
+    calibration_factor: 4.761712E-4
+    unit: 1/m
+    powerconverter:
+      type: pyaml_cs_oa.epicsRW
+      read_pvname: VS2P2D8R:rdbk
+      write_pvname: VS2P2D8R:set
+      unit: A
+- type: pyaml.magnet.vcorrector
+  name: VS2M1T8R
+  lattice_names: S2M1T8R@0
+  model:
+    type: pyaml.magnet.linear_model
+    calibration_factor: 4.761712E-4
+    unit: 1/m
+    powerconverter:
+      type: pyaml_cs_oa.epicsRW
+      read_pvname: VS2P1T8R:rdbk
+      write_pvname: VS2P1T8R:set
+      unit: A
+- type: pyaml.magnet.vcorrector
+  name: VS3M1T8R
+  lattice_names: S3M1T8R@0
+  model:
+    type: pyaml.magnet.linear_model
+    calibration_factor: 4.761712E-4
+    unit: 1/m
+    powerconverter:
+      type: pyaml_cs_oa.epicsRW
+      read_pvname: VS3P1T8R:rdbk
+      write_pvname: VS3P1T8R:set
+      unit: A
+- type: pyaml.magnet.vcorrector
+  name: VS3M2T8R
+  lattice_names: S3M2T8R@0
+  model:
+    type: pyaml.magnet.linear_model
+    calibration_factor: 4.761712E-4
+    unit: 1/m
+    powerconverter:
+      type: pyaml_cs_oa.epicsRW
+      read_pvname: VS3P2T8R:rdbk
+      write_pvname: VS3P2T8R:set
+      unit: A
+- type: pyaml.magnet.vcorrector
+  name: VS2M2T8R
+  lattice_names: S2M2T8R@0
+  model:
+    type: pyaml.magnet.linear_model
+    calibration_factor: 4.761712E-4
+    unit: 1/m
+    powerconverter:
+      type: pyaml_cs_oa.epicsRW
+      read_pvname: VS2P2T8R:rdbk
+      write_pvname: VS2P2T8R:set
+      unit: A
+- type: pyaml.magnet.vcorrector
+  name: VS2M1D1R
+  lattice_names: S2M1D1R@0
+  model:
+    type: pyaml.magnet.linear_model
+    calibration_factor: 4.761712E-4
+    unit: 1/m
+    powerconverter:
+      type: pyaml_cs_oa.epicsRW
+      read_pvname: VS2P1D1R:rdbk
+      write_pvname: VS2P1D1R:set
+      unit: A
+- type: pyaml.magnet.vcorrector
+  name: VS3M1D1R
+  lattice_names: S3M1D1R@0
+  model:
+    type: pyaml.magnet.linear_model
+    calibration_factor: 4.761712E-4
+    unit: 1/m
+    powerconverter:
+      type: pyaml_cs_oa.epicsRW
+      read_pvname: VS3P1D1R:rdbk
+      write_pvname: VS3P1D1R:set
+      unit: A
 - type: pyaml.bpm.bpm
   name: BPMZ5D1R
   model:
