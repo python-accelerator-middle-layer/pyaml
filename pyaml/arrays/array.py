@@ -11,13 +11,13 @@ from ..common.element_holder import ElementHolder
 
 class ArrayConfigModel(BaseModel):
     """
-    Base class for array confirguration
+    Base class for array configuration
 
-    Parameters:
-    -----------
-    name: str
+    Parameters
+    ----------
+    name : str
         Family name
-    elements: list[str]
+    elements : list[str]
         List of pyaml element names
     """
 

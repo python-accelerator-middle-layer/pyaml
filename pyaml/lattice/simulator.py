@@ -50,16 +50,27 @@ PYAMLCLASS = "Simulator"
 
 
 class ConfigModel(BaseModel):
+    """
+    Configuration model for Simulator
+
+    Parameters
+    ----------
+    name : str
+        Simulator name
+    lattice : str
+        AT lattice file
+    mat_key : str, optional
+        AT lattice ring name
+    linker : LatticeElementsLinker, optional
+        The linker configuration model
+    """
+
     model_config = ConfigDict(arbitrary_types_allowed=True, extra="forbid")
 
     name: str
-    """Simulator name"""
     lattice: str
-    """AT lattice file"""
     mat_key: str = None
-    """AT lattice ring name"""
     linker: LatticeElementsLinker = None
-    """The linker configuration model"""
 
 
 class Simulator(ElementHolder):

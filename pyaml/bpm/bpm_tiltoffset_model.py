@@ -11,20 +11,36 @@ from ..control.deviceaccess import DeviceAccess
 # Define the main class name for this module
 PYAMLCLASS = "BPMTiltOffsetModel"
 
+# TODO: Implepement indexed offset and tilt
+
 
 class ConfigModel(BaseModel):
+    """
+    Configuration model for BPM with tilt and offset
+
+    Parameters
+    ----------
+    x_pos : DeviceAccess, optional
+        Horizontal position device
+    y_pos : DeviceAccess, optional
+        Vertical position device
+    x_offset : DeviceAccess, optional
+        Horizontal BPM offset device
+    y_offset : DeviceAccess, optional
+        Vertical BPM offset device
+    tilt : DeviceAccess, optional
+        BPM tilt device
+    """
+
     model_config = ConfigDict(arbitrary_types_allowed=True, extra="forbid")
 
     x_pos: DeviceAccess | None
-    """Horizontal position"""
     y_pos: DeviceAccess | None
-    """Vertical position"""
+    x_pos_index: int | None = None
+    y_pos_index: int | None = None
     x_offset: DeviceAccess | None
-    """Horizontal BPM offset"""
     y_offset: DeviceAccess | None
-    """Vertical BPM offset"""
     tilt: DeviceAccess | None
-    """BPM tilt"""
 
 
 class BPMTiltOffsetModel(BPMSimpleModel):

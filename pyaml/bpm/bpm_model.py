@@ -20,7 +20,7 @@ class BPMModel(metaclass=ABCMeta):
         Returns
         -------
         list[DeviceAccess]
-            Array of DeviceAcess
+            h and v position devices
         """
         pass
 
@@ -32,7 +32,7 @@ class BPMModel(metaclass=ABCMeta):
         Returns
         -------
         list[DeviceAccess]
-            Array of DeviceAcess
+            tilt device
         """
         pass
 
@@ -44,6 +44,80 @@ class BPMModel(metaclass=ABCMeta):
         Returns
         -------
         list[DeviceAccess]
-            Array of DeviceAcess
+            h and v offset devices
         """
         pass
+
+    def x_pos_index(self) -> int | None:
+        """
+        Returns the index of the horizontal position in
+        an array, otherwise a scalar value is expected from the
+        corresponding DeviceAccess
+
+        Returns
+        -------
+        int
+            Index in the array, None for a scalar value
+        """
+        return None
+
+    def y_pos_index(self) -> int | None:
+        """
+        Returns the index of the veritcal position in
+        an array, otherwise a scalar value is expected from the
+        corresponding DeviceAccess
+
+        Returns
+        -------
+        int
+            Index in the array, None for a scalar value
+        """
+        return None
+
+    def is_pos_indexed(self) -> bool:
+        return self.x_pos_index() is not None and self.y_pos_index() is not None
+
+    def tilt_index(self) -> int | None:
+        """
+        Returns the index of the tilt angle in
+        an array, otherwise a scalar value is expected from the
+        corresponding DeviceAccess
+
+        Returns
+        -------
+        int
+            Index in the array, None for a scalar value
+        """
+        return None
+
+    def is_tilt_indexed(self) -> bool:
+        return self.tilt_index() is not None
+
+    def x_offset_index(self) -> int | None:
+        """
+        Returns the index of the horizontal offset in
+        an array, otherwise a scalar value is expected from the
+        corresponding DeviceAccess
+
+        Returns
+        -------
+        int
+            Index in the array, None for a scalar value
+        """
+        return None
+
+    def y_offset_index(self) -> int | None:
+        """
+        Returns the index of the veritcal offset in
+        an array, otherwise a scalar value is expected from the
+        corresponding DeviceAccess
+
+        Returns
+        -------
+        int
+            Index in the array, None for a scalar value
+        """
+        return None
+
+    def is_offset_indexed(self) -> bool:
+        return self.x_offset_index() is not None and self.y_offset_index() is not None

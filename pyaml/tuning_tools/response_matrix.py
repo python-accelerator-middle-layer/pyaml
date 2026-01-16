@@ -6,6 +6,21 @@ PYAMLCLASS = "ResponseMatrix"
 
 
 class ConfigModel(BaseModel):
+    """
+    Configuration model for response matrix
+
+    Parameters
+    ----------
+    matrix : list[list[float]]
+        Response matrix data
+    input_names : list[str], optional
+        Input names
+    output_names : list[str]
+        Output names
+    rf_response : list[float], optional
+        RF response data
+    """
+
     model_config = ConfigDict(arbitrary_types_allowed=True, extra="forbid")
 
     matrix: list[list[float]]

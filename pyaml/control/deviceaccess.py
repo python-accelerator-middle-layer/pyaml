@@ -1,14 +1,11 @@
 from abc import ABCMeta, abstractmethod
-from typing import Union
 
-import numpy.typing as npt
-
-from .readback_value import Value
+# TODO: correctly type value
 
 
 class DeviceAccess(metaclass=ABCMeta):
     """
-    Abstract class providing access to a control system float variable
+    Abstract class providing access to a control system variable
     """
 
     @abstractmethod
@@ -22,22 +19,22 @@ class DeviceAccess(metaclass=ABCMeta):
         pass
 
     @abstractmethod
-    def set(self, value: float):
+    def set(self, value):
         """Write a control system device variable (i.e. a power supply current)"""
         pass
 
     @abstractmethod
-    def set_and_wait(self, value: float):
+    def set_and_wait(self, value):
         """Write a control system device variable (i.e. a power supply current)"""
         pass
 
     @abstractmethod
-    def get(self) -> float:
-        """Return the setpoint of a control system device variable"""
+    def get(self):
+        """Return the setpoint(s) of a control system device variable"""
         pass
 
     @abstractmethod
-    def readback(self) -> Union[Value, npt.NDArray[Value]]:
+    def readback(self):
         """Return the measured variable"""
         pass
 

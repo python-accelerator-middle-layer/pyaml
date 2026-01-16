@@ -8,7 +8,7 @@ pyAML
 __title__ = "pyAML"
 __description__ = "Python Accelerator Middle Layer"
 __url__ = "https://github.com/python-accelerator-middle-layer/pyaml"
-__version__ = "0.1.1"
+__version__ = "0.2.1"
 __author__ = "pyAML collaboration"
 __author_email__ = ""
 
@@ -17,7 +17,7 @@ import os
 
 from pyaml.common.exception import PyAMLConfigException, PyAMLException
 
-__all__ = [__version__, PyAMLException, PyAMLConfigException]
+__all__ = [__version__, "PyAMLException", "PyAMLConfigException"]
 
 
 config_file = os.getenv("PYAML_LOG_CONFIG", "pyaml_logging.conf")

@@ -19,26 +19,41 @@ PYAMLCLASS = "Accelerator"
 
 
 class ConfigModel(BaseModel):
+    """
+    Configuration model for Accelerator
+
+    Parameters
+    ----------
+    facility : str
+        Facility name
+    machine : str
+        Accelerator name
+    energy : float
+        Accelerator nominal energy. For ramped machine,
+        this value can be dynamically set
+    controls : list[ControlSystem], optional
+        List of control system used. An accelerator
+        can access several control systems
+    simulators : list[Simulator], optional
+        Simulator list
+    data_folder : str
+        Data folder
+    arrays : list[ArrayConfig], optional
+        Element family
+    devices : list[Element]
+        Element list
+    """
+
     model_config = ConfigDict(arbitrary_types_allowed=True, extra="forbid")
 
     facility: str
-    "Facility name"
     machine: str
-    """Accelerator name"""
     energy: float
-    """Accelerator nominal energy, for ramped machine,
-       this value can be dynamically set"""
     controls: list[ControlSystem] = None
-    """List of control system used, an accelerator
-       can access several control systems"""
     simulators: list[Simulator] = None
-    """Simulator list"""
     data_folder: str
-    """Data folder"""
     arrays: list[ArrayConfig] = None
-    """Element family"""
     devices: list[Element]
-    """Element list"""
 
 
 class Accelerator(object):
@@ -109,6 +124,25 @@ class Accelerator(object):
         return self.__design
 
     @staticmethod
+    def from_dict(config_dict: dict, ignore_external=False) -> "Accelerator":
+        """
+        Construct an accelerator from a dictionary.
+        Parameters
+        ----------
+        config_dict : str
+            Dictionnary conatining accelerator config
+        ignore_external: bool
+            Ignore external modules and return None for object that
+            cannot be created. pydantic schema that support that an
+            object is not created should handle None fields.
+
+        """
+        if ignore_external:
+            # control systems are external, so remove controls field
+            config_dict.pop("controls", None)
+        return Factory.depth_first_build(config_dict, ignore_external)
+
+    @staticmethod
     def load(
         filename: str, use_fast_loader: bool = False, ignore_external=False
     ) -> "Accelerator":
@@ -124,7 +158,7 @@ class Accelerator(object):
             no line number are reported in case of error,
             only the element name that triggered the error
             will be reported in the exception)
-        ignore_external: bool
+        ignore_external : bool
             Ignore external modules and return None for object that
             cannot be created. pydantic schema that support that an
             object is not created should handle None fields.
@@ -136,8 +170,4 @@ class Accelerator(object):
         rootfolder = os.path.abspath(os.path.dirname(filename))
         set_root_folder(rootfolder)
         config_dict = load(os.path.basename(filename), None, use_fast_loader)
-        if ignore_external:
-            # control systems are external, so remove controls field
-            config_dict.pop("controls", None)
-        aml = Factory.depth_first_build(config_dict, ignore_external)
-        return aml
+        return Accelerator.from_dict(config_dict)
