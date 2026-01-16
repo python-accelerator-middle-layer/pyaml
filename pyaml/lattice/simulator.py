@@ -9,15 +9,15 @@ from ..common.element import Element
 from ..common.element_holder import ElementHolder
 from ..common.exception import PyAMLException
 from ..configuration import get_root_folder
-from ..diagnostics.tune_monitor import BetatronTuneMonitor
 from ..diagnostics.chromaticity_monitor import ChomaticityMonitor
+from ..diagnostics.tune_monitor import BetatronTuneMonitor
 from ..lattice.abstract_impl import (
     BPMHScalarAggregator,
     BPMScalarAggregator,
     BPMVScalarAggregator,
     RBetatronTuneArray,
-    RChromaticityArray,
     RBpmArray,
+    RChromaticityArray,
     RWBpmOffsetArray,
     RWBpmTiltScalar,
     RWHardwareArray,

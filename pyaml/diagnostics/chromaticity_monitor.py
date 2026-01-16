@@ -6,11 +6,11 @@ try:
     from typing import Self  # Python 3.11+
 except ImportError:
     from typing_extensions import Self  # Python 3.10 and earlier
-from pydantic import ConfigDict
-
 from time import sleep
-import numpy as np
+
 import matplotlib.pyplot as plt
+import numpy as np
+from pydantic import ConfigDict
 from scipy.optimize import curve_fit
 
 PYAMLCLASS = "ChomaticityMonitor"
@@ -75,13 +75,13 @@ class ChomaticityMonitor(Element):
         obj._peer = peer
         return obj
 
-    def chromaticity_measurement(self, 
-                                 N_step: int=None, 
-                                 alphac: float=None, 
-                                 E_delta: float=None, 
-                                 Max_E_delta: float=None, 
-                                 N_tune_meas: int=None, 
-                                 Sleep_between_meas: float=None, 
+    def chromaticity_measurement(self,
+                                 N_step: int=None,
+                                 alphac: float=None,
+                                 E_delta: float=None,
+                                 Max_E_delta: float=None,
+                                 N_tune_meas: int=None,
+                                 Sleep_between_meas: float=None,
                                  Sleep_between_RFvar: float=None,
                                  fit_method: str=None,
                                  do_plot: bool=None):
@@ -139,12 +139,12 @@ class ChomaticityMonitor(Element):
         chrom = self.fit_chromaticity(delta=delta, NuX=NuX, NuY=NuY, method=fit_method, do_plot=do_plot)
         return(chrom)
 
-    def measure_tune_response(self, 
-                                N_step: int, 
-                                alphac: float, 
-                                E_delta: float, 
-                                N_tune_meas: int, 
-                                Sleep_between_meas: float, 
+    def measure_tune_response(self,
+                                N_step: int,
+                                alphac: float,
+                                E_delta: float,
+                                N_tune_meas: int,
+                                Sleep_between_meas: float,
                                 Sleep_between_RFvar: float):
         """
         Main function for chromaticity measurment
@@ -165,7 +165,7 @@ class ChomaticityMonitor(Element):
         """
         tune = self._peer.get_betatron_tune_monitor(self._cfg.betatron_tune)
         rf = self._peer.get_rf_plant(self._cfg.RFfreq)
-        
+
         f0 = rf.frequency.get()
 
         delta = np.linspace(-E_delta, E_delta, N_step)
@@ -190,7 +190,7 @@ class ChomaticityMonitor(Element):
             # TODO : Use set_and_wait once it is implemented !
             rf.frequency.set(f0)
 
-        return(delta, NuX, NuY)    
+        return(delta, NuX, NuY)
 
 
     def fit_chromaticity(self, delta, NuX, NuY, method, do_plot):
@@ -247,9 +247,9 @@ class ChomaticityMonitor(Element):
                     ax.plot(delta,
                              linear_fit(delta, popt_lin[0], popt_lin[1]),
                              '--')
-                    title = "{:.4f}dp/p+{:.8f}".format(*popt_lin) 
+                    title = "{:.4f}dp/p+{:.8f}".format(*popt_lin)
                 elif method=="quad":
-                    ax.plot(delta, 
+                    ax.plot(delta,
                              quad_fit(delta, popt_quad[0], popt_quad[1], popt_quad[2]),
                              '--',)
                     title="{:.4f}(dp/p)$^2$+{:.4f}dp/p+{:.4f}".format(*popt_quad)

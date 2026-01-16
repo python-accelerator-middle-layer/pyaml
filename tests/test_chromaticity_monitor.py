@@ -1,8 +1,9 @@
+import numpy as np
 import pytest
 
 from pyaml.accelerator import Accelerator
 from pyaml.configuration.factory import Factory
-import numpy as np
+
 
 @pytest.mark.parametrize(
     "install_test_package",

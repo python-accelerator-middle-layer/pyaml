@@ -10,8 +10,8 @@ from ..control.abstract_impl import (
     CSScalarAggregator,
     CSStrengthScalarAggregator,
     RBetatronTuneArray,
-    RChromaticityArray,
     RBpmArray,
+    RChromaticityArray,
     RWBpmOffsetArray,
     RWBpmTiltScalar,
     RWHardwareArray,
@@ -22,8 +22,8 @@ from ..control.abstract_impl import (
     RWStrengthArray,
     RWStrengthScalar,
 )
-from ..diagnostics.tune_monitor import BetatronTuneMonitor
 from ..diagnostics.chromaticity_monitor import ChomaticityMonitor
+from ..diagnostics.tune_monitor import BetatronTuneMonitor
 from ..magnet.cfm_magnet import CombinedFunctionMagnet
 from ..magnet.magnet import Magnet
 from ..rf.rf_plant import RFPlant, RWTotalVoltage

@@ -8,8 +8,8 @@ from ..arrays.element_array import ElementArray
 from ..arrays.magnet_array import MagnetArray
 from ..bpm.bpm import BPM
 from ..common.exception import PyAMLException
-from ..diagnostics.tune_monitor import BetatronTuneMonitor
 from ..diagnostics.chromaticity_monitor import ChomaticityMonitor
+from ..diagnostics.tune_monitor import BetatronTuneMonitor
 from ..magnet.cfm_magnet import CombinedFunctionMagnet
 from ..magnet.magnet import Magnet
 from ..rf.rf_plant import RFPlant
