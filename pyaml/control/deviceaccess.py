@@ -45,3 +45,12 @@ class DeviceAccess(metaclass=ABCMeta):
     def unit(self) -> str:
         """Return the variable unit"""
         pass
+
+    @abstractmethod
+    def get_range(self) -> list[float]:
+        pass
+
+    @abstractmethod
+    def check_device_availability(self) -> bool:
+        pass
+
