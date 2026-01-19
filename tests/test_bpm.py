@@ -5,13 +5,8 @@ from pyaml.accelerator import Accelerator
 from pyaml.configuration.factory import Factory
 
 
-@pytest.mark.parametrize(
-    "install_test_package",
-    [{"name": "tango-pyaml", "path": "tests/dummy_cs/tango-pyaml"}],
-    indirect=True,
-)
-def test_simulator_bpm_tilt(install_test_package):
-    sr: Accelerator = Accelerator.load("tests/config/bpms.yaml")
+def test_simulator_bpm_tilt():
+    sr: Accelerator = Accelerator.load("tests/config/bpms.yaml", ignore_external=True)
     sr.design.get_lattice().disable_6d()
     bpm = sr.design.get_bpm("BPM_C01-01")
     assert bpm.tilt.get() == 0
@@ -21,13 +16,8 @@ def test_simulator_bpm_tilt(install_test_package):
     Factory.clear()
 
 
-@pytest.mark.parametrize(
-    "install_test_package",
-    [{"name": "tango-pyaml", "path": "tests/dummy_cs/tango-pyaml"}],
-    indirect=True,
-)
-def test_simulator_bpm_offset(install_test_package):
-    sr: Accelerator = Accelerator.load("tests/config/bpms.yaml")
+def test_simulator_bpm_offset():
+    sr: Accelerator = Accelerator.load("tests/config/bpms.yaml", ignore_external=True)
     sr.design.get_lattice().disable_6d()
     bpm = sr.design.get_bpm("BPM_C01-01")
 
@@ -58,13 +48,8 @@ def test_simulator_bpm_position(install_test_package):
     Factory.clear()
 
 
-@pytest.mark.parametrize(
-    "install_test_package",
-    [{"name": "tango-pyaml", "path": "tests/dummy_cs/tango-pyaml"}],
-    indirect=True,
-)
-def test_simulator_bpm_position_with_bad_corrector_strength(install_test_package):
-    sr: Accelerator = Accelerator.load("tests/config/bpms.yaml")
+def test_simulator_bpm_position_with_bad_corrector_strength():
+    sr: Accelerator = Accelerator.load("tests/config/bpms.yaml", ignore_external=True)
     sr.design.get_lattice().disable_6d()
     bpm1 = sr.design.get_bpm("BPM_C01-01")
     bpm_simple = sr.design.get_bpm("BPM_C01-02")

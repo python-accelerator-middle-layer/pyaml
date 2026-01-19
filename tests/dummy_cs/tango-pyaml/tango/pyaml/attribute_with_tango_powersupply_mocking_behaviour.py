@@ -159,3 +159,9 @@ class AttributeWithTangoMockingBehaviour(DeviceAccess):
 
     def unit(self) -> str:
         return self._unit
+
+    def get_range(self) -> list[float]:
+        return [None, None]
+
+    def check_device_availability(self) -> bool:
+        return True

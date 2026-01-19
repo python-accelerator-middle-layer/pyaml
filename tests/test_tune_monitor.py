@@ -4,13 +4,8 @@ from pyaml.accelerator import Accelerator
 from pyaml.configuration.factory import Factory
 
 
-@pytest.mark.parametrize(
-    "install_test_package",
-    [{"name": "tango-pyaml", "path": "tests/dummy_cs/tango-pyaml"}],
-    indirect=True,
-)
-def test_simulator_tune_monitor(install_test_package):
-    sr: Accelerator = Accelerator.load("tests/config/tune_monitor.yaml")
+def test_simulator_tune_monitor():
+    sr: Accelerator = Accelerator.load("tests/config/tune_monitor.yaml", ignore_external=True)
     sr.design.get_lattice().disable_6d()
     tune_monitor = sr.design.get_betatron_tune_monitor("BETATRON_TUNE")
     assert tune_monitor.tune.get()[0] == sr.design.get_lattice().get_tune()[0]

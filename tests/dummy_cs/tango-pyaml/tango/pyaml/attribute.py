@@ -57,3 +57,9 @@ class Attribute(DeviceAccess):
 
     def __repr__(self):
         return repr(self._cfg).replace("ConfigModel", self.__class__.__name__)
+
+    def get_range(self) -> list[float]:
+        return [None, None]
+
+    def check_device_availability(self) -> bool:
+        return True

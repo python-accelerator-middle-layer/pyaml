@@ -5,13 +5,8 @@ from pyaml.accelerator import Accelerator
 from pyaml.configuration.factory import Factory
 
 
-@pytest.mark.parametrize(
-    "install_test_package",
-    [{"name": "tango-pyaml", "path": "tests/dummy_cs/tango-pyaml"}],
-    indirect=True,
-)
-def test_tune(install_test_package):
-    sr: Accelerator = Accelerator.load(("tests/config/EBSTune.yaml"))
+def test_tune():
+    sr: Accelerator = Accelerator.load("tests/config/EBSTune.yaml", ignore_external=True)
     sr.design.get_lattice().disable_6d()
 
     quadForTuneDesign = sr.design.get_magnets("QForTune")
