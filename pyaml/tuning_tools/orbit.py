@@ -36,7 +36,7 @@ class ConfigModel(ElementConfigModel):
     hcorr_array_name: str
     vcorr_array_name: str
     singular_values: int
-    response_matrix: Union[ResponseMatrix | str]
+    response_matrix: Optional[Union[ResponseMatrix, str]] = None
 
 
 class Orbit(Element):
@@ -48,7 +48,7 @@ class Orbit(Element):
         self.vcorr_array_name = cfg.vcorr_array_name
         self.singular_values = cfg.singular_values
 
-        if type(cfg.response_matrix) is str:
+        if type(cfg.response_matrix) is str or cfg.response_matrix is None:
             logger.warning(f"{cfg.name} does not have a response_matrix!")
             self.response_matrix = cfg.response_matrix
         else:
@@ -65,8 +65,8 @@ class Orbit(Element):
         gain: float = 1.0,
         plane: Optional[Literal["H", "V"]] = None,
     ):
-        if self.response_matrix is str:
-            raise PyAMLException("f{cfg.name} does not have a response_matrix.")
+        if type(self.response_matrix) is str or self.response_matrix is None:
+            raise PyAMLException(f"{self.get_name()} does not have a response_matrix.")
 
         interface = pySCInterface(
             element_holder=self._peer,
