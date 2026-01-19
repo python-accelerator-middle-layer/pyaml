@@ -23,7 +23,7 @@ if TYPE_CHECKING:
 logger = logging.getLogger(__name__)
 
 accepted_suffixes = [".yaml", ".yml", ".json"]
-not_expanded_prefixes = ["file:"]
+FILE_PREFIX = "file:"
 
 ROOT = {"path": Path.cwd().resolve()}
 
@@ -82,11 +82,9 @@ def load(
 
 
 # Expand condition
-def hasToExpand(value):
-    return (
-        isinstance(value, str)
-        and any(value.endswith(suffix) for suffix in accepted_suffixes)
-        and not any(value.startswith(prefix) for prefix in not_expanded_prefixes)
+def hasToLoad(value):
+    return isinstance(value, str) and any(
+        value.endswith(suffix) for suffix in accepted_suffixes
     )
 
 
@@ -107,8 +105,13 @@ class Loader:
     def expand_dict(self, d: dict):
         for key, value in d.items():
             try:
-                if hasToExpand(value):
-                    d[key] = load(value, self.files_stack, self.use_fast_loader)
+                if hasToLoad(value):
+                    if value.startswith(FILE_PREFIX):
+                        # remove prefix
+                        stripped_value = value[len(FILE_PREFIX) :]
+                        d[key] = str(get_root_folder() / Path(stripped_value))
+                    else:
+                        d[key] = load(value, self.files_stack, self.use_fast_loader)
                 else:
                     self.expand(value)
             except PyAMLConfigCyclingException as pyaml_ex:
@@ -129,7 +132,7 @@ class Loader:
     # Recursively expand a list
     def expand_list(self, l: list):
         for idx, value in enumerate(l):
-            if hasToExpand(value):
+            if hasToLoad(value):
                 l[idx] = load(value, self.files_stack)
             else:
                 self.expand(value)
