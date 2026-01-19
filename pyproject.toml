@@ -55,11 +55,15 @@ dependencies = [
 [project.optional-dependencies]
 
 tango-pyaml = [
-    "tango-pyaml @ git+https://github.com/python-accelerator-middle-layer/tango-pyaml.git"
+    "tango-pyaml",
 ]
 
-pyaml-cs-oa = [
-    "pyaml-cs-oa @ git+https://github.com/python-accelerator-middle-layer/pyaml-cs-oa.git"
+cs-oa-epics = [
+    "pyaml-cs-oa[epics]",
+]
+
+cs-oa-tango = [
+    "pyaml-cs-oa[tango]",
 ]
 
 test = [
