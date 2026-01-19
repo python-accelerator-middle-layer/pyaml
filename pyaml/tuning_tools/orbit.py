@@ -12,14 +12,14 @@ from pydantic import ConfigDict
 
 if TYPE_CHECKING:
     from ..common.element_holder import ElementHolder
-# from ..external.pySC.pySC import ResponseMatrix as pySC_ResponseMatrix
+from pySC.pySC import ResponseMatrix as pySC_ResponseMatrix
+from pySC.pySC.apps import orbit_correction
+
 from ..arrays.magnet_array import MagnetArray
 from ..common.element import Element, ElementConfigModel
 from ..common.exception import PyAMLException
 from ..configuration.factory import Factory
 from ..configuration.fileloader import get_path, load
-from ..external.pySC.pySC import ResponseMatrix as pySC_ResponseMatrix
-from ..external.pySC.pySC.apps import orbit_correction
 from ..external.pySC_interface import pySCInterface
 from .response_matrix import ResponseMatrix
 

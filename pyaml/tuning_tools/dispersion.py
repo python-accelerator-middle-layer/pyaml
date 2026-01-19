@@ -3,9 +3,9 @@ from pathlib import Path
 from typing import List, Optional
 
 from pydantic import BaseModel, ConfigDict
+from pySC.apps import measure_dispersion
 
 from ..common.element_holder import ElementHolder
-from ..external.pySC.pySC.apps import measure_dispersion
 from ..external.pySC_interface import pySCInterface
 
 logger = logging.getLogger(__name__)
