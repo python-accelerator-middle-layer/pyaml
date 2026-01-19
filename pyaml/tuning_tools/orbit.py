@@ -12,8 +12,8 @@ from pydantic import ConfigDict
 
 if TYPE_CHECKING:
     from ..common.element_holder import ElementHolder
-from pySC.pySC import ResponseMatrix as pySC_ResponseMatrix
-from pySC.pySC.apps import orbit_correction
+from pySC import ResponseMatrix as pySC_ResponseMatrix
+from pySC.apps import orbit_correction
 
 from ..arrays.magnet_array import MagnetArray
 from ..common.element import Element, ElementConfigModel
