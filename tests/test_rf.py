@@ -6,13 +6,8 @@ from pyaml.common.exception import PyAMLException
 from pyaml.configuration.factory import Factory
 
 
-@pytest.mark.parametrize(
-    "install_test_package",
-    [{"name": "tango-pyaml", "path": "tests/dummy_cs/tango-pyaml"}],
-    indirect=True,
-)
-def test_rf(install_test_package):
-    sr: Accelerator = Accelerator.load("tests/config/EBS_rf.yaml")
+def test_rf():
+    sr: Accelerator = Accelerator.load("tests/config/EBS_rf.yaml", ignore_external=True)
     RF = sr.design.get_rf_plant("RF")
 
     RF.frequency.set(3.523e8)
