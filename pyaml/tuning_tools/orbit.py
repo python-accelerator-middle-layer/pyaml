@@ -8,7 +8,7 @@ except ImportError:
     from typing_extensions import Self  # Python 3.10 and earlier
 
 
-from pydantic import BaseModel, ConfigDict
+from pydantic import ConfigDict
 
 if TYPE_CHECKING:
     from ..common.element_holder import ElementHolder
@@ -36,7 +36,7 @@ class ConfigModel(ElementConfigModel):
     hcorr_array_name: str
     vcorr_array_name: str
     singular_values: int
-    response_matrix: Optional[Union[ResponseMatrix, str]] = None
+    response_matrix: Union[str, ResponseMatrix]
 
 
 class Orbit(Element):
@@ -48,13 +48,19 @@ class Orbit(Element):
         self.vcorr_array_name = cfg.vcorr_array_name
         self.singular_values = cfg.singular_values
 
-        if type(cfg.response_matrix) is str or cfg.response_matrix is None:
-            logger.warning(f"{cfg.name} does not have a response_matrix!")
-            self.response_matrix = cfg.response_matrix
+        if type(cfg.response_matrix) is str:
+            response_matrix_filename = cfg.response_matrix
+            # assigns self.response_matrix
+            if Path(response_matrix_filename).exists():
+                self.load_response_matrix(response_matrix_filename)
+            else:
+                logger.warning(f"{response_matrix_filename} does not exist.")
+                self.response_matrix = None
         else:
             self.response_matrix = pySC_ResponseMatrix.model_validate(
                 cfg.response_matrix._cfg.model_dump()
             )
+
         self._hcorr: MagnetArray = None
         self._vcorr: MagnetArray = None
         self._hvcorr: MagnetArray = None
@@ -65,7 +71,7 @@ class Orbit(Element):
         gain: float = 1.0,
         plane: Optional[Literal["H", "V"]] = None,
     ):
-        if type(self.response_matrix) is str or self.response_matrix is None:
+        if self.response_matrix is None:
             raise PyAMLException(f"{self.get_name()} does not have a response_matrix.")
 
         interface = pySCInterface(
