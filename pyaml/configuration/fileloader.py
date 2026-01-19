@@ -23,7 +23,7 @@ if TYPE_CHECKING:
 logger = logging.getLogger(__name__)
 
 accepted_suffixes = [".yaml", ".yml", ".json"]
-
+not_expanded_prefixes = ["file:"]
 
 ROOT = {"path": Path.cwd().resolve()}
 
@@ -83,8 +83,10 @@ def load(
 
 # Expand condition
 def hasToExpand(value):
-    return isinstance(value, str) and any(
-        value.endswith(suffix) for suffix in accepted_suffixes
+    return (
+        isinstance(value, str)
+        and any(value.endswith(suffix) for suffix in accepted_suffixes)
+        and not any(value.startswith(prefix) for prefix in not_expanded_prefixes)
     )
 
 
