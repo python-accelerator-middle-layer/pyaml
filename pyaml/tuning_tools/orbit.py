@@ -1,6 +1,6 @@
 import logging
 from pathlib import Path
-from typing import TYPE_CHECKING, Literal, Optional
+from typing import TYPE_CHECKING, Literal, Optional, Union
 
 try:
     from typing import Self  # Python 3.11+
@@ -8,7 +8,7 @@ except ImportError:
     from typing_extensions import Self  # Python 3.10 and earlier
 
 
-from pydantic import BaseModel, ConfigDict
+from pydantic import ConfigDict
 
 if TYPE_CHECKING:
     from ..common.element_holder import ElementHolder
@@ -16,6 +16,8 @@ if TYPE_CHECKING:
 from ..arrays.magnet_array import MagnetArray
 from ..common.element import Element, ElementConfigModel
 from ..common.exception import PyAMLException
+from ..configuration.factory import Factory
+from ..configuration.fileloader import get_path, load
 from ..external.pySC.pySC import ResponseMatrix as pySC_ResponseMatrix
 from ..external.pySC.pySC.apps import orbit_correction
 from ..external.pySC_interface import pySCInterface
@@ -34,21 +36,31 @@ class ConfigModel(ElementConfigModel):
     hcorr_array_name: str
     vcorr_array_name: str
     singular_values: int
-    response_matrix: Optional[ResponseMatrix]
+    response_matrix: Union[str, ResponseMatrix]
 
 
 class Orbit(Element):
     def __init__(self, cfg: ConfigModel):
         super().__init__(cfg.name)
         self._cfg = cfg
-
         self.bpm_array_name = cfg.bpm_array_name
         self.hcorr_array_name = cfg.hcorr_array_name
         self.vcorr_array_name = cfg.vcorr_array_name
         self.singular_values = cfg.singular_values
-        self.response_matrix = pySC_ResponseMatrix.model_validate(
-            cfg.response_matrix._cfg.model_dump()
-        )
+
+        if type(cfg.response_matrix) is str:
+            response_matrix_filename = cfg.response_matrix
+            # assigns self.response_matrix
+            if Path(response_matrix_filename).exists():
+                self.load_response_matrix(response_matrix_filename)
+            else:
+                logger.warning(f"{response_matrix_filename} does not exist.")
+                self.response_matrix = None
+        else:
+            self.response_matrix = pySC_ResponseMatrix.model_validate(
+                cfg.response_matrix._cfg.model_dump()
+            )
+
         self._hcorr: MagnetArray = None
         self._vcorr: MagnetArray = None
         self._hvcorr: MagnetArray = None
@@ -59,6 +71,9 @@ class Orbit(Element):
         gain: float = 1.0,
         plane: Optional[Literal["H", "V"]] = None,
     ):
+        if self.response_matrix is None:
+            raise PyAMLException(f"{self.get_name()} does not have a response_matrix.")
+
         interface = pySCInterface(
             element_holder=self._peer,
             bpm_array_name=self.bpm_array_name,
@@ -130,3 +145,10 @@ class Orbit(Element):
         obj = self.__class__(self._cfg)
         obj._peer = peer
         return obj
+
+    def load_response_matrix(self, filename: str) -> None:
+        path = Path(filename)
+        config_dict = load(str(path.resolve()))
+        rm = Factory.depth_first_build(config_dict, ignore_external=False)
+        self.response_matrix = pySC_ResponseMatrix.model_validate(rm._cfg.model_dump())
+        return None
