@@ -23,10 +23,10 @@ TANGO or EPICS: [pyaml-cs-oa](https://github.com/python-accelerator-middle-layer
 
 ### Installation
 
-Installation instructions for both user and development installation can be found in the [documentation](https://pyaml.readthedocs.io/en/latest/?badge=latest)
+Installation instructions for both user and development installation can be found in the [documentation](https://pyaml.readthedocs.io/en/latest/?badge=latest).
 
 #### Documentation
 
 The documentation is available [here](https://pyaml.readthedocs.io/en/latest/?badge=latest).
 
-In the documentation there is both examples and Jupyter notebooks available for how to use the package.
+In the documentation there are both examples and Jupyter notebooks available for how to use the package.
