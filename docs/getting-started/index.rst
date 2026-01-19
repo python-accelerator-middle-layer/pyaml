@@ -10,4 +10,4 @@ If you are a new user or developer you find instructions here for how to get sta
    installation
    test-examples
    configuration
-   contribute
+   contribute <../notebooks/developper_install_instructions>
