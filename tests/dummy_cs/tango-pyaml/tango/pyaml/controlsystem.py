@@ -24,7 +24,13 @@ class TangoControlSystem(ControlSystem):
         print(f"Creating dummy TangoControlSystem: {cfg.name}")
         self.__DEVICES = {}
 
+    def attach_array(self, devs: list[DeviceAccess]) -> list[DeviceAccess]:
+        return self._attach(devs, True)
+
     def attach(self, devs: list[DeviceAccess]) -> list[DeviceAccess]:
+        return self._attach(devs, False)
+
+    def _attach(self, devs: list[DeviceAccess], is_array: bool) -> list[DeviceAccess]:
         newDevs = []
         for d in devs:
             if d is not None:
@@ -36,6 +42,7 @@ class TangoControlSystem(ControlSystem):
                     # to allow a new attribute name
                     newDev._cfg = copy.copy(d._cfg)
                     newDev._cfg.attribute = full_name
+                    newDev.set_array(is_array)
                     self.__DEVICES[full_name] = newDev
                 newDevs.append(self.__DEVICES[full_name])
             else:

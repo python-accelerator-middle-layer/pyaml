@@ -18,10 +18,10 @@ The code is still under development. The features include among others:
 
 Available packages for bindings:
 
-TANGO: [tango-pyaml](https://github.com/python-accelerator-middle-layer/tango-pyaml)  
+TANGO: [tango-pyaml](https://github.com/python-accelerator-middle-layer/tango-pyaml)
 TANGO or EPICS: [pyaml-cs-oa](https://github.com/python-accelerator-middle-layer/pyaml-cs-oa)
 
-### Installation
+#### Installation
 
 Installation instructions for both user and development installation can be found in the [documentation](https://pyaml.readthedocs.io/en/latest/?badge=latest).
 

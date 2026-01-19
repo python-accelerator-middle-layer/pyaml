@@ -934,7 +934,7 @@ devices:
   vcorr_array_name: VCorr
   name: DEFAULT_ORBIT_CORRECTION
   singular_values: 162
-  response_matrix: ideal_orm_disp.json
+  response_matrix: file:ideal_orm_disp.json
 - type: pyaml.rf.rf_plant
   name: RF
   masterclock:
