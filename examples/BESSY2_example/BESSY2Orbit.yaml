@@ -252,12 +252,13 @@ arrays:
       - BPMZ41D1R
       - BPMZ42D1R
 devices:
-#- type: pyaml.tuning_tools.orbit
-#  bpm_array_name: BPM
-#  hcorr_array_name: HCorr
-#  vcorr_array_name: VCorr
-#  name: DEFAULT_ORBIT_CORRECTION
-#  singular_values: 64
+- type: pyaml.tuning_tools.orbit
+  bpm_array_name: BPM
+  hcorr_array_name: HCorr
+  vcorr_array_name: VCorr
+  name: DEFAULT_ORBIT_CORRECTION
+  singular_values: 16
+  response_matrix: file:ideal_orm.json
 - type: pyaml.rf.rf_plant
   name: RF
   masterclock:
