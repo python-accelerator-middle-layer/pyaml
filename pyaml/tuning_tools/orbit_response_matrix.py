@@ -72,6 +72,19 @@ class OrbitResponseMatrix(object):
                 self.vcorr_array_name
             ).names()
             corrector_names = hcorrector_names + vcorrector_names
+        else:
+            all_hcorrector_names = self.element_holder.get_magnets(
+                self.hcorr_array_name
+            ).names()
+            all_vcorrector_names = self.element_holder.get_magnets(
+                self.vcorr_array_name
+            ).names()
+            hcorrector_names = [
+                corr for corr in corrector_names if corr in all_hcorrector_names
+            ]
+            vcorrector_names = [
+                corr for corr in corrector_names if corr in all_vcorrector_names
+            ]
 
         generator = measure_ORM(
             interface=interface,
