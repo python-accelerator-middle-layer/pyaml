@@ -51,11 +51,14 @@ class OrbitResponseMatrix(object):
         self.corrector_delta = cfg.corrector_delta
         self.latest_measurement = None
 
-    def measure(self, corrector_names: Optional[List[str]] = None):
+    def measure(
+        self, corrector_names: Optional[List[str]] = None, set_wait_time: float = 0
+    ):
         interface = pySCInterface(
             element_holder=self.element_holder,
             bpm_array_name=self.bpm_array_name,
         )
+        interface.set_wait_time = set_wait_time
 
         if corrector_names is None:
             logger.info(
