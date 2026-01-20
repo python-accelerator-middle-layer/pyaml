@@ -87,6 +87,9 @@ class OrbitResponseMatrix(object):
             self.bpm_array_name
         ).names()
         self.latest_measurement = response_data.model_dump()
+        len_h = len(hcorrector_names)
+        len_v = len(vcorrector_names)
+        self.latest_measurement["inputs_plane"] = ["H"] * len_h + ["V"] * len_v
 
     def get(self):
         return self.latest_measurement

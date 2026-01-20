@@ -32,7 +32,7 @@ if sr.design.orbit.response_matrix is None:
         "matrix": orm_data["matrix"],
         "input_names": orm_data["input_names"],
         "output_names": orm_data["output_names"],
-        "rf_response": list(np.zeros(nbBPM).tolist()),
+        "inputs_plane": orm_data["inputs_plane"],
     }
     json.dump(ideal_ORM_data, open("ideal_orm.json", "w"))
     sr.live.orbit.load_response_matrix("ideal_orm.json")
@@ -51,7 +51,8 @@ time.sleep(3)
 
 positions_bc = orbit.get()
 # Correct
-sr.live.orbit.correct()
+sr.live.orbit.correct(plane="H")
+sr.live.orbit.correct(plane="V")
 time.sleep(3)
 positions_ac = orbit.get()
 
