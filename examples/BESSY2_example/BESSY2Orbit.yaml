@@ -1,0 +1,3263 @@
+type: pyaml.accelerator
+machine: sr
+facility: BESSY2
+energy: 1.7e9
+simulators:
+  - type: pyaml.lattice.simulator
+    lattice: bessy2.mat
+    name: design
+controls:
+  - type: pyaml_cs_oa.controlsystem
+    prefix: "pons:"
+    name: live
+data_folder: /data/store
+arrays:
+  - type: pyaml.arrays.magnet
+    name: HCorr
+    elements:
+      - HS4M2D1R
+      - HS1MT1R
+      - HS4M1T1R
+      - HS4M2T1R
+      - HS1MD2R
+      - HS4M1D2R
+      - HS4M2D2R
+      - HS1MT2R
+      - HS4M1T2R
+      - HS4M2T2R
+      - HS1MD3R
+      - HS4M1D3R
+      - HS4M2D3R
+      - HS1MT3R
+      - HS4M1T3R
+      - HS4M2T3R
+      - HS1MD4R
+      - HS4M1D4R
+      - HS4M2D4R
+      - HS1MT4R
+      - HS4M1T4R
+      - HS4M2T4R
+      - HS1MD5R
+      - HS4M1D5R
+      - HS4M2D5R
+      - HS1MT5R
+      - HS4M1T5R
+      - HS4M2T5R
+      - HS1MD6R
+      - HS4M1D6R
+      - HS4M2D6R
+      - HS1MT6R
+      - HS4M1T6R
+      - HS4M2T6R
+      - HS1MD7R
+      - HS4M1D7R
+      - HS4M2D7R
+      - HS1MT7R
+      - HS4M1T7R
+      - HS4M2T7R
+      - HS1MD8R
+      - HS4M1D8R
+      - HS4M2D8R
+      - HS1MT8R
+      - HS4M1T8R
+      - HS4M2T8R
+      - HS1MD1R
+      - HS4M1D1R
+  - type: pyaml.arrays.magnet
+    name: VCorr
+    elements:
+      - VS3M2D1R
+      - VS2M2D1R
+      - VS2M1T1R
+      - VS3M1T1R
+      - VS3M2T1R
+      - VS2M2T1R
+      - VS2M1D2R
+      - VS3M1D2R
+      - VS3M2D2R
+      - VS2M2D2R
+      - VS2M1T2R
+      - VS3M1T2R
+      - VS3M2T2R
+      - VS2M2T2R
+      - VS2M1D3R
+      - VS3M1D3R
+      - VS3M2D3R
+      - VS2M2D3R
+      - VS2M1T3R
+      - VS3M1T3R
+      - VS3M2T3R
+      - VS2M2T3R
+      - VS2M1D4R
+      - VS3M1D4R
+      - VS3M2D4R
+      - VS2M2D4R
+      - VS2M1T4R
+      - VS3M1T4R
+      - VS3M2T4R
+      - VS2M2T4R
+      - VS2M1D5R
+      - VS3M1D5R
+      - VS3M2D5R
+      - VS2M2D5R
+      - VS2M1T5R
+      - VS3M1T5R
+      - VS3M2T5R
+      - VS2M2T5R
+      - VS2M1D6R
+      - VS3M1D6R
+      - VS3M2D6R
+      - VS2M2D6R
+      - VS2M1T6R
+      - VS3M1T6R
+      - VS3M2T6R
+      - VS2M2T6R
+      - VS2M1D7R
+      - VS3M1D7R
+      - VS3M2D7R
+      - VS2M2D7R
+      - VS2M1T7R
+      - VS3M1T7R
+      - VS3M2T7R
+      - VS2M2T7R
+      - VS2M1D8R
+      - VS3M1D8R
+      - VS3M2D8R
+      - VS2M2D8R
+      - VS2M1T8R
+      - VS3M1T8R
+      - VS3M2T8R
+      - VS2M2T8R
+      - VS2M1D1R
+      - VS3M1D1R
+  - type: pyaml.arrays.bpm
+    name: BPM
+    elements:
+      - BPMZ5D1R
+      - BPMZ6D1R
+      - BPMZ7D1R
+      - BPMZ1T1R
+      - BPMZ2T1R
+      - BPMZ3T1R
+      - BPMZ4T1R
+      - BPMZ43T1R
+      - BPMZ5T1R
+      - BPMZ6T1R
+      - BPMZ7T1R
+      - BPMZ1D2R
+      - BPMZ2D2R
+      - BPMZ3D2R
+      - BPMZ4D2R
+      - BPMZ5D2R
+      - BPMZ6D2R
+      - BPMZ7D2R
+      - BPMZ1T2R
+      - BPMZ2T2R
+      - BPMZ3T2R
+      - BPMZ4T2R
+      - BPMZ5T2R
+      - BPMZ6T2R
+      - BPMZ7T2R
+      - BPMZ1D3R
+      - BPMZ2D3R
+      - BPMZ3D3R
+      - BPMZ4D3R
+      - BPMZ5D3R
+      - BPMZ6D3R
+      - BPMZ7D3R
+      - BPMZ1T3R
+      - BPMZ2T3R
+      - BPMZ3T3R
+      - BPMZ4T3R
+      - BPMZ5T3R
+      - BPMZ6T3R
+      - BPMZ7T3R
+      - BPMZ1D4R
+      - BPMZ2D4R
+      - BPMZ3D4R
+      - BPMZ4D4R
+      - BPMZ5D4R
+      - BPMZ6D4R
+      - BPMZ7D4R
+      - BPMZ1T4R
+      - BPMZ2T4R
+      - BPMZ3T4R
+      - BPMZ4T4R
+      - BPMZ5T4R
+      - BPMZ6T4R
+      - BPMZ7T4R
+      - BPMZ1D5R
+      - BPMZ2D5R
+      - BPMZ3D5R
+      - BPMZ4D5R
+      - BPMZ5D5R
+      - BPMZ6D5R
+      - BPMZ7D5R
+      - BPMZ1T5R
+      - BPMZ2T5R
+      - BPMZ3T5R
+      - BPMZ4T5R
+      - BPMZ5T5R
+      - BPMZ6T5R
+      - BPMZ7T5R
+      - BPMZ1D6R
+      - BPMZ2D6R
+      - BPMZ3D6R
+      - BPMZ4D6R
+      - BPMZ41D6R
+      - BPMZ42D6R
+      - BPMZ43D6R
+      - BPMZ44D6R
+      - BPMZ6D6R
+      - BPMZ7D6R
+      - BPMZ1T6R
+      - BPMZ2T6R
+      - BPMZ3T6R
+      - BPMZ4T6R
+      - BPMZ5T6R
+      - BPMZ6T6R
+      - BPMZ7T6R
+      - BPMZ1D7R
+      - BPMZ2D7R
+      - BPMZ3D7R
+      - BPMZ4D7R
+      - BPMZ5D7R
+      - BPMZ6D7R
+      - BPMZ7D7R
+      - BPMZ1T7R
+      - BPMZ2T7R
+      - BPMZ3T7R
+      - BPMZ4T7R
+      - BPMZ5T7R
+      - BPMZ6T7R
+      - BPMZ7T7R
+      - BPMZ1D8R
+      - BPMZ2D8R
+      - BPMZ3D8R
+      - BPMZ4D8R
+      - BPMZ5D8R
+      - BPMZ6D8R
+      - BPMZ7D8R
+      - BPMZ1T8R
+      - BPMZ2T8R
+      - BPMZ3T8R
+      - BPMZ4T8R
+      - BPMZ5T8R
+      - BPMZ6T8R
+      - BPMZ7T8R
+      - BPMZ1D1R
+      - BPMZ2D1R
+      - BPMZ3D1R
+      - BPMZ4D1R
+      - BPMZ41D1R
+      - BPMZ42D1R
+devices:
+- type: pyaml.tuning_tools.orbit
+  bpm_array_name: BPM
+  hcorr_array_name: HCorr
+  vcorr_array_name: VCorr
+  name: DEFAULT_ORBIT_CORRECTION
+  singular_values: 16
+  response_matrix: file:ideal_orm.json
+- type: pyaml.rf.rf_plant
+  name: RF
+  masterclock:
+    type: pyaml_cs_oa.epicsW
+    write_pvname: MCLKHX251C:freq
+    unit: KHz
+- type: pyaml.magnet.hcorrector
+  name: HS4M2D1R
+  lattice_names: S4M2D1R@0
+  model:
+    type: pyaml.magnet.linear_model
+    calibration_factor: -0.0044502
+    unit: 1/m
+    powerconverter:
+      type: pyaml_cs_oa.epicsRW
+      read_pvname: HS4P2D1R:rdbk
+      write_pvname: HS4P2D1R:set
+      unit: A
+- type: pyaml.magnet.hcorrector
+  name: HS1MT1R
+  lattice_names: S1MT1R@0
+  model:
+    type: pyaml.magnet.linear_model
+    calibration_factor: -0.00553438
+    unit: 1/m
+    powerconverter:
+      type: pyaml_cs_oa.epicsRW
+      read_pvname: HS1PT1R:rdbk
+      write_pvname: HS1PT1R:set
+      unit: A
+- type: pyaml.magnet.hcorrector
+  name: HS4M1T1R
+  lattice_names: S4M1T1R@0
+  model:
+    type: pyaml.magnet.linear_model
+    calibration_factor: -0.0044502
+    unit: 1/m
+    powerconverter:
+      type: pyaml_cs_oa.epicsRW
+      read_pvname: HS4P1T1R:rdbk
+      write_pvname: HS4P1T1R:set
+      unit: A
+- type: pyaml.magnet.hcorrector
+  name: HS4M2T1R
+  lattice_names: S4M2T1R@0
+  model:
+    type: pyaml.magnet.linear_model
+    calibration_factor: -0.0044502
+    unit: 1/m
+    powerconverter:
+      type: pyaml_cs_oa.epicsRW
+      read_pvname: HS4P2T1R:rdbk
+      write_pvname: HS4P2T1R:set
+      unit: A
+- type: pyaml.magnet.hcorrector
+  name: HS1MD2R
+  lattice_names: S1MD2R@0
+  model:
+    type: pyaml.magnet.linear_model
+    calibration_factor: -0.00553438
+    unit: 1/m
+    powerconverter:
+      type: pyaml_cs_oa.epicsRW
+      read_pvname: HS1PD2R:rdbk
+      write_pvname: HS1PD2R:set
+      unit: A
+- type: pyaml.magnet.hcorrector
+  name: HS4M1D2R
+  lattice_names: S4M1D2R@0
+  model:
+    type: pyaml.magnet.linear_model
+    calibration_factor: -0.0044502
+    unit: 1/m
+    powerconverter:
+      type: pyaml_cs_oa.epicsRW
+      read_pvname: HS4P1D2R:rdbk
+      write_pvname: HS4P1D2R:set
+      unit: A
+- type: pyaml.magnet.hcorrector
+  name: HS4M2D2R
+  lattice_names: S4M2D2R@0
+  model:
+    type: pyaml.magnet.linear_model
+    calibration_factor: -0.0044502
+    unit: 1/m
+    powerconverter:
+      type: pyaml_cs_oa.epicsRW
+      read_pvname: HS4P2D2R:rdbk
+      write_pvname: HS4P2D2R:set
+      unit: A
+- type: pyaml.magnet.hcorrector
+  name: HS1MT2R
+  lattice_names: S1MT2R@0
+  model:
+    type: pyaml.magnet.linear_model
+    calibration_factor: -0.00553438
+    unit: 1/m
+    powerconverter:
+      type: pyaml_cs_oa.epicsRW
+      read_pvname: HS1PT2R:rdbk
+      write_pvname: HS1PT2R:set
+      unit: A
+- type: pyaml.magnet.hcorrector
+  name: HS4M1T2R
+  lattice_names: S4M1T2R@0
+  model:
+    type: pyaml.magnet.linear_model
+    calibration_factor: -0.0044502
+    unit: 1/m
+    powerconverter:
+      type: pyaml_cs_oa.epicsRW
+      read_pvname: HS4P1T2R:rdbk
+      write_pvname: HS4P1T2R:set
+      unit: A
+- type: pyaml.magnet.hcorrector
+  name: HS4M2T2R
+  lattice_names: S4M2T2R@0
+  model:
+    type: pyaml.magnet.linear_model
+    calibration_factor: -0.0044502
+    unit: 1/m
+    powerconverter:
+      type: pyaml_cs_oa.epicsRW
+      read_pvname: HS4P2T2R:rdbk
+      write_pvname: HS4P2T2R:set
+      unit: A
+- type: pyaml.magnet.hcorrector
+  name: HS1MD3R
+  lattice_names: S1MD3R@0
+  model:
+    type: pyaml.magnet.linear_model
+    calibration_factor: -0.00553438
+    unit: 1/m
+    powerconverter:
+      type: pyaml_cs_oa.epicsRW
+      read_pvname: HS1PD3R:rdbk
+      write_pvname: HS1PD3R:set
+      unit: A
+- type: pyaml.magnet.hcorrector
+  name: HS4M1D3R
+  lattice_names: S4M1D3R@0
+  model:
+    type: pyaml.magnet.linear_model
+    calibration_factor: -0.0044502
+    unit: 1/m
+    powerconverter:
+      type: pyaml_cs_oa.epicsRW
+      read_pvname: HS4P1D3R:rdbk
+      write_pvname: HS4P1D3R:set
+      unit: A
+- type: pyaml.magnet.hcorrector
+  name: HS4M2D3R
+  lattice_names: S4M2D3R@0
+  model:
+    type: pyaml.magnet.linear_model
+    calibration_factor: -0.0044502
+    unit: 1/m
+    powerconverter:
+      type: pyaml_cs_oa.epicsRW
+      read_pvname: HS4P2D3R:rdbk
+      write_pvname: HS4P2D3R:set
+      unit: A
+- type: pyaml.magnet.hcorrector
+  name: HS1MT3R
+  lattice_names: S1MT3R@0
+  model:
+    type: pyaml.magnet.linear_model
+    calibration_factor: -0.00553438
+    unit: 1/m
+    powerconverter:
+      type: pyaml_cs_oa.epicsRW
+      read_pvname: HS1PT3R:rdbk
+      write_pvname: HS1PT3R:set
+      unit: A
+- type: pyaml.magnet.hcorrector
+  name: HS4M1T3R
+  lattice_names: S4M1T3R@0
+  model:
+    type: pyaml.magnet.linear_model
+    calibration_factor: -0.0044502
+    unit: 1/m
+    powerconverter:
+      type: pyaml_cs_oa.epicsRW
+      read_pvname: HS4P1T3R:rdbk
+      write_pvname: HS4P1T3R:set
+      unit: A
+- type: pyaml.magnet.hcorrector
+  name: HS4M2T3R
+  lattice_names: S4M2T3R@0
+  model:
+    type: pyaml.magnet.linear_model
+    calibration_factor: -0.0044502
+    unit: 1/m
+    powerconverter:
+      type: pyaml_cs_oa.epicsRW
+      read_pvname: HS4P2T3R:rdbk
+      write_pvname: HS4P2T3R:set
+      unit: A
+- type: pyaml.magnet.hcorrector
+  name: HS1MD4R
+  lattice_names: S1MD4R@0
+  model:
+    type: pyaml.magnet.linear_model
+    calibration_factor: -0.00553438
+    unit: 1/m
+    powerconverter:
+      type: pyaml_cs_oa.epicsRW
+      read_pvname: HS1PD4R:rdbk
+      write_pvname: HS1PD4R:set
+      unit: A
+- type: pyaml.magnet.hcorrector
+  name: HS4M1D4R
+  lattice_names: S4M1D4R@0
+  model:
+    type: pyaml.magnet.linear_model
+    calibration_factor: -0.0044502
+    unit: 1/m
+    powerconverter:
+      type: pyaml_cs_oa.epicsRW
+      read_pvname: HS4P1D4R:rdbk
+      write_pvname: HS4P1D4R:set
+      unit: A
+- type: pyaml.magnet.hcorrector
+  name: HS4M2D4R
+  lattice_names: S4M2D4R@0
+  model:
+    type: pyaml.magnet.linear_model
+    calibration_factor: -0.0044502
+    unit: 1/m
+    powerconverter:
+      type: pyaml_cs_oa.epicsRW
+      read_pvname: HS4P2D4R:rdbk
+      write_pvname: HS4P2D4R:set
+      unit: A
+- type: pyaml.magnet.hcorrector
+  name: HS1MT4R
+  lattice_names: S1MT4R@0
+  model:
+    type: pyaml.magnet.linear_model
+    calibration_factor: -0.00553438
+    unit: 1/m
+    powerconverter:
+      type: pyaml_cs_oa.epicsRW
+      read_pvname: HS1PT4R:rdbk
+      write_pvname: HS1PT4R:set
+      unit: A
+- type: pyaml.magnet.hcorrector
+  name: HS4M1T4R
+  lattice_names: S4M1T4R@0
+  model:
+    type: pyaml.magnet.linear_model
+    calibration_factor: -0.0044502
+    unit: 1/m
+    powerconverter:
+      type: pyaml_cs_oa.epicsRW
+      read_pvname: HS4P1T4R:rdbk
+      write_pvname: HS4P1T4R:set
+      unit: A
+- type: pyaml.magnet.hcorrector
+  name: HS4M2T4R
+  lattice_names: S4M2T4R@0
+  model:
+    type: pyaml.magnet.linear_model
+    calibration_factor: -0.0044502
+    unit: 1/m
+    powerconverter:
+      type: pyaml_cs_oa.epicsRW
+      read_pvname: HS4P2T4R:rdbk
+      write_pvname: HS4P2T4R:set
+      unit: A
+- type: pyaml.magnet.hcorrector
+  name: HS1MD5R
+  lattice_names: S1MD5R@0
+  model:
+    type: pyaml.magnet.linear_model
+    calibration_factor: -0.00553438
+    unit: 1/m
+    powerconverter:
+      type: pyaml_cs_oa.epicsRW
+      read_pvname: HS1PD5R:rdbk
+      write_pvname: HS1PD5R:set
+      unit: A
+- type: pyaml.magnet.hcorrector
+  name: HS4M1D5R
+  lattice_names: S4M1D5R@0
+  model:
+    type: pyaml.magnet.linear_model
+    calibration_factor: -0.0044502
+    unit: 1/m
+    powerconverter:
+      type: pyaml_cs_oa.epicsRW
+      read_pvname: HS4P1D5R:rdbk
+      write_pvname: HS4P1D5R:set
+      unit: A
+- type: pyaml.magnet.hcorrector
+  name: HS4M2D5R
+  lattice_names: S4M2D5R@0
+  model:
+    type: pyaml.magnet.linear_model
+    calibration_factor: -0.0044502
+    unit: 1/m
+    powerconverter:
+      type: pyaml_cs_oa.epicsRW
+      read_pvname: HS4P2D5R:rdbk
+      write_pvname: HS4P2D5R:set
+      unit: A
+- type: pyaml.magnet.hcorrector
+  name: HS1MT5R
+  lattice_names: S1MT5R@0
+  model:
+    type: pyaml.magnet.linear_model
+    calibration_factor: -0.00553438
+    unit: 1/m
+    powerconverter:
+      type: pyaml_cs_oa.epicsRW
+      read_pvname: HS1PT5R:rdbk
+      write_pvname: HS1PT5R:set
+      unit: A
+- type: pyaml.magnet.hcorrector
+  name: HS4M1T5R
+  lattice_names: S4M1T5R@0
+  model:
+    type: pyaml.magnet.linear_model
+    calibration_factor: -0.0044502
+    unit: 1/m
+    powerconverter:
+      type: pyaml_cs_oa.epicsRW
+      read_pvname: HS4P1T5R:rdbk
+      write_pvname: HS4P1T5R:set
+      unit: A
+- type: pyaml.magnet.hcorrector
+  name: HS4M2T5R
+  lattice_names: S4M2T5R@0
+  model:
+    type: pyaml.magnet.linear_model
+    calibration_factor: -0.0044502
+    unit: 1/m
+    powerconverter:
+      type: pyaml_cs_oa.epicsRW
+      read_pvname: HS4P2T5R:rdbk
+      write_pvname: HS4P2T5R:set
+      unit: A
+- type: pyaml.magnet.hcorrector
+  name: HS1MD6R
+  lattice_names: S1MD6R@0
+  model:
+    type: pyaml.magnet.linear_model
+    calibration_factor: -0.00553438
+    unit: 1/m
+    powerconverter:
+      type: pyaml_cs_oa.epicsRW
+      read_pvname: HS1PD6R:rdbk
+      write_pvname: HS1PD6R:set
+      unit: A
+- type: pyaml.magnet.hcorrector
+  name: HS4M1D6R
+  lattice_names: S4M1D6R@0
+  model:
+    type: pyaml.magnet.linear_model
+    calibration_factor: -0.0044502
+    unit: 1/m
+    powerconverter:
+      type: pyaml_cs_oa.epicsRW
+      read_pvname: HS4P1D6R:rdbk
+      write_pvname: HS4P1D6R:set
+      unit: A
+- type: pyaml.magnet.hcorrector
+  name: HS4M2D6R
+  lattice_names: S4M2D6R@0
+  model:
+    type: pyaml.magnet.linear_model
+    calibration_factor: -0.0044502
+    unit: 1/m
+    powerconverter:
+      type: pyaml_cs_oa.epicsRW
+      read_pvname: HS4P2D6R:rdbk
+      write_pvname: HS4P2D6R:set
+      unit: A
+- type: pyaml.magnet.hcorrector
+  name: HS1MT6R
+  lattice_names: S1MT6R@0
+  model:
+    type: pyaml.magnet.linear_model
+    calibration_factor: -0.00553438
+    unit: 1/m
+    powerconverter:
+      type: pyaml_cs_oa.epicsRW
+      read_pvname: HS1PT6R:rdbk
+      write_pvname: HS1PT6R:set
+      unit: A
+- type: pyaml.magnet.hcorrector
+  name: HS4M1T6R
+  lattice_names: S4M1T6R@0
+  model:
+    type: pyaml.magnet.linear_model
+    calibration_factor: -0.0044502
+    unit: 1/m
+    powerconverter:
+      type: pyaml_cs_oa.epicsRW
+      read_pvname: HS4P1T6R:rdbk
+      write_pvname: HS4P1T6R:set
+      unit: A
+- type: pyaml.magnet.hcorrector
+  name: HS4M2T6R
+  lattice_names: S4M2T6R@0
+  model:
+    type: pyaml.magnet.linear_model
+    calibration_factor: -0.0044502
+    unit: 1/m
+    powerconverter:
+      type: pyaml_cs_oa.epicsRW
+      read_pvname: HS4P2T6R:rdbk
+      write_pvname: HS4P2T6R:set
+      unit: A
+- type: pyaml.magnet.hcorrector
+  name: HS1MD7R
+  lattice_names: S1MD7R@0
+  model:
+    type: pyaml.magnet.linear_model
+    calibration_factor: -0.00553438
+    unit: 1/m
+    powerconverter:
+      type: pyaml_cs_oa.epicsRW
+      read_pvname: HS1PD7R:rdbk
+      write_pvname: HS1PD7R:set
+      unit: A
+- type: pyaml.magnet.hcorrector
+  name: HS4M1D7R
+  lattice_names: S4M1D7R@0
+  model:
+    type: pyaml.magnet.linear_model
+    calibration_factor: -0.0044502
+    unit: 1/m
+    powerconverter:
+      type: pyaml_cs_oa.epicsRW
+      read_pvname: HS4P1D7R:rdbk
+      write_pvname: HS4P1D7R:set
+      unit: A
+- type: pyaml.magnet.hcorrector
+  name: HS4M2D7R
+  lattice_names: S4M2D7R@0
+  model:
+    type: pyaml.magnet.linear_model
+    calibration_factor: -0.0044502
+    unit: 1/m
+    powerconverter:
+      type: pyaml_cs_oa.epicsRW
+      read_pvname: HS4P2D7R:rdbk
+      write_pvname: HS4P2D7R:set
+      unit: A
+- type: pyaml.magnet.hcorrector
+  name: HS1MT7R
+  lattice_names: S1MT7R@0
+  model:
+    type: pyaml.magnet.linear_model
+    calibration_factor: -0.00553438
+    unit: 1/m
+    powerconverter:
+      type: pyaml_cs_oa.epicsRW
+      read_pvname: HS1PT7R:rdbk
+      write_pvname: HS1PT7R:set
+      unit: A
+- type: pyaml.magnet.hcorrector
+  name: HS4M1T7R
+  lattice_names: S4M1T7R@0
+  model:
+    type: pyaml.magnet.linear_model
+    calibration_factor: -0.0044502
+    unit: 1/m
+    powerconverter:
+      type: pyaml_cs_oa.epicsRW
+      read_pvname: HS4P1T7R:rdbk
+      write_pvname: HS4P1T7R:set
+      unit: A
+- type: pyaml.magnet.hcorrector
+  name: HS4M2T7R
+  lattice_names: S4M2T7R@0
+  model:
+    type: pyaml.magnet.linear_model
+    calibration_factor: -0.0044502
+    unit: 1/m
+    powerconverter:
+      type: pyaml_cs_oa.epicsRW
+      read_pvname: HS4P2T7R:rdbk
+      write_pvname: HS4P2T7R:set
+      unit: A
+- type: pyaml.magnet.hcorrector
+  name: HS1MD8R
+  lattice_names: S1MD8R@0
+  model:
+    type: pyaml.magnet.linear_model
+    calibration_factor: -0.00553438
+    unit: 1/m
+    powerconverter:
+      type: pyaml_cs_oa.epicsRW
+      read_pvname: HS1PD8R:rdbk
+      write_pvname: HS1PD8R:set
+      unit: A
+- type: pyaml.magnet.hcorrector
+  name: HS4M1D8R
+  lattice_names: S4M1D8R@0
+  model:
+    type: pyaml.magnet.linear_model
+    calibration_factor: -0.0044502
+    unit: 1/m
+    powerconverter:
+      type: pyaml_cs_oa.epicsRW
+      read_pvname: HS4P1D8R:rdbk
+      write_pvname: HS4P1D8R:set
+      unit: A
+- type: pyaml.magnet.hcorrector
+  name: HS4M2D8R
+  lattice_names: S4M2D8R@0
+  model:
+    type: pyaml.magnet.linear_model
+    calibration_factor: -0.0044502
+    unit: 1/m
+    powerconverter:
+      type: pyaml_cs_oa.epicsRW
+      read_pvname: HS4P2D8R:rdbk
+      write_pvname: HS4P2D8R:set
+      unit: A
+- type: pyaml.magnet.hcorrector
+  name: HS1MT8R
+  lattice_names: S1MT8R@0
+  model:
+    type: pyaml.magnet.linear_model
+    calibration_factor: -0.00553438
+    unit: 1/m
+    powerconverter:
+      type: pyaml_cs_oa.epicsRW
+      read_pvname: HS1PT8R:rdbk
+      write_pvname: HS1PT8R:set
+      unit: A
+- type: pyaml.magnet.hcorrector
+  name: HS4M1T8R
+  lattice_names: S4M1T8R@0
+  model:
+    type: pyaml.magnet.linear_model
+    calibration_factor: -0.0044502
+    unit: 1/m
+    powerconverter:
+      type: pyaml_cs_oa.epicsRW
+      read_pvname: HS4P1T8R:rdbk
+      write_pvname: HS4P1T8R:set
+      unit: A
+- type: pyaml.magnet.hcorrector
+  name: HS4M2T8R
+  lattice_names: S4M2T8R@0
+  model:
+    type: pyaml.magnet.linear_model
+    calibration_factor: -0.0044502
+    unit: 1/m
+    powerconverter:
+      type: pyaml_cs_oa.epicsRW
+      read_pvname: HS4P2T8R:rdbk
+      write_pvname: HS4P2T8R:set
+      unit: A
+- type: pyaml.magnet.hcorrector
+  name: HS1MD1R
+  lattice_names: S1MD1R@0
+  model:
+    type: pyaml.magnet.linear_model
+    calibration_factor: -0.00553438
+    unit: 1/m
+    powerconverter:
+      type: pyaml_cs_oa.epicsRW
+      read_pvname: HS1PD1R:rdbk
+      write_pvname: HS1PD1R:set
+      unit: A
+- type: pyaml.magnet.hcorrector
+  name: HS4M1D1R
+  lattice_names: S4M1D1R@0
+  model:
+    type: pyaml.magnet.linear_model
+    calibration_factor: -0.0044502
+    unit: 1/m
+    powerconverter:
+      type: pyaml_cs_oa.epicsRW
+      read_pvname: HS4P1D1R:rdbk
+      write_pvname: HS4P1D1R:set
+      unit: A
+- type: pyaml.magnet.vcorrector
+  name: VS3M2D1R
+  lattice_names: S3M2D1R@0
+  model:
+    type: pyaml.magnet.linear_model
+    calibration_factor: 0.00297607
+    unit: 1/m
+    powerconverter:
+      type: pyaml_cs_oa.epicsRW
+      read_pvname: VS3P2D1R:rdbk
+      write_pvname: VS3P2D1R:set
+      unit: A
+- type: pyaml.magnet.vcorrector
+  name: VS2M2D1R
+  lattice_names: S2M2D1R@0
+  model:
+    type: pyaml.magnet.linear_model
+    calibration_factor: 0.00297607
+    unit: 1/m
+    powerconverter:
+      type: pyaml_cs_oa.epicsRW
+      read_pvname: VS2P2D1R:rdbk
+      write_pvname: VS2P2D1R:set
+      unit: A
+- type: pyaml.magnet.vcorrector
+  name: VS2M1T1R
+  lattice_names: S2M1T1R@0
+  model:
+    type: pyaml.magnet.linear_model
+    calibration_factor: 0.00297607
+    unit: 1/m
+    powerconverter:
+      type: pyaml_cs_oa.epicsRW
+      read_pvname: VS2P1T1R:rdbk
+      write_pvname: VS2P1T1R:set
+      unit: A
+- type: pyaml.magnet.vcorrector
+  name: VS3M1T1R
+  lattice_names: S3M1T1R@0
+  model:
+    type: pyaml.magnet.linear_model
+    calibration_factor: 0.00297607
+    unit: 1/m
+    powerconverter:
+      type: pyaml_cs_oa.epicsRW
+      read_pvname: VS3P1T1R:rdbk
+      write_pvname: VS3P1T1R:set
+      unit: A
+- type: pyaml.magnet.vcorrector
+  name: VS3M2T1R
+  lattice_names: S3M2T1R@0
+  model:
+    type: pyaml.magnet.linear_model
+    calibration_factor: 0.00297607
+    unit: 1/m
+    powerconverter:
+      type: pyaml_cs_oa.epicsRW
+      read_pvname: VS3P2T1R:rdbk
+      write_pvname: VS3P2T1R:set
+      unit: A
+- type: pyaml.magnet.vcorrector
+  name: VS2M2T1R
+  lattice_names: S2M2T1R@0
+  model:
+    type: pyaml.magnet.linear_model
+    calibration_factor: 0.00297607
+    unit: 1/m
+    powerconverter:
+      type: pyaml_cs_oa.epicsRW
+      read_pvname: VS2P2T1R:rdbk
+      write_pvname: VS2P2T1R:set
+      unit: A
+- type: pyaml.magnet.vcorrector
+  name: VS2M1D2R
+  lattice_names: S2M1D2R@0
+  model:
+    type: pyaml.magnet.linear_model
+    calibration_factor: 0.00297607
+    unit: 1/m
+    powerconverter:
+      type: pyaml_cs_oa.epicsRW
+      read_pvname: VS2P1D2R:rdbk
+      write_pvname: VS2P1D2R:set
+      unit: A
+- type: pyaml.magnet.vcorrector
+  name: VS3M1D2R
+  lattice_names: S3M1D2R@0
+  model:
+    type: pyaml.magnet.linear_model
+    calibration_factor: 0.00297607
+    unit: 1/m
+    powerconverter:
+      type: pyaml_cs_oa.epicsRW
+      read_pvname: VS3P1D2R:rdbk
+      write_pvname: VS3P1D2R:set
+      unit: A
+- type: pyaml.magnet.vcorrector
+  name: VS3M2D2R
+  lattice_names: S3M2D2R@0
+  model:
+    type: pyaml.magnet.linear_model
+    calibration_factor: 0.00297607
+    unit: 1/m
+    powerconverter:
+      type: pyaml_cs_oa.epicsRW
+      read_pvname: VS3P2D2R:rdbk
+      write_pvname: VS3P2D2R:set
+      unit: A
+- type: pyaml.magnet.vcorrector
+  name: VS2M2D2R
+  lattice_names: S2M2D2R@0
+  model:
+    type: pyaml.magnet.linear_model
+    calibration_factor: 0.00297607
+    unit: 1/m
+    powerconverter:
+      type: pyaml_cs_oa.epicsRW
+      read_pvname: VS2P2D2R:rdbk
+      write_pvname: VS2P2D2R:set
+      unit: A
+- type: pyaml.magnet.vcorrector
+  name: VS2M1T2R
+  lattice_names: S2M1T2R@0
+  model:
+    type: pyaml.magnet.linear_model
+    calibration_factor: 0.00297607
+    unit: 1/m
+    powerconverter:
+      type: pyaml_cs_oa.epicsRW
+      read_pvname: VS2P1T2R:rdbk
+      write_pvname: VS2P1T2R:set
+      unit: A
+- type: pyaml.magnet.vcorrector
+  name: VS3M1T2R
+  lattice_names: S3M1T2R@0
+  model:
+    type: pyaml.magnet.linear_model
+    calibration_factor: 0.00297607
+    unit: 1/m
+    powerconverter:
+      type: pyaml_cs_oa.epicsRW
+      read_pvname: VS3P1T2R:rdbk
+      write_pvname: VS3P1T2R:set
+      unit: A
+- type: pyaml.magnet.vcorrector
+  name: VS3M2T2R
+  lattice_names: S3M2T2R@0
+  model:
+    type: pyaml.magnet.linear_model
+    calibration_factor: 0.00297607
+    unit: 1/m
+    powerconverter:
+      type: pyaml_cs_oa.epicsRW
+      read_pvname: VS3P2T2R:rdbk
+      write_pvname: VS3P2T2R:set
+      unit: A
+- type: pyaml.magnet.vcorrector
+  name: VS2M2T2R
+  lattice_names: S2M2T2R@0
+  model:
+    type: pyaml.magnet.linear_model
+    calibration_factor: 0.00297607
+    unit: 1/m
+    powerconverter:
+      type: pyaml_cs_oa.epicsRW
+      read_pvname: VS2P2T2R:rdbk
+      write_pvname: VS2P2T2R:set
+      unit: A
+- type: pyaml.magnet.vcorrector
+  name: VS2M1D3R
+  lattice_names: S2M1D3R@0
+  model:
+    type: pyaml.magnet.linear_model
+    calibration_factor: 0.00297607
+    unit: 1/m
+    powerconverter:
+      type: pyaml_cs_oa.epicsRW
+      read_pvname: VS2P1D3R:rdbk
+      write_pvname: VS2P1D3R:set
+      unit: A
+- type: pyaml.magnet.vcorrector
+  name: VS3M1D3R
+  lattice_names: S3M1D3R@0
+  model:
+    type: pyaml.magnet.linear_model
+    calibration_factor: 0.00297607
+    unit: 1/m
+    powerconverter:
+      type: pyaml_cs_oa.epicsRW
+      read_pvname: VS3P1D3R:rdbk
+      write_pvname: VS3P1D3R:set
+      unit: A
+- type: pyaml.magnet.vcorrector
+  name: VS3M2D3R
+  lattice_names: S3M2D3R@0
+  model:
+    type: pyaml.magnet.linear_model
+    calibration_factor: 0.00297607
+    unit: 1/m
+    powerconverter:
+      type: pyaml_cs_oa.epicsRW
+      read_pvname: VS3P2D3R:rdbk
+      write_pvname: VS3P2D3R:set
+      unit: A
+- type: pyaml.magnet.vcorrector
+  name: VS2M2D3R
+  lattice_names: S2M2D3R@0
+  model:
+    type: pyaml.magnet.linear_model
+    calibration_factor: 0.00297607
+    unit: 1/m
+    powerconverter:
+      type: pyaml_cs_oa.epicsRW
+      read_pvname: VS2P2D3R:rdbk
+      write_pvname: VS2P2D3R:set
+      unit: A
+- type: pyaml.magnet.vcorrector
+  name: VS2M1T3R
+  lattice_names: S2M1T3R@0
+  model:
+    type: pyaml.magnet.linear_model
+    calibration_factor: 0.00297607
+    unit: 1/m
+    powerconverter:
+      type: pyaml_cs_oa.epicsRW
+      read_pvname: VS2P1T3R:rdbk
+      write_pvname: VS2P1T3R:set
+      unit: A
+- type: pyaml.magnet.vcorrector
+  name: VS3M1T3R
+  lattice_names: S3M1T3R@0
+  model:
+    type: pyaml.magnet.linear_model
+    calibration_factor: 0.00297607
+    unit: 1/m
+    powerconverter:
+      type: pyaml_cs_oa.epicsRW
+      read_pvname: VS3P1T3R:rdbk
+      write_pvname: VS3P1T3R:set
+      unit: A
+- type: pyaml.magnet.vcorrector
+  name: VS3M2T3R
+  lattice_names: S3M2T3R@0
+  model:
+    type: pyaml.magnet.linear_model
+    calibration_factor: 0.00297607
+    unit: 1/m
+    powerconverter:
+      type: pyaml_cs_oa.epicsRW
+      read_pvname: VS3P2T3R:rdbk
+      write_pvname: VS3P2T3R:set
+      unit: A
+- type: pyaml.magnet.vcorrector
+  name: VS2M2T3R
+  lattice_names: S2M2T3R@0
+  model:
+    type: pyaml.magnet.linear_model
+    calibration_factor: 0.00297607
+    unit: 1/m
+    powerconverter:
+      type: pyaml_cs_oa.epicsRW
+      read_pvname: VS2P2T3R:rdbk
+      write_pvname: VS2P2T3R:set
+      unit: A
+- type: pyaml.magnet.vcorrector
+  name: VS2M1D4R
+  lattice_names: S2M1D4R@0
+  model:
+    type: pyaml.magnet.linear_model
+    calibration_factor: 0.00297607
+    unit: 1/m
+    powerconverter:
+      type: pyaml_cs_oa.epicsRW
+      read_pvname: VS2P1D4R:rdbk
+      write_pvname: VS2P1D4R:set
+      unit: A
+- type: pyaml.magnet.vcorrector
+  name: VS3M1D4R
+  lattice_names: S3M1D4R@0
+  model:
+    type: pyaml.magnet.linear_model
+    calibration_factor: 0.00297607
+    unit: 1/m
+    powerconverter:
+      type: pyaml_cs_oa.epicsRW
+      read_pvname: VS3P1D4R:rdbk
+      write_pvname: VS3P1D4R:set
+      unit: A
+- type: pyaml.magnet.vcorrector
+  name: VS3M2D4R
+  lattice_names: S3M2D4R@0
+  model:
+    type: pyaml.magnet.linear_model
+    calibration_factor: 0.00297607
+    unit: 1/m
+    powerconverter:
+      type: pyaml_cs_oa.epicsRW
+      read_pvname: VS3P2D4R:rdbk
+      write_pvname: VS3P2D4R:set
+      unit: A
+- type: pyaml.magnet.vcorrector
+  name: VS2M2D4R
+  lattice_names: S2M2D4R@0
+  model:
+    type: pyaml.magnet.linear_model
+    calibration_factor: 0.00297607
+    unit: 1/m
+    powerconverter:
+      type: pyaml_cs_oa.epicsRW
+      read_pvname: VS2P2D4R:rdbk
+      write_pvname: VS2P2D4R:set
+      unit: A
+- type: pyaml.magnet.vcorrector
+  name: VS2M1T4R
+  lattice_names: S2M1T4R@0
+  model:
+    type: pyaml.magnet.linear_model
+    calibration_factor: 0.00297607
+    unit: 1/m
+    powerconverter:
+      type: pyaml_cs_oa.epicsRW
+      read_pvname: VS2P1T4R:rdbk
+      write_pvname: VS2P1T4R:set
+      unit: A
+- type: pyaml.magnet.vcorrector
+  name: VS3M1T4R
+  lattice_names: S3M1T4R@0
+  model:
+    type: pyaml.magnet.linear_model
+    calibration_factor: 0.00297607
+    unit: 1/m
+    powerconverter:
+      type: pyaml_cs_oa.epicsRW
+      read_pvname: VS3P1T4R:rdbk
+      write_pvname: VS3P1T4R:set
+      unit: A
+- type: pyaml.magnet.vcorrector
+  name: VS3M2T4R
+  lattice_names: S3M2T4R@0
+  model:
+    type: pyaml.magnet.linear_model
+    calibration_factor: 0.00297607
+    unit: 1/m
+    powerconverter:
+      type: pyaml_cs_oa.epicsRW
+      read_pvname: VS3P2T4R:rdbk
+      write_pvname: VS3P2T4R:set
+      unit: A
+- type: pyaml.magnet.vcorrector
+  name: VS2M2T4R
+  lattice_names: S2M2T4R@0
+  model:
+    type: pyaml.magnet.linear_model
+    calibration_factor: 0.00297607
+    unit: 1/m
+    powerconverter:
+      type: pyaml_cs_oa.epicsRW
+      read_pvname: VS2P2T4R:rdbk
+      write_pvname: VS2P2T4R:set
+      unit: A
+- type: pyaml.magnet.vcorrector
+  name: VS2M1D5R
+  lattice_names: S2M1D5R@0
+  model:
+    type: pyaml.magnet.linear_model
+    calibration_factor: 0.00297607
+    unit: 1/m
+    powerconverter:
+      type: pyaml_cs_oa.epicsRW
+      read_pvname: VS2P1D5R:rdbk
+      write_pvname: VS2P1D5R:set
+      unit: A
+- type: pyaml.magnet.vcorrector
+  name: VS3M1D5R
+  lattice_names: S3M1D5R@0
+  model:
+    type: pyaml.magnet.linear_model
+    calibration_factor: 0.00297607
+    unit: 1/m
+    powerconverter:
+      type: pyaml_cs_oa.epicsRW
+      read_pvname: VS3P1D5R:rdbk
+      write_pvname: VS3P1D5R:set
+      unit: A
+- type: pyaml.magnet.vcorrector
+  name: VS3M2D5R
+  lattice_names: S3M2D5R@0
+  model:
+    type: pyaml.magnet.linear_model
+    calibration_factor: 0.00297607
+    unit: 1/m
+    powerconverter:
+      type: pyaml_cs_oa.epicsRW
+      read_pvname: VS3P2D5R:rdbk
+      write_pvname: VS3P2D5R:set
+      unit: A
+- type: pyaml.magnet.vcorrector
+  name: VS2M2D5R
+  lattice_names: S2M2D5R@0
+  model:
+    type: pyaml.magnet.linear_model
+    calibration_factor: 0.00297607
+    unit: 1/m
+    powerconverter:
+      type: pyaml_cs_oa.epicsRW
+      read_pvname: VS2P2D5R:rdbk
+      write_pvname: VS2P2D5R:set
+      unit: A
+- type: pyaml.magnet.vcorrector
+  name: VS2M1T5R
+  lattice_names: S2M1T5R@0
+  model:
+    type: pyaml.magnet.linear_model
+    calibration_factor: 0.00297607
+    unit: 1/m
+    powerconverter:
+      type: pyaml_cs_oa.epicsRW
+      read_pvname: VS2P1T5R:rdbk
+      write_pvname: VS2P1T5R:set
+      unit: A
+- type: pyaml.magnet.vcorrector
+  name: VS3M1T5R
+  lattice_names: S3M1T5R@0
+  model:
+    type: pyaml.magnet.linear_model
+    calibration_factor: 0.00297607
+    unit: 1/m
+    powerconverter:
+      type: pyaml_cs_oa.epicsRW
+      read_pvname: VS3P1T5R:rdbk
+      write_pvname: VS3P1T5R:set
+      unit: A
+- type: pyaml.magnet.vcorrector
+  name: VS3M2T5R
+  lattice_names: S3M2T5R@0
+  model:
+    type: pyaml.magnet.linear_model
+    calibration_factor: 0.00297607
+    unit: 1/m
+    powerconverter:
+      type: pyaml_cs_oa.epicsRW
+      read_pvname: VS3P2T5R:rdbk
+      write_pvname: VS3P2T5R:set
+      unit: A
+- type: pyaml.magnet.vcorrector
+  name: VS2M2T5R
+  lattice_names: S2M2T5R@0
+  model:
+    type: pyaml.magnet.linear_model
+    calibration_factor: 0.00297607
+    unit: 1/m
+    powerconverter:
+      type: pyaml_cs_oa.epicsRW
+      read_pvname: VS2P2T5R:rdbk
+      write_pvname: VS2P2T5R:set
+      unit: A
+- type: pyaml.magnet.vcorrector
+  name: VS2M1D6R
+  lattice_names: S2M1D6R@0
+  model:
+    type: pyaml.magnet.linear_model
+    calibration_factor: 0.00297607
+    unit: 1/m
+    powerconverter:
+      type: pyaml_cs_oa.epicsRW
+      read_pvname: VS2P1D6R:rdbk
+      write_pvname: VS2P1D6R:set
+      unit: A
+- type: pyaml.magnet.vcorrector
+  name: VS3M1D6R
+  lattice_names: S3M1D6R@0
+  model:
+    type: pyaml.magnet.linear_model
+    calibration_factor: 0.00297607
+    unit: 1/m
+    powerconverter:
+      type: pyaml_cs_oa.epicsRW
+      read_pvname: VS3P1D6R:rdbk
+      write_pvname: VS3P1D6R:set
+      unit: A
+- type: pyaml.magnet.vcorrector
+  name: VS3M2D6R
+  lattice_names: S3M2D6R@0
+  model:
+    type: pyaml.magnet.linear_model
+    calibration_factor: 0.00297607
+    unit: 1/m
+    powerconverter:
+      type: pyaml_cs_oa.epicsRW
+      read_pvname: VS3P2D6R:rdbk
+      write_pvname: VS3P2D6R:set
+      unit: A
+- type: pyaml.magnet.vcorrector
+  name: VS2M2D6R
+  lattice_names: S2M2D6R@0
+  model:
+    type: pyaml.magnet.linear_model
+    calibration_factor: 0.00297607
+    unit: 1/m
+    powerconverter:
+      type: pyaml_cs_oa.epicsRW
+      read_pvname: VS2P2D6R:rdbk
+      write_pvname: VS2P2D6R:set
+      unit: A
+- type: pyaml.magnet.vcorrector
+  name: VS2M1T6R
+  lattice_names: S2M1T6R@0
+  model:
+    type: pyaml.magnet.linear_model
+    calibration_factor: 0.00297607
+    unit: 1/m
+    powerconverter:
+      type: pyaml_cs_oa.epicsRW
+      read_pvname: VS2P1T6R:rdbk
+      write_pvname: VS2P1T6R:set
+      unit: A
+- type: pyaml.magnet.vcorrector
+  name: VS3M1T6R
+  lattice_names: S3M1T6R@0
+  model:
+    type: pyaml.magnet.linear_model
+    calibration_factor: 0.00297607
+    unit: 1/m
+    powerconverter:
+      type: pyaml_cs_oa.epicsRW
+      read_pvname: VS3P1T6R:rdbk
+      write_pvname: VS3P1T6R:set
+      unit: A
+- type: pyaml.magnet.vcorrector
+  name: VS3M2T6R
+  lattice_names: S3M2T6R@0
+  model:
+    type: pyaml.magnet.linear_model
+    calibration_factor: 0.00297607
+    unit: 1/m
+    powerconverter:
+      type: pyaml_cs_oa.epicsRW
+      read_pvname: VS3P2T6R:rdbk
+      write_pvname: VS3P2T6R:set
+      unit: A
+- type: pyaml.magnet.vcorrector
+  name: VS2M2T6R
+  lattice_names: S2M2T6R@0
+  model:
+    type: pyaml.magnet.linear_model
+    calibration_factor: 0.00297607
+    unit: 1/m
+    powerconverter:
+      type: pyaml_cs_oa.epicsRW
+      read_pvname: VS2P2T6R:rdbk
+      write_pvname: VS2P2T6R:set
+      unit: A
+- type: pyaml.magnet.vcorrector
+  name: VS2M1D7R
+  lattice_names: S2M1D7R@0
+  model:
+    type: pyaml.magnet.linear_model
+    calibration_factor: 0.00297607
+    unit: 1/m
+    powerconverter:
+      type: pyaml_cs_oa.epicsRW
+      read_pvname: VS2P1D7R:rdbk
+      write_pvname: VS2P1D7R:set
+      unit: A
+- type: pyaml.magnet.vcorrector
+  name: VS3M1D7R
+  lattice_names: S3M1D7R@0
+  model:
+    type: pyaml.magnet.linear_model
+    calibration_factor: 0.00297607
+    unit: 1/m
+    powerconverter:
+      type: pyaml_cs_oa.epicsRW
+      read_pvname: VS3P1D7R:rdbk
+      write_pvname: VS3P1D7R:set
+      unit: A
+- type: pyaml.magnet.vcorrector
+  name: VS3M2D7R
+  lattice_names: S3M2D7R@0
+  model:
+    type: pyaml.magnet.linear_model
+    calibration_factor: 0.00297607
+    unit: 1/m
+    powerconverter:
+      type: pyaml_cs_oa.epicsRW
+      read_pvname: VS3P2D7R:rdbk
+      write_pvname: VS3P2D7R:set
+      unit: A
+- type: pyaml.magnet.vcorrector
+  name: VS2M2D7R
+  lattice_names: S2M2D7R@0
+  model:
+    type: pyaml.magnet.linear_model
+    calibration_factor: 0.00297607
+    unit: 1/m
+    powerconverter:
+      type: pyaml_cs_oa.epicsRW
+      read_pvname: VS2P2D7R:rdbk
+      write_pvname: VS2P2D7R:set
+      unit: A
+- type: pyaml.magnet.vcorrector
+  name: VS2M1T7R
+  lattice_names: S2M1T7R@0
+  model:
+    type: pyaml.magnet.linear_model
+    calibration_factor: 0.00297607
+    unit: 1/m
+    powerconverter:
+      type: pyaml_cs_oa.epicsRW
+      read_pvname: VS2P1T7R:rdbk
+      write_pvname: VS2P1T7R:set
+      unit: A
+- type: pyaml.magnet.vcorrector
+  name: VS3M1T7R
+  lattice_names: S3M1T7R@0
+  model:
+    type: pyaml.magnet.linear_model
+    calibration_factor: 0.00297607
+    unit: 1/m
+    powerconverter:
+      type: pyaml_cs_oa.epicsRW
+      read_pvname: VS3P1T7R:rdbk
+      write_pvname: VS3P1T7R:set
+      unit: A
+- type: pyaml.magnet.vcorrector
+  name: VS3M2T7R
+  lattice_names: S3M2T7R@0
+  model:
+    type: pyaml.magnet.linear_model
+    calibration_factor: 0.00297607
+    unit: 1/m
+    powerconverter:
+      type: pyaml_cs_oa.epicsRW
+      read_pvname: VS3P2T7R:rdbk
+      write_pvname: VS3P2T7R:set
+      unit: A
+- type: pyaml.magnet.vcorrector
+  name: VS2M2T7R
+  lattice_names: S2M2T7R@0
+  model:
+    type: pyaml.magnet.linear_model
+    calibration_factor: 0.00297607
+    unit: 1/m
+    powerconverter:
+      type: pyaml_cs_oa.epicsRW
+      read_pvname: VS2P2T7R:rdbk
+      write_pvname: VS2P2T7R:set
+      unit: A
+- type: pyaml.magnet.vcorrector
+  name: VS2M1D8R
+  lattice_names: S2M1D8R@0
+  model:
+    type: pyaml.magnet.linear_model
+    calibration_factor: 0.00297607
+    unit: 1/m
+    powerconverter:
+      type: pyaml_cs_oa.epicsRW
+      read_pvname: VS2P1D8R:rdbk
+      write_pvname: VS2P1D8R:set
+      unit: A
+- type: pyaml.magnet.vcorrector
+  name: VS3M1D8R
+  lattice_names: S3M1D8R@0
+  model:
+    type: pyaml.magnet.linear_model
+    calibration_factor: 0.00297607
+    unit: 1/m
+    powerconverter:
+      type: pyaml_cs_oa.epicsRW
+      read_pvname: VS3P1D8R:rdbk
+      write_pvname: VS3P1D8R:set
+      unit: A
+- type: pyaml.magnet.vcorrector
+  name: VS3M2D8R
+  lattice_names: S3M2D8R@0
+  model:
+    type: pyaml.magnet.linear_model
+    calibration_factor: 0.00297607
+    unit: 1/m
+    powerconverter:
+      type: pyaml_cs_oa.epicsRW
+      read_pvname: VS3P2D8R:rdbk
+      write_pvname: VS3P2D8R:set
+      unit: A
+- type: pyaml.magnet.vcorrector
+  name: VS2M2D8R
+  lattice_names: S2M2D8R@0
+  model:
+    type: pyaml.magnet.linear_model
+    calibration_factor: 0.00297607
+    unit: 1/m
+    powerconverter:
+      type: pyaml_cs_oa.epicsRW
+      read_pvname: VS2P2D8R:rdbk
+      write_pvname: VS2P2D8R:set
+      unit: A
+- type: pyaml.magnet.vcorrector
+  name: VS2M1T8R
+  lattice_names: S2M1T8R@0
+  model:
+    type: pyaml.magnet.linear_model
+    calibration_factor: 0.00297607
+    unit: 1/m
+    powerconverter:
+      type: pyaml_cs_oa.epicsRW
+      read_pvname: VS2P1T8R:rdbk
+      write_pvname: VS2P1T8R:set
+      unit: A
+- type: pyaml.magnet.vcorrector
+  name: VS3M1T8R
+  lattice_names: S3M1T8R@0
+  model:
+    type: pyaml.magnet.linear_model
+    calibration_factor: 0.00297607
+    unit: 1/m
+    powerconverter:
+      type: pyaml_cs_oa.epicsRW
+      read_pvname: VS3P1T8R:rdbk
+      write_pvname: VS3P1T8R:set
+      unit: A
+- type: pyaml.magnet.vcorrector
+  name: VS3M2T8R
+  lattice_names: S3M2T8R@0
+  model:
+    type: pyaml.magnet.linear_model
+    calibration_factor: 0.00297607
+    unit: 1/m
+    powerconverter:
+      type: pyaml_cs_oa.epicsRW
+      read_pvname: VS3P2T8R:rdbk
+      write_pvname: VS3P2T8R:set
+      unit: A
+- type: pyaml.magnet.vcorrector
+  name: VS2M2T8R
+  lattice_names: S2M2T8R@0
+  model:
+    type: pyaml.magnet.linear_model
+    calibration_factor: 0.00297607
+    unit: 1/m
+    powerconverter:
+      type: pyaml_cs_oa.epicsRW
+      read_pvname: VS2P2T8R:rdbk
+      write_pvname: VS2P2T8R:set
+      unit: A
+- type: pyaml.magnet.vcorrector
+  name: VS2M1D1R
+  lattice_names: S2M1D1R@0
+  model:
+    type: pyaml.magnet.linear_model
+    calibration_factor: 0.00297607
+    unit: 1/m
+    powerconverter:
+      type: pyaml_cs_oa.epicsRW
+      read_pvname: VS2P1D1R:rdbk
+      write_pvname: VS2P1D1R:set
+      unit: A
+- type: pyaml.magnet.vcorrector
+  name: VS3M1D1R
+  lattice_names: S3M1D1R@0
+  model:
+    type: pyaml.magnet.linear_model
+    calibration_factor: 0.00297607
+    unit: 1/m
+    powerconverter:
+      type: pyaml_cs_oa.epicsRW
+      read_pvname: VS3P1D1R:rdbk
+      write_pvname: VS3P1D1R:set
+      unit: A
+- type: pyaml.bpm.bpm
+  name: BPMZ5D1R
+  model:
+    type: pyaml.bpm.bpm_simple_model
+    x_pos_index: 11
+    y_pos_index: 11
+    x_pos:
+      type: pyaml_cs_oa.epicsR
+      read_pvname: beam:orbit:x
+      unit: nm
+    y_pos:
+      type: pyaml_cs_oa.epicsR
+      read_pvname: beam:orbit:y
+      unit: nm
+- type: pyaml.bpm.bpm
+  name: BPMZ6D1R
+  model:
+    type: pyaml.bpm.bpm_simple_model
+    x_pos_index: 19
+    y_pos_index: 19
+    x_pos:
+      type: pyaml_cs_oa.epicsR
+      read_pvname: beam:orbit:x
+      unit: nm
+    y_pos:
+      type: pyaml_cs_oa.epicsR
+      read_pvname: beam:orbit:y
+      unit: nm
+- type: pyaml.bpm.bpm
+  name: BPMZ7D1R
+  model:
+    type: pyaml.bpm.bpm_simple_model
+    x_pos_index: 29
+    y_pos_index: 29
+    x_pos:
+      type: pyaml_cs_oa.epicsR
+      read_pvname: beam:orbit:x
+      unit: nm
+    y_pos:
+      type: pyaml_cs_oa.epicsR
+      read_pvname: beam:orbit:y
+      unit: nm
+- type: pyaml.bpm.bpm
+  name: BPMZ1T1R
+  model:
+    type: pyaml.bpm.bpm_simple_model
+    x_pos_index: 42
+    y_pos_index: 42
+    x_pos:
+      type: pyaml_cs_oa.epicsR
+      read_pvname: beam:orbit:x
+      unit: nm
+    y_pos:
+      type: pyaml_cs_oa.epicsR
+      read_pvname: beam:orbit:y
+      unit: nm
+- type: pyaml.bpm.bpm
+  name: BPMZ2T1R
+  model:
+    type: pyaml.bpm.bpm_simple_model
+    x_pos_index: 48
+    y_pos_index: 48
+    x_pos:
+      type: pyaml_cs_oa.epicsR
+      read_pvname: beam:orbit:x
+      unit: nm
+    y_pos:
+      type: pyaml_cs_oa.epicsR
+      read_pvname: beam:orbit:y
+      unit: nm
+- type: pyaml.bpm.bpm
+  name: BPMZ3T1R
+  model:
+    type: pyaml.bpm.bpm_simple_model
+    x_pos_index: 58
+    y_pos_index: 58
+    x_pos:
+      type: pyaml_cs_oa.epicsR
+      read_pvname: beam:orbit:x
+      unit: nm
+    y_pos:
+      type: pyaml_cs_oa.epicsR
+      read_pvname: beam:orbit:y
+      unit: nm
+- type: pyaml.bpm.bpm
+  name: BPMZ4T1R
+  model:
+    type: pyaml.bpm.bpm_simple_model
+    x_pos_index: 68
+    y_pos_index: 68
+    x_pos:
+      type: pyaml_cs_oa.epicsR
+      read_pvname: beam:orbit:x
+      unit: nm
+    y_pos:
+      type: pyaml_cs_oa.epicsR
+      read_pvname: beam:orbit:y
+      unit: nm
+- type: pyaml.bpm.bpm
+  name: BPMZ43T1R
+  model:
+    type: pyaml.bpm.bpm_simple_model
+    x_pos_index: 81
+    y_pos_index: 81
+    x_pos:
+      type: pyaml_cs_oa.epicsR
+      read_pvname: beam:orbit:x
+      unit: nm
+    y_pos:
+      type: pyaml_cs_oa.epicsR
+      read_pvname: beam:orbit:y
+      unit: nm
+- type: pyaml.bpm.bpm
+  name: BPMZ5T1R
+  model:
+    type: pyaml.bpm.bpm_simple_model
+    x_pos_index: 83
+    y_pos_index: 83
+    x_pos:
+      type: pyaml_cs_oa.epicsR
+      read_pvname: beam:orbit:x
+      unit: nm
+    y_pos:
+      type: pyaml_cs_oa.epicsR
+      read_pvname: beam:orbit:y
+      unit: nm
+- type: pyaml.bpm.bpm
+  name: BPMZ6T1R
+  model:
+    type: pyaml.bpm.bpm_simple_model
+    x_pos_index: 93
+    y_pos_index: 93
+    x_pos:
+      type: pyaml_cs_oa.epicsR
+      read_pvname: beam:orbit:x
+      unit: nm
+    y_pos:
+      type: pyaml_cs_oa.epicsR
+      read_pvname: beam:orbit:y
+      unit: nm
+- type: pyaml.bpm.bpm
+  name: BPMZ7T1R
+  model:
+    type: pyaml.bpm.bpm_simple_model
+    x_pos_index: 103
+    y_pos_index: 103
+    x_pos:
+      type: pyaml_cs_oa.epicsR
+      read_pvname: beam:orbit:x
+      unit: nm
+    y_pos:
+      type: pyaml_cs_oa.epicsR
+      read_pvname: beam:orbit:y
+      unit: nm
+- type: pyaml.bpm.bpm
+  name: BPMZ1D2R
+  model:
+    type: pyaml.bpm.bpm_simple_model
+    x_pos_index: 116
+    y_pos_index: 116
+    x_pos:
+      type: pyaml_cs_oa.epicsR
+      read_pvname: beam:orbit:x
+      unit: nm
+    y_pos:
+      type: pyaml_cs_oa.epicsR
+      read_pvname: beam:orbit:y
+      unit: nm
+- type: pyaml.bpm.bpm
+  name: BPMZ2D2R
+  model:
+    type: pyaml.bpm.bpm_simple_model
+    x_pos_index: 124
+    y_pos_index: 124
+    x_pos:
+      type: pyaml_cs_oa.epicsR
+      read_pvname: beam:orbit:x
+      unit: nm
+    y_pos:
+      type: pyaml_cs_oa.epicsR
+      read_pvname: beam:orbit:y
+      unit: nm
+- type: pyaml.bpm.bpm
+  name: BPMZ3D2R
+  model:
+    type: pyaml.bpm.bpm_simple_model
+    x_pos_index: 132
+    y_pos_index: 132
+    x_pos:
+      type: pyaml_cs_oa.epicsR
+      read_pvname: beam:orbit:x
+      unit: nm
+    y_pos:
+      type: pyaml_cs_oa.epicsR
+      read_pvname: beam:orbit:y
+      unit: nm
+- type: pyaml.bpm.bpm
+  name: BPMZ4D2R
+  model:
+    type: pyaml.bpm.bpm_simple_model
+    x_pos_index: 140
+    y_pos_index: 140
+    x_pos:
+      type: pyaml_cs_oa.epicsR
+      read_pvname: beam:orbit:x
+      unit: nm
+    y_pos:
+      type: pyaml_cs_oa.epicsR
+      read_pvname: beam:orbit:y
+      unit: nm
+- type: pyaml.bpm.bpm
+  name: BPMZ5D2R
+  model:
+    type: pyaml.bpm.bpm_simple_model
+    x_pos_index: 146
+    y_pos_index: 146
+    x_pos:
+      type: pyaml_cs_oa.epicsR
+      read_pvname: beam:orbit:x
+      unit: nm
+    y_pos:
+      type: pyaml_cs_oa.epicsR
+      read_pvname: beam:orbit:y
+      unit: nm
+- type: pyaml.bpm.bpm
+  name: BPMZ6D2R
+  model:
+    type: pyaml.bpm.bpm_simple_model
+    x_pos_index: 154
+    y_pos_index: 154
+    x_pos:
+      type: pyaml_cs_oa.epicsR
+      read_pvname: beam:orbit:x
+      unit: nm
+    y_pos:
+      type: pyaml_cs_oa.epicsR
+      read_pvname: beam:orbit:y
+      unit: nm
+- type: pyaml.bpm.bpm
+  name: BPMZ7D2R
+  model:
+    type: pyaml.bpm.bpm_simple_model
+    x_pos_index: 164
+    y_pos_index: 164
+    x_pos:
+      type: pyaml_cs_oa.epicsR
+      read_pvname: beam:orbit:x
+      unit: nm
+    y_pos:
+      type: pyaml_cs_oa.epicsR
+      read_pvname: beam:orbit:y
+      unit: nm
+- type: pyaml.bpm.bpm
+  name: BPMZ1T2R
+  model:
+    type: pyaml.bpm.bpm_simple_model
+    x_pos_index: 177
+    y_pos_index: 177
+    x_pos:
+      type: pyaml_cs_oa.epicsR
+      read_pvname: beam:orbit:x
+      unit: nm
+    y_pos:
+      type: pyaml_cs_oa.epicsR
+      read_pvname: beam:orbit:y
+      unit: nm
+- type: pyaml.bpm.bpm
+  name: BPMZ2T2R
+  model:
+    type: pyaml.bpm.bpm_simple_model
+    x_pos_index: 183
+    y_pos_index: 183
+    x_pos:
+      type: pyaml_cs_oa.epicsR
+      read_pvname: beam:orbit:x
+      unit: nm
+    y_pos:
+      type: pyaml_cs_oa.epicsR
+      read_pvname: beam:orbit:y
+      unit: nm
+- type: pyaml.bpm.bpm
+  name: BPMZ3T2R
+  model:
+    type: pyaml.bpm.bpm_simple_model
+    x_pos_index: 193
+    y_pos_index: 193
+    x_pos:
+      type: pyaml_cs_oa.epicsR
+      read_pvname: beam:orbit:x
+      unit: nm
+    y_pos:
+      type: pyaml_cs_oa.epicsR
+      read_pvname: beam:orbit:y
+      unit: nm
+- type: pyaml.bpm.bpm
+  name: BPMZ4T2R
+  model:
+    type: pyaml.bpm.bpm_simple_model
+    x_pos_index: 203
+    y_pos_index: 203
+    x_pos:
+      type: pyaml_cs_oa.epicsR
+      read_pvname: beam:orbit:x
+      unit: nm
+    y_pos:
+      type: pyaml_cs_oa.epicsR
+      read_pvname: beam:orbit:y
+      unit: nm
+- type: pyaml.bpm.bpm
+  name: BPMZ5T2R
+  model:
+    type: pyaml.bpm.bpm_simple_model
+    x_pos_index: 223
+    y_pos_index: 223
+    x_pos:
+      type: pyaml_cs_oa.epicsR
+      read_pvname: beam:orbit:x
+      unit: nm
+    y_pos:
+      type: pyaml_cs_oa.epicsR
+      read_pvname: beam:orbit:y
+      unit: nm
+- type: pyaml.bpm.bpm
+  name: BPMZ6T2R
+  model:
+    type: pyaml.bpm.bpm_simple_model
+    x_pos_index: 233
+    y_pos_index: 233
+    x_pos:
+      type: pyaml_cs_oa.epicsR
+      read_pvname: beam:orbit:x
+      unit: nm
+    y_pos:
+      type: pyaml_cs_oa.epicsR
+      read_pvname: beam:orbit:y
+      unit: nm
+- type: pyaml.bpm.bpm
+  name: BPMZ7T2R
+  model:
+    type: pyaml.bpm.bpm_simple_model
+    x_pos_index: 243
+    y_pos_index: 243
+    x_pos:
+      type: pyaml_cs_oa.epicsR
+      read_pvname: beam:orbit:x
+      unit: nm
+    y_pos:
+      type: pyaml_cs_oa.epicsR
+      read_pvname: beam:orbit:y
+      unit: nm
+- type: pyaml.bpm.bpm
+  name: BPMZ1D3R
+  model:
+    type: pyaml.bpm.bpm_simple_model
+    x_pos_index: 256
+    y_pos_index: 256
+    x_pos:
+      type: pyaml_cs_oa.epicsR
+      read_pvname: beam:orbit:x
+      unit: nm
+    y_pos:
+      type: pyaml_cs_oa.epicsR
+      read_pvname: beam:orbit:y
+      unit: nm
+- type: pyaml.bpm.bpm
+  name: BPMZ2D3R
+  model:
+    type: pyaml.bpm.bpm_simple_model
+    x_pos_index: 265
+    y_pos_index: 265
+    x_pos:
+      type: pyaml_cs_oa.epicsR
+      read_pvname: beam:orbit:x
+      unit: nm
+    y_pos:
+      type: pyaml_cs_oa.epicsR
+      read_pvname: beam:orbit:y
+      unit: nm
+- type: pyaml.bpm.bpm
+  name: BPMZ3D3R
+  model:
+    type: pyaml.bpm.bpm_simple_model
+    x_pos_index: 275
+    y_pos_index: 275
+    x_pos:
+      type: pyaml_cs_oa.epicsR
+      read_pvname: beam:orbit:x
+      unit: nm
+    y_pos:
+      type: pyaml_cs_oa.epicsR
+      read_pvname: beam:orbit:y
+      unit: nm
+- type: pyaml.bpm.bpm
+  name: BPMZ4D3R
+  model:
+    type: pyaml.bpm.bpm_simple_model
+    x_pos_index: 283
+    y_pos_index: 283
+    x_pos:
+      type: pyaml_cs_oa.epicsR
+      read_pvname: beam:orbit:x
+      unit: nm
+    y_pos:
+      type: pyaml_cs_oa.epicsR
+      read_pvname: beam:orbit:y
+      unit: nm
+- type: pyaml.bpm.bpm
+  name: BPMZ5D3R
+  model:
+    type: pyaml.bpm.bpm_simple_model
+    x_pos_index: 287
+    y_pos_index: 287
+    x_pos:
+      type: pyaml_cs_oa.epicsR
+      read_pvname: beam:orbit:x
+      unit: nm
+    y_pos:
+      type: pyaml_cs_oa.epicsR
+      read_pvname: beam:orbit:y
+      unit: nm
+- type: pyaml.bpm.bpm
+  name: BPMZ6D3R
+  model:
+    type: pyaml.bpm.bpm_simple_model
+    x_pos_index: 295
+    y_pos_index: 295
+    x_pos:
+      type: pyaml_cs_oa.epicsR
+      read_pvname: beam:orbit:x
+      unit: nm
+    y_pos:
+      type: pyaml_cs_oa.epicsR
+      read_pvname: beam:orbit:y
+      unit: nm
+- type: pyaml.bpm.bpm
+  name: BPMZ7D3R
+  model:
+    type: pyaml.bpm.bpm_simple_model
+    x_pos_index: 305
+    y_pos_index: 305
+    x_pos:
+      type: pyaml_cs_oa.epicsR
+      read_pvname: beam:orbit:x
+      unit: nm
+    y_pos:
+      type: pyaml_cs_oa.epicsR
+      read_pvname: beam:orbit:y
+      unit: nm
+- type: pyaml.bpm.bpm
+  name: BPMZ1T3R
+  model:
+    type: pyaml.bpm.bpm_simple_model
+    x_pos_index: 318
+    y_pos_index: 318
+    x_pos:
+      type: pyaml_cs_oa.epicsR
+      read_pvname: beam:orbit:x
+      unit: nm
+    y_pos:
+      type: pyaml_cs_oa.epicsR
+      read_pvname: beam:orbit:y
+      unit: nm
+- type: pyaml.bpm.bpm
+  name: BPMZ2T3R
+  model:
+    type: pyaml.bpm.bpm_simple_model
+    x_pos_index: 324
+    y_pos_index: 324
+    x_pos:
+      type: pyaml_cs_oa.epicsR
+      read_pvname: beam:orbit:x
+      unit: nm
+    y_pos:
+      type: pyaml_cs_oa.epicsR
+      read_pvname: beam:orbit:y
+      unit: nm
+- type: pyaml.bpm.bpm
+  name: BPMZ3T3R
+  model:
+    type: pyaml.bpm.bpm_simple_model
+    x_pos_index: 334
+    y_pos_index: 334
+    x_pos:
+      type: pyaml_cs_oa.epicsR
+      read_pvname: beam:orbit:x
+      unit: nm
+    y_pos:
+      type: pyaml_cs_oa.epicsR
+      read_pvname: beam:orbit:y
+      unit: nm
+- type: pyaml.bpm.bpm
+  name: BPMZ4T3R
+  model:
+    type: pyaml.bpm.bpm_simple_model
+    x_pos_index: 344
+    y_pos_index: 344
+    x_pos:
+      type: pyaml_cs_oa.epicsR
+      read_pvname: beam:orbit:x
+      unit: nm
+    y_pos:
+      type: pyaml_cs_oa.epicsR
+      read_pvname: beam:orbit:y
+      unit: nm
+- type: pyaml.bpm.bpm
+  name: BPMZ5T3R
+  model:
+    type: pyaml.bpm.bpm_simple_model
+    x_pos_index: 349
+    y_pos_index: 349
+    x_pos:
+      type: pyaml_cs_oa.epicsR
+      read_pvname: beam:orbit:x
+      unit: nm
+    y_pos:
+      type: pyaml_cs_oa.epicsR
+      read_pvname: beam:orbit:y
+      unit: nm
+- type: pyaml.bpm.bpm
+  name: BPMZ6T3R
+  model:
+    type: pyaml.bpm.bpm_simple_model
+    x_pos_index: 359
+    y_pos_index: 359
+    x_pos:
+      type: pyaml_cs_oa.epicsR
+      read_pvname: beam:orbit:x
+      unit: nm
+    y_pos:
+      type: pyaml_cs_oa.epicsR
+      read_pvname: beam:orbit:y
+      unit: nm
+- type: pyaml.bpm.bpm
+  name: BPMZ7T3R
+  model:
+    type: pyaml.bpm.bpm_simple_model
+    x_pos_index: 369
+    y_pos_index: 369
+    x_pos:
+      type: pyaml_cs_oa.epicsR
+      read_pvname: beam:orbit:x
+      unit: nm
+    y_pos:
+      type: pyaml_cs_oa.epicsR
+      read_pvname: beam:orbit:y
+      unit: nm
+- type: pyaml.bpm.bpm
+  name: BPMZ1D4R
+  model:
+    type: pyaml.bpm.bpm_simple_model
+    x_pos_index: 382
+    y_pos_index: 382
+    x_pos:
+      type: pyaml_cs_oa.epicsR
+      read_pvname: beam:orbit:x
+      unit: nm
+    y_pos:
+      type: pyaml_cs_oa.epicsR
+      read_pvname: beam:orbit:y
+      unit: nm
+- type: pyaml.bpm.bpm
+  name: BPMZ2D4R
+  model:
+    type: pyaml.bpm.bpm_simple_model
+    x_pos_index: 388
+    y_pos_index: 388
+    x_pos:
+      type: pyaml_cs_oa.epicsR
+      read_pvname: beam:orbit:x
+      unit: nm
+    y_pos:
+      type: pyaml_cs_oa.epicsR
+      read_pvname: beam:orbit:y
+      unit: nm
+- type: pyaml.bpm.bpm
+  name: BPMZ3D4R
+  model:
+    type: pyaml.bpm.bpm_simple_model
+    x_pos_index: 398
+    y_pos_index: 398
+    x_pos:
+      type: pyaml_cs_oa.epicsR
+      read_pvname: beam:orbit:x
+      unit: nm
+    y_pos:
+      type: pyaml_cs_oa.epicsR
+      read_pvname: beam:orbit:y
+      unit: nm
+- type: pyaml.bpm.bpm
+  name: BPMZ4D4R
+  model:
+    type: pyaml.bpm.bpm_simple_model
+    x_pos_index: 406
+    y_pos_index: 406
+    x_pos:
+      type: pyaml_cs_oa.epicsR
+      read_pvname: beam:orbit:x
+      unit: nm
+    y_pos:
+      type: pyaml_cs_oa.epicsR
+      read_pvname: beam:orbit:y
+      unit: nm
+- type: pyaml.bpm.bpm
+  name: BPMZ5D4R
+  model:
+    type: pyaml.bpm.bpm_simple_model
+    x_pos_index: 413
+    y_pos_index: 413
+    x_pos:
+      type: pyaml_cs_oa.epicsR
+      read_pvname: beam:orbit:x
+      unit: nm
+    y_pos:
+      type: pyaml_cs_oa.epicsR
+      read_pvname: beam:orbit:y
+      unit: nm
+- type: pyaml.bpm.bpm
+  name: BPMZ6D4R
+  model:
+    type: pyaml.bpm.bpm_simple_model
+    x_pos_index: 421
+    y_pos_index: 421
+    x_pos:
+      type: pyaml_cs_oa.epicsR
+      read_pvname: beam:orbit:x
+      unit: nm
+    y_pos:
+      type: pyaml_cs_oa.epicsR
+      read_pvname: beam:orbit:y
+      unit: nm
+- type: pyaml.bpm.bpm
+  name: BPMZ7D4R
+  model:
+    type: pyaml.bpm.bpm_simple_model
+    x_pos_index: 431
+    y_pos_index: 431
+    x_pos:
+      type: pyaml_cs_oa.epicsR
+      read_pvname: beam:orbit:x
+      unit: nm
+    y_pos:
+      type: pyaml_cs_oa.epicsR
+      read_pvname: beam:orbit:y
+      unit: nm
+- type: pyaml.bpm.bpm
+  name: BPMZ1T4R
+  model:
+    type: pyaml.bpm.bpm_simple_model
+    x_pos_index: 444
+    y_pos_index: 444
+    x_pos:
+      type: pyaml_cs_oa.epicsR
+      read_pvname: beam:orbit:x
+      unit: nm
+    y_pos:
+      type: pyaml_cs_oa.epicsR
+      read_pvname: beam:orbit:y
+      unit: nm
+- type: pyaml.bpm.bpm
+  name: BPMZ2T4R
+  model:
+    type: pyaml.bpm.bpm_simple_model
+    x_pos_index: 450
+    y_pos_index: 450
+    x_pos:
+      type: pyaml_cs_oa.epicsR
+      read_pvname: beam:orbit:x
+      unit: nm
+    y_pos:
+      type: pyaml_cs_oa.epicsR
+      read_pvname: beam:orbit:y
+      unit: nm
+- type: pyaml.bpm.bpm
+  name: BPMZ3T4R
+  model:
+    type: pyaml.bpm.bpm_simple_model
+    x_pos_index: 460
+    y_pos_index: 460
+    x_pos:
+      type: pyaml_cs_oa.epicsR
+      read_pvname: beam:orbit:x
+      unit: nm
+    y_pos:
+      type: pyaml_cs_oa.epicsR
+      read_pvname: beam:orbit:y
+      unit: nm
+- type: pyaml.bpm.bpm
+  name: BPMZ4T4R
+  model:
+    type: pyaml.bpm.bpm_simple_model
+    x_pos_index: 470
+    y_pos_index: 470
+    x_pos:
+      type: pyaml_cs_oa.epicsR
+      read_pvname: beam:orbit:x
+      unit: nm
+    y_pos:
+      type: pyaml_cs_oa.epicsR
+      read_pvname: beam:orbit:y
+      unit: nm
+- type: pyaml.bpm.bpm
+  name: BPMZ5T4R
+  model:
+    type: pyaml.bpm.bpm_simple_model
+    x_pos_index: 476
+    y_pos_index: 476
+    x_pos:
+      type: pyaml_cs_oa.epicsR
+      read_pvname: beam:orbit:x
+      unit: nm
+    y_pos:
+      type: pyaml_cs_oa.epicsR
+      read_pvname: beam:orbit:y
+      unit: nm
+- type: pyaml.bpm.bpm
+  name: BPMZ6T4R
+  model:
+    type: pyaml.bpm.bpm_simple_model
+    x_pos_index: 486
+    y_pos_index: 486
+    x_pos:
+      type: pyaml_cs_oa.epicsR
+      read_pvname: beam:orbit:x
+      unit: nm
+    y_pos:
+      type: pyaml_cs_oa.epicsR
+      read_pvname: beam:orbit:y
+      unit: nm
+- type: pyaml.bpm.bpm
+  name: BPMZ7T4R
+  model:
+    type: pyaml.bpm.bpm_simple_model
+    x_pos_index: 496
+    y_pos_index: 496
+    x_pos:
+      type: pyaml_cs_oa.epicsR
+      read_pvname: beam:orbit:x
+      unit: nm
+    y_pos:
+      type: pyaml_cs_oa.epicsR
+      read_pvname: beam:orbit:y
+      unit: nm
+- type: pyaml.bpm.bpm
+  name: BPMZ1D5R
+  model:
+    type: pyaml.bpm.bpm_simple_model
+    x_pos_index: 509
+    y_pos_index: 509
+    x_pos:
+      type: pyaml_cs_oa.epicsR
+      read_pvname: beam:orbit:x
+      unit: nm
+    y_pos:
+      type: pyaml_cs_oa.epicsR
+      read_pvname: beam:orbit:y
+      unit: nm
+- type: pyaml.bpm.bpm
+  name: BPMZ2D5R
+  model:
+    type: pyaml.bpm.bpm_simple_model
+    x_pos_index: 515
+    y_pos_index: 515
+    x_pos:
+      type: pyaml_cs_oa.epicsR
+      read_pvname: beam:orbit:x
+      unit: nm
+    y_pos:
+      type: pyaml_cs_oa.epicsR
+      read_pvname: beam:orbit:y
+      unit: nm
+- type: pyaml.bpm.bpm
+  name: BPMZ3D5R
+  model:
+    type: pyaml.bpm.bpm_simple_model
+    x_pos_index: 525
+    y_pos_index: 525
+    x_pos:
+      type: pyaml_cs_oa.epicsR
+      read_pvname: beam:orbit:x
+      unit: nm
+    y_pos:
+      type: pyaml_cs_oa.epicsR
+      read_pvname: beam:orbit:y
+      unit: nm
+- type: pyaml.bpm.bpm
+  name: BPMZ4D5R
+  model:
+    type: pyaml.bpm.bpm_simple_model
+    x_pos_index: 533
+    y_pos_index: 533
+    x_pos:
+      type: pyaml_cs_oa.epicsR
+      read_pvname: beam:orbit:x
+      unit: nm
+    y_pos:
+      type: pyaml_cs_oa.epicsR
+      read_pvname: beam:orbit:y
+      unit: nm
+- type: pyaml.bpm.bpm
+  name: BPMZ5D5R
+  model:
+    type: pyaml.bpm.bpm_simple_model
+    x_pos_index: 538
+    y_pos_index: 538
+    x_pos:
+      type: pyaml_cs_oa.epicsR
+      read_pvname: beam:orbit:x
+      unit: nm
+    y_pos:
+      type: pyaml_cs_oa.epicsR
+      read_pvname: beam:orbit:y
+      unit: nm
+- type: pyaml.bpm.bpm
+  name: BPMZ6D5R
+  model:
+    type: pyaml.bpm.bpm_simple_model
+    x_pos_index: 546
+    y_pos_index: 546
+    x_pos:
+      type: pyaml_cs_oa.epicsR
+      read_pvname: beam:orbit:x
+      unit: nm
+    y_pos:
+      type: pyaml_cs_oa.epicsR
+      read_pvname: beam:orbit:y
+      unit: nm
+- type: pyaml.bpm.bpm
+  name: BPMZ7D5R
+  model:
+    type: pyaml.bpm.bpm_simple_model
+    x_pos_index: 556
+    y_pos_index: 556
+    x_pos:
+      type: pyaml_cs_oa.epicsR
+      read_pvname: beam:orbit:x
+      unit: nm
+    y_pos:
+      type: pyaml_cs_oa.epicsR
+      read_pvname: beam:orbit:y
+      unit: nm
+- type: pyaml.bpm.bpm
+  name: BPMZ1T5R
+  model:
+    type: pyaml.bpm.bpm_simple_model
+    x_pos_index: 568
+    y_pos_index: 568
+    x_pos:
+      type: pyaml_cs_oa.epicsR
+      read_pvname: beam:orbit:x
+      unit: nm
+    y_pos:
+      type: pyaml_cs_oa.epicsR
+      read_pvname: beam:orbit:y
+      unit: nm
+- type: pyaml.bpm.bpm
+  name: BPMZ2T5R
+  model:
+    type: pyaml.bpm.bpm_simple_model
+    x_pos_index: 577
+    y_pos_index: 577
+    x_pos:
+      type: pyaml_cs_oa.epicsR
+      read_pvname: beam:orbit:x
+      unit: nm
+    y_pos:
+      type: pyaml_cs_oa.epicsR
+      read_pvname: beam:orbit:y
+      unit: nm
+- type: pyaml.bpm.bpm
+  name: BPMZ3T5R
+  model:
+    type: pyaml.bpm.bpm_simple_model
+    x_pos_index: 587
+    y_pos_index: 587
+    x_pos:
+      type: pyaml_cs_oa.epicsR
+      read_pvname: beam:orbit:x
+      unit: nm
+    y_pos:
+      type: pyaml_cs_oa.epicsR
+      read_pvname: beam:orbit:y
+      unit: nm
+- type: pyaml.bpm.bpm
+  name: BPMZ4T5R
+  model:
+    type: pyaml.bpm.bpm_simple_model
+    x_pos_index: 597
+    y_pos_index: 597
+    x_pos:
+      type: pyaml_cs_oa.epicsR
+      read_pvname: beam:orbit:x
+      unit: nm
+    y_pos:
+      type: pyaml_cs_oa.epicsR
+      read_pvname: beam:orbit:y
+      unit: nm
+- type: pyaml.bpm.bpm
+  name: BPMZ5T5R
+  model:
+    type: pyaml.bpm.bpm_simple_model
+    x_pos_index: 602
+    y_pos_index: 602
+    x_pos:
+      type: pyaml_cs_oa.epicsR
+      read_pvname: beam:orbit:x
+      unit: nm
+    y_pos:
+      type: pyaml_cs_oa.epicsR
+      read_pvname: beam:orbit:y
+      unit: nm
+- type: pyaml.bpm.bpm
+  name: BPMZ6T5R
+  model:
+    type: pyaml.bpm.bpm_simple_model
+    x_pos_index: 612
+    y_pos_index: 612
+    x_pos:
+      type: pyaml_cs_oa.epicsR
+      read_pvname: beam:orbit:x
+      unit: nm
+    y_pos:
+      type: pyaml_cs_oa.epicsR
+      read_pvname: beam:orbit:y
+      unit: nm
+- type: pyaml.bpm.bpm
+  name: BPMZ7T5R
+  model:
+    type: pyaml.bpm.bpm_simple_model
+    x_pos_index: 622
+    y_pos_index: 622
+    x_pos:
+      type: pyaml_cs_oa.epicsR
+      read_pvname: beam:orbit:x
+      unit: nm
+    y_pos:
+      type: pyaml_cs_oa.epicsR
+      read_pvname: beam:orbit:y
+      unit: nm
+- type: pyaml.bpm.bpm
+  name: BPMZ1D6R
+  model:
+    type: pyaml.bpm.bpm_simple_model
+    x_pos_index: 635
+    y_pos_index: 635
+    x_pos:
+      type: pyaml_cs_oa.epicsR
+      read_pvname: beam:orbit:x
+      unit: nm
+    y_pos:
+      type: pyaml_cs_oa.epicsR
+      read_pvname: beam:orbit:y
+      unit: nm
+- type: pyaml.bpm.bpm
+  name: BPMZ2D6R
+  model:
+    type: pyaml.bpm.bpm_simple_model
+    x_pos_index: 641
+    y_pos_index: 641
+    x_pos:
+      type: pyaml_cs_oa.epicsR
+      read_pvname: beam:orbit:x
+      unit: nm
+    y_pos:
+      type: pyaml_cs_oa.epicsR
+      read_pvname: beam:orbit:y
+      unit: nm
+- type: pyaml.bpm.bpm
+  name: BPMZ3D6R
+  model:
+    type: pyaml.bpm.bpm_simple_model
+    x_pos_index: 651
+    y_pos_index: 651
+    x_pos:
+      type: pyaml_cs_oa.epicsR
+      read_pvname: beam:orbit:x
+      unit: nm
+    y_pos:
+      type: pyaml_cs_oa.epicsR
+      read_pvname: beam:orbit:y
+      unit: nm
+- type: pyaml.bpm.bpm
+  name: BPMZ4D6R
+  model:
+    type: pyaml.bpm.bpm_simple_model
+    x_pos_index: 659
+    y_pos_index: 659
+    x_pos:
+      type: pyaml_cs_oa.epicsR
+      read_pvname: beam:orbit:x
+      unit: nm
+    y_pos:
+      type: pyaml_cs_oa.epicsR
+      read_pvname: beam:orbit:y
+      unit: nm
+- type: pyaml.bpm.bpm
+  name: BPMZ41D6R
+  model:
+    type: pyaml.bpm.bpm_simple_model
+    x_pos_index: 663
+    y_pos_index: 663
+    x_pos:
+      type: pyaml_cs_oa.epicsR
+      read_pvname: beam:orbit:x
+      unit: nm
+    y_pos:
+      type: pyaml_cs_oa.epicsR
+      read_pvname: beam:orbit:y
+      unit: nm
+- type: pyaml.bpm.bpm
+  name: BPMZ42D6R
+  model:
+    type: pyaml.bpm.bpm_simple_model
+    x_pos_index: 667
+    y_pos_index: 667
+    x_pos:
+      type: pyaml_cs_oa.epicsR
+      read_pvname: beam:orbit:x
+      unit: nm
+    y_pos:
+      type: pyaml_cs_oa.epicsR
+      read_pvname: beam:orbit:y
+      unit: nm
+- type: pyaml.bpm.bpm
+  name: BPMZ43D6R
+  model:
+    type: pyaml.bpm.bpm_simple_model
+    x_pos_index: 672
+    y_pos_index: 672
+    x_pos:
+      type: pyaml_cs_oa.epicsR
+      read_pvname: beam:orbit:x
+      unit: nm
+    y_pos:
+      type: pyaml_cs_oa.epicsR
+      read_pvname: beam:orbit:y
+      unit: nm
+- type: pyaml.bpm.bpm
+  name: BPMZ44D6R
+  model:
+    type: pyaml.bpm.bpm_simple_model
+    x_pos_index: 676
+    y_pos_index: 676
+    x_pos:
+      type: pyaml_cs_oa.epicsR
+      read_pvname: beam:orbit:x
+      unit: nm
+    y_pos:
+      type: pyaml_cs_oa.epicsR
+      read_pvname: beam:orbit:y
+      unit: nm
+- type: pyaml.bpm.bpm
+  name: BPMZ6D6R
+  model:
+    type: pyaml.bpm.bpm_simple_model
+    x_pos_index: 686
+    y_pos_index: 686
+    x_pos:
+      type: pyaml_cs_oa.epicsR
+      read_pvname: beam:orbit:x
+      unit: nm
+    y_pos:
+      type: pyaml_cs_oa.epicsR
+      read_pvname: beam:orbit:y
+      unit: nm
+- type: pyaml.bpm.bpm
+  name: BPMZ7D6R
+  model:
+    type: pyaml.bpm.bpm_simple_model
+    x_pos_index: 696
+    y_pos_index: 696
+    x_pos:
+      type: pyaml_cs_oa.epicsR
+      read_pvname: beam:orbit:x
+      unit: nm
+    y_pos:
+      type: pyaml_cs_oa.epicsR
+      read_pvname: beam:orbit:y
+      unit: nm
+- type: pyaml.bpm.bpm
+  name: BPMZ1T6R
+  model:
+    type: pyaml.bpm.bpm_simple_model
+    x_pos_index: 709
+    y_pos_index: 709
+    x_pos:
+      type: pyaml_cs_oa.epicsR
+      read_pvname: beam:orbit:x
+      unit: nm
+    y_pos:
+      type: pyaml_cs_oa.epicsR
+      read_pvname: beam:orbit:y
+      unit: nm
+- type: pyaml.bpm.bpm
+  name: BPMZ2T6R
+  model:
+    type: pyaml.bpm.bpm_simple_model
+    x_pos_index: 715
+    y_pos_index: 715
+    x_pos:
+      type: pyaml_cs_oa.epicsR
+      read_pvname: beam:orbit:x
+      unit: nm
+    y_pos:
+      type: pyaml_cs_oa.epicsR
+      read_pvname: beam:orbit:y
+      unit: nm
+- type: pyaml.bpm.bpm
+  name: BPMZ3T6R
+  model:
+    type: pyaml.bpm.bpm_simple_model
+    x_pos_index: 725
+    y_pos_index: 725
+    x_pos:
+      type: pyaml_cs_oa.epicsR
+      read_pvname: beam:orbit:x
+      unit: nm
+    y_pos:
+      type: pyaml_cs_oa.epicsR
+      read_pvname: beam:orbit:y
+      unit: nm
+- type: pyaml.bpm.bpm
+  name: BPMZ4T6R
+  model:
+    type: pyaml.bpm.bpm_simple_model
+    x_pos_index: 735
+    y_pos_index: 735
+    x_pos:
+      type: pyaml_cs_oa.epicsR
+      read_pvname: beam:orbit:x
+      unit: nm
+    y_pos:
+      type: pyaml_cs_oa.epicsR
+      read_pvname: beam:orbit:y
+      unit: nm
+- type: pyaml.bpm.bpm
+  name: BPMZ5T6R
+  model:
+    type: pyaml.bpm.bpm_simple_model
+    x_pos_index: 745
+    y_pos_index: 745
+    x_pos:
+      type: pyaml_cs_oa.epicsR
+      read_pvname: beam:orbit:x
+      unit: nm
+    y_pos:
+      type: pyaml_cs_oa.epicsR
+      read_pvname: beam:orbit:y
+      unit: nm
+- type: pyaml.bpm.bpm
+  name: BPMZ6T6R
+  model:
+    type: pyaml.bpm.bpm_simple_model
+    x_pos_index: 755
+    y_pos_index: 755
+    x_pos:
+      type: pyaml_cs_oa.epicsR
+      read_pvname: beam:orbit:x
+      unit: nm
+    y_pos:
+      type: pyaml_cs_oa.epicsR
+      read_pvname: beam:orbit:y
+      unit: nm
+- type: pyaml.bpm.bpm
+  name: BPMZ7T6R
+  model:
+    type: pyaml.bpm.bpm_simple_model
+    x_pos_index: 765
+    y_pos_index: 765
+    x_pos:
+      type: pyaml_cs_oa.epicsR
+      read_pvname: beam:orbit:x
+      unit: nm
+    y_pos:
+      type: pyaml_cs_oa.epicsR
+      read_pvname: beam:orbit:y
+      unit: nm
+- type: pyaml.bpm.bpm
+  name: BPMZ1D7R
+  model:
+    type: pyaml.bpm.bpm_simple_model
+    x_pos_index: 778
+    y_pos_index: 778
+    x_pos:
+      type: pyaml_cs_oa.epicsR
+      read_pvname: beam:orbit:x
+      unit: nm
+    y_pos:
+      type: pyaml_cs_oa.epicsR
+      read_pvname: beam:orbit:y
+      unit: nm
+- type: pyaml.bpm.bpm
+  name: BPMZ2D7R
+  model:
+    type: pyaml.bpm.bpm_simple_model
+    x_pos_index: 784
+    y_pos_index: 784
+    x_pos:
+      type: pyaml_cs_oa.epicsR
+      read_pvname: beam:orbit:x
+      unit: nm
+    y_pos:
+      type: pyaml_cs_oa.epicsR
+      read_pvname: beam:orbit:y
+      unit: nm
+- type: pyaml.bpm.bpm
+  name: BPMZ3D7R
+  model:
+    type: pyaml.bpm.bpm_simple_model
+    x_pos_index: 794
+    y_pos_index: 794
+    x_pos:
+      type: pyaml_cs_oa.epicsR
+      read_pvname: beam:orbit:x
+      unit: nm
+    y_pos:
+      type: pyaml_cs_oa.epicsR
+      read_pvname: beam:orbit:y
+      unit: nm
+- type: pyaml.bpm.bpm
+  name: BPMZ4D7R
+  model:
+    type: pyaml.bpm.bpm_simple_model
+    x_pos_index: 802
+    y_pos_index: 802
+    x_pos:
+      type: pyaml_cs_oa.epicsR
+      read_pvname: beam:orbit:x
+      unit: nm
+    y_pos:
+      type: pyaml_cs_oa.epicsR
+      read_pvname: beam:orbit:y
+      unit: nm
+- type: pyaml.bpm.bpm
+  name: BPMZ5D7R
+  model:
+    type: pyaml.bpm.bpm_simple_model
+    x_pos_index: 807
+    y_pos_index: 807
+    x_pos:
+      type: pyaml_cs_oa.epicsR
+      read_pvname: beam:orbit:x
+      unit: nm
+    y_pos:
+      type: pyaml_cs_oa.epicsR
+      read_pvname: beam:orbit:y
+      unit: nm
+- type: pyaml.bpm.bpm
+  name: BPMZ6D7R
+  model:
+    type: pyaml.bpm.bpm_simple_model
+    x_pos_index: 815
+    y_pos_index: 815
+    x_pos:
+      type: pyaml_cs_oa.epicsR
+      read_pvname: beam:orbit:x
+      unit: nm
+    y_pos:
+      type: pyaml_cs_oa.epicsR
+      read_pvname: beam:orbit:y
+      unit: nm
+- type: pyaml.bpm.bpm
+  name: BPMZ7D7R
+  model:
+    type: pyaml.bpm.bpm_simple_model
+    x_pos_index: 825
+    y_pos_index: 825
+    x_pos:
+      type: pyaml_cs_oa.epicsR
+      read_pvname: beam:orbit:x
+      unit: nm
+    y_pos:
+      type: pyaml_cs_oa.epicsR
+      read_pvname: beam:orbit:y
+      unit: nm
+- type: pyaml.bpm.bpm
+  name: BPMZ1T7R
+  model:
+    type: pyaml.bpm.bpm_simple_model
+    x_pos_index: 838
+    y_pos_index: 838
+    x_pos:
+      type: pyaml_cs_oa.epicsR
+      read_pvname: beam:orbit:x
+      unit: nm
+    y_pos:
+      type: pyaml_cs_oa.epicsR
+      read_pvname: beam:orbit:y
+      unit: nm
+- type: pyaml.bpm.bpm
+  name: BPMZ2T7R
+  model:
+    type: pyaml.bpm.bpm_simple_model
+    x_pos_index: 844
+    y_pos_index: 844
+    x_pos:
+      type: pyaml_cs_oa.epicsR
+      read_pvname: beam:orbit:x
+      unit: nm
+    y_pos:
+      type: pyaml_cs_oa.epicsR
+      read_pvname: beam:orbit:y
+      unit: nm
+- type: pyaml.bpm.bpm
+  name: BPMZ3T7R
+  model:
+    type: pyaml.bpm.bpm_simple_model
+    x_pos_index: 854
+    y_pos_index: 854
+    x_pos:
+      type: pyaml_cs_oa.epicsR
+      read_pvname: beam:orbit:x
+      unit: nm
+    y_pos:
+      type: pyaml_cs_oa.epicsR
+      read_pvname: beam:orbit:y
+      unit: nm
+- type: pyaml.bpm.bpm
+  name: BPMZ4T7R
+  model:
+    type: pyaml.bpm.bpm_simple_model
+    x_pos_index: 864
+    y_pos_index: 864
+    x_pos:
+      type: pyaml_cs_oa.epicsR
+      read_pvname: beam:orbit:x
+      unit: nm
+    y_pos:
+      type: pyaml_cs_oa.epicsR
+      read_pvname: beam:orbit:y
+      unit: nm
+- type: pyaml.bpm.bpm
+  name: BPMZ5T7R
+  model:
+    type: pyaml.bpm.bpm_simple_model
+    x_pos_index: 869
+    y_pos_index: 869
+    x_pos:
+      type: pyaml_cs_oa.epicsR
+      read_pvname: beam:orbit:x
+      unit: nm
+    y_pos:
+      type: pyaml_cs_oa.epicsR
+      read_pvname: beam:orbit:y
+      unit: nm
+- type: pyaml.bpm.bpm
+  name: BPMZ6T7R
+  model:
+    type: pyaml.bpm.bpm_simple_model
+    x_pos_index: 879
+    y_pos_index: 879
+    x_pos:
+      type: pyaml_cs_oa.epicsR
+      read_pvname: beam:orbit:x
+      unit: nm
+    y_pos:
+      type: pyaml_cs_oa.epicsR
+      read_pvname: beam:orbit:y
+      unit: nm
+- type: pyaml.bpm.bpm
+  name: BPMZ7T7R
+  model:
+    type: pyaml.bpm.bpm_simple_model
+    x_pos_index: 889
+    y_pos_index: 889
+    x_pos:
+      type: pyaml_cs_oa.epicsR
+      read_pvname: beam:orbit:x
+      unit: nm
+    y_pos:
+      type: pyaml_cs_oa.epicsR
+      read_pvname: beam:orbit:y
+      unit: nm
+- type: pyaml.bpm.bpm
+  name: BPMZ1D8R
+  model:
+    type: pyaml.bpm.bpm_simple_model
+    x_pos_index: 902
+    y_pos_index: 902
+    x_pos:
+      type: pyaml_cs_oa.epicsR
+      read_pvname: beam:orbit:x
+      unit: nm
+    y_pos:
+      type: pyaml_cs_oa.epicsR
+      read_pvname: beam:orbit:y
+      unit: nm
+- type: pyaml.bpm.bpm
+  name: BPMZ2D8R
+  model:
+    type: pyaml.bpm.bpm_simple_model
+    x_pos_index: 908
+    y_pos_index: 908
+    x_pos:
+      type: pyaml_cs_oa.epicsR
+      read_pvname: beam:orbit:x
+      unit: nm
+    y_pos:
+      type: pyaml_cs_oa.epicsR
+      read_pvname: beam:orbit:y
+      unit: nm
+- type: pyaml.bpm.bpm
+  name: BPMZ3D8R
+  model:
+    type: pyaml.bpm.bpm_simple_model
+    x_pos_index: 918
+    y_pos_index: 918
+    x_pos:
+      type: pyaml_cs_oa.epicsR
+      read_pvname: beam:orbit:x
+      unit: nm
+    y_pos:
+      type: pyaml_cs_oa.epicsR
+      read_pvname: beam:orbit:y
+      unit: nm
+- type: pyaml.bpm.bpm
+  name: BPMZ4D8R
+  model:
+    type: pyaml.bpm.bpm_simple_model
+    x_pos_index: 926
+    y_pos_index: 926
+    x_pos:
+      type: pyaml_cs_oa.epicsR
+      read_pvname: beam:orbit:x
+      unit: nm
+    y_pos:
+      type: pyaml_cs_oa.epicsR
+      read_pvname: beam:orbit:y
+      unit: nm
+- type: pyaml.bpm.bpm
+  name: BPMZ5D8R
+  model:
+    type: pyaml.bpm.bpm_simple_model
+    x_pos_index: 933
+    y_pos_index: 933
+    x_pos:
+      type: pyaml_cs_oa.epicsR
+      read_pvname: beam:orbit:x
+      unit: nm
+    y_pos:
+      type: pyaml_cs_oa.epicsR
+      read_pvname: beam:orbit:y
+      unit: nm
+- type: pyaml.bpm.bpm
+  name: BPMZ6D8R
+  model:
+    type: pyaml.bpm.bpm_simple_model
+    x_pos_index: 941
+    y_pos_index: 941
+    x_pos:
+      type: pyaml_cs_oa.epicsR
+      read_pvname: beam:orbit:x
+      unit: nm
+    y_pos:
+      type: pyaml_cs_oa.epicsR
+      read_pvname: beam:orbit:y
+      unit: nm
+- type: pyaml.bpm.bpm
+  name: BPMZ7D8R
+  model:
+    type: pyaml.bpm.bpm_simple_model
+    x_pos_index: 951
+    y_pos_index: 951
+    x_pos:
+      type: pyaml_cs_oa.epicsR
+      read_pvname: beam:orbit:x
+      unit: nm
+    y_pos:
+      type: pyaml_cs_oa.epicsR
+      read_pvname: beam:orbit:y
+      unit: nm
+- type: pyaml.bpm.bpm
+  name: BPMZ1T8R
+  model:
+    type: pyaml.bpm.bpm_simple_model
+    x_pos_index: 964
+    y_pos_index: 964
+    x_pos:
+      type: pyaml_cs_oa.epicsR
+      read_pvname: beam:orbit:x
+      unit: nm
+    y_pos:
+      type: pyaml_cs_oa.epicsR
+      read_pvname: beam:orbit:y
+      unit: nm
+- type: pyaml.bpm.bpm
+  name: BPMZ2T8R
+  model:
+    type: pyaml.bpm.bpm_simple_model
+    x_pos_index: 970
+    y_pos_index: 970
+    x_pos:
+      type: pyaml_cs_oa.epicsR
+      read_pvname: beam:orbit:x
+      unit: nm
+    y_pos:
+      type: pyaml_cs_oa.epicsR
+      read_pvname: beam:orbit:y
+      unit: nm
+- type: pyaml.bpm.bpm
+  name: BPMZ3T8R
+  model:
+    type: pyaml.bpm.bpm_simple_model
+    x_pos_index: 980
+    y_pos_index: 980
+    x_pos:
+      type: pyaml_cs_oa.epicsR
+      read_pvname: beam:orbit:x
+      unit: nm
+    y_pos:
+      type: pyaml_cs_oa.epicsR
+      read_pvname: beam:orbit:y
+      unit: nm
+- type: pyaml.bpm.bpm
+  name: BPMZ4T8R
+  model:
+    type: pyaml.bpm.bpm_simple_model
+    x_pos_index: 990
+    y_pos_index: 990
+    x_pos:
+      type: pyaml_cs_oa.epicsR
+      read_pvname: beam:orbit:x
+      unit: nm
+    y_pos:
+      type: pyaml_cs_oa.epicsR
+      read_pvname: beam:orbit:y
+      unit: nm
+- type: pyaml.bpm.bpm
+  name: BPMZ5T8R
+  model:
+    type: pyaml.bpm.bpm_simple_model
+    x_pos_index: 1002
+    y_pos_index: 1002
+    x_pos:
+      type: pyaml_cs_oa.epicsR
+      read_pvname: beam:orbit:x
+      unit: nm
+    y_pos:
+      type: pyaml_cs_oa.epicsR
+      read_pvname: beam:orbit:y
+      unit: nm
+- type: pyaml.bpm.bpm
+  name: BPMZ6T8R
+  model:
+    type: pyaml.bpm.bpm_simple_model
+    x_pos_index: 1012
+    y_pos_index: 1012
+    x_pos:
+      type: pyaml_cs_oa.epicsR
+      read_pvname: beam:orbit:x
+      unit: nm
+    y_pos:
+      type: pyaml_cs_oa.epicsR
+      read_pvname: beam:orbit:y
+      unit: nm
+- type: pyaml.bpm.bpm
+  name: BPMZ7T8R
+  model:
+    type: pyaml.bpm.bpm_simple_model
+    x_pos_index: 1022
+    y_pos_index: 1022
+    x_pos:
+      type: pyaml_cs_oa.epicsR
+      read_pvname: beam:orbit:x
+      unit: nm
+    y_pos:
+      type: pyaml_cs_oa.epicsR
+      read_pvname: beam:orbit:y
+      unit: nm
+- type: pyaml.bpm.bpm
+  name: BPMZ1D1R
+  model:
+    type: pyaml.bpm.bpm_simple_model
+    x_pos_index: 1035
+    y_pos_index: 1035
+    x_pos:
+      type: pyaml_cs_oa.epicsR
+      read_pvname: beam:orbit:x
+      unit: nm
+    y_pos:
+      type: pyaml_cs_oa.epicsR
+      read_pvname: beam:orbit:y
+      unit: nm
+- type: pyaml.bpm.bpm
+  name: BPMZ2D1R
+  model:
+    type: pyaml.bpm.bpm_simple_model
+    x_pos_index: 1041
+    y_pos_index: 1041
+    x_pos:
+      type: pyaml_cs_oa.epicsR
+      read_pvname: beam:orbit:x
+      unit: nm
+    y_pos:
+      type: pyaml_cs_oa.epicsR
+      read_pvname: beam:orbit:y
+      unit: nm
+- type: pyaml.bpm.bpm
+  name: BPMZ3D1R
+  model:
+    type: pyaml.bpm.bpm_simple_model
+    x_pos_index: 1051
+    y_pos_index: 1051
+    x_pos:
+      type: pyaml_cs_oa.epicsR
+      read_pvname: beam:orbit:x
+      unit: nm
+    y_pos:
+      type: pyaml_cs_oa.epicsR
+      read_pvname: beam:orbit:y
+      unit: nm
+- type: pyaml.bpm.bpm
+  name: BPMZ4D1R
+  model:
+    type: pyaml.bpm.bpm_simple_model
+    x_pos_index: 1059
+    y_pos_index: 1059
+    x_pos:
+      type: pyaml_cs_oa.epicsR
+      read_pvname: beam:orbit:x
+      unit: nm
+    y_pos:
+      type: pyaml_cs_oa.epicsR
+      read_pvname: beam:orbit:y
+      unit: nm
+- type: pyaml.bpm.bpm
+  name: BPMZ41D1R
+  model:
+    type: pyaml.bpm.bpm_simple_model
+    x_pos_index: 1063
+    y_pos_index: 1063
+    x_pos:
+      type: pyaml_cs_oa.epicsR
+      read_pvname: beam:orbit:x
+      unit: nm
+    y_pos:
+      type: pyaml_cs_oa.epicsR
+      read_pvname: beam:orbit:y
+      unit: nm
+- type: pyaml.bpm.bpm
+  name: BPMZ42D1R
+  model:
+    type: pyaml.bpm.bpm_simple_model
+    x_pos_index: 1065
+    y_pos_index: 1065
+    x_pos:
+      type: pyaml_cs_oa.epicsR
+      read_pvname: beam:orbit:x
+      unit: nm
+    y_pos:
+      type: pyaml_cs_oa.epicsR
+      read_pvname: beam:orbit:y
+      unit: nm

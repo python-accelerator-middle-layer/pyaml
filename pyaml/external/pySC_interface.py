@@ -1,3 +1,4 @@
+import time
 from typing import TYPE_CHECKING, Optional, Tuple
 
 import numpy as np
@@ -8,6 +9,8 @@ from ..common.exception import PyAMLException
 
 
 class pySCInterface:
+    set_wait_time: float = 0
+
     def __init__(
         self,
         element_holder: "ElementHolder",
@@ -36,6 +39,7 @@ class pySCInterface:
     def set(self, name: str, value: float) -> None:
         magnet = self.element_holder.get_magnet(name=name)
         magnet.strength.set(value=value)  # ideally set_and_wait but not implemented
+        time.sleep(self.set_wait_time)
         return
 
     def get_rf_main_frequency(self) -> float:

@@ -2,13 +2,13 @@ import logging
 from pathlib import Path
 from typing import List, Optional
 
+import pySC
 from pydantic import BaseModel, ConfigDict
+from pySC.apps import measure_ORM
+from pySC.apps.codes import ResponseCode
 
 from ..common.element_holder import ElementHolder
 from ..common.exception import PyAMLException
-from ..external.pySC import pySC
-from ..external.pySC.pySC.apps import measure_ORM
-from ..external.pySC.pySC.apps.codes import ResponseCode
 from ..external.pySC_interface import pySCInterface
 
 logger = logging.getLogger(__name__)
@@ -51,11 +51,14 @@ class OrbitResponseMatrix(object):
         self.corrector_delta = cfg.corrector_delta
         self.latest_measurement = None
 
-    def measure(self, corrector_names: Optional[List[str]] = None):
+    def measure(
+        self, corrector_names: Optional[List[str]] = None, set_wait_time: float = 0
+    ):
         interface = pySCInterface(
             element_holder=self.element_holder,
             bpm_array_name=self.bpm_array_name,
         )
+        interface.set_wait_time = set_wait_time
 
         if corrector_names is None:
             logger.info(
@@ -69,6 +72,19 @@ class OrbitResponseMatrix(object):
                 self.vcorr_array_name
             ).names()
             corrector_names = hcorrector_names + vcorrector_names
+        else:
+            all_hcorrector_names = self.element_holder.get_magnets(
+                self.hcorr_array_name
+            ).names()
+            all_vcorrector_names = self.element_holder.get_magnets(
+                self.vcorr_array_name
+            ).names()
+            hcorrector_names = [
+                corr for corr in corrector_names if corr in all_hcorrector_names
+            ]
+            vcorrector_names = [
+                corr for corr in corrector_names if corr in all_vcorrector_names
+            ]
 
         generator = measure_ORM(
             interface=interface,
@@ -87,6 +103,9 @@ class OrbitResponseMatrix(object):
             self.bpm_array_name
         ).names()
         self.latest_measurement = response_data.model_dump()
+        len_h = len(hcorrector_names)
+        len_v = len(vcorrector_names)
+        self.latest_measurement["inputs_plane"] = ["H"] * len_h + ["V"] * len_v
 
     def get(self):
         return self.latest_measurement

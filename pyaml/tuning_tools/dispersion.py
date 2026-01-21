@@ -3,9 +3,9 @@ from pathlib import Path
 from typing import List, Optional
 
 from pydantic import BaseModel, ConfigDict
+from pySC.apps import measure_dispersion
 
 from ..common.element_holder import ElementHolder
-from ..external.pySC.pySC.apps import measure_dispersion
 from ..external.pySC_interface import pySCInterface
 
 logger = logging.getLogger(__name__)
@@ -44,12 +44,13 @@ class Dispersion(object):
         self.frequency_delta = cfg.frequency_delta
         self.latest_measurement = None
 
-    def measure(self):
+    def measure(self, set_waiting_time: float = 0):
         interface = pySCInterface(
             element_holder=self.element_holder,
             bpm_array_name=self.bpm_array_name,
             rf_plant_name=self.rf_plant_name,
         )
+        interface.set_wait_time = set_waiting_time
 
         generator = measure_dispersion(
             interface=interface,
