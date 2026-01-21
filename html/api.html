@@ -51,7 +51,7 @@
     <script>DOCUMENTATION_OPTIONS.pagename = 'api';</script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="pyaml.arrays" href="api/pyaml.arrays.html" />
+    <link rel="next" title="pyaml.accelerator" href="api/pyaml.accelerator.html" />
     <link rel="prev" title="use of magnet arrays" href="notebooks/arrays.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
@@ -307,6 +307,7 @@
   <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
   <div class="bd-toc-item navbar-nav"><p aria-level="2" class="caption" role="heading"><span class="caption-text">Packages:</span></p>
 <ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="api/pyaml.accelerator.html">pyaml.accelerator</a></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="api/pyaml.arrays.html">pyaml.arrays</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="api/pyaml.arrays.array.html">pyaml.arrays.array</a></li>
 <li class="toctree-l2"><a class="reference internal" href="api/pyaml.arrays.bpm.html">pyaml.arrays.bpm</a></li>
@@ -350,6 +351,7 @@
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="api/pyaml.control.html">pyaml.control</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="api/pyaml.control.abstract_impl.html">pyaml.control.abstract_impl</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/pyaml.control.controlsystem.html">pyaml.control.controlsystem</a></li>
 <li class="toctree-l2"><a class="reference internal" href="api/pyaml.control.deviceaccess.html">pyaml.control.deviceaccess</a></li>
 <li class="toctree-l2"><a class="reference internal" href="api/pyaml.control.deviceaccesslist.html">pyaml.control.deviceaccesslist</a></li>
 <li class="toctree-l2"><a class="reference internal" href="api/pyaml.control.readback_value.html">pyaml.control.readback_value</a></li>
@@ -369,6 +371,7 @@
 <li class="toctree-l2"><a class="reference internal" href="api/pyaml.lattice.element.html">pyaml.lattice.element</a></li>
 <li class="toctree-l2"><a class="reference internal" href="api/pyaml.lattice.lattice_elements_linker.html">pyaml.lattice.lattice_elements_linker</a></li>
 <li class="toctree-l2"><a class="reference internal" href="api/pyaml.lattice.polynom_info.html">pyaml.lattice.polynom_info</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/pyaml.lattice.simulator.html">pyaml.lattice.simulator</a></li>
 </ul>
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="api/pyaml.magnet.html">pyaml.magnet</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
@@ -462,37 +465,40 @@
 <p>API reference for pyAML.</p>
 <div class="pst-scrollable-table-container"><table class="autosummary longtable table">
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="api/pyaml.arrays.html#module-pyaml.arrays" title="pyaml.arrays"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pyaml.arrays</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/pyaml.accelerator.html#module-pyaml.accelerator" title="pyaml.accelerator"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pyaml.accelerator</span></code></a></p></td>
+<td><p>Accelerator class</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="api/pyaml.arrays.html#module-pyaml.arrays" title="pyaml.arrays"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pyaml.arrays</span></code></a></p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="api/pyaml.bpm.html#module-pyaml.bpm" title="pyaml.bpm"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pyaml.bpm</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/pyaml.bpm.html#module-pyaml.bpm" title="pyaml.bpm"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pyaml.bpm</span></code></a></p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="api/pyaml.common.html#module-pyaml.common" title="pyaml.common"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pyaml.common</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="api/pyaml.common.html#module-pyaml.common" title="pyaml.common"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pyaml.common</span></code></a></p></td>
 <td><p>PyAML common module Contains code common to both simulator and control system</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="api/pyaml.configuration.html#module-pyaml.configuration" title="pyaml.configuration"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pyaml.configuration</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/pyaml.configuration.html#module-pyaml.configuration" title="pyaml.configuration"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pyaml.configuration</span></code></a></p></td>
 <td><p>PyAML configuration module</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="api/pyaml.control.html#module-pyaml.control" title="pyaml.control"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pyaml.control</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="api/pyaml.control.html#module-pyaml.control" title="pyaml.control"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pyaml.control</span></code></a></p></td>
 <td><p>PyAML Control module Contains low level access to control system</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="api/pyaml.diagnostics.html#module-pyaml.diagnostics" title="pyaml.diagnostics"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pyaml.diagnostics</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/pyaml.diagnostics.html#module-pyaml.diagnostics" title="pyaml.diagnostics"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pyaml.diagnostics</span></code></a></p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="api/pyaml.external.html#module-pyaml.external" title="pyaml.external"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pyaml.external</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="api/pyaml.external.html#module-pyaml.external" title="pyaml.external"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pyaml.external</span></code></a></p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="api/pyaml.lattice.html#module-pyaml.lattice" title="pyaml.lattice"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pyaml.lattice</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/pyaml.lattice.html#module-pyaml.lattice" title="pyaml.lattice"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pyaml.lattice</span></code></a></p></td>
 <td><p>PyAML Lattice module Provides access to simulator engine</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="api/pyaml.magnet.html#module-pyaml.magnet" title="pyaml.magnet"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pyaml.magnet</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="api/pyaml.magnet.html#module-pyaml.magnet" title="pyaml.magnet"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pyaml.magnet</span></code></a></p></td>
 <td><p>PyAML Magnet module</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="api/pyaml.rf.html#module-pyaml.rf" title="pyaml.rf"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pyaml.rf</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/pyaml.rf.html#module-pyaml.rf" title="pyaml.rf"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pyaml.rf</span></code></a></p></td>
 <td><p>PyAML RF module</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="api/pyaml.tuning_tools.html#module-pyaml.tuning_tools" title="pyaml.tuning_tools"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pyaml.tuning_tools</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="api/pyaml.tuning_tools.html#module-pyaml.tuning_tools" title="pyaml.tuning_tools"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pyaml.tuning_tools</span></code></a></p></td>
 <td><p>tuning tools package
 
 :2: (WARNING/2) Title underline too short.
@@ -525,11 +531,11 @@ tuning tools package
       </div>
     </a>
     <a class="right-next"
-       href="api/pyaml.arrays.html"
+       href="api/pyaml.accelerator.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">pyaml.arrays</p>
+        <p class="prev-next-title">pyaml.accelerator</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>

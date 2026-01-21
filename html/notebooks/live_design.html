@@ -395,39 +395,6 @@
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
-<span class="ne">ModuleNotFoundError</span><span class="g g-Whitespace">                       </span>Traceback (most recent call last)
-<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">line</span> <span class="mi">5</span>
-<span class="g g-Whitespace">      </span><span class="mi">1</span> <span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
-<span class="g g-Whitespace">      </span><span class="mi">3</span> <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
-<span class="ne">----&gt; </span><span class="mi">5</span> <span class="kn">from</span><span class="w"> </span><span class="nn">pyaml.accelerator</span><span class="w"> </span><span class="kn">import</span> <span class="n">Accelerator</span>
-
-<span class="n">File</span> <span class="o">/</span><span class="n">opt</span><span class="o">/</span><span class="n">hostedtoolcache</span><span class="o">/</span><span class="n">Python</span><span class="o">/</span><span class="mf">3.14.2</span><span class="o">/</span><span class="n">x64</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">python3</span><span class="mf">.14</span><span class="o">/</span><span class="n">site</span><span class="o">-</span><span class="n">packages</span><span class="o">/</span><span class="n">pyaml</span><span class="o">/</span><span class="n">accelerator</span><span class="o">.</span><span class="n">py</span><span class="p">:</span><span class="mi">14</span>
-<span class="g g-Whitespace">     </span><span class="mi">12</span> <span class="kn">from</span><span class="w"> </span><span class="nn">.configuration.factory</span><span class="w"> </span><span class="kn">import</span> <span class="n">Factory</span>
-<span class="g g-Whitespace">     </span><span class="mi">13</span> <span class="kn">from</span><span class="w"> </span><span class="nn">.configuration.fileloader</span><span class="w"> </span><span class="kn">import</span> <span class="n">load</span><span class="p">,</span> <span class="n">set_root_folder</span>
-<span class="ne">---&gt; </span><span class="mi">14</span> <span class="kn">from</span><span class="w"> </span><span class="nn">.control.controlsystem</span><span class="w"> </span><span class="kn">import</span> <span class="n">ControlSystem</span>
-<span class="g g-Whitespace">     </span><span class="mi">15</span> <span class="kn">from</span><span class="w"> </span><span class="nn">.lattice.simulator</span><span class="w"> </span><span class="kn">import</span> <span class="n">Simulator</span>
-<span class="g g-Whitespace">     </span><span class="mi">17</span> <span class="c1"># Define the main class name for this module</span>
-
-<span class="n">File</span> <span class="o">/</span><span class="n">opt</span><span class="o">/</span><span class="n">hostedtoolcache</span><span class="o">/</span><span class="n">Python</span><span class="o">/</span><span class="mf">3.14.2</span><span class="o">/</span><span class="n">x64</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">python3</span><span class="mf">.14</span><span class="o">/</span><span class="n">site</span><span class="o">-</span><span class="n">packages</span><span class="o">/</span><span class="n">pyaml</span><span class="o">/</span><span class="n">control</span><span class="o">/</span><span class="n">controlsystem</span><span class="o">.</span><span class="n">py</span><span class="p">:</span><span class="mi">34</span>
-<span class="g g-Whitespace">     </span><span class="mi">32</span> <span class="kn">from</span><span class="w"> </span><span class="nn">..rf.rf_plant</span><span class="w"> </span><span class="kn">import</span> <span class="n">RFPlant</span><span class="p">,</span> <span class="n">RWTotalVoltage</span>
-<span class="g g-Whitespace">     </span><span class="mi">33</span> <span class="kn">from</span><span class="w"> </span><span class="nn">..rf.rf_transmitter</span><span class="w"> </span><span class="kn">import</span> <span class="n">RFTransmitter</span>
-<span class="ne">---&gt; </span><span class="mi">34</span> <span class="kn">from</span><span class="w"> </span><span class="nn">..tuning_tools.orbit</span><span class="w"> </span><span class="kn">import</span> <span class="n">Orbit</span>
-<span class="g g-Whitespace">     </span><span class="mi">35</span> <span class="kn">from</span><span class="w"> </span><span class="nn">..tuning_tools.tune</span><span class="w"> </span><span class="kn">import</span> <span class="n">Tune</span>
-<span class="g g-Whitespace">     </span><span class="mi">36</span> <span class="kn">from</span><span class="w"> </span><span class="nn">.deviceaccess</span><span class="w"> </span><span class="kn">import</span> <span class="n">DeviceAccess</span>
-
-<span class="n">File</span> <span class="o">/</span><span class="n">opt</span><span class="o">/</span><span class="n">hostedtoolcache</span><span class="o">/</span><span class="n">Python</span><span class="o">/</span><span class="mf">3.14.2</span><span class="o">/</span><span class="n">x64</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">python3</span><span class="mf">.14</span><span class="o">/</span><span class="n">site</span><span class="o">-</span><span class="n">packages</span><span class="o">/</span><span class="n">pyaml</span><span class="o">/</span><span class="n">tuning_tools</span><span class="o">/</span><span class="n">orbit</span><span class="o">.</span><span class="n">py</span><span class="p">:</span><span class="mi">21</span>
-<span class="g g-Whitespace">     </span><span class="mi">19</span> <span class="kn">from</span><span class="w"> </span><span class="nn">..configuration.factory</span><span class="w"> </span><span class="kn">import</span> <span class="n">Factory</span>
-<span class="g g-Whitespace">     </span><span class="mi">20</span> <span class="kn">from</span><span class="w"> </span><span class="nn">..configuration.fileloader</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_path</span><span class="p">,</span> <span class="n">load</span>
-<span class="ne">---&gt; </span><span class="mi">21</span> <span class="kn">from</span><span class="w"> </span><span class="nn">..external.pySC.pySC</span><span class="w"> </span><span class="kn">import</span> <span class="n">ResponseMatrix</span> <span class="k">as</span> <span class="n">pySC_ResponseMatrix</span>
-<span class="g g-Whitespace">     </span><span class="mi">22</span> <span class="kn">from</span><span class="w"> </span><span class="nn">..external.pySC.pySC.apps</span><span class="w"> </span><span class="kn">import</span> <span class="n">orbit_correction</span>
-<span class="g g-Whitespace">     </span><span class="mi">23</span> <span class="kn">from</span><span class="w"> </span><span class="nn">..external.pySC_interface</span><span class="w"> </span><span class="kn">import</span> <span class="n">pySCInterface</span>
-
-<span class="ne">ModuleNotFoundError</span>: No module named &#39;pyaml.external.pySC&#39;
-</pre></div>
-</div>
-</div>
 </div>
 <p>instantiate a pyAML accelerator</p>
 <div class="cell docutils container">
@@ -438,11 +405,56 @@
 </div>
 <div class="cell_output docutils container">
 <div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
-<span class="ne">NameError</span><span class="g g-Whitespace">                                 </span>Traceback (most recent call last)
+<span class="ne">PyAMLConfigException</span><span class="g g-Whitespace">                      </span>Traceback (most recent call last)
 <span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">line</span> <span class="mi">1</span>
 <span class="ne">----&gt; </span><span class="mi">1</span> <span class="n">SR</span><span class="p">:</span> <span class="n">Accelerator</span> <span class="o">=</span> <span class="n">Accelerator</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s2">&quot;../../tests/config/EBSTune.yaml&quot;</span><span class="p">)</span>
 
-<span class="ne">NameError</span>: name &#39;Accelerator&#39; is not defined
+<span class="nn">File /opt/hostedtoolcache/Python/3.14.2/x64/lib/python3.14/site-packages/pyaml/accelerator.py:173,</span> in <span class="ni">Accelerator.load</span><span class="nt">(filename, use_fast_loader, ignore_external)</span>
+<span class="g g-Whitespace">    </span><span class="mi">171</span> <span class="n">set_root_folder</span><span class="p">(</span><span class="n">rootfolder</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">172</span> <span class="n">config_dict</span> <span class="o">=</span> <span class="n">load</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">filename</span><span class="p">),</span> <span class="kc">None</span><span class="p">,</span> <span class="n">use_fast_loader</span><span class="p">)</span>
+<span class="ne">--&gt; </span><span class="mi">173</span> <span class="k">return</span> <span class="n">Accelerator</span><span class="o">.</span><span class="n">from_dict</span><span class="p">(</span><span class="n">config_dict</span><span class="p">)</span>
+
+<span class="nn">File /opt/hostedtoolcache/Python/3.14.2/x64/lib/python3.14/site-packages/pyaml/accelerator.py:143,</span> in <span class="ni">Accelerator.from_dict</span><span class="nt">(config_dict, ignore_external)</span>
+<span class="g g-Whitespace">    </span><span class="mi">140</span> <span class="k">if</span> <span class="n">ignore_external</span><span class="p">:</span>
+<span class="g g-Whitespace">    </span><span class="mi">141</span>     <span class="c1"># control systems are external, so remove controls field</span>
+<span class="g g-Whitespace">    </span><span class="mi">142</span>     <span class="n">config_dict</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;controls&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+<span class="ne">--&gt; </span><span class="mi">143</span> <span class="k">return</span> <span class="n">Factory</span><span class="o">.</span><span class="n">depth_first_build</span><span class="p">(</span><span class="n">config_dict</span><span class="p">,</span> <span class="n">ignore_external</span><span class="p">)</span>
+
+<span class="nn">File /opt/hostedtoolcache/Python/3.14.2/x64/lib/python3.14/site-packages/pyaml/configuration/factory.py:175,</span> in <span class="ni">PyAMLFactory.depth_first_build</span><span class="nt">(self, d, ignore_external)</span>
+<span class="g g-Whitespace">    </span><span class="mi">173</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">key</span> <span class="o">==</span> <span class="s2">&quot;__fieldlocations__&quot;</span><span class="p">:</span>
+<span class="g g-Whitespace">    </span><span class="mi">174</span>     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">dict</span><span class="p">)</span> <span class="ow">or</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+<span class="ne">--&gt; </span><span class="mi">175</span>         <span class="n">obj</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">depth_first_build</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">ignore_external</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">176</span>         <span class="c1"># Replace the inner dict by the object itself</span>
+<span class="g g-Whitespace">    </span><span class="mi">177</span>         <span class="n">d</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">obj</span>
+
+<span class="nn">File /opt/hostedtoolcache/Python/3.14.2/x64/lib/python3.14/site-packages/pyaml/configuration/factory.py:165,</span> in <span class="ni">PyAMLFactory.depth_first_build</span><span class="nt">(self, d, ignore_external)</span>
+<span class="g g-Whitespace">    </span><span class="mi">163</span> <span class="k">for</span> <span class="n">_index</span><span class="p">,</span> <span class="n">e</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">d</span><span class="p">):</span>
+<span class="g g-Whitespace">    </span><span class="mi">164</span>     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="nb">dict</span><span class="p">)</span> <span class="ow">or</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+<span class="ne">--&gt; </span><span class="mi">165</span>         <span class="n">obj</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">depth_first_build</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="n">ignore_external</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">166</span>         <span class="n">l</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">167</span>     <span class="k">else</span><span class="p">:</span>
+
+<span class="nn">File /opt/hostedtoolcache/Python/3.14.2/x64/lib/python3.14/site-packages/pyaml/configuration/factory.py:180,</span> in <span class="ni">PyAMLFactory.depth_first_build</span><span class="nt">(self, d, ignore_external)</span>
+<span class="g g-Whitespace">    </span><span class="mi">177</span>                 <span class="n">d</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">obj</span>
+<span class="g g-Whitespace">    </span><span class="mi">179</span>     <span class="c1"># We are now on leaf (no nested object), we can construct</span>
+<span class="ne">--&gt; </span><span class="mi">180</span>     <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">build_object</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">ignore_external</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">182</span> <span class="k">raise</span> <span class="n">PyAMLConfigException</span><span class="p">(</span>
+<span class="g g-Whitespace">    </span><span class="mi">183</span>     <span class="s2">&quot;Unexpected element found. &#39;dict&#39; or &#39;list&#39; expected &quot;</span>
+<span class="g g-Whitespace">    </span><span class="mi">184</span>     <span class="s2">&quot;but got &#39;</span><span class="si">{d.__class__.__name__}</span><span class="s2">&#39;&quot;</span>
+<span class="g g-Whitespace">    </span><span class="mi">185</span> <span class="p">)</span>
+
+<span class="nn">File /opt/hostedtoolcache/Python/3.14.2/x64/lib/python3.14/site-packages/pyaml/configuration/factory.py:95,</span> in <span class="ni">PyAMLFactory.build_object</span><span class="nt">(self, d, ignore_external)</span>
+<span class="g g-Whitespace">     </span><span class="mi">92</span> <span class="k">except</span> <span class="ne">ModuleNotFoundError</span> <span class="k">as</span> <span class="n">ex</span><span class="p">:</span>
+<span class="g g-Whitespace">     </span><span class="mi">93</span>     <span class="k">if</span> <span class="ow">not</span> <span class="n">ignore_external</span><span class="p">:</span>
+<span class="g g-Whitespace">     </span><span class="mi">94</span>         <span class="c1"># Discard module not found stack trace</span>
+<span class="ne">---&gt; </span><span class="mi">95</span>         <span class="k">raise</span> <span class="n">PyAMLConfigException</span><span class="p">(</span>
+<span class="g g-Whitespace">     </span><span class="mi">96</span>             <span class="s2">&quot;Module referenced in type cannot be found:&quot;</span>
+<span class="g g-Whitespace">     </span><span class="mi">97</span>             <span class="o">+</span> <span class="sa">f</span><span class="s2">&quot;&#39;</span><span class="si">{</span><span class="n">type_str</span><span class="si">}</span><span class="s2">&#39; </span><span class="si">{</span><span class="n">location_str</span><span class="si">}</span><span class="s2">&quot;</span>
+<span class="g g-Whitespace">     </span><span class="mi">98</span>         <span class="p">)</span> <span class="kn">from</span><span class="w"> </span><span class="kc">None</span>
+<span class="g g-Whitespace">     </span><span class="mi">99</span>     <span class="k">else</span><span class="p">:</span>
+<span class="g g-Whitespace">    </span><span class="mi">100</span>         <span class="k">return</span> <span class="kc">None</span>
+
+<span class="ne">PyAMLConfigException</span>: Module referenced in type cannot be found:&#39;tango.pyaml.controlsystem&#39; /home/runner/work/pyaml/pyaml/tests/config/EBSTune.yaml at line 10, column 5.
 </pre></div>
 </div>
 </div>
