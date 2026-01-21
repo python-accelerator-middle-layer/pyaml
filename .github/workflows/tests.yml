@@ -32,6 +32,7 @@ jobs:
         pip install scipy
         pip install pydantic
         pip install accelerator-toolbox
+        pip install accelerator-commissioning
         pip install matplotlib
         pip install h5py
         pip install PyYaml

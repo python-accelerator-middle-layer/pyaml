@@ -2,13 +2,13 @@ import logging
 from pathlib import Path
 from typing import List, Optional
 
+import pySC
 from pydantic import BaseModel, ConfigDict
+from pySC.apps import measure_ORM
+from pySC.apps.codes import ResponseCode
 
 from ..common.element_holder import ElementHolder
 from ..common.exception import PyAMLException
-from ..external.pySC import pySC
-from ..external.pySC.pySC.apps import measure_ORM
-from ..external.pySC.pySC.apps.codes import ResponseCode
 from ..external.pySC_interface import pySCInterface
 
 logger = logging.getLogger(__name__)

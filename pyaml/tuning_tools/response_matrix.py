@@ -32,8 +32,3 @@ class ConfigModel(BaseModel):
 class ResponseMatrix(object):
     def __init__(self, cfg: ConfigModel):
         self._cfg = cfg
-
-        # self.matrix = cfg.matrix
-        # self.input_names = cfg.input_names
-        # self.output_names = cfg.output_names
-        # self.rf_response = cfg.rf_response
