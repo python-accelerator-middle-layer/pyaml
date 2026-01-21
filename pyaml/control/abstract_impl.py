@@ -151,12 +151,18 @@ class CSBPMArrayMapper(CSScalarAggregator):
         raise Exception("BPM are not writable")
 
     def get(self) -> NDArray[np.float64]:
-        # TODO read using DeviceAccessList
-        allValues = []
-        for i, d in enumerate(self._devs):
-            v = d.get()
-            allValues.extend(v[self._indices[i]])
-        return np.array(allValues)
+        if len(self._devs) == 1:
+            v = self._devs[0].get()
+            return v[self._indices[0]]
+        else:
+            # TODO read using DeviceAccessList
+            v0 = self._devs[0].get()[self._indices[0]]
+            v1 = self._devs[1].get()[self._indices[1]]
+            # Interleave
+            xy = np.zeros(v0.size + v1.size)
+            xy[0::2] = v0
+            xy[1::2] = v1
+            return xy
 
     def readback(self) -> np.array:
         return self.get()

@@ -44,12 +44,13 @@ class Dispersion(object):
         self.frequency_delta = cfg.frequency_delta
         self.latest_measurement = None
 
-    def measure(self):
+    def measure(self, set_waiting_time: float = 0):
         interface = pySCInterface(
             element_holder=self.element_holder,
             bpm_array_name=self.bpm_array_name,
             rf_plant_name=self.rf_plant_name,
         )
+        interface.set_wait_time = set_waiting_time
 
         generator = measure_dispersion(
             interface=interface,
