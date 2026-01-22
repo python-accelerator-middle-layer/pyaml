@@ -87,3 +87,17 @@ class MultiAttribute(DeviceAccessList):
 
     def get_last_nb_written(self) -> int:
         return self.__last_nb_written
+
+    def get_range(self) -> list[float]:
+        attr_range: list[float] = []
+        for device in self:
+            attr_range.extend(device.get_range())
+        return attr_range
+
+    def check_device_availability(self) -> bool:
+        available = False
+        for device in self:
+            available = device.check_device_availability()
+            if not available:
+                break
+        return available
