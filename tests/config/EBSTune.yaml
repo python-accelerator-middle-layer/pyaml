@@ -8,7 +8,7 @@ simulators:
     name: design
 controls:
   - type: tango.pyaml.controlsystem
-    tango_host: ebs-simu-3:10000
+    tango_host: ebs-simu-2:10000
     name: live
 data_folder: /data/store
 arrays:
@@ -1021,6 +1021,7 @@ devices:
     powerconverter:
       type: tango.pyaml.attribute
       attribute: srmag/vps-qd2/c04-e/current
+      range: [10,109]
       unit: A
 - type: pyaml.magnet.quadrupole
   name: QD2A-C05
