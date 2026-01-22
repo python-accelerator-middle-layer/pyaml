@@ -579,3 +579,24 @@ class RBetatronTuneArray(abstract.ReadFloatArray):
 
     def unit(self) -> str:
         return "1"
+
+# ------------------------------------------------------------------------------
+
+
+class RChromaticityArray(abstract.ReadFloatArray):
+    """
+    Class providing read-only access to the chromaticity of a ring.
+    """
+
+    def __init__(self, ring: at.Lattice):
+        self.__ring = ring
+
+    def _update_chromaticity_monitor(self, chromaticity_monitor):
+        """Use to attach the rigth object in control.abstract_impl.RChromaticityArray. Nothing needed here"""
+        pass
+
+    def get(self) -> float:
+        return self.__ring.get_chrom()[:2]
+
+    def unit(self) -> str:
+        return "1"
