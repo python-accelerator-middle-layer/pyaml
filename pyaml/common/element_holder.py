@@ -11,6 +11,7 @@ from ..arrays.magnet_array import MagnetArray
 from ..arrays.serialized_magnet_array import SerializedMagnetsArray
 from ..bpm.bpm import BPM
 from ..common.exception import PyAMLException
+from ..diagnostics.chromaticity_monitor import ChomaticityMonitor
 from ..diagnostics.tune_monitor import BetatronTuneMonitor
 from ..magnet.cfm_magnet import CombinedFunctionMagnet
 from ..magnet.magnet import Magnet
@@ -220,6 +221,15 @@ class ElementHolder(object):
 
     def add_betatron_tune_monitor(self, tune_monitor: Element):
         self.__add(self.__DIAG, tune_monitor)
+
+    # Chromaticity monitor
+
+    def get_chromaticity_monitor(self, name: str) -> ChomaticityMonitor:
+        obj = self.__get("Diagnostic", name, self.__DIAG)
+        return obj
+
+    def add_chromaticity_monitor(self, chromaticity_monitor: Element):
+        self.__add(self.__DIAG, chromaticity_monitor)
 
     # Tuning tools
 
