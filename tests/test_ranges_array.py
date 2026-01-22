@@ -4,7 +4,6 @@ import pyaml
 from pyaml.accelerator import Accelerator
 
 
-
 @pytest.mark.parametrize(
     "install_test_package",
     [{"name": "tango-pyaml", "path": "tests/dummy_cs/tango-pyaml"}],
