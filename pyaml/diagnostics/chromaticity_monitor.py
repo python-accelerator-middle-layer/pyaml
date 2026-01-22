@@ -289,7 +289,6 @@ class ChomaticityMonitor(Element):
                     if o != 0:
                         title += " + "
 
-                print(title)
                 ax.plot(delta, np.polyval(coefs[::-1], delta))
                 ax.set_title(title)
                 ax.set_xlabel("Momentum Shift, dp/p [%]")
