@@ -11,7 +11,6 @@ from time import sleep
 import matplotlib.pyplot as plt
 import numpy as np
 from pydantic import ConfigDict
-from scipy.optimize import curve_fit
 
 PYAMLCLASS = "ChomaticityMonitor"
 
@@ -46,9 +45,8 @@ class ConfigModel(ElementConfigModel):
         Default time sleep between two tune measurment [default: 2.0]
     Sleep_between_RFvar: float
         Default time sleep after RF frequency variation [default: 5.0]
-    fit_method: str
-        Default fitting method used for chromaticity between "lin" for
-        linear or "quad" for quadratique [default: "lin"]
+    fit_order: int
+        Fitting order [default: 1]
     """
 
     betatron_tune: str
@@ -60,7 +58,7 @@ class ConfigModel(ElementConfigModel):
     N_tune_meas: int = 1
     Sleep_between_meas: float = 2.0
     Sleep_between_RFvar: float = 5.0
-    fit_method: str = "lin"
+    fit_order: int = 1
 
 
 class ChomaticityMonitor(Element):
@@ -107,7 +105,7 @@ class ChomaticityMonitor(Element):
         N_tune_meas: int = None,
         Sleep_between_meas: float = None,
         Sleep_between_RFvar: float = None,
-        fit_method: str = None,
+        fit_order: int = None,
         do_plot: bool = None,
     ):
         """
@@ -133,9 +131,8 @@ class ChomaticityMonitor(Element):
             Default time sleep between two tune measurment [default: from config]
         Sleep_between_RFvar: float
             Default time sleep after RF frequency variation [default: from config]
-        fit_method: str
-            Default fitting method used for chromaticity between "lin" for
-            linear or "quad" for quadratique [default: from config]
+        fit_order: int
+            Fitting order [default: 1]
         do_plot : bool
             Do you want to plot the fittinf results ?
         """
@@ -153,8 +150,8 @@ class ChomaticityMonitor(Element):
             Sleep_between_meas = self._cfg.Sleep_between_meas
         if Sleep_between_RFvar is None:
             Sleep_between_RFvar = self._cfg.Sleep_between_RFvar
-        if fit_method is None:
-            fit_method = self._cfg.fit_method
+        if fit_order is None:
+            fit_order = self._cfg.fit_order
         if abs(E_delta) > abs(Max_E_delta):
             # TODO : Add logger to warm that E_delta is to large
             return np.array([None, None])
@@ -171,7 +168,7 @@ class ChomaticityMonitor(Element):
             Sleep_between_RFvar=Sleep_between_RFvar,
         )
         chrom = self.fit_chromaticity(
-            delta=delta, NuX=NuX, NuY=NuY, method=fit_method, do_plot=do_plot
+            delta=delta, NuX=NuX, NuY=NuY, order=fit_order, do_plot=do_plot
         )
         return chrom
 
@@ -239,7 +236,7 @@ class ChomaticityMonitor(Element):
 
         return (delta, NuX, NuY)
 
-    def fit_chromaticity(self, delta, NuX, NuY, method, do_plot):
+    def fit_chromaticity(self, delta, NuX, NuY, order, do_plot):
         """
         Compute chromaticity from measurement data.
 
@@ -251,8 +248,8 @@ class ChomaticityMonitor(Element):
             Horizontal tune measured.
         NuZ : array of float
             Vertical tune measured.
-        method : {"lin" or "quad"}
-            "lin" uses a linear fit and "quad" a 2nd order polynomial.
+        order : int
+            order of polynomial used for fit
         plot : bool, optional
             If True, plot the fit.
             Plots are made but not shown. Use plt.show() to show it.
@@ -273,36 +270,27 @@ class ChomaticityMonitor(Element):
             #     tune0 = np.mean(Nu[N_step_delta//2,:])
 
             dtune = np.mean(Nu[:, :], 1)
-
-            if method == "lin":
-
-                def linear_fit(x, a, b):
-                    return a * x + b
-
-                popt_lin, _ = curve_fit(linear_fit, delta, dtune)
-                chro.append(popt_lin[0])
-            elif method == "quad":
-
-                def quad_fit(x, a, b, c):
-                    return a * x**2 + b * x + c
-
-                popt_quad, _ = curve_fit(quad_fit, delta, dtune)
-                chro.append(popt_quad[1])
+            coefs = np.polynomial.polynomial.polyfit(delta, dtune, order)
+            chro.append(coefs[1])
 
             if do_plot:
                 fig = plt.figure("Chromaticity_measurement")
                 ax = fig.add_subplot(2, 1, 1 + i)
                 ax.scatter(delta, dtune)
-                if method == "lin":
-                    ax.plot(delta, linear_fit(delta, popt_lin[0], popt_lin[1]), "--")
-                    title = "{:.4f}dp/p+{:.8f}".format(*popt_lin)
-                elif method == "quad":
-                    ax.plot(
-                        delta,
-                        quad_fit(delta, popt_quad[0], popt_quad[1], popt_quad[2]),
-                        "--",
-                    )
-                    title = "{:.4f}(dp/p)$^2$+{:.4f}dp/p+{:.4f}".format(*popt_quad)
+                title = ""
+                for o in range(order, -1, -1):
+                    dp = ""
+                    if o == 1:
+                        dp = "dp/p"
+                    elif o >= 1:
+                        dp = "(dp/p)$^2$"
+
+                    title += f"{coefs[o]:.4f} {dp}"
+                    if o != 0:
+                        title += " + "
+
+                print(title)
+                ax.plot(delta, np.polyval(coefs[::-1], delta))
                 ax.set_title(title)
                 ax.set_xlabel("Momentum Shift, dp/p [%]")
                 ax.set_ylabel("%s Tune" % ["Horizontal", "Vertical"][i])
