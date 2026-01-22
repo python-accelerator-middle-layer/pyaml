@@ -8,7 +8,7 @@ simulators:
     name: design
 controls:
   - type: tango.pyaml.controlsystem
-    tango_host: ebs-simu-3:10000
+    tango_host: ebs-simu-2:10000
     name: live
 data_folder: /data/store
 devices:
@@ -16,12 +16,12 @@ devices:
   name: BETATRON_TUNE
   tune_h:
     type: tango.pyaml.attribute_read_only
-    attribute: srdiag/tune/tune_h
-    unit: mm
+    attribute: srdiag/beam-tune/main/Qh
+    unit: "1"
   tune_v:
     type: tango.pyaml.attribute_read_only
-    attribute: srdiag/tune/tune_v
-    unit: mm
+    attribute: srdiag/beam-tune/main/Qv
+    unit: "1"
 - type: pyaml.diagnostics.chromaticity_monitor
   name: KSI
   betatron_tune: BETATRON_TUNE
