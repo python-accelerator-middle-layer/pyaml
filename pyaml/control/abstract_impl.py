@@ -34,6 +34,9 @@ def check_range(values: Any, dev_range: Any) -> bool:
         - N == 1 and K > 1: the single value must satisfy ALL ranges
         - N > 1 and K == 1: the single range applies to ALL values
     """
+    if dev_range is None:
+        return True
+
     # ---- Normalize values to a 1D float array ----
     v = np.asarray(values, dtype=float)
     if v.ndim == 0:
