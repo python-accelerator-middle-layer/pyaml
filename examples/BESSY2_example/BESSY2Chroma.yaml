@@ -1,0 +1,41 @@
+type: pyaml.accelerator
+facility: BESSY2
+machine: sr
+energy: 1.7e9
+simulators:
+- type: pyaml.lattice.simulator
+  lattice: bessy2.mat
+  name: design
+controls:
+- type: pyaml_cs_oa.controlsystem
+  prefix: 'pons:'
+  name: live
+data_folder: /data/store
+devices:
+- type: pyaml.diagnostics.tune_monitor
+  name: BETATRON_TUNE
+  tune_h:
+    type: pyaml_cs_oa.epicsR
+    read_pvname: beam:twiss:x:tune
+    unit: ''
+  tune_v:
+    type: pyaml_cs_oa.epicsR
+    read_pvname: beam:twiss:y:tune
+    unit: ''
+- type: pyaml.diagnostics.chromaticity_monitor
+  name: KSI
+  betatron_tune: BETATRON_TUNE
+  RFfreq: RF
+  fit_order: 1
+  N_tune_meas: 1
+  N_step: 5
+  Sleep_between_meas: 0
+  Sleep_between_RFvar: 2
+  E_delta: 1e-3
+  Max_E_delta: 1e-3
+- type: pyaml.rf.rf_plant
+  name: RF
+  masterclock:
+    type: pyaml_cs_oa.epicsW
+    write_pvname: MCLKHX251C:freq
+    unit: KHz
