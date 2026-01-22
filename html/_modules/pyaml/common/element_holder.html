@@ -368,6 +368,7 @@
 <span class="kn">from</span><span class="w"> </span><span class="nn">..arrays.serialized_magnet_array</span><span class="w"> </span><span class="kn">import</span> <span class="n">SerializedMagnetsArray</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">..bpm.bpm</span><span class="w"> </span><span class="kn">import</span> <span class="n">BPM</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">..common.exception</span><span class="w"> </span><span class="kn">import</span> <span class="n">PyAMLException</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">..diagnostics.chromaticity_monitor</span><span class="w"> </span><span class="kn">import</span> <span class="n">ChomaticityMonitor</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">..diagnostics.tune_monitor</span><span class="w"> </span><span class="kn">import</span> <span class="n">BetatronTuneMonitor</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">..magnet.cfm_magnet</span><span class="w"> </span><span class="kn">import</span> <span class="n">CombinedFunctionMagnet</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">..magnet.magnet</span><span class="w"> </span><span class="kn">import</span> <span class="n">Magnet</span>
@@ -677,6 +678,21 @@
 <a class="viewcode-back" href="../../../api/pyaml.common.element_holder.html#pyaml.common.element_holder.ElementHolder.add_betatron_tune_monitor">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">add_betatron_tune_monitor</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tune_monitor</span><span class="p">:</span> <span class="n">Element</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__add</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__DIAG</span><span class="p">,</span> <span class="n">tune_monitor</span><span class="p">)</span></div>
+
+
+    <span class="c1"># Chromaticity monitor</span>
+
+<div class="viewcode-block" id="ElementHolder.get_chromaticity_monitor">
+<a class="viewcode-back" href="../../../api/pyaml.common.element_holder.html#pyaml.common.element_holder.ElementHolder.get_chromaticity_monitor">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_chromaticity_monitor</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ChomaticityMonitor</span><span class="p">:</span>
+        <span class="n">obj</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__get</span><span class="p">(</span><span class="s2">&quot;Diagnostic&quot;</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__DIAG</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">obj</span></div>
+
+
+<div class="viewcode-block" id="ElementHolder.add_chromaticity_monitor">
+<a class="viewcode-back" href="../../../api/pyaml.common.element_holder.html#pyaml.common.element_holder.ElementHolder.add_chromaticity_monitor">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">add_chromaticity_monitor</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">chromaticity_monitor</span><span class="p">:</span> <span class="n">Element</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__add</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__DIAG</span><span class="p">,</span> <span class="n">chromaticity_monitor</span><span class="p">)</span></div>
 
 
     <span class="c1"># Tuning tools</span>

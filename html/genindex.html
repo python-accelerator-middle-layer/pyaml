@@ -368,6 +368,8 @@
 </li>
       <li><a href="api/pyaml.common.element_holder.html#pyaml.common.element_holder.ElementHolder.add_cfm_magnet">add_cfm_magnet() (ElementHolder method)</a>
 </li>
+      <li><a href="api/pyaml.common.element_holder.html#pyaml.common.element_holder.ElementHolder.add_chromaticity_monitor">add_chromaticity_monitor() (ElementHolder method)</a>
+</li>
       <li><a href="api/pyaml.control.abstract_impl.html#pyaml.control.abstract_impl.CSScalarAggregator.add_devices">add_devices() (CSScalarAggregator method)</a>
 
       <ul>
@@ -394,10 +396,10 @@
 </li>
       <li><a href="api/pyaml.control.readback_value.html#pyaml.control.readback_value.Quality.ALARM">ALARM (Quality attribute)</a>
 </li>
-      <li><a href="api/pyaml.magnet.spline_model.html#pyaml.magnet.spline_model.ConfigModel.alpha">alpha (ConfigModel attribute)</a>
-</li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/pyaml.magnet.spline_model.html#pyaml.magnet.spline_model.ConfigModel.alpha">alpha (ConfigModel attribute)</a>
+</li>
       <li><a href="api/pyaml.magnet.hcorrector.html#pyaml.magnet.hcorrector.HCorrector.angle">angle (HCorrector property)</a>
 
       <ul>
@@ -787,6 +789,8 @@
 </li>
         <li><a href="api/pyaml.control.abstract_impl.html#pyaml.control.abstract_impl.RBpmArray.get">(RBpmArray method)</a>, <a href="api/pyaml.lattice.abstract_impl.html#pyaml.lattice.abstract_impl.RBpmArray.get">[1]</a>
 </li>
+        <li><a href="api/pyaml.control.abstract_impl.html#pyaml.control.abstract_impl.RChromaticityArray.get">(RChromaticityArray method)</a>, <a href="api/pyaml.lattice.abstract_impl.html#pyaml.lattice.abstract_impl.RChromaticityArray.get">[1]</a>
+</li>
         <li><a href="api/pyaml.common.abstract.html#pyaml.common.abstract.ReadFloatArray.get">(ReadFloatArray method)</a>
 </li>
         <li><a href="api/pyaml.common.abstract.html#pyaml.common.abstract.ReadFloatScalar.get">(ReadFloatScalar method)</a>
@@ -865,6 +869,8 @@
       <li><a href="api/pyaml.common.element_holder.html#pyaml.common.element_holder.ElementHolder.get_cfm_magnet">get_cfm_magnet() (ElementHolder method)</a>
 </li>
       <li><a href="api/pyaml.common.element_holder.html#pyaml.common.element_holder.ElementHolder.get_cfm_magnets">get_cfm_magnets() (ElementHolder method)</a>
+</li>
+      <li><a href="api/pyaml.common.element_holder.html#pyaml.common.element_holder.ElementHolder.get_chromaticity_monitor">get_chromaticity_monitor() (ElementHolder method)</a>
 </li>
       <li><a href="api/pyaml.configuration.csvcurve.html#pyaml.configuration.csvcurve.CSVCurve.get_curve">get_curve() (CSVCurve method)</a>
 
@@ -2081,6 +2087,12 @@
         <li><a href="api/pyaml.lattice.abstract_impl.html#pyaml.lattice.abstract_impl.RBpmArray">(class in pyaml.lattice.abstract_impl)</a>
 </li>
       </ul></li>
+      <li><a href="api/pyaml.control.abstract_impl.html#pyaml.control.abstract_impl.RChromaticityArray">RChromaticityArray (class in pyaml.control.abstract_impl)</a>
+
+      <ul>
+        <li><a href="api/pyaml.lattice.abstract_impl.html#pyaml.lattice.abstract_impl.RChromaticityArray">(class in pyaml.lattice.abstract_impl)</a>
+</li>
+      </ul></li>
       <li><a href="api/pyaml.lattice.abstract_impl.html#pyaml.lattice.abstract_impl.BPMScalarAggregator.readback">readback() (BPMScalarAggregator method)</a>
 
       <ul>
@@ -2129,14 +2141,14 @@
 </li>
       <li><a href="api/pyaml.arrays.bpm_array.html#pyaml.arrays.bpm_array.RWBPMSinglePosition">RWBPMSinglePosition (class in pyaml.arrays.bpm_array)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/pyaml.control.abstract_impl.html#pyaml.control.abstract_impl.RWBpmTiltScalar">RWBpmTiltScalar (class in pyaml.control.abstract_impl)</a>
 
       <ul>
         <li><a href="api/pyaml.lattice.abstract_impl.html#pyaml.lattice.abstract_impl.RWBpmTiltScalar">(class in pyaml.lattice.abstract_impl)</a>
 </li>
       </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/pyaml.magnet.corrector.html#pyaml.magnet.corrector.RWCorrectorAngle">RWCorrectorAngle (class in pyaml.magnet.corrector)</a>
 </li>
       <li><a href="api/pyaml.control.abstract_impl.html#pyaml.control.abstract_impl.RWHardwareArray">RWHardwareArray (class in pyaml.control.abstract_impl)</a>
@@ -2501,6 +2513,8 @@
         <li><a href="api/pyaml.control.abstract_impl.html#pyaml.control.abstract_impl.RBetatronTuneArray.unit">(RBetatronTuneArray method)</a>, <a href="api/pyaml.lattice.abstract_impl.html#pyaml.lattice.abstract_impl.RBetatronTuneArray.unit">[1]</a>
 </li>
         <li><a href="api/pyaml.control.abstract_impl.html#pyaml.control.abstract_impl.RBpmArray.unit">(RBpmArray method)</a>, <a href="api/pyaml.lattice.abstract_impl.html#pyaml.lattice.abstract_impl.RBpmArray.unit">[1]</a>
+</li>
+        <li><a href="api/pyaml.control.abstract_impl.html#pyaml.control.abstract_impl.RChromaticityArray.unit">(RChromaticityArray method)</a>, <a href="api/pyaml.lattice.abstract_impl.html#pyaml.lattice.abstract_impl.RChromaticityArray.unit">[1]</a>
 </li>
         <li><a href="api/pyaml.common.abstract.html#pyaml.common.abstract.ReadFloatArray.unit">(ReadFloatArray method)</a>
 </li>

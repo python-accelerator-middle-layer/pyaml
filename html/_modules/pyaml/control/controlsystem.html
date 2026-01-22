@@ -372,6 +372,7 @@
     <span class="n">CSStrengthScalarAggregator</span><span class="p">,</span>
     <span class="n">RBetatronTuneArray</span><span class="p">,</span>
     <span class="n">RBpmArray</span><span class="p">,</span>
+    <span class="n">RChromaticityArray</span><span class="p">,</span>
     <span class="n">RWBpmOffsetArray</span><span class="p">,</span>
     <span class="n">RWBpmTiltScalar</span><span class="p">,</span>
     <span class="n">RWHardwareArray</span><span class="p">,</span>
@@ -382,6 +383,7 @@
     <span class="n">RWStrengthArray</span><span class="p">,</span>
     <span class="n">RWStrengthScalar</span><span class="p">,</span>
 <span class="p">)</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">..diagnostics.chromaticity_monitor</span><span class="w"> </span><span class="kn">import</span> <span class="n">ChomaticityMonitor</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">..diagnostics.tune_monitor</span><span class="w"> </span><span class="kn">import</span> <span class="n">BetatronTuneMonitor</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">..magnet.cfm_magnet</span><span class="w"> </span><span class="kn">import</span> <span class="n">CombinedFunctionMagnet</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">..magnet.magnet</span><span class="w"> </span><span class="kn">import</span> <span class="n">Magnet</span>
@@ -677,6 +679,11 @@
                 <span class="n">betatron_tune</span> <span class="o">=</span> <span class="n">RBetatronTuneArray</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="n">tuneDevs</span><span class="p">)</span>
                 <span class="n">e</span> <span class="o">=</span> <span class="n">e</span><span class="o">.</span><span class="n">attach</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">betatron_tune</span><span class="p">)</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">add_betatron_tune_monitor</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+
+            <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="n">ChomaticityMonitor</span><span class="p">):</span>
+                <span class="n">chromaticity</span> <span class="o">=</span> <span class="n">RChromaticityArray</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+                <span class="n">e</span> <span class="o">=</span> <span class="n">e</span><span class="o">.</span><span class="n">attach</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">chromaticity</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">add_chromaticity_monitor</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
 
             <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="n">Tune</span><span class="p">):</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">add_tune_tuning</span><span class="p">(</span><span class="n">e</span><span class="o">.</span><span class="n">attach</span><span class="p">(</span><span class="bp">self</span><span class="p">))</span>

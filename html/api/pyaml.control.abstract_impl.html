@@ -732,6 +732,29 @@ the aggregator prevents to apply several times the same power supply setpoint.</
 </dd></dl>
 
 <dl class="py class">
+<dt class="sig sig-object py" id="pyaml.control.abstract_impl.RChromaticityArray">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">RChromaticityArray</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">chromaticity_monitor</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/control/abstract_impl.html#RChromaticityArray"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.control.abstract_impl.RChromaticityArray" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="pyaml.common.abstract.html#pyaml.common.abstract.ReadFloatArray" title="pyaml.common.abstract.ReadFloatArray"><code class="xref py py-class docutils literal notranslate"><span class="pre">ReadFloatArray</span></code></a></p>
+<p>Class providing read write access to chromaticity of a control system.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaml.control.abstract_impl.RChromaticityArray.get">
+<span class="sig-name descname"><span class="pre">get</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/control/abstract_impl.html#RChromaticityArray.get"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.control.abstract_impl.RChromaticityArray.get" title="Link to this definition">#</a></dt>
+<dd><p>Get the value</p>
+<dl class="field-list simple">
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaml.control.abstract_impl.RChromaticityArray.unit">
+<span class="sig-name descname"><span class="pre">unit</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/control/abstract_impl.html#RChromaticityArray.unit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.control.abstract_impl.RChromaticityArray.unit" title="Link to this definition">#</a></dt>
+<dd><p>Get the unit of the values</p>
+<dl class="field-list simple">
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
 <dt class="sig sig-object py" id="pyaml.control.abstract_impl.RWBpmOffsetArray">
 <em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">RWBpmOffsetArray</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hDev</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vDev</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/control/abstract_impl.html#RWBpmOffsetArray"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.control.abstract_impl.RWBpmOffsetArray" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference internal" href="pyaml.common.abstract.html#pyaml.common.abstract.ReadWriteFloatArray" title="pyaml.common.abstract.ReadWriteFloatArray"><code class="xref py py-class docutils literal notranslate"><span class="pre">ReadWriteFloatArray</span></code></a></p>
@@ -1199,6 +1222,11 @@ for a transmitter of a control system.</p>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.control.abstract_impl.RBpmArray"><code class="docutils literal notranslate"><span class="pre">RBpmArray</span></code></a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.control.abstract_impl.RBpmArray.get"><code class="docutils literal notranslate"><span class="pre">RBpmArray.get()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.control.abstract_impl.RBpmArray.unit"><code class="docutils literal notranslate"><span class="pre">RBpmArray.unit()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.control.abstract_impl.RChromaticityArray"><code class="docutils literal notranslate"><span class="pre">RChromaticityArray</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.control.abstract_impl.RChromaticityArray.get"><code class="docutils literal notranslate"><span class="pre">RChromaticityArray.get()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.control.abstract_impl.RChromaticityArray.unit"><code class="docutils literal notranslate"><span class="pre">RChromaticityArray.unit()</span></code></a></li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.control.abstract_impl.RWBpmOffsetArray"><code class="docutils literal notranslate"><span class="pre">RWBpmOffsetArray</span></code></a><ul class="nav section-nav flex-column">

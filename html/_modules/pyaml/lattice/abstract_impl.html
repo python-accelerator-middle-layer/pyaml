@@ -1194,6 +1194,36 @@
         <span class="k">return</span> <span class="s2">&quot;1&quot;</span></div>
 </div>
 
+
+<span class="c1"># ------------------------------------------------------------------------------</span>
+
+
+<div class="viewcode-block" id="RChromaticityArray">
+<a class="viewcode-back" href="../../../api/pyaml.lattice.abstract_impl.html#pyaml.lattice.abstract_impl.RChromaticityArray">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">RChromaticityArray</span><span class="p">(</span><span class="n">abstract</span><span class="o">.</span><span class="n">ReadFloatArray</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Class providing read-only access to the chromaticity of a ring.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ring</span><span class="p">:</span> <span class="n">at</span><span class="o">.</span><span class="n">Lattice</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__ring</span> <span class="o">=</span> <span class="n">ring</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_update_chromaticity_monitor</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">chromaticity_monitor</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Use to attach the rigth object in control.abstract_impl.RChromaticityArray. Nothing needed here&quot;&quot;&quot;</span>
+        <span class="k">pass</span>
+
+<div class="viewcode-block" id="RChromaticityArray.get">
+<a class="viewcode-back" href="../../../api/pyaml.lattice.abstract_impl.html#pyaml.lattice.abstract_impl.RChromaticityArray.get">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__ring</span><span class="o">.</span><span class="n">get_chrom</span><span class="p">()[:</span><span class="mi">2</span><span class="p">]</span></div>
+
+
+<div class="viewcode-block" id="RChromaticityArray.unit">
+<a class="viewcode-back" href="../../../api/pyaml.lattice.abstract_impl.html#pyaml.lattice.abstract_impl.RChromaticityArray.unit">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">unit</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s2">&quot;1&quot;</span></div>
+</div>
+
 </pre></div>
 
                 </article>

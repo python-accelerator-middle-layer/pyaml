@@ -1095,6 +1095,36 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__tune_monitor</span><span class="o">.</span><span class="n">_cfg</span><span class="o">.</span><span class="n">tune_v</span><span class="o">.</span><span class="n">unit</span><span class="p">()</span></div>
 </div>
 
+<span class="c1"># ------------------------------------------------------------------------------</span>
+
+
+<div class="viewcode-block" id="RChromaticityArray">
+<a class="viewcode-back" href="../../../api/pyaml.control.abstract_impl.html#pyaml.control.abstract_impl.RChromaticityArray">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">RChromaticityArray</span><span class="p">(</span><span class="n">abstract</span><span class="o">.</span><span class="n">ReadFloatArray</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Class providing read write access to chromaticity of a control system.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">chromaticity_monitor</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__chromaticity_monitor</span> <span class="o">=</span> <span class="n">chromaticity_monitor</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_update_chromaticity_monitor</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">chromaticity_monitor</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Use to attach the proper chromaticity_monitor and not the one used to create this instance&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__chromaticity_monitor</span> <span class="o">=</span> <span class="n">chromaticity_monitor</span>
+
+<div class="viewcode-block" id="RChromaticityArray.get">
+<a class="viewcode-back" href="../../../api/pyaml.control.abstract_impl.html#pyaml.control.abstract_impl.RChromaticityArray.get">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">NDArray</span><span class="p">:</span>
+        <span class="c1"># Return horizontal and vertical chromaticity as a NumPy array</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__chromaticity_monitor</span><span class="o">.</span><span class="n">_last_measured</span></div>
+
+
+<div class="viewcode-block" id="RChromaticityArray.unit">
+<a class="viewcode-back" href="../../../api/pyaml.control.abstract_impl.html#pyaml.control.abstract_impl.RChromaticityArray.unit">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">unit</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s2">&quot;1&quot;</span></div>
+</div>
+
 </pre></div>
 
                 </article>
