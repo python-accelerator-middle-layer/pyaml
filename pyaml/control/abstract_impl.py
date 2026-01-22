@@ -257,9 +257,6 @@ class RWHardwareScalar(abstract.ReadWriteFloatScalar):
         return self.__dev.get()
 
     def set(self, value: float):
-        available = self.__dev.check_device_availability()
-        if not available:
-            raise PyAMLException(f"The device {self.__dev} is not available")
         dev_range = self.__dev.get_range()
         if not check_range(value, dev_range):
             raise PyAMLException(f"The values are out of range: {value}, {dev_range} for device {self.__dev}")
