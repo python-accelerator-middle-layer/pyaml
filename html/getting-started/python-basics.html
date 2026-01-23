@@ -216,6 +216,10 @@
   
 
   
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
 </div>
 
     </header>
@@ -373,7 +377,90 @@
                   
   <section class="tex2jax_ignore mathjax_ignore" id="for-users-new-to-python">
 <h1>For Users New to Python<a class="headerlink" href="#for-users-new-to-python" title="Link to this heading">#</a></h1>
-<p>To write…</p>
+<p>If you are a new Python user this page provides some help to get started. It also provides some advice for MATLAB users migrating to Python.</p>
+<p>Python is a large ecosystem with many tools to achieve similar things so this is not intended to be a complete list. Which tool to use is often based on personal preference and the intention of this guide is only to provide a starting point for you to find you preferred setup.</p>
+<section id="integrated-development-environments">
+<h2>Integrated Development Environments<a class="headerlink" href="#integrated-development-environments" title="Link to this heading">#</a></h2>
+<p>Python can be run directly in a terminal or an <a class="reference external" href="https://ipython.org/">IPython</a> shell but if you want to do more complex things like debug or develop code it is easier to use an Integrated Development Environment (IDE). There are many IDEs with Python support with different features, user experience etc so the choice is highly personal. Three common ones are:</p>
+<ul>
+<li><p><strong>Spyder</strong>:
+<a class="reference external" href="https://www.spyder-ide.org/">https://www.spyder-ide.org/</a></p>
+<p>Spyder is designed for scientific computing and data analysis. It has the most MATLAB-like interface which often makes it a preferred choice among MATLAB users. It works well when using standard scientific Python packages but has currently less support for custom Python classes. It also only has basic Git integration and works best with conda environments. There is an plugin for Jupyter notebooks but it is not available for all the installation options yet.</p>
+</li>
+<li><p><strong>VS Code</strong>:
+<a class="reference external" href="https://code.visualstudio.com/">https://code.visualstudio.com/</a></p>
+<p>VS Code supports Python through extensions. It also has extensions for other programming languages as well as for Jupyter notebooks. It has a very good Git integration making it a good choice if you are new to using version control and prefer to not use the terminal. It also has very good support for all type of virtual environments. In addition, it has extensions to connect to remote services (such as clusters) and JupyterHub. Many HPC centers therefore provide a web-based version for their users. It however makes heavy use of keyboard shortcuts which can be a bit of a learning curve for new users.</p>
+</li>
+<li><p><strong>PyCharm</strong>:
+<a class="reference external" href="https://www.jetbrains.com/pycharm/">https://www.jetbrains.com/pycharm/</a></p>
+<p>PyCharm is a dedicated Python IDE. It has many features and customization possibilities and is often used by software professionals. There is both a community (free) and professional (paid) edition.</p>
+</li>
+</ul>
+<p>If you are a new user getting started who doesn’t know yet what you prefer, a good choice is likely to start with VS Code.</p>
+</section>
+<section id="jupyter-notebooks">
+<h2>Jupyter Notebooks<a class="headerlink" href="#jupyter-notebooks" title="Link to this heading">#</a></h2>
+<p>A very common way to run Python in the scientific community is to use Jupyter notebooks(https://jupyter.org/). Is a browser-based tool which is very useful for data visualisation and interactive work. It can be installed both in a basic version <strong>Jupyter Notebook</strong> or as <strong>JupyterLab</strong> which provides some useful IDE features. It is common that tutorials will be in the form of a notebook.</p>
+</section>
+<section id="installing-python">
+<h2>Installing Python<a class="headerlink" href="#installing-python" title="Link to this heading">#</a></h2>
+<p>There are many different ways to get an installation of Python. An important aspect is that you at some point might need to be able to switch between different versions and have more than one version installed simultaneously. There are different options available for this. Here are some common ones:</p>
+<ul>
+<li><p><strong>pyenv</strong>:
+<a class="github reference external" href="https://github.com/pyenv/pyenv">pyenv/pyenv</a></p>
+<p>This is the most basic choice but probably too basic for most users. There is a plugin <a class="reference external" href="https://github.com/pyenv/pyenv-virtualenv">pyenv-virtualenv</a> if you also want the tool to manage virtual environments.</p>
+</li>
+<li><p><strong>conda</strong>:
+<a class="reference external" href="https://docs.conda.io/projects/conda/en/stable/">https://docs.conda.io/projects/conda/en/stable/</a></p>
+<p>Conda is often used in the scientific community. There are several versions available and some might require a license. A good choice to avoid license issues is to choose <a class="reference external" href="https://github.com/conda-forge/miniforge">Miniforge</a>. This gives you a minimal installation of the free community edition. In addition to different Python versions, it also provides an easy way to manage and create virtual environments.</p>
+</li>
+<li><p><strong>uv</strong>:
+<a class="reference external" href="https://docs.astral.sh/uv/">https://docs.astral.sh/uv/</a></p>
+<p>Uv is a new tool which is intended as a single tool to replace the functionality of many other tools. In addition to managing Python versions and virtual environments it can also help to build packages. It however has a bit of a learning curve so is likely mostly a good choice for the experienced user who also wants to do development work.</p>
+</li>
+</ul>
+</section>
+<section id="python-packages">
+<h2>Python Packages<a class="headerlink" href="#python-packages" title="Link to this heading">#</a></h2>
+<p>After you have installed Python you need to install packages for the code that you want to use. There are two common ways to do this:</p>
+<ul>
+<li><p><strong>pip</strong>:
+<a class="reference external" href="https://pip.pypa.io/en/stable/">https://pip.pypa.io/en/stable/</a></p>
+<p>Pip is the standard package installer for Python. It is often automatically installed when you install Python and is easy to use. You can install from different sources as explained in the documentation <a class="reference external" href="https://pip.pypa.io/en/stable/getting-started/">https://pip.pypa.io/en/stable/getting-started/</a>.</p>
+</li>
+<li><p><strong>conda</strong></p>
+<p>If you are using conda, it also provides its own way of installing packages. You can however still use pip in conda environments in case the package is not available as a conda package. The installation is similar to when using pip <a class="reference external" href="https://www.anaconda.com/docs/getting-started/working-with-conda/packages/install-packages">https://www.anaconda.com/docs/getting-started/working-with-conda/packages/install-packages</a>.</p>
+</li>
+</ul>
+</section>
+<section id="virtual-environments">
+<h2>Virtual Environments<a class="headerlink" href="#virtual-environments" title="Link to this heading">#</a></h2>
+<p>A key aspect of a good Python setup is to use virtual environments. A virtual environment is a self-contained directory which contains a Python installation for a specific version plus additional packages. The purpose is to install packages without fear of compatibility issues that might cause your entire Python setup to break. If something goes wrong, you can just delete the virtual environment and start over.</p>
+<p><strong>You should never install Python packages in your default Python environment. It can cause big problems and especially if your computer is using an OS which relies on Python.</strong></p>
+<p>The recommended workflow is to always create a virtual environment, activate it and then install the Python packages you need into it. There are two different versions of virtual environments:</p>
+<ul>
+<li><p><strong>venv</strong>:
+<a class="reference external" href="https://docs.python.org/3/library/venv.html">https://docs.python.org/3/library/venv.html</a></p>
+<p>This is the standard way that comes with the Python installation. It is very lightweight but can sometimes be annoying to use because you need to remember the command to activate the environment after it was created. The virtual environment is created in the current working folder so there is also no global way to manage your environments if you want an easy way to switch between environments. However, tools exist to extend the functionality such as <a class="reference external" href="https://virtualenv.pypa.io/en/latest/">virtualenv</a> and <a class="reference external" href="https://virtualenvwrapper.readthedocs.io/en/latest/">virtualenvwrapper</a>.</p>
+</li>
+<li><p><strong>conda</strong></p>
+<p>Conda can also create virtual environments. It provides and easy way to activate and switch between environments so is a good choice for new users.</p>
+</li>
+</ul>
+<p>Some IDEs has the functionality to help you create and switch between virtual environments. This works for both type of environments and can substantially simplify the workflow compared to using the terminal.</p>
+</section>
+<section id="example-resources">
+<h2>Example Resources<a class="headerlink" href="#example-resources" title="Link to this heading">#</a></h2>
+<p>There are many resources available for learning Python and also dedicated resources tailored for the scientific community. Several organisations provide free courses and material for scientists. Here are some recommendations:</p>
+<ul class="simple">
+<li><p><strong>The Python documentation</strong>: <a class="reference external" href="https://www.python.org/">https://www.python.org/</a></p></li>
+<li><p><strong>Python Packaging User Guide</strong>: <a class="reference external" href="https://packaging.python.org/en/latest/">https://packaging.python.org/en/latest/</a></p></li>
+<li><p><strong>Scientific Python</strong>: <a class="reference external" href="https://scientific-python.org/">https://scientific-python.org/</a></p></li>
+<li><p><strong>Carpentries</strong>: <a class="reference external" href="https://carpentries.org/">https://carpentries.org/</a></p></li>
+<li><p><strong>CodeRefinery</strong>: <a class="reference external" href="https://coderefinery.org/">https://coderefinery.org/</a></p></li>
+<li><p><strong>Software Sustainability Institute.</strong>: <a class="reference external" href="https://www.software.ac.uk/">https://www.software.ac.uk/</a></p></li>
+</ul>
+</section>
 </section>
 
 
@@ -410,6 +497,29 @@
             </div>
             
             
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#integrated-development-environments">Integrated Development Environments</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#jupyter-notebooks">Jupyter Notebooks</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#installing-python">Installing Python</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#python-packages">Python Packages</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#virtual-environments">Virtual Environments</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#example-resources">Example Resources</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
               
             
           </div>
