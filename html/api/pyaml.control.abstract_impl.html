@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>pyaml.control.abstract_impl &#8212; Python Accelerator Middle Layer 0.2.2 documentation</title>
+    <title>pyaml.control.abstract_impl &#8212; Python Accelerator Middle Layer 0.2.3 documentation</title>
   
   
   
@@ -42,7 +42,7 @@
   <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
 <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
-    <script src="../_static/documentation_options.js?v=d27f7911"></script>
+    <script src="../_static/documentation_options.js?v=b6b0a955"></script>
     <script src="../_static/doctools.js?v=9bcbadda"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -121,8 +121,8 @@
       
     
     
-    <img src="../_static/logo.png" class="logo__image only-light" alt="Python Accelerator Middle Layer 0.2.2 documentation - Home"/>
-    <img src="../_static/dark.png" class="logo__image only-dark pst-js-only" alt="Python Accelerator Middle Layer 0.2.2 documentation - Home"/>
+    <img src="../_static/logo.png" class="logo__image only-light" alt="Python Accelerator Middle Layer 0.2.3 documentation - Home"/>
+    <img src="../_static/dark.png" class="logo__image only-dark pst-js-only" alt="Python Accelerator Middle Layer 0.2.3 documentation - Home"/>
   
   
 </a></div>
@@ -1139,6 +1139,48 @@ for a transmitter of a control system.</p>
 
 </dd></dl>
 
+<dl class="py function">
+<dt class="sig sig-object py" id="pyaml.control.abstract_impl.check_range">
+<span class="sig-name descname"><span class="pre">check_range</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">values</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dev_range</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/control/abstract_impl.html#check_range"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.control.abstract_impl.check_range" title="Link to this definition">#</a></dt>
+<dd><p>Check whether values are within given ranges.</p>
+<dl class="simple">
+<dt>Inverted semantics:</dt><dd><ul class="simple">
+<li><p>True  -&gt; all checks pass (everything is within bounds)</p></li>
+<li><p>False -&gt; at least one check fails (out of range)</p></li>
+</ul>
+</dd>
+<dt>dev_range format (flat):</dt><dd><p>[min1, max1, min2, max2, …]</p>
+</dd>
+<dt>Broadcasting rules:</dt><dd><p>Let N = number of values, K = number of ranges (pairs).
+- N == K           : one range per value
+- N == 1 and K &gt; 1: the single value must satisfy ALL ranges
+- N &gt; 1 and K == 1: the single range applies to ALL values</p>
+</dd>
+</dl>
+<dl class="field-list simple">
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyaml.control.abstract_impl.format_out_of_range_message">
+<span class="sig-name descname"><span class="pre">format_out_of_range_message</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">values</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">devs</span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">header</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Values</span> <span class="pre">out</span> <span class="pre">of</span> <span class="pre">range:'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/control/abstract_impl.html#format_out_of_range_message"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.control.abstract_impl.format_out_of_range_message" title="Link to this definition">#</a></dt>
+<dd><p>Build a user-friendly error message for out-of-range values.</p>
+<dl class="simple">
+<dt>Output example:</dt><dd><p>Values out of range:
+110 A, ‘//host/dev/attr’ [10.0, 109.0]
+110 A, ‘//host/dev/attr’ [10.0, 109.0]</p>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<ul class="simple">
+<li><p>Only failing channels are listed.</p></li>
+<li><p>Supports scalar/array values and DeviceAccess/DeviceAccessList.</p></li>
+<li><p>Uses check_range() semantics (inclusive bounds, None =&gt; unbounded).</p></li>
+</ul>
+<dl class="field-list simple">
+</dl>
+</dd></dl>
+
 </section>
 
 
@@ -1294,6 +1336,8 @@ for a transmitter of a control system.</p>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.control.abstract_impl.RWStrengthScalar.unit"><code class="docutils literal notranslate"><span class="pre">RWStrengthScalar.unit()</span></code></a></li>
 </ul>
 </li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.control.abstract_impl.check_range"><code class="docutils literal notranslate"><span class="pre">check_range()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.control.abstract_impl.format_out_of_range_message"><code class="docutils literal notranslate"><span class="pre">format_out_of_range_message()</span></code></a></li>
 </ul>
   </nav></div>
 

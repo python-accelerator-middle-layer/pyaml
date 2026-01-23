@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>pyaml.control.abstract_impl &#8212; Python Accelerator Middle Layer 0.2.2 documentation</title>
+    <title>pyaml.control.abstract_impl &#8212; Python Accelerator Middle Layer 0.2.3 documentation</title>
   
   
   
@@ -41,7 +41,7 @@
   <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
 <link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
-    <script src="../../../_static/documentation_options.js?v=d27f7911"></script>
+    <script src="../../../_static/documentation_options.js?v=b6b0a955"></script>
     <script src="../../../_static/doctools.js?v=9bcbadda"></script>
     <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -118,8 +118,8 @@
       
     
     
-    <img src="../../../_static/logo.png" class="logo__image only-light" alt="Python Accelerator Middle Layer 0.2.2 documentation - Home"/>
-    <img src="../../../_static/dark.png" class="logo__image only-dark pst-js-only" alt="Python Accelerator Middle Layer 0.2.2 documentation - Home"/>
+    <img src="../../../_static/logo.png" class="logo__image only-light" alt="Python Accelerator Middle Layer 0.2.3 documentation - Home"/>
+    <img src="../../../_static/dark.png" class="logo__image only-dark pst-js-only" alt="Python Accelerator Middle Layer 0.2.3 documentation - Home"/>
   
   
 </a></div>
@@ -355,10 +355,13 @@
                 <article class="bd-article">
                   
   <h1>Source code for pyaml.control.abstract_impl</h1><div class="highlight"><pre>
-<span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span></span><span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Any</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="kn">import</span> <span class="n">double</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">numpy.typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">NDArray</span>
 
+<span class="kn">from</span><span class="w"> </span><span class="nn">..</span><span class="w"> </span><span class="kn">import</span> <span class="n">PyAMLException</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">..bpm.bpm_model</span><span class="w"> </span><span class="kn">import</span> <span class="n">BPMModel</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">..common</span><span class="w"> </span><span class="kn">import</span> <span class="n">abstract</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">..common.abstract_aggregator</span><span class="w"> </span><span class="kn">import</span> <span class="n">ScalarAggregator</span>
@@ -370,6 +373,174 @@
 <span class="kn">from</span><span class="w"> </span><span class="nn">..rf.rf_transmitter</span><span class="w"> </span><span class="kn">import</span> <span class="n">RFTransmitter</span>
 
 <span class="c1"># ------------------------------------------------------------------------------</span>
+
+
+<div class="viewcode-block" id="check_range">
+<a class="viewcode-back" href="../../../api/pyaml.control.abstract_impl.html#pyaml.control.abstract_impl.check_range">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">check_range</span><span class="p">(</span><span class="n">values</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="n">dev_range</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Check whether values are within given ranges.</span>
+
+<span class="sd">    Inverted semantics:</span>
+<span class="sd">        - True  -&gt; all checks pass (everything is within bounds)</span>
+<span class="sd">        - False -&gt; at least one check fails (out of range)</span>
+
+<span class="sd">    dev_range format (flat):</span>
+<span class="sd">        [min1, max1, min2, max2, ...]</span>
+
+<span class="sd">    Broadcasting rules:</span>
+<span class="sd">        Let N = number of values, K = number of ranges (pairs).</span>
+<span class="sd">        - N == K           : one range per value</span>
+<span class="sd">        - N == 1 and K &gt; 1: the single value must satisfy ALL ranges</span>
+<span class="sd">        - N &gt; 1 and K == 1: the single range applies to ALL values</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># ---- Normalize values to a 1D float array ----</span>
+    <span class="n">v</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">values</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">v</span><span class="o">.</span><span class="n">ndim</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">v</span> <span class="o">=</span> <span class="n">v</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">v</span> <span class="o">=</span> <span class="n">v</span><span class="o">.</span><span class="n">ravel</span><span class="p">()</span>
+    <span class="n">n</span> <span class="o">=</span> <span class="n">v</span><span class="o">.</span><span class="n">size</span>
+
+    <span class="c1"># ---- Normalize dev_range (object to preserve None) ----</span>
+    <span class="n">r</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">dev_range</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">object</span><span class="p">)</span><span class="o">.</span><span class="n">ravel</span><span class="p">()</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">r</span><span class="o">.</span><span class="n">size</span> <span class="o">%</span> <span class="mi">2</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;dev_range must have an even length, got </span><span class="si">{</span><span class="n">r</span><span class="o">.</span><span class="n">size</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+    <span class="n">mins_obj</span> <span class="o">=</span> <span class="n">r</span><span class="p">[</span><span class="mi">0</span><span class="p">::</span><span class="mi">2</span><span class="p">]</span>
+    <span class="n">maxs_obj</span> <span class="o">=</span> <span class="n">r</span><span class="p">[</span><span class="mi">1</span><span class="p">::</span><span class="mi">2</span><span class="p">]</span>
+    <span class="n">k</span> <span class="o">=</span> <span class="n">mins_obj</span><span class="o">.</span><span class="n">size</span>
+
+    <span class="c1"># ---- Broadcasting rules ----</span>
+    <span class="k">if</span> <span class="n">n</span> <span class="o">==</span> <span class="n">k</span><span class="p">:</span>
+        <span class="n">vv</span> <span class="o">=</span> <span class="n">v</span>
+        <span class="n">mins</span> <span class="o">=</span> <span class="n">mins_obj</span>
+        <span class="n">maxs</span> <span class="o">=</span> <span class="n">maxs_obj</span>
+    <span class="k">elif</span> <span class="n">n</span> <span class="o">==</span> <span class="mi">1</span> <span class="ow">and</span> <span class="n">k</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="n">vv</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">full</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">v</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+        <span class="n">mins</span> <span class="o">=</span> <span class="n">mins_obj</span>
+        <span class="n">maxs</span> <span class="o">=</span> <span class="n">maxs_obj</span>
+    <span class="k">elif</span> <span class="n">n</span> <span class="o">&gt;</span> <span class="mi">1</span> <span class="ow">and</span> <span class="n">k</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="n">vv</span> <span class="o">=</span> <span class="n">v</span>
+        <span class="n">mins</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">full</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">mins_obj</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">object</span><span class="p">)</span>
+        <span class="n">maxs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">full</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">maxs_obj</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">object</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;Inconsistent sizes: </span><span class="si">{</span><span class="n">n</span><span class="si">}</span><span class="s2"> value(s) for </span><span class="si">{</span><span class="n">k</span><span class="si">}</span><span class="s2"> range(s). &quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;Supported: N==K, N==1, or K==1.&quot;</span>
+        <span class="p">)</span>
+
+    <span class="c1"># ---- Replace None bounds with -inf / +inf (NumPy-safe) ----</span>
+    <span class="n">mins_is_none</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">equal</span><span class="p">(</span><span class="n">mins</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+    <span class="n">maxs_is_none</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">equal</span><span class="p">(</span><span class="n">maxs</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+
+    <span class="n">mins_f</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">mins_is_none</span><span class="p">,</span> <span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">inf</span><span class="p">,</span> <span class="n">mins</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">float</span><span class="p">)</span>
+    <span class="n">maxs_f</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">maxs_is_none</span><span class="p">,</span> <span class="o">+</span><span class="n">np</span><span class="o">.</span><span class="n">inf</span><span class="p">,</span> <span class="n">maxs</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">float</span><span class="p">)</span>
+
+    <span class="c1"># ---- Vectorized range check ----</span>
+    <span class="k">return</span> <span class="nb">bool</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">all</span><span class="p">((</span><span class="n">vv</span> <span class="o">&gt;=</span> <span class="n">mins_f</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">vv</span> <span class="o">&lt;=</span> <span class="n">maxs_f</span><span class="p">)))</span></div>
+
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_as_1d_float_array</span><span class="p">(</span><span class="n">values</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Normalize input values to a 1D float NumPy array.&quot;&quot;&quot;</span>
+    <span class="n">v</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">values</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">v</span><span class="o">.</span><span class="n">ndim</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">v</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">v</span><span class="o">.</span><span class="n">ravel</span><span class="p">()</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_iter_devices_and_ranges</span><span class="p">(</span><span class="n">devs</span><span class="p">:</span> <span class="n">DeviceAccess</span> <span class="o">|</span> <span class="n">DeviceAccessList</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Yield tuples (device, [min, max]) for each underlying device.</span>
+
+<span class="sd">    Works for:</span>
+<span class="sd">      - DeviceAccess: yields 1 item</span>
+<span class="sd">      - DeviceAccessList: yields N items based on get_devices() and get_range() flattening</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Single device</span>
+    <span class="k">if</span> <span class="p">(</span>
+        <span class="nb">hasattr</span><span class="p">(</span><span class="n">devs</span><span class="p">,</span> <span class="s2">&quot;get&quot;</span><span class="p">)</span>
+        <span class="ow">and</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">devs</span><span class="p">,</span> <span class="s2">&quot;get_range&quot;</span><span class="p">)</span>
+        <span class="ow">and</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">devs</span><span class="p">,</span> <span class="s2">&quot;get_devices&quot;</span><span class="p">)</span>
+    <span class="p">):</span>
+        <span class="n">r</span> <span class="o">=</span> <span class="n">devs</span><span class="o">.</span><span class="n">get_range</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">r</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">r</span> <span class="o">=</span> <span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span>
+        <span class="k">return</span> <span class="p">[(</span><span class="n">devs</span><span class="p">,</span> <span class="p">[</span><span class="n">r</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">r</span><span class="p">[</span><span class="mi">1</span><span class="p">]])]</span>
+
+    <span class="c1"># Device list (expects get_devices() + get_range() flat list)</span>
+    <span class="n">devices</span> <span class="o">=</span> <span class="n">devs</span><span class="o">.</span><span class="n">get_devices</span><span class="p">()</span>
+    <span class="n">flat</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">devs</span><span class="o">.</span><span class="n">get_range</span><span class="p">(),</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">object</span><span class="p">)</span><span class="o">.</span><span class="n">ravel</span><span class="p">()</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">flat</span><span class="o">.</span><span class="n">size</span> <span class="o">%</span> <span class="mi">2</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;dev_range must have an even length, got </span><span class="si">{</span><span class="n">flat</span><span class="o">.</span><span class="n">size</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+    <span class="n">pairs</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">d</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">devices</span><span class="p">):</span>
+        <span class="n">pairs</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">d</span><span class="p">,</span> <span class="p">[</span><span class="n">flat</span><span class="p">[</span><span class="mi">2</span> <span class="o">*</span> <span class="n">i</span><span class="p">],</span> <span class="n">flat</span><span class="p">[</span><span class="mi">2</span> <span class="o">*</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]]))</span>
+    <span class="k">return</span> <span class="n">pairs</span>
+
+
+<div class="viewcode-block" id="format_out_of_range_message">
+<a class="viewcode-back" href="../../../api/pyaml.control.abstract_impl.html#pyaml.control.abstract_impl.format_out_of_range_message">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">format_out_of_range_message</span><span class="p">(</span>
+    <span class="n">values</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
+    <span class="n">devs</span><span class="p">:</span> <span class="n">DeviceAccess</span> <span class="o">|</span> <span class="n">DeviceAccessList</span><span class="p">,</span>
+    <span class="o">*</span><span class="p">,</span>
+    <span class="n">header</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;Values out of range:&quot;</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Build a user-friendly error message for out-of-range values.</span>
+
+<span class="sd">    Output example:</span>
+<span class="sd">        Values out of range:</span>
+<span class="sd">        110 A, &#39;//host/dev/attr&#39; [10.0, 109.0]</span>
+<span class="sd">        110 A, &#39;//host/dev/attr&#39; [10.0, 109.0]</span>
+
+<span class="sd">    Notes:</span>
+<span class="sd">      - Only failing channels are listed.</span>
+<span class="sd">      - Supports scalar/array values and DeviceAccess/DeviceAccessList.</span>
+<span class="sd">      - Uses check_range() semantics (inclusive bounds, None =&gt; unbounded).</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">v</span> <span class="o">=</span> <span class="n">_as_1d_float_array</span><span class="p">(</span><span class="n">values</span><span class="p">)</span>
+    <span class="n">dev_pairs</span> <span class="o">=</span> <span class="n">_iter_devices_and_ranges</span><span class="p">(</span><span class="n">devs</span><span class="p">)</span>
+
+    <span class="c1"># Apply the same broadcasting rules as check_range():</span>
+    <span class="c1"># - N == K : value per device</span>
+    <span class="c1"># - N == 1 and K &gt; 1 : single value checked against all devices</span>
+    <span class="c1"># - N &gt; 1 and K == 1 : single device range applied to all values (rare here but supported)</span>
+    <span class="n">n</span> <span class="o">=</span> <span class="n">v</span><span class="o">.</span><span class="n">size</span>
+    <span class="n">k</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">dev_pairs</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">n</span> <span class="o">==</span> <span class="n">k</span><span class="p">:</span>
+        <span class="n">vv</span> <span class="o">=</span> <span class="n">v</span>
+        <span class="n">pairs</span> <span class="o">=</span> <span class="n">dev_pairs</span>
+    <span class="k">elif</span> <span class="n">n</span> <span class="o">==</span> <span class="mi">1</span> <span class="ow">and</span> <span class="n">k</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="n">vv</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">full</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">v</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+        <span class="n">pairs</span> <span class="o">=</span> <span class="n">dev_pairs</span>
+    <span class="k">elif</span> <span class="n">n</span> <span class="o">&gt;</span> <span class="mi">1</span> <span class="ow">and</span> <span class="n">k</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="n">vv</span> <span class="o">=</span> <span class="n">v</span>
+        <span class="n">pairs</span> <span class="o">=</span> <span class="p">[</span><span class="n">dev_pairs</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span> <span class="o">*</span> <span class="n">n</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;Inconsistent sizes: </span><span class="si">{</span><span class="n">n</span><span class="si">}</span><span class="s2"> value(s) for </span><span class="si">{</span><span class="n">k</span><span class="si">}</span><span class="s2"> device(s). &quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;Supported: N==K, N==1, or K==1.&quot;</span>
+        <span class="p">)</span>
+
+    <span class="n">lines</span> <span class="o">=</span> <span class="p">[</span><span class="n">header</span><span class="p">]</span>
+    <span class="k">for</span> <span class="n">val</span><span class="p">,</span> <span class="p">(</span><span class="n">dev</span><span class="p">,</span> <span class="n">r</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">vv</span><span class="p">,</span> <span class="n">pairs</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">check_range</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="n">r</span><span class="p">):</span>
+            <span class="n">unit</span> <span class="o">=</span> <span class="n">dev</span><span class="o">.</span><span class="n">unit</span><span class="p">()</span> <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">dev</span><span class="p">,</span> <span class="s2">&quot;unit&quot;</span><span class="p">)</span> <span class="k">else</span> <span class="s2">&quot;&quot;</span>
+            <span class="n">name</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">dev</span><span class="p">)</span>
+            <span class="n">rmin</span><span class="p">,</span> <span class="n">rmax</span> <span class="o">=</span> <span class="n">r</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">r</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+            <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">val</span><span class="si">:</span><span class="s2">g</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">unit</span><span class="si">}</span><span class="s2">, &#39;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">&#39; [</span><span class="si">{</span><span class="n">rmin</span><span class="si">}</span><span class="s2">, </span><span class="si">{</span><span class="n">rmax</span><span class="si">}</span><span class="s2">]&quot;</span><span class="p">)</span>
+
+    <span class="c1"># Fallback if nothing selected (should not happen if caller checked range before)</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">lines</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;(no channel details available)&quot;</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">lines</span><span class="p">)</span></div>
+
 
 
 <div class="viewcode-block" id="CSScalarAggregator">
@@ -486,6 +657,11 @@
                 <span class="n">model</span><span class="o">.</span><span class="n">compute_hardware_values</span><span class="p">(</span><span class="n">mStrengths</span><span class="p">)</span>
             <span class="p">)</span>
             <span class="n">hardwareIndex</span> <span class="o">+=</span> <span class="n">nbDev</span>
+        <span class="n">dev_range</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_devs</span><span class="o">.</span><span class="n">get_range</span><span class="p">()</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">check_range</span><span class="p">(</span><span class="n">newHardwareValues</span><span class="p">,</span> <span class="n">dev_range</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="n">PyAMLException</span><span class="p">(</span>
+                <span class="n">format_out_of_range_message</span><span class="p">(</span><span class="n">newHardwareValues</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_devs</span><span class="p">)</span>
+            <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_devs</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">newHardwareValues</span><span class="p">)</span></div>
 
 
@@ -612,6 +788,9 @@
 <div class="viewcode-block" id="RWHardwareScalar.set">
 <a class="viewcode-back" href="../../../api/pyaml.control.abstract_impl.html#pyaml.control.abstract_impl.RWHardwareScalar.set">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">set</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="nb">float</span><span class="p">):</span>
+        <span class="n">dev_range</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__dev</span><span class="o">.</span><span class="n">get_range</span><span class="p">()</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">check_range</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">dev_range</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="n">PyAMLException</span><span class="p">(</span><span class="n">format_out_of_range_message</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__dev</span><span class="p">))</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__dev</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">value</span><span class="p">)</span></div>
 
 
@@ -662,6 +841,9 @@
 <a class="viewcode-back" href="../../../api/pyaml.control.abstract_impl.html#pyaml.control.abstract_impl.RWStrengthScalar.set">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">set</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="nb">float</span><span class="p">):</span>
         <span class="n">current</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__model</span><span class="o">.</span><span class="n">compute_hardware_values</span><span class="p">([</span><span class="n">value</span><span class="p">])[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">dev_range</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__dev</span><span class="o">.</span><span class="n">get_range</span><span class="p">()</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">check_range</span><span class="p">(</span><span class="n">current</span><span class="p">,</span> <span class="n">dev_range</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="n">PyAMLException</span><span class="p">(</span><span class="n">format_out_of_range_message</span><span class="p">(</span><span class="n">current</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__dev</span><span class="p">))</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__dev</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">current</span><span class="p">)</span></div>
 
 
@@ -714,6 +896,9 @@
 <a class="viewcode-back" href="../../../api/pyaml.control.abstract_impl.html#pyaml.control.abstract_impl.RWHardwareArray.set">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">set</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">):</span>
         <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">p</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__devs</span><span class="p">):</span>
+            <span class="n">dev_range</span> <span class="o">=</span> <span class="n">p</span><span class="o">.</span><span class="n">get_range</span><span class="p">()</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">check_range</span><span class="p">(</span><span class="n">value</span><span class="p">[</span><span class="n">idx</span><span class="p">],</span> <span class="n">dev_range</span><span class="p">):</span>
+                <span class="k">raise</span> <span class="n">PyAMLException</span><span class="p">(</span><span class="n">format_out_of_range_message</span><span class="p">(</span><span class="n">value</span><span class="p">[</span><span class="n">idx</span><span class="p">],</span> <span class="n">p</span><span class="p">))</span>
             <span class="n">p</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">value</span><span class="p">[</span><span class="n">idx</span><span class="p">])</span></div>
 
 
@@ -761,6 +946,11 @@
 <a class="viewcode-back" href="../../../api/pyaml.control.abstract_impl.html#pyaml.control.abstract_impl.RWStrengthArray.set">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">set</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">):</span>
         <span class="n">cur</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__model</span><span class="o">.</span><span class="n">compute_hardware_values</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">p</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__devs</span><span class="p">):</span>
+            <span class="n">dev_range</span> <span class="o">=</span> <span class="n">p</span><span class="o">.</span><span class="n">get_range</span><span class="p">()</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">check_range</span><span class="p">(</span><span class="n">cur</span><span class="p">[</span><span class="n">idx</span><span class="p">],</span> <span class="n">dev_range</span><span class="p">):</span>
+                <span class="k">raise</span> <span class="n">PyAMLException</span><span class="p">(</span><span class="n">format_out_of_range_message</span><span class="p">(</span><span class="n">cur</span><span class="p">[</span><span class="n">idx</span><span class="p">],</span> <span class="n">p</span><span class="p">))</span>
+
         <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">p</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__devs</span><span class="p">):</span>
             <span class="n">p</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">cur</span><span class="p">[</span><span class="n">idx</span><span class="p">])</span></div>
 
@@ -1094,6 +1284,8 @@
     <span class="k">def</span><span class="w"> </span><span class="nf">unit</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__tune_monitor</span><span class="o">.</span><span class="n">_cfg</span><span class="o">.</span><span class="n">tune_v</span><span class="o">.</span><span class="n">unit</span><span class="p">()</span></div>
 </div>
+
+
 
 <span class="c1"># ------------------------------------------------------------------------------</span>
 
