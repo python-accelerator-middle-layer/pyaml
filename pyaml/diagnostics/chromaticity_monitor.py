@@ -283,18 +283,17 @@ class ChomaticityMonitor(Element):
                     if o == 1:
                         dp = "dp/p"
                     elif o >= 1:
-                        dp = "(dp/p)$^2$"
+                        dp = f"(dp/p)$^{o}$"
 
                     title += f"{coefs[o]:.4f} {dp}"
                     if o != 0:
                         title += " + "
 
-                print(title)
                 ax.plot(delta, np.polyval(coefs[::-1], delta))
                 ax.set_title(title)
                 ax.set_xlabel("Momentum Shift, dp/p [%]")
                 ax.set_ylabel("%s Tune" % ["Horizontal", "Vertical"][i])
-                ax.legend()
+                # ax.legend()
 
         if do_plot:
             fig.tight_layout()
