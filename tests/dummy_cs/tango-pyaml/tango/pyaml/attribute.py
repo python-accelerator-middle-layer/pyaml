@@ -1,3 +1,5 @@
+from typing import Optional, Tuple
+
 from pydantic import BaseModel, ConfigDict
 
 from pyaml.control.deviceaccess import DeviceAccess
@@ -11,6 +13,7 @@ class ConfigModel(BaseModel):
 
     attribute: str
     unit: str = ""
+    range: Optional[Tuple[Optional[float], Optional[float]]] = None
 
 
 class Attribute(DeviceAccess):
@@ -57,3 +60,17 @@ class Attribute(DeviceAccess):
 
     def __repr__(self):
         return repr(self._cfg).replace("ConfigModel", self.__class__.__name__)
+
+    def get_range(self) -> list[float]:
+        attr_range: list[float] = [None, None]
+        if self._cfg.range is not None:
+            attr_range[0] = (
+                self._cfg.range[0] if self._cfg.range[0] is not None else None
+            )
+            attr_range[1] = (
+                self._cfg.range[1] if self._cfg.range[1] is not None else None
+            )
+        return attr_range
+
+    def check_device_availability(self) -> bool:
+        return True

@@ -7,8 +7,8 @@ simulators:
     lattice: sr/lattices/ebs.mat
     name: design
 controls:
-  - type: pyaml_cs_oa.controlsystem
-    prefix: //ebs-simu-3:10000/
+  - type: tango.pyaml.controlsystem
+    tango_host: ebs-simu-3:10000
     name: live
 data_folder: /data/store
 arrays:
@@ -151,7 +151,7 @@ devices:
       file: sr/magnet_models/QF1_strength.csv
     unit: 1/m
     powerconverter:
-      type: pyaml_cs_oa.tangoRW
+      type: tango.pyaml.attribute
       attribute: srmag/vps-qf1/c04-e/current
       unit: A
 - type: pyaml.magnet.quadrupole
@@ -165,9 +165,10 @@ devices:
       file: sr/magnet_models/QF1_strength.csv
     unit: 1/m
     powerconverter:
-      type: pyaml_cs_oa.tangoRW
+      type: tango.pyaml.attribute
       attribute: srmag/vps-qf1/c05-a/current
       unit: A
+      range: [10,109]
 - type: pyaml.magnet.quadrupole
   name: QF1E-C05
   model:
@@ -179,7 +180,7 @@ devices:
       file: sr/magnet_models/QF1_strength.csv
     unit: 1/m
     powerconverter:
-      type: pyaml_cs_oa.tangoRW
+      type: tango.pyaml.attribute
       attribute: srmag/vps-qf1/c05-e/current
       unit: A
 - type: pyaml.magnet.quadrupole
@@ -193,7 +194,7 @@ devices:
       file: sr/magnet_models/QF1_strength.csv
     unit: 1/m
     powerconverter:
-      type: pyaml_cs_oa.tangoRW
+      type: tango.pyaml.attribute
       attribute: srmag/vps-qf1/c06-a/current
       unit: A
 - type: pyaml.magnet.quadrupole
@@ -207,7 +208,7 @@ devices:
       file: sr/magnet_models/QF1_strength.csv
     unit: 1/m
     powerconverter:
-      type: pyaml_cs_oa.tangoRW
+      type: tango.pyaml.attribute
       attribute: srmag/vps-qf1/c06-e/current
       unit: A
 - type: pyaml.magnet.quadrupole
@@ -221,7 +222,7 @@ devices:
       file: sr/magnet_models/QF1_strength.csv
     unit: 1/m
     powerconverter:
-      type: pyaml_cs_oa.tangoRW
+      type: tango.pyaml.attribute
       attribute: srmag/vps-qf1/c07-a/current
       unit: A
 - type: pyaml.magnet.quadrupole
@@ -235,7 +236,7 @@ devices:
       file: sr/magnet_models/QF1_strength.csv
     unit: 1/m
     powerconverter:
-      type: pyaml_cs_oa.tangoRW
+      type: tango.pyaml.attribute
       attribute: srmag/vps-qf1/c07-e/current
       unit: A
 - type: pyaml.magnet.quadrupole
@@ -249,7 +250,7 @@ devices:
       file: sr/magnet_models/QF1_strength.csv
     unit: 1/m
     powerconverter:
-      type: pyaml_cs_oa.tangoRW
+      type: tango.pyaml.attribute
       attribute: srmag/vps-qf1/c08-a/current
       unit: A
 - type: pyaml.magnet.quadrupole
@@ -263,7 +264,7 @@ devices:
       file: sr/magnet_models/QF1_strength.csv
     unit: 1/m
     powerconverter:
-      type: pyaml_cs_oa.tangoRW
+      type: tango.pyaml.attribute
       attribute: srmag/vps-qf1/c08-e/current
       unit: A
 - type: pyaml.magnet.quadrupole
@@ -277,7 +278,7 @@ devices:
       file: sr/magnet_models/QF1_strength.csv
     unit: 1/m
     powerconverter:
-      type: pyaml_cs_oa.tangoRW
+      type: tango.pyaml.attribute
       attribute: srmag/vps-qf1/c09-a/current
       unit: A
 - type: pyaml.magnet.quadrupole
@@ -291,7 +292,7 @@ devices:
       file: sr/magnet_models/QF1_strength.csv
     unit: 1/m
     powerconverter:
-      type: pyaml_cs_oa.tangoRW
+      type: tango.pyaml.attribute
       attribute: srmag/vps-qf1/c09-e/current
       unit: A
 - type: pyaml.magnet.quadrupole
@@ -305,7 +306,7 @@ devices:
       file: sr/magnet_models/QF1_strength.csv
     unit: 1/m
     powerconverter:
-      type: pyaml_cs_oa.tangoRW
+      type: tango.pyaml.attribute
       attribute: srmag/vps-qf1/c10-a/current
       unit: A
 - type: pyaml.magnet.quadrupole
@@ -319,7 +320,7 @@ devices:
       file: sr/magnet_models/QF1_strength.csv
     unit: 1/m
     powerconverter:
-      type: pyaml_cs_oa.tangoRW
+      type: tango.pyaml.attribute
       attribute: srmag/vps-qf1/c10-e/current
       unit: A
 - type: pyaml.magnet.quadrupole
@@ -333,7 +334,7 @@ devices:
       file: sr/magnet_models/QF1_strength.csv
     unit: 1/m
     powerconverter:
-      type: pyaml_cs_oa.tangoRW
+      type: tango.pyaml.attribute
       attribute: srmag/vps-qf1/c11-a/current
       unit: A
 - type: pyaml.magnet.quadrupole
@@ -347,7 +348,7 @@ devices:
       file: sr/magnet_models/QF1_strength.csv
     unit: 1/m
     powerconverter:
-      type: pyaml_cs_oa.tangoRW
+      type: tango.pyaml.attribute
       attribute: srmag/vps-qf1/c11-e/current
       unit: A
 - type: pyaml.magnet.quadrupole
@@ -361,7 +362,7 @@ devices:
       file: sr/magnet_models/QF1_strength.csv
     unit: 1/m
     powerconverter:
-      type: pyaml_cs_oa.tangoRW
+      type: tango.pyaml.attribute
       attribute: srmag/vps-qf1/c12-a/current
       unit: A
 - type: pyaml.magnet.quadrupole
@@ -375,7 +376,7 @@ devices:
       file: sr/magnet_models/QF1_strength.csv
     unit: 1/m
     powerconverter:
-      type: pyaml_cs_oa.tangoRW
+      type: tango.pyaml.attribute
       attribute: srmag/vps-qf1/c12-e/current
       unit: A
 - type: pyaml.magnet.quadrupole
@@ -389,7 +390,7 @@ devices:
       file: sr/magnet_models/QF1_strength.csv
     unit: 1/m
     powerconverter:
-      type: pyaml_cs_oa.tangoRW
+      type: tango.pyaml.attribute
       attribute: srmag/vps-qf1/c13-a/current
       unit: A
 - type: pyaml.magnet.quadrupole
@@ -403,7 +404,7 @@ devices:
       file: sr/magnet_models/QF1_strength.csv
     unit: 1/m
     powerconverter:
-      type: pyaml_cs_oa.tangoRW
+      type: tango.pyaml.attribute
       attribute: srmag/vps-qf1/c13-e/current
       unit: A
 - type: pyaml.magnet.quadrupole
@@ -417,7 +418,7 @@ devices:
       file: sr/magnet_models/QF1_strength.csv
     unit: 1/m
     powerconverter:
-      type: pyaml_cs_oa.tangoRW
+      type: tango.pyaml.attribute
       attribute: srmag/vps-qf1/c14-a/current
       unit: A
 - type: pyaml.magnet.quadrupole
@@ -431,7 +432,7 @@ devices:
       file: sr/magnet_models/QF1_strength.csv
     unit: 1/m
     powerconverter:
-      type: pyaml_cs_oa.tangoRW
+      type: tango.pyaml.attribute
       attribute: srmag/vps-qf1/c14-e/current
       unit: A
 - type: pyaml.magnet.quadrupole
@@ -445,7 +446,7 @@ devices:
       file: sr/magnet_models/QF1_strength.csv
     unit: 1/m
     powerconverter:
-      type: pyaml_cs_oa.tangoRW
+      type: tango.pyaml.attribute
       attribute: srmag/vps-qf1/c15-a/current
       unit: A
 - type: pyaml.magnet.quadrupole
@@ -459,7 +460,7 @@ devices:
       file: sr/magnet_models/QF1_strength.csv
     unit: 1/m
     powerconverter:
-      type: pyaml_cs_oa.tangoRW
+      type: tango.pyaml.attribute
       attribute: srmag/vps-qf1/c15-e/current
       unit: A
 - type: pyaml.magnet.quadrupole
@@ -473,7 +474,7 @@ devices:
       file: sr/magnet_models/QF1_strength.csv
     unit: 1/m
     powerconverter:
-      type: pyaml_cs_oa.tangoRW
+      type: tango.pyaml.attribute
       attribute: srmag/vps-qf1/c16-a/current
       unit: A
 - type: pyaml.magnet.quadrupole
@@ -487,7 +488,7 @@ devices:
       file: sr/magnet_models/QF1_strength.csv
     unit: 1/m
     powerconverter:
-      type: pyaml_cs_oa.tangoRW
+      type: tango.pyaml.attribute
       attribute: srmag/vps-qf1/c16-e/current
       unit: A
 - type: pyaml.magnet.quadrupole
@@ -501,7 +502,7 @@ devices:
       file: sr/magnet_models/QF1_strength.csv
     unit: 1/m
     powerconverter:
-      type: pyaml_cs_oa.tangoRW
+      type: tango.pyaml.attribute
       attribute: srmag/vps-qf1/c17-a/current
       unit: A
 - type: pyaml.magnet.quadrupole
@@ -515,7 +516,7 @@ devices:
       file: sr/magnet_models/QF1_strength.csv
     unit: 1/m
     powerconverter:
-      type: pyaml_cs_oa.tangoRW
+      type: tango.pyaml.attribute
       attribute: srmag/vps-qf1/c17-e/current
       unit: A
 - type: pyaml.magnet.quadrupole
@@ -529,7 +530,7 @@ devices:
       file: sr/magnet_models/QF1_strength.csv
     unit: 1/m
     powerconverter:
-      type: pyaml_cs_oa.tangoRW
+      type: tango.pyaml.attribute
       attribute: srmag/vps-qf1/c18-a/current
       unit: A
 - type: pyaml.magnet.quadrupole
@@ -543,7 +544,7 @@ devices:
       file: sr/magnet_models/QF1_strength.csv
     unit: 1/m
     powerconverter:
-      type: pyaml_cs_oa.tangoRW
+      type: tango.pyaml.attribute
       attribute: srmag/vps-qf1/c18-e/current
       unit: A
 - type: pyaml.magnet.quadrupole
@@ -557,7 +558,7 @@ devices:
       file: sr/magnet_models/QF1_strength.csv
     unit: 1/m
     powerconverter:
-      type: pyaml_cs_oa.tangoRW
+      type: tango.pyaml.attribute
       attribute: srmag/vps-qf1/c19-a/current
       unit: A
 - type: pyaml.magnet.quadrupole
@@ -571,7 +572,7 @@ devices:
       file: sr/magnet_models/QF1_strength.csv
     unit: 1/m
     powerconverter:
-      type: pyaml_cs_oa.tangoRW
+      type: tango.pyaml.attribute
       attribute: srmag/vps-qf1/c19-e/current
       unit: A
 - type: pyaml.magnet.quadrupole
@@ -585,7 +586,7 @@ devices:
       file: sr/magnet_models/QF1_strength.csv
     unit: 1/m
     powerconverter:
-      type: pyaml_cs_oa.tangoRW
+      type: tango.pyaml.attribute
       attribute: srmag/vps-qf1/c20-a/current
       unit: A
 - type: pyaml.magnet.quadrupole
@@ -599,7 +600,7 @@ devices:
       file: sr/magnet_models/QF1_strength.csv
     unit: 1/m
     powerconverter:
-      type: pyaml_cs_oa.tangoRW
+      type: tango.pyaml.attribute
       attribute: srmag/vps-qf1/c20-e/current
       unit: A
 - type: pyaml.magnet.quadrupole
@@ -613,7 +614,7 @@ devices:
       file: sr/magnet_models/QF1_strength.csv
     unit: 1/m
     powerconverter:
-      type: pyaml_cs_oa.tangoRW
+      type: tango.pyaml.attribute
       attribute: srmag/vps-qf1/c21-a/current
       unit: A
 - type: pyaml.magnet.quadrupole
@@ -627,7 +628,7 @@ devices:
       file: sr/magnet_models/QF1_strength.csv
     unit: 1/m
     powerconverter:
-      type: pyaml_cs_oa.tangoRW
+      type: tango.pyaml.attribute
       attribute: srmag/vps-qf1/c21-e/current
       unit: A
 - type: pyaml.magnet.quadrupole
@@ -641,7 +642,7 @@ devices:
       file: sr/magnet_models/QF1_strength.csv
     unit: 1/m
     powerconverter:
-      type: pyaml_cs_oa.tangoRW
+      type: tango.pyaml.attribute
       attribute: srmag/vps-qf1/c22-a/current
       unit: A
 - type: pyaml.magnet.quadrupole
@@ -655,7 +656,7 @@ devices:
       file: sr/magnet_models/QF1_strength.csv
     unit: 1/m
     powerconverter:
-      type: pyaml_cs_oa.tangoRW
+      type: tango.pyaml.attribute
       attribute: srmag/vps-qf1/c22-e/current
       unit: A
 - type: pyaml.magnet.quadrupole
@@ -669,7 +670,7 @@ devices:
       file: sr/magnet_models/QF1_strength.csv
     unit: 1/m
     powerconverter:
-      type: pyaml_cs_oa.tangoRW
+      type: tango.pyaml.attribute
       attribute: srmag/vps-qf1/c23-a/current
       unit: A
 - type: pyaml.magnet.quadrupole
@@ -683,7 +684,7 @@ devices:
       file: sr/magnet_models/QF1_strength.csv
     unit: 1/m
     powerconverter:
-      type: pyaml_cs_oa.tangoRW
+      type: tango.pyaml.attribute
       attribute: srmag/vps-qf1/c23-e/current
       unit: A
 - type: pyaml.magnet.quadrupole
@@ -697,7 +698,7 @@ devices:
       file: sr/magnet_models/QF1_strength.csv
     unit: 1/m
     powerconverter:
-      type: pyaml_cs_oa.tangoRW
+      type: tango.pyaml.attribute
       attribute: srmag/vps-qf1/c24-a/current
       unit: A
 - type: pyaml.magnet.quadrupole
@@ -711,7 +712,7 @@ devices:
       file: sr/magnet_models/QF1_strength.csv
     unit: 1/m
     powerconverter:
-      type: pyaml_cs_oa.tangoRW
+      type: tango.pyaml.attribute
       attribute: srmag/vps-qf1/c24-e/current
       unit: A
 - type: pyaml.magnet.quadrupole
@@ -725,7 +726,7 @@ devices:
       file: sr/magnet_models/QF1_strength.csv
     unit: 1/m
     powerconverter:
-      type: pyaml_cs_oa.tangoRW
+      type: tango.pyaml.attribute
       attribute: srmag/vps-qf1/c25-a/current
       unit: A
 - type: pyaml.magnet.quadrupole
@@ -739,7 +740,7 @@ devices:
       file: sr/magnet_models/QF1_strength.csv
     unit: 1/m
     powerconverter:
-      type: pyaml_cs_oa.tangoRW
+      type: tango.pyaml.attribute
       attribute: srmag/vps-qf1/c25-e/current
       unit: A
 - type: pyaml.magnet.quadrupole
@@ -753,7 +754,7 @@ devices:
       file: sr/magnet_models/QF1_strength.csv
     unit: 1/m
     powerconverter:
-      type: pyaml_cs_oa.tangoRW
+      type: tango.pyaml.attribute
       attribute: srmag/vps-qf1/c26-a/current
       unit: A
 - type: pyaml.magnet.quadrupole
@@ -767,7 +768,7 @@ devices:
       file: sr/magnet_models/QF1_strength.csv
     unit: 1/m
     powerconverter:
-      type: pyaml_cs_oa.tangoRW
+      type: tango.pyaml.attribute
       attribute: srmag/vps-qf1/c26-e/current
       unit: A
 - type: pyaml.magnet.quadrupole
@@ -781,7 +782,7 @@ devices:
       file: sr/magnet_models/QF1_strength.csv
     unit: 1/m
     powerconverter:
-      type: pyaml_cs_oa.tangoRW
+      type: tango.pyaml.attribute
       attribute: srmag/vps-qf1/c27-a/current
       unit: A
 - type: pyaml.magnet.quadrupole
@@ -795,7 +796,7 @@ devices:
       file: sr/magnet_models/QF1_strength.csv
     unit: 1/m
     powerconverter:
-      type: pyaml_cs_oa.tangoRW
+      type: tango.pyaml.attribute
       attribute: srmag/vps-qf1/c27-e/current
       unit: A
 - type: pyaml.magnet.quadrupole
@@ -809,7 +810,7 @@ devices:
       file: sr/magnet_models/QF1_strength.csv
     unit: 1/m
     powerconverter:
-      type: pyaml_cs_oa.tangoRW
+      type: tango.pyaml.attribute
       attribute: srmag/vps-qf1/c28-a/current
       unit: A
 - type: pyaml.magnet.quadrupole
@@ -823,7 +824,7 @@ devices:
       file: sr/magnet_models/QF1_strength.csv
     unit: 1/m
     powerconverter:
-      type: pyaml_cs_oa.tangoRW
+      type: tango.pyaml.attribute
       attribute: srmag/vps-qf1/c28-e/current
       unit: A
 - type: pyaml.magnet.quadrupole
@@ -837,7 +838,7 @@ devices:
       file: sr/magnet_models/QF1_strength.csv
     unit: 1/m
     powerconverter:
-      type: pyaml_cs_oa.tangoRW
+      type: tango.pyaml.attribute
       attribute: srmag/vps-qf1/c29-a/current
       unit: A
 - type: pyaml.magnet.quadrupole
@@ -851,7 +852,7 @@ devices:
       file: sr/magnet_models/QF1_strength.csv
     unit: 1/m
     powerconverter:
-      type: pyaml_cs_oa.tangoRW
+      type: tango.pyaml.attribute
       attribute: srmag/vps-qf1/c29-e/current
       unit: A
 - type: pyaml.magnet.quadrupole
@@ -865,7 +866,7 @@ devices:
       file: sr/magnet_models/QF1_strength.csv
     unit: 1/m
     powerconverter:
-      type: pyaml_cs_oa.tangoRW
+      type: tango.pyaml.attribute
       attribute: srmag/vps-qf1/c30-a/current
       unit: A
 - type: pyaml.magnet.quadrupole
@@ -879,7 +880,7 @@ devices:
       file: sr/magnet_models/QF1_strength.csv
     unit: 1/m
     powerconverter:
-      type: pyaml_cs_oa.tangoRW
+      type: tango.pyaml.attribute
       attribute: srmag/vps-qf1/c30-e/current
       unit: A
 - type: pyaml.magnet.quadrupole
@@ -893,7 +894,7 @@ devices:
       file: sr/magnet_models/QF1_strength.csv
     unit: 1/m
     powerconverter:
-      type: pyaml_cs_oa.tangoRW
+      type: tango.pyaml.attribute
       attribute: srmag/vps-qf1/c31-a/current
       unit: A
 - type: pyaml.magnet.quadrupole
@@ -907,7 +908,7 @@ devices:
       file: sr/magnet_models/QF1_strength.csv
     unit: 1/m
     powerconverter:
-      type: pyaml_cs_oa.tangoRW
+      type: tango.pyaml.attribute
       attribute: srmag/vps-qf1/c31-e/current
       unit: A
 - type: pyaml.magnet.quadrupole
@@ -921,7 +922,7 @@ devices:
       file: sr/magnet_models/QF1_strength.csv
     unit: 1/m
     powerconverter:
-      type: pyaml_cs_oa.tangoRW
+      type: tango.pyaml.attribute
       attribute: srmag/vps-qf1/c32-a/current
       unit: A
 - type: pyaml.magnet.quadrupole
@@ -935,7 +936,7 @@ devices:
       file: sr/magnet_models/QF1_strength.csv
     unit: 1/m
     powerconverter:
-      type: pyaml_cs_oa.tangoRW
+      type: tango.pyaml.attribute
       attribute: srmag/vps-qf1/c32-e/current
       unit: A
 - type: pyaml.magnet.quadrupole
@@ -949,7 +950,7 @@ devices:
       file: sr/magnet_models/QF1_strength.csv
     unit: 1/m
     powerconverter:
-      type: pyaml_cs_oa.tangoRW
+      type: tango.pyaml.attribute
       attribute: srmag/vps-qf1/c01-a/current
       unit: A
 - type: pyaml.magnet.quadrupole
@@ -963,7 +964,7 @@ devices:
       file: sr/magnet_models/QF1_strength.csv
     unit: 1/m
     powerconverter:
-      type: pyaml_cs_oa.tangoRW
+      type: tango.pyaml.attribute
       attribute: srmag/vps-qf1/c01-e/current
       unit: A
 - type: pyaml.magnet.quadrupole
@@ -977,7 +978,7 @@ devices:
       file: sr/magnet_models/QF1_strength.csv
     unit: 1/m
     powerconverter:
-      type: pyaml_cs_oa.tangoRW
+      type: tango.pyaml.attribute
       attribute: srmag/vps-qf1/c02-a/current
       unit: A
 - type: pyaml.magnet.quadrupole
@@ -991,7 +992,7 @@ devices:
       file: sr/magnet_models/QF1_strength.csv
     unit: 1/m
     powerconverter:
-      type: pyaml_cs_oa.tangoRW
+      type: tango.pyaml.attribute
       attribute: srmag/vps-qf1/c02-e/current
       unit: A
 - type: pyaml.magnet.quadrupole
@@ -1005,7 +1006,7 @@ devices:
       file: sr/magnet_models/QF1_strength.csv
     unit: 1/m
     powerconverter:
-      type: pyaml_cs_oa.tangoRW
+      type: tango.pyaml.attribute
       attribute: srmag/vps-qf1/c03-a/current
       unit: A
 - type: pyaml.magnet.quadrupole
@@ -1019,7 +1020,7 @@ devices:
       file: sr/magnet_models/QD2_strength.csv
     unit: 1/m
     powerconverter:
-      type: pyaml_cs_oa.tangoRW
+      type: tango.pyaml.attribute
       attribute: srmag/vps-qd2/c04-e/current
       unit: A
 - type: pyaml.magnet.quadrupole
@@ -1033,7 +1034,7 @@ devices:
       file: sr/magnet_models/QD2_strength.csv
     unit: 1/m
     powerconverter:
-      type: pyaml_cs_oa.tangoRW
+      type: tango.pyaml.attribute
       attribute: srmag/vps-qd2/c05-a/current
       unit: A
 - type: pyaml.magnet.quadrupole
@@ -1047,7 +1048,7 @@ devices:
       file: sr/magnet_models/QD2_strength.csv
     unit: 1/m
     powerconverter:
-      type: pyaml_cs_oa.tangoRW
+      type: tango.pyaml.attribute
       attribute: srmag/vps-qd2/c05-e/current
       unit: A
 - type: pyaml.magnet.quadrupole
@@ -1061,7 +1062,7 @@ devices:
       file: sr/magnet_models/QD2_strength.csv
     unit: 1/m
     powerconverter:
-      type: pyaml_cs_oa.tangoRW
+      type: tango.pyaml.attribute
       attribute: srmag/vps-qd2/c06-a/current
       unit: A
 - type: pyaml.magnet.quadrupole
@@ -1075,7 +1076,7 @@ devices:
       file: sr/magnet_models/QD2_strength.csv
     unit: 1/m
     powerconverter:
-      type: pyaml_cs_oa.tangoRW
+      type: tango.pyaml.attribute
       attribute: srmag/vps-qd2/c06-e/current
       unit: A
 - type: pyaml.magnet.quadrupole
@@ -1089,7 +1090,7 @@ devices:
       file: sr/magnet_models/QD2_strength.csv
     unit: 1/m
     powerconverter:
-      type: pyaml_cs_oa.tangoRW
+      type: tango.pyaml.attribute
       attribute: srmag/vps-qd2/c07-a/current
       unit: A
 - type: pyaml.magnet.quadrupole
@@ -1103,7 +1104,7 @@ devices:
       file: sr/magnet_models/QD2_strength.csv
     unit: 1/m
     powerconverter:
-      type: pyaml_cs_oa.tangoRW
+      type: tango.pyaml.attribute
       attribute: srmag/vps-qd2/c07-e/current
       unit: A
 - type: pyaml.magnet.quadrupole
@@ -1117,7 +1118,7 @@ devices:
       file: sr/magnet_models/QD2_strength.csv
     unit: 1/m
     powerconverter:
-      type: pyaml_cs_oa.tangoRW
+      type: tango.pyaml.attribute
       attribute: srmag/vps-qd2/c08-a/current
       unit: A
 - type: pyaml.magnet.quadrupole
@@ -1131,7 +1132,7 @@ devices:
       file: sr/magnet_models/QD2_strength.csv
     unit: 1/m
     powerconverter:
-      type: pyaml_cs_oa.tangoRW
+      type: tango.pyaml.attribute
       attribute: srmag/vps-qd2/c08-e/current
       unit: A
 - type: pyaml.magnet.quadrupole
@@ -1145,7 +1146,7 @@ devices:
       file: sr/magnet_models/QD2_strength.csv
     unit: 1/m
     powerconverter:
-      type: pyaml_cs_oa.tangoRW
+      type: tango.pyaml.attribute
       attribute: srmag/vps-qd2/c09-a/current
       unit: A
 - type: pyaml.magnet.quadrupole
@@ -1159,7 +1160,7 @@ devices:
       file: sr/magnet_models/QD2_strength.csv
     unit: 1/m
     powerconverter:
-      type: pyaml_cs_oa.tangoRW
+      type: tango.pyaml.attribute
       attribute: srmag/vps-qd2/c09-e/current
       unit: A
 - type: pyaml.magnet.quadrupole
@@ -1173,7 +1174,7 @@ devices:
       file: sr/magnet_models/QD2_strength.csv
     unit: 1/m
     powerconverter:
-      type: pyaml_cs_oa.tangoRW
+      type: tango.pyaml.attribute
       attribute: srmag/vps-qd2/c10-a/current
       unit: A
 - type: pyaml.magnet.quadrupole
@@ -1187,7 +1188,7 @@ devices:
       file: sr/magnet_models/QD2_strength.csv
     unit: 1/m
     powerconverter:
-      type: pyaml_cs_oa.tangoRW
+      type: tango.pyaml.attribute
       attribute: srmag/vps-qd2/c10-e/current
       unit: A
 - type: pyaml.magnet.quadrupole
@@ -1201,7 +1202,7 @@ devices:
       file: sr/magnet_models/QD2_strength.csv
     unit: 1/m
     powerconverter:
-      type: pyaml_cs_oa.tangoRW
+      type: tango.pyaml.attribute
       attribute: srmag/vps-qd2/c11-a/current
       unit: A
 - type: pyaml.magnet.quadrupole
@@ -1215,7 +1216,7 @@ devices:
       file: sr/magnet_models/QD2_strength.csv
     unit: 1/m
     powerconverter:
-      type: pyaml_cs_oa.tangoRW
+      type: tango.pyaml.attribute
       attribute: srmag/vps-qd2/c11-e/current
       unit: A
 - type: pyaml.magnet.quadrupole
@@ -1229,7 +1230,7 @@ devices:
       file: sr/magnet_models/QD2_strength.csv
     unit: 1/m
     powerconverter:
-      type: pyaml_cs_oa.tangoRW
+      type: tango.pyaml.attribute
       attribute: srmag/vps-qd2/c12-a/current
       unit: A
 - type: pyaml.magnet.quadrupole
@@ -1243,7 +1244,7 @@ devices:
       file: sr/magnet_models/QD2_strength.csv
     unit: 1/m
     powerconverter:
-      type: pyaml_cs_oa.tangoRW
+      type: tango.pyaml.attribute
       attribute: srmag/vps-qd2/c12-e/current
       unit: A
 - type: pyaml.magnet.quadrupole
@@ -1257,7 +1258,7 @@ devices:
       file: sr/magnet_models/QD2_strength.csv
     unit: 1/m
     powerconverter:
-      type: pyaml_cs_oa.tangoRW
+      type: tango.pyaml.attribute
       attribute: srmag/vps-qd2/c13-a/current
       unit: A
 - type: pyaml.magnet.quadrupole
@@ -1271,7 +1272,7 @@ devices:
       file: sr/magnet_models/QD2_strength.csv
     unit: 1/m
     powerconverter:
-      type: pyaml_cs_oa.tangoRW
+      type: tango.pyaml.attribute
       attribute: srmag/vps-qd2/c13-e/current
       unit: A
 - type: pyaml.magnet.quadrupole
@@ -1285,7 +1286,7 @@ devices:
       file: sr/magnet_models/QD2_strength.csv
     unit: 1/m
     powerconverter:
-      type: pyaml_cs_oa.tangoRW
+      type: tango.pyaml.attribute
       attribute: srmag/vps-qd2/c14-a/current
       unit: A
 - type: pyaml.magnet.quadrupole
@@ -1299,7 +1300,7 @@ devices:
       file: sr/magnet_models/QD2_strength.csv
     unit: 1/m
     powerconverter:
-      type: pyaml_cs_oa.tangoRW
+      type: tango.pyaml.attribute
       attribute: srmag/vps-qd2/c14-e/current
       unit: A
 - type: pyaml.magnet.quadrupole
@@ -1313,7 +1314,7 @@ devices:
       file: sr/magnet_models/QD2_strength.csv
     unit: 1/m
     powerconverter:
-      type: pyaml_cs_oa.tangoRW
+      type: tango.pyaml.attribute
       attribute: srmag/vps-qd2/c15-a/current
       unit: A
 - type: pyaml.magnet.quadrupole
@@ -1327,7 +1328,7 @@ devices:
       file: sr/magnet_models/QD2_strength.csv
     unit: 1/m
     powerconverter:
-      type: pyaml_cs_oa.tangoRW
+      type: tango.pyaml.attribute
       attribute: srmag/vps-qd2/c15-e/current
       unit: A
 - type: pyaml.magnet.quadrupole
@@ -1341,7 +1342,7 @@ devices:
       file: sr/magnet_models/QD2_strength.csv
     unit: 1/m
     powerconverter:
-      type: pyaml_cs_oa.tangoRW
+      type: tango.pyaml.attribute
       attribute: srmag/vps-qd2/c16-a/current
       unit: A
 - type: pyaml.magnet.quadrupole
@@ -1355,7 +1356,7 @@ devices:
       file: sr/magnet_models/QD2_strength.csv
     unit: 1/m
     powerconverter:
-      type: pyaml_cs_oa.tangoRW
+      type: tango.pyaml.attribute
       attribute: srmag/vps-qd2/c16-e/current
       unit: A
 - type: pyaml.magnet.quadrupole
@@ -1369,7 +1370,7 @@ devices:
       file: sr/magnet_models/QD2_strength.csv
     unit: 1/m
     powerconverter:
-      type: pyaml_cs_oa.tangoRW
+      type: tango.pyaml.attribute
       attribute: srmag/vps-qd2/c17-a/current
       unit: A
 - type: pyaml.magnet.quadrupole
@@ -1383,7 +1384,7 @@ devices:
       file: sr/magnet_models/QD2_strength.csv
     unit: 1/m
     powerconverter:
-      type: pyaml_cs_oa.tangoRW
+      type: tango.pyaml.attribute
       attribute: srmag/vps-qd2/c17-e/current
       unit: A
 - type: pyaml.magnet.quadrupole
@@ -1397,7 +1398,7 @@ devices:
       file: sr/magnet_models/QD2_strength.csv
     unit: 1/m
     powerconverter:
-      type: pyaml_cs_oa.tangoRW
+      type: tango.pyaml.attribute
       attribute: srmag/vps-qd2/c18-a/current
       unit: A
 - type: pyaml.magnet.quadrupole
@@ -1411,7 +1412,7 @@ devices:
       file: sr/magnet_models/QD2_strength.csv
     unit: 1/m
     powerconverter:
-      type: pyaml_cs_oa.tangoRW
+      type: tango.pyaml.attribute
       attribute: srmag/vps-qd2/c18-e/current
       unit: A
 - type: pyaml.magnet.quadrupole
@@ -1425,7 +1426,7 @@ devices:
       file: sr/magnet_models/QD2_strength.csv
     unit: 1/m
     powerconverter:
-      type: pyaml_cs_oa.tangoRW
+      type: tango.pyaml.attribute
       attribute: srmag/vps-qd2/c19-a/current
       unit: A
 - type: pyaml.magnet.quadrupole
@@ -1439,7 +1440,7 @@ devices:
       file: sr/magnet_models/QD2_strength.csv
     unit: 1/m
     powerconverter:
-      type: pyaml_cs_oa.tangoRW
+      type: tango.pyaml.attribute
       attribute: srmag/vps-qd2/c19-e/current
       unit: A
 - type: pyaml.magnet.quadrupole
@@ -1453,7 +1454,7 @@ devices:
       file: sr/magnet_models/QD2_strength.csv
     unit: 1/m
     powerconverter:
-      type: pyaml_cs_oa.tangoRW
+      type: tango.pyaml.attribute
       attribute: srmag/vps-qd2/c20-a/current
       unit: A
 - type: pyaml.magnet.quadrupole
@@ -1467,7 +1468,7 @@ devices:
       file: sr/magnet_models/QD2_strength.csv
     unit: 1/m
     powerconverter:
-      type: pyaml_cs_oa.tangoRW
+      type: tango.pyaml.attribute
       attribute: srmag/vps-qd2/c20-e/current
       unit: A
 - type: pyaml.magnet.quadrupole
@@ -1481,7 +1482,7 @@ devices:
       file: sr/magnet_models/QD2_strength.csv
     unit: 1/m
     powerconverter:
-      type: pyaml_cs_oa.tangoRW
+      type: tango.pyaml.attribute
       attribute: srmag/vps-qd2/c21-a/current
       unit: A
 - type: pyaml.magnet.quadrupole
@@ -1495,7 +1496,7 @@ devices:
       file: sr/magnet_models/QD2_strength.csv
     unit: 1/m
     powerconverter:
-      type: pyaml_cs_oa.tangoRW
+      type: tango.pyaml.attribute
       attribute: srmag/vps-qd2/c21-e/current
       unit: A
 - type: pyaml.magnet.quadrupole
@@ -1509,7 +1510,7 @@ devices:
       file: sr/magnet_models/QD2_strength.csv
     unit: 1/m
     powerconverter:
-      type: pyaml_cs_oa.tangoRW
+      type: tango.pyaml.attribute
       attribute: srmag/vps-qd2/c22-a/current
       unit: A
 - type: pyaml.magnet.quadrupole
@@ -1523,7 +1524,7 @@ devices:
       file: sr/magnet_models/QD2_strength.csv
     unit: 1/m
     powerconverter:
-      type: pyaml_cs_oa.tangoRW
+      type: tango.pyaml.attribute
       attribute: srmag/vps-qd2/c22-e/current
       unit: A
 - type: pyaml.magnet.quadrupole
@@ -1537,7 +1538,7 @@ devices:
       file: sr/magnet_models/QD2_strength.csv
     unit: 1/m
     powerconverter:
-      type: pyaml_cs_oa.tangoRW
+      type: tango.pyaml.attribute
       attribute: srmag/vps-qd2/c23-a/current
       unit: A
 - type: pyaml.magnet.quadrupole
@@ -1551,7 +1552,7 @@ devices:
       file: sr/magnet_models/QD2_strength.csv
     unit: 1/m
     powerconverter:
-      type: pyaml_cs_oa.tangoRW
+      type: tango.pyaml.attribute
       attribute: srmag/vps-qd2/c23-e/current
       unit: A
 - type: pyaml.magnet.quadrupole
@@ -1565,7 +1566,7 @@ devices:
       file: sr/magnet_models/QD2_strength.csv
     unit: 1/m
     powerconverter:
-      type: pyaml_cs_oa.tangoRW
+      type: tango.pyaml.attribute
       attribute: srmag/vps-qd2/c24-a/current
       unit: A
 - type: pyaml.magnet.quadrupole
@@ -1579,7 +1580,7 @@ devices:
       file: sr/magnet_models/QD2_strength.csv
     unit: 1/m
     powerconverter:
-      type: pyaml_cs_oa.tangoRW
+      type: tango.pyaml.attribute
       attribute: srmag/vps-qd2/c24-e/current
       unit: A
 - type: pyaml.magnet.quadrupole
@@ -1593,7 +1594,7 @@ devices:
       file: sr/magnet_models/QD2_strength.csv
     unit: 1/m
     powerconverter:
-      type: pyaml_cs_oa.tangoRW
+      type: tango.pyaml.attribute
       attribute: srmag/vps-qd2/c25-a/current
       unit: A
 - type: pyaml.magnet.quadrupole
@@ -1607,7 +1608,7 @@ devices:
       file: sr/magnet_models/QD2_strength.csv
     unit: 1/m
     powerconverter:
-      type: pyaml_cs_oa.tangoRW
+      type: tango.pyaml.attribute
       attribute: srmag/vps-qd2/c25-e/current
       unit: A
 - type: pyaml.magnet.quadrupole
@@ -1621,7 +1622,7 @@ devices:
       file: sr/magnet_models/QD2_strength.csv
     unit: 1/m
     powerconverter:
-      type: pyaml_cs_oa.tangoRW
+      type: tango.pyaml.attribute
       attribute: srmag/vps-qd2/c26-a/current
       unit: A
 - type: pyaml.magnet.quadrupole
@@ -1635,7 +1636,7 @@ devices:
       file: sr/magnet_models/QD2_strength.csv
     unit: 1/m
     powerconverter:
-      type: pyaml_cs_oa.tangoRW
+      type: tango.pyaml.attribute
       attribute: srmag/vps-qd2/c26-e/current
       unit: A
 - type: pyaml.magnet.quadrupole
@@ -1649,7 +1650,7 @@ devices:
       file: sr/magnet_models/QD2_strength.csv
     unit: 1/m
     powerconverter:
-      type: pyaml_cs_oa.tangoRW
+      type: tango.pyaml.attribute
       attribute: srmag/vps-qd2/c27-a/current
       unit: A
 - type: pyaml.magnet.quadrupole
@@ -1663,7 +1664,7 @@ devices:
       file: sr/magnet_models/QD2_strength.csv
     unit: 1/m
     powerconverter:
-      type: pyaml_cs_oa.tangoRW
+      type: tango.pyaml.attribute
       attribute: srmag/vps-qd2/c27-e/current
       unit: A
 - type: pyaml.magnet.quadrupole
@@ -1677,7 +1678,7 @@ devices:
       file: sr/magnet_models/QD2_strength.csv
     unit: 1/m
     powerconverter:
-      type: pyaml_cs_oa.tangoRW
+      type: tango.pyaml.attribute
       attribute: srmag/vps-qd2/c28-a/current
       unit: A
 - type: pyaml.magnet.quadrupole
@@ -1691,7 +1692,7 @@ devices:
       file: sr/magnet_models/QD2_strength.csv
     unit: 1/m
     powerconverter:
-      type: pyaml_cs_oa.tangoRW
+      type: tango.pyaml.attribute
       attribute: srmag/vps-qd2/c28-e/current
       unit: A
 - type: pyaml.magnet.quadrupole
@@ -1705,7 +1706,7 @@ devices:
       file: sr/magnet_models/QD2_strength.csv
     unit: 1/m
     powerconverter:
-      type: pyaml_cs_oa.tangoRW
+      type: tango.pyaml.attribute
       attribute: srmag/vps-qd2/c29-a/current
       unit: A
 - type: pyaml.magnet.quadrupole
@@ -1719,7 +1720,7 @@ devices:
       file: sr/magnet_models/QD2_strength.csv
     unit: 1/m
     powerconverter:
-      type: pyaml_cs_oa.tangoRW
+      type: tango.pyaml.attribute
       attribute: srmag/vps-qd2/c29-e/current
       unit: A
 - type: pyaml.magnet.quadrupole
@@ -1733,7 +1734,7 @@ devices:
       file: sr/magnet_models/QD2_strength.csv
     unit: 1/m
     powerconverter:
-      type: pyaml_cs_oa.tangoRW
+      type: tango.pyaml.attribute
       attribute: srmag/vps-qd2/c30-a/current
       unit: A
 - type: pyaml.magnet.quadrupole
@@ -1747,7 +1748,7 @@ devices:
       file: sr/magnet_models/QD2_strength.csv
     unit: 1/m
     powerconverter:
-      type: pyaml_cs_oa.tangoRW
+      type: tango.pyaml.attribute
       attribute: srmag/vps-qd2/c30-e/current
       unit: A
 - type: pyaml.magnet.quadrupole
@@ -1761,7 +1762,7 @@ devices:
       file: sr/magnet_models/QD2_strength.csv
     unit: 1/m
     powerconverter:
-      type: pyaml_cs_oa.tangoRW
+      type: tango.pyaml.attribute
       attribute: srmag/vps-qd2/c31-a/current
       unit: A
 - type: pyaml.magnet.quadrupole
@@ -1775,7 +1776,7 @@ devices:
       file: sr/magnet_models/QD2_strength.csv
     unit: 1/m
     powerconverter:
-      type: pyaml_cs_oa.tangoRW
+      type: tango.pyaml.attribute
       attribute: srmag/vps-qd2/c31-e/current
       unit: A
 - type: pyaml.magnet.quadrupole
@@ -1789,7 +1790,7 @@ devices:
       file: sr/magnet_models/QD2_strength.csv
     unit: 1/m
     powerconverter:
-      type: pyaml_cs_oa.tangoRW
+      type: tango.pyaml.attribute
       attribute: srmag/vps-qd2/c32-a/current
       unit: A
 - type: pyaml.magnet.quadrupole
@@ -1803,7 +1804,7 @@ devices:
       file: sr/magnet_models/QD2_strength.csv
     unit: 1/m
     powerconverter:
-      type: pyaml_cs_oa.tangoRW
+      type: tango.pyaml.attribute
       attribute: srmag/vps-qd2/c32-e/current
       unit: A
 - type: pyaml.magnet.quadrupole
@@ -1817,7 +1818,7 @@ devices:
       file: sr/magnet_models/QD2_strength.csv
     unit: 1/m
     powerconverter:
-      type: pyaml_cs_oa.tangoRW
+      type: tango.pyaml.attribute
       attribute: srmag/vps-qd2/c01-a/current
       unit: A
 - type: pyaml.magnet.quadrupole
@@ -1831,7 +1832,7 @@ devices:
       file: sr/magnet_models/QD2_strength.csv
     unit: 1/m
     powerconverter:
-      type: pyaml_cs_oa.tangoRW
+      type: tango.pyaml.attribute
       attribute: srmag/vps-qd2/c01-e/current
       unit: A
 - type: pyaml.magnet.quadrupole
@@ -1845,7 +1846,7 @@ devices:
       file: sr/magnet_models/QD2_strength.csv
     unit: 1/m
     powerconverter:
-      type: pyaml_cs_oa.tangoRW
+      type: tango.pyaml.attribute
       attribute: srmag/vps-qd2/c02-a/current
       unit: A
 - type: pyaml.magnet.quadrupole
@@ -1859,7 +1860,7 @@ devices:
       file: sr/magnet_models/QD2_strength.csv
     unit: 1/m
     powerconverter:
-      type: pyaml_cs_oa.tangoRW
+      type: tango.pyaml.attribute
       attribute: srmag/vps-qd2/c02-e/current
       unit: A
 - type: pyaml.magnet.quadrupole
@@ -1873,17 +1874,17 @@ devices:
       file: sr/magnet_models/QD2_strength.csv
     unit: 1/m
     powerconverter:
-      type: pyaml_cs_oa.tangoRW
+      type: tango.pyaml.attribute
       attribute: srmag/vps-qd2/c03-a/current
       unit: A
 - type: pyaml.diagnostics.tune_monitor
   name: BETATRON_TUNE
   tune_h:
-    type: pyaml_cs_oa.tangoR
+    type: tango.pyaml.attribute_read_only
     attribute: srdiag/beam-tune/main/Qh
     unit: mm
   tune_v:
-    type: pyaml_cs_oa.tangoR
+    type: tango.pyaml.attribute_read_only
     attribute: srdiag/beam-tune/main/Qv
     unit: mm
 - type: pyaml.tuning_tools.tune

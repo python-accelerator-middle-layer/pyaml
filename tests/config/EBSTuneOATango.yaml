@@ -8,7 +8,7 @@ simulators:
     name: design
 controls:
   - type: pyaml_cs_oa.controlsystem
-    prefix: //ebs-simu-3:10000/
+    prefix: //ebs-simu-2:10000/
     name: live
 data_folder: /data/store
 arrays:
@@ -154,6 +154,7 @@ devices:
       type: pyaml_cs_oa.tangoRW
       attribute: srmag/vps-qf1/c04-e/current
       unit: A
+      range: [10,109]
 - type: pyaml.magnet.quadrupole
   name: QF1A-C05
   model:
@@ -168,6 +169,7 @@ devices:
       type: pyaml_cs_oa.tangoRW
       attribute: srmag/vps-qf1/c05-a/current
       unit: A
+      range: [10,109]
 - type: pyaml.magnet.quadrupole
   name: QF1E-C05
   model:
@@ -182,6 +184,7 @@ devices:
       type: pyaml_cs_oa.tangoRW
       attribute: srmag/vps-qf1/c05-e/current
       unit: A
+      range: [10,109]
 - type: pyaml.magnet.quadrupole
   name: QF1A-C06
   model:
@@ -196,6 +199,7 @@ devices:
       type: pyaml_cs_oa.tangoRW
       attribute: srmag/vps-qf1/c06-a/current
       unit: A
+      range: [10,109]
 - type: pyaml.magnet.quadrupole
   name: QF1E-C06
   model:
@@ -210,6 +214,7 @@ devices:
       type: pyaml_cs_oa.tangoRW
       attribute: srmag/vps-qf1/c06-e/current
       unit: A
+      range: [10,109]
 - type: pyaml.magnet.quadrupole
   name: QF1A-C07
   model:
@@ -224,6 +229,7 @@ devices:
       type: pyaml_cs_oa.tangoRW
       attribute: srmag/vps-qf1/c07-a/current
       unit: A
+      range: [10,109]
 - type: pyaml.magnet.quadrupole
   name: QF1E-C07
   model:
@@ -238,6 +244,7 @@ devices:
       type: pyaml_cs_oa.tangoRW
       attribute: srmag/vps-qf1/c07-e/current
       unit: A
+      range: [10,109]
 - type: pyaml.magnet.quadrupole
   name: QF1A-C08
   model:
@@ -252,6 +259,7 @@ devices:
       type: pyaml_cs_oa.tangoRW
       attribute: srmag/vps-qf1/c08-a/current
       unit: A
+      range: [10,109]
 - type: pyaml.magnet.quadrupole
   name: QF1E-C08
   model:
@@ -266,6 +274,7 @@ devices:
       type: pyaml_cs_oa.tangoRW
       attribute: srmag/vps-qf1/c08-e/current
       unit: A
+      range: [10,109]
 - type: pyaml.magnet.quadrupole
   name: QF1A-C09
   model:
@@ -280,6 +289,7 @@ devices:
       type: pyaml_cs_oa.tangoRW
       attribute: srmag/vps-qf1/c09-a/current
       unit: A
+      range: [10,109]
 - type: pyaml.magnet.quadrupole
   name: QF1E-C09
   model:
@@ -294,6 +304,7 @@ devices:
       type: pyaml_cs_oa.tangoRW
       attribute: srmag/vps-qf1/c09-e/current
       unit: A
+      range: [10,109]
 - type: pyaml.magnet.quadrupole
   name: QF1A-C10
   model:
@@ -308,6 +319,7 @@ devices:
       type: pyaml_cs_oa.tangoRW
       attribute: srmag/vps-qf1/c10-a/current
       unit: A
+      range: [10,109]
 - type: pyaml.magnet.quadrupole
   name: QF1E-C10
   model:
@@ -322,6 +334,7 @@ devices:
       type: pyaml_cs_oa.tangoRW
       attribute: srmag/vps-qf1/c10-e/current
       unit: A
+      range: [10,109]
 - type: pyaml.magnet.quadrupole
   name: QF1A-C11
   model:
@@ -336,6 +349,7 @@ devices:
       type: pyaml_cs_oa.tangoRW
       attribute: srmag/vps-qf1/c11-a/current
       unit: A
+      range: [10,109]
 - type: pyaml.magnet.quadrupole
   name: QF1E-C11
   model:
@@ -350,6 +364,7 @@ devices:
       type: pyaml_cs_oa.tangoRW
       attribute: srmag/vps-qf1/c11-e/current
       unit: A
+      range: [10,109]
 - type: pyaml.magnet.quadrupole
   name: QF1A-C12
   model:
@@ -364,6 +379,7 @@ devices:
       type: pyaml_cs_oa.tangoRW
       attribute: srmag/vps-qf1/c12-a/current
       unit: A
+      range: [10,109]
 - type: pyaml.magnet.quadrupole
   name: QF1E-C12
   model:
@@ -378,6 +394,7 @@ devices:
       type: pyaml_cs_oa.tangoRW
       attribute: srmag/vps-qf1/c12-e/current
       unit: A
+      range: [10,109]
 - type: pyaml.magnet.quadrupole
   name: QF1A-C13
   model:
@@ -392,6 +409,7 @@ devices:
       type: pyaml_cs_oa.tangoRW
       attribute: srmag/vps-qf1/c13-a/current
       unit: A
+      range: [10,109]
 - type: pyaml.magnet.quadrupole
   name: QF1E-C13
   model:
@@ -406,6 +424,7 @@ devices:
       type: pyaml_cs_oa.tangoRW
       attribute: srmag/vps-qf1/c13-e/current
       unit: A
+      range: [10,109]
 - type: pyaml.magnet.quadrupole
   name: QF1A-C14
   model:
@@ -420,6 +439,7 @@ devices:
       type: pyaml_cs_oa.tangoRW
       attribute: srmag/vps-qf1/c14-a/current
       unit: A
+      range: [10,109]
 - type: pyaml.magnet.quadrupole
   name: QF1E-C14
   model:
@@ -434,6 +454,7 @@ devices:
       type: pyaml_cs_oa.tangoRW
       attribute: srmag/vps-qf1/c14-e/current
       unit: A
+      range: [10,109]
 - type: pyaml.magnet.quadrupole
   name: QF1A-C15
   model:
@@ -448,6 +469,7 @@ devices:
       type: pyaml_cs_oa.tangoRW
       attribute: srmag/vps-qf1/c15-a/current
       unit: A
+      range: [10,109]
 - type: pyaml.magnet.quadrupole
   name: QF1E-C15
   model:
@@ -462,6 +484,7 @@ devices:
       type: pyaml_cs_oa.tangoRW
       attribute: srmag/vps-qf1/c15-e/current
       unit: A
+      range: [10,109]
 - type: pyaml.magnet.quadrupole
   name: QF1A-C16
   model:
@@ -476,6 +499,7 @@ devices:
       type: pyaml_cs_oa.tangoRW
       attribute: srmag/vps-qf1/c16-a/current
       unit: A
+      range: [10,109]
 - type: pyaml.magnet.quadrupole
   name: QF1E-C16
   model:
@@ -490,6 +514,7 @@ devices:
       type: pyaml_cs_oa.tangoRW
       attribute: srmag/vps-qf1/c16-e/current
       unit: A
+      range: [10,109]
 - type: pyaml.magnet.quadrupole
   name: QF1A-C17
   model:
@@ -504,6 +529,7 @@ devices:
       type: pyaml_cs_oa.tangoRW
       attribute: srmag/vps-qf1/c17-a/current
       unit: A
+      range: [10,109]
 - type: pyaml.magnet.quadrupole
   name: QF1E-C17
   model:
@@ -518,6 +544,7 @@ devices:
       type: pyaml_cs_oa.tangoRW
       attribute: srmag/vps-qf1/c17-e/current
       unit: A
+      range: [10,109]
 - type: pyaml.magnet.quadrupole
   name: QF1A-C18
   model:
@@ -532,6 +559,7 @@ devices:
       type: pyaml_cs_oa.tangoRW
       attribute: srmag/vps-qf1/c18-a/current
       unit: A
+      range: [10,109]
 - type: pyaml.magnet.quadrupole
   name: QF1E-C18
   model:
@@ -546,6 +574,7 @@ devices:
       type: pyaml_cs_oa.tangoRW
       attribute: srmag/vps-qf1/c18-e/current
       unit: A
+      range: [10,109]
 - type: pyaml.magnet.quadrupole
   name: QF1A-C19
   model:
@@ -560,6 +589,7 @@ devices:
       type: pyaml_cs_oa.tangoRW
       attribute: srmag/vps-qf1/c19-a/current
       unit: A
+      range: [10,109]
 - type: pyaml.magnet.quadrupole
   name: QF1E-C19
   model:
@@ -574,6 +604,7 @@ devices:
       type: pyaml_cs_oa.tangoRW
       attribute: srmag/vps-qf1/c19-e/current
       unit: A
+      range: [10,109]
 - type: pyaml.magnet.quadrupole
   name: QF1A-C20
   model:
@@ -588,6 +619,7 @@ devices:
       type: pyaml_cs_oa.tangoRW
       attribute: srmag/vps-qf1/c20-a/current
       unit: A
+      range: [10,109]
 - type: pyaml.magnet.quadrupole
   name: QF1E-C20
   model:
@@ -602,6 +634,7 @@ devices:
       type: pyaml_cs_oa.tangoRW
       attribute: srmag/vps-qf1/c20-e/current
       unit: A
+      range: [10,109]
 - type: pyaml.magnet.quadrupole
   name: QF1A-C21
   model:
@@ -616,6 +649,7 @@ devices:
       type: pyaml_cs_oa.tangoRW
       attribute: srmag/vps-qf1/c21-a/current
       unit: A
+      range: [10,109]
 - type: pyaml.magnet.quadrupole
   name: QF1E-C21
   model:
@@ -630,6 +664,7 @@ devices:
       type: pyaml_cs_oa.tangoRW
       attribute: srmag/vps-qf1/c21-e/current
       unit: A
+      range: [10,109]
 - type: pyaml.magnet.quadrupole
   name: QF1A-C22
   model:
@@ -644,6 +679,7 @@ devices:
       type: pyaml_cs_oa.tangoRW
       attribute: srmag/vps-qf1/c22-a/current
       unit: A
+      range: [10,109]
 - type: pyaml.magnet.quadrupole
   name: QF1E-C22
   model:
@@ -658,6 +694,7 @@ devices:
       type: pyaml_cs_oa.tangoRW
       attribute: srmag/vps-qf1/c22-e/current
       unit: A
+      range: [10,109]
 - type: pyaml.magnet.quadrupole
   name: QF1A-C23
   model:
@@ -672,6 +709,7 @@ devices:
       type: pyaml_cs_oa.tangoRW
       attribute: srmag/vps-qf1/c23-a/current
       unit: A
+      range: [10,109]
 - type: pyaml.magnet.quadrupole
   name: QF1E-C23
   model:
@@ -686,6 +724,7 @@ devices:
       type: pyaml_cs_oa.tangoRW
       attribute: srmag/vps-qf1/c23-e/current
       unit: A
+      range: [10,109]
 - type: pyaml.magnet.quadrupole
   name: QF1A-C24
   model:
@@ -700,6 +739,7 @@ devices:
       type: pyaml_cs_oa.tangoRW
       attribute: srmag/vps-qf1/c24-a/current
       unit: A
+      range: [10,109]
 - type: pyaml.magnet.quadrupole
   name: QF1E-C24
   model:
@@ -714,6 +754,7 @@ devices:
       type: pyaml_cs_oa.tangoRW
       attribute: srmag/vps-qf1/c24-e/current
       unit: A
+      range: [10,109]
 - type: pyaml.magnet.quadrupole
   name: QF1A-C25
   model:
@@ -728,6 +769,7 @@ devices:
       type: pyaml_cs_oa.tangoRW
       attribute: srmag/vps-qf1/c25-a/current
       unit: A
+      range: [10,109]
 - type: pyaml.magnet.quadrupole
   name: QF1E-C25
   model:
@@ -742,6 +784,7 @@ devices:
       type: pyaml_cs_oa.tangoRW
       attribute: srmag/vps-qf1/c25-e/current
       unit: A
+      range: [10,109]
 - type: pyaml.magnet.quadrupole
   name: QF1A-C26
   model:
@@ -756,6 +799,7 @@ devices:
       type: pyaml_cs_oa.tangoRW
       attribute: srmag/vps-qf1/c26-a/current
       unit: A
+      range: [10,109]
 - type: pyaml.magnet.quadrupole
   name: QF1E-C26
   model:
@@ -770,6 +814,7 @@ devices:
       type: pyaml_cs_oa.tangoRW
       attribute: srmag/vps-qf1/c26-e/current
       unit: A
+      range: [10,109]
 - type: pyaml.magnet.quadrupole
   name: QF1A-C27
   model:
@@ -784,6 +829,7 @@ devices:
       type: pyaml_cs_oa.tangoRW
       attribute: srmag/vps-qf1/c27-a/current
       unit: A
+      range: [10,109]
 - type: pyaml.magnet.quadrupole
   name: QF1E-C27
   model:
@@ -798,6 +844,7 @@ devices:
       type: pyaml_cs_oa.tangoRW
       attribute: srmag/vps-qf1/c27-e/current
       unit: A
+      range: [10,109]
 - type: pyaml.magnet.quadrupole
   name: QF1A-C28
   model:
@@ -812,6 +859,7 @@ devices:
       type: pyaml_cs_oa.tangoRW
       attribute: srmag/vps-qf1/c28-a/current
       unit: A
+      range: [10,109]
 - type: pyaml.magnet.quadrupole
   name: QF1E-C28
   model:
@@ -826,6 +874,7 @@ devices:
       type: pyaml_cs_oa.tangoRW
       attribute: srmag/vps-qf1/c28-e/current
       unit: A
+      range: [10,109]
 - type: pyaml.magnet.quadrupole
   name: QF1A-C29
   model:
@@ -840,6 +889,7 @@ devices:
       type: pyaml_cs_oa.tangoRW
       attribute: srmag/vps-qf1/c29-a/current
       unit: A
+      range: [10,109]
 - type: pyaml.magnet.quadrupole
   name: QF1E-C29
   model:
@@ -854,6 +904,7 @@ devices:
       type: pyaml_cs_oa.tangoRW
       attribute: srmag/vps-qf1/c29-e/current
       unit: A
+      range: [10,109]
 - type: pyaml.magnet.quadrupole
   name: QF1A-C30
   model:
@@ -868,6 +919,7 @@ devices:
       type: pyaml_cs_oa.tangoRW
       attribute: srmag/vps-qf1/c30-a/current
       unit: A
+      range: [10,109]
 - type: pyaml.magnet.quadrupole
   name: QF1E-C30
   model:
@@ -882,6 +934,7 @@ devices:
       type: pyaml_cs_oa.tangoRW
       attribute: srmag/vps-qf1/c30-e/current
       unit: A
+      range: [10,109]
 - type: pyaml.magnet.quadrupole
   name: QF1A-C31
   model:
@@ -896,6 +949,7 @@ devices:
       type: pyaml_cs_oa.tangoRW
       attribute: srmag/vps-qf1/c31-a/current
       unit: A
+      range: [10,109]
 - type: pyaml.magnet.quadrupole
   name: QF1E-C31
   model:
@@ -910,6 +964,7 @@ devices:
       type: pyaml_cs_oa.tangoRW
       attribute: srmag/vps-qf1/c31-e/current
       unit: A
+      range: [10,109]
 - type: pyaml.magnet.quadrupole
   name: QF1A-C32
   model:
@@ -924,6 +979,7 @@ devices:
       type: pyaml_cs_oa.tangoRW
       attribute: srmag/vps-qf1/c32-a/current
       unit: A
+      range: [10,109]
 - type: pyaml.magnet.quadrupole
   name: QF1E-C32
   model:
@@ -938,6 +994,7 @@ devices:
       type: pyaml_cs_oa.tangoRW
       attribute: srmag/vps-qf1/c32-e/current
       unit: A
+      range: [10,109]
 - type: pyaml.magnet.quadrupole
   name: QF1A-C01
   model:
@@ -952,6 +1009,7 @@ devices:
       type: pyaml_cs_oa.tangoRW
       attribute: srmag/vps-qf1/c01-a/current
       unit: A
+      range: [10,109]
 - type: pyaml.magnet.quadrupole
   name: QF1E-C01
   model:
@@ -966,6 +1024,7 @@ devices:
       type: pyaml_cs_oa.tangoRW
       attribute: srmag/vps-qf1/c01-e/current
       unit: A
+      range: [10,109]
 - type: pyaml.magnet.quadrupole
   name: QF1A-C02
   model:
@@ -980,6 +1039,7 @@ devices:
       type: pyaml_cs_oa.tangoRW
       attribute: srmag/vps-qf1/c02-a/current
       unit: A
+      range: [10,109]
 - type: pyaml.magnet.quadrupole
   name: QF1E-C02
   model:
@@ -994,6 +1054,7 @@ devices:
       type: pyaml_cs_oa.tangoRW
       attribute: srmag/vps-qf1/c02-e/current
       unit: A
+      range: [10,109]
 - type: pyaml.magnet.quadrupole
   name: QF1A-C03
   model:
@@ -1008,6 +1069,7 @@ devices:
       type: pyaml_cs_oa.tangoRW
       attribute: srmag/vps-qf1/c03-a/current
       unit: A
+      range: [10,109]
 - type: pyaml.magnet.quadrupole
   name: QD2E-C04
   model:
@@ -1022,6 +1084,7 @@ devices:
       type: pyaml_cs_oa.tangoRW
       attribute: srmag/vps-qd2/c04-e/current
       unit: A
+      range: [10,109]
 - type: pyaml.magnet.quadrupole
   name: QD2A-C05
   model:
@@ -1036,6 +1099,7 @@ devices:
       type: pyaml_cs_oa.tangoRW
       attribute: srmag/vps-qd2/c05-a/current
       unit: A
+      range: [10,109]
 - type: pyaml.magnet.quadrupole
   name: QD2E-C05
   model:
@@ -1050,6 +1114,7 @@ devices:
       type: pyaml_cs_oa.tangoRW
       attribute: srmag/vps-qd2/c05-e/current
       unit: A
+      range: [10,109]
 - type: pyaml.magnet.quadrupole
   name: QD2A-C06
   model:
@@ -1064,6 +1129,7 @@ devices:
       type: pyaml_cs_oa.tangoRW
       attribute: srmag/vps-qd2/c06-a/current
       unit: A
+      range: [10,109]
 - type: pyaml.magnet.quadrupole
   name: QD2E-C06
   model:
@@ -1078,6 +1144,7 @@ devices:
       type: pyaml_cs_oa.tangoRW
       attribute: srmag/vps-qd2/c06-e/current
       unit: A
+      range: [10,109]
 - type: pyaml.magnet.quadrupole
   name: QD2A-C07
   model:
@@ -1092,6 +1159,7 @@ devices:
       type: pyaml_cs_oa.tangoRW
       attribute: srmag/vps-qd2/c07-a/current
       unit: A
+      range: [10,109]
 - type: pyaml.magnet.quadrupole
   name: QD2E-C07
   model:
@@ -1106,6 +1174,7 @@ devices:
       type: pyaml_cs_oa.tangoRW
       attribute: srmag/vps-qd2/c07-e/current
       unit: A
+      range: [10,109]
 - type: pyaml.magnet.quadrupole
   name: QD2A-C08
   model:
@@ -1120,6 +1189,7 @@ devices:
       type: pyaml_cs_oa.tangoRW
       attribute: srmag/vps-qd2/c08-a/current
       unit: A
+      range: [10,109]
 - type: pyaml.magnet.quadrupole
   name: QD2E-C08
   model:
@@ -1134,6 +1204,7 @@ devices:
       type: pyaml_cs_oa.tangoRW
       attribute: srmag/vps-qd2/c08-e/current
       unit: A
+      range: [10,109]
 - type: pyaml.magnet.quadrupole
   name: QD2A-C09
   model:
@@ -1148,6 +1219,7 @@ devices:
       type: pyaml_cs_oa.tangoRW
       attribute: srmag/vps-qd2/c09-a/current
       unit: A
+      range: [10,109]
 - type: pyaml.magnet.quadrupole
   name: QD2E-C09
   model:
@@ -1162,6 +1234,7 @@ devices:
       type: pyaml_cs_oa.tangoRW
       attribute: srmag/vps-qd2/c09-e/current
       unit: A
+      range: [10,109]
 - type: pyaml.magnet.quadrupole
   name: QD2A-C10
   model:
@@ -1176,6 +1249,7 @@ devices:
       type: pyaml_cs_oa.tangoRW
       attribute: srmag/vps-qd2/c10-a/current
       unit: A
+      range: [10,109]
 - type: pyaml.magnet.quadrupole
   name: QD2E-C10
   model:
@@ -1190,6 +1264,7 @@ devices:
       type: pyaml_cs_oa.tangoRW
       attribute: srmag/vps-qd2/c10-e/current
       unit: A
+      range: [10,109]
 - type: pyaml.magnet.quadrupole
   name: QD2A-C11
   model:
@@ -1204,6 +1279,7 @@ devices:
       type: pyaml_cs_oa.tangoRW
       attribute: srmag/vps-qd2/c11-a/current
       unit: A
+      range: [10,109]
 - type: pyaml.magnet.quadrupole
   name: QD2E-C11
   model:
@@ -1218,6 +1294,7 @@ devices:
       type: pyaml_cs_oa.tangoRW
       attribute: srmag/vps-qd2/c11-e/current
       unit: A
+      range: [10,109]
 - type: pyaml.magnet.quadrupole
   name: QD2A-C12
   model:
@@ -1232,6 +1309,7 @@ devices:
       type: pyaml_cs_oa.tangoRW
       attribute: srmag/vps-qd2/c12-a/current
       unit: A
+      range: [10,109]
 - type: pyaml.magnet.quadrupole
   name: QD2E-C12
   model:
@@ -1246,6 +1324,7 @@ devices:
       type: pyaml_cs_oa.tangoRW
       attribute: srmag/vps-qd2/c12-e/current
       unit: A
+      range: [10,109]
 - type: pyaml.magnet.quadrupole
   name: QD2A-C13
   model:
@@ -1260,6 +1339,7 @@ devices:
       type: pyaml_cs_oa.tangoRW
       attribute: srmag/vps-qd2/c13-a/current
       unit: A
+      range: [10,109]
 - type: pyaml.magnet.quadrupole
   name: QD2E-C13
   model:
@@ -1274,6 +1354,7 @@ devices:
       type: pyaml_cs_oa.tangoRW
       attribute: srmag/vps-qd2/c13-e/current
       unit: A
+      range: [10,109]
 - type: pyaml.magnet.quadrupole
   name: QD2A-C14
   model:
@@ -1288,6 +1369,7 @@ devices:
       type: pyaml_cs_oa.tangoRW
       attribute: srmag/vps-qd2/c14-a/current
       unit: A
+      range: [10,109]
 - type: pyaml.magnet.quadrupole
   name: QD2E-C14
   model:
@@ -1302,6 +1384,7 @@ devices:
       type: pyaml_cs_oa.tangoRW
       attribute: srmag/vps-qd2/c14-e/current
       unit: A
+      range: [10,109]
 - type: pyaml.magnet.quadrupole
   name: QD2A-C15
   model:
@@ -1316,6 +1399,7 @@ devices:
       type: pyaml_cs_oa.tangoRW
       attribute: srmag/vps-qd2/c15-a/current
       unit: A
+      range: [10,109]
 - type: pyaml.magnet.quadrupole
   name: QD2E-C15
   model:
@@ -1330,6 +1414,7 @@ devices:
       type: pyaml_cs_oa.tangoRW
       attribute: srmag/vps-qd2/c15-e/current
       unit: A
+      range: [10,109]
 - type: pyaml.magnet.quadrupole
   name: QD2A-C16
   model:
@@ -1344,6 +1429,7 @@ devices:
       type: pyaml_cs_oa.tangoRW
       attribute: srmag/vps-qd2/c16-a/current
       unit: A
+      range: [10,109]
 - type: pyaml.magnet.quadrupole
   name: QD2E-C16
   model:
@@ -1358,6 +1444,7 @@ devices:
       type: pyaml_cs_oa.tangoRW
       attribute: srmag/vps-qd2/c16-e/current
       unit: A
+      range: [10,109]
 - type: pyaml.magnet.quadrupole
   name: QD2A-C17
   model:
@@ -1372,6 +1459,7 @@ devices:
       type: pyaml_cs_oa.tangoRW
       attribute: srmag/vps-qd2/c17-a/current
       unit: A
+      range: [10,109]
 - type: pyaml.magnet.quadrupole
   name: QD2E-C17
   model:
@@ -1386,6 +1474,7 @@ devices:
       type: pyaml_cs_oa.tangoRW
       attribute: srmag/vps-qd2/c17-e/current
       unit: A
+      range: [10,109]
 - type: pyaml.magnet.quadrupole
   name: QD2A-C18
   model:
@@ -1400,6 +1489,7 @@ devices:
       type: pyaml_cs_oa.tangoRW
       attribute: srmag/vps-qd2/c18-a/current
       unit: A
+      range: [10,109]
 - type: pyaml.magnet.quadrupole
   name: QD2E-C18
   model:
@@ -1414,6 +1504,7 @@ devices:
       type: pyaml_cs_oa.tangoRW
       attribute: srmag/vps-qd2/c18-e/current
       unit: A
+      range: [10,109]
 - type: pyaml.magnet.quadrupole
   name: QD2A-C19
   model:
@@ -1428,6 +1519,7 @@ devices:
       type: pyaml_cs_oa.tangoRW
       attribute: srmag/vps-qd2/c19-a/current
       unit: A
+      range: [10,109]
 - type: pyaml.magnet.quadrupole
   name: QD2E-C19
   model:
@@ -1442,6 +1534,7 @@ devices:
       type: pyaml_cs_oa.tangoRW
       attribute: srmag/vps-qd2/c19-e/current
       unit: A
+      range: [10,109]
 - type: pyaml.magnet.quadrupole
   name: QD2A-C20
   model:
@@ -1456,6 +1549,7 @@ devices:
       type: pyaml_cs_oa.tangoRW
       attribute: srmag/vps-qd2/c20-a/current
       unit: A
+      range: [10,109]
 - type: pyaml.magnet.quadrupole
   name: QD2E-C20
   model:
@@ -1470,6 +1564,7 @@ devices:
       type: pyaml_cs_oa.tangoRW
       attribute: srmag/vps-qd2/c20-e/current
       unit: A
+      range: [10,109]
 - type: pyaml.magnet.quadrupole
   name: QD2A-C21
   model:
@@ -1484,6 +1579,7 @@ devices:
       type: pyaml_cs_oa.tangoRW
       attribute: srmag/vps-qd2/c21-a/current
       unit: A
+      range: [10,109]
 - type: pyaml.magnet.quadrupole
   name: QD2E-C21
   model:
@@ -1498,6 +1594,7 @@ devices:
       type: pyaml_cs_oa.tangoRW
       attribute: srmag/vps-qd2/c21-e/current
       unit: A
+      range: [10,109]
 - type: pyaml.magnet.quadrupole
   name: QD2A-C22
   model:
@@ -1512,6 +1609,7 @@ devices:
       type: pyaml_cs_oa.tangoRW
       attribute: srmag/vps-qd2/c22-a/current
       unit: A
+      range: [10,109]
 - type: pyaml.magnet.quadrupole
   name: QD2E-C22
   model:
@@ -1526,6 +1624,7 @@ devices:
       type: pyaml_cs_oa.tangoRW
       attribute: srmag/vps-qd2/c22-e/current
       unit: A
+      range: [10,109]
 - type: pyaml.magnet.quadrupole
   name: QD2A-C23
   model:
@@ -1540,6 +1639,7 @@ devices:
       type: pyaml_cs_oa.tangoRW
       attribute: srmag/vps-qd2/c23-a/current
       unit: A
+      range: [10,109]
 - type: pyaml.magnet.quadrupole
   name: QD2E-C23
   model:
@@ -1554,6 +1654,7 @@ devices:
       type: pyaml_cs_oa.tangoRW
       attribute: srmag/vps-qd2/c23-e/current
       unit: A
+      range: [10,109]
 - type: pyaml.magnet.quadrupole
   name: QD2A-C24
   model:
@@ -1568,6 +1669,7 @@ devices:
       type: pyaml_cs_oa.tangoRW
       attribute: srmag/vps-qd2/c24-a/current
       unit: A
+      range: [10,109]
 - type: pyaml.magnet.quadrupole
   name: QD2E-C24
   model:
@@ -1582,6 +1684,7 @@ devices:
       type: pyaml_cs_oa.tangoRW
       attribute: srmag/vps-qd2/c24-e/current
       unit: A
+      range: [10,109]
 - type: pyaml.magnet.quadrupole
   name: QD2A-C25
   model:
@@ -1596,6 +1699,7 @@ devices:
       type: pyaml_cs_oa.tangoRW
       attribute: srmag/vps-qd2/c25-a/current
       unit: A
+      range: [10,109]
 - type: pyaml.magnet.quadrupole
   name: QD2E-C25
   model:
@@ -1610,6 +1714,7 @@ devices:
       type: pyaml_cs_oa.tangoRW
       attribute: srmag/vps-qd2/c25-e/current
       unit: A
+      range: [10,109]
 - type: pyaml.magnet.quadrupole
   name: QD2A-C26
   model:
@@ -1624,6 +1729,7 @@ devices:
       type: pyaml_cs_oa.tangoRW
       attribute: srmag/vps-qd2/c26-a/current
       unit: A
+      range: [10,109]
 - type: pyaml.magnet.quadrupole
   name: QD2E-C26
   model:
@@ -1638,6 +1744,7 @@ devices:
       type: pyaml_cs_oa.tangoRW
       attribute: srmag/vps-qd2/c26-e/current
       unit: A
+      range: [10,109]
 - type: pyaml.magnet.quadrupole
   name: QD2A-C27
   model:
@@ -1652,6 +1759,7 @@ devices:
       type: pyaml_cs_oa.tangoRW
       attribute: srmag/vps-qd2/c27-a/current
       unit: A
+      range: [10,109]
 - type: pyaml.magnet.quadrupole
   name: QD2E-C27
   model:
@@ -1666,6 +1774,7 @@ devices:
       type: pyaml_cs_oa.tangoRW
       attribute: srmag/vps-qd2/c27-e/current
       unit: A
+      range: [10,109]
 - type: pyaml.magnet.quadrupole
   name: QD2A-C28
   model:
@@ -1680,6 +1789,7 @@ devices:
       type: pyaml_cs_oa.tangoRW
       attribute: srmag/vps-qd2/c28-a/current
       unit: A
+      range: [10,109]
 - type: pyaml.magnet.quadrupole
   name: QD2E-C28
   model:
@@ -1694,6 +1804,7 @@ devices:
       type: pyaml_cs_oa.tangoRW
       attribute: srmag/vps-qd2/c28-e/current
       unit: A
+      range: [10,109]
 - type: pyaml.magnet.quadrupole
   name: QD2A-C29
   model:
@@ -1708,6 +1819,7 @@ devices:
       type: pyaml_cs_oa.tangoRW
       attribute: srmag/vps-qd2/c29-a/current
       unit: A
+      range: [10,109]
 - type: pyaml.magnet.quadrupole
   name: QD2E-C29
   model:
@@ -1722,6 +1834,7 @@ devices:
       type: pyaml_cs_oa.tangoRW
       attribute: srmag/vps-qd2/c29-e/current
       unit: A
+      range: [10,109]
 - type: pyaml.magnet.quadrupole
   name: QD2A-C30
   model:
@@ -1736,6 +1849,7 @@ devices:
       type: pyaml_cs_oa.tangoRW
       attribute: srmag/vps-qd2/c30-a/current
       unit: A
+      range: [10,109]
 - type: pyaml.magnet.quadrupole
   name: QD2E-C30
   model:
@@ -1750,6 +1864,7 @@ devices:
       type: pyaml_cs_oa.tangoRW
       attribute: srmag/vps-qd2/c30-e/current
       unit: A
+      range: [10,109]
 - type: pyaml.magnet.quadrupole
   name: QD2A-C31
   model:
@@ -1764,6 +1879,7 @@ devices:
       type: pyaml_cs_oa.tangoRW
       attribute: srmag/vps-qd2/c31-a/current
       unit: A
+      range: [10,109]
 - type: pyaml.magnet.quadrupole
   name: QD2E-C31
   model:
@@ -1778,6 +1894,7 @@ devices:
       type: pyaml_cs_oa.tangoRW
       attribute: srmag/vps-qd2/c31-e/current
       unit: A
+      range: [10,109]
 - type: pyaml.magnet.quadrupole
   name: QD2A-C32
   model:
@@ -1792,6 +1909,7 @@ devices:
       type: pyaml_cs_oa.tangoRW
       attribute: srmag/vps-qd2/c32-a/current
       unit: A
+      range: [10,109]
 - type: pyaml.magnet.quadrupole
   name: QD2E-C32
   model:
@@ -1806,6 +1924,7 @@ devices:
       type: pyaml_cs_oa.tangoRW
       attribute: srmag/vps-qd2/c32-e/current
       unit: A
+      range: [10,109]
 - type: pyaml.magnet.quadrupole
   name: QD2A-C01
   model:
@@ -1820,6 +1939,7 @@ devices:
       type: pyaml_cs_oa.tangoRW
       attribute: srmag/vps-qd2/c01-a/current
       unit: A
+      range: [10,109]
 - type: pyaml.magnet.quadrupole
   name: QD2E-C01
   model:
@@ -1834,6 +1954,7 @@ devices:
       type: pyaml_cs_oa.tangoRW
       attribute: srmag/vps-qd2/c01-e/current
       unit: A
+      range: [10,109]
 - type: pyaml.magnet.quadrupole
   name: QD2A-C02
   model:
@@ -1848,6 +1969,7 @@ devices:
       type: pyaml_cs_oa.tangoRW
       attribute: srmag/vps-qd2/c02-a/current
       unit: A
+      range: [10,109]
 - type: pyaml.magnet.quadrupole
   name: QD2E-C02
   model:
@@ -1862,6 +1984,7 @@ devices:
       type: pyaml_cs_oa.tangoRW
       attribute: srmag/vps-qd2/c02-e/current
       unit: A
+      range: [10,109]
 - type: pyaml.magnet.quadrupole
   name: QD2A-C03
   model:
@@ -1876,6 +1999,7 @@ devices:
       type: pyaml_cs_oa.tangoRW
       attribute: srmag/vps-qd2/c03-a/current
       unit: A
+      range: [10,109]
 - type: pyaml.diagnostics.tune_monitor
   name: BETATRON_TUNE
   tune_h:
