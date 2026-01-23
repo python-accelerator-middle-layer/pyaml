@@ -11,6 +11,10 @@ from pyaml.accelerator import Accelerator
 )
 def test_ranges_array(install_test_package):
     sr: Accelerator = Accelerator.load("tests/config/EBSTune-range.yaml")
+    mag_cur = sr.live.get_magnets("QForTune").hardwares
+    mag_cur.set(mag_cur.get() + 50)
+
     mag = sr.live.get_magnets("QForTune").strengths
-    with pytest.raises(pyaml.PyAMLException, match="out of range"):
-        mag.set( mag.get()*1000.0 )
+
+    with pytest.raises(pyaml.PyAMLException, match="out of range") as excinfo:
+        mag.set(mag.get() * 1000.0)

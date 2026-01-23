@@ -17,6 +17,7 @@ from ..rf.rf_transmitter import RFTransmitter
 
 # ------------------------------------------------------------------------------
 
+
 def check_range(values: Any, dev_range: Any) -> bool:
     """
     Check whether values are within given ranges.
@@ -79,6 +80,104 @@ def check_range(values: Any, dev_range: Any) -> bool:
 
     # ---- Vectorized range check ----
     return bool(np.all((vv >= mins_f) & (vv <= maxs_f)))
+
+
+def _as_1d_float_array(values: Any) -> np.ndarray:
+    """Normalize input values to a 1D float NumPy array."""
+    v = np.asarray(values, dtype=float)
+    if v.ndim == 0:
+        return v.reshape(1)
+    return v.ravel()
+
+
+def _iter_devices_and_ranges(devs: DeviceAccess | DeviceAccessList):
+    """
+    Yield tuples (device, [min, max]) for each underlying device.
+
+    Works for:
+      - DeviceAccess: yields 1 item
+      - DeviceAccessList: yields N items based on get_devices() and get_range() flattening
+    """
+    # Single device
+    if (
+        hasattr(devs, "get")
+        and hasattr(devs, "get_range")
+        and not hasattr(devs, "get_devices")
+    ):
+        r = devs.get_range()
+        if r is None:
+            r = [None, None]
+        return [(devs, [r[0], r[1]])]
+
+    # Device list (expects get_devices() + get_range() flat list)
+    devices = devs.get_devices()
+    flat = np.asarray(devs.get_range(), dtype=object).ravel()
+    if (flat.size % 2) != 0:
+        raise ValueError(f"dev_range must have an even length, got {flat.size}")
+
+    pairs = []
+    for i, d in enumerate(devices):
+        pairs.append((d, [flat[2 * i], flat[2 * i + 1]]))
+    return pairs
+
+
+def format_out_of_range_message(
+    values: Any,
+    devs: DeviceAccess | DeviceAccessList,
+    *,
+    header: str = "Values out of range:",
+) -> str:
+    """
+    Build a user-friendly error message for out-of-range values.
+
+    Output example:
+        Values out of range:
+        110 A, '//host/dev/attr' [10.0, 109.0]
+        110 A, '//host/dev/attr' [10.0, 109.0]
+
+    Notes:
+      - Only failing channels are listed.
+      - Supports scalar/array values and DeviceAccess/DeviceAccessList.
+      - Uses check_range() semantics (inclusive bounds, None => unbounded).
+    """
+    v = _as_1d_float_array(values)
+    dev_pairs = _iter_devices_and_ranges(devs)
+
+    # Apply the same broadcasting rules as check_range():
+    # - N == K : value per device
+    # - N == 1 and K > 1 : single value checked against all devices
+    # - N > 1 and K == 1 : single device range applied to all values (rare here but supported)
+    n = v.size
+    k = len(dev_pairs)
+
+    if n == k:
+        vv = v
+        pairs = dev_pairs
+    elif n == 1 and k > 1:
+        vv = np.full(k, v[0], dtype=float)
+        pairs = dev_pairs
+    elif n > 1 and k == 1:
+        vv = v
+        pairs = [dev_pairs[0]] * n
+    else:
+        raise ValueError(
+            f"Inconsistent sizes: {n} value(s) for {k} device(s). "
+            f"Supported: N==K, N==1, or K==1."
+        )
+
+    lines = [header]
+    for val, (dev, r) in zip(vv, pairs):
+        if not check_range(val, r):
+            unit = dev.unit() if hasattr(dev, "unit") else ""
+            name = str(dev)
+            rmin, rmax = r[0], r[1]
+            lines.append(f"{val:g} {unit}, '{name}' [{rmin}, {rmax}]")
+
+    # Fallback if nothing selected (should not happen if caller checked range before)
+    if len(lines) == 1:
+        lines.append("(no channel details available)")
+
+    return "\n".join(lines)
 
 
 class CSScalarAggregator(ScalarAggregator):
@@ -166,7 +265,9 @@ class CSStrengthScalarAggregator(CSScalarAggregator):
             hardwareIndex += nbDev
         dev_range = self._devs.get_range()
         if not check_range(newHardwareValues, dev_range):
-            raise PyAMLException(f"The values are out of range: {newHardwareValues}, {dev_range} for device {self._devs}")
+            raise PyAMLException(
+                format_out_of_range_message(newHardwareValues, self._devs)
+            )
         self._devs.set(newHardwareValues)
 
     def set_and_wait(self, value: NDArray[np.float64]):
@@ -259,7 +360,7 @@ class RWHardwareScalar(abstract.ReadWriteFloatScalar):
     def set(self, value: float):
         dev_range = self.__dev.get_range()
         if not check_range(value, dev_range):
-            raise PyAMLException(f"The values are out of range: {value}, {dev_range} for device {self.__dev}")
+            raise PyAMLException(format_out_of_range_message(value, self.__dev))
         self.__dev.set(value)
 
     def set_and_wait(self, value: double):
@@ -294,7 +395,7 @@ class RWStrengthScalar(abstract.ReadWriteFloatScalar):
         current = self.__model.compute_hardware_values([value])[0]
         dev_range = self.__dev.get_range()
         if not check_range(current, dev_range):
-            raise PyAMLException(f"The values are out of range: {current}, {dev_range} for device {self.__dev}")
+            raise PyAMLException(format_out_of_range_message(current, self.__dev))
         self.__dev.set(current)
 
     # Sets the value and wait that the read value reach the setpoint
@@ -331,7 +432,7 @@ class RWHardwareArray(abstract.ReadWriteFloatArray):
         for idx, p in enumerate(self.__devs):
             dev_range = p.get_range()
             if not check_range(value[idx], dev_range):
-                raise PyAMLException(f"The values are out of range: {value[idx]}, {dev_range} for device {self.__devs}")
+                raise PyAMLException(format_out_of_range_message(value[idx], p))
             p.set(value[idx])
 
     # Sets the value and waits that the read value reach the setpoint
@@ -367,7 +468,7 @@ class RWStrengthArray(abstract.ReadWriteFloatArray):
         for idx, p in enumerate(self.__devs):
             dev_range = p.get_range()
             if not check_range(cur[idx], dev_range):
-                raise PyAMLException(f"The values are out of range: {cur[idx]}, {dev_range} for device {self.__devs}")
+                raise PyAMLException(format_out_of_range_message(cur[idx], p))
 
         for idx, p in enumerate(self.__devs):
             p.set(cur[idx])
@@ -602,6 +703,8 @@ class RBetatronTuneArray(abstract.ReadFloatArray):
 
     def unit(self) -> str:
         return self.__tune_monitor._cfg.tune_v.unit()
+
+
 # ------------------------------------------------------------------------------
 
 
