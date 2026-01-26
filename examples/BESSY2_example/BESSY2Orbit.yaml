@@ -1,7 +1,7 @@
 type: pyaml.accelerator
 machine: sr
 facility: BESSY2
-energy: 1.7e9
+energy: 1.7185e9
 simulators:
   - type: pyaml.lattice.simulator
     lattice: bessy2_standard_user.mat
