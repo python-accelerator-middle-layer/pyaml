@@ -1,4 +1,7 @@
+from collections.abc import Callable
+
 from ..common.abstract import ReadFloatArray
+from ..common.constants import ACTION_APPLY, ACTION_MEASURE, ACTION_RESTORE
 from ..common.element import Element, ElementConfigModel
 from ..common.exception import PyAMLException
 
@@ -96,7 +99,7 @@ class ChomaticityMonitor(Element):
         obj._peer = peer
         return obj
 
-    def chromaticity_measurement(
+    def measure(
         self,
         N_step: int = None,
         alphac: float = None,
@@ -107,6 +110,7 @@ class ChomaticityMonitor(Element):
         Sleep_between_RFvar: float = None,
         fit_order: int = None,
         do_plot: bool = None,
+        callback: callable = None,
     ):
         """
         Main function for chromaticity measurment
@@ -135,6 +139,10 @@ class ChomaticityMonitor(Element):
             Fitting order [default: 1]
         do_plot : bool
             Do you want to plot the fittinf results ?
+        callback: Callable, optional
+            User chroma_callback(step:int,action:int,rf:float,tune:np.array)
+            Callback is executed after each measurement or setting.
+            If the callback return false, then the process is aborted.
         """
         if N_step is None:
             N_step = self._cfg.N_step
@@ -166,8 +174,13 @@ class ChomaticityMonitor(Element):
             N_tune_meas=N_tune_meas,
             Sleep_between_meas=Sleep_between_meas,
             Sleep_between_RFvar=Sleep_between_RFvar,
+            callback=callback,
         )
-        chrom = self.fit_chromaticity(
+
+        if delta is None:
+            return [np.nan, np.nan]
+
+        chrom = self.fit(
             delta=delta, NuX=NuX, NuY=NuY, order=fit_order, do_plot=do_plot
         )
         return chrom
@@ -180,6 +193,7 @@ class ChomaticityMonitor(Element):
         N_tune_meas: int,
         Sleep_between_meas: float,
         Sleep_between_RFvar: float,
+        callback: Callable,
     ):
         """
         Main function for chromaticity measurment
@@ -199,7 +213,10 @@ class ChomaticityMonitor(Element):
             Default time sleep between two tune measurment [default: from config]
         Sleep_between_RFvar: float
             Default time sleep after RF frequency variation [default: from config]
-
+        callback: Callable, optional
+            User chroma_callback(step:int,action:int,rf:float,tune:np.array)
+            Callback is executed after each measurement or setting.
+            If the callback return false, then the process is aborted.
         """
         tune = self._peer.get_betatron_tune_monitor(self._cfg.betatron_tune)
         rf = self._peer.get_rf_plant(self._cfg.RFfreq)
@@ -220,23 +237,36 @@ class ChomaticityMonitor(Element):
                 # TODO : Use set_and_wait once it is implemented !
                 # (and remove Sleep_between_RFvar ?)
                 rf.frequency.set(f0 + f)
+                if callback and not callback(i, ACTION_APPLY, f0 + f, [np.nan, np.nan]):
+                    # Abort
+                    rf.frequency.set(f0)
+                    return (None, None, None)
                 sleep(Sleep_between_RFvar)
 
                 for j in range(N_tune_meas):
                     NuX[i, j], NuY[i, j] = tune.tune.get()
+                    if callback and not callback(
+                        i, ACTION_MEASURE, f0 + f, [NuX[i, j], NuY[i, j]]
+                    ):
+                        # Abort
+                        rf.frequency.set(f0)
+                        return (None, None, None)
                     sleep(Sleep_between_meas)
+
         except Exception as ex:
             err = ex
         finally:
             # TODO : Use set_and_wait once it is implemented !
             rf.frequency.set(f0)
+            if callback:
+                callback(i, ACTION_RESTORE, f0 + f, [np.nan, np.nan])
 
         if err:
             raise (err)
 
         return (delta, NuX, NuY)
 
-    def fit_chromaticity(self, delta, NuX, NuY, order, do_plot):
+    def fit(self, delta, NuX, NuY, order, do_plot):
         """
         Compute chromaticity from measurement data.
 
@@ -260,6 +290,11 @@ class ChomaticityMonitor(Element):
             Array with horizontal and veritical chromaticity.
 
         """
+        if len(NuX) == 0:
+            raise PyAMLException(
+                "No measurement data available for fit, pleas call measure() first"
+            )
+
         delta = -delta
         chro = []
         N_step_delta = len(delta)
