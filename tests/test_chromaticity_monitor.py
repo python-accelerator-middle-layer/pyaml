@@ -33,7 +33,7 @@ def test_controlsystem_chromaticity_monitor(install_test_package):
     chromaticity_monitor = sr.live.get_chromaticity_monitor("KSI")
     assert np.isnan(chromaticity_monitor.chromaticity.get()[0])
     assert np.isnan(chromaticity_monitor.chromaticity.get()[1])
-    chromaticity_monitor.chromaticity_measurement(
+    chromaticity_monitor.measure(
         do_plot=False,
         alphac=1e-4,
         Sleep_between_meas=0,
