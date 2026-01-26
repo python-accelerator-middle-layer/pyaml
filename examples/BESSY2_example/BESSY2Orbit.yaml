@@ -4,11 +4,11 @@ facility: BESSY2
 energy: 1.7e9
 simulators:
   - type: pyaml.lattice.simulator
-    lattice: bessy2.mat
+    lattice: bessy2_standard_user.mat
     name: design
 controls:
   - type: pyaml_cs_oa.controlsystem
-    prefix: "pons:"
+    prefix: "a3744:"
     name: live
 data_folder: /data/store
 arrays:
@@ -140,7 +140,7 @@ arrays:
       - BPMZ2T1R
       - BPMZ3T1R
       - BPMZ4T1R
-      - BPMZ43T1R
+      - BPMZ41T1R
       - BPMZ5T1R
       - BPMZ6T1R
       - BPMZ7T1R
@@ -155,6 +155,9 @@ arrays:
       - BPMZ2T2R
       - BPMZ3T2R
       - BPMZ4T2R
+      - BPMZ41T2R
+      - BPMZ42T2R
+      - BPMZ43T2R            
       - BPMZ5T2R
       - BPMZ6T2R
       - BPMZ7T2R
@@ -164,7 +167,7 @@ arrays:
       - BPMZ4D3R
       - BPMZ5D3R
       - BPMZ6D3R
-      - BPMZ7D3R
+      - BPMZ7D3R     
       - BPMZ1T3R
       - BPMZ2T3R
       - BPMZ3T3R
@@ -214,6 +217,7 @@ arrays:
       - BPMZ2T6R
       - BPMZ3T6R
       - BPMZ4T6R
+      - BPMZ41T6R
       - BPMZ5T6R
       - BPMZ6T6R
       - BPMZ7T6R
@@ -228,6 +232,7 @@ arrays:
       - BPMZ2T7R
       - BPMZ3T7R
       - BPMZ4T7R
+      - BPMZ41T7R
       - BPMZ5T7R
       - BPMZ6T7R
       - BPMZ7T7R
@@ -1613,1651 +1618,1721 @@ devices:
   name: BPMZ5D1R
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos_index: 11
-    y_pos_index: 11
+    x_pos_index: 0
+    y_pos_index: 1
     x_pos:
       type: pyaml_cs_oa.epicsR
-      read_pvname: beam:orbit:x
+      read_pvname: ORBITCC:rdPos
       unit: nm
     y_pos:
       type: pyaml_cs_oa.epicsR
-      read_pvname: beam:orbit:y
+      read_pvname: ORBITCC:rdPos
       unit: nm
 - type: pyaml.bpm.bpm
   name: BPMZ6D1R
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos_index: 19
-    y_pos_index: 19
+    x_pos_index: 2
+    y_pos_index: 3
     x_pos:
       type: pyaml_cs_oa.epicsR
-      read_pvname: beam:orbit:x
+      read_pvname: ORBITCC:rdPos
       unit: nm
     y_pos:
       type: pyaml_cs_oa.epicsR
-      read_pvname: beam:orbit:y
+      read_pvname: ORBITCC:rdPos
       unit: nm
 - type: pyaml.bpm.bpm
   name: BPMZ7D1R
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos_index: 29
-    y_pos_index: 29
+    x_pos_index: 4
+    y_pos_index: 5
     x_pos:
       type: pyaml_cs_oa.epicsR
-      read_pvname: beam:orbit:x
+      read_pvname: ORBITCC:rdPos
       unit: nm
     y_pos:
       type: pyaml_cs_oa.epicsR
-      read_pvname: beam:orbit:y
+      read_pvname: ORBITCC:rdPos
       unit: nm
 - type: pyaml.bpm.bpm
   name: BPMZ1T1R
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos_index: 42
-    y_pos_index: 42
+    x_pos_index: 6
+    y_pos_index: 7
     x_pos:
       type: pyaml_cs_oa.epicsR
-      read_pvname: beam:orbit:x
+      read_pvname: ORBITCC:rdPos
       unit: nm
     y_pos:
       type: pyaml_cs_oa.epicsR
-      read_pvname: beam:orbit:y
+      read_pvname: ORBITCC:rdPos
       unit: nm
 - type: pyaml.bpm.bpm
   name: BPMZ2T1R
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos_index: 48
-    y_pos_index: 48
+    x_pos_index: 8
+    y_pos_index: 9
     x_pos:
       type: pyaml_cs_oa.epicsR
-      read_pvname: beam:orbit:x
+      read_pvname: ORBITCC:rdPos
       unit: nm
     y_pos:
       type: pyaml_cs_oa.epicsR
-      read_pvname: beam:orbit:y
+      read_pvname: ORBITCC:rdPos
       unit: nm
 - type: pyaml.bpm.bpm
   name: BPMZ3T1R
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos_index: 58
-    y_pos_index: 58
+    x_pos_index: 10
+    y_pos_index: 11
     x_pos:
       type: pyaml_cs_oa.epicsR
-      read_pvname: beam:orbit:x
+      read_pvname: ORBITCC:rdPos
       unit: nm
     y_pos:
       type: pyaml_cs_oa.epicsR
-      read_pvname: beam:orbit:y
+      read_pvname: ORBITCC:rdPos
       unit: nm
 - type: pyaml.bpm.bpm
   name: BPMZ4T1R
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos_index: 68
-    y_pos_index: 68
+    x_pos_index: 12
+    y_pos_index: 13
     x_pos:
       type: pyaml_cs_oa.epicsR
-      read_pvname: beam:orbit:x
+      read_pvname: ORBITCC:rdPos
       unit: nm
     y_pos:
       type: pyaml_cs_oa.epicsR
-      read_pvname: beam:orbit:y
+      read_pvname: ORBITCC:rdPos
       unit: nm
 - type: pyaml.bpm.bpm
-  name: BPMZ43T1R
+  name: BPMZ41T1R
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos_index: 81
-    y_pos_index: 81
+    x_pos_index: 14
+    y_pos_index: 15
     x_pos:
       type: pyaml_cs_oa.epicsR
-      read_pvname: beam:orbit:x
+      read_pvname: ORBITCC:rdPos
       unit: nm
     y_pos:
       type: pyaml_cs_oa.epicsR
-      read_pvname: beam:orbit:y
+      read_pvname: ORBITCC:rdPos
       unit: nm
 - type: pyaml.bpm.bpm
   name: BPMZ5T1R
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos_index: 83
-    y_pos_index: 83
+    x_pos_index: 16
+    y_pos_index: 17
     x_pos:
       type: pyaml_cs_oa.epicsR
-      read_pvname: beam:orbit:x
+      read_pvname: ORBITCC:rdPos
       unit: nm
     y_pos:
       type: pyaml_cs_oa.epicsR
-      read_pvname: beam:orbit:y
+      read_pvname: ORBITCC:rdPos
       unit: nm
 - type: pyaml.bpm.bpm
   name: BPMZ6T1R
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos_index: 93
-    y_pos_index: 93
+    x_pos_index: 18
+    y_pos_index: 19
     x_pos:
       type: pyaml_cs_oa.epicsR
-      read_pvname: beam:orbit:x
+      read_pvname: ORBITCC:rdPos
       unit: nm
     y_pos:
       type: pyaml_cs_oa.epicsR
-      read_pvname: beam:orbit:y
+      read_pvname: ORBITCC:rdPos
       unit: nm
 - type: pyaml.bpm.bpm
   name: BPMZ7T1R
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos_index: 103
-    y_pos_index: 103
+    x_pos_index: 20
+    y_pos_index: 21
     x_pos:
       type: pyaml_cs_oa.epicsR
-      read_pvname: beam:orbit:x
+      read_pvname: ORBITCC:rdPos
       unit: nm
     y_pos:
       type: pyaml_cs_oa.epicsR
-      read_pvname: beam:orbit:y
+      read_pvname: ORBITCC:rdPos
       unit: nm
 - type: pyaml.bpm.bpm
   name: BPMZ1D2R
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos_index: 116
-    y_pos_index: 116
+    x_pos_index: 22
+    y_pos_index: 23
     x_pos:
       type: pyaml_cs_oa.epicsR
-      read_pvname: beam:orbit:x
+      read_pvname: ORBITCC:rdPos
       unit: nm
     y_pos:
       type: pyaml_cs_oa.epicsR
-      read_pvname: beam:orbit:y
+      read_pvname: ORBITCC:rdPos
       unit: nm
 - type: pyaml.bpm.bpm
   name: BPMZ2D2R
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos_index: 124
-    y_pos_index: 124
+    x_pos_index: 24
+    y_pos_index: 25
     x_pos:
       type: pyaml_cs_oa.epicsR
-      read_pvname: beam:orbit:x
+      read_pvname: ORBITCC:rdPos
       unit: nm
     y_pos:
       type: pyaml_cs_oa.epicsR
-      read_pvname: beam:orbit:y
+      read_pvname: ORBITCC:rdPos
       unit: nm
 - type: pyaml.bpm.bpm
   name: BPMZ3D2R
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos_index: 132
-    y_pos_index: 132
+    x_pos_index: 26
+    y_pos_index: 27
     x_pos:
       type: pyaml_cs_oa.epicsR
-      read_pvname: beam:orbit:x
+      read_pvname: ORBITCC:rdPos
       unit: nm
     y_pos:
       type: pyaml_cs_oa.epicsR
-      read_pvname: beam:orbit:y
+      read_pvname: ORBITCC:rdPos
       unit: nm
 - type: pyaml.bpm.bpm
   name: BPMZ4D2R
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos_index: 140
-    y_pos_index: 140
+    x_pos_index: 28
+    y_pos_index: 29
     x_pos:
       type: pyaml_cs_oa.epicsR
-      read_pvname: beam:orbit:x
+      read_pvname: ORBITCC:rdPos
       unit: nm
     y_pos:
       type: pyaml_cs_oa.epicsR
-      read_pvname: beam:orbit:y
+      read_pvname: ORBITCC:rdPos
       unit: nm
 - type: pyaml.bpm.bpm
   name: BPMZ5D2R
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos_index: 146
-    y_pos_index: 146
+    x_pos_index: 30
+    y_pos_index: 31
     x_pos:
       type: pyaml_cs_oa.epicsR
-      read_pvname: beam:orbit:x
+      read_pvname: ORBITCC:rdPos
       unit: nm
     y_pos:
       type: pyaml_cs_oa.epicsR
-      read_pvname: beam:orbit:y
+      read_pvname: ORBITCC:rdPos
       unit: nm
 - type: pyaml.bpm.bpm
   name: BPMZ6D2R
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos_index: 154
-    y_pos_index: 154
+    x_pos_index: 32
+    y_pos_index: 33
     x_pos:
       type: pyaml_cs_oa.epicsR
-      read_pvname: beam:orbit:x
+      read_pvname: ORBITCC:rdPos
       unit: nm
     y_pos:
       type: pyaml_cs_oa.epicsR
-      read_pvname: beam:orbit:y
+      read_pvname: ORBITCC:rdPos
       unit: nm
 - type: pyaml.bpm.bpm
   name: BPMZ7D2R
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos_index: 164
-    y_pos_index: 164
+    x_pos_index: 34
+    y_pos_index: 35
     x_pos:
       type: pyaml_cs_oa.epicsR
-      read_pvname: beam:orbit:x
+      read_pvname: ORBITCC:rdPos
       unit: nm
     y_pos:
       type: pyaml_cs_oa.epicsR
-      read_pvname: beam:orbit:y
+      read_pvname: ORBITCC:rdPos
       unit: nm
 - type: pyaml.bpm.bpm
   name: BPMZ1T2R
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos_index: 177
-    y_pos_index: 177
+    x_pos_index: 36
+    y_pos_index: 37
     x_pos:
       type: pyaml_cs_oa.epicsR
-      read_pvname: beam:orbit:x
+      read_pvname: ORBITCC:rdPos
       unit: nm
     y_pos:
       type: pyaml_cs_oa.epicsR
-      read_pvname: beam:orbit:y
+      read_pvname: ORBITCC:rdPos
       unit: nm
 - type: pyaml.bpm.bpm
   name: BPMZ2T2R
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos_index: 183
-    y_pos_index: 183
+    x_pos_index: 38
+    y_pos_index: 39
     x_pos:
       type: pyaml_cs_oa.epicsR
-      read_pvname: beam:orbit:x
+      read_pvname: ORBITCC:rdPos
       unit: nm
     y_pos:
       type: pyaml_cs_oa.epicsR
-      read_pvname: beam:orbit:y
+      read_pvname: ORBITCC:rdPos
       unit: nm
 - type: pyaml.bpm.bpm
   name: BPMZ3T2R
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos_index: 193
-    y_pos_index: 193
+    x_pos_index: 40
+    y_pos_index: 41
     x_pos:
       type: pyaml_cs_oa.epicsR
-      read_pvname: beam:orbit:x
+      read_pvname: ORBITCC:rdPos
       unit: nm
     y_pos:
       type: pyaml_cs_oa.epicsR
-      read_pvname: beam:orbit:y
+      read_pvname: ORBITCC:rdPos
       unit: nm
 - type: pyaml.bpm.bpm
   name: BPMZ4T2R
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos_index: 203
-    y_pos_index: 203
+    x_pos_index: 42
+    y_pos_index: 43
     x_pos:
       type: pyaml_cs_oa.epicsR
-      read_pvname: beam:orbit:x
+      read_pvname: ORBITCC:rdPos
       unit: nm
     y_pos:
       type: pyaml_cs_oa.epicsR
-      read_pvname: beam:orbit:y
+      read_pvname: ORBITCC:rdPos
       unit: nm
+- type: pyaml.bpm.bpm
+  name: BPMZ41T2R
+  model:
+    type: pyaml.bpm.bpm_simple_model
+    x_pos_index: 44
+    y_pos_index: 45
+    x_pos:
+      type: pyaml_cs_oa.epicsR
+      read_pvname: ORBITCC:rdPos
+      unit: nm
+    y_pos:
+      type: pyaml_cs_oa.epicsR
+      read_pvname: ORBITCC:rdPos
+      unit: nm
+- type: pyaml.bpm.bpm
+  name: BPMZ42T2R
+  model:
+    type: pyaml.bpm.bpm_simple_model
+    x_pos_index: 46
+    y_pos_index: 47
+    x_pos:
+      type: pyaml_cs_oa.epicsR
+      read_pvname: ORBITCC:rdPos
+      unit: nm
+    y_pos:
+      type: pyaml_cs_oa.epicsR
+      read_pvname: ORBITCC:rdPos
+      unit: nm
+- type: pyaml.bpm.bpm
+  name: BPMZ43T2R
+  model:
+    type: pyaml.bpm.bpm_simple_model
+    x_pos_index: 48
+    y_pos_index: 49
+    x_pos:
+      type: pyaml_cs_oa.epicsR
+      read_pvname: ORBITCC:rdPos
+      unit: nm
+    y_pos:
+      type: pyaml_cs_oa.epicsR
+      read_pvname: ORBITCC:rdPos
+      unit: nm       
 - type: pyaml.bpm.bpm
   name: BPMZ5T2R
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos_index: 223
-    y_pos_index: 223
+    x_pos_index: 50
+    y_pos_index: 51
     x_pos:
       type: pyaml_cs_oa.epicsR
-      read_pvname: beam:orbit:x
+      read_pvname: ORBITCC:rdPos
       unit: nm
     y_pos:
       type: pyaml_cs_oa.epicsR
-      read_pvname: beam:orbit:y
+      read_pvname: ORBITCC:rdPos
       unit: nm
 - type: pyaml.bpm.bpm
   name: BPMZ6T2R
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos_index: 233
-    y_pos_index: 233
+    x_pos_index: 52
+    y_pos_index: 53
     x_pos:
       type: pyaml_cs_oa.epicsR
-      read_pvname: beam:orbit:x
+      read_pvname: ORBITCC:rdPos
       unit: nm
     y_pos:
       type: pyaml_cs_oa.epicsR
-      read_pvname: beam:orbit:y
+      read_pvname: ORBITCC:rdPos
       unit: nm
 - type: pyaml.bpm.bpm
   name: BPMZ7T2R
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos_index: 243
-    y_pos_index: 243
+    x_pos_index: 54
+    y_pos_index: 55
     x_pos:
       type: pyaml_cs_oa.epicsR
-      read_pvname: beam:orbit:x
+      read_pvname: ORBITCC:rdPos
       unit: nm
     y_pos:
       type: pyaml_cs_oa.epicsR
-      read_pvname: beam:orbit:y
+      read_pvname: ORBITCC:rdPos
       unit: nm
 - type: pyaml.bpm.bpm
   name: BPMZ1D3R
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos_index: 256
-    y_pos_index: 256
+    x_pos_index: 56
+    y_pos_index: 57
     x_pos:
       type: pyaml_cs_oa.epicsR
-      read_pvname: beam:orbit:x
+      read_pvname: ORBITCC:rdPos
       unit: nm
     y_pos:
       type: pyaml_cs_oa.epicsR
-      read_pvname: beam:orbit:y
+      read_pvname: ORBITCC:rdPos
       unit: nm
 - type: pyaml.bpm.bpm
   name: BPMZ2D3R
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos_index: 265
-    y_pos_index: 265
+    x_pos_index: 58
+    y_pos_index: 59
     x_pos:
       type: pyaml_cs_oa.epicsR
-      read_pvname: beam:orbit:x
+      read_pvname: ORBITCC:rdPos
       unit: nm
     y_pos:
       type: pyaml_cs_oa.epicsR
-      read_pvname: beam:orbit:y
+      read_pvname: ORBITCC:rdPos
       unit: nm
 - type: pyaml.bpm.bpm
   name: BPMZ3D3R
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos_index: 275
-    y_pos_index: 275
+    x_pos_index: 60
+    y_pos_index: 61
     x_pos:
       type: pyaml_cs_oa.epicsR
-      read_pvname: beam:orbit:x
+      read_pvname: ORBITCC:rdPos
       unit: nm
     y_pos:
       type: pyaml_cs_oa.epicsR
-      read_pvname: beam:orbit:y
+      read_pvname: ORBITCC:rdPos
       unit: nm
 - type: pyaml.bpm.bpm
   name: BPMZ4D3R
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos_index: 283
-    y_pos_index: 283
+    x_pos_index: 62
+    y_pos_index: 63
     x_pos:
       type: pyaml_cs_oa.epicsR
-      read_pvname: beam:orbit:x
+      read_pvname: ORBITCC:rdPos
       unit: nm
     y_pos:
       type: pyaml_cs_oa.epicsR
-      read_pvname: beam:orbit:y
+      read_pvname: ORBITCC:rdPos
       unit: nm
 - type: pyaml.bpm.bpm
   name: BPMZ5D3R
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos_index: 287
-    y_pos_index: 287
+    x_pos_index: 64
+    y_pos_index: 65
     x_pos:
       type: pyaml_cs_oa.epicsR
-      read_pvname: beam:orbit:x
+      read_pvname: ORBITCC:rdPos
       unit: nm
     y_pos:
       type: pyaml_cs_oa.epicsR
-      read_pvname: beam:orbit:y
+      read_pvname: ORBITCC:rdPos
       unit: nm
 - type: pyaml.bpm.bpm
   name: BPMZ6D3R
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos_index: 295
-    y_pos_index: 295
+    x_pos_index: 66
+    y_pos_index: 67
     x_pos:
       type: pyaml_cs_oa.epicsR
-      read_pvname: beam:orbit:x
+      read_pvname: ORBITCC:rdPos
       unit: nm
     y_pos:
       type: pyaml_cs_oa.epicsR
-      read_pvname: beam:orbit:y
+      read_pvname: ORBITCC:rdPos
       unit: nm
 - type: pyaml.bpm.bpm
   name: BPMZ7D3R
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos_index: 305
-    y_pos_index: 305
+    x_pos_index: 68
+    y_pos_index: 69
     x_pos:
       type: pyaml_cs_oa.epicsR
-      read_pvname: beam:orbit:x
+      read_pvname: ORBITCC:rdPos
       unit: nm
     y_pos:
       type: pyaml_cs_oa.epicsR
-      read_pvname: beam:orbit:y
+      read_pvname: ORBITCC:rdPos
       unit: nm
 - type: pyaml.bpm.bpm
   name: BPMZ1T3R
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos_index: 318
-    y_pos_index: 318
+    x_pos_index: 70
+    y_pos_index: 71
     x_pos:
       type: pyaml_cs_oa.epicsR
-      read_pvname: beam:orbit:x
+      read_pvname: ORBITCC:rdPos
       unit: nm
     y_pos:
       type: pyaml_cs_oa.epicsR
-      read_pvname: beam:orbit:y
+      read_pvname: ORBITCC:rdPos
       unit: nm
 - type: pyaml.bpm.bpm
   name: BPMZ2T3R
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos_index: 324
-    y_pos_index: 324
+    x_pos_index: 72
+    y_pos_index: 73
     x_pos:
       type: pyaml_cs_oa.epicsR
-      read_pvname: beam:orbit:x
+      read_pvname: ORBITCC:rdPos
       unit: nm
     y_pos:
       type: pyaml_cs_oa.epicsR
-      read_pvname: beam:orbit:y
+      read_pvname: ORBITCC:rdPos
       unit: nm
 - type: pyaml.bpm.bpm
   name: BPMZ3T3R
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos_index: 334
-    y_pos_index: 334
+    x_pos_index: 74
+    y_pos_index: 75
     x_pos:
       type: pyaml_cs_oa.epicsR
-      read_pvname: beam:orbit:x
+      read_pvname: ORBITCC:rdPos
       unit: nm
     y_pos:
       type: pyaml_cs_oa.epicsR
-      read_pvname: beam:orbit:y
+      read_pvname: ORBITCC:rdPos
       unit: nm
 - type: pyaml.bpm.bpm
   name: BPMZ4T3R
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos_index: 344
-    y_pos_index: 344
+    x_pos_index: 76
+    y_pos_index: 77
     x_pos:
       type: pyaml_cs_oa.epicsR
-      read_pvname: beam:orbit:x
+      read_pvname: ORBITCC:rdPos
       unit: nm
     y_pos:
       type: pyaml_cs_oa.epicsR
-      read_pvname: beam:orbit:y
+      read_pvname: ORBITCC:rdPos
       unit: nm
 - type: pyaml.bpm.bpm
   name: BPMZ5T3R
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos_index: 349
-    y_pos_index: 349
+    x_pos_index: 78
+    y_pos_index: 79
     x_pos:
       type: pyaml_cs_oa.epicsR
-      read_pvname: beam:orbit:x
+      read_pvname: ORBITCC:rdPos
       unit: nm
     y_pos:
       type: pyaml_cs_oa.epicsR
-      read_pvname: beam:orbit:y
+      read_pvname: ORBITCC:rdPos
       unit: nm
 - type: pyaml.bpm.bpm
   name: BPMZ6T3R
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos_index: 359
-    y_pos_index: 359
+    x_pos_index: 80
+    y_pos_index: 81
     x_pos:
       type: pyaml_cs_oa.epicsR
-      read_pvname: beam:orbit:x
+      read_pvname: ORBITCC:rdPos
       unit: nm
     y_pos:
       type: pyaml_cs_oa.epicsR
-      read_pvname: beam:orbit:y
+      read_pvname: ORBITCC:rdPos
       unit: nm
 - type: pyaml.bpm.bpm
   name: BPMZ7T3R
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos_index: 369
-    y_pos_index: 369
+    x_pos_index: 82
+    y_pos_index: 83
     x_pos:
       type: pyaml_cs_oa.epicsR
-      read_pvname: beam:orbit:x
+      read_pvname: ORBITCC:rdPos
       unit: nm
     y_pos:
       type: pyaml_cs_oa.epicsR
-      read_pvname: beam:orbit:y
+      read_pvname: ORBITCC:rdPos
       unit: nm
 - type: pyaml.bpm.bpm
   name: BPMZ1D4R
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos_index: 382
-    y_pos_index: 382
+    x_pos_index: 84
+    y_pos_index: 85
     x_pos:
       type: pyaml_cs_oa.epicsR
-      read_pvname: beam:orbit:x
+      read_pvname: ORBITCC:rdPos
       unit: nm
     y_pos:
       type: pyaml_cs_oa.epicsR
-      read_pvname: beam:orbit:y
+      read_pvname: ORBITCC:rdPos
       unit: nm
 - type: pyaml.bpm.bpm
   name: BPMZ2D4R
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos_index: 388
-    y_pos_index: 388
+    x_pos_index: 86
+    y_pos_index: 87
     x_pos:
       type: pyaml_cs_oa.epicsR
-      read_pvname: beam:orbit:x
+      read_pvname: ORBITCC:rdPos
       unit: nm
     y_pos:
       type: pyaml_cs_oa.epicsR
-      read_pvname: beam:orbit:y
+      read_pvname: ORBITCC:rdPos
       unit: nm
 - type: pyaml.bpm.bpm
   name: BPMZ3D4R
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos_index: 398
-    y_pos_index: 398
+    x_pos_index: 88
+    y_pos_index: 89
     x_pos:
       type: pyaml_cs_oa.epicsR
-      read_pvname: beam:orbit:x
+      read_pvname: ORBITCC:rdPos
       unit: nm
     y_pos:
       type: pyaml_cs_oa.epicsR
-      read_pvname: beam:orbit:y
+      read_pvname: ORBITCC:rdPos
       unit: nm
 - type: pyaml.bpm.bpm
   name: BPMZ4D4R
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos_index: 406
-    y_pos_index: 406
+    x_pos_index: 90
+    y_pos_index: 91
     x_pos:
       type: pyaml_cs_oa.epicsR
-      read_pvname: beam:orbit:x
+      read_pvname: ORBITCC:rdPos
       unit: nm
     y_pos:
       type: pyaml_cs_oa.epicsR
-      read_pvname: beam:orbit:y
+      read_pvname: ORBITCC:rdPos
       unit: nm
 - type: pyaml.bpm.bpm
   name: BPMZ5D4R
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos_index: 413
-    y_pos_index: 413
+    x_pos_index: 92
+    y_pos_index: 93
     x_pos:
       type: pyaml_cs_oa.epicsR
-      read_pvname: beam:orbit:x
+      read_pvname: ORBITCC:rdPos
       unit: nm
     y_pos:
       type: pyaml_cs_oa.epicsR
-      read_pvname: beam:orbit:y
+      read_pvname: ORBITCC:rdPos
       unit: nm
 - type: pyaml.bpm.bpm
   name: BPMZ6D4R
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos_index: 421
-    y_pos_index: 421
+    x_pos_index: 94
+    y_pos_index: 95
     x_pos:
       type: pyaml_cs_oa.epicsR
-      read_pvname: beam:orbit:x
+      read_pvname: ORBITCC:rdPos
       unit: nm
     y_pos:
       type: pyaml_cs_oa.epicsR
-      read_pvname: beam:orbit:y
+      read_pvname: ORBITCC:rdPos
       unit: nm
 - type: pyaml.bpm.bpm
   name: BPMZ7D4R
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos_index: 431
-    y_pos_index: 431
+    x_pos_index: 96
+    y_pos_index: 97
     x_pos:
       type: pyaml_cs_oa.epicsR
-      read_pvname: beam:orbit:x
+      read_pvname: ORBITCC:rdPos
       unit: nm
     y_pos:
       type: pyaml_cs_oa.epicsR
-      read_pvname: beam:orbit:y
+      read_pvname: ORBITCC:rdPos
       unit: nm
 - type: pyaml.bpm.bpm
   name: BPMZ1T4R
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos_index: 444
-    y_pos_index: 444
+    x_pos_index: 98
+    y_pos_index: 99
     x_pos:
       type: pyaml_cs_oa.epicsR
-      read_pvname: beam:orbit:x
+      read_pvname: ORBITCC:rdPos
       unit: nm
     y_pos:
       type: pyaml_cs_oa.epicsR
-      read_pvname: beam:orbit:y
+      read_pvname: ORBITCC:rdPos
       unit: nm
 - type: pyaml.bpm.bpm
   name: BPMZ2T4R
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos_index: 450
-    y_pos_index: 450
+    x_pos_index: 100
+    y_pos_index: 101
     x_pos:
       type: pyaml_cs_oa.epicsR
-      read_pvname: beam:orbit:x
+      read_pvname: ORBITCC:rdPos
       unit: nm
     y_pos:
       type: pyaml_cs_oa.epicsR
-      read_pvname: beam:orbit:y
+      read_pvname: ORBITCC:rdPos
       unit: nm
 - type: pyaml.bpm.bpm
   name: BPMZ3T4R
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos_index: 460
-    y_pos_index: 460
+    x_pos_index: 102
+    y_pos_index: 103
     x_pos:
       type: pyaml_cs_oa.epicsR
-      read_pvname: beam:orbit:x
+      read_pvname: ORBITCC:rdPos
       unit: nm
     y_pos:
       type: pyaml_cs_oa.epicsR
-      read_pvname: beam:orbit:y
+      read_pvname: ORBITCC:rdPos
       unit: nm
 - type: pyaml.bpm.bpm
   name: BPMZ4T4R
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos_index: 470
-    y_pos_index: 470
+    x_pos_index: 104
+    y_pos_index: 105
     x_pos:
       type: pyaml_cs_oa.epicsR
-      read_pvname: beam:orbit:x
+      read_pvname: ORBITCC:rdPos
       unit: nm
     y_pos:
       type: pyaml_cs_oa.epicsR
-      read_pvname: beam:orbit:y
+      read_pvname: ORBITCC:rdPos
       unit: nm
 - type: pyaml.bpm.bpm
   name: BPMZ5T4R
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos_index: 476
-    y_pos_index: 476
+    x_pos_index: 106
+    y_pos_index: 107
     x_pos:
       type: pyaml_cs_oa.epicsR
-      read_pvname: beam:orbit:x
+      read_pvname: ORBITCC:rdPos
       unit: nm
     y_pos:
       type: pyaml_cs_oa.epicsR
-      read_pvname: beam:orbit:y
+      read_pvname: ORBITCC:rdPos
       unit: nm
 - type: pyaml.bpm.bpm
   name: BPMZ6T4R
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos_index: 486
-    y_pos_index: 486
+    x_pos_index: 108
+    y_pos_index: 109
     x_pos:
       type: pyaml_cs_oa.epicsR
-      read_pvname: beam:orbit:x
+      read_pvname: ORBITCC:rdPos
       unit: nm
     y_pos:
       type: pyaml_cs_oa.epicsR
-      read_pvname: beam:orbit:y
+      read_pvname: ORBITCC:rdPos
       unit: nm
 - type: pyaml.bpm.bpm
   name: BPMZ7T4R
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos_index: 496
-    y_pos_index: 496
+    x_pos_index: 110
+    y_pos_index: 111
     x_pos:
       type: pyaml_cs_oa.epicsR
-      read_pvname: beam:orbit:x
+      read_pvname: ORBITCC:rdPos
       unit: nm
     y_pos:
       type: pyaml_cs_oa.epicsR
-      read_pvname: beam:orbit:y
+      read_pvname: ORBITCC:rdPos
       unit: nm
 - type: pyaml.bpm.bpm
   name: BPMZ1D5R
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos_index: 509
-    y_pos_index: 509
+    x_pos_index: 112
+    y_pos_index: 113
     x_pos:
       type: pyaml_cs_oa.epicsR
-      read_pvname: beam:orbit:x
+      read_pvname: ORBITCC:rdPos
       unit: nm
     y_pos:
       type: pyaml_cs_oa.epicsR
-      read_pvname: beam:orbit:y
+      read_pvname: ORBITCC:rdPos
       unit: nm
 - type: pyaml.bpm.bpm
   name: BPMZ2D5R
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos_index: 515
-    y_pos_index: 515
+    x_pos_index: 114
+    y_pos_index: 115
     x_pos:
       type: pyaml_cs_oa.epicsR
-      read_pvname: beam:orbit:x
+      read_pvname: ORBITCC:rdPos
       unit: nm
     y_pos:
       type: pyaml_cs_oa.epicsR
-      read_pvname: beam:orbit:y
+      read_pvname: ORBITCC:rdPos
       unit: nm
 - type: pyaml.bpm.bpm
   name: BPMZ3D5R
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos_index: 525
-    y_pos_index: 525
+    x_pos_index: 116
+    y_pos_index: 117
     x_pos:
       type: pyaml_cs_oa.epicsR
-      read_pvname: beam:orbit:x
+      read_pvname: ORBITCC:rdPos
       unit: nm
     y_pos:
       type: pyaml_cs_oa.epicsR
-      read_pvname: beam:orbit:y
+      read_pvname: ORBITCC:rdPos
       unit: nm
 - type: pyaml.bpm.bpm
   name: BPMZ4D5R
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos_index: 533
-    y_pos_index: 533
+    x_pos_index: 118
+    y_pos_index: 119
     x_pos:
       type: pyaml_cs_oa.epicsR
-      read_pvname: beam:orbit:x
+      read_pvname: ORBITCC:rdPos
       unit: nm
     y_pos:
       type: pyaml_cs_oa.epicsR
-      read_pvname: beam:orbit:y
+      read_pvname: ORBITCC:rdPos
       unit: nm
 - type: pyaml.bpm.bpm
   name: BPMZ5D5R
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos_index: 538
-    y_pos_index: 538
+    x_pos_index: 120
+    y_pos_index: 121
     x_pos:
       type: pyaml_cs_oa.epicsR
-      read_pvname: beam:orbit:x
+      read_pvname: ORBITCC:rdPos
       unit: nm
     y_pos:
       type: pyaml_cs_oa.epicsR
-      read_pvname: beam:orbit:y
+      read_pvname: ORBITCC:rdPos
       unit: nm
 - type: pyaml.bpm.bpm
   name: BPMZ6D5R
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos_index: 546
-    y_pos_index: 546
+    x_pos_index: 122
+    y_pos_index: 123
     x_pos:
       type: pyaml_cs_oa.epicsR
-      read_pvname: beam:orbit:x
+      read_pvname: ORBITCC:rdPos
       unit: nm
     y_pos:
       type: pyaml_cs_oa.epicsR
-      read_pvname: beam:orbit:y
+      read_pvname: ORBITCC:rdPos
       unit: nm
 - type: pyaml.bpm.bpm
   name: BPMZ7D5R
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos_index: 556
-    y_pos_index: 556
+    x_pos_index: 124
+    y_pos_index: 125
     x_pos:
       type: pyaml_cs_oa.epicsR
-      read_pvname: beam:orbit:x
+      read_pvname: ORBITCC:rdPos
       unit: nm
     y_pos:
       type: pyaml_cs_oa.epicsR
-      read_pvname: beam:orbit:y
+      read_pvname: ORBITCC:rdPos
       unit: nm
 - type: pyaml.bpm.bpm
   name: BPMZ1T5R
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos_index: 568
-    y_pos_index: 568
+    x_pos_index: 126
+    y_pos_index: 127
     x_pos:
       type: pyaml_cs_oa.epicsR
-      read_pvname: beam:orbit:x
+      read_pvname: ORBITCC:rdPos
       unit: nm
     y_pos:
       type: pyaml_cs_oa.epicsR
-      read_pvname: beam:orbit:y
+      read_pvname: ORBITCC:rdPos
       unit: nm
 - type: pyaml.bpm.bpm
   name: BPMZ2T5R
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos_index: 577
-    y_pos_index: 577
+    x_pos_index: 128
+    y_pos_index: 129
     x_pos:
       type: pyaml_cs_oa.epicsR
-      read_pvname: beam:orbit:x
+      read_pvname: ORBITCC:rdPos
       unit: nm
     y_pos:
       type: pyaml_cs_oa.epicsR
-      read_pvname: beam:orbit:y
+      read_pvname: ORBITCC:rdPos
       unit: nm
 - type: pyaml.bpm.bpm
   name: BPMZ3T5R
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos_index: 587
-    y_pos_index: 587
+    x_pos_index: 130
+    y_pos_index: 131
     x_pos:
       type: pyaml_cs_oa.epicsR
-      read_pvname: beam:orbit:x
+      read_pvname: ORBITCC:rdPos
       unit: nm
     y_pos:
       type: pyaml_cs_oa.epicsR
-      read_pvname: beam:orbit:y
+      read_pvname: ORBITCC:rdPos
       unit: nm
 - type: pyaml.bpm.bpm
   name: BPMZ4T5R
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos_index: 597
-    y_pos_index: 597
+    x_pos_index: 132
+    y_pos_index: 133
     x_pos:
       type: pyaml_cs_oa.epicsR
-      read_pvname: beam:orbit:x
+      read_pvname: ORBITCC:rdPos
       unit: nm
     y_pos:
       type: pyaml_cs_oa.epicsR
-      read_pvname: beam:orbit:y
+      read_pvname: ORBITCC:rdPos
       unit: nm
 - type: pyaml.bpm.bpm
   name: BPMZ5T5R
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos_index: 602
-    y_pos_index: 602
+    x_pos_index: 134
+    y_pos_index: 135
     x_pos:
       type: pyaml_cs_oa.epicsR
-      read_pvname: beam:orbit:x
+      read_pvname: ORBITCC:rdPos
       unit: nm
     y_pos:
       type: pyaml_cs_oa.epicsR
-      read_pvname: beam:orbit:y
+      read_pvname: ORBITCC:rdPos
       unit: nm
 - type: pyaml.bpm.bpm
   name: BPMZ6T5R
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos_index: 612
-    y_pos_index: 612
+    x_pos_index: 136
+    y_pos_index: 137
     x_pos:
       type: pyaml_cs_oa.epicsR
-      read_pvname: beam:orbit:x
+      read_pvname: ORBITCC:rdPos
       unit: nm
     y_pos:
       type: pyaml_cs_oa.epicsR
-      read_pvname: beam:orbit:y
+      read_pvname: ORBITCC:rdPos
       unit: nm
 - type: pyaml.bpm.bpm
   name: BPMZ7T5R
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos_index: 622
-    y_pos_index: 622
+    x_pos_index: 138
+    y_pos_index: 139
     x_pos:
       type: pyaml_cs_oa.epicsR
-      read_pvname: beam:orbit:x
+      read_pvname: ORBITCC:rdPos
       unit: nm
     y_pos:
       type: pyaml_cs_oa.epicsR
-      read_pvname: beam:orbit:y
+      read_pvname: ORBITCC:rdPos
       unit: nm
 - type: pyaml.bpm.bpm
   name: BPMZ1D6R
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos_index: 635
-    y_pos_index: 635
+    x_pos_index: 140
+    y_pos_index: 141
     x_pos:
       type: pyaml_cs_oa.epicsR
-      read_pvname: beam:orbit:x
+      read_pvname: ORBITCC:rdPos
       unit: nm
     y_pos:
       type: pyaml_cs_oa.epicsR
-      read_pvname: beam:orbit:y
+      read_pvname: ORBITCC:rdPos
       unit: nm
 - type: pyaml.bpm.bpm
   name: BPMZ2D6R
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos_index: 641
-    y_pos_index: 641
+    x_pos_index: 142
+    y_pos_index: 143
     x_pos:
       type: pyaml_cs_oa.epicsR
-      read_pvname: beam:orbit:x
+      read_pvname: ORBITCC:rdPos
       unit: nm
     y_pos:
       type: pyaml_cs_oa.epicsR
-      read_pvname: beam:orbit:y
+      read_pvname: ORBITCC:rdPos
       unit: nm
 - type: pyaml.bpm.bpm
   name: BPMZ3D6R
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos_index: 651
-    y_pos_index: 651
+    x_pos_index: 144
+    y_pos_index: 145
     x_pos:
       type: pyaml_cs_oa.epicsR
-      read_pvname: beam:orbit:x
+      read_pvname: ORBITCC:rdPos
       unit: nm
     y_pos:
       type: pyaml_cs_oa.epicsR
-      read_pvname: beam:orbit:y
+      read_pvname: ORBITCC:rdPos
       unit: nm
 - type: pyaml.bpm.bpm
   name: BPMZ4D6R
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos_index: 659
-    y_pos_index: 659
+    x_pos_index: 146
+    y_pos_index: 147
     x_pos:
       type: pyaml_cs_oa.epicsR
-      read_pvname: beam:orbit:x
+      read_pvname: ORBITCC:rdPos
       unit: nm
     y_pos:
       type: pyaml_cs_oa.epicsR
-      read_pvname: beam:orbit:y
+      read_pvname: ORBITCC:rdPos
       unit: nm
 - type: pyaml.bpm.bpm
   name: BPMZ41D6R
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos_index: 663
-    y_pos_index: 663
+    x_pos_index: 148
+    y_pos_index: 149
     x_pos:
       type: pyaml_cs_oa.epicsR
-      read_pvname: beam:orbit:x
+      read_pvname: ORBITCC:rdPos
       unit: nm
     y_pos:
       type: pyaml_cs_oa.epicsR
-      read_pvname: beam:orbit:y
+      read_pvname: ORBITCC:rdPos
       unit: nm
 - type: pyaml.bpm.bpm
   name: BPMZ42D6R
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos_index: 667
-    y_pos_index: 667
+    x_pos_index: 150
+    y_pos_index: 151
     x_pos:
       type: pyaml_cs_oa.epicsR
-      read_pvname: beam:orbit:x
+      read_pvname: ORBITCC:rdPos
       unit: nm
     y_pos:
       type: pyaml_cs_oa.epicsR
-      read_pvname: beam:orbit:y
+      read_pvname: ORBITCC:rdPos
       unit: nm
 - type: pyaml.bpm.bpm
   name: BPMZ43D6R
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos_index: 672
-    y_pos_index: 672
+    x_pos_index: 152
+    y_pos_index: 153
     x_pos:
       type: pyaml_cs_oa.epicsR
-      read_pvname: beam:orbit:x
+      read_pvname: ORBITCC:rdPos
       unit: nm
     y_pos:
       type: pyaml_cs_oa.epicsR
-      read_pvname: beam:orbit:y
+      read_pvname: ORBITCC:rdPos
       unit: nm
 - type: pyaml.bpm.bpm
   name: BPMZ44D6R
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos_index: 676
-    y_pos_index: 676
+    x_pos_index: 154
+    y_pos_index: 155
     x_pos:
       type: pyaml_cs_oa.epicsR
-      read_pvname: beam:orbit:x
+      read_pvname: ORBITCC:rdPos
       unit: nm
     y_pos:
       type: pyaml_cs_oa.epicsR
-      read_pvname: beam:orbit:y
+      read_pvname: ORBITCC:rdPos
       unit: nm
 - type: pyaml.bpm.bpm
   name: BPMZ6D6R
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos_index: 686
-    y_pos_index: 686
+    x_pos_index: 156
+    y_pos_index: 157
     x_pos:
       type: pyaml_cs_oa.epicsR
-      read_pvname: beam:orbit:x
+      read_pvname: ORBITCC:rdPos
       unit: nm
     y_pos:
       type: pyaml_cs_oa.epicsR
-      read_pvname: beam:orbit:y
+      read_pvname: ORBITCC:rdPos
       unit: nm
 - type: pyaml.bpm.bpm
   name: BPMZ7D6R
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos_index: 696
-    y_pos_index: 696
+    x_pos_index: 158
+    y_pos_index: 159
     x_pos:
       type: pyaml_cs_oa.epicsR
-      read_pvname: beam:orbit:x
+      read_pvname: ORBITCC:rdPos
       unit: nm
     y_pos:
       type: pyaml_cs_oa.epicsR
-      read_pvname: beam:orbit:y
+      read_pvname: ORBITCC:rdPos
       unit: nm
 - type: pyaml.bpm.bpm
   name: BPMZ1T6R
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos_index: 709
-    y_pos_index: 709
+    x_pos_index: 160
+    y_pos_index: 161
     x_pos:
       type: pyaml_cs_oa.epicsR
-      read_pvname: beam:orbit:x
+      read_pvname: ORBITCC:rdPos
       unit: nm
     y_pos:
       type: pyaml_cs_oa.epicsR
-      read_pvname: beam:orbit:y
+      read_pvname: ORBITCC:rdPos
       unit: nm
 - type: pyaml.bpm.bpm
   name: BPMZ2T6R
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos_index: 715
-    y_pos_index: 715
+    x_pos_index: 162
+    y_pos_index: 163
     x_pos:
       type: pyaml_cs_oa.epicsR
-      read_pvname: beam:orbit:x
+      read_pvname: ORBITCC:rdPos
       unit: nm
     y_pos:
       type: pyaml_cs_oa.epicsR
-      read_pvname: beam:orbit:y
+      read_pvname: ORBITCC:rdPos
       unit: nm
 - type: pyaml.bpm.bpm
   name: BPMZ3T6R
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos_index: 725
-    y_pos_index: 725
+    x_pos_index: 164
+    y_pos_index: 165
     x_pos:
       type: pyaml_cs_oa.epicsR
-      read_pvname: beam:orbit:x
+      read_pvname: ORBITCC:rdPos
       unit: nm
     y_pos:
       type: pyaml_cs_oa.epicsR
-      read_pvname: beam:orbit:y
+      read_pvname: ORBITCC:rdPos
       unit: nm
 - type: pyaml.bpm.bpm
   name: BPMZ4T6R
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos_index: 735
-    y_pos_index: 735
+    x_pos_index: 166
+    y_pos_index: 167
     x_pos:
       type: pyaml_cs_oa.epicsR
-      read_pvname: beam:orbit:x
+      read_pvname: ORBITCC:rdPos
       unit: nm
     y_pos:
       type: pyaml_cs_oa.epicsR
-      read_pvname: beam:orbit:y
+      read_pvname: ORBITCC:rdPos
       unit: nm
+- type: pyaml.bpm.bpm
+  name: BPMZ41T6R
+  model:
+    type: pyaml.bpm.bpm_simple_model
+    x_pos_index: 168
+    y_pos_index: 169
+    x_pos:
+      type: pyaml_cs_oa.epicsR
+      read_pvname: ORBITCC:rdPos
+      unit: nm
+    y_pos:
+      type: pyaml_cs_oa.epicsR
+      read_pvname: ORBITCC:rdPos
+      unit: nm      
 - type: pyaml.bpm.bpm
   name: BPMZ5T6R
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos_index: 745
-    y_pos_index: 745
+    x_pos_index: 170
+    y_pos_index: 171
     x_pos:
       type: pyaml_cs_oa.epicsR
-      read_pvname: beam:orbit:x
+      read_pvname: ORBITCC:rdPos
       unit: nm
     y_pos:
       type: pyaml_cs_oa.epicsR
-      read_pvname: beam:orbit:y
+      read_pvname: ORBITCC:rdPos
       unit: nm
 - type: pyaml.bpm.bpm
   name: BPMZ6T6R
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos_index: 755
-    y_pos_index: 755
+    x_pos_index: 172
+    y_pos_index: 173
     x_pos:
       type: pyaml_cs_oa.epicsR
-      read_pvname: beam:orbit:x
+      read_pvname: ORBITCC:rdPos
       unit: nm
     y_pos:
       type: pyaml_cs_oa.epicsR
-      read_pvname: beam:orbit:y
+      read_pvname: ORBITCC:rdPos
       unit: nm
 - type: pyaml.bpm.bpm
   name: BPMZ7T6R
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos_index: 765
-    y_pos_index: 765
+    x_pos_index: 174
+    y_pos_index: 175
     x_pos:
       type: pyaml_cs_oa.epicsR
-      read_pvname: beam:orbit:x
+      read_pvname: ORBITCC:rdPos
       unit: nm
     y_pos:
       type: pyaml_cs_oa.epicsR
-      read_pvname: beam:orbit:y
+      read_pvname: ORBITCC:rdPos
       unit: nm
 - type: pyaml.bpm.bpm
   name: BPMZ1D7R
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos_index: 778
-    y_pos_index: 778
+    x_pos_index: 176
+    y_pos_index: 177
     x_pos:
       type: pyaml_cs_oa.epicsR
-      read_pvname: beam:orbit:x
+      read_pvname: ORBITCC:rdPos
       unit: nm
     y_pos:
       type: pyaml_cs_oa.epicsR
-      read_pvname: beam:orbit:y
+      read_pvname: ORBITCC:rdPos
       unit: nm
 - type: pyaml.bpm.bpm
   name: BPMZ2D7R
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos_index: 784
-    y_pos_index: 784
+    x_pos_index: 178
+    y_pos_index: 179
     x_pos:
       type: pyaml_cs_oa.epicsR
-      read_pvname: beam:orbit:x
+      read_pvname: ORBITCC:rdPos
       unit: nm
     y_pos:
       type: pyaml_cs_oa.epicsR
-      read_pvname: beam:orbit:y
+      read_pvname: ORBITCC:rdPos
       unit: nm
 - type: pyaml.bpm.bpm
   name: BPMZ3D7R
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos_index: 794
-    y_pos_index: 794
+    x_pos_index: 180
+    y_pos_index: 181
     x_pos:
       type: pyaml_cs_oa.epicsR
-      read_pvname: beam:orbit:x
+      read_pvname: ORBITCC:rdPos
       unit: nm
     y_pos:
       type: pyaml_cs_oa.epicsR
-      read_pvname: beam:orbit:y
+      read_pvname: ORBITCC:rdPos
       unit: nm
 - type: pyaml.bpm.bpm
   name: BPMZ4D7R
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos_index: 802
-    y_pos_index: 802
+    x_pos_index: 182
+    y_pos_index: 183
     x_pos:
       type: pyaml_cs_oa.epicsR
-      read_pvname: beam:orbit:x
+      read_pvname: ORBITCC:rdPos
       unit: nm
     y_pos:
       type: pyaml_cs_oa.epicsR
-      read_pvname: beam:orbit:y
+      read_pvname: ORBITCC:rdPos
       unit: nm
 - type: pyaml.bpm.bpm
   name: BPMZ5D7R
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos_index: 807
-    y_pos_index: 807
+    x_pos_index: 184
+    y_pos_index: 185
     x_pos:
       type: pyaml_cs_oa.epicsR
-      read_pvname: beam:orbit:x
+      read_pvname: ORBITCC:rdPos
       unit: nm
     y_pos:
       type: pyaml_cs_oa.epicsR
-      read_pvname: beam:orbit:y
+      read_pvname: ORBITCC:rdPos
       unit: nm
 - type: pyaml.bpm.bpm
   name: BPMZ6D7R
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos_index: 815
-    y_pos_index: 815
+    x_pos_index: 186
+    y_pos_index: 187
     x_pos:
       type: pyaml_cs_oa.epicsR
-      read_pvname: beam:orbit:x
+      read_pvname: ORBITCC:rdPos
       unit: nm
     y_pos:
       type: pyaml_cs_oa.epicsR
-      read_pvname: beam:orbit:y
+      read_pvname: ORBITCC:rdPos
       unit: nm
 - type: pyaml.bpm.bpm
   name: BPMZ7D7R
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos_index: 825
-    y_pos_index: 825
+    x_pos_index: 188
+    y_pos_index: 189
     x_pos:
       type: pyaml_cs_oa.epicsR
-      read_pvname: beam:orbit:x
+      read_pvname: ORBITCC:rdPos
       unit: nm
     y_pos:
       type: pyaml_cs_oa.epicsR
-      read_pvname: beam:orbit:y
+      read_pvname: ORBITCC:rdPos
       unit: nm
 - type: pyaml.bpm.bpm
   name: BPMZ1T7R
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos_index: 838
-    y_pos_index: 838
+    x_pos_index: 190
+    y_pos_index: 191
     x_pos:
       type: pyaml_cs_oa.epicsR
-      read_pvname: beam:orbit:x
+      read_pvname: ORBITCC:rdPos
       unit: nm
     y_pos:
       type: pyaml_cs_oa.epicsR
-      read_pvname: beam:orbit:y
+      read_pvname: ORBITCC:rdPos
       unit: nm
 - type: pyaml.bpm.bpm
   name: BPMZ2T7R
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos_index: 844
-    y_pos_index: 844
+    x_pos_index: 192
+    y_pos_index: 193
     x_pos:
       type: pyaml_cs_oa.epicsR
-      read_pvname: beam:orbit:x
+      read_pvname: ORBITCC:rdPos
       unit: nm
     y_pos:
       type: pyaml_cs_oa.epicsR
-      read_pvname: beam:orbit:y
+      read_pvname: ORBITCC:rdPos
       unit: nm
 - type: pyaml.bpm.bpm
   name: BPMZ3T7R
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos_index: 854
-    y_pos_index: 854
+    x_pos_index: 194
+    y_pos_index: 195
     x_pos:
       type: pyaml_cs_oa.epicsR
-      read_pvname: beam:orbit:x
+      read_pvname: ORBITCC:rdPos
       unit: nm
     y_pos:
       type: pyaml_cs_oa.epicsR
-      read_pvname: beam:orbit:y
+      read_pvname: ORBITCC:rdPos
       unit: nm
 - type: pyaml.bpm.bpm
   name: BPMZ4T7R
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos_index: 864
-    y_pos_index: 864
+    x_pos_index: 196
+    y_pos_index: 197
     x_pos:
       type: pyaml_cs_oa.epicsR
-      read_pvname: beam:orbit:x
+      read_pvname: ORBITCC:rdPos
       unit: nm
     y_pos:
       type: pyaml_cs_oa.epicsR
-      read_pvname: beam:orbit:y
+      read_pvname: ORBITCC:rdPos
       unit: nm
+- type: pyaml.bpm.bpm
+  name: BPMZ41T7R
+  model:
+    type: pyaml.bpm.bpm_simple_model
+    x_pos_index: 198
+    y_pos_index: 199
+    x_pos:
+      type: pyaml_cs_oa.epicsR
+      read_pvname: ORBITCC:rdPos
+      unit: nm
+    y_pos:
+      type: pyaml_cs_oa.epicsR
+      read_pvname: ORBITCC:rdPos
+      unit: nm      
 - type: pyaml.bpm.bpm
   name: BPMZ5T7R
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos_index: 869
-    y_pos_index: 869
+    x_pos_index: 200
+    y_pos_index: 201
     x_pos:
       type: pyaml_cs_oa.epicsR
-      read_pvname: beam:orbit:x
+      read_pvname: ORBITCC:rdPos
       unit: nm
     y_pos:
       type: pyaml_cs_oa.epicsR
-      read_pvname: beam:orbit:y
+      read_pvname: ORBITCC:rdPos
       unit: nm
 - type: pyaml.bpm.bpm
   name: BPMZ6T7R
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos_index: 879
-    y_pos_index: 879
+    x_pos_index: 202
+    y_pos_index: 203
     x_pos:
       type: pyaml_cs_oa.epicsR
-      read_pvname: beam:orbit:x
+      read_pvname: ORBITCC:rdPos
       unit: nm
     y_pos:
       type: pyaml_cs_oa.epicsR
-      read_pvname: beam:orbit:y
+      read_pvname: ORBITCC:rdPos
       unit: nm
 - type: pyaml.bpm.bpm
   name: BPMZ7T7R
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos_index: 889
-    y_pos_index: 889
+    x_pos_index: 204
+    y_pos_index: 205
     x_pos:
       type: pyaml_cs_oa.epicsR
-      read_pvname: beam:orbit:x
+      read_pvname: ORBITCC:rdPos
       unit: nm
     y_pos:
       type: pyaml_cs_oa.epicsR
-      read_pvname: beam:orbit:y
+      read_pvname: ORBITCC:rdPos
       unit: nm
 - type: pyaml.bpm.bpm
   name: BPMZ1D8R
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos_index: 902
-    y_pos_index: 902
+    x_pos_index: 206
+    y_pos_index: 207
     x_pos:
       type: pyaml_cs_oa.epicsR
-      read_pvname: beam:orbit:x
+      read_pvname: ORBITCC:rdPos
       unit: nm
     y_pos:
       type: pyaml_cs_oa.epicsR
-      read_pvname: beam:orbit:y
+      read_pvname: ORBITCC:rdPos
       unit: nm
 - type: pyaml.bpm.bpm
   name: BPMZ2D8R
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos_index: 908
-    y_pos_index: 908
+    x_pos_index: 208
+    y_pos_index: 209
     x_pos:
       type: pyaml_cs_oa.epicsR
-      read_pvname: beam:orbit:x
+      read_pvname: ORBITCC:rdPos
       unit: nm
     y_pos:
       type: pyaml_cs_oa.epicsR
-      read_pvname: beam:orbit:y
+      read_pvname: ORBITCC:rdPos
       unit: nm
 - type: pyaml.bpm.bpm
   name: BPMZ3D8R
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos_index: 918
-    y_pos_index: 918
+    x_pos_index: 210
+    y_pos_index: 211
     x_pos:
       type: pyaml_cs_oa.epicsR
-      read_pvname: beam:orbit:x
+      read_pvname: ORBITCC:rdPos
       unit: nm
     y_pos:
       type: pyaml_cs_oa.epicsR
-      read_pvname: beam:orbit:y
+      read_pvname: ORBITCC:rdPos
       unit: nm
 - type: pyaml.bpm.bpm
   name: BPMZ4D8R
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos_index: 926
-    y_pos_index: 926
+    x_pos_index: 212
+    y_pos_index: 213
     x_pos:
       type: pyaml_cs_oa.epicsR
-      read_pvname: beam:orbit:x
+      read_pvname: ORBITCC:rdPos
       unit: nm
     y_pos:
       type: pyaml_cs_oa.epicsR
-      read_pvname: beam:orbit:y
+      read_pvname: ORBITCC:rdPos
       unit: nm
 - type: pyaml.bpm.bpm
   name: BPMZ5D8R
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos_index: 933
-    y_pos_index: 933
+    x_pos_index: 214
+    y_pos_index: 215
     x_pos:
       type: pyaml_cs_oa.epicsR
-      read_pvname: beam:orbit:x
+      read_pvname: ORBITCC:rdPos
       unit: nm
     y_pos:
       type: pyaml_cs_oa.epicsR
-      read_pvname: beam:orbit:y
+      read_pvname: ORBITCC:rdPos
       unit: nm
 - type: pyaml.bpm.bpm
   name: BPMZ6D8R
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos_index: 941
-    y_pos_index: 941
+    x_pos_index: 216
+    y_pos_index: 217
     x_pos:
       type: pyaml_cs_oa.epicsR
-      read_pvname: beam:orbit:x
+      read_pvname: ORBITCC:rdPos
       unit: nm
     y_pos:
       type: pyaml_cs_oa.epicsR
-      read_pvname: beam:orbit:y
+      read_pvname: ORBITCC:rdPos
       unit: nm
 - type: pyaml.bpm.bpm
   name: BPMZ7D8R
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos_index: 951
-    y_pos_index: 951
+    x_pos_index: 218
+    y_pos_index: 219
     x_pos:
       type: pyaml_cs_oa.epicsR
-      read_pvname: beam:orbit:x
+      read_pvname: ORBITCC:rdPos
       unit: nm
     y_pos:
       type: pyaml_cs_oa.epicsR
-      read_pvname: beam:orbit:y
+      read_pvname: ORBITCC:rdPos
       unit: nm
 - type: pyaml.bpm.bpm
   name: BPMZ1T8R
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos_index: 964
-    y_pos_index: 964
+    x_pos_index: 220
+    y_pos_index: 221
     x_pos:
       type: pyaml_cs_oa.epicsR
-      read_pvname: beam:orbit:x
+      read_pvname: ORBITCC:rdPos
       unit: nm
     y_pos:
       type: pyaml_cs_oa.epicsR
-      read_pvname: beam:orbit:y
+      read_pvname: ORBITCC:rdPos
       unit: nm
 - type: pyaml.bpm.bpm
   name: BPMZ2T8R
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos_index: 970
-    y_pos_index: 970
+    x_pos_index: 222
+    y_pos_index: 223
     x_pos:
       type: pyaml_cs_oa.epicsR
-      read_pvname: beam:orbit:x
+      read_pvname: ORBITCC:rdPos
       unit: nm
     y_pos:
       type: pyaml_cs_oa.epicsR
-      read_pvname: beam:orbit:y
+      read_pvname: ORBITCC:rdPos
       unit: nm
 - type: pyaml.bpm.bpm
   name: BPMZ3T8R
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos_index: 980
-    y_pos_index: 980
+    x_pos_index: 224
+    y_pos_index: 225
     x_pos:
       type: pyaml_cs_oa.epicsR
-      read_pvname: beam:orbit:x
+      read_pvname: ORBITCC:rdPos
       unit: nm
     y_pos:
       type: pyaml_cs_oa.epicsR
-      read_pvname: beam:orbit:y
+      read_pvname: ORBITCC:rdPos
       unit: nm
 - type: pyaml.bpm.bpm
   name: BPMZ4T8R
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos_index: 990
-    y_pos_index: 990
+    x_pos_index: 226
+    y_pos_index: 227
     x_pos:
       type: pyaml_cs_oa.epicsR
-      read_pvname: beam:orbit:x
+      read_pvname: ORBITCC:rdPos
       unit: nm
     y_pos:
       type: pyaml_cs_oa.epicsR
-      read_pvname: beam:orbit:y
+      read_pvname: ORBITCC:rdPos
       unit: nm
 - type: pyaml.bpm.bpm
   name: BPMZ5T8R
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos_index: 1002
-    y_pos_index: 1002
+    x_pos_index: 228
+    y_pos_index: 229
     x_pos:
       type: pyaml_cs_oa.epicsR
-      read_pvname: beam:orbit:x
+      read_pvname: ORBITCC:rdPos
       unit: nm
     y_pos:
       type: pyaml_cs_oa.epicsR
-      read_pvname: beam:orbit:y
+      read_pvname: ORBITCC:rdPos
       unit: nm
 - type: pyaml.bpm.bpm
   name: BPMZ6T8R
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos_index: 1012
-    y_pos_index: 1012
+    x_pos_index: 230
+    y_pos_index: 231
     x_pos:
       type: pyaml_cs_oa.epicsR
-      read_pvname: beam:orbit:x
+      read_pvname: ORBITCC:rdPos
       unit: nm
     y_pos:
       type: pyaml_cs_oa.epicsR
-      read_pvname: beam:orbit:y
+      read_pvname: ORBITCC:rdPos
       unit: nm
 - type: pyaml.bpm.bpm
   name: BPMZ7T8R
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos_index: 1022
-    y_pos_index: 1022
+    x_pos_index: 232
+    y_pos_index: 233
     x_pos:
       type: pyaml_cs_oa.epicsR
-      read_pvname: beam:orbit:x
+      read_pvname: ORBITCC:rdPos
       unit: nm
     y_pos:
       type: pyaml_cs_oa.epicsR
-      read_pvname: beam:orbit:y
+      read_pvname: ORBITCC:rdPos
       unit: nm
 - type: pyaml.bpm.bpm
   name: BPMZ1D1R
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos_index: 1035
-    y_pos_index: 1035
+    x_pos_index: 234
+    y_pos_index: 235
     x_pos:
       type: pyaml_cs_oa.epicsR
-      read_pvname: beam:orbit:x
+      read_pvname: ORBITCC:rdPos
       unit: nm
     y_pos:
       type: pyaml_cs_oa.epicsR
-      read_pvname: beam:orbit:y
+      read_pvname: ORBITCC:rdPos
       unit: nm
 - type: pyaml.bpm.bpm
   name: BPMZ2D1R
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos_index: 1041
-    y_pos_index: 1041
+    x_pos_index: 236
+    y_pos_index: 237
     x_pos:
       type: pyaml_cs_oa.epicsR
-      read_pvname: beam:orbit:x
+      read_pvname: ORBITCC:rdPos
       unit: nm
     y_pos:
       type: pyaml_cs_oa.epicsR
-      read_pvname: beam:orbit:y
+      read_pvname: ORBITCC:rdPos
       unit: nm
 - type: pyaml.bpm.bpm
   name: BPMZ3D1R
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos_index: 1051
-    y_pos_index: 1051
+    x_pos_index: 238
+    y_pos_index: 239
     x_pos:
       type: pyaml_cs_oa.epicsR
-      read_pvname: beam:orbit:x
+      read_pvname: ORBITCC:rdPos
       unit: nm
     y_pos:
       type: pyaml_cs_oa.epicsR
-      read_pvname: beam:orbit:y
+      read_pvname: ORBITCC:rdPos
       unit: nm
 - type: pyaml.bpm.bpm
   name: BPMZ4D1R
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos_index: 1059
-    y_pos_index: 1059
+    x_pos_index: 240
+    y_pos_index: 241
     x_pos:
       type: pyaml_cs_oa.epicsR
-      read_pvname: beam:orbit:x
+      read_pvname: ORBITCC:rdPos
       unit: nm
     y_pos:
       type: pyaml_cs_oa.epicsR
-      read_pvname: beam:orbit:y
+      read_pvname: ORBITCC:rdPos
       unit: nm
 - type: pyaml.bpm.bpm
   name: BPMZ41D1R
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos_index: 1063
-    y_pos_index: 1063
+    x_pos_index: 242
+    y_pos_index: 243
     x_pos:
       type: pyaml_cs_oa.epicsR
-      read_pvname: beam:orbit:x
+      read_pvname: ORBITCC:rdPos
       unit: nm
     y_pos:
       type: pyaml_cs_oa.epicsR
-      read_pvname: beam:orbit:y
+      read_pvname: ORBITCC:rdPos
       unit: nm
 - type: pyaml.bpm.bpm
   name: BPMZ42D1R
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos_index: 1065
-    y_pos_index: 1065
+    x_pos_index: 244
+    y_pos_index: 245
     x_pos:
       type: pyaml_cs_oa.epicsR
-      read_pvname: beam:orbit:x
+      read_pvname: ORBITCC:rdPos
       unit: nm
     y_pos:
       type: pyaml_cs_oa.epicsR
-      read_pvname: beam:orbit:y
+      read_pvname: ORBITCC:rdPos
       unit: nm
