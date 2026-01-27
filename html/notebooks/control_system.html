@@ -311,6 +311,11 @@
 <li class="toctree-l1 current active"><a class="current reference internal" href="#">Control System</a></li>
 <li class="toctree-l1"><a class="reference internal" href="arrays.html">Use Arrays</a></li>
 </ul>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="run_bessy_virtual_accelerator.html">create an environment</a></li>
+
+
+</ul>
 </div>
 </nav></div>
     </div>
@@ -380,7 +385,6 @@ pip install tango-pyaml</p>
 <p>ophyd-asynch interface to pyaml: <br />
 pip install pyaml-oa-cs</p>
 <p>If the above packages are installed the examples below will work</p>
-<p>Different accelerators, with different magnet names can operate with their own control system within the same script</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">pyaml.accelerator</span><span class="w"> </span><span class="kn">import</span> <span class="n">Accelerator</span>
@@ -408,43 +412,16 @@ pip install pyaml-oa-cs</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># work with TANGO</span>
-<span class="c1"># SR_Tango: Accelerator = Accelerator.load(&quot;../../tests/config/EBSTune.yaml&quot;)</span>
-</pre></div>
-</div>
-</div>
-</div>
-<p>Assuming these lines are present in …/…/tests/config/EBSTuneOA.yaml</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">type</span><span class="p">:</span> <span class="n">pyaml</span><span class="o">.</span><span class="n">accelerator</span>
-<span class="n">name</span><span class="p">:</span> <span class="n">sr</span>
-<span class="n">energy</span><span class="p">:</span> <span class="mf">6e9</span>
-<span class="n">controls</span><span class="p">:</span>
-  <span class="o">-</span> <span class="nb">type</span><span class="p">:</span> <span class="n">pyaml</span><span class="o">-</span><span class="n">cs</span><span class="o">-</span><span class="n">oa</span><span class="o">.</span><span class="n">pyaml</span><span class="o">.</span><span class="n">controlsystem</span>
-      <span class="n">name</span><span class="p">:</span> <span class="n">live</span>
-<span class="o">...</span>
- <span class="n">powerconverter</span><span class="p">:</span>
-      <span class="nb">type</span><span class="p">:</span> <span class="n">pyaml_cs_oa</span><span class="o">.</span><span class="n">tangoRW</span>
-<span class="o">...</span>
- <span class="n">tune_h</span><span class="p">:</span>
-    <span class="nb">type</span><span class="p">:</span> <span class="n">pyaml_cs_oa</span><span class="o">.</span><span class="n">tangoR</span>
-</pre></div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># work with Ophyd-Asynch - tango</span>
-<span class="n">SR_OphydAsynch_Tango</span><span class="p">:</span> <span class="n">Accelerator</span> <span class="o">=</span> <span class="n">Accelerator</span><span class="o">.</span><span class="n">load</span><span class="p">(</span>
-    <span class="s2">&quot;../../tests/config/EBSTuneOATango.yaml&quot;</span>
-<span class="p">)</span>
+<span class="n">SR_Tango</span><span class="p">:</span> <span class="n">Accelerator</span> <span class="o">=</span> <span class="n">Accelerator</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s2">&quot;../../tests/config/EBSTune.yaml&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
 <div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
 <span class="ne">PyAMLConfigException</span><span class="g g-Whitespace">                      </span>Traceback (most recent call last)
-<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">3</span><span class="p">],</span> <span class="n">line</span> <span class="mi">2</span>
-<span class="g g-Whitespace">      </span><span class="mi">1</span> <span class="c1"># work with Ophyd-Asynch - tango</span>
-<span class="ne">----&gt; </span><span class="mi">2</span> <span class="n">SR_OphydAsynch_Tango</span><span class="p">:</span> <span class="n">Accelerator</span> <span class="o">=</span> <span class="n">Accelerator</span><span class="o">.</span><span class="n">load</span><span class="p">(</span>
-<span class="g g-Whitespace">      </span><span class="mi">3</span>     <span class="s2">&quot;../../tests/config/EBSTuneOATango.yaml&quot;</span>
-<span class="g g-Whitespace">      </span><span class="mi">4</span> <span class="p">)</span>
+<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">line</span> <span class="mi">2</span>
+<span class="g g-Whitespace">      </span><span class="mi">1</span> <span class="c1"># work with TANGO</span>
+<span class="ne">----&gt; </span><span class="mi">2</span> <span class="n">SR_Tango</span><span class="p">:</span> <span class="n">Accelerator</span> <span class="o">=</span> <span class="n">Accelerator</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s2">&quot;../../tests/config/EBSTune.yaml&quot;</span><span class="p">)</span>
 
 <span class="nn">File /opt/hostedtoolcache/Python/3.14.2/x64/lib/python3.14/site-packages/pyaml/accelerator.py:173,</span> in <span class="ni">Accelerator.load</span><span class="nt">(filename, use_fast_loader, ignore_external)</span>
 <span class="g g-Whitespace">    </span><span class="mi">171</span> <span class="n">set_root_folder</span><span class="p">(</span><span class="n">rootfolder</span><span class="p">)</span>
@@ -491,11 +468,28 @@ pip install pyaml-oa-cs</p>
 <span class="g g-Whitespace">     </span><span class="mi">99</span>     <span class="k">else</span><span class="p">:</span>
 <span class="g g-Whitespace">    </span><span class="mi">100</span>         <span class="k">return</span> <span class="kc">None</span>
 
-<span class="ne">PyAMLConfigException</span>: Module referenced in type cannot be found:&#39;pyaml_cs_oa.controlsystem&#39; /home/runner/work/pyaml/pyaml/tests/config/EBSTuneOATango.yaml at line 10, column 5.
+<span class="ne">PyAMLConfigException</span>: Module referenced in type cannot be found:&#39;tango.pyaml.controlsystem&#39; /home/runner/work/pyaml/pyaml/tests/config/EBSTune.yaml at line 10, column 5.
 </pre></div>
 </div>
 </div>
 </div>
+<p>Assuming these lines are present in …/…/tests/config/EBSTuneOATango.yaml</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">type</span><span class="p">:</span> <span class="n">pyaml</span><span class="o">.</span><span class="n">accelerator</span>
+<span class="n">name</span><span class="p">:</span> <span class="n">sr</span>
+<span class="n">energy</span><span class="p">:</span> <span class="mf">6e9</span>
+<span class="n">controls</span><span class="p">:</span>
+  <span class="o">-</span> <span class="nb">type</span><span class="p">:</span> <span class="n">pyaml</span><span class="o">-</span><span class="n">cs</span><span class="o">-</span><span class="n">oa</span><span class="o">.</span><span class="n">pyaml</span><span class="o">.</span><span class="n">controlsystem</span>
+      <span class="n">name</span><span class="p">:</span> <span class="n">live</span>
+<span class="o">...</span>
+ <span class="n">powerconverter</span><span class="p">:</span>
+      <span class="nb">type</span><span class="p">:</span> <span class="n">pyaml_cs_oa</span><span class="o">.</span><span class="n">tangoRW</span>
+<span class="o">...</span>
+ <span class="n">tune_h</span><span class="p">:</span>
+    <span class="nb">type</span><span class="p">:</span> <span class="n">pyaml_cs_oa</span><span class="o">.</span><span class="n">tangoR</span>
+</pre></div>
+</div>
+<p>this works with Ophyd-Asynch - tango:</p>
+<p>SR_OphydAsynch_Tango: Accelerator = Accelerator.load(”…/…/tests/config/EBSTuneOATango.yaml”)</p>
 <p>Assuming these lines are present in …/…/tests/config/EBSTuneOAEpics.yaml</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">type</span><span class="p">:</span> <span class="n">pyaml</span><span class="o">.</span><span class="n">accelerator</span>
 <span class="n">name</span><span class="p">:</span> <span class="n">sr</span>
@@ -511,16 +505,8 @@ pip install pyaml-oa-cs</p>
     <span class="nb">type</span><span class="p">:</span> <span class="n">pyaml_cs_oa</span><span class="o">.</span><span class="n">epicsR</span>
 </pre></div>
 </div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># work with Ophyd-Asynch - tango</span>
-<span class="c1"># SR_OphydAsynch_Epics: Accelerator = Accelerator.load(</span>
-<span class="c1">#     &quot;../../tests/config/EBSTuneOAEpics.yaml&quot;</span>
-<span class="c1"># )</span>
-</pre></div>
-</div>
-</div>
-</div>
+<p>This work with Ophyd-Asynch - epics :</p>
+<p>SR_OphydAsynch_Epics: Accelerator = Accelerator.load(”…/…/examples/BESSY2_example/BESSY2Tune.yaml”)</p>
 </section>
 
 
