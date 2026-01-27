@@ -48,7 +48,7 @@ dependencies = [
     "accelerator-toolbox>=0.6.1",
     "PyYAML>=6.0.2",
     "pydantic>=2.11.7",
-    "accelerator-commissioning==0.4.0", #pySC
+    "accelerator-commissioning==0.4.2", #pySC
     "h5py",
     "matplotlib"
 ]
