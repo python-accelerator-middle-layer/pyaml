@@ -21,6 +21,7 @@ from ..rf.rf_transmitter import RFTransmitter
 from .element import Element
 
 if TYPE_CHECKING:
+    from ..tuning_tools.dispersion import Dispersion
     from ..tuning_tools.orbit import Orbit
     from ..tuning_tools.orbit_response_matrix import OrbitResponseMatrix
     from ..tuning_tools.tune import Tune
@@ -263,3 +264,13 @@ class ElementHolder(object):
     @property
     def orm(self) -> "Orbit":
         return self.get_orm_tuning("DEFAULT_ORBIT_RESPONSE_MATRIX")
+
+    def get_dispersion_tuning(self, name: str) -> "Dispersion":
+        return self.__get("Dispersion tool", name, self.__TUNING_TOOLS)
+
+    def add_dispersion_tuning(self, dispersion: Element):
+        self.__add(self.__TUNING_TOOLS, dispersion)
+
+    @property
+    def dispersion(self) -> "Dispersion":
+        return self.get_dispersion_tuning("DEFAULT_DISPERSION")
