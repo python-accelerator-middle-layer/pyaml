@@ -38,6 +38,7 @@ from ..magnet.serialized_magnet import SerializedMagnets
 from ..rf.rf_plant import RFPlant, RWTotalVoltage
 from ..rf.rf_transmitter import RFTransmitter
 from ..tuning_tools.orbit import Orbit
+from ..tuning_tools.orbit_response_matrix import OrbitResponseMatrix
 from ..tuning_tools.tune import Tune
 from .attribute_linker import (
     ConfigModel as PyAtAttrLinkerConfigModel,
@@ -174,7 +175,8 @@ class Simulator(ElementHolder):
             elif isinstance(e, SerializedMagnets):
                 currents = []
                 strengths = []
-                # Create unique refs the series and each of its function for this control system
+                # Create unique refs the series and each of its function for this
+                # control system
                 # Link hardware to strengths and bind strength together
                 for index, magnet in enumerate(e.get_magnets()):
                     current = (
@@ -279,6 +281,9 @@ class Simulator(ElementHolder):
 
             elif isinstance(e, Orbit):
                 self.add_orbit_tuning(e.attach(self))
+
+            elif isinstance(e, OrbitResponseMatrix):
+                self.add_orm_tuning(e.attach(self))
 
     def get_names(self, element: Element) -> list[str] | None:
         """
