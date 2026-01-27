@@ -103,11 +103,17 @@ class OrbitResponseMatrix(object):
             self.bpm_array_name
         ).names()
         self.latest_measurement = response_data.model_dump()
-        len_h = len(hcorrector_names)
-        len_v = len(vcorrector_names)
+
+        inputs_plane = []
+        for corr in corrector_names:
+            if corr in hcorrector_names:
+                inputs_plane.append("H")
+            elif corr in vcorrector_names:
+                inputs_plane.append("V")
+        self.latest_measurement["inputs_plane"] = inputs_plane
+
         len_b = len(response_data.output_names)
-        self.latest_measurement["inputs_plane"] = ["H"] * len_h + ["V"] * len_v
-        self.latest_measurement["outputs_plane"] = ["H", "V"] * len_b
+        self.latest_measurement["outputs_plane"] = ["H"] * len_b + ["V"] * len_b
 
     def get(self):
         return self.latest_measurement
