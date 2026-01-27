@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>create an environment &#8212; Python Accelerator Middle Layer 0.2.3 documentation</title>
+    <title>Instruction to run example scripts using the BESSYII virtual accelerator &#8212; Python Accelerator Middle Layer 0.2.3 documentation</title>
   
   
   
@@ -216,10 +216,6 @@
   
 
   
-    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
-      <span class="fa-solid fa-outdent"></span>
-    </button>
-  
 </div>
 
     </header>
@@ -316,9 +312,7 @@
 <li class="toctree-l1"><a class="reference internal" href="arrays.html">Use Arrays</a></li>
 </ul>
 <ul class="current nav bd-sidenav">
-<li class="toctree-l1 current active"><a class="current reference internal" href="#">create an environment</a></li>
-
-
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Run tests using virtual accelerator</a></li>
 </ul>
 </div>
 </nav></div>
@@ -362,7 +356,7 @@
     
     <li class="breadcrumb-item"><a href="../how-to/index.html" class="nav-link">How to Guides</a></li>
     
-    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">create an environment</span></li>
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">Instruction to run example scripts using the BESSYII virtual accelerator</span></li>
   </ul>
 </nav>
 </div>
@@ -379,7 +373,10 @@
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <p>if ARM-based macos (M1, M2, M3…)
+  <section class="tex2jax_ignore mathjax_ignore" id="instruction-to-run-example-scripts-using-the-bessyii-virtual-accelerator">
+<h1>Instruction to run example scripts using the BESSYII virtual accelerator<a class="headerlink" href="#instruction-to-run-example-scripts-using-the-bessyii-virtual-accelerator" title="Link to this heading">#</a></h1>
+<p>instruction to install apptainer (and run the bessy virutal accelerator)</p>
+<p>if ARM-based macos (M1, M2, M3…)
 server:</p>
 <ol class="arabic simple">
 <li><p>brew install qemu lima</p></li>
@@ -410,18 +407,13 @@ server:</p>
 <li><p>pvlist</p></li>
 <li><p>pvlist 192.168.5.15:5075 (replace the address with the one printed by the command above after tcp&#64;)</p></li>
 </ol>
-<section class="tex2jax_ignore mathjax_ignore" id="create-an-environment">
-<h1>create an environment<a class="headerlink" href="#create-an-environment" title="Link to this heading">#</a></h1>
+<p>create an environment</p>
 <p>python -m venv bessy2_pyaml
 source bessy2_pyaml/bin/activate</p>
-</section>
-<section class="tex2jax_ignore mathjax_ignore" id="clone-repositories-from-main-not-latest-release">
-<h1>clone repositories from main (not latest release)<a class="headerlink" href="#clone-repositories-from-main-not-latest-release" title="Link to this heading">#</a></h1>
+<p>clone repositories from main (not latest release)</p>
 <p>git clone https://github.com/python-accelerator-middle-layer/pyaml.git
 git clone https://github.com/python-accelerator-middle-layer/pyaml-cs-oa.git</p>
-</section>
-<section class="tex2jax_ignore mathjax_ignore" id="install-locally-need-to-modify-the-pyaml-configuration">
-<h1>install locally (need to modify the pyaml configuration)<a class="headerlink" href="#install-locally-need-to-modify-the-pyaml-configuration" title="Link to this heading">#</a></h1>
+<p>install locally (need to modify the pyaml configuration)</p>
 <p>cd pyaml
 pip install -e .</p>
 <p>cd pyaml-cs-oa
@@ -430,25 +422,11 @@ pip install -e .</p>
 <p>change the pyaml configuration file ./pyaml/examples/BESSY2_example/BESSY2Orbit.yaml at line 11 with the correct prefix (replace pons: by your prefix)
 change the pyaml configuration file ./pyaml/examples/BESSY2_example/BESSY2Tune.yaml at line 11 with the correct prefix (replace pons: by your prefix)
 change the pyaml configuration file ./pyaml/examples/BESSY2_example/BESSY2Chroma.yaml at line 11 with the correct prefix (replace pons: by your prefix)</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">navigate</span> <span class="n">to</span> <span class="n">the</span> <span class="n">folder</span> <span class="o">./</span><span class="n">pyaml</span><span class="o">/</span><span class="n">examples</span><span class="o">/</span><span class="n">BESSY2_example</span><span class="o">/</span>
-<span class="n">run</span> <span class="n">the</span> <span class="n">file</span> <span class="n">bessy2</span><span class="o">-</span><span class="n">orbit</span><span class="o">.</span><span class="n">py</span>
-<span class="p">(</span><span class="n">this</span> <span class="n">will</span> <span class="n">take</span> <span class="n">sometime</span> <span class="n">to</span> <span class="n">compute</span> <span class="n">the</span> <span class="n">ORM</span><span class="p">)</span>
-<span class="n">run</span> <span class="n">the</span> <span class="n">file</span> <span class="n">bessy2</span><span class="o">-</span><span class="n">tune</span><span class="o">.</span><span class="n">py</span>
-<span class="n">run</span> <span class="n">the</span> <span class="n">file</span> <span class="n">bessy2</span><span class="o">-</span><span class="n">chroma</span><span class="o">.</span><span class="n">py</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span>  <span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">line</span> <span class="mi">1</span>
-    <span class="n">navigate</span> <span class="n">to</span> <span class="n">the</span> <span class="n">folder</span> <span class="o">./</span><span class="n">pyaml</span><span class="o">/</span><span class="n">examples</span><span class="o">/</span><span class="n">BESSY2_example</span><span class="o">/</span>
-             <span class="o">^</span>
-<span class="ne">SyntaxError</span>: invalid syntax
-</pre></div>
-</div>
-</div>
-</div>
+<p>navigate to the folder ./pyaml/examples/BESSY2_example/</p>
+<p>run the file bessy2-orbit.py
+(this will take sometime to compute the ORM)</p>
+<p>run the file bessy2-tune.py
+run the file bessy2-chroma.py</p>
 </section>
 
 
@@ -485,27 +463,6 @@ change the pyaml configuration file ./pyaml/examples/BESSY2_example/BESSY2Chroma
             </div>
             
             
-              
-                <dialog id="pst-secondary-sidebar-modal"></dialog>
-                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
-
-
-  <div class="sidebar-secondary-item">
-<div
-    id="pst-page-navigation-heading-2"
-    class="page-toc tocsection onthispage">
-    <i class="fa-solid fa-list"></i> On this page
-  </div>
-  <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
-    <ul class="visible nav section-nav flex-column">
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">create an environment</a></li>
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#clone-repositories-from-main-not-latest-release">clone repositories from main (not latest release)</a></li>
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#install-locally-need-to-modify-the-pyaml-configuration">install locally (need to modify the pyaml configuration)</a></li>
-</ul>
-
-  </nav></div>
-
-</div></div>
               
             
           </div>
