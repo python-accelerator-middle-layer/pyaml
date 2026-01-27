@@ -1,6 +1,6 @@
-""" Orbit correction
+"""Orbit correction
 
-This example shows how to run orbit correction using the simulator or the virtual accelerator.  
+This example shows how to run orbit correction using the simulator or the virtual accelerator.
 If you want to test the virtual accelerator you need to start the container before running the script.
 
 """
@@ -15,22 +15,21 @@ from pyaml.accelerator import Accelerator
 from pyaml.tuning_tools.orbit_response_matrix import ConfigModel as ORM_ConfigModel
 from pyaml.tuning_tools.orbit_response_matrix import OrbitResponseMatrix
 
-# ----- Load the configuration ----- 
+# ----- Load the configuration -----
 # Remember to change the prefix for the live mode to the one matching your virtual accelerator before loading.
 
 sr = Accelerator.load("BESSY2Orbit.yaml")
 
-# ----- Measure the orbit response matrix ----- 
-# If there is no existing orbit response matrix you need to measure it. This can be done on either the design or live mode.  
+# ----- Measure the orbit response matrix -----
+# If there is no existing orbit response matrix you need to measure it. This can be done on either the design or live mode.
 # It is also possible to measure the ORM using the design mode and use it to correct the live mode.
 
-# Choose which backend to use. 
+# Choose which backend to use.
 SR = sr.design
-#SR = sr.live
+# SR = sr.live
 
 # if the ORM is not present measure it
 if sr.design.orbit.response_matrix is None:
-
     orm = OrbitResponseMatrix(
         cfg=ORM_ConfigModel(
             bpm_array_name="BPM",
@@ -54,13 +53,13 @@ if sr.design.orbit.response_matrix is None:
     }
     json.dump(ORM_data, open("orm.json", "w"))
 
-# ----- Load the response matrix ----- 
+# ----- Load the response matrix -----
 # The example does the correction for the live mode but it can also be done on the design mode.
 
 # Load the ORM for the live mode
 sr.live.orbit.load_response_matrix("orm.json")
 
-# ----- Correct the orbit ----- 
+# ----- Correct the orbit -----
 
 # Get the devices
 hcorr = sr.live.get_magnets("HCorr")
@@ -80,13 +79,13 @@ orbit_initial = orbit.get()
 # since the unit for the BPMs are not the same for both modes yet.
 
 sr.live.orbit.correct(gain=1e-9)
-#sr.design.orbit.correct()
-#sr.live.orbit.correct()
+# sr.design.orbit.correct()
+# sr.live.orbit.correct()
 
 time.sleep(3)
 orbit_after = orbit.get()
 
-# ----- Plot the results ----- 
+# ----- Plot the results -----
 # Remember: if you change the example from live to design you need to change the unit for the orbit when plotting since not the same yet.
 # If you are running in VS code you might need to switch the matplotlib backend for the plot to show.
 
@@ -94,13 +93,13 @@ fig = plt.figure()
 ax1 = fig.add_subplot(311)
 ax2 = fig.add_subplot(312)
 ax3 = fig.add_subplot(313)
-ax1.plot(orbit_initial[:, 0]*1e-6, label="Orbit before correction")
-ax2.plot(orbit_initial[:, 1]*1e-6, label="Orbit before correction")
-ax1.plot(orbit_after[:, 0]*1e-6, label="Orbit after correction")
-ax2.plot(orbit_after[:, 1]*1e-6, label="Orbit after correction")
+ax1.plot(orbit_initial[:, 0] * 1e-6, label="Orbit before correction")
+ax2.plot(orbit_initial[:, 1] * 1e-6, label="Orbit before correction")
+ax1.plot(orbit_after[:, 0] * 1e-6, label="Orbit after correction")
+ax2.plot(orbit_after[:, 1] * 1e-6, label="Orbit after correction")
 
-ax3.plot(hcorr.strengths.get()*1e6, label="H Steerers")
-ax3.plot(vcorr.strengths.get()*1e6, label="V Steerers")
+ax3.plot(hcorr.strengths.get() * 1e6, label="H Steerers")
+ax3.plot(vcorr.strengths.get() * 1e6, label="V Steerers")
 
 ax1.set_ylabel("Horizontal pos. [mm]")
 ax2.set_ylabel("Vertical pos. [mm]")
