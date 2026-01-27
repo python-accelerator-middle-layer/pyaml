@@ -22,6 +22,7 @@ from .element import Element
 
 if TYPE_CHECKING:
     from ..tuning_tools.orbit import Orbit
+    from ..tuning_tools.orbit_response_matrix import OrbitResponseMatrix
     from ..tuning_tools.tune import Tune
 
 
@@ -252,3 +253,13 @@ class ElementHolder(object):
     @property
     def orbit(self) -> "Orbit":
         return self.get_orbit_tuning("DEFAULT_ORBIT_CORRECTION")
+
+    def get_orm_tuning(self, name: str) -> "OrbitResponseMatrix":
+        return self.__get("OrbitResponseMatrix tool", name, self.__TUNING_TOOLS)
+
+    def add_orm_tuning(self, orm: Element):
+        self.__add(self.__TUNING_TOOLS, orm)
+
+    @property
+    def orm(self) -> "Orbit":
+        return self.get_orm_tuning("DEFAULT_ORBIT_RESPONSE_MATRIX")

@@ -34,6 +34,7 @@ from ..magnet.serialized_magnet import SerializedMagnets
 from ..rf.rf_plant import RFPlant, RWTotalVoltage
 from ..rf.rf_transmitter import RFTransmitter
 from ..tuning_tools.orbit import Orbit
+from ..tuning_tools.orbit_response_matrix import OrbitResponseMatrix
 from ..tuning_tools.tune import Tune
 from .deviceaccess import DeviceAccess
 
@@ -296,3 +297,6 @@ class ControlSystem(ElementHolder, metaclass=ABCMeta):
 
             elif isinstance(e, Orbit):
                 self.add_orbit_tuning(e.attach(self))
+
+            elif isinstance(e, OrbitResponseMatrix):
+                self.add_orm_tuning(e.attach(self))

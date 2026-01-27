@@ -41,10 +41,10 @@ class ConfigModel(BaseModel):
 
 
 class OrbitResponseMatrix(object):
-    def __init__(self, element_holder: ElementHolder, cfg: ConfigModel):
+    def __init__(self, cfg: ConfigModel):
+        super().__init__(cfg.name)
         self._cfg = cfg
 
-        self.element_holder = element_holder
         self.bpm_array_name = cfg.bpm_array_name
         self.hcorr_array_name = cfg.hcorr_array_name
         self.vcorr_array_name = cfg.vcorr_array_name
@@ -55,7 +55,7 @@ class OrbitResponseMatrix(object):
         self, corrector_names: Optional[List[str]] = None, set_wait_time: float = 0
     ):
         interface = pySCInterface(
-            element_holder=self.element_holder,
+            element_holder=self._peer,
             bpm_array_name=self.bpm_array_name,
         )
         interface.set_wait_time = set_wait_time
