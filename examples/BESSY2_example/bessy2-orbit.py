@@ -11,7 +11,6 @@ from pyaml.tuning_tools.orbit_response_matrix import OrbitResponseMatrix
 # Load the configuration
 sr = Accelerator.load("BESSY2Orbit.yaml")
 
-
 # if the ORM is not present measure it
 if sr.design.orbit.response_matrix is None:
     # Measure ORM on design or on live
@@ -36,6 +35,7 @@ if sr.design.orbit.response_matrix is None:
         "input_names": orm_data["input_names"],
         "output_names": orm_data["output_names"],
         "inputs_plane": orm_data["inputs_plane"],
+        "outputs_plane": orm_data["outputs_plane"],
     }
     json.dump(ideal_ORM_data, open("ideal_orm.json", "w"))
     # load the response on the live

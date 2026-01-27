@@ -105,7 +105,9 @@ class OrbitResponseMatrix(object):
         self.latest_measurement = response_data.model_dump()
         len_h = len(hcorrector_names)
         len_v = len(vcorrector_names)
+        len_b = len(response_data.output_names)
         self.latest_measurement["inputs_plane"] = ["H"] * len_h + ["V"] * len_v
+        self.latest_measurement["outputs_plane"] = ["H", "V"] * len_b
 
     def get(self):
         return self.latest_measurement

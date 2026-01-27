@@ -8,7 +8,7 @@ simulators:
     name: design
 controls:
   - type: pyaml_cs_oa.controlsystem
-    prefix: "a3744:"
+    prefix: "pons:"
     name: live
 data_folder: /data/store
 arrays:
@@ -157,7 +157,7 @@ arrays:
       - BPMZ4T2R
       - BPMZ41T2R
       - BPMZ42T2R
-      - BPMZ43T2R            
+      - BPMZ43T2R
       - BPMZ5T2R
       - BPMZ6T2R
       - BPMZ7T2R
@@ -167,7 +167,7 @@ arrays:
       - BPMZ4D3R
       - BPMZ5D3R
       - BPMZ6D3R
-      - BPMZ7D3R     
+      - BPMZ7D3R
       - BPMZ1T3R
       - BPMZ2T3R
       - BPMZ3T3R
@@ -1963,7 +1963,7 @@ devices:
     y_pos:
       type: pyaml_cs_oa.epicsR
       read_pvname: ORBITCC:rdPos
-      unit: nm       
+      unit: nm
 - type: pyaml.bpm.bpm
   name: BPMZ5T2R
   model:
@@ -2803,7 +2803,7 @@ devices:
     y_pos:
       type: pyaml_cs_oa.epicsR
       read_pvname: ORBITCC:rdPos
-      unit: nm      
+      unit: nm
 - type: pyaml.bpm.bpm
   name: BPMZ5T6R
   model:
@@ -3013,7 +3013,7 @@ devices:
     y_pos:
       type: pyaml_cs_oa.epicsR
       read_pvname: ORBITCC:rdPos
-      unit: nm      
+      unit: nm
 - type: pyaml.bpm.bpm
   name: BPMZ5T7R
   model:
