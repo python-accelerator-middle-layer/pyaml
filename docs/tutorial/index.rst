@@ -1,7 +1,7 @@
 Tutorials
 =============
 
-Here you can find step-by-step guides with explainations for both new and experienced users.
+Here you can find tutorials to LEARN how to use the accelerator middle layer software.
 
 Basics
 -------
