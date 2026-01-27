@@ -47,9 +47,9 @@
 
   ## Run the examples
 
-  1. Download (or clone) the example files.
+  1. Download (or clone) the example files. They exist both as a notebook or scripts depending on what you prefer to use.
 
-  2. Edit the yaml config files so the control system prefix matches the prefix for your virtual accelerator.
+  2. Edit the yaml config files so the control system prefix matches the prefix for your virtual accelerator or you won't be able to connect to it. This is the part to change:
 
   ```yaml
   controls:

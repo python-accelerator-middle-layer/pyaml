@@ -8,7 +8,7 @@ simulators:
     name: design
 controls:
   - type: pyaml_cs_oa.controlsystem
-    prefix: "pons:"
+    prefix: "a3744:"
     name: live
 data_folder: /data/store
 arrays:
@@ -263,7 +263,7 @@ devices:
   vcorr_array_name: VCorr
   name: DEFAULT_ORBIT_CORRECTION
   singular_values: 16
-  response_matrix: file:ideal_orm.json
+  response_matrix: file:orm.json
 - type: pyaml.rf.rf_plant
   name: RF
   masterclock:
