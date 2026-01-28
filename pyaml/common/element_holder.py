@@ -262,7 +262,7 @@ class ElementHolder(object):
         self.__add(self.__TUNING_TOOLS, orm)
 
     @property
-    def orm(self) -> "Orbit":
+    def orm(self) -> "OrbitResponseMatrix":
         return self.get_orm_tuning("DEFAULT_ORBIT_RESPONSE_MATRIX")
 
     def get_dispersion_tuning(self, name: str) -> "Dispersion":
