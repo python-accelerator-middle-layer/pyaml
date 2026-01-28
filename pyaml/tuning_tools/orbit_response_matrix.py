@@ -1,12 +1,13 @@
 import logging
 from pathlib import Path
-from typing import List, Optional, Self
+from typing import Callable, List, Optional, Self
 
 import pySC
 from pydantic import BaseModel, ConfigDict
 from pySC.apps import measure_ORM
 from pySC.apps.codes import ResponseCode
 
+from ..common.constants import ACTION_APPLY, ACTION_MEASURE, ACTION_RESTORE
 from ..common.element import Element, ElementConfigModel
 from ..common.element_holder import ElementHolder
 from ..common.exception import PyAMLException
@@ -53,8 +54,22 @@ class OrbitResponseMatrix(Element):
         self.latest_measurement = None
 
     def measure(
-        self, corrector_names: Optional[List[str]] = None, set_wait_time: float = 0
+        self,
+        corrector_names: Optional[List[str]] = None,
+        set_wait_time: float = 0,
+        callback: Optional[Callable] = None,
     ):
+        """
+        Measure orbit response matrix
+
+        Parameters
+        ----------
+        callback : Callable, optional
+            example: callback(action:int, callback_data: 'Complicated struct')
+            callback is executed after each strength setting and after each orbit
+            reading.
+            If the callback returns false, then the process is aborted.
+        """
         element_holder = self._peer
         interface = pySCInterface(
             element_holder=element_holder,
@@ -92,9 +107,26 @@ class OrbitResponseMatrix(Element):
         )
 
         pySC.disable_pySC_rich()
+        aborted = False
         for code, measurement in generator:
-            if code is ResponseCode.MEASURING:
+            callback_data = measurement.response_data  # to be defined better
+            if code is ResponseCode.AFTER_SET:
+                if callback and not callback(ACTION_APPLY, callback_data):
+                    if aborted:
+                        break
+            elif code is ResponseCode.AFTER_GET:
+                if callback and not callback(ACTION_MEASURE, callback_data):
+                    aborted = True
+                    break
+            elif code is ResponseCode.AFTER_RESTORE:
                 logger.info(f"Measured response of {measurement.last_input}.")
+                if callback and not callback(ACTION_RESTORE, callback_data):
+                    aborted = True
+                    break
+
+        if aborted:
+            logger.warning("Measurement aborted! Settings have not been restored.")
+            return
 
         response_data = measurement.response_data  # contains also pre-processed data
         response_data.output_names = element_holder.get_bpms(
