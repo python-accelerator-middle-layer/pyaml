@@ -9,20 +9,11 @@ config_path = parent_folder.parent.parent.joinpath(
     "tests", "config", "EBSOrbit.yaml"
 ).resolve()
 sr = Accelerator.load(config_path)
-element_holder = sr.design
+ebs = sr.design
+orm = ebs.orm
 
-orm = OrbitResponseMatrix(
-    cfg=ORM_ConfigModel(
-        bpm_array_name="BPM",
-        hcorr_array_name="HCorr",
-        vcorr_array_name="VCorr",
-        corrector_delta=1e-6,
-    ),
-    element_holder=element_holder,
-)
-
-hcorr = element_holder.get_magnets("HCorr")
-vcorr = element_holder.get_magnets("VCorr")
+hcorr = ebs.get_magnets("HCorr")
+vcorr = ebs.get_magnets("VCorr")
 corrector_names = (
     hcorr["SJ2A*"].names()
     + hcorr["SF2A*"].names()
