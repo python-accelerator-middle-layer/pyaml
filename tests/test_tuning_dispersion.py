@@ -17,14 +17,7 @@ def test_tuning_orm():
     sr = Accelerator.load(config_path)
     element_holder = sr.design
 
-    dispersion = Dispersion(
-        cfg=Disp_ConfigModel(
-            bpm_array_name="BPM",
-            rf_plant_name="RF",
-            frequency_delta=10,
-        ),
-        element_holder=element_holder,
-    )
+    dispersion = element_holder.dispersion
 
     dispersion.measure()
     dispersion_data = dispersion.get()

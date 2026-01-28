@@ -17,15 +17,7 @@ def test_tuning_orm():
     sr = Accelerator.load(config_path)
     element_holder = sr.design
 
-    orm = OrbitResponseMatrix(
-        cfg=ORM_ConfigModel(
-            bpm_array_name="BPM",
-            hcorr_array_name="HCorr",
-            vcorr_array_name="VCorr",
-            corrector_delta=1e-6,
-        ),
-        element_holder=element_holder,
-    )
+    orm = element_holder.orm
 
     bpms = element_holder.get_bpms("BPM")
     hcorr_names = element_holder.get_magnets("HCorr").names()[:4]
