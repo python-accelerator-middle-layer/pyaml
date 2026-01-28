@@ -15,13 +15,13 @@ config_path = parent_folder.parent.parent.joinpath(
 ).resolve()
 sr = Accelerator.load(config_path)
 
-ring = sr.design
+ebs = sr.design
 
-ring.orm.measure()
-orm_data = ring.orm.get()
+ebs.orm.measure()
+orm_data = ebs.orm.get()
 
-ring.dispersion.measure()
-dispersion_data = ring.dispersion.get()
+ebs.dispersion.measure()
+dispersion_data = ebs.dispersion.get()
 
 rf_response = (
     dispersion_data["frequency_response_x"] + dispersion_data["frequency_response_y"]
@@ -32,6 +32,8 @@ ideal_ORM_data = {
     "matrix": orm_data["matrix"],
     "input_names": orm_data["input_names"],
     "output_names": orm_data["output_names"],
+    "inputs_plane": orm_data["inputs_plane"],
+    "outputs_plane": orm_data["outputs_plane"],
     "rf_response": rf_response,
 }
 

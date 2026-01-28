@@ -11,10 +11,10 @@ config_path = parent_folder.parent.parent.joinpath(
     "tests", "config", "EBSOrbit.yaml"
 ).resolve()
 sr = Accelerator.load(config_path)
-eh = sr.design
+ebs = sr.design
 
-eh.dispersion.measure()
-dispersion_data = eh.dispersion.get()
+ebs.dispersion.measure()
+dispersion_data = ebs.dispersion.get()
 
 fig = plt.figure()
 ax = fig.add_subplot(111)

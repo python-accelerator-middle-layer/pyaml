@@ -9,11 +9,11 @@ config_path = parent_folder.parent.parent.joinpath(
     "tests", "config", "EBSOrbit.yaml"
 ).resolve()
 sr = Accelerator.load(config_path)
-eh = sr.design
+ebs = sr.design
 
-eh.orm.measure()
-eh.orm.save(parent_folder / Path("ideal_orm.json"))
-eh.orm.save(parent_folder / Path("ideal_orm.yaml"), with_type="yaml")
-eh.orm.save(parent_folder / Path("ideal_orm.npz"), with_type="npz")
+ebs.orm.measure()
+ebs.orm.save(parent_folder / Path("ideal_orm.json"))
+ebs.orm.save(parent_folder / Path("ideal_orm.yaml"), with_type="yaml")
+ebs.orm.save(parent_folder / Path("ideal_orm.npz"), with_type="npz")
 
-ormdata = eh.get()
+ormdata = ebs.get()
