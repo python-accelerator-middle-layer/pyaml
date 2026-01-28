@@ -28,6 +28,7 @@ class ConfigModel(BaseModel):
     output_names: list[str]
     rf_response: Optional[list[float]] = None
     inputs_plane: Optional[list[str]] = None
+    outputs_plane: Optional[list[str]] = None
 
 
 class ResponseMatrix(object):
