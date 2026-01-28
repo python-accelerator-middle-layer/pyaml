@@ -1,10 +1,11 @@
 import logging
-from pathlib import Path
-from typing import List, Optional, Self
+from typing import Callable, Optional, Self
 
-from pydantic import BaseModel, ConfigDict
+from pydantic import ConfigDict
 from pySC.apps import measure_dispersion
+from pySC.apps.codes import DispersionCode
 
+from ..common.constants import ACTION_APPLY, ACTION_MEASURE, ACTION_RESTORE
 from ..common.element import Element, ElementConfigModel
 from ..common.element_holder import ElementHolder
 from ..external.pySC_interface import pySCInterface
@@ -45,7 +46,11 @@ class Dispersion(Element):
         self.frequency_delta = cfg.frequency_delta
         self.latest_measurement = None
 
-    def measure(self, set_waiting_time: float = 0):
+    def measure(
+        self,
+        set_waiting_time: float = 0,
+        callback: Optional[Callable] = None,
+    ):
         element_holder = self._peer
         interface = pySCInterface(
             element_holder=element_holder,
@@ -60,9 +65,25 @@ class Dispersion(Element):
             skip_save=True,
         )
 
-        _, measurement = next(generator)
-        for _, _ in generator:
-            pass
+        aborted = False
+        for code, measurement in generator:
+            callback_data = measurement.dispersion_data  # to be defined better
+            if code is DispersionCode.AFTER_SET:
+                if callback and not callback(ACTION_APPLY, callback_data):
+                    if aborted:
+                        break
+            elif code is DispersionCode.AFTER_GET:
+                if callback and not callback(ACTION_MEASURE, callback_data):
+                    aborted = True
+                    break
+            elif code is DispersionCode.AFTER_RESTORE:
+                if callback and not callback(ACTION_RESTORE, callback_data):
+                    aborted = True
+                    break
+
+        if aborted:
+            logger.warning("Measurement aborted! Settings have not been restored.")
+            return
 
         dispersion_data = measurement.dispersion_data
         # contains also pre-processed data
