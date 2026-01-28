@@ -9,21 +9,11 @@ config_path = parent_folder.parent.parent.joinpath(
     "tests", "config", "EBSOrbit.yaml"
 ).resolve()
 sr = Accelerator.load(config_path)
-element_holder = sr.design
+eh = sr.design
 
-orm = OrbitResponseMatrix(
-    cfg=ORM_ConfigModel(
-        bpm_array_name="BPM",
-        hcorr_array_name="HCorr",
-        vcorr_array_name="VCorr",
-        corrector_delta=1e-6,
-    ),
-    element_holder=element_holder,
-)
+eh.orm.measure()
+eh.orm.save(parent_folder / Path("ideal_orm.json"))
+eh.orm.save(parent_folder / Path("ideal_orm.yaml"), with_type="yaml")
+eh.orm.save(parent_folder / Path("ideal_orm.npz"), with_type="npz")
 
-orm.measure()
-orm.save(parent_folder / Path("ideal_orm.json"))
-orm.save(parent_folder / Path("ideal_orm.yaml"), with_type="yaml")
-orm.save(parent_folder / Path("ideal_orm.npz"), with_type="npz")
-
-ormdata = orm.get()
+ormdata = eh.get()
