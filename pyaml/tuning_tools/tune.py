@@ -1,7 +1,7 @@
 from typing import TYPE_CHECKING
 
 from .. import PyAMLException
-from ..common.constants import ACTION_APPLY, ACTION_RESTORE
+from ..common.constants import ACTION_APPLY, ACTION_MEASURE, ACTION_RESTORE
 from ..common.element import Element, ElementConfigModel
 
 if TYPE_CHECKING:
@@ -53,7 +53,7 @@ class TuneResponse(object):
         self.__respmatrix = mat
         self.__correctionmat = np.linalg.pinv(mat.T)
 
-    def measure(self, callback: Callable | None = None):
+    def measure(self, callback: Callable | None = None, set_wait_time: float = 0):
         """
         Measure tune response matrix
 
@@ -64,6 +64,8 @@ class TuneResponse(object):
             Callback executed after each strength setting. The magnet and step are
             passed as input arguement of the callback.
             If the callback return false, then the process is aborted.
+        set_wait_time : float
+            Wait after quad has been set
         """
         quads = self.quads()  # Returns attached quad devices
         tunemat = np.zeros((len(quads), 2))
@@ -80,9 +82,15 @@ class TuneResponse(object):
                 aborted = True
                 break
 
+            time.sleep(set_wait_time)
+
             tune = self.__parent.readback()
             dq = tune - initial_tune
             tunemat[idx] = dq / delta
+
+            if callback and not callback(idx, ACTION_MEASURE, m, tunemat[idx]):
+                aborted = True
+                break
 
             # Restore strength
             m.strength.set(str)
