@@ -86,7 +86,7 @@ devices:
   lattice_names: Q3M1D1R
   model:
     type: pyaml.magnet.linear_model
-    calibration_factor: -0.063430
+    calibration_factor: -0.0158575
     unit: 1/m
     powerconverter:
       type: pyaml_cs_oa.epicsRW
@@ -98,7 +98,7 @@ devices:
   lattice_names: Q3M2D1R
   model:
     type: pyaml.magnet.linear_model
-    calibration_factor: -0.063430
+    calibration_factor: -0.0158575
     unit: 1/m
     powerconverter:
       type: pyaml_cs_oa.epicsRW
@@ -111,7 +111,7 @@ devices:
   lattice_names: Q3M1T1R
   model:
     type: pyaml.magnet.linear_model
-    calibration_factor: -0.062940
+    calibration_factor: -0.015735
     unit: 1/m
     powerconverter:
       type: pyaml_cs_oa.epicsRW
@@ -123,7 +123,7 @@ devices:
   lattice_names: Q3M2T1R
   model:
     type: pyaml.magnet.linear_model
-    calibration_factor: -0.062940
+    calibration_factor: -0.015735
     unit: 1/m
     powerconverter:
       type: pyaml_cs_oa.epicsRW
@@ -136,7 +136,7 @@ devices:
   lattice_names: Q3M1D2R
   model:
     type: pyaml.magnet.linear_model
-    calibration_factor: -0.063430
+    calibration_factor: -0.0158575
     unit: 1/m
     powerconverter:
       type: pyaml_cs_oa.epicsRW
@@ -148,7 +148,7 @@ devices:
   lattice_names: Q3M2D2R
   model:
     type: pyaml.magnet.linear_model
-    calibration_factor: -0.063430
+    calibration_factor: -0.0158575
     unit: 1/m
     powerconverter:
       type: pyaml_cs_oa.epicsRW
@@ -161,7 +161,7 @@ devices:
   lattice_names: Q3M1T2R
   model:
     type: pyaml.magnet.linear_model
-    calibration_factor: -0.062940
+    calibration_factor: -0.015735
     unit: 1/m
     powerconverter:
       type: pyaml_cs_oa.epicsRW
@@ -173,7 +173,7 @@ devices:
   lattice_names: Q3M2T2R
   model:
     type: pyaml.magnet.linear_model
-    calibration_factor: -0.062940
+    calibration_factor: -0.015735
     unit: 1/m
     powerconverter:
       type: pyaml_cs_oa.epicsRW
@@ -186,7 +186,7 @@ devices:
   lattice_names: Q3M1D3R
   model:
     type: pyaml.magnet.linear_model
-    calibration_factor: -0.063430
+    calibration_factor: -0.0158575
     unit: 1/m
     powerconverter:
       type: pyaml_cs_oa.epicsRW
@@ -198,7 +198,7 @@ devices:
   lattice_names: Q3M2D3R
   model:
     type: pyaml.magnet.linear_model
-    calibration_factor: -0.063430
+    calibration_factor: -0.0158575
     unit: 1/m
     powerconverter:
       type: pyaml_cs_oa.epicsRW
@@ -211,7 +211,7 @@ devices:
   lattice_names: Q3M1T3R
   model:
     type: pyaml.magnet.linear_model
-    calibration_factor: -0.062940
+    calibration_factor: -0.015735
     unit: 1/m
     powerconverter:
       type: pyaml_cs_oa.epicsRW
@@ -223,7 +223,7 @@ devices:
   lattice_names: Q3M2T3R
   model:
     type: pyaml.magnet.linear_model
-    calibration_factor: -0.062940
+    calibration_factor: -0.015735
     unit: 1/m
     powerconverter:
       type: pyaml_cs_oa.epicsRW
@@ -236,7 +236,7 @@ devices:
   lattice_names: Q3M1D4R
   model:
     type: pyaml.magnet.linear_model
-    calibration_factor: -0.063430
+    calibration_factor: -0.0158575
     unit: 1/m
     powerconverter:
       type: pyaml_cs_oa.epicsRW
@@ -248,7 +248,7 @@ devices:
   lattice_names: Q3M2D4R
   model:
     type: pyaml.magnet.linear_model
-    calibration_factor: -0.063430
+    calibration_factor: -0.0158575
     unit: 1/m
     powerconverter:
       type: pyaml_cs_oa.epicsRW
@@ -261,7 +261,7 @@ devices:
   lattice_names: Q3M1T4R
   model:
     type: pyaml.magnet.linear_model
-    calibration_factor: -0.062940
+    calibration_factor: -0.015735
     unit: 1/m
     powerconverter:
       type: pyaml_cs_oa.epicsRW
@@ -273,7 +273,7 @@ devices:
   lattice_names: Q3M2T4R
   model:
     type: pyaml.magnet.linear_model
-    calibration_factor: -0.062940
+    calibration_factor: -0.015735
     unit: 1/m
     powerconverter:
       type: pyaml_cs_oa.epicsRW
@@ -286,7 +286,7 @@ devices:
   lattice_names: Q3M1D5R
   model:
     type: pyaml.magnet.linear_model
-    calibration_factor: -0.063430
+    calibration_factor: -0.0158575
     unit: 1/m
     powerconverter:
       type: pyaml_cs_oa.epicsRW
@@ -298,7 +298,7 @@ devices:
   lattice_names: Q3M2D5R
   model:
     type: pyaml.magnet.linear_model
-    calibration_factor: -0.063430
+    calibration_factor: -0.0158575
     unit: 1/m
     powerconverter:
       type: pyaml_cs_oa.epicsRW
@@ -311,7 +311,7 @@ devices:
   lattice_names: Q3M1T5R
   model:
     type: pyaml.magnet.linear_model
-    calibration_factor: -0.062940
+    calibration_factor: -0.015735
     unit: 1/m
     powerconverter:
       type: pyaml_cs_oa.epicsRW
@@ -323,7 +323,7 @@ devices:
   lattice_names: Q3M2T5R
   model:
     type: pyaml.magnet.linear_model
-    calibration_factor: -0.062940
+    calibration_factor: -0.015735
     unit: 1/m
     powerconverter:
       type: pyaml_cs_oa.epicsRW
@@ -336,7 +336,7 @@ devices:
   lattice_names: Q3M1D6R
   model:
     type: pyaml.magnet.linear_model
-    calibration_factor: -0.063430
+    calibration_factor: -0.0158575
     unit: 1/m
     powerconverter:
       type: pyaml_cs_oa.epicsRW
@@ -348,7 +348,7 @@ devices:
   lattice_names: Q3M2D6R
   model:
     type: pyaml.magnet.linear_model
-    calibration_factor: -0.063430
+    calibration_factor: -0.0158575
     unit: 1/m
     powerconverter:
       type: pyaml_cs_oa.epicsRW
@@ -361,7 +361,7 @@ devices:
   lattice_names: Q3M1T6R
   model:
     type: pyaml.magnet.linear_model
-    calibration_factor: -0.062940
+    calibration_factor: -0.015735
     unit: 1/m
     powerconverter:
       type: pyaml_cs_oa.epicsRW
@@ -373,7 +373,7 @@ devices:
   lattice_names: Q3M2T6R
   model:
     type: pyaml.magnet.linear_model
-    calibration_factor: -0.062940
+    calibration_factor: -0.015735
     unit: 1/m
     powerconverter:
       type: pyaml_cs_oa.epicsRW
@@ -386,7 +386,7 @@ devices:
   lattice_names: Q3M1D7R
   model:
     type: pyaml.magnet.linear_model
-    calibration_factor: -0.063430
+    calibration_factor: -0.0158575
     unit: 1/m
     powerconverter:
       type: pyaml_cs_oa.epicsRW
@@ -398,7 +398,7 @@ devices:
   lattice_names: Q3M2D7R
   model:
     type: pyaml.magnet.linear_model
-    calibration_factor: -0.063430
+    calibration_factor: -0.0158575
     unit: 1/m
     powerconverter:
       type: pyaml_cs_oa.epicsRW
@@ -411,7 +411,7 @@ devices:
   lattice_names: Q3M1T7R
   model:
     type: pyaml.magnet.linear_model
-    calibration_factor: -0.062940
+    calibration_factor: -0.015735
     unit: 1/m
     powerconverter:
       type: pyaml_cs_oa.epicsRW
@@ -423,7 +423,7 @@ devices:
   lattice_names: Q3M2T7R
   model:
     type: pyaml.magnet.linear_model
-    calibration_factor: -0.062940
+    calibration_factor: -0.015735
     unit: 1/m
     powerconverter:
       type: pyaml_cs_oa.epicsRW
@@ -436,7 +436,7 @@ devices:
   lattice_names: Q3M1D8R
   model:
     type: pyaml.magnet.linear_model
-    calibration_factor: -0.063430
+    calibration_factor: -0.0158575
     unit: 1/m
     powerconverter:
       type: pyaml_cs_oa.epicsRW
@@ -448,7 +448,7 @@ devices:
   lattice_names: Q3M2D8R
   model:
     type: pyaml.magnet.linear_model
-    calibration_factor: -0.063430
+    calibration_factor: -0.0158575
     unit: 1/m
     powerconverter:
       type: pyaml_cs_oa.epicsRW
@@ -461,7 +461,7 @@ devices:
   lattice_names: Q3M1T8R
   model:
     type: pyaml.magnet.linear_model
-    calibration_factor: -0.062940
+    calibration_factor: -0.015735
     unit: 1/m
     powerconverter:
       type: pyaml_cs_oa.epicsRW
@@ -473,7 +473,7 @@ devices:
   lattice_names: Q3M2T8R
   model:
     type: pyaml.magnet.linear_model
-    calibration_factor: -0.062940
+    calibration_factor: -0.015735
     unit: 1/m
     powerconverter:
       type: pyaml_cs_oa.epicsRW
@@ -486,7 +486,7 @@ devices:
   lattice_names: Q4M1D1R
   model:
     type: pyaml.magnet.linear_model
-    calibration_factor: 0.060633
+    calibration_factor: 0.0303165
     unit: 1/m
     powerconverter:
       type: pyaml_cs_oa.epicsRW
@@ -498,7 +498,7 @@ devices:
   lattice_names: Q4M2D1R
   model:
     type: pyaml.magnet.linear_model
-    calibration_factor: 0.060633
+    calibration_factor: 0.0303165
     unit: 1/m
     powerconverter:
       type: pyaml_cs_oa.epicsRW
@@ -511,7 +511,7 @@ devices:
   lattice_names: Q4M1T1R
   model:
     type: pyaml.magnet.linear_model
-    calibration_factor: 0.059339
+    calibration_factor: 0.0296695
     unit: 1/m
     powerconverter:
       type: pyaml_cs_oa.epicsRW
@@ -523,7 +523,7 @@ devices:
   lattice_names: Q4M2T1R
   model:
     type: pyaml.magnet.linear_model
-    calibration_factor: 0.059339
+    calibration_factor: 0.0296695
     unit: 1/m
     powerconverter:
       type: pyaml_cs_oa.epicsRW
@@ -536,7 +536,7 @@ devices:
   lattice_names: Q4M1D2R
   model:
     type: pyaml.magnet.linear_model
-    calibration_factor: 0.060633
+    calibration_factor: 0.0303165
     unit: 1/m
     powerconverter:
       type: pyaml_cs_oa.epicsRW
@@ -548,7 +548,7 @@ devices:
   lattice_names: Q4M2D2R
   model:
     type: pyaml.magnet.linear_model
-    calibration_factor: 0.060633
+    calibration_factor: 0.0303165
     unit: 1/m
     powerconverter:
       type: pyaml_cs_oa.epicsRW
@@ -561,7 +561,7 @@ devices:
   lattice_names: Q4M1T2R
   model:
     type: pyaml.magnet.linear_model
-    calibration_factor: 0.059339
+    calibration_factor: 0.0296695
     unit: 1/m
     powerconverter:
       type: pyaml_cs_oa.epicsRW
@@ -573,7 +573,7 @@ devices:
   lattice_names: Q4M2T2R
   model:
     type: pyaml.magnet.linear_model
-    calibration_factor: 0.059339
+    calibration_factor: 0.0296695
     unit: 1/m
     powerconverter:
       type: pyaml_cs_oa.epicsRW
@@ -586,7 +586,7 @@ devices:
   lattice_names: Q4M1D3R
   model:
     type: pyaml.magnet.linear_model
-    calibration_factor: 0.060633
+    calibration_factor: 0.0303165
     unit: 1/m
     powerconverter:
       type: pyaml_cs_oa.epicsRW
@@ -598,7 +598,7 @@ devices:
   lattice_names: Q4M2D3R
   model:
     type: pyaml.magnet.linear_model
-    calibration_factor: 0.060633
+    calibration_factor: 0.0303165
     unit: 1/m
     powerconverter:
       type: pyaml_cs_oa.epicsRW
@@ -611,7 +611,7 @@ devices:
   lattice_names: Q4M1T3R
   model:
     type: pyaml.magnet.linear_model
-    calibration_factor: 0.059339
+    calibration_factor: 0.0296695
     unit: 1/m
     powerconverter:
       type: pyaml_cs_oa.epicsRW
@@ -623,7 +623,7 @@ devices:
   lattice_names: Q4M2T3R
   model:
     type: pyaml.magnet.linear_model
-    calibration_factor: 0.059339
+    calibration_factor: 0.0296695
     unit: 1/m
     powerconverter:
       type: pyaml_cs_oa.epicsRW
@@ -636,7 +636,7 @@ devices:
   lattice_names: Q4M1D4R
   model:
     type: pyaml.magnet.linear_model
-    calibration_factor: 0.060633
+    calibration_factor: 0.0303165
     unit: 1/m
     powerconverter:
       type: pyaml_cs_oa.epicsRW
@@ -648,7 +648,7 @@ devices:
   lattice_names: Q4M2D4R
   model:
     type: pyaml.magnet.linear_model
-    calibration_factor: 0.060633
+    calibration_factor: 0.0303165
     unit: 1/m
     powerconverter:
       type: pyaml_cs_oa.epicsRW
@@ -661,7 +661,7 @@ devices:
   lattice_names: Q4M1T4R
   model:
     type: pyaml.magnet.linear_model
-    calibration_factor: 0.059339
+    calibration_factor: 0.0296695
     unit: 1/m
     powerconverter:
       type: pyaml_cs_oa.epicsRW
@@ -673,7 +673,7 @@ devices:
   lattice_names: Q4M2T4R
   model:
     type: pyaml.magnet.linear_model
-    calibration_factor: 0.059339
+    calibration_factor: 0.0296695
     unit: 1/m
     powerconverter:
       type: pyaml_cs_oa.epicsRW
@@ -686,7 +686,7 @@ devices:
   lattice_names: Q4M1D5R
   model:
     type: pyaml.magnet.linear_model
-    calibration_factor: 0.060633
+    calibration_factor: 0.0303165
     unit: 1/m
     powerconverter:
       type: pyaml_cs_oa.epicsRW
@@ -698,7 +698,7 @@ devices:
   lattice_names: Q4M2D5R
   model:
     type: pyaml.magnet.linear_model
-    calibration_factor: 0.060633
+    calibration_factor: 0.0303165
     unit: 1/m
     powerconverter:
       type: pyaml_cs_oa.epicsRW
@@ -711,7 +711,7 @@ devices:
   lattice_names: Q4M1T5R
   model:
     type: pyaml.magnet.linear_model
-    calibration_factor: 0.059339
+    calibration_factor: 0.0296695
     unit: 1/m
     powerconverter:
       type: pyaml_cs_oa.epicsRW
@@ -723,7 +723,7 @@ devices:
   lattice_names: Q4M2T5R
   model:
     type: pyaml.magnet.linear_model
-    calibration_factor: 0.059339
+    calibration_factor: 0.0296695
     unit: 1/m
     powerconverter:
       type: pyaml_cs_oa.epicsRW
@@ -736,7 +736,7 @@ devices:
   lattice_names: Q4M1D6R
   model:
     type: pyaml.magnet.linear_model
-    calibration_factor: 0.060633
+    calibration_factor: 0.0303165
     unit: 1/m
     powerconverter:
       type: pyaml_cs_oa.epicsRW
@@ -748,7 +748,7 @@ devices:
   lattice_names: Q4M2D6R
   model:
     type: pyaml.magnet.linear_model
-    calibration_factor: 0.060633
+    calibration_factor: 0.0303165
     unit: 1/m
     powerconverter:
       type: pyaml_cs_oa.epicsRW
@@ -761,7 +761,7 @@ devices:
   lattice_names: Q4M1T6R
   model:
     type: pyaml.magnet.linear_model
-    calibration_factor: 0.059339
+    calibration_factor: 0.0296695
     unit: 1/m
     powerconverter:
       type: pyaml_cs_oa.epicsRW
@@ -773,7 +773,7 @@ devices:
   lattice_names: Q4M2T6R
   model:
     type: pyaml.magnet.linear_model
-    calibration_factor: 0.059339
+    calibration_factor: 0.0296695
     unit: 1/m
     powerconverter:
       type: pyaml_cs_oa.epicsRW
@@ -786,7 +786,7 @@ devices:
   lattice_names: Q4M1D7R
   model:
     type: pyaml.magnet.linear_model
-    calibration_factor: 0.060633
+    calibration_factor: 0.0303165
     unit: 1/m
     powerconverter:
       type: pyaml_cs_oa.epicsRW
@@ -798,7 +798,7 @@ devices:
   lattice_names: Q4M2D7R
   model:
     type: pyaml.magnet.linear_model
-    calibration_factor: 0.060633
+    calibration_factor: 0.0303165
     unit: 1/m
     powerconverter:
       type: pyaml_cs_oa.epicsRW
@@ -811,7 +811,7 @@ devices:
   lattice_names: Q4M1T7R
   model:
     type: pyaml.magnet.linear_model
-    calibration_factor: 0.059339
+    calibration_factor: 0.0296695
     unit: 1/m
     powerconverter:
       type: pyaml_cs_oa.epicsRW
@@ -823,7 +823,7 @@ devices:
   lattice_names: Q4M2T7R
   model:
     type: pyaml.magnet.linear_model
-    calibration_factor: 0.059339
+    calibration_factor: 0.0296695
     unit: 1/m
     powerconverter:
       type: pyaml_cs_oa.epicsRW
@@ -836,7 +836,7 @@ devices:
   lattice_names: Q4M1D8R
   model:
     type: pyaml.magnet.linear_model
-    calibration_factor: 0.060633
+    calibration_factor: 0.0303165
     unit: 1/m
     powerconverter:
       type: pyaml_cs_oa.epicsRW
@@ -848,7 +848,7 @@ devices:
   lattice_names: Q4M2D8R
   model:
     type: pyaml.magnet.linear_model
-    calibration_factor: 0.060633
+    calibration_factor: 0.0303165
     unit: 1/m
     powerconverter:
       type: pyaml_cs_oa.epicsRW
@@ -861,7 +861,7 @@ devices:
   lattice_names: Q4M1T8R
   model:
     type: pyaml.magnet.linear_model
-    calibration_factor: 0.059339
+    calibration_factor: 0.0296695
     unit: 1/m
     powerconverter:
       type: pyaml_cs_oa.epicsRW
@@ -873,7 +873,7 @@ devices:
   lattice_names: Q4M2T8R
   model:
     type: pyaml.magnet.linear_model
-    calibration_factor: 0.059339
+    calibration_factor: 0.0296695
     unit: 1/m
     powerconverter:
       type: pyaml_cs_oa.epicsRW
