@@ -127,16 +127,17 @@ class Accelerator(object):
     def from_dict(config_dict: dict, ignore_external=False) -> "Accelerator":
         """
         Construct an accelerator from a dictionary.
+
         Parameters
         ----------
         config_dict : str
-            Dictionnary conatining accelerator config
+            Dictionary containing accelerator config
         ignore_external: bool
             Ignore external modules and return None for object that
             cannot be created. pydantic schema that support that an
             object is not created should handle None fields.
-
         """
+
         if ignore_external:
             # control systems are external, so remove controls field
             config_dict.pop("controls", None)
