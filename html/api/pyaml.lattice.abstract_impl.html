@@ -362,6 +362,7 @@
 </ul>
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="pyaml.diagnostics.html">pyaml.diagnostics</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="pyaml.diagnostics.chromaticity_monitor.html">pyaml.diagnostics.chromaticity_monitor</a></li>
 <li class="toctree-l2"><a class="reference internal" href="pyaml.diagnostics.tune_monitor.html">pyaml.diagnostics.tune_monitor</a></li>
 </ul>
 </details></li>
@@ -490,43 +491,46 @@
 <tr class="row-odd"><td><p><a class="reference internal" href="#pyaml.lattice.abstract_impl.RBpmArray" title="pyaml.lattice.abstract_impl.RBpmArray"><code class="xref py py-obj docutils literal notranslate"><span class="pre">RBpmArray</span></code></a>(element, lattice)</p></td>
 <td><p>Class providing read access to a BPM position (array) of a simulator.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#pyaml.lattice.abstract_impl.RWBpmOffsetArray" title="pyaml.lattice.abstract_impl.RWBpmOffsetArray"><code class="xref py py-obj docutils literal notranslate"><span class="pre">RWBpmOffsetArray</span></code></a>(element)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#pyaml.lattice.abstract_impl.RChromaticityArray" title="pyaml.lattice.abstract_impl.RChromaticityArray"><code class="xref py py-obj docutils literal notranslate"><span class="pre">RChromaticityArray</span></code></a>(ring)</p></td>
+<td><p>Class providing read-only access to the chromaticity of a ring.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#pyaml.lattice.abstract_impl.RWBpmOffsetArray" title="pyaml.lattice.abstract_impl.RWBpmOffsetArray"><code class="xref py py-obj docutils literal notranslate"><span class="pre">RWBpmOffsetArray</span></code></a>(element)</p></td>
 <td><p>Class providing read write access to a BPM offset (array) of a simulator.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#pyaml.lattice.abstract_impl.RWBpmTiltScalar" title="pyaml.lattice.abstract_impl.RWBpmTiltScalar"><code class="xref py py-obj docutils literal notranslate"><span class="pre">RWBpmTiltScalar</span></code></a>(element)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#pyaml.lattice.abstract_impl.RWBpmTiltScalar" title="pyaml.lattice.abstract_impl.RWBpmTiltScalar"><code class="xref py py-obj docutils literal notranslate"><span class="pre">RWBpmTiltScalar</span></code></a>(element)</p></td>
 <td><p>Class providing read write access to a BPM tilt of a simulator.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#pyaml.lattice.abstract_impl.RWHardwareArray" title="pyaml.lattice.abstract_impl.RWHardwareArray"><code class="xref py py-obj docutils literal notranslate"><span class="pre">RWHardwareArray</span></code></a>(elements, poly, model)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#pyaml.lattice.abstract_impl.RWHardwareArray" title="pyaml.lattice.abstract_impl.RWHardwareArray"><code class="xref py py-obj docutils literal notranslate"><span class="pre">RWHardwareArray</span></code></a>(elements, poly, model)</p></td>
 <td><p>Class providing read write access to a magnet of a simulator in hardware units.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#pyaml.lattice.abstract_impl.RWHardwareScalar" title="pyaml.lattice.abstract_impl.RWHardwareScalar"><code class="xref py py-obj docutils literal notranslate"><span class="pre">RWHardwareScalar</span></code></a>(elements, poly, model)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#pyaml.lattice.abstract_impl.RWHardwareScalar" title="pyaml.lattice.abstract_impl.RWHardwareScalar"><code class="xref py py-obj docutils literal notranslate"><span class="pre">RWHardwareScalar</span></code></a>(elements, poly, model)</p></td>
 <td><p>Class providing read write access to a magnet of a simulator in hardware unit.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#pyaml.lattice.abstract_impl.RWRFATFrequencyScalar" title="pyaml.lattice.abstract_impl.RWRFATFrequencyScalar"><code class="xref py py-obj docutils literal notranslate"><span class="pre">RWRFATFrequencyScalar</span></code></a>(ring)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#pyaml.lattice.abstract_impl.RWRFATFrequencyScalar" title="pyaml.lattice.abstract_impl.RWRFATFrequencyScalar"><code class="xref py py-obj docutils literal notranslate"><span class="pre">RWRFATFrequencyScalar</span></code></a>(ring)</p></td>
 <td><p>Class providing read write access to RF frequency of a simulator using AT methods.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#pyaml.lattice.abstract_impl.RWRFATotalVoltageScalar" title="pyaml.lattice.abstract_impl.RWRFATotalVoltageScalar"><code class="xref py py-obj docutils literal notranslate"><span class="pre">RWRFATotalVoltageScalar</span></code></a>(ring)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#pyaml.lattice.abstract_impl.RWRFATotalVoltageScalar" title="pyaml.lattice.abstract_impl.RWRFATotalVoltageScalar"><code class="xref py py-obj docutils literal notranslate"><span class="pre">RWRFATotalVoltageScalar</span></code></a>(ring)</p></td>
 <td><p>Class providing read write access to a RF voltage of a simulator using AT methods.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#pyaml.lattice.abstract_impl.RWRFFrequencyScalar" title="pyaml.lattice.abstract_impl.RWRFFrequencyScalar"><code class="xref py py-obj docutils literal notranslate"><span class="pre">RWRFFrequencyScalar</span></code></a>(elements, harmonics)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#pyaml.lattice.abstract_impl.RWRFFrequencyScalar" title="pyaml.lattice.abstract_impl.RWRFFrequencyScalar"><code class="xref py py-obj docutils literal notranslate"><span class="pre">RWRFFrequencyScalar</span></code></a>(elements, harmonics)</p></td>
 <td><p>Class providing read write access to RF frequency of a simulator.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#pyaml.lattice.abstract_impl.RWRFPhaseScalar" title="pyaml.lattice.abstract_impl.RWRFPhaseScalar"><code class="xref py py-obj docutils literal notranslate"><span class="pre">RWRFPhaseScalar</span></code></a>(elements)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#pyaml.lattice.abstract_impl.RWRFPhaseScalar" title="pyaml.lattice.abstract_impl.RWRFPhaseScalar"><code class="xref py py-obj docutils literal notranslate"><span class="pre">RWRFPhaseScalar</span></code></a>(elements)</p></td>
 <td><p>Class providing read write access to a cavity phase of a simulator for a given RF trasnmitter.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#pyaml.lattice.abstract_impl.RWRFVoltageScalar" title="pyaml.lattice.abstract_impl.RWRFVoltageScalar"><code class="xref py py-obj docutils literal notranslate"><span class="pre">RWRFVoltageScalar</span></code></a>(elements)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#pyaml.lattice.abstract_impl.RWRFVoltageScalar" title="pyaml.lattice.abstract_impl.RWRFVoltageScalar"><code class="xref py py-obj docutils literal notranslate"><span class="pre">RWRFVoltageScalar</span></code></a>(elements)</p></td>
 <td><p>Class providing read write access to a cavity voltage of a simulator for a given RF trasnmitter.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#pyaml.lattice.abstract_impl.RWSerializedHardware" title="pyaml.lattice.abstract_impl.RWSerializedHardware"><code class="xref py py-obj docutils literal notranslate"><span class="pre">RWSerializedHardware</span></code></a>(elements, element_index)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#pyaml.lattice.abstract_impl.RWSerializedHardware" title="pyaml.lattice.abstract_impl.RWSerializedHardware"><code class="xref py py-obj docutils literal notranslate"><span class="pre">RWSerializedHardware</span></code></a>(elements, element_index)</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#pyaml.lattice.abstract_impl.RWSerializedStrength" title="pyaml.lattice.abstract_impl.RWSerializedStrength"><code class="xref py py-obj docutils literal notranslate"><span class="pre">RWSerializedStrength</span></code></a>(element, ...)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#pyaml.lattice.abstract_impl.RWSerializedStrength" title="pyaml.lattice.abstract_impl.RWSerializedStrength"><code class="xref py py-obj docutils literal notranslate"><span class="pre">RWSerializedStrength</span></code></a>(element, ...)</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#pyaml.lattice.abstract_impl.RWStrengthArray" title="pyaml.lattice.abstract_impl.RWStrengthArray"><code class="xref py py-obj docutils literal notranslate"><span class="pre">RWStrengthArray</span></code></a>(elements, poly, model)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#pyaml.lattice.abstract_impl.RWStrengthArray" title="pyaml.lattice.abstract_impl.RWStrengthArray"><code class="xref py py-obj docutils literal notranslate"><span class="pre">RWStrengthArray</span></code></a>(elements, poly, model)</p></td>
 <td><p>Class providing read write access to a strength (array) of a simulator</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#pyaml.lattice.abstract_impl.RWStrengthScalar" title="pyaml.lattice.abstract_impl.RWStrengthScalar"><code class="xref py py-obj docutils literal notranslate"><span class="pre">RWStrengthScalar</span></code></a>(elements, poly, model)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#pyaml.lattice.abstract_impl.RWStrengthScalar" title="pyaml.lattice.abstract_impl.RWStrengthScalar"><code class="xref py py-obj docutils literal notranslate"><span class="pre">RWStrengthScalar</span></code></a>(elements, poly, model)</p></td>
 <td><p>Class providing read write access to a strength of a simulator</p></td>
 </tr>
 </tbody>

@@ -497,16 +497,17 @@
     <span class="k">def</span><span class="w"> </span><span class="nf">from_dict</span><span class="p">(</span><span class="n">config_dict</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">ignore_external</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;Accelerator&quot;</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Construct an accelerator from a dictionary.</span>
+
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        config_dict : str</span>
-<span class="sd">            Dictionnary conatining accelerator config</span>
+<span class="sd">            Dictionary containing accelerator config</span>
 <span class="sd">        ignore_external: bool</span>
 <span class="sd">            Ignore external modules and return None for object that</span>
 <span class="sd">            cannot be created. pydantic schema that support that an</span>
 <span class="sd">            object is not created should handle None fields.</span>
-
 <span class="sd">        &quot;&quot;&quot;</span>
+
         <span class="k">if</span> <span class="n">ignore_external</span><span class="p">:</span>
             <span class="c1"># control systems are external, so remove controls field</span>
             <span class="n">config_dict</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;controls&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
