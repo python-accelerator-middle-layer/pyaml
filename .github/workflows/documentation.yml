@@ -45,16 +45,11 @@ jobs:
         run: python -m pip install --upgrade pip
 
       - name: Install package
-        run: python -m pip install '.[doc]'
-
-      - name: Install package tangopyaml
-        run: python -m pip install tango-pyaml
-      
-      - name: Install package oa epics
-        run: python -m pip install pyaml-cs-oa[epics]
-
-      - name: Install package oa tango
-        run: python -m pip install pyaml-cs-oa[tango]
+        run: |
+          python -m pip install '.[doc]'
+          python -m pip install tango-pyaml
+          python -m pip install pyaml-cs-oa[epics]
+          python -m pip install pyaml-cs-oa[tango]
 
       - name: Build documentation
         run: make html
