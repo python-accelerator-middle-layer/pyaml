@@ -378,7 +378,9 @@
 <span class="kn">from</span><span class="w"> </span><span class="nn">.element</span><span class="w"> </span><span class="kn">import</span> <span class="n">Element</span>
 
 <span class="k">if</span> <span class="n">TYPE_CHECKING</span><span class="p">:</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">..tuning_tools.dispersion</span><span class="w"> </span><span class="kn">import</span> <span class="n">Dispersion</span>
     <span class="kn">from</span><span class="w"> </span><span class="nn">..tuning_tools.orbit</span><span class="w"> </span><span class="kn">import</span> <span class="n">Orbit</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">..tuning_tools.orbit_response_matrix</span><span class="w"> </span><span class="kn">import</span> <span class="n">OrbitResponseMatrix</span>
     <span class="kn">from</span><span class="w"> </span><span class="nn">..tuning_tools.tune</span><span class="w"> </span><span class="kn">import</span> <span class="n">Tune</span>
 
 
@@ -727,7 +729,39 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">orbit</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;Orbit&quot;</span><span class="p">:</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_orbit_tuning</span><span class="p">(</span><span class="s2">&quot;DEFAULT_ORBIT_CORRECTION&quot;</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_orbit_tuning</span><span class="p">(</span><span class="s2">&quot;DEFAULT_ORBIT_CORRECTION&quot;</span><span class="p">)</span>
+
+<div class="viewcode-block" id="ElementHolder.get_orm_tuning">
+<a class="viewcode-back" href="../../../api/pyaml.common.element_holder.html#pyaml.common.element_holder.ElementHolder.get_orm_tuning">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_orm_tuning</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;OrbitResponseMatrix&quot;</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__get</span><span class="p">(</span><span class="s2">&quot;OrbitResponseMatrix tool&quot;</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__TUNING_TOOLS</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="ElementHolder.add_orm_tuning">
+<a class="viewcode-back" href="../../../api/pyaml.common.element_holder.html#pyaml.common.element_holder.ElementHolder.add_orm_tuning">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">add_orm_tuning</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">orm</span><span class="p">:</span> <span class="n">Element</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__add</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__TUNING_TOOLS</span><span class="p">,</span> <span class="n">orm</span><span class="p">)</span></div>
+
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">orm</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;OrbitResponseMatrix&quot;</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_orm_tuning</span><span class="p">(</span><span class="s2">&quot;DEFAULT_ORBIT_RESPONSE_MATRIX&quot;</span><span class="p">)</span>
+
+<div class="viewcode-block" id="ElementHolder.get_dispersion_tuning">
+<a class="viewcode-back" href="../../../api/pyaml.common.element_holder.html#pyaml.common.element_holder.ElementHolder.get_dispersion_tuning">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_dispersion_tuning</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;Dispersion&quot;</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__get</span><span class="p">(</span><span class="s2">&quot;Dispersion tool&quot;</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__TUNING_TOOLS</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="ElementHolder.add_dispersion_tuning">
+<a class="viewcode-back" href="../../../api/pyaml.common.element_holder.html#pyaml.common.element_holder.ElementHolder.add_dispersion_tuning">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">add_dispersion_tuning</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dispersion</span><span class="p">:</span> <span class="n">Element</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__add</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__TUNING_TOOLS</span><span class="p">,</span> <span class="n">dispersion</span><span class="p">)</span></div>
+
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">dispersion</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;Dispersion&quot;</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_dispersion_tuning</span><span class="p">(</span><span class="s2">&quot;DEFAULT_DISPERSION&quot;</span><span class="p">)</span></div>
 
 </pre></div>
 

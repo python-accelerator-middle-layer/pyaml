@@ -394,7 +394,9 @@
 <span class="kn">from</span><span class="w"> </span><span class="nn">..magnet.serialized_magnet</span><span class="w"> </span><span class="kn">import</span> <span class="n">SerializedMagnets</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">..rf.rf_plant</span><span class="w"> </span><span class="kn">import</span> <span class="n">RFPlant</span><span class="p">,</span> <span class="n">RWTotalVoltage</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">..rf.rf_transmitter</span><span class="w"> </span><span class="kn">import</span> <span class="n">RFTransmitter</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">..tuning_tools.dispersion</span><span class="w"> </span><span class="kn">import</span> <span class="n">Dispersion</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">..tuning_tools.orbit</span><span class="w"> </span><span class="kn">import</span> <span class="n">Orbit</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">..tuning_tools.orbit_response_matrix</span><span class="w"> </span><span class="kn">import</span> <span class="n">OrbitResponseMatrix</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">..tuning_tools.tune</span><span class="w"> </span><span class="kn">import</span> <span class="n">Tune</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">.attribute_linker</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
     <span class="n">ConfigModel</span> <span class="k">as</span> <span class="n">PyAtAttrLinkerConfigModel</span><span class="p">,</span>
@@ -556,7 +558,8 @@
             <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="n">SerializedMagnets</span><span class="p">):</span>
                 <span class="n">currents</span> <span class="o">=</span> <span class="p">[]</span>
                 <span class="n">strengths</span> <span class="o">=</span> <span class="p">[]</span>
-                <span class="c1"># Create unique refs the series and each of its function for this control system</span>
+                <span class="c1"># Create unique refs the series and each of its function for this</span>
+                <span class="c1"># control system</span>
                 <span class="c1"># Link hardware to strengths and bind strength together</span>
                 <span class="k">for</span> <span class="n">index</span><span class="p">,</span> <span class="n">magnet</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">e</span><span class="o">.</span><span class="n">get_magnets</span><span class="p">()):</span>
                     <span class="n">current</span> <span class="o">=</span> <span class="p">(</span>
@@ -660,7 +663,13 @@
                 <span class="bp">self</span><span class="o">.</span><span class="n">add_tune_tuning</span><span class="p">(</span><span class="n">e</span><span class="o">.</span><span class="n">attach</span><span class="p">(</span><span class="bp">self</span><span class="p">))</span>
 
             <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="n">Orbit</span><span class="p">):</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">add_orbit_tuning</span><span class="p">(</span><span class="n">e</span><span class="o">.</span><span class="n">attach</span><span class="p">(</span><span class="bp">self</span><span class="p">))</span></div>
+                <span class="bp">self</span><span class="o">.</span><span class="n">add_orbit_tuning</span><span class="p">(</span><span class="n">e</span><span class="o">.</span><span class="n">attach</span><span class="p">(</span><span class="bp">self</span><span class="p">))</span>
+
+            <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="n">OrbitResponseMatrix</span><span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">add_orm_tuning</span><span class="p">(</span><span class="n">e</span><span class="o">.</span><span class="n">attach</span><span class="p">(</span><span class="bp">self</span><span class="p">))</span>
+
+            <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="n">Dispersion</span><span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">add_dispersion_tuning</span><span class="p">(</span><span class="n">e</span><span class="o">.</span><span class="n">attach</span><span class="p">(</span><span class="bp">self</span><span class="p">))</span></div>
 
 
 <div class="viewcode-block" id="Simulator.get_names">
