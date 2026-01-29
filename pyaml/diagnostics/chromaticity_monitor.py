@@ -74,6 +74,7 @@ class ChomaticityMonitor(Element):
     def __init__(self, cfg: ConfigModel):
         """
         Construct a ChomaticityMonitor.
+
         Parameters
         ----------
         cfg : ConfigModel
