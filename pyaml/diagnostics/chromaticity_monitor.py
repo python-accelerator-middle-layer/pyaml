@@ -312,7 +312,7 @@ class ChomaticityMonitor(Element):
             if do_plot:
                 fig = plt.figure("Chromaticity_measurement")
                 ax = fig.add_subplot(2, 1, 1 + i)
-                ax.scatter(delta, dtune)
+                ax.scatter(delta * 100, dtune)
                 title = ""
                 for o in range(order, -1, -1):
                     dp = ""
@@ -325,7 +325,7 @@ class ChomaticityMonitor(Element):
                     if o != 0:
                         title += " + "
 
-                ax.plot(delta, np.polyval(coefs[::-1], delta))
+                ax.plot(delta * 100, np.polyval(coefs[::-1], delta))
                 ax.set_title(title)
                 ax.set_xlabel("Momentum Shift, dp/p [%]")
                 ax.set_ylabel("%s Tune" % ["Horizontal", "Vertical"][i])

@@ -4,11 +4,11 @@ machine: sr
 energy: 1.7e9
 simulators:
 - type: pyaml.lattice.simulator
-  lattice: bessy2.mat
+  lattice: bessy2_standard_user.mat
   name: design
 controls:
 - type: pyaml_cs_oa.controlsystem
-  prefix: 'pons:'
+  prefix: 'a3744:'
   name: live
 data_folder: /data/store
 devices:
@@ -26,10 +26,10 @@ devices:
   name: KSI
   betatron_tune: BETATRON_TUNE
   RFfreq: RF
-  fit_order: 1
+  fit_order: 2
   N_tune_meas: 1
   N_step: 5
-  Sleep_between_meas: 0
+  Sleep_between_meas: 2
   Sleep_between_RFvar: 2
   E_delta: 1e-3
   Max_E_delta: 1e-3
