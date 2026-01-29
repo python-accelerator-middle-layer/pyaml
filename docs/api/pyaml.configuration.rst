@@ -3,7 +3,7 @@
 
 .. automodule:: pyaml.configuration
 
-   
+
 .. rubric:: Modules
 
 .. autosummary::
@@ -18,4 +18,3 @@
    inline_curve
    inline_matrix
    matrix
-   models

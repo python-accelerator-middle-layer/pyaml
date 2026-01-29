@@ -3,16 +3,17 @@ pyaml.lattice.abstract\_impl
 
 .. automodule:: pyaml.lattice.abstract_impl
 
-   
+
    .. rubric:: Classes
 
    .. autosummary::
-   
+
       BPMHScalarAggregator
       BPMScalarAggregator
       BPMVScalarAggregator
       RBetatronTuneArray
       RBpmArray
+      RChromaticityArray
       RWBpmOffsetArray
       RWBpmTiltScalar
       RWHardwareArray
@@ -26,4 +27,3 @@ pyaml.lattice.abstract\_impl
       RWSerializedStrength
       RWStrengthArray
       RWStrengthScalar
-   
