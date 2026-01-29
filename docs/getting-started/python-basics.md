@@ -30,7 +30,7 @@ If you are a new user getting started who doesn't know yet what you prefer, a go
 Jupyter Notebooks
 -----------------
 
-A very common way to run Python in the scientific community is to use Jupyter notebooks(https://jupyter.org/). Is a browser-based tool which is very useful for data visualisation and interactive work. It can be installed both in a basic version **Jupyter Notebook** or as **JupyterLab** which provides some useful IDE features. It is common that tutorials will be in the form of a notebook.
+A very common way to run Python in the scientific community is to use [Jupyter notebooks](https://jupyter.org/). Is a browser-based tool which is very useful for data visualisation and interactive work. It can be installed both in a basic version **Jupyter Notebook** or as **JupyterLab** which provides some useful IDE features. It is common that tutorials will be in the form of a notebook.
 
 Installing Python
 -----------------
