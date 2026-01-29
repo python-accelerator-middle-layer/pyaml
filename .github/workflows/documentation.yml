@@ -47,6 +47,9 @@ jobs:
       - name: Install package
         run: |
           python -m pip install '.[doc]'
+          pip install accelerator-middle-layer[cs-oa-epics]
+          pip install accelerator-middle-layer[cs-oa-tango]
+          pip install accelerator-middle-layer[tango-pyaml]
 
       - name: Build documentation
         run: make html
