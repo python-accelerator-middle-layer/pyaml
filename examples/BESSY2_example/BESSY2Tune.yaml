@@ -4,62 +4,89 @@ machine: sr
 energy: 1.7e9
 simulators:
 - type: pyaml.lattice.simulator
-  lattice: bessy2.mat
+  lattice: bessy2_standard_user.mat
   name: design
 controls:
 - type: pyaml_cs_oa.controlsystem
-  prefix: 'pons:'
+  prefix: 'a3744:'
   name: live
 data_folder: /data/store
 arrays:
 - type: pyaml.arrays.magnet
   name: QForTune
   elements:
-  - Q3MD1R
-  - Q3MD2R
-  - Q3MD3R
-  - Q3MD4R
-  - Q3MD5R
-  - Q3MD6R
-  - Q3MD7R
-  - Q3MD8R
+  - Q3M2D1R
   - Q3M1T1R
   - Q3M2T1R
-  - Q3MT2R
-  - Q3MT3R
-  - Q3MT4R
-  - Q3MT5R
+  - Q3M1D2R
+  - Q3M2D2R
+  - Q3M1T2R
+  - Q3M2T2R
+  - Q3M1D3R
+  - Q3M2D3R
+  - Q3M1T3R
+  - Q3M2T3R
+  - Q3M1D4R
+  - Q3M2D4R
+  - Q3M1T4R
+  - Q3M2T4R
+  - Q3M1D5R
+  - Q3M2D5R
+  - Q3M1T5R
+  - Q3M2T5R
+  - Q3M1D6R
+  - Q3M2D6R
   - Q3M1T6R
   - Q3M2T6R
-  - Q3MT7R
+  - Q3M1D7R
+  - Q3M2D7R
+  - Q3M1T7R
+  - Q3M2T7R
+  - Q3M1D8R
+  - Q3M2D8R
   - Q3M1T8R
   - Q3M2T8R
-  - Q4MD1R
-  - Q4MD2R
-  - Q4MD3R
-  - Q4MD4R
-  - Q4MD5R
-  - Q4MD6R
-  - Q4MD7R
-  - Q4MD8R
+  - Q3M1D1R
+  - Q4M2D1R
   - Q4M1T1R
   - Q4M2T1R
-  - Q4MT2R
-  - Q4MT3R
-  - Q4MT4R
-  - Q4MT5R
+  - Q4M1D2R
+  - Q4M2D2R
+  - Q4M1T2R
+  - Q4M2T2R
+  - Q4M1D3R
+  - Q4M2D3R
+  - Q4M1T3R
+  - Q4M2T3R
+  - Q4M1D4R
+  - Q4M2D4R
+  - Q4M1T4R
+  - Q4M2T4R
+  - Q4M1D5R
+  - Q4M2D5R
+  - Q4M1T5R
+  - Q4M2T5R
+  - Q4M1D6R
+  - Q4M2D6R
   - Q4M1T6R
   - Q4M2T6R
-  - Q4MT7R
+  - Q4M1D7R
+  - Q4M2D7R
+  - Q4M1T7R
+  - Q4M2T7R
+  - Q4M1D8R
+  - Q4M2D8R
   - Q4M1T8R
   - Q4M2T8R
+  - Q4M1D1R
 devices:
+# Q3 D1
 - type: pyaml.magnet.quadrupole
-  name: Q3MD1R
-  lattice_names: list(Q3M1D1R,Q3M2D1R)
+  name: Q3M1D1R
+  lattice_names: Q3M1D1R
   model:
     type: pyaml.magnet.linear_model
-    calibration_factor: -0.031715
+    calibration_factor: -0.0158575
     unit: 1/m
     powerconverter:
       type: pyaml_cs_oa.epicsRW
@@ -67,91 +94,21 @@ devices:
       read_pvname: Q3PD1R:rdbk
       unit: A
 - type: pyaml.magnet.quadrupole
-  name: Q3MD2R
-  lattice_names: list(Q3M1D2R,Q3M2D2R)
+  name: Q3M2D1R
+  lattice_names: Q3M2D1R
   model:
     type: pyaml.magnet.linear_model
-    calibration_factor: -0.031715
+    calibration_factor: -0.0158575
     unit: 1/m
     powerconverter:
       type: pyaml_cs_oa.epicsRW
-      write_pvname: Q3PD2R:set
-      read_pvname: Q3PD2R:rdbk
+      write_pvname: Q3PD1R:set
+      read_pvname: Q3PD1R:rdbk
       unit: A
-- type: pyaml.magnet.quadrupole
-  name: Q3MD3R
-  lattice_names: list(Q3M1D3R,Q3M2D3R)
-  model:
-    type: pyaml.magnet.linear_model
-    calibration_factor: -0.031715
-    unit: 1/m
-    powerconverter:
-      type: pyaml_cs_oa.epicsRW
-      write_pvname: Q3PD3R:set
-      read_pvname: Q3PD3R:rdbk
-      unit: A
-- type: pyaml.magnet.quadrupole
-  name: Q3MD4R
-  lattice_names: list(Q3M1D4R,Q3M2D4R)
-  model:
-    type: pyaml.magnet.linear_model
-    calibration_factor: -0.031715
-    unit: 1/m
-    powerconverter:
-      type: pyaml_cs_oa.epicsRW
-      write_pvname: Q3PD4R:set
-      read_pvname: Q3PD4R:rdbk
-      unit: A
-- type: pyaml.magnet.quadrupole
-  name: Q3MD5R
-  lattice_names: list(Q3M1D5R,Q3M2D5R)
-  model:
-    type: pyaml.magnet.linear_model
-    calibration_factor: -0.031715
-    unit: 1/m
-    powerconverter:
-      type: pyaml_cs_oa.epicsRW
-      write_pvname: Q3PD5R:set
-      read_pvname: Q3PD5R:rdbk
-      unit: A
-- type: pyaml.magnet.quadrupole
-  name: Q3MD6R
-  lattice_names: list(Q3M1D6R,Q3M2D6R)
-  model:
-    type: pyaml.magnet.linear_model
-    calibration_factor: -0.031715
-    unit: 1/m
-    powerconverter:
-      type: pyaml_cs_oa.epicsRW
-      write_pvname: Q3PD6R:set
-      read_pvname: Q3PD6R:rdbk
-      unit: A
-- type: pyaml.magnet.quadrupole
-  name: Q3MD7R
-  lattice_names: list(Q3M1D7R,Q3M2D7R)
-  model:
-    type: pyaml.magnet.linear_model
-    calibration_factor: -0.031715
-    unit: 1/m
-    powerconverter:
-      type: pyaml_cs_oa.epicsRW
-      write_pvname: Q3PD7R:set
-      read_pvname: Q3PD7R:rdbk
-      unit: A
-- type: pyaml.magnet.quadrupole
-  name: Q3MD8R
-  lattice_names: list(Q3M1D8R,Q3M2D8R)
-  model:
-    type: pyaml.magnet.linear_model
-    calibration_factor: -0.031715
-    unit: 1/m
-    powerconverter:
-      type: pyaml_cs_oa.epicsRW
-      write_pvname: Q3PD8R:set
-      read_pvname: Q3PD8R:rdbk
-      unit: A
+# Q3 T1
 - type: pyaml.magnet.quadrupole
   name: Q3M1T1R
+  lattice_names: Q3M1T1R
   model:
     type: pyaml.magnet.linear_model
     calibration_factor: -0.015735
@@ -163,6 +120,7 @@ devices:
       unit: A
 - type: pyaml.magnet.quadrupole
   name: Q3M2T1R
+  lattice_names: Q3M2T1R
   model:
     type: pyaml.magnet.linear_model
     calibration_factor: -0.015735
@@ -172,12 +130,38 @@ devices:
       write_pvname: Q3P2T1R:set
       read_pvname: Q3P2T1R:rdbk
       unit: A
+# Q3 D2
 - type: pyaml.magnet.quadrupole
-  name: Q3MT2R
-  lattice_names: list(Q3M1T2R,Q3M2T2R)
+  name: Q3M1D2R
+  lattice_names: Q3M1D2R
   model:
     type: pyaml.magnet.linear_model
-    calibration_factor: -0.03147
+    calibration_factor: -0.0158575
+    unit: 1/m
+    powerconverter:
+      type: pyaml_cs_oa.epicsRW
+      write_pvname: Q3PD2R:set
+      read_pvname: Q3PD2R:rdbk
+      unit: A
+- type: pyaml.magnet.quadrupole
+  name: Q3M2D2R
+  lattice_names: Q3M2D2R
+  model:
+    type: pyaml.magnet.linear_model
+    calibration_factor: -0.0158575
+    unit: 1/m
+    powerconverter:
+      type: pyaml_cs_oa.epicsRW
+      write_pvname: Q3PD2R:set
+      read_pvname: Q3PD2R:rdbk
+      unit: A
+# Q3 T2
+- type: pyaml.magnet.quadrupole
+  name: Q3M1T2R
+  lattice_names: Q3M1T2R
+  model:
+    type: pyaml.magnet.linear_model
+    calibration_factor: -0.015735
     unit: 1/m
     powerconverter:
       type: pyaml_cs_oa.epicsRW
@@ -185,11 +169,49 @@ devices:
       read_pvname: Q3PT2R:rdbk
       unit: A
 - type: pyaml.magnet.quadrupole
-  name: Q3MT3R
-  lattice_names: list(Q3M1T3R,Q3M2T3R)
+  name: Q3M2T2R
+  lattice_names: Q3M2T2R
   model:
     type: pyaml.magnet.linear_model
-    calibration_factor: -0.03147
+    calibration_factor: -0.015735
+    unit: 1/m
+    powerconverter:
+      type: pyaml_cs_oa.epicsRW
+      write_pvname: Q3PT2R:set
+      read_pvname: Q3PT2R:rdbk
+      unit: A
+# Q3 D3
+- type: pyaml.magnet.quadrupole
+  name: Q3M1D3R
+  lattice_names: Q3M1D3R
+  model:
+    type: pyaml.magnet.linear_model
+    calibration_factor: -0.0158575
+    unit: 1/m
+    powerconverter:
+      type: pyaml_cs_oa.epicsRW
+      write_pvname: Q3PD3R:set
+      read_pvname: Q3PD3R:rdbk
+      unit: A
+- type: pyaml.magnet.quadrupole
+  name: Q3M2D3R
+  lattice_names: Q3M2D3R
+  model:
+    type: pyaml.magnet.linear_model
+    calibration_factor: -0.0158575
+    unit: 1/m
+    powerconverter:
+      type: pyaml_cs_oa.epicsRW
+      write_pvname: Q3PD3R:set
+      read_pvname: Q3PD3R:rdbk
+      unit: A
+# Q3 T3
+- type: pyaml.magnet.quadrupole
+  name: Q3M1T3R
+  lattice_names: Q3M1T3R
+  model:
+    type: pyaml.magnet.linear_model
+    calibration_factor: -0.015735
     unit: 1/m
     powerconverter:
       type: pyaml_cs_oa.epicsRW
@@ -197,11 +219,49 @@ devices:
       read_pvname: Q3PT3R:rdbk
       unit: A
 - type: pyaml.magnet.quadrupole
-  name: Q3MT4R
-  lattice_names: list(Q3M1T4R,Q3M2T4R)
+  name: Q3M2T3R
+  lattice_names: Q3M2T3R
   model:
     type: pyaml.magnet.linear_model
-    calibration_factor: -0.03147
+    calibration_factor: -0.015735
+    unit: 1/m
+    powerconverter:
+      type: pyaml_cs_oa.epicsRW
+      write_pvname: Q3PT3R:set
+      read_pvname: Q3PT3R:rdbk
+      unit: A
+# Q3 D4
+- type: pyaml.magnet.quadrupole
+  name: Q3M1D4R
+  lattice_names: Q3M1D4R
+  model:
+    type: pyaml.magnet.linear_model
+    calibration_factor: -0.0158575
+    unit: 1/m
+    powerconverter:
+      type: pyaml_cs_oa.epicsRW
+      write_pvname: Q3PD4R:set
+      read_pvname: Q3PD4R:rdbk
+      unit: A
+- type: pyaml.magnet.quadrupole
+  name: Q3M2D4R
+  lattice_names: Q3M2D4R
+  model:
+    type: pyaml.magnet.linear_model
+    calibration_factor: -0.0158575
+    unit: 1/m
+    powerconverter:
+      type: pyaml_cs_oa.epicsRW
+      write_pvname: Q3PD4R:set
+      read_pvname: Q3PD4R:rdbk
+      unit: A
+# Q3 T4
+- type: pyaml.magnet.quadrupole
+  name: Q3M1T4R
+  lattice_names: Q3M1T4R
+  model:
+    type: pyaml.magnet.linear_model
+    calibration_factor: -0.015735
     unit: 1/m
     powerconverter:
       type: pyaml_cs_oa.epicsRW
@@ -209,11 +269,49 @@ devices:
       read_pvname: Q3PT4R:rdbk
       unit: A
 - type: pyaml.magnet.quadrupole
-  name: Q3MT5R
-  lattice_names: list(Q3M1T5R,Q3M2T5R)
+  name: Q3M2T4R
+  lattice_names: Q3M2T4R
   model:
     type: pyaml.magnet.linear_model
-    calibration_factor: -0.03147
+    calibration_factor: -0.015735
+    unit: 1/m
+    powerconverter:
+      type: pyaml_cs_oa.epicsRW
+      write_pvname: Q3PT4R:set
+      read_pvname: Q3PT4R:rdbk
+      unit: A
+# Q3 D5
+- type: pyaml.magnet.quadrupole
+  name: Q3M1D5R
+  lattice_names: Q3M1D5R
+  model:
+    type: pyaml.magnet.linear_model
+    calibration_factor: -0.0158575
+    unit: 1/m
+    powerconverter:
+      type: pyaml_cs_oa.epicsRW
+      write_pvname: Q3PD5R:set
+      read_pvname: Q3PD5R:rdbk
+      unit: A
+- type: pyaml.magnet.quadrupole
+  name: Q3M2D5R
+  lattice_names: Q3M2D5R
+  model:
+    type: pyaml.magnet.linear_model
+    calibration_factor: -0.0158575
+    unit: 1/m
+    powerconverter:
+      type: pyaml_cs_oa.epicsRW
+      write_pvname: Q3PD5R:set
+      read_pvname: Q3PD5R:rdbk
+      unit: A
+# Q3 T5
+- type: pyaml.magnet.quadrupole
+  name: Q3M1T5R
+  lattice_names: Q3M1T5R
+  model:
+    type: pyaml.magnet.linear_model
+    calibration_factor: -0.015735
     unit: 1/m
     powerconverter:
       type: pyaml_cs_oa.epicsRW
@@ -221,7 +319,46 @@ devices:
       read_pvname: Q3PT5R:rdbk
       unit: A
 - type: pyaml.magnet.quadrupole
+  name: Q3M2T5R
+  lattice_names: Q3M2T5R
+  model:
+    type: pyaml.magnet.linear_model
+    calibration_factor: -0.015735
+    unit: 1/m
+    powerconverter:
+      type: pyaml_cs_oa.epicsRW
+      write_pvname: Q3PT5R:set
+      read_pvname: Q3PT5R:rdbk
+      unit: A
+# Q3 D6
+- type: pyaml.magnet.quadrupole
+  name: Q3M1D6R
+  lattice_names: Q3M1D6R
+  model:
+    type: pyaml.magnet.linear_model
+    calibration_factor: -0.0158575
+    unit: 1/m
+    powerconverter:
+      type: pyaml_cs_oa.epicsRW
+      write_pvname: Q3PD6R:set
+      read_pvname: Q3PD6R:rdbk
+      unit: A
+- type: pyaml.magnet.quadrupole
+  name: Q3M2D6R
+  lattice_names: Q3M2D6R
+  model:
+    type: pyaml.magnet.linear_model
+    calibration_factor: -0.0158575
+    unit: 1/m
+    powerconverter:
+      type: pyaml_cs_oa.epicsRW
+      write_pvname: Q3PD6R:set
+      read_pvname: Q3PD6R:rdbk
+      unit: A
+# Q3 T6
+- type: pyaml.magnet.quadrupole
   name: Q3M1T6R
+  lattice_names: Q3M1T6R
   model:
     type: pyaml.magnet.linear_model
     calibration_factor: -0.015735
@@ -233,6 +370,7 @@ devices:
       unit: A
 - type: pyaml.magnet.quadrupole
   name: Q3M2T6R
+  lattice_names: Q3M2T6R
   model:
     type: pyaml.magnet.linear_model
     calibration_factor: -0.015735
@@ -242,12 +380,38 @@ devices:
       write_pvname: Q3P2T6R:set
       read_pvname: Q3P2T6R:rdbk
       unit: A
+# Q3 D7
 - type: pyaml.magnet.quadrupole
-  name: Q3MT7R
-  lattice_names: list(Q3M1T7R,Q3M2T7R)
+  name: Q3M1D7R
+  lattice_names: Q3M1D7R
   model:
     type: pyaml.magnet.linear_model
-    calibration_factor: -0.03147
+    calibration_factor: -0.0158575
+    unit: 1/m
+    powerconverter:
+      type: pyaml_cs_oa.epicsRW
+      write_pvname: Q3PD7R:set
+      read_pvname: Q3PD7R:rdbk
+      unit: A
+- type: pyaml.magnet.quadrupole
+  name: Q3M2D7R
+  lattice_names: Q3M2D7R
+  model:
+    type: pyaml.magnet.linear_model
+    calibration_factor: -0.0158575
+    unit: 1/m
+    powerconverter:
+      type: pyaml_cs_oa.epicsRW
+      write_pvname: Q3PD7R:set
+      read_pvname: Q3PD7R:rdbk
+      unit: A
+# Q3 T7
+- type: pyaml.magnet.quadrupole
+  name: Q3M1T7R
+  lattice_names: Q3M1T7R
+  model:
+    type: pyaml.magnet.linear_model
+    calibration_factor: -0.015735
     unit: 1/m
     powerconverter:
       type: pyaml_cs_oa.epicsRW
@@ -255,7 +419,46 @@ devices:
       read_pvname: Q3PT7R:rdbk
       unit: A
 - type: pyaml.magnet.quadrupole
+  name: Q3M2T7R
+  lattice_names: Q3M2T7R
+  model:
+    type: pyaml.magnet.linear_model
+    calibration_factor: -0.015735
+    unit: 1/m
+    powerconverter:
+      type: pyaml_cs_oa.epicsRW
+      write_pvname: Q3PT7R:set
+      read_pvname: Q3PT7R:rdbk
+      unit: A
+# Q3 D8
+- type: pyaml.magnet.quadrupole
+  name: Q3M1D8R
+  lattice_names: Q3M1D8R
+  model:
+    type: pyaml.magnet.linear_model
+    calibration_factor: -0.0158575
+    unit: 1/m
+    powerconverter:
+      type: pyaml_cs_oa.epicsRW
+      write_pvname: Q3PD8R:set
+      read_pvname: Q3PD8R:rdbk
+      unit: A
+- type: pyaml.magnet.quadrupole
+  name: Q3M2D8R
+  lattice_names: Q3M2D8R
+  model:
+    type: pyaml.magnet.linear_model
+    calibration_factor: -0.0158575
+    unit: 1/m
+    powerconverter:
+      type: pyaml_cs_oa.epicsRW
+      write_pvname: Q3PD8R:set
+      read_pvname: Q3PD8R:rdbk
+      unit: A
+# Q3 T8
+- type: pyaml.magnet.quadrupole
   name: Q3M1T8R
+  lattice_names: Q3M1T8R
   model:
     type: pyaml.magnet.linear_model
     calibration_factor: -0.015735
@@ -267,6 +470,7 @@ devices:
       unit: A
 - type: pyaml.magnet.quadrupole
   name: Q3M2T8R
+  lattice_names: Q3M2T8R
   model:
     type: pyaml.magnet.linear_model
     calibration_factor: -0.015735
@@ -276,12 +480,13 @@ devices:
       write_pvname: Q3P2T8R:set
       read_pvname: Q3P2T8R:rdbk
       unit: A
+# Q4 D1
 - type: pyaml.magnet.quadrupole
-  name: Q4MD1R
-  lattice_names: list(Q4M1D1R,Q4M2D1R)
+  name: Q4M1D1R
+  lattice_names: Q4M1D1R
   model:
     type: pyaml.magnet.linear_model
-    calibration_factor: 0.060633
+    calibration_factor: 0.0303165
     unit: 1/m
     powerconverter:
       type: pyaml_cs_oa.epicsRW
@@ -289,91 +494,21 @@ devices:
       read_pvname: Q4PD1R:rdbk
       unit: A
 - type: pyaml.magnet.quadrupole
-  name: Q4MD2R
-  lattice_names: list(Q4M1D2R,Q4M2D2R)
+  name: Q4M2D1R
+  lattice_names: Q4M2D1R
   model:
     type: pyaml.magnet.linear_model
-    calibration_factor: 0.060633
+    calibration_factor: 0.0303165
     unit: 1/m
     powerconverter:
       type: pyaml_cs_oa.epicsRW
-      write_pvname: Q4PD2R:set
-      read_pvname: Q4PD2R:rdbk
+      write_pvname: Q4PD1R:set
+      read_pvname: Q4PD1R:rdbk
       unit: A
-- type: pyaml.magnet.quadrupole
-  name: Q4MD3R
-  lattice_names: list(Q4M1D3R,Q4M2D3R)
-  model:
-    type: pyaml.magnet.linear_model
-    calibration_factor: 0.060633
-    unit: 1/m
-    powerconverter:
-      type: pyaml_cs_oa.epicsRW
-      write_pvname: Q4PD3R:set
-      read_pvname: Q4PD3R:rdbk
-      unit: A
-- type: pyaml.magnet.quadrupole
-  name: Q4MD4R
-  lattice_names: list(Q4M1D4R,Q4M2D4R)
-  model:
-    type: pyaml.magnet.linear_model
-    calibration_factor: 0.060633
-    unit: 1/m
-    powerconverter:
-      type: pyaml_cs_oa.epicsRW
-      write_pvname: Q4PD4R:set
-      read_pvname: Q4PD4R:rdbk
-      unit: A
-- type: pyaml.magnet.quadrupole
-  name: Q4MD5R
-  lattice_names: list(Q4M1D5R,Q4M2D5R)
-  model:
-    type: pyaml.magnet.linear_model
-    calibration_factor: 0.060633
-    unit: 1/m
-    powerconverter:
-      type: pyaml_cs_oa.epicsRW
-      write_pvname: Q4PD5R:set
-      read_pvname: Q4PD5R:rdbk
-      unit: A
-- type: pyaml.magnet.quadrupole
-  name: Q4MD6R
-  lattice_names: list(Q4M1D6R,Q4M2D6R)
-  model:
-    type: pyaml.magnet.linear_model
-    calibration_factor: 0.060633
-    unit: 1/m
-    powerconverter:
-      type: pyaml_cs_oa.epicsRW
-      write_pvname: Q4PD6R:set
-      read_pvname: Q4PD6R:rdbk
-      unit: A
-- type: pyaml.magnet.quadrupole
-  name: Q4MD7R
-  lattice_names: list(Q4M1D7R,Q4M2D7R)
-  model:
-    type: pyaml.magnet.linear_model
-    calibration_factor: 0.060633
-    unit: 1/m
-    powerconverter:
-      type: pyaml_cs_oa.epicsRW
-      write_pvname: Q4PD7R:set
-      read_pvname: Q4PD7R:rdbk
-      unit: A
-- type: pyaml.magnet.quadrupole
-  name: Q4MD8R
-  lattice_names: list(Q4M1D8R,Q4M2D8R)
-  model:
-    type: pyaml.magnet.linear_model
-    calibration_factor: 0.060633
-    unit: 1/m
-    powerconverter:
-      type: pyaml_cs_oa.epicsRW
-      write_pvname: Q4PD8R:set
-      read_pvname: Q4PD8R:rdbk
-      unit: A
+# Q34T1
 - type: pyaml.magnet.quadrupole
   name: Q4M1T1R
+  lattice_names: Q4M1T1R
   model:
     type: pyaml.magnet.linear_model
     calibration_factor: 0.0296695
@@ -385,6 +520,7 @@ devices:
       unit: A
 - type: pyaml.magnet.quadrupole
   name: Q4M2T1R
+  lattice_names: Q4M2T1R
   model:
     type: pyaml.magnet.linear_model
     calibration_factor: 0.0296695
@@ -394,12 +530,38 @@ devices:
       write_pvname: Q4P2T1R:set
       read_pvname: Q4P2T1R:rdbk
       unit: A
+# Q4 D2
 - type: pyaml.magnet.quadrupole
-  name: Q4MT2R
-  lattice_names: list(Q4M1T2R,Q4M2T2R)
+  name: Q4M1D2R
+  lattice_names: Q4M1D2R
   model:
     type: pyaml.magnet.linear_model
-    calibration_factor: 0.059339
+    calibration_factor: 0.0303165
+    unit: 1/m
+    powerconverter:
+      type: pyaml_cs_oa.epicsRW
+      write_pvname: Q4PD2R:set
+      read_pvname: Q4PD2R:rdbk
+      unit: A
+- type: pyaml.magnet.quadrupole
+  name: Q4M2D2R
+  lattice_names: Q4M2D2R
+  model:
+    type: pyaml.magnet.linear_model
+    calibration_factor: 0.0303165
+    unit: 1/m
+    powerconverter:
+      type: pyaml_cs_oa.epicsRW
+      write_pvname: Q4PD2R:set
+      read_pvname: Q4PD2R:rdbk
+      unit: A
+# Q4 T2
+- type: pyaml.magnet.quadrupole
+  name: Q4M1T2R
+  lattice_names: Q4M1T2R
+  model:
+    type: pyaml.magnet.linear_model
+    calibration_factor: 0.0296695
     unit: 1/m
     powerconverter:
       type: pyaml_cs_oa.epicsRW
@@ -407,11 +569,49 @@ devices:
       read_pvname: Q4PT2R:rdbk
       unit: A
 - type: pyaml.magnet.quadrupole
-  name: Q4MT3R
-  lattice_names: list(Q4M1T3R,Q4M2T3R)
+  name: Q4M2T2R
+  lattice_names: Q4M2T2R
   model:
     type: pyaml.magnet.linear_model
-    calibration_factor: 0.059339
+    calibration_factor: 0.0296695
+    unit: 1/m
+    powerconverter:
+      type: pyaml_cs_oa.epicsRW
+      write_pvname: Q4PT2R:set
+      read_pvname: Q4PT2R:rdbk
+      unit: A
+# Q4 D3
+- type: pyaml.magnet.quadrupole
+  name: Q4M1D3R
+  lattice_names: Q4M1D3R
+  model:
+    type: pyaml.magnet.linear_model
+    calibration_factor: 0.0303165
+    unit: 1/m
+    powerconverter:
+      type: pyaml_cs_oa.epicsRW
+      write_pvname: Q4PD3R:set
+      read_pvname: Q4PD3R:rdbk
+      unit: A
+- type: pyaml.magnet.quadrupole
+  name: Q4M2D3R
+  lattice_names: Q4M2D3R
+  model:
+    type: pyaml.magnet.linear_model
+    calibration_factor: 0.0303165
+    unit: 1/m
+    powerconverter:
+      type: pyaml_cs_oa.epicsRW
+      write_pvname: Q4PD3R:set
+      read_pvname: Q4PD3R:rdbk
+      unit: A
+# Q4 T3
+- type: pyaml.magnet.quadrupole
+  name: Q4M1T3R
+  lattice_names: Q4M1T3R
+  model:
+    type: pyaml.magnet.linear_model
+    calibration_factor: 0.0296695
     unit: 1/m
     powerconverter:
       type: pyaml_cs_oa.epicsRW
@@ -419,11 +619,49 @@ devices:
       read_pvname: Q4PT3R:rdbk
       unit: A
 - type: pyaml.magnet.quadrupole
-  name: Q4MT4R
-  lattice_names: list(Q4M1T4R,Q4M2T4R)
+  name: Q4M2T3R
+  lattice_names: Q4M2T3R
   model:
     type: pyaml.magnet.linear_model
-    calibration_factor: 0.059339
+    calibration_factor: 0.0296695
+    unit: 1/m
+    powerconverter:
+      type: pyaml_cs_oa.epicsRW
+      write_pvname: Q4PT3R:set
+      read_pvname: Q4PT3R:rdbk
+      unit: A
+# Q4 D4
+- type: pyaml.magnet.quadrupole
+  name: Q4M1D4R
+  lattice_names: Q4M1D4R
+  model:
+    type: pyaml.magnet.linear_model
+    calibration_factor: 0.0303165
+    unit: 1/m
+    powerconverter:
+      type: pyaml_cs_oa.epicsRW
+      write_pvname: Q4PD4R:set
+      read_pvname: Q4PD4R:rdbk
+      unit: A
+- type: pyaml.magnet.quadrupole
+  name: Q4M2D4R
+  lattice_names: Q4M2D4R
+  model:
+    type: pyaml.magnet.linear_model
+    calibration_factor: 0.0303165
+    unit: 1/m
+    powerconverter:
+      type: pyaml_cs_oa.epicsRW
+      write_pvname: Q4PD4R:set
+      read_pvname: Q4PD4R:rdbk
+      unit: A
+# Q4 T4
+- type: pyaml.magnet.quadrupole
+  name: Q4M1T4R
+  lattice_names: Q4M1T4R
+  model:
+    type: pyaml.magnet.linear_model
+    calibration_factor: 0.0296695
     unit: 1/m
     powerconverter:
       type: pyaml_cs_oa.epicsRW
@@ -431,11 +669,49 @@ devices:
       read_pvname: Q4PT4R:rdbk
       unit: A
 - type: pyaml.magnet.quadrupole
-  name: Q4MT5R
-  lattice_names: list(Q4M1T5R,Q4M2T5R)
+  name: Q4M2T4R
+  lattice_names: Q4M2T4R
   model:
     type: pyaml.magnet.linear_model
-    calibration_factor: 0.059339
+    calibration_factor: 0.0296695
+    unit: 1/m
+    powerconverter:
+      type: pyaml_cs_oa.epicsRW
+      write_pvname: Q4PT4R:set
+      read_pvname: Q4PT4R:rdbk
+      unit: A
+# Q4 D5
+- type: pyaml.magnet.quadrupole
+  name: Q4M1D5R
+  lattice_names: Q4M1D5R
+  model:
+    type: pyaml.magnet.linear_model
+    calibration_factor: 0.0303165
+    unit: 1/m
+    powerconverter:
+      type: pyaml_cs_oa.epicsRW
+      write_pvname: Q4PD5R:set
+      read_pvname: Q4PD5R:rdbk
+      unit: A
+- type: pyaml.magnet.quadrupole
+  name: Q4M2D5R
+  lattice_names: Q4M2D5R
+  model:
+    type: pyaml.magnet.linear_model
+    calibration_factor: 0.0303165
+    unit: 1/m
+    powerconverter:
+      type: pyaml_cs_oa.epicsRW
+      write_pvname: Q4PD5R:set
+      read_pvname: Q4PD5R:rdbk
+      unit: A
+# Q4 T5
+- type: pyaml.magnet.quadrupole
+  name: Q4M1T5R
+  lattice_names: Q4M1T5R
+  model:
+    type: pyaml.magnet.linear_model
+    calibration_factor: 0.0296695
     unit: 1/m
     powerconverter:
       type: pyaml_cs_oa.epicsRW
@@ -443,7 +719,46 @@ devices:
       read_pvname: Q4PT5R:rdbk
       unit: A
 - type: pyaml.magnet.quadrupole
+  name: Q4M2T5R
+  lattice_names: Q4M2T5R
+  model:
+    type: pyaml.magnet.linear_model
+    calibration_factor: 0.0296695
+    unit: 1/m
+    powerconverter:
+      type: pyaml_cs_oa.epicsRW
+      write_pvname: Q4PT5R:set
+      read_pvname: Q4PT5R:rdbk
+      unit: A
+# Q4 D6
+- type: pyaml.magnet.quadrupole
+  name: Q4M1D6R
+  lattice_names: Q4M1D6R
+  model:
+    type: pyaml.magnet.linear_model
+    calibration_factor: 0.0303165
+    unit: 1/m
+    powerconverter:
+      type: pyaml_cs_oa.epicsRW
+      write_pvname: Q4PD6R:set
+      read_pvname: Q4PD6R:rdbk
+      unit: A
+- type: pyaml.magnet.quadrupole
+  name: Q4M2D6R
+  lattice_names: Q4M2D6R
+  model:
+    type: pyaml.magnet.linear_model
+    calibration_factor: 0.0303165
+    unit: 1/m
+    powerconverter:
+      type: pyaml_cs_oa.epicsRW
+      write_pvname: Q4PD6R:set
+      read_pvname: Q4PD6R:rdbk
+      unit: A
+# Q4 T6
+- type: pyaml.magnet.quadrupole
   name: Q4M1T6R
+  lattice_names: Q4M1T6R
   model:
     type: pyaml.magnet.linear_model
     calibration_factor: 0.0296695
@@ -455,6 +770,7 @@ devices:
       unit: A
 - type: pyaml.magnet.quadrupole
   name: Q4M2T6R
+  lattice_names: Q4M2T6R
   model:
     type: pyaml.magnet.linear_model
     calibration_factor: 0.0296695
@@ -464,12 +780,38 @@ devices:
       write_pvname: Q4P2T6R:set
       read_pvname: Q4P2T6R:rdbk
       unit: A
+# Q4 D7
 - type: pyaml.magnet.quadrupole
-  name: Q4MT7R
-  lattice_names: list(Q4M1T7R,Q4M2T7R)
+  name: Q4M1D7R
+  lattice_names: Q4M1D7R
   model:
     type: pyaml.magnet.linear_model
-    calibration_factor: 0.059339
+    calibration_factor: 0.0303165
+    unit: 1/m
+    powerconverter:
+      type: pyaml_cs_oa.epicsRW
+      write_pvname: Q4PD7R:set
+      read_pvname: Q4PD7R:rdbk
+      unit: A
+- type: pyaml.magnet.quadrupole
+  name: Q4M2D7R
+  lattice_names: Q4M2D7R
+  model:
+    type: pyaml.magnet.linear_model
+    calibration_factor: 0.0303165
+    unit: 1/m
+    powerconverter:
+      type: pyaml_cs_oa.epicsRW
+      write_pvname: Q4PD7R:set
+      read_pvname: Q4PD7R:rdbk
+      unit: A
+# Q4 T7
+- type: pyaml.magnet.quadrupole
+  name: Q4M1T7R
+  lattice_names: Q4M1T7R
+  model:
+    type: pyaml.magnet.linear_model
+    calibration_factor: 0.0296695
     unit: 1/m
     powerconverter:
       type: pyaml_cs_oa.epicsRW
@@ -477,7 +819,46 @@ devices:
       read_pvname: Q4PT7R:rdbk
       unit: A
 - type: pyaml.magnet.quadrupole
+  name: Q4M2T7R
+  lattice_names: Q4M2T7R
+  model:
+    type: pyaml.magnet.linear_model
+    calibration_factor: 0.0296695
+    unit: 1/m
+    powerconverter:
+      type: pyaml_cs_oa.epicsRW
+      write_pvname: Q4PT7R:set
+      read_pvname: Q4PT7R:rdbk
+      unit: A
+# Q4 D8
+- type: pyaml.magnet.quadrupole
+  name: Q4M1D8R
+  lattice_names: Q4M1D8R
+  model:
+    type: pyaml.magnet.linear_model
+    calibration_factor: 0.0303165
+    unit: 1/m
+    powerconverter:
+      type: pyaml_cs_oa.epicsRW
+      write_pvname: Q4PD8R:set
+      read_pvname: Q4PD8R:rdbk
+      unit: A
+- type: pyaml.magnet.quadrupole
+  name: Q4M2D8R
+  lattice_names: Q4M2D8R
+  model:
+    type: pyaml.magnet.linear_model
+    calibration_factor: 0.0303165
+    unit: 1/m
+    powerconverter:
+      type: pyaml_cs_oa.epicsRW
+      write_pvname: Q4PD8R:set
+      read_pvname: Q4PD8R:rdbk
+      unit: A
+# Q4 T8
+- type: pyaml.magnet.quadrupole
   name: Q4M1T8R
+  lattice_names: Q4M1T8R
   model:
     type: pyaml.magnet.linear_model
     calibration_factor: 0.0296695
@@ -489,6 +870,7 @@ devices:
       unit: A
 - type: pyaml.magnet.quadrupole
   name: Q4M2T8R
+  lattice_names: Q4M2T8R
   model:
     type: pyaml.magnet.linear_model
     calibration_factor: 0.0296695
