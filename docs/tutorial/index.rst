@@ -9,7 +9,7 @@ Basics
 .. toctree::
    :maxdepth: 1
 
-   How to correct tunes 
+   How to correct tunes
 
 Advanced
--------
+---------
