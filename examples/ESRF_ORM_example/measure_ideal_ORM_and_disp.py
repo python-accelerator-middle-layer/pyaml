@@ -14,33 +14,15 @@ config_path = parent_folder.parent.parent.joinpath(
     "tests", "config", "EBSOrbit.yaml"
 ).resolve()
 sr = Accelerator.load(config_path)
-element_holder = sr.design
 
-orm = OrbitResponseMatrix(
-    cfg=ORM_ConfigModel(
-        bpm_array_name="BPM",
-        hcorr_array_name="HCorr",
-        vcorr_array_name="VCorr",
-        corrector_delta=1e-6,
-    ),
-    element_holder=element_holder,
-)
+ebs = sr.design
 
-orm.measure()
+ebs.orm.measure()
+orm_data = ebs.orm.get()
 
-orm_data = orm.get()
+ebs.dispersion.measure()
+dispersion_data = ebs.dispersion.get()
 
-dispersion = Dispersion(
-    cfg=Disp_ConfigModel(
-        bpm_array_name="BPM",
-        rf_plant_name="RF",
-        frequency_delta=10,
-    ),
-    element_holder=element_holder,
-)
-
-dispersion.measure()
-dispersion_data = dispersion.get()
 rf_response = (
     dispersion_data["frequency_response_x"] + dispersion_data["frequency_response_y"]
 )
@@ -50,6 +32,8 @@ ideal_ORM_data = {
     "matrix": orm_data["matrix"],
     "input_names": orm_data["input_names"],
     "output_names": orm_data["output_names"],
+    "inputs_plane": orm_data["inputs_plane"],
+    "outputs_plane": orm_data["outputs_plane"],
     "rf_response": rf_response,
 }
 

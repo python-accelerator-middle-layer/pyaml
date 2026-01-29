@@ -30,17 +30,8 @@ SR = sr.design
 
 # if the ORM is not present measure it
 if sr.design.orbit.response_matrix is None:
-    orm = OrbitResponseMatrix(
-        cfg=ORM_ConfigModel(
-            bpm_array_name="BPM",
-            hcorr_array_name="HCorr",
-            vcorr_array_name="VCorr",
-            corrector_delta=1e-6,
-        ),
-        element_holder=SR,  # Measurement target
-    )
-    orm.measure(set_wait_time=0.0 if SR == sr.design else 2.0)
-    orm_data = orm.get()
+    SR.orm.measure(set_wait_time=0.0 if SR == sr.design else 2.0)
+    orm_data = SR.orm.get()
 
     # Save the data to json
     ORM_data = {

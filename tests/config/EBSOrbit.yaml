@@ -935,6 +935,17 @@ devices:
   name: DEFAULT_ORBIT_CORRECTION
   singular_values: 162
   response_matrix: file:ideal_orm_disp.json
+- type: pyaml.tuning_tools.orbit_response_matrix
+  bpm_array_name: BPM
+  hcorr_array_name: HCorr
+  vcorr_array_name: VCorr
+  corrector_delta: 1e-6
+  name: DEFAULT_ORBIT_RESPONSE_MATRIX
+- type: pyaml.tuning_tools.dispersion
+  bpm_array_name: BPM
+  rf_plant_name: RF
+  frequency_delta: 10
+  name: DEFAULT_DISPERSION
 - type: pyaml.rf.rf_plant
   name: RF
   masterclock:
