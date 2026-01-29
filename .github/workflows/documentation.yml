@@ -47,13 +47,13 @@ jobs:
       - name: Install package
         run: python -m pip install '.[doc]'
 
-      - name: Install package
+      - name: Install package tangopyaml
         run: python -m pip install tango-pyaml
       
-      - name: Install package
+      - name: Install package oa epics
         run: python -m pip install pyaml-cs-oa[epics]
 
-      - name: Install package
+      - name: Install package oa tango
         run: python -m pip install pyaml-cs-oa[tango]
 
       - name: Build documentation
