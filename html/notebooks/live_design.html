@@ -152,6 +152,13 @@
 
 
 <li class="nav-item ">
+  <a class="nav-link nav-internal" href="../tutorial/index.html">
+    Tutorials
+  </a>
+</li>
+
+
+<li class="nav-item ">
   <a class="nav-link nav-internal" href="../api.html">
     API Reference
   </a>
@@ -252,6 +259,13 @@
 <li class="nav-item current active">
   <a class="nav-link nav-internal" href="../how-to/index.html">
     How to Guides
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../tutorial/index.html">
+    Tutorials
   </a>
 </li>
 
@@ -407,57 +421,7 @@
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
-<span class="ne">PyAMLConfigException</span><span class="g g-Whitespace">                      </span>Traceback (most recent call last)
-<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">line</span> <span class="mi">1</span>
-<span class="ne">----&gt; </span><span class="mi">1</span> <span class="n">SR</span><span class="p">:</span> <span class="n">Accelerator</span> <span class="o">=</span> <span class="n">Accelerator</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s2">&quot;../../tests/config/EBSTune.yaml&quot;</span><span class="p">)</span>
-
-<span class="nn">File /opt/hostedtoolcache/Python/3.14.2/x64/lib/python3.14/site-packages/pyaml/accelerator.py:174,</span> in <span class="ni">Accelerator.load</span><span class="nt">(filename, use_fast_loader, ignore_external)</span>
-<span class="g g-Whitespace">    </span><span class="mi">172</span> <span class="n">set_root_folder</span><span class="p">(</span><span class="n">rootfolder</span><span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">173</span> <span class="n">config_dict</span> <span class="o">=</span> <span class="n">load</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">filename</span><span class="p">),</span> <span class="kc">None</span><span class="p">,</span> <span class="n">use_fast_loader</span><span class="p">)</span>
-<span class="ne">--&gt; </span><span class="mi">174</span> <span class="k">return</span> <span class="n">Accelerator</span><span class="o">.</span><span class="n">from_dict</span><span class="p">(</span><span class="n">config_dict</span><span class="p">)</span>
-
-<span class="nn">File /opt/hostedtoolcache/Python/3.14.2/x64/lib/python3.14/site-packages/pyaml/accelerator.py:144,</span> in <span class="ni">Accelerator.from_dict</span><span class="nt">(config_dict, ignore_external)</span>
-<span class="g g-Whitespace">    </span><span class="mi">141</span> <span class="k">if</span> <span class="n">ignore_external</span><span class="p">:</span>
-<span class="g g-Whitespace">    </span><span class="mi">142</span>     <span class="c1"># control systems are external, so remove controls field</span>
-<span class="g g-Whitespace">    </span><span class="mi">143</span>     <span class="n">config_dict</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;controls&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
-<span class="ne">--&gt; </span><span class="mi">144</span> <span class="k">return</span> <span class="n">Factory</span><span class="o">.</span><span class="n">depth_first_build</span><span class="p">(</span><span class="n">config_dict</span><span class="p">,</span> <span class="n">ignore_external</span><span class="p">)</span>
-
-<span class="nn">File /opt/hostedtoolcache/Python/3.14.2/x64/lib/python3.14/site-packages/pyaml/configuration/factory.py:175,</span> in <span class="ni">PyAMLFactory.depth_first_build</span><span class="nt">(self, d, ignore_external)</span>
-<span class="g g-Whitespace">    </span><span class="mi">173</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">key</span> <span class="o">==</span> <span class="s2">&quot;__fieldlocations__&quot;</span><span class="p">:</span>
-<span class="g g-Whitespace">    </span><span class="mi">174</span>     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">dict</span><span class="p">)</span> <span class="ow">or</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
-<span class="ne">--&gt; </span><span class="mi">175</span>         <span class="n">obj</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">depth_first_build</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">ignore_external</span><span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">176</span>         <span class="c1"># Replace the inner dict by the object itself</span>
-<span class="g g-Whitespace">    </span><span class="mi">177</span>         <span class="n">d</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">obj</span>
-
-<span class="nn">File /opt/hostedtoolcache/Python/3.14.2/x64/lib/python3.14/site-packages/pyaml/configuration/factory.py:165,</span> in <span class="ni">PyAMLFactory.depth_first_build</span><span class="nt">(self, d, ignore_external)</span>
-<span class="g g-Whitespace">    </span><span class="mi">163</span> <span class="k">for</span> <span class="n">_index</span><span class="p">,</span> <span class="n">e</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">d</span><span class="p">):</span>
-<span class="g g-Whitespace">    </span><span class="mi">164</span>     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="nb">dict</span><span class="p">)</span> <span class="ow">or</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
-<span class="ne">--&gt; </span><span class="mi">165</span>         <span class="n">obj</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">depth_first_build</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="n">ignore_external</span><span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">166</span>         <span class="n">l</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">167</span>     <span class="k">else</span><span class="p">:</span>
-
-<span class="nn">File /opt/hostedtoolcache/Python/3.14.2/x64/lib/python3.14/site-packages/pyaml/configuration/factory.py:180,</span> in <span class="ni">PyAMLFactory.depth_first_build</span><span class="nt">(self, d, ignore_external)</span>
-<span class="g g-Whitespace">    </span><span class="mi">177</span>                 <span class="n">d</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">obj</span>
-<span class="g g-Whitespace">    </span><span class="mi">179</span>     <span class="c1"># We are now on leaf (no nested object), we can construct</span>
-<span class="ne">--&gt; </span><span class="mi">180</span>     <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">build_object</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">ignore_external</span><span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">182</span> <span class="k">raise</span> <span class="n">PyAMLConfigException</span><span class="p">(</span>
-<span class="g g-Whitespace">    </span><span class="mi">183</span>     <span class="s2">&quot;Unexpected element found. &#39;dict&#39; or &#39;list&#39; expected &quot;</span>
-<span class="g g-Whitespace">    </span><span class="mi">184</span>     <span class="s2">&quot;but got &#39;</span><span class="si">{d.__class__.__name__}</span><span class="s2">&#39;&quot;</span>
-<span class="g g-Whitespace">    </span><span class="mi">185</span> <span class="p">)</span>
-
-<span class="nn">File /opt/hostedtoolcache/Python/3.14.2/x64/lib/python3.14/site-packages/pyaml/configuration/factory.py:95,</span> in <span class="ni">PyAMLFactory.build_object</span><span class="nt">(self, d, ignore_external)</span>
-<span class="g g-Whitespace">     </span><span class="mi">92</span> <span class="k">except</span> <span class="ne">ModuleNotFoundError</span> <span class="k">as</span> <span class="n">ex</span><span class="p">:</span>
-<span class="g g-Whitespace">     </span><span class="mi">93</span>     <span class="k">if</span> <span class="ow">not</span> <span class="n">ignore_external</span><span class="p">:</span>
-<span class="g g-Whitespace">     </span><span class="mi">94</span>         <span class="c1"># Discard module not found stack trace</span>
-<span class="ne">---&gt; </span><span class="mi">95</span>         <span class="k">raise</span> <span class="n">PyAMLConfigException</span><span class="p">(</span>
-<span class="g g-Whitespace">     </span><span class="mi">96</span>             <span class="s2">&quot;Module referenced in type cannot be found:&quot;</span>
-<span class="g g-Whitespace">     </span><span class="mi">97</span>             <span class="o">+</span> <span class="sa">f</span><span class="s2">&quot;&#39;</span><span class="si">{</span><span class="n">type_str</span><span class="si">}</span><span class="s2">&#39; </span><span class="si">{</span><span class="n">location_str</span><span class="si">}</span><span class="s2">&quot;</span>
-<span class="g g-Whitespace">     </span><span class="mi">98</span>         <span class="p">)</span> <span class="kn">from</span><span class="w"> </span><span class="kc">None</span>
-<span class="g g-Whitespace">     </span><span class="mi">99</span>     <span class="k">else</span><span class="p">:</span>
-<span class="g g-Whitespace">    </span><span class="mi">100</span>         <span class="k">return</span> <span class="kc">None</span>
-
-<span class="ne">PyAMLConfigException</span>: Module referenced in type cannot be found:&#39;tango.pyaml.controlsystem&#39; /home/runner/work/pyaml/pyaml/tests/config/EBSTune.yaml at line 10, column 5.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>29 Jan% 2026, 15:25:59 | WARNING | PyAML Tango control system binding (0.3.3) initialized with name &#39;live&#39; and TANGO_HOST=ebs-simu-3:10000
 </pre></div>
 </div>
 </div>
@@ -471,34 +435,12 @@
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
-<span class="ne">NameError</span><span class="g g-Whitespace">                                 </span>Traceback (most recent call last)
-<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">3</span><span class="p">],</span> <span class="n">line</span> <span class="mi">1</span>
-<span class="ne">----&gt; </span><span class="mi">1</span> <span class="n">sr</span> <span class="o">=</span> <span class="n">SR</span><span class="o">.</span><span class="n">design</span>  <span class="c1"># simulations</span>
-<span class="g g-Whitespace">      </span><span class="mi">2</span> <span class="c1"># sr = SR.live # act on real accelerator</span>
-
-<span class="ne">NameError</span>: name &#39;SR&#39; is not defined
-</pre></div>
-</div>
-</div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">quadForTune</span> <span class="o">=</span> <span class="n">sr</span><span class="o">.</span><span class="n">get_magnets</span><span class="p">(</span><span class="s2">&quot;QForTune&quot;</span><span class="p">)</span>
 
 <span class="n">tune_device</span> <span class="o">=</span> <span class="n">sr</span><span class="o">.</span><span class="n">get_betatron_tune_monitor</span><span class="p">(</span><span class="s2">&quot;BETATRON_TUNE&quot;</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
-<span class="ne">NameError</span><span class="g g-Whitespace">                                 </span>Traceback (most recent call last)
-<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">4</span><span class="p">],</span> <span class="n">line</span> <span class="mi">1</span>
-<span class="ne">----&gt; </span><span class="mi">1</span> <span class="n">quadForTune</span> <span class="o">=</span> <span class="n">sr</span><span class="o">.</span><span class="n">get_magnets</span><span class="p">(</span><span class="s2">&quot;QForTune&quot;</span><span class="p">)</span>
-<span class="g g-Whitespace">      </span><span class="mi">3</span> <span class="n">tune_device</span> <span class="o">=</span> <span class="n">sr</span><span class="o">.</span><span class="n">get_betatron_tune_monitor</span><span class="p">(</span><span class="s2">&quot;BETATRON_TUNE&quot;</span><span class="p">)</span>
-
-<span class="ne">NameError</span>: name &#39;sr&#39; is not defined
 </pre></div>
 </div>
 </div>
@@ -521,15 +463,7 @@
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
-<span class="ne">NameError</span><span class="g g-Whitespace">                                 </span>Traceback (most recent call last)
-<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">5</span><span class="p">],</span> <span class="n">line</span> <span class="mi">2</span>
-<span class="g g-Whitespace">      </span><span class="mi">1</span> <span class="c1"># Build tune response matrix</span>
-<span class="ne">----&gt; </span><span class="mi">2</span> <span class="n">initial_tune</span> <span class="o">=</span> <span class="n">tune_device</span><span class="o">.</span><span class="n">tune</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
-<span class="g g-Whitespace">      </span><span class="mi">3</span> <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Tune via pyAML interface for design mode </span><span class="si">{</span><span class="n">initial_tune</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-<span class="g g-Whitespace">      </span><span class="mi">4</span> <span class="n">tunemat</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="nb">len</span><span class="p">(</span><span class="n">quadForTune</span><span class="p">),</span> <span class="mi">2</span><span class="p">))</span>
-
-<span class="ne">NameError</span>: name &#39;tune_device&#39; is not defined
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Tune via pyAML interface for design mode [0.15999673 0.33999769]
 </pre></div>
 </div>
 </div>
@@ -545,14 +479,7 @@
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
-<span class="ne">NameError</span><span class="g g-Whitespace">                                 </span>Traceback (most recent call last)
-<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">6</span><span class="p">],</span> <span class="n">line</span> <span class="mi">1</span>
-<span class="ne">----&gt; </span><span class="mi">1</span> <span class="n">SR</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">get_lattice</span><span class="p">()</span><span class="o">.</span><span class="n">disable_6d</span><span class="p">()</span>
-<span class="g g-Whitespace">      </span><span class="mi">2</span> <span class="n">tune_design</span> <span class="o">=</span> <span class="n">SR</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">get_lattice</span><span class="p">()</span><span class="o">.</span><span class="n">get_tune</span><span class="p">()</span>
-<span class="g g-Whitespace">      </span><span class="mi">4</span> <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Tune directly from the lattice </span><span class="si">{</span><span class="n">tune_design</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-
-<span class="ne">NameError</span>: name &#39;SR&#39; is not defined
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Tune directly from the lattice [0.16000001 0.33999986]
 </pre></div>
 </div>
 </div>
