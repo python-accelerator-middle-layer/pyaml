@@ -1,4 +1,5 @@
 How to Contribute
-======
+=================
 
-To write...
+```{include} ../../CONTRIBUTING.md
+:start-after: "# Contributing to [Python Accelerator Middle Layer (PyAML)]"
