@@ -11,7 +11,7 @@ sr.design.get_lattice().disable_6d()
 
 # switch script from live to design
 # sr.design acts on simulations sr.live to act on real machine 
-SR = sr.design 
+MACH = sr.design 
 
 
 # Callback exectued after each magnet strenght setting
@@ -29,7 +29,7 @@ tune_adjust_design.response.measure(callback=tune_callback)
 tune_adjust_design.response.save_json("tunemat.json")
 
 # Correct tune on live or design
-tune_adjust = SR.tune
+tune_adjust = MACH.tune
 tune_adjust.response.load_json("tunemat.json")
 print(f'Initial tune: {tune_adjust.readback()}')
 tune_adjust.set([0.17, 0.32], iter=2, wait_time=10)
