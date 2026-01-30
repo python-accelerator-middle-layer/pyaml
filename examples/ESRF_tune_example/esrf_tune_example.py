@@ -6,12 +6,12 @@ from pyaml.accelerator import Accelerator
 from pyaml.common.constants import ACTION_RESTORE
 from pyaml.magnet.magnet import Magnet
 
-sr: Accelerator = Accelerator.load('./tests/config/EBSTune.yaml')
+sr: Accelerator = Accelerator.load("./tests/config/EBSTune.yaml")
 sr.design.get_lattice().disable_6d()
 
 # switch script from live to design
-# sr.design acts on simulations sr.live to act on real machine 
-SR = sr.design 
+# sr.design acts on simulations sr.live to act on real machine
+SR = sr.live
 
 
 # Callback exectued after each magnet strenght setting
@@ -31,6 +31,6 @@ tune_adjust_design.response.save_json("tunemat.json")
 # Correct tune on live or design
 tune_adjust = SR.tune
 tune_adjust.response.load_json("tunemat.json")
-print(f'Initial tune: {tune_adjust.readback()}')
+print(f"Initial tune: {tune_adjust.readback()}")
 tune_adjust.set([0.17, 0.32], iter=2, wait_time=10)
-print(f'Final tune: {tune_adjust.readback()}')
+print(f"Final tune: {tune_adjust.readback()}")
