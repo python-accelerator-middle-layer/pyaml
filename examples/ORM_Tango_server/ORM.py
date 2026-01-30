@@ -59,6 +59,9 @@ class ORM(Device):
         self.orm_data = None
         nb_hsteer = len(self.SR.design.get_magnets("HCorr"))
         nb_vsteer = len(self.SR.design.get_magnets("VCorr"))
+        nb_skew = len(self.SR.design.get_magnets("Skews"))
+        skewErr = 1e-3 * np.random.normal(size=nb_skew)
+        self.SR.design.get_magnets("Skews").strengths.set(skewErr)
         self.progress_data = [0] * 2 * (nb_hsteer + nb_vsteer)
         self.set_status(f"Ready to scan: {self.ConfigFileName}")
         self.set_state(DevState.ON)
@@ -121,7 +124,7 @@ class ORM(Device):
     )
     def matrix(self):
         if self.orm_data:
-            return np.array(self.orm_data["matrix"])
+            return np.array(self.orm_data["matrix"]).T
         else:
             return [[0.0]]
 
