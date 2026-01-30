@@ -6,11 +6,12 @@ from pyaml.accelerator import Accelerator
 from pyaml.common.constants import ACTION_RESTORE
 from pyaml.magnet.magnet import Magnet
 
-sr: Accelerator = Accelerator.load('./pyaml/tests/config/EBSTune.yaml')
+sr: Accelerator = Accelerator.load('./tests/config/EBSTune.yaml')
 sr.design.get_lattice().disable_6d()
 
 # switch script from live to design
-SR = sr.design # acts on simulations sr.live to act on real machine 
+# sr.design acts on simulations sr.live to act on real machine 
+SR = sr.design 
 
 
 # Callback exectued after each magnet strenght setting
