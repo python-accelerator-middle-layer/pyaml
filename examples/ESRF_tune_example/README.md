@@ -16,11 +16,16 @@
    ```
 
   ## Run the examples
+  Two examples are available for tune correction.
+  The esrf_tune_example.py  shows the standard usage
+  The esrf_tune_example_no_yaml.py  shows the same but without using configuration file.
 
-  1. navigate to the pyaml root directory 
-  1. Download (or clone) the example files. 
+  To run the examples:
+  1. navigate to the pyaml root directory
+  2. Download (or clone) the example files.
+  3. run the files
 
-  ## expected output for SR.design is
+  ## expected output of esrf_tune_example.py for SR.design is
 
   30 Jan 2026, 09:23:13 | WARNING | PyAML Tango control system binding (0.3.2) initialized with name 'live' and TANGO_HOST=ebs-simu-3:10000
   Tune response: #0 QD2E-C04 [ 0.17851726 -1.25993589]
@@ -31,7 +36,7 @@
   Final tune: [0.17 0.32]
 
 
-  ## expected output for SR.live is
+  ## expected output of esrf_tune_example.py for SR.live is
   Initial tune: [0. 0.]
   MultiAttribute.get(124 values)
   MultiAttribute.get(124 values)
@@ -41,3 +46,16 @@
   //ebs-simu-3:10000/srmag/vps-qf1/c02-e/current:1.3024074153237937
   //ebs-simu-3:10000/srmag/vps-qf1/c03-a/current:1.2966875742108155
   Final tune: [0. 0.]
+
+  ## expected output of: esrf_tune_example_no_yaml.py
+
+  Creating dummy TangoControlSystem: live
+  Tune=Value(0.0, quality='VALID',timestamp='2026-01-30 10:14:20.685681'), Value(0.0, quality='VALID',timestamp='2026-01-30 10:14:20.685764')
+  MultiAttribute.get(4 values)
+  MultiAttribute.get(4 values)
+  MultiAttribute.set(4 values)
+  //ebs-simu-3:10000/srmag/vps-qf1/c01-a/current:9.77449643229055
+  //ebs-simu-3:10000/srmag/vps-qf1/c01-e/current:9.724114177375114
+  //ebs-simu-3:10000/srmag/vps-qd2/c01-a/current:7.785894751522811
+  //ebs-simu-3:10000/srmag/vps-qd2/c01-e/current:7.778613675036138
+  Tune=Value(0.0, quality='VALID',timestamp='2026-01-30 10:14:23.686925'), Value(0.0, quality='VALID',timestamp='2026-01-30 10:14:23.686994')
