@@ -12,4 +12,6 @@
 
   ## Run the examples
 
+  1. navigate to the pyaml root directory 
   1. Download (or clone) the example files. 
+

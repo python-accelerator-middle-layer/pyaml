@@ -10,8 +10,7 @@ sr: Accelerator = Accelerator.load('./pyaml/tests/config/EBSTune.yaml')
 sr.design.get_lattice().disable_6d()
 
 # switch script from live to design
-# SR = sr.live   # act on live machine
-SR = sr.design # act on simulation 
+SR = sr.design # acts on simulations sr.live to act on real machine 
 
 
 # Callback exectued after each magnet strenght setting
