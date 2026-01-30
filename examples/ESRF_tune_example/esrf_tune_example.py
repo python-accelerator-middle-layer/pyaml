@@ -24,13 +24,13 @@ def tune_callback(step: int, action: int, m: Magnet, dtune: np.array):
 
 
 # Compute tune response matrix
-tune_adjust_design = sr.design.get_tune_tuning("TUNE")
+tune_adjust_design = sr.design.tune
 tune_adjust_design.response.measure(callback=tune_callback)
 tune_adjust_design.response.save_json("tunemat.json")
 
 # Correct tune on live or design
-tune_adjust = SR.get_tune_tuning("TUNE")
+tune_adjust = SR.tune
 tune_adjust.response.load_json("tunemat.json")
-print(tune_adjust.readback())
+print(f'Initial tune: {tune_adjust.readback()}')
 tune_adjust.set([0.17, 0.32], iter=2, wait_time=10)
-print(tune_adjust.readback())
+print(f'Final tune: {tune_adjust.readback()}')
