@@ -12,7 +12,8 @@
 
 ## Start the BESSY II virtual accelerator
 
-1. Install [Apptainer](https://apptainer.org/docs/admin/main/installation.html) in case you don't already have it.
+1. Install [Apptainer](https://apptainer.org/docs/admin/main/installation.html) by following the instructions in the [documentation](https://pyaml.readthedocs.io/en/latest/how-to/apptainer.html).
+
 
 2. Open a terminal and start the container.
 

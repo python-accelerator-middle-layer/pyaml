@@ -20,4 +20,4 @@ Advanced
 .. toctree::
    :maxdepth: 1
 
-   Run tests using virtual accelerator <../notebooks/run_bessy_virtual_accelerator>
+   apptainer
