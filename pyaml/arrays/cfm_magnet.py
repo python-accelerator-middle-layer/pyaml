@@ -7,6 +7,7 @@ PYAMLCLASS = "CombinedFunctionMagnet"
 
 class ConfigModel(ArrayConfigModel):
     """Configuration model for Combined Function Magnet array."""
+
     ...
 
 

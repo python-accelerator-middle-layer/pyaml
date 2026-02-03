@@ -5,7 +5,9 @@ from pyaml.configuration.factory import Factory
 
 
 def test_simulator_tune_monitor():
-    sr: Accelerator = Accelerator.load("tests/config/tune_monitor.yaml", ignore_external=True)
+    sr: Accelerator = Accelerator.load(
+        "tests/config/tune_monitor.yaml", ignore_external=True
+    )
     sr.design.get_lattice().disable_6d()
     tune_monitor = sr.design.get_betatron_tune_monitor("BETATRON_TUNE")
     assert tune_monitor.tune.get()[0] == sr.design.get_lattice().get_tune()[0]

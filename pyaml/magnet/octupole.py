@@ -7,6 +7,7 @@ PYAMLCLASS = "Octupole"
 
 class ConfigModel(MagnetConfigModel):
     """Configuration model for Octupole magnet."""
+
     ...
 
 

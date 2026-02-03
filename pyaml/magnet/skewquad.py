@@ -7,6 +7,7 @@ PYAMLCLASS = "SkewQuad"
 
 class ConfigModel(MagnetConfigModel):
     """Configuration model for SkewQuad magnet."""
+
     ...
 
 

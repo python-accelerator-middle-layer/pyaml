@@ -9,6 +9,7 @@ PYAMLCLASS = "VCorrector"
 
 class ConfigModel(MagnetConfigModel):
     """Configuration model for Vertical Corrector magnet."""
+
     ...
 
 

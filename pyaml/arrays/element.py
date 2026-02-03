@@ -7,6 +7,7 @@ PYAMLCLASS = "Element"
 
 class ConfigModel(ArrayConfigModel):
     """Configuration model for Element array."""
+
     ...
 
 

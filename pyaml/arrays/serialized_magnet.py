@@ -7,6 +7,7 @@ PYAMLCLASS = "SerializedMagnets"
 
 class ConfigModel(ArrayConfigModel):
     """Configuration model for Serialized Magnets array."""
+
     ...
 
 

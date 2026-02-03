@@ -30,7 +30,7 @@ Available options for installing with control system bindings are:
 Example usage:
 
 ```
-pip install accelerator-middle-layer[cs-oa-epics] 
+pip install accelerator-middle-layer[cs-oa-epics]
 ```
 
 ## Developer Installation
@@ -67,7 +67,7 @@ To do development work you need to clone the source code from GitHub and install
 5. Install control system bindings *(optional)*
 
     If you want to use control system bindings you need to also install the package for the binding you want to use. Follow the installation instructions in the corresponding repository.
-    
+
     If you want to do development work on the bindings they need to be installed in editable mode, but if not you can install the latest release from PyPI.
 
 6. Install dummy control system for TANGO *(optional)*

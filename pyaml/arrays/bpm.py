@@ -7,6 +7,7 @@ PYAMLCLASS = "BPM"
 
 class ConfigModel(ArrayConfigModel):
     """Configuration model for BPM array."""
+
     ...
 
 

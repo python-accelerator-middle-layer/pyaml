@@ -24,7 +24,9 @@ def check_no_diff(array: list[np.float64]) -> bool:
     ],
 )
 def test_config_load(sr_file):
-    sr: Accelerator = Accelerator.load(sr_file, use_fast_loader=True, ignore_external=True)
+    sr: Accelerator = Accelerator.load(
+        sr_file, use_fast_loader=True, ignore_external=True
+    )
     assert sr is not None
     magnets = [
         sr.design.get_element("QF8B-C04"),

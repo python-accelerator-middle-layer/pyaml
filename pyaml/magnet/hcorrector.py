@@ -10,6 +10,7 @@ PYAMLCLASS = "HCorrector"
 
 class ConfigModel(MagnetConfigModel):
     """Configuration model for Horizontal Corrector magnet."""
+
     ...
 
 

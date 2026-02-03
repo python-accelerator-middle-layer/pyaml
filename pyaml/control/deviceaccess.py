@@ -66,4 +66,3 @@ class DeviceAccess(metaclass=ABCMeta):
             True if device is available, False otherwise
         """
         pass
-
