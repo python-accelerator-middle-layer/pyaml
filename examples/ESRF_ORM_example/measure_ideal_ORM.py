@@ -16,4 +16,4 @@ ebs.orm.save(parent_folder / Path("ideal_orm.json"))
 ebs.orm.save(parent_folder / Path("ideal_orm.yaml"), with_type="yaml")
 ebs.orm.save(parent_folder / Path("ideal_orm.npz"), with_type="npz")
 
-ormdata = ebs.get()
+ormdata = ebs.orm.get()
