@@ -4,7 +4,7 @@
 
 1. Create a virtual environment and activate it. You need to have Python 3.11+.
 
-2. Install pyAML including the tango-pyaml EPICS bindings.
+2. Install pyAML, including the tango-pyaml TANGO bindings.
 
   ```bash
   pip install accelerator-middle-layer[tango-pyaml]
