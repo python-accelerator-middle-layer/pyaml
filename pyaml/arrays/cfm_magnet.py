@@ -5,7 +5,9 @@ from .array import ArrayConfig, ArrayConfigModel
 PYAMLCLASS = "CombinedFunctionMagnet"
 
 
-class ConfigModel(ArrayConfigModel): ...
+class ConfigModel(ArrayConfigModel):
+    """Configuration model for Combined Function Magnet array."""
+    ...
 
 
 class CombinedFunctionMagnet(ArrayConfig):
@@ -29,4 +31,12 @@ class CombinedFunctionMagnet(ArrayConfig):
         super().__init__(cfg)
 
     def fill_array(self, holder: ElementHolder):
+        """
+        Fill the combined function magnet array in the element holder.
+
+        Parameters
+        ----------
+        holder : ElementHolder
+            The element holder to populate with combined function magnet array
+        """
         holder.fill_cfm_magnet_array(self._cfg.name, self._cfg.elements)

@@ -5,7 +5,9 @@ from .array import ArrayConfig, ArrayConfigModel
 PYAMLCLASS = "BPM"
 
 
-class ConfigModel(ArrayConfigModel): ...
+class ConfigModel(ArrayConfigModel):
+    """Configuration model for BPM array."""
+    ...
 
 
 class BPM(ArrayConfig):
@@ -27,4 +29,12 @@ class BPM(ArrayConfig):
         super().__init__(cfg)
 
     def fill_array(self, holder: ElementHolder):
+        """
+        Fill the BPM array in the element holder.
+
+        Parameters
+        ----------
+        holder : ElementHolder
+            The element holder to populate with BPM array
+        """
         holder.fill_bpm_array(self._cfg.name, self._cfg.elements)

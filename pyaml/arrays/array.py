@@ -36,4 +36,17 @@ class ArrayConfig(object):
         self._cfg = cfg
 
     def fill_array(self, holder: ElementHolder):
+        """
+        Fill array with elements from the holder.
+
+        Parameters
+        ----------
+        holder : ElementHolder
+            The element holder to populate
+
+        Raises
+        ------
+        PyAMLException
+            When this method is not overridden in a subclass
+        """
         raise PyAMLException("Array.fill_array() is not subclassed")

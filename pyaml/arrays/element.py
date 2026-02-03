@@ -5,7 +5,9 @@ from .array import ArrayConfig, ArrayConfigModel
 PYAMLCLASS = "Element"
 
 
-class ConfigModel(ArrayConfigModel): ...
+class ConfigModel(ArrayConfigModel):
+    """Configuration model for Element array."""
+    ...
 
 
 class Element(ArrayConfig):
@@ -30,4 +32,12 @@ class Element(ArrayConfig):
         super().__init__(cfg)
 
     def fill_array(self, holder: ElementHolder):
+        """
+        Fill the element array in the element holder.
+
+        Parameters
+        ----------
+        holder : ElementHolder
+            The element holder to populate with element array
+        """
         holder.fill_element_array(self._cfg.name, self._cfg.elements)

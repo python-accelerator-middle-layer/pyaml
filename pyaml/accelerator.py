@@ -97,6 +97,14 @@ class Accelerator(object):
         self.post_init()
 
     def set_energy(self, E: float):
+        """
+        Set the energy for all simulators and control systems.
+
+        Parameters
+        ----------
+        E : float
+            Energy value to set in GeV
+        """
         if self._cfg.simulators is not None:
             for s in self._cfg.simulators:
                 s.set_energy(E)
@@ -117,10 +125,26 @@ class Accelerator(object):
 
     @property
     def live(self) -> ControlSystem:
+        """
+        Get the live control system.
+
+        Returns
+        -------
+        ControlSystem
+            The live control system instance
+        """
         return self.__live
 
     @property
     def design(self) -> Simulator:
+        """
+        Get the design simulator.
+
+        Returns
+        -------
+        Simulator
+            The design simulator instance
+        """
         return self.__design
 
     @staticmethod
