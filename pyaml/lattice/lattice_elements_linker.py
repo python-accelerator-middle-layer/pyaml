@@ -64,6 +64,14 @@ class LatticeElementsLinker(metaclass=ABCMeta):
         self.lattice: Lattice = None
 
     def set_lattice(self, lattice: Lattice):
+        """
+        Set the lattice for element linking.
+
+        Parameters
+        ----------
+        lattice : Lattice
+            The lattice to link elements with
+        """
         self.lattice = lattice
 
     @abstractmethod
@@ -74,6 +82,19 @@ class LatticeElementsLinker(metaclass=ABCMeta):
 
     @abstractmethod
     def get_element_identifier(self, element: Element) -> LinkerIdentifier:
+        """
+        Get the identifier for linking an element.
+
+        Parameters
+        ----------
+        element : Element
+            The element to get the identifier for
+
+        Returns
+        -------
+        LinkerIdentifier
+            The identifier for the element
+        """
         pass
 
     def _iter_matches(self, identifier: LinkerIdentifier) -> Iterable[at.Element]:

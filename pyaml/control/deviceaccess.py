@@ -45,9 +45,25 @@ class DeviceAccess(metaclass=ABCMeta):
 
     @abstractmethod
     def get_range(self) -> list[float]:
+        """
+        Get the valid range for the device variable.
+
+        Returns
+        -------
+        list[float]
+            List containing [min, max] values
+        """
         pass
 
     @abstractmethod
     def check_device_availability(self) -> bool:
+        """
+        Check if the device is available and accessible.
+
+        Returns
+        -------
+        bool
+            True if device is available, False otherwise
+        """
         pass
 

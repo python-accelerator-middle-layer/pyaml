@@ -19,38 +19,38 @@ PYAMLCLASS = "ChomaticityMonitor"
 
 
 class ConfigModel(ElementConfigModel):
-    model_config = ConfigDict(arbitrary_types_allowed=True, extra="forbid")
-
     """
-    Chomaticity measurement
+    Configuration model for Chromaticity Monitor.
 
     Parameters
     ----------
-    betatron_tune: str
+    betatron_tune : str
         Name of the diagnostic pyaml device for measuring the tune
-    RFfreq: str
+    RFfreq : str
         Name of main RF frequency plant
-    N_step: int = 5
+    N_step : int, optional
         Default number of RF step during chromaticity
-        measurment [default: 5]
-    alphac: float | None = None
-        Moment compaction factor
-    E_delta: float
-        Default variation of relative energy during chromaticity measurment:
-        f0 - f0 * E_delta * alphac  < f_RF < f0 + f0 * E_delta * alphac
-        [default: 0.001]
-    Max_E_delta: float
-        Maximum autorized variation of relative energy during chromaticity
-        measurment [default: 0.004]
-    N_tune_meas: int
-        Default number of tune measurment per RF frequency [default: 1]
-    Sleep_between_meas: float
-        Default time sleep between two tune measurment [default: 2.0]
-    Sleep_between_RFvar: float
-        Default time sleep after RF frequency variation [default: 5.0]
-    fit_order: int
-        Fitting order [default: 1]
+        measurement, by default 5
+    alphac : float or None, optional
+        Momentum compaction factor, by default None
+    E_delta : float, optional
+        Default variation of relative energy during chromaticity measurement:
+        f0 - f0 * E_delta * alphac  < f_RF < f0 + f0 * E_delta * alphac,
+        by default 0.001
+    Max_E_delta : float, optional
+        Maximum authorized variation of relative energy during chromaticity
+        measurement, by default 0.004
+    N_tune_meas : int, optional
+        Default number of tune measurement per RF frequency, by default 1
+    Sleep_between_meas : float, optional
+        Default time sleep between two tune measurements, by default 2.0
+    Sleep_between_RFvar : float, optional
+        Default time sleep after RF frequency variation, by default 5.0
+    fit_order : int, optional
+        Fitting order, by default 1
     """
+
+    model_config = ConfigDict(arbitrary_types_allowed=True, extra="forbid")
 
     betatron_tune: str
     RFfreq: str
@@ -90,10 +90,33 @@ class ChomaticityMonitor(Element):
 
     @property
     def chromaticity(self) -> ReadFloatArray:
+        """
+        Get the chromaticity values.
+
+        Returns
+        -------
+        ReadFloatArray
+            Array of chromaticity values [horizontal, vertical]
+        """
         self.check_peer()
         return self.__chromaticity
 
     def attach(self, peer, chromaticity: ReadFloatArray) -> Self:
+        """
+        Attach the chromaticity monitor to a peer with chromaticity data.
+
+        Parameters
+        ----------
+        peer : object
+            The peer object (simulator or control system)
+        chromaticity : ReadFloatArray
+            The chromaticity array to monitor
+
+        Returns
+        -------
+        Self
+            A new attached instance of ChomaticityMonitor
+        """
         obj = self.__class__(self._cfg)
         chromaticity._update_chromaticity_monitor(obj)
         obj.__chromaticity = chromaticity
