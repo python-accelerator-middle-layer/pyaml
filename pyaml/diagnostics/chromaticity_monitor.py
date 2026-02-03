@@ -115,7 +115,7 @@ class ChomaticityMonitor(Element):
         Returns
         -------
         Self
-            A new attached instance of ChomaticityMonitor
+            A new attached instance of ChromaticityMonitor
         """
         obj = self.__class__(self._cfg)
         chromaticity._update_chromaticity_monitor(obj)
