@@ -13,8 +13,16 @@ import numpy as np
 
 
 class MagnetConfigModel(ElementConfigModel):
+    """
+    Configuration model for magnet elements.
+
+    Attributes
+    ----------
+    model : MagnetModel or None, optional
+        Object in charge of converting magnet strengths to power supply values
+    """
+
     model: MagnetModel | None = None
-    """Object in charge of converting magnet strenghts to power supply values"""
 
 
 class Magnet(Element):

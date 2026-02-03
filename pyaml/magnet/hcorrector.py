@@ -8,7 +8,9 @@ from .magnet import Magnet, MagnetConfigModel
 PYAMLCLASS = "HCorrector"
 
 
-class ConfigModel(MagnetConfigModel): ...
+class ConfigModel(MagnetConfigModel):
+    """Configuration model for Horizontal Corrector magnet."""
+    ...
 
 
 class HCorrector(Magnet):

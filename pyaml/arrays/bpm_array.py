@@ -7,6 +7,21 @@ from .element_array import ElementArray
 
 
 class RWBPMPosition(ReadFloatArray):
+    """
+    Read/write access to BPM positions (horizontal and vertical).
+
+    This class provides access to both horizontal and vertical positions
+    of a list of BPMs. It supports both individual access and aggregated
+    access through a device access list for improved performance.
+
+    Parameters
+    ----------
+    name : str
+        Name of the position accessor
+    bpms : list[BPM]
+        List of BPM objects to access
+    """
+
     def __init__(self, name: str, bpms: list[BPM]):
         self.__bpms = bpms
         self.__name = name
@@ -14,6 +29,15 @@ class RWBPMPosition(ReadFloatArray):
 
     # Gets the values
     def get(self) -> np.array:
+        """
+        Get BPM positions.
+
+        Returns
+        -------
+        np.array
+            Array of shape (n_bpms, 2) containing horizontal and vertical
+            positions for each BPM
+        """
         if not self.__aggregator:
             return np.array([b.positions.get() for b in self.__bpms])
         else:
@@ -21,14 +45,47 @@ class RWBPMPosition(ReadFloatArray):
 
     # Gets the unit of the values
     def unit(self) -> list[str]:
+        """
+        Get the units for BPM positions.
+
+        Returns
+        -------
+        list[str]
+            List of unit strings for each BPM
+        """
         return [b.positions.unit() for b in self.__bpms]
 
     # Set the aggregator (Control system only)
     def set_aggregator(self, agg: DeviceAccessList):
+        """
+        Set the device access list aggregator for improved performance.
+
+        Parameters
+        ----------
+        agg : DeviceAccessList
+            Device access list for aggregated reads
+        """
         self.__aggregator = agg
 
 
 class RWBPMSinglePosition(ReadFloatArray):
+    """
+    Read/write access to single axis BPM positions.
+
+    This class provides access to either horizontal or vertical positions
+    of a list of BPMs. It supports both individual access and aggregated
+    access through a device access list for improved performance.
+
+    Parameters
+    ----------
+    name : str
+        Name of the position accessor
+    bpms : list[BPM]
+        List of BPM objects to access
+    idx : int
+        Index for the position axis (0 for horizontal, 1 for vertical)
+    """
+
     def __init__(self, name: str, bpms: list[BPM], idx: int):
         self.__bpms = bpms
         self.__name = name
@@ -37,6 +94,14 @@ class RWBPMSinglePosition(ReadFloatArray):
 
     # Gets the values
     def get(self) -> np.array:
+        """
+        Get single axis BPM positions.
+
+        Returns
+        -------
+        np.array
+            Array of positions for the specified axis (horizontal or vertical)
+        """
         if not self.__aggregator:
             return np.array([b.positions.get()[self.__idx] for b in self.__bpms])
         else:
@@ -44,10 +109,26 @@ class RWBPMSinglePosition(ReadFloatArray):
 
     # Gets the unit of the values
     def unit(self) -> list[str]:
+        """
+        Get the units for BPM positions.
+
+        Returns
+        -------
+        list[str]
+            List of unit strings for each BPM
+        """
         return [b.positions.unit() for b in self.__bpms]
 
     # Set the aggregator (Control system only)
     def set_aggregator(self, agg: DeviceAccessList):
+        """
+        Set the device access list aggregator for improved performance.
+
+        Parameters
+        ----------
+        agg : DeviceAccessList
+            Device access list for aggregated reads
+        """
         self.__aggregator = agg
 
 

@@ -5,7 +5,9 @@ from .magnet import Magnet, MagnetConfigModel
 PYAMLCLASS = "Quadrupole"
 
 
-class ConfigModel(MagnetConfigModel): ...
+class ConfigModel(MagnetConfigModel):
+    """Configuration model for Quadrupole magnet."""
+    ...
 
 
 class Quadrupole(Magnet):

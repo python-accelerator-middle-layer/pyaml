@@ -66,6 +66,19 @@ class PyAtAttributeElementsLinker(LatticeElementsLinker):
         super().__init__(config_model)
 
     def get_element_identifier(self, element: Element) -> LinkerIdentifier:
+        """
+        Get the element identifier for the given element.
+
+        Parameters
+        ----------
+        element : Element
+            The element to get the identifier for
+
+        Returns
+        -------
+        LinkerIdentifier
+            The identifier for linking the element
+        """
         return PyAtAttributeIdentifier(
             self.linker_config_model.attribute_name, element.get_name()
         )

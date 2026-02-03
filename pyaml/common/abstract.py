@@ -82,22 +82,67 @@ class RWMapper(ReadWriteFloatScalar):
 
     # Gets the value
     def get(self) -> float:
+        """
+        Get the value at the mapped index.
+
+        Returns
+        -------
+        float
+            Value at the mapped array index
+        """
         return self.bind.get()[self.idx]
 
     # Sets the value
     def set(self, value: float):
+        """
+        Set the value at the mapped index.
+
+        Parameters
+        ----------
+        value : float
+            Value to set
+        """
         arr = self.bind.get()
         arr[self.idx] = value
         self.bind.set(arr)
 
     # Sets the value and wait that the read value reach the setpoint
     def set_and_wait(self, value: float):
+        """
+        Set the value and wait for it to reach the setpoint.
+
+        Parameters
+        ----------
+        value : float
+            Target value to set and wait for
+
+        Raises
+        ------
+        NotImplementedError
+            This method is not yet implemented
+        """
         raise NotImplementedError("Not implemented yet.")
 
     # Return the unit
     def unit(self) -> str:
+        """
+        Get the unit for the value.
+
+        Returns
+        -------
+        str
+            Unit string for the value at the mapped index
+        """
         return self.bind.unit()[self.idx]
 
     # Return the mapped index
     def index(self) -> int:
+        """
+        Get the mapped array index.
+
+        Returns
+        -------
+        int
+            The index in the array that this scalar maps to
+        """
         return self.idx
