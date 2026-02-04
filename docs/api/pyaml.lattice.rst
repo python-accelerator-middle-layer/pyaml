@@ -3,7 +3,7 @@
 
 .. automodule:: pyaml.lattice
 
-   
+
 .. rubric:: Modules
 
 .. autosummary::

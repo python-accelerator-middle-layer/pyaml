@@ -3,7 +3,7 @@
 
 .. automodule:: pyaml.magnet
 
-   
+
 .. rubric:: Modules
 
 .. autosummary::

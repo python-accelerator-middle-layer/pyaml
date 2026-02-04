@@ -53,10 +53,33 @@ class BetatronTuneMonitor(Element):
 
     @property
     def tune(self) -> ReadFloatArray:
+        """
+        Get the betatron tune values.
+
+        Returns
+        -------
+        ReadFloatArray
+            Array of tune values [horizontal, vertical]
+        """
         self.check_peer()
         return self.__tune
 
     def attach(self, peer, betatron_tune: ReadFloatArray) -> Self:
+        """
+        Attach the tune monitor to a peer with betatron tune data.
+
+        Parameters
+        ----------
+        peer : object
+            The peer object (simulator or control system)
+        betatron_tune : ReadFloatArray
+            The betatron tune array to monitor
+
+        Returns
+        -------
+        Self
+            A new attached instance of TuneMonitor
+        """
         obj = self.__class__(self._cfg)
         obj.__tune = betatron_tune
         obj._peer = peer

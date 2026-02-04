@@ -3,7 +3,7 @@
 
 .. automodule:: pyaml.common
 
-   
+
 .. rubric:: Modules
 
 .. autosummary::

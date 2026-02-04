@@ -3,7 +3,7 @@
 
 .. automodule:: pyaml.bpm
 
-   
+
 .. rubric:: Modules
 
 .. autosummary::

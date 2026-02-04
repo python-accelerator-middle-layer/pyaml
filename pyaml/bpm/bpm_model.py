@@ -75,6 +75,14 @@ class BPMModel(metaclass=ABCMeta):
         return None
 
     def is_pos_indexed(self) -> bool:
+        """
+        Check if position values are indexed (array-based).
+
+        Returns
+        -------
+        bool
+            True if both x and y positions are indexed, False otherwise
+        """
         return self.x_pos_index() is not None and self.y_pos_index() is not None
 
     def tilt_index(self) -> int | None:
@@ -91,6 +99,14 @@ class BPMModel(metaclass=ABCMeta):
         return None
 
     def is_tilt_indexed(self) -> bool:
+        """
+        Check if tilt value is indexed (array-based).
+
+        Returns
+        -------
+        bool
+            True if tilt is indexed, False otherwise
+        """
         return self.tilt_index() is not None
 
     def x_offset_index(self) -> int | None:
@@ -120,4 +136,12 @@ class BPMModel(metaclass=ABCMeta):
         return None
 
     def is_offset_indexed(self) -> bool:
+        """
+        Check if offset values are indexed (array-based).
+
+        Returns
+        -------
+        bool
+            True if both x and y offsets are indexed, False otherwise
+        """
         return self.x_offset_index() is not None and self.y_offset_index() is not None

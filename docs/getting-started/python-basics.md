@@ -11,10 +11,10 @@ Integrated Development Environments
 Python can be run directly in a terminal or an [IPython](https://ipython.org/) shell but if you want to do more complex things like debug or develop code it is easier to use an Integrated Development Environment (IDE). There are many IDEs with Python support with different features, user experience etc so the choice is highly personal. Three common ones are:
 
 - **Spyder**:
-    [https://www.spyder-ide.org/](https://www.spyder-ide.org/) 
+    [https://www.spyder-ide.org/](https://www.spyder-ide.org/)
 
     Spyder is designed for scientific computing and data analysis. It has the most MATLAB-like interface which often makes it a preferred choice among MATLAB users. It works well when using standard scientific Python packages but has currently less support for custom Python classes. It also only has basic Git integration and works best with conda environments. There is an plugin for Jupyter notebooks but it is not available for all the installation options yet.
-    
+
 - **VS Code**:
     [https://code.visualstudio.com/](https://code.visualstudio.com/)
 
@@ -51,9 +51,9 @@ There are many different ways to get an installation of Python. An important asp
     [https://docs.astral.sh/uv/](https://docs.astral.sh/uv/)
 
     Uv is a new tool which is intended as a single tool to replace the functionality of many other tools. In addition to managing Python versions and virtual environments it can also help to build packages. It however has a bit of a learning curve so is likely mostly a good choice for the experienced user who also wants to do development work.
-    
+
 Python Packages
------------------ 
+-----------------
 
 After you have installed Python you need to install packages for the code that you want to use. There are two common ways to do this:
 

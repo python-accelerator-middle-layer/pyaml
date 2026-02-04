@@ -7,7 +7,10 @@ from .magnet import Magnet, MagnetConfigModel
 PYAMLCLASS = "VCorrector"
 
 
-class ConfigModel(MagnetConfigModel): ...
+class ConfigModel(MagnetConfigModel):
+    """Configuration model for Vertical Corrector magnet."""
+
+    ...
 
 
 class VCorrector(Magnet):
