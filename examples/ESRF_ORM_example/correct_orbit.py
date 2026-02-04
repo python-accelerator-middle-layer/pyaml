@@ -17,7 +17,7 @@ ebs = sr.design
 
 ## get reference
 ref_h, ref_v = ebs.get_bpms("BPM").positions.get().T
-reference = np.concat((ref_h, ref_v))
+reference = np.concatenate((ref_h, ref_v))
 ########################################################
 
 
