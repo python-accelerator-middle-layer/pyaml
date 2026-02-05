@@ -2,7 +2,6 @@ import numpy as np
 import pytest
 
 from pyaml.accelerator import Accelerator
-from pyaml.configuration.factory import Factory
 
 
 def test_simulator_chromaticity_monitor():
@@ -19,8 +18,6 @@ def test_simulator_chromaticity_monitor():
         chromaticity_monitor.chromaticity.get()[1]
         == sr.design.get_lattice().get_chrom()[1]
     )
-
-    Factory.clear()
 
 
 @pytest.mark.parametrize(
@@ -44,5 +41,3 @@ def test_controlsystem_chromaticity_monitor(install_test_package):
     ksi = np.abs(chromaticity_monitor.chromaticity.get())
     assert abs(ksi[0]) < 1e-17
     assert abs(ksi[1]) < 1e-17
-
-    Factory.clear()

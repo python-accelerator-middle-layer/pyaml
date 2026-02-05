@@ -3,9 +3,7 @@ import pytest
 
 from pyaml.accelerator import Accelerator
 from pyaml.configuration.factory import Factory
-from pyaml.magnet.cfm_magnet import CombinedFunctionMagnet
 from pyaml.magnet.hcorrector import HCorrector
-from pyaml.magnet.model import MagnetModel
 from pyaml.magnet.vcorrector import VCorrector
 
 
@@ -44,5 +42,3 @@ def test_cfm_magnets(magnet_file, install_test_package):
     assert np.abs(o[1] - 3.39661431e-07) < 1e-10
     assert np.abs(o[2] + 1.59928207e-06) < 1e-10
     assert np.abs(o[3] + 1.74771216e-05) < 1e-10
-
-    Factory.clear()

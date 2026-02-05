@@ -2,7 +2,6 @@ import numpy as np
 import pytest
 
 from pyaml.accelerator import Accelerator
-from pyaml.configuration.factory import Factory
 
 
 @pytest.mark.parametrize(
@@ -18,8 +17,6 @@ def test_controlsystem_bpm_tilt(install_test_package):
     assert bpm.tilt.get() == 0
     bpm.tilt.set(0.01)
     assert bpm.tilt.get() == 0.01
-
-    Factory.clear()
 
 
 @pytest.mark.parametrize(
@@ -37,8 +34,6 @@ def test_controlsystem_bpm_offset(install_test_package):
     assert bpm.offset.get()[0] == 0.1
     assert bpm.offset.get()[1] == 0.2
     assert np.allclose(bpm.positions.get(), np.array([0.0, 0.0]))
-
-    Factory.clear()
 
 
 @pytest.mark.parametrize(
@@ -65,5 +60,3 @@ def test_controlsystem_bpm_position_indexed(install_test_package):
     bpm = sr.live.get_bpm("BPM_C01-04")
 
     assert np.allclose(bpm.positions.get(), np.array([0.0, 1.0]))
-
-    Factory.clear()

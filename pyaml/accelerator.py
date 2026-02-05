@@ -153,6 +153,8 @@ class Accelerator(object):
         if ignore_external:
             # control systems are external, so remove controls field
             config_dict.pop("controls", None)
+        # Ensure factory is clean before building a new accelerator
+        Factory.clear()
         return Factory.depth_first_build(config_dict, ignore_external)
 
     @staticmethod

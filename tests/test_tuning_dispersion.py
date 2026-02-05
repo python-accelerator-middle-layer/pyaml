@@ -1,12 +1,7 @@
 import logging
 from pathlib import Path
 
-import numpy as np
-
 from pyaml.accelerator import Accelerator
-from pyaml.configuration.factory import Factory
-from pyaml.tuning_tools.dispersion import ConfigModel as Disp_ConfigModel
-from pyaml.tuning_tools.dispersion import Dispersion
 
 
 def test_tuning_orm():
@@ -26,5 +21,3 @@ def test_tuning_orm():
 
     assert len(dispersion_data["frequency_response_x"]) == len(bpms)
     assert len(dispersion_data["frequency_response_y"]) == len(bpms)
-
-    Factory.clear()

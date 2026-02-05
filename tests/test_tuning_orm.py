@@ -4,9 +4,6 @@ from pathlib import Path
 import numpy as np
 
 from pyaml.accelerator import Accelerator
-from pyaml.configuration.factory import Factory
-from pyaml.tuning_tools.orbit_response_matrix import ConfigModel as ORM_ConfigModel
-from pyaml.tuning_tools.orbit_response_matrix import OrbitResponseMatrix
 
 
 def test_tuning_orm():
@@ -27,5 +24,3 @@ def test_tuning_orm():
     orm_data = orm.get()
     orm_shape = np.array(orm_data["matrix"]).shape
     assert orm_shape == (2 * len(bpms), 8)
-
-    Factory.clear()
