@@ -541,6 +541,14 @@ object is not created should handle None fields.</p></li>
 </dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="pyaml.accelerator.Accelerator.get_description">
+<span class="sig-name descname"><span class="pre">get_description</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/accelerator.html#Accelerator.get_description"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.accelerator.Accelerator.get_description" title="Link to this definition">#</a></dt>
+<dd><p>Returns the description of the accelerator</p>
+<dl class="field-list simple">
+</dl>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="pyaml.accelerator.Accelerator.post_init">
 <span class="sig-name descname"><span class="pre">post_init</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/accelerator.html#Accelerator.post_init"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.accelerator.Accelerator.post_init" title="Link to this definition">#</a></dt>
 <dd><p>Method triggered after all initialisations are done</p>
@@ -567,7 +575,7 @@ object is not created should handle None fields.</p></li>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="pyaml.accelerator.ConfigModel">
-<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ConfigModel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">facility</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">machine</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">energy</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">controls</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">simulators</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data_folder</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">arrays</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">devices</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/accelerator.html#ConfigModel"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.accelerator.ConfigModel" title="Link to this definition">#</a></dt>
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ConfigModel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">facility</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">machine</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">energy</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">controls</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">simulators</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data_folder</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">description</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">arrays</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">devices</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/accelerator.html#ConfigModel"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.accelerator.ConfigModel" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">BaseModel</span></code></p>
 <p>Configuration model for Accelerator</p>
 <dl class="field-list simple">
@@ -582,6 +590,7 @@ can access several control systems</p></li>
 <li><p><strong>simulators</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.14)"><em>list</em></a><em>[</em><a class="reference internal" href="pyaml.lattice.simulator.html#pyaml.lattice.simulator.Simulator" title="pyaml.lattice.simulator.Simulator"><em>Simulator</em></a><em>]</em><em>, </em><em>optional</em>) – Simulator list</p></li>
 <li><p><strong>data_folder</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>) – Data folder</p></li>
 <li><p><strong>arrays</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.14)"><em>list</em></a><em>[</em><a class="reference internal" href="pyaml.arrays.array.html#pyaml.arrays.array.ArrayConfig" title="pyaml.arrays.array.ArrayConfig"><em>ArrayConfig</em></a><em>]</em><em>, </em><em>optional</em>) – Element family</p></li>
+<li><p><strong>description</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em> , </em><em>optional</em>) – Acceleration description</p></li>
 <li><p><strong>devices</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.14)"><em>list</em></a><em>[</em><a class="reference internal" href="pyaml.arrays.element.html#pyaml.arrays.element.Element" title="pyaml.arrays.element.Element"><em>Element</em></a><em>]</em>) – Element list</p></li>
 </ul>
 </dd>
@@ -603,6 +612,11 @@ validated to form a valid model.</p>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="pyaml.accelerator.ConfigModel.data_folder">
 <span class="sig-name descname"><span class="pre">data_folder</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></em><a class="headerlink" href="#pyaml.accelerator.ConfigModel.data_folder" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyaml.accelerator.ConfigModel.description">
+<span class="sig-name descname"><span class="pre">description</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></em><a class="headerlink" href="#pyaml.accelerator.ConfigModel.description" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
@@ -690,6 +704,7 @@ validated to form a valid model.</p>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.accelerator.Accelerator"><code class="docutils literal notranslate"><span class="pre">Accelerator</span></code></a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.accelerator.Accelerator.from_dict"><code class="docutils literal notranslate"><span class="pre">Accelerator.from_dict()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.accelerator.Accelerator.load"><code class="docutils literal notranslate"><span class="pre">Accelerator.load()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.accelerator.Accelerator.get_description"><code class="docutils literal notranslate"><span class="pre">Accelerator.get_description()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.accelerator.Accelerator.post_init"><code class="docutils literal notranslate"><span class="pre">Accelerator.post_init()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.accelerator.Accelerator.set_energy"><code class="docutils literal notranslate"><span class="pre">Accelerator.set_energy()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.accelerator.Accelerator.design"><code class="docutils literal notranslate"><span class="pre">Accelerator.design</span></code></a></li>
@@ -700,6 +715,7 @@ validated to form a valid model.</p>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.accelerator.ConfigModel.arrays"><code class="docutils literal notranslate"><span class="pre">ConfigModel.arrays</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.accelerator.ConfigModel.controls"><code class="docutils literal notranslate"><span class="pre">ConfigModel.controls</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.accelerator.ConfigModel.data_folder"><code class="docutils literal notranslate"><span class="pre">ConfigModel.data_folder</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.accelerator.ConfigModel.description"><code class="docutils literal notranslate"><span class="pre">ConfigModel.description</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.accelerator.ConfigModel.devices"><code class="docutils literal notranslate"><span class="pre">ConfigModel.devices</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.accelerator.ConfigModel.energy"><code class="docutils literal notranslate"><span class="pre">ConfigModel.energy</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.accelerator.ConfigModel.facility"><code class="docutils literal notranslate"><span class="pre">ConfigModel.facility</span></code></a></li>

@@ -490,7 +490,7 @@
 <p class="rubric">Classes</p>
 <div class="pst-scrollable-table-container"><table class="autosummary longtable table">
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#pyaml.lattice.simulator.ConfigModel" title="pyaml.lattice.simulator.ConfigModel"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ConfigModel</span></code></a>(*, name, lattice[, mat_key, linker])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#pyaml.lattice.simulator.ConfigModel" title="pyaml.lattice.simulator.ConfigModel"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ConfigModel</span></code></a>(*, name, lattice[, mat_key, ...])</p></td>
 <td><p>Configuration model for Simulator</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#pyaml.lattice.simulator.Simulator" title="pyaml.lattice.simulator.Simulator"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Simulator</span></code></a>(cfg)</p></td>
@@ -501,7 +501,7 @@
 </div>
 <dl class="py class">
 <dt class="sig sig-object py" id="pyaml.lattice.simulator.ConfigModel">
-<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ConfigModel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lattice</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mat_key</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">linker</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/lattice/simulator.html#ConfigModel"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.lattice.simulator.ConfigModel" title="Link to this definition">#</a></dt>
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ConfigModel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lattice</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mat_key</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">linker</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">description</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/lattice/simulator.html#ConfigModel"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.lattice.simulator.ConfigModel" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">BaseModel</span></code></p>
 <p>Configuration model for Simulator</p>
 <dl class="field-list simple">
@@ -511,6 +511,7 @@
 <li><p><strong>lattice</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>) – AT lattice file</p></li>
 <li><p><strong>mat_key</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em>, </em><em>optional</em>) – AT lattice ring name</p></li>
 <li><p><strong>linker</strong> (<a class="reference internal" href="pyaml.lattice.lattice_elements_linker.html#pyaml.lattice.lattice_elements_linker.LatticeElementsLinker" title="pyaml.lattice.lattice_elements_linker.LatticeElementsLinker"><em>LatticeElementsLinker</em></a><em>, </em><em>optional</em>) – The linker configuration model</p></li>
+<li><p><strong>description</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em> , </em><em>optional</em>) – Simulator description</p></li>
 </ul>
 </dd>
 </dl>
@@ -518,6 +519,11 @@
 <p>Raises [<cite>ValidationError</cite>][pydantic_core.ValidationError] if the input data cannot be
 validated to form a valid model.</p>
 <p><cite>self</cite> is explicitly positional-only to allow <cite>self</cite> as a field name.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyaml.lattice.simulator.ConfigModel.description">
+<span class="sig-name descname"><span class="pre">description</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></em><a class="headerlink" href="#pyaml.lattice.simulator.ConfigModel.description" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
 <dl class="py attribute">
 <dt class="sig sig-object py" id="pyaml.lattice.simulator.ConfigModel.lattice">
 <span class="sig-name descname"><span class="pre">lattice</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></em><a class="headerlink" href="#pyaml.lattice.simulator.ConfigModel.lattice" title="Link to this definition">#</a></dt>
@@ -585,6 +591,14 @@ validated to form a valid model.</p>
 <dt class="sig sig-object py" id="pyaml.lattice.simulator.Simulator.get_at_elems">
 <span class="sig-name descname"><span class="pre">get_at_elems</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">element</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/lattice/simulator.html#Simulator.get_at_elems"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.lattice.simulator.Simulator.get_at_elems" title="Link to this definition">#</a></dt>
 <dd><dl class="field-list simple">
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaml.lattice.simulator.Simulator.get_description">
+<span class="sig-name descname"><span class="pre">get_description</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/lattice/simulator.html#Simulator.get_description"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.lattice.simulator.Simulator.get_description" title="Link to this definition">#</a></dt>
+<dd><p>Returns the description of the accelerator</p>
+<dl class="field-list simple">
 </dl>
 </dd></dl>
 
@@ -677,6 +691,7 @@ validated to form a valid model.</p>
   <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.lattice.simulator.ConfigModel"><code class="docutils literal notranslate"><span class="pre">ConfigModel</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.lattice.simulator.ConfigModel.description"><code class="docutils literal notranslate"><span class="pre">ConfigModel.description</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.lattice.simulator.ConfigModel.lattice"><code class="docutils literal notranslate"><span class="pre">ConfigModel.lattice</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.lattice.simulator.ConfigModel.linker"><code class="docutils literal notranslate"><span class="pre">ConfigModel.linker</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.lattice.simulator.ConfigModel.mat_key"><code class="docutils literal notranslate"><span class="pre">ConfigModel.mat_key</span></code></a></li>
@@ -690,6 +705,7 @@ validated to form a valid model.</p>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.lattice.simulator.Simulator.create_magnet_strength_aggregator"><code class="docutils literal notranslate"><span class="pre">Simulator.create_magnet_strength_aggregator()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.lattice.simulator.Simulator.fill_device"><code class="docutils literal notranslate"><span class="pre">Simulator.fill_device()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.lattice.simulator.Simulator.get_at_elems"><code class="docutils literal notranslate"><span class="pre">Simulator.get_at_elems()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.lattice.simulator.Simulator.get_description"><code class="docutils literal notranslate"><span class="pre">Simulator.get_description()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.lattice.simulator.Simulator.get_indices"><code class="docutils literal notranslate"><span class="pre">Simulator.get_indices()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.lattice.simulator.Simulator.get_lattice"><code class="docutils literal notranslate"><span class="pre">Simulator.get_lattice()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.lattice.simulator.Simulator.get_names"><code class="docutils literal notranslate"><span class="pre">Simulator.get_names()</span></code></a></li>

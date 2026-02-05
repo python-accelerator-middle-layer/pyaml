@@ -440,6 +440,8 @@
 <span class="sd">        AT lattice ring name</span>
 <span class="sd">    linker : LatticeElementsLinker, optional</span>
 <span class="sd">        The linker configuration model</span>
+<span class="sd">    description : str , optional</span>
+<span class="sd">        Simulator description</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">model_config</span> <span class="o">=</span> <span class="n">ConfigDict</span><span class="p">(</span><span class="n">arbitrary_types_allowed</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">extra</span><span class="o">=</span><span class="s2">&quot;forbid&quot;</span><span class="p">)</span>
@@ -447,7 +449,8 @@
     <span class="n">name</span><span class="p">:</span> <span class="nb">str</span>
     <span class="n">lattice</span><span class="p">:</span> <span class="nb">str</span>
     <span class="n">mat_key</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span>
-    <span class="n">linker</span><span class="p">:</span> <span class="n">LatticeElementsLinker</span> <span class="o">=</span> <span class="kc">None</span></div>
+    <span class="n">linker</span><span class="p">:</span> <span class="n">LatticeElementsLinker</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">description</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span></div>
 
 
 
@@ -489,6 +492,15 @@
 <a class="viewcode-back" href="../../../api/pyaml.lattice.simulator.html#pyaml.lattice.simulator.Simulator.get_lattice">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">get_lattice</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">at</span><span class="o">.</span><span class="n">Lattice</span><span class="p">:</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">ring</span></div>
+
+
+<div class="viewcode-block" id="Simulator.get_description">
+<a class="viewcode-back" href="../../../api/pyaml.lattice.simulator.html#pyaml.lattice.simulator.Simulator.get_description">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_description</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns the description of the accelerator</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cfg</span><span class="o">.</span><span class="n">description</span></div>
 
 
 <div class="viewcode-block" id="Simulator.set_energy">

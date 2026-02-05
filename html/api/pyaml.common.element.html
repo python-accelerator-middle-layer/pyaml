@@ -493,7 +493,7 @@
 <tr class="row-odd"><td><p><a class="reference internal" href="#pyaml.common.element.Element" title="pyaml.common.element.Element"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Element</span></code></a>(name)</p></td>
 <td><p>Class providing access to one element of a physical or simulated lattice</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#pyaml.common.element.ElementConfigModel" title="pyaml.common.element.ElementConfigModel"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ElementConfigModel</span></code></a>(*, name[, lattice_names])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#pyaml.common.element.ElementConfigModel" title="pyaml.common.element.ElementConfigModel"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ElementConfigModel</span></code></a>(*, name[, description, ...])</p></td>
 <td><p>Base class for element configuration.</p></td>
 </tr>
 </tbody>
@@ -518,6 +518,14 @@ The unique name identifying the element in the configuration file</p>
 <span class="sig-name descname"><span class="pre">check_peer</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/common/element.html#Element.check_peer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.common.element.Element.check_peer" title="Link to this definition">#</a></dt>
 <dd><p>Throws an exception if the element is not attacched
 to a simulator or to a control system</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaml.common.element.Element.get_description">
+<span class="sig-name descname"><span class="pre">get_description</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/common/element.html#Element.get_description"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.common.element.Element.get_description" title="Link to this definition">#</a></dt>
+<dd><p>Returns the description of the element</p>
+<dl class="field-list simple">
+</dl>
 </dd></dl>
 
 <dl class="py method">
@@ -562,13 +570,14 @@ to a simulator or to a control system</p>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="pyaml.common.element.ElementConfigModel">
-<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ElementConfigModel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lattice_names</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/common/element.html#ElementConfigModel"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.common.element.ElementConfigModel" title="Link to this definition">#</a></dt>
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ElementConfigModel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">description</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lattice_names</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/common/element.html#ElementConfigModel"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.common.element.ElementConfigModel" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">BaseModel</span></code></p>
 <p>Base class for element configuration.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>) – The name of the PyAML element.</p></li>
+<li><p><strong>description</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em>, </em><em>optional</em>) – Description of the element.</p></li>
 <li><p><strong>lattice_names</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em> or </em><em>None</em><em>, </em><em>optional</em>) – The name(s) of the associated element(s) in the lattice. By default,
 the PyAML element name is used. lattice_name accept the following
 syntax:
@@ -584,6 +593,11 @@ of lattice element is used for indexing.</p></li>
 <p>Raises [<cite>ValidationError</cite>][pydantic_core.ValidationError] if the input data cannot be
 validated to form a valid model.</p>
 <p><cite>self</cite> is explicitly positional-only to allow <cite>self</cite> as a field name.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyaml.common.element.ElementConfigModel.description">
+<span class="sig-name descname"><span class="pre">description</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></em><a class="headerlink" href="#pyaml.common.element.ElementConfigModel.description" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
 <dl class="py attribute">
 <dt class="sig sig-object py" id="pyaml.common.element.ElementConfigModel.lattice_names">
 <span class="sig-name descname"><span class="pre">lattice_names</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></em><a class="headerlink" href="#pyaml.common.element.ElementConfigModel.lattice_names" title="Link to this definition">#</a></dt>
@@ -654,6 +668,7 @@ validated to form a valid model.</p>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.common.element.Element"><code class="docutils literal notranslate"><span class="pre">Element</span></code></a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.common.element.Element.name"><code class="docutils literal notranslate"><span class="pre">Element.name</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.common.element.Element.check_peer"><code class="docutils literal notranslate"><span class="pre">Element.check_peer()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.common.element.Element.get_description"><code class="docutils literal notranslate"><span class="pre">Element.get_description()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.common.element.Element.get_lattice_names"><code class="docutils literal notranslate"><span class="pre">Element.get_lattice_names()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.common.element.Element.get_name"><code class="docutils literal notranslate"><span class="pre">Element.get_name()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.common.element.Element.get_peer"><code class="docutils literal notranslate"><span class="pre">Element.get_peer()</span></code></a></li>
@@ -662,6 +677,7 @@ validated to form a valid model.</p>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.common.element.ElementConfigModel"><code class="docutils literal notranslate"><span class="pre">ElementConfigModel</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.common.element.ElementConfigModel.description"><code class="docutils literal notranslate"><span class="pre">ElementConfigModel.description</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.common.element.ElementConfigModel.lattice_names"><code class="docutils literal notranslate"><span class="pre">ElementConfigModel.lattice_names</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.common.element.ElementConfigModel.model_config"><code class="docutils literal notranslate"><span class="pre">ElementConfigModel.model_config</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.common.element.ElementConfigModel.name"><code class="docutils literal notranslate"><span class="pre">ElementConfigModel.name</span></code></a></li>

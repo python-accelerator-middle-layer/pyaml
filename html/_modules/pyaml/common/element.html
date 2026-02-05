@@ -410,6 +410,8 @@
 <span class="sd">    ----------</span>
 <span class="sd">    name : str</span>
 <span class="sd">        The name of the PyAML element.</span>
+<span class="sd">    description : str, optional</span>
+<span class="sd">        Description of the element.</span>
 <span class="sd">    lattice_names : str or None, optional</span>
 <span class="sd">        The name(s) of the associated element(s) in the lattice. By default,</span>
 <span class="sd">        the PyAML element name is used. lattice_name accept the following</span>
@@ -424,6 +426,7 @@
     <span class="n">model_config</span> <span class="o">=</span> <span class="n">ConfigDict</span><span class="p">(</span><span class="n">arbitrary_types_allowed</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">extra</span><span class="o">=</span><span class="s2">&quot;forbid&quot;</span><span class="p">)</span>
 
     <span class="n">name</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">description</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="n">lattice_names</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span></div>
 
 
@@ -462,6 +465,15 @@
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__name</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cfg</span><span class="o">.</span><span class="n">lattice_names</span></div>
+
+
+<div class="viewcode-block" id="Element.get_description">
+<a class="viewcode-back" href="../../../api/pyaml.common.element.html#pyaml.common.element.Element.get_description">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_description</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns the description of the element</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cfg</span><span class="o">.</span><span class="n">description</span></div>
 
 
 <div class="viewcode-block" id="Element.set_energy">
