@@ -4,9 +4,6 @@ from pathlib import Path
 import numpy as np
 
 from pyaml.accelerator import Accelerator
-from pyaml.configuration.factory import Factory
-from pyaml.tuning_tools.orbit import ConfigModel as Orbit_ConfigModel
-from pyaml.tuning_tools.orbit import Orbit
 
 
 def test_tuning_orm():
@@ -48,5 +45,3 @@ def test_tuning_orm():
     std_ac = np.std(positions_ac, axis=0)
     assert np.isclose(std_ac[0], 5.041856471193712e-07, rtol=0, atol=1e-14)
     assert np.isclose(std_ac[1], 4.789269566479167e-07, rtol=0, atol=1e-14)
-
-    Factory.clear()

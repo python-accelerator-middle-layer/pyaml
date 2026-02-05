@@ -2,7 +2,6 @@ import numpy as np
 import pytest
 
 from pyaml.accelerator import Accelerator
-from pyaml.configuration.factory import Factory
 
 
 def test_simulator_bpm_tilt():
@@ -12,8 +11,6 @@ def test_simulator_bpm_tilt():
     assert bpm.tilt.get() == 0
     bpm.tilt.set(0.01)
     assert bpm.tilt.get() == 0.01
-
-    Factory.clear()
 
 
 def test_simulator_bpm_offset():
@@ -27,8 +24,6 @@ def test_simulator_bpm_offset():
     assert bpm.offset.get()[0] == 0.1
     assert bpm.offset.get()[1] == 0.2
     assert np.allclose(bpm.positions.get(), np.array([0.0, 0.0]))
-
-    Factory.clear()
 
 
 @pytest.mark.parametrize(
@@ -45,8 +40,6 @@ def test_simulator_bpm_position(install_test_package):
     assert np.allclose(bpm.positions.get(), np.array([0.0, 0.0]))
     assert np.allclose(bpm_simple.positions.get(), np.array([0.0, 0.0]))
 
-    Factory.clear()
-
 
 def test_simulator_bpm_position_with_bad_corrector_strength():
     sr: Accelerator = Accelerator.load("tests/config/bpms.yaml", ignore_external=True)
@@ -60,5 +53,3 @@ def test_simulator_bpm_position_with_bad_corrector_strength():
     for bpm in [bpm1, bpm_simple, bpm3]:
         assert bpm.positions.get()[0] != 0.0
         assert bpm.positions.get()[1] != 0.0
-
-    Factory.clear()

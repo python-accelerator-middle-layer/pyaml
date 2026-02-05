@@ -3,7 +3,6 @@ import pytest
 
 from pyaml import PyAMLException
 from pyaml.accelerator import Accelerator
-from pyaml.configuration.factory import Factory
 
 
 def _in_range(vmin, vmax) -> float:
@@ -21,7 +20,9 @@ def _out_of_range(vmin, vmax) -> float:
         return float(vmax) + 0.1
     if vmin is not None:
         return float(vmin) - 0.1
-    raise RuntimeError("Unbounded range [None, None], cannot build an out-of-range value.")
+    raise RuntimeError(
+        "Unbounded range [None, None], cannot build an out-of-range value."
+    )
 
 
 @pytest.mark.parametrize(
@@ -34,7 +35,9 @@ def _out_of_range(vmin, vmax) -> float:
     ],
     indirect=["install_test_package"],
 )
-def test_cfm_ranges_from_yaml_are_propagated_and_enforced(magnet_file, install_test_package):
+def test_cfm_ranges_from_yaml_are_propagated_and_enforced(
+    magnet_file, install_test_package
+):
     sr: Accelerator = Accelerator.load(magnet_file)
     sr.design.get_lattice().disable_6d()
 
@@ -55,11 +58,13 @@ def test_cfm_ranges_from_yaml_are_propagated_and_enforced(magnet_file, install_t
     assert got_ranges == expected_ranges
 
     # Build an in-range current vector (3 values)
-    in_currents = np.array([
-        _in_range(*expected_ranges[0]),
-        _in_range(*expected_ranges[1]),
-        _in_range(*expected_ranges[2]),
-    ])
+    in_currents = np.array(
+        [
+            _in_range(*expected_ranges[0]),
+            _in_range(*expected_ranges[1]),
+            _in_range(*expected_ranges[2]),
+        ]
+    )
 
     # Convert currents -> strengths (vector size 3)
     in_strengths = m.model.compute_strengths(in_currents)
@@ -73,5 +78,3 @@ def test_cfm_ranges_from_yaml_are_propagated_and_enforced(magnet_file, install_t
 
     with pytest.raises(PyAMLException, match="out of range"):
         m.strengths.set(out_strengths)
-
-    Factory.clear()

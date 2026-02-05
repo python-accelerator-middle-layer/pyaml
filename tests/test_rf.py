@@ -3,7 +3,6 @@ import pytest
 
 from pyaml.accelerator import Accelerator
 from pyaml.common.exception import PyAMLException
-from pyaml.configuration.factory import Factory
 
 
 def test_rf():
@@ -32,8 +31,6 @@ def test_rf():
         RF.voltage.set(6.5e6)
         assert np.isclose(RF.frequency.get(), 3.523721693993786e8)
         assert np.isclose(RF.voltage.get(), 6.5e6)
-
-    Factory.clear()
 
 
 @pytest.mark.parametrize(
@@ -85,8 +82,6 @@ def test_rf_multi(install_test_package):
     assert np.isclose(RF2.voltage.get(), 2e6)
     assert np.isclose(RFTRA_HARMONIC.voltage.get(), 3e5)
 
-    Factory.clear()
-
 
 @pytest.mark.parametrize(
     "install_test_package",
@@ -116,5 +111,3 @@ def test_rf_multi_notrans(install_test_package):
 
     # Check that frequency and voltage has been applied on the masterclock device
     assert np.isclose(RF.frequency.get(), 3.523e8)
-
-    Factory.clear()

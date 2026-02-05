@@ -9,12 +9,10 @@ from pyaml.arrays.bpm import ConfigModel as BPMArrayConfigModel
 from pyaml.arrays.bpm_array import BPMArray
 from pyaml.arrays.cfm_magnet import CombinedFunctionMagnet
 from pyaml.arrays.cfm_magnet import ConfigModel as CombinedFunctionMagnetConfigModel
-from pyaml.arrays.cfm_magnet_array import CombinedFunctionMagnetArray
 from pyaml.arrays.element_array import ElementArray
 from pyaml.arrays.magnet import ConfigModel as MagnetArrayConfigModel
 from pyaml.arrays.magnet import Magnet
 from pyaml.arrays.magnet_array import MagnetArray
-from pyaml.configuration.factory import Factory
 
 
 @pytest.mark.parametrize(
@@ -205,8 +203,6 @@ def test_arrays(install_test_package):
     bpmsLive = BPMArray("", sr.live.get_all_bpms())
     bpmsLive.positions.get()
 
-    Factory.clear()
-
     # Test dynamic arrays
 
     sr: Accelerator = Accelerator.load(
@@ -244,7 +240,6 @@ def test_arrays(install_test_package):
     v = sr.design.get_cfm_magnets("emptyCFM").strengths.get()  # Ensure good attach
     assert np.shape(v) == (0,)
 
-    Factory.clear()
 
 @pytest.mark.parametrize(
     "sr_file",
@@ -253,7 +248,9 @@ def test_arrays(install_test_package):
     ],
 )
 def test_serialized_magnets_arrays(sr_file):
-    sr: Accelerator = Accelerator.load(sr_file, use_fast_loader=True, ignore_external=True)
+    sr: Accelerator = Accelerator.load(
+        sr_file, use_fast_loader=True, ignore_external=True
+    )
     the_serie = sr.design.get_serialized_magnets("series")
     strength = the_serie.strengths.get()
     assert len(strength) == 5
@@ -263,4 +260,3 @@ def test_serialized_magnets_arrays(sr_file):
     assert len(hardwares) == 5
     print(hardwares)
     the_serie.hardwares.set([10])
-

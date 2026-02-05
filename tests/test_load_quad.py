@@ -16,8 +16,6 @@ from pyaml.control.abstract_impl import (
 )
 from pyaml.magnet.cfm_magnet import CombinedFunctionMagnet
 from pyaml.magnet.hcorrector import HCorrector
-from pyaml.magnet.identity_model import IdentityMagnetModel
-from pyaml.magnet.quadrupole import ConfigModel as QuadrupoleConfigModel
 from pyaml.magnet.quadrupole import Quadrupole
 
 # TODO: Generate JSON pydantic schema for MetaConfigurator

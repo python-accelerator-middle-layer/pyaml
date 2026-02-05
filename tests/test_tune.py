@@ -2,7 +2,6 @@ import numpy as np
 import pytest
 
 from pyaml.accelerator import Accelerator
-from pyaml.configuration.factory import Factory
 
 
 def test_tune():
@@ -51,5 +50,3 @@ def test_tune():
         strs = quadForTuneLive.strengths.get()
         strs += np.matmul(correctionmat, [0.1, 0.05])  # Ask for correction [dqx,dqy]
         quadForTuneLive.strengths.set(strs)
-
-    Factory.clear()
