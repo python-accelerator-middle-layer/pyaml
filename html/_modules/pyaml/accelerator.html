@@ -540,6 +540,8 @@
         <span class="k">if</span> <span class="n">ignore_external</span><span class="p">:</span>
             <span class="c1"># control systems are external, so remove controls field</span>
             <span class="n">config_dict</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;controls&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="c1"># Ensure factory is clean before building a new accelerator</span>
+        <span class="n">Factory</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
         <span class="k">return</span> <span class="n">Factory</span><span class="o">.</span><span class="n">depth_first_build</span><span class="p">(</span><span class="n">config_dict</span><span class="p">,</span> <span class="n">ignore_external</span><span class="p">)</span></div>
 
 
