@@ -37,7 +37,7 @@ class ElementConfigModel(BaseModel):
     ----------
     name : str
         The name of the PyAML element.
-    description : str
+    description : str, optional
         Description of the element.
     lattice_names : str or None, optional
         The name(s) of the associated element(s) in the lattice. By default,
@@ -85,7 +85,7 @@ class Element(object):
         else:
             return self._cfg.lattice_names
 
-    def get_descripton(self) -> str:
+    def get_description(self) -> str:
         """
         Returns the description of the element
         """
