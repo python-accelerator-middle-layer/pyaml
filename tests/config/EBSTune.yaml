@@ -2,8 +2,10 @@ type: pyaml.accelerator
 facility: ESRF
 machine: sr
 energy: 6e9
+description: "Accelerator configuration for EBS storage ring"
 simulators:
   - type: pyaml.lattice.simulator
+    description: "EBS lattice"
     lattice: sr/lattices/ebs.mat
     name: design
 controls:
@@ -141,6 +143,7 @@ arrays:
       - QF1A-C03
 devices:
 - type: pyaml.magnet.quadrupole
+  description: "QF1E-C04 quadrupole"
   name: QF1E-C04
   model:
     type: pyaml.magnet.linear_model

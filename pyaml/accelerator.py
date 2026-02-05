@@ -40,6 +40,8 @@ class ConfigModel(BaseModel):
         Data folder
     arrays : list[ArrayConfig], optional
         Element family
+    description : str , optional
+        Acceleration description
     devices : list[Element]
         Element list
     """
@@ -52,6 +54,7 @@ class ConfigModel(BaseModel):
     controls: list[ControlSystem] = None
     simulators: list[Simulator] = None
     data_folder: str
+    description: str | None = None
     arrays: list[ArrayConfig] = None
     devices: list[Element]
 
@@ -115,6 +118,12 @@ class Accelerator(object):
             for c in self._cfg.controls:
                 c.post_init()
 
+    def get_description(self) -> str:
+        """
+        Returns the description of the accelerator
+        """
+        return self._cfg.description
+
     @property
     def live(self) -> ControlSystem:
         return self.__live
@@ -122,6 +131,9 @@ class Accelerator(object):
     @property
     def design(self) -> Simulator:
         return self.__design
+
+    def __repr__(self):
+        return repr(self._cfg).replace("ConfigModel", self.__class__.__name__)
 
     @staticmethod
     def from_dict(config_dict: dict, ignore_external=False) -> "Accelerator":

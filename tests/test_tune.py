@@ -6,7 +6,14 @@ from pyaml.configuration.factory import Factory
 
 
 def test_tune():
-    sr: Accelerator = Accelerator.load("tests/config/EBSTune.yaml", ignore_external=True)
+    sr: Accelerator = Accelerator.load(
+        "tests/config/EBSTune.yaml", ignore_external=True
+    )
+
+    assert sr.get_description() == "Accelerator configuration for EBS storage ring"
+    assert sr.design.get_magnet("QF1E-C04").get_description() == "QF1E-C04 quadrupole"
+    assert sr.design.get_description() == "EBS lattice"
+
     sr.design.get_lattice().disable_6d()
 
     quadForTuneDesign = sr.design.get_magnets("QForTune")
