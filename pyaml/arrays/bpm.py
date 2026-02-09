@@ -20,8 +20,8 @@ class BPM(ArrayConfig):
 
     A BPM array configuration can also be created by code using the following example::
 
-        from pyaml.arrays.bpm import BPM,ConfigModel as BPMArrayConfigModel
-        bpmArray = BPM(
+      >>>  from pyaml.arrays.bpm import BPM,ConfigModel as BPMArrayConfigModel
+      >>>  bpmArray = BPM(
                      BPMArrayConfigModel(name="MyBPMs", elements=["bpm1","bpm2"])
                    )
     """

@@ -106,7 +106,7 @@ class Accelerator(object):
         Parameters
         ----------
         E : float
-            Energy value to set in GeV
+            Energy value to set in eV
         """
         if self._cfg.simulators is not None:
             for s in self._cfg.simulators:
