@@ -78,7 +78,7 @@ class RFTransmitter(Element):
     @property
     def phase(self) -> abstract.ReadWriteFloatScalar:
         """
-        Get the RF phase accessor.
+        Get the RF phase in [rad].
 
         Returns
         -------
