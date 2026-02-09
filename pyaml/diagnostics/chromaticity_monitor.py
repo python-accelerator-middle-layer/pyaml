@@ -43,9 +43,9 @@ class ConfigModel(ElementConfigModel):
     N_tune_meas : int, optional
         Default number of tune measurement per RF frequency, by default 1
     Sleep_between_meas : float, optional
-        Default time sleep between two tune measurements, by default 2.0
+        Default sleep time in [s] between two tune measurements, by default 2.0
     Sleep_between_RFvar : float, optional
-        Default time sleep after RF frequency variation, by default 5.0
+        Default sleep time in [s] after RF frequency variation, by default 5.0
     fit_order : int, optional
         Fitting order, by default 1
     """
