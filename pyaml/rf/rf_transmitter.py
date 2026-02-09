@@ -57,7 +57,7 @@ class RFTransmitter(Element):
     @property
     def voltage(self) -> abstract.ReadWriteFloatScalar:
         """
-        Get the RF voltage accessor.
+        Get the RF voltage in [V].
 
         Returns
         -------
