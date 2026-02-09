@@ -4,7 +4,7 @@ Accelerator class
 
 import os
 
-from pydantic import BaseModel, ConfigDict
+from pydantic import BaseModel, ConfigDict, Field
 
 from .arrays.array import ArrayConfig
 from .common.element import Element
@@ -55,8 +55,8 @@ class ConfigModel(BaseModel):
     simulators: list[Simulator] = None
     data_folder: str
     description: str | None = None
-    arrays: list[ArrayConfig] = None
-    devices: list[Element]
+    arrays: list[ArrayConfig] = Field(default=None, repr=False)
+    devices: list[Element] = Field(repr=False)
 
 
 class Accelerator(object):

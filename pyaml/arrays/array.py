@@ -37,3 +37,8 @@ class ArrayConfig(object):
 
     def fill_array(self, holder: ElementHolder):
         raise PyAMLException("Array.fill_array() is not subclassed")
+
+    def __repr__(self):
+        # ArrayConfigModel is a super class
+        # ConfigModel is expected from sub classes
+        return repr(self._cfg).replace("ConfigModel", self.__class__.__name__)
