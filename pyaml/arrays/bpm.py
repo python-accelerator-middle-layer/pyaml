@@ -31,11 +31,11 @@ class BPM(ArrayConfig):
 
     def fill_array(self, holder: ElementHolder):
         """
-        Fill the BPM array in the element holder.
+        Fill the BPM array with the element holder.
 
         Parameters
         ----------
         holder : ElementHolder
-            The element holder to populate with BPM array
+            The element holder to populate the BPM array with
         """
         holder.fill_bpm_array(self._cfg.name, self._cfg.elements)
