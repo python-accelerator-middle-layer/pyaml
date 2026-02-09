@@ -375,7 +375,7 @@
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
 
-<span class="kn">from</span><span class="w"> </span><span class="nn">pydantic</span><span class="w"> </span><span class="kn">import</span> <span class="n">BaseModel</span><span class="p">,</span> <span class="n">ConfigDict</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pydantic</span><span class="w"> </span><span class="kn">import</span> <span class="n">BaseModel</span><span class="p">,</span> <span class="n">ConfigDict</span><span class="p">,</span> <span class="n">Field</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">.arrays.array</span><span class="w"> </span><span class="kn">import</span> <span class="n">ArrayConfig</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">.common.element</span><span class="w"> </span><span class="kn">import</span> <span class="n">Element</span>
@@ -428,8 +428,8 @@
     <span class="n">simulators</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Simulator</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="n">data_folder</span><span class="p">:</span> <span class="nb">str</span>
     <span class="n">description</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
-    <span class="n">arrays</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">ArrayConfig</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
-    <span class="n">devices</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Element</span><span class="p">]</span></div>
+    <span class="n">arrays</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">ArrayConfig</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="nb">repr</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">devices</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Element</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="nb">repr</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span></div>
 
 
 
