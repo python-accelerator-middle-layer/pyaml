@@ -4,7 +4,7 @@ Accelerator class
 
 import os
 
-from pydantic import BaseModel, ConfigDict
+from pydantic import BaseModel, ConfigDict, Field
 
 from .arrays.array import ArrayConfig
 from .common.element import Element
@@ -40,6 +40,8 @@ class ConfigModel(BaseModel):
         Data folder
     arrays : list[ArrayConfig], optional
         Element family
+    description : str , optional
+        Acceleration description
     devices : list[Element]
         Element list
     """
@@ -52,8 +54,9 @@ class ConfigModel(BaseModel):
     controls: list[ControlSystem] = None
     simulators: list[Simulator] = None
     data_folder: str
-    arrays: list[ArrayConfig] = None
-    devices: list[Element]
+    description: str | None = None
+    arrays: list[ArrayConfig] = Field(default=None, repr=False)
+    devices: list[Element] = Field(repr=False)
 
 
 class Accelerator(object):
@@ -123,6 +126,12 @@ class Accelerator(object):
             for c in self._cfg.controls:
                 c.post_init()
 
+    def get_description(self) -> str:
+        """
+        Returns the description of the accelerator
+        """
+        return self._cfg.description
+
     @property
     def live(self) -> ControlSystem:
         """
@@ -147,6 +156,9 @@ class Accelerator(object):
         """
         return self.__design
 
+    def __repr__(self):
+        return repr(self._cfg).replace("ConfigModel", self.__class__.__name__)
+
     @staticmethod
     def from_dict(config_dict: dict, ignore_external=False) -> "Accelerator":
         """
@@ -165,6 +177,8 @@ class Accelerator(object):
         if ignore_external:
             # control systems are external, so remove controls field
             config_dict.pop("controls", None)
+        # Ensure factory is clean before building a new accelerator
+        Factory.clear()
         return Factory.depth_first_build(config_dict, ignore_external)
 
     @staticmethod

@@ -2,13 +2,17 @@ import numpy as np
 import pytest
 
 from pyaml.accelerator import Accelerator
-from pyaml.configuration.factory import Factory
 
 
 def test_tune():
     sr: Accelerator = Accelerator.load(
         "tests/config/EBSTune.yaml", ignore_external=True
     )
+
+    assert sr.get_description() == "Accelerator configuration for EBS storage ring"
+    assert sr.design.get_magnet("QF1E-C04").get_description() == "QF1E-C04 quadrupole"
+    assert sr.design.get_description() == "EBS lattice"
+
     sr.design.get_lattice().disable_6d()
 
     quadForTuneDesign = sr.design.get_magnets("QForTune")
@@ -46,5 +50,3 @@ def test_tune():
         strs = quadForTuneLive.strengths.get()
         strs += np.matmul(correctionmat, [0.1, 0.05])  # Ask for correction [dqx,dqy]
         quadForTuneLive.strengths.set(strs)
-
-    Factory.clear()

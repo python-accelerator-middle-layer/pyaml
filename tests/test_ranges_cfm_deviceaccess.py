@@ -3,7 +3,6 @@ import pytest
 
 from pyaml import PyAMLException
 from pyaml.accelerator import Accelerator
-from pyaml.configuration.factory import Factory
 
 
 def _in_range(vmin, vmax) -> float:
@@ -79,5 +78,3 @@ def test_cfm_ranges_from_yaml_are_propagated_and_enforced(
 
     with pytest.raises(PyAMLException, match="out of range"):
         m.strengths.set(out_strengths)
-
-    Factory.clear()

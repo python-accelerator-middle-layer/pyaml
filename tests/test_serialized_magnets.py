@@ -2,7 +2,6 @@ import numpy as np
 import pytest
 
 from pyaml.accelerator import Accelerator
-from pyaml.configuration.factory import Factory
 
 
 def check_no_diff(array: list[np.float64]) -> bool:
@@ -48,4 +47,3 @@ def test_config_load(sr_file):
     currents = [magnet.hardware.get() for magnet in magnets]
     assert check_no_diff(strengths)
     assert check_no_diff(currents)
-    Factory.clear()

@@ -2,7 +2,6 @@ import numpy as np
 import pytest
 
 from pyaml.accelerator import Accelerator
-from pyaml.configuration.factory import Factory
 
 
 def test_tune():
@@ -44,4 +43,3 @@ def test_tune():
     assert np.abs(currents[0] - 88.04522942) < 1e-8
     assert np.abs(currents[1] - 88.26677735) < 1e-8
     assert units[0] == "A" and units[1] == "A"
-    Factory.clear()

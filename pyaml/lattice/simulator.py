@@ -67,6 +67,8 @@ class ConfigModel(BaseModel):
         AT lattice ring name
     linker : LatticeElementsLinker, optional
         The linker configuration model
+    description : str , optional
+        Simulator description
     """
 
     model_config = ConfigDict(arbitrary_types_allowed=True, extra="forbid")
@@ -75,6 +77,7 @@ class ConfigModel(BaseModel):
     lattice: str
     mat_key: str = None
     linker: LatticeElementsLinker = None
+    description: str | None = None
 
 
 class Simulator(ElementHolder):
@@ -108,6 +111,12 @@ class Simulator(ElementHolder):
 
     def get_lattice(self) -> at.Lattice:
         return self.ring
+
+    def get_description(self) -> str:
+        """
+        Returns the description of the accelerator
+        """
+        return self._cfg.description
 
     def set_energy(self, E: float):
         self.ring.energy = E

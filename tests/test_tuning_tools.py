@@ -2,7 +2,6 @@ import numpy as np
 
 from pyaml.accelerator import Accelerator
 from pyaml.common.constants import ACTION_RESTORE
-from pyaml.configuration.factory import Factory
 from pyaml.magnet.magnet import Magnet
 
 
@@ -23,5 +22,3 @@ def test_tuning_tools():
     tune = sr.design.tune.readback()
     assert np.abs(tune[0] - 0.17) < 1e-5
     assert np.abs(tune[1] - 0.32) < 1e-5
-
-    Factory.clear()
