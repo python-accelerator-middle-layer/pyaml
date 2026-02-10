@@ -39,14 +39,22 @@ version = ".".join(pyaml.__version__.split(".")[:2])
 
 root_doc = "index"
 extensions = [
-    "sphinx.ext.autosummary",  # Automatically generates summary tables and stub pages for documented functions, classes, and modules
-    "sphinx.ext.napoleon",  # Adds support for NumPy-style and Google-style docstrings, so you don’t have to write reStructuredText by hand.
-    "sphinx.ext.intersphinx",  # Allows you to link to documentation of other projects (e.g. NumPy, Python, SciPy) as if they were local.
-    "sphinx.ext.githubpages",  # Adds support files (like .nojekyll) needed to publish docs on GitHub Pages.
-    "sphinx.ext.viewcode",  # Adds links in the docs to view the source code of documented Python objects.
+    "sphinx.ext.autosummary",  # Automatically generates summary tables and stub pages
+    # for documented functions, classes, and modules
+    "sphinx.ext.napoleon",  # Adds support for NumPy-style and Google-style docstrings,
+    # so you don’t have to write reStructuredText by hand.
+    "sphinx.ext.autodoc",  # Adds support for NumPy-style and Google-style docstrings
+    # code snippets.
+    "sphinx.ext.intersphinx",  # Allows you to link to documentation of other projects
+    # (e.g. NumPy, Python, SciPy) as if they were local.
+    "sphinx.ext.githubpages",  # Adds support files (like .nojekyll) needed to publish
+    # docs on GitHub Pages.
+    "sphinx.ext.viewcode",  # Adds links in the docs to view the source code of
+    # documented Python objects.
     "myst_nb",  # Enables MyST Markdown and Jupyter Notebook support.
     "sphinx_copybutton",  # Adds a “copy to clipboard” button to code blocks.
-    "sphinx_design",  # Provides layout and design components (cards, grids, tabs, buttons).
+    "sphinx_design",  # Provides layout and design components
+    # (cards, grids, tabs, buttons).
 ]
 
 intersphinx_mapping = {
@@ -65,7 +73,8 @@ templates_path = ["_templates"]
 exclude_patterns = ["README.rst", "**/*.so", "_build/*"]
 
 # Injects content at the top of every reStructuredText file before it’s parsed.
-# Defines a custom inline role called :pycode: which renders inline code with Python syntax highlighting
+# Defines a custom inline role called :pycode: which renders inline code with Python
+# syntax highlighting
 rst_prolog = """
 .. role:: pycode(code)
    :language: python
