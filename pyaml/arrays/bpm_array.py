@@ -150,11 +150,15 @@ class BPMArray(ElementArray):
     Example
     -------
 
-    An array can be retrieved from the configuration as in the following example::
+    An array can be retrieved from the configuration as in the following example:
 
-        sr = Accelerator.load("acc.yaml")
-        bpms = sr.design.get_bpms("BPMs")
+    .. code-block:: python
 
+        >>> sr = Accelerator.load("acc.yaml") # Load the accelerator
+        >>> bpms = sr.design.get_bpms("BPM")  # Retrieve BPM array
+        >>> orbit = bpms.positions.get()      # Get the orbit
+
+    or can be created by code using :py:class:`pyaml.arrays.bpm.BPM`.
 
     """
 
