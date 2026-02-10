@@ -378,7 +378,10 @@
 
 <div class="viewcode-block" id="ConfigModel">
 <a class="viewcode-back" href="../../../api/pyaml.arrays.magnet.html#pyaml.arrays.magnet.ConfigModel">[docs]</a>
-<span class="k">class</span><span class="w"> </span><span class="nc">ConfigModel</span><span class="p">(</span><span class="n">ArrayConfigModel</span><span class="p">):</span> <span class="o">...</span></div>
+<span class="k">class</span><span class="w"> </span><span class="nc">ConfigModel</span><span class="p">(</span><span class="n">ArrayConfigModel</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Configuration model for Magnet array.&quot;&quot;&quot;</span>
+
+    <span class="o">...</span></div>
 
 
 
@@ -406,6 +409,14 @@
 <div class="viewcode-block" id="Magnet.fill_array">
 <a class="viewcode-back" href="../../../api/pyaml.arrays.magnet.html#pyaml.arrays.magnet.Magnet.fill_array">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">fill_array</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">holder</span><span class="p">:</span> <span class="n">ElementHolder</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Fill the magnet array in the element holder.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        holder : ElementHolder</span>
+<span class="sd">            The element holder to populate with magnet array</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">holder</span><span class="o">.</span><span class="n">fill_magnet_array</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_cfg</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cfg</span><span class="o">.</span><span class="n">elements</span><span class="p">)</span></div>
 </div>
 

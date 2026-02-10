@@ -518,39 +518,58 @@
 <dl class="py method">
 <dt class="sig sig-object py" id="pyaml.common.abstract.RWMapper.get">
 <span class="sig-name descname"><span class="pre">get</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/common/abstract.html#RWMapper.get"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.common.abstract.RWMapper.get" title="Link to this definition">#</a></dt>
-<dd><p>Get the value</p>
+<dd><p>Get the value at the mapped index.</p>
 <dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>float</strong> – Value at the mapped array index</p>
+</dd>
 </dl>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pyaml.common.abstract.RWMapper.index">
 <span class="sig-name descname"><span class="pre">index</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/common/abstract.html#RWMapper.index"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.common.abstract.RWMapper.index" title="Link to this definition">#</a></dt>
-<dd><dl class="field-list simple">
+<dd><p>Get the mapped array index.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>int</strong> – The index in the array that this scalar maps to</p>
+</dd>
 </dl>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pyaml.common.abstract.RWMapper.set">
 <span class="sig-name descname"><span class="pre">set</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/common/abstract.html#RWMapper.set"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.common.abstract.RWMapper.set" title="Link to this definition">#</a></dt>
-<dd><p>Set the value</p>
+<dd><p>Set the value at the mapped index.</p>
 <dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>value</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><em>float</em></a>) – Value to set</p>
+</dd>
 </dl>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pyaml.common.abstract.RWMapper.set_and_wait">
 <span class="sig-name descname"><span class="pre">set_and_wait</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/common/abstract.html#RWMapper.set_and_wait"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.common.abstract.RWMapper.set_and_wait" title="Link to this definition">#</a></dt>
-<dd><p>Set the value and wait that setpoint is reached</p>
+<dd><p>Set the value and wait for it to reach the setpoint.</p>
 <dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>value</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><em>float</em></a>) – Target value to set and wait for</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#NotImplementedError" title="(in Python v3.14)"><strong>NotImplementedError</strong></a> – This method is not yet implemented</p>
+</dd>
 </dl>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pyaml.common.abstract.RWMapper.unit">
 <span class="sig-name descname"><span class="pre">unit</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/common/abstract.html#RWMapper.unit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.common.abstract.RWMapper.unit" title="Link to this definition">#</a></dt>
-<dd><p>Get the unit of the value</p>
+<dd><p>Get the unit for the value.</p>
 <dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>str</strong> – Unit string for the value at the mapped index</p>
+</dd>
 </dl>
 </dd></dl>
 

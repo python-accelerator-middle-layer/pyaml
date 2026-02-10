@@ -491,10 +491,10 @@
 <div class="pst-scrollable-table-container"><table class="autosummary longtable table">
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="#pyaml.arrays.bpm.BPM" title="pyaml.arrays.bpm.BPM"><code class="xref py py-obj docutils literal notranslate"><span class="pre">BPM</span></code></a>(cfg)</p></td>
-<td><p>BPM array confirguration</p></td>
+<td><p>BPM array configuration</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#pyaml.arrays.bpm.ConfigModel" title="pyaml.arrays.bpm.ConfigModel"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ConfigModel</span></code></a>(*, name, elements)</p></td>
-<td><p>Create a new model by parsing and validating input data from keyword arguments.</p></td>
+<td><p>Configuration model for BPM array.</p></td>
 </tr>
 </tbody>
 </table>
@@ -503,13 +503,23 @@
 <dt class="sig sig-object py" id="pyaml.arrays.bpm.BPM">
 <em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">BPM</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cfg</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/arrays/bpm.html#BPM"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.arrays.bpm.BPM" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference internal" href="pyaml.arrays.array.html#pyaml.arrays.array.ArrayConfig" title="pyaml.arrays.array.ArrayConfig"><code class="xref py py-class docutils literal notranslate"><span class="pre">ArrayConfig</span></code></a></p>
-<p>BPM array confirguration</p>
+<p>BPM array configuration</p>
 <p class="rubric">Example</p>
+<p>Here is an example using a yaml configuration file:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">arrays</span><span class="p">:</span><span class="w">                    </span><span class="c1"># Global array section</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">pyaml.arrays.bpm</span><span class="w">   </span><span class="c1"># Type of array</span>
+<span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">BPM</span><span class="w">              </span><span class="c1"># Name of the array</span>
+<span class="w">    </span><span class="nt">elements</span><span class="p">:</span><span class="w">              </span><span class="c1"># Element names</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">BPM_C04-01</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">BPM_C04-02</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">BPM_C04-03</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">BPM_C04-04</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">BPM_C04-05</span>
+</pre></div>
+</div>
 <p>A BPM array configuration can also be created by code using the following example:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">pyaml.arrays.bpm</span><span class="w"> </span><span class="kn">import</span> <span class="n">BPM</span><span class="p">,</span><span class="n">ConfigModel</span> <span class="k">as</span> <span class="n">BPMArrayConfigModel</span>
-<span class="n">bpmArray</span> <span class="o">=</span> <span class="n">BPM</span><span class="p">(</span>
-             <span class="n">BPMArrayConfigModel</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;MyBPMs&quot;</span><span class="p">,</span> <span class="n">elements</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;bpm1&quot;</span><span class="p">,</span><span class="s2">&quot;bpm2&quot;</span><span class="p">])</span>
-           <span class="p">)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span> <span class="kn">from</span><span class="w"> </span><span class="nn">pyaml.arrays.bpm</span><span class="w"> </span><span class="kn">import</span> <span class="n">BPM</span><span class="p">,</span><span class="n">ConfigModel</span> <span class="k">as</span> <span class="n">BPMArrayConfigModel</span>
+<span class="gp">&gt;&gt;&gt; </span> <span class="n">bpmArray</span> <span class="o">=</span> <span class="n">BPM</span><span class="p">(</span><span class="n">BPMArrayConfigModel</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;MyBPMs&quot;</span><span class="p">,</span> <span class="n">elements</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;bpm1&quot;</span><span class="p">,</span><span class="s2">&quot;bpm2&quot;</span><span class="p">])</span>
 </pre></div>
 </div>
 <dl class="field-list simple">
@@ -517,7 +527,11 @@
 <dl class="py method">
 <dt class="sig sig-object py" id="pyaml.arrays.bpm.BPM.fill_array">
 <span class="sig-name descname"><span class="pre">fill_array</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">holder</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/arrays/bpm.html#BPM.fill_array"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.arrays.bpm.BPM.fill_array" title="Link to this definition">#</a></dt>
-<dd><dl class="field-list simple">
+<dd><p>Fill the <a class="reference internal" href="pyaml.arrays.bpm_array.html#pyaml.arrays.bpm_array.BPMArray" title="pyaml.arrays.bpm_array.BPMArray"><code class="xref py py-class docutils literal notranslate"><span class="pre">BPMArray</span></code></a> using element holder.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>holder</strong> (<a class="reference internal" href="pyaml.common.element_holder.html#pyaml.common.element_holder.ElementHolder" title="pyaml.common.element_holder.ElementHolder"><em>ElementHolder</em></a>) – The element holder to populate the BPM array with</p>
+</dd>
 </dl>
 </dd></dl>
 
@@ -527,6 +541,7 @@
 <dt class="sig sig-object py" id="pyaml.arrays.bpm.ConfigModel">
 <em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ConfigModel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">elements</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/arrays/bpm.html#ConfigModel"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.arrays.bpm.ConfigModel" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference internal" href="pyaml.arrays.array.html#pyaml.arrays.array.ArrayConfigModel" title="pyaml.arrays.array.ArrayConfigModel"><code class="xref py py-class docutils literal notranslate"><span class="pre">ArrayConfigModel</span></code></a></p>
+<p>Configuration model for BPM array.</p>
 <p>Create a new model by parsing and validating input data from keyword arguments.</p>
 <p>Raises [<cite>ValidationError</cite>][pydantic_core.ValidationError] if the input data cannot be
 validated to form a valid model.</p>

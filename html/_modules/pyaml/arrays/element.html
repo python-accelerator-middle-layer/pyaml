@@ -378,7 +378,10 @@
 
 <div class="viewcode-block" id="ConfigModel">
 <a class="viewcode-back" href="../../../api/pyaml.arrays.element.html#pyaml.arrays.element.ConfigModel">[docs]</a>
-<span class="k">class</span><span class="w"> </span><span class="nc">ConfigModel</span><span class="p">(</span><span class="n">ArrayConfigModel</span><span class="p">):</span> <span class="o">...</span></div>
+<span class="k">class</span><span class="w"> </span><span class="nc">ConfigModel</span><span class="p">(</span><span class="n">ArrayConfigModel</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Configuration model for Element array.&quot;&quot;&quot;</span>
+
+    <span class="o">...</span></div>
 
 
 
@@ -408,6 +411,14 @@
 <div class="viewcode-block" id="Element.fill_array">
 <a class="viewcode-back" href="../../../api/pyaml.arrays.element.html#pyaml.arrays.element.Element.fill_array">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">fill_array</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">holder</span><span class="p">:</span> <span class="n">ElementHolder</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Fill the element array in the element holder.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        holder : ElementHolder</span>
+<span class="sd">            The element holder to populate with element array</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">holder</span><span class="o">.</span><span class="n">fill_element_array</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_cfg</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cfg</span><span class="o">.</span><span class="n">elements</span><span class="p">)</span></div>
 </div>
 

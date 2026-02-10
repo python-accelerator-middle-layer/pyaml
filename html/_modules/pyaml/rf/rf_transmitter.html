@@ -389,18 +389,31 @@
 <div class="viewcode-block" id="ConfigModel">
 <a class="viewcode-back" href="../../../api/pyaml.rf.rf_transmitter.html#pyaml.rf.rf_transmitter.ConfigModel">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">ConfigModel</span><span class="p">(</span><span class="n">ElementConfigModel</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Configuration model for RF Transmitter.</span>
+
+<span class="sd">    Attributes</span>
+<span class="sd">    ----------</span>
+<span class="sd">    voltage : DeviceAccess or None, optional</span>
+<span class="sd">        Device to apply cavity voltage</span>
+<span class="sd">    phase : DeviceAccess or None, optional</span>
+<span class="sd">        Device to apply cavity phase</span>
+<span class="sd">    cavities : list[str]</span>
+<span class="sd">        List of cavity names connected to this transmitter</span>
+<span class="sd">    harmonic : float, optional</span>
+<span class="sd">        Harmonic frequency ratio, 1.0 for main frequency, by default 1.0</span>
+<span class="sd">    distribution : float, optional</span>
+<span class="sd">        RF distribution (Part of the total RF voltage powered by this transmitter),</span>
+<span class="sd">        by default 1.0</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
     <span class="n">model_config</span> <span class="o">=</span> <span class="n">ConfigDict</span><span class="p">(</span><span class="n">arbitrary_types_allowed</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">extra</span><span class="o">=</span><span class="s2">&quot;forbid&quot;</span><span class="p">)</span>
 
     <span class="n">voltage</span><span class="p">:</span> <span class="n">DeviceAccess</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Device to apply cavity voltage&quot;&quot;&quot;</span>
     <span class="n">phase</span><span class="p">:</span> <span class="n">DeviceAccess</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Device to apply cavity phase&quot;&quot;&quot;</span>
     <span class="n">cavities</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;List of cavity names connected to this transmitter&quot;&quot;&quot;</span>
     <span class="n">harmonic</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1.0</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Harmonic frequency ratio, 1.0 for main frequency&quot;&quot;&quot;</span>
-    <span class="n">distribution</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1.0</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;RF distribution (Part of the total RF voltage powered by this transmitter)&quot;&quot;&quot;</span></div>
+    <span class="n">distribution</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1.0</span></div>
 
 
 
@@ -419,6 +432,19 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">voltage</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">abstract</span><span class="o">.</span><span class="n">ReadWriteFloatScalar</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get the RF voltage in [V].</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        abstract.ReadWriteFloatScalar</span>
+<span class="sd">            Read/write access to RF voltage</span>
+
+<span class="sd">        Raises</span>
+<span class="sd">        ------</span>
+<span class="sd">        PyAMLException</span>
+<span class="sd">            If transmitter is unattached or has no voltage device defined</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__voltage</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">raise</span> <span class="n">PyAMLException</span><span class="p">(</span>
                 <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="si">}</span><span class="s2"> is unattached or has no voltage device defined&quot;</span>
@@ -427,6 +453,19 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">phase</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">abstract</span><span class="o">.</span><span class="n">ReadWriteFloatScalar</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get the RF phase in [rad].</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        abstract.ReadWriteFloatScalar</span>
+<span class="sd">            Read/write access to RF phase</span>
+
+<span class="sd">        Raises</span>
+<span class="sd">        ------</span>
+<span class="sd">        PyAMLException</span>
+<span class="sd">            If transmitter is unattached or has no phase device defined</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__phase</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">raise</span> <span class="n">PyAMLException</span><span class="p">(</span>
                 <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="si">}</span><span class="s2"> is unattached or has no phase device defined&quot;</span>
@@ -441,6 +480,23 @@
         <span class="n">voltage</span><span class="p">:</span> <span class="n">abstract</span><span class="o">.</span><span class="n">ReadWriteFloatScalar</span><span class="p">,</span>
         <span class="n">phase</span><span class="p">:</span> <span class="n">abstract</span><span class="o">.</span><span class="n">ReadWriteFloatScalar</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Self</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Attach voltage and phase attributes to a peer.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        peer : object</span>
+<span class="sd">            The peer object (simulator or control system)</span>
+<span class="sd">        voltage : abstract.ReadWriteFloatScalar</span>
+<span class="sd">            Voltage accessor to attach</span>
+<span class="sd">        phase : abstract.ReadWriteFloatScalar</span>
+<span class="sd">            Phase accessor to attach</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        Self</span>
+<span class="sd">            A new attached instance of RFTransmitter</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># Attach voltage and phase attribute and returns a new reference</span>
         <span class="n">obj</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_cfg</span><span class="p">)</span>
         <span class="n">obj</span><span class="o">.</span><span class="n">__voltage</span> <span class="o">=</span> <span class="n">voltage</span>

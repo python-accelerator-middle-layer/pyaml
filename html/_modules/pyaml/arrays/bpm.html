@@ -378,7 +378,10 @@
 
 <div class="viewcode-block" id="ConfigModel">
 <a class="viewcode-back" href="../../../api/pyaml.arrays.bpm.html#pyaml.arrays.bpm.ConfigModel">[docs]</a>
-<span class="k">class</span><span class="w"> </span><span class="nc">ConfigModel</span><span class="p">(</span><span class="n">ArrayConfigModel</span><span class="p">):</span> <span class="o">...</span></div>
+<span class="k">class</span><span class="w"> </span><span class="nc">ConfigModel</span><span class="p">(</span><span class="n">ArrayConfigModel</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Configuration model for BPM array.&quot;&quot;&quot;</span>
+
+    <span class="o">...</span></div>
 
 
 
@@ -386,17 +389,32 @@
 <a class="viewcode-back" href="../../../api/pyaml.arrays.bpm.html#pyaml.arrays.bpm.BPM">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">BPM</span><span class="p">(</span><span class="n">ArrayConfig</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    BPM array confirguration</span>
+<span class="sd">    BPM array configuration</span>
 
 <span class="sd">    Example</span>
 <span class="sd">    -------</span>
+<span class="sd">    Here is an example using a yaml configuration file:</span>
 
-<span class="sd">    A BPM array configuration can also be created by code using the following example::</span>
+<span class="sd">    .. code-block:: yaml</span>
 
-<span class="sd">        from pyaml.arrays.bpm import BPM,ConfigModel as BPMArrayConfigModel</span>
-<span class="sd">        bpmArray = BPM(</span>
-<span class="sd">                     BPMArrayConfigModel(name=&quot;MyBPMs&quot;, elements=[&quot;bpm1&quot;,&quot;bpm2&quot;])</span>
-<span class="sd">                   )</span>
+<span class="sd">        arrays:                    # Global array section</span>
+<span class="sd">        - type: pyaml.arrays.bpm   # Type of array</span>
+<span class="sd">            name: BPM              # Name of the array</span>
+<span class="sd">            elements:              # Element names</span>
+<span class="sd">            - BPM_C04-01</span>
+<span class="sd">            - BPM_C04-02</span>
+<span class="sd">            - BPM_C04-03</span>
+<span class="sd">            - BPM_C04-04</span>
+<span class="sd">            - BPM_C04-05</span>
+
+<span class="sd">    A BPM array configuration can also be created by code using the following example:</span>
+
+<span class="sd">    .. code-block:: python</span>
+
+<span class="sd">        &gt;&gt;&gt;  from pyaml.arrays.bpm import BPM,ConfigModel as BPMArrayConfigModel</span>
+<span class="sd">        &gt;&gt;&gt;  bpmArray = BPM(BPMArrayConfigModel(name=&quot;MyBPMs&quot;, elements=[&quot;bpm1&quot;,&quot;bpm2&quot;])</span>
+
+
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cfg</span><span class="p">:</span> <span class="n">ArrayConfigModel</span><span class="p">):</span>
@@ -405,6 +423,14 @@
 <div class="viewcode-block" id="BPM.fill_array">
 <a class="viewcode-back" href="../../../api/pyaml.arrays.bpm.html#pyaml.arrays.bpm.BPM.fill_array">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">fill_array</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">holder</span><span class="p">:</span> <span class="n">ElementHolder</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Fill the :py:class:`.BPMArray` using element holder.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        holder : ElementHolder</span>
+<span class="sd">            The element holder to populate the BPM array with</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">holder</span><span class="o">.</span><span class="n">fill_bpm_array</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_cfg</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cfg</span><span class="o">.</span><span class="n">elements</span><span class="p">)</span></div>
 </div>
 

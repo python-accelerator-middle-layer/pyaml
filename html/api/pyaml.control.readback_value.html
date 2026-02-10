@@ -491,7 +491,7 @@
 <div class="pst-scrollable-table-container"><table class="autosummary longtable table">
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="#pyaml.control.readback_value.Quality" title="pyaml.control.readback_value.Quality"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Quality</span></code></a>(*values)</p></td>
-<td><p></p></td>
+<td><p>Enumeration for data quality indicators.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#pyaml.control.readback_value.Value" title="pyaml.control.readback_value.Value"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Value</span></code></a>(value[, quality, timestamp])</p></td>
 <td><p>Represents a numerical value with associated quality and timestamp.</p></td>
@@ -503,29 +503,85 @@
 <dt class="sig sig-object py" id="pyaml.control.readback_value.Quality">
 <em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Quality</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">values</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/control/readback_value.html#Quality"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.control.readback_value.Quality" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/enum.html#enum.Enum" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Enum</span></code></a></p>
+<p>Enumeration for data quality indicators.</p>
 <dl class="py attribute">
-<dt class="sig sig-object py" id="pyaml.control.readback_value.Quality.ALARM">
-<span class="sig-name descname"><span class="pre">ALARM</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">3</span></em><a class="headerlink" href="#pyaml.control.readback_value.Quality.ALARM" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pyaml.control.readback_value.Quality.CHANGING">
-<span class="sig-name descname"><span class="pre">CHANGING</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">4</span></em><a class="headerlink" href="#pyaml.control.readback_value.Quality.CHANGING" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dt class="sig sig-object py" id="pyaml.control.readback_value.Quality.VALID">
+<span class="sig-name descname"><span class="pre">VALID</span></span><a class="headerlink" href="#pyaml.control.readback_value.Quality.VALID" title="Link to this definition">#</a></dt>
+<dd><p>Data is valid and reliable</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)">int</a></p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="pyaml.control.readback_value.Quality.INVALID">
-<span class="sig-name descname"><span class="pre">INVALID</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">2</span></em><a class="headerlink" href="#pyaml.control.readback_value.Quality.INVALID" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<span class="sig-name descname"><span class="pre">INVALID</span></span><a class="headerlink" href="#pyaml.control.readback_value.Quality.INVALID" title="Link to this definition">#</a></dt>
+<dd><p>Data is invalid</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)">int</a></p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="pyaml.control.readback_value.Quality.VALID">
-<span class="sig-name descname"><span class="pre">VALID</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">1</span></em><a class="headerlink" href="#pyaml.control.readback_value.Quality.VALID" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dt class="sig sig-object py" id="pyaml.control.readback_value.Quality.ALARM">
+<span class="sig-name descname"><span class="pre">ALARM</span></span><a class="headerlink" href="#pyaml.control.readback_value.Quality.ALARM" title="Link to this definition">#</a></dt>
+<dd><p>Data indicates an alarm condition</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)">int</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyaml.control.readback_value.Quality.CHANGING">
+<span class="sig-name descname"><span class="pre">CHANGING</span></span><a class="headerlink" href="#pyaml.control.readback_value.Quality.CHANGING" title="Link to this definition">#</a></dt>
+<dd><p>Data is currently changing</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)">int</a></p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="pyaml.control.readback_value.Quality.WARNING">
-<span class="sig-name descname"><span class="pre">WARNING</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">5</span></em><a class="headerlink" href="#pyaml.control.readback_value.Quality.WARNING" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">WARNING</span></span><a class="headerlink" href="#pyaml.control.readback_value.Quality.WARNING" title="Link to this definition">#</a></dt>
+<dd><p>Data indicates a warning condition</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)">int</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id0">
+<span class="sig-name descname"><span class="pre">ALARM</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">3</span></em><a class="headerlink" href="#id0" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id1">
+<span class="sig-name descname"><span class="pre">CHANGING</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">4</span></em><a class="headerlink" href="#id1" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id2">
+<span class="sig-name descname"><span class="pre">INVALID</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">2</span></em><a class="headerlink" href="#id2" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id3">
+<span class="sig-name descname"><span class="pre">VALID</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">1</span></em><a class="headerlink" href="#id3" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id4">
+<span class="sig-name descname"><span class="pre">WARNING</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">5</span></em><a class="headerlink" href="#id4" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
@@ -609,11 +665,16 @@ operations and comparisons. It also retains metadata like quality and timestamp.
   <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.control.readback_value.Quality"><code class="docutils literal notranslate"><span class="pre">Quality</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.control.readback_value.Quality.VALID"><code class="docutils literal notranslate"><span class="pre">Quality.VALID</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.control.readback_value.Quality.INVALID"><code class="docutils literal notranslate"><span class="pre">Quality.INVALID</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.control.readback_value.Quality.ALARM"><code class="docutils literal notranslate"><span class="pre">Quality.ALARM</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.control.readback_value.Quality.CHANGING"><code class="docutils literal notranslate"><span class="pre">Quality.CHANGING</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.control.readback_value.Quality.INVALID"><code class="docutils literal notranslate"><span class="pre">Quality.INVALID</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.control.readback_value.Quality.VALID"><code class="docutils literal notranslate"><span class="pre">Quality.VALID</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.control.readback_value.Quality.WARNING"><code class="docutils literal notranslate"><span class="pre">Quality.WARNING</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id0"><code class="docutils literal notranslate"><span class="pre">Quality.ALARM</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id1"><code class="docutils literal notranslate"><span class="pre">Quality.CHANGING</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id2"><code class="docutils literal notranslate"><span class="pre">Quality.INVALID</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id3"><code class="docutils literal notranslate"><span class="pre">Quality.VALID</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id4"><code class="docutils literal notranslate"><span class="pre">Quality.WARNING</span></code></a></li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.control.readback_value.Value"><code class="docutils literal notranslate"><span class="pre">Value</span></code></a><ul class="nav section-nav flex-column">

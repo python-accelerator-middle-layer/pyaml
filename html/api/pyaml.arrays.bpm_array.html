@@ -494,10 +494,10 @@
 <td><p>Class that implements access to a BPM array</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#pyaml.arrays.bpm_array.RWBPMPosition" title="pyaml.arrays.bpm_array.RWBPMPosition"><code class="xref py py-obj docutils literal notranslate"><span class="pre">RWBPMPosition</span></code></a>(name, bpms)</p></td>
-<td><p></p></td>
+<td><p>Read/write access to BPM positions (horizontal and vertical).</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#pyaml.arrays.bpm_array.RWBPMSinglePosition" title="pyaml.arrays.bpm_array.RWBPMSinglePosition"><code class="xref py py-obj docutils literal notranslate"><span class="pre">RWBPMSinglePosition</span></code></a>(name, bpms, idx)</p></td>
-<td><p></p></td>
+<td><p>Read/write access to single axis BPM positions.</p></td>
 </tr>
 </tbody>
 </table>
@@ -548,28 +548,49 @@ access to underlying devices.</p></li>
 <dt class="sig sig-object py" id="pyaml.arrays.bpm_array.RWBPMPosition">
 <em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">RWBPMPosition</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bpms</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/arrays/bpm_array.html#RWBPMPosition"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.arrays.bpm_array.RWBPMPosition" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference internal" href="pyaml.common.abstract.html#pyaml.common.abstract.ReadFloatArray" title="pyaml.common.abstract.ReadFloatArray"><code class="xref py py-class docutils literal notranslate"><span class="pre">ReadFloatArray</span></code></a></p>
+<p>Read/write access to BPM positions (horizontal and vertical).</p>
+<p>This class provides access to both horizontal and vertical positions
+of a list of BPMs. It supports both individual access and aggregated
+access through a device access list for improved performance.</p>
 <dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>) – Name of the position accessor</p></li>
+<li><p><strong>bpms</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.14)"><em>list</em></a><em>[</em><a class="reference internal" href="pyaml.arrays.bpm.html#pyaml.arrays.bpm.BPM" title="pyaml.arrays.bpm.BPM"><em>BPM</em></a><em>]</em>) – List of BPM objects to access</p></li>
+</ul>
+</dd>
 </dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="pyaml.arrays.bpm_array.RWBPMPosition.get">
 <span class="sig-name descname"><span class="pre">get</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/arrays/bpm_array.html#RWBPMPosition.get"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.arrays.bpm_array.RWBPMPosition.get" title="Link to this definition">#</a></dt>
-<dd><p>Get the value</p>
+<dd><p>Get BPM positions.</p>
 <dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>np.array</strong> – Array of shape (n_bpms, 2) containing horizontal and vertical
+positions for each BPM</p>
+</dd>
 </dl>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pyaml.arrays.bpm_array.RWBPMPosition.set_aggregator">
 <span class="sig-name descname"><span class="pre">set_aggregator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">agg</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/arrays/bpm_array.html#RWBPMPosition.set_aggregator"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.arrays.bpm_array.RWBPMPosition.set_aggregator" title="Link to this definition">#</a></dt>
-<dd><dl class="field-list simple">
+<dd><p>Set the device access list aggregator for improved performance.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>agg</strong> (<a class="reference internal" href="pyaml.control.deviceaccesslist.html#pyaml.control.deviceaccesslist.DeviceAccessList" title="pyaml.control.deviceaccesslist.DeviceAccessList"><em>DeviceAccessList</em></a>) – Device access list for aggregated reads</p>
+</dd>
 </dl>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pyaml.arrays.bpm_array.RWBPMPosition.unit">
 <span class="sig-name descname"><span class="pre">unit</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/arrays/bpm_array.html#RWBPMPosition.unit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.arrays.bpm_array.RWBPMPosition.unit" title="Link to this definition">#</a></dt>
-<dd><p>Get the unit of the values</p>
+<dd><p>Get the units for BPM positions.</p>
 <dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>list[str]</strong> – List of unit strings for each BPM</p>
+</dd>
 </dl>
 </dd></dl>
 
@@ -579,28 +600,49 @@ access to underlying devices.</p></li>
 <dt class="sig sig-object py" id="pyaml.arrays.bpm_array.RWBPMSinglePosition">
 <em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">RWBPMSinglePosition</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bpms</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">idx</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/arrays/bpm_array.html#RWBPMSinglePosition"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.arrays.bpm_array.RWBPMSinglePosition" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference internal" href="pyaml.common.abstract.html#pyaml.common.abstract.ReadFloatArray" title="pyaml.common.abstract.ReadFloatArray"><code class="xref py py-class docutils literal notranslate"><span class="pre">ReadFloatArray</span></code></a></p>
+<p>Read/write access to single axis BPM positions.</p>
+<p>This class provides access to either horizontal or vertical positions
+of a list of BPMs. It supports both individual access and aggregated
+access through a device access list for improved performance.</p>
 <dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>) – Name of the position accessor</p></li>
+<li><p><strong>bpms</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.14)"><em>list</em></a><em>[</em><a class="reference internal" href="pyaml.arrays.bpm.html#pyaml.arrays.bpm.BPM" title="pyaml.arrays.bpm.BPM"><em>BPM</em></a><em>]</em>) – List of BPM objects to access</p></li>
+<li><p><strong>idx</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><em>int</em></a>) – Index for the position axis (0 for horizontal, 1 for vertical)</p></li>
+</ul>
+</dd>
 </dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="pyaml.arrays.bpm_array.RWBPMSinglePosition.get">
 <span class="sig-name descname"><span class="pre">get</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/arrays/bpm_array.html#RWBPMSinglePosition.get"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.arrays.bpm_array.RWBPMSinglePosition.get" title="Link to this definition">#</a></dt>
-<dd><p>Get the value</p>
+<dd><p>Get single axis BPM positions.</p>
 <dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>np.array</strong> – Array of positions for the specified axis (horizontal or vertical)</p>
+</dd>
 </dl>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pyaml.arrays.bpm_array.RWBPMSinglePosition.set_aggregator">
 <span class="sig-name descname"><span class="pre">set_aggregator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">agg</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/arrays/bpm_array.html#RWBPMSinglePosition.set_aggregator"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.arrays.bpm_array.RWBPMSinglePosition.set_aggregator" title="Link to this definition">#</a></dt>
-<dd><dl class="field-list simple">
+<dd><p>Set the device access list aggregator for improved performance.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>agg</strong> (<a class="reference internal" href="pyaml.control.deviceaccesslist.html#pyaml.control.deviceaccesslist.DeviceAccessList" title="pyaml.control.deviceaccesslist.DeviceAccessList"><em>DeviceAccessList</em></a>) – Device access list for aggregated reads</p>
+</dd>
 </dl>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pyaml.arrays.bpm_array.RWBPMSinglePosition.unit">
 <span class="sig-name descname"><span class="pre">unit</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/arrays/bpm_array.html#RWBPMSinglePosition.unit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.arrays.bpm_array.RWBPMSinglePosition.unit" title="Link to this definition">#</a></dt>
-<dd><p>Get the unit of the values</p>
+<dd><p>Get the units for BPM positions.</p>
 <dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>list[str]</strong> – List of unit strings for each BPM</p>
+</dd>
 </dl>
 </dd></dl>
 

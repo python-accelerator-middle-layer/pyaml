@@ -512,7 +512,11 @@
 <dl class="py method">
 <dt class="sig sig-object py" id="pyaml.control.deviceaccesslist.DeviceAccessList.check_device_availability">
 <em class="property"><span class="k"><span class="pre">abstractmethod</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">check_device_availability</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/control/deviceaccesslist.html#DeviceAccessList.check_device_availability"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.control.deviceaccesslist.DeviceAccessList.check_device_availability" title="Link to this definition">#</a></dt>
-<dd><dl class="field-list simple">
+<dd><p>Check if all devices in the list are available and accessible.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>bool</strong> – True if all devices are available, False otherwise</p>
+</dd>
 </dl>
 </dd></dl>
 
@@ -535,7 +539,11 @@
 <dl class="py method">
 <dt class="sig sig-object py" id="pyaml.control.deviceaccesslist.DeviceAccessList.get_range">
 <em class="property"><span class="k"><span class="pre">abstractmethod</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_range</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/control/deviceaccesslist.html#DeviceAccessList.get_range"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.control.deviceaccesslist.DeviceAccessList.get_range" title="Link to this definition">#</a></dt>
-<dd><dl class="field-list simple">
+<dd><p>Get the valid range for the device variables.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>list[float]</strong> – List containing [min, max] values</p>
+</dd>
 </dl>
 </dd></dl>
 

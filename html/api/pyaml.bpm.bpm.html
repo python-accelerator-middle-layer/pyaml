@@ -494,7 +494,7 @@
 <td><p>Class providing access to one BPM of a physical or simulated lattice</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#pyaml.bpm.bpm.ConfigModel" title="pyaml.bpm.bpm.ConfigModel"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ConfigModel</span></code></a>(*, name[, description, ...])</p></td>
-<td><p>Create a new model by parsing and validating input data from keyword arguments.</p></td>
+<td><p>Configuration model for BPM element.</p></td>
 </tr>
 </tbody>
 </table>
@@ -516,29 +516,74 @@
 <dl class="py method">
 <dt class="sig sig-object py" id="pyaml.bpm.bpm.BPM.attach">
 <span class="sig-name descname"><span class="pre">attach</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">peer</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">positions</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">offset</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tilt</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/bpm/bpm.html#BPM.attach"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.bpm.bpm.BPM.attach" title="Link to this definition">#</a></dt>
-<dd><dl class="field-list simple">
+<dd><p>Attach BPM attributes to a peer.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>peer</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.14)"><em>object</em></a>) – The peer object (simulator or control system)</p></li>
+<li><p><strong>positions</strong> (<a class="reference internal" href="pyaml.control.abstract_impl.html#pyaml.control.abstract_impl.RBpmArray" title="pyaml.control.abstract_impl.RBpmArray"><em>RBpmArray</em></a>) – BPM position readings</p></li>
+<li><p><strong>offset</strong> (<a class="reference internal" href="pyaml.control.abstract_impl.html#pyaml.control.abstract_impl.RWBpmOffsetArray" title="pyaml.control.abstract_impl.RWBpmOffsetArray"><em>RWBpmOffsetArray</em></a>) – BPM offset values for correction</p></li>
+<li><p><strong>tilt</strong> (<a class="reference internal" href="pyaml.control.abstract_impl.html#pyaml.control.abstract_impl.RWBpmTiltScalar" title="pyaml.control.abstract_impl.RWBpmTiltScalar"><em>RWBpmTiltScalar</em></a>) – BPM tilt angle for rotation correction</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>Self</strong> – A new attached instance of BPM</p>
+</dd>
 </dl>
 </dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="pyaml.bpm.bpm.BPM.model">
 <em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">model</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="pyaml.bpm.bpm_model.html#pyaml.bpm.bpm_model.BPMModel" title="pyaml.bpm.bpm_model.BPMModel"><span class="pre">BPMModel</span></a></em><a class="headerlink" href="#pyaml.bpm.bpm.BPM.model" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Get the BPM model.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>BPMModel</strong> – The BPM model instance</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="pyaml.bpm.bpm.BPM.offset">
 <em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">offset</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="pyaml.lattice.abstract_impl.html#pyaml.lattice.abstract_impl.RWBpmOffsetArray" title="pyaml.lattice.abstract_impl.RWBpmOffsetArray"><span class="pre">RWBpmOffsetArray</span></a></em><a class="headerlink" href="#pyaml.bpm.bpm.BPM.offset" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Get the BPM offset values.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>RWBpmOffsetArray</strong> – BPM offset array for position correction</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="pyaml.common.exception.html#pyaml.common.exception.PyAMLException" title="pyaml.common.exception.PyAMLException"><strong>PyAMLException</strong></a> – If offset has not been attached</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="pyaml.bpm.bpm.BPM.positions">
 <em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">positions</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="pyaml.lattice.abstract_impl.html#pyaml.lattice.abstract_impl.RBpmArray" title="pyaml.lattice.abstract_impl.RBpmArray"><span class="pre">RBpmArray</span></a></em><a class="headerlink" href="#pyaml.bpm.bpm.BPM.positions" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Get the BPM position readings.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>RBpmArray</strong> – BPM position array containing horizontal and vertical positions</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="pyaml.common.exception.html#pyaml.common.exception.PyAMLException" title="pyaml.common.exception.PyAMLException"><strong>PyAMLException</strong></a> – If positions have not been attached</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="pyaml.bpm.bpm.BPM.tilt">
 <em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">tilt</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="pyaml.lattice.abstract_impl.html#pyaml.lattice.abstract_impl.RWBpmTiltScalar" title="pyaml.lattice.abstract_impl.RWBpmTiltScalar"><span class="pre">RWBpmTiltScalar</span></a></em><a class="headerlink" href="#pyaml.bpm.bpm.BPM.tilt" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Get the BPM tilt angle.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>RWBpmTiltScalar</strong> – BPM tilt angle for rotation correction</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="pyaml.common.exception.html#pyaml.common.exception.PyAMLException" title="pyaml.common.exception.PyAMLException"><strong>PyAMLException</strong></a> – If tilt has not been attached</p>
+</dd>
+</dl>
+</dd></dl>
 
 </dd></dl>
 
@@ -546,17 +591,28 @@
 <dt class="sig sig-object py" id="pyaml.bpm.bpm.ConfigModel">
 <em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ConfigModel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">description</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lattice_names</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/bpm/bpm.html#ConfigModel"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.bpm.bpm.ConfigModel" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference internal" href="pyaml.common.element.html#pyaml.common.element.ElementConfigModel" title="pyaml.common.element.ElementConfigModel"><code class="xref py py-class docutils literal notranslate"><span class="pre">ElementConfigModel</span></code></a></p>
-<p>Create a new model by parsing and validating input data from keyword arguments.</p>
-<p>Raises [<cite>ValidationError</cite>][pydantic_core.ValidationError] if the input data cannot be
-validated to form a valid model.</p>
-<p><cite>self</cite> is explicitly positional-only to allow <cite>self</cite> as a field name.</p>
+<p>Configuration model for BPM element.</p>
 <dl class="field-list simple">
 </dl>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="pyaml.bpm.bpm.ConfigModel.model">
-<span class="sig-name descname"><span class="pre">model</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="pyaml.bpm.bpm_model.html#pyaml.bpm.bpm_model.BPMModel" title="pyaml.bpm.bpm_model.BPMModel"><span class="pre">BPMModel</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></em><a class="headerlink" href="#pyaml.bpm.bpm.ConfigModel.model" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">model</span></span><a class="headerlink" href="#pyaml.bpm.bpm.ConfigModel.model" title="Link to this definition">#</a></dt>
 <dd><p>Object in charge of BPM modeling</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="pyaml.bpm.bpm_model.html#pyaml.bpm.bpm_model.BPMModel" title="pyaml.bpm.bpm_model.BPMModel">BPMModel</a> or None, optional</p>
+</dd>
+</dl>
 </dd></dl>
+
+<p>Create a new model by parsing and validating input data from keyword arguments.</p>
+<p>Raises [<cite>ValidationError</cite>][pydantic_core.ValidationError] if the input data cannot be
+validated to form a valid model.</p>
+<p><cite>self</cite> is explicitly positional-only to allow <cite>self</cite> as a field name.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id0">
+<span class="sig-name descname"><span class="pre">model</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="pyaml.bpm.bpm_model.html#pyaml.bpm.bpm_model.BPMModel" title="pyaml.bpm.bpm_model.BPMModel"><span class="pre">BPMModel</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></em><a class="headerlink" href="#id0" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="pyaml.bpm.bpm.ConfigModel.model_config">
@@ -625,6 +681,7 @@ validated to form a valid model.</p>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.bpm.bpm.ConfigModel"><code class="docutils literal notranslate"><span class="pre">ConfigModel</span></code></a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.bpm.bpm.ConfigModel.model"><code class="docutils literal notranslate"><span class="pre">ConfigModel.model</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id0"><code class="docutils literal notranslate"><span class="pre">ConfigModel.model</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.bpm.bpm.ConfigModel.model_config"><code class="docutils literal notranslate"><span class="pre">ConfigModel.model_config</span></code></a></li>
 </ul>
 </li>

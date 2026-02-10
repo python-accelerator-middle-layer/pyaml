@@ -392,38 +392,38 @@
 <div class="viewcode-block" id="ConfigModel">
 <a class="viewcode-back" href="../../../api/pyaml.diagnostics.chromaticity_monitor.html#pyaml.diagnostics.chromaticity_monitor.ConfigModel">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">ConfigModel</span><span class="p">(</span><span class="n">ElementConfigModel</span><span class="p">):</span>
-    <span class="n">model_config</span> <span class="o">=</span> <span class="n">ConfigDict</span><span class="p">(</span><span class="n">arbitrary_types_allowed</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">extra</span><span class="o">=</span><span class="s2">&quot;forbid&quot;</span><span class="p">)</span>
-
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Chomaticity measurement</span>
+<span class="sd">    Configuration model for Chromaticity Monitor.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">    betatron_tune: str</span>
+<span class="sd">    betatron_tune : str</span>
 <span class="sd">        Name of the diagnostic pyaml device for measuring the tune</span>
-<span class="sd">    RFfreq: str</span>
+<span class="sd">    RFfreq : str</span>
 <span class="sd">        Name of main RF frequency plant</span>
-<span class="sd">    N_step: int = 5</span>
+<span class="sd">    N_step : int, optional</span>
 <span class="sd">        Default number of RF step during chromaticity</span>
-<span class="sd">        measurment [default: 5]</span>
-<span class="sd">    alphac: float | None = None</span>
-<span class="sd">        Moment compaction factor</span>
-<span class="sd">    E_delta: float</span>
-<span class="sd">        Default variation of relative energy during chromaticity measurment:</span>
-<span class="sd">        f0 - f0 * E_delta * alphac  &lt; f_RF &lt; f0 + f0 * E_delta * alphac</span>
-<span class="sd">        [default: 0.001]</span>
-<span class="sd">    Max_E_delta: float</span>
-<span class="sd">        Maximum autorized variation of relative energy during chromaticity</span>
-<span class="sd">        measurment [default: 0.004]</span>
-<span class="sd">    N_tune_meas: int</span>
-<span class="sd">        Default number of tune measurment per RF frequency [default: 1]</span>
-<span class="sd">    Sleep_between_meas: float</span>
-<span class="sd">        Default time sleep between two tune measurment [default: 2.0]</span>
-<span class="sd">    Sleep_between_RFvar: float</span>
-<span class="sd">        Default time sleep after RF frequency variation [default: 5.0]</span>
-<span class="sd">    fit_order: int</span>
-<span class="sd">        Fitting order [default: 1]</span>
+<span class="sd">        measurement, by default 5</span>
+<span class="sd">    alphac : float or None, optional</span>
+<span class="sd">        Momentum compaction factor, by default None</span>
+<span class="sd">    E_delta : float, optional</span>
+<span class="sd">        Default variation of relative energy during chromaticity measurement:</span>
+<span class="sd">        f0 - f0 * E_delta * alphac  &lt; f_RF &lt; f0 + f0 * E_delta * alphac,</span>
+<span class="sd">        by default 0.001</span>
+<span class="sd">    Max_E_delta : float, optional</span>
+<span class="sd">        Maximum authorized variation of relative energy during chromaticity</span>
+<span class="sd">        measurement, by default 0.004</span>
+<span class="sd">    N_tune_meas : int, optional</span>
+<span class="sd">        Default number of tune measurement per RF frequency, by default 1</span>
+<span class="sd">    Sleep_between_meas : float, optional</span>
+<span class="sd">        Default sleep time in [s] between two tune measurements, by default 2.0</span>
+<span class="sd">    Sleep_between_RFvar : float, optional</span>
+<span class="sd">        Default sleep time in [s] after RF frequency variation, by default 5.0</span>
+<span class="sd">    fit_order : int, optional</span>
+<span class="sd">        Fitting order, by default 1</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">model_config</span> <span class="o">=</span> <span class="n">ConfigDict</span><span class="p">(</span><span class="n">arbitrary_types_allowed</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">extra</span><span class="o">=</span><span class="s2">&quot;forbid&quot;</span><span class="p">)</span>
 
     <span class="n">betatron_tune</span><span class="p">:</span> <span class="nb">str</span>
     <span class="n">RFfreq</span><span class="p">:</span> <span class="nb">str</span>
@@ -466,12 +466,35 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">chromaticity</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ReadFloatArray</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get the chromaticity values.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        ReadFloatArray</span>
+<span class="sd">            Array of chromaticity values [horizontal, vertical]</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">check_peer</span><span class="p">()</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__chromaticity</span>
 
 <div class="viewcode-block" id="ChomaticityMonitor.attach">
 <a class="viewcode-back" href="../../../api/pyaml.diagnostics.chromaticity_monitor.html#pyaml.diagnostics.chromaticity_monitor.ChomaticityMonitor.attach">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">attach</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">peer</span><span class="p">,</span> <span class="n">chromaticity</span><span class="p">:</span> <span class="n">ReadFloatArray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Self</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Attach the chromaticity monitor to a peer with chromaticity data.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        peer : object</span>
+<span class="sd">            The peer object (simulator or control system)</span>
+<span class="sd">        chromaticity : ReadFloatArray</span>
+<span class="sd">            The chromaticity array to monitor</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        Self</span>
+<span class="sd">            A new attached instance of ChromaticityMonitor</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">obj</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_cfg</span><span class="p">)</span>
         <span class="n">chromaticity</span><span class="o">.</span><span class="n">_update_chromaticity_monitor</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>
         <span class="n">obj</span><span class="o">.</span><span class="n">__chromaticity</span> <span class="o">=</span> <span class="n">chromaticity</span>

@@ -465,6 +465,14 @@
 <div class="viewcode-block" id="BPMModel.is_pos_indexed">
 <a class="viewcode-back" href="../../../api/pyaml.bpm.bpm_model.html#pyaml.bpm.bpm_model.BPMModel.is_pos_indexed">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">is_pos_indexed</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Check if position values are indexed (array-based).</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        bool</span>
+<span class="sd">            True if both x and y positions are indexed, False otherwise</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">x_pos_index</span><span class="p">()</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">y_pos_index</span><span class="p">()</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span></div>
 
 
@@ -487,6 +495,14 @@
 <div class="viewcode-block" id="BPMModel.is_tilt_indexed">
 <a class="viewcode-back" href="../../../api/pyaml.bpm.bpm_model.html#pyaml.bpm.bpm_model.BPMModel.is_tilt_indexed">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">is_tilt_indexed</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Check if tilt value is indexed (array-based).</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        bool</span>
+<span class="sd">            True if tilt is indexed, False otherwise</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">tilt_index</span><span class="p">()</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span></div>
 
 
@@ -525,6 +541,14 @@
 <div class="viewcode-block" id="BPMModel.is_offset_indexed">
 <a class="viewcode-back" href="../../../api/pyaml.bpm.bpm_model.html#pyaml.bpm.bpm_model.BPMModel.is_offset_indexed">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">is_offset_indexed</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Check if offset values are indexed (array-based).</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        bool</span>
+<span class="sd">            True if both x and y offsets are indexed, False otherwise</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">x_offset_index</span><span class="p">()</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">y_offset_index</span><span class="p">()</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span></div>
 </div>
 

@@ -516,14 +516,30 @@ device access for horizontal and vertical tunes.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="pyaml.diagnostics.tune_monitor.BetatronTuneMonitor.attach">
 <span class="sig-name descname"><span class="pre">attach</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">peer</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">betatron_tune</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/diagnostics/tune_monitor.html#BetatronTuneMonitor.attach"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.diagnostics.tune_monitor.BetatronTuneMonitor.attach" title="Link to this definition">#</a></dt>
-<dd><dl class="field-list simple">
+<dd><p>Attach the tune monitor to a peer with betatron tune data.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>peer</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.14)"><em>object</em></a>) – The peer object (simulator or control system)</p></li>
+<li><p><strong>betatron_tune</strong> (<a class="reference internal" href="pyaml.common.abstract.html#pyaml.common.abstract.ReadFloatArray" title="pyaml.common.abstract.ReadFloatArray"><em>ReadFloatArray</em></a>) – The betatron tune array to monitor</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>Self</strong> – A new attached instance of TuneMonitor</p>
+</dd>
 </dl>
 </dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="pyaml.diagnostics.tune_monitor.BetatronTuneMonitor.tune">
 <em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">tune</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="pyaml.common.abstract.html#pyaml.common.abstract.ReadFloatArray" title="pyaml.common.abstract.ReadFloatArray"><span class="pre">ReadFloatArray</span></a></em><a class="headerlink" href="#pyaml.diagnostics.tune_monitor.BetatronTuneMonitor.tune" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Get the betatron tune values.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>ReadFloatArray</strong> – Array of tune values [horizontal, vertical]</p>
+</dd>
+</dl>
+</dd></dl>
 
 </dd></dl>
 

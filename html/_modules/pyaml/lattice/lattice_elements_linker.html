@@ -445,6 +445,14 @@
 <div class="viewcode-block" id="LatticeElementsLinker.set_lattice">
 <a class="viewcode-back" href="../../../api/pyaml.lattice.lattice_elements_linker.html#pyaml.lattice.lattice_elements_linker.LatticeElementsLinker.set_lattice">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">set_lattice</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lattice</span><span class="p">:</span> <span class="n">Lattice</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Set the lattice for element linking.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        lattice : Lattice</span>
+<span class="sd">            The lattice to link elements with</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">lattice</span> <span class="o">=</span> <span class="n">lattice</span></div>
 
 
@@ -458,6 +466,19 @@
 <a class="viewcode-back" href="../../../api/pyaml.lattice.lattice_elements_linker.html#pyaml.lattice.lattice_elements_linker.LatticeElementsLinker.get_element_identifier">[docs]</a>
     <span class="nd">@abstractmethod</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">get_element_identifier</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">element</span><span class="p">:</span> <span class="n">Element</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">LinkerIdentifier</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get the identifier for linking an element.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        element : Element</span>
+<span class="sd">            The element to get the identifier for</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        LinkerIdentifier</span>
+<span class="sd">            The identifier for the element</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">pass</span></div>
 
 

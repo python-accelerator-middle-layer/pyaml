@@ -494,7 +494,7 @@
 <td><p>Combined function magnet array confirguration</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#pyaml.arrays.cfm_magnet.ConfigModel" title="pyaml.arrays.cfm_magnet.ConfigModel"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ConfigModel</span></code></a>(*, name, elements)</p></td>
-<td><p>Create a new model by parsing and validating input data from keyword arguments.</p></td>
+<td><p>Configuration model for Combined Function Magnet array.</p></td>
 </tr>
 </tbody>
 </table>
@@ -519,7 +519,11 @@ the following example:</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="pyaml.arrays.cfm_magnet.CombinedFunctionMagnet.fill_array">
 <span class="sig-name descname"><span class="pre">fill_array</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">holder</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/arrays/cfm_magnet.html#CombinedFunctionMagnet.fill_array"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.arrays.cfm_magnet.CombinedFunctionMagnet.fill_array" title="Link to this definition">#</a></dt>
-<dd><dl class="field-list simple">
+<dd><p>Fill the combined function magnet array in the element holder.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>holder</strong> (<a class="reference internal" href="pyaml.common.element_holder.html#pyaml.common.element_holder.ElementHolder" title="pyaml.common.element_holder.ElementHolder"><em>ElementHolder</em></a>) – The element holder to populate with combined function magnet array</p>
+</dd>
 </dl>
 </dd></dl>
 
@@ -529,6 +533,7 @@ the following example:</p>
 <dt class="sig sig-object py" id="pyaml.arrays.cfm_magnet.ConfigModel">
 <em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ConfigModel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">elements</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/arrays/cfm_magnet.html#ConfigModel"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.arrays.cfm_magnet.ConfigModel" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference internal" href="pyaml.arrays.array.html#pyaml.arrays.array.ArrayConfigModel" title="pyaml.arrays.array.ArrayConfigModel"><code class="xref py py-class docutils literal notranslate"><span class="pre">ArrayConfigModel</span></code></a></p>
+<p>Configuration model for Combined Function Magnet array.</p>
 <p>Create a new model by parsing and validating input data from keyword arguments.</p>
 <p>Raises [<cite>ValidationError</cite>][pydantic_core.ValidationError] if the input data cannot be
 validated to form a valid model.</p>
