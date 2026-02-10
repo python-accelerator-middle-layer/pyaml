@@ -36,8 +36,7 @@ class BPM(ArrayConfig):
     .. code-block:: python
 
         >>>  from pyaml.arrays.bpm import BPM,ConfigModel as BPMArrayConfigModel
-        >>>  bpmArray = BPM(
-                        BPMArrayConfigModel(name="MyBPMs", elements=["bpm1","bpm2"])
+        >>>  bpmArray = BPM(BPMArrayConfigModel(name="MyBPMs", elements=["bpm1","bpm2"])
 
 
     """
