@@ -36,4 +36,4 @@ python:
 
 submodules:
   include: all
-  recursive: true    
+  recursive: true

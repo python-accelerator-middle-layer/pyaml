@@ -12,8 +12,16 @@ PYAMLCLASS = "BPM"
 
 
 class ConfigModel(ElementConfigModel):
+    """
+    Configuration model for BPM element.
+
+    Attributes
+    ----------
+    model : BPMModel or None, optional
+        Object in charge of BPM modeling
+    """
+
     model: BPMModel | None = None
-    """Object in charge of BPM modeling"""
 
 
 class BPM(Element):
@@ -43,22 +51,69 @@ class BPM(Element):
 
     @property
     def model(self) -> BPMModel:
+        """
+        Get the BPM model.
+
+        Returns
+        -------
+        BPMModel
+            The BPM model instance
+        """
         return self.__model
 
     @property
     def positions(self) -> RBpmArray:
+        """
+        Get the BPM position readings.
+
+        Returns
+        -------
+        RBpmArray
+            BPM position array containing horizontal and vertical positions
+
+        Raises
+        ------
+        PyAMLException
+            If positions have not been attached
+        """
         if self.__positions is None:
             raise PyAMLException(f"{str(self)} has no attached positions")
         return self.__positions
 
     @property
     def offset(self) -> RWBpmOffsetArray:
+        """
+        Get the BPM offset values.
+
+        Returns
+        -------
+        RWBpmOffsetArray
+            BPM offset array for position correction
+
+        Raises
+        ------
+        PyAMLException
+            If offset has not been attached
+        """
         if self.__offset is None:
             raise PyAMLException(f"{str(self)} has no attached offset")
         return self.__offset
 
     @property
     def tilt(self) -> RWBpmTiltScalar:
+        """
+        Get the BPM tilt angle.
+
+        Returns
+        -------
+        RWBpmTiltScalar
+            BPM tilt angle for rotation correction
+
+        Raises
+        ------
+        PyAMLException
+            If tilt has not been attached
+        """
         if self.__tilt is None:
             raise PyAMLException(f"{str(self)} has no attached tilt")
         return self.__tilt
@@ -70,6 +125,25 @@ class BPM(Element):
         offset: RWBpmOffsetArray,
         tilt: RWBpmTiltScalar,
     ) -> Self:
+        """
+        Attach BPM attributes to a peer.
+
+        Parameters
+        ----------
+        peer : object
+            The peer object (simulator or control system)
+        positions : RBpmArray
+            BPM position readings
+        offset : RWBpmOffsetArray
+            BPM offset values for correction
+        tilt : RWBpmTiltScalar
+            BPM tilt angle for rotation correction
+
+        Returns
+        -------
+        Self
+            A new attached instance of BPM
+        """
         # Attach positions, offset and tilt attributes and returns a new
         # reference
         obj = self.__class__(self._cfg)

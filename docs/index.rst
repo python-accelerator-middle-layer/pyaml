@@ -10,7 +10,7 @@ The code is still under development. The features include among others:
 - Machine independence allowing configuration of different type of accelerators and facility specific naming conventions.
 - Unit conversions.
 - Automatic generation of metadata and standardized format for measurement data.
-- A set of standard applications and a framework for developing new applications. 
+- A set of standard applications and a framework for developing new applications.
 
 Installation
 ------------

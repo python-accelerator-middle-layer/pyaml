@@ -6,6 +6,23 @@ import numpy as np
 
 
 class Quality(Enum):
+    """
+    Enumeration for data quality indicators.
+
+    Attributes
+    ----------
+    VALID : int
+        Data is valid and reliable
+    INVALID : int
+        Data is invalid
+    ALARM : int
+        Data indicates an alarm condition
+    CHANGING : int
+        Data is currently changing
+    WARNING : int
+        Data indicates a warning condition
+    """
+
     VALID = auto()
     INVALID = auto()
     ALARM = auto()

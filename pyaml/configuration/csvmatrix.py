@@ -43,6 +43,14 @@ class CSVMatrix(Matrix):
             ) from None
 
     def get_matrix(self) -> np.array:
+        """
+        Get the matrix data.
+
+        Returns
+        -------
+        np.array
+            Matrix data as a numpy array
+        """
         return self._mat
 
     def __repr__(self):

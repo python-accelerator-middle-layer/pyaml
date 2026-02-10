@@ -5,7 +5,10 @@ from .magnet import Magnet, MagnetConfigModel
 PYAMLCLASS = "SkewQuad"
 
 
-class ConfigModel(MagnetConfigModel): ...
+class ConfigModel(MagnetConfigModel):
+    """Configuration model for SkewQuad magnet."""
+
+    ...
 
 
 class SkewQuad(Magnet):
