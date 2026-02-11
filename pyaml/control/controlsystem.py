@@ -8,6 +8,7 @@ from ..common.abstract_aggregator import ScalarAggregator
 from ..common.element import Element
 from ..common.element_holder import ElementHolder
 from ..common.exception import PyAMLException
+from ..configuration.catalog import Catalog
 from ..configuration.factory import Factory
 from ..control.abstract_impl import (
     CSBPMArrayMapper,
@@ -47,6 +48,10 @@ class ControlSystem(ElementHolder, metaclass=ABCMeta):
 
     def __init__(self):
         ElementHolder.__init__(self)
+        self._catalog: Catalog | None = None
+
+    def set_catalog(self, catalog: Catalog):
+        self._catalog = catalog
 
     @abstractmethod
     def attach(self, dev: list[DeviceAccess]) -> list[DeviceAccess]:

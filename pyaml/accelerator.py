@@ -9,6 +9,7 @@ from pydantic import BaseModel, ConfigDict, Field
 from .arrays.array import ArrayConfig
 from .common.element import Element
 from .common.exception import PyAMLConfigException
+from .configuration.catalog import Catalog
 from .configuration.factory import Factory
 from .configuration.fileloader import load, set_root_folder
 from .control.controlsystem import ControlSystem
@@ -44,6 +45,8 @@ class ConfigModel(BaseModel):
         Acceleration description
     devices : list[Element]
         Element list
+    control_system_catalog : Catalog
+        catalog of DeviceAccess objects
     """
 
     model_config = ConfigDict(arbitrary_types_allowed=True, extra="forbid")
@@ -57,6 +60,7 @@ class ConfigModel(BaseModel):
     description: str | None = None
     arrays: list[ArrayConfig] = Field(default=None, repr=False)
     devices: list[Element] = Field(repr=False)
+    control_system_catalog: Catalog = Field(repr=False)
 
 
 class Accelerator(object):
@@ -69,6 +73,7 @@ class Accelerator(object):
 
         if cfg.controls is not None:
             for c in cfg.controls:
+                c.set_catalog(cfg.control_system_catalog)
                 if c.name() == "live":
                     self.__live = c
                 else:

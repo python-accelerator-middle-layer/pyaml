@@ -85,3 +85,30 @@ devices:
     - [A0, SH1A-C01-V]
     - [A1, SH1A-C01-SQ]
   model: sr/magnet_models/SH1AC01.yaml
+control_system_catalog:
+  type: pyaml.configuration.catalog
+  refs:
+    - type: pyaml.configuration.catalog_entry
+      reference: BPM_C01-02
+      devices:
+        - type: tango.pyaml.attribute_read_only
+          attribute: srdiag/bpm/c01-02/SA_HPosition
+          unit: mm
+        - type: tango.pyaml.attribute_read_only
+          attribute: srdiag/bpm/c01-02/SA_HPosition
+          unit: mm
+    - type: pyaml.configuration.catalog_entry
+      reference: BPM_C01-03
+      devices:
+        - type: tango.pyaml.attribute_read_only
+          attribute: srdiag/bpm/c01-03/SA_HPosition
+          unit: mm
+        - type: tango.pyaml.attribute_read_only
+          attribute: srdiag/bpm/c01-03/SA_VPosition
+          unit: mm
+    - type: pyaml.configuration.catalog_entry
+      reference: BPM_C01-04
+      device:
+        type: tango.pyaml.attribute_read_only
+        attribute: srdiag/bpm/c01-04/Position
+        unit: mm
