@@ -132,7 +132,7 @@ def generate_toctree(filename: str, title: str, level: int, module: str):
         file.write(".. toctree::\n")
 
         file.write("   :maxdepth: 1\n")
-        file.write("   :caption: PyAML packages:\n\n")
+        file.write(f"   :caption: {title}:\n\n")
 
         for p in level_path:
             module_name = module + "." + p

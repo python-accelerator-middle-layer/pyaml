@@ -6,12 +6,12 @@ PYAMLCLASS = "BPM"
 
 
 class ConfigModel(ArrayConfigModel):
-    """Configuration model for BPM array."""
+    """Configuration model for :py:class:`.BPMArray`."""
 
 
 class BPM(ArrayConfig):
     """
-    BPM array configuration
+    :py:class:`.BPMArray` configuration.
 
     Example
     -------
@@ -27,7 +27,8 @@ class BPM(ArrayConfig):
             - BPM_C04-02
             - BPM_C04-03
 
-    A BPM array configuration can also be created by code using the following example:
+    A :py:class:`.BPMArray` configuration can also be created by code using the
+    following example:
 
     .. code-block:: python
 
@@ -44,8 +45,11 @@ class BPM(ArrayConfig):
 
     def fill_array(self, holder: ElementHolder):
         """
-        Fill the :py:class:`.BPMArray` using element holder. This method is called
-        when an :py:class:`~pyaml.accelerator.Accelerator` is loaded but can be
+        Fill the :py:class:`.BPMArray` using element holder
+        (:py:class:`~pyaml.lattice.simulator.Simulator`
+        or :py:class:`~pyaml.control.controlsystem.ControlSystem`)
+        and add the array to the holder. This method is called when an
+        :py:class:`~pyaml.accelerator.Accelerator` is loaded but can be
         used to create arrays by code as shown bellow:
 
         .. code-block:: python
@@ -60,6 +64,6 @@ class BPM(ArrayConfig):
         Parameters
         ----------
         holder : ElementHolder
-            The element holder to populate the BPM array with
+            The element holder to populate the :py:class:`.BPMArray` with.
         """
         holder.fill_bpm_array(self._cfg.name, self._cfg.elements)
