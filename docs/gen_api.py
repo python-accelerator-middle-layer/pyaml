@@ -106,7 +106,7 @@ def generate_selective_module(m):
         # file.write("   .. rubric:: Classes\n\n")
         file.write(f".. automodule:: {p.__name__}\n")
         if len(all_cls) > 0:
-            # Exclude class that will ne treadted by autoclass
+            # Exclude classes that will be treated by autoclass
             file.write(
                 f"   :exclude-members: {','.join([c.__name__ for c in all_cls])}\n\n"
             )
