@@ -22,7 +22,7 @@ test:	Makefile
 	@$(SPHINXBUILD) -M $@ -d "$(BUILDDIR)/doctrees" "$(SOURCEDIR)" "$(HTMLDIR)" $(SPHINXOPTS) $(O)
 
 clean:	Makefile
-	rm api.rst
+	rm -f api.rst
 	rm -rf api/*
 	@$(SPHINXBUILD) -M $@ "$(SOURCEDIR)" "$(BUILDDIR)" $(SPHINXOPTS) $(O)
 

@@ -99,27 +99,31 @@ def generate_selective_module(m):
                 all_cls.append(c)
 
     # Generate mddule
-    if len(all_cls) > 0:
-        with open(f"api/{p.__name__}.rst", "w") as file:
-            title = p.__name__.split(".")[-1:][0]
-            file.write(f"{title}\n")
-            file.write("-" * len(title) + "\n\n")
-            # file.write("   .. rubric:: Classes\n\n")
-            file.write(f".. automodule:: {p.__name__}\n")
+    with open(f"api/{p.__name__}.rst", "w") as file:
+        title = p.__name__.split(".")[-1:][0]
+        file.write(f"{title}\n")
+        file.write("-" * len(title) + "\n\n")
+        # file.write("   .. rubric:: Classes\n\n")
+        file.write(f".. automodule:: {p.__name__}\n")
+        if len(all_cls) > 0:
+            # Exclude class that will ne treadted by autoclass
             file.write(
                 f"   :exclude-members: {','.join([c.__name__ for c in all_cls])}\n\n"
             )
-            for c in all_cls:
-                file.write(f"   .. autoclass:: {c.__name__}\n")
-                file.write("         :members:\n")
-                file.write("         :exclude-members: model_config\n")
-                file.write("         :undoc-members:\n")
-                file.write("         :show-inheritance:\n\n")
+        for c in all_cls:
+            file.write(f"   .. autoclass:: {c.__name__}\n")
+            file.write("         :members:\n")
+            file.write("         :exclude-members: model_config\n")
+            file.write("         :undoc-members:\n")
+            file.write("         :show-inheritance:\n\n")
 
 
 def generate_toctree(filename: str, title: str, level: int, module: str):
     sub_modules = [m for m in modules if m.startswith(module)]
-    level_path = set([m.split(".")[level + 1 : level + 2][0] for m in sub_modules])
+    level_path = sorted(
+        set([m.split(".")[level + 1 : level + 2][0] for m in sub_modules])
+    )
+
     paths = []
 
     with open(f"{filename}", "w") as file:
