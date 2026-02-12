@@ -253,11 +253,11 @@ class ControlSystem(ElementHolder, metaclass=ABCMeta):
                     self.add_magnet(m)
 
             elif isinstance(e, BPM):
-                hDev = e.model.get_pos_devices()[0]
-                vDev = e.model.get_pos_devices()[1]
-                tiltDev = e.model.get_tilt_device()
-                hOffsetDev = e.model.get_offset_devices()[0]
-                vOffsetDev = e.model.get_offset_devices()[1]
+                hDev = e.model.get_pos_devices(e.get_name(), self._catalog)[0]
+                vDev = e.model.get_pos_devices(e.get_name(), self._catalog)[1]
+                tiltDev = e.model.get_tilt_device(e.get_name(), self._catalog)
+                hOffsetDev = e.model.get_offset_devices(e.get_name(), self._catalog)[0]
+                vOffsetDev = e.model.get_offset_devices(e.get_name(), self._catalog)[1]
                 ahDev = self.attach_indexed(hDev, e.model.x_pos_index())
                 avDev = self.attach_indexed(vDev, e.model.y_pos_index())
                 atiltDev = self.attach_indexed(tiltDev, e.model.tilt_index())

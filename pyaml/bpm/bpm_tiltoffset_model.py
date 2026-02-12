@@ -6,6 +6,7 @@ from pyaml.bpm.bpm_model import BPMModel
 from pyaml.bpm.bpm_simple_model import BPMSimpleModel
 
 from ..common.element import __pyaml_repr__
+from ..configuration.catalog import Catalog
 from ..control.deviceaccess import DeviceAccess
 
 # Define the main class name for this module
@@ -20,27 +21,18 @@ class ConfigModel(BaseModel):
 
     Parameters
     ----------
-    x_pos : DeviceAccess, optional
-        Horizontal position device
-    y_pos : DeviceAccess, optional
-        Vertical position device
-    x_offset : DeviceAccess, optional
-        Horizontal BPM offset device
-    y_offset : DeviceAccess, optional
-        Vertical BPM offset device
-    tilt : DeviceAccess, optional
-        BPM tilt device
+    x_pos_index : int, optional
+        Index in the array when specified, otherwise scalar
+        value is expected
+    y_pos_index : int, optional
+        Index in the array when specified, otherwise scalar
+        value is expected
     """
 
     model_config = ConfigDict(arbitrary_types_allowed=True, extra="forbid")
 
-    x_pos: DeviceAccess | None
-    y_pos: DeviceAccess | None
     x_pos_index: int | None = None
     y_pos_index: int | None = None
-    x_offset: DeviceAccess | None
-    y_offset: DeviceAccess | None
-    tilt: DeviceAccess | None
 
 
 class BPMTiltOffsetModel(BPMSimpleModel):
@@ -51,44 +43,34 @@ class BPMTiltOffsetModel(BPMSimpleModel):
 
     def __init__(self, cfg: ConfigModel):
         super().__init__(cfg)
-        self.__x_pos = cfg.x_pos
-        self.__y_pos = cfg.y_pos
-        self.__x_offset = cfg.x_offset
-        self.__y_offset = cfg.y_offset
-        self.__tilt = cfg.tilt
 
-    def get_pos_devices(self) -> list[DeviceAccess | None]:
-        """
-        Get device handles used for position reading
-
-        Returns
-        -------
-        list[DeviceAccess]
-            Array of DeviceAcess
-        """
-        return [self.__x_pos, self.__y_pos]
-
-    def get_tilt_device(self) -> DeviceAccess | None:
+    def get_tilt_device(self, name: str, catalog: Catalog) -> DeviceAccess | None:
         """
         Get device handle used for tilt access
 
         Returns
         -------
         DeviceAccess
-            DeviceAcess
+            The DeviceAccess for tilt
         """
-        return self.__tilt
+        if catalog.has_reference(name + "/tilt"):
+            return catalog.get_one(name + "/tilt")
+        return None
 
-    def get_offset_devices(self) -> list[DeviceAccess | None]:
+    def get_offset_devices(
+        self, name: str, catalog: Catalog
+    ) -> list[DeviceAccess | None]:
         """
         Get device handles used for offset access
 
         Returns
         -------
         list[DeviceAccess]
-            Array of DeviceAcess
+            Array of 2 DeviceAccess: [x_offset, y_offset]
         """
-        return [self.__x_offset, self.__y_offset]
+        if catalog.has_reference(name + "/offsets"):
+            return catalog.get_many(name + "/offsets")[:2]
+        return [None, None]
 
     def __repr__(self):
         return __pyaml_repr__(self)

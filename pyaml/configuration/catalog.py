@@ -153,3 +153,21 @@ class Catalog:
     def keys(self) -> list[str]:
         """Return all catalog reference keys."""
         return list(self._entries.keys())
+
+    # ------------------------------------------------------------------
+
+    def has_reference(self, reference: str) -> bool:
+        """
+        Return True if the reference exists in the catalog.
+
+        Parameters
+        ----------
+        reference : str
+            Catalog reference key.
+
+        Returns
+        -------
+        bool
+            True if the reference exists, False otherwise.
+        """
+        return reference in self._entries

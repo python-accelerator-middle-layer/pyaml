@@ -5,6 +5,7 @@ from pydantic import BaseModel, ConfigDict
 from pyaml.bpm.bpm_model import BPMModel
 
 from ..common.element import __pyaml_repr__
+from ..configuration.catalog import Catalog
 from ..control.deviceaccess import DeviceAccess
 
 # Define the main class name for this module
@@ -31,8 +32,6 @@ class ConfigModel(BaseModel):
 
     model_config = ConfigDict(arbitrary_types_allowed=True, extra="forbid")
 
-    x_pos: DeviceAccess | None
-    y_pos: DeviceAccess | None
     x_pos_index: int | None = None
     y_pos_index: int | None = None
 
@@ -45,39 +44,44 @@ class BPMSimpleModel(BPMModel):
 
     def __init__(self, cfg: ConfigModel):
         self._cfg = cfg
-        self.__x_pos = cfg.x_pos
-        self.__y_pos = cfg.y_pos
 
-    def get_pos_devices(self) -> list[DeviceAccess | None]:
+    def get_pos_devices(self, name: str, catalog: Catalog) -> list[DeviceAccess | None]:
         """
         Get device handles used for position reading
 
         Returns
         -------
         list[DeviceAccess]
-            Array of DeviceAcess
+            Array of DeviceAccess
         """
-        return [self.__x_pos, self.__y_pos]
+        if self.is_pos_indexed():
+            dev = catalog.get_one(name)
+            pos_devices = [dev, dev]
+        else:
+            pos_devices = catalog.get_many(name)[:2]
+        return pos_devices
 
-    def get_tilt_device(self) -> DeviceAccess | None:
+    def get_tilt_device(self, name: str, catalog: Catalog) -> DeviceAccess | None:
         """
         Get device handle used for tilt access
 
         Returns
         -------
         list[DeviceAccess]
-            Array of DeviceAcess
+            Array of DeviceAccess
         """
         return None
 
-    def get_offset_devices(self) -> list[DeviceAccess | None]:
+    def get_offset_devices(
+        self, name: str, catalog: Catalog
+    ) -> list[DeviceAccess | None]:
         """
         Get device handles used for offset access
 
         Returns
         -------
         list[DeviceAccess]
-            Array of DeviceAcess
+            Array of DeviceAccess
         """
         return [None, None]
 

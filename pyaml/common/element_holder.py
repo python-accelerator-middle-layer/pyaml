@@ -190,7 +190,7 @@ class ElementHolder(object):
             arrayName, elementNames, self.get_bpm, BPMArray, self.__BPM_ARRAYS
         )
 
-    def get_bpm(self, name: str) -> Element:
+    def get_bpm(self, name: str) -> BPM:
         return self.__get("BPM", name, self.__BPMS)
 
     def add_bpm(self, bpm: BPM):

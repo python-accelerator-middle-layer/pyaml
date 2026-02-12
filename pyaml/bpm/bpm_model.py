@@ -3,6 +3,7 @@ from abc import ABCMeta, abstractmethod
 import numpy as np
 from numpy.typing import NDArray
 
+from ..configuration.catalog import Catalog
 from ..control.deviceaccess import DeviceAccess
 
 
@@ -13,7 +14,7 @@ class BPMModel(metaclass=ABCMeta):
     """
 
     @abstractmethod
-    def get_pos_devices(self) -> list[DeviceAccess | None]:
+    def get_pos_devices(self, name: str, catalog: Catalog) -> list[DeviceAccess | None]:
         """
         Get device handles used for position reading
 
@@ -25,7 +26,7 @@ class BPMModel(metaclass=ABCMeta):
         pass
 
     @abstractmethod
-    def get_tilt_device(self) -> DeviceAccess | None:
+    def get_tilt_device(self, name: str, catalog: Catalog) -> DeviceAccess | None:
         """
         Get device handle used for tilt access
 
@@ -37,7 +38,9 @@ class BPMModel(metaclass=ABCMeta):
         pass
 
     @abstractmethod
-    def get_offset_devices(self) -> list[DeviceAccess | None]:
+    def get_offset_devices(
+        self, name: str, catalog: Catalog
+    ) -> list[DeviceAccess | None]:
         """
         Get device handles used for offset access
 
