@@ -18,12 +18,15 @@ class ConfigModel(BaseModel):
 
     Attributes
     ----------
+    name: str
+        Name of the configuration to be reference in the control system
     refs : list[CatalogEntryConfigModel]
         List of catalog entries.
     """
 
     model_config = ConfigDict(arbitrary_types_allowed=True, extra="forbid")
 
+    name: str
     refs: list[CatalogEntry]
 
     @model_validator(mode="after")

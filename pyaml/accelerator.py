@@ -60,7 +60,7 @@ class ConfigModel(BaseModel):
     description: str | None = None
     arrays: list[ArrayConfig] = Field(default=None, repr=False)
     devices: list[Element] = Field(repr=False)
-    control_system_catalog: Catalog = Field(repr=False)
+    control_system_catalogs: list[Catalog] = None
 
 
 class Accelerator(object):
@@ -71,13 +71,20 @@ class Accelerator(object):
         __design = None
         __live = None
 
+        # TODO Manage mapping between catalogs and control systems
+        catalog = (
+            cfg.control_system_catalogs[0]
+            if cfg.control_system_catalogs is not None
+            and len(cfg.control_system_catalogs) > 0
+            else None
+        )
         if cfg.controls is not None:
             for c in cfg.controls:
-                c.set_catalog(cfg.control_system_catalog)
+                c.set_catalog(catalog)
                 if c.name() == "live":
                     self.__live = c
                 else:
-                    # Add as dynacmic attribute
+                    # Add as dynamic attribute
                     setattr(self, c.name(), c)
                 c.fill_device(cfg.devices)
 
@@ -86,7 +93,7 @@ class Accelerator(object):
                 if s.name() == "design":
                     self.__design = s
                 else:
-                    # Add as dynacmic attribute
+                    # Add as dynamic attribute
                     setattr(self, s.name(), s)
                 s.fill_device(cfg.devices)
 

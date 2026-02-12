@@ -33,12 +33,12 @@ class ConfigModel(BaseModel):
 
     x_pos_index: int | None = None
     y_pos_index: int | None = None
-    x_pos: str = "x_pos"
-    y_pos: str = "y_pos"
-    positions: str = "positions"
-    tilt: str = "tilt"
-    x_offset: str = "x_offset"
-    y_offset: str = "y_offset"
+    x_pos: str = None
+    y_pos: str = None
+    positions: str = None
+    tilt: str = None
+    x_offset: str = None
+    y_offset: str = None
 
 
 class BPMTiltOffsetModel(BPMSimpleModel):

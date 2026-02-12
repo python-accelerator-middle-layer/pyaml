@@ -34,9 +34,9 @@ class ConfigModel(BaseModel):
 
     x_pos_index: int | None = None
     y_pos_index: int | None = None
-    x_pos: str = "x_pos"
-    y_pos: str = "y_pos"
-    positions: str = "positions"
+    x_pos: str = None
+    y_pos: str = None
+    positions: str = None
 
 
 class BPMSimpleModel(BPMModel):
