@@ -21,7 +21,13 @@ show:
 test:	Makefile
 	@$(SPHINXBUILD) -M $@ -d "$(BUILDDIR)/doctrees" "$(SOURCEDIR)" "$(HTMLDIR)" $(SPHINXOPTS) $(O)
 
+clean:	Makefile
+	rm api.rst
+	rm -rf api/*
+	@$(SPHINXBUILD) -M $@ "$(SOURCEDIR)" "$(BUILDDIR)" $(SPHINXOPTS) $(O)
+
 # Catch-all target: route all unknown targets to Sphinx using the new
 # "make mode" option.  $(O) is meant as a shortcut for $(SPHINXOPTS).
 %: Makefile
+	python gen_api.py
 	@$(SPHINXBUILD) -M $@ "$(SOURCEDIR)" "$(BUILDDIR)" $(SPHINXOPTS) $(O)
