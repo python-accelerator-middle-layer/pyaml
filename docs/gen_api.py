@@ -98,7 +98,7 @@ def generate_selective_module(m):
             else:
                 all_cls.append(c)
 
-    # Generate mddule
+    # Generate module
     with open(f"api/{p.__name__}.rst", "w") as file:
         title = p.__name__.split(".")[-1:][0]
         file.write(f"{title}\n")
