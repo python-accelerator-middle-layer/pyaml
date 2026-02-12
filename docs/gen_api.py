@@ -1,6 +1,6 @@
 import importlib
 import inspect
-import os
+import sys
 from pathlib import Path
 
 # List of PyAML modules to include in the API reference
@@ -86,6 +86,10 @@ modules = [
 
 
 def generate_selective_module(m):
+    # Display a progress
+    sys.stdout.write(".")
+    sys.stdout.flush()
+
     # Module introspection
     p = importlib.import_module(m)
     classes = inspect.getmembers(p, inspect.isclass)
@@ -149,9 +153,16 @@ def generate_toctree(filename: str, title: str, level: int, module: str):
 
 
 # Generate toctrees
+sys.stdout.write("Generating API")
+sys.stdout.flush()
 paths = generate_toctree("api.rst", "API Reference", 0, "pyaml")
 level = 1
 while len(paths) > 0:
+    npaths = []
     for p in paths:
-        paths = generate_toctree(f"api/{'pyaml.' + p}.rst", f"{p}", level, "pyaml." + p)
+        npaths.extend(
+            generate_toctree(f"api/{'pyaml.' + p}.rst", f"{p}", level, "pyaml." + p)
+        )
+    paths = npaths
     level += 1
+print("done")
