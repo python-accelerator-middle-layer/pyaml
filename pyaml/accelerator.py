@@ -42,7 +42,7 @@ class ConfigModel(BaseModel):
         Element family
     description : str , optional
         Acceleration description
-    devices : list[Element]
+    devices : list[.common.element.Element]
         Element list
     """
 

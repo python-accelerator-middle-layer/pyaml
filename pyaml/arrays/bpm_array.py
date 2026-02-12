@@ -18,7 +18,7 @@ class RWBPMPosition(ReadFloatArray):
     ----------
     name : str
         Name of the position accessor
-    bpms : list[BPM]
+    bpms : list[pyaml.bpm.bpm.BPM]
         List of BPM objects to access
     """
 
@@ -80,7 +80,7 @@ class RWBPMSinglePosition(ReadFloatArray):
     ----------
     name : str
         Name of the position accessor
-    bpms : list[BPM]
+    bpms : list[pyaml.bpm.bpm.BPM]
         List of BPM objects to access
     idx : int
         Index for the position axis (0 for horizontal, 1 for vertical)
@@ -134,15 +134,16 @@ class RWBPMSinglePosition(ReadFloatArray):
 
 class BPMArray(ElementArray):
     """
-    Class that implements access to a BPM array
+    Class that implements access to a BPM array.
 
     Parameters
     ----------
     arrayName : str
         Array name
-    bpms : list[BPM]
+    bpms : list[pyaml.bpm.bpm.BPM]
         BPM list, all elements must be attached to the same instance of
-        either a Simulator or a ControlSystem.
+        either a (:py:class:`~pyaml.lattice.simulator.Simulator`
+        or a :py:class:`~pyaml.control.controlsystem.ControlSystem`).
     use_aggregator : bool
         Use aggregator to increase performance by using paralell
         access to underlying devices.
@@ -150,11 +151,16 @@ class BPMArray(ElementArray):
     Example
     -------
 
-    An array can be retrieved from the configuration as in the following example::
+    An array can be retrieved from the configuration as in the following
+    example:
 
-        sr = Accelerator.load("acc.yaml")
-        bpms = sr.design.get_bpms("BPMs")
+    .. code-block:: python
 
+        >>> sr = Accelerator.load("acc.yaml") # Load the accelerator
+        >>> bpms = sr.design.get_bpms("BPM")  # Retrieve BPM array
+        >>> orbit = bpms.positions.get()      # Get the orbit
+
+    or can be created by code using :py:class:`pyaml.arrays.bpm.BPM`.
 
     """
 
