@@ -34,6 +34,9 @@ class ConfigModel(BaseModel):
 
     x_pos_index: int | None = None
     y_pos_index: int | None = None
+    x_pos: str = "x_pos"
+    y_pos: str = "y_pos"
+    positions: str = "positions"
 
 
 class BPMSimpleModel(BPMModel):
@@ -55,10 +58,13 @@ class BPMSimpleModel(BPMModel):
             Array of DeviceAccess
         """
         if self.is_pos_indexed():
-            dev = catalog.get_one(name)
+            ref = name + "/" + self._cfg.positions
+            dev = catalog.get_one(ref)
             pos_devices = [dev, dev]
         else:
-            pos_devices = catalog.get_many(name)[:2]
+            x_ref = name + "/" + self._cfg.x_pos
+            y_ref = name + "/" + self._cfg.y_pos
+            pos_devices = [catalog.get_one(x_ref), catalog.get_one(y_ref)]
         return pos_devices
 
     def get_tilt_device(self, name: str, catalog: Catalog) -> DeviceAccess | None:

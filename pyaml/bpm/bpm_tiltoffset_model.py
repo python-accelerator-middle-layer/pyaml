@@ -33,6 +33,12 @@ class ConfigModel(BaseModel):
 
     x_pos_index: int | None = None
     y_pos_index: int | None = None
+    x_pos: str = "x_pos"
+    y_pos: str = "y_pos"
+    positions: str = "positions"
+    tilt: str = "tilt"
+    x_offset: str = "x_offset"
+    y_offset: str = "y_offset"
 
 
 class BPMTiltOffsetModel(BPMSimpleModel):
@@ -53,8 +59,9 @@ class BPMTiltOffsetModel(BPMSimpleModel):
         DeviceAccess
             The DeviceAccess for tilt
         """
-        if catalog.has_reference(name + "/tilt"):
-            return catalog.get_one(name + "/tilt")
+        ref = name + "/" + self._cfg.tilt
+        if catalog.has_reference(ref):
+            return catalog.get_one(ref)
         return None
 
     def get_offset_devices(
@@ -68,8 +75,10 @@ class BPMTiltOffsetModel(BPMSimpleModel):
         list[DeviceAccess]
             Array of 2 DeviceAccess: [x_offset, y_offset]
         """
-        if catalog.has_reference(name + "/offsets"):
-            return catalog.get_many(name + "/offsets")[:2]
+        x_ref = name + "/" + self._cfg.x_offset
+        y_ref = name + "/" + self._cfg.y_offset
+        if catalog.has_reference(x_ref) and catalog.has_reference(y_ref):
+            return [catalog.get_one(x_ref), catalog.get_one(y_ref)]
         return [None, None]
 
     def __repr__(self):
