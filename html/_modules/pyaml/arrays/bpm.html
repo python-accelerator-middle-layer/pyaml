@@ -379,9 +379,7 @@
 <div class="viewcode-block" id="ConfigModel">
 <a class="viewcode-back" href="../../../api/pyaml.arrays.bpm.html#pyaml.arrays.bpm.ConfigModel">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">ConfigModel</span><span class="p">(</span><span class="n">ArrayConfigModel</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Configuration model for BPM array.&quot;&quot;&quot;</span>
-
-    <span class="o">...</span></div>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Configuration model for :py:class:`.BPMArray`.&quot;&quot;&quot;</span></div>
 
 
 
@@ -389,7 +387,7 @@
 <a class="viewcode-back" href="../../../api/pyaml.arrays.bpm.html#pyaml.arrays.bpm.BPM">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">BPM</span><span class="p">(</span><span class="n">ArrayConfig</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    BPM array configuration</span>
+<span class="sd">    :py:class:`.BPMArray` configuration.</span>
 
 <span class="sd">    Example</span>
 <span class="sd">    -------</span>
@@ -404,16 +402,17 @@
 <span class="sd">            - BPM_C04-01</span>
 <span class="sd">            - BPM_C04-02</span>
 <span class="sd">            - BPM_C04-03</span>
-<span class="sd">            - BPM_C04-04</span>
-<span class="sd">            - BPM_C04-05</span>
 
-<span class="sd">    A BPM array configuration can also be created by code using the following example:</span>
+<span class="sd">    A :py:class:`.BPMArray` configuration can also be created by code using the</span>
+<span class="sd">    following example:</span>
 
 <span class="sd">    .. code-block:: python</span>
 
 <span class="sd">        &gt;&gt;&gt;  from pyaml.arrays.bpm import BPM,ConfigModel as BPMArrayConfigModel</span>
-<span class="sd">        &gt;&gt;&gt;  bpmArray = BPM(BPMArrayConfigModel(name=&quot;MyBPMs&quot;, elements=[&quot;bpm1&quot;,&quot;bpm2&quot;])</span>
-
+<span class="sd">        &gt;&gt;&gt;  bpm_cfg = BPM(BPMArrayConfigModel(</span>
+<span class="sd">                        name=&quot;BPM&quot;,</span>
+<span class="sd">                        elements=[&quot;BPM_C04-01&quot;,&quot;BPM_C04-02&quot;,&quot;BPM_C04-03&quot;]</span>
+<span class="sd">                       ))</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
@@ -424,12 +423,26 @@
 <a class="viewcode-back" href="../../../api/pyaml.arrays.bpm.html#pyaml.arrays.bpm.BPM.fill_array">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">fill_array</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">holder</span><span class="p">:</span> <span class="n">ElementHolder</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Fill the :py:class:`.BPMArray` using element holder.</span>
+<span class="sd">        Fill the :py:class:`.BPMArray` using element holder</span>
+<span class="sd">        (:py:class:`~pyaml.lattice.simulator.Simulator`</span>
+<span class="sd">        or :py:class:`~pyaml.control.controlsystem.ControlSystem`)</span>
+<span class="sd">        and add the array to the holder. This method is called when an</span>
+<span class="sd">        :py:class:`~pyaml.accelerator.Accelerator` is loaded but can be</span>
+<span class="sd">        used to create arrays by code as shown bellow:</span>
+
+<span class="sd">        .. code-block:: python</span>
+
+<span class="sd">            &gt;&gt;&gt; bpm_cfg.fill_array(sr.design) # For arrays created on the fly</span>
+<span class="sd">            &gt;&gt;&gt; orbit = sr.design.get_bpms(&quot;BPM&quot;).positions.get()</span>
+<span class="sd">            &gt;&gt;&gt; print(orbit)</span>
+<span class="sd">            [[ 6.02736506e-10  0.00000000e+00]</span>
+<span class="sd">             [-3.06292158e-08  0.00000000e+00]</span>
+<span class="sd">             [-2.80366116e-08  0.00000000e+00]]</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        holder : ElementHolder</span>
-<span class="sd">            The element holder to populate the BPM array with</span>
+<span class="sd">            The element holder to populate the :py:class:`.BPMArray` with.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">holder</span><span class="o">.</span><span class="n">fill_bpm_array</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_cfg</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cfg</span><span class="o">.</span><span class="n">elements</span><span class="p">)</span></div>
 </div>

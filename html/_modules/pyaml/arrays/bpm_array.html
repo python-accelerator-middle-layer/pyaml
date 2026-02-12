@@ -391,7 +391,7 @@
 <span class="sd">    ----------</span>
 <span class="sd">    name : str</span>
 <span class="sd">        Name of the position accessor</span>
-<span class="sd">    bpms : list[BPM]</span>
+<span class="sd">    bpms : list[pyaml.bpm.bpm.BPM]</span>
 <span class="sd">        List of BPM objects to access</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
@@ -465,7 +465,7 @@
 <span class="sd">    ----------</span>
 <span class="sd">    name : str</span>
 <span class="sd">        Name of the position accessor</span>
-<span class="sd">    bpms : list[BPM]</span>
+<span class="sd">    bpms : list[pyaml.bpm.bpm.BPM]</span>
 <span class="sd">        List of BPM objects to access</span>
 <span class="sd">    idx : int</span>
 <span class="sd">        Index for the position axis (0 for horizontal, 1 for vertical)</span>
@@ -531,15 +531,16 @@
 <a class="viewcode-back" href="../../../api/pyaml.arrays.bpm_array.html#pyaml.arrays.bpm_array.BPMArray">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">BPMArray</span><span class="p">(</span><span class="n">ElementArray</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Class that implements access to a BPM array</span>
+<span class="sd">    Class that implements access to a BPM array.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    arrayName : str</span>
 <span class="sd">        Array name</span>
-<span class="sd">    bpms : list[BPM]</span>
+<span class="sd">    bpms : list[pyaml.bpm.bpm.BPM]</span>
 <span class="sd">        BPM list, all elements must be attached to the same instance of</span>
-<span class="sd">        either a Simulator or a ControlSystem.</span>
+<span class="sd">        either a (:py:class:`~pyaml.lattice.simulator.Simulator`</span>
+<span class="sd">        or a :py:class:`~pyaml.control.controlsystem.ControlSystem`).</span>
 <span class="sd">    use_aggregator : bool</span>
 <span class="sd">        Use aggregator to increase performance by using paralell</span>
 <span class="sd">        access to underlying devices.</span>
@@ -547,11 +548,16 @@
 <span class="sd">    Example</span>
 <span class="sd">    -------</span>
 
-<span class="sd">    An array can be retrieved from the configuration as in the following example::</span>
+<span class="sd">    An array can be retrieved from the configuration as in the following</span>
+<span class="sd">    example:</span>
 
-<span class="sd">        sr = Accelerator.load(&quot;acc.yaml&quot;)</span>
-<span class="sd">        bpms = sr.design.get_bpms(&quot;BPMs&quot;)</span>
+<span class="sd">    .. code-block:: python</span>
 
+<span class="sd">        &gt;&gt;&gt; sr = Accelerator.load(&quot;acc.yaml&quot;) # Load the accelerator</span>
+<span class="sd">        &gt;&gt;&gt; bpms = sr.design.get_bpms(&quot;BPM&quot;)  # Retrieve BPM array</span>
+<span class="sd">        &gt;&gt;&gt; orbit = bpms.positions.get()      # Get the orbit</span>
+
+<span class="sd">    or can be created by code using :py:class:`pyaml.arrays.bpm.BPM`.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
 

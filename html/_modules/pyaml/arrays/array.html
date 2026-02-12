@@ -384,12 +384,14 @@
 <a class="viewcode-back" href="../../../api/pyaml.arrays.array.html#pyaml.arrays.array.ArrayConfigModel">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">ArrayConfigModel</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Base class for array configuration</span>
+<span class="sd">    Base class for configuration of array of :py:class:`~pyaml.arrays.element.Element`,</span>
+<span class="sd">    :py:class:`~pyaml.arrays.bpm.BPM`, :py:class:`~pyaml.arrays.magnet.Magnet` or</span>
+<span class="sd">    :py:class:`~pyaml.arrays.cfm_magnet.CombinedFunctionMagnet`.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    name : str</span>
-<span class="sd">        Family name</span>
+<span class="sd">        Name of the array</span>
 <span class="sd">    elements : list[str]</span>
 <span class="sd">        List of pyaml element names</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -415,12 +417,15 @@
 <a class="viewcode-back" href="../../../api/pyaml.arrays.array.html#pyaml.arrays.array.ArrayConfig.fill_array">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">fill_array</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">holder</span><span class="p">:</span> <span class="n">ElementHolder</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Fill array with elements from the holder.</span>
+<span class="sd">        Fill array with elements from the holder and add the array to</span>
+<span class="sd">        the holder.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        holder : ElementHolder</span>
-<span class="sd">            The element holder to populate</span>
+<span class="sd">            The element holder (:py:class:`~pyaml.lattice.simulator.Simulator`</span>
+<span class="sd">            or :py:class:`~pyaml.control.controlsystem.ControlSystem`) to</span>
+<span class="sd">            populate with the array.</span>
 
 <span class="sd">        Raises</span>
 <span class="sd">        ------</span>
