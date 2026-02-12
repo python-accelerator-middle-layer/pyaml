@@ -153,16 +153,17 @@ def generate_toctree(filename: str, title: str, level: int, module: str):
 
 
 # Generate toctrees
-sys.stdout.write("Generating API")
-sys.stdout.flush()
-paths = generate_toctree("api.rst", "API Reference", 0, "pyaml")
-level = 1
-while len(paths) > 0:
-    npaths = []
-    for p in paths:
-        npaths.extend(
-            generate_toctree(f"api/{'pyaml.' + p}.rst", f"{p}", level, "pyaml." + p)
-        )
-    paths = npaths
-    level += 1
-print("done")
+def gen_doc():
+    sys.stdout.write("Generating API")
+    sys.stdout.flush()
+    paths = generate_toctree("api.rst", "API Reference", 0, "pyaml")
+    level = 1
+    while len(paths) > 0:
+        npaths = []
+        for p in paths:
+            npaths.extend(
+                generate_toctree(f"api/{'pyaml.' + p}.rst", f"{p}", level, "pyaml." + p)
+            )
+        paths = npaths
+        level += 1
+    print("done")

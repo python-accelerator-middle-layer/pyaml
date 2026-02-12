@@ -17,6 +17,11 @@
 
 import pyaml
 
+# Generate reference API
+from pyaml.apidoc.gen_api import gen_doc
+
+gen_doc()
+
 # -- Project information -----------------------------------------------------
 
 project = "Python Accelerator Middle Layer"
