@@ -11,12 +11,14 @@ from ..common.element_holder import ElementHolder
 
 class ArrayConfigModel(BaseModel):
     """
-    Base class for array configuration
+    Base class for configuration of array of :py:class:`~pyaml.arrays.element.Element`,
+    :py:class:`~pyaml.arrays.bpm.BPM`, :py:class:`~pyaml.arrays.magnet.Magnet` or
+    :py:class:`~pyaml.arrays.cfm_magnet.CombinedFunctionMagnet`.
 
     Parameters
     ----------
     name : str
-        Family name
+        Name of the array
     elements : list[str]
         List of pyaml element names
     """
@@ -37,12 +39,15 @@ class ArrayConfig(object):
 
     def fill_array(self, holder: ElementHolder):
         """
-        Fill array with elements from the holder.
+        Fill array with elements from the holder and add the array to
+        the holder.
 
         Parameters
         ----------
         holder : ElementHolder
-            The element holder to populate
+            The element holder (:py:class:`~pyaml.lattice.simulator.Simulator`
+            or :py:class:`~pyaml.control.controlsystem.ControlSystem`) to
+            populate with the array.
 
         Raises
         ------
