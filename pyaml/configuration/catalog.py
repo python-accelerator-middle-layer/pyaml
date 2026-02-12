@@ -54,9 +54,15 @@ class Catalog:
     """
 
     def __init__(self, cfg: ConfigModel):
+        self._cfg = cfg
         self._entries: dict[str, CatalogValue] = {}
         for ref in cfg.refs:
             self.add(ref.get_reference(), ref.get_value())
+
+    # ------------------------------------------------------------------
+
+    def get_name(self) -> str:
+        return self._cfg.name
 
     # ------------------------------------------------------------------
 

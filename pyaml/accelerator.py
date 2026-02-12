@@ -70,7 +70,11 @@ class Accelerator(object):
         self._cfg = cfg
         __design = None
         __live = None
+        self.__catalogs: dict[str, Catalog] = {}
 
+        if cfg.control_system_catalogs is not None:
+            for catalog in cfg.control_system_catalogs:
+                self.__catalogs[catalog.get_name()] = catalog
         # TODO Manage mapping between catalogs and control systems
         catalog = (
             cfg.control_system_catalogs[0]

@@ -50,7 +50,7 @@ class ControlSystem(ElementHolder, metaclass=ABCMeta):
         ElementHolder.__init__(self)
         self._catalog: Catalog | None = None
 
-    def set_catalog(self, catalog: Catalog):
+    def set_catalog(self, catalog: Catalog | None):
         self._catalog = catalog
 
     @abstractmethod
@@ -123,7 +123,7 @@ class ControlSystem(ElementHolder, metaclass=ABCMeta):
             aggh = self.create_scalar_aggregator()
             aggv = self.create_scalar_aggregator()
             for b in bpms:
-                devs = self.attach(b.model.get_pos_devices())
+                devs = self.attach(b.model.get_pos_devices(b.get_name(), self._catalog))
                 agg.add_devices(devs)
                 aggh.add_devices(devs[0])
                 aggv.add_devices(devs[1])
