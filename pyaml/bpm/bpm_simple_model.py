@@ -48,48 +48,71 @@ class BPMSimpleModel(BPMModel):
     def __init__(self, cfg: ConfigModel):
         self._cfg = cfg
 
-    def get_pos_devices(self, name: str, catalog: Catalog) -> list[DeviceAccess | None]:
+    def get_positions_device(self) -> str | None:
         """
         Get device handles used for position reading
 
         Returns
         -------
-        list[DeviceAccess]
-            Array of DeviceAccess
+        str | None
+            h and v positions naming
         """
-        if self.is_pos_indexed():
-            ref = name + "/" + self._cfg.positions
-            dev = catalog.get_one(ref)
-            pos_devices = [dev, dev]
-        else:
-            x_ref = name + "/" + self._cfg.x_pos
-            y_ref = name + "/" + self._cfg.y_pos
-            pos_devices = [catalog.get_one(x_ref), catalog.get_one(y_ref)]
-        return pos_devices
+        return self._cfg.positions
 
-    def get_tilt_device(self, name: str, catalog: Catalog) -> DeviceAccess | None:
+    def get_x_pos_device(self) -> str | None:
+        """
+        Get device handles used for position reading
+
+        Returns
+        -------
+        str | None
+            h position naming
+        """
+        return self._cfg.x_pos
+
+    def get_y_pos_device(self) -> str | None:
+        """
+        Get device handles used for position reading
+
+        Returns
+        -------
+        str | None
+            v position naming
+        """
+        return self._cfg.y_pos
+
+    def get_tilt_device(self) -> str | None:
         """
         Get device handle used for tilt access
 
         Returns
         -------
-        list[DeviceAccess]
-            Array of DeviceAccess
+        str | None
+            tilt naming
         """
         return None
 
-    def get_offset_devices(
-        self, name: str, catalog: Catalog
-    ) -> list[DeviceAccess | None]:
+    def get_x_offset_device(self) -> str | None:
         """
         Get device handles used for offset access
 
         Returns
         -------
-        list[DeviceAccess]
-            Array of DeviceAccess
+        str | None
+            h offset naming
         """
-        return [None, None]
+        return None
+
+    def get_y_offset_device(self) -> str | None:
+        """
+        Get device handles used for offset access
+
+        Returns
+        -------
+        str | None
+            v offset naming
+        """
+        return None
 
     def x_pos_index(self) -> int | None:
         """

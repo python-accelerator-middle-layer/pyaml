@@ -50,36 +50,38 @@ class BPMTiltOffsetModel(BPMSimpleModel):
     def __init__(self, cfg: ConfigModel):
         super().__init__(cfg)
 
-    def get_tilt_device(self, name: str, catalog: Catalog) -> DeviceAccess | None:
+    def get_tilt_device(self) -> str | None:
         """
         Get device handle used for tilt access
 
         Returns
         -------
-        DeviceAccess
-            The DeviceAccess for tilt
+        str | None
+            tilt naming
         """
-        ref = name + "/" + self._cfg.tilt
-        if catalog.has_reference(ref):
-            return catalog.get_one(ref)
-        return None
+        return self._cfg.tilt
 
-    def get_offset_devices(
-        self, name: str, catalog: Catalog
-    ) -> list[DeviceAccess | None]:
+    def get_x_offset_device(self) -> str | None:
         """
         Get device handles used for offset access
 
         Returns
         -------
-        list[DeviceAccess]
-            Array of 2 DeviceAccess: [x_offset, y_offset]
+        str | None
+            h offset naming
         """
-        x_ref = name + "/" + self._cfg.x_offset
-        y_ref = name + "/" + self._cfg.y_offset
-        if catalog.has_reference(x_ref) and catalog.has_reference(y_ref):
-            return [catalog.get_one(x_ref), catalog.get_one(y_ref)]
-        return [None, None]
+        return self._cfg.x_offset
+
+    def get_y_offset_device(self) -> str | None:
+        """
+        Get device handles used for offset access
+
+        Returns
+        -------
+        str | None
+            v offset naming
+        """
+        return self._cfg.y_offset
 
     def __repr__(self):
         return __pyaml_repr__(self)

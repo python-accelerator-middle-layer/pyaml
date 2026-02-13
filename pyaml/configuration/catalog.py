@@ -145,9 +145,39 @@ class Catalog:
 
     # ------------------------------------------------------------------
 
+    def find_by_prefix(self, prefix: str) -> dict[str, CatalogValue]:
+        """
+        Return all catalog entries whose reference starts with
+        the given prefix.
+
+        Parameters
+        ----------
+        prefix : str
+            Prefix to match at the beginning of reference keys.
+
+        Returns
+        -------
+        dict[str, CatalogValue]
+            Mapping {reference -> DeviceAccess or list[DeviceAccess]}.
+
+        Notes
+        -----
+        - The prefix is escaped using re.escape() to avoid
+          unintended regular expression behavior.
+        - This is a convenience wrapper around `find()`.
+        """
+        return self.find(rf"^{re.escape(prefix)}")
+
+    # ------------------------------------------------------------------
+
     def find(self, pattern: str) -> dict[str, CatalogValue]:
         """
         Resolve references matching a regular expression.
+
+        Parameters
+        ----------
+        pattern : str
+            Regular expression applied to reference keys.
 
         Returns
         -------
@@ -156,6 +186,88 @@ class Catalog:
         """
         regex: Pattern[str] = re.compile(pattern)
         return {k: v for k, v in self._entries.items() if regex.search(k)}
+
+    # ------------------------------------------------------------------
+
+    def get_sub_catalog_by_prefix(self, prefix: str) -> "Catalog":
+        """
+        Create a new Catalog containing only the references
+        that start with the given prefix, and remove the prefix
+        from the keys in the returned catalog.
+
+        Parameters
+        ----------
+        prefix : str
+            Prefix to match at the beginning of reference keys.
+
+        Returns
+        -------
+        Catalog
+            A new Catalog instance containing only the matching
+            references, with the prefix removed from their keys.
+
+        Notes
+        -----
+        - The prefix is matched literally (no regex behavior).
+        - The underlying DeviceAccess instances are NOT copied;
+          the same objects are reused.
+        - If no references match, an empty Catalog is returned.
+        - If removing the prefix results in duplicate keys,
+          a PyAMLException is raised.
+        """
+        sub_catalog = Catalog(ConfigModel(name=self.get_name() + "/" + prefix, refs=[]))
+
+        for key, value in self._entries.items():
+            if key.startswith(prefix):
+                # Remove prefix from key
+                new_key = key[len(prefix) :]
+
+                if not new_key:
+                    raise PyAMLException(
+                        f"Removing prefix '{prefix}' from '{key}' "
+                        "results in an empty reference."
+                    )
+
+                sub_catalog.add(new_key, value)
+
+        return sub_catalog
+
+    # ------------------------------------------------------------------
+
+    def get_sub_catalog(self, pattern: str) -> "Catalog":
+        """
+        Create a new Catalog containing only the references
+        matching the given regular expression.
+
+        Parameters
+        ----------
+        pattern : str
+            Regular expression applied to reference keys.
+
+        Returns
+        -------
+        Catalog
+            A new Catalog instance containing only the matching
+            references and their associated DeviceAccess objects.
+
+        Notes
+        -----
+        - The returned catalog is independent from the original one.
+        - The underlying DeviceAccess objects are not copied; the
+          same instances are reused.
+        - If no references match, an empty Catalog is returned.
+        """
+        data = self.find(pattern)
+
+        # Create a new empty catalog with a derived name
+        sub_catalog = Catalog(
+            ConfigModel(name=self.get_name() + "/" + pattern, refs=[])
+        )
+
+        # Re-register matching entries in the new catalog
+        for k, v in data.items():
+            sub_catalog.add(k, v)
+        return sub_catalog
 
     # ------------------------------------------------------------------
 

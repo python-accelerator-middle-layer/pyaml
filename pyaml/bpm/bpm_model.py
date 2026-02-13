@@ -14,40 +14,74 @@ class BPMModel(metaclass=ABCMeta):
     """
 
     @abstractmethod
-    def get_pos_devices(self, name: str, catalog: Catalog) -> list[DeviceAccess | None]:
+    def get_positions_device(self) -> str | None:
         """
         Get device handles used for position reading
 
         Returns
         -------
-        list[DeviceAccess]
-            h and v position devices
+        str | None
+            h and v positions naming
         """
         pass
 
     @abstractmethod
-    def get_tilt_device(self, name: str, catalog: Catalog) -> DeviceAccess | None:
+    def get_x_pos_device(self) -> str | None:
+        """
+        Get device handles used for position reading
+
+        Returns
+        -------
+        str | None
+            h position naming
+        """
+        pass
+
+    @abstractmethod
+    def get_y_pos_device(self) -> str | None:
+        """
+        Get device handles used for position reading
+
+        Returns
+        -------
+        str | None
+            v position naming
+        """
+        pass
+
+    @abstractmethod
+    def get_tilt_device(self) -> str | None:
         """
         Get device handle used for tilt access
 
         Returns
         -------
-        list[DeviceAccess]
-            tilt device
+        str | None
+            tilt naming
         """
         pass
 
     @abstractmethod
-    def get_offset_devices(
-        self, name: str, catalog: Catalog
-    ) -> list[DeviceAccess | None]:
+    def get_x_offset_device(self) -> str | None:
         """
         Get device handles used for offset access
 
         Returns
         -------
-        list[DeviceAccess]
-            h and v offset devices
+        str | None
+            h offset naming
+        """
+        pass
+
+    @abstractmethod
+    def get_y_offset_device(self) -> str | None:
+        """
+        Get device handles used for offset access
+
+        Returns
+        -------
+        str | None
+            v offset naming
         """
         pass
 
