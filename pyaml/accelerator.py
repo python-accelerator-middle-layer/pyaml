@@ -9,6 +9,7 @@ from pydantic import BaseModel, ConfigDict, Field
 from .arrays.array import ArrayConfig
 from .common.element import Element
 from .common.exception import PyAMLConfigException
+from .configuration.catalog import Catalog
 from .configuration.factory import Factory
 from .configuration.fileloader import load, set_root_folder
 from .control.controlsystem import ControlSystem
@@ -44,6 +45,8 @@ class ConfigModel(BaseModel):
         Acceleration description
     devices : list[.common.element.Element]
         Element list
+    control_system_catalog : Catalog
+        catalog of DeviceAccess objects
     """
 
     model_config = ConfigDict(arbitrary_types_allowed=True, extra="forbid")
@@ -57,6 +60,7 @@ class ConfigModel(BaseModel):
     description: str | None = None
     arrays: list[ArrayConfig] = Field(default=None, repr=False)
     devices: list[Element] = Field(repr=False)
+    control_system_catalogs: list[Catalog] = None
 
 
 class Accelerator(object):
@@ -66,13 +70,25 @@ class Accelerator(object):
         self._cfg = cfg
         __design = None
         __live = None
+        self.__catalogs: dict[str, Catalog] = {}
 
+        if cfg.control_system_catalogs is not None:
+            for catalog in cfg.control_system_catalogs:
+                self.__catalogs[catalog.get_name()] = catalog
+        # TODO Manage mapping between catalogs and control systems
+        catalog = (
+            cfg.control_system_catalogs[0]
+            if cfg.control_system_catalogs is not None
+            and len(cfg.control_system_catalogs) > 0
+            else None
+        )
         if cfg.controls is not None:
             for c in cfg.controls:
+                c.set_catalog(catalog)
                 if c.name() == "live":
                     self.__live = c
                 else:
-                    # Add as dynacmic attribute
+                    # Add as dynamic attribute
                     setattr(self, c.name(), c)
                 c.fill_device(cfg.devices)
 
@@ -81,7 +97,7 @@ class Accelerator(object):
                 if s.name() == "design":
                     self.__design = s
                 else:
-                    # Add as dynacmic attribute
+                    # Add as dynamic attribute
                     setattr(self, s.name(), s)
                 s.fill_device(cfg.devices)
 

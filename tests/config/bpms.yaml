@@ -16,72 +16,102 @@ devices:
   name: BPM_C01-01
   model:
     type: pyaml.bpm.bpm_tiltoffset_model
-    x_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: srdiag/bpm/c01-01/SA_HPosition
-      unit: mm
-    y_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: srdiag/bpm/c01-01/SA_VPosition
-      unit: mm
-    x_offset:
-      type: tango.pyaml.attribute
-      attribute: srdiag/bpm/c01-01/HOffset
-      unit: mm
-    y_offset:
-      type: tango.pyaml.attribute
-      attribute: srdiag/bpm/c01-01/VOffset
-      unit: mm
-    tilt:
-      type: tango.pyaml.attribute
-      attribute: srdiag/bpm/c01-01/Tilt_Angle
-      unit: rad
+    x_pos: x_pos
+    y_pos: y_pos
+    tilt: tilt
+    x_offset: x_offset
+    y_offset: y_offset
 - type: pyaml.bpm.bpm
   name: BPM_C01-02
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: srdiag/bpm/c01-02/SA_HPosition
-      unit: mm
-    y_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: srdiag/bpm/c01-02/SA_VPosition
-      unit: mm
+    x_pos: x_pos
+    y_pos: y_pos
 - type: pyaml.bpm.bpm
   name: BPM_C01-03
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: srdiag/bpm/c01-03/SA_HPosition
-      unit: mm
-    y_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: srdiag/bpm/c01-03/SA_VPosition
-      unit: mm
+    x_pos: x_pos
+    y_pos: y_pos
 - type: pyaml.bpm.bpm
   name: BPM_C01-04
   model:
     type: pyaml.bpm.bpm_simple_model
     x_pos_index: 0
     y_pos_index: 1
-    x_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: srdiag/bpm/c01-04/Position
-      unit: mm
-    y_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: srdiag/bpm/c01-04/Position
-      unit: mm
+    positions: positions
 - type: pyaml.magnet.cfm_magnet
   name: SH1A-C01         #Name of the element in the lattice model
   mapping:
     # Multipole mapping for usage in families, in this example SH1-C01A-H is not
     # a lattice element present in the model, it is just a name to use in
-    # PyAML families. When this 'virutal' element is set, it then applies
+    # PyAML families. When this 'virtual' element is set, it then applies
     # the corresponding multipole on the parent element.
     - [B0, SH1A-C01-H]
     - [A0, SH1A-C01-V]
     - [A1, SH1A-C01-SQ]
   model: sr/magnet_models/SH1AC01.yaml
+control_system_catalogs:
+  - type: pyaml.configuration.catalog
+    name: live_catalog
+    refs:
+      - type: pyaml.configuration.catalog_entry
+        reference: BPM_C01-01/x_pos
+        device:
+          type: tango.pyaml.attribute_read_only
+          attribute: srdiag/bpm/c01-01/SA_HPosition
+          unit: mm
+      - type: pyaml.configuration.catalog_entry
+        reference: BPM_C01-01/y_pos
+        device:
+          type: tango.pyaml.attribute_read_only
+          attribute: srdiag/bpm/c01-01/SA_VPosition
+          unit: mm
+      - type: pyaml.configuration.catalog_entry
+        reference: BPM_C01-01/x_offset
+        device:
+          type: tango.pyaml.attribute
+          attribute: srdiag/bpm/c01-01/HOffset
+          unit: mm
+      - type: pyaml.configuration.catalog_entry
+        reference: BPM_C01-01/y_offset
+        device:
+          type: tango.pyaml.attribute
+          attribute: srdiag/bpm/c01-01/VOffset
+          unit: mm
+      - type: pyaml.configuration.catalog_entry
+        reference: BPM_C01-01/tilt
+        device:
+          type: tango.pyaml.attribute
+          attribute: srdiag/bpm/c01-01/Tilt_Angle
+          unit: rad
+      - type: pyaml.configuration.catalog_entry
+        reference: BPM_C01-02/x_pos
+        device:
+          type: tango.pyaml.attribute_read_only
+          attribute: srdiag/bpm/c01-02/SA_HPosition
+          unit: mm
+      - type: pyaml.configuration.catalog_entry
+        reference: BPM_C01-02/y_pos
+        device:
+          type: tango.pyaml.attribute_read_only
+          attribute: srdiag/bpm/c01-02/SA_VPosition
+          unit: mm
+      - type: pyaml.configuration.catalog_entry
+        reference: BPM_C01-03/x_pos
+        device:
+          type: tango.pyaml.attribute_read_only
+          attribute: srdiag/bpm/c01-03/SA_HPosition
+          unit: mm
+      - type: pyaml.configuration.catalog_entry
+        reference: BPM_C01-03/y_pos
+        device:
+          type: tango.pyaml.attribute_read_only
+          attribute: srdiag/bpm/c01-03/SA_VPosition
+          unit: mm
+      - type: pyaml.configuration.catalog_entry
+        reference: BPM_C01-04/positions
+        device:
+          type: tango.pyaml.attribute_read_only
+          attribute: srdiag/bpm/c01-04/Position
+          unit: mm

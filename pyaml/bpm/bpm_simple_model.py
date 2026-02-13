@@ -5,6 +5,7 @@ from pydantic import BaseModel, ConfigDict
 from pyaml.bpm.bpm_model import BPMModel
 
 from ..common.element import __pyaml_repr__
+from ..configuration.catalog import Catalog
 from ..control.deviceaccess import DeviceAccess
 
 # Define the main class name for this module
@@ -31,10 +32,11 @@ class ConfigModel(BaseModel):
 
     model_config = ConfigDict(arbitrary_types_allowed=True, extra="forbid")
 
-    x_pos: DeviceAccess | None
-    y_pos: DeviceAccess | None
     x_pos_index: int | None = None
     y_pos_index: int | None = None
+    x_pos: str = None
+    y_pos: str = None
+    positions: str = None
 
 
 class BPMSimpleModel(BPMModel):
@@ -45,41 +47,72 @@ class BPMSimpleModel(BPMModel):
 
     def __init__(self, cfg: ConfigModel):
         self._cfg = cfg
-        self.__x_pos = cfg.x_pos
-        self.__y_pos = cfg.y_pos
 
-    def get_pos_devices(self) -> list[DeviceAccess | None]:
+    def get_positions_device(self) -> str | None:
         """
         Get device handles used for position reading
 
         Returns
         -------
-        list[DeviceAccess]
-            Array of DeviceAcess
+        str | None
+            h and v positions naming
         """
-        return [self.__x_pos, self.__y_pos]
+        return self._cfg.positions
 
-    def get_tilt_device(self) -> DeviceAccess | None:
+    def get_x_pos_device(self) -> str | None:
+        """
+        Get device handles used for position reading
+
+        Returns
+        -------
+        str | None
+            h position naming
+        """
+        return self._cfg.x_pos
+
+    def get_y_pos_device(self) -> str | None:
+        """
+        Get device handles used for position reading
+
+        Returns
+        -------
+        str | None
+            v position naming
+        """
+        return self._cfg.y_pos
+
+    def get_tilt_device(self) -> str | None:
         """
         Get device handle used for tilt access
 
         Returns
         -------
-        list[DeviceAccess]
-            Array of DeviceAcess
+        str | None
+            tilt naming
         """
         return None
 
-    def get_offset_devices(self) -> list[DeviceAccess | None]:
+    def get_x_offset_device(self) -> str | None:
         """
         Get device handles used for offset access
 
         Returns
         -------
-        list[DeviceAccess]
-            Array of DeviceAcess
+        str | None
+            h offset naming
         """
-        return [None, None]
+        return None
+
+    def get_y_offset_device(self) -> str | None:
+        """
+        Get device handles used for offset access
+
+        Returns
+        -------
+        str | None
+            v offset naming
+        """
+        return None
 
     def x_pos_index(self) -> int | None:
         """

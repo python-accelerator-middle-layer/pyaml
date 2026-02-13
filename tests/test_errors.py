@@ -22,7 +22,7 @@ def test_tune(install_test_package):
     with pytest.raises(PyAMLConfigException) as exc:
         ml: Accelerator = Accelerator.load("tests/config/bad_conf_duplicate_3.yaml")
     assert "element BPM_C04-06 already defined" in str(exc)
-    assert "line 58, column 3" in str(exc)
+    assert "line 40, column 3" in str(exc)
 
     sr: Accelerator = Accelerator.load("tests/config/EBSTune.yaml")
     m1 = sr.live.get_magnet("QF1E-C04")

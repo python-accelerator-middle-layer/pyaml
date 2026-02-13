@@ -23,47 +23,63 @@ devices:
   name: BPM_C04-04
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: srdiag/bpm/c04-04/SA_HPosition
-      unit: m
-    y_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: srdiag/bpm/c04-04/SA_VPosition
-      unit: m
+    x_pos: x_pos
+    y_pos: y_pos
 - type: pyaml.bpm.bpm
   name: BPM_C04-05
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: srdiag/bpm/c04-05/SA_HPosition
-      unit: m
-    y_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: srdiag/bpm/c04-05/SA_VPosition
-      unit: m
+    x_pos: x_pos
+    y_pos: y_pos
 - type: pyaml.bpm.bpm
   name: BPM_C04-06
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: srdiag/bpm/c04-06/SA_HPosition
-      unit: m
-    y_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: srdiag/bpm/c04-06/SA_VPosition
-      unit: m
+    x_pos: x_pos
+    y_pos: y_pos
 - type: pyaml.bpm.bpm # duplicate device
   name: BPM_C04-06
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: srdiag/bpm/c04-06/SA_HPosition
-      unit: m
-    y_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: srdiag/bpm/c04-06/SA_VPosition
-      unit: m
+    x_pos: x_pos
+    y_pos: y_pos
+control_system_catalogs:
+  - type: pyaml.configuration.catalog
+    name: live_catalog
+    refs:
+      - type: pyaml.configuration.catalog_entry
+        reference: BPM_C04-04/x_pos
+        device:
+          type: tango.pyaml.attribute_read_only
+          attribute: srdiag/bpm/c04-01/SA_HPosition
+          unit: mm
+      - type: pyaml.configuration.catalog_entry
+        reference: BPM_C04-04/y_pos
+        device:
+          type: tango.pyaml.attribute_read_only
+          attribute: srdiag/bpm/c04-01/SA_VPosition
+          unit: mm
+      - type: pyaml.configuration.catalog_entry
+        reference: BPM_C04-05/x_pos
+        device:
+          type: tango.pyaml.attribute_read_only
+          attribute: srdiag/bpm/c04-02/SA_HPosition
+          unit: mm
+      - type: pyaml.configuration.catalog_entry
+        reference: BPM_C04-05/y_pos
+        device:
+          type: tango.pyaml.attribute_read_only
+          attribute: srdiag/bpm/c04-02/SA_VPosition
+          unit: mm
+      - type: pyaml.configuration.catalog_entry
+        reference: BPM_C04-06/x_pos
+        device:
+          type: tango.pyaml.attribute_read_only
+          attribute: srdiag/bpm/c04-02/SA_HPosition
+          unit: mm
+      - type: pyaml.configuration.catalog_entry
+        reference: BPM_C04-06/y_pos
+        device:
+          type: tango.pyaml.attribute_read_only
+          attribute: srdiag/bpm/c04-02/SA_VPosition
+          unit: mm
