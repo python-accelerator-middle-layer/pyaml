@@ -55,7 +55,9 @@ class ElementArray(list[Element]):
 
     def get_peer(self):
         """
-        Returns the peer (Simulator or ControlSystem) of an element list
+        Returns the peer (:py:class:`~pyaml.lattice.simulator.Simulator`
+        or :py:class:`~pyaml.control.controlsystem.ControlSystem`) of
+        an element list
         """
         return self.__peer
 
@@ -215,9 +217,15 @@ class ElementArray(list[Element]):
 
         Returns
         -------
-        ElementArray or specialized array
+        Array
+
             The result is automatically typed according to the most specific
-            common base class of the remaining elements.
+            common base class of the remaining elements which can be:
+            :py:class:`.BPMArray` or :py:class:`.MagnetArray` or
+            :py:class:`.CombinedFunctionMagnetArray` or
+            :py:class:`.SerializedMagnetsArray` or
+            :py:class:`.ElementArray`.
+
         """
         # --- mask filtering ---
         if self.__is_bool_mask(other):
@@ -277,9 +285,15 @@ class ElementArray(list[Element]):
 
         Returns
         -------
-        ElementArray or specialized array
+        Array
+
             The result is automatically typed according to the most specific
-            common base class of the remaining elements.
+            common base class of the remaining elements which can be:
+            :py:class:`.BPMArray` or :py:class:`.MagnetArray` or
+            :py:class:`.CombinedFunctionMagnetArray` or
+            :py:class:`.SerializedMagnetsArray` or
+            :py:class:`.ElementArray`.
+
         """
         # --- mask removal ---
         if self.__is_bool_mask(other):
@@ -317,9 +331,15 @@ class ElementArray(list[Element]):
 
         Returns
         -------
-        ElementArray or specialized array
+        Array
+
             The result is automatically typed according to the most specific
-            common base class of the combined elements.
+            common base class of the remaining elements which can be:
+            :py:class:`.BPMArray` or :py:class:`.MagnetArray` or
+            :py:class:`.CombinedFunctionMagnetArray` or
+            :py:class:`.SerializedMagnetsArray` or
+            :py:class:`.ElementArray`.
+
         """
         other_arr = self.__ensure_compatible_operand(other)
 
@@ -355,6 +375,17 @@ class ElementArray(list[Element]):
         .. code-block:: python
 
             >>> all_corr = hcorr + vcorr
+
+        Returns
+        -------
+        Array
+
+            The result is automatically typed according to the most specific
+            common base class of the remaining elements which can be:
+            :py:class:`.BPMArray` or :py:class:`.MagnetArray` or
+            :py:class:`.CombinedFunctionMagnetArray` or
+            :py:class:`.SerializedMagnetsArray` or
+            :py:class:`.ElementArray`.
 
         """
         return self.__or__(other)
