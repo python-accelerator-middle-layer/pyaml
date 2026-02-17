@@ -18,7 +18,7 @@ class ElementArray(list[Element]):
 
     Parameters
     ----------
-    arrayName : str
+    array_name : str
         Array name
     elements : list[Element]
         Element list, all elements must be attached to the same instance of
@@ -184,8 +184,33 @@ class ElementArray(list[Element]):
         """
         Intersection or boolean mask filtering.
 
-        - If other is ElementArray: intersection (based on element names)
-        - If other is a boolean mask: keep elements where mask is True
+        This operator has two distinct behaviors depending on the type of
+        ``other``.
+
+        1) Array intersection
+           If ``other`` is an ElementArray, the result contains elements
+           whose names are present in both arrays.
+
+           Example
+           -------
+           >>> cell1 = sr.live.get_elements("C01")
+           >>> sexts = sr.live.get_magnets("SEXT")
+           >>> cell1_sext = cell1 & sexts
+
+        2) Boolean mask filtering
+           If ``other`` is a boolean mask (list[bool] or numpy.ndarray of bool),
+           elements are kept where the mask is True.
+
+           Example
+           -------
+           >>> mask = cell1.mask_by_type(Magnet)
+           >>> magnets = cell1 & mask
+
+        Returns
+        -------
+        ElementArray or specialized array
+            The result is automatically typed according to the most specific
+            common base class of the remaining elements.
         """
         # --- mask filtering ---
         if self.__is_bool_mask(other):
@@ -215,9 +240,33 @@ class ElementArray(list[Element]):
         """
         Difference or boolean mask removal.
 
-        - If other is ElementArray: difference (based on element names)
-        - If other is a boolean mask: remove elements where mask is True (inverse of
-          '& mask')
+        This operator has two behaviors depending on the type of ``other``.
+
+        1) Array difference
+           If ``other`` is an ElementArray, the result contains elements
+           whose names are present in ``self`` but not in ``other``.
+
+           Example
+           -------
+           >>> hvcorr = sr.live.get_magnets("HVCORR")
+           >>> hcorr = sr.live.get_magnets("HCORR")
+           >>> vcorr_only = hvcorr - hcorr
+
+        2) Boolean mask removal
+           If ``other`` is a boolean mask (list[bool] or numpy.ndarray of bool),
+           elements are removed where the mask is True.
+           This is the inverse of ``& mask``.
+
+           Example
+           -------
+           >>> mask = cell1.mask_by_type(Magnet)
+           >>> non_magnets = cell1 - mask
+
+        Returns
+        -------
+        ElementArray or specialized array
+            The result is automatically typed according to the most specific
+            common base class of the remaining elements.
         """
         # --- mask removal ---
         if self.__is_bool_mask(other):
@@ -235,6 +284,65 @@ class ElementArray(list[Element]):
         other_names = {e.get_name() for e in other_arr}
         res = [e for e in self if e.get_name() not in other_names]
         return self.__auto_array(res)
+
+    def __or__(self, other: object):
+        """
+        Union between two ElementArray instances.
+
+        Elements are combined using their names as identity.
+        Order is stable: elements from ``self`` first, followed by
+        elements from ``other`` that are not already present.
+
+        Example
+        -------
+        >>> hcorr = sr.live.get_magnets("HCORR")
+        >>> vcorr = sr.live.get_magnets("VCORR")
+        >>> all_corr = hcorr | vcorr
+
+        Returns
+        -------
+        ElementArray or specialized array
+            The result is automatically typed according to the most specific
+            common base class of the combined elements.
+        """
+        other_arr = self.__ensure_compatible_operand(other)
+
+        seen: set[str] = set()
+        res: list[Element] = []
+
+        for e in self:
+            name = e.get_name()
+            if name not in seen:
+                res.append(e)
+                seen.add(name)
+
+        for e in other_arr:
+            name = e.get_name()
+            if name not in seen:
+                res.append(e)
+                seen.add(name)
+
+        return self.__auto_array(res)
+
+    def __ror__(self, other: object):
+        if isinstance(other, ElementArray):
+            return other.__or__(self)
+        return NotImplemented
+
+    def __add__(self, other: object):
+        """
+        Alias for the union operator ``|``.
+
+        Example
+        -------
+        >>> all_corr = hcorr + vcorr
+        """
+        return self.__or__(other)
+
+    def __radd__(self, other: object):
+        if isinstance(other, ElementArray):
+            return other.__add__(self)
+        return NotImplemented
 
     def mask_by_type(self, element_type: type) -> list[bool]:
         """Return a boolean mask indicating which elements are instances of the given

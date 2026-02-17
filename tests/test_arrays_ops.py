@@ -179,3 +179,51 @@ def test_filter_by_type_returns_autotyped_array(install_test_package):
     else:
         assert isinstance(filtered, MagnetArray)
         assert all(isinstance(e, Magnet) for e in filtered)
+
+
+@pytest.mark.parametrize(
+    "install_test_package",
+    [{"name": "tango-pyaml", "path": "tests/dummy_cs/tango-pyaml"}],
+    indirect=True,
+)
+def test_element_array_or_union_is_unique_stable_and_autotyped(install_test_package):
+    sr: Accelerator = Accelerator.load("tests/config/sr.yaml")
+    sr.design.get_lattice().disable_6d()
+
+    hcorr = sr.live.get_magnets("HCORR")
+    vcorr = sr.live.get_magnets("VCORR")
+
+    u = hcorr | vcorr
+
+    # auto-typed
+    assert isinstance(u, MagnetArray)
+
+    # stable order: all hcorr first, then vcorr
+    assert u.names() == hcorr.names() + vcorr.names()
+
+    # uniqueness: if you union with itself, no duplicates
+    uu = hcorr | hcorr
+    assert uu.names() == hcorr.names()
+
+    Factory.clear()
+
+
+@pytest.mark.parametrize(
+    "install_test_package",
+    [{"name": "tango-pyaml", "path": "tests/dummy_cs/tango-pyaml"}],
+    indirect=True,
+)
+def test_element_array_add_is_alias_of_union(install_test_package):
+    sr: Accelerator = Accelerator.load("tests/config/sr.yaml")
+    sr.design.get_lattice().disable_6d()
+
+    hcorr = sr.live.get_magnets("HCORR")
+    vcorr = sr.live.get_magnets("VCORR")
+
+    u1 = hcorr | vcorr
+    u2 = hcorr + vcorr
+
+    assert isinstance(u2, MagnetArray)
+    assert u2.names() == u1.names()
+
+    Factory.clear()
