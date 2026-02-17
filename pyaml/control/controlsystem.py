@@ -124,17 +124,14 @@ class ControlSystem(ElementHolder, metaclass=ABCMeta):
             aggh = self.create_scalar_aggregator()
             aggv = self.create_scalar_aggregator()
             for b in bpms:
-                bpm_catalog = self._catalog.get_sub_catalog_by_prefix(
-                    b.get_name() + "/"
-                )
                 model = b.model
                 hDev = (
-                    bpm_catalog.get_one(model.get_x_pos_device())
+                    self._catalog.get_one(model.get_x_pos_device())
                     if model.get_x_pos_device() is not None
                     else None
                 )
                 vDev = (
-                    bpm_catalog.get_one(model.get_y_pos_device())
+                    self._catalog.get_one(model.get_y_pos_device())
                     if model.get_y_pos_device() is not None
                     else None
                 )
@@ -268,40 +265,37 @@ class ControlSystem(ElementHolder, metaclass=ABCMeta):
                     self.add_magnet(m)
 
             elif isinstance(e, BPM):
-                bpm_catalog = self._catalog.get_sub_catalog_by_prefix(
-                    e.get_name() + "/"
-                )
                 model = e.model
                 if model.is_pos_indexed():
                     hDev = (
-                        bpm_catalog.get_one(model.get_positions_device())
+                        self._catalog.get_one(model.get_positions_device())
                         if model.get_positions_device() is not None
                         else None
                     )
                     vDev = hDev
                 else:
                     hDev = (
-                        bpm_catalog.get_one(model.get_x_pos_device())
+                        self._catalog.get_one(model.get_x_pos_device())
                         if model.get_x_pos_device() is not None
                         else None
                     )
                     vDev = (
-                        bpm_catalog.get_one(model.get_y_pos_device())
+                        self._catalog.get_one(model.get_y_pos_device())
                         if model.get_y_pos_device() is not None
                         else None
                     )
                 tiltDev = (
-                    bpm_catalog.get_one(model.get_tilt_device())
+                    self._catalog.get_one(model.get_tilt_device())
                     if model.get_tilt_device() is not None
                     else None
                 )
                 hOffsetDev = (
-                    bpm_catalog.get_one(model.get_x_offset_device())
+                    self._catalog.get_one(model.get_x_offset_device())
                     if model.get_x_offset_device() is not None
                     else None
                 )
                 vOffsetDev = (
-                    bpm_catalog.get_one(model.get_y_offset_device())
+                    self._catalog.get_one(model.get_y_offset_device())
                     if model.get_y_offset_device() is not None
                     else None
                 )

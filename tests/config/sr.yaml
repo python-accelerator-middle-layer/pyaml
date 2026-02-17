@@ -54,14 +54,14 @@ devices:
     name: BPM_C04-01
     model:
       type: pyaml.bpm.bpm_simple_model
-      x_pos: x_pos
-      y_pos: y_pos
+      x_pos: BPM_C04-01/x_pos
+      y_pos: BPM_C04-01/y_pos
   - type: pyaml.bpm.bpm
     name: BPM_C04-02
     model:
       type: pyaml.bpm.bpm_simple_model
-      x_pos: x_pos
-      y_pos: y_pos
+      x_pos: BPM_C04-02/x_pos
+      y_pos: BPM_C04-02/y_pos
 control_system_catalogs:
   - type: pyaml.configuration.catalog
     name: live_catalog
