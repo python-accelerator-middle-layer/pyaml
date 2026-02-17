@@ -30,12 +30,12 @@ class ElementArray(list[Element]):
     Example
     -------
 
-    An array can be retrieved from the configuration as in the following example::
+    An array can be retrieved from the configuration as in the following example:
 
-        .. code-block:: python
+    .. code-block:: python
 
-            >>> sr = Accelerator.load("acc.yaml")
-            >>> elements = sr.design.get_elements("QuadForTune")
+        >>> sr = Accelerator.load("acc.yaml")
+        >>> elements = sr.design.get_elements("QuadForTune")
 
     """
 
@@ -195,6 +195,7 @@ class ElementArray(list[Element]):
 
            Example
            -------
+
            .. code-block:: python
 
                >>> cell1 = sr.live.get_elements("C01")
@@ -254,6 +255,7 @@ class ElementArray(list[Element]):
 
            Example
            -------
+
            .. code-block:: python
 
                >>> hvcorr = sr.live.get_magnets("HVCORR")
@@ -267,10 +269,11 @@ class ElementArray(list[Element]):
 
            Example
            -------
-           .. code-block:: python
 
-               >>> mask = cell1.mask_by_type(Magnet)
-               >>> non_magnets = cell1 - mask
+            .. code-block:: python
+
+                >>> mask = cell1.mask_by_type(Magnet)
+                >>> non_magnets = cell1 - mask
 
         Returns
         -------
@@ -305,6 +308,7 @@ class ElementArray(list[Element]):
 
         Example
         -------
+
         .. code-block:: python
 
             >>> hcorr = sr.live.get_magnets("HCORR")
@@ -347,9 +351,11 @@ class ElementArray(list[Element]):
 
         Example
         -------
+
         .. code-block:: python
 
             >>> all_corr = hcorr + vcorr
+
         """
         return self.__or__(other)
 
