@@ -32,8 +32,10 @@ class ElementArray(list[Element]):
 
     An array can be retrieved from the configuration as in the following example::
 
-        sr = Accelerator.load("acc.yaml")
-        elts = sr.design.get_elemens("QuadForTune")
+        .. code-block:: python
+
+        >>> sr = Accelerator.load("acc.yaml")
+        >>> elements = sr.design.get_elements("QuadForTune")
 
     """
 
@@ -193,6 +195,8 @@ class ElementArray(list[Element]):
 
            Example
            -------
+           .. code-block:: python
+
            >>> cell1 = sr.live.get_elements("C01")
            >>> sexts = sr.live.get_magnets("SEXT")
            >>> cell1_sext = cell1 & sexts
@@ -203,6 +207,8 @@ class ElementArray(list[Element]):
 
            Example
            -------
+           .. code-block:: python
+
            >>> mask = cell1.mask_by_type(Magnet)
            >>> magnets = cell1 & mask
 
@@ -248,6 +254,8 @@ class ElementArray(list[Element]):
 
            Example
            -------
+           .. code-block:: python
+
            >>> hvcorr = sr.live.get_magnets("HVCORR")
            >>> hcorr = sr.live.get_magnets("HCORR")
            >>> vcorr_only = hvcorr - hcorr
@@ -259,6 +267,8 @@ class ElementArray(list[Element]):
 
            Example
            -------
+           .. code-block:: python
+
            >>> mask = cell1.mask_by_type(Magnet)
            >>> non_magnets = cell1 - mask
 
@@ -295,6 +305,8 @@ class ElementArray(list[Element]):
 
         Example
         -------
+        .. code-block:: python
+
         >>> hcorr = sr.live.get_magnets("HCORR")
         >>> vcorr = sr.live.get_magnets("VCORR")
         >>> all_corr = hcorr | vcorr
@@ -335,6 +347,8 @@ class ElementArray(list[Element]):
 
         Example
         -------
+        .. code-block:: python
+
         >>> all_corr = hcorr + vcorr
         """
         return self.__or__(other)
