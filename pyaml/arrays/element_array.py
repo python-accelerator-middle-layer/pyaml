@@ -34,8 +34,8 @@ class ElementArray(list[Element]):
 
         .. code-block:: python
 
-        >>> sr = Accelerator.load("acc.yaml")
-        >>> elements = sr.design.get_elements("QuadForTune")
+            >>> sr = Accelerator.load("acc.yaml")
+            >>> elements = sr.design.get_elements("QuadForTune")
 
     """
 
@@ -197,9 +197,9 @@ class ElementArray(list[Element]):
            -------
            .. code-block:: python
 
-           >>> cell1 = sr.live.get_elements("C01")
-           >>> sexts = sr.live.get_magnets("SEXT")
-           >>> cell1_sext = cell1 & sexts
+               >>> cell1 = sr.live.get_elements("C01")
+               >>> sexts = sr.live.get_magnets("SEXT")
+               >>> cell1_sext = cell1 & sexts
 
         2) Boolean mask filtering
            If ``other`` is a boolean mask (list[bool] or numpy.ndarray of bool),
@@ -209,8 +209,8 @@ class ElementArray(list[Element]):
            -------
            .. code-block:: python
 
-           >>> mask = cell1.mask_by_type(Magnet)
-           >>> magnets = cell1 & mask
+               >>> mask = cell1.mask_by_type(Magnet)
+               >>> magnets = cell1 & mask
 
         Returns
         -------
@@ -256,9 +256,9 @@ class ElementArray(list[Element]):
            -------
            .. code-block:: python
 
-           >>> hvcorr = sr.live.get_magnets("HVCORR")
-           >>> hcorr = sr.live.get_magnets("HCORR")
-           >>> vcorr_only = hvcorr - hcorr
+               >>> hvcorr = sr.live.get_magnets("HVCORR")
+               >>> hcorr = sr.live.get_magnets("HCORR")
+               >>> vcorr_only = hvcorr - hcorr
 
         2) Boolean mask removal
            If ``other`` is a boolean mask (list[bool] or numpy.ndarray of bool),
@@ -269,8 +269,8 @@ class ElementArray(list[Element]):
            -------
            .. code-block:: python
 
-           >>> mask = cell1.mask_by_type(Magnet)
-           >>> non_magnets = cell1 - mask
+               >>> mask = cell1.mask_by_type(Magnet)
+               >>> non_magnets = cell1 - mask
 
         Returns
         -------
@@ -307,9 +307,9 @@ class ElementArray(list[Element]):
         -------
         .. code-block:: python
 
-        >>> hcorr = sr.live.get_magnets("HCORR")
-        >>> vcorr = sr.live.get_magnets("VCORR")
-        >>> all_corr = hcorr | vcorr
+            >>> hcorr = sr.live.get_magnets("HCORR")
+            >>> vcorr = sr.live.get_magnets("VCORR")
+            >>> all_corr = hcorr | vcorr
 
         Returns
         -------
@@ -349,7 +349,7 @@ class ElementArray(list[Element]):
         -------
         .. code-block:: python
 
-        >>> all_corr = hcorr + vcorr
+            >>> all_corr = hcorr + vcorr
         """
         return self.__or__(other)
 
