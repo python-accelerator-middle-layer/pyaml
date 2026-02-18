@@ -6,25 +6,25 @@ PYAMLCLASS = "Element"
 
 
 class ConfigModel(ArrayConfigModel):
-    """Configuration model for Element array."""
-
-    ...
+    """Configuration model for :py:class:`.ElementArray`."""
 
 
 class Element(ArrayConfig):
     """
-    Element array confirguration
+    :py:class:`.ElementArray` configuration.
 
     Example
     -------
 
     An element array configuration can also be created by code using
-    the following example::
+    the following example:
+
+    .. code-block:: python
 
         from pyaml.arrays.element import Element,ConfigModel as ElementArrayConfigModel
-        elemArray = Element(
-                      ElementArrayConfigModel(name="MyArray", elements=["elt1","elt2"])
-                    )
+        elt_cfg = Element(
+           ElementArrayConfigModel(name="MyArray", elements=["BPM_C04-01","SH1A-C04-H"])
+        )
 
 
     """
@@ -34,7 +34,20 @@ class Element(ArrayConfig):
 
     def fill_array(self, holder: ElementHolder):
         """
-        Fill the element array in the element holder.
+
+        Fill the :py:class:`.ElementArray` using element holder
+        (:py:class:`~pyaml.lattice.simulator.Simulator`
+        or :py:class:`~pyaml.control.controlsystem.ControlSystem`)
+        and add the array to the holder. This method is called when an
+        :py:class:`~pyaml.accelerator.Accelerator` is loaded but can be
+        used to create arrays by code as shown bellow:
+
+        .. code-block:: python
+
+            >>> elt_cfg.fill_array(sr.design)
+            >>> names = sr.design.get_elements("MyArray").names()
+            >>> print(names)
+            ['BPM_C04-01', 'SH1A-C04-H']
 
         Parameters
         ----------
