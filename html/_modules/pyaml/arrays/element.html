@@ -379,9 +379,7 @@
 <div class="viewcode-block" id="ConfigModel">
 <a class="viewcode-back" href="../../../api/pyaml.arrays.element.html#pyaml.arrays.element.ConfigModel">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">ConfigModel</span><span class="p">(</span><span class="n">ArrayConfigModel</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Configuration model for Element array.&quot;&quot;&quot;</span>
-
-    <span class="o">...</span></div>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Configuration model for :py:class:`.ElementArray`.&quot;&quot;&quot;</span></div>
 
 
 
@@ -389,18 +387,20 @@
 <a class="viewcode-back" href="../../../api/pyaml.arrays.element.html#pyaml.arrays.element.Element">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">Element</span><span class="p">(</span><span class="n">ArrayConfig</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Element array confirguration</span>
+<span class="sd">    :py:class:`.ElementArray` configuration.</span>
 
 <span class="sd">    Example</span>
 <span class="sd">    -------</span>
 
 <span class="sd">    An element array configuration can also be created by code using</span>
-<span class="sd">    the following example::</span>
+<span class="sd">    the following example:</span>
+
+<span class="sd">    .. code-block:: python</span>
 
 <span class="sd">        from pyaml.arrays.element import Element,ConfigModel as ElementArrayConfigModel</span>
-<span class="sd">        elemArray = Element(</span>
-<span class="sd">                      ElementArrayConfigModel(name=&quot;MyArray&quot;, elements=[&quot;elt1&quot;,&quot;elt2&quot;])</span>
-<span class="sd">                    )</span>
+<span class="sd">        elt_cfg = Element(</span>
+<span class="sd">           ElementArrayConfigModel(name=&quot;MyArray&quot;, elements=[&quot;BPM_C04-01&quot;,&quot;SH1A-C04-H&quot;])</span>
+<span class="sd">        )</span>
 
 
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -412,7 +412,20 @@
 <a class="viewcode-back" href="../../../api/pyaml.arrays.element.html#pyaml.arrays.element.Element.fill_array">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">fill_array</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">holder</span><span class="p">:</span> <span class="n">ElementHolder</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Fill the element array in the element holder.</span>
+
+<span class="sd">        Fill the :py:class:`.ElementArray` using element holder</span>
+<span class="sd">        (:py:class:`~pyaml.lattice.simulator.Simulator`</span>
+<span class="sd">        or :py:class:`~pyaml.control.controlsystem.ControlSystem`)</span>
+<span class="sd">        and add the array to the holder. This method is called when an</span>
+<span class="sd">        :py:class:`~pyaml.accelerator.Accelerator` is loaded but can be</span>
+<span class="sd">        used to create arrays by code as shown bellow:</span>
+
+<span class="sd">        .. code-block:: python</span>
+
+<span class="sd">            &gt;&gt;&gt; elt_cfg.fill_array(sr.design)</span>
+<span class="sd">            &gt;&gt;&gt; names = sr.design.get_elements(&quot;MyArray&quot;).names()</span>
+<span class="sd">            &gt;&gt;&gt; print(names)</span>
+<span class="sd">            [&#39;BPM_C04-01&#39;, &#39;SH1A-C04-H&#39;]</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>

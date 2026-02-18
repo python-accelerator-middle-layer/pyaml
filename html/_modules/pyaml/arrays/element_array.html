@@ -371,12 +371,16 @@
   <h1>Source code for pyaml.arrays.element_array</h1><div class="highlight"><pre>
 <span></span><span class="kn">import</span><span class="w"> </span><span class="nn">fnmatch</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">importlib</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Sequence</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">..bpm.bpm</span><span class="w"> </span><span class="kn">import</span> <span class="n">BPM</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">..common.element</span><span class="w"> </span><span class="kn">import</span> <span class="n">Element</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">..common.exception</span><span class="w"> </span><span class="kn">import</span> <span class="n">PyAMLException</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">..magnet.cfm_magnet</span><span class="w"> </span><span class="kn">import</span> <span class="n">CombinedFunctionMagnet</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">..magnet.magnet</span><span class="w"> </span><span class="kn">import</span> <span class="n">Magnet</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">..magnet.serialized_magnet</span><span class="w"> </span><span class="kn">import</span> <span class="n">SerializedMagnets</span>
 
 
 <div class="viewcode-block" id="ElementArray">
@@ -387,7 +391,7 @@
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">    arrayName : str</span>
+<span class="sd">    array_name : str</span>
 <span class="sd">        Array name</span>
 <span class="sd">    elements : list[Element]</span>
 <span class="sd">        Element list, all elements must be attached to the same instance of</span>
@@ -399,19 +403,22 @@
 <span class="sd">    Example</span>
 <span class="sd">    -------</span>
 
-<span class="sd">    An array can be retrieved from the configuration as in the following example::</span>
+<span class="sd">    An array can be retrieved from the configuration as in the following example:</span>
 
-<span class="sd">        sr = Accelerator.load(&quot;acc.yaml&quot;)</span>
-<span class="sd">        elts = sr.design.get_elemens(&quot;QuadForTune&quot;)</span>
+<span class="sd">    .. code-block:: python</span>
+
+<span class="sd">        &gt;&gt;&gt; sr = Accelerator.load(&quot;acc.yaml&quot;)</span>
+<span class="sd">        &gt;&gt;&gt; elements = sr.design.get_elements(&quot;QuadForTune&quot;)</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">arrayName</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">elements</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Element</span><span class="p">],</span> <span class="n">use_aggregator</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">array_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">elements</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Element</span><span class="p">],</span> <span class="n">use_aggregator</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">elements</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">__name</span> <span class="o">=</span> <span class="n">arrayName</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__name</span> <span class="o">=</span> <span class="n">array_name</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__peer</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__use_aggregator</span> <span class="o">=</span> <span class="n">use_aggregator</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">elements</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">__peer</span> <span class="o">=</span> <span class="bp">self</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">_peer</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="k">else</span> <span class="kc">None</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">__use_aggretator</span> <span class="o">=</span> <span class="n">use_aggregator</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__peer</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="nb">any</span><span class="p">([</span><span class="n">m</span><span class="o">.</span><span class="n">_peer</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__peer</span> <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="bp">self</span><span class="p">]):</span>
                 <span class="k">raise</span> <span class="n">PyAMLException</span><span class="p">(</span>
                     <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">get_name</span><span class="p">()</span><span class="si">}</span><span class="s2">: &quot;</span>
@@ -423,7 +430,9 @@
 <a class="viewcode-back" href="../../../api/pyaml.arrays.element_array.html#pyaml.arrays.element_array.ElementArray.get_peer">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">get_peer</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Returns the peer (Simulator or ControlSystem) of an element list</span>
+<span class="sd">        Returns the peer (:py:class:`~pyaml.lattice.simulator.Simulator`</span>
+<span class="sd">        or :py:class:`~pyaml.control.controlsystem.ControlSystem`) of</span>
+<span class="sd">        an element list</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__peer</span></div>
 
@@ -446,73 +455,437 @@
         <span class="k">return</span> <span class="p">[</span><span class="n">e</span><span class="o">.</span><span class="n">get_name</span><span class="p">()</span> <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="bp">self</span><span class="p">]</span></div>
 
 
-    <span class="k">def</span><span class="w"> </span><span class="nf">__create_array</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">arrName</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">eltType</span><span class="p">:</span> <span class="nb">type</span><span class="p">,</span> <span class="n">elements</span><span class="p">:</span> <span class="nb">list</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">__create_array</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">array_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">element_type</span><span class="p">:</span> <span class="nb">type</span><span class="p">,</span> <span class="n">elements</span><span class="p">:</span> <span class="nb">list</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">element_type</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">element_type</span> <span class="o">=</span> <span class="n">Element</span>
+
+        <span class="k">if</span> <span class="nb">issubclass</span><span class="p">(</span><span class="n">element_type</span><span class="p">,</span> <span class="n">Magnet</span><span class="p">):</span>
+            <span class="n">m</span> <span class="o">=</span> <span class="n">importlib</span><span class="o">.</span><span class="n">import_module</span><span class="p">(</span><span class="s2">&quot;pyaml.arrays.magnet_array&quot;</span><span class="p">)</span>
+            <span class="n">array_class</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="s2">&quot;MagnetArray&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">array_class</span><span class="p">(</span><span class="n">array_name</span><span class="p">,</span> <span class="n">elements</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__use_aggregator</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="nb">issubclass</span><span class="p">(</span><span class="n">element_type</span><span class="p">,</span> <span class="n">BPM</span><span class="p">):</span>
+            <span class="n">m</span> <span class="o">=</span> <span class="n">importlib</span><span class="o">.</span><span class="n">import_module</span><span class="p">(</span><span class="s2">&quot;pyaml.arrays.bpm_array&quot;</span><span class="p">)</span>
+            <span class="n">array_class</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="s2">&quot;BPMArray&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">array_class</span><span class="p">(</span><span class="n">array_name</span><span class="p">,</span> <span class="n">elements</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__use_aggregator</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="nb">issubclass</span><span class="p">(</span><span class="n">element_type</span><span class="p">,</span> <span class="n">CombinedFunctionMagnet</span><span class="p">):</span>
+            <span class="n">m</span> <span class="o">=</span> <span class="n">importlib</span><span class="o">.</span><span class="n">import_module</span><span class="p">(</span><span class="s2">&quot;pyaml.arrays.cfm_magnet_array&quot;</span><span class="p">)</span>
+            <span class="n">array_class</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="s2">&quot;CombinedFunctionMagnetArray&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">array_class</span><span class="p">(</span><span class="n">array_name</span><span class="p">,</span> <span class="n">elements</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__use_aggregator</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="nb">issubclass</span><span class="p">(</span><span class="n">element_type</span><span class="p">,</span> <span class="n">SerializedMagnets</span><span class="p">):</span>
+            <span class="n">m</span> <span class="o">=</span> <span class="n">importlib</span><span class="o">.</span><span class="n">import_module</span><span class="p">(</span><span class="s2">&quot;pyaml.arrays.serialized_magnet_array&quot;</span><span class="p">)</span>
+            <span class="n">array_class</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="s2">&quot;SerializedMagnetsArray&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">array_class</span><span class="p">(</span><span class="n">array_name</span><span class="p">,</span> <span class="n">elements</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__use_aggregator</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="nb">issubclass</span><span class="p">(</span><span class="n">element_type</span><span class="p">,</span> <span class="n">Element</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">ElementArray</span><span class="p">(</span><span class="n">array_name</span><span class="p">,</span> <span class="n">elements</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__use_aggregator</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">PyAMLException</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;Unsupported sliced array for type </span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">element_type</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">__eval_field</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">attribute_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">element</span><span class="p">:</span> <span class="n">Element</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="n">function_name</span> <span class="o">=</span> <span class="s2">&quot;get_&quot;</span> <span class="o">+</span> <span class="n">attribute_name</span>
+        <span class="n">func</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">element</span><span class="p">,</span> <span class="n">function_name</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">func</span><span class="p">()</span> <span class="k">if</span> <span class="n">func</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="s2">&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">__ensure_compatible_operand</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">:</span> <span class="nb">object</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;ElementArray&quot;</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Validate the operand used for set-like operations between arrays.&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="n">ElementArray</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;Unsupported operand type(s) for set operation: &quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;&#39;</span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">&#39; and &#39;</span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">other</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">&#39;&quot;</span>
+            <span class="p">)</span>
+
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">other</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_peer</span><span class="p">()</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">other</span><span class="o">.</span><span class="n">get_peer</span><span class="p">()</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_peer</span><span class="p">()</span> <span class="o">!=</span> <span class="n">other</span><span class="o">.</span><span class="n">get_peer</span><span class="p">():</span>
+                    <span class="k">raise</span> <span class="n">PyAMLException</span><span class="p">(</span>
+                        <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">: cannot operate on arrays &quot;</span>
+                        <span class="s2">&quot;attached to different peers&quot;</span>
+                    <span class="p">)</span>
+        <span class="k">return</span> <span class="n">other</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">__auto_array</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">elements</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Element</span><span class="p">]):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Create the most specific array type for the given element list.</span>
+
+<span class="sd">        The target element type is the most specific common base class (nearest common</span>
+<span class="sd">        ancestor) of all elements. This supports heterogeneous subclasses (e.g.,</span>
+<span class="sd">        several Magnet subclasses) while still returning a MagnetArray when</span>
+<span class="sd">        appropriate.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">elements</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
             <span class="k">return</span> <span class="p">[]</span>
 
-        <span class="k">if</span> <span class="nb">issubclass</span><span class="p">(</span><span class="n">eltType</span><span class="p">,</span> <span class="n">Magnet</span><span class="p">):</span>
-            <span class="n">m</span> <span class="o">=</span> <span class="n">importlib</span><span class="o">.</span><span class="n">import_module</span><span class="p">(</span><span class="s2">&quot;pyaml.arrays.magnet_array&quot;</span><span class="p">)</span>
-            <span class="n">arrayClass</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="s2">&quot;MagnetArray&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
-            <span class="k">return</span> <span class="n">arrayClass</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">elements</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__use_aggretator</span><span class="p">)</span>
-        <span class="k">elif</span> <span class="nb">issubclass</span><span class="p">(</span><span class="n">eltType</span><span class="p">,</span> <span class="n">BPM</span><span class="p">):</span>
-            <span class="n">m</span> <span class="o">=</span> <span class="n">importlib</span><span class="o">.</span><span class="n">import_module</span><span class="p">(</span><span class="s2">&quot;pyaml.arrays.bpm_array&quot;</span><span class="p">)</span>
-            <span class="n">arrayClass</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="s2">&quot;BPMArray&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
-            <span class="k">return</span> <span class="n">arrayClass</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">elements</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__use_aggretator</span><span class="p">)</span>
-        <span class="k">elif</span> <span class="nb">issubclass</span><span class="p">(</span><span class="n">eltType</span><span class="p">,</span> <span class="n">CombinedFunctionMagnet</span><span class="p">):</span>
-            <span class="n">m</span> <span class="o">=</span> <span class="n">importlib</span><span class="o">.</span><span class="n">import_module</span><span class="p">(</span><span class="s2">&quot;pyaml.arrays.cfm_magnet_array&quot;</span><span class="p">)</span>
-            <span class="n">arrayClass</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="s2">&quot;CombinedFunctionMagnetArray&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
-            <span class="k">return</span> <span class="n">arrayClass</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">elements</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__use_aggretator</span><span class="p">)</span>
-        <span class="k">elif</span> <span class="nb">issubclass</span><span class="p">(</span><span class="n">eltType</span><span class="p">,</span> <span class="n">Element</span><span class="p">):</span>
-            <span class="k">return</span> <span class="n">ElementArray</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">elements</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__use_aggretator</span><span class="p">)</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="n">PyAMLException</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unsupported sliced array for type </span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">eltType</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="kn">import</span><span class="w"> </span><span class="nn">inspect</span>
 
-    <span class="k">def</span><span class="w"> </span><span class="nf">__eval_field</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">attName</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">e</span><span class="p">:</span> <span class="n">Element</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-        <span class="n">funcName</span> <span class="o">=</span> <span class="s2">&quot;get_&quot;</span> <span class="o">+</span> <span class="n">attName</span>
-        <span class="n">func</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="n">funcName</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">func</span><span class="p">()</span> <span class="k">if</span> <span class="n">func</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="s2">&quot;&quot;</span>
+        <span class="k">def</span><span class="w"> </span><span class="nf">mro_as_list</span><span class="p">(</span><span class="bp">cls</span><span class="p">:</span> <span class="nb">type</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">type</span><span class="p">]:</span>
+            <span class="c1"># inspect.getmro returns (cls, ..., object)</span>
+            <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="n">inspect</span><span class="o">.</span><span class="n">getmro</span><span class="p">(</span><span class="bp">cls</span><span class="p">))</span>
+
+        <span class="c1"># Start from the first element MRO as reference order (most specific first).</span>
+        <span class="n">common</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">type</span><span class="p">]</span> <span class="o">=</span> <span class="n">mro_as_list</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">elements</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
+
+        <span class="c1"># Intersect while preserving MRO order from the first element.</span>
+        <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">elements</span><span class="p">[</span><span class="mi">1</span><span class="p">:]:</span>
+            <span class="n">mro_set</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">mro_as_list</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">e</span><span class="p">)))</span>
+            <span class="n">common</span> <span class="o">=</span> <span class="p">[</span><span class="n">c</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">common</span> <span class="k">if</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">mro_set</span><span class="p">]</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">common</span><span class="p">:</span>
+                <span class="k">break</span>
+
+        <span class="c1"># Pick the first suitable common base within the Element hierarchy.</span>
+        <span class="n">chosen</span><span class="p">:</span> <span class="nb">type</span> <span class="o">=</span> <span class="n">Element</span>
+        <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">common</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">c</span> <span class="ow">is</span> <span class="nb">object</span><span class="p">:</span>
+                <span class="k">continue</span>
+            <span class="k">if</span> <span class="nb">issubclass</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">Element</span><span class="p">):</span>
+                <span class="n">chosen</span> <span class="o">=</span> <span class="n">c</span>
+                <span class="k">break</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__create_array</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">chosen</span><span class="p">,</span> <span class="n">elements</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">__is_bool_mask</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">:</span> <span class="nb">object</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return True if &#39;other&#39; looks like a boolean mask (list or numpy array).&quot;&quot;&quot;</span>
+        <span class="c1"># --- numpy boolean array ---</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="ow">and</span> <span class="n">other</span><span class="o">.</span><span class="n">dtype</span> <span class="o">==</span> <span class="nb">bool</span><span class="p">:</span>
+                <span class="k">return</span> <span class="kc">True</span>
+        <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+            <span class="k">pass</span>
+
+        <span class="c1"># --- python sequence of bools (but not a string/bytes) ---</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="n">Sequence</span><span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span>
+            <span class="n">other</span><span class="p">,</span> <span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="nb">bytes</span><span class="p">,</span> <span class="nb">bytearray</span><span class="p">)</span>
+        <span class="p">):</span>
+            <span class="c1"># Avoid treating ElementArray as a mask</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="n">ElementArray</span><span class="p">):</span>
+                <span class="k">return</span> <span class="kc">False</span>
+            <span class="c1"># Accept only actual bool-like values</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="k">return</span> <span class="nb">all</span><span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="nb">bool</span><span class="p">)</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">other</span><span class="p">)</span>
+            <span class="k">except</span> <span class="ne">TypeError</span><span class="p">:</span>
+                <span class="k">return</span> <span class="kc">False</span>
+
+        <span class="k">return</span> <span class="kc">False</span>
+
+<div class="viewcode-block" id="ElementArray.__and__">
+<a class="viewcode-back" href="../../../api/pyaml.arrays.element_array.html#pyaml.arrays.element_array.ElementArray.__and__">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__and__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">:</span> <span class="nb">object</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Intersection or boolean mask filtering.</span>
+
+<span class="sd">        This operator has two distinct behaviors depending on the type of</span>
+<span class="sd">        ``other``.</span>
+
+<span class="sd">        1) Array intersection</span>
+<span class="sd">           If ``other`` is an ElementArray, the result contains elements</span>
+<span class="sd">           whose names are present in both arrays.</span>
+
+<span class="sd">           Example</span>
+<span class="sd">           -------</span>
+
+<span class="sd">           .. code-block:: python</span>
+
+<span class="sd">               &gt;&gt;&gt; cell1 = sr.live.get_elements(&quot;C01&quot;)</span>
+<span class="sd">               &gt;&gt;&gt; sexts = sr.live.get_magnets(&quot;SEXT&quot;)</span>
+<span class="sd">               &gt;&gt;&gt; cell1_sext = cell1 &amp; sexts</span>
+
+<span class="sd">        2) Boolean mask filtering</span>
+<span class="sd">           If ``other`` is a boolean mask (list[bool] or numpy.ndarray of bool),</span>
+<span class="sd">           elements are kept where the mask is True.</span>
+
+<span class="sd">           Example</span>
+<span class="sd">           -------</span>
+<span class="sd">           .. code-block:: python</span>
+
+<span class="sd">               &gt;&gt;&gt; mask = cell1.mask_by_type(Magnet)</span>
+<span class="sd">               &gt;&gt;&gt; magnets = cell1 &amp; mask</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        Array</span>
+
+<span class="sd">            The result is automatically typed according to the most specific</span>
+<span class="sd">            common base class of the remaining elements which can be:</span>
+<span class="sd">            :py:class:`.BPMArray` or :py:class:`.MagnetArray` or</span>
+<span class="sd">            :py:class:`.CombinedFunctionMagnetArray` or</span>
+<span class="sd">            :py:class:`.SerializedMagnetsArray` or</span>
+<span class="sd">            :py:class:`.ElementArray`.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># --- mask filtering ---</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__is_bool_mask</span><span class="p">(</span><span class="n">other</span><span class="p">):</span>
+            <span class="n">mask</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">other</span><span class="p">)</span>  <span class="c1"># works for list/tuple and numpy arrays</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">mask</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                    <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">: mask length (</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">mask</span><span class="p">)</span><span class="si">}</span><span class="s2">) &quot;</span>
+                    <span class="sa">f</span><span class="s2">&quot;does not match array length (</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="si">}</span><span class="s2">)&quot;</span>
+                <span class="p">)</span>
+            <span class="n">res</span> <span class="o">=</span> <span class="p">[</span><span class="n">e</span> <span class="k">for</span> <span class="n">e</span><span class="p">,</span> <span class="n">keep</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mask</span><span class="p">,</span> <span class="n">strict</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> <span class="k">if</span> <span class="nb">bool</span><span class="p">(</span><span class="n">keep</span><span class="p">)]</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__auto_array</span><span class="p">(</span><span class="n">res</span><span class="p">)</span>
+
+        <span class="c1"># --- array intersection ---</span>
+        <span class="n">other_arr</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__ensure_compatible_operand</span><span class="p">(</span><span class="n">other</span><span class="p">)</span>
+        <span class="n">other_names</span> <span class="o">=</span> <span class="p">{</span><span class="n">e</span><span class="o">.</span><span class="n">get_name</span><span class="p">()</span> <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">other_arr</span><span class="p">}</span>
+        <span class="n">res</span> <span class="o">=</span> <span class="p">[</span><span class="n">e</span> <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="bp">self</span> <span class="k">if</span> <span class="n">e</span><span class="o">.</span><span class="n">get_name</span><span class="p">()</span> <span class="ow">in</span> <span class="n">other_names</span><span class="p">]</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__auto_array</span><span class="p">(</span><span class="n">res</span><span class="p">)</span></div>
+
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__rand__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">:</span> <span class="nb">object</span><span class="p">):</span>
+        <span class="c1"># Support &quot;array on the right&quot; for array operands; for masks, we don&#39;t enforce</span>
+        <span class="c1"># commutativity.</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="n">ElementArray</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">other</span><span class="o">.</span><span class="fm">__and__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">NotImplemented</span>
+
+<div class="viewcode-block" id="ElementArray.__sub__">
+<a class="viewcode-back" href="../../../api/pyaml.arrays.element_array.html#pyaml.arrays.element_array.ElementArray.__sub__">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__sub__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">:</span> <span class="nb">object</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Difference or boolean mask removal.</span>
+
+<span class="sd">        This operator has two behaviors depending on the type of ``other``.</span>
+
+<span class="sd">        1) Array difference</span>
+<span class="sd">           If ``other`` is an ElementArray, the result contains elements</span>
+<span class="sd">           whose names are present in ``self`` but not in ``other``.</span>
+
+<span class="sd">           Example</span>
+<span class="sd">           -------</span>
+
+<span class="sd">           .. code-block:: python</span>
+
+<span class="sd">               &gt;&gt;&gt; hvcorr = sr.live.get_magnets(&quot;HVCORR&quot;)</span>
+<span class="sd">               &gt;&gt;&gt; hcorr = sr.live.get_magnets(&quot;HCORR&quot;)</span>
+<span class="sd">               &gt;&gt;&gt; vcorr_only = hvcorr - hcorr</span>
+
+<span class="sd">        2) Boolean mask removal</span>
+<span class="sd">           If ``other`` is a boolean mask (list[bool] or numpy.ndarray of bool),</span>
+<span class="sd">           elements are removed where the mask is True.</span>
+<span class="sd">           This is the inverse of ``&amp; mask``.</span>
+
+<span class="sd">           Example</span>
+<span class="sd">           -------</span>
+
+<span class="sd">            .. code-block:: python</span>
+
+<span class="sd">                &gt;&gt;&gt; mask = cell1.mask_by_type(Magnet)</span>
+<span class="sd">                &gt;&gt;&gt; non_magnets = cell1 - mask</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        Array</span>
+
+<span class="sd">            The result is automatically typed according to the most specific</span>
+<span class="sd">            common base class of the remaining elements which can be:</span>
+<span class="sd">            :py:class:`.BPMArray` or :py:class:`.MagnetArray` or</span>
+<span class="sd">            :py:class:`.CombinedFunctionMagnetArray` or</span>
+<span class="sd">            :py:class:`.SerializedMagnetsArray` or</span>
+<span class="sd">            :py:class:`.ElementArray`.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># --- mask removal ---</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__is_bool_mask</span><span class="p">(</span><span class="n">other</span><span class="p">):</span>
+            <span class="n">mask</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">other</span><span class="p">)</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">mask</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                    <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">: mask length (</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">mask</span><span class="p">)</span><span class="si">}</span><span class="s2">) &quot;</span>
+                    <span class="sa">f</span><span class="s2">&quot;does not match array length (</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="si">}</span><span class="s2">)&quot;</span>
+                <span class="p">)</span>
+            <span class="n">res</span> <span class="o">=</span> <span class="p">[</span><span class="n">e</span> <span class="k">for</span> <span class="n">e</span><span class="p">,</span> <span class="n">remove</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mask</span><span class="p">,</span> <span class="n">strict</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> <span class="k">if</span> <span class="ow">not</span> <span class="nb">bool</span><span class="p">(</span><span class="n">remove</span><span class="p">)]</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__auto_array</span><span class="p">(</span><span class="n">res</span><span class="p">)</span>
+
+        <span class="c1"># --- array difference ---</span>
+        <span class="n">other_arr</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__ensure_compatible_operand</span><span class="p">(</span><span class="n">other</span><span class="p">)</span>
+        <span class="n">other_names</span> <span class="o">=</span> <span class="p">{</span><span class="n">e</span><span class="o">.</span><span class="n">get_name</span><span class="p">()</span> <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">other_arr</span><span class="p">}</span>
+        <span class="n">res</span> <span class="o">=</span> <span class="p">[</span><span class="n">e</span> <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="bp">self</span> <span class="k">if</span> <span class="n">e</span><span class="o">.</span><span class="n">get_name</span><span class="p">()</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">other_names</span><span class="p">]</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__auto_array</span><span class="p">(</span><span class="n">res</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="ElementArray.__or__">
+<a class="viewcode-back" href="../../../api/pyaml.arrays.element_array.html#pyaml.arrays.element_array.ElementArray.__or__">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__or__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">:</span> <span class="nb">object</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Union between two ElementArray instances.</span>
+
+<span class="sd">        Elements are combined using their names as identity.</span>
+<span class="sd">        Order is stable: elements from ``self`` first, followed by</span>
+<span class="sd">        elements from ``other`` that are not already present.</span>
+
+<span class="sd">        Example</span>
+<span class="sd">        -------</span>
+
+<span class="sd">        .. code-block:: python</span>
+
+<span class="sd">            &gt;&gt;&gt; hcorr = sr.live.get_magnets(&quot;HCORR&quot;)</span>
+<span class="sd">            &gt;&gt;&gt; vcorr = sr.live.get_magnets(&quot;VCORR&quot;)</span>
+<span class="sd">            &gt;&gt;&gt; all_corr = hcorr | vcorr</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        Array</span>
+
+<span class="sd">            The result is automatically typed according to the most specific</span>
+<span class="sd">            common base class of the remaining elements which can be:</span>
+<span class="sd">            :py:class:`.BPMArray` or :py:class:`.MagnetArray` or</span>
+<span class="sd">            :py:class:`.CombinedFunctionMagnetArray` or</span>
+<span class="sd">            :py:class:`.SerializedMagnetsArray` or</span>
+<span class="sd">            :py:class:`.ElementArray`.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">other_arr</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__ensure_compatible_operand</span><span class="p">(</span><span class="n">other</span><span class="p">)</span>
+
+        <span class="n">seen</span><span class="p">:</span> <span class="nb">set</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+        <span class="n">res</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Element</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="bp">self</span><span class="p">:</span>
+            <span class="n">name</span> <span class="o">=</span> <span class="n">e</span><span class="o">.</span><span class="n">get_name</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">seen</span><span class="p">:</span>
+                <span class="n">res</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+                <span class="n">seen</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">other_arr</span><span class="p">:</span>
+            <span class="n">name</span> <span class="o">=</span> <span class="n">e</span><span class="o">.</span><span class="n">get_name</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">seen</span><span class="p">:</span>
+                <span class="n">res</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+                <span class="n">seen</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__auto_array</span><span class="p">(</span><span class="n">res</span><span class="p">)</span></div>
+
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__ror__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">:</span> <span class="nb">object</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="n">ElementArray</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">other</span><span class="o">.</span><span class="fm">__or__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">NotImplemented</span>
+
+<div class="viewcode-block" id="ElementArray.__add__">
+<a class="viewcode-back" href="../../../api/pyaml.arrays.element_array.html#pyaml.arrays.element_array.ElementArray.__add__">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__add__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">:</span> <span class="nb">object</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Alias for the union operator ``|``.</span>
+
+<span class="sd">        Example</span>
+<span class="sd">        -------</span>
+
+<span class="sd">        .. code-block:: python</span>
+
+<span class="sd">            &gt;&gt;&gt; all_corr = hcorr + vcorr</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        Array</span>
+
+<span class="sd">            The result is automatically typed according to the most specific</span>
+<span class="sd">            common base class of the remaining elements which can be:</span>
+<span class="sd">            :py:class:`.BPMArray` or :py:class:`.MagnetArray` or</span>
+<span class="sd">            :py:class:`.CombinedFunctionMagnetArray` or</span>
+<span class="sd">            :py:class:`.SerializedMagnetsArray` or</span>
+<span class="sd">            :py:class:`.ElementArray`.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="fm">__or__</span><span class="p">(</span><span class="n">other</span><span class="p">)</span></div>
+
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__radd__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">:</span> <span class="nb">object</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="n">ElementArray</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">other</span><span class="o">.</span><span class="fm">__add__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">NotImplemented</span>
+
+<div class="viewcode-block" id="ElementArray.mask_by_type">
+<a class="viewcode-back" href="../../../api/pyaml.arrays.element_array.html#pyaml.arrays.element_array.ElementArray.mask_by_type">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">mask_by_type</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">element_type</span><span class="p">:</span> <span class="nb">type</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">bool</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return a boolean mask indicating which elements are instances of the given</span>
+<span class="sd">        type.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        element_type : type</span>
+<span class="sd">            The class to test against (e.g., Magnet).</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        list[bool]</span>
+<span class="sd">            A list of booleans where True indicates the element is an instance</span>
+<span class="sd">            of the given type (including subclasses).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">element_type</span><span class="p">,</span> <span class="nb">type</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">: element_type must be a type&quot;</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="p">[</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="n">element_type</span><span class="p">)</span> <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="bp">self</span><span class="p">]</span></div>
+
+
+<div class="viewcode-block" id="ElementArray.of_type">
+<a class="viewcode-back" href="../../../api/pyaml.arrays.element_array.html#pyaml.arrays.element_array.ElementArray.of_type">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">of_type</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">element_type</span><span class="p">:</span> <span class="nb">type</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return a new array containing only elements of the given type.</span>
+
+<span class="sd">        The resulting array is automatically typed according to the most</span>
+<span class="sd">        specific common base class of the filtered elements.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        element_type : type</span>
+<span class="sd">            The class to filter by (e.g., Magnet).</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        ElementArray or specialized array</span>
+<span class="sd">            An auto-typed array containing only matching elements.</span>
+<span class="sd">            Returns [] if no elements match.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">element_type</span><span class="p">,</span> <span class="nb">type</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">: element_type must be a type&quot;</span><span class="p">)</span>
+
+        <span class="n">filtered</span> <span class="o">=</span> <span class="p">[</span><span class="n">e</span> <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="bp">self</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="n">element_type</span><span class="p">)]</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__auto_array</span><span class="p">(</span><span class="n">filtered</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="ElementArray.exclude_type">
+<a class="viewcode-back" href="../../../api/pyaml.arrays.element_array.html#pyaml.arrays.element_array.ElementArray.exclude_type">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">exclude_type</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">element_type</span><span class="p">):</span>
+        <span class="n">mask</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">mask_by_type</span><span class="p">(</span><span class="n">element_type</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span> <span class="o">-</span> <span class="n">mask</span></div>
+
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="nb">slice</span><span class="p">):</span>
             <span class="c1"># Slicing</span>
-            <span class="n">eltType</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="n">element_type</span> <span class="o">=</span> <span class="kc">None</span>
             <span class="n">r</span> <span class="o">=</span> <span class="p">[]</span>
             <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="o">*</span><span class="n">key</span><span class="o">.</span><span class="n">indices</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="p">))):</span>
-                <span class="k">if</span> <span class="n">eltType</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-                    <span class="n">eltType</span> <span class="o">=</span> <span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
-                <span class="k">elif</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">eltType</span><span class="p">):</span>
-                    <span class="n">eltType</span> <span class="o">=</span> <span class="n">Element</span>  <span class="c1"># Fall back to element</span>
+                <span class="k">if</span> <span class="n">element_type</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="n">element_type</span> <span class="o">=</span> <span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+                <span class="k">elif</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">element_type</span><span class="p">):</span>
+                    <span class="n">element_type</span> <span class="o">=</span> <span class="n">Element</span>  <span class="c1"># Fall back to element</span>
                 <span class="n">r</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
-            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__create_array</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">eltType</span><span class="p">,</span> <span class="n">r</span><span class="p">)</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__create_array</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">element_type</span><span class="p">,</span> <span class="n">r</span><span class="p">)</span>
 
         <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
             <span class="n">fields</span> <span class="o">=</span> <span class="n">key</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;:&quot;</span><span class="p">)</span>
 
             <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">fields</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="mi">1</span><span class="p">:</span>
                 <span class="c1"># Selection by name</span>
-                <span class="n">eltType</span> <span class="o">=</span> <span class="kc">None</span>
+                <span class="n">element_type</span> <span class="o">=</span> <span class="kc">None</span>
                 <span class="n">r</span> <span class="o">=</span> <span class="p">[]</span>
                 <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="bp">self</span><span class="p">:</span>
                     <span class="k">if</span> <span class="n">fnmatch</span><span class="o">.</span><span class="n">fnmatch</span><span class="p">(</span><span class="n">e</span><span class="o">.</span><span class="n">get_name</span><span class="p">(),</span> <span class="n">key</span><span class="p">):</span>
-                        <span class="k">if</span> <span class="n">eltType</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-                            <span class="n">eltType</span> <span class="o">=</span> <span class="nb">type</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
-                        <span class="k">elif</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="n">eltType</span><span class="p">):</span>
-                            <span class="n">eltType</span> <span class="o">=</span> <span class="n">Element</span>  <span class="c1"># Fall back to element</span>
+                        <span class="k">if</span> <span class="n">element_type</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                            <span class="n">element_type</span> <span class="o">=</span> <span class="nb">type</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+                        <span class="k">elif</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="n">element_type</span><span class="p">):</span>
+                            <span class="n">element_type</span> <span class="o">=</span> <span class="n">Element</span>  <span class="c1"># Fall back to element</span>
                         <span class="n">r</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="c1"># Selection by fields</span>
-                <span class="n">eltType</span> <span class="o">=</span> <span class="kc">None</span>
+                <span class="n">element_type</span> <span class="o">=</span> <span class="kc">None</span>
                 <span class="n">r</span> <span class="o">=</span> <span class="p">[]</span>
                 <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="bp">self</span><span class="p">:</span>
                     <span class="n">txt</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__eval_field</span><span class="p">(</span><span class="n">fields</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">e</span><span class="p">)</span>
                     <span class="k">if</span> <span class="n">fnmatch</span><span class="o">.</span><span class="n">fnmatch</span><span class="p">(</span><span class="n">txt</span><span class="p">,</span> <span class="n">fields</span><span class="p">[</span><span class="mi">1</span><span class="p">]):</span>
-                        <span class="k">if</span> <span class="n">eltType</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-                            <span class="n">eltType</span> <span class="o">=</span> <span class="nb">type</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
-                        <span class="k">elif</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="n">eltType</span><span class="p">):</span>
-                            <span class="n">eltType</span> <span class="o">=</span> <span class="n">Element</span>  <span class="c1"># Fall back to element</span>
+                        <span class="k">if</span> <span class="n">element_type</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                            <span class="n">element_type</span> <span class="o">=</span> <span class="nb">type</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+                        <span class="k">elif</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="n">element_type</span><span class="p">):</span>
+                            <span class="n">element_type</span> <span class="o">=</span> <span class="n">Element</span>  <span class="c1"># Fall back to element</span>
                         <span class="n">r</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
 
-            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__create_array</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">eltType</span><span class="p">,</span> <span class="n">r</span><span class="p">)</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__create_array</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">element_type</span><span class="p">,</span> <span class="n">r</span><span class="p">)</span>
 
         <span class="k">else</span><span class="p">:</span>
             <span class="c1"># Default to super selection</span>

@@ -496,13 +496,13 @@
 <span id="element-array"></span><h1>element_array<a class="headerlink" href="#module-pyaml.arrays.element_array" title="Link to this heading">#</a></h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="pyaml.arrays.element_array.ElementArray">
-<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ElementArray</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">arrayName</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">elements</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_aggregator</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/arrays/element_array.html#ElementArray"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.arrays.element_array.ElementArray" title="Link to this definition">#</a></dt>
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ElementArray</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">array_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">elements</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_aggregator</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/arrays/element_array.html#ElementArray"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.arrays.element_array.ElementArray" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code></a>[<a class="reference internal" href="pyaml.common.element.html#pyaml.common.element.Element" title="pyaml.common.element.Element"><code class="xref py py-class docutils literal notranslate"><span class="pre">Element</span></code></a>]</p>
 <p>Class that implements access to an element array</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>arrayName</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>) – Array name</p></li>
+<li><p><strong>array_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>) – Array name</p></li>
 <li><p><strong>elements</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.14)"><em>list</em></a><em>[</em><a class="reference internal" href="pyaml.arrays.element.html#pyaml.arrays.element.Element" title="pyaml.arrays.element.Element"><em>Element</em></a><em>]</em>) – Element list, all elements must be attached to the same instance of
 either a Simulator or a ControlSystem.</p></li>
 <li><p><strong>use_aggregator</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><em>bool</em></a>) – Use aggregator to increase performance by using paralell
@@ -512,10 +512,136 @@ access to underlying devices.</p></li>
 </dl>
 <p class="rubric">Example</p>
 <p>An array can be retrieved from the configuration as in the following example:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sr</span> <span class="o">=</span> <span class="n">Accelerator</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s2">&quot;acc.yaml&quot;</span><span class="p">)</span>
-<span class="n">elts</span> <span class="o">=</span> <span class="n">sr</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">get_elemens</span><span class="p">(</span><span class="s2">&quot;QuadForTune&quot;</span><span class="p">)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">sr</span> <span class="o">=</span> <span class="n">Accelerator</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s2">&quot;acc.yaml&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">elements</span> <span class="o">=</span> <span class="n">sr</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">get_elements</span><span class="p">(</span><span class="s2">&quot;QuadForTune&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaml.arrays.element_array.ElementArray.__add__">
+<span class="sig-name descname"><span class="pre">__add__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/arrays/element_array.html#ElementArray.__add__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.arrays.element_array.ElementArray.__add__" title="Link to this definition">#</a></dt>
+<dd><p>Alias for the union operator <code class="docutils literal notranslate"><span class="pre">|</span></code>.</p>
+<p class="rubric">Example</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">all_corr</span> <span class="o">=</span> <span class="n">hcorr</span> <span class="o">+</span> <span class="n">vcorr</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>Array</strong> – The result is automatically typed according to the most specific
+common base class of the remaining elements which can be:
+<a class="reference internal" href="pyaml.arrays.bpm_array.html#pyaml.arrays.bpm_array.BPMArray" title="pyaml.arrays.bpm_array.BPMArray"><code class="xref py py-class docutils literal notranslate"><span class="pre">BPMArray</span></code></a> or <a class="reference internal" href="pyaml.arrays.magnet_array.html#pyaml.arrays.magnet_array.MagnetArray" title="pyaml.arrays.magnet_array.MagnetArray"><code class="xref py py-class docutils literal notranslate"><span class="pre">MagnetArray</span></code></a> or
+<a class="reference internal" href="pyaml.arrays.cfm_magnet_array.html#pyaml.arrays.cfm_magnet_array.CombinedFunctionMagnetArray" title="pyaml.arrays.cfm_magnet_array.CombinedFunctionMagnetArray"><code class="xref py py-class docutils literal notranslate"><span class="pre">CombinedFunctionMagnetArray</span></code></a> or
+<a class="reference internal" href="pyaml.arrays.serialized_magnet_array.html#pyaml.arrays.serialized_magnet_array.SerializedMagnetsArray" title="pyaml.arrays.serialized_magnet_array.SerializedMagnetsArray"><code class="xref py py-class docutils literal notranslate"><span class="pre">SerializedMagnetsArray</span></code></a> or
+<a class="reference internal" href="#pyaml.arrays.element_array.ElementArray" title="pyaml.arrays.element_array.ElementArray"><code class="xref py py-class docutils literal notranslate"><span class="pre">ElementArray</span></code></a>.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaml.arrays.element_array.ElementArray.__and__">
+<span class="sig-name descname"><span class="pre">__and__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/arrays/element_array.html#ElementArray.__and__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.arrays.element_array.ElementArray.__and__" title="Link to this definition">#</a></dt>
+<dd><p>Intersection or boolean mask filtering.</p>
+<p>This operator has two distinct behaviors depending on the type of
+<code class="docutils literal notranslate"><span class="pre">other</span></code>.</p>
+<ol class="arabic">
+<li><p>Array intersection
+If <code class="docutils literal notranslate"><span class="pre">other</span></code> is an ElementArray, the result contains elements
+whose names are present in both arrays.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">cell1</span> <span class="o">=</span> <span class="n">sr</span><span class="o">.</span><span class="n">live</span><span class="o">.</span><span class="n">get_elements</span><span class="p">(</span><span class="s2">&quot;C01&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sexts</span> <span class="o">=</span> <span class="n">sr</span><span class="o">.</span><span class="n">live</span><span class="o">.</span><span class="n">get_magnets</span><span class="p">(</span><span class="s2">&quot;SEXT&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cell1_sext</span> <span class="o">=</span> <span class="n">cell1</span> <span class="o">&amp;</span> <span class="n">sexts</span>
+</pre></div>
+</div>
+</li>
+<li><p>Boolean mask filtering
+If <code class="docutils literal notranslate"><span class="pre">other</span></code> is a boolean mask (list[bool] or numpy.ndarray of bool),
+elements are kept where the mask is True.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">mask</span> <span class="o">=</span> <span class="n">cell1</span><span class="o">.</span><span class="n">mask_by_type</span><span class="p">(</span><span class="n">Magnet</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">magnets</span> <span class="o">=</span> <span class="n">cell1</span> <span class="o">&amp;</span> <span class="n">mask</span>
+</pre></div>
+</div>
+</li>
+</ol>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>Array</strong> – The result is automatically typed according to the most specific
+common base class of the remaining elements which can be:
+<a class="reference internal" href="pyaml.arrays.bpm_array.html#pyaml.arrays.bpm_array.BPMArray" title="pyaml.arrays.bpm_array.BPMArray"><code class="xref py py-class docutils literal notranslate"><span class="pre">BPMArray</span></code></a> or <a class="reference internal" href="pyaml.arrays.magnet_array.html#pyaml.arrays.magnet_array.MagnetArray" title="pyaml.arrays.magnet_array.MagnetArray"><code class="xref py py-class docutils literal notranslate"><span class="pre">MagnetArray</span></code></a> or
+<a class="reference internal" href="pyaml.arrays.cfm_magnet_array.html#pyaml.arrays.cfm_magnet_array.CombinedFunctionMagnetArray" title="pyaml.arrays.cfm_magnet_array.CombinedFunctionMagnetArray"><code class="xref py py-class docutils literal notranslate"><span class="pre">CombinedFunctionMagnetArray</span></code></a> or
+<a class="reference internal" href="pyaml.arrays.serialized_magnet_array.html#pyaml.arrays.serialized_magnet_array.SerializedMagnetsArray" title="pyaml.arrays.serialized_magnet_array.SerializedMagnetsArray"><code class="xref py py-class docutils literal notranslate"><span class="pre">SerializedMagnetsArray</span></code></a> or
+<a class="reference internal" href="#pyaml.arrays.element_array.ElementArray" title="pyaml.arrays.element_array.ElementArray"><code class="xref py py-class docutils literal notranslate"><span class="pre">ElementArray</span></code></a>.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaml.arrays.element_array.ElementArray.__or__">
+<span class="sig-name descname"><span class="pre">__or__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/arrays/element_array.html#ElementArray.__or__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.arrays.element_array.ElementArray.__or__" title="Link to this definition">#</a></dt>
+<dd><p>Union between two ElementArray instances.</p>
+<p>Elements are combined using their names as identity.
+Order is stable: elements from <code class="docutils literal notranslate"><span class="pre">self</span></code> first, followed by
+elements from <code class="docutils literal notranslate"><span class="pre">other</span></code> that are not already present.</p>
+<p class="rubric">Example</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">hcorr</span> <span class="o">=</span> <span class="n">sr</span><span class="o">.</span><span class="n">live</span><span class="o">.</span><span class="n">get_magnets</span><span class="p">(</span><span class="s2">&quot;HCORR&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">vcorr</span> <span class="o">=</span> <span class="n">sr</span><span class="o">.</span><span class="n">live</span><span class="o">.</span><span class="n">get_magnets</span><span class="p">(</span><span class="s2">&quot;VCORR&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">all_corr</span> <span class="o">=</span> <span class="n">hcorr</span> <span class="o">|</span> <span class="n">vcorr</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>Array</strong> – The result is automatically typed according to the most specific
+common base class of the remaining elements which can be:
+<a class="reference internal" href="pyaml.arrays.bpm_array.html#pyaml.arrays.bpm_array.BPMArray" title="pyaml.arrays.bpm_array.BPMArray"><code class="xref py py-class docutils literal notranslate"><span class="pre">BPMArray</span></code></a> or <a class="reference internal" href="pyaml.arrays.magnet_array.html#pyaml.arrays.magnet_array.MagnetArray" title="pyaml.arrays.magnet_array.MagnetArray"><code class="xref py py-class docutils literal notranslate"><span class="pre">MagnetArray</span></code></a> or
+<a class="reference internal" href="pyaml.arrays.cfm_magnet_array.html#pyaml.arrays.cfm_magnet_array.CombinedFunctionMagnetArray" title="pyaml.arrays.cfm_magnet_array.CombinedFunctionMagnetArray"><code class="xref py py-class docutils literal notranslate"><span class="pre">CombinedFunctionMagnetArray</span></code></a> or
+<a class="reference internal" href="pyaml.arrays.serialized_magnet_array.html#pyaml.arrays.serialized_magnet_array.SerializedMagnetsArray" title="pyaml.arrays.serialized_magnet_array.SerializedMagnetsArray"><code class="xref py py-class docutils literal notranslate"><span class="pre">SerializedMagnetsArray</span></code></a> or
+<a class="reference internal" href="#pyaml.arrays.element_array.ElementArray" title="pyaml.arrays.element_array.ElementArray"><code class="xref py py-class docutils literal notranslate"><span class="pre">ElementArray</span></code></a>.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaml.arrays.element_array.ElementArray.__sub__">
+<span class="sig-name descname"><span class="pre">__sub__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/arrays/element_array.html#ElementArray.__sub__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.arrays.element_array.ElementArray.__sub__" title="Link to this definition">#</a></dt>
+<dd><p>Difference or boolean mask removal.</p>
+<p>This operator has two behaviors depending on the type of <code class="docutils literal notranslate"><span class="pre">other</span></code>.</p>
+<ol class="arabic">
+<li><p>Array difference
+If <code class="docutils literal notranslate"><span class="pre">other</span></code> is an ElementArray, the result contains elements
+whose names are present in <code class="docutils literal notranslate"><span class="pre">self</span></code> but not in <code class="docutils literal notranslate"><span class="pre">other</span></code>.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">hvcorr</span> <span class="o">=</span> <span class="n">sr</span><span class="o">.</span><span class="n">live</span><span class="o">.</span><span class="n">get_magnets</span><span class="p">(</span><span class="s2">&quot;HVCORR&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">hcorr</span> <span class="o">=</span> <span class="n">sr</span><span class="o">.</span><span class="n">live</span><span class="o">.</span><span class="n">get_magnets</span><span class="p">(</span><span class="s2">&quot;HCORR&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">vcorr_only</span> <span class="o">=</span> <span class="n">hvcorr</span> <span class="o">-</span> <span class="n">hcorr</span>
+</pre></div>
+</div>
+</li>
+<li><p>Boolean mask removal
+If <code class="docutils literal notranslate"><span class="pre">other</span></code> is a boolean mask (list[bool] or numpy.ndarray of bool),
+elements are removed where the mask is True.
+This is the inverse of <code class="docutils literal notranslate"><span class="pre">&amp;</span> <span class="pre">mask</span></code>.</p>
+<blockquote>
+<div><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">mask</span> <span class="o">=</span> <span class="n">cell1</span><span class="o">.</span><span class="n">mask_by_type</span><span class="p">(</span><span class="n">Magnet</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">non_magnets</span> <span class="o">=</span> <span class="n">cell1</span> <span class="o">-</span> <span class="n">mask</span>
+</pre></div>
+</div>
+</div></blockquote>
+</li>
+</ol>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>Array</strong> – The result is automatically typed according to the most specific
+common base class of the remaining elements which can be:
+<a class="reference internal" href="pyaml.arrays.bpm_array.html#pyaml.arrays.bpm_array.BPMArray" title="pyaml.arrays.bpm_array.BPMArray"><code class="xref py py-class docutils literal notranslate"><span class="pre">BPMArray</span></code></a> or <a class="reference internal" href="pyaml.arrays.magnet_array.html#pyaml.arrays.magnet_array.MagnetArray" title="pyaml.arrays.magnet_array.MagnetArray"><code class="xref py py-class docutils literal notranslate"><span class="pre">MagnetArray</span></code></a> or
+<a class="reference internal" href="pyaml.arrays.cfm_magnet_array.html#pyaml.arrays.cfm_magnet_array.CombinedFunctionMagnetArray" title="pyaml.arrays.cfm_magnet_array.CombinedFunctionMagnetArray"><code class="xref py py-class docutils literal notranslate"><span class="pre">CombinedFunctionMagnetArray</span></code></a> or
+<a class="reference internal" href="pyaml.arrays.serialized_magnet_array.html#pyaml.arrays.serialized_magnet_array.SerializedMagnetsArray" title="pyaml.arrays.serialized_magnet_array.SerializedMagnetsArray"><code class="xref py py-class docutils literal notranslate"><span class="pre">SerializedMagnetsArray</span></code></a> or
+<a class="reference internal" href="#pyaml.arrays.element_array.ElementArray" title="pyaml.arrays.element_array.ElementArray"><code class="xref py py-class docutils literal notranslate"><span class="pre">ElementArray</span></code></a>.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaml.arrays.element_array.ElementArray.exclude_type">
+<span class="sig-name descname"><span class="pre">exclude_type</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">element_type</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/arrays/element_array.html#ElementArray.exclude_type"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.arrays.element_array.ElementArray.exclude_type" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="pyaml.arrays.element_array.ElementArray.get_name">
 <span class="sig-name descname"><span class="pre">get_name</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/arrays/element_array.html#ElementArray.get_name"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.arrays.element_array.ElementArray.get_name" title="Link to this definition">#</a></dt>
@@ -527,7 +653,25 @@ access to underlying devices.</p></li>
 <dl class="py method">
 <dt class="sig sig-object py" id="pyaml.arrays.element_array.ElementArray.get_peer">
 <span class="sig-name descname"><span class="pre">get_peer</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/arrays/element_array.html#ElementArray.get_peer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.arrays.element_array.ElementArray.get_peer" title="Link to this definition">#</a></dt>
-<dd><p>Returns the peer (Simulator or ControlSystem) of an element list</p>
+<dd><p>Returns the peer (<a class="reference internal" href="pyaml.lattice.simulator.html#pyaml.lattice.simulator.Simulator" title="pyaml.lattice.simulator.Simulator"><code class="xref py py-class docutils literal notranslate"><span class="pre">Simulator</span></code></a>
+or <a class="reference internal" href="pyaml.control.controlsystem.html#pyaml.control.controlsystem.ControlSystem" title="pyaml.control.controlsystem.ControlSystem"><code class="xref py py-class docutils literal notranslate"><span class="pre">ControlSystem</span></code></a>) of
+an element list</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaml.arrays.element_array.ElementArray.mask_by_type">
+<span class="sig-name descname"><span class="pre">mask_by_type</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">element_type</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/arrays/element_array.html#ElementArray.mask_by_type"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.arrays.element_array.ElementArray.mask_by_type" title="Link to this definition">#</a></dt>
+<dd><p>Return a boolean mask indicating which elements are instances of the given
+type.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>element_type</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#type" title="(in Python v3.14)"><em>type</em></a>) – The class to test against (e.g., Magnet).</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>list[bool]</strong> – A list of booleans where True indicates the element is an instance
+of the given type (including subclasses).</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
@@ -535,6 +679,23 @@ access to underlying devices.</p></li>
 <span class="sig-name descname"><span class="pre">names</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/arrays/element_array.html#ElementArray.names"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.arrays.element_array.ElementArray.names" title="Link to this definition">#</a></dt>
 <dd><p>Returns the element names</p>
 <dl class="field-list simple">
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaml.arrays.element_array.ElementArray.of_type">
+<span class="sig-name descname"><span class="pre">of_type</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">element_type</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/arrays/element_array.html#ElementArray.of_type"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.arrays.element_array.ElementArray.of_type" title="Link to this definition">#</a></dt>
+<dd><p>Return a new array containing only elements of the given type.</p>
+<p>The resulting array is automatically typed according to the most
+specific common base class of the filtered elements.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>element_type</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#type" title="(in Python v3.14)"><em>type</em></a>) – The class to filter by (e.g., Magnet).</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>ElementArray or specialized array</strong> – An auto-typed array containing only matching elements.
+Returns [] if no elements match.</p>
+</dd>
 </dl>
 </dd></dl>
 
@@ -590,9 +751,16 @@ access to underlying devices.</p></li>
   <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.arrays.element_array.ElementArray"><code class="docutils literal notranslate"><span class="pre">ElementArray</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.arrays.element_array.ElementArray.__add__"><code class="docutils literal notranslate"><span class="pre">ElementArray.__add__()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.arrays.element_array.ElementArray.__and__"><code class="docutils literal notranslate"><span class="pre">ElementArray.__and__()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.arrays.element_array.ElementArray.__or__"><code class="docutils literal notranslate"><span class="pre">ElementArray.__or__()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.arrays.element_array.ElementArray.__sub__"><code class="docutils literal notranslate"><span class="pre">ElementArray.__sub__()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.arrays.element_array.ElementArray.exclude_type"><code class="docutils literal notranslate"><span class="pre">ElementArray.exclude_type()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.arrays.element_array.ElementArray.get_name"><code class="docutils literal notranslate"><span class="pre">ElementArray.get_name()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.arrays.element_array.ElementArray.get_peer"><code class="docutils literal notranslate"><span class="pre">ElementArray.get_peer()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.arrays.element_array.ElementArray.mask_by_type"><code class="docutils literal notranslate"><span class="pre">ElementArray.mask_by_type()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.arrays.element_array.ElementArray.names"><code class="docutils literal notranslate"><span class="pre">ElementArray.names()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.arrays.element_array.ElementArray.of_type"><code class="docutils literal notranslate"><span class="pre">ElementArray.of_type()</span></code></a></li>
 </ul>
 </li>
 </ul>
