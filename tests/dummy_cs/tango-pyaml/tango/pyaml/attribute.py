@@ -1,5 +1,6 @@
 from typing import Optional, Tuple
 
+import numpy as np
 from pydantic import BaseModel, ConfigDict
 
 from pyaml.control.deviceaccess import DeviceAccess
@@ -7,7 +8,6 @@ from pyaml.control.readback_value import Value
 
 PYAMLCLASS: str = "Attribute"
 
-import numpy as np
 
 class ConfigModel(BaseModel):
     model_config = ConfigDict(arbitrary_types_allowed=True, extra="forbid")
