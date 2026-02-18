@@ -2,7 +2,7 @@ import numpy as np
 import pytest
 
 from pyaml.accelerator import Accelerator
-
+from pyaml.arrays.bpm_array import BPMArray
 
 @pytest.mark.parametrize(
     "install_test_package",
@@ -60,3 +60,7 @@ def test_controlsystem_bpm_position_indexed(install_test_package):
     bpm = sr.live.get_bpm("BPM_C01-04")
 
     assert np.allclose(bpm.positions.get(), np.array([0.0, 1.0]))
+
+    # Test aggregator
+    bpms = BPMArray("", [sr.live.get_bpm("BPM_C01-04")] )
+    assert np.allclose(bpms.positions.get()[0], np.array([0.0, 1.0]))

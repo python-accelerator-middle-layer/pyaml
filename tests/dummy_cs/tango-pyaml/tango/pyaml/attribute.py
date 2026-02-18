@@ -7,6 +7,7 @@ from pyaml.control.readback_value import Value
 
 PYAMLCLASS: str = "Attribute"
 
+import numpy as np
 
 class ConfigModel(BaseModel):
     model_config = ConfigDict(arbitrary_types_allowed=True, extra="forbid")
@@ -31,7 +32,7 @@ class Attribute(DeviceAccess):
 
     def set_array(self, is_array: bool):
         self._is_array = is_array
-        self._cache = 0.0 if not is_array else [0.0, 1.0]
+        self._cache = 0.0 if not is_array else np.array([0.0, 1.0])
 
     def name(self) -> str:
         return self._setpoint
