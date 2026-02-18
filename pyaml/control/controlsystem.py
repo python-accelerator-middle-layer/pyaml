@@ -149,7 +149,8 @@ class ControlSystem(ElementHolder, metaclass=ABCMeta):
             vIdx = []
             allHV = []
             for b in bpms:
-                devs = self.attach_array(b.model.get_pos_devices())
+                positions_device = self._catalog.get_one(b.model.get_positions_device())
+                devs = self.attach_array([positions_device, positions_device])
                 devH = devs[0]
                 devV = devs[1]
                 if devH not in allH:
