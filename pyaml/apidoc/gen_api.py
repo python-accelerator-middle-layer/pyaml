@@ -117,6 +117,11 @@ def generate_selective_module(m):
         for c in all_cls:
             file.write(f"   .. autoclass:: {c.__name__}\n")
             file.write("         :members:\n")
+            if m in ["pyaml.arrays.element_array"]:
+                # Include special members for operator overloading
+                file.write(
+                    "         :special-members: __add__, __and__, __or__, __sub__ \n"
+                )
             file.write("         :exclude-members: model_config\n")
             file.write("         :undoc-members:\n")
             file.write("         :show-inheritance:\n\n")
