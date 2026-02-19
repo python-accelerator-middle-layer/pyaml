@@ -39,7 +39,8 @@ devices:
     type: pyaml.bpm.bpm_simple_model
     x_pos_index: 0
     y_pos_index: 1
-    positions: BPM_C01-04/positions
+    x_pos: BPM_C01-04/positions
+    y_pos: BPM_C01-04/positions
 - type: pyaml.magnet.cfm_magnet
   name: SH1A-C01         #Name of the element in the lattice model
   mapping:

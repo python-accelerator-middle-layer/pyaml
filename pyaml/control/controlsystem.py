@@ -149,8 +149,9 @@ class ControlSystem(ElementHolder, metaclass=ABCMeta):
             vIdx = []
             allHV = []
             for b in bpms:
-                positions_device = self._catalog.get_one(b.model.get_positions_device())
-                devs = self.attach_array([positions_device, positions_device])
+                x_pos_device = self._catalog.get_one(b.model.get_x_pos_device())
+                y_pos_device = self._catalog.get_one(b.model.get_y_pos_device())
+                devs = self.attach_array([x_pos_device, y_pos_device])
                 devH = devs[0]
                 devV = devs[1]
                 if devH not in allH:
@@ -267,24 +268,16 @@ class ControlSystem(ElementHolder, metaclass=ABCMeta):
 
             elif isinstance(e, BPM):
                 model = e.model
-                if model.is_pos_indexed():
-                    hDev = (
-                        self._catalog.get_one(model.get_positions_device())
-                        if model.get_positions_device() is not None
-                        else None
-                    )
-                    vDev = hDev
-                else:
-                    hDev = (
-                        self._catalog.get_one(model.get_x_pos_device())
-                        if model.get_x_pos_device() is not None
-                        else None
-                    )
-                    vDev = (
-                        self._catalog.get_one(model.get_y_pos_device())
-                        if model.get_y_pos_device() is not None
-                        else None
-                    )
+                hDev = (
+                    self._catalog.get_one(model.get_x_pos_device())
+                    if model.get_x_pos_device() is not None
+                    else None
+                )
+                vDev = (
+                    self._catalog.get_one(model.get_y_pos_device())
+                    if model.get_y_pos_device() is not None
+                    else None
+                )
                 tiltDev = (
                     self._catalog.get_one(model.get_tilt_device())
                     if model.get_tilt_device() is not None

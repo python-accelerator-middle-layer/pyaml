@@ -36,7 +36,6 @@ class ConfigModel(BaseModel):
     y_pos_index: int | None = None
     x_pos: str = None
     y_pos: str = None
-    positions: str = None
 
 
 class BPMSimpleModel(BPMModel):
@@ -47,17 +46,6 @@ class BPMSimpleModel(BPMModel):
 
     def __init__(self, cfg: ConfigModel):
         self._cfg = cfg
-
-    def get_positions_device(self) -> str | None:
-        """
-        Get device handles used for position reading
-
-        Returns
-        -------
-        str | None
-            h and v positions naming
-        """
-        return self._cfg.positions
 
     def get_x_pos_device(self) -> str | None:
         """

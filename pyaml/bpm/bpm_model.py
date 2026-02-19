@@ -14,18 +14,6 @@ class BPMModel(metaclass=ABCMeta):
     """
 
     @abstractmethod
-    def get_positions_device(self) -> str | None:
-        """
-        Get device handles used for position reading
-
-        Returns
-        -------
-        str | None
-            h and v positions naming
-        """
-        pass
-
-    @abstractmethod
     def get_x_pos_device(self) -> str | None:
         """
         Get device handles used for position reading
