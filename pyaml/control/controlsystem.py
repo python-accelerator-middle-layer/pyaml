@@ -81,6 +81,11 @@ class ControlSystem(ElementHolder, metaclass=ABCMeta):
         """Returns the module name used for handling aggregator of DeviceVectorAccess"""
         return None
 
+    @abstractmethod
+    def get_catalog_name(self) -> str | None:
+        """Returns the name of the catalog dedicated to this control system"""
+        return None
+
     def attach_indexed(self, dev: DeviceAccess, idx: int | None) -> DeviceAccess:
         if idx is not None:
             return self.attach_array([dev])[0]

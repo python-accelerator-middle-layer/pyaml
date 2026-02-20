@@ -13,6 +13,7 @@ simulators:
 controls:
 - type: tango.pyaml.controlsystem
   name: live
+  catalog: live_catalog
   tango_host: localhost:11000
 arrays:
 - type: pyaml.arrays.bpm

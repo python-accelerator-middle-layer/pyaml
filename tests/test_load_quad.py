@@ -38,6 +38,7 @@ def test_quad_external_model(install_test_package, config_root_dir):
         {
             "type": "tango.pyaml.controlsystem",
             "name": "live",
+            "catalog": "live_catalog",
             "tango_host": "ebs-simu-3:10000",
         }
     )
@@ -81,6 +82,7 @@ def test_quad_linear(magnet_file, install_test_package, config_root_dir):
         {
             "type": "tango.pyaml.controlsystem",
             "name": "live",
+            "catalog": "live_catalog",
             "tango_host": "ebs-simu-3:10000",
         }
     )
@@ -129,6 +131,7 @@ def test_combined_function_magnets(magnet_file, config_root_dir):
         {
             "type": "tango.pyaml.controlsystem",
             "name": "live",
+            "catalog": "live_catalog",
             "tango_host": "ebs-simu-3:10000",
         }
     )

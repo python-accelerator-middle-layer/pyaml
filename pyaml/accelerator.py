@@ -75,16 +75,11 @@ class Accelerator(object):
         if cfg.control_system_catalogs is not None:
             for catalog in cfg.control_system_catalogs:
                 self.__catalogs[catalog.get_name()] = catalog
-        # TODO Manage mapping between catalogs and control systems
-        catalog = (
-            cfg.control_system_catalogs[0]
-            if cfg.control_system_catalogs is not None
-            and len(cfg.control_system_catalogs) > 0
-            else None
-        )
+
         if cfg.controls is not None:
             for c in cfg.controls:
-                c.set_catalog(catalog)
+                if c.get_catalog_name():
+                    c.set_catalog(self.__catalogs.get(c.get_catalog_name()))
                 if c.name() == "live":
                     self.__live = c
                 else:
