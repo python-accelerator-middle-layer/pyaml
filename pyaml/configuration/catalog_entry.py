@@ -1,5 +1,3 @@
-from typing import Union
-
 from pydantic import BaseModel, ConfigDict, model_validator
 
 from pyaml.control.deviceaccess import DeviceAccess
@@ -57,18 +55,18 @@ class ConfigModel(BaseModel):
         return self
 
 
-CatalogValue = Union[DeviceAccess, list[DeviceAccess]]
+CatalogTarget = DeviceAccess | list[DeviceAccess]
 
 
 class CatalogEntry:
     def __init__(self, cfg: ConfigModel):
         self._cfg: ConfigModel = cfg
-        self._value: CatalogValue = (
+        self._value: CatalogTarget = (
             cfg.device if cfg.device is not None else cfg.devices
         )
 
     def get_reference(self) -> str:
         return self._cfg.reference
 
-    def get_value(self) -> CatalogValue:
+    def get_value(self) -> CatalogTarget:
         return self._value

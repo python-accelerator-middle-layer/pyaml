@@ -39,6 +39,7 @@ from ..tuning_tools.dispersion import Dispersion
 from ..tuning_tools.orbit import Orbit
 from ..tuning_tools.orbit_response_matrix import OrbitResponseMatrix
 from ..tuning_tools.tune import Tune
+from .catalog_view import CatalogView
 from .deviceaccess import DeviceAccess
 
 
@@ -49,9 +50,9 @@ class ControlSystem(ElementHolder, metaclass=ABCMeta):
 
     def __init__(self):
         ElementHolder.__init__(self)
-        self._catalog: Catalog | None = None
+        self._catalog: CatalogView | None = None
 
-    def set_catalog(self, catalog: Catalog | None):
+    def set_catalog(self, catalog: CatalogView | None):
         self._catalog = catalog
 
     @abstractmethod
@@ -140,10 +141,12 @@ class ControlSystem(ElementHolder, metaclass=ABCMeta):
                     if model.get_y_pos_device() is not None
                     else None
                 )
-                devs = self.attach([hDev, vDev])
+                devs = self.attach([hDev.get_target(), vDev.get_target()])
+                hDev.set_target(devs[0])
+                vDev.set_target(devs[1])
                 agg.add_devices(devs)
-                aggh.add_devices(devs[0])
-                aggv.add_devices(devs[1])
+                aggh.add_devices(hDev)
+                aggv.add_devices(vDev)
             return [agg, aggh, aggv]
 
         elif any([b.model.is_pos_indexed() for b in bpms]):
@@ -154,11 +157,11 @@ class ControlSystem(ElementHolder, metaclass=ABCMeta):
             vIdx = []
             allHV = []
             for b in bpms:
-                x_pos_device = self._catalog.get_one(b.model.get_x_pos_device())
-                y_pos_device = self._catalog.get_one(b.model.get_y_pos_device())
-                devs = self.attach_array([x_pos_device, y_pos_device])
-                devH = devs[0]
-                devV = devs[1]
+                devH = self._catalog.get_one(b.model.get_x_pos_device())
+                devV = self._catalog.get_one(b.model.get_y_pos_device())
+                devs = self.attach_array([devH.get_target(), devV.get_target()])
+                devH.set_target(devs[0])
+                devV.set_target(devs[1])
                 if devH not in allH:
                     allH.append(devH)
                 if devH not in allHV:
@@ -298,14 +301,37 @@ class ControlSystem(ElementHolder, metaclass=ABCMeta):
                     if model.get_y_offset_device() is not None
                     else None
                 )
-                ahDev = self.attach_indexed(hDev, model.x_pos_index())
-                avDev = self.attach_indexed(vDev, model.y_pos_index())
-                atiltDev = self.attach_indexed(tiltDev, model.tilt_index())
-                ahOffsetDev = self.attach_indexed(hOffsetDev, model.x_offset_index())
-                avOffsetDev = self.attach_indexed(vOffsetDev, model.y_offset_index())
-                positions = RBpmArray(model, ahDev, avDev)
-                tilt = RWBpmTiltScalar(model, atiltDev)
-                offsets = RWBpmOffsetArray(model, ahOffsetDev, avOffsetDev)
+                ahDev = self.attach_indexed(
+                    hDev.get_target() if hDev is not None else None, model.x_pos_index()
+                )
+                avDev = self.attach_indexed(
+                    vDev.get_target() if vDev is not None else None, model.y_pos_index()
+                )
+                atiltDev = self.attach_indexed(
+                    tiltDev.get_target() if tiltDev is not None else None,
+                    model.tilt_index(),
+                )
+                ahOffsetDev = self.attach_indexed(
+                    hOffsetDev.get_target() if hOffsetDev is not None else None,
+                    model.x_offset_index(),
+                )
+                avOffsetDev = self.attach_indexed(
+                    vOffsetDev.get_target() if vOffsetDev is not None else None,
+                    model.y_offset_index(),
+                )
+                if ahDev is not None:
+                    hDev.set_target(ahDev)
+                if avDev is not None:
+                    vDev.set_target(avDev)
+                if atiltDev is not None:
+                    tiltDev.set_target(atiltDev)
+                if ahOffsetDev is not None:
+                    hOffsetDev.set_target(ahOffsetDev)
+                if avOffsetDev is not None:
+                    vOffsetDev.set_target(avOffsetDev)
+                positions = RBpmArray(model, hDev, vDev)
+                tilt = RWBpmTiltScalar(model, tiltDev)
+                offsets = RWBpmOffsetArray(model, hOffsetDev, vOffsetDev)
                 e = e.attach(self, positions, offsets, tilt)
                 self.add_bpm(e)
 

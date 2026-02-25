@@ -1,3 +1,4 @@
+import threading
 from typing import Optional, Tuple
 
 import numpy as np
@@ -29,6 +30,8 @@ class Attribute(DeviceAccess):
         self._setpoint = cfg.attribute
         self._readback = cfg.attribute
         self._unit = cfg.unit
+        self._is_array = is_array
+        self._cache = 0.0 if not is_array else np.array([0.0, 1.0])
 
     def set_array(self, is_array: bool):
         self._is_array = is_array

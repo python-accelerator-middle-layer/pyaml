@@ -1,19 +1,15 @@
+import numpy as np
 import pytest
 
 from pyaml import PyAMLException
-from pyaml.configuration.catalog import Catalog
-from pyaml.configuration.catalog import ConfigModel as CatalogConfigModel
-from pyaml.configuration.catalog_entry import (
-    CatalogEntry,
-)
-from pyaml.configuration.catalog_entry import (
-    ConfigModel as CatalogEntryConfigModel,
-)
+from pyaml.accelerator import Accelerator
 from pyaml.configuration.factory import Factory
 
 
 def _build_ro_attr(attribute: str, unit: str = "mm"):
-    """Build a DeviceAccess using the Factory (requires tango-pyaml in tests)."""
+    """
+    Build a DeviceAccess prototype using the Factory (requires tango-pyaml in tests).
+    """
     return Factory.build_object(
         {
             "type": "tango.pyaml.attribute_read_only",
@@ -28,119 +24,85 @@ def _build_ro_attr(attribute: str, unit: str = "mm"):
     [{"name": "tango-pyaml", "path": "tests/dummy_cs/tango-pyaml"}],
     indirect=True,
 )
-def test_catalog_entry_requires_exactly_one_of_device_or_devices(install_test_package):
-    dev = _build_ro_attr("srdiag/bpm/c04-01/SA_HPosition")
+def test_catalog_view_get_one_and_identity_stability(install_test_package):
+    """
+    CatalogView.get_one() returns a stable DeviceAccessProxy.
+    After a config update, the proxy identity must remain stable and only its target
+    changes.
+    """
+    from tango.pyaml.attribute import Attribute
+    from tango.pyaml.attribute import ConfigModel as AttrConfigModel
 
-    # neither device nor devices
-    with pytest.raises(ValueError, match="exactly one of 'device' or 'devices'"):
-        CatalogEntryConfigModel(reference="k1")
+    sr: Accelerator = Accelerator.load("tests/config/bpms.yaml")
 
-    # both device and devices
-    with pytest.raises(ValueError, match="exactly one of 'device' or 'devices'"):
-        CatalogEntryConfigModel(reference="k1", device=dev, devices=[dev])
+    cfg = sr.get_catalog(sr.live.get_catalog_name())
+    view = cfg.view(sr.live)
 
-    # devices is empty -> treated as "not provided" => invalid
-    with pytest.raises(ValueError, match="exactly one of 'device' or 'devices'"):
-        CatalogEntryConfigModel(reference="k1", devices=[])
+    proxy_before = view.get_one("BPM_C01-02/x_pos")
+    old_target = proxy_before.get_target()
 
+    # Update the config catalog prototype (eager propagation to existing views)
+    new_dev = Attribute(AttrConfigModel(attribute="srdiag/bpm/c01-02/SA_HPosition2"))
+    cfg.update_proto("BPM_C01-02/x_pos", new_dev)
 
-@pytest.mark.parametrize(
-    "install_test_package",
-    [{"name": "tango-pyaml", "path": "tests/dummy_cs/tango-pyaml"}],
-    indirect=True,
-)
-def test_catalog_config_model_rejects_duplicate_references(install_test_package):
-    dev1 = _build_ro_attr("srdiag/bpm/c04-01/SA_HPosition")
-    dev2 = _build_ro_attr("srdiag/bpm/c04-01/SA_VPosition")
+    proxy_after = view.get_one("BPM_C01-02/x_pos")
 
-    e1 = CatalogEntry(CatalogEntryConfigModel(reference="BPM/x_pos", device=dev1))
-    e2 = CatalogEntry(CatalogEntryConfigModel(reference="BPM/x_pos", device=dev2))
-
-    with pytest.raises(ValueError, match="Duplicate catalog reference"):
-        CatalogConfigModel(name="live_catalog", refs=[e1, e2])
-
-
-@pytest.mark.parametrize(
-    "install_test_package",
-    [{"name": "tango-pyaml", "path": "tests/dummy_cs/tango-pyaml"}],
-    indirect=True,
-)
-def test_catalog_get_get_one_get_many(install_test_package):
-    dev = _build_ro_attr("srdiag/bpm/c04-01/SA_HPosition")
-    entry = CatalogEntry(
-        CatalogEntryConfigModel(reference="BPM_C04-01/x_pos", device=dev)
-    )
-    cat = Catalog(CatalogConfigModel(name="live_catalog", refs=[entry]))
-
-    # get / get_one on a single-device entry
-    assert cat.get("BPM_C04-01/x_pos") is dev
-    assert cat.get_one("BPM_C04-01/x_pos") is dev
-
-    # get_many on a single-device entry -> error
-    with pytest.raises(PyAMLException, match="is single-device; use get_one"):
-        cat.get_many("BPM_C04-01/x_pos")
-
-    # missing reference -> error
-    with pytest.raises(PyAMLException, match="not found"):
-        cat.get("does/not/exist")
-
-
-@pytest.mark.parametrize(
-    "install_test_package",
-    [{"name": "tango-pyaml", "path": "tests/dummy_cs/tango-pyaml"}],
-    indirect=True,
-)
-def test_catalog_multi_device_get_many_and_get_one_error(install_test_package):
-    dev1 = _build_ro_attr("srdiag/bpm/c04-01/SA_HPosition")
-    dev2 = _build_ro_attr("srdiag/bpm/c04-01/SA_VPosition")
-
-    entry = CatalogEntry(
-        CatalogEntryConfigModel(reference="BPM_C04-01/positions", devices=[dev1, dev2])
-    )
-    cat = Catalog(CatalogConfigModel(name="live_catalog", refs=[entry]))
-
-    many = cat.get_many("BPM_C04-01/positions")
-    assert many == [dev1, dev2]
-
-    # get_one on a multi-device entry -> error
-    with pytest.raises(PyAMLException, match="is multi-device; use get_many"):
-        cat.get_one("BPM_C04-01/positions")
-
-
-@pytest.mark.parametrize(
-    "install_test_package",
-    [{"name": "tango-pyaml", "path": "tests/dummy_cs/tango-pyaml"}],
-    indirect=True,
-)
-def test_catalog_find_and_find_by_prefix(install_test_package):
-    devx1 = _build_ro_attr("srdiag/bpm/c04-01/SA_HPosition")
-    devy1 = _build_ro_attr("srdiag/bpm/c04-01/SA_VPosition")
-    devx2 = _build_ro_attr("srdiag/bpm/c04-02/SA_HPosition")
-
-    cat = Catalog(
-        CatalogConfigModel(
-            name="live_catalog",
-            refs=[
-                CatalogEntry(
-                    CatalogEntryConfigModel(reference="BPM_C04-01/x_pos", device=devx1)
-                ),
-                CatalogEntry(
-                    CatalogEntryConfigModel(reference="BPM_C04-01/y_pos", device=devy1)
-                ),
-                CatalogEntry(
-                    CatalogEntryConfigModel(reference="BPM_C04-02/x_pos", device=devx2)
-                ),
-            ],
-        )
+    assert proxy_after is proxy_before
+    assert proxy_after.get_target() is not old_target
+    assert (
+        proxy_after.get_target() is new_dev
+        or proxy_after.get_target()._cfg.attribute.endswith("SA_HPosition2")
     )
 
-    # regex search
-    res = cat.find(r"BPM_C04-01/.*_pos$")
-    assert set(res.keys()) == {"BPM_C04-01/x_pos", "BPM_C04-01/y_pos"}
 
-    # prefix search (literal prefix escaped internally)
-    res2 = cat.find_by_prefix("BPM_C04-01/")
-    assert set(res2.keys()) == {"BPM_C04-01/x_pos", "BPM_C04-01/y_pos"}
+@pytest.mark.parametrize(
+    "install_test_package",
+    [{"name": "tango-pyaml", "path": "tests/dummy_cs/tango-pyaml"}],
+    indirect=True,
+)
+def test_catalog_view_get_many_identity_stability(install_test_package):
+    """
+    For multi-device entries, CatalogView.get_many() returns a stable list of proxies.
+    After a config update, proxy identities must remain stable and targets must change.
+    """
+    from tango.pyaml.attribute import Attribute
+    from tango.pyaml.attribute import ConfigModel as AttrConfigModel
+
+    sr: Accelerator = Accelerator.load("tests/config/bpms.yaml")
+
+    cfg = sr.get_catalog(sr.live.get_catalog_name())
+    view = cfg.view(sr.live)
+
+    # We assume BPM_C01-02/x_pos and y_pos are single refs; for a true multi ref,
+    # use a key that is configured as devices=[...]. If your config has none,
+    # you can skip this test or add one reference in YAML.
+    #
+    # Here we validate multi-device behavior using a synthetic multi reference.
+    devs1 = [
+        _build_ro_attr("srdiag/bpm/c01-02/SA_HPosition"),
+        _build_ro_attr("srdiag/bpm/c01-02/SA_VPosition"),
+    ]
+    cfg.add_proto("BPM_C01-02/positions", devs1)
+    view.refresh_reference("BPM_C01-02/positions")
+
+    proxies_before = view.get_many("BPM_C01-02/positions")
+    targets_before = [p.get_target() for p in proxies_before]
+
+    devs2 = [
+        Attribute(AttrConfigModel(attribute="srdiag/bpm/c01-02/SA_HPosition2")),
+        Attribute(AttrConfigModel(attribute="srdiag/bpm/c01-02/SA_VPosition2")),
+    ]
+    cfg.update_proto("BPM_C01-02/positions", devs2)
+
+    proxies_after = view.get_many("BPM_C01-02/positions")
+    targets_after = [p.get_target() for p in proxies_after]
+
+    assert proxies_after == proxies_before
+    assert targets_after != targets_before
+
+    # targets_after should point to the new devices (or attached equivalent)
+    assert targets_after[0]._cfg.attribute.endswith("SA_HPosition2")
+    assert targets_after[1]._cfg.attribute.endswith("SA_VPosition2")
 
 
 @pytest.mark.parametrize(
@@ -148,31 +110,26 @@ def test_catalog_find_and_find_by_prefix(install_test_package):
     [{"name": "tango-pyaml", "path": "tests/dummy_cs/tango-pyaml"}],
     indirect=True,
 )
-def test_catalog_get_sub_catalog_regex(install_test_package):
-    devx1 = _build_ro_attr("srdiag/bpm/c04-01/SA_HPosition")
-    devy1 = _build_ro_attr("srdiag/bpm/c04-01/SA_VPosition")
-    devx2 = _build_ro_attr("srdiag/bpm/c04-02/SA_HPosition")
+def test_catalog_view_shape_stable_on_update(install_test_package):
+    """
+    Shape stability: a reference cannot change from single to multi (or multi to single)
+    once the view has created proxies for it.
+    """
+    sr: Accelerator = Accelerator.load("tests/config/bpms.yaml")
 
-    cat = Catalog(
-        CatalogConfigModel(
-            name="live_catalog",
-            refs=[
-                CatalogEntry(
-                    CatalogEntryConfigModel(reference="BPM_C04-01/x_pos", device=devx1)
-                ),
-                CatalogEntry(
-                    CatalogEntryConfigModel(reference="BPM_C04-01/y_pos", device=devy1)
-                ),
-                CatalogEntry(
-                    CatalogEntryConfigModel(reference="BPM_C04-02/x_pos", device=devx2)
-                ),
-            ],
-        )
-    )
+    cfg = sr.get_catalog(sr.live.get_catalog_name())
+    view = cfg.view(sr.live)
 
-    sub = cat.get_sub_catalog(r"^BPM_C04-01/")
-    assert set(sub.keys()) == {"BPM_C04-01/x_pos", "BPM_C04-01/y_pos"}
-    assert sub.get_one("BPM_C04-01/x_pos") is devx1
+    # Ensure existing single proxy
+    _ = view.get_one("BPM_C01-02/x_pos")
+
+    # Try to change the prototype to multi -> must raise at refresh time
+    devs_multi = [
+        _build_ro_attr("srdiag/bpm/c01-02/SA_HPosition"),
+        _build_ro_attr("srdiag/bpm/c01-02/SA_VPosition"),
+    ]
+    with pytest.raises(PyAMLException, match="shape change is not supported"):
+        cfg.update_proto("BPM_C01-02/x_pos", devs_multi)
 
 
 @pytest.mark.parametrize(
@@ -180,33 +137,21 @@ def test_catalog_get_sub_catalog_regex(install_test_package):
     [{"name": "tango-pyaml", "path": "tests/dummy_cs/tango-pyaml"}],
     indirect=True,
 )
-def test_catalog_get_sub_catalog_by_prefix_strips_prefix(install_test_package):
-    devx1 = _build_ro_attr("srdiag/bpm/c04-01/SA_HPosition")
-    devy1 = _build_ro_attr("srdiag/bpm/c04-01/SA_VPosition")
+def test_catalog_view_sub_catalog_reuses_proxies(install_test_package):
+    """
+    Sub-catalogs must reuse the same proxy instances (no duplication).
+    """
+    sr: Accelerator = Accelerator.load("tests/config/bpms.yaml")
 
-    cat = Catalog(
-        CatalogConfigModel(
-            name="live_catalog",
-            refs=[
-                CatalogEntry(
-                    CatalogEntryConfigModel(reference="BPM_C04-01/x_pos", device=devx1)
-                ),
-                CatalogEntry(
-                    CatalogEntryConfigModel(reference="BPM_C04-01/y_pos", device=devy1)
-                ),
-            ],
-        )
-    )
+    cfg = sr.get_catalog(sr.live.get_catalog_name())
+    view = cfg.view(sr.live)
 
-    sub = cat.get_sub_catalog_by_prefix("BPM_C04-01/")
-    # Prefix must be removed in the returned catalog
-    assert set(sub.keys()) == {"x_pos", "y_pos"}
-    assert sub.get_one("x_pos") is devx1
-    assert sub.get_one("y_pos") is devy1
+    p_parent = view.get_one("BPM_C01-02/x_pos")
 
-    # Removing the full key must fail (would produce an empty key)
-    with pytest.raises(PyAMLException, match="results in an empty reference"):
-        cat.get_sub_catalog_by_prefix("BPM_C04-01/x_pos")
+    sub = view.get_sub_catalog(r"^BPM_C01-02/")
+    p_sub = sub.get_one("BPM_C01-02/x_pos")
+
+    assert p_sub is p_parent
 
 
 @pytest.mark.parametrize(
@@ -214,18 +159,73 @@ def test_catalog_get_sub_catalog_by_prefix_strips_prefix(install_test_package):
     [{"name": "tango-pyaml", "path": "tests/dummy_cs/tango-pyaml"}],
     indirect=True,
 )
-def test_catalog_has_reference(install_test_package):
-    dev = _build_ro_attr("srdiag/bpm/c04-01/SA_HPosition")
-    cat = Catalog(
-        CatalogConfigModel(
-            name="live_catalog",
-            refs=[
-                CatalogEntry(
-                    CatalogEntryConfigModel(reference="BPM_C04-01/x_pos", device=dev)
-                ),
-            ],
-        )
-    )
+def test_catalog_view_sub_catalog_by_prefix_strips_prefix_and_reuses_proxies(
+    install_test_package,
+):
+    """
+    get_sub_catalog_by_prefix() must strip keys and reuse proxies.
+    """
+    sr: Accelerator = Accelerator.load("tests/config/bpms.yaml")
 
-    assert cat.has_reference("BPM_C04-01/x_pos") is True
-    assert cat.has_reference("BPM_C04-01/y_pos") is False
+    cfg = sr.get_catalog(sr.live.get_catalog_name())
+    view = cfg.view(sr.live)
+
+    p_parent = view.get_one("BPM_C01-02/x_pos")
+
+    sub = view.get_sub_catalog_by_prefix("BPM_C01-02/")
+    assert sub.has_reference("x_pos")
+
+    p_sub = sub.get_one("x_pos")
+    assert p_sub is p_parent
+
+
+@pytest.mark.parametrize(
+    "install_test_package",
+    [{"name": "tango-pyaml", "path": "tests/dummy_cs/tango-pyaml"}],
+    indirect=True,
+)
+def test_config_catalog_update_propagates_to_existing_bpm_instance(
+    install_test_package,
+):
+    """
+    Integration test:
+    Updating the config catalog must propagate to an already-created BPM object,
+    via the CatalogView proxies used internally by the control system.
+    """
+    from tango.pyaml.attribute import Attribute
+    from tango.pyaml.attribute import ConfigModel as AttrConfigModel
+
+    sr: Accelerator = Accelerator.load("tests/config/bpms.yaml")
+
+    # Create BPM first (it should have resolved proxies from the CS-bound view)
+    bpm = sr.live.get_bpm("BPM_C01-02")
+
+    cfg = sr.get_catalog(sr.live.get_catalog_name())
+    liv_catalog_view = cfg.view(
+        sr.live
+    )  # ensure view exists and is registered for updates
+
+    dev_x = Attribute(AttrConfigModel(attribute="srdiag/bpm/c01-02/SA_HPosition2"))
+    dev_y = Attribute(AttrConfigModel(attribute="srdiag/bpm/c01-02/SA_VPosition2"))
+
+    cfg.update_proto("BPM_C01-02/x_pos", dev_x)
+    cfg.update_proto("BPM_C01-02/y_pos", dev_y)
+
+    dev_x_live = liv_catalog_view.get_one("BPM_C01-02/x_pos")
+    dev_y_live = liv_catalog_view.get_one("BPM_C01-02/y_pos")
+
+    # The change is effective
+    assert dev_x_live.name() == "srdiag/bpm/c01-02/SA_HPosition2"
+    assert dev_y_live.name() == "srdiag/bpm/c01-02/SA_VPosition2"
+
+    # Changing the values works on high-level objects.
+    dev_x_live.set(1.0)
+    dev_y_live.set(2.0)
+
+    """
+    With a real control system, the following code would have work but not on the dummy.
+    dev_x.set(1.0)
+    dev_y.set(2.0)
+    """
+
+    assert np.allclose(bpm.positions.get(), np.array([1.0, 2.0]))

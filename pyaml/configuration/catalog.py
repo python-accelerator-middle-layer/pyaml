@@ -1,11 +1,8 @@
-import re
-from typing import Pattern
-
 from pydantic import BaseModel, ConfigDict, model_validator
 
 from pyaml import PyAMLException
-from pyaml.configuration.catalog_entry import CatalogEntry, CatalogValue
-from pyaml.configuration.catalog_entry import ConfigModel as CatalogEntryConfigModel
+from pyaml.configuration.catalog_entry import CatalogEntry, CatalogTarget
+from pyaml.control.catalog_view import CatalogView
 from pyaml.control.deviceaccess import DeviceAccess
 
 # Define the main class name for this module
@@ -46,48 +43,105 @@ class ConfigModel(BaseModel):
 
 class Catalog:
     """
-    A simple registry mapping reference keys to DeviceAccess objects.
+    Shared configuration catalog.
 
-    The catalog is intentionally minimal:
-    - It resolves references to DeviceAccess or list[DeviceAccess]
-    - It does NOT expose any DeviceAccess-like interface (no get/set/readback/etc.)
+    This catalog stores *prototypes* (not attached) and can be shared across
+    multiple ControlSystem instances.
+
+    Key points
+    ----------
+    - sr.get_catalog(name) returns this configuration object (as you described).
+    - Each ControlSystem (identified by name) uses a per-CS runtime view:
+        cfg_catalog.view(control_system)
+    - Updates are propagated to all existing views eagerly (refresh occurs
+      immediately), while actual device connections remain lazy inside
+      DeviceAccess backends.
+
+    Update semantics
+    ---------------
+    update_proto(reference, proto) updates the shared prototype and triggers a
+    refresh of that reference in every existing CatalogView.
     """
 
     def __init__(self, cfg: ConfigModel):
         self._cfg = cfg
-        self._entries: dict[str, CatalogValue] = {}
+        self._protos: dict[str, CatalogTarget] = {}
+
+        # Views indexed by ControlSystem name (instance identity rule).
+        self._views: dict[str, CatalogView] = {}
+
         for ref in cfg.refs:
-            self.add(ref.get_reference(), ref.get_value())
+            self.add_proto(ref.get_reference(), ref.get_value())
 
     # ------------------------------------------------------------------
 
     def get_name(self) -> str:
+        """Return the catalog name."""
         return self._cfg.name
 
     # ------------------------------------------------------------------
 
-    def add(self, reference: str, value: CatalogValue):
+    def keys(self) -> list[str]:
+        """Return all reference keys in this catalog."""
+        return list(self._protos.keys())
+
+    # ------------------------------------------------------------------
+
+    def has_reference(self, reference: str) -> bool:
+        """Return True if a prototype exists for this reference."""
+        return reference in self._protos
+
+    # ------------------------------------------------------------------
+
+    def add_proto(self, reference: str, proto: CatalogTarget):
         """
-        Register a reference in the catalog.
+        Add a new prototype entry.
+
+        Parameters
+        ----------
+        reference : str
+            Reference key.
+        proto : DeviceAccess | list[DeviceAccess]
+            Prototype device(s), not attached.
 
         Raises
         ------
         PyAMLException
             If the reference already exists.
         """
-        if reference in self._entries:
+        if reference in self._protos:
             raise PyAMLException(f"Duplicate catalog reference: '{reference}'")
-        self._entries[reference] = value
+        self._protos[reference] = proto
+        self._notify_update(reference)
 
     # ------------------------------------------------------------------
 
-    def get(self, reference: str) -> CatalogValue:
+    def update_proto(self, reference: str, proto: CatalogTarget):
         """
-        Resolve a reference key.
+        Update an existing prototype entry.
 
-        Returns
-        -------
-        DeviceAccess | list[DeviceAccess]
+        Parameters
+        ----------
+        reference : str
+            Existing reference key.
+        proto : DeviceAccess | list[DeviceAccess]
+            New prototype device(s), not attached.
+
+        Raises
+        ------
+        PyAMLException
+            If the reference does not exist.
+        """
+        if reference not in self._protos:
+            raise PyAMLException(f"Catalog reference '{reference}' not found.")
+        self._protos[reference] = proto
+        self._notify_update(reference)
+
+    # ------------------------------------------------------------------
+
+    def get_proto(self, reference: str) -> CatalogTarget:
+        """
+        Return the prototype for a given reference.
 
         Raises
         ------
@@ -95,200 +149,47 @@ class Catalog:
             If the reference does not exist.
         """
         try:
-            return self._entries[reference]
+            return self._protos[reference]
         except KeyError as exc:
             raise PyAMLException(f"Catalog reference '{reference}' not found.") from exc
 
     # ------------------------------------------------------------------
 
-    def get_one(self, reference: str) -> DeviceAccess:
+    def view(self, control_system: "ControlSystem") -> CatalogView:  # noqa: F821
         """
-        Resolve a reference and ensure it corresponds to a single DeviceAccess.
-
-        Raises
-        ------
-        PyAMLException
-            If the reference does not exist or is multi-device.
-        """
-        value = self.get(reference)
-
-        if isinstance(value, list):
-            raise PyAMLException(
-                f"Catalog reference '{reference}' is multi-device; use get_many()."
-            )
-
-        return value
-
-    # ------------------------------------------------------------------
-
-    def get_many(self, reference: str) -> list[DeviceAccess]:
-        """
-        Resolve a reference and ensure it corresponds to multiple DeviceAccess.
-
-        Returns
-        -------
-        list[DeviceAccess]
-
-        Raises
-        ------
-        PyAMLException
-            If the reference does not exist or is single-device.
-        """
-        value = self.get(reference)
-
-        if not isinstance(value, list):
-            raise PyAMLException(
-                f"Catalog reference '{reference}' is single-device; use get_one()."
-            )
-
-        return value
-
-    # ------------------------------------------------------------------
-
-    def find_by_prefix(self, prefix: str) -> dict[str, CatalogValue]:
-        """
-        Return all catalog entries whose reference starts with
-        the given prefix.
+        Return a per-ControlSystem runtime view of this catalog.
 
         Parameters
         ----------
-        prefix : str
-            Prefix to match at the beginning of reference keys.
+        control_system : ControlSystem
+            ControlSystem instance. Its name identifies the view.
 
         Returns
         -------
-        dict[str, CatalogValue]
-            Mapping {reference -> DeviceAccess or list[DeviceAccess]}.
+        CatalogView
+            Runtime view bound to the provided ControlSystem.
 
         Notes
         -----
-        - The prefix is escaped using re.escape() to avoid
-          unintended regular expression behavior.
-        - This is a convenience wrapper around `find()`.
+        - A view is created once per ControlSystem name and cached.
+        - The view is immediately refreshed (all entries attached in that CS context).
         """
-        return self.find(rf"^{re.escape(prefix)}")
+        cs_name = control_system.name()
+        view = self._views.get(cs_name)
+        if view is None:
+            view = CatalogView(config_catalog=self, control_system=control_system)
+            self._views[cs_name] = view
+            view.refresh_all()
+        return view
 
     # ------------------------------------------------------------------
 
-    def find(self, pattern: str) -> dict[str, CatalogValue]:
+    def _notify_update(self, reference: str):
         """
-        Resolve references matching a regular expression.
+        Notify all existing views that a reference prototype has changed.
 
-        Parameters
-        ----------
-        pattern : str
-            Regular expression applied to reference keys.
-
-        Returns
-        -------
-        dict[str, DeviceAccess | list[DeviceAccess]]
-            Mapping {reference -> value}.
+        We choose eager propagation: every view refreshes that reference immediately.
+        DeviceAccess backends remain lazy, so this is typically cheap.
         """
-        regex: Pattern[str] = re.compile(pattern)
-        return {k: v for k, v in self._entries.items() if regex.search(k)}
-
-    # ------------------------------------------------------------------
-
-    def get_sub_catalog_by_prefix(self, prefix: str) -> "Catalog":
-        """
-        Create a new Catalog containing only the references
-        that start with the given prefix, and remove the prefix
-        from the keys in the returned catalog.
-
-        Parameters
-        ----------
-        prefix : str
-            Prefix to match at the beginning of reference keys.
-
-        Returns
-        -------
-        Catalog
-            A new Catalog instance containing only the matching
-            references, with the prefix removed from their keys.
-
-        Notes
-        -----
-        - The prefix is matched literally (no regex behavior).
-        - The underlying DeviceAccess instances are NOT copied;
-          the same objects are reused.
-        - If no references match, an empty Catalog is returned.
-        - If removing the prefix results in duplicate keys,
-          a PyAMLException is raised.
-        """
-        sub_catalog = Catalog(ConfigModel(name=self.get_name() + "/" + prefix, refs=[]))
-
-        for key, value in self._entries.items():
-            if key.startswith(prefix):
-                # Remove prefix from key
-                new_key = key[len(prefix) :]
-
-                if not new_key:
-                    raise PyAMLException(
-                        f"Removing prefix '{prefix}' from '{key}' "
-                        "results in an empty reference."
-                    )
-
-                sub_catalog.add(new_key, value)
-
-        return sub_catalog
-
-    # ------------------------------------------------------------------
-
-    def get_sub_catalog(self, pattern: str) -> "Catalog":
-        """
-        Create a new Catalog containing only the references
-        matching the given regular expression.
-
-        Parameters
-        ----------
-        pattern : str
-            Regular expression applied to reference keys.
-
-        Returns
-        -------
-        Catalog
-            A new Catalog instance containing only the matching
-            references and their associated DeviceAccess objects.
-
-        Notes
-        -----
-        - The returned catalog is independent from the original one.
-        - The underlying DeviceAccess objects are not copied; the
-          same instances are reused.
-        - If no references match, an empty Catalog is returned.
-        """
-        data = self.find(pattern)
-
-        # Create a new empty catalog with a derived name
-        sub_catalog = Catalog(
-            ConfigModel(name=self.get_name() + "/" + pattern, refs=[])
-        )
-
-        # Re-register matching entries in the new catalog
-        for k, v in data.items():
-            sub_catalog.add(k, v)
-        return sub_catalog
-
-    # ------------------------------------------------------------------
-
-    def keys(self) -> list[str]:
-        """Return all catalog reference keys."""
-        return list(self._entries.keys())
-
-    # ------------------------------------------------------------------
-
-    def has_reference(self, reference: str) -> bool:
-        """
-        Return True if the reference exists in the catalog.
-
-        Parameters
-        ----------
-        reference : str
-            Catalog reference key.
-
-        Returns
-        -------
-        bool
-            True if the reference exists, False otherwise.
-        """
-        return reference in self._entries
+        for view in self._views.values():
+            view.refresh_reference(reference)

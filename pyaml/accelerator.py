@@ -78,8 +78,13 @@ class Accelerator(object):
 
         if cfg.controls is not None:
             for c in cfg.controls:
-                if c.get_catalog_name():
-                    c.set_catalog(self.__catalogs.get(c.get_catalog_name()))
+                if (
+                    c.get_catalog_name()
+                    and c.get_catalog_name() in self.__catalogs.keys()
+                ):
+                    catalog = self.__catalogs.get(c.get_catalog_name())
+                    view = catalog.view(c)
+                    c.set_catalog(view)
                 if c.name() == "live":
                     self.__live = c
                 else:
@@ -125,6 +130,21 @@ class Accelerator(object):
         if self._cfg.controls is not None:
             for c in self._cfg.controls:
                 c.set_energy(E)
+
+    def get_catalog(self, catalog_name: str) -> Catalog | None:
+        """
+
+        Parameters
+        ----------
+        catalog_name: str
+            The name of the catalog
+
+        Returns
+        -------
+            The catalog instance or None
+
+        """
+        return self.__catalogs.get(catalog_name)
 
     def post_init(self):
         """
