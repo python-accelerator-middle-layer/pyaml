@@ -51,6 +51,14 @@ class CSVCurve(Curve):
             )
 
     def get_curve(self) -> np.array:
+        """
+        Get the curve data.
+
+        Returns
+        -------
+        np.array
+            Curve data as a 2D numpy array of shape (n, 2)
+        """
         return self._curve
 
     def __repr__(self):

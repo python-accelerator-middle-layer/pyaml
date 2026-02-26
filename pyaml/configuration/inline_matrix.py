@@ -33,6 +33,14 @@ class InlineMatrix(Matrix):
         self._mat = np.array(self._cfg.mat)
 
     def get_matrix(self) -> np.array:
+        """
+        Get the matrix data.
+
+        Returns
+        -------
+        np.array
+            Matrix data as a numpy array
+        """
         return self._mat
 
     def __repr__(self):

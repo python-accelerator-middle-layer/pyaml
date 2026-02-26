@@ -580,6 +580,7 @@ class RBetatronTuneArray(abstract.ReadFloatArray):
     def unit(self) -> str:
         return "1"
 
+
 # ------------------------------------------------------------------------------
 
 
