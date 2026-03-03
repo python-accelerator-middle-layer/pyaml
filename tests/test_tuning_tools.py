@@ -22,3 +22,14 @@ def test_tuning_tools():
     tune = sr.design.tune.readback()
     assert np.abs(tune[0] - 0.17) < 1e-5
     assert np.abs(tune[1] - 0.32) < 1e-5
+
+
+def test_tune_step():
+    sr = Accelerator.load("tests/config/EBSTune.yaml", use_fast_loader=False)
+    sr.design.get_lattice().disable_6d()
+    sr.design.tune.response.measure(callback=tune_callback)
+    tune_initial = sr.design.tune.readback()
+    dtune = np.array([0.01, -0.01])
+    sr.design.tune.step(dtune)
+    tune = sr.design.tune.readback()
+    np.testing.assert_allclose(tune - tune_initial, dtune, atol=1e-5)

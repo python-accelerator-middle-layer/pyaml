@@ -212,15 +212,28 @@ class Tune(Element):
         wait_time : float
             Time to wait in second between 2 iterations
         """
-        self.__setpoint = np.array(tune)
         for i in range(iter):
             diff_tune = tune - self.readback()
-            str = self.__tr.quads().strengths.get()
-            str += self.__tr.correct(diff_tune)
-            self.__tr.quads().strengths.set(str)
-            if i < iter - 1:
-                # Does not wait on the last iter
-                time.sleep(wait_time)
+            if i == iter:
+                wait_time = 0  # do not wait on last iteration
+            self.step(diff_tune, wait_time)
+        self.__setpoint = np.array(tune)
+
+    def step(self, dtune: np.array, wait_time: float = 0.0):
+        """
+        Step the tune by a delta
+        Parameters
+        ----------
+        dtune : np.array
+            Delta tune
+        iter_nb: int
+        wait_time: float
+        """
+        strengths = self.__tr.quads().strengths.get()
+        strengths += self.__tr.correct(dtune)
+        self.__tr.quads().strengths.set(strengths)
+        time.sleep(wait_time)
+        self.__setpoint += dtune
 
     @property
     def response(self) -> TuneResponse:
