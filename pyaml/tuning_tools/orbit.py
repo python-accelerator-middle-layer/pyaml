@@ -157,11 +157,12 @@ class Orbit(Element):
                 response_matrix=self.response_matrix,
                 method="svd_values",
                 parameter=svH,
-                zerosum=True,
+                virtual=True,
                 apply=False,
                 plane="H",
                 reference=reference,
                 rf=rf,
+                # virtual_target=1e-6
             )
 
         if plane is None or plane == "V":
@@ -170,7 +171,7 @@ class Orbit(Element):
                 response_matrix=self.response_matrix,
                 method="svd_values",
                 parameter=svV,
-                zerosum=False,
+                virtual=False,
                 apply=False,
                 plane="V",
                 reference=reference,
@@ -228,6 +229,20 @@ class Orbit(Element):
             rf_frequency = self._rf_plant.frequency.get()
             self._rf_plant.frequency.set(rf_frequency + rf_trim)
 
+        return
+
+    def set_weight(
+        self, name: str, weight: float, plane: Optional[Literal["H", "V"]] = None
+    ) -> None:
+        self.response_matrix.set_weight(name, weight, plane=plane)
+        return
+
+    def set_virtual_weight(self, weight: float) -> None:
+        self.response_matrix.virtual_weight = weight
+        return
+
+    def set_rf_weight(self, weight: float) -> None:
+        self.response_matrix.rf_weight = weight
         return
 
     def post_init(self):
