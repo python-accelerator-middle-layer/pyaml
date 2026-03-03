@@ -20,14 +20,17 @@ ref_h, ref_v = ebs.get_bpms("BPM").positions.get().T
 reference = np.concatenate((ref_h, ref_v))
 ########################################################
 
+plant = sr.design.get_rf_plant("RF")
+frf = plant.frequency.get()
+plant.frequency.set(frf + 100)
+
 
 ## generate some orbit
-std_kick = 1e-6
+std_kick = 0e-6
 hcorr = ebs.get_magnets("HCorr")
 vcorr = ebs.get_magnets("VCorr")
 bpms = ebs.get_bpms("BPM")
 
-np.random.seed(1)
 # mangle orbit
 hcorr.strengths.set(
     hcorr.strengths.get() + std_kick * np.random.normal(size=len(hcorr))
@@ -35,9 +38,6 @@ hcorr.strengths.set(
 vcorr.strengths.set(
     vcorr.strengths.get() + std_kick * np.random.normal(size=len(vcorr))
 )
-
-h0 = hcorr.strengths.get()
-v0 = vcorr.strengths.get()
 
 positions_bc = bpms.positions.get()
 std_bc = np.std(positions_bc, axis=0)
@@ -47,9 +47,10 @@ print(
 )
 ########################################################
 
-ebs.orbit.set_virtual_weight(1000)
 ## Correct the orbit
-ebs.orbit.correct(reference=reference)
+ebs.orbit.set_rf_weight(1e7)
+ebs.orbit.correct(reference=reference, rf=True, gain_H=1, gain_V=1, gain_RF=1)
+ebs.orbit.correct(reference=reference, rf=True, gain_H=1, gain_V=1, gain_RF=1)
 # ebs.orbit.correct(plane="H")
 # ebs.orbit.correct(plane="V")
 ########################################################
@@ -81,6 +82,4 @@ ax3.set_ylabel("Strength (rad)")
 ax3.set_xlabel("Steerer number")
 fig.tight_layout()
 
-print(f"Sum of h. corr. trims: {np.sum(hcorr.strengths.get() - h0)}")
-print(f"Sum of v. corr. trims: {np.sum(vcorr.strengths.get() - v0)}")
 plt.show()
