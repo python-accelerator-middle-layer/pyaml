@@ -180,6 +180,7 @@ class Orbit(Element):
         eff_gain_H = gain_H if gain_H is not None else gain
         eff_gain_V = gain_V if gain_V is not None else gain
 
+        # take care of rf trim
         rf_flag = rf and (plane is None or plane == "H")
         if rf_flag:
             if self._rf_plant is None:
@@ -189,6 +190,7 @@ class Orbit(Element):
             rf_trim = eff_gain_RF * trims_h["rf"]
             del trims_h["rf"]
 
+        # collect all trims and apply gain
         if plane is None:
             for trim in trims_h:
                 trims_h[trim] *= eff_gain_H
@@ -220,6 +222,7 @@ class Orbit(Element):
                 )
             data_to_send[idx] += trims[name]
 
+        # send trims
         corr_array.strengths.set(data_to_send)
         if rf_flag:
             rf_frequency = self._rf_plant.frequency.get()
