@@ -8,11 +8,13 @@ from pydantic import BaseModel, ConfigDict, Field
 
 from .arrays.array import ArrayConfig
 from .common.element import Element
+from .common.element_holder import ElementHolder
 from .common.exception import PyAMLConfigException
 from .configuration.factory import Factory
 from .configuration.fileloader import load, set_root_folder
 from .control.controlsystem import ControlSystem
 from .lattice.simulator import Simulator
+from .yellow_pages import YellowPages
 
 # Define the main class name for this module
 PYAMLCLASS = "Accelerator"
@@ -66,24 +68,28 @@ class Accelerator(object):
         self._cfg = cfg
         __design = None
         __live = None
+        self._controls: dict[str, ElementHolder] = {}
+        self._simulators: dict[str, ElementHolder] = {}
 
         if cfg.controls is not None:
             for c in cfg.controls:
                 if c.name() == "live":
                     self.__live = c
                 else:
-                    # Add as dynacmic attribute
+                    # Add as dynamic attribute
                     setattr(self, c.name(), c)
                 c.fill_device(cfg.devices)
+                self._controls[c.name()] = c
 
         if cfg.simulators is not None:
             for s in cfg.simulators:
                 if s.name() == "design":
                     self.__design = s
                 else:
-                    # Add as dynacmic attribute
+                    # Add as dynamic attribute
                     setattr(self, s.name(), s)
                 s.fill_device(cfg.devices)
+                self._simulators[s.name()] = s
 
         if cfg.arrays is not None:
             for a in cfg.arrays:
@@ -96,6 +102,8 @@ class Accelerator(object):
 
         if cfg.energy is not None:
             self.set_energy(cfg.energy)
+
+        self._yellow_pages = YellowPages(self)
 
         self.post_init()
 
@@ -155,6 +163,25 @@ class Accelerator(object):
             The design simulator instance
         """
         return self.__design
+
+    @property
+    def yellow_pages(self) -> YellowPages:
+        return self._yellow_pages
+
+    def simulators(self) -> dict[str, "ElementHolder"]:
+        """Return all registered control/simulator modes."""
+        return self._simulators
+
+    def controls(self) -> dict[str, "ElementHolder"]:
+        """Return all registered control/simulator modes."""
+        return self._controls
+
+    def modes(self) -> dict[str, "ElementHolder"]:
+        """Return all registered control/simulator modes."""
+        modes: dict[str, "ElementHolder"] = {}
+        modes.update(self._simulators)
+        modes.update(self._controls)
+        return self._controls
 
     def __repr__(self):
         return repr(self._cfg).replace("ConfigModel", self.__class__.__name__)

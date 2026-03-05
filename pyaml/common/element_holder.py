@@ -274,3 +274,63 @@ class ElementHolder(object):
     @property
     def dispersion(self) -> "Dispersion":
         return self.get_dispersion_tuning("DEFAULT_DISPERSION")
+
+    def get_array(self, name: str):
+        """
+        Generic array resolver used by YellowPages.
+
+        The method returns the array object referenced by 'name', regardless of its
+        concrete type.
+        """
+        if name in self.__BPM_ARRAYS:
+            return self.__BPM_ARRAYS[name]
+        if name in self.__MAGNET_ARRAYS:
+            return self.__MAGNET_ARRAYS[name]
+        if name in self.__CFM_MAGNET_ARRAYS:
+            return self.__CFM_MAGNET_ARRAYS[name]
+        if name in self.__SERIALIZED_MAGNETS_ARRAYS:
+            return self.__SERIALIZED_MAGNETS_ARRAYS[name]
+        if name in self.__ELEMENT_ARRAYS:
+            return self.__ELEMENT_ARRAYS[name]
+
+        raise PyAMLException(f"Array {name} not defined")
+
+    def get_tool(self, name: str):
+        """
+        Generic tuning tool resolver used by YellowPages.
+        """
+        if name not in self.__TUNING_TOOLS:
+            raise PyAMLException(f"Tool {name} not defined")
+        return self.__TUNING_TOOLS[name]
+
+    def get_diagnostic(self, name: str):
+        """
+        Generic diagnostic resolver used by YellowPages.
+        """
+        if name not in self.__DIAG:
+            raise PyAMLException(f"Diagnostic {name} not defined")
+        return self.__DIAG[name]
+
+    def list_arrays(self) -> set[str]:
+        """
+        Return all array identifiers available in this holder.
+        """
+        return (
+            set(self.__BPM_ARRAYS.keys())
+            | set(self.__MAGNET_ARRAYS.keys())
+            | set(self.__CFM_MAGNET_ARRAYS.keys())
+            | set(self.__SERIALIZED_MAGNETS_ARRAYS.keys())
+            | set(self.__ELEMENT_ARRAYS.keys())
+        )
+
+    def list_tools(self) -> set[str]:
+        """
+        Return all tuning tool identifiers available in this holder.
+        """
+        return set(self.__TUNING_TOOLS.keys())
+
+    def list_diagnostics(self) -> set[str]:
+        """
+        Return all diagnostic identifiers available in this holder.
+        """
+        return set(self.__DIAG.keys())
