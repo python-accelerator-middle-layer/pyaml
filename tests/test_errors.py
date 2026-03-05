@@ -24,6 +24,10 @@ def test_tune(install_test_package):
     assert "element BPM_C04-06 already defined" in str(exc)
     assert "line 58, column 3" in str(exc)
 
+    with pytest.raises(PyAMLConfigException) as exc:
+        ml: Accelerator = Accelerator.load("tests/config/bad_conf_duplicate_4.yaml")
+    assert "MagnetArray HCORR : duplicate name SH1A-C02-H @index 2" in str(exc)
+
     sr: Accelerator = Accelerator.load("tests/config/EBSTune.yaml")
     m1 = sr.live.get_magnet("QF1E-C04")
     m2 = sr.design.get_magnet("QF1A-C05")
