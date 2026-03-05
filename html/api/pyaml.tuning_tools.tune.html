@@ -581,6 +581,20 @@ or a control system.</p>
 </dl>
 </dd></dl>
 
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaml.tuning_tools.tune.Tune.step">
+<span class="sig-name descname"><span class="pre">step</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dtune</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">wait_time</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/tuning_tools/tune.html#Tune.step"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.tuning_tools.tune.Tune.step" title="Link to this definition">#</a></dt>
+<dd><p>Step the tune by a delta
+:param dtune: Delta tune
+:type dtune: np.array
+:param iter_nb:
+:type iter_nb: int
+:param wait_time:
+:type wait_time: float</p>
+<dl class="field-list simple">
+</dl>
+</dd></dl>
+
 <dl class="py property">
 <dt class="sig sig-object py" id="pyaml.tuning_tools.tune.Tune.response">
 <em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">response</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#pyaml.tuning_tools.tune.TuneResponse" title="pyaml.tuning_tools.tune.TuneResponse"><span class="pre">TuneResponse</span></a></em><a class="headerlink" href="#pyaml.tuning_tools.tune.Tune.response" title="Link to this definition">#</a></dt>
@@ -714,6 +728,7 @@ If the callback return false, then the process is aborted.</p></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.tuning_tools.tune.Tune.post_init"><code class="docutils literal notranslate"><span class="pre">Tune.post_init()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.tuning_tools.tune.Tune.readback"><code class="docutils literal notranslate"><span class="pre">Tune.readback()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.tuning_tools.tune.Tune.set"><code class="docutils literal notranslate"><span class="pre">Tune.set()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.tuning_tools.tune.Tune.step"><code class="docutils literal notranslate"><span class="pre">Tune.step()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.tuning_tools.tune.Tune.response"><code class="docutils literal notranslate"><span class="pre">Tune.response</span></code></a></li>
 </ul>
 </li>

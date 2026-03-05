@@ -617,15 +617,31 @@
 <span class="sd">        wait_time : float</span>
 <span class="sd">            Time to wait in second between 2 iterations</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">__setpoint</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">tune</span><span class="p">)</span>
         <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">iter</span><span class="p">):</span>
             <span class="n">diff_tune</span> <span class="o">=</span> <span class="n">tune</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">readback</span><span class="p">()</span>
-            <span class="nb">str</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__tr</span><span class="o">.</span><span class="n">quads</span><span class="p">()</span><span class="o">.</span><span class="n">strengths</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
-            <span class="nb">str</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__tr</span><span class="o">.</span><span class="n">correct</span><span class="p">(</span><span class="n">diff_tune</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">__tr</span><span class="o">.</span><span class="n">quads</span><span class="p">()</span><span class="o">.</span><span class="n">strengths</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span>
-            <span class="k">if</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="nb">iter</span> <span class="o">-</span> <span class="mi">1</span><span class="p">:</span>
-                <span class="c1"># Does not wait on the last iter</span>
-                <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="n">wait_time</span><span class="p">)</span></div>
+            <span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="nb">iter</span><span class="p">:</span>
+                <span class="n">wait_time</span> <span class="o">=</span> <span class="mi">0</span>  <span class="c1"># do not wait on last iteration</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">step</span><span class="p">(</span><span class="n">diff_tune</span><span class="p">,</span> <span class="n">wait_time</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__setpoint</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">tune</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="Tune.step">
+<a class="viewcode-back" href="../../../api/pyaml.tuning_tools.tune.html#pyaml.tuning_tools.tune.Tune.step">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">step</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dtune</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">,</span> <span class="n">wait_time</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Step the tune by a delta</span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        dtune : np.array</span>
+<span class="sd">            Delta tune</span>
+<span class="sd">        iter_nb: int</span>
+<span class="sd">        wait_time: float</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">strengths</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__tr</span><span class="o">.</span><span class="n">quads</span><span class="p">()</span><span class="o">.</span><span class="n">strengths</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+        <span class="n">strengths</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__tr</span><span class="o">.</span><span class="n">correct</span><span class="p">(</span><span class="n">dtune</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__tr</span><span class="o">.</span><span class="n">quads</span><span class="p">()</span><span class="o">.</span><span class="n">strengths</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">strengths</span><span class="p">)</span>
+        <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="n">wait_time</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__setpoint</span> <span class="o">+=</span> <span class="n">dtune</span></div>
 
 
     <span class="nd">@property</span>
