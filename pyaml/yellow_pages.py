@@ -39,11 +39,13 @@ Regex grammar:
 
 Examples
 --------
->>> yp["BPM"]
->>> yp["HCORR|VCORR"]
->>> yp["BPM - re{BPM_C01-01}"]
->>> yp["re{^BPM_C..-..$}"]
->>> yp["(HCORR|VCORR) - re{CH_.*}"]
+.. code-block:: python
+
+    >>> yp["BPM"]
+    >>> yp["HCORR|VCORR"]
+    >>> yp["BPM - re{BPM_C01-01}"]
+    >>> yp["re{^BPM_C..-..$}"]
+    >>> yp["(HCORR|VCORR) - re{CH_.*}"]
 
 Notes
 -----
@@ -187,20 +189,65 @@ def _extract_regex(tok: str) -> str:
 
 
 class YellowPages:
-    """
-    Fully dynamic YellowPages service attached to Accelerator.
+    r"""
+    Dynamic discovery service for accelerator objects.
 
-    Discovery:
-    - keys/categories are derived by scanning all modes at runtime.
+    :class:`YellowPages` provides a unified access layer to arrays,
+    tuning tools and diagnostics available in an
+    :class:`~pyaml.accelerator.Accelerator`.
 
-    Resolution:
-    - get(key, mode="...") resolves in a specific mode.
-    - get(key) returns dict[mode_name, obj] for all modes where available.
+    Entries are discovered dynamically by scanning all
+    :class:`~pyaml.element_holder.ElementHolder` instances
+    associated with the accelerator control and simulation modes.
 
-    Query language (arrays/IDs):
-    - yp["BPM"]
-    - yp["HCORR|VCORR"]
-    - yp["BPM - re{BPM_C01-01}"]
+    Notes
+    -----
+    The :class:`~pyaml.accelerator.Accelerator` must provide:
+
+    - ``controls() -> dict[str, ElementHolder]``
+    - ``simulators() -> dict[str, ElementHolder]``
+    - ``modes() -> dict[str, ElementHolder]``
+
+    Each :class:`~pyaml.element_holder.ElementHolder` must implement:
+
+    - ``list_arrays()`` / ``get_array(name)``
+    - ``list_tools()`` / ``get_tool(name)``
+    - ``list_diagnostics()`` / ``get_diagnostic(name)``
+
+    Examples
+    --------
+
+    Print the global overview:
+
+    .. code-block:: python
+
+        print(sr.yellow_pages)
+
+    Resolve an entry across all modes:
+
+    .. code-block:: python
+
+        sr.yellow_pages.get("BPM")
+
+    Resolve in a specific mode:
+
+    .. code-block:: python
+
+        sr.yellow_pages.get("BPM", mode="live")
+
+    Query arrays using set expressions:
+
+    .. code-block:: python
+
+        sr.yellow_pages["BPM"]
+        sr.yellow_pages["HCORR|VCORR"]
+        sr.yellow_pages["BPM - re{BPM_C01-01}"]
+
+    Regex filtering:
+
+    .. code-block:: python
+
+        sr.yellow_pages["re{^BPM_C..-..$}"]
     """
 
     def __init__(self, accelerator: Any):
@@ -211,14 +258,93 @@ class YellowPages:
     # ---------------------------
 
     def has(self, key: str) -> bool:
+        """
+        Check whether a YellowPages key exists.
+
+        Parameters
+        ----------
+        key : str
+            Name of the entry.
+
+        Returns
+        -------
+        bool
+            True if the key exists.
+
+        Examples
+        --------
+
+        .. code-block:: python
+
+            >>> sr.yellow_pages.has("BPM")
+            True
+
+        .. code-block:: python
+
+            >>> sr.yellow_pages.has("UNKNOWN")
+            False
+
+        """
         return key in self._all_keys()
 
     def categories(self) -> list[str]:
+        """
+        Return the list of available categories.
+
+        Only categories that contain elements are returned.
+
+        Returns
+        -------
+        list[str]
+
+        Examples
+        --------
+
+        .. code-block:: python
+
+            >>> sr.yellow_pages.categories()
+            ['Arrays', 'Tools', 'Diagnostics']
+
+        """
         discovered = self._discover()
         present = {cat for cat, keys in discovered.items() if keys}
         return [c.value for c in YellowPagesCategory if c in present]
 
     def keys(self, category: str | YellowPagesCategory | None = None) -> list[str]:
+        """
+        Return available YellowPages keys.
+
+        Parameters
+        ----------
+        category : str or YellowPagesCategory, optional
+            Restrict results to a specific category.
+
+        Returns
+        -------
+        list[str]
+
+        Examples
+        --------
+
+        All entries:
+
+        .. code-block:: python
+
+            >>> sr.yellow_pages.keys()
+
+        Only arrays:
+
+        .. code-block:: python
+
+            >>> sr.yellow_pages.keys("Arrays")
+
+        Using enum:
+
+        .. code-block:: python
+
+            >>> sr.yellow_pages.keys(YellowPagesCategory.ARRAYS)
+
+        """
         discovered = self._discover()
 
         if category is None:
@@ -247,6 +373,31 @@ class YellowPages:
     # ---------------------------
 
     def availability(self, key: str) -> set[str]:
+        """
+        Return the list of modes where a key is available.
+
+        Parameters
+        ----------
+        key : str
+
+        Returns
+        -------
+        set[str]
+
+        Examples
+        --------
+
+        .. code-block:: python
+
+            >>> sr.yellow_pages.availability("BPM")
+            {'live', 'design'}
+
+        .. code-block:: python
+
+            >>> sr.yellow_pages.availability("DEFAULT_ORBIT_CORRECTION")
+            {'live'}
+
+        """
         self._require_key(key)
         avail: set[str] = set()
         for mode_name, holder in self._acc.modes().items():
@@ -255,6 +406,42 @@ class YellowPages:
         return avail
 
     def get(self, key: str, *, mode: str | None = None):
+        """
+        Resolve a YellowPages entry.
+
+        Parameters
+        ----------
+        key : str
+            Entry name.
+        mode : str, optional
+            Specific mode.
+
+        Returns
+        -------
+        object or dict[str, object]
+
+        Examples
+        --------
+
+        Resolve in all modes:
+
+        .. code-block:: python
+
+            >>> sr.yellow_pages.get("BPM")
+
+        Resolve in a specific mode:
+
+        .. code-block:: python
+
+            >>> sr.yellow_pages.get("BPM", mode="live")
+
+        Using attribute access:
+
+        .. code-block:: python
+
+            >>> sr.yellow_pages.BPM
+
+        """
         self._require_key(key)
 
         if mode is not None:
@@ -280,6 +467,61 @@ class YellowPages:
     # ---------------------------
 
     def __getitem__(self, query: str) -> list[str]:
+        """
+        Evaluate a YellowPages query expression.
+
+        The query language allows set operations and regex filtering.
+
+        Operators
+        ---------
+
+        | : union
+
+        & : intersection
+
+        - : difference
+
+        Parentheses are supported.
+
+        Regex
+        -----
+
+        Use the form ``re{pattern}``.
+
+        Examples
+        --------
+
+        All BPMs:
+
+        .. code-block:: python
+
+            >>> sr.yellow_pages["BPM"]
+
+        Union:
+
+        .. code-block:: python
+
+            >>> sr.yellow_pages["HCORR|VCORR"]
+
+        Difference:
+
+        .. code-block:: python
+
+            >>> sr.yellow_pages["BPM - re{BPM_C01-01}"]
+
+        Regex filter:
+
+        .. code-block:: python
+
+            >>> sr.yellow_pages["re{^BPM_C..-..$}"]
+
+        Combined expressions:
+
+        .. code-block:: python
+
+            >>> sr.yellow_pages["(HCORR|VCORR) - re{CH_.*}"]
+
+        """
         ids = self._eval_query_to_ids(query)
         return sorted(ids)
 
@@ -288,6 +530,40 @@ class YellowPages:
     # ---------------------------
 
     def __repr__(self) -> str:
+        """
+        Return a human-readable overview of the YellowPages content.
+
+        The output lists controls, simulators and discovered objects
+        grouped by category.
+
+        Examples
+        --------
+
+        .. code-block:: python
+
+            >>> print(sr.yellow_pages)
+
+        Controls:
+            live
+            .
+
+        Simulators:
+            design
+            .
+
+        Arrays:
+            BPM (pyaml.arrays.bpm_array) size=224
+            HCORR (pyaml.arrays.magnet_array) size=96
+            .
+
+        Tools:
+            DEFAULT_ORBIT_CORRECTION (pyaml.tuning_tools.orbit)
+            .
+
+        Diagnostics:
+            BETATRON_TUNE (pyaml.diagnostics.tune_monitor)
+            .
+        """
         lines: list[str] = []
 
         lines.append("Controls:")
