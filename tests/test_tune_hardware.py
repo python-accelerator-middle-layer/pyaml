@@ -38,8 +38,9 @@ def test_tune():
     newTune = tune_monitor.tune.get()
     units = quadForTuneDesign.hardwares.unit()
     diffTune = newTune - tune
+
     assert np.abs(diffTune[0] - 0.1) < 1e-3
     assert np.abs(diffTune[1] - 0.05) < 1.1e-3
-    assert np.abs(currents[0] - 88.04522942) < 1e-8
-    assert np.abs(currents[1] - 88.26677735) < 1e-8
+    assert np.abs(currents[62] - 88.04522942) < 1e-8
+    assert np.abs(currents[63] - 88.26677735) < 1e-8
     assert units[0] == "A" and units[1] == "A"

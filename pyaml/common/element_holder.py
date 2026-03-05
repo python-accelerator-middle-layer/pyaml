@@ -102,24 +102,35 @@ class ElementHolder(object):
         constructor,
         ARR: dict,
     ):
-        a = []
-
+        all_names: list[str] = []
+        excluded_names: list[str] = []
         for name in element_names:
-            names = self.find_elements(name)
+            if name.startswith("!"):
+                names = self.find_elements(name[1:])
+                excluded_names.extend(names)
+            else:
+                names = self.find_elements(name)
+                all_names.extend(names)
 
-            for n in names:
-                try:
-                    m = get_func(n)
-                except Exception as err:
-                    raise PyAMLException(
-                        f"{constructor.__name__} {array_name} : {err} @index {len(a)}"
-                    ) from None
-                if m in a:
-                    raise PyAMLException(
-                        f"{constructor.__name__} {array_name} : "
-                        f"duplicate name {name} @index {len(a)}"
-                    ) from None
-                a.append(m)
+        [all_names.remove(name) for name in excluded_names]
+
+        order = {elem_name: i for i, elem_name in enumerate(self.__ALL.keys())}
+        all_names = sorted(all_names, key=lambda num: order[num])
+
+        a = []
+        for n in all_names:
+            try:
+                m = get_func(n)
+            except Exception as err:
+                raise PyAMLException(
+                    f"{constructor.__name__} {array_name} : {err} @index {len(a)}"
+                ) from None
+            if m in a:
+                raise PyAMLException(
+                    f"{constructor.__name__} {array_name} : "
+                    f"duplicate name {name} @index {len(a)}"
+                ) from None
+            a.append(m)
         ARR[array_name] = constructor(array_name, a)
 
     def __add(self, array, element: Element):
