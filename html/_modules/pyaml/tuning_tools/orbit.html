@@ -378,7 +378,7 @@
 <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
     <span class="kn">from</span><span class="w"> </span><span class="nn">typing_extensions</span><span class="w"> </span><span class="kn">import</span> <span class="n">Self</span>  <span class="c1"># Python 3.10 and earlier</span>
 
-
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">pydantic</span><span class="w"> </span><span class="kn">import</span> <span class="n">ConfigDict</span>
 
 <span class="k">if</span> <span class="n">TYPE_CHECKING</span><span class="p">:</span>
@@ -408,7 +408,9 @@
     <span class="n">bpm_array_name</span><span class="p">:</span> <span class="nb">str</span>
     <span class="n">hcorr_array_name</span><span class="p">:</span> <span class="nb">str</span>
     <span class="n">vcorr_array_name</span><span class="p">:</span> <span class="nb">str</span>
-    <span class="n">singular_values</span><span class="p">:</span> <span class="nb">int</span>
+    <span class="n">singular_values</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">singular_values_H</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">singular_values_V</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="n">response_matrix</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">ResponseMatrix</span><span class="p">]</span></div>
 
 
@@ -422,7 +424,23 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">bpm_array_name</span> <span class="o">=</span> <span class="n">cfg</span><span class="o">.</span><span class="n">bpm_array_name</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">hcorr_array_name</span> <span class="o">=</span> <span class="n">cfg</span><span class="o">.</span><span class="n">hcorr_array_name</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">vcorr_array_name</span> <span class="o">=</span> <span class="n">cfg</span><span class="o">.</span><span class="n">vcorr_array_name</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">singular_values</span> <span class="o">=</span> <span class="n">cfg</span><span class="o">.</span><span class="n">singular_values</span>
+
+        <span class="k">if</span> <span class="n">cfg</span><span class="o">.</span><span class="n">singular_values</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">cfg</span><span class="o">.</span><span class="n">singular_values_H</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">cfg</span><span class="o">.</span><span class="n">singular_values_V</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">PyAMLException</span><span class="p">(</span>
+                    <span class="s2">&quot;Either `singular_values` or `singular_values_H` and &quot;</span>
+                    <span class="s2">&quot;`singular_values_V` must be provided.&quot;</span>
+                <span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">singular_values_H</span> <span class="o">=</span> <span class="n">cfg</span><span class="o">.</span><span class="n">singular_values_H</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">singular_values_V</span> <span class="o">=</span> <span class="n">cfg</span><span class="o">.</span><span class="n">singular_values_V</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">cfg</span><span class="o">.</span><span class="n">singular_values_H</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">cfg</span><span class="o">.</span><span class="n">singular_values_V</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">PyAMLException</span><span class="p">(</span>
+                    <span class="s2">&quot;Either `singular_values` or `singular_values_H` and &quot;</span>
+                    <span class="s2">&quot;`singular_values_V` must be provided, not both.&quot;</span>
+                <span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">singular_values_H</span> <span class="o">=</span> <span class="n">cfg</span><span class="o">.</span><span class="n">singular_values</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">singular_values_V</span> <span class="o">=</span> <span class="n">cfg</span><span class="o">.</span><span class="n">singular_values</span>
 
         <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">cfg</span><span class="o">.</span><span class="n">response_matrix</span><span class="p">)</span> <span class="ow">is</span> <span class="nb">str</span><span class="p">:</span>
             <span class="n">response_matrix_filename</span> <span class="o">=</span> <span class="n">cfg</span><span class="o">.</span><span class="n">response_matrix</span>
@@ -445,10 +463,42 @@
 <a class="viewcode-back" href="../../../api/pyaml.tuning_tools.orbit.html#pyaml.tuning_tools.orbit.Orbit.correct">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">correct</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
-        <span class="n">reference</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-        <span class="n">gain</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">,</span>
         <span class="n">plane</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;H&quot;</span><span class="p">,</span> <span class="s2">&quot;V&quot;</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">gain</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">,</span>
+        <span class="n">gain_H</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">gain_V</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">singular_values_H</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">singular_values_V</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">reference</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Perform orbit correction using the configured response matrix and corrector</span>
+<span class="sd">        arrays.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        reference : optional</span>
+<span class="sd">            Optional reference orbit to correct towards. If not specified, corrects</span>
+<span class="sd">            to zero orbit.</span>
+<span class="sd">        gain : float, default 1.0</span>
+<span class="sd">            Global gain applied to all corrector kicks if per-plane gains are not</span>
+<span class="sd">            specified.</span>
+<span class="sd">        plane : {&#39;H&#39;, &#39;V&#39;}, optional</span>
+<span class="sd">            Plane to correct. If &#39;H&#39;, only horizontal correction is performed.</span>
+<span class="sd">            If &#39;V&#39;, only vertical correction is performed.</span>
+<span class="sd">            If None (default), both planes are corrected.</span>
+<span class="sd">        gain_H : float or ArrayLike, optional</span>
+<span class="sd">            Gain(s) for the horizontal plane. Overrides `gain` for H-plane if specified.</span>
+<span class="sd">        gain_V : float or ArrayLike, optional</span>
+<span class="sd">            Gain(s) for the vertical plane. Overrides `gain` for V-plane if specified.</span>
+<span class="sd">        singular_values_H : int, optional</span>
+<span class="sd">            Number of singular values to use for SVD decomposition in the horizontal</span>
+<span class="sd">            plane. If not specified, uses the default or configured value.</span>
+<span class="sd">        singular_values_V : int, optional</span>
+<span class="sd">            Number of singular values to use for SVD decomposition in the vertical</span>
+<span class="sd">            plane. If not specified, uses the default or configured value.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">response_matrix</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">raise</span> <span class="n">PyAMLException</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">get_name</span><span class="p">()</span><span class="si">}</span><span class="s2"> does not have a response_matrix.&quot;</span><span class="p">)</span>
 
@@ -457,12 +507,22 @@
             <span class="n">bpm_array_name</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">bpm_array_name</span><span class="p">,</span>
         <span class="p">)</span>
 
+        <span class="k">if</span> <span class="n">singular_values_H</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">svH</span> <span class="o">=</span> <span class="n">singular_values_H</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">svH</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">singular_values_H</span>
+
+        <span class="k">if</span> <span class="n">singular_values_V</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">svV</span> <span class="o">=</span> <span class="n">singular_values_V</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">svV</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">singular_values_V</span>
+
         <span class="k">if</span> <span class="n">plane</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">plane</span> <span class="o">==</span> <span class="s2">&quot;H&quot;</span><span class="p">:</span>
             <span class="n">trims_h</span> <span class="o">=</span> <span class="n">orbit_correction</span><span class="p">(</span>
                 <span class="n">interface</span><span class="o">=</span><span class="n">interface</span><span class="p">,</span>
                 <span class="n">response_matrix</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">response_matrix</span><span class="p">,</span>
                 <span class="n">method</span><span class="o">=</span><span class="s2">&quot;svd_values&quot;</span><span class="p">,</span>
-                <span class="n">parameter</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">singular_values</span><span class="p">,</span>
+                <span class="n">parameter</span><span class="o">=</span><span class="n">svH</span><span class="p">,</span>
                 <span class="n">zerosum</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
                 <span class="n">apply</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
                 <span class="n">plane</span><span class="o">=</span><span class="s2">&quot;H&quot;</span><span class="p">,</span>
@@ -474,20 +534,31 @@
                 <span class="n">interface</span><span class="o">=</span><span class="n">interface</span><span class="p">,</span>
                 <span class="n">response_matrix</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">response_matrix</span><span class="p">,</span>
                 <span class="n">method</span><span class="o">=</span><span class="s2">&quot;svd_values&quot;</span><span class="p">,</span>
-                <span class="n">parameter</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">singular_values</span><span class="p">,</span>
+                <span class="n">parameter</span><span class="o">=</span><span class="n">svV</span><span class="p">,</span>
                 <span class="n">zerosum</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
                 <span class="n">apply</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
                 <span class="n">plane</span><span class="o">=</span><span class="s2">&quot;V&quot;</span><span class="p">,</span>
                 <span class="n">reference</span><span class="o">=</span><span class="n">reference</span><span class="p">,</span>
             <span class="p">)</span>
 
+        <span class="n">eff_gain_H</span> <span class="o">=</span> <span class="n">gain_H</span> <span class="k">if</span> <span class="n">gain_H</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">gain</span>
+        <span class="n">eff_gain_V</span> <span class="o">=</span> <span class="n">gain_V</span> <span class="k">if</span> <span class="n">gain_V</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">gain</span>
+
         <span class="k">if</span> <span class="n">plane</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">trim</span> <span class="ow">in</span> <span class="n">trims_h</span><span class="p">:</span>
+                <span class="n">trims_h</span><span class="p">[</span><span class="n">trim</span><span class="p">]</span> <span class="o">*=</span> <span class="n">eff_gain_H</span>
+            <span class="k">for</span> <span class="n">trim</span> <span class="ow">in</span> <span class="n">trims_v</span><span class="p">:</span>
+                <span class="n">trims_v</span><span class="p">[</span><span class="n">trim</span><span class="p">]</span> <span class="o">*=</span> <span class="n">eff_gain_V</span>
             <span class="n">trims</span> <span class="o">=</span> <span class="p">{</span><span class="o">**</span><span class="n">trims_h</span><span class="p">,</span> <span class="o">**</span><span class="n">trims_v</span><span class="p">}</span>
             <span class="n">corr_array</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_hvcorr</span>
         <span class="k">elif</span> <span class="n">plane</span> <span class="o">==</span> <span class="s2">&quot;H&quot;</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">trim</span> <span class="ow">in</span> <span class="n">trims_h</span><span class="p">:</span>
+                <span class="n">trims_h</span><span class="p">[</span><span class="n">trim</span><span class="p">]</span> <span class="o">*=</span> <span class="n">eff_gain_H</span>
             <span class="n">trims</span> <span class="o">=</span> <span class="n">trims_h</span>
             <span class="n">corr_array</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_hcorr</span>
         <span class="k">elif</span> <span class="n">plane</span> <span class="o">==</span> <span class="s2">&quot;V&quot;</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">trim</span> <span class="ow">in</span> <span class="n">trims_v</span><span class="p">:</span>
+                <span class="n">trims_v</span><span class="p">[</span><span class="n">trim</span><span class="p">]</span> <span class="o">*=</span> <span class="n">eff_gain_V</span>
             <span class="n">trims</span> <span class="o">=</span> <span class="n">trims_v</span>
             <span class="n">corr_array</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_vcorr</span>
 
@@ -502,7 +573,7 @@
                     <span class="s2">&quot;Possible inconcistency between corrector arrays and &quot;</span>
                     <span class="s2">&quot;response matrix.&quot;</span>
                 <span class="p">)</span>
-            <span class="n">data_to_send</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span> <span class="o">+=</span> <span class="n">trims</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">*</span> <span class="n">gain</span>
+            <span class="n">data_to_send</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span> <span class="o">+=</span> <span class="n">trims</span><span class="p">[</span><span class="n">name</span><span class="p">]</span>
 
         <span class="n">corr_array</span><span class="o">.</span><span class="n">strengths</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">data_to_send</span><span class="p">)</span>
         <span class="k">return</span></div>
