@@ -161,31 +161,12 @@ def test_getattr_returns_multimode_resolution_dict(yp):
 # ---------------------------
 
 
-def test_get_without_mode_returns_only_available_modes(yp):
-    hcorr = yp.get("HCORR")
-    assert set(hcorr.keys()) == {"live", "design"}  # tango missing
-
-
-def test_get_with_mode_returns_object_or_raises(yp):
-    bpm_live = yp.get("BPM", mode="live")
-    assert bpm_live == ["BPM_C01-01", "BPM_C01-02", "BPM_C02-01"]
-
-    with pytest.raises(YellowPagesError, match=r"Unknown mode"):
-        yp.get("BPM", mode="does_not_exist")
-
-    with pytest.raises(YellowPagesError, match=r"not available in mode 'tango'"):
-        yp.get("HCORR", mode="tango")
-
-
 def test_availability(yp):
     assert yp.availability("BPM") == {"live", "tango", "design"}
     assert yp.availability("HCORR") == {"live", "design"}
 
 
 def test_unknown_key_errors(yp):
-    with pytest.raises(KeyError, match=r"Unknown YellowPages key"):
-        yp.get("DOES_NOT_EXIST")
-
     with pytest.raises(YellowPagesQueryError, match=r"Unknown YellowPages key"):
         _ = yp["DOES_NOT_EXIST"]
 

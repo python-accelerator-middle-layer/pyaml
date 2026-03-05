@@ -365,7 +365,7 @@ class YellowPages:
 
     def __getattr__(self, name):
         if name in self._all_keys():
-            return self.get(name)
+            return self._get(name)
         raise AttributeError(f"'YellowPages' object has no attribute '{name}'")
 
     # ---------------------------
@@ -405,7 +405,7 @@ class YellowPages:
                 avail.add(mode_name)
         return avail
 
-    def get(self, key: str, *, mode: str | None = None):
+    def _get(self, key: str, *, mode: str | None = None):
         """
         Resolve a YellowPages entry.
 
@@ -681,7 +681,7 @@ class YellowPages:
 
         The type is inferred from the first resolved object found across modes.
         """
-        resolved = self.get(key)
+        resolved = self._get(key)
 
         for obj in resolved.values():
             if obj is None:
@@ -695,7 +695,7 @@ class YellowPages:
     def _format_key(self, category: YellowPagesCategory, key: str) -> str:
         type_name = self._get_type_name(key)
         type_part = f" ({type_name})" if type_name else ""
-        resolved = self.get(key)  # dict[mode,obj] where available
+        resolved = self._get(key)  # dict[mode,obj] where available
         modes = sorted(resolved.keys())
         all_modes = sorted(self._acc.modes().keys())
 
@@ -759,7 +759,7 @@ class YellowPages:
 
     def _ids_for_key_union_all_modes(self, key: str) -> set[str]:
         out: set[str] = set()
-        resolved = self.get(key)  # dict[mode,obj]
+        resolved = self._get(key)  # dict[mode,obj]
         for obj in resolved.values():
             out |= self._object_to_ids(obj)
         return out
