@@ -13,6 +13,7 @@ class ConfigModel(BaseModel):
     model_config = ConfigDict(arbitrary_types_allowed=True, extra="forbid")
 
     name: str
+    catalog: str
     tango_host: str
     debug_level: str = None
 
@@ -23,6 +24,10 @@ class TangoControlSystem(ControlSystem):
         self._cfg = cfg
         print(f"Creating dummy TangoControlSystem: {cfg.name}")
         self.__DEVICES = {}
+
+    def get_catalog_name(self) -> str | None:
+        """Returns the name of the catalog dedicated to this control system"""
+        return self._cfg.catalog
 
     def attach_array(self, devs: list[DeviceAccess]) -> list[DeviceAccess]:
         return self._attach(devs, True)

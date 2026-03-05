@@ -1,3 +1,4 @@
+import re
 from abc import ABCMeta, abstractmethod
 from typing import Tuple
 
@@ -8,6 +9,7 @@ from ..common.abstract_aggregator import ScalarAggregator
 from ..common.element import Element
 from ..common.element_holder import ElementHolder
 from ..common.exception import PyAMLException
+from ..configuration.catalog import Catalog
 from ..configuration.factory import Factory
 from ..control.abstract_impl import (
     CSBPMArrayMapper,
@@ -37,6 +39,7 @@ from ..tuning_tools.dispersion import Dispersion
 from ..tuning_tools.orbit import Orbit
 from ..tuning_tools.orbit_response_matrix import OrbitResponseMatrix
 from ..tuning_tools.tune import Tune
+from .catalog_view import CatalogView
 from .deviceaccess import DeviceAccess
 
 
@@ -47,6 +50,10 @@ class ControlSystem(ElementHolder, metaclass=ABCMeta):
 
     def __init__(self):
         ElementHolder.__init__(self)
+        self._catalog: CatalogView | None = None
+
+    def set_catalog(self, catalog: CatalogView | None):
+        self._catalog = catalog
 
     @abstractmethod
     def attach(self, dev: list[DeviceAccess]) -> list[DeviceAccess]:
@@ -73,6 +80,11 @@ class ControlSystem(ElementHolder, metaclass=ABCMeta):
     @abstractmethod
     def vector_aggregator(self) -> str | None:
         """Returns the module name used for handling aggregator of DeviceVectorAccess"""
+        return None
+
+    @abstractmethod
+    def get_catalog_name(self) -> str | None:
+        """Returns the name of the catalog dedicated to this control system"""
         return None
 
     def attach_indexed(self, dev: DeviceAccess, idx: int | None) -> DeviceAccess:
@@ -118,10 +130,23 @@ class ControlSystem(ElementHolder, metaclass=ABCMeta):
             aggh = self.create_scalar_aggregator()
             aggv = self.create_scalar_aggregator()
             for b in bpms:
-                devs = self.attach(b.model.get_pos_devices())
+                model = b.model
+                hDev = (
+                    self._catalog.get_one(model.get_x_pos_device())
+                    if model.get_x_pos_device() is not None
+                    else None
+                )
+                vDev = (
+                    self._catalog.get_one(model.get_y_pos_device())
+                    if model.get_y_pos_device() is not None
+                    else None
+                )
+                devs = self.attach([hDev.get_target(), vDev.get_target()])
+                hDev.set_target(devs[0])
+                vDev.set_target(devs[1])
                 agg.add_devices(devs)
-                aggh.add_devices(devs[0])
-                aggv.add_devices(devs[1])
+                aggh.add_devices(hDev)
+                aggv.add_devices(vDev)
             return [agg, aggh, aggv]
 
         elif any([b.model.is_pos_indexed() for b in bpms]):
@@ -132,9 +157,11 @@ class ControlSystem(ElementHolder, metaclass=ABCMeta):
             vIdx = []
             allHV = []
             for b in bpms:
-                devs = self.attach_array(b.model.get_pos_devices())
-                devH = devs[0]
-                devV = devs[1]
+                devH = self._catalog.get_one(b.model.get_x_pos_device())
+                devV = self._catalog.get_one(b.model.get_y_pos_device())
+                devs = self.attach_array([devH.get_target(), devV.get_target()])
+                devH.set_target(devs[0])
+                devV.set_target(devs[1])
                 if devH not in allH:
                     allH.append(devH)
                 if devH not in allHV:
@@ -248,19 +275,63 @@ class ControlSystem(ElementHolder, metaclass=ABCMeta):
                     self.add_magnet(m)
 
             elif isinstance(e, BPM):
-                hDev = e.model.get_pos_devices()[0]
-                vDev = e.model.get_pos_devices()[1]
-                tiltDev = e.model.get_tilt_device()
-                hOffsetDev = e.model.get_offset_devices()[0]
-                vOffsetDev = e.model.get_offset_devices()[1]
-                ahDev = self.attach_indexed(hDev, e.model.x_pos_index())
-                avDev = self.attach_indexed(vDev, e.model.y_pos_index())
-                atiltDev = self.attach_indexed(tiltDev, e.model.tilt_index())
-                ahOffsetDev = self.attach_indexed(hOffsetDev, e.model.x_offset_index())
-                avOffsetDev = self.attach_indexed(vOffsetDev, e.model.y_offset_index())
-                positions = RBpmArray(e.model, ahDev, avDev)
-                tilt = RWBpmTiltScalar(e.model, atiltDev)
-                offsets = RWBpmOffsetArray(e.model, ahOffsetDev, avOffsetDev)
+                model = e.model
+                hDev = (
+                    self._catalog.get_one(model.get_x_pos_device())
+                    if model.get_x_pos_device() is not None
+                    else None
+                )
+                vDev = (
+                    self._catalog.get_one(model.get_y_pos_device())
+                    if model.get_y_pos_device() is not None
+                    else None
+                )
+                tiltDev = (
+                    self._catalog.get_one(model.get_tilt_device())
+                    if model.get_tilt_device() is not None
+                    else None
+                )
+                hOffsetDev = (
+                    self._catalog.get_one(model.get_x_offset_device())
+                    if model.get_x_offset_device() is not None
+                    else None
+                )
+                vOffsetDev = (
+                    self._catalog.get_one(model.get_y_offset_device())
+                    if model.get_y_offset_device() is not None
+                    else None
+                )
+                ahDev = self.attach_indexed(
+                    hDev.get_target() if hDev is not None else None, model.x_pos_index()
+                )
+                avDev = self.attach_indexed(
+                    vDev.get_target() if vDev is not None else None, model.y_pos_index()
+                )
+                atiltDev = self.attach_indexed(
+                    tiltDev.get_target() if tiltDev is not None else None,
+                    model.tilt_index(),
+                )
+                ahOffsetDev = self.attach_indexed(
+                    hOffsetDev.get_target() if hOffsetDev is not None else None,
+                    model.x_offset_index(),
+                )
+                avOffsetDev = self.attach_indexed(
+                    vOffsetDev.get_target() if vOffsetDev is not None else None,
+                    model.y_offset_index(),
+                )
+                if ahDev is not None:
+                    hDev.set_target(ahDev)
+                if avDev is not None:
+                    vDev.set_target(avDev)
+                if atiltDev is not None:
+                    tiltDev.set_target(atiltDev)
+                if ahOffsetDev is not None:
+                    hOffsetDev.set_target(ahOffsetDev)
+                if avOffsetDev is not None:
+                    vOffsetDev.set_target(avOffsetDev)
+                positions = RBpmArray(model, hDev, vDev)
+                tilt = RWBpmTiltScalar(model, tiltDev)
+                offsets = RWBpmOffsetArray(model, hOffsetDev, vOffsetDev)
                 e = e.attach(self, positions, offsets, tilt)
                 self.add_bpm(e)
 

@@ -12,6 +12,13 @@ class DeviceAccessList(list[DeviceAccess], metaclass=ABCMeta):
     Abstract class providing access to a list of control system float variable
     """
 
+    @staticmethod
+    def unwrap(dev: DeviceAccess):
+        get_target = getattr(dev, "get_target", None)
+        if callable(get_target):
+            return get_target()
+        return dev
+
     @abstractmethod
     def add_devices(self, devices: DeviceAccess | list[DeviceAccess]):
         """Add a DeviceAccess to this list"""
