@@ -128,6 +128,24 @@ def test_tuning_orbit_correction():
     assert np.isclose(std_ac[0], 3.360429728849497e-05, rtol=0, atol=1e-14)
     assert np.isclose(std_ac[1], 4.5937430373721725e-05, rtol=0, atol=1e-14)
 
+    x, y = bpms.positions.get().T  # get reference orbit
+    reference_before_rf = np.concat((x, y))
+
+    plant = element_holder.get_rf_plant("RF")
+    frf = plant.frequency.get()
+    plant.frequency.set(frf + 100)
+    for _ in range(3):
+        element_holder.orbit.correct(
+            reference=reference_before_rf,
+            plane="H",
+            rf=True,
+            gain_RF=1,
+            gain_H=0,
+        )
+
+    frf_after = plant.frequency.get()
+    assert np.isclose(frf, frf_after, rtol=0, atol=1e-16)
+
 
 def test_tuning_orbit_correction_config():
     # test orbit config
