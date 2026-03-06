@@ -105,7 +105,7 @@ class ElementHolder(object):
         all_names: list[str] = []
         excluded_names: list[str] = []
         for name in element_names:
-            if name.startswith("!"):
+            if name.startswith("~"):
                 names = self.find_elements(name[1:])
                 excluded_names.extend(names)
             else:
