@@ -51,4 +51,5 @@ class pySCInterface:
         if self.rf_plant is None:
             raise PyAMLException("RF plant name was not provided.")
         self.rf_plant.frequency.set(value)
+        time.sleep(self.set_wait_time)
         return
