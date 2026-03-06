@@ -43,7 +43,7 @@ for i, w in enumerate(weights):
     hcorr.strengths.set(h0)
     my_corr.strength.set(0)
     vcorr.strengths.set(v0)
-    ebs.orbit.response_matrix.set_weight(my_corr_name, w)
+    ebs.orbit.set_weight(my_corr_name, w)
 
     ebs.orbit.correct(reference=reference)
     corr_settings[i] = my_corr.strength.get()

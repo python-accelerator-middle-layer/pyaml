@@ -42,7 +42,7 @@ ref_bpm_reading = my_bpm.positions.get()[0]
 for i, w in enumerate(weights):
     hcorr.strengths.set(h0)
     vcorr.strengths.set(v0)
-    ebs.orbit.response_matrix.set_weight(my_bpm_name, w, plane="H")
+    ebs.orbit.set_weight(my_bpm_name, w, plane="H")
 
     ebs.orbit.correct(singular_values_H=40, singular_values_V=40)
     ebs.orbit.correct(singular_values_H=40, singular_values_V=40)
