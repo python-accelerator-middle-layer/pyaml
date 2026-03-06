@@ -48,7 +48,7 @@ print(
 ########################################################
 
 ## Correct the orbit
-ebs.orbit.set_rf_weight(1e7)
+# ebs.orbit.set_rf_weight(1e7)
 ebs.orbit.correct(reference=reference, rf=True, gain_H=1, gain_V=1, gain_RF=1)
 ebs.orbit.correct(reference=reference, rf=True, gain_H=1, gain_V=1, gain_RF=1)
 # ebs.orbit.correct(plane="H")
