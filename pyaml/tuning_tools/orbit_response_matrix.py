@@ -134,16 +134,16 @@ class OrbitResponseMatrix(Element):
         ).names()
         self.latest_measurement = response_data.model_dump()
 
-        inputs_plane = []
+        input_planes = []
         for corr in corrector_names:
             if corr in hcorrector_names:
-                inputs_plane.append("H")
+                input_planes.append("H")
             elif corr in vcorrector_names:
-                inputs_plane.append("V")
-        self.latest_measurement["inputs_plane"] = inputs_plane
+                input_planes.append("V")
+        self.latest_measurement["input_planes"] = input_planes
 
         len_b = len(response_data.output_names)
-        self.latest_measurement["outputs_plane"] = ["H"] * len_b + ["V"] * len_b
+        self.latest_measurement["output_planes"] = ["H"] * len_b + ["V"] * len_b
 
     def get(self):
         return self.latest_measurement

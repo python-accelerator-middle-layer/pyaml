@@ -4,10 +4,6 @@ from pathlib import Path
 import numpy as np
 
 from pyaml.accelerator import Accelerator
-from pyaml.tuning_tools.dispersion import ConfigModel as Disp_ConfigModel
-from pyaml.tuning_tools.dispersion import Dispersion
-from pyaml.tuning_tools.orbit_response_matrix import ConfigModel as ORM_ConfigModel
-from pyaml.tuning_tools.orbit_response_matrix import OrbitResponseMatrix
 
 parent_folder = Path(__file__).parent
 config_path = parent_folder.parent.parent.joinpath(
@@ -32,8 +28,8 @@ ideal_ORM_data = {
     "matrix": orm_data["matrix"],
     "input_names": orm_data["input_names"],
     "output_names": orm_data["output_names"],
-    "inputs_plane": orm_data["inputs_plane"],
-    "outputs_plane": orm_data["outputs_plane"],
+    "input_planes": orm_data["input_planes"],
+    "output_planes": orm_data["output_planes"],
     "rf_response": rf_response,
 }
 
