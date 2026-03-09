@@ -28,21 +28,10 @@ If manual intervention is required, please follow the instructions provided by t
 #### Releasing a new version on PyPi
 
 1. Create a branch for a release
-2. Set the version in pyaml/__init__.py:
-
-```
-__title__ = "pyAML"
-__description__ = "Python Accelerator Middle Layer"
-__url__ = "https://github.com/python-accelerator-middle-layer/pyaml"
-__version__ = "0.2.4"
-__author__ = "pyAML collaboration"
-__author_email__ = ""
-```
-3. Provide a list of changes and release description in the merge request. Justify a version bump is necessary.
-4. Approve and merge the PR
-
-5. Then tag to the corresponding version.
-6. CI/CD will take care of PyPi release. (Make sure the version in CI/CD deployment pipeline matches the one you just tagged.)
+2. Provide a list of changes and release description in the merge request. Justify a version bump is necessary.
+3. Tag the corresponding version.
+4. Approve and merge the PR.
+5. CI/CD will take care of PyPi release. (Make sure the version in CI/CD deployment pipeline matches the one you just tagged.)
 ### 4. Documentation
 - **Improving Docs:** Fix typos, clarify instructions, or add missing documentation. Submit a PR as you would for code changes.
 - **Website:** Our project website is at [python-accelerator-middle-layer.github.io](https://python-accelerator-middle-layer.github.io/).
