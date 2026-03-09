@@ -245,6 +245,45 @@ class Orbit(Element):
         self.response_matrix.rf_weight = weight
         return
 
+    def get_weight(self, name: str, plane: Optional[Literal["H", "V"]] = None) -> float:
+        names = []
+        planes = []
+        weights = []
+
+        inames = self.response_matrix.input_names
+        iplanes = self.response_matrix.input_planes
+        iweights = self.response_matrix.input_weights
+        for iname, iplane, iw in zip(inames, iplanes, iweights, strict=True):
+            if name == iname:
+                if plane is None or plane == iplane:
+                    names.append(iname)
+                    planes.append(iplane)
+                    weights.append(iw)
+
+        onames = self.response_matrix.output_names
+        oplanes = self.response_matrix.output_planes
+        oweights = self.response_matrix.output_weights
+        for oname, oplane, ow in zip(onames, oplanes, oweights, strict=True):
+            if name == oname:
+                if plane is None or plane == oplane:
+                    names.append(oname)
+                    planes.append(oplane)
+                    weights.append(ow)
+
+        if len(weights) == 1:
+            return weights[0]
+        else:
+            raise PyAMLException(
+                "More than one weight found, please select plane. "
+                f"{names=}, {planes=}, {weights=}"
+            )
+
+    def get_virtual_weight(self) -> float:
+        return self.response_matrix.virtual_weight
+
+    def get_rf_weight(self) -> float:
+        return self.response_matrix.rf_weight
+
     def post_init(self):
         self._hcorr = self._peer.get_magnets(self._cfg.hcorr_array_name)
         self._vcorr = self._peer.get_magnets(self._cfg.vcorr_array_name)
