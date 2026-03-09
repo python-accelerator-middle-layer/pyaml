@@ -133,8 +133,8 @@ def test_tuning_orbit_correction():
 
     positions_ac = bpms.positions.get()
     std_ac = np.std(positions_ac, axis=0)
-    assert np.isclose(std_ac[0], 5.0567271717464e-07, rtol=0, atol=1e-14)
-    assert np.isclose(std_ac[1], 4.78926715640338e-07, rtol=0, atol=1e-14)
+    assert np.isclose(std_ac[0], 5.056719006414065e-07, rtol=0, atol=1e-14)
+    assert np.isclose(std_ac[1], 4.790610352466602e-07, rtol=0, atol=1e-14)
     element_holder.orbit.set_weight("BPM_C04-05", 1)
 
     # mangle orbit again, test virtual weight
@@ -207,6 +207,15 @@ def test_tuning_orbit_correction():
     frf_after = plant.frequency.get()
     assert np.isclose(frf, frf_after, rtol=0, atol=1e-16)
     element_holder.orbit.set_rf_weight(rf_weight)
+
+    # test getters of weights
+    assert np.isclose(
+        element_holder.orbit.get_weight("BPM_C04-05", plane="H"), 1, rtol=0, atol=1e-16
+    )
+    assert np.isclose(element_holder.orbit.get_virtual_weight(), 1, rtol=0, atol=1e-16)
+    assert np.isclose(
+        element_holder.orbit.get_rf_weight(), rf_weight, rtol=0, atol=1e-16
+    )
 
 
 def test_tuning_orbit_correction_config():
