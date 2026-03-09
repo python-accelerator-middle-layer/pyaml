@@ -1,7 +1,8 @@
 """Orbit correction
 
-This example shows how to run orbit correction using the simulator or the virtual accelerator.
-If you want to test the virtual accelerator you need to start the container before running the script.
+This example shows how to run orbit correction using the simulator or the virtual
+accelerator. If you want to test the virtual accelerator you need to start the
+container before running the script.
 
 """
 
@@ -16,13 +17,16 @@ from pyaml.tuning_tools.orbit_response_matrix import ConfigModel as ORM_ConfigMo
 from pyaml.tuning_tools.orbit_response_matrix import OrbitResponseMatrix
 
 # ----- Load the configuration -----
-# Remember to change the prefix for the live mode to the one matching your virtual accelerator before loading.
+# Remember to change the prefix for the live mode to the one matching your virtual
+# accelerator before loading.
 
 sr = Accelerator.load("BESSY2Orbit.yaml")
 
 # ----- Measure the orbit response matrix -----
-# If there is no existing orbit response matrix you need to measure it. This can be done on either the design or live mode.
-# It is also possible to measure the ORM using the design mode and use it to correct the live mode.
+# If there is no existing orbit response matrix you need to measure it.
+# This can be done on either the design or live mode.
+# It is also possible to measure the ORM using the design mode and use it to correct
+# the live mode.
 
 # Choose which backend to use.
 SR = sr.design
@@ -39,13 +43,14 @@ if sr.design.orbit.response_matrix is None:
         "matrix": orm_data["matrix"],
         "input_names": orm_data["input_names"],
         "output_names": orm_data["output_names"],
-        "inputs_plane": orm_data["inputs_plane"],
-        "outputs_plane": orm_data["outputs_plane"],
+        "input_planes": orm_data["input_planes"],
+        "output_planes": orm_data["output_planes"],
     }
     json.dump(ORM_data, open("orm.json", "w"))
 
 # ----- Load the response matrix -----
-# The example does the correction for the live mode but it can also be done on the design mode.
+# The example does the correction for the live mode but it can also be done on the
+# design mode.
 
 # Load the ORM for the live mode
 sr.live.orbit.load_response_matrix("orm.json")
@@ -66,8 +71,8 @@ time.sleep(3)
 orbit_initial = orbit.get()
 
 # Correct the orbit
-# If you are using the ORM measured on design to correct on live you need to set the gain
-# since the unit for the BPMs are not the same for both modes yet.
+# If you are using the ORM measured on design to correct on live you need to set the
+# gain since the unit for the BPMs are not the same for both modes yet.
 
 sr.live.orbit.correct(gain=1e-9)
 # sr.design.orbit.correct()
@@ -77,8 +82,10 @@ time.sleep(3)
 orbit_after = orbit.get()
 
 # ----- Plot the results -----
-# Remember: if you change the example from live to design you need to change the unit for the orbit when plotting since not the same yet.
-# If you are running in VS code you might need to switch the matplotlib backend for the plot to show.
+# Remember: if you change the example from live to design you need to change the unit
+# for the orbit when plotting since not the same yet.
+# If you are running in VS code you might need to switch the matplotlib backend for
+# the plot to show.
 
 fig = plt.figure()
 ax1 = fig.add_subplot(311)
