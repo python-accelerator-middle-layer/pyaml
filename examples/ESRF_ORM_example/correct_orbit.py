@@ -27,6 +27,7 @@ hcorr = ebs.get_magnets("HCorr")
 vcorr = ebs.get_magnets("VCorr")
 bpms = ebs.get_bpms("BPM")
 
+np.random.seed(1)
 # mangle orbit
 hcorr.strengths.set(
     hcorr.strengths.get() + std_kick * np.random.normal(size=len(hcorr))
@@ -34,6 +35,9 @@ hcorr.strengths.set(
 vcorr.strengths.set(
     vcorr.strengths.get() + std_kick * np.random.normal(size=len(vcorr))
 )
+
+h0 = hcorr.strengths.get()
+v0 = vcorr.strengths.get()
 
 positions_bc = bpms.positions.get()
 std_bc = np.std(positions_bc, axis=0)
@@ -43,6 +47,7 @@ print(
 )
 ########################################################
 
+ebs.orbit.set_virtual_weight(1000)
 ## Correct the orbit
 ebs.orbit.correct(reference=reference)
 # ebs.orbit.correct(plane="H")
@@ -76,4 +81,6 @@ ax3.set_ylabel("Strength (rad)")
 ax3.set_xlabel("Steerer number")
 fig.tight_layout()
 
+print(f"Sum of h. corr. trims: {np.sum(hcorr.strengths.get() - h0)}")
+print(f"Sum of v. corr. trims: {np.sum(vcorr.strengths.get() - v0)}")
 plt.show()
