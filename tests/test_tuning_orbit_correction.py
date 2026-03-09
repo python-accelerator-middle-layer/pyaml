@@ -148,6 +148,18 @@ def test_tuning_orbit_correction():
     std_ac = np.std(positions_ac, axis=0)
     assert np.isclose(std_ac[0], 5.05398857685373e-07, rtol=0, atol=1e-14)
     assert np.isclose(std_ac[1], 4.789270969888965e-07, rtol=0, atol=1e-14)
+    element_holder.orbit.set_virtual_weight(1000)
+
+    # mangle orbit again, test virtual target
+    hcorr.strengths.set(h_strengths)
+    vcorr.strengths.set(v_strengths)
+
+    virtual_target = 1e-8
+    element_holder.orbit.correct(virtual_target=virtual_target)
+
+    delta_h_strengths = hcorr.strengths.get() - h_strengths
+    delta_h_strengths_sum = -np.sum(delta_h_strengths)
+    assert np.isclose(delta_h_strengths_sum - virtual_target, 0, rtol=0, atol=1e-13)
     element_holder.orbit.set_virtual_weight(1)
 
     # mangle orbit again, test reference

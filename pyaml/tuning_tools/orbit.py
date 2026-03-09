@@ -40,6 +40,7 @@ class ConfigModel(ElementConfigModel):
     singular_values: Optional[int] = None
     singular_values_H: Optional[int] = None
     singular_values_V: Optional[int] = None
+    virtual_target: float = 0
     response_matrix: Union[str, ResponseMatrix]
 
 
@@ -50,6 +51,8 @@ class Orbit(Element):
         self.bpm_array_name = cfg.bpm_array_name
         self.hcorr_array_name = cfg.hcorr_array_name
         self.vcorr_array_name = cfg.vcorr_array_name
+
+        self.virtual_target = cfg.virtual_target
 
         if cfg.singular_values is None:
             if cfg.singular_values_H is None or cfg.singular_values_V is None:
@@ -97,6 +100,7 @@ class Orbit(Element):
         singular_values_V: Optional[int] = None,
         reference: Optional[np.ndarray] = None,
         rf: bool = False,
+        virtual_target: Optional[float] = None,
     ):
         """
         Perform orbit correction using the configured response matrix and corrector
@@ -151,6 +155,9 @@ class Orbit(Element):
         else:
             svV = self.singular_values_V
 
+        if virtual_target is None:
+            virtual_target = self.virtual_target
+
         if plane is None or plane == "H":
             trims_h = orbit_correction(
                 interface=interface,
@@ -162,7 +169,7 @@ class Orbit(Element):
                 plane="H",
                 reference=reference,
                 rf=rf,
-                # virtual_target=1e-6
+                virtual_target=virtual_target,
             )
 
         if plane is None or plane == "V":
