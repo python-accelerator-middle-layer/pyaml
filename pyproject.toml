@@ -91,6 +91,9 @@ packages = ["pyaml"]
 [tool.hatch.metadata]
 allow-direct-references = true
 
+[tool.hatch.build.hooks.vcs]
+version-file = "pyaml/_version.py"
+
 [tool.ruff]
 line-length = 88
 target-version = "py311"
