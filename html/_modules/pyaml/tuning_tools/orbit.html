@@ -390,8 +390,9 @@
 <span class="kn">from</span><span class="w"> </span><span class="nn">..common.element</span><span class="w"> </span><span class="kn">import</span> <span class="n">Element</span><span class="p">,</span> <span class="n">ElementConfigModel</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">..common.exception</span><span class="w"> </span><span class="kn">import</span> <span class="n">PyAMLException</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">..configuration.factory</span><span class="w"> </span><span class="kn">import</span> <span class="n">Factory</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">..configuration.fileloader</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_path</span><span class="p">,</span> <span class="n">load</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">..configuration.fileloader</span><span class="w"> </span><span class="kn">import</span> <span class="n">load</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">..external.pySC_interface</span><span class="w"> </span><span class="kn">import</span> <span class="n">pySCInterface</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">..rf.rf_plant</span><span class="w"> </span><span class="kn">import</span> <span class="n">RFPlant</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">.response_matrix</span><span class="w"> </span><span class="kn">import</span> <span class="n">ResponseMatrix</span>
 
 <span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
@@ -408,9 +409,11 @@
     <span class="n">bpm_array_name</span><span class="p">:</span> <span class="nb">str</span>
     <span class="n">hcorr_array_name</span><span class="p">:</span> <span class="nb">str</span>
     <span class="n">vcorr_array_name</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">rf_plant_name</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="n">singular_values</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="n">singular_values_H</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="n">singular_values_V</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">virtual_target</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">0</span>
     <span class="n">response_matrix</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">ResponseMatrix</span><span class="p">]</span></div>
 
 
@@ -424,6 +427,8 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">bpm_array_name</span> <span class="o">=</span> <span class="n">cfg</span><span class="o">.</span><span class="n">bpm_array_name</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">hcorr_array_name</span> <span class="o">=</span> <span class="n">cfg</span><span class="o">.</span><span class="n">hcorr_array_name</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">vcorr_array_name</span> <span class="o">=</span> <span class="n">cfg</span><span class="o">.</span><span class="n">vcorr_array_name</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">virtual_target</span> <span class="o">=</span> <span class="n">cfg</span><span class="o">.</span><span class="n">virtual_target</span>
 
         <span class="k">if</span> <span class="n">cfg</span><span class="o">.</span><span class="n">singular_values</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">cfg</span><span class="o">.</span><span class="n">singular_values_H</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">cfg</span><span class="o">.</span><span class="n">singular_values_V</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
@@ -458,6 +463,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_hcorr</span><span class="p">:</span> <span class="n">MagnetArray</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_vcorr</span><span class="p">:</span> <span class="n">MagnetArray</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_hvcorr</span><span class="p">:</span> <span class="n">MagnetArray</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_rf_plant</span><span class="p">:</span> <span class="n">RFPlant</span> <span class="o">=</span> <span class="kc">None</span>
 
 <div class="viewcode-block" id="Orbit.correct">
 <a class="viewcode-back" href="../../../api/pyaml.tuning_tools.orbit.html#pyaml.tuning_tools.orbit.Orbit.correct">[docs]</a>
@@ -467,9 +473,12 @@
         <span class="n">gain</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">,</span>
         <span class="n">gain_H</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">gain_V</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">gain_RF</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">singular_values_H</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">singular_values_V</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">reference</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">rf</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="n">virtual_target</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Perform orbit correction using the configured response matrix and corrector</span>
@@ -487,16 +496,23 @@
 <span class="sd">            Plane to correct. If &#39;H&#39;, only horizontal correction is performed.</span>
 <span class="sd">            If &#39;V&#39;, only vertical correction is performed.</span>
 <span class="sd">            If None (default), both planes are corrected.</span>
-<span class="sd">        gain_H : float or ArrayLike, optional</span>
-<span class="sd">            Gain(s) for the horizontal plane. Overrides `gain` for H-plane if specified.</span>
-<span class="sd">        gain_V : float or ArrayLike, optional</span>
-<span class="sd">            Gain(s) for the vertical plane. Overrides `gain` for V-plane if specified.</span>
+<span class="sd">        gain_H : float, optional</span>
+<span class="sd">            Gain for the horizontal plane. Overrides `gain` for H-plane if specified.</span>
+<span class="sd">        gain_V : float, optional</span>
+<span class="sd">            Gain for the vertical plane. Overrides `gain` for V-plane if specified.</span>
+<span class="sd">        gain_RF : optional</span>
+<span class="sd">            Gain for the correction with the rf frequency. If not specified,</span>
+<span class="sd">            the gain of the horizontal plane is used.</span>
 <span class="sd">        singular_values_H : int, optional</span>
 <span class="sd">            Number of singular values to use for SVD decomposition in the horizontal</span>
 <span class="sd">            plane. If not specified, uses the default or configured value.</span>
 <span class="sd">        singular_values_V : int, optional</span>
 <span class="sd">            Number of singular values to use for SVD decomposition in the vertical</span>
 <span class="sd">            plane. If not specified, uses the default or configured value.</span>
+<span class="sd">        rf : bool, default False,</span>
+<span class="sd">            If set to true, the rf_response will also be used in the response matrix</span>
+<span class="sd">            for correction of the horizontal orbit. Only takes into effect if plane is</span>
+<span class="sd">            None or if plane = &#39;H&#39;.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">response_matrix</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
@@ -517,16 +533,21 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="n">svV</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">singular_values_V</span>
 
+        <span class="k">if</span> <span class="n">virtual_target</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">virtual_target</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">virtual_target</span>
+
         <span class="k">if</span> <span class="n">plane</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">plane</span> <span class="o">==</span> <span class="s2">&quot;H&quot;</span><span class="p">:</span>
             <span class="n">trims_h</span> <span class="o">=</span> <span class="n">orbit_correction</span><span class="p">(</span>
                 <span class="n">interface</span><span class="o">=</span><span class="n">interface</span><span class="p">,</span>
                 <span class="n">response_matrix</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">response_matrix</span><span class="p">,</span>
                 <span class="n">method</span><span class="o">=</span><span class="s2">&quot;svd_values&quot;</span><span class="p">,</span>
                 <span class="n">parameter</span><span class="o">=</span><span class="n">svH</span><span class="p">,</span>
-                <span class="n">zerosum</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                <span class="n">virtual</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
                 <span class="n">apply</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
                 <span class="n">plane</span><span class="o">=</span><span class="s2">&quot;H&quot;</span><span class="p">,</span>
                 <span class="n">reference</span><span class="o">=</span><span class="n">reference</span><span class="p">,</span>
+                <span class="n">rf</span><span class="o">=</span><span class="n">rf</span><span class="p">,</span>
+                <span class="n">virtual_target</span><span class="o">=</span><span class="n">virtual_target</span><span class="p">,</span>
             <span class="p">)</span>
 
         <span class="k">if</span> <span class="n">plane</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">plane</span> <span class="o">==</span> <span class="s2">&quot;V&quot;</span><span class="p">:</span>
@@ -535,15 +556,27 @@
                 <span class="n">response_matrix</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">response_matrix</span><span class="p">,</span>
                 <span class="n">method</span><span class="o">=</span><span class="s2">&quot;svd_values&quot;</span><span class="p">,</span>
                 <span class="n">parameter</span><span class="o">=</span><span class="n">svV</span><span class="p">,</span>
-                <span class="n">zerosum</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                <span class="n">virtual</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
                 <span class="n">apply</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
                 <span class="n">plane</span><span class="o">=</span><span class="s2">&quot;V&quot;</span><span class="p">,</span>
                 <span class="n">reference</span><span class="o">=</span><span class="n">reference</span><span class="p">,</span>
+                <span class="n">rf</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
             <span class="p">)</span>
 
         <span class="n">eff_gain_H</span> <span class="o">=</span> <span class="n">gain_H</span> <span class="k">if</span> <span class="n">gain_H</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">gain</span>
         <span class="n">eff_gain_V</span> <span class="o">=</span> <span class="n">gain_V</span> <span class="k">if</span> <span class="n">gain_V</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">gain</span>
 
+        <span class="c1"># take care of rf trim</span>
+        <span class="n">rf_flag</span> <span class="o">=</span> <span class="n">rf</span> <span class="ow">and</span> <span class="p">(</span><span class="n">plane</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">plane</span> <span class="o">==</span> <span class="s2">&quot;H&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">rf_flag</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_rf_plant</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">PyAMLException</span><span class="p">(</span><span class="s2">&quot;RF plant is not defined!&quot;</span><span class="p">)</span>
+            <span class="n">eff_gain_RF</span> <span class="o">=</span> <span class="n">gain_RF</span> <span class="k">if</span> <span class="n">gain_RF</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">eff_gain_H</span>
+            <span class="c1">## pySC returns with an &#39;rf&#39; entry into the dictionary if rf=True</span>
+            <span class="n">rf_trim</span> <span class="o">=</span> <span class="n">eff_gain_RF</span> <span class="o">*</span> <span class="n">trims_h</span><span class="p">[</span><span class="s2">&quot;rf&quot;</span><span class="p">]</span>
+            <span class="k">del</span> <span class="n">trims_h</span><span class="p">[</span><span class="s2">&quot;rf&quot;</span><span class="p">]</span>
+
+        <span class="c1"># collect all trims and apply gain</span>
         <span class="k">if</span> <span class="n">plane</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">for</span> <span class="n">trim</span> <span class="ow">in</span> <span class="n">trims_h</span><span class="p">:</span>
                 <span class="n">trims_h</span><span class="p">[</span><span class="n">trim</span><span class="p">]</span> <span class="o">*=</span> <span class="n">eff_gain_H</span>
@@ -575,8 +608,84 @@
                 <span class="p">)</span>
             <span class="n">data_to_send</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span> <span class="o">+=</span> <span class="n">trims</span><span class="p">[</span><span class="n">name</span><span class="p">]</span>
 
+        <span class="c1"># send trims</span>
         <span class="n">corr_array</span><span class="o">.</span><span class="n">strengths</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">data_to_send</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">rf_flag</span><span class="p">:</span>
+            <span class="n">rf_frequency</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_rf_plant</span><span class="o">.</span><span class="n">frequency</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_rf_plant</span><span class="o">.</span><span class="n">frequency</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">rf_frequency</span> <span class="o">+</span> <span class="n">rf_trim</span><span class="p">)</span>
+
         <span class="k">return</span></div>
+
+
+<div class="viewcode-block" id="Orbit.set_weight">
+<a class="viewcode-back" href="../../../api/pyaml.tuning_tools.orbit.html#pyaml.tuning_tools.orbit.Orbit.set_weight">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">set_weight</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">weight</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">plane</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;H&quot;</span><span class="p">,</span> <span class="s2">&quot;V&quot;</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">response_matrix</span><span class="o">.</span><span class="n">set_weight</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">weight</span><span class="p">,</span> <span class="n">plane</span><span class="o">=</span><span class="n">plane</span><span class="p">)</span>
+        <span class="k">return</span></div>
+
+
+<div class="viewcode-block" id="Orbit.set_virtual_weight">
+<a class="viewcode-back" href="../../../api/pyaml.tuning_tools.orbit.html#pyaml.tuning_tools.orbit.Orbit.set_virtual_weight">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">set_virtual_weight</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">weight</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">response_matrix</span><span class="o">.</span><span class="n">virtual_weight</span> <span class="o">=</span> <span class="n">weight</span>
+        <span class="k">return</span></div>
+
+
+<div class="viewcode-block" id="Orbit.set_rf_weight">
+<a class="viewcode-back" href="../../../api/pyaml.tuning_tools.orbit.html#pyaml.tuning_tools.orbit.Orbit.set_rf_weight">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">set_rf_weight</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">weight</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">response_matrix</span><span class="o">.</span><span class="n">rf_weight</span> <span class="o">=</span> <span class="n">weight</span>
+        <span class="k">return</span></div>
+
+
+<div class="viewcode-block" id="Orbit.get_weight">
+<a class="viewcode-back" href="../../../api/pyaml.tuning_tools.orbit.html#pyaml.tuning_tools.orbit.Orbit.get_weight">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_weight</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">plane</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;H&quot;</span><span class="p">,</span> <span class="s2">&quot;V&quot;</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+        <span class="n">names</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">planes</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">weights</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="n">inames</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">response_matrix</span><span class="o">.</span><span class="n">input_names</span>
+        <span class="n">iplanes</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">response_matrix</span><span class="o">.</span><span class="n">input_planes</span>
+        <span class="n">iweights</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">response_matrix</span><span class="o">.</span><span class="n">input_weights</span>
+        <span class="k">for</span> <span class="n">iname</span><span class="p">,</span> <span class="n">iplane</span><span class="p">,</span> <span class="n">iw</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">inames</span><span class="p">,</span> <span class="n">iplanes</span><span class="p">,</span> <span class="n">iweights</span><span class="p">,</span> <span class="n">strict</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">name</span> <span class="o">==</span> <span class="n">iname</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">plane</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">plane</span> <span class="o">==</span> <span class="n">iplane</span><span class="p">:</span>
+                    <span class="n">names</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">iname</span><span class="p">)</span>
+                    <span class="n">planes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">iplane</span><span class="p">)</span>
+                    <span class="n">weights</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">iw</span><span class="p">)</span>
+
+        <span class="n">onames</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">response_matrix</span><span class="o">.</span><span class="n">output_names</span>
+        <span class="n">oplanes</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">response_matrix</span><span class="o">.</span><span class="n">output_planes</span>
+        <span class="n">oweights</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">response_matrix</span><span class="o">.</span><span class="n">output_weights</span>
+        <span class="k">for</span> <span class="n">oname</span><span class="p">,</span> <span class="n">oplane</span><span class="p">,</span> <span class="n">ow</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">onames</span><span class="p">,</span> <span class="n">oplanes</span><span class="p">,</span> <span class="n">oweights</span><span class="p">,</span> <span class="n">strict</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">name</span> <span class="o">==</span> <span class="n">oname</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">plane</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">plane</span> <span class="o">==</span> <span class="n">oplane</span><span class="p">:</span>
+                    <span class="n">names</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">oname</span><span class="p">)</span>
+                    <span class="n">planes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">oplane</span><span class="p">)</span>
+                    <span class="n">weights</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ow</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">weights</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">weights</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">PyAMLException</span><span class="p">(</span>
+                <span class="s2">&quot;More than one weight found, please select plane. &quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">names</span><span class="si">=}</span><span class="s2">, </span><span class="si">{</span><span class="n">planes</span><span class="si">=}</span><span class="s2">, </span><span class="si">{</span><span class="n">weights</span><span class="si">=}</span><span class="s2">&quot;</span>
+            <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="Orbit.get_virtual_weight">
+<a class="viewcode-back" href="../../../api/pyaml.tuning_tools.orbit.html#pyaml.tuning_tools.orbit.Orbit.get_virtual_weight">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_virtual_weight</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">response_matrix</span><span class="o">.</span><span class="n">virtual_weight</span></div>
+
+
+<div class="viewcode-block" id="Orbit.get_rf_weight">
+<a class="viewcode-back" href="../../../api/pyaml.tuning_tools.orbit.html#pyaml.tuning_tools.orbit.Orbit.get_rf_weight">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_rf_weight</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">response_matrix</span><span class="o">.</span><span class="n">rf_weight</span></div>
 
 
 <div class="viewcode-block" id="Orbit.post_init">
@@ -587,7 +696,9 @@
         <span class="n">hvElts</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="n">hvElts</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_hcorr</span><span class="p">)</span>
         <span class="n">hvElts</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_vcorr</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_hvcorr</span> <span class="o">=</span> <span class="n">MagnetArray</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">hvElts</span><span class="p">)</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_hvcorr</span> <span class="o">=</span> <span class="n">MagnetArray</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">hvElts</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cfg</span><span class="o">.</span><span class="n">rf_plant_name</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_rf_plant</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_peer</span><span class="o">.</span><span class="n">get_rf_plant</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_cfg</span><span class="o">.</span><span class="n">rf_plant_name</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="Orbit.attach">

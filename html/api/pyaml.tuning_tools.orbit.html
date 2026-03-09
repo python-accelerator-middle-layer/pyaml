@@ -496,7 +496,7 @@
 <span id="orbit"></span><h1>orbit<a class="headerlink" href="#module-pyaml.tuning_tools.orbit" title="Link to this heading">#</a></h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="pyaml.tuning_tools.orbit.ConfigModel">
-<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ConfigModel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">description</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lattice_names</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bpm_array_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hcorr_array_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vcorr_array_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">singular_values</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">singular_values_H</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">singular_values_V</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">response_matrix</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/tuning_tools/orbit.html#ConfigModel"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.tuning_tools.orbit.ConfigModel" title="Link to this definition">#</a></dt>
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ConfigModel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">description</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lattice_names</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bpm_array_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hcorr_array_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vcorr_array_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rf_plant_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">singular_values</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">singular_values_H</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">singular_values_V</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">virtual_target</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">response_matrix</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/tuning_tools/orbit.html#ConfigModel"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.tuning_tools.orbit.ConfigModel" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference internal" href="pyaml.common.element.html#pyaml.common.element.ElementConfigModel" title="pyaml.common.element.ElementConfigModel"><code class="xref py py-class docutils literal notranslate"><span class="pre">ElementConfigModel</span></code></a></p>
 <p>Create a new model by parsing and validating input data from keyword arguments.</p>
 <p>Raises [<cite>ValidationError</cite>][pydantic_core.ValidationError] if the input data cannot be
@@ -520,6 +520,11 @@ validated to form a valid model.</p>
 <dd></dd></dl>
 
 <dl class="py attribute">
+<dt class="sig sig-object py" id="pyaml.tuning_tools.orbit.ConfigModel.rf_plant_name">
+<span class="sig-name descname"><span class="pre">rf_plant_name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></em><a class="headerlink" href="#pyaml.tuning_tools.orbit.ConfigModel.rf_plant_name" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
 <dt class="sig sig-object py" id="pyaml.tuning_tools.orbit.ConfigModel.singular_values">
 <span class="sig-name descname"><span class="pre">singular_values</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></em><a class="headerlink" href="#pyaml.tuning_tools.orbit.ConfigModel.singular_values" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
@@ -537,6 +542,11 @@ validated to form a valid model.</p>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="pyaml.tuning_tools.orbit.ConfigModel.vcorr_array_name">
 <span class="sig-name descname"><span class="pre">vcorr_array_name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></em><a class="headerlink" href="#pyaml.tuning_tools.orbit.ConfigModel.vcorr_array_name" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyaml.tuning_tools.orbit.ConfigModel.virtual_target">
+<span class="sig-name descname"><span class="pre">virtual_target</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><span class="pre">float</span></a></em><a class="headerlink" href="#pyaml.tuning_tools.orbit.ConfigModel.virtual_target" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
@@ -558,7 +568,7 @@ or a control system.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pyaml.tuning_tools.orbit.Orbit.correct">
-<span class="sig-name descname"><span class="pre">correct</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">plane</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gain</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gain_H</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gain_V</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">singular_values_H</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">singular_values_V</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reference</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/tuning_tools/orbit.html#Orbit.correct"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.tuning_tools.orbit.Orbit.correct" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">correct</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">plane</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gain</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gain_H</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gain_V</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gain_RF</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">singular_values_H</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">singular_values_V</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reference</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rf</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">virtual_target</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/tuning_tools/orbit.html#Orbit.correct"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.tuning_tools.orbit.Orbit.correct" title="Link to this definition">#</a></dt>
 <dd><p>Perform orbit correction using the configured response matrix and corrector
 arrays.</p>
 <dl class="field-list simple">
@@ -571,14 +581,40 @@ specified.</p></li>
 <li><p><strong>plane</strong> (<em>{'H'</em><em>, </em><em>'V'}</em><em>, </em><em>optional</em>) – Plane to correct. If ‘H’, only horizontal correction is performed.
 If ‘V’, only vertical correction is performed.
 If None (default), both planes are corrected.</p></li>
-<li><p><strong>gain_H</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><em>float</em></a><em> or </em><em>ArrayLike</em><em>, </em><em>optional</em>) – Gain(s) for the horizontal plane. Overrides <cite>gain</cite> for H-plane if specified.</p></li>
-<li><p><strong>gain_V</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><em>float</em></a><em> or </em><em>ArrayLike</em><em>, </em><em>optional</em>) – Gain(s) for the vertical plane. Overrides <cite>gain</cite> for V-plane if specified.</p></li>
+<li><p><strong>gain_H</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><em>float</em></a><em>, </em><em>optional</em>) – Gain for the horizontal plane. Overrides <cite>gain</cite> for H-plane if specified.</p></li>
+<li><p><strong>gain_V</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><em>float</em></a><em>, </em><em>optional</em>) – Gain for the vertical plane. Overrides <cite>gain</cite> for V-plane if specified.</p></li>
+<li><p><strong>gain_RF</strong> (<em>optional</em>) – Gain for the correction with the rf frequency. If not specified,
+the gain of the horizontal plane is used.</p></li>
 <li><p><strong>singular_values_H</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><em>int</em></a><em>, </em><em>optional</em>) – Number of singular values to use for SVD decomposition in the horizontal
 plane. If not specified, uses the default or configured value.</p></li>
 <li><p><strong>singular_values_V</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><em>int</em></a><em>, </em><em>optional</em>) – Number of singular values to use for SVD decomposition in the vertical
 plane. If not specified, uses the default or configured value.</p></li>
+<li><p><strong>rf</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><em>bool</em></a><em>, </em><em>default False</em><em>,</em>) – If set to true, the rf_response will also be used in the response matrix
+for correction of the horizontal orbit. Only takes into effect if plane is
+None or if plane = ‘H’.</p></li>
 </ul>
 </dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaml.tuning_tools.orbit.Orbit.get_rf_weight">
+<span class="sig-name descname"><span class="pre">get_rf_weight</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/tuning_tools/orbit.html#Orbit.get_rf_weight"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.tuning_tools.orbit.Orbit.get_rf_weight" title="Link to this definition">#</a></dt>
+<dd><dl class="field-list simple">
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaml.tuning_tools.orbit.Orbit.get_virtual_weight">
+<span class="sig-name descname"><span class="pre">get_virtual_weight</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/tuning_tools/orbit.html#Orbit.get_virtual_weight"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.tuning_tools.orbit.Orbit.get_virtual_weight" title="Link to this definition">#</a></dt>
+<dd><dl class="field-list simple">
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaml.tuning_tools.orbit.Orbit.get_weight">
+<span class="sig-name descname"><span class="pre">get_weight</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">plane</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/tuning_tools/orbit.html#Orbit.get_weight"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.tuning_tools.orbit.Orbit.get_weight" title="Link to this definition">#</a></dt>
+<dd><dl class="field-list simple">
 </dl>
 </dd></dl>
 
@@ -593,6 +629,27 @@ plane. If not specified, uses the default or configured value.</p></li>
 <dt class="sig sig-object py" id="pyaml.tuning_tools.orbit.Orbit.post_init">
 <span class="sig-name descname"><span class="pre">post_init</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/tuning_tools/orbit.html#Orbit.post_init"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.tuning_tools.orbit.Orbit.post_init" title="Link to this definition">#</a></dt>
 <dd><p>Method triggered after all initialisations are done</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaml.tuning_tools.orbit.Orbit.set_rf_weight">
+<span class="sig-name descname"><span class="pre">set_rf_weight</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">weight</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/tuning_tools/orbit.html#Orbit.set_rf_weight"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.tuning_tools.orbit.Orbit.set_rf_weight" title="Link to this definition">#</a></dt>
+<dd><dl class="field-list simple">
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaml.tuning_tools.orbit.Orbit.set_virtual_weight">
+<span class="sig-name descname"><span class="pre">set_virtual_weight</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">weight</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/tuning_tools/orbit.html#Orbit.set_virtual_weight"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.tuning_tools.orbit.Orbit.set_virtual_weight" title="Link to this definition">#</a></dt>
+<dd><dl class="field-list simple">
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaml.tuning_tools.orbit.Orbit.set_weight">
+<span class="sig-name descname"><span class="pre">set_weight</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weight</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">plane</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/tuning_tools/orbit.html#Orbit.set_weight"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.tuning_tools.orbit.Orbit.set_weight" title="Link to this definition">#</a></dt>
+<dd><dl class="field-list simple">
+</dl>
 </dd></dl>
 
 </dd></dl>
@@ -650,17 +707,25 @@ plane. If not specified, uses the default or configured value.</p></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.tuning_tools.orbit.ConfigModel.bpm_array_name"><code class="docutils literal notranslate"><span class="pre">ConfigModel.bpm_array_name</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.tuning_tools.orbit.ConfigModel.hcorr_array_name"><code class="docutils literal notranslate"><span class="pre">ConfigModel.hcorr_array_name</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.tuning_tools.orbit.ConfigModel.response_matrix"><code class="docutils literal notranslate"><span class="pre">ConfigModel.response_matrix</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.tuning_tools.orbit.ConfigModel.rf_plant_name"><code class="docutils literal notranslate"><span class="pre">ConfigModel.rf_plant_name</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.tuning_tools.orbit.ConfigModel.singular_values"><code class="docutils literal notranslate"><span class="pre">ConfigModel.singular_values</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.tuning_tools.orbit.ConfigModel.singular_values_H"><code class="docutils literal notranslate"><span class="pre">ConfigModel.singular_values_H</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.tuning_tools.orbit.ConfigModel.singular_values_V"><code class="docutils literal notranslate"><span class="pre">ConfigModel.singular_values_V</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.tuning_tools.orbit.ConfigModel.vcorr_array_name"><code class="docutils literal notranslate"><span class="pre">ConfigModel.vcorr_array_name</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.tuning_tools.orbit.ConfigModel.virtual_target"><code class="docutils literal notranslate"><span class="pre">ConfigModel.virtual_target</span></code></a></li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.tuning_tools.orbit.Orbit"><code class="docutils literal notranslate"><span class="pre">Orbit</span></code></a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.tuning_tools.orbit.Orbit.attach"><code class="docutils literal notranslate"><span class="pre">Orbit.attach()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.tuning_tools.orbit.Orbit.correct"><code class="docutils literal notranslate"><span class="pre">Orbit.correct()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.tuning_tools.orbit.Orbit.get_rf_weight"><code class="docutils literal notranslate"><span class="pre">Orbit.get_rf_weight()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.tuning_tools.orbit.Orbit.get_virtual_weight"><code class="docutils literal notranslate"><span class="pre">Orbit.get_virtual_weight()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.tuning_tools.orbit.Orbit.get_weight"><code class="docutils literal notranslate"><span class="pre">Orbit.get_weight()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.tuning_tools.orbit.Orbit.load_response_matrix"><code class="docutils literal notranslate"><span class="pre">Orbit.load_response_matrix()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.tuning_tools.orbit.Orbit.post_init"><code class="docutils literal notranslate"><span class="pre">Orbit.post_init()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.tuning_tools.orbit.Orbit.set_rf_weight"><code class="docutils literal notranslate"><span class="pre">Orbit.set_rf_weight()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.tuning_tools.orbit.Orbit.set_virtual_weight"><code class="docutils literal notranslate"><span class="pre">Orbit.set_virtual_weight()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.tuning_tools.orbit.Orbit.set_weight"><code class="docutils literal notranslate"><span class="pre">Orbit.set_weight()</span></code></a></li>
 </ul>
 </li>
 </ul>

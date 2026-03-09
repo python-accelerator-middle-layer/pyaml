@@ -1161,6 +1161,8 @@
 </li>
       <li><a href="api/pyaml.common.element_holder.html#pyaml.common.element_holder.ElementHolder.get_rf_trasnmitter">get_rf_trasnmitter() (ElementHolder method)</a>
 </li>
+      <li><a href="api/pyaml.tuning_tools.orbit.html#pyaml.tuning_tools.orbit.Orbit.get_rf_weight">get_rf_weight() (Orbit method)</a>
+</li>
       <li><a href="api/pyaml.configuration.fileloader.html#pyaml.configuration.fileloader.get_root_folder">get_root_folder() (in module pyaml.configuration.fileloader)</a>
 </li>
       <li><a href="api/pyaml.common.element_holder.html#pyaml.common.element_holder.ElementHolder.get_serialized_magnet">get_serialized_magnet() (ElementHolder method)</a>
@@ -1194,6 +1196,10 @@
 </li>
       </ul></li>
       <li><a href="api/pyaml.common.element_holder.html#pyaml.common.element_holder.ElementHolder.get_tune_tuning">get_tune_tuning() (ElementHolder method)</a>
+</li>
+      <li><a href="api/pyaml.tuning_tools.orbit.html#pyaml.tuning_tools.orbit.Orbit.get_virtual_weight">get_virtual_weight() (Orbit method)</a>
+</li>
+      <li><a href="api/pyaml.tuning_tools.orbit.html#pyaml.tuning_tools.orbit.Orbit.get_weight">get_weight() (Orbit method)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -1269,7 +1275,7 @@
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="api/pyaml.tuning_tools.response_matrix.html#pyaml.tuning_tools.response_matrix.ConfigModel.inputs_plane">inputs_plane (ConfigModel attribute)</a>
+      <li><a href="api/pyaml.tuning_tools.response_matrix.html#pyaml.tuning_tools.response_matrix.ConfigModel.input_planes">input_planes (ConfigModel attribute)</a>
 </li>
       <li><a href="api/pyaml.control.readback_value.html#id2">INVALID (Quality attribute)</a>, <a href="api/pyaml.control.readback_value.html#pyaml.control.readback_value.Quality.INVALID">[1]</a>
 </li>
@@ -1618,7 +1624,7 @@
 </li>
       <li><a href="api/pyaml.tuning_tools.response_matrix.html#pyaml.tuning_tools.response_matrix.ConfigModel.output_names">output_names (ConfigModel attribute)</a>
 </li>
-      <li><a href="api/pyaml.tuning_tools.response_matrix.html#pyaml.tuning_tools.response_matrix.ConfigModel.outputs_plane">outputs_plane (ConfigModel attribute)</a>
+      <li><a href="api/pyaml.tuning_tools.response_matrix.html#pyaml.tuning_tools.response_matrix.ConfigModel.output_planes">output_planes (ConfigModel attribute)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -2275,7 +2281,7 @@
 </li>
       <li><a href="api/pyaml.tuning_tools.response_matrix.html#pyaml.tuning_tools.response_matrix.ResponseMatrix">ResponseMatrix (class in pyaml.tuning_tools.response_matrix)</a>
 </li>
-      <li><a href="api/pyaml.tuning_tools.dispersion.html#pyaml.tuning_tools.dispersion.ConfigModel.rf_plant_name">rf_plant_name (ConfigModel attribute)</a>
+      <li><a href="api/pyaml.tuning_tools.dispersion.html#pyaml.tuning_tools.dispersion.ConfigModel.rf_plant_name">rf_plant_name (ConfigModel attribute)</a>, <a href="api/pyaml.tuning_tools.orbit.html#pyaml.tuning_tools.orbit.ConfigModel.rf_plant_name">[1]</a>
 </li>
       <li><a href="api/pyaml.tuning_tools.response_matrix.html#pyaml.tuning_tools.response_matrix.ConfigModel.rf_response">rf_response (ConfigModel attribute)</a>
 </li>
@@ -2589,9 +2595,15 @@
 </li>
       <li><a href="api/pyaml.external.pySC_interface.html#pyaml.external.pySC_interface.pySCInterface.set_rf_main_frequency">set_rf_main_frequency() (pySCInterface method)</a>
 </li>
+      <li><a href="api/pyaml.tuning_tools.orbit.html#pyaml.tuning_tools.orbit.Orbit.set_rf_weight">set_rf_weight() (Orbit method)</a>
+</li>
       <li><a href="api/pyaml.configuration.fileloader.html#pyaml.configuration.fileloader.set_root_folder">set_root_folder() (in module pyaml.configuration.fileloader)</a>
 </li>
+      <li><a href="api/pyaml.tuning_tools.orbit.html#pyaml.tuning_tools.orbit.Orbit.set_virtual_weight">set_virtual_weight() (Orbit method)</a>
+</li>
       <li><a href="api/pyaml.external.pySC_interface.html#pyaml.external.pySC_interface.pySCInterface.set_wait_time">set_wait_time (pySCInterface attribute)</a>
+</li>
+      <li><a href="api/pyaml.tuning_tools.orbit.html#pyaml.tuning_tools.orbit.Orbit.set_weight">set_weight() (Orbit method)</a>
 </li>
       <li><a href="api/pyaml.magnet.sextupole.html#pyaml.magnet.sextupole.Sextupole">Sextupole (class in pyaml.magnet.sextupole)</a>
 </li>
@@ -2763,11 +2775,13 @@
 </li>
       <li><a href="api/pyaml.tuning_tools.orbit.html#pyaml.tuning_tools.orbit.ConfigModel.vcorr_array_name">vcorr_array_name (ConfigModel attribute)</a>, <a href="api/pyaml.tuning_tools.orbit_response_matrix.html#pyaml.tuning_tools.orbit_response_matrix.ConfigModel.vcorr_array_name">[1]</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/pyaml.magnet.vcorrector.html#pyaml.magnet.vcorrector.VCorrector">VCorrector (class in pyaml.magnet.vcorrector)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/pyaml.control.controlsystem.html#pyaml.control.controlsystem.ControlSystem.vector_aggregator">vector_aggregator() (ControlSystem method)</a>
+</li>
+      <li><a href="api/pyaml.tuning_tools.orbit.html#pyaml.tuning_tools.orbit.ConfigModel.virtual_target">virtual_target (ConfigModel attribute)</a>
 </li>
       <li><a href="api/pyaml.rf.rf_transmitter.html#id4">voltage (ConfigModel attribute)</a>, <a href="api/pyaml.rf.rf_transmitter.html#pyaml.rf.rf_transmitter.ConfigModel.voltage">[1]</a>
 
