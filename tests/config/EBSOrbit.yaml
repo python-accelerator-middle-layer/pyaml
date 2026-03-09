@@ -1224,6 +1224,7 @@ devices:
   bpm_array_name: BPM
   hcorr_array_name: HCorr
   vcorr_array_name: VCorr
+  rf_plant_name: RF
   name: DEFAULT_ORBIT_CORRECTION
   singular_values: 162
   response_matrix: file:ideal_orm_disp.json

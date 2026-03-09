@@ -46,8 +46,8 @@ def test_tuning_orbit_correction():
 
     positions_ac = bpms.positions.get()
     std_ac = np.std(positions_ac, axis=0)
-    assert np.isclose(std_ac[0], 5.041856471193712e-07, rtol=0, atol=1e-14)
-    assert np.isclose(std_ac[1], 4.789269566479167e-07, rtol=0, atol=1e-14)
+    assert np.isclose(std_ac[0], 5.054093306546607e-07, rtol=0, atol=1e-14)
+    assert np.isclose(std_ac[1], 4.789271163619949e-07, rtol=0, atol=1e-14)
 
     # mangle orbit again, test gain_H/gain_V
     hcorr.strengths.set(h_strengths)
@@ -56,8 +56,8 @@ def test_tuning_orbit_correction():
 
     positions_ac = bpms.positions.get()
     std_ac = np.std(positions_ac, axis=0)
-    assert np.isclose(std_ac[0], 3.35354284052137e-05, rtol=0, atol=1e-14)
-    assert np.isclose(std_ac[1], 4.1339663520424604e-05, rtol=0, atol=1e-14)
+    assert np.isclose(std_ac[0], 3.35697276761084e-05, rtol=0, atol=1e-14)
+    assert np.isclose(std_ac[1], 4.134022877212121e-05, rtol=0, atol=1e-14)
 
     # mangle orbit again, test gain/gain_V
     hcorr.strengths.set(h_strengths)
@@ -66,8 +66,8 @@ def test_tuning_orbit_correction():
 
     positions_ac = bpms.positions.get()
     std_ac = np.std(positions_ac, axis=0)
-    assert np.isclose(std_ac[0], 5.104224174704558e-07, rtol=0, atol=1e-14)
-    assert np.isclose(std_ac[1], 4.1313661790996294e-05, rtol=0, atol=1e-14)
+    assert np.isclose(std_ac[0], 5.119687659921698e-07, rtol=0, atol=1e-14)
+    assert np.isclose(std_ac[1], 4.1314729706686444e-05, rtol=0, atol=1e-14)
 
     # mangle orbit again, test singular_values_H
     hcorr.strengths.set(h_strengths)
@@ -76,8 +76,8 @@ def test_tuning_orbit_correction():
 
     positions_ac = bpms.positions.get()
     std_ac = np.std(positions_ac, axis=0)
-    assert np.isclose(std_ac[0], 1.3748553578879513e-06, rtol=0, atol=1e-14)
-    assert np.isclose(std_ac[1], 4.789939022822169e-07, rtol=0, atol=1e-14)
+    assert np.isclose(std_ac[0], 1.407498808433106e-06, rtol=0, atol=1e-14)
+    assert np.isclose(std_ac[1], 4.790103697644036e-07, rtol=0, atol=1e-14)
 
     # mangle orbit again, test singular_values_V
     hcorr.strengths.set(h_strengths)
@@ -86,8 +86,8 @@ def test_tuning_orbit_correction():
 
     positions_ac = bpms.positions.get()
     std_ac = np.std(positions_ac, axis=0)
-    assert np.isclose(std_ac[0], 5.042256801373377e-07, rtol=0, atol=1e-14)
-    assert np.isclose(std_ac[1], 2.764901786304611e-06, rtol=0, atol=1e-14)
+    assert np.isclose(std_ac[0], 5.054514402135771e-07, rtol=0, atol=1e-14)
+    assert np.isclose(std_ac[1], 2.7648819443570936e-06, rtol=0, atol=1e-14)
 
     # mangle orbit again, test plane=H
     hcorr.strengths.set(h_strengths)
@@ -96,8 +96,8 @@ def test_tuning_orbit_correction():
 
     positions_ac = bpms.positions.get()
     std_ac = np.std(positions_ac, axis=0)
-    assert np.isclose(std_ac[0], 5.241959150018442e-07, rtol=0, atol=1e-14)
-    assert np.isclose(std_ac[1], 4.5907541799723846e-05, rtol=0, atol=1e-14)
+    assert np.isclose(std_ac[0], 5.25813506653942e-07, rtol=0, atol=1e-14)
+    assert np.isclose(std_ac[1], 4.5908728774474065e-05, rtol=0, atol=1e-14)
     assert np.isclose(std_ac[1], original_V, rtol=1e-2, atol=1e-14)
 
     # mangle orbit again, test plane=V
@@ -110,6 +110,57 @@ def test_tuning_orbit_correction():
     assert np.isclose(std_ac[0], 6.65117255381606e-05, rtol=0, atol=1e-14)
     assert np.isclose(std_ac[1], 4.845815082760313e-07, rtol=0, atol=1e-14)
     assert np.isclose(std_ac[0], original_H, rtol=1e-2, atol=1e-14)
+
+    # mangle orbit again, corrector weight
+    hcorr.strengths.set(h_strengths)
+    vcorr.strengths.set(v_strengths)
+
+    element_holder.orbit.set_weight("SJ2A-C04-H", 2)
+    element_holder.orbit.correct()
+
+    positions_ac = bpms.positions.get()
+    std_ac = np.std(positions_ac, axis=0)
+    assert np.isclose(std_ac[0], 5.057265926153962e-07, rtol=0, atol=1e-14)
+    assert np.isclose(std_ac[1], 4.78927471675123e-07, rtol=0, atol=1e-14)
+    element_holder.orbit.set_weight("SJ2A-C04-H", 1)
+
+    # mangle orbit again, test bpm weight
+    hcorr.strengths.set(h_strengths)
+    vcorr.strengths.set(v_strengths)
+
+    element_holder.orbit.set_weight("BPM_C04-05", 2)
+    element_holder.orbit.correct()
+
+    positions_ac = bpms.positions.get()
+    std_ac = np.std(positions_ac, axis=0)
+    assert np.isclose(std_ac[0], 5.056719006414065e-07, rtol=0, atol=1e-14)
+    assert np.isclose(std_ac[1], 4.790610352466602e-07, rtol=0, atol=1e-14)
+    element_holder.orbit.set_weight("BPM_C04-05", 1)
+
+    # mangle orbit again, test virtual weight
+    hcorr.strengths.set(h_strengths)
+    vcorr.strengths.set(v_strengths)
+
+    element_holder.orbit.set_virtual_weight(2)
+    element_holder.orbit.correct()
+
+    positions_ac = bpms.positions.get()
+    std_ac = np.std(positions_ac, axis=0)
+    assert np.isclose(std_ac[0], 5.05398857685373e-07, rtol=0, atol=1e-14)
+    assert np.isclose(std_ac[1], 4.789270969888965e-07, rtol=0, atol=1e-14)
+    element_holder.orbit.set_virtual_weight(1000)
+
+    # mangle orbit again, test virtual target
+    hcorr.strengths.set(h_strengths)
+    vcorr.strengths.set(v_strengths)
+
+    virtual_target = 1e-8
+    element_holder.orbit.correct(virtual_target=virtual_target)
+
+    delta_h_strengths = hcorr.strengths.get() - h_strengths
+    delta_h_strengths_sum = -np.sum(delta_h_strengths)
+    assert np.isclose(delta_h_strengths_sum - virtual_target, 0, rtol=0, atol=1e-13)
+    element_holder.orbit.set_virtual_weight(1)
 
     # mangle orbit again, test reference
     hcorr.strengths.set(h_strengths)
@@ -125,8 +176,58 @@ def test_tuning_orbit_correction():
     element_holder.orbit.correct(reference=reference / 2, plane="H")
     positions_ac = bpms.positions.get()
     std_ac = np.std(positions_ac, axis=0)
-    assert np.isclose(std_ac[0], 3.356995564922256e-05, rtol=0, atol=1e-14)
-    assert np.isclose(std_ac[1], 4.5936801886172225e-05, rtol=0, atol=1e-14)
+    assert np.isclose(std_ac[0], 3.360429728849497e-05, rtol=0, atol=1e-14)
+    assert np.isclose(std_ac[1], 4.5937430373721725e-05, rtol=0, atol=1e-14)
+
+    # no need to mangle orbit again, test rf
+    x, y = bpms.positions.get().T  # get reference orbit
+    reference_before_rf = np.concat((x, y))
+
+    plant = element_holder.get_rf_plant("RF")
+    frf = plant.frequency.get()
+    plant.frequency.set(frf + 100)
+    for _ in range(3):
+        element_holder.orbit.correct(
+            reference=reference_before_rf,
+            plane="H",
+            rf=True,
+            gain_RF=1,
+            gain_H=0,
+        )
+
+    frf_after = plant.frequency.get()
+    assert np.isclose(frf, frf_after, rtol=0, atol=1e-16)
+
+    # no need to mangle orbit again, test rf
+    x, y = bpms.positions.get().T  # get reference orbit
+    reference_before_rf = np.concat((x, y))
+
+    rf_weight = element_holder.orbit.get_rf_weight()
+    element_holder.orbit.set_rf_weight(1.1 * rf_weight)
+    plant = element_holder.get_rf_plant("RF")
+    frf = plant.frequency.get()
+    plant.frequency.set(frf + 100)
+    for _ in range(8):
+        element_holder.orbit.correct(
+            reference=reference_before_rf,
+            plane="H",
+            rf=True,
+            gain_RF=1,
+            gain_H=0,
+        )
+
+    frf_after = plant.frequency.get()
+    assert np.isclose(frf, frf_after, rtol=0, atol=1e-16)
+    element_holder.orbit.set_rf_weight(rf_weight)
+
+    # test getters of weights
+    assert np.isclose(
+        element_holder.orbit.get_weight("BPM_C04-05", plane="H"), 1, rtol=0, atol=1e-16
+    )
+    assert np.isclose(element_holder.orbit.get_virtual_weight(), 1, rtol=0, atol=1e-16)
+    assert np.isclose(
+        element_holder.orbit.get_rf_weight(), rf_weight, rtol=0, atol=1e-16
+    )
 
 
 def test_tuning_orbit_correction_config():
