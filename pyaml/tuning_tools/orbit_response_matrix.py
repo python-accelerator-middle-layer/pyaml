@@ -129,21 +129,21 @@ class OrbitResponseMatrix(Element):
             return
 
         response_data = measurement.response_data  # contains also pre-processed data
-        response_data.output_names = element_holder.get_bpms(
-            self.bpm_array_name
-        ).names()
+        bpm_names = element_holder.get_bpms(self.bpm_array_name).names()
+        # This is because we assume always dual-plane bpms now.
+        response_data.output_names = bpm_names * 2
         self.latest_measurement = response_data.model_dump()
 
-        inputs_plane = []
+        input_planes = []
         for corr in corrector_names:
             if corr in hcorrector_names:
-                inputs_plane.append("H")
+                input_planes.append("H")
             elif corr in vcorrector_names:
-                inputs_plane.append("V")
-        self.latest_measurement["inputs_plane"] = inputs_plane
+                input_planes.append("V")
+        self.latest_measurement["input_planes"] = input_planes
 
-        len_b = len(response_data.output_names)
-        self.latest_measurement["outputs_plane"] = ["H"] * len_b + ["V"] * len_b
+        len_b = len(bpm_names)
+        self.latest_measurement["output_planes"] = ["H"] * len_b + ["V"] * len_b
 
     def get(self):
         return self.latest_measurement
