@@ -129,9 +129,9 @@ class OrbitResponseMatrix(Element):
             return
 
         response_data = measurement.response_data  # contains also pre-processed data
-        response_data.output_names = (
-            element_holder.get_bpms(self.bpm_array_name).names() * 2
-        )  # This is because we assume always dual-plane bpms now.
+        bpm_names = element_holder.get_bpms(self.bpm_array_name).names()
+        # This is because we assume always dual-plane bpms now.
+        response_data.output_names = bpm_names * 2
         self.latest_measurement = response_data.model_dump()
 
         input_planes = []
@@ -142,7 +142,7 @@ class OrbitResponseMatrix(Element):
                 input_planes.append("V")
         self.latest_measurement["input_planes"] = input_planes
 
-        len_b = len(response_data.output_names)
+        len_b = len(bpm_names)
         self.latest_measurement["output_planes"] = ["H"] * len_b + ["V"] * len_b
 
     def get(self):
