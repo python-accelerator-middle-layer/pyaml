@@ -4,7 +4,6 @@ import io
 import json
 import logging
 import os
-import textwrap
 from pathlib import Path
 from typing import TYPE_CHECKING, Union
 
@@ -12,6 +11,8 @@ import yaml
 from yaml import CLoader
 from yaml.constructor import ConstructorError
 from yaml.loader import SafeLoader
+
+from pyaml.configuration.factory import Factory
 
 from .. import PyAMLException
 
@@ -23,7 +24,6 @@ logger = logging.getLogger(__name__)
 
 accepted_suffixes = [".yaml", ".yml", ".json"]
 FILE_PREFIX = "file:"
-elements_code_tag = "elements_code"
 
 ROOT = {"path": Path.cwd().resolve()}
 
@@ -88,44 +88,6 @@ def hasToLoad(value):
     )
 
 
-# Expand condition for dynamic code execution
-def has_to_execute(key: str, value):
-    """
-    Return True if the current dict entry corresponds to executable code.
-
-    The execution is triggered only when:
-    - the key is exactly "elements_code"
-    - the value is a string (code snippet)
-
-    This keeps behavior explicit and avoids accidental execution.
-    """
-    return key == elements_code_tag and isinstance(value, str)
-
-
-def execute_configuration_code(code: str):
-    clean_code = textwrap.dedent(code).strip()
-    wrapped = "def _f():\n" + textwrap.indent(clean_code.strip(), "    ")
-    compiled = compile(wrapped, "<string>", "exec")
-
-    ns = {}
-    exec(compiled, ns)
-
-    return ns["_f"]()
-
-
-def extract_location(d: dict, key: str) -> str:
-    location = d.pop("__location__", None)
-    field_locations = d.pop("__fieldlocations__", None)
-    location_str = ""
-    if location:
-        file, line, col = location
-        if field_locations and key in field_locations:
-            location = field_locations[key]
-            file, line, col = location
-        location_str = f" in {file} at line {line}, column {col}"
-    return location_str
-
-
 # Loader base class (nested files expansion)
 class Loader:
     def __init__(self, filename: str, parent_path_stack: list[Path]):
@@ -150,23 +112,18 @@ class Loader:
                         d[key] = str(get_root_folder() / Path(stripped_value))
                     else:
                         d[key] = load(value, self.files_stack, self.use_fast_loader)
-                elif has_to_execute(key, value):
-                    exec_result = execute_configuration_code(value)
-                    d.pop(key, None)
-                    if isinstance(exec_result, dict):
-                        self.expand(exec_result)
-                        d.update(exec_result)
-                    else:
-                        location_str = extract_location(d, key)
-                        raise PyAMLException(
-                            f"The type returned by an elements_code"
-                            f" block was of type {type(exec_result)}"
-                            f" while a dict was expected{location_str}"
-                        )
                 else:
                     self.expand(value)
             except PyAMLConfigCyclingException as pyaml_ex:
-                location_str = extract_location(d, key)
+                location = d.pop("__location__", None)
+                field_locations = d.pop("__fieldlocations__", None)
+                location_str = ""
+                if location:
+                    file, line, col = location
+                    if field_locations and key in field_locations:
+                        location = field_locations[key]
+                        file, line, col = location
+                    location_str = f" in {file} at line {line}, column {col}"
                 raise PyAMLException(
                     "Circular file inclusion "
                     f"of {pyaml_ex.error_filename}{location_str}"
@@ -174,36 +131,11 @@ class Loader:
 
     # Recursively expand a list
     def expand_list(self, l: list):
-        idx = 0
-        while idx < len(l):
-            value = l[idx]
-
-            # Special case: list item is a pure code-macro dict {"elements_code": "..."}
-            if isinstance(value, dict) and elements_code_tag in value.keys():
-                result = execute_configuration_code(value[elements_code_tag])
-
-                if isinstance(result, list):
-                    # Replace the macro item with all generated items
-                    l[idx : idx + 1] = result
-                    # Expand each inserted item
-                    for j in range(idx, idx + len(result)):
-                        self.expand(l[j])
-                    idx += len(result)
-                else:
-                    # It should be a dict, but we accept everything as a custom
-                    # strategy can be used.
-                    l[idx] = result
-                    self.expand(l[idx])
-                    idx += 1
-                continue
-
-            # Default behavior
+        for idx, value in enumerate(l):
             if hasToLoad(value):
                 l[idx] = load(value, self.files_stack)
             else:
                 self.expand(value)
-
-            idx += 1
 
     # Recursively expand an object
     def expand(self, obj: Union[dict, list]):
