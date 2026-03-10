@@ -99,8 +99,8 @@ def test_arrays(install_test_package):
 
     strHV = sr.live.get_magnets("HVCORR").strengths.get()
     assert np.abs(strHV[0] - 0.000010) < 1e-10
-    assert np.abs(strHV[1] - 0.000015) < 1e-10
-    assert np.abs(strHV[2] + 0.000008) < 1e-10
+    assert np.abs(strHV[1] + 0.000008) < 1e-10
+    assert np.abs(strHV[2] - 0.000015) < 1e-10
     assert np.abs(strHV[3] + 0.000017) < 1e-10
 
     # Reset to 0
@@ -122,7 +122,7 @@ def test_arrays(install_test_package):
     for m in sr.live.get_magnets("HVCORR"):
         mags.append(m)
     array = MagnetArray("HVCOOR_noagg", mags, use_aggregator=False)
-    array.strengths.set([0.000010, 0.000015, -0.000008, -0.000017])
+    array.strengths.set([0.000010, -0.000008, 0.000015, -0.000017])
     ps1 = sr.live.get_cfm_magnet("SH1A-C01").hardwares.get()
     ps2 = sr.live.get_cfm_magnet("SH1A-C02").hardwares.get()
     assert np.abs(ps1[0] - 0.02956737880874648) < 1e-10
