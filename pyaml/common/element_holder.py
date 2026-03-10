@@ -92,6 +92,7 @@ class ElementHolder(object):
         constructor,
         ARR: dict,
     ):
+        # Handle wildcard, regexp and exclusion pattern
         all_names: list[str] = []
         excluded_names: list[str] = []
         for name in element_names:
@@ -103,9 +104,6 @@ class ElementHolder(object):
                 all_names.extend(names)
 
         [all_names.remove(name) for name in excluded_names]
-
-        order = {elem_name: i for i, elem_name in enumerate(self.__ALL.keys())}
-        all_names = sorted(all_names, key=lambda num: order[num])
 
         a = []
         for n in all_names:
