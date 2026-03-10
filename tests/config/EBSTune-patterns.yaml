@@ -2,8 +2,10 @@ type: pyaml.accelerator
 facility: ESRF
 machine: sr
 energy: 6e9
+description: "Accelerator configuration for EBS storage ring"
 simulators:
   - type: pyaml.lattice.simulator
+    description: "EBS lattice"
     lattice: sr/lattices/ebs.mat
     name: design
 controls:
@@ -17,8 +19,16 @@ arrays:
     elements:
       - QD2*
       - QF1*
+  - type: pyaml.arrays.magnet
+    name: QForTest
+    elements:
+      - QD2*
+      - QF1*
+      - ~QF1E-C05
+      - ~Q???-C06
 devices:
 - type: pyaml.magnet.quadrupole
+  description: "QF1E-C04 quadrupole"
   name: QF1E-C04
   model:
     type: pyaml.magnet.linear_model
@@ -46,7 +56,6 @@ devices:
       type: tango.pyaml.attribute
       attribute: srmag/vps-qf1/c05-a/current
       unit: A
-      range: [10,109]
 - type: pyaml.magnet.quadrupole
   name: QF1E-C05
   model:
