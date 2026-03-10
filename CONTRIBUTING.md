@@ -25,7 +25,13 @@ If manual intervention is required, please follow the instructions provided by t
   - Include a description of your changes and reference the relevant issue.
   - Ensure your code follows the project’s style and passes all tests.
   - A maintainer will review your PR and may suggest changes.
+#### Releasing a new version on PyPi
 
+1. Create a branch for a release
+2. Provide a list of changes and release description in the merge request. Justify a version bump is necessary.
+3. Tag the corresponding version.
+4. Approve and merge the PR.
+5. CI/CD will take care of PyPi release. (Make sure the version in CI/CD deployment pipeline matches the one you just tagged.)
 ### 4. Documentation
 - **Improving Docs:** Fix typos, clarify instructions, or add missing documentation. Submit a PR as you would for code changes.
 - **Website:** Our project website is at [python-accelerator-middle-layer.github.io](https://python-accelerator-middle-layer.github.io/).
