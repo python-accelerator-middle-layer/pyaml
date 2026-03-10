@@ -35,16 +35,6 @@ class ElementHolder(object):
     simulators and control system
     """
 
-    __MAGNETS: dict[str, Magnet]
-    __CFM_MAGNETS: dict[str, CombinedFunctionMagnet]
-    __SERIALIZED_MAGNETS: dict[str, SerializedMagnets]
-    __BPMS: dict[str, BPM]
-    __RFPLANT: dict[str, RFPlant]
-    __RFTRANSMITTER: dict[str, RFTransmitter]
-    __DIAG: dict[str, Element]
-    __TUNING_TOOLS: dict[str, Element]
-    __ALL: dict[str, Element]
-
     def __init__(self):
         # Device handle
         self.__MAGNETS: dict[str, Magnet] = {}
