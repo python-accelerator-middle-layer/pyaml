@@ -13,7 +13,42 @@
    ```bash
     pip install accelerator-middle-layer[pyaml-cs-oa]
     ```
-## Start the SOLEIL II virtual accelerator
+
+If this does not work, you can proceed to do a developer installation directly from git repository.
+```bash
+# pyAML core
+git clone git@github.com:python-accelerator-middle-layer/pyaml.git
+cd pyaml
+pip install -e .[dev]
+# pyAML TANGO bindings
+git clone git@github.com:python-accelerator-middle-layer/tango-pyaml.git
+cd tango-pyaml
+pip install -e .
+#pyAML ophyd-async bindings (supports both TANGO and EPICS)
+git clone git@github.com:python-accelerator-middle-layer/pyaml-cs-oa.git
+cd pyaml-cs-oa
+pip install -e .
+```
+
+You can verify that everything is installed correctly by running in Python or IPython terminal the start of the examples.
+
+```python
+from pyaml.accelerator import Accelerator
+
+sr = Accelerator.load("p.yaml")
+sr  # string representation
+```
+
+The following or a similar message will be printed
+```
+Accelerator(facility='Synchrotron SOLEIL', machine='sr', energy=2750000000.0, controls=[TangoControlSystem(name='live', tango_host='localhost:11000', debug_level=None, lazy_devices=True, scalar_aggregator='tango.pyaml.multi_attribute', vector_aggregator=None, timeout_ms=3000)], simulators=[Simulator(name='design', lattice='SOLEIL_II_V3631_sym1_V001_database_rf.m', mat_key=None, linker=<pyaml.lattice.attribute_linker.PyAtAttributeElementsLinker object at 0x7a1ce1e9deb0>, description=None)], data_folder='/data/store', description=None)
+```
+
+pyAML has two control modes: "live" and "design" (named in the config file). "live" connects to a control system (or a control system emulator), "design" only requires pyAT lattice file and will run pyAT. If you want to avoid having any control system connection, you can delete "controls: " section from the configuration file.
+
+### Start the SOLEIL II virtual accelerator
+
+SOLEIL II virtual accelerator is an emulation of TANGO control system that runs pyAT under the hood.
 
 1. Install [Apptainer](https://apptainer.org/docs/admin/main/installation.html) in case you don't already have it.
 
