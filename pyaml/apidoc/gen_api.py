@@ -80,7 +80,7 @@ modules = [
     "pyaml.tuning_tools.dispersion",
     "pyaml.tuning_tools.orbit",
     "pyaml.tuning_tools.orbit_response_matrix",
-    "pyaml.tuning_tools.response_matrix",
+    "pyaml.tuning_tools.response_matrix_data",
     "pyaml.tuning_tools.tune",
     "pyaml.yellow_pages",
 ]
