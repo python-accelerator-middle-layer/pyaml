@@ -18,8 +18,6 @@ from pySC.apps import orbit_correction
 from ..arrays.magnet_array import MagnetArray
 from ..common.element import Element, ElementConfigModel
 from ..common.exception import PyAMLException
-from ..configuration.factory import Factory
-from ..configuration.fileloader import load
 from ..external.pySC_interface import pySCInterface
 from ..rf.rf_plant import RFPlant
 from .response_matrix import ResponseMatrix
@@ -51,6 +49,7 @@ class Orbit(Element):
         self.bpm_array_name = cfg.bpm_array_name
         self.hcorr_array_name = cfg.hcorr_array_name
         self.vcorr_array_name = cfg.vcorr_array_name
+        self._pySC_response_matrix = None
 
         self.virtual_target = cfg.virtual_target
 
@@ -71,16 +70,17 @@ class Orbit(Element):
             self.singular_values_H = cfg.singular_values
             self.singular_values_V = cfg.singular_values
 
+        # If the configuration response matrix is a filename, load it
         if type(cfg.response_matrix) is str:
-            response_matrix_filename = cfg.response_matrix
-            # assigns self.response_matrix
-            if Path(response_matrix_filename).exists():
-                self.load_response_matrix(response_matrix_filename)
-            else:
-                logger.warning(f"{response_matrix_filename} does not exist.")
-                self.response_matrix = None
-        else:
-            self.response_matrix = pySC_ResponseMatrix.model_validate(
+            try:
+                cfg.response_matrix = ResponseMatrix.load(cfg.response_matrix)
+            except Exception as e:
+                logger.warning(f"{str(e)}")
+                cfg.response_matrix = None
+
+        # assigns self._pySC_response_matrix
+        if cfg.response_matrix:
+            self._pySC_response_matrix = pySC_ResponseMatrix.model_validate(
                 cfg.response_matrix._cfg.model_dump()
             )
 
@@ -88,6 +88,10 @@ class Orbit(Element):
         self._vcorr: MagnetArray = None
         self._hvcorr: MagnetArray = None
         self._rf_plant: RFPlant = None
+
+    @property
+    def reponse_matrix(self) -> ResponseMatrix | None:
+        return self._cfg.response_matrix
 
     def correct(
         self,
@@ -137,7 +141,7 @@ class Orbit(Element):
             None or if plane = 'H'.
         """
 
-        if self.response_matrix is None:
+        if self._pySC_response_matrix is None:
             raise PyAMLException(f"{self.get_name()} does not have a response_matrix.")
 
         interface = pySCInterface(
@@ -161,7 +165,7 @@ class Orbit(Element):
         if plane is None or plane == "H":
             trims_h = orbit_correction(
                 interface=interface,
-                response_matrix=self.response_matrix,
+                response_matrix=self._pySC_response_matrix,
                 method="svd_values",
                 parameter=svH,
                 virtual=True,
@@ -175,7 +179,7 @@ class Orbit(Element):
         if plane is None or plane == "V":
             trims_v = orbit_correction(
                 interface=interface,
-                response_matrix=self.response_matrix,
+                response_matrix=self._pySC_response_matrix,
                 method="svd_values",
                 parameter=svV,
                 virtual=False,
@@ -241,15 +245,15 @@ class Orbit(Element):
     def set_weight(
         self, name: str, weight: float, plane: Optional[Literal["H", "V"]] = None
     ) -> None:
-        self.response_matrix.set_weight(name, weight, plane=plane)
+        self._pySC_response_matrix.set_weight(name, weight, plane=plane)
         return
 
     def set_virtual_weight(self, weight: float) -> None:
-        self.response_matrix.virtual_weight = weight
+        self._pySC_response_matrix.virtual_weight = weight
         return
 
     def set_rf_weight(self, weight: float) -> None:
-        self.response_matrix.rf_weight = weight
+        self._pySC_response_matrix.rf_weight = weight
         return
 
     def get_weight(self, name: str, plane: Optional[Literal["H", "V"]] = None) -> float:
@@ -257,9 +261,9 @@ class Orbit(Element):
         planes = []
         weights = []
 
-        inames = self.response_matrix.input_names
-        iplanes = self.response_matrix.input_planes
-        iweights = self.response_matrix.input_weights
+        inames = self._pySC_response_matrix.input_names
+        iplanes = self._pySC_response_matrix.input_planes
+        iweights = self._pySC_response_matrix.input_weights
         for iname, iplane, iw in zip(inames, iplanes, iweights, strict=True):
             if name == iname:
                 if plane is None or plane == iplane:
@@ -267,9 +271,9 @@ class Orbit(Element):
                     planes.append(iplane)
                     weights.append(iw)
 
-        onames = self.response_matrix.output_names
-        oplanes = self.response_matrix.output_planes
-        oweights = self.response_matrix.output_weights
+        onames = self._pySC_response_matrix.output_names
+        oplanes = self._pySC_response_matrix.output_planes
+        oweights = self._pySC_response_matrix.output_weights
         for oname, oplane, ow in zip(onames, oplanes, oweights, strict=True):
             if name == oname:
                 if plane is None or plane == oplane:
@@ -286,10 +290,10 @@ class Orbit(Element):
             )
 
     def get_virtual_weight(self) -> float:
-        return self.response_matrix.virtual_weight
+        return self._pySC_response_matrix.virtual_weight
 
     def get_rf_weight(self) -> float:
-        return self.response_matrix.rf_weight
+        return self._pySC_response_matrix.rf_weight
 
     def post_init(self):
         self._hcorr = self._peer.get_magnets(self._cfg.hcorr_array_name)
@@ -309,10 +313,3 @@ class Orbit(Element):
         obj = self.__class__(self._cfg)
         obj._peer = peer
         return obj
-
-    def load_response_matrix(self, filename: str) -> None:
-        path = Path(filename)
-        config_dict = load(str(path.resolve()))
-        rm = Factory.depth_first_build(config_dict, ignore_external=False)
-        self.response_matrix = pySC_ResponseMatrix.model_validate(rm._cfg.model_dump())
-        return None
