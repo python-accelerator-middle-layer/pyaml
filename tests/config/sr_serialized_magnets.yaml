@@ -32,3 +32,11 @@ devices:
         type: tango.pyaml.attribute
         attribute: srmag/ps-corr-sh1/c01-a-ch1/current
         unit: A
+  # - type: pyaml.magnet.quadrupole
+  #   name: QF8B-C04-W
+  #   description: "Winding on a quadrupole"
+  #   model:
+  #     type: pyaml.magnet.winding_model
+  #     winding_ratio: -3
+  #     attached_magnet_name: mySeriesOfMagnets
+  #     element_in_series: QF8B-C04
