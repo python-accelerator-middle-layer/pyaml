@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>pyaml.tuning_tools.response_matrix &#8212; Python Accelerator Middle Layer 0.1.dev1+gc70627fd7 documentation</title>
+    <title>pyaml.tuning_tools.response_matrix &#8212; Python Accelerator Middle Layer 0.1.dev1+ga234ce537 documentation</title>
   
   
   
@@ -41,7 +41,7 @@
   <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
 <link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
-    <script src="../../../_static/documentation_options.js?v=5b465ee6"></script>
+    <script src="../../../_static/documentation_options.js?v=3f964867"></script>
     <script src="../../../_static/doctools.js?v=9bcbadda"></script>
     <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -118,8 +118,8 @@
       
     
     
-    <img src="../../../_static/logo.png" class="logo__image only-light" alt="Python Accelerator Middle Layer 0.1.dev1+gc70627fd7 documentation - Home"/>
-    <img src="../../../_static/dark.png" class="logo__image only-dark pst-js-only" alt="Python Accelerator Middle Layer 0.1.dev1+gc70627fd7 documentation - Home"/>
+    <img src="../../../_static/logo.png" class="logo__image only-light" alt="Python Accelerator Middle Layer 0.1.dev1+ga234ce537 documentation - Home"/>
+    <img src="../../../_static/dark.png" class="logo__image only-dark pst-js-only" alt="Python Accelerator Middle Layer 0.1.dev1+ga234ce537 documentation - Home"/>
   
   
 </a></div>
@@ -369,9 +369,16 @@
                 <article class="bd-article">
                   
   <h1>Source code for pyaml.tuning_tools.response_matrix</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Optional</span>
+<span></span><span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Optional</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">pydantic</span><span class="w"> </span><span class="kn">import</span> <span class="n">BaseModel</span><span class="p">,</span> <span class="n">ConfigDict</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">pyaml.common.element</span><span class="w"> </span><span class="kn">import</span> <span class="n">__pyaml_repr__</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pyaml.configuration.factory</span><span class="w"> </span><span class="kn">import</span> <span class="n">Factory</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">..</span><span class="w"> </span><span class="kn">import</span> <span class="n">PyAMLException</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">..configuration.fileloader</span><span class="w"> </span><span class="kn">import</span> <span class="n">load</span>
 
 <span class="n">PYAMLCLASS</span> <span class="o">=</span> <span class="s2">&quot;ResponseMatrix&quot;</span>
 
@@ -387,9 +394,9 @@
 <span class="sd">    matrix : list[list[float]]</span>
 <span class="sd">        Response matrix data</span>
 <span class="sd">    input_names : list[str], optional</span>
-<span class="sd">        Input names</span>
+<span class="sd">        Input names, basically the actuators</span>
 <span class="sd">    output_names : list[str]</span>
-<span class="sd">        Output names</span>
+<span class="sd">        Output names, basically the measurements</span>
 <span class="sd">    rf_response : list[float], optional</span>
 <span class="sd">        RF response data</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -408,8 +415,30 @@
 <div class="viewcode-block" id="ResponseMatrix">
 <a class="viewcode-back" href="../../../api/pyaml.tuning_tools.response_matrix.html#pyaml.tuning_tools.response_matrix.ResponseMatrix">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">ResponseMatrix</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Generic response matrix loader</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cfg</span><span class="p">:</span> <span class="n">ConfigModel</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_cfg</span> <span class="o">=</span> <span class="n">cfg</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_cfg</span> <span class="o">=</span> <span class="n">cfg</span>
+
+<div class="viewcode-block" id="ResponseMatrix.load">
+<a class="viewcode-back" href="../../../api/pyaml.tuning_tools.response_matrix.html#pyaml.tuning_tools.response_matrix.ResponseMatrix.load">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">load</span><span class="p">(</span><span class="n">filename</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Load a reponse matrix from a configuration file</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
+            <span class="n">config_dict</span> <span class="o">=</span> <span class="n">load</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">path</span><span class="o">.</span><span class="n">resolve</span><span class="p">()))</span>
+            <span class="k">return</span> <span class="n">Factory</span><span class="o">.</span><span class="n">depth_first_build</span><span class="p">(</span><span class="n">config_dict</span><span class="p">,</span> <span class="n">ignore_external</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">PyAMLException</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">filename</span><span class="si">}</span><span class="s2">: file not found&quot;</span><span class="p">)</span></div>
+
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">__pyaml_repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div>
 
 </pre></div>
 
