@@ -20,7 +20,7 @@ from ..common.element import Element, ElementConfigModel
 from ..common.exception import PyAMLException
 from ..external.pySC_interface import pySCInterface
 from ..rf.rf_plant import RFPlant
-from .response_matrix_data import ResponseMatrixData
+from .orbit_response_matrix_data import OrbitResponseMatrixData
 
 logger = logging.getLogger(__name__)
 logging.getLogger("pyaml.external.pySC").setLevel(logging.WARNING)
@@ -39,7 +39,7 @@ class ConfigModel(ElementConfigModel):
     singular_values_H: Optional[int] = None
     singular_values_V: Optional[int] = None
     virtual_target: float = 0
-    response_matrix: Union[str, ResponseMatrixData]
+    response_matrix: Union[str, OrbitResponseMatrixData]
 
 
 class Orbit(Element):
@@ -73,7 +73,7 @@ class Orbit(Element):
         # If the configuration response matrix is a filename, load it
         if type(cfg.response_matrix) is str:
             try:
-                cfg.response_matrix = ResponseMatrixData.load(cfg.response_matrix)
+                cfg.response_matrix = OrbitResponseMatrixData.load(cfg.response_matrix)
             except Exception as e:
                 logger.warning(f"{str(e)}")
                 cfg.response_matrix = None
@@ -90,7 +90,7 @@ class Orbit(Element):
         self._rf_plant: RFPlant = None
 
     @property
-    def reponse_matrix(self) -> ResponseMatrixData | None:
+    def reponse_matrix(self) -> OrbitResponseMatrixData | None:
         return self._cfg.response_matrix
 
     def correct(

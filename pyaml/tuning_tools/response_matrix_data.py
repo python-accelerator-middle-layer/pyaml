@@ -24,8 +24,6 @@ class ConfigModel(BaseModel):
         Input names, basically the actuators
     output_names : list[str]
         Output names, basically the measurements
-    rf_response : list[float], optional
-        RF response data
     """
 
     model_config = ConfigDict(arbitrary_types_allowed=True, extra="forbid")
@@ -33,9 +31,6 @@ class ConfigModel(BaseModel):
     matrix: list[list[float]]
     input_names: Optional[list[str]]
     output_names: list[str]
-    rf_response: Optional[list[float]] = None
-    input_planes: Optional[list[str]] = None
-    output_planes: Optional[list[str]] = None
 
 
 class ResponseMatrixData(object):
