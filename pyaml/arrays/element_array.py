@@ -96,9 +96,7 @@ class ElementArray(list[Element]):
         elif issubclass(element_type, Element):
             return ElementArray(array_name, elements, self.__use_aggregator)
         else:
-            raise PyAMLException(
-                f"Unsupported sliced array for type {str(element_type)}"
-            )
+            raise PyAMLException(f"Unsupported sliced array for type {str(element_type)}")
 
     def __eval_field(self, attribute_name: str, element: Element) -> str:
         function_name = "get_" + attribute_name
@@ -109,16 +107,14 @@ class ElementArray(list[Element]):
         """Validate the operand used for set-like operations between arrays."""
         if not isinstance(other, ElementArray):
             raise TypeError(
-                f"Unsupported operand type(s) for set operation: "
-                f"'{type(self).__name__}' and '{type(other).__name__}'"
+                f"Unsupported operand type(s) for set operation: '{type(self).__name__}' and '{type(other).__name__}'"
             )
 
         if len(self) > 0 and len(other) > 0:
             if self.get_peer() is not None and other.get_peer() is not None:
                 if self.get_peer() != other.get_peer():
                     raise PyAMLException(
-                        f"{self.__class__.__name__}: cannot operate on arrays "
-                        "attached to different peers"
+                        f"{self.__class__.__name__}: cannot operate on arrays attached to different peers"
                     )
         return other
 
@@ -170,9 +166,7 @@ class ElementArray(list[Element]):
             pass
 
         # --- python sequence of bools (but not a string/bytes) ---
-        if isinstance(other, Sequence) and not isinstance(
-            other, (str, bytes, bytearray)
-        ):
+        if isinstance(other, Sequence) and not isinstance(other, (str, bytes, bytearray)):
             # Avoid treating ElementArray as a mask
             if isinstance(other, ElementArray):
                 return False
@@ -195,8 +189,7 @@ class ElementArray(list[Element]):
            If ``other`` is an ElementArray, the result contains elements
            whose names are present in both arrays.
 
-           Example
-           -------
+           **Example**
 
            .. code-block:: python
 
@@ -208,8 +201,8 @@ class ElementArray(list[Element]):
            If ``other`` is a boolean mask (list[bool] or numpy.ndarray of bool),
            elements are kept where the mask is True.
 
-           Example
-           -------
+           **Example**
+
            .. code-block:: python
 
                >>> mask = cell1.mask_by_type(Magnet)
@@ -232,8 +225,7 @@ class ElementArray(list[Element]):
             mask = list(other)  # works for list/tuple and numpy arrays
             if len(mask) != len(self):
                 raise ValueError(
-                    f"{self.__class__.__name__}: mask length ({len(mask)}) "
-                    f"does not match array length ({len(self)})"
+                    f"{self.__class__.__name__}: mask length ({len(mask)}) does not match array length ({len(self)})"
                 )
             res = [e for e, keep in zip(self, mask, strict=True) if bool(keep)]
             return self.__auto_array(res)
@@ -261,8 +253,7 @@ class ElementArray(list[Element]):
            If ``other`` is an ElementArray, the result contains elements
            whose names are present in ``self`` but not in ``other``.
 
-           Example
-           -------
+           **Example**
 
            .. code-block:: python
 
@@ -275,8 +266,7 @@ class ElementArray(list[Element]):
            elements are removed where the mask is True.
            This is the inverse of ``& mask``.
 
-           Example
-           -------
+           **Example**
 
             .. code-block:: python
 
@@ -300,8 +290,7 @@ class ElementArray(list[Element]):
             mask = list(other)
             if len(mask) != len(self):
                 raise ValueError(
-                    f"{self.__class__.__name__}: mask length ({len(mask)}) "
-                    f"does not match array length ({len(self)})"
+                    f"{self.__class__.__name__}: mask length ({len(mask)}) does not match array length ({len(self)})"
                 )
             res = [e for e, remove in zip(self, mask, strict=True) if not bool(remove)]
             return self.__auto_array(res)

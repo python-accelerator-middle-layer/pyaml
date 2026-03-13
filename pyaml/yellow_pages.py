@@ -4,29 +4,29 @@ yellow_pages.py
 Fully dynamic YellowPages service attached to Accelerator.
 
 Key points:
-- Auto-discovery only: arrays, tools and diagnostics are discovered at runtime
-  by scanning all modes.
-- No caching: every call reflects current runtime state.
-- Simple query syntax for identifiers:
-    - wildcard / fnmatch:
-        yp["OH4*"]
-    - regular expression:
-        yp["re:^SH1A-C0[12]-H$"]
+    - Auto-discovery only: arrays, tools and diagnostics are discovered at runtime
+      by scanning all modes.
+    - No caching: every call reflects current runtime state.
+    - Simple query syntax for identifiers:
+        - wildcard / fnmatch:
+            yp["OH4*"]
+        - regular expression:
+            yp["re:^SH1A-C0[12]-H$"]
 
 Expected Accelerator interface
 ------------------------------
-- controls()   -> dict[str, ElementHolder]
-- simulators() -> dict[str, ElementHolder]
-- modes()      -> dict[str, ElementHolder]
+    - controls()   -> dict[str, ElementHolder]
+    - simulators() -> dict[str, ElementHolder]
+    - modes()      -> dict[str, ElementHolder]
 
 Expected ElementHolder interface
 --------------------------------
-- list_arrays() -> set[str]
-- list_tools() -> set[str]
-- list_diagnostics() -> set[str]
-- get_array(name: str) -> Any
-- get_tool(name: str) -> Any
-- get_diagnostic(name: str) -> Any
+    - list_arrays() -> set[str]
+    - list_tools() -> set[str]
+    - list_diagnostics() -> set[str]
+    - get_array(name: str) -> Any
+    - get_tool(name: str) -> Any
+    - get_diagnostic(name: str) -> Any
 """
 
 from __future__ import annotations
