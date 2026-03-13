@@ -37,14 +37,3 @@ def test_load_conf_with_code():
     str_repr = str(sr.yellow_pages)
     print(str_repr)
     assert ebs_orbit_str_repr == str_repr
-
-
-def test_soleil():
-    parent_folder = Path(__file__).parent
-    config_path = parent_folder.joinpath("p.yaml").resolve()
-    sr: Accelerator = Accelerator.load(config_path)
-    str_repr = str(sr.yellow_pages)
-    print(str_repr)
-    print(sr.modes())
-    print(f"BPM={sr.yellow_pages.get('BPM', mode='design')}")
-    print(f"\n\nCell1={sr.yellow_pages['Cell1']}")
