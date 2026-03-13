@@ -4,56 +4,34 @@ yellow_pages.py
 Fully dynamic YellowPages service attached to Accelerator.
 
 Key points:
-- Auto-discovery ONLY: arrays/tools/diagnostics are discovered at runtime by scanning
-  all modes.
+- Auto-discovery only: arrays, tools and diagnostics are discovered at runtime
+  by scanning all modes.
 - No caching: every call reflects current runtime state.
+- Simple query syntax for identifiers:
+    - wildcard / fnmatch:
+        yp["OH4*"]
+    - regular expression:
+        yp["re:^SH1A-C0[12]-H$"]
 
-Expected Accelerator interface:
+Expected Accelerator interface
+------------------------------
 - controls()   -> dict[str, ElementHolder]
 - simulators() -> dict[str, ElementHolder]
-- modes()      -> dict[str, ElementHolder]   (union of controls + simulators)
+- modes()      -> dict[str, ElementHolder]
 
-Expected ElementHolder interface:
-- list_arrays()      -> set[str]
-- list_tools()       -> set[str]
+Expected ElementHolder interface
+--------------------------------
+- list_arrays() -> set[str]
+- list_tools() -> set[str]
 - list_diagnostics() -> set[str]
-- get_array(name: str)      -> Any
-- get_tool(name: str)       -> Any
+- get_array(name: str) -> Any
+- get_tool(name: str) -> Any
 - get_diagnostic(name: str) -> Any
-
-Query language via __getitem__:
-- Operands:
-  - KEY: discovered identifier (e.g. BPM, HCORR, VCORR)
-  - Regex: use re{ ... } (recommended) or re:... (legacy simple form)
-
-- Operators:
-  - Union:        |
-  - Intersection: &
-  - Difference:   -
-  - Parentheses:  ( )
-
-Regex grammar:
-- Preferred form: re{<python-regex>}
-  - Allows '-', parentheses, spaces, etc.
-  - Escape '}' as '\\}' inside the regex.
-
-Examples
---------
-.. code-block:: python
-
-    >>> yp["BPM"]
-    >>> yp["HCORR|VCORR"]
-    >>> yp["BPM - re{BPM_C01-01}"]
-    >>> yp["re{^BPM_C..-..$}"]
-    >>> yp["(HCORR|VCORR) - re{CH_.*}"]
-
-Notes
------
-- KEY operands in queries are treated as arrays and converted to IDs.
-- Regex operands filter over ALL known IDs gathered from all discovered arrays across
-  all modes.
 """
 
+from __future__ import annotations
+
+import fnmatch
 import re
 from enum import Enum
 from typing import Any
@@ -72,120 +50,10 @@ class YellowPagesError(PyAMLException):
 
 
 class YellowPagesQueryError(YellowPagesError):
-    """Raised when a YellowPages query string cannot be parsed/evaluated."""
+    """Raised when a YellowPages query string cannot be evaluated."""
 
 
 _VALID_KEY_RE = re.compile(r"^[A-Z0-9_]+$")
-
-
-# ---------------------------
-# Query parsing helpers
-# ---------------------------
-
-# Regex operand supports:
-# - re{...} where ... may include operators chars like '-', '|', '&', parentheses,
-#   spaces, etc.
-#   '}' can be escaped as '\}' inside.
-#
-# We match: re{ (?: \\. | [^}] )* }
-# meaning: either an escaped char (e.g. '\}') or any char except '}'.
-_TOKEN_RE = re.compile(
-    r"""
-    \s*(
-        re\{(?:\\.|[^}])*\}     |  # regex token with braces, supports escaped chars
-        re:[^\s\|\&\-\(\)]+     |  # legacy regex token (no spaces/operators/parens)
-        [A-Z0-9_]+              |  # identifier token (YellowPages key)
-        \|\|?                   |  # '|' or '||'
-        \&\&?                   |  # '&' or '&&'
-        \-                      |  # difference
-        \(|\)                      # parentheses
-    )\s*
-    """,
-    re.VERBOSE,
-)
-
-
-def _tokenize(expr: str) -> list[str]:
-    if not expr or not expr.strip():
-        raise YellowPagesQueryError("Empty YellowPages query.")
-
-    pos = 0
-    tokens: list[str] = []
-    while pos < len(expr):
-        m = _TOKEN_RE.match(expr, pos)
-        if not m:
-            snippet = expr[pos : min(len(expr), pos + 32)]
-            raise YellowPagesQueryError(f"Cannot tokenize near: '{snippet}'")
-        tok = m.group(1)
-        if tok == "||":
-            tok = "|"
-        if tok == "&&":
-            tok = "&"
-        tokens.append(tok)
-        pos = m.end()
-    return tokens
-
-
-def _to_rpn(tokens: list[str]) -> list[str]:
-    """
-    Shunting-yard to RPN.
-
-    Precedence:
-    - '&' and '-' higher than '|'
-    - all left-associative
-    """
-    prec = {"|": 1, "&": 2, "-": 2}
-    output: list[str] = []
-    stack: list[str] = []
-
-    for tok in tokens:
-        if tok == "(":
-            stack.append(tok)
-        elif tok == ")":
-            while stack and stack[-1] != "(":
-                output.append(stack.pop())
-            if not stack or stack[-1] != "(":
-                raise YellowPagesQueryError("Mismatched parentheses.")
-            stack.pop()
-        elif tok in prec:
-            while stack and stack[-1] in prec and prec[stack[-1]] >= prec[tok]:
-                output.append(stack.pop())
-            stack.append(tok)
-        else:
-            output.append(tok)
-
-    while stack:
-        if stack[-1] in ("(", ")"):
-            raise YellowPagesQueryError("Mismatched parentheses.")
-        output.append(stack.pop())
-
-    return output
-
-
-def _extract_regex(tok: str) -> str:
-    """
-    Extract regex pattern from a regex token.
-
-    Supported:
-    - re{...} (preferred)
-    - re:...  (legacy)
-    """
-    if tok.startswith("re{") and tok.endswith("}"):
-        inner = tok[3:-1]
-        # Interpret escaped sequences (e.g. '\}' -> '}')
-        # Keep it simple: only unescape '\}' and '\\'
-        inner = inner.replace(r"\}", "}").replace(r"\\", "\\")
-        return inner
-
-    if tok.startswith("re:"):
-        return tok[3:]
-
-    raise YellowPagesQueryError(f"Invalid regex token '{tok}'")
-
-
-# ---------------------------
-# YellowPages service (full dynamic)
-# ---------------------------
 
 
 class YellowPages:
@@ -235,41 +103,35 @@ class YellowPages:
 
         sr.yellow_pages.get("BPM", mode="live")
 
-    Query arrays using set expressions:
+    Search identifiers using wildcards:
 
     .. code-block:: python
 
-        sr.yellow_pages["BPM"]
-        sr.yellow_pages["HCORR|VCORR"]
-        sr.yellow_pages["BPM - re{BPM_C01-01}"]
+        sr.yellow_pages["OH4*"]
 
-    Regex filtering:
+    Search identifiers using a regular expression:
 
     .. code-block:: python
 
-        sr.yellow_pages["re{^BPM_C..-..$}"]
+        sr.yellow_pages["re:^SH1A-C0[12]-H$"]
     """
 
     def __init__(self, accelerator: Any):
         self._acc = accelerator
 
-    # ---------------------------
-    # Discovery API
-    # ---------------------------
-
     def has(self, key: str) -> bool:
-        """
+        r"""
         Check whether a YellowPages key exists.
 
         Parameters
         ----------
         key : str
-            Name of the entry.
+            Entry name.
 
         Returns
         -------
         bool
-            True if the key exists.
+            ``True`` if the key exists.
 
         Examples
         --------
@@ -288,10 +150,10 @@ class YellowPages:
         return key in self._all_keys()
 
     def categories(self) -> list[str]:
-        """
+        r"""
         Return the list of available categories.
 
-        Only categories that contain elements are returned.
+        Only categories that contain entries are returned.
 
         Returns
         -------
@@ -311,13 +173,13 @@ class YellowPages:
         return [c.value for c in YellowPagesCategory if c in present]
 
     def keys(self, category: str | YellowPagesCategory | None = None) -> list[str]:
-        """
+        r"""
         Return available YellowPages keys.
 
         Parameters
         ----------
         category : str or YellowPagesCategory, optional
-            Restrict results to a specific category.
+            Restrict the result to a specific category.
 
         Returns
         -------
@@ -348,37 +210,41 @@ class YellowPages:
         discovered = self._discover()
 
         if category is None:
-            return sorted(self._all_keys())
+            return self._all_keys()
 
         cat = YellowPagesCategory(category)
-        return sorted(discovered.get(cat, set()))
-
-    # ---------------------------
-    # Bonus: REPL-friendly exploration
-    # ---------------------------
+        return discovered.get(cat, [])
 
     def __dir__(self):
+        """
+        Extend ``dir()`` with attribute-friendly discovered keys.
+        """
         default = super().__dir__()
-        return sorted(
-            set(default) | {k for k in self._all_keys() if _VALID_KEY_RE.match(k)}
-        )
+        return sorted(set(default) | {k for k in self._all_keys() if _VALID_KEY_RE.match(k)})
 
     def __getattr__(self, name):
+        """
+        Allow attribute-style access for valid discovered keys.
+
+        Examples
+        --------
+
+        .. code-block:: python
+
+            sr.yellow_pages.BPM
+        """
         if name in self._all_keys():
-            return self._get(name)
+            return self._get_object(name)
         raise AttributeError(f"'YellowPages' object has no attribute '{name}'")
 
-    # ---------------------------
-    # Resolution API
-    # ---------------------------
-
     def availability(self, key: str) -> set[str]:
-        """
-        Return the list of modes where a key is available.
+        r"""
+        Return the set of modes where a key is available.
 
         Parameters
         ----------
         key : str
+            Entry name.
 
         Returns
         -------
@@ -389,14 +255,8 @@ class YellowPages:
 
         .. code-block:: python
 
-            >>> sr.yellow_pages.availability("BPM")
-            {'live', 'design'}
-
-        .. code-block:: python
-
-            >>> sr.yellow_pages.availability("DEFAULT_ORBIT_CORRECTION")
-            {'live'}
-
+            sr.yellow_pages.availability("BPM")
+            sr.yellow_pages.availability("DEFAULT_ORBIT_CORRECTION")
         """
         self._require_key(key)
         avail: set[str] = set()
@@ -405,8 +265,8 @@ class YellowPages:
                 avail.add(mode_name)
         return avail
 
-    def _get(self, key: str, *, mode: str | None = None):
-        """
+    def _get_object(self, key: str, *, mode: str | None = None):
+        r"""
         Resolve a YellowPages entry.
 
         Parameters
@@ -414,16 +274,29 @@ class YellowPages:
         key : str
             Entry name.
         mode : str, optional
-            Specific mode.
+            Restrict the resolution to a specific mode.
 
         Returns
         -------
         object or dict[str, object]
 
+            If ``mode`` is specified, returns the resolved object.
+
+            Otherwise returns a dictionary mapping mode names
+            to resolved objects.
+
+        Raises
+        ------
+        KeyError
+            If the key does not exist.
+        YellowPagesError
+            If the mode is unknown or the key is not available
+            in the requested mode.
+
         Examples
         --------
 
-        Resolve in all modes:
+        Resolve across all modes:
 
         .. code-block:: python
 
@@ -450,9 +323,7 @@ class YellowPages:
                 raise YellowPagesError(f"Unknown mode '{mode}'.")
             obj = self._try_resolve_in_holder(key, holder)
             if obj is None:
-                raise YellowPagesError(
-                    f"YellowPages key '{key}' not available in mode '{mode}'."
-                )
+                raise YellowPagesError(f"YellowPages key '{key}' not available in mode '{mode}'.")
             return obj
 
         out: dict[str, Any] = {}
@@ -462,114 +333,131 @@ class YellowPages:
                 out[mode_name] = obj
         return out
 
-    # ---------------------------
-    # Query language: yp["..."]  (arrays/IDs only)
-    # ---------------------------
-
     def __getitem__(self, query: str) -> list[str]:
         """
-        Evaluate a YellowPages query expression.
+        Alias for :meth:`get`.
+        """
+        return self.get(query)
 
-        The query language allows set operations and regex filtering.
+    def get(self, query: str, mode: str | None = None) -> list[str]:
+        """
+        Search identifiers using a wildcard or regular expression.
 
-        Operators
-        ---------
+        Parameters
+        ----------
+        query : str
+            Search expression.
+        mode : str, optional
+            Restrict the search to a specific accelerator mode.
 
-        | : union
-
-        & : intersection
-
-        - : difference
-
-        Parentheses are supported.
-
-        Regex
-        -----
-
-        Use the form ``re{pattern}``.
+        Returns
+        -------
+        list[str]
 
         Examples
         --------
 
-        All BPMs:
-
         .. code-block:: python
 
-            >>> sr.yellow_pages["BPM"]
+            >>> sr.yellow_pages.get("OH4*")
 
-        Union:
+            >>> sr.yellow_pages.get("OH4*", mode="live")
 
-        .. code-block:: python
-
-            >>> sr.yellow_pages["HCORR|VCORR"]
-
-        Difference:
-
-        .. code-block:: python
-
-            >>> sr.yellow_pages["BPM - re{BPM_C01-01}"]
-
-        Regex filter:
-
-        .. code-block:: python
-
-            >>> sr.yellow_pages["re{^BPM_C..-..$}"]
-
-        Combined expressions:
-
-        .. code-block:: python
-
-            >>> sr.yellow_pages["(HCORR|VCORR) - re{CH_.*}"]
+            >>> sr.yellow_pages.get("re:^SH1A-C0[12]-H$")
 
         """
-        ids = self._eval_query_to_ids(query)
-        return sorted(ids)
+        if not query or not query.strip():
+            raise YellowPagesQueryError("Empty YellowPages query.")
 
-    # ---------------------------
-    # Printing / introspection
-    # ---------------------------
+        query = query.strip()
+
+        if mode is not None:
+            holder = self._acc.modes().get(mode)
+            if holder is None:
+                raise YellowPagesError(f"Unknown mode '{mode}'.")
+
+            if query in holder.list_arrays():
+                return self._object_to_ids(holder.get_array(query))
+            else:
+                ids = self._ids_from_holder(holder)
+        else:
+            if query in self.keys(YellowPagesCategory.ARRAYS):
+                if mode is None:
+                    arr_list: list[str] = []
+                    for a_mode in self._acc.modes():
+                        try:
+                            obj = self._get_object(query, mode=a_mode)
+                            array_ids = self._object_to_ids(obj)
+                            self._extend_unique(arr_list, array_ids)
+                        except Exception:
+                            continue
+                    return arr_list
+
+                return self._object_to_ids(self._get_object(query, mode=mode))
+            ids = self._all_known_ids()
+
+        if query.startswith("re:"):
+            pattern = query[3:]
+            try:
+                rx = re.compile(pattern)
+            except re.error as ex:
+                raise YellowPagesQueryError(f"Invalid regex '{pattern}': {ex}") from ex
+
+            return [i for i in ids if rx.search(i)]
+
+        return [i for i in ids if fnmatch.fnmatch(i, query)]
 
     def __repr__(self) -> str:
-        """
+        r"""
         Return a human-readable overview of the YellowPages content.
 
-        The output lists controls, simulators and discovered objects
-        grouped by category.
+        The representation lists:
+
+        - controls
+        - simulators
+        - discovered arrays, tools and diagnostics
+
+        The displayed type corresponds to the Python module
+        defining the resolved object.
 
         Examples
         --------
 
         .. code-block:: python
 
-            >>> print(sr.yellow_pages)
+            print(sr.yellow_pages)
 
-        Controls:
-            live
-            .
+        Example output:
 
-        Simulators:
-            design
-            .
+        .. code-block:: text
 
-        Arrays:
-            BPM (pyaml.arrays.bpm_array) size=224
-            HCORR (pyaml.arrays.magnet_array) size=96
-            .
+            Controls:
+                live
+                .
 
-        Tools:
-            DEFAULT_ORBIT_CORRECTION (pyaml.tuning_tools.orbit)
-            .
+            Simulators:
+                design
+                .
 
-        Diagnostics:
-            BETATRON_TUNE (pyaml.diagnostics.tune_monitor)
-            .
+            Arrays:
+                BPM (pyaml.arrays.bpm_array) size=224
+                HCORR (pyaml.arrays.magnet_array) size=96
+                .
+
+            Tools:
+                DEFAULT_ORBIT_CORRECTION (pyaml.tuning_tools.orbit)
+                .
+
+            Diagnostics:
+                BETATRON_TUNE (pyaml.diagnostics.tune_monitor)
+                .
         """
         lines: list[str] = []
 
         lines.append("Controls:")
         controls = self._acc.controls()
         if controls:
-            for name in sorted(controls.keys()):
+            for name in controls.keys():
                 lines.append(f"    {name}")
         lines.append("    .")
         lines.append("")
@@ -577,7 +465,7 @@ class YellowPages:
         lines.append("Simulators:")
         simulators = self._acc.simulators()
         if simulators:
-            for name in sorted(simulators.keys()):
+            for name in simulators.keys():
                 lines.append(f"    {name}")
         lines.append("    .")
         lines.append("")
@@ -589,7 +477,7 @@ class YellowPages:
                 continue
 
             lines.append(f"{cat.value}:")
-            for key in sorted(keys):
+            for key in keys:
                 lines.append(self._format_key(cat, key))
             lines.append("    .")
             lines.append("")
@@ -599,26 +487,22 @@ class YellowPages:
     def __str__(self) -> str:
         return self.__repr__()
 
-    # ---------------------------
-    # Internals: discovery
-    # ---------------------------
-
-    def _discover(self) -> dict[YellowPagesCategory, set[str]]:
-        arrays: set[str] = set()
-        tools: set[str] = set()
-        diags: set[str] = set()
+    def _discover(self) -> dict[YellowPagesCategory, list[str]]:
+        arrays: list[str] = []
+        tools: list[str] = []
+        diags: list[str] = []
 
         for _, holder in self._acc.modes().items():
             try:
-                arrays |= set(holder.list_arrays())
+                self._extend_unique(arrays, holder.list_arrays())
             except Exception:
                 pass
             try:
-                tools |= set(holder.list_tools())
+                self._extend_unique(tools, holder.list_tools())
             except Exception:
                 pass
             try:
-                diags |= set(holder.list_diagnostics())
+                self._extend_unique(diags, holder.list_diagnostics())
             except Exception:
                 pass
 
@@ -628,29 +512,38 @@ class YellowPages:
             YellowPagesCategory.DIAGNOSTICS: diags,
         }
 
-    def _all_keys(self) -> set[str]:
-        discovered = self._discover()
-        out: set[str] = set()
-        for keys in discovered.values():
-            out |= set(keys)
-        return out
+    def _extend_unique(self, target: list[str], values: list[str]) -> None:
+        """
+        Append values to target while preserving insertion order and uniqueness.
+        """
+        for value in values:
+            if value not in target:
+                target.append(value)
 
-    # ---------------------------
-    # Internals: resolution
-    # ---------------------------
+    def _all_keys(self) -> list[str]:
+        discovered = self._discover()
+        out: list[str] = []
+        for keys in discovered.values():
+            self._extend_unique(out, keys)
+        return out
 
     def _require_key(self, key: str) -> None:
         if key not in self._all_keys():
             raise KeyError(self._unknown_key_message(key))
 
     def _unknown_key_message(self, key: str) -> str:
-        available = ", ".join(sorted(self._all_keys()))
-        return (
-            f"Unknown YellowPages key '{key}'. "
-            f"Available keys: {available if available else '<none>'}"
-        )
+        available = ", ".join(self._all_keys())
+        return f"Unknown YellowPages key '{key}'. Available keys: {available if available else '<none>'}"
 
     def _try_resolve_in_holder(self, key: str, holder: Any) -> Any | None:
+        """
+        Resolve a discovered key in a holder.
+
+        Resolution order:
+        - arrays
+        - tools
+        - diagnostics
+        """
         try:
             if key in holder.list_arrays():
                 return holder.get_array(key)
@@ -671,37 +564,41 @@ class YellowPages:
 
         return None
 
-    # ---------------------------
-    # Internals: repr formatting
-    # ---------------------------
-
-    def _get_type_name(self, key: str) -> str | None:
+    def _get_type_name_from_resolved(self, resolved: dict[str, Any]) -> str | None:
         """
-        Determine the fully qualified type name of a YellowPages entry.
+        Return the public type name used in ``__repr__``.
 
-        The type is inferred from the first resolved object found across modes.
+        Only the module path is displayed, not the concrete class name.
+
+        Examples
+        --------
+
+        .. code-block:: text
+
+            pyaml.arrays.bpm_array
+            pyaml.tuning_tools.orbit
+            pyaml.diagnostics.tune_monitor
         """
-        resolved = self._get(key)
-
         for obj in resolved.values():
             if obj is None:
                 continue
-
-            cls = obj.__class__
-            return f"{cls.__module__}.{cls.__name__}"
-
+            return obj.__class__.__module__
         return None
 
     def _format_key(self, category: YellowPagesCategory, key: str) -> str:
-        type_name = self._get_type_name(key)
+        """
+        Format one discovered key for ``__repr__``.
+        """
+        resolved = self._get_object(key)
+        type_name = self._get_type_name_from_resolved(resolved)
         type_part = f" ({type_name})" if type_name else ""
-        resolved = self._get(key)  # dict[mode,obj] where available
-        modes = sorted(resolved.keys())
-        all_modes = sorted(self._acc.modes().keys())
+
+        modes = list(resolved.keys())
+        all_modes = list(self._acc.modes().keys())
 
         availability_part = ""
         if set(modes) != set(all_modes):
-            missing = sorted(set(all_modes) - set(modes))
+            missing = [mode for mode in all_modes if mode not in modes]
             availability_part = f" modes={modes} missing={missing}"
 
         if category == YellowPagesCategory.ARRAYS:
@@ -712,113 +609,78 @@ class YellowPages:
                 except Exception:
                     sizes[mode_name] = 0
 
-            if set(modes) == set(all_modes) and sizes and len(set(sizes.values())) == 1:
+            if modes == all_modes and sizes and len(set(sizes.values())) == 1:
                 size_part = f" size={next(iter(sizes.values()))}"
             else:
-                size_part = (
-                    " size={"
-                    + ", ".join(f"{m}:{n}" for m, n in sorted(sizes.items()))
-                    + "}"
-                )
+                size_part = " size={" + ", ".join(f"{m}:{n}" for m, n in sizes.items()) + "}"
 
-            return f"    {key:<10}{type_part:<40}{size_part}{availability_part}"
+            return f"    {key:<21}{type_part:<40}{size_part}{availability_part}"
 
         return f"    {key}{type_part}{availability_part}"
 
-    # ---------------------------
-    # Internals: ID extraction
-    # ---------------------------
-
-    def _object_to_ids(self, obj: Any) -> set[str]:
+    def _object_to_ids(self, obj: Any) -> list[str]:
+        """
+        Convert a resolved object into a set of identifiers.
+        """
         if obj is None:
-            return set()
+            return []
 
         if isinstance(obj, (list, tuple, set)) and all(isinstance(x, str) for x in obj):
-            return set(obj)
+            return list(obj)
 
-        ids: set[str] = set()
+        ids: list[str] = list()
         try:
             for x in obj:
                 if isinstance(x, str):
-                    ids.add(x)
+                    if x not in ids:
+                        ids.append(x)
                 elif hasattr(x, "get_name") and callable(x.get_name):
-                    ids.add(x.get_name())
+                    if x.get_name() not in ids:
+                        ids.append(x.get_name())
                 elif hasattr(x, "name") and callable(x.name):
-                    ids.add(x.name())
+                    if x.name() not in ids:
+                        ids.append(x.name())
                 elif hasattr(x, "name") and isinstance(x.name, str):
-                    ids.add(x.name)
+                    if x.name not in ids:
+                        ids.append(x.name)
                 else:
-                    ids.add(str(x))
+                    if str(x) not in ids:
+                        ids.append(str(x))
             return ids
         except TypeError:
             if isinstance(obj, str):
-                return {obj}
+                return [obj]
             if hasattr(obj, "get_name") and callable(obj.get_name):
-                return {obj.get_name()}
-            return {str(obj)}
+                return [obj.get_name()]
+            return [str(obj)]
 
-    def _ids_for_key_union_all_modes(self, key: str) -> set[str]:
-        out: set[str] = set()
-        resolved = self._get(key)  # dict[mode,obj]
+    def _ids_for_key_union_all_modes(self, key: str) -> list[str]:
+        out: list[str] = []
+        resolved = self._get_object(key)
         for obj in resolved.values():
-            out |= self._object_to_ids(obj)
+            self._extend_unique(out, self._object_to_ids(obj))
         return out
 
-    def _all_known_ids(self) -> set[str]:
-        all_ids: set[str] = set()
+    def _all_known_ids(self) -> list[str]:
+        """
+        Collect all identifiers from all discovered arrays across all modes.
+        """
+        all_ids: list[str] = []
         for array_name in self.keys(YellowPagesCategory.ARRAYS):
             try:
-                all_ids |= self._ids_for_key_union_all_modes(array_name)
+                self._extend_unique(all_ids, self._ids_for_key_union_all_modes(array_name))
             except Exception:
                 continue
         return all_ids
 
-    # ---------------------------
-    # Query evaluation
-    # ---------------------------
+    def _ids_from_holder(self, holder) -> list[str]:
+        ids: list[str] = []
 
-    def _eval_query_to_ids(self, expr: str) -> set[str]:
-        tokens = _tokenize(expr)
-        rpn = _to_rpn(tokens)
+        try:
+            for name in holder.list_arrays():
+                arr = holder.get_array(name)
+                self._extend_unique(ids, self._object_to_ids(arr))
+        except Exception:
+            pass
 
-        stack: list[set[str]] = []
-        for tok in rpn:
-            if tok in ("|", "&", "-"):
-                if len(stack) < 2:
-                    raise YellowPagesQueryError(
-                        f"Missing operand for operator '{tok}'."
-                    )
-                b = stack.pop()
-                a = stack.pop()
-                if tok == "|":
-                    stack.append(a | b)
-                elif tok == "&":
-                    stack.append(a & b)
-                else:
-                    stack.append(a - b)
-                continue
-
-            # Regex operand (preferred re{...} or legacy re:...)
-            if tok.startswith("re{") or tok.startswith("re:"):
-                pattern = _extract_regex(tok)
-                try:
-                    rx = re.compile(pattern)
-                except re.error as ex:
-                    raise YellowPagesQueryError(
-                        f"Invalid regex '{pattern}': {ex}"
-                    ) from ex
-
-                base = self._all_known_ids()
-                stack.append({i for i in base if rx.search(i)})
-                continue
-
-            # KEY operand
-            if tok not in self._all_keys():
-                raise YellowPagesQueryError(self._unknown_key_message(tok))
-
-            stack.append(self._ids_for_key_union_all_modes(tok))
-
-        if len(stack) != 1:
-            raise YellowPagesQueryError("Invalid expression (remaining operands).")
-
-        return stack[0]
+        return ids

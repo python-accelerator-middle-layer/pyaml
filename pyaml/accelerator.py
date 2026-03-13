@@ -181,7 +181,7 @@ class Accelerator(object):
         modes: dict[str, "ElementHolder"] = {}
         modes.update(self._simulators)
         modes.update(self._controls)
-        return self._controls
+        return modes
 
     def __repr__(self):
         return repr(self._cfg).replace("ConfigModel", self.__class__.__name__)
@@ -209,9 +209,7 @@ class Accelerator(object):
         return Factory.depth_first_build(config_dict, ignore_external)
 
     @staticmethod
-    def load(
-        filename: str, use_fast_loader: bool = False, ignore_external=False
-    ) -> "Accelerator":
+    def load(filename: str, use_fast_loader: bool = False, ignore_external=False) -> "Accelerator":
         """
         Load an accelerator from a config file.
 

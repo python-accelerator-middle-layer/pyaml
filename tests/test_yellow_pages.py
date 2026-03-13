@@ -1,6 +1,6 @@
 # tests/test_yellow_pages.py
 #
-# Self-contained tests for fully dynamic YellowPages (no register).
+# Self-contained tests for fully dynamic YellowPages.
 # Comments are in English.
 
 import re
@@ -19,6 +19,33 @@ from pyaml.yellow_pages import (
 # ---------------------------
 
 
+class _Array:
+    """Minimal array-like object exposing names and a stable module path."""
+
+    __module__ = "pyaml.arrays.test_array"
+
+    def __init__(self, names):
+        self._names = list(names)
+
+    def __len__(self):
+        return len(self._names)
+
+    def __iter__(self):
+        return iter(self._names)
+
+
+class _Tool:
+    """Minimal tool-like object exposing a stable module path."""
+
+    __module__ = "pyaml.tuning_tools.test_tool"
+
+
+class _Diagnostic:
+    """Minimal diagnostic-like object exposing a stable module path."""
+
+    __module__ = "pyaml.diagnostics.test_diagnostic"
+
+
 class _Holder:
     """Minimal ElementHolder double with discovery + resolution."""
 
@@ -28,14 +55,14 @@ class _Holder:
         self._diagnostics = dict(diagnostics or {})
 
     # Discovery
-    def list_arrays(self) -> set[str]:
-        return set(self._arrays.keys())
+    def list_arrays(self) -> list[str]:
+        return list(self._arrays.keys())
 
-    def list_tools(self) -> set[str]:
-        return set(self._tools.keys())
+    def list_tools(self) -> list[str]:
+        return list(self._tools.keys())
 
-    def list_diagnostics(self) -> set[str]:
-        return set(self._diagnostics.keys())
+    def list_diagnostics(self) -> list[str]:
+        return list(self._diagnostics.keys())
 
     # Resolution
     def get_array(self, name: str):
@@ -82,33 +109,35 @@ def accelerator():
     # Controls
     live = _Holder(
         arrays={
-            "BPM": ["BPM_C01-01", "BPM_C01-02", "BPM_C02-01"],
-            "HCORR": ["CH_C01-01", "CH_C01-02"],
+            "BPM": _Array(["BPM_C01-01", "BPM_C01-02", "BPM_C02-01"]),
+            "HCORR": _Array(["CH_C01-01", "CH_C01-02"]),
         },
-        tools={"DEFAULT_ORBIT_CORRECTION": object()},
-        diagnostics={"DEFAULT_BETATRON_TUNE_MONITOR": object()},
+        tools={"DEFAULT_ORBIT_CORRECTION": _Tool()},
+        diagnostics={"DEFAULT_BETATRON_TUNE_MONITOR": _Diagnostic()},
     )
+
     tango = _Holder(
         arrays={
-            "BPM": ["BPM_C01-01", "BPM_C01-02", "BPM_C02-01"],  # same as live
-            # HCORR missing in tango
+            "BPM": _Array(["BPM_C01-01", "BPM_C01-02", "BPM_C02-01"]),
+            # HCORR intentionally missing in tango
         },
-        tools={},  # tool missing
-        diagnostics={},  # diag missing
+        tools={},
+        diagnostics={},
     )
 
     # Simulators
     design = _Holder(
         arrays={
-            "BPM": ["BPM_C01-01", "BPM_C01-02", "BPM_C02-01"],
-            "HCORR": ["CH_C01-01"],  # different size than live
+            "BPM": _Array(["BPM_C01-01", "BPM_C01-02", "BPM_C02-01"]),
+            "HCORR": _Array(["CH_C01-01"]),
         },
-        tools={"DEFAULT_ORBIT_CORRECTION": object()},
-        diagnostics={},  # missing
+        tools={"DEFAULT_ORBIT_CORRECTION": _Tool()},
+        diagnostics={},
     )
 
     return _Accelerator(
-        controls={"live": live, "tango": tango}, simulators={"design": design}
+        controls={"live": live, "tango": tango},
+        simulators={"design": design},
     )
 
 
@@ -161,23 +190,53 @@ def test_getattr_returns_multimode_resolution_dict(yp):
 # ---------------------------
 
 
+def test_get_object_without_mode_returns_only_available_modes(yp):
+    hcorr = yp._get_object("HCORR")
+    assert set(hcorr.keys()) == {"live", "design"}
+
+
+def test_get_object_with_mode_returns_object_or_raises(yp):
+    bpm_live = yp._get_object("BPM", mode="live")
+    assert len(bpm_live) == 3
+
+    with pytest.raises(YellowPagesError, match=r"Unknown mode"):
+        yp._get_object("BPM", mode="does_not_exist")
+
+    with pytest.raises(YellowPagesError, match=r"not available in mode 'tango'"):
+        yp._get_object("HCORR", mode="tango")
+
+
 def test_availability(yp):
     assert yp.availability("BPM") == {"live", "tango", "design"}
     assert yp.availability("HCORR") == {"live", "design"}
 
 
+# ---------------------------
+# Query API (public get + __getitem__)
+# ---------------------------
+
+
+def test_get_and_getitem_are_equivalent_for_wildcards(yp):
+    assert yp.get("BPM_C01*") == yp["BPM_C01*"]
+
+
+def test_get_and_getitem_are_equivalent_for_regex(yp):
+    assert yp.get("re:^BPM_C01-0[12]$") == yp["re:^BPM_C01-0[12]$"]
+
+
 def test_unknown_key_errors(yp):
-    with pytest.raises(YellowPagesQueryError, match=r"Unknown YellowPages key"):
-        _ = yp["DOES_NOT_EXIST"]
+    with pytest.raises(KeyError, match=r"Unknown YellowPages key"):
+        yp._get_object("DOES_NOT_EXIST")
 
 
 # ---------------------------
-# __repr__ formatting (controls/simulators + sizes + modes)
+# __repr__ formatting (controls/simulators + types + sizes + modes)
 # ---------------------------
 
 
 def test_repr_has_controls_and_simulators_headers(yp):
     s = repr(yp)
+
     assert "Controls:" in s
     assert "Simulators:" in s
 
@@ -187,19 +246,17 @@ def test_repr_has_controls_and_simulators_headers(yp):
 
 
 def test_repr_array_size_compaction_when_identical_everywhere(yp):
-    # BPM has same size in all modes => should show "size=3"
     s = repr(yp)
     bpm_line = next(line for line in s.splitlines() if line.strip().startswith("BPM"))
+    assert "(pyaml.arrays.test_array)" in bpm_line
     assert "size=3" in bpm_line
     assert "size={" not in bpm_line
 
 
 def test_repr_array_size_dict_when_different_or_not_everywhere(yp):
-    # HCORR differs in size between live (2) and design (1) and missing in tango
     s = repr(yp)
-    hcorr_line = next(
-        line for line in s.splitlines() if line.strip().startswith("HCORR")
-    )
+    hcorr_line = next(line for line in s.splitlines() if line.strip().startswith("HCORR"))
+    assert "(pyaml.arrays.test_array)" in hcorr_line
     assert "size={" in hcorr_line
     assert "live:2" in hcorr_line
     assert "design:1" in hcorr_line
@@ -207,44 +264,33 @@ def test_repr_array_size_dict_when_different_or_not_everywhere(yp):
     assert "missing=" in hcorr_line
 
 
-def test_repr_tools_show_modes_missing(yp):
+def test_repr_tools_show_type_and_modes_missing(yp):
     s = repr(yp)
-    tool_line = next(
-        line for line in s.splitlines() if "DEFAULT_ORBIT_CORRECTION" in line
-    )
+    tool_line = next(line for line in s.splitlines() if "DEFAULT_ORBIT_CORRECTION" in line)
+    assert "(pyaml.tuning_tools.test_tool)" in tool_line
     assert "modes=" in tool_line
     assert "missing=" in tool_line
 
 
+def test_repr_diagnostics_show_type(yp):
+    s = repr(yp)
+    diag_line = next(line for line in s.splitlines() if "DEFAULT_BETATRON_TUNE_MONITOR" in line)
+    assert "(pyaml.diagnostics.test_diagnostic)" in diag_line
+
+
 # ---------------------------
-# Query language (__getitem__)
+# Query language (wildcard + regex)
 # ---------------------------
 
 
-def test_query_single_key_returns_union_of_ids_across_modes(yp):
-    out = yp["BPM"]
-    assert out == ["BPM_C01-01", "BPM_C01-02", "BPM_C02-01"]
+def test_query_wildcard(yp):
+    out = yp["BPM_C01*"]
+    assert out == ["BPM_C01-01", "BPM_C01-02"]
 
 
-def test_query_union_operator(yp):
-    out = yp["HCORR|BPM"]
-    assert "CH_C01-01" in out
-    assert "CH_C01-02" in out
-    assert "BPM_C01-01" in out
-
-
-def test_query_intersection_operator(yp):
-    assert yp["BPM&HCORR"] == []
-
-
-def test_query_difference_operator(yp):
-    out = yp["BPM - re{BPM_C01-01}"]
-    assert out == ["BPM_C01-02", "BPM_C02-01"]
-
-
-def test_query_parentheses_precedence(yp):
-    out = yp["(BPM|HCORR) - re:CH_.*"]
-    assert out == ["BPM_C01-01", "BPM_C01-02", "BPM_C02-01"]
+def test_query_regex(yp):
+    out = yp["re:^BPM_C01-0[12]$"]
+    assert out == ["BPM_C01-01", "BPM_C01-02"]
 
 
 def test_query_regex_alone_filters_all_known_ids(yp):
@@ -252,19 +298,31 @@ def test_query_regex_alone_filters_all_known_ids(yp):
     assert out == ["BPM_C01-01", "BPM_C01-02", "BPM_C02-01"]
 
 
-def test_query_tokenize_errors_raise(yp):
+def test_query_wildcard_on_hcorr(yp):
+    out = yp["CH_C01*"]
+    assert out == ["CH_C01-01", "CH_C01-02"]
+
+
+def test_query_empty_raises(yp):
     with pytest.raises(YellowPagesQueryError, match=r"Empty YellowPages query"):
         _ = yp[""]
-
-    with pytest.raises(YellowPagesQueryError, match=r"Cannot tokenize"):
-        _ = yp["BPM $$$"]
-
-
-def test_query_mismatched_parentheses_raise(yp):
-    with pytest.raises(YellowPagesQueryError, match=r"Mismatched parentheses"):
-        _ = yp["(BPM|HCORR"]
 
 
 def test_query_invalid_regex_raise(yp):
     with pytest.raises(YellowPagesQueryError, match=r"Invalid regex"):
-        _ = yp["re{(}"]
+        _ = yp["re:("]
+
+
+def test_query_with_mode_wildcard(yp):
+    out = yp.get("CH_C01*", mode="live")
+    assert out == ["CH_C01-01", "CH_C01-02"]
+
+
+def test_query_with_mode_regex(yp):
+    out = yp.get("re:^BPM_C01", mode="design")
+    assert out == ["BPM_C01-01", "BPM_C01-02"]
+
+
+def test_query_with_unknown_mode(yp):
+    with pytest.raises(YellowPagesError, match=r"Unknown mode"):
+        yp.get("BPM*", mode="invalid")

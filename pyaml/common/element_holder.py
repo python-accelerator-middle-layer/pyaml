@@ -110,13 +110,10 @@ class ElementHolder(object):
             try:
                 m = get_func(n)
             except Exception as err:
-                raise PyAMLException(
-                    f"{constructor.__name__} {array_name} : {err} @index {len(a)}"
-                ) from None
+                raise PyAMLException(f"{constructor.__name__} {array_name} : {err} @index {len(a)}") from None
             if m in a:
                 raise PyAMLException(
-                    f"{constructor.__name__} {array_name} : "
-                    f"duplicate name {name} @index {len(a)}"
+                    f"{constructor.__name__} {array_name} : duplicate name {name} @index {len(a)}"
                 ) from None
             a.append(m)
         ARR[array_name] = constructor(array_name, a)
@@ -124,8 +121,7 @@ class ElementHolder(object):
     def __add(self, array, element: Element):
         if element.get_name() in self.__ALL:  # Ensure name unicity
             raise PyAMLException(
-                f"Duplicate element {element.__class__.__name__} "
-                "name {element.get_name()}"
+                f"Duplicate element {element.__class__.__name__} name {{element.get_name()}}"
             ) from None
         array[element.get_name()] = element
         self.__ALL[element.get_name()] = element
@@ -157,9 +153,7 @@ class ElementHolder(object):
     # Magnets
 
     def fill_magnet_array(self, arrayName: str, elementNames: list[str]):
-        self.fill_array(
-            arrayName, elementNames, self.get_magnet, MagnetArray, self.__MAGNET_ARRAYS
-        )
+        self.fill_array(arrayName, elementNames, self.get_magnet, MagnetArray, self.__MAGNET_ARRAYS)
 
     def get_magnet(self, name: str) -> Magnet:
         return self.__get("Magnet", name, self.__MAGNETS)
@@ -191,9 +185,7 @@ class ElementHolder(object):
         self.__add(self.__CFM_MAGNETS, m)
 
     def get_cfm_magnets(self, name: str) -> CombinedFunctionMagnetArray:
-        return self.__get(
-            "CombinedFunctionMagnet array", name, self.__CFM_MAGNET_ARRAYS
-        )
+        return self.__get("CombinedFunctionMagnet array", name, self.__CFM_MAGNET_ARRAYS)
 
     def get_all_cfm_magnets(self) -> list[CombinedFunctionMagnet]:
         return [value for key, value in self.__CFM_MAGNETS.items()]
@@ -216,9 +208,7 @@ class ElementHolder(object):
         self.__add(self.__SERIALIZED_MAGNETS, m)
 
     def get_serialized_magnets(self, name: str) -> SerializedMagnetsArray:
-        return self.__get(
-            "SerializedMagnets array", name, self.__SERIALIZED_MAGNETS_ARRAYS
-        )
+        return self.__get("SerializedMagnets array", name, self.__SERIALIZED_MAGNETS_ARRAYS)
 
     def get_all_serialized_magnets(self) -> list[SerializedMagnets]:
         return [value for key, value in self.__SERIALIZED_MAGNETS.items()]
@@ -355,26 +345,26 @@ class ElementHolder(object):
             raise PyAMLException(f"Diagnostic {name} not defined")
         return self.__DIAG[name]
 
-    def list_arrays(self) -> set[str]:
+    def list_arrays(self) -> list[str]:
         """
         Return all array identifiers available in this holder.
         """
-        return (
-            set(self.__BPM_ARRAYS.keys())
-            | set(self.__MAGNET_ARRAYS.keys())
-            | set(self.__CFM_MAGNET_ARRAYS.keys())
-            | set(self.__SERIALIZED_MAGNETS_ARRAYS.keys())
-            | set(self.__ELEMENT_ARRAYS.keys())
-        )
+        arrays: list[str] = []
+        arrays.extend(self.__BPM_ARRAYS.keys())
+        arrays.extend(self.__MAGNET_ARRAYS.keys())
+        arrays.extend(self.__CFM_MAGNET_ARRAYS.keys())
+        arrays.extend(self.__SERIALIZED_MAGNETS_ARRAYS.keys())
+        arrays.extend(self.__ELEMENT_ARRAYS.keys())
+        return arrays
 
-    def list_tools(self) -> set[str]:
+    def list_tools(self) -> list[str]:
         """
         Return all tuning tool identifiers available in this holder.
         """
-        return set(self.__TUNING_TOOLS.keys())
+        return list(self.__TUNING_TOOLS.keys())
 
-    def list_diagnostics(self) -> set[str]:
+    def list_diagnostics(self) -> list[str]:
         """
         Return all diagnostic identifiers available in this holder.
         """
-        return set(self.__DIAG.keys())
+        return list(self.__DIAG.keys())

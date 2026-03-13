@@ -12,20 +12,20 @@ Simulators:
     .
 
 Arrays:
-    BPM        (pyaml.arrays.bpm_array.BPMArray)       size=320
-    HCorr      (pyaml.arrays.magnet_array.MagnetArray) size=288
-    Skews      (pyaml.arrays.magnet_array.MagnetArray) size=288
-    VCorr      (pyaml.arrays.magnet_array.MagnetArray) size=288
+    BPM                   (pyaml.arrays.bpm_array)                size=320
+    HCorr                 (pyaml.arrays.magnet_array)             size=288
+    VCorr                 (pyaml.arrays.magnet_array)             size=288
+    Skews                 (pyaml.arrays.magnet_array)             size=288
     .
 
 Tools:
-    DEFAULT_DISPERSION (pyaml.tuning_tools.dispersion.Dispersion)
-    DEFAULT_ORBIT_CORRECTION (pyaml.tuning_tools.orbit.Orbit)
-    DEFAULT_ORBIT_RESPONSE_MATRIX (pyaml.tuning_tools.orbit_response_matrix.OrbitResponseMatrix)
+    DEFAULT_ORBIT_CORRECTION (pyaml.tuning_tools.orbit)
+    DEFAULT_ORBIT_RESPONSE_MATRIX (pyaml.tuning_tools.orbit_response_matrix)
+    DEFAULT_DISPERSION (pyaml.tuning_tools.dispersion)
     .
 
 Diagnostics:
-    BETATRON_TUNE (pyaml.diagnostics.tune_monitor.BetatronTuneMonitor)
+    BETATRON_TUNE (pyaml.diagnostics.tune_monitor)
     ."""
 
 
@@ -35,4 +35,16 @@ def test_load_conf_with_code():
 
     sr: Accelerator = Accelerator.load(config_path)
     str_repr = str(sr.yellow_pages)
+    print(str_repr)
     assert ebs_orbit_str_repr == str_repr
+
+
+def test_soleil():
+    parent_folder = Path(__file__).parent
+    config_path = parent_folder.joinpath("p.yaml").resolve()
+    sr: Accelerator = Accelerator.load(config_path)
+    str_repr = str(sr.yellow_pages)
+    print(str_repr)
+    print(sr.modes())
+    print(f"BPM={sr.yellow_pages.get('BPM', mode='design')}")
+    print(f"\n\nCell1={sr.yellow_pages['Cell1']}")
