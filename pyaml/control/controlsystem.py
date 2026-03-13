@@ -52,7 +52,7 @@ class ControlSystem(ElementHolder, metaclass=ABCMeta):
         ElementHolder.__init__(self)
         self._catalog: CatalogView | None = None
 
-    def set_catalog(self, catalog: CatalogView | None):
+    def set_catalog_view(self, catalog: CatalogView | None):
         self._catalog = catalog
 
     @abstractmethod
@@ -83,8 +83,18 @@ class ControlSystem(ElementHolder, metaclass=ABCMeta):
         return None
 
     @abstractmethod
+    def get_catalog(self) -> str | Catalog | None:
+        """Returns the name of the catalog dedicated to this control system"""
+        return None
+
     def get_catalog_name(self) -> str | None:
         """Returns the name of the catalog dedicated to this control system"""
+        catalog = self.get_catalog()
+        if catalog is not None:
+            if isinstance(catalog, str):
+                return catalog
+            elif isinstance(catalog, Catalog):
+                return catalog.get_name()
         return None
 
     def attach_indexed(self, dev: DeviceAccess, idx: int | None) -> DeviceAccess:
@@ -98,18 +108,14 @@ class ControlSystem(ElementHolder, metaclass=ABCMeta):
         agg = Factory.build_object({"type": mod}) if mod is not None else None
         return CSScalarAggregator(agg)
 
-    def create_magnet_strength_aggregator(
-        self, magnets: list[Magnet]
-    ) -> ScalarAggregator:
+    def create_magnet_strength_aggregator(self, magnets: list[Magnet]) -> ScalarAggregator:
         agg = CSStrengthScalarAggregator(self.create_scalar_aggregator())
         for m in magnets:
             devs = self.attach(m.model.get_devices())
             agg.add_magnet(m, devs)
         return agg
 
-    def create_magnet_hardware_aggregator(
-        self, magnets: list[Magnet]
-    ) -> ScalarAggregator:
+    def create_magnet_hardware_aggregator(self, magnets: list[Magnet]) -> ScalarAggregator:
         """When working in hardware space, 1 single power
         supply device per multipolar strength is required
         """
@@ -131,16 +137,8 @@ class ControlSystem(ElementHolder, metaclass=ABCMeta):
             aggv = self.create_scalar_aggregator()
             for b in bpms:
                 model = b.model
-                hDev = (
-                    self._catalog.get_one(model.get_x_pos_device())
-                    if model.get_x_pos_device() is not None
-                    else None
-                )
-                vDev = (
-                    self._catalog.get_one(model.get_y_pos_device())
-                    if model.get_y_pos_device() is not None
-                    else None
-                )
+                hDev = self._catalog.get_one(model.get_x_pos_device()) if model.get_x_pos_device() is not None else None
+                vDev = self._catalog.get_one(model.get_y_pos_device()) if model.get_y_pos_device() is not None else None
                 devs = self.attach([hDev.get_target(), vDev.get_target()])
                 hDev.set_target(devs[0])
                 vDev.set_target(devs[1])
@@ -176,10 +174,7 @@ class ControlSystem(ElementHolder, metaclass=ABCMeta):
             if len(allH) > 1 or len(allV) > 1:
                 # Does not support aggregator for individual BPM that
                 # returns an array of [x,y]
-                print(
-                    "Warning, Individual BPM that returns [x,y]"
-                    + " are not read in parralell"
-                )
+                print("Warning, Individual BPM that returns [x,y]" + " are not read in parralell")
                 # Default to serialized readding
                 return [None, None, None]
 
@@ -198,9 +193,7 @@ class ControlSystem(ElementHolder, metaclass=ABCMeta):
             aggv = CSBPMArrayMapper(allV, [vIdx])
             return [agg, aggh, aggv]
         else:
-            raise PyAMLException(
-                "Indexed BPM and scalar values cannot be mixed in the same array"
-            )
+            raise PyAMLException("Indexed BPM and scalar values cannot be mixed in the same array")
 
     def set_energy(self, E: float):
         """
@@ -229,12 +222,8 @@ class ControlSystem(ElementHolder, metaclass=ABCMeta):
         for e in elements:
             if isinstance(e, Magnet):
                 dev = self.attach(e.model.get_devices())[0]
-                current = (
-                    RWHardwareScalar(e.model, dev) if e.model.has_hardware() else None
-                )
-                strength = (
-                    RWStrengthScalar(e.model, dev) if e.model.has_physics() else None
-                )
+                current = RWHardwareScalar(e.model, dev) if e.model.has_hardware() else None
+                strength = RWStrengthScalar(e.model, dev) if e.model.has_physics() else None
                 # Create a unique ref for this control system
                 m = e.attach(self, strength, current)
                 self.add_magnet(m)
@@ -257,16 +246,8 @@ class ControlSystem(ElementHolder, metaclass=ABCMeta):
                 # Create unique refs the series and each of its function for this
                 # control system
                 for i in range(e.get_nb_magnets()):
-                    current = (
-                        RWHardwareScalar(e.model.get_sub_model(i), devs[i])
-                        if e.model.has_hardware()
-                        else None
-                    )
-                    strength = (
-                        RWStrengthScalar(e.model.get_sub_model(i), devs[i])
-                        if e.model.has_physics()
-                        else None
-                    )
+                    current = RWHardwareScalar(e.model.get_sub_model(i), devs[i]) if e.model.has_hardware() else None
+                    strength = RWStrengthScalar(e.model.get_sub_model(i), devs[i]) if e.model.has_physics() else None
                     currents.append(current)
                     strengths.append(strength)
                 ms = e.attach(self, strengths, currents)
@@ -276,20 +257,10 @@ class ControlSystem(ElementHolder, metaclass=ABCMeta):
 
             elif isinstance(e, BPM):
                 model = e.model
-                hDev = (
-                    self._catalog.get_one(model.get_x_pos_device())
-                    if model.get_x_pos_device() is not None
-                    else None
-                )
-                vDev = (
-                    self._catalog.get_one(model.get_y_pos_device())
-                    if model.get_y_pos_device() is not None
-                    else None
-                )
+                hDev = self._catalog.get_one(model.get_x_pos_device()) if model.get_x_pos_device() is not None else None
+                vDev = self._catalog.get_one(model.get_y_pos_device()) if model.get_y_pos_device() is not None else None
                 tiltDev = (
-                    self._catalog.get_one(model.get_tilt_device())
-                    if model.get_tilt_device() is not None
-                    else None
+                    self._catalog.get_one(model.get_tilt_device()) if model.get_tilt_device() is not None else None
                 )
                 hOffsetDev = (
                     self._catalog.get_one(model.get_x_offset_device())
@@ -301,12 +272,8 @@ class ControlSystem(ElementHolder, metaclass=ABCMeta):
                     if model.get_y_offset_device() is not None
                     else None
                 )
-                ahDev = self.attach_indexed(
-                    hDev.get_target() if hDev is not None else None, model.x_pos_index()
-                )
-                avDev = self.attach_indexed(
-                    vDev.get_target() if vDev is not None else None, model.y_pos_index()
-                )
+                ahDev = self.attach_indexed(hDev.get_target() if hDev is not None else None, model.x_pos_index())
+                avDev = self.attach_indexed(vDev.get_target() if vDev is not None else None, model.y_pos_index())
                 atiltDev = self.attach_indexed(
                     tiltDev.get_target() if tiltDev is not None else None,
                     model.tilt_index(),
