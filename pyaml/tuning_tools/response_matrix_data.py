@@ -20,17 +20,17 @@ class ConfigModel(BaseModel):
     ----------
     matrix : list[list[float]]
         Response matrix data
-    input_names : list[str], optional
-        Input names, basically the actuators
-    output_names : list[str]
-        Output names, basically the measurements
+    varaible_names : list[str], optional
+        Variable names, basically the actuators
+    observables_names : list[str]
+        Observable names, basically the measurements
     """
 
     model_config = ConfigDict(arbitrary_types_allowed=True, extra="forbid")
 
     matrix: list[list[float]]
-    input_names: Optional[list[str]]
-    output_names: list[str]
+    variable_names: Optional[list[str]]
+    observable_names: list[str]
 
 
 class ResponseMatrixData(object):

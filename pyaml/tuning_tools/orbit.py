@@ -78,11 +78,14 @@ class Orbit(Element):
                 logger.warning(f"{str(e)}")
                 cfg.response_matrix = None
 
-        # assigns self._pySC_response_matrix
+        # Converts to self._pySC_response_matrix
         if cfg.response_matrix:
-            self._pySC_response_matrix = pySC_ResponseMatrix.model_validate(
-                cfg.response_matrix._cfg.model_dump()
-            )
+            m = cfg.response_matrix._cfg.model_dump()
+            m["input_names"] = m.pop("variable_names")
+            m["output_names"] = m.pop("observable_names")
+            m["input_planes"] = m.pop("variable_planes")
+            m["output_planes"] = m.pop("observable_planes")
+            self._pySC_response_matrix = pySC_ResponseMatrix.model_validate(m)
 
         self._hcorr: MagnetArray = None
         self._vcorr: MagnetArray = None
