@@ -12,7 +12,6 @@ controls:
   - type: tango.pyaml.controlsystem
     tango_host: ebs-simu-3:10000
     name: live
-    catalog: live_catalog
 data_folder: /data/store
 arrays:
   - type: pyaml.arrays.magnet
@@ -20,6 +19,13 @@ arrays:
     elements:
       - QD2*
       - QF1*
+  - type: pyaml.arrays.magnet
+    name: QForTest
+    elements:
+      - QD2*
+      - QF1*
+      - ~QF1E-C05
+      - ~Q???-C06
 devices:
 - type: pyaml.magnet.quadrupole
   description: "QF1E-C04 quadrupole"
