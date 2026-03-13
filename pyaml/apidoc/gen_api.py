@@ -82,6 +82,7 @@ modules = [
     "pyaml.tuning_tools.orbit_response_matrix",
     "pyaml.tuning_tools.response_matrix",
     "pyaml.tuning_tools.tune",
+    "pyaml.yellow_pages",
 ]
 
 
@@ -111,17 +112,13 @@ def generate_selective_module(m):
         file.write(f".. automodule:: {p.__name__}\n")
         if len(all_cls) > 0:
             # Exclude classes that will be treated by autoclass
-            file.write(
-                f"   :exclude-members: {','.join([c.__name__ for c in all_cls])}\n\n"
-            )
+            file.write(f"   :exclude-members: {','.join([c.__name__ for c in all_cls])}\n\n")
         for c in all_cls:
             file.write(f"   .. autoclass:: {c.__name__}\n")
             file.write("         :members:\n")
             if m in ["pyaml.arrays.element_array"]:
                 # Include special members for operator overloading
-                file.write(
-                    "         :special-members: __add__, __and__, __or__, __sub__ \n"
-                )
+                file.write("         :special-members: __add__, __and__, __or__, __sub__ \n")
             file.write("         :exclude-members: model_config\n")
             file.write("         :undoc-members:\n")
             file.write("         :show-inheritance:\n\n")
@@ -129,9 +126,7 @@ def generate_selective_module(m):
 
 def generate_toctree(filename: str, title: str, level: int, module: str):
     sub_modules = [m for m in modules if m.startswith(module)]
-    level_path = sorted(
-        set([m.split(".")[level + 1 : level + 2][0] for m in sub_modules])
-    )
+    level_path = sorted(set([m.split(".")[level + 1 : level + 2][0] for m in sub_modules]))
 
     paths = []
 
@@ -166,9 +161,7 @@ def gen_doc():
     while len(paths) > 0:
         npaths = []
         for p in paths:
-            npaths.extend(
-                generate_toctree(f"api/{'pyaml.' + p}.rst", f"{p}", level, "pyaml." + p)
-            )
+            npaths.extend(generate_toctree(f"api/{'pyaml.' + p}.rst", f"{p}", level, "pyaml." + p))
         paths = npaths
         level += 1
     print("done")
