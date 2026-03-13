@@ -9,6 +9,7 @@ from pydantic import BaseModel, ConfigDict, Field
 from .arrays.array import ArrayConfig
 from .common.element import Element
 from .common.exception import PyAMLConfigException
+from .configuration.catalog import Catalog
 from .configuration.factory import Factory
 from .configuration.fileloader import load, set_root_folder
 from .control.controlsystem import ControlSystem
@@ -44,6 +45,8 @@ class ConfigModel(BaseModel):
         Acceleration description
     devices : list[.common.element.Element]
         Element list
+    control_system_catalog : Catalog
+        catalog of DeviceAccess objects
     """
 
     model_config = ConfigDict(arbitrary_types_allowed=True, extra="forbid")
@@ -57,6 +60,7 @@ class ConfigModel(BaseModel):
     description: str | None = None
     arrays: list[ArrayConfig] = Field(default=None, repr=False)
     devices: list[Element] = Field(repr=False)
+    control_system_catalogs: list[Catalog] = None
 
 
 class Accelerator(object):
@@ -66,13 +70,35 @@ class Accelerator(object):
         self._cfg = cfg
         __design = None
         __live = None
+        self.__catalogs: dict[str, Catalog] = {}
+
+        if cfg.control_system_catalogs is not None:
+            for catalog in cfg.control_system_catalogs:
+                self.__catalogs[catalog.get_name()] = catalog
 
         if cfg.controls is not None:
             for c in cfg.controls:
+                if c.get_catalog():
+                    if isinstance(c.get_catalog(), str):
+                        catalog = self.__catalogs.get(c.get_catalog())
+                    elif isinstance(c.get_catalog(), Catalog):
+                        catalog = c.get_catalog()
+                        if catalog.get_name() in self.__catalogs.keys():
+                            raise PyAMLConfigException(
+                                f"Duplicated catalog name: {type(catalog.get_name())}."
+                                f" One entry was founded in the definition of the"
+                                f" control system '{c.name()}'"
+                            )
+                        self.__catalogs[catalog.get_name()] = catalog
+                    else:
+                        raise PyAMLConfigException(f"Unknown catalog type: {type(c.get_catalog())}")
+                    if catalog:
+                        view = catalog.view(c)
+                        c.set_catalog_view(view)
                 if c.name() == "live":
                     self.__live = c
                 else:
-                    # Add as dynacmic attribute
+                    # Add as dynamic attribute
                     setattr(self, c.name(), c)
                 c.fill_device(cfg.devices)
 
@@ -81,7 +107,7 @@ class Accelerator(object):
                 if s.name() == "design":
                     self.__design = s
                 else:
-                    # Add as dynacmic attribute
+                    # Add as dynamic attribute
                     setattr(self, s.name(), s)
                 s.fill_device(cfg.devices)
 
@@ -114,6 +140,21 @@ class Accelerator(object):
         if self._cfg.controls is not None:
             for c in self._cfg.controls:
                 c.set_energy(E)
+
+    def get_catalog(self, catalog_name: str) -> Catalog | None:
+        """
+
+        Parameters
+        ----------
+        catalog_name: str
+            The name of the catalog
+
+        Returns
+        -------
+            The catalog instance or None
+
+        """
+        return self.__catalogs.get(catalog_name)
 
     def post_init(self):
         """
@@ -182,9 +223,7 @@ class Accelerator(object):
         return Factory.depth_first_build(config_dict, ignore_external)
 
     @staticmethod
-    def load(
-        filename: str, use_fast_loader: bool = False, ignore_external=False
-    ) -> "Accelerator":
+    def load(filename: str, use_fast_loader: bool = False, ignore_external=False) -> "Accelerator":
         """
         Load an accelerator from a config file.
 
