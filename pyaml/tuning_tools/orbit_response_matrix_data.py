@@ -8,21 +8,21 @@ PYAMLCLASS = "OrbitResponseMatrixData"
 
 class ConfigModel(ReponseMatrixDataConfigModel):
     """
-    Base configuration model for response matrix
+    Configuration model for orbit response matrix
 
     Parameters
     ----------
     rf_response : list[float], optional
         RF response data
-    input_names : list[str], optional
-        Input plane names, basically the plane of the actuators
-    output_names : list[str], optional
-        Output plane names, basically the plane of measurements
+    variable_names : list[str], optional
+        Vaiable plane names, basically the plane of the actuators
+    observable_names : list[str], optional
+        Observable plane names, basically the plane of measurements
     """
 
     rf_response: Optional[list[float]] = None
-    input_planes: Optional[list[str]] = None
-    output_planes: Optional[list[str]] = None
+    variable_planes: Optional[list[str]] = None
+    observable_planes: Optional[list[str]] = None
 
 
 class OrbitResponseMatrixData(ResponseMatrixData):
