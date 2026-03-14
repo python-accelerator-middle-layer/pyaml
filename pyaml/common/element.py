@@ -1,4 +1,4 @@
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Callable
 
 from pydantic import BaseModel, ConfigDict
 
@@ -103,25 +103,26 @@ class Element(object):
         to a simulator or to a control system
         """
         if self._peer is None:
-            raise PyAMLException(
-                f"{str(self)} is not attachedto a control system or the a simulator"
-            )
+            raise PyAMLException(f"{str(self)} is not attachedto a control system or the a simulator")
 
     def get_peer(self) -> str:
         """
         Returns a string representation of peer simulator or control system
         """
-        return (
-            "None"
-            if self._peer is None
-            else f"{self._peer.__class__.__name__}:{self._peer.name()}"
-        )
+        return "None" if self._peer is None else f"{self._peer.__class__.__name__}:{self._peer.name()}"
 
     def post_init(self):
         """
         Method triggered after all initialisations are done
         """
         pass
+
+    def send_callback(self, action: int, callback: Callable, cb_data: dict) -> bool:
+        if callback is not None:
+            # Add source
+            cb_data["source"] = self.__class__.__name__
+            return callback(action, cb_data)
+        return True
 
     def __repr__(self):
         return __pyaml_repr__(self)
