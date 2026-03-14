@@ -89,17 +89,17 @@ class TuneResponseMatrix(ResponseMatrix):
             Default time sleep between two tune measurment
             Default: from config
         callback : Callable, optional
-            tune_callback(action:int,callback_data: dict)
             Callback executed after each strength setting.
             action can be :py:data:`~pyaml.common.constant.ACTION_APPLY`,
             :py:data:`~pyaml.common.constant.ACTION_MEASURE` or :py:data:`~pyaml.common.constant.ACTION_RESTORE`.
-            calback_data dict contains:
+            callback_data dict contains:
+              source: Object that triggered the source
               step:int The current step
               avg_step:tin The current avg step
               m:Magnet The magnet being exited
               tune:np.array The tune (on ACTION_MEASURE)
               dtune:np.array The tune variation (on ACTION_RESTORE)
-            If the callback return false, then the process is aborted.
+            If the callback return false, then the scan is aborted and strength restored.
         """
         # Get devices
         self.check_peer()
@@ -125,7 +125,7 @@ class TuneResponseMatrix(ResponseMatrix):
                 # apply strength
                 m.strength.set(str + d)
 
-                if callback and not callback(ACTION_APPLY, {"step": qidx, "magnet": m}):
+                if not self.send_callback(ACTION_APPLY, callback, {"step": qidx, "magnet": m}):
                     aborted = True
                     m.strength.set(str)  # restore strength
                     break
@@ -137,9 +137,8 @@ class TuneResponseMatrix(ResponseMatrix):
                 for avg in range(nb_meas):
                     tune = tm.tune.get()
                     Q[step] += tune
-                    if callback and not callback(
-                        ACTION_MEASURE,
-                        {"step": qidx, "avg_step": avg, "magnet": m, "tune": tune},
+                    if not self.send_callback(
+                        ACTION_MEASURE, callback, {"step": qidx, "avg_step": avg, "magnet": m, "tune": tune}
                     ):
                         aborted = True
                         m.strength.set(str)  # restore strength
@@ -159,7 +158,7 @@ class TuneResponseMatrix(ResponseMatrix):
 
             # Restore strength
             m.strength.set(str)
-            if callback and not callback(ACTION_RESTORE, {"step": qidx, "magnet": m, "dtune": tunemat[qidx]}):
+            if not self.send_callback(ACTION_RESTORE, callback, {"step": qidx, "magnet": m, "dtune": tunemat[qidx]}):
                 aborted = True
                 break
 
