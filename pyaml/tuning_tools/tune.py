@@ -5,6 +5,7 @@ from .. import PyAMLException
 from ..common.constants import ACTION_APPLY, ACTION_MEASURE, ACTION_RESTORE
 from ..common.element import Element, ElementConfigModel
 from .response_matrix_data import ResponseMatrixData
+from .tuning_tool import TuningTool
 
 if TYPE_CHECKING:
     from ..arrays.magnet_array import MagnetArray
@@ -45,7 +46,7 @@ class ConfigModel(ElementConfigModel):
     response_matrix: str | ResponseMatrixData
 
 
-class Tune(Element):
+class Tune(TuningTool):
     """
     Class providing tune adjustment tool
     """
@@ -143,7 +144,7 @@ class Tune(Element):
 
     def add(self, dtune: np.array, wait_time: float = 0.0):
         """
-        Add dtune to the tune
+        Add delta tune to the tune
 
         Parameters
         ----------
@@ -157,15 +158,3 @@ class Tune(Element):
         self._quads.strengths.set(strengths)
         time.sleep(wait_time)
         self._setpoint += dtune
-
-    def attach(
-        self,
-        peer: "ElementHolder",
-    ) -> Self:
-        """
-        Create a new reference to attach this tune object to a simulator
-        or a control system.
-        """
-        obj = self.__class__(self._cfg)
-        obj._peer = peer
-        return obj

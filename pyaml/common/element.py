@@ -1,4 +1,4 @@
-from typing import TYPE_CHECKING, Callable
+from typing import TYPE_CHECKING
 
 from pydantic import BaseModel, ConfigDict
 
@@ -116,13 +116,6 @@ class Element(object):
         Method triggered after all initialisations are done
         """
         pass
-
-    def send_callback(self, action: int, callback: Callable, cb_data: dict) -> bool:
-        if callback is not None:
-            # Add source
-            cb_data["source"] = self.__class__.__name__
-            return callback(action, cb_data)
-        return True
 
     def __repr__(self):
         return __pyaml_repr__(self)

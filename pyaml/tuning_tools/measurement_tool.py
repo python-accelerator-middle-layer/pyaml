@@ -1,35 +1,34 @@
 import logging
 from abc import ABCMeta, abstractmethod
 from pathlib import Path
-from typing import Self
+from typing import Callable, Self
 
 from ..common.element import Element
 from ..common.element_holder import ElementHolder
 from ..common.exception import PyAMLException
-from .response_matrix_data import ResponseMatrixData
 
 logger = logging.getLogger(__name__)
 
 
-class ResponseMatrix(Element, metaclass=ABCMeta):
+class MeasurementTool(Element, metaclass=ABCMeta):
     """
-    Base class for response matrix measurement
+    Base class for measurement tool such as reponse matrix measurement or other scans.
     """
 
     def __init__(self, name):
         super().__init__(name)
-        self.latest_measurement: ResponseMatrixData = None
+        self.latest_measurement: dict = None
 
     @abstractmethod
     def measure(self):
         """
-        Measure response matrix
+        Launch measurement
         """
         raise NotImplementedError()
 
-    def get(self):
+    def get(self) -> dict:
         """
-        Measure tune response matrix
+        Return last measurement data
 
         Returns
         -------
@@ -38,10 +37,10 @@ class ResponseMatrix(Element, metaclass=ABCMeta):
         """
         return self.latest_measurement
 
-    # TDODO: Abstrat this method
+    # TODO: Abstract this method
     def load(self, load_path: Path):
         """
-        Load response matrix
+        Load measurement data
 
         Parameters
         ----------
@@ -52,7 +51,7 @@ class ResponseMatrix(Element, metaclass=ABCMeta):
 
     def save(self, save_path: Path, with_type: str = "json"):
         """
-        Save response matrix
+        Save measurement data
 
         Parameters
         ----------
@@ -79,9 +78,32 @@ class ResponseMatrix(Element, metaclass=ABCMeta):
         else:
             raise PyAMLException(f"ERROR: Unknown file type to save as: {with_type}.")
 
+    def send_callback(self, action: int, callback: Callable, cb_data: dict) -> bool:
+        """
+        Send callback from this Measurement tool to the caller.
+
+        Parameters
+        ----------
+        action: int
+          :py:data:`~pyaml.common.constant.ACTION_APPLY`
+          :py:data:`~pyaml.common.constant.ACTION_MEASURE`
+          :py:data:`~pyaml.common.constant.ACTION_RESTORE`
+
+        callback: Callable
+          Callback to be executed
+
+        cb_data: dict
+          Callback data
+        """
+        if callback is not None:
+            # Add source
+            cb_data["source"] = self.__class__.__name__
+            return callback(action, cb_data)
+        return True
+
     def attach(self, peer: "ElementHolder") -> Self:
         """
-        Create a new reference to attach this ResponseMatrix object to a simulator
+        Create a new reference to attach this measurement tool object to a simulator
         or a control system.
         """
         obj = self.__class__(self._cfg)
