@@ -119,9 +119,9 @@ class TuneResponseMatrix(ResponseMatrix):
         for qidx, m in enumerate(quads):
             str = m.strength.get()  # Initial strength
             deltas = np.linspace(-delta, delta, nb_step)
-            dq = np.zeros((nb_step, 2))
+            Q = np.zeros((nb_step, 2))
 
-            for didx, d in enumerate(deltas):
+            for step, d in enumerate(deltas):
                 # apply strength
                 m.strength.set(str + d)
 
@@ -133,10 +133,10 @@ class TuneResponseMatrix(ResponseMatrix):
                 time.sleep(sleep_step)
 
                 # Tune averaging
-                dq[didx] = np.zeros(2)
+                Q[step] = np.zeros(2)
                 for avg in range(nb_meas):
                     tune = tm.tune.get()
-                    dq += tune
+                    Q[step] += tune
                     if callback and not callback(
                         ACTION_MEASURE,
                         {"step": qidx, "avg_step": avg, "magnet": m, "tune": tune},
@@ -145,17 +145,16 @@ class TuneResponseMatrix(ResponseMatrix):
                         m.strength.set(str)  # restore strength
                         break
                     time.sleep(sleep_meas)
-                dq[didx] /= float(nb_meas)
-                dq[didx] -= initial_tune
+                Q[step] /= float(nb_meas)
 
             if aborted:
                 break
 
-            # Fit and return load the slope in the matrix
+            # Fit and fill matrix with the slopes
             if nb_step == 1:
-                tunemat[qidx] = dq / deltas[0]
+                tunemat[qidx] = (Q - initial_tune) / deltas[0]
             else:
-                coefs = np.polynomial.polynomial.polyfit(deltas, dq, 1)
+                coefs = np.polynomial.polynomial.polyfit(deltas, Q, 1)
                 tunemat[qidx] = coefs[1]
 
             # Restore strength
