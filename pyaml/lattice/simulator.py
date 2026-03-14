@@ -37,10 +37,8 @@ from ..magnet.magnet import Magnet
 from ..magnet.serialized_magnet import SerializedMagnets
 from ..rf.rf_plant import RFPlant, RWTotalVoltage
 from ..rf.rf_transmitter import RFTransmitter
-from ..tuning_tools.dispersion import Dispersion
-from ..tuning_tools.orbit import Orbit
-from ..tuning_tools.orbit_response_matrix import OrbitResponseMatrix
-from ..tuning_tools.tune import Tune
+from ..tuning_tools.measurement_tool import MeasurementTool
+from ..tuning_tools.tuning_tool import TuningTool
 from .attribute_linker import (
     ConfigModel as PyAtAttrLinkerConfigModel,
 )
@@ -124,15 +122,11 @@ class Simulator(ElementHolder):
         for m in self.get_all_elements():
             m.set_energy(E)
 
-    def create_magnet_strength_aggregator(
-        self, magnets: list[Magnet]
-    ) -> ScalarAggregator:
+    def create_magnet_strength_aggregator(self, magnets: list[Magnet]) -> ScalarAggregator:
         # No magnet aggregator for simulator
         return None
 
-    def create_magnet_hardware_aggregator(
-        self, magnets: list[Magnet]
-    ) -> ScalarAggregator:
+    def create_magnet_hardware_aggregator(self, magnets: list[Magnet]) -> ScalarAggregator:
         # No magnet aggregator for simulator
         return None
 
@@ -151,30 +145,16 @@ class Simulator(ElementHolder):
         for e in elements:
             # Need conversion to physics unit to work with simulator
             if isinstance(e, Magnet):
-                current = (
-                    RWHardwareScalar(self.get_at_elems(e), e.polynom, e.model)
-                    if e.model.has_physics()
-                    else None
-                )
-                strength = (
-                    RWStrengthScalar(self.get_at_elems(e), e.polynom, e.model)
-                    if e.model.has_physics()
-                    else None
-                )
+                current = RWHardwareScalar(self.get_at_elems(e), e.polynom, e.model) if e.model.has_physics() else None
+                strength = RWStrengthScalar(self.get_at_elems(e), e.polynom, e.model) if e.model.has_physics() else None
                 # Create a unique ref for this simulator
                 m = e.attach(self, strength, current)
                 self.add_magnet(m)
 
             elif isinstance(e, CombinedFunctionMagnet):
-                currents = (
-                    RWHardwareArray(self.get_at_elems(e), e.polynoms, e.model)
-                    if e.model.has_physics()
-                    else None
-                )
+                currents = RWHardwareArray(self.get_at_elems(e), e.polynoms, e.model) if e.model.has_physics() else None
                 strengths = (
-                    RWStrengthArray(self.get_at_elems(e), e.polynoms, e.model)
-                    if e.model.has_physics()
-                    else None
+                    RWStrengthArray(self.get_at_elems(e), e.polynoms, e.model) if e.model.has_physics() else None
                 )
                 # Create unique refs of each function for this simulator
                 ms = e.attach(self, strengths, currents)
@@ -212,16 +192,8 @@ class Simulator(ElementHolder):
                 linked_currents = []
                 linked_strengths = []
                 for i in range(e.get_nb_magnets()):
-                    current = (
-                        RWSerializedHardware(currents, i)
-                        if e.model.has_hardware()
-                        else None
-                    )
-                    strength = (
-                        RWSerializedStrength(strengths[i], currents, i)
-                        if e.model.has_physics()
-                        else None
-                    )
+                    current = RWSerializedHardware(currents, i) if e.model.has_hardware() else None
+                    strength = RWSerializedStrength(strengths[i], currents, i) if e.model.has_physics() else None
                     linked_currents.append(current)
                     linked_strengths.append(strength)
                 ms = e.attach(self, linked_strengths, linked_currents)
@@ -249,13 +221,10 @@ class Simulator(ElementHolder):
                             cav = self.get_at_elems(Element(c))
                             if len(cav) > 1:
                                 raise PyAMLException(
-                                    f"RF transmitter {t.get_name()},"
-                                    "multiple cavity definition:{cav[0]}"
+                                    f"RF transmitter {t.get_name()},multiple cavity definition:{{cav[0]}}"
                                 )
                             if len(cav) == 0:
-                                raise PyAMLException(
-                                    f"RF transmitter {t.get_name()}, No cavity found"
-                                )
+                                raise PyAMLException(f"RF transmitter {t.get_name()}, No cavity found")
                             cavsPerTrans.append(cav[0])
                             harmonics.append(t._cfg.harmonic)
                         voltage = RWRFVoltageScalar(cavsPerTrans)
@@ -286,17 +255,8 @@ class Simulator(ElementHolder):
                 e = e.attach(self, betatron_tune)
                 self.add_chromaticity_monitor(e)
 
-            elif isinstance(e, Tune):
-                self.add_tune_tuning(e.attach(self))
-
-            elif isinstance(e, Orbit):
-                self.add_orbit_tuning(e.attach(self))
-
-            elif isinstance(e, OrbitResponseMatrix):
-                self.add_orm_tuning(e.attach(self))
-
-            elif isinstance(e, Dispersion):
-                self.add_dispersion_tuning(e.attach(self))
+            elif isinstance(e, MeasurementTool) | isinstance(e, TuningTool):
+                self.add_tool(e.attach(self))
 
     def get_names(self, element: Element) -> list[str] | None:
         """
@@ -359,9 +319,7 @@ class Simulator(ElementHolder):
             identifier = self._linker.get_element_identifier(element)
             element_list = self._linker.get_at_elements(identifier)
             if not element_list:
-                raise PyAMLException(
-                    f"{identifier} not found in lattice:{self._cfg.lattice}"
-                )
+                raise PyAMLException(f"{identifier} not found in lattice:{self._cfg.lattice}")
             return element_list
         else:
             # By list
@@ -371,9 +329,7 @@ class Simulator(ElementHolder):
                 names = []
                 for name in nameList:
                     if name not in self._elements_indexing:
-                        raise PyAMLException(
-                            f"{name} not found in lattice:{self._cfg.lattice}"
-                        )
+                        raise PyAMLException(f"{name} not found in lattice:{self._cfg.lattice}")
                     elts = self._elements_indexing[name]
                     names.extend(elts)
                 return names
@@ -386,9 +342,7 @@ class Simulator(ElementHolder):
                 return [self.ring[idx] for idx in indices]
             else:
                 if name not in self._elements_indexing:
-                    raise PyAMLException(
-                        f"{name} not found in lattice:{self._cfg.lattice}"
-                    )
+                    raise PyAMLException(f"{name} not found in lattice:{self._cfg.lattice}")
                 elts = self._elements_indexing[name]
                 if indices is None:
                     return elts
