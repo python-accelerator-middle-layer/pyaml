@@ -10,7 +10,7 @@ from pySC.apps.codes import ResponseCode
 from ..common.constants import ACTION_APPLY, ACTION_MEASURE, ACTION_RESTORE
 from ..common.element import ElementConfigModel
 from ..external.pySC_interface import pySCInterface
-from .response_matrix import ResponseMatrix
+from .measurement_tool import MeasurementTool
 
 logger = logging.getLogger(__name__)
 
@@ -41,7 +41,7 @@ class ConfigModel(ElementConfigModel):
     corrector_delta: float
 
 
-class OrbitResponseMatrix(ResponseMatrix):
+class OrbitResponseMatrix(MeasurementTool):
     def __init__(self, cfg: ConfigModel):
         super().__init__(cfg.name)
         self._cfg = cfg

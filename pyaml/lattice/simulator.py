@@ -37,11 +37,8 @@ from ..magnet.magnet import Magnet
 from ..magnet.serialized_magnet import SerializedMagnets
 from ..rf.rf_plant import RFPlant, RWTotalVoltage
 from ..rf.rf_transmitter import RFTransmitter
-from ..tuning_tools.dispersion import Dispersion
-from ..tuning_tools.orbit import Orbit
-from ..tuning_tools.orbit_response_matrix import OrbitResponseMatrix
-from ..tuning_tools.tune import Tune
-from ..tuning_tools.tune_response_matrix import TuneResponseMatrix
+from ..tuning_tools.measurement_tool import MeasurementTool
+from ..tuning_tools.tuning_tool import TuningTool
 from .attribute_linker import (
     ConfigModel as PyAtAttrLinkerConfigModel,
 )
@@ -258,20 +255,8 @@ class Simulator(ElementHolder):
                 e = e.attach(self, betatron_tune)
                 self.add_chromaticity_monitor(e)
 
-            elif isinstance(e, Tune):
-                self.add_tune_tuning(e.attach(self))
-
-            elif isinstance(e, TuneResponseMatrix):
-                self.add_trm_tuning(e.attach(self))
-
-            elif isinstance(e, Orbit):
-                self.add_orbit_tuning(e.attach(self))
-
-            elif isinstance(e, OrbitResponseMatrix):
-                self.add_orm_tuning(e.attach(self))
-
-            elif isinstance(e, Dispersion):
-                self.add_dispersion_tuning(e.attach(self))
+            elif isinstance(e, MeasurementTool) | isinstance(e, TuningTool):
+                self.add_tool(e.attach(self))
 
     def get_names(self, element: Element) -> list[str] | None:
         """

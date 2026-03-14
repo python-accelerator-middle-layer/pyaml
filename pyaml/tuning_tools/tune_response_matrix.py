@@ -7,7 +7,7 @@ import numpy as np
 from ..common.constants import ACTION_APPLY, ACTION_MEASURE, ACTION_RESTORE
 from ..common.element import Element, ElementConfigModel
 from ..common.exception import PyAMLException
-from .response_matrix import ResponseMatrix
+from .measurement_tool import MeasurementTool
 from .response_matrix_data import ConfigModel as ResponseMatrixDataConfigModel
 from .response_matrix_data import ResponseMatrixData
 
@@ -54,7 +54,7 @@ class ConfigModel(ElementConfigModel):
     sleep_between_meas: Optional[float] = 0
 
 
-class TuneResponseMatrix(ResponseMatrix):
+class TuneResponseMatrix(MeasurementTool):
     def __init__(self, cfg: ConfigModel):
         super().__init__(cfg.name)
         self._cfg = cfg

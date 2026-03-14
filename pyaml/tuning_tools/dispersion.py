@@ -6,9 +6,10 @@ from pySC.apps import measure_dispersion
 from pySC.apps.codes import DispersionCode
 
 from ..common.constants import ACTION_APPLY, ACTION_MEASURE, ACTION_RESTORE
-from ..common.element import Element, ElementConfigModel
+from ..common.element import ElementConfigModel
 from ..common.element_holder import ElementHolder
 from ..external.pySC_interface import pySCInterface
+from .measurement_tool import MeasurementTool
 
 logger = logging.getLogger(__name__)
 
@@ -36,7 +37,7 @@ class ConfigModel(ElementConfigModel):
     frequency_delta: float
 
 
-class Dispersion(Element):
+class Dispersion(MeasurementTool):
     def __init__(self, cfg: ConfigModel):
         super().__init__(cfg.name)
         self._cfg = cfg
@@ -95,12 +96,3 @@ class Dispersion(Element):
 
     def get(self):
         return self.latest_measurement
-
-    def attach(self, peer: "ElementHolder") -> Self:
-        """
-        Create a new reference to attach this OrbitResponseMatrix object to a simulator
-        or a control system.
-        """
-        obj = self.__class__(self._cfg)
-        obj._peer = peer
-        return obj
