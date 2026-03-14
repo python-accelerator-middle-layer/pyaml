@@ -19,8 +19,8 @@ class ConfigModel(BaseModel):
     Parameters
     ----------
     matrix : list[list[float]]
-        Response matrix data
-    varaible_names : list[str], optional
+        Response matrix data (rows for observable, cols for variables)
+    variable_names : list[str], optional
         Variable names, basically the actuators
     observables_names : list[str]
         Observable names, basically the measurements

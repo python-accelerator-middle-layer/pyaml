@@ -27,6 +27,7 @@ if TYPE_CHECKING:
     from ..tuning_tools.orbit import Orbit
     from ..tuning_tools.orbit_response_matrix import OrbitResponseMatrix
     from ..tuning_tools.tune import Tune
+    from ..tuning_tools.tune_response_matrix import TuneResponseMatrix
 
 
 class ElementHolder(object):
@@ -298,6 +299,16 @@ class ElementHolder(object):
     @property
     def orm(self) -> "OrbitResponseMatrix":
         return self.get_orm_tuning("DEFAULT_ORBIT_RESPONSE_MATRIX")
+
+    def get_trm_tuning(self, name: str) -> "TuneResponseMatrix":
+        return self.__get("TuneResponseMatrix tool", name, self.__TUNING_TOOLS)
+
+    def add_trm_tuning(self, trm: Element):
+        self.__add(self.__TUNING_TOOLS, trm)
+
+    @property
+    def trm(self) -> "TuneResponseMatrix":
+        return self.get_orm_tuning("DEFAULT_TUNE_RESPONSE_MATRIX")
 
     def get_dispersion_tuning(self, name: str) -> "Dispersion":
         return self.__get("Dispersion tool", name, self.__TUNING_TOOLS)
