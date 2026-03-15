@@ -45,32 +45,7 @@ class PyAMLFactory:
         """Register a plugin-based strategy for object creation."""
         self._strategies.remove(strategy)
 
-    def handle_validation_error(
-        self, e, type_str: str, location_str: str, field_locations: dict
-    ):
-        # Handle pydantic errors
-        globalMessage = ""
-        for err in e.errors():
-            msg = err["msg"]
-            field = ""
-            if len(err["loc"]) == 2:
-                field, fieldIdx = err["loc"]
-                message = f"'{field}.{fieldIdx}': {msg}"
-            else:
-                field = err["loc"][0]
-                message = f"'{field}': {msg}"
-            if field_locations and field in field_locations:
-                file, line, col = field_locations[field]
-                loc = f"{file} at line {line}, colum {col}"
-                message += f" {loc}"
-            globalMessage += message
-            globalMessage += ", "
-        # Discard pydantic stack trace
-        raise PyAMLConfigException(
-            f"{globalMessage} for object: '{type_str}' {location_str}"
-        ) from None
-
-    def build_object(self, d: dict, ignore_external: bool = False):
+    def build_object(self, d: dict, validate=True, ignore_external: bool = False):
         """Build an object from the dict"""
         location = d.pop("__location__", None)
         field_locations = d.pop("__fieldlocations__", None)
@@ -112,12 +87,6 @@ class PyAMLFactory:
                 ) from e
 
         # Default loading strategy
-        # Get the config object
-        config_cls = getattr(module, "ConfigModel", None)
-        if config_cls is None:
-            raise PyAMLConfigException(
-                f"ConfigModel class '{type_str}.ConfigModel' not found {location_str}"
-            )
 
         # Get the class name
         cls_name = getattr(module, "PYAMLCLASS", None)
@@ -126,28 +95,33 @@ class PyAMLFactory:
                 f"PYAMLCLASS definition not found in '{type_str}' {location_str}"
             )
 
-        try:
-            # Validate the model
-            cfg = config_cls.model_validate(d)
-        except ValidationError as e:
-            self.handle_validation_error(e, type_str, location_str, field_locations)
-
-        # Construct and return the object
-        elem_cls = getattr(module, cls_name, None)
-        if elem_cls is None:
+        # Get the class
+        cls = getattr(module, cls_name, None)
+        if cls is None:
             raise PyAMLConfigException(f"Unknown element class '{type_str}.{cls_name}'")
 
-        try:
-            obj = elem_cls(cfg)
-            self.register_element(obj)
-        except Exception as e:
-            raise PyAMLConfigException(
-                f"{str(e)} when creating '{type_str}.{cls_name}' {location_str}"
-            ) from e
+        # Valide/not validate and create the object
+        if validate:
+            try:
+                obj = cls.from_validated(d)
+            except Exception as e:
+                raise PyAMLConfigException(
+                    f"Error creating {type_str}.{cls_name} at {location_str}: {e}"
+                ) from e
+        else:
+            try:
+                obj = cls(**d)
+            except Exception as e:
+                raise PyAMLConfigException(
+                    f"{str(e)} when creating '{type_str}.{cls_name}' {location_str}"
+                ) from e
+
+        # Register the element
+        self.register_element(obj)
 
         return obj
 
-    def depth_first_build(self, d, ignore_external: bool):
+    def depth_first_build(self, d, validate: bool, ignore_external: bool):
         """
         Main factory function (Depth-first factory)
 
@@ -177,7 +151,7 @@ class PyAMLFactory:
                         d[key] = obj
 
             # We are now on leaf (no nested object), we can construct
-            return self.build_object(d, ignore_external)
+            return self.build_object(d, validate, ignore_external)
 
         raise PyAMLConfigException(
             "Unexpected element found. 'dict' or 'list' expected "
