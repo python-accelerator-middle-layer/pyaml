@@ -119,6 +119,9 @@ def generate_selective_module(m):
             if m in ["pyaml.arrays.element_array"]:
                 # Include special members for operator overloading
                 file.write("         :special-members: __add__, __and__, __or__, __sub__ \n")
+            if m in ["pyaml.yellow_pages"]:
+                # Include special members for exploratory overloading
+                file.write("         :special-members: __dir__, __getattr__, __getitem__, __repr__, __str__ \n")
             file.write("         :exclude-members: model_config\n")
             file.write("         :undoc-members:\n")
             file.write("         :show-inheritance:\n\n")
