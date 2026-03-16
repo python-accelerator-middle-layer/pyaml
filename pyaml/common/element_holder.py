@@ -309,7 +309,7 @@ class ElementHolder(object):
     def dispersion(self) -> "Dispersion":
         return self.get_dispersion_tuning("DEFAULT_DISPERSION")
 
-    def get_array(self, name: str):
+    def _get_array(self, name: str):
         """
         Generic array resolver used by YellowPages.
 
@@ -329,7 +329,7 @@ class ElementHolder(object):
 
         raise PyAMLException(f"Array {name} not defined")
 
-    def get_tool(self, name: str):
+    def _get_tool(self, name: str):
         """
         Generic tuning tool resolver used by YellowPages.
         """
@@ -337,7 +337,7 @@ class ElementHolder(object):
             raise PyAMLException(f"Tool {name} not defined")
         return self.__TUNING_TOOLS[name]
 
-    def get_diagnostic(self, name: str):
+    def _get_diagnostic(self, name: str):
         """
         Generic diagnostic resolver used by YellowPages.
         """
@@ -345,7 +345,7 @@ class ElementHolder(object):
             raise PyAMLException(f"Diagnostic {name} not defined")
         return self.__DIAG[name]
 
-    def list_arrays(self) -> list[str]:
+    def _list_arrays(self) -> list[str]:
         """
         Return all array identifiers available in this holder.
         """
@@ -357,13 +357,13 @@ class ElementHolder(object):
         arrays.extend(self.__ELEMENT_ARRAYS.keys())
         return arrays
 
-    def list_tools(self) -> list[str]:
+    def _list_tools(self) -> list[str]:
         """
         Return all tuning tool identifiers available in this holder.
         """
         return list(self.__TUNING_TOOLS.keys())
 
-    def list_diagnostics(self) -> list[str]:
+    def _list_diagnostics(self) -> list[str]:
         """
         Return all diagnostic identifiers available in this holder.
         """

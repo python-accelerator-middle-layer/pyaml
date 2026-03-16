@@ -377,8 +377,8 @@ class YellowPages:
             if holder is None:
                 raise YellowPagesError(f"Unknown mode '{mode}'.")
 
-            if query in holder.list_arrays():
-                return self._object_to_ids(holder.get_array(query))
+            if query in holder._list_arrays():
+                return self._object_to_ids(holder._get_array(query))
             else:
                 ids = self._ids_from_holder(holder)
         else:
@@ -495,15 +495,15 @@ class YellowPages:
 
         for _, holder in self._acc.modes().items():
             try:
-                self._extend_unique(arrays, holder.list_arrays())
+                self._extend_unique(arrays, holder._list_arrays())
             except Exception:
                 pass
             try:
-                self._extend_unique(tools, holder.list_tools())
+                self._extend_unique(tools, holder._list_tools())
             except Exception:
                 pass
             try:
-                self._extend_unique(diags, holder.list_diagnostics())
+                self._extend_unique(diags, holder._list_diagnostics())
             except Exception:
                 pass
 
@@ -546,20 +546,20 @@ class YellowPages:
         - diagnostics
         """
         try:
-            if key in holder.list_arrays():
-                return holder.get_array(key)
+            if key in holder._list_arrays():
+                return holder._get_array(key)
         except Exception:
             pass
 
         try:
-            if key in holder.list_tools():
-                return holder.get_tool(key)
+            if key in holder._list_tools():
+                return holder._get_tool(key)
         except Exception:
             pass
 
         try:
-            if key in holder.list_diagnostics():
-                return holder.get_diagnostic(key)
+            if key in holder._list_diagnostics():
+                return holder._get_diagnostic(key)
         except Exception:
             pass
 
@@ -678,8 +678,8 @@ class YellowPages:
         ids: list[str] = []
 
         try:
-            for name in holder.list_arrays():
-                arr = holder.get_array(name)
+            for name in holder._list_arrays():
+                arr = holder._get_array(name)
                 self._extend_unique(ids, self._object_to_ids(arr))
         except Exception:
             pass

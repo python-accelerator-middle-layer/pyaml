@@ -55,27 +55,27 @@ class _Holder:
         self._diagnostics = dict(diagnostics or {})
 
     # Discovery
-    def list_arrays(self) -> list[str]:
+    def _list_arrays(self) -> list[str]:
         return list(self._arrays.keys())
 
-    def list_tools(self) -> list[str]:
+    def _list_tools(self) -> list[str]:
         return list(self._tools.keys())
 
-    def list_diagnostics(self) -> list[str]:
+    def _list_diagnostics(self) -> list[str]:
         return list(self._diagnostics.keys())
 
     # Resolution
-    def get_array(self, name: str):
+    def _get_array(self, name: str):
         if name not in self._arrays:
             raise KeyError(name)
         return self._arrays[name]
 
-    def get_tool(self, name: str):
+    def _get_tool(self, name: str):
         if name not in self._tools:
             raise KeyError(name)
         return self._tools[name]
 
-    def get_diagnostic(self, name: str):
+    def _get_diagnostic(self, name: str):
         if name not in self._diagnostics:
             raise KeyError(name)
         return self._diagnostics[name]
