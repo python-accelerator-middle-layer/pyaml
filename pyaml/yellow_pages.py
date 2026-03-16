@@ -29,14 +29,15 @@ Expected ElementHolder interface
     - get_diagnostic(name: str) -> Any
 """
 
-from __future__ import annotations
-
 import fnmatch
 import re
 from enum import Enum
-from typing import Any
+from typing import TYPE_CHECKING, Any
 
 from pyaml import PyAMLException
+
+if TYPE_CHECKING:
+    from .accelerator import Accelerator
 
 
 class YellowPagesCategory(str, Enum):
@@ -116,7 +117,7 @@ class YellowPages:
         sr.yellow_pages["re:^SH1A-C0[12]-H$"]
     """
 
-    def __init__(self, accelerator: Any):
+    def __init__(self, accelerator: "Accelerator"):
         self._acc = accelerator
 
     def has(self, key: str) -> bool:
