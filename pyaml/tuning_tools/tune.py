@@ -78,7 +78,7 @@ class Tune(TuningTool):
             self._response_matrix = np.array(cfg.response_matrix._cfg.matrix)
             self._correctionmat = np.linalg.pinv(self._response_matrix)
 
-        # TODO: Initialise firs setpoint
+        # TODO: Initialise first setpoint
         self._setpoint = np.array([np.nan, np.nan])
 
     def load(self, load_path: Path):

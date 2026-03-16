@@ -1,11 +1,13 @@
 import logging
 from abc import ABCMeta, abstractmethod
 from pathlib import Path
-from typing import Callable, Self
+from typing import TYPE_CHECKING, Callable, Self
 
 from ..common.element import Element
-from ..common.element_holder import ElementHolder
 from ..common.exception import PyAMLException
+
+if TYPE_CHECKING:
+    from ..common.element_holder import ElementHolder
 
 logger = logging.getLogger(__name__)
 
@@ -18,6 +20,7 @@ class MeasurementTool(Element, metaclass=ABCMeta):
     def __init__(self, name):
         super().__init__(name)
         self.latest_measurement: dict = None
+        self._peer: "ElementHolder" = None  # Peer: ControlSystem or Simulator
 
     @abstractmethod
     def measure(self):

@@ -259,19 +259,20 @@ class ElementHolder(object):
     def add_betatron_tune_monitor(self, tune_monitor: Element):
         self.__add(self.__DIAG, tune_monitor)
 
-    # Chromaticity monitor
+    # Tuning/Measurement tools
+
+    def add_tool(self, tool: Element):
+        self.__add(self.__TUNING_TOOLS, tool)
+
+    # ---- Chromaticity -------------------------------------------------
 
     def get_chromaticity_monitor(self, name: str) -> ChomaticityMonitor:
-        obj = self.__get("Diagnostic", name, self.__DIAG)
+        obj = self.__get("Chomaticity monitor", name, self.__TUNING_TOOLS)
         return obj
 
-    def add_chromaticity_monitor(self, chromaticity_monitor: Element):
-        self.__add(self.__DIAG, chromaticity_monitor)
-
-    # Tuning tools
-
-    def add_tool(self, tune: Element):
-        self.__add(self.__TUNING_TOOLS, tune)
+    @property
+    def chromaticity(self) -> "ChomaticityMonitor":
+        return self.get_chromaticity_monitor("DEFAULT_CHROMATICITY_MONITOR")
 
     # ---- Tune ---------------------------------------------------------
 
