@@ -151,6 +151,7 @@ class ChomaticityMonitor(MeasurementTool):
         sleep_between_step: float = None,
         fit_order: int = None,
         fit_disp_order: int = None,
+        fit_dispersion: bool = False,
         do_plot: bool = None,
         callback: callable = None,
     ):
@@ -181,6 +182,8 @@ class ChomaticityMonitor(MeasurementTool):
             Fitting order [default: from config]
         fit_disp_order : int, optional
             Dispersion fitting order [default: from config]
+        fit_dispersion : bool, optionnal
+            Fit dispersion, default False
         do_plot : bool
             Do you want to plot the fittinf results ?
         callback: Callable, optional
@@ -210,7 +213,7 @@ class ChomaticityMonitor(MeasurementTool):
         bpms = None
         n_bpm = 0
         orbit = None
-        if fit_disp_order is not None and self._cfg.bpm_array_name is not None:
+        if fit_dispersion and fit_disp_order is not None and self._cfg.bpm_array_name is not None:
             # For dispersion fit
             bpms = self._peer.get_bpms(self._cfg.bpm_array_name)
             n_bpm = len(bpms)
@@ -276,7 +279,7 @@ class ChomaticityMonitor(MeasurementTool):
 
     def fit(self, deltas, Q, order, orbit=None, fit_disp_order=None, do_plot=False):
         """
-        Compute chromaticity from measurement data.
+        Compute chromaticity (and dispersion) from measurement data.
 
         Parameters
         ----------
