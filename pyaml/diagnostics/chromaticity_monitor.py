@@ -209,6 +209,7 @@ class ChomaticityMonitor(MeasurementTool):
         rf = self._peer.get_rf_plant(self._cfg.rf_plant_name)
         bpms = None
         n_bpm = 0
+        orbit = None
         if fit_disp_order is not None and self._cfg.bpm_array_name is not None:
             # For dispersion fit
             bpms = self._peer.get_bpms(self._cfg.bpm_array_name)
@@ -220,7 +221,8 @@ class ChomaticityMonitor(MeasurementTool):
         delta_frec = -delta * alphac * f0
 
         Q = np.zeros((n_step, 2))
-        orbit = np.zeros((n_step, n_bpm))
+        if bpms is not None:
+            orbit = np.zeros((n_step, n_bpm, 2))
 
         # ensure that, even if there is an issus, the script will finish by
         # reseting the RF frequency to its original value
@@ -270,7 +272,7 @@ class ChomaticityMonitor(MeasurementTool):
         if err:
             raise (err)
 
-        self.fit(delta, Q, fit_order, do_plot=do_plot)
+        self.fit(delta, Q, fit_order, orbit=orbit, fit_disp_order=fit_disp_order, do_plot=do_plot)
 
     def fit(self, deltas, Q, order, orbit=None, fit_disp_order=None, do_plot=False):
         """
@@ -299,11 +301,13 @@ class ChomaticityMonitor(MeasurementTool):
         chroma = np.polynomial.polynomial.polyfit(deltas, Q, order).T
         self.latest_measurement = dict()
         self.latest_measurement["chromaticity_fit"] = chroma
-        self.latest_measurement["chromaticity"] = chroma[:, 1]
-        if fit_disp_order:
-            disp = np.polynomial.polynomial.polyfit(deltas, orbit, order).T
-            self.latest_measurement["dispersion_fit"] = disp
-            self.latest_measurement["dispersion"] = disp[:, 1]
+        self.latest_measurement["chromaticity"] = chroma[:, 1]  # First order chroma
+        if orbit is not None:
+            dispx = np.polynomial.polynomial.polyfit(deltas, orbit[:, :, 0], fit_disp_order).T
+            self.latest_measurement["dispersionx_fit"] = dispx
+            dispy = np.polynomial.polynomial.polyfit(deltas, orbit[:, :, 1], fit_disp_order).T
+            self.latest_measurement["dispersiony_fit"] = dispy
+            self.latest_measurement["dispersion"] = [dispx[:, 1], dispy[:, 1]]  # First order dispersion
 
         if do_plot:
             fig = plt.figure("Chromaticity_measurement")
