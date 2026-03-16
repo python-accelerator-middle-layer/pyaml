@@ -22,16 +22,16 @@ def test_simulator_chromaticity_monitor():
     assert np.abs(chroma[1] - chromaAT[1]) < 1e-2
 
     dispx = chromaticity_monitor.dispersion.get()[0, :]
-    assert np.abs(dispx[0] + 0.00157552) < 1e-6
-    assert np.abs(dispx[1] - 0.08024241) < 1e-6
-    assert np.abs(dispx[2] - 0.07345349) < 1e-6
-    assert np.abs(dispx[3] - 0.01317651) < 1e-6
-    assert np.abs(dispx[4] - 0.01488452) < 1e-6
-    assert np.abs(dispx[5] - 0.01489548) < 1e-6
-    assert np.abs(dispx[6] - 0.0131858) < 1e-6
-    assert np.abs(dispx[7] - 0.07340748) < 1e-6
-    assert np.abs(dispx[8] - 0.08038594) < 1e-6
-    assert np.abs(dispx[9] - 0.00146621) < 1e-6
+    assert np.abs(dispx[0] + 0.00157552) < 1e-8
+    assert np.abs(dispx[1] - 0.08024241) < 1e-8
+    assert np.abs(dispx[2] - 0.07345349) < 1e-8
+    assert np.abs(dispx[3] - 0.01317651) < 1e-8
+    assert np.abs(dispx[4] - 0.01488452) < 1e-8
+    assert np.abs(dispx[5] - 0.01489548) < 1e-8
+    assert np.abs(dispx[6] - 0.0131858) < 1e-8
+    assert np.abs(dispx[7] - 0.07340748) < 1e-8
+    assert np.abs(dispx[8] - 0.08038594) < 1e-8
+    assert np.abs(dispx[9] - 0.00146621) < 1e-8
     dispy = chromaticity_monitor.dispersion.get()[1, :]
     assert abs(np.mean(dispy)) < 1e-10
 
