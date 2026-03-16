@@ -23,9 +23,9 @@ devices:
     attribute: srdiag/beam-tune/main/Qv
     unit: "1"
 - type: pyaml.diagnostics.chromaticity_monitor
-  name: KSI
-  betatron_tune: BETATRON_TUNE
-  RFfreq: RF
+  name: DEFAULT_CHROMATICITY_MONITOR
+  betatron_tune_name: BETATRON_TUNE
+  rf_plant_name: RF
 - type: pyaml.rf.rf_plant
   name: RF
   masterclock:

@@ -15,7 +15,6 @@ from ..control.abstract_impl import (
     CSStrengthScalarAggregator,
     RBetatronTuneArray,
     RBpmArray,
-    RChromaticityArray,
     RWBpmOffsetArray,
     RWBpmTiltScalar,
     RWHardwareArray,
@@ -26,7 +25,6 @@ from ..control.abstract_impl import (
     RWStrengthArray,
     RWStrengthScalar,
 )
-from ..diagnostics.chromaticity_monitor import ChomaticityMonitor
 from ..diagnostics.tune_monitor import BetatronTuneMonitor
 from ..magnet.cfm_magnet import CombinedFunctionMagnet
 from ..magnet.magnet import Magnet
@@ -264,11 +262,6 @@ class ControlSystem(ElementHolder, metaclass=ABCMeta):
                 betatron_tune = RBetatronTuneArray(e, tuneDevs)
                 e = e.attach(self, betatron_tune)
                 self.add_betatron_tune_monitor(e)
-
-            elif isinstance(e, ChomaticityMonitor):
-                chromaticity = RChromaticityArray(e)
-                e = e.attach(self, chromaticity)
-                self.add_chromaticity_monitor(e)
 
             elif isinstance(e, TuningTool) | isinstance(e, MeasurementTool):
                 self.add_tool(e.attach(self))

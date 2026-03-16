@@ -58,7 +58,6 @@ class TuneResponseMatrix(MeasurementTool):
     def __init__(self, cfg: ConfigModel):
         super().__init__(cfg.name)
         self._cfg = cfg
-        self._peer: "ElementHolder" = None  # Peer: ControlSystem, Simulator
 
     def measure(
         self,
@@ -143,7 +142,8 @@ class TuneResponseMatrix(MeasurementTool):
                         aborted = True
                         m.strength.set(str)  # restore strength
                         break
-                    time.sleep(sleep_meas)
+                    if avg < nb_meas - 1:
+                        time.sleep(sleep_meas)
                 Q[step] /= float(nb_meas)
 
             if aborted:

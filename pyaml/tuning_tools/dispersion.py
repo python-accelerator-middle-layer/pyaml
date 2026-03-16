@@ -45,7 +45,6 @@ class Dispersion(MeasurementTool):
         self.bpm_array_name = cfg.bpm_array_name
         self.rf_plant_name = cfg.rf_plant_name
         self.frequency_delta = cfg.frequency_delta
-        self.latest_measurement = None
 
     def measure(
         self,
