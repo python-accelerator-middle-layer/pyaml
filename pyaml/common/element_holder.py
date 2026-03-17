@@ -23,6 +23,8 @@ from ..rf.rf_transmitter import RFTransmitter
 from .element import Element
 
 if TYPE_CHECKING:
+    from ..tuning_tools.chromaticity import Chromaticity
+    from ..tuning_tools.chromaticity_response_matrix import ChromaticityResponseMatrix
     from ..tuning_tools.dispersion import Dispersion
     from ..tuning_tools.orbit import Orbit
     from ..tuning_tools.orbit_response_matrix import OrbitResponseMatrix
@@ -270,9 +272,19 @@ class ElementHolder(object):
         obj = self.__get("Chomaticity monitor", name, self.__TUNING_TOOLS)
         return obj
 
+    def get_chromaticity_tuning(self, name: str) -> "Chromaticity":
+        return self.__get("Chromaticity tool", name, self.__TUNING_TOOLS)
+
+    def get_crm_tuning(self, name: str) -> "ChromaticityResponseMatrix":
+        return self.__get("ChromaticityResponseMatrix tool", name, self.__TUNING_TOOLS)
+
     @property
-    def chromaticity(self) -> "ChomaticityMonitor":
-        return self.get_chromaticity_monitor("DEFAULT_CHROMATICITY_MONITOR")
+    def chromaticity(self) -> "Chromaticity":
+        return self.get_chromaticity_tuning("DEFAULT_CHROMATICITY_CORRECTION")
+
+    @property
+    def crm(self) -> "ChromaticityResponseMatrix":
+        return self.get_crm_tuning("DEFAULT_CHROMATICITY_RESPONSE_MATRIX")
 
     # ---- Tune ---------------------------------------------------------
 

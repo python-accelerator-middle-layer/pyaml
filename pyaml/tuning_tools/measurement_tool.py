@@ -24,9 +24,13 @@ class MeasurementTool(Element, metaclass=ABCMeta):
         self._peer: "ElementHolder" = None  # Peer: ControlSystem or Simulator
 
     @abstractmethod
-    def measure(self):
+    def measure(self) -> bool:
         """
         Launch measurement
+        Returns
+        -------
+        bool
+            True if the process has been aborted
         """
         raise NotImplementedError()
 

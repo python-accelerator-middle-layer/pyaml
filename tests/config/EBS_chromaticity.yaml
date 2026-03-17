@@ -28,7 +28,7 @@ devices:
     attribute: srdiag/beam-tune/main/Qv
     unit: "1"
 - type: pyaml.diagnostics.chromaticity_monitor
-  name: DEFAULT_CHROMATICITY_MONITOR
+  name: CHROMATICITY_MONITOR
   betatron_tune_name: BETATRON_TUNE
   rf_plant_name: RF
   bpm_array_name: BPM

@@ -48,3 +48,13 @@ def test_tune_add():
     sr.design.tune.add(dtune)
     tune = sr.design.tune.readback()
     np.testing.assert_allclose(tune - tune_initial, dtune, atol=1e-5)
+
+
+def test_chroma_add():
+    sr: Accelerator = Accelerator.load("tests/config/EBSOrbit.yaml")
+    chromaAT = sr.design.get_lattice().get_chrom()[:-1]
+    sr.design.chromaticity.add([0.5, 0.4])
+    chromaAT2 = sr.design.get_lattice().get_chrom()[:-1]
+    chromaDiff = chromaAT2 - chromaAT
+    assert np.abs(chromaDiff[0] - 0.5) < 5e-2
+    assert np.abs(chromaDiff[1] - 0.4) < 5e-2

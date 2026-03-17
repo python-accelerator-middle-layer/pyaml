@@ -54,6 +54,8 @@ class ConfigModel(ElementConfigModel):
         Chomaticity fitting order, by default 1
     fit_disp_order : int, optional
         Dispersion fitting order, by default 1
+    fit_dispersion : bool, optional
+        Dispersion fitting, by default False
     """
 
     model_config = ConfigDict(arbitrary_types_allowed=True, extra="forbid")
@@ -66,10 +68,11 @@ class ConfigModel(ElementConfigModel):
     e_delta: float = 0.001
     max_e_delta: float = 0.004
     n_tune_meas: int = 1
-    sleep_between_meas: float = 2.0
-    sleep_between_step: float = 5.0
+    sleep_between_meas: float = 0.0
+    sleep_between_step: float = 0.0
     fit_order: int = 1
     fit_disp_order: int = 1
+    fit_dispersion: bool = False
 
 
 class RChromaDispArray(ReadFloatArray):
@@ -151,7 +154,7 @@ class ChomaticityMonitor(MeasurementTool):
         sleep_between_step: float = None,
         fit_order: int = None,
         fit_disp_order: int = None,
-        fit_dispersion: bool = False,
+        fit_dispersion: bool | None = None,
         do_plot: bool = None,
         callback: callable = None,
     ):
@@ -183,7 +186,7 @@ class ChomaticityMonitor(MeasurementTool):
         fit_disp_order : int, optional
             Dispersion fitting order [default: from config]
         fit_dispersion : bool, optionnal
-            Fit dispersion, default False
+            Fit dispersion, [default: from config]
         do_plot : bool
             Do you want to plot the fittinf results ?
         callback: Callable, optional
@@ -199,6 +202,7 @@ class ChomaticityMonitor(MeasurementTool):
         sleep_between_step = sleep_between_step if sleep_between_step is not None else self._cfg.sleep_between_step
         fit_order = fit_order if fit_order is not None else self._cfg.fit_order
         fit_disp_order = fit_disp_order if fit_disp_order is not None else self._cfg.fit_disp_order
+        fit_dispersion = fit_dispersion if fit_dispersion is not None else self._cfg.fit_dispersion
 
         if abs(e_delta) > abs(max_e_delta):
             logger.warning("e_delta={e_delta} is greater than max_e_delta={max_e_delta}")
@@ -230,6 +234,7 @@ class ChomaticityMonitor(MeasurementTool):
         # ensure that, even if there is an issus, the script will finish by
         # reseting the RF frequency to its original value
         err = None
+        ok = True
         try:
             for i, f in enumerate(delta_frec):
                 # TODO : Use set_and_wait once it is implemented !
@@ -240,7 +245,7 @@ class ChomaticityMonitor(MeasurementTool):
                 if not self.send_callback(Action.APPLY, callback, cb_data):
                     # Abort
                     rf.frequency.set(f0)
-                    return
+                    return False
                 sleep(sleep_between_step)
 
                 # Averaging
@@ -255,7 +260,7 @@ class ChomaticityMonitor(MeasurementTool):
                     if not self.send_callback(Action.MEASURE, callback, cb_data):
                         # Abort
                         rf.frequency.set(f0)
-                        return
+                        return False
 
                     if j < n_tune_meas - 1:
                         sleep(sleep_between_meas)
@@ -269,13 +274,15 @@ class ChomaticityMonitor(MeasurementTool):
         finally:
             # TODO : Use set_and_wait once it is implemented !
             rf.frequency.set(f0)
-            cb_data = {"step": i, "rf": f0 + f}
-            self.send_callback(Action.RESTORE, callback, cb_data)
+            cb_data = {"step": i, "rf": f0}
+            ok = self.send_callback(Action.RESTORE, callback, cb_data)
 
         if err:
             raise (err)
 
         self.fit(delta, Q, fit_order, orbit=orbit, fit_disp_order=fit_disp_order, do_plot=do_plot)
+
+        return ok
 
     def fit(self, deltas, Q, order, orbit=None, fit_disp_order=None, do_plot=False):
         """

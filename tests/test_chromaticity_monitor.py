@@ -15,7 +15,7 @@ def test_simulator_chromaticity_monitor():
     mcf = sr.design.get_lattice().get_mcf()
     sr.design.get_lattice().enable_6d()
     chromaAT = sr.design.get_lattice().get_chrom()[:-1]
-    chromaticity_monitor = sr.design.chromaticity
+    chromaticity_monitor = sr.design.get_chromaticity_monitor("CHROMATICITY_MONITOR")
     chromaticity_monitor.measure(
         alphac=mcf, fit_dispersion=True, sleep_between_meas=0, sleep_between_step=0, callback=callback
     )
@@ -45,7 +45,7 @@ def test_simulator_chromaticity_monitor():
 )
 def test_controlsystem_chromaticity_monitor(install_test_package):
     sr: Accelerator = Accelerator.load("tests/config/EBS_chromaticity.yaml")
-    chromaticity_monitor = sr.live.chromaticity
+    chromaticity_monitor = sr.live.get_chromaticity_monitor("CHROMATICITY_MONITOR")
     assert chromaticity_monitor.chromaticity.get() is None
     chromaticity_monitor.measure(
         do_plot=False,
