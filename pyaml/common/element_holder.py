@@ -23,10 +23,13 @@ from ..rf.rf_transmitter import RFTransmitter
 from .element import Element
 
 if TYPE_CHECKING:
+    from ..tuning_tools.chromaticity import Chromaticity
+    from ..tuning_tools.chromaticity_response_matrix import ChromaticityResponseMatrix
     from ..tuning_tools.dispersion import Dispersion
     from ..tuning_tools.orbit import Orbit
     from ..tuning_tools.orbit_response_matrix import OrbitResponseMatrix
     from ..tuning_tools.tune import Tune
+    from ..tuning_tools.tune_response_matrix import TuneResponseMatrix
 
 
 class ElementHolder(object):
@@ -258,32 +261,51 @@ class ElementHolder(object):
     def add_betatron_tune_monitor(self, tune_monitor: Element):
         self.__add(self.__DIAG, tune_monitor)
 
-    # Chromaticity monitor
+    # Tuning/Measurement tools
+
+    def add_tool(self, tool: Element):
+        self.__add(self.__TUNING_TOOLS, tool)
+
+    # ---- Chromaticity -------------------------------------------------
 
     def get_chromaticity_monitor(self, name: str) -> ChomaticityMonitor:
-        obj = self.__get("Diagnostic", name, self.__DIAG)
+        obj = self.__get("Chomaticity monitor", name, self.__TUNING_TOOLS)
         return obj
 
-    def add_chromaticity_monitor(self, chromaticity_monitor: Element):
-        self.__add(self.__DIAG, chromaticity_monitor)
+    def get_chromaticity_tuning(self, name: str) -> "Chromaticity":
+        return self.__get("Chromaticity tool", name, self.__TUNING_TOOLS)
 
-    # Tuning tools
+    def get_crm_tuning(self, name: str) -> "ChromaticityResponseMatrix":
+        return self.__get("ChromaticityResponseMatrix tool", name, self.__TUNING_TOOLS)
+
+    @property
+    def chromaticity(self) -> "Chromaticity":
+        return self.get_chromaticity_tuning("DEFAULT_CHROMATICITY_CORRECTION")
+
+    @property
+    def crm(self) -> "ChromaticityResponseMatrix":
+        return self.get_crm_tuning("DEFAULT_CHROMATICITY_RESPONSE_MATRIX")
+
+    # ---- Tune ---------------------------------------------------------
 
     def get_tune_tuning(self, name: str) -> "Tune":
         return self.__get("Tune tuning tool", name, self.__TUNING_TOOLS)
-
-    def add_tune_tuning(self, tune: Element):
-        self.__add(self.__TUNING_TOOLS, tune)
 
     @property
     def tune(self) -> "Tune":
         return self.get_tune_tuning("DEFAULT_TUNE_CORRECTION")
 
+    def get_trm_tuning(self, name: str) -> "TuneResponseMatrix":
+        return self.__get("TuneResponseMatrix tool", name, self.__TUNING_TOOLS)
+
+    @property
+    def trm(self) -> "TuneResponseMatrix":
+        return self.get_trm_tuning("DEFAULT_TUNE_RESPONSE_MATRIX")
+
+    # ---- Orbit --------------------------------------------------------
+
     def get_orbit_tuning(self, name: str) -> "Orbit":
         return self.__get("Orbit tuning tool", name, self.__TUNING_TOOLS)
-
-    def add_orbit_tuning(self, orbit: Element):
-        self.__add(self.__TUNING_TOOLS, orbit)
 
     @property
     def orbit(self) -> "Orbit":
@@ -292,18 +314,14 @@ class ElementHolder(object):
     def get_orm_tuning(self, name: str) -> "OrbitResponseMatrix":
         return self.__get("OrbitResponseMatrix tool", name, self.__TUNING_TOOLS)
 
-    def add_orm_tuning(self, orm: Element):
-        self.__add(self.__TUNING_TOOLS, orm)
-
     @property
     def orm(self) -> "OrbitResponseMatrix":
         return self.get_orm_tuning("DEFAULT_ORBIT_RESPONSE_MATRIX")
 
+    # ---- Dispersive orbit --------------------------------------------
+
     def get_dispersion_tuning(self, name: str) -> "Dispersion":
         return self.__get("Dispersion tool", name, self.__TUNING_TOOLS)
-
-    def add_dispersion_tuning(self, dispersion: Element):
-        self.__add(self.__TUNING_TOOLS, dispersion)
 
     @property
     def dispersion(self) -> "Dispersion":

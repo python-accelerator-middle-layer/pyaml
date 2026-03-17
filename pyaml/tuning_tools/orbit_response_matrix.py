@@ -3,15 +3,16 @@ from pathlib import Path
 from typing import Callable, List, Optional, Self
 
 import pySC
-from pydantic import BaseModel, ConfigDict
+from pydantic import ConfigDict
 from pySC.apps import measure_ORM
 from pySC.apps.codes import ResponseCode
 
-from ..common.constants import ACTION_APPLY, ACTION_MEASURE, ACTION_RESTORE
-from ..common.element import Element, ElementConfigModel
-from ..common.element_holder import ElementHolder
-from ..common.exception import PyAMLException
+from ..common.constants import Action
+from ..common.element import ElementConfigModel
 from ..external.pySC_interface import pySCInterface
+from .measurement_tool import MeasurementTool
+from .orbit_response_matrix_data import ConfigModel as OrbitResponseMatrixDataConfigModel
+from .orbit_response_matrix_data import OrbitResponseMatrixData
 
 logger = logging.getLogger(__name__)
 
@@ -42,7 +43,7 @@ class ConfigModel(ElementConfigModel):
     corrector_delta: float
 
 
-class OrbitResponseMatrix(Element):
+class OrbitResponseMatrix(MeasurementTool):
     def __init__(self, cfg: ConfigModel):
         super().__init__(cfg.name)
         self._cfg = cfg
@@ -51,7 +52,6 @@ class OrbitResponseMatrix(Element):
         self.hcorr_array_name = cfg.hcorr_array_name
         self.vcorr_array_name = cfg.vcorr_array_name
         self.corrector_delta = cfg.corrector_delta
-        self.latest_measurement = None
 
     def measure(
         self,
@@ -79,25 +79,11 @@ class OrbitResponseMatrix(Element):
 
         if corrector_names is None:
             logger.info(
-                f"Measuring correctors from the default arrays: "
-                f"{self.hcorr_array_name} and {self.vcorr_array_name}."
+                f"Measuring correctors from the default arrays: {self.hcorr_array_name} and {self.vcorr_array_name}."
             )
             hcorrector_names = element_holder.get_magnets(self.hcorr_array_name).names()
             vcorrector_names = element_holder.get_magnets(self.vcorr_array_name).names()
             corrector_names = hcorrector_names + vcorrector_names
-        else:
-            all_hcorrector_names = element_holder.get_magnets(
-                self.hcorr_array_name
-            ).names()
-            all_vcorrector_names = element_holder.get_magnets(
-                self.vcorr_array_name
-            ).names()
-            hcorrector_names = [
-                corr for corr in corrector_names if corr in all_hcorrector_names
-            ]
-            vcorrector_names = [
-                corr for corr in corrector_names if corr in all_vcorrector_names
-            ]
 
         generator = measure_ORM(
             interface=interface,
@@ -111,16 +97,16 @@ class OrbitResponseMatrix(Element):
         for code, measurement in generator:
             callback_data = measurement.response_data  # to be defined better
             if code is ResponseCode.AFTER_SET:
-                if callback and not callback(ACTION_APPLY, callback_data):
+                if not self.send_callback(Action.APPLY, callback, callback_data):
                     if aborted:
                         break
             elif code is ResponseCode.AFTER_GET:
-                if callback and not callback(ACTION_MEASURE, callback_data):
+                if not self.send_callback(Action.MEASURE, callback, callback_data):
                     aborted = True
                     break
             elif code is ResponseCode.AFTER_RESTORE:
                 logger.info(f"Measured response of {measurement.last_input}.")
-                if callback and not callback(ACTION_RESTORE, callback_data):
+                if not self.send_callback(Action.RESTORE, callback, callback_data):
                     aborted = True
                     break
 
@@ -128,51 +114,36 @@ class OrbitResponseMatrix(Element):
             logger.warning("Measurement aborted! Settings have not been restored.")
             return
 
-        response_data = measurement.response_data  # contains also pre-processed data
+        orm_data = self._pySC_response_data_to_ORMData(measurement.response_data.model_dump())
+        self.latest_measurement = orm_data.model_dump()
+
+    def _pySC_response_data_to_ORMData(self, data: dict) -> OrbitResponseMatrixDataConfigModel:
+        # all metadata is discarded here. Should we keep something?
+
+        element_holder = self._peer
+        all_hcorrector_names = element_holder.get_magnets(self.hcorr_array_name).names()
+        all_vcorrector_names = element_holder.get_magnets(self.vcorr_array_name).names()
+        variable_planes = []
+        for corr in data["input_names"]:
+            if corr in all_hcorrector_names:
+                variable_planes.append("H")
+            elif corr in all_vcorrector_names:
+                variable_planes.append("V")
+
         bpm_names = element_holder.get_bpms(self.bpm_array_name).names()
         # This is because we assume always dual-plane bpms now.
-        response_data.output_names = bpm_names * 2
-        self.latest_measurement = response_data.model_dump()
-
-        input_planes = []
-        for corr in corrector_names:
-            if corr in hcorrector_names:
-                input_planes.append("H")
-            elif corr in vcorrector_names:
-                input_planes.append("V")
-        self.latest_measurement["input_planes"] = input_planes
-
         len_b = len(bpm_names)
-        self.latest_measurement["output_planes"] = ["H"] * len_b + ["V"] * len_b
+        observable_names = bpm_names * 2
+        observable_planes = ["H"] * len_b + ["V"] * len_b
 
-    def get(self):
-        return self.latest_measurement
+        orm_data_model = {
+            "matrix": data["matrix"],
+            "variable_names": data["input_names"],
+            "observable_names": observable_names,
+            "rf_response": None,
+            "variable_planes": variable_planes,
+            "observable_planes": observable_planes,
+        }
 
-    def save(self, save_path: Path, with_type: str = "json"):
-        # should we make a general pyaml saving/loading function for data?
-        if with_type == "json":
-            import json
-
-            data = self.latest_measurement
-            json.dump(data, open(save_path, "w"), indent=4)
-        elif with_type == "yaml":
-            import yaml
-
-            data = self.latest_measurement
-            yaml.safe_dump(data, open(save_path, "w"))
-        elif with_type == "npz":
-            import numpy as np
-
-            data = self.latest_measurement
-            np.savez(save_path.resolve(), **data)
-        else:
-            raise PyAMLException(f"ERROR: Unknown file type to save as: {with_type}.")
-
-    def attach(self, peer: "ElementHolder") -> Self:
-        """
-        Create a new reference to attach this OrbitResponseMatrix object to a simulator
-        or a control system.
-        """
-        obj = self.__class__(self._cfg)
-        obj._peer = peer
-        return obj
+        orm_data = OrbitResponseMatrixDataConfigModel(**orm_data_model)
+        return orm_data

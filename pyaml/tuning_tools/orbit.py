@@ -20,7 +20,8 @@ from ..common.element import Element, ElementConfigModel
 from ..common.exception import PyAMLException
 from ..external.pySC_interface import pySCInterface
 from ..rf.rf_plant import RFPlant
-from .response_matrix import ResponseMatrix
+from .orbit_response_matrix_data import OrbitResponseMatrixData
+from .tuning_tool import TuningTool
 
 logger = logging.getLogger(__name__)
 logging.getLogger("pyaml.external.pySC").setLevel(logging.WARNING)
@@ -39,10 +40,10 @@ class ConfigModel(ElementConfigModel):
     singular_values_H: Optional[int] = None
     singular_values_V: Optional[int] = None
     virtual_target: float = 0
-    response_matrix: Union[str, ResponseMatrix]
+    response_matrix: Union[str, OrbitResponseMatrixData]
 
 
-class Orbit(Element):
+class Orbit(TuningTool):
     def __init__(self, cfg: ConfigModel):
         super().__init__(cfg.name)
         self._cfg = cfg
@@ -56,8 +57,7 @@ class Orbit(Element):
         if cfg.singular_values is None:
             if cfg.singular_values_H is None or cfg.singular_values_V is None:
                 raise PyAMLException(
-                    "Either `singular_values` or `singular_values_H` and "
-                    "`singular_values_V` must be provided."
+                    "Either `singular_values` or `singular_values_H` and `singular_values_V` must be provided."
                 )
             self.singular_values_H = cfg.singular_values_H
             self.singular_values_V = cfg.singular_values_V
@@ -73,16 +73,19 @@ class Orbit(Element):
         # If the configuration response matrix is a filename, load it
         if type(cfg.response_matrix) is str:
             try:
-                cfg.response_matrix = ResponseMatrix.load(cfg.response_matrix)
+                cfg.response_matrix = OrbitResponseMatrixData.load(cfg.response_matrix)
             except Exception as e:
                 logger.warning(f"{str(e)}")
                 cfg.response_matrix = None
 
-        # assigns self._pySC_response_matrix
+        # Converts to self._pySC_response_matrix
         if cfg.response_matrix:
-            self._pySC_response_matrix = pySC_ResponseMatrix.model_validate(
-                cfg.response_matrix._cfg.model_dump()
-            )
+            m = cfg.response_matrix._cfg.model_dump()
+            m["input_names"] = m.pop("variable_names")
+            m["output_names"] = m.pop("observable_names")
+            m["input_planes"] = m.pop("variable_planes")
+            m["output_planes"] = m.pop("observable_planes")
+            self._pySC_response_matrix = pySC_ResponseMatrix.model_validate(m)
 
         self._hcorr: MagnetArray = None
         self._vcorr: MagnetArray = None
@@ -90,7 +93,7 @@ class Orbit(Element):
         self._rf_plant: RFPlant = None
 
     @property
-    def reponse_matrix(self) -> ResponseMatrix | None:
+    def reponse_matrix(self) -> OrbitResponseMatrixData | None:
         return self._cfg.response_matrix
 
     def correct(
@@ -242,9 +245,7 @@ class Orbit(Element):
 
         return
 
-    def set_weight(
-        self, name: str, weight: float, plane: Optional[Literal["H", "V"]] = None
-    ) -> None:
+    def set_weight(self, name: str, weight: float, plane: Optional[Literal["H", "V"]] = None) -> None:
         self._pySC_response_matrix.set_weight(name, weight, plane=plane)
         return
 
@@ -284,10 +285,7 @@ class Orbit(Element):
         if len(weights) == 1:
             return weights[0]
         else:
-            raise PyAMLException(
-                "More than one weight found, please select plane. "
-                f"{names=}, {planes=}, {weights=}"
-            )
+            raise PyAMLException(f"More than one weight found, please select plane. {names=}, {planes=}, {weights=}")
 
     def get_virtual_weight(self) -> float:
         return self._pySC_response_matrix.virtual_weight
@@ -304,12 +302,3 @@ class Orbit(Element):
         self._hvcorr = MagnetArray("", hvElts)
         if self._cfg.rf_plant_name is not None:
             self._rf_plant = self._peer.get_rf_plant(self._cfg.rf_plant_name)
-
-    def attach(self, peer: "ElementHolder") -> Self:
-        """
-        Create a new reference to attach this Orbit object to a simulator
-        or a control system.
-        """
-        obj = self.__class__(self._cfg)
-        obj._peer = peer
-        return obj

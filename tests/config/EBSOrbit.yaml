@@ -24,6 +24,11 @@ arrays:
     name: Skews
     elements:
       - S*-SQ
+  - type: pyaml.arrays.magnet
+    name: Sext
+    elements:
+      - SF*-S
+      - SD*-S
   - type: pyaml.arrays.bpm
     name: BPM
     elements:
@@ -39,6 +44,20 @@ devices:
     type: tango.pyaml.attribute_read_only
     attribute: sys/ringsimulator/ebs/Tune_v
     unit: ""
+- type: pyaml.diagnostics.chromaticity_monitor
+  name: CHROMATICITY_MONITOR
+  betatron_tune_name: BETATRON_TUNE
+  rf_plant_name: RF
+  bpm_array_name: BPM
+- type: pyaml.tuning_tools.chromaticity_response_matrix
+  name: DEFAULT_CHROMATICITY_RESPONSE_MATRIX
+  sextu_array_name: Sext
+  chromaticity_name: CHROMATICITY_MONITOR
+  sextu_delta: 1e-6
+- type: pyaml.tuning_tools.chromaticity
+  name: DEFAULT_CHROMATICITY_CORRECTION
+  sextu_array_name: Sext
+  response_matrix: file:ideal_chroma_resp.json
 - type: pyaml.tuning_tools.orbit
   bpm_array_name: BPM
   hcorr_array_name: HCorr

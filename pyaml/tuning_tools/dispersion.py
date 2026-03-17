@@ -5,10 +5,11 @@ from pydantic import ConfigDict
 from pySC.apps import measure_dispersion
 from pySC.apps.codes import DispersionCode
 
-from ..common.constants import ACTION_APPLY, ACTION_MEASURE, ACTION_RESTORE
-from ..common.element import Element, ElementConfigModel
+from ..common.constants import Action
+from ..common.element import ElementConfigModel
 from ..common.element_holder import ElementHolder
 from ..external.pySC_interface import pySCInterface
+from .measurement_tool import MeasurementTool
 
 logger = logging.getLogger(__name__)
 
@@ -36,7 +37,7 @@ class ConfigModel(ElementConfigModel):
     frequency_delta: float
 
 
-class Dispersion(Element):
+class Dispersion(MeasurementTool):
     def __init__(self, cfg: ConfigModel):
         super().__init__(cfg.name)
         self._cfg = cfg
@@ -44,7 +45,6 @@ class Dispersion(Element):
         self.bpm_array_name = cfg.bpm_array_name
         self.rf_plant_name = cfg.rf_plant_name
         self.frequency_delta = cfg.frequency_delta
-        self.latest_measurement = None
 
     def measure(
         self,
@@ -69,15 +69,15 @@ class Dispersion(Element):
         for code, measurement in generator:
             callback_data = measurement.dispersion_data  # to be defined better
             if code is DispersionCode.AFTER_SET:
-                if callback and not callback(ACTION_APPLY, callback_data):
+                if not self.send_callback(Action.APPLY, callback, callback_data):
                     if aborted:
                         break
             elif code is DispersionCode.AFTER_GET:
-                if callback and not callback(ACTION_MEASURE, callback_data):
+                if not self.send_callback(Action.MEASURE, callback, callback_data):
                     aborted = True
                     break
             elif code is DispersionCode.AFTER_RESTORE:
-                if callback and not callback(ACTION_RESTORE, callback_data):
+                if not self.send_callback(Action.RESTORE, callback, callback_data):
                     aborted = True
                     break
 
@@ -95,12 +95,3 @@ class Dispersion(Element):
 
     def get(self):
         return self.latest_measurement
-
-    def attach(self, peer: "ElementHolder") -> Self:
-        """
-        Create a new reference to attach this OrbitResponseMatrix object to a simulator
-        or a control system.
-        """
-        obj = self.__class__(self._cfg)
-        obj._peer = peer
-        return obj
