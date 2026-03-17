@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>response_matrix &#8212; Python Accelerator Middle Layer 0.1.dev1+g6b7e7772a documentation</title>
+    <title>tuning_tool &#8212; Python Accelerator Middle Layer 0.1.dev1+g0cf44ff7c documentation</title>
   
   
   
@@ -42,17 +42,17 @@
   <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
 <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
-    <script src="../_static/documentation_options.js?v=8ba10de4"></script>
+    <script src="../_static/documentation_options.js?v=df29db57"></script>
     <script src="../_static/doctools.js?v=9bcbadda"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="../_static/copybutton.js?v=fd10adb8"></script>
     <script src="../_static/design-tabs.js?v=f930bc37"></script>
-    <script>DOCUMENTATION_OPTIONS.pagename = 'api/pyaml.tuning_tools.response_matrix';</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'api/pyaml.tuning_tools.tuning_tool';</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="tune" href="pyaml.tuning_tools.tune.html" />
-    <link rel="prev" title="orbit_response_matrix" href="pyaml.tuning_tools.orbit_response_matrix.html" />
+    <link rel="next" title="yellow_pages" href="pyaml.yellow_pages.html" />
+    <link rel="prev" title="tune_response_matrix" href="pyaml.tuning_tools.tune_response_matrix.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   <meta name="docsearch:version" content="0.1" />
@@ -121,8 +121,8 @@
       
     
     
-    <img src="../_static/logo.png" class="logo__image only-light" alt="Python Accelerator Middle Layer 0.1.dev1+g6b7e7772a documentation - Home"/>
-    <img src="../_static/dark.png" class="logo__image only-dark pst-js-only" alt="Python Accelerator Middle Layer 0.1.dev1+g6b7e7772a documentation - Home"/>
+    <img src="../_static/logo.png" class="logo__image only-light" alt="Python Accelerator Middle Layer 0.1.dev1+g0cf44ff7c documentation - Home"/>
+    <img src="../_static/dark.png" class="logo__image only-dark pst-js-only" alt="Python Accelerator Middle Layer 0.1.dev1+g0cf44ff7c documentation - Home"/>
   
   
 </a></div>
@@ -326,6 +326,10 @@
   <div class="bd-toc-item navbar-nav"><p aria-level="2" class="caption" role="heading"><span class="caption-text">API Reference:</span></p>
 <ul class="current nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="pyaml.accelerator.html">accelerator</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="pyaml.apidoc.html">apidoc</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="pyaml.apidoc.gen_api.html">gen_api</a></li>
+</ul>
+</details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="pyaml.arrays.html">arrays</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="pyaml.arrays.array.html">array</a></li>
 <li class="toctree-l2"><a class="reference internal" href="pyaml.arrays.bpm.html">bpm</a></li>
@@ -423,10 +427,14 @@
 </details></li>
 <li class="toctree-l1 current active has-children"><a class="reference internal" href="pyaml.tuning_tools.html">tuning_tools</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="pyaml.tuning_tools.dispersion.html">dispersion</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyaml.tuning_tools.measurement_tool.html">measurement_tool</a></li>
 <li class="toctree-l2"><a class="reference internal" href="pyaml.tuning_tools.orbit.html">orbit</a></li>
 <li class="toctree-l2"><a class="reference internal" href="pyaml.tuning_tools.orbit_response_matrix.html">orbit_response_matrix</a></li>
-<li class="toctree-l2 current active"><a class="current reference internal" href="#">response_matrix</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyaml.tuning_tools.orbit_response_matrix_data.html">orbit_response_matrix_data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyaml.tuning_tools.response_matrix_data.html">response_matrix_data</a></li>
 <li class="toctree-l2"><a class="reference internal" href="pyaml.tuning_tools.tune.html">tune</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyaml.tuning_tools.tune_response_matrix.html">tune_response_matrix</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">tuning_tool</a></li>
 </ul>
 </details></li>
 <li class="toctree-l1"><a class="reference internal" href="pyaml.yellow_pages.html">yellow_pages</a></li>
@@ -476,7 +484,7 @@
     
     <li class="breadcrumb-item"><a href="pyaml.tuning_tools.html" class="nav-link">tuning_tools</a></li>
     
-    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">response_matrix</span></li>
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">tuning_tool</span></li>
   </ul>
 </nav>
 </div>
@@ -493,70 +501,18 @@
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section id="module-pyaml.tuning_tools.response_matrix">
-<span id="response-matrix"></span><h1>response_matrix<a class="headerlink" href="#module-pyaml.tuning_tools.response_matrix" title="Link to this heading">#</a></h1>
+  <section id="module-pyaml.tuning_tools.tuning_tool">
+<span id="tuning-tool"></span><h1>tuning_tool<a class="headerlink" href="#module-pyaml.tuning_tools.tuning_tool" title="Link to this heading">#</a></h1>
 <dl class="py class">
-<dt class="sig sig-object py" id="pyaml.tuning_tools.response_matrix.ConfigModel">
-<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ConfigModel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">matrix</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">input_names</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_names</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rf_response</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">input_planes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_planes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/tuning_tools/response_matrix.html#ConfigModel"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.tuning_tools.response_matrix.ConfigModel" title="Link to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">BaseModel</span></code></p>
-<p>Configuration model for response matrix</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>matrix</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.14)"><em>list</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.14)"><em>list</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><em>float</em></a><em>]</em><em>]</em>) – Response matrix data</p></li>
-<li><p><strong>input_names</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.14)"><em>list</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em>]</em><em>, </em><em>optional</em>) – Input names, basically the actuators</p></li>
-<li><p><strong>output_names</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.14)"><em>list</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em>]</em>) – Output names, basically the measurements</p></li>
-<li><p><strong>rf_response</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.14)"><em>list</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><em>float</em></a><em>]</em><em>, </em><em>optional</em>) – RF response data</p></li>
-</ul>
-</dd>
-</dl>
-<p>Create a new model by parsing and validating input data from keyword arguments.</p>
-<p>Raises [<cite>ValidationError</cite>][pydantic_core.ValidationError] if the input data cannot be
-validated to form a valid model.</p>
-<p><cite>self</cite> is explicitly positional-only to allow <cite>self</cite> as a field name.</p>
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pyaml.tuning_tools.response_matrix.ConfigModel.input_names">
-<span class="sig-name descname"><span class="pre">input_names</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.14)"><span class="pre">list</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></em><a class="headerlink" href="#pyaml.tuning_tools.response_matrix.ConfigModel.input_names" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pyaml.tuning_tools.response_matrix.ConfigModel.input_planes">
-<span class="sig-name descname"><span class="pre">input_planes</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.14)"><span class="pre">list</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></em><a class="headerlink" href="#pyaml.tuning_tools.response_matrix.ConfigModel.input_planes" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pyaml.tuning_tools.response_matrix.ConfigModel.matrix">
-<span class="sig-name descname"><span class="pre">matrix</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.14)"><span class="pre">list</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.14)"><span class="pre">list</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><span class="pre">float</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#pyaml.tuning_tools.response_matrix.ConfigModel.matrix" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pyaml.tuning_tools.response_matrix.ConfigModel.output_names">
-<span class="sig-name descname"><span class="pre">output_names</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.14)"><span class="pre">list</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#pyaml.tuning_tools.response_matrix.ConfigModel.output_names" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pyaml.tuning_tools.response_matrix.ConfigModel.output_planes">
-<span class="sig-name descname"><span class="pre">output_planes</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.14)"><span class="pre">list</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></em><a class="headerlink" href="#pyaml.tuning_tools.response_matrix.ConfigModel.output_planes" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pyaml.tuning_tools.response_matrix.ConfigModel.rf_response">
-<span class="sig-name descname"><span class="pre">rf_response</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.14)"><span class="pre">list</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><span class="pre">float</span></a><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></em><a class="headerlink" href="#pyaml.tuning_tools.response_matrix.ConfigModel.rf_response" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
-
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="pyaml.tuning_tools.response_matrix.ResponseMatrix">
-<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ResponseMatrix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cfg</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/tuning_tools/response_matrix.html#ResponseMatrix"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.tuning_tools.response_matrix.ResponseMatrix" title="Link to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
-<p>Generic response matrix loader</p>
-<dl class="field-list simple">
-</dl>
+<dt class="sig sig-object py" id="pyaml.tuning_tools.tuning_tool.TuningTool">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">TuningTool</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/tuning_tools/tuning_tool.html#TuningTool"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.tuning_tools.tuning_tool.TuningTool" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="pyaml.common.element.html#pyaml.common.element.Element" title="pyaml.common.element.Element"><code class="xref py py-class docutils literal notranslate"><span class="pre">Element</span></code></a></p>
+<p>Base class for tuning tool such as tune adjustment or other tuning tools.</p>
 <dl class="py method">
-<dt class="sig sig-object py" id="pyaml.tuning_tools.response_matrix.ResponseMatrix.load">
-<em class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">load</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/tuning_tools/response_matrix.html#ResponseMatrix.load"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.tuning_tools.response_matrix.ResponseMatrix.load" title="Link to this definition">#</a></dt>
-<dd><p>Load a reponse matrix from a configuration file</p>
+<dt class="sig sig-object py" id="pyaml.tuning_tools.tuning_tool.TuningTool.attach">
+<span class="sig-name descname"><span class="pre">attach</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">peer</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/tuning_tools/tuning_tool.html#TuningTool.attach"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.tuning_tools.tuning_tool.TuningTool.attach" title="Link to this definition">#</a></dt>
+<dd><p>Create a new reference to attach this tuning tool object to a simulator
+or a control system.</p>
 <dl class="field-list simple">
 </dl>
 </dd></dl>
@@ -576,20 +532,20 @@ validated to form a valid model.</p>
                   
 <div class="prev-next-area">
     <a class="left-prev"
-       href="pyaml.tuning_tools.orbit_response_matrix.html"
+       href="pyaml.tuning_tools.tune_response_matrix.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">orbit_response_matrix</p>
+        <p class="prev-next-title">tune_response_matrix</p>
       </div>
     </a>
     <a class="right-next"
-       href="pyaml.tuning_tools.tune.html"
+       href="pyaml.yellow_pages.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">tune</p>
+        <p class="prev-next-title">yellow_pages</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -612,17 +568,8 @@ validated to form a valid model.</p>
   </div>
   <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.tuning_tools.response_matrix.ConfigModel"><code class="docutils literal notranslate"><span class="pre">ConfigModel</span></code></a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.tuning_tools.response_matrix.ConfigModel.input_names"><code class="docutils literal notranslate"><span class="pre">ConfigModel.input_names</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.tuning_tools.response_matrix.ConfigModel.input_planes"><code class="docutils literal notranslate"><span class="pre">ConfigModel.input_planes</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.tuning_tools.response_matrix.ConfigModel.matrix"><code class="docutils literal notranslate"><span class="pre">ConfigModel.matrix</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.tuning_tools.response_matrix.ConfigModel.output_names"><code class="docutils literal notranslate"><span class="pre">ConfigModel.output_names</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.tuning_tools.response_matrix.ConfigModel.output_planes"><code class="docutils literal notranslate"><span class="pre">ConfigModel.output_planes</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.tuning_tools.response_matrix.ConfigModel.rf_response"><code class="docutils literal notranslate"><span class="pre">ConfigModel.rf_response</span></code></a></li>
-</ul>
-</li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.tuning_tools.response_matrix.ResponseMatrix"><code class="docutils literal notranslate"><span class="pre">ResponseMatrix</span></code></a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.tuning_tools.response_matrix.ResponseMatrix.load"><code class="docutils literal notranslate"><span class="pre">ResponseMatrix.load()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.tuning_tools.tuning_tool.TuningTool"><code class="docutils literal notranslate"><span class="pre">TuningTool</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.tuning_tools.tuning_tool.TuningTool.attach"><code class="docutils literal notranslate"><span class="pre">TuningTool.attach()</span></code></a></li>
 </ul>
 </li>
 </ul>

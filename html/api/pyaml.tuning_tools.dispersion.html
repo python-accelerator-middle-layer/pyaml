@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>dispersion &#8212; Python Accelerator Middle Layer 0.1.dev1+g6b7e7772a documentation</title>
+    <title>dispersion &#8212; Python Accelerator Middle Layer 0.1.dev1+g0cf44ff7c documentation</title>
   
   
   
@@ -42,7 +42,7 @@
   <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
 <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
-    <script src="../_static/documentation_options.js?v=8ba10de4"></script>
+    <script src="../_static/documentation_options.js?v=df29db57"></script>
     <script src="../_static/doctools.js?v=9bcbadda"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -51,7 +51,7 @@
     <script>DOCUMENTATION_OPTIONS.pagename = 'api/pyaml.tuning_tools.dispersion';</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="orbit" href="pyaml.tuning_tools.orbit.html" />
+    <link rel="next" title="measurement_tool" href="pyaml.tuning_tools.measurement_tool.html" />
     <link rel="prev" title="tuning_tools" href="pyaml.tuning_tools.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
@@ -121,8 +121,8 @@
       
     
     
-    <img src="../_static/logo.png" class="logo__image only-light" alt="Python Accelerator Middle Layer 0.1.dev1+g6b7e7772a documentation - Home"/>
-    <img src="../_static/dark.png" class="logo__image only-dark pst-js-only" alt="Python Accelerator Middle Layer 0.1.dev1+g6b7e7772a documentation - Home"/>
+    <img src="../_static/logo.png" class="logo__image only-light" alt="Python Accelerator Middle Layer 0.1.dev1+g0cf44ff7c documentation - Home"/>
+    <img src="../_static/dark.png" class="logo__image only-dark pst-js-only" alt="Python Accelerator Middle Layer 0.1.dev1+g0cf44ff7c documentation - Home"/>
   
   
 </a></div>
@@ -326,6 +326,10 @@
   <div class="bd-toc-item navbar-nav"><p aria-level="2" class="caption" role="heading"><span class="caption-text">API Reference:</span></p>
 <ul class="current nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="pyaml.accelerator.html">accelerator</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="pyaml.apidoc.html">apidoc</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="pyaml.apidoc.gen_api.html">gen_api</a></li>
+</ul>
+</details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="pyaml.arrays.html">arrays</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="pyaml.arrays.array.html">array</a></li>
 <li class="toctree-l2"><a class="reference internal" href="pyaml.arrays.bpm.html">bpm</a></li>
@@ -423,10 +427,14 @@
 </details></li>
 <li class="toctree-l1 current active has-children"><a class="reference internal" href="pyaml.tuning_tools.html">tuning_tools</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
 <li class="toctree-l2 current active"><a class="current reference internal" href="#">dispersion</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyaml.tuning_tools.measurement_tool.html">measurement_tool</a></li>
 <li class="toctree-l2"><a class="reference internal" href="pyaml.tuning_tools.orbit.html">orbit</a></li>
 <li class="toctree-l2"><a class="reference internal" href="pyaml.tuning_tools.orbit_response_matrix.html">orbit_response_matrix</a></li>
-<li class="toctree-l2"><a class="reference internal" href="pyaml.tuning_tools.response_matrix.html">response_matrix</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyaml.tuning_tools.orbit_response_matrix_data.html">orbit_response_matrix_data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyaml.tuning_tools.response_matrix_data.html">response_matrix_data</a></li>
 <li class="toctree-l2"><a class="reference internal" href="pyaml.tuning_tools.tune.html">tune</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyaml.tuning_tools.tune_response_matrix.html">tune_response_matrix</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyaml.tuning_tools.tuning_tool.html">tuning_tool</a></li>
 </ul>
 </details></li>
 <li class="toctree-l1"><a class="reference internal" href="pyaml.yellow_pages.html">yellow_pages</a></li>
@@ -533,27 +541,26 @@ validated to form a valid model.</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="pyaml.tuning_tools.dispersion.Dispersion">
 <em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Dispersion</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cfg</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/tuning_tools/dispersion.html#Dispersion"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.tuning_tools.dispersion.Dispersion" title="Link to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference internal" href="pyaml.common.element.html#pyaml.common.element.Element" title="pyaml.common.element.Element"><code class="xref py py-class docutils literal notranslate"><span class="pre">Element</span></code></a></p>
+<dd><p>Bases: <a class="reference internal" href="pyaml.tuning_tools.measurement_tool.html#pyaml.tuning_tools.measurement_tool.MeasurementTool" title="pyaml.tuning_tools.measurement_tool.MeasurementTool"><code class="xref py py-class docutils literal notranslate"><span class="pre">MeasurementTool</span></code></a></p>
 <dl class="field-list simple">
 </dl>
 <dl class="py method">
-<dt class="sig sig-object py" id="pyaml.tuning_tools.dispersion.Dispersion.attach">
-<span class="sig-name descname"><span class="pre">attach</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">peer</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/tuning_tools/dispersion.html#Dispersion.attach"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.tuning_tools.dispersion.Dispersion.attach" title="Link to this definition">#</a></dt>
-<dd><p>Create a new reference to attach this OrbitResponseMatrix object to a simulator
-or a control system.</p>
+<dt class="sig sig-object py" id="pyaml.tuning_tools.dispersion.Dispersion.get">
+<span class="sig-name descname"><span class="pre">get</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/tuning_tools/dispersion.html#Dispersion.get"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.tuning_tools.dispersion.Dispersion.get" title="Link to this definition">#</a></dt>
+<dd><p>Return last measurement data</p>
 <dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>ResponseMatrixData</strong> – Return latest measurement or None</p>
+</dd>
 </dl>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="pyaml.tuning_tools.dispersion.Dispersion.get">
-<span class="sig-name descname"><span class="pre">get</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/tuning_tools/dispersion.html#Dispersion.get"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.tuning_tools.dispersion.Dispersion.get" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
 <dt class="sig sig-object py" id="pyaml.tuning_tools.dispersion.Dispersion.measure">
 <span class="sig-name descname"><span class="pre">measure</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">set_waiting_time</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">callback</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/tuning_tools/dispersion.html#Dispersion.measure"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.tuning_tools.dispersion.Dispersion.measure" title="Link to this definition">#</a></dt>
-<dd><dl class="field-list simple">
+<dd><p>Launch measurement
+:Returns: <strong>bool</strong> – True if the process has been aborted</p>
+<dl class="field-list simple">
 </dl>
 </dd></dl>
 
@@ -581,11 +588,11 @@ or a control system.</p>
       </div>
     </a>
     <a class="right-next"
-       href="pyaml.tuning_tools.orbit.html"
+       href="pyaml.tuning_tools.measurement_tool.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">orbit</p>
+        <p class="prev-next-title">measurement_tool</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -615,7 +622,6 @@ or a control system.</p>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.tuning_tools.dispersion.Dispersion"><code class="docutils literal notranslate"><span class="pre">Dispersion</span></code></a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.tuning_tools.dispersion.Dispersion.attach"><code class="docutils literal notranslate"><span class="pre">Dispersion.attach()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.tuning_tools.dispersion.Dispersion.get"><code class="docutils literal notranslate"><span class="pre">Dispersion.get()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.tuning_tools.dispersion.Dispersion.measure"><code class="docutils literal notranslate"><span class="pre">Dispersion.measure()</span></code></a></li>
 </ul>

@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>tune &#8212; Python Accelerator Middle Layer 0.1.dev1+g6b7e7772a documentation</title>
+    <title>tune &#8212; Python Accelerator Middle Layer 0.1.dev1+g0cf44ff7c documentation</title>
   
   
   
@@ -42,7 +42,7 @@
   <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
 <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
-    <script src="../_static/documentation_options.js?v=8ba10de4"></script>
+    <script src="../_static/documentation_options.js?v=df29db57"></script>
     <script src="../_static/doctools.js?v=9bcbadda"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -51,8 +51,8 @@
     <script>DOCUMENTATION_OPTIONS.pagename = 'api/pyaml.tuning_tools.tune';</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="yellow_pages" href="pyaml.yellow_pages.html" />
-    <link rel="prev" title="response_matrix" href="pyaml.tuning_tools.response_matrix.html" />
+    <link rel="next" title="tune_response_matrix" href="pyaml.tuning_tools.tune_response_matrix.html" />
+    <link rel="prev" title="response_matrix_data" href="pyaml.tuning_tools.response_matrix_data.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   <meta name="docsearch:version" content="0.1" />
@@ -121,8 +121,8 @@
       
     
     
-    <img src="../_static/logo.png" class="logo__image only-light" alt="Python Accelerator Middle Layer 0.1.dev1+g6b7e7772a documentation - Home"/>
-    <img src="../_static/dark.png" class="logo__image only-dark pst-js-only" alt="Python Accelerator Middle Layer 0.1.dev1+g6b7e7772a documentation - Home"/>
+    <img src="../_static/logo.png" class="logo__image only-light" alt="Python Accelerator Middle Layer 0.1.dev1+g0cf44ff7c documentation - Home"/>
+    <img src="../_static/dark.png" class="logo__image only-dark pst-js-only" alt="Python Accelerator Middle Layer 0.1.dev1+g0cf44ff7c documentation - Home"/>
   
   
 </a></div>
@@ -326,6 +326,10 @@
   <div class="bd-toc-item navbar-nav"><p aria-level="2" class="caption" role="heading"><span class="caption-text">API Reference:</span></p>
 <ul class="current nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="pyaml.accelerator.html">accelerator</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="pyaml.apidoc.html">apidoc</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="pyaml.apidoc.gen_api.html">gen_api</a></li>
+</ul>
+</details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="pyaml.arrays.html">arrays</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="pyaml.arrays.array.html">array</a></li>
 <li class="toctree-l2"><a class="reference internal" href="pyaml.arrays.bpm.html">bpm</a></li>
@@ -423,10 +427,14 @@
 </details></li>
 <li class="toctree-l1 current active has-children"><a class="reference internal" href="pyaml.tuning_tools.html">tuning_tools</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="pyaml.tuning_tools.dispersion.html">dispersion</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyaml.tuning_tools.measurement_tool.html">measurement_tool</a></li>
 <li class="toctree-l2"><a class="reference internal" href="pyaml.tuning_tools.orbit.html">orbit</a></li>
 <li class="toctree-l2"><a class="reference internal" href="pyaml.tuning_tools.orbit_response_matrix.html">orbit_response_matrix</a></li>
-<li class="toctree-l2"><a class="reference internal" href="pyaml.tuning_tools.response_matrix.html">response_matrix</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyaml.tuning_tools.orbit_response_matrix_data.html">orbit_response_matrix_data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyaml.tuning_tools.response_matrix_data.html">response_matrix_data</a></li>
 <li class="toctree-l2 current active"><a class="current reference internal" href="#">tune</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyaml.tuning_tools.tune_response_matrix.html">tune_response_matrix</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyaml.tuning_tools.tuning_tool.html">tuning_tool</a></li>
 </ul>
 </details></li>
 <li class="toctree-l1"><a class="reference internal" href="pyaml.yellow_pages.html">yellow_pages</a></li>
@@ -497,15 +505,15 @@
 <span id="tune"></span><h1>tune<a class="headerlink" href="#module-pyaml.tuning_tools.tune" title="Link to this heading">#</a></h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="pyaml.tuning_tools.tune.ConfigModel">
-<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ConfigModel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">description</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lattice_names</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">quad_array</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">betatron_tune</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">delta</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/tuning_tools/tune.html#ConfigModel"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.tuning_tools.tune.ConfigModel" title="Link to this definition">#</a></dt>
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ConfigModel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">description</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lattice_names</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">quad_array_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">betatron_tune_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">response_matrix</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/tuning_tools/tune.html#ConfigModel"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.tuning_tools.tune.ConfigModel" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference internal" href="pyaml.common.element.html#pyaml.common.element.ElementConfigModel" title="pyaml.common.element.ElementConfigModel"><code class="xref py py-class docutils literal notranslate"><span class="pre">ElementConfigModel</span></code></a></p>
 <p>Configuration model for Tune</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>quad_array</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>) – Array name of quad used to adjust the tune</p></li>
-<li><p><strong>betatron_tune</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>) – Name of the diagnostic pyaml device for measuring the tune</p></li>
-<li><p><strong>delta</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><em>float</em></a>) – Delta strength used to get the response matrix</p></li>
+<li><p><strong>quad_array_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>) – Array name of quad used to adjust the tune</p></li>
+<li><p><strong>betatron_tune_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>) – Name of the diagnostic pyaml device for measuring the tune</p></li>
+<li><p><strong>quad_delta</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><em>float</em></a>) – Delta strength used to get the response matrix</p></li>
 </ul>
 </dd>
 </dl>
@@ -514,18 +522,18 @@
 validated to form a valid model.</p>
 <p><cite>self</cite> is explicitly positional-only to allow <cite>self</cite> as a field name.</p>
 <dl class="py attribute">
-<dt class="sig sig-object py" id="pyaml.tuning_tools.tune.ConfigModel.betatron_tune">
-<span class="sig-name descname"><span class="pre">betatron_tune</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></em><a class="headerlink" href="#pyaml.tuning_tools.tune.ConfigModel.betatron_tune" title="Link to this definition">#</a></dt>
+<dt class="sig sig-object py" id="pyaml.tuning_tools.tune.ConfigModel.betatron_tune_name">
+<span class="sig-name descname"><span class="pre">betatron_tune_name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></em><a class="headerlink" href="#pyaml.tuning_tools.tune.ConfigModel.betatron_tune_name" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="pyaml.tuning_tools.tune.ConfigModel.delta">
-<span class="sig-name descname"><span class="pre">delta</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><span class="pre">float</span></a></em><a class="headerlink" href="#pyaml.tuning_tools.tune.ConfigModel.delta" title="Link to this definition">#</a></dt>
+<dt class="sig sig-object py" id="pyaml.tuning_tools.tune.ConfigModel.quad_array_name">
+<span class="sig-name descname"><span class="pre">quad_array_name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></em><a class="headerlink" href="#pyaml.tuning_tools.tune.ConfigModel.quad_array_name" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="pyaml.tuning_tools.tune.ConfigModel.quad_array">
-<span class="sig-name descname"><span class="pre">quad_array</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></em><a class="headerlink" href="#pyaml.tuning_tools.tune.ConfigModel.quad_array" title="Link to this definition">#</a></dt>
+<dt class="sig sig-object py" id="pyaml.tuning_tools.tune.ConfigModel.response_matrix">
+<span class="sig-name descname"><span class="pre">response_matrix</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference internal" href="pyaml.tuning_tools.response_matrix_data.html#pyaml.tuning_tools.response_matrix_data.ResponseMatrixData" title="pyaml.tuning_tools.response_matrix_data.ResponseMatrixData"><span class="pre">ResponseMatrixData</span></a></em><a class="headerlink" href="#pyaml.tuning_tools.tune.ConfigModel.response_matrix" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
@@ -533,8 +541,8 @@ validated to form a valid model.</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="pyaml.tuning_tools.tune.Tune">
 <em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Tune</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cfg</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/tuning_tools/tune.html#Tune"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.tuning_tools.tune.Tune" title="Link to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference internal" href="pyaml.common.element.html#pyaml.common.element.Element" title="pyaml.common.element.Element"><code class="xref py py-class docutils literal notranslate"><span class="pre">Element</span></code></a></p>
-<p>Class providing tune response matrix measurement and tune adjustment</p>
+<dd><p>Bases: <a class="reference internal" href="pyaml.tuning_tools.tuning_tool.html#pyaml.tuning_tools.tuning_tool.TuningTool" title="pyaml.tuning_tools.tuning_tool.TuningTool"><code class="xref py py-class docutils literal notranslate"><span class="pre">TuningTool</span></code></a></p>
+<p>Class providing tune adjustment tool</p>
 <p>Construct a Tune adjustment object.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -542,11 +550,28 @@ validated to form a valid model.</p>
 </dd>
 </dl>
 <dl class="py method">
-<dt class="sig sig-object py" id="pyaml.tuning_tools.tune.Tune.attach">
-<span class="sig-name descname"><span class="pre">attach</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">peer</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/tuning_tools/tune.html#Tune.attach"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.tuning_tools.tune.Tune.attach" title="Link to this definition">#</a></dt>
-<dd><p>Create a new reference to attach this tune object to a simulator
-or a control system.</p>
+<dt class="sig sig-object py" id="pyaml.tuning_tools.tune.Tune.add">
+<span class="sig-name descname"><span class="pre">add</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dtune</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">wait_time</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/tuning_tools/tune.html#Tune.add"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.tuning_tools.tune.Tune.add" title="Link to this definition">#</a></dt>
+<dd><p>Add delta tune to the tune</p>
 <dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>dtune</strong> (<em>np.array</em>) – Delta tune</p></li>
+<li><p><strong>iter_nb</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><em>int</em></a>)</p></li>
+<li><p><strong>wait_time</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><em>float</em></a>)</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaml.tuning_tools.tune.Tune.correct">
+<span class="sig-name descname"><span class="pre">correct</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dtune</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/tuning_tools/tune.html#Tune.correct"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.tuning_tools.tune.Tune.correct" title="Link to this definition">#</a></dt>
+<dd><p>Return delta strengths for tune correction</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>dtune</strong> (<em>np.array</em>) – Delta tune</p>
+</dd>
 </dl>
 </dd></dl>
 
@@ -557,9 +582,10 @@ or a control system.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="pyaml.tuning_tools.tune.Tune.post_init">
-<span class="sig-name descname"><span class="pre">post_init</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/tuning_tools/tune.html#Tune.post_init"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.tuning_tools.tune.Tune.post_init" title="Link to this definition">#</a></dt>
-<dd><p>Method triggered after all initialisations are done</p>
+<dt class="sig sig-object py" id="pyaml.tuning_tools.tune.Tune.load">
+<span class="sig-name descname"><span class="pre">load</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">load_path</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/tuning_tools/tune.html#Tune.load"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.tuning_tools.tune.Tune.load" title="Link to this definition">#</a></dt>
+<dd><dl class="field-list simple">
+</dl>
 </dd></dl>
 
 <dl class="py method">
@@ -583,99 +609,6 @@ or a control system.</p>
 </dl>
 </dd></dl>
 
-<dl class="py method">
-<dt class="sig sig-object py" id="pyaml.tuning_tools.tune.Tune.step">
-<span class="sig-name descname"><span class="pre">step</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dtune</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">wait_time</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/tuning_tools/tune.html#Tune.step"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.tuning_tools.tune.Tune.step" title="Link to this definition">#</a></dt>
-<dd><p>Step the tune by a delta
-:param dtune: Delta tune
-:type dtune: np.array
-:param iter_nb:
-:type iter_nb: int
-:param wait_time:
-:type wait_time: float</p>
-<dl class="field-list simple">
-</dl>
-</dd></dl>
-
-<dl class="py property">
-<dt class="sig sig-object py" id="pyaml.tuning_tools.tune.Tune.response">
-<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">response</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#pyaml.tuning_tools.tune.TuneResponse" title="pyaml.tuning_tools.tune.TuneResponse"><span class="pre">TuneResponse</span></a></em><a class="headerlink" href="#pyaml.tuning_tools.tune.Tune.response" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
-
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="pyaml.tuning_tools.tune.TuneResponse">
-<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">TuneResponse</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/tuning_tools/tune.html#TuneResponse"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.tuning_tools.tune.TuneResponse" title="Link to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
-<dl class="field-list simple">
-</dl>
-<dl class="py method">
-<dt class="sig sig-object py" id="pyaml.tuning_tools.tune.TuneResponse.correct">
-<span class="sig-name descname"><span class="pre">correct</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dtune</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/tuning_tools/tune.html#TuneResponse.correct"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.tuning_tools.tune.TuneResponse.correct" title="Link to this definition">#</a></dt>
-<dd><p>Return delta strengths for tune correction</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>dtune</strong> (<em>np.array</em>) – Delta tune</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pyaml.tuning_tools.tune.TuneResponse.get">
-<span class="sig-name descname"><span class="pre">get</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/tuning_tools/tune.html#TuneResponse.get"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.tuning_tools.tune.TuneResponse.get" title="Link to this definition">#</a></dt>
-<dd><p>Return tune response matrix</p>
-<dl class="field-list simple">
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pyaml.tuning_tools.tune.TuneResponse.load_json">
-<span class="sig-name descname"><span class="pre">load_json</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/tuning_tools/tune.html#TuneResponse.load_json"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.tuning_tools.tune.TuneResponse.load_json" title="Link to this definition">#</a></dt>
-<dd><p>Load tune response matrix</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>filename</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>) – File name to load</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pyaml.tuning_tools.tune.TuneResponse.measure">
-<span class="sig-name descname"><span class="pre">measure</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">callback</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">set_wait_time</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/tuning_tools/tune.html#TuneResponse.measure"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.tuning_tools.tune.TuneResponse.measure" title="Link to this definition">#</a></dt>
-<dd><p>Measure tune response matrix</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>callback</strong> (<em>Callable</em><em>, </em><em>optional</em>) – tune_callback(step:int,action:int,m:Magnet,dtune:np.array)
-Callback executed after each strength setting. The magnet and step are
-passed as input arguement of the callback.
-If the callback return false, then the process is aborted.</p></li>
-<li><p><strong>set_wait_time</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><em>float</em></a>) – Wait after quad has been set</p></li>
-</ul>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pyaml.tuning_tools.tune.TuneResponse.quads">
-<span class="sig-name descname"><span class="pre">quads</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/tuning_tools/tune.html#TuneResponse.quads"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.tuning_tools.tune.TuneResponse.quads" title="Link to this definition">#</a></dt>
-<dd><p>Returns quads used for tune correction</p>
-<dl class="field-list simple">
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pyaml.tuning_tools.tune.TuneResponse.save_json">
-<span class="sig-name descname"><span class="pre">save_json</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/tuning_tools/tune.html#TuneResponse.save_json"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.tuning_tools.tune.TuneResponse.save_json" title="Link to this definition">#</a></dt>
-<dd><p>Save tune response matrix</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>filename</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>) – File name to save</p>
-</dd>
-</dl>
-</dd></dl>
-
 </dd></dl>
 
 </section>
@@ -691,20 +624,20 @@ If the callback return false, then the process is aborted.</p></li>
                   
 <div class="prev-next-area">
     <a class="left-prev"
-       href="pyaml.tuning_tools.response_matrix.html"
+       href="pyaml.tuning_tools.response_matrix_data.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">response_matrix</p>
+        <p class="prev-next-title">response_matrix_data</p>
       </div>
     </a>
     <a class="right-next"
-       href="pyaml.yellow_pages.html"
+       href="pyaml.tuning_tools.tune_response_matrix.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">yellow_pages</p>
+        <p class="prev-next-title">tune_response_matrix</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -728,28 +661,18 @@ If the callback return false, then the process is aborted.</p></li>
   <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.tuning_tools.tune.ConfigModel"><code class="docutils literal notranslate"><span class="pre">ConfigModel</span></code></a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.tuning_tools.tune.ConfigModel.betatron_tune"><code class="docutils literal notranslate"><span class="pre">ConfigModel.betatron_tune</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.tuning_tools.tune.ConfigModel.delta"><code class="docutils literal notranslate"><span class="pre">ConfigModel.delta</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.tuning_tools.tune.ConfigModel.quad_array"><code class="docutils literal notranslate"><span class="pre">ConfigModel.quad_array</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.tuning_tools.tune.ConfigModel.betatron_tune_name"><code class="docutils literal notranslate"><span class="pre">ConfigModel.betatron_tune_name</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.tuning_tools.tune.ConfigModel.quad_array_name"><code class="docutils literal notranslate"><span class="pre">ConfigModel.quad_array_name</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.tuning_tools.tune.ConfigModel.response_matrix"><code class="docutils literal notranslate"><span class="pre">ConfigModel.response_matrix</span></code></a></li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.tuning_tools.tune.Tune"><code class="docutils literal notranslate"><span class="pre">Tune</span></code></a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.tuning_tools.tune.Tune.attach"><code class="docutils literal notranslate"><span class="pre">Tune.attach()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.tuning_tools.tune.Tune.add"><code class="docutils literal notranslate"><span class="pre">Tune.add()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.tuning_tools.tune.Tune.correct"><code class="docutils literal notranslate"><span class="pre">Tune.correct()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.tuning_tools.tune.Tune.get"><code class="docutils literal notranslate"><span class="pre">Tune.get()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.tuning_tools.tune.Tune.post_init"><code class="docutils literal notranslate"><span class="pre">Tune.post_init()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.tuning_tools.tune.Tune.load"><code class="docutils literal notranslate"><span class="pre">Tune.load()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.tuning_tools.tune.Tune.readback"><code class="docutils literal notranslate"><span class="pre">Tune.readback()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.tuning_tools.tune.Tune.set"><code class="docutils literal notranslate"><span class="pre">Tune.set()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.tuning_tools.tune.Tune.step"><code class="docutils literal notranslate"><span class="pre">Tune.step()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.tuning_tools.tune.Tune.response"><code class="docutils literal notranslate"><span class="pre">Tune.response</span></code></a></li>
-</ul>
-</li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.tuning_tools.tune.TuneResponse"><code class="docutils literal notranslate"><span class="pre">TuneResponse</span></code></a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.tuning_tools.tune.TuneResponse.correct"><code class="docutils literal notranslate"><span class="pre">TuneResponse.correct()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.tuning_tools.tune.TuneResponse.get"><code class="docutils literal notranslate"><span class="pre">TuneResponse.get()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.tuning_tools.tune.TuneResponse.load_json"><code class="docutils literal notranslate"><span class="pre">TuneResponse.load_json()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.tuning_tools.tune.TuneResponse.measure"><code class="docutils literal notranslate"><span class="pre">TuneResponse.measure()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.tuning_tools.tune.TuneResponse.quads"><code class="docutils literal notranslate"><span class="pre">TuneResponse.quads()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.tuning_tools.tune.TuneResponse.save_json"><code class="docutils literal notranslate"><span class="pre">TuneResponse.save_json()</span></code></a></li>
 </ul>
 </li>
 </ul>

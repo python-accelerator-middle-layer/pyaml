@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>pyaml.lattice.simulator &#8212; Python Accelerator Middle Layer 0.1.dev1+g6b7e7772a documentation</title>
+    <title>pyaml.lattice.simulator &#8212; Python Accelerator Middle Layer 0.1.dev1+g0cf44ff7c documentation</title>
   
   
   
@@ -41,7 +41,7 @@
   <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
 <link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
-    <script src="../../../_static/documentation_options.js?v=8ba10de4"></script>
+    <script src="../../../_static/documentation_options.js?v=df29db57"></script>
     <script src="../../../_static/doctools.js?v=9bcbadda"></script>
     <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -118,8 +118,8 @@
       
     
     
-    <img src="../../../_static/logo.png" class="logo__image only-light" alt="Python Accelerator Middle Layer 0.1.dev1+g6b7e7772a documentation - Home"/>
-    <img src="../../../_static/dark.png" class="logo__image only-dark pst-js-only" alt="Python Accelerator Middle Layer 0.1.dev1+g6b7e7772a documentation - Home"/>
+    <img src="../../../_static/logo.png" class="logo__image only-light" alt="Python Accelerator Middle Layer 0.1.dev1+g0cf44ff7c documentation - Home"/>
+    <img src="../../../_static/dark.png" class="logo__image only-dark pst-js-only" alt="Python Accelerator Middle Layer 0.1.dev1+g0cf44ff7c documentation - Home"/>
   
   
 </a></div>
@@ -380,7 +380,6 @@
 <span class="kn">from</span><span class="w"> </span><span class="nn">..common.element_holder</span><span class="w"> </span><span class="kn">import</span> <span class="n">ElementHolder</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">..common.exception</span><span class="w"> </span><span class="kn">import</span> <span class="n">PyAMLException</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">..configuration</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_root_folder</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">..diagnostics.chromaticity_monitor</span><span class="w"> </span><span class="kn">import</span> <span class="n">ChomaticityMonitor</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">..diagnostics.tune_monitor</span><span class="w"> </span><span class="kn">import</span> <span class="n">BetatronTuneMonitor</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">..lattice.abstract_impl</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
     <span class="n">BPMHScalarAggregator</span><span class="p">,</span>
@@ -388,7 +387,6 @@
     <span class="n">BPMVScalarAggregator</span><span class="p">,</span>
     <span class="n">RBetatronTuneArray</span><span class="p">,</span>
     <span class="n">RBpmArray</span><span class="p">,</span>
-    <span class="n">RChromaticityArray</span><span class="p">,</span>
     <span class="n">RWBpmOffsetArray</span><span class="p">,</span>
     <span class="n">RWBpmTiltScalar</span><span class="p">,</span>
     <span class="n">RWHardwareArray</span><span class="p">,</span>
@@ -408,10 +406,8 @@
 <span class="kn">from</span><span class="w"> </span><span class="nn">..magnet.serialized_magnet</span><span class="w"> </span><span class="kn">import</span> <span class="n">SerializedMagnets</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">..rf.rf_plant</span><span class="w"> </span><span class="kn">import</span> <span class="n">RFPlant</span><span class="p">,</span> <span class="n">RWTotalVoltage</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">..rf.rf_transmitter</span><span class="w"> </span><span class="kn">import</span> <span class="n">RFTransmitter</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">..tuning_tools.dispersion</span><span class="w"> </span><span class="kn">import</span> <span class="n">Dispersion</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">..tuning_tools.orbit</span><span class="w"> </span><span class="kn">import</span> <span class="n">Orbit</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">..tuning_tools.orbit_response_matrix</span><span class="w"> </span><span class="kn">import</span> <span class="n">OrbitResponseMatrix</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">..tuning_tools.tune</span><span class="w"> </span><span class="kn">import</span> <span class="n">Tune</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">..tuning_tools.measurement_tool</span><span class="w"> </span><span class="kn">import</span> <span class="n">MeasurementTool</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">..tuning_tools.tuning_tool</span><span class="w"> </span><span class="kn">import</span> <span class="n">TuningTool</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">.attribute_linker</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
     <span class="n">ConfigModel</span> <span class="k">as</span> <span class="n">PyAtAttrLinkerConfigModel</span><span class="p">,</span>
 <span class="p">)</span>
@@ -514,18 +510,14 @@
 
 <div class="viewcode-block" id="Simulator.create_magnet_strength_aggregator">
 <a class="viewcode-back" href="../../../api/pyaml.lattice.simulator.html#pyaml.lattice.simulator.Simulator.create_magnet_strength_aggregator">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">create_magnet_strength_aggregator</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span> <span class="n">magnets</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Magnet</span><span class="p">]</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ScalarAggregator</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">create_magnet_strength_aggregator</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">magnets</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Magnet</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">ScalarAggregator</span><span class="p">:</span>
         <span class="c1"># No magnet aggregator for simulator</span>
         <span class="k">return</span> <span class="kc">None</span></div>
 
 
 <div class="viewcode-block" id="Simulator.create_magnet_hardware_aggregator">
 <a class="viewcode-back" href="../../../api/pyaml.lattice.simulator.html#pyaml.lattice.simulator.Simulator.create_magnet_hardware_aggregator">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">create_magnet_hardware_aggregator</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span> <span class="n">magnets</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Magnet</span><span class="p">]</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ScalarAggregator</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">create_magnet_hardware_aggregator</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">magnets</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Magnet</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">ScalarAggregator</span><span class="p">:</span>
         <span class="c1"># No magnet aggregator for simulator</span>
         <span class="k">return</span> <span class="kc">None</span></div>
 
@@ -550,30 +542,16 @@
         <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">elements</span><span class="p">:</span>
             <span class="c1"># Need conversion to physics unit to work with simulator</span>
             <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="n">Magnet</span><span class="p">):</span>
-                <span class="n">current</span> <span class="o">=</span> <span class="p">(</span>
-                    <span class="n">RWHardwareScalar</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_at_elems</span><span class="p">(</span><span class="n">e</span><span class="p">),</span> <span class="n">e</span><span class="o">.</span><span class="n">polynom</span><span class="p">,</span> <span class="n">e</span><span class="o">.</span><span class="n">model</span><span class="p">)</span>
-                    <span class="k">if</span> <span class="n">e</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">has_physics</span><span class="p">()</span>
-                    <span class="k">else</span> <span class="kc">None</span>
-                <span class="p">)</span>
-                <span class="n">strength</span> <span class="o">=</span> <span class="p">(</span>
-                    <span class="n">RWStrengthScalar</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_at_elems</span><span class="p">(</span><span class="n">e</span><span class="p">),</span> <span class="n">e</span><span class="o">.</span><span class="n">polynom</span><span class="p">,</span> <span class="n">e</span><span class="o">.</span><span class="n">model</span><span class="p">)</span>
-                    <span class="k">if</span> <span class="n">e</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">has_physics</span><span class="p">()</span>
-                    <span class="k">else</span> <span class="kc">None</span>
-                <span class="p">)</span>
+                <span class="n">current</span> <span class="o">=</span> <span class="n">RWHardwareScalar</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_at_elems</span><span class="p">(</span><span class="n">e</span><span class="p">),</span> <span class="n">e</span><span class="o">.</span><span class="n">polynom</span><span class="p">,</span> <span class="n">e</span><span class="o">.</span><span class="n">model</span><span class="p">)</span> <span class="k">if</span> <span class="n">e</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">has_physics</span><span class="p">()</span> <span class="k">else</span> <span class="kc">None</span>
+                <span class="n">strength</span> <span class="o">=</span> <span class="n">RWStrengthScalar</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_at_elems</span><span class="p">(</span><span class="n">e</span><span class="p">),</span> <span class="n">e</span><span class="o">.</span><span class="n">polynom</span><span class="p">,</span> <span class="n">e</span><span class="o">.</span><span class="n">model</span><span class="p">)</span> <span class="k">if</span> <span class="n">e</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">has_physics</span><span class="p">()</span> <span class="k">else</span> <span class="kc">None</span>
                 <span class="c1"># Create a unique ref for this simulator</span>
                 <span class="n">m</span> <span class="o">=</span> <span class="n">e</span><span class="o">.</span><span class="n">attach</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">strength</span><span class="p">,</span> <span class="n">current</span><span class="p">)</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">add_magnet</span><span class="p">(</span><span class="n">m</span><span class="p">)</span>
 
             <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="n">CombinedFunctionMagnet</span><span class="p">):</span>
-                <span class="n">currents</span> <span class="o">=</span> <span class="p">(</span>
-                    <span class="n">RWHardwareArray</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_at_elems</span><span class="p">(</span><span class="n">e</span><span class="p">),</span> <span class="n">e</span><span class="o">.</span><span class="n">polynoms</span><span class="p">,</span> <span class="n">e</span><span class="o">.</span><span class="n">model</span><span class="p">)</span>
-                    <span class="k">if</span> <span class="n">e</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">has_physics</span><span class="p">()</span>
-                    <span class="k">else</span> <span class="kc">None</span>
-                <span class="p">)</span>
+                <span class="n">currents</span> <span class="o">=</span> <span class="n">RWHardwareArray</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_at_elems</span><span class="p">(</span><span class="n">e</span><span class="p">),</span> <span class="n">e</span><span class="o">.</span><span class="n">polynoms</span><span class="p">,</span> <span class="n">e</span><span class="o">.</span><span class="n">model</span><span class="p">)</span> <span class="k">if</span> <span class="n">e</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">has_physics</span><span class="p">()</span> <span class="k">else</span> <span class="kc">None</span>
                 <span class="n">strengths</span> <span class="o">=</span> <span class="p">(</span>
-                    <span class="n">RWStrengthArray</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_at_elems</span><span class="p">(</span><span class="n">e</span><span class="p">),</span> <span class="n">e</span><span class="o">.</span><span class="n">polynoms</span><span class="p">,</span> <span class="n">e</span><span class="o">.</span><span class="n">model</span><span class="p">)</span>
-                    <span class="k">if</span> <span class="n">e</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">has_physics</span><span class="p">()</span>
-                    <span class="k">else</span> <span class="kc">None</span>
+                    <span class="n">RWStrengthArray</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_at_elems</span><span class="p">(</span><span class="n">e</span><span class="p">),</span> <span class="n">e</span><span class="o">.</span><span class="n">polynoms</span><span class="p">,</span> <span class="n">e</span><span class="o">.</span><span class="n">model</span><span class="p">)</span> <span class="k">if</span> <span class="n">e</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">has_physics</span><span class="p">()</span> <span class="k">else</span> <span class="kc">None</span>
                 <span class="p">)</span>
                 <span class="c1"># Create unique refs of each function for this simulator</span>
                 <span class="n">ms</span> <span class="o">=</span> <span class="n">e</span><span class="o">.</span><span class="n">attach</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">strengths</span><span class="p">,</span> <span class="n">currents</span><span class="p">)</span>
@@ -611,16 +589,8 @@
                 <span class="n">linked_currents</span> <span class="o">=</span> <span class="p">[]</span>
                 <span class="n">linked_strengths</span> <span class="o">=</span> <span class="p">[]</span>
                 <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">e</span><span class="o">.</span><span class="n">get_nb_magnets</span><span class="p">()):</span>
-                    <span class="n">current</span> <span class="o">=</span> <span class="p">(</span>
-                        <span class="n">RWSerializedHardware</span><span class="p">(</span><span class="n">currents</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span>
-                        <span class="k">if</span> <span class="n">e</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">has_hardware</span><span class="p">()</span>
-                        <span class="k">else</span> <span class="kc">None</span>
-                    <span class="p">)</span>
-                    <span class="n">strength</span> <span class="o">=</span> <span class="p">(</span>
-                        <span class="n">RWSerializedStrength</span><span class="p">(</span><span class="n">strengths</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">currents</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span>
-                        <span class="k">if</span> <span class="n">e</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">has_physics</span><span class="p">()</span>
-                        <span class="k">else</span> <span class="kc">None</span>
-                    <span class="p">)</span>
+                    <span class="n">current</span> <span class="o">=</span> <span class="n">RWSerializedHardware</span><span class="p">(</span><span class="n">currents</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span> <span class="k">if</span> <span class="n">e</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">has_hardware</span><span class="p">()</span> <span class="k">else</span> <span class="kc">None</span>
+                    <span class="n">strength</span> <span class="o">=</span> <span class="n">RWSerializedStrength</span><span class="p">(</span><span class="n">strengths</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">currents</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span> <span class="k">if</span> <span class="n">e</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">has_physics</span><span class="p">()</span> <span class="k">else</span> <span class="kc">None</span>
                     <span class="n">linked_currents</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">current</span><span class="p">)</span>
                     <span class="n">linked_strengths</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">strength</span><span class="p">)</span>
                 <span class="n">ms</span> <span class="o">=</span> <span class="n">e</span><span class="o">.</span><span class="n">attach</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">linked_strengths</span><span class="p">,</span> <span class="n">linked_currents</span><span class="p">)</span>
@@ -648,13 +618,10 @@
                             <span class="n">cav</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_at_elems</span><span class="p">(</span><span class="n">Element</span><span class="p">(</span><span class="n">c</span><span class="p">))</span>
                             <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">cav</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
                                 <span class="k">raise</span> <span class="n">PyAMLException</span><span class="p">(</span>
-                                    <span class="sa">f</span><span class="s2">&quot;RF transmitter </span><span class="si">{</span><span class="n">t</span><span class="o">.</span><span class="n">get_name</span><span class="p">()</span><span class="si">}</span><span class="s2">,&quot;</span>
-                                    <span class="s2">&quot;multiple cavity definition:</span><span class="si">{cav[0]}</span><span class="s2">&quot;</span>
+                                    <span class="sa">f</span><span class="s2">&quot;RF transmitter </span><span class="si">{</span><span class="n">t</span><span class="o">.</span><span class="n">get_name</span><span class="p">()</span><span class="si">}</span><span class="s2">,multiple cavity definition:</span><span class="se">{{</span><span class="s2">cav[0]</span><span class="se">}}</span><span class="s2">&quot;</span>
                                 <span class="p">)</span>
                             <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">cav</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-                                <span class="k">raise</span> <span class="n">PyAMLException</span><span class="p">(</span>
-                                    <span class="sa">f</span><span class="s2">&quot;RF transmitter </span><span class="si">{</span><span class="n">t</span><span class="o">.</span><span class="n">get_name</span><span class="p">()</span><span class="si">}</span><span class="s2">, No cavity found&quot;</span>
-                                <span class="p">)</span>
+                                <span class="k">raise</span> <span class="n">PyAMLException</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;RF transmitter </span><span class="si">{</span><span class="n">t</span><span class="o">.</span><span class="n">get_name</span><span class="p">()</span><span class="si">}</span><span class="s2">, No cavity found&quot;</span><span class="p">)</span>
                             <span class="n">cavsPerTrans</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">cav</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
                             <span class="n">harmonics</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">t</span><span class="o">.</span><span class="n">_cfg</span><span class="o">.</span><span class="n">harmonic</span><span class="p">)</span>
                         <span class="n">voltage</span> <span class="o">=</span> <span class="n">RWRFVoltageScalar</span><span class="p">(</span><span class="n">cavsPerTrans</span><span class="p">)</span>
@@ -680,22 +647,8 @@
                 <span class="n">e</span> <span class="o">=</span> <span class="n">e</span><span class="o">.</span><span class="n">attach</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">betatron_tune</span><span class="p">)</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">add_betatron_tune_monitor</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
 
-            <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="n">ChomaticityMonitor</span><span class="p">):</span>
-                <span class="n">betatron_tune</span> <span class="o">=</span> <span class="n">RChromaticityArray</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ring</span><span class="p">)</span>
-                <span class="n">e</span> <span class="o">=</span> <span class="n">e</span><span class="o">.</span><span class="n">attach</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">betatron_tune</span><span class="p">)</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">add_chromaticity_monitor</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
-
-            <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="n">Tune</span><span class="p">):</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">add_tune_tuning</span><span class="p">(</span><span class="n">e</span><span class="o">.</span><span class="n">attach</span><span class="p">(</span><span class="bp">self</span><span class="p">))</span>
-
-            <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="n">Orbit</span><span class="p">):</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">add_orbit_tuning</span><span class="p">(</span><span class="n">e</span><span class="o">.</span><span class="n">attach</span><span class="p">(</span><span class="bp">self</span><span class="p">))</span>
-
-            <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="n">OrbitResponseMatrix</span><span class="p">):</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">add_orm_tuning</span><span class="p">(</span><span class="n">e</span><span class="o">.</span><span class="n">attach</span><span class="p">(</span><span class="bp">self</span><span class="p">))</span>
-
-            <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="n">Dispersion</span><span class="p">):</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">add_dispersion_tuning</span><span class="p">(</span><span class="n">e</span><span class="o">.</span><span class="n">attach</span><span class="p">(</span><span class="bp">self</span><span class="p">))</span></div>
+            <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="n">MeasurementTool</span><span class="p">)</span> <span class="o">|</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="n">TuningTool</span><span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">add_tool</span><span class="p">(</span><span class="n">e</span><span class="o">.</span><span class="n">attach</span><span class="p">(</span><span class="bp">self</span><span class="p">))</span></div>
 
 
 <div class="viewcode-block" id="Simulator.get_names">
@@ -767,9 +720,7 @@
             <span class="n">identifier</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_linker</span><span class="o">.</span><span class="n">get_element_identifier</span><span class="p">(</span><span class="n">element</span><span class="p">)</span>
             <span class="n">element_list</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_linker</span><span class="o">.</span><span class="n">get_at_elements</span><span class="p">(</span><span class="n">identifier</span><span class="p">)</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="n">element_list</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="n">PyAMLException</span><span class="p">(</span>
-                    <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">identifier</span><span class="si">}</span><span class="s2"> not found in lattice:</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_cfg</span><span class="o">.</span><span class="n">lattice</span><span class="si">}</span><span class="s2">&quot;</span>
-                <span class="p">)</span>
+                <span class="k">raise</span> <span class="n">PyAMLException</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">identifier</span><span class="si">}</span><span class="s2"> not found in lattice:</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_cfg</span><span class="o">.</span><span class="n">lattice</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
             <span class="k">return</span> <span class="n">element_list</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="c1"># By list</span>
@@ -779,9 +730,7 @@
                 <span class="n">names</span> <span class="o">=</span> <span class="p">[]</span>
                 <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">nameList</span><span class="p">:</span>
                     <span class="k">if</span> <span class="n">name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_elements_indexing</span><span class="p">:</span>
-                        <span class="k">raise</span> <span class="n">PyAMLException</span><span class="p">(</span>
-                            <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2"> not found in lattice:</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_cfg</span><span class="o">.</span><span class="n">lattice</span><span class="si">}</span><span class="s2">&quot;</span>
-                        <span class="p">)</span>
+                        <span class="k">raise</span> <span class="n">PyAMLException</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2"> not found in lattice:</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_cfg</span><span class="o">.</span><span class="n">lattice</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
                     <span class="n">elts</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_elements_indexing</span><span class="p">[</span><span class="n">name</span><span class="p">]</span>
                     <span class="n">names</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">elts</span><span class="p">)</span>
                 <span class="k">return</span> <span class="n">names</span>
@@ -794,9 +743,7 @@
                 <span class="k">return</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">ring</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span> <span class="k">for</span> <span class="n">idx</span> <span class="ow">in</span> <span class="n">indices</span><span class="p">]</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="k">if</span> <span class="n">name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_elements_indexing</span><span class="p">:</span>
-                    <span class="k">raise</span> <span class="n">PyAMLException</span><span class="p">(</span>
-                        <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2"> not found in lattice:</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_cfg</span><span class="o">.</span><span class="n">lattice</span><span class="si">}</span><span class="s2">&quot;</span>
-                    <span class="p">)</span>
+                    <span class="k">raise</span> <span class="n">PyAMLException</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2"> not found in lattice:</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_cfg</span><span class="o">.</span><span class="n">lattice</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
                 <span class="n">elts</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_elements_indexing</span><span class="p">[</span><span class="n">name</span><span class="p">]</span>
                 <span class="k">if</span> <span class="n">indices</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
                     <span class="k">return</span> <span class="n">elts</span>

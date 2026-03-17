@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>pyaml.tuning_tools.dispersion &#8212; Python Accelerator Middle Layer 0.1.dev1+g6b7e7772a documentation</title>
+    <title>pyaml.tuning_tools.dispersion &#8212; Python Accelerator Middle Layer 0.1.dev1+g0cf44ff7c documentation</title>
   
   
   
@@ -41,7 +41,7 @@
   <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
 <link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
-    <script src="../../../_static/documentation_options.js?v=8ba10de4"></script>
+    <script src="../../../_static/documentation_options.js?v=df29db57"></script>
     <script src="../../../_static/doctools.js?v=9bcbadda"></script>
     <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -118,8 +118,8 @@
       
     
     
-    <img src="../../../_static/logo.png" class="logo__image only-light" alt="Python Accelerator Middle Layer 0.1.dev1+g6b7e7772a documentation - Home"/>
-    <img src="../../../_static/dark.png" class="logo__image only-dark pst-js-only" alt="Python Accelerator Middle Layer 0.1.dev1+g6b7e7772a documentation - Home"/>
+    <img src="../../../_static/logo.png" class="logo__image only-light" alt="Python Accelerator Middle Layer 0.1.dev1+g0cf44ff7c documentation - Home"/>
+    <img src="../../../_static/dark.png" class="logo__image only-dark pst-js-only" alt="Python Accelerator Middle Layer 0.1.dev1+g0cf44ff7c documentation - Home"/>
   
   
 </a></div>
@@ -376,10 +376,11 @@
 <span class="kn">from</span><span class="w"> </span><span class="nn">pySC.apps</span><span class="w"> </span><span class="kn">import</span> <span class="n">measure_dispersion</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">pySC.apps.codes</span><span class="w"> </span><span class="kn">import</span> <span class="n">DispersionCode</span>
 
-<span class="kn">from</span><span class="w"> </span><span class="nn">..common.constants</span><span class="w"> </span><span class="kn">import</span> <span class="n">ACTION_APPLY</span><span class="p">,</span> <span class="n">ACTION_MEASURE</span><span class="p">,</span> <span class="n">ACTION_RESTORE</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">..common.element</span><span class="w"> </span><span class="kn">import</span> <span class="n">Element</span><span class="p">,</span> <span class="n">ElementConfigModel</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">..common.constants</span><span class="w"> </span><span class="kn">import</span> <span class="n">Action</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">..common.element</span><span class="w"> </span><span class="kn">import</span> <span class="n">ElementConfigModel</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">..common.element_holder</span><span class="w"> </span><span class="kn">import</span> <span class="n">ElementHolder</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">..external.pySC_interface</span><span class="w"> </span><span class="kn">import</span> <span class="n">pySCInterface</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.measurement_tool</span><span class="w"> </span><span class="kn">import</span> <span class="n">MeasurementTool</span>
 
 <span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
 
@@ -412,7 +413,7 @@
 
 <div class="viewcode-block" id="Dispersion">
 <a class="viewcode-back" href="../../../api/pyaml.tuning_tools.dispersion.html#pyaml.tuning_tools.dispersion.Dispersion">[docs]</a>
-<span class="k">class</span><span class="w"> </span><span class="nc">Dispersion</span><span class="p">(</span><span class="n">Element</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">Dispersion</span><span class="p">(</span><span class="n">MeasurementTool</span><span class="p">):</span>
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cfg</span><span class="p">:</span> <span class="n">ConfigModel</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">cfg</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_cfg</span> <span class="o">=</span> <span class="n">cfg</span>
@@ -420,7 +421,6 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">bpm_array_name</span> <span class="o">=</span> <span class="n">cfg</span><span class="o">.</span><span class="n">bpm_array_name</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">rf_plant_name</span> <span class="o">=</span> <span class="n">cfg</span><span class="o">.</span><span class="n">rf_plant_name</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">frequency_delta</span> <span class="o">=</span> <span class="n">cfg</span><span class="o">.</span><span class="n">frequency_delta</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">latest_measurement</span> <span class="o">=</span> <span class="kc">None</span>
 
 <div class="viewcode-block" id="Dispersion.measure">
 <a class="viewcode-back" href="../../../api/pyaml.tuning_tools.dispersion.html#pyaml.tuning_tools.dispersion.Dispersion.measure">[docs]</a>
@@ -447,15 +447,15 @@
         <span class="k">for</span> <span class="n">code</span><span class="p">,</span> <span class="n">measurement</span> <span class="ow">in</span> <span class="n">generator</span><span class="p">:</span>
             <span class="n">callback_data</span> <span class="o">=</span> <span class="n">measurement</span><span class="o">.</span><span class="n">dispersion_data</span>  <span class="c1"># to be defined better</span>
             <span class="k">if</span> <span class="n">code</span> <span class="ow">is</span> <span class="n">DispersionCode</span><span class="o">.</span><span class="n">AFTER_SET</span><span class="p">:</span>
-                <span class="k">if</span> <span class="n">callback</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">callback</span><span class="p">(</span><span class="n">ACTION_APPLY</span><span class="p">,</span> <span class="n">callback_data</span><span class="p">):</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">send_callback</span><span class="p">(</span><span class="n">Action</span><span class="o">.</span><span class="n">APPLY</span><span class="p">,</span> <span class="n">callback</span><span class="p">,</span> <span class="n">callback_data</span><span class="p">):</span>
                     <span class="k">if</span> <span class="n">aborted</span><span class="p">:</span>
                         <span class="k">break</span>
             <span class="k">elif</span> <span class="n">code</span> <span class="ow">is</span> <span class="n">DispersionCode</span><span class="o">.</span><span class="n">AFTER_GET</span><span class="p">:</span>
-                <span class="k">if</span> <span class="n">callback</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">callback</span><span class="p">(</span><span class="n">ACTION_MEASURE</span><span class="p">,</span> <span class="n">callback_data</span><span class="p">):</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">send_callback</span><span class="p">(</span><span class="n">Action</span><span class="o">.</span><span class="n">MEASURE</span><span class="p">,</span> <span class="n">callback</span><span class="p">,</span> <span class="n">callback_data</span><span class="p">):</span>
                     <span class="n">aborted</span> <span class="o">=</span> <span class="kc">True</span>
                     <span class="k">break</span>
             <span class="k">elif</span> <span class="n">code</span> <span class="ow">is</span> <span class="n">DispersionCode</span><span class="o">.</span><span class="n">AFTER_RESTORE</span><span class="p">:</span>
-                <span class="k">if</span> <span class="n">callback</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">callback</span><span class="p">(</span><span class="n">ACTION_RESTORE</span><span class="p">,</span> <span class="n">callback_data</span><span class="p">):</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">send_callback</span><span class="p">(</span><span class="n">Action</span><span class="o">.</span><span class="n">RESTORE</span><span class="p">,</span> <span class="n">callback</span><span class="p">,</span> <span class="n">callback_data</span><span class="p">):</span>
                     <span class="n">aborted</span> <span class="o">=</span> <span class="kc">True</span>
                     <span class="k">break</span>
 
@@ -476,18 +476,6 @@
 <a class="viewcode-back" href="../../../api/pyaml.tuning_tools.dispersion.html#pyaml.tuning_tools.dispersion.Dispersion.get">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">latest_measurement</span></div>
-
-
-<div class="viewcode-block" id="Dispersion.attach">
-<a class="viewcode-back" href="../../../api/pyaml.tuning_tools.dispersion.html#pyaml.tuning_tools.dispersion.Dispersion.attach">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">attach</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">peer</span><span class="p">:</span> <span class="s2">&quot;ElementHolder&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Self</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Create a new reference to attach this OrbitResponseMatrix object to a simulator</span>
-<span class="sd">        or a control system.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">obj</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_cfg</span><span class="p">)</span>
-        <span class="n">obj</span><span class="o">.</span><span class="n">_peer</span> <span class="o">=</span> <span class="n">peer</span>
-        <span class="k">return</span> <span class="n">obj</span></div>
 </div>
 
 </pre></div>

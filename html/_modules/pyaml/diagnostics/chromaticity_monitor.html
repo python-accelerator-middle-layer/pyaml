@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>pyaml.diagnostics.chromaticity_monitor &#8212; Python Accelerator Middle Layer 0.1.dev1+g6b7e7772a documentation</title>
+    <title>pyaml.diagnostics.chromaticity_monitor &#8212; Python Accelerator Middle Layer 0.1.dev1+g0cf44ff7c documentation</title>
   
   
   
@@ -41,7 +41,7 @@
   <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
 <link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
-    <script src="../../../_static/documentation_options.js?v=8ba10de4"></script>
+    <script src="../../../_static/documentation_options.js?v=df29db57"></script>
     <script src="../../../_static/doctools.js?v=9bcbadda"></script>
     <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -118,8 +118,8 @@
       
     
     
-    <img src="../../../_static/logo.png" class="logo__image only-light" alt="Python Accelerator Middle Layer 0.1.dev1+g6b7e7772a documentation - Home"/>
-    <img src="../../../_static/dark.png" class="logo__image only-dark pst-js-only" alt="Python Accelerator Middle Layer 0.1.dev1+g6b7e7772a documentation - Home"/>
+    <img src="../../../_static/logo.png" class="logo__image only-light" alt="Python Accelerator Middle Layer 0.1.dev1+g0cf44ff7c documentation - Home"/>
+    <img src="../../../_static/dark.png" class="logo__image only-dark pst-js-only" alt="Python Accelerator Middle Layer 0.1.dev1+g0cf44ff7c documentation - Home"/>
   
   
 </a></div>
@@ -369,22 +369,24 @@
                 <article class="bd-article">
                   
   <h1>Source code for pyaml.diagnostics.chromaticity_monitor</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span><span class="w"> </span><span class="nn">collections.abc</span><span class="w"> </span><span class="kn">import</span> <span class="n">Callable</span>
-
-<span class="kn">from</span><span class="w"> </span><span class="nn">..common.abstract</span><span class="w"> </span><span class="kn">import</span> <span class="n">ReadFloatArray</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">..common.constants</span><span class="w"> </span><span class="kn">import</span> <span class="n">ACTION_APPLY</span><span class="p">,</span> <span class="n">ACTION_MEASURE</span><span class="p">,</span> <span class="n">ACTION_RESTORE</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">..common.element</span><span class="w"> </span><span class="kn">import</span> <span class="n">Element</span><span class="p">,</span> <span class="n">ElementConfigModel</span>
+<span></span><span class="kn">from</span><span class="w"> </span><span class="nn">..common.abstract</span><span class="w"> </span><span class="kn">import</span> <span class="n">ReadFloatArray</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">..common.constants</span><span class="w"> </span><span class="kn">import</span> <span class="n">Action</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">..common.element</span><span class="w"> </span><span class="kn">import</span> <span class="n">ElementConfigModel</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">..common.exception</span><span class="w"> </span><span class="kn">import</span> <span class="n">PyAMLException</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">..tuning_tools.measurement_tool</span><span class="w"> </span><span class="kn">import</span> <span class="n">MeasurementTool</span>
 
 <span class="k">try</span><span class="p">:</span>
     <span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Self</span>  <span class="c1"># Python 3.11+</span>
 <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
     <span class="kn">from</span><span class="w"> </span><span class="nn">typing_extensions</span><span class="w"> </span><span class="kn">import</span> <span class="n">Self</span>  <span class="c1"># Python 3.10 and earlier</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">logging</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">time</span><span class="w"> </span><span class="kn">import</span> <span class="n">sleep</span>
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">pydantic</span><span class="w"> </span><span class="kn">import</span> <span class="n">ConfigDict</span>
+
+<span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
 
 <span class="n">PYAMLCLASS</span> <span class="o">=</span> <span class="s2">&quot;ChomaticityMonitor&quot;</span>
 
@@ -397,50 +399,90 @@
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">    betatron_tune : str</span>
+<span class="sd">    betatron_tune_name : str</span>
 <span class="sd">        Name of the diagnostic pyaml device for measuring the tune</span>
-<span class="sd">    RFfreq : str</span>
+<span class="sd">    rf_plant_name : str</span>
 <span class="sd">        Name of main RF frequency plant</span>
-<span class="sd">    N_step : int, optional</span>
+<span class="sd">    bpm_array_name : str,optional</span>
+<span class="sd">        Name of main BPM array used for dispersion fit</span>
+<span class="sd">    n_step : int, optional</span>
 <span class="sd">        Default number of RF step during chromaticity</span>
 <span class="sd">        measurement, by default 5</span>
 <span class="sd">    alphac : float or None, optional</span>
 <span class="sd">        Momentum compaction factor, by default None</span>
-<span class="sd">    E_delta : float, optional</span>
+<span class="sd">    e_delta : float, optional</span>
 <span class="sd">        Default variation of relative energy during chromaticity measurement:</span>
 <span class="sd">        f0 - f0 * E_delta * alphac  &lt; f_RF &lt; f0 + f0 * E_delta * alphac,</span>
 <span class="sd">        by default 0.001</span>
-<span class="sd">    Max_E_delta : float, optional</span>
+<span class="sd">    max_e_delta : float, optional</span>
 <span class="sd">        Maximum authorized variation of relative energy during chromaticity</span>
 <span class="sd">        measurement, by default 0.004</span>
-<span class="sd">    N_tune_meas : int, optional</span>
-<span class="sd">        Default number of tune measurement per RF frequency, by default 1</span>
-<span class="sd">    Sleep_between_meas : float, optional</span>
+<span class="sd">    n_tune_meas : int, optional</span>
+<span class="sd">        Default number of tune/orbit measurement per RF frequency, by default 1</span>
+<span class="sd">    sleep_between_meas : float, optional</span>
 <span class="sd">        Default sleep time in [s] between two tune measurements, by default 2.0</span>
-<span class="sd">    Sleep_between_RFvar : float, optional</span>
+<span class="sd">    sleep_between_step : float, optional</span>
 <span class="sd">        Default sleep time in [s] after RF frequency variation, by default 5.0</span>
 <span class="sd">    fit_order : int, optional</span>
-<span class="sd">        Fitting order, by default 1</span>
+<span class="sd">        Chomaticity fitting order, by default 1</span>
+<span class="sd">    fit_disp_order : int, optional</span>
+<span class="sd">        Dispersion fitting order, by default 1</span>
+<span class="sd">    fit_dispersion : bool, optional</span>
+<span class="sd">        Dispersion fitting, by default False</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">model_config</span> <span class="o">=</span> <span class="n">ConfigDict</span><span class="p">(</span><span class="n">arbitrary_types_allowed</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">extra</span><span class="o">=</span><span class="s2">&quot;forbid&quot;</span><span class="p">)</span>
 
-    <span class="n">betatron_tune</span><span class="p">:</span> <span class="nb">str</span>
-    <span class="n">RFfreq</span><span class="p">:</span> <span class="nb">str</span>
-    <span class="n">N_step</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">5</span>
+    <span class="n">betatron_tune_name</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">rf_plant_name</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">bpm_array_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">n_step</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">5</span>
     <span class="n">alphac</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
-    <span class="n">E_delta</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.001</span>
-    <span class="n">Max_E_delta</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.004</span>
-    <span class="n">N_tune_meas</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span>
-    <span class="n">Sleep_between_meas</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">2.0</span>
-    <span class="n">Sleep_between_RFvar</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">5.0</span>
-    <span class="n">fit_order</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span></div>
+    <span class="n">e_delta</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.001</span>
+    <span class="n">max_e_delta</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.004</span>
+    <span class="n">n_tune_meas</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="n">sleep_between_meas</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.0</span>
+    <span class="n">sleep_between_step</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.0</span>
+    <span class="n">fit_order</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="n">fit_disp_order</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="n">fit_dispersion</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span></div>
+
+
+
+<div class="viewcode-block" id="RChromaDispArray">
+<a class="viewcode-back" href="../../../api/pyaml.diagnostics.chromaticity_monitor.html#pyaml.diagnostics.chromaticity_monitor.RChromaDispArray">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">RChromaDispArray</span><span class="p">(</span><span class="n">ReadFloatArray</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Class providing read access to chromaticity or dispersion.</span>
+<span class="sd">    Returns arrays of shape (fit_order,2) or None</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="p">:</span> <span class="s2">&quot;ChomaticityMonitor&quot;</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">unit</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_parent</span> <span class="o">=</span> <span class="n">parent</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_name</span> <span class="o">=</span> <span class="n">name</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_unit</span> <span class="o">=</span> <span class="n">unit</span>
+
+<div class="viewcode-block" id="RChromaDispArray.get">
+<a class="viewcode-back" href="../../../api/pyaml.diagnostics.chromaticity_monitor.html#pyaml.diagnostics.chromaticity_monitor.RChromaDispArray.get">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">:</span>
+        <span class="n">last</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parent</span><span class="o">.</span><span class="n">latest_measurement</span>
+        <span class="k">if</span> <span class="n">last</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">_name</span> <span class="ow">in</span> <span class="n">last</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">last</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_name</span><span class="p">])</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span></div>
+
+
+<div class="viewcode-block" id="RChromaDispArray.unit">
+<a class="viewcode-back" href="../../../api/pyaml.diagnostics.chromaticity_monitor.html#pyaml.diagnostics.chromaticity_monitor.RChromaDispArray.unit">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">unit</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">unit</span></div>
+</div>
 
 
 
 <div class="viewcode-block" id="ChomaticityMonitor">
 <a class="viewcode-back" href="../../../api/pyaml.diagnostics.chromaticity_monitor.html#pyaml.diagnostics.chromaticity_monitor.ChomaticityMonitor">[docs]</a>
-<span class="k">class</span><span class="w"> </span><span class="nc">ChomaticityMonitor</span><span class="p">(</span><span class="n">Element</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">ChomaticityMonitor</span><span class="p">(</span><span class="n">MeasurementTool</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Class providing access to a chromaticity monitor</span>
 <span class="sd">    of a physical or simulated lattice. The monitor provides</span>
@@ -457,12 +499,10 @@
 <span class="sd">            Configuration for the ChromaticityMonitor, including betatron</span>
 <span class="sd">            tune monitor, RF plant, and defaults parameters.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">cfg</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_cfg</span> <span class="o">=</span> <span class="n">cfg</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">__chromaticity</span> <span class="o">=</span> <span class="kc">None</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_last_measured</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">])</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_peer</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_chromaticity</span> <span class="o">=</span> <span class="n">RChromaDispArray</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;chromaticity&quot;</span><span class="p">,</span> <span class="s2">&quot;1&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_dipsersion</span> <span class="o">=</span> <span class="n">RChromaDispArray</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;dispersion&quot;</span><span class="p">,</span> <span class="s2">&quot;m&quot;</span><span class="p">)</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">chromaticity</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ReadFloatArray</span><span class="p">:</span>
@@ -472,48 +512,36 @@
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        ReadFloatArray</span>
-<span class="sd">            Array of chromaticity values [horizontal, vertical]</span>
+<span class="sd">            Array of chromaticity values [[q&#39;x, q&#39;y],[q&#39;&#39;x, q&#39;&#39;y],...]</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">check_peer</span><span class="p">()</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__chromaticity</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_chromaticity</span>
 
-<div class="viewcode-block" id="ChomaticityMonitor.attach">
-<a class="viewcode-back" href="../../../api/pyaml.diagnostics.chromaticity_monitor.html#pyaml.diagnostics.chromaticity_monitor.ChomaticityMonitor.attach">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">attach</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">peer</span><span class="p">,</span> <span class="n">chromaticity</span><span class="p">:</span> <span class="n">ReadFloatArray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Self</span><span class="p">:</span>
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">dispersion</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ReadFloatArray</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Attach the chromaticity monitor to a peer with chromaticity data.</span>
-
-<span class="sd">        Parameters</span>
-<span class="sd">        ----------</span>
-<span class="sd">        peer : object</span>
-<span class="sd">            The peer object (simulator or control system)</span>
-<span class="sd">        chromaticity : ReadFloatArray</span>
-<span class="sd">            The chromaticity array to monitor</span>
+<span class="sd">        Get the dispersion values.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
-<span class="sd">        Self</span>
-<span class="sd">            A new attached instance of ChromaticityMonitor</span>
+<span class="sd">        ReadFloatArray</span>
+<span class="sd">            Array of dispersion values [[dx, dy],[d&#39;x, d&#39;y],...]</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">obj</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_cfg</span><span class="p">)</span>
-        <span class="n">chromaticity</span><span class="o">.</span><span class="n">_update_chromaticity_monitor</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>
-        <span class="n">obj</span><span class="o">.</span><span class="n">__chromaticity</span> <span class="o">=</span> <span class="n">chromaticity</span>
-        <span class="n">obj</span><span class="o">.</span><span class="n">_peer</span> <span class="o">=</span> <span class="n">peer</span>
-        <span class="k">return</span> <span class="n">obj</span></div>
-
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dipsersion</span>
 
 <div class="viewcode-block" id="ChomaticityMonitor.measure">
 <a class="viewcode-back" href="../../../api/pyaml.diagnostics.chromaticity_monitor.html#pyaml.diagnostics.chromaticity_monitor.ChomaticityMonitor.measure">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">measure</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
-        <span class="n">N_step</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">n_step</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">alphac</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-        <span class="n">E_delta</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-        <span class="n">Max_E_delta</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-        <span class="n">N_tune_meas</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-        <span class="n">Sleep_between_meas</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-        <span class="n">Sleep_between_RFvar</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">e_delta</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">max_e_delta</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">n_tune_meas</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">sleep_between_meas</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">sleep_between_step</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">fit_order</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">fit_disp_order</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">fit_dispersion</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">do_plot</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">callback</span><span class="p">:</span> <span class="nb">callable</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
@@ -522,207 +550,170 @@
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        N_step: int</span>
+<span class="sd">        n_step: int</span>
 <span class="sd">            Default number of RF step during chromaticity</span>
 <span class="sd">            measurment [default: from config]</span>
 <span class="sd">        alphac: float | None</span>
 <span class="sd">            Moment compaction factor [default: from config]</span>
-<span class="sd">        E_delta: float</span>
+<span class="sd">        w_delta: float</span>
 <span class="sd">            Default variation of relative energy during chromaticity measurment:</span>
 <span class="sd">            f0 - f0 * E_delta * alphac  &lt; f_RF &lt; f0 + f0 * E_delta * alphac</span>
 <span class="sd">            [default: from config]</span>
-<span class="sd">        Max_E_delta: float</span>
+<span class="sd">        max_e_delta: float</span>
 <span class="sd">            Maximum autorized variation of relative energy during chromaticity</span>
 <span class="sd">            measurment [default: from config]</span>
-<span class="sd">        N_tune_meas: int</span>
-<span class="sd">            Default number of tune measurment per RF frequency [default: from config]</span>
-<span class="sd">        Sleep_between_meas: float</span>
+<span class="sd">        n_tune_meas: int</span>
+<span class="sd">            Default number of tune/orbit measurment per RF frequency [default: from config]</span>
+<span class="sd">        sleep_between_meas: float</span>
 <span class="sd">            Default time sleep between two tune measurment [default: from config]</span>
-<span class="sd">        Sleep_between_RFvar: float</span>
+<span class="sd">        sleep_between_step: float</span>
 <span class="sd">            Default time sleep after RF frequency variation [default: from config]</span>
 <span class="sd">        fit_order: int</span>
-<span class="sd">            Fitting order [default: 1]</span>
+<span class="sd">            Fitting order [default: from config]</span>
+<span class="sd">        fit_disp_order : int, optional</span>
+<span class="sd">            Dispersion fitting order [default: from config]</span>
+<span class="sd">        fit_dispersion : bool, optionnal</span>
+<span class="sd">            Fit dispersion, [default: from config]</span>
 <span class="sd">        do_plot : bool</span>
 <span class="sd">            Do you want to plot the fittinf results ?</span>
 <span class="sd">        callback: Callable, optional</span>
-<span class="sd">            User chroma_callback(step:int,action:int,rf:float,tune:np.array)</span>
 <span class="sd">            Callback is executed after each measurement or setting.</span>
 <span class="sd">            If the callback return false, then the process is aborted.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="n">N_step</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">N_step</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cfg</span><span class="o">.</span><span class="n">N_step</span>
-        <span class="k">if</span> <span class="n">alphac</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">alphac</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cfg</span><span class="o">.</span><span class="n">alphac</span>
-        <span class="k">if</span> <span class="n">E_delta</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">E_delta</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cfg</span><span class="o">.</span><span class="n">E_delta</span>
-        <span class="k">if</span> <span class="n">Max_E_delta</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">Max_E_delta</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cfg</span><span class="o">.</span><span class="n">Max_E_delta</span>
-        <span class="k">if</span> <span class="n">N_tune_meas</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">N_tune_meas</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cfg</span><span class="o">.</span><span class="n">N_tune_meas</span>
-        <span class="k">if</span> <span class="n">Sleep_between_meas</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">Sleep_between_meas</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cfg</span><span class="o">.</span><span class="n">Sleep_between_meas</span>
-        <span class="k">if</span> <span class="n">Sleep_between_RFvar</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">Sleep_between_RFvar</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cfg</span><span class="o">.</span><span class="n">Sleep_between_RFvar</span>
-        <span class="k">if</span> <span class="n">fit_order</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">fit_order</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cfg</span><span class="o">.</span><span class="n">fit_order</span>
-        <span class="k">if</span> <span class="nb">abs</span><span class="p">(</span><span class="n">E_delta</span><span class="p">)</span> <span class="o">&gt;</span> <span class="nb">abs</span><span class="p">(</span><span class="n">Max_E_delta</span><span class="p">):</span>
-            <span class="c1"># TODO : Add logger to warm that E_delta is to large</span>
-            <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">])</span>
+        <span class="n">n_step</span> <span class="o">=</span> <span class="n">n_step</span> <span class="k">if</span> <span class="n">n_step</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cfg</span><span class="o">.</span><span class="n">n_step</span>
+        <span class="n">alphac</span> <span class="o">=</span> <span class="n">alphac</span> <span class="k">if</span> <span class="n">alphac</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cfg</span><span class="o">.</span><span class="n">alphac</span>
+        <span class="n">e_delta</span> <span class="o">=</span> <span class="n">e_delta</span> <span class="k">if</span> <span class="n">e_delta</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cfg</span><span class="o">.</span><span class="n">e_delta</span>
+        <span class="n">max_e_delta</span> <span class="o">=</span> <span class="n">max_e_delta</span> <span class="k">if</span> <span class="n">max_e_delta</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cfg</span><span class="o">.</span><span class="n">max_e_delta</span>
+        <span class="n">n_tune_meas</span> <span class="o">=</span> <span class="n">n_tune_meas</span> <span class="k">if</span> <span class="n">n_tune_meas</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cfg</span><span class="o">.</span><span class="n">n_tune_meas</span>
+        <span class="n">sleep_between_meas</span> <span class="o">=</span> <span class="n">sleep_between_meas</span> <span class="k">if</span> <span class="n">sleep_between_meas</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cfg</span><span class="o">.</span><span class="n">sleep_between_meas</span>
+        <span class="n">sleep_between_step</span> <span class="o">=</span> <span class="n">sleep_between_step</span> <span class="k">if</span> <span class="n">sleep_between_step</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cfg</span><span class="o">.</span><span class="n">sleep_between_step</span>
+        <span class="n">fit_order</span> <span class="o">=</span> <span class="n">fit_order</span> <span class="k">if</span> <span class="n">fit_order</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cfg</span><span class="o">.</span><span class="n">fit_order</span>
+        <span class="n">fit_disp_order</span> <span class="o">=</span> <span class="n">fit_disp_order</span> <span class="k">if</span> <span class="n">fit_disp_order</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cfg</span><span class="o">.</span><span class="n">fit_disp_order</span>
+        <span class="n">fit_dispersion</span> <span class="o">=</span> <span class="n">fit_dispersion</span> <span class="k">if</span> <span class="n">fit_dispersion</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cfg</span><span class="o">.</span><span class="n">fit_dispersion</span>
+
+        <span class="k">if</span> <span class="nb">abs</span><span class="p">(</span><span class="n">e_delta</span><span class="p">)</span> <span class="o">&gt;</span> <span class="nb">abs</span><span class="p">(</span><span class="n">max_e_delta</span><span class="p">):</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;e_delta=</span><span class="si">{e_delta}</span><span class="s2"> is greater than max_e_delta=</span><span class="si">{max_e_delta}</span><span class="s2">&quot;</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="n">alphac</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">raise</span> <span class="n">PyAMLException</span><span class="p">(</span><span class="s2">&quot;Moment compaction factor is not defined&quot;</span><span class="p">)</span>
 
-        <span class="n">delta</span><span class="p">,</span> <span class="n">NuX</span><span class="p">,</span> <span class="n">NuY</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">measure_tune_response</span><span class="p">(</span>
-            <span class="n">N_step</span><span class="o">=</span><span class="n">N_step</span><span class="p">,</span>
-            <span class="n">alphac</span><span class="o">=</span><span class="n">alphac</span><span class="p">,</span>
-            <span class="n">E_delta</span><span class="o">=</span><span class="n">E_delta</span><span class="p">,</span>
-            <span class="n">N_tune_meas</span><span class="o">=</span><span class="n">N_tune_meas</span><span class="p">,</span>
-            <span class="n">Sleep_between_meas</span><span class="o">=</span><span class="n">Sleep_between_meas</span><span class="p">,</span>
-            <span class="n">Sleep_between_RFvar</span><span class="o">=</span><span class="n">Sleep_between_RFvar</span><span class="p">,</span>
-            <span class="n">callback</span><span class="o">=</span><span class="n">callback</span><span class="p">,</span>
-        <span class="p">)</span>
-
-        <span class="k">if</span> <span class="n">delta</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">return</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">]</span>
-
-        <span class="n">chrom</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span>
-            <span class="n">delta</span><span class="o">=</span><span class="n">delta</span><span class="p">,</span> <span class="n">NuX</span><span class="o">=</span><span class="n">NuX</span><span class="p">,</span> <span class="n">NuY</span><span class="o">=</span><span class="n">NuY</span><span class="p">,</span> <span class="n">order</span><span class="o">=</span><span class="n">fit_order</span><span class="p">,</span> <span class="n">do_plot</span><span class="o">=</span><span class="n">do_plot</span>
-        <span class="p">)</span>
-        <span class="k">return</span> <span class="n">chrom</span></div>
-
-
-<div class="viewcode-block" id="ChomaticityMonitor.measure_tune_response">
-<a class="viewcode-back" href="../../../api/pyaml.diagnostics.chromaticity_monitor.html#pyaml.diagnostics.chromaticity_monitor.ChomaticityMonitor.measure_tune_response">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">measure_tune_response</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span>
-        <span class="n">N_step</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
-        <span class="n">alphac</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
-        <span class="n">E_delta</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
-        <span class="n">N_tune_meas</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
-        <span class="n">Sleep_between_meas</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
-        <span class="n">Sleep_between_RFvar</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
-        <span class="n">callback</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span>
-    <span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Main function for chromaticity measurment</span>
-
-<span class="sd">        N_step: int</span>
-<span class="sd">            Default number of RF step during chromaticity</span>
-<span class="sd">            measurment [default: from config]</span>
-<span class="sd">        alphac: float | None</span>
-<span class="sd">            Moment compaction factor [default: from config]</span>
-<span class="sd">        E_delta: float</span>
-<span class="sd">            Default variation of relative energy during chromaticity measurment:</span>
-<span class="sd">            f0 - f0 * E_delta * alphac  &lt; f_RF &lt; f0 + f0 * E_delta * alphac</span>
-<span class="sd">            [default: from config]</span>
-<span class="sd">        N_tune_meas: int</span>
-<span class="sd">            Default number of tune measurment per RF frequency [default: from config]</span>
-<span class="sd">        Sleep_between_meas: float</span>
-<span class="sd">            Default time sleep between two tune measurment [default: from config]</span>
-<span class="sd">        Sleep_between_RFvar: float</span>
-<span class="sd">            Default time sleep after RF frequency variation [default: from config]</span>
-<span class="sd">        callback: Callable, optional</span>
-<span class="sd">            User chroma_callback(step:int,action:int,rf:float,tune:np.array)</span>
-<span class="sd">            Callback is executed after each measurement or setting.</span>
-<span class="sd">            If the callback return false, then the process is aborted.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">tune</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_peer</span><span class="o">.</span><span class="n">get_betatron_tune_monitor</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_cfg</span><span class="o">.</span><span class="n">betatron_tune</span><span class="p">)</span>
-        <span class="n">rf</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_peer</span><span class="o">.</span><span class="n">get_rf_plant</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_cfg</span><span class="o">.</span><span class="n">RFfreq</span><span class="p">)</span>
+        <span class="c1"># Get devices</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">check_peer</span><span class="p">()</span>
+        <span class="n">tm</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_peer</span><span class="o">.</span><span class="n">get_betatron_tune_monitor</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_cfg</span><span class="o">.</span><span class="n">betatron_tune_name</span><span class="p">)</span>
+        <span class="n">rf</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_peer</span><span class="o">.</span><span class="n">get_rf_plant</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_cfg</span><span class="o">.</span><span class="n">rf_plant_name</span><span class="p">)</span>
+        <span class="n">bpms</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="n">n_bpm</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">orbit</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">if</span> <span class="n">fit_dispersion</span> <span class="ow">and</span> <span class="n">fit_disp_order</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cfg</span><span class="o">.</span><span class="n">bpm_array_name</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="c1"># For dispersion fit</span>
+            <span class="n">bpms</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_peer</span><span class="o">.</span><span class="n">get_bpms</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_cfg</span><span class="o">.</span><span class="n">bpm_array_name</span><span class="p">)</span>
+            <span class="n">n_bpm</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">bpms</span><span class="p">)</span>
 
         <span class="n">f0</span> <span class="o">=</span> <span class="n">rf</span><span class="o">.</span><span class="n">frequency</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
 
-        <span class="n">delta</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="n">E_delta</span><span class="p">,</span> <span class="n">E_delta</span><span class="p">,</span> <span class="n">N_step</span><span class="p">)</span>
-        <span class="n">delta_frec</span> <span class="o">=</span> <span class="n">delta</span> <span class="o">*</span> <span class="n">alphac</span> <span class="o">*</span> <span class="n">f0</span>
+        <span class="n">delta</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="n">e_delta</span><span class="p">,</span> <span class="n">e_delta</span><span class="p">,</span> <span class="n">n_step</span><span class="p">)</span>
+        <span class="n">delta_frec</span> <span class="o">=</span> <span class="o">-</span><span class="n">delta</span> <span class="o">*</span> <span class="n">alphac</span> <span class="o">*</span> <span class="n">f0</span>
 
-        <span class="n">NuY</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">N_step</span><span class="p">,</span> <span class="n">N_tune_meas</span><span class="p">))</span>
-        <span class="n">NuX</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">N_step</span><span class="p">,</span> <span class="n">N_tune_meas</span><span class="p">))</span>
+        <span class="n">Q</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">n_step</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
+        <span class="k">if</span> <span class="n">bpms</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">orbit</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">n_step</span><span class="p">,</span> <span class="n">n_bpm</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
 
         <span class="c1"># ensure that, even if there is an issus, the script will finish by</span>
         <span class="c1"># reseting the RF frequency to its original value</span>
         <span class="n">err</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="n">ok</span> <span class="o">=</span> <span class="kc">True</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">f</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">delta_frec</span><span class="p">):</span>
                 <span class="c1"># TODO : Use set_and_wait once it is implemented !</span>
-                <span class="c1"># (and remove Sleep_between_RFvar ?)</span>
+
                 <span class="n">rf</span><span class="o">.</span><span class="n">frequency</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">f0</span> <span class="o">+</span> <span class="n">f</span><span class="p">)</span>
-                <span class="k">if</span> <span class="n">callback</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">callback</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">ACTION_APPLY</span><span class="p">,</span> <span class="n">f0</span> <span class="o">+</span> <span class="n">f</span><span class="p">,</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">]):</span>
+
+                <span class="n">cb_data</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;step&quot;</span><span class="p">:</span> <span class="n">i</span><span class="p">,</span> <span class="s2">&quot;rf&quot;</span><span class="p">:</span> <span class="n">f0</span> <span class="o">+</span> <span class="n">f</span><span class="p">}</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">send_callback</span><span class="p">(</span><span class="n">Action</span><span class="o">.</span><span class="n">APPLY</span><span class="p">,</span> <span class="n">callback</span><span class="p">,</span> <span class="n">cb_data</span><span class="p">):</span>
                     <span class="c1"># Abort</span>
                     <span class="n">rf</span><span class="o">.</span><span class="n">frequency</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">f0</span><span class="p">)</span>
-                    <span class="k">return</span> <span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
-                <span class="n">sleep</span><span class="p">(</span><span class="n">Sleep_between_RFvar</span><span class="p">)</span>
+                    <span class="k">return</span> <span class="kc">False</span>
+                <span class="n">sleep</span><span class="p">(</span><span class="n">sleep_between_step</span><span class="p">)</span>
 
-                <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">N_tune_meas</span><span class="p">):</span>
-                    <span class="n">NuX</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">],</span> <span class="n">NuY</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">tune</span><span class="o">.</span><span class="n">tune</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
-                    <span class="k">if</span> <span class="n">callback</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">callback</span><span class="p">(</span>
-                        <span class="n">i</span><span class="p">,</span> <span class="n">ACTION_MEASURE</span><span class="p">,</span> <span class="n">f0</span> <span class="o">+</span> <span class="n">f</span><span class="p">,</span> <span class="p">[</span><span class="n">NuX</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">],</span> <span class="n">NuY</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]]</span>
-                    <span class="p">):</span>
+                <span class="c1"># Averaging</span>
+                <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_tune_meas</span><span class="p">):</span>
+                    <span class="n">tune</span> <span class="o">=</span> <span class="n">tm</span><span class="o">.</span><span class="n">tune</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+                    <span class="n">Q</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+=</span> <span class="n">tune</span>
+                    <span class="n">cb_data</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;step&quot;</span><span class="p">:</span> <span class="n">i</span><span class="p">,</span> <span class="s2">&quot;avg_step&quot;</span><span class="p">:</span> <span class="n">j</span><span class="p">,</span> <span class="s2">&quot;rf&quot;</span><span class="p">:</span> <span class="n">f0</span> <span class="o">+</span> <span class="n">f</span><span class="p">,</span> <span class="s2">&quot;tune&quot;</span><span class="p">:</span> <span class="n">tune</span><span class="p">}</span>
+                    <span class="k">if</span> <span class="n">bpms</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                        <span class="n">orb</span> <span class="o">=</span> <span class="n">bpms</span><span class="o">.</span><span class="n">positions</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+                        <span class="n">orbit</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+=</span> <span class="n">orb</span>
+                        <span class="n">cb_data</span><span class="p">[</span><span class="s2">&quot;orbit&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">orb</span>
+                    <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">send_callback</span><span class="p">(</span><span class="n">Action</span><span class="o">.</span><span class="n">MEASURE</span><span class="p">,</span> <span class="n">callback</span><span class="p">,</span> <span class="n">cb_data</span><span class="p">):</span>
                         <span class="c1"># Abort</span>
                         <span class="n">rf</span><span class="o">.</span><span class="n">frequency</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">f0</span><span class="p">)</span>
-                        <span class="k">return</span> <span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
-                    <span class="n">sleep</span><span class="p">(</span><span class="n">Sleep_between_meas</span><span class="p">)</span>
+                        <span class="k">return</span> <span class="kc">False</span>
+
+                    <span class="k">if</span> <span class="n">j</span> <span class="o">&lt;</span> <span class="n">n_tune_meas</span> <span class="o">-</span> <span class="mi">1</span><span class="p">:</span>
+                        <span class="n">sleep</span><span class="p">(</span><span class="n">sleep_between_meas</span><span class="p">)</span>
+
+                <span class="n">Q</span> <span class="o">/=</span> <span class="nb">float</span><span class="p">(</span><span class="n">n_tune_meas</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">bpms</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="n">orbit</span> <span class="o">/=</span> <span class="nb">float</span><span class="p">(</span><span class="n">n_tune_meas</span><span class="p">)</span>
 
         <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">ex</span><span class="p">:</span>
             <span class="n">err</span> <span class="o">=</span> <span class="n">ex</span>
         <span class="k">finally</span><span class="p">:</span>
             <span class="c1"># TODO : Use set_and_wait once it is implemented !</span>
             <span class="n">rf</span><span class="o">.</span><span class="n">frequency</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">f0</span><span class="p">)</span>
-            <span class="k">if</span> <span class="n">callback</span><span class="p">:</span>
-                <span class="n">callback</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">ACTION_RESTORE</span><span class="p">,</span> <span class="n">f0</span> <span class="o">+</span> <span class="n">f</span><span class="p">,</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">])</span>
+            <span class="n">cb_data</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;step&quot;</span><span class="p">:</span> <span class="n">i</span><span class="p">,</span> <span class="s2">&quot;rf&quot;</span><span class="p">:</span> <span class="n">f0</span><span class="p">}</span>
+            <span class="n">ok</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">send_callback</span><span class="p">(</span><span class="n">Action</span><span class="o">.</span><span class="n">RESTORE</span><span class="p">,</span> <span class="n">callback</span><span class="p">,</span> <span class="n">cb_data</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="n">err</span><span class="p">:</span>
             <span class="k">raise</span> <span class="p">(</span><span class="n">err</span><span class="p">)</span>
 
-        <span class="k">return</span> <span class="p">(</span><span class="n">delta</span><span class="p">,</span> <span class="n">NuX</span><span class="p">,</span> <span class="n">NuY</span><span class="p">)</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">delta</span><span class="p">,</span> <span class="n">Q</span><span class="p">,</span> <span class="n">fit_order</span><span class="p">,</span> <span class="n">orbit</span><span class="o">=</span><span class="n">orbit</span><span class="p">,</span> <span class="n">fit_disp_order</span><span class="o">=</span><span class="n">fit_disp_order</span><span class="p">,</span> <span class="n">do_plot</span><span class="o">=</span><span class="n">do_plot</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">ok</span></div>
 
 
 <div class="viewcode-block" id="ChomaticityMonitor.fit">
 <a class="viewcode-back" href="../../../api/pyaml.diagnostics.chromaticity_monitor.html#pyaml.diagnostics.chromaticity_monitor.ChomaticityMonitor.fit">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">delta</span><span class="p">,</span> <span class="n">NuX</span><span class="p">,</span> <span class="n">NuY</span><span class="p">,</span> <span class="n">order</span><span class="p">,</span> <span class="n">do_plot</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">deltas</span><span class="p">,</span> <span class="n">Q</span><span class="p">,</span> <span class="n">order</span><span class="p">,</span> <span class="n">orbit</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">fit_disp_order</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">do_plot</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Compute chromaticity from measurement data.</span>
+<span class="sd">        Compute chromaticity (and dispersion) from measurement data.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        delta : array of float</span>
+<span class="sd">        deltas : array of float</span>
 <span class="sd">            Relative energy (delta) variation steps done.</span>
-<span class="sd">        NuX : array of float</span>
-<span class="sd">            Horizontal tune measured.</span>
-<span class="sd">        NuZ : array of float</span>
-<span class="sd">            Vertical tune measured.</span>
-<span class="sd">        order : int</span>
-<span class="sd">            order of polynomial used for fit</span>
+<span class="sd">        Q : array of [Qx,Qy]</span>
+<span class="sd">            Horizontal,Vertical tune measured.</span>
+<span class="sd">        orbit: array of [[x0,y0],[x1,y1],...]</span>
+<span class="sd">        fit_order: int</span>
+<span class="sd">            Chromaticity fitting order</span>
+<span class="sd">        fit_disp_order : int, optional</span>
+<span class="sd">            Dispersion fitting order</span>
 <span class="sd">        plot : bool, optional</span>
 <span class="sd">            If True, plot the fit.</span>
-<span class="sd">            Plots are made but not shown. Use plt.show() to show it.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
-<span class="sd">        chro : array</span>
-<span class="sd">            Array with horizontal and veritical chromaticity.</span>
+<span class="sd">        dict</span>
+<span class="sd">            Dict with horizontal and veritical chromaticity and dispersion</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">NuX</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="n">PyAMLException</span><span class="p">(</span>
-                <span class="s2">&quot;No measurement data available for fit, pleas call measure() first&quot;</span>
-            <span class="p">)</span>
+        <span class="n">chroma</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">polynomial</span><span class="o">.</span><span class="n">polynomial</span><span class="o">.</span><span class="n">polyfit</span><span class="p">(</span><span class="n">deltas</span><span class="p">,</span> <span class="n">Q</span><span class="p">,</span> <span class="n">order</span><span class="p">)</span><span class="o">.</span><span class="n">T</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">latest_measurement</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">latest_measurement</span><span class="p">[</span><span class="s2">&quot;chromaticity_fit&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">chroma</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">latest_measurement</span><span class="p">[</span><span class="s2">&quot;chromaticity&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">chroma</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span>  <span class="c1"># First order chroma</span>
+        <span class="k">if</span> <span class="n">orbit</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">dispx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">polynomial</span><span class="o">.</span><span class="n">polynomial</span><span class="o">.</span><span class="n">polyfit</span><span class="p">(</span><span class="n">deltas</span><span class="p">,</span> <span class="n">orbit</span><span class="p">[:,</span> <span class="p">:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">fit_disp_order</span><span class="p">)</span><span class="o">.</span><span class="n">T</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">latest_measurement</span><span class="p">[</span><span class="s2">&quot;dispersionx_fit&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">dispx</span>
+            <span class="n">dispy</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">polynomial</span><span class="o">.</span><span class="n">polynomial</span><span class="o">.</span><span class="n">polyfit</span><span class="p">(</span><span class="n">deltas</span><span class="p">,</span> <span class="n">orbit</span><span class="p">[:,</span> <span class="p">:,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">fit_disp_order</span><span class="p">)</span><span class="o">.</span><span class="n">T</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">latest_measurement</span><span class="p">[</span><span class="s2">&quot;dispersiony_fit&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">dispy</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">latest_measurement</span><span class="p">[</span><span class="s2">&quot;dispersion&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">dispx</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">dispy</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]]</span>  <span class="c1"># First order dispersion</span>
 
-        <span class="n">delta</span> <span class="o">=</span> <span class="o">-</span><span class="n">delta</span>
-        <span class="n">chro</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="n">N_step_delta</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">delta</span><span class="p">)</span>
-        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">Nu</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">([</span><span class="n">NuX</span><span class="p">,</span> <span class="n">NuY</span><span class="p">]):</span>
-            <span class="c1"># if N_step_delta%2 == 0:</span>
-            <span class="c1">#     tune0 = np.mean((Nu[N_step_delta//2-1,:] + Nu[N_step_delta//2,:])/2.)</span>
-            <span class="c1"># else:</span>
-            <span class="c1">#     tune0 = np.mean(Nu[N_step_delta//2,:])</span>
-
-            <span class="n">dtune</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">Nu</span><span class="p">[:,</span> <span class="p">:],</span> <span class="mi">1</span><span class="p">)</span>
-            <span class="n">coefs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">polynomial</span><span class="o">.</span><span class="n">polynomial</span><span class="o">.</span><span class="n">polyfit</span><span class="p">(</span><span class="n">delta</span><span class="p">,</span> <span class="n">dtune</span><span class="p">,</span> <span class="n">order</span><span class="p">)</span>
-            <span class="n">chro</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">coefs</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
-
-            <span class="k">if</span> <span class="n">do_plot</span><span class="p">:</span>
-                <span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="s2">&quot;Chromaticity_measurement&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">do_plot</span><span class="p">:</span>
+            <span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="s2">&quot;Chromaticity_measurement&quot;</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="p">):</span>
                 <span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span> <span class="o">+</span> <span class="n">i</span><span class="p">)</span>
-                <span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">delta</span> <span class="o">*</span> <span class="mi">100</span><span class="p">,</span> <span class="n">dtune</span><span class="p">)</span>
+                <span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">deltas</span> <span class="o">*</span> <span class="mi">100</span><span class="p">,</span> <span class="n">Q</span><span class="p">[:,</span> <span class="n">i</span><span class="p">])</span>
                 <span class="n">title</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
                 <span class="k">for</span> <span class="n">o</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">order</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">):</span>
                     <span class="n">dp</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
@@ -731,23 +722,17 @@
                     <span class="k">elif</span> <span class="n">o</span> <span class="o">&gt;=</span> <span class="mi">1</span><span class="p">:</span>
                         <span class="n">dp</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;(dp/p)$^</span><span class="si">{</span><span class="n">o</span><span class="si">}</span><span class="s2">$&quot;</span>
 
-                    <span class="n">title</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">coefs</span><span class="p">[</span><span class="n">o</span><span class="p">]</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">dp</span><span class="si">}</span><span class="s2">&quot;</span>
+                    <span class="n">title</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">chroma</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">o</span><span class="p">]</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">dp</span><span class="si">}</span><span class="s2">&quot;</span>
                     <span class="k">if</span> <span class="n">o</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
                         <span class="n">title</span> <span class="o">+=</span> <span class="s2">&quot; + &quot;</span>
 
-                <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">delta</span> <span class="o">*</span> <span class="mi">100</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">polyval</span><span class="p">(</span><span class="n">coefs</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">delta</span><span class="p">))</span>
+                <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">deltas</span> <span class="o">*</span> <span class="mi">100</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">polyval</span><span class="p">(</span><span class="n">chroma</span><span class="p">[</span><span class="n">i</span><span class="p">][::</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">deltas</span><span class="p">))</span>
                 <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="n">title</span><span class="p">)</span>
                 <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;Momentum Shift, dp/p [%]&quot;</span><span class="p">)</span>
                 <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2"> Tune&quot;</span> <span class="o">%</span> <span class="p">[</span><span class="s2">&quot;Horizontal&quot;</span><span class="p">,</span> <span class="s2">&quot;Vertical&quot;</span><span class="p">][</span><span class="n">i</span><span class="p">])</span>
-                <span class="c1"># ax.legend()</span>
-
-        <span class="k">if</span> <span class="n">do_plot</span><span class="p">:</span>
+            <span class="c1"># ax.legend()</span>
             <span class="n">fig</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
-            <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
-
-        <span class="bp">self</span><span class="o">.</span><span class="n">_last_measured</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">chro</span><span class="p">)</span>
-
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_last_measured</span></div>
+            <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span></div>
 </div>
 
 </pre></div>

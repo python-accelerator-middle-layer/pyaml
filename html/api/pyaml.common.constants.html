@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>constants &#8212; Python Accelerator Middle Layer 0.1.dev1+g6b7e7772a documentation</title>
+    <title>constants &#8212; Python Accelerator Middle Layer 0.1.dev1+g0cf44ff7c documentation</title>
   
   
   
@@ -42,7 +42,7 @@
   <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
 <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
-    <script src="../_static/documentation_options.js?v=8ba10de4"></script>
+    <script src="../_static/documentation_options.js?v=df29db57"></script>
     <script src="../_static/doctools.js?v=9bcbadda"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -121,8 +121,8 @@
       
     
     
-    <img src="../_static/logo.png" class="logo__image only-light" alt="Python Accelerator Middle Layer 0.1.dev1+g6b7e7772a documentation - Home"/>
-    <img src="../_static/dark.png" class="logo__image only-dark pst-js-only" alt="Python Accelerator Middle Layer 0.1.dev1+g6b7e7772a documentation - Home"/>
+    <img src="../_static/logo.png" class="logo__image only-light" alt="Python Accelerator Middle Layer 0.1.dev1+g0cf44ff7c documentation - Home"/>
+    <img src="../_static/dark.png" class="logo__image only-dark pst-js-only" alt="Python Accelerator Middle Layer 0.1.dev1+g0cf44ff7c documentation - Home"/>
   
   
 </a></div>
@@ -326,6 +326,10 @@
   <div class="bd-toc-item navbar-nav"><p aria-level="2" class="caption" role="heading"><span class="caption-text">API Reference:</span></p>
 <ul class="current nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="pyaml.accelerator.html">accelerator</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="pyaml.apidoc.html">apidoc</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="pyaml.apidoc.gen_api.html">gen_api</a></li>
+</ul>
+</details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="pyaml.arrays.html">arrays</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="pyaml.arrays.array.html">array</a></li>
 <li class="toctree-l2"><a class="reference internal" href="pyaml.arrays.bpm.html">bpm</a></li>
@@ -423,10 +427,14 @@
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="pyaml.tuning_tools.html">tuning_tools</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="pyaml.tuning_tools.dispersion.html">dispersion</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyaml.tuning_tools.measurement_tool.html">measurement_tool</a></li>
 <li class="toctree-l2"><a class="reference internal" href="pyaml.tuning_tools.orbit.html">orbit</a></li>
 <li class="toctree-l2"><a class="reference internal" href="pyaml.tuning_tools.orbit_response_matrix.html">orbit_response_matrix</a></li>
-<li class="toctree-l2"><a class="reference internal" href="pyaml.tuning_tools.response_matrix.html">response_matrix</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyaml.tuning_tools.orbit_response_matrix_data.html">orbit_response_matrix_data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyaml.tuning_tools.response_matrix_data.html">response_matrix_data</a></li>
 <li class="toctree-l2"><a class="reference internal" href="pyaml.tuning_tools.tune.html">tune</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyaml.tuning_tools.tune_response_matrix.html">tune_response_matrix</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyaml.tuning_tools.tuning_tool.html">tuning_tool</a></li>
 </ul>
 </details></li>
 <li class="toctree-l1"><a class="reference internal" href="pyaml.yellow_pages.html">yellow_pages</a></li>
@@ -502,25 +510,29 @@
 <dd><p>Horizontal kick sign convention for both kick an kick angle (default: -1).</p>
 </dd></dl>
 
-<dl class="py data">
-<dt class="sig sig-object py" id="pyaml.common.constants.ACTION_APPLY">
-<span class="sig-name descname"><span class="pre">ACTION_APPLY</span></span><a class="headerlink" href="#pyaml.common.constants.ACTION_APPLY" title="Link to this definition">#</a></dt>
-<dd><p>Action identifier for callback in measurement tools
-Triggered just after exitation has been sent</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="pyaml.common.constants.Action">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Action</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">values</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/common/constants.html#Action"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.common.constants.Action" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/enum.html#enum.Enum" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Enum</span></code></a></p>
+<p>Action identifier for callback in measurement tools</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyaml.common.constants.Action.APPLY">
+<span class="sig-name descname"><span class="pre">APPLY</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">0</span></em><a class="headerlink" href="#pyaml.common.constants.Action.APPLY" title="Link to this definition">#</a></dt>
+<dd><p>Triggered imediatly after actuator exitation</p>
 </dd></dl>
 
-<dl class="py data">
-<dt class="sig sig-object py" id="pyaml.common.constants.ACTION_RESTORE">
-<span class="sig-name descname"><span class="pre">ACTION_RESTORE</span></span><a class="headerlink" href="#pyaml.common.constants.ACTION_RESTORE" title="Link to this definition">#</a></dt>
-<dd><p>Action identifier for callback in measurement tools
-Triggered just after exitation has been restored</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyaml.common.constants.Action.MEASURE">
+<span class="sig-name descname"><span class="pre">MEASURE</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">2</span></em><a class="headerlink" href="#pyaml.common.constants.Action.MEASURE" title="Link to this definition">#</a></dt>
+<dd><p>Triggered imediatly after measurement</p>
 </dd></dl>
 
-<dl class="py data">
-<dt class="sig sig-object py" id="pyaml.common.constants.ACTION_MEASURE">
-<span class="sig-name descname"><span class="pre">ACTION_MEASURE</span></span><a class="headerlink" href="#pyaml.common.constants.ACTION_MEASURE" title="Link to this definition">#</a></dt>
-<dd><p>Action identifier for callback in measurement tools
-Triggered just after measurement</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyaml.common.constants.Action.RESTORE">
+<span class="sig-name descname"><span class="pre">RESTORE</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">1</span></em><a class="headerlink" href="#pyaml.common.constants.Action.RESTORE" title="Link to this definition">#</a></dt>
+<dd><p>Triggered imediatly after actuator has been restored to initial value</p>
+</dd></dl>
+
 </dd></dl>
 
 </section>
@@ -573,9 +585,12 @@ Triggered just after measurement</p>
   <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.common.constants.HORIZONTAL_KICK_SIGN"><code class="docutils literal notranslate"><span class="pre">HORIZONTAL_KICK_SIGN</span></code></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.common.constants.ACTION_APPLY"><code class="docutils literal notranslate"><span class="pre">ACTION_APPLY</span></code></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.common.constants.ACTION_RESTORE"><code class="docutils literal notranslate"><span class="pre">ACTION_RESTORE</span></code></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.common.constants.ACTION_MEASURE"><code class="docutils literal notranslate"><span class="pre">ACTION_MEASURE</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.common.constants.Action"><code class="docutils literal notranslate"><span class="pre">Action</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.common.constants.Action.APPLY"><code class="docutils literal notranslate"><span class="pre">Action.APPLY</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.common.constants.Action.MEASURE"><code class="docutils literal notranslate"><span class="pre">Action.MEASURE</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.common.constants.Action.RESTORE"><code class="docutils literal notranslate"><span class="pre">Action.RESTORE</span></code></a></li>
+</ul>
+</li>
 </ul>
   </nav></div>
 

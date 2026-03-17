@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>chromaticity_monitor &#8212; Python Accelerator Middle Layer 0.1.dev1+g6b7e7772a documentation</title>
+    <title>chromaticity_monitor &#8212; Python Accelerator Middle Layer 0.1.dev1+g0cf44ff7c documentation</title>
   
   
   
@@ -42,7 +42,7 @@
   <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
 <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
-    <script src="../_static/documentation_options.js?v=8ba10de4"></script>
+    <script src="../_static/documentation_options.js?v=df29db57"></script>
     <script src="../_static/doctools.js?v=9bcbadda"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -121,8 +121,8 @@
       
     
     
-    <img src="../_static/logo.png" class="logo__image only-light" alt="Python Accelerator Middle Layer 0.1.dev1+g6b7e7772a documentation - Home"/>
-    <img src="../_static/dark.png" class="logo__image only-dark pst-js-only" alt="Python Accelerator Middle Layer 0.1.dev1+g6b7e7772a documentation - Home"/>
+    <img src="../_static/logo.png" class="logo__image only-light" alt="Python Accelerator Middle Layer 0.1.dev1+g0cf44ff7c documentation - Home"/>
+    <img src="../_static/dark.png" class="logo__image only-dark pst-js-only" alt="Python Accelerator Middle Layer 0.1.dev1+g0cf44ff7c documentation - Home"/>
   
   
 </a></div>
@@ -326,6 +326,10 @@
   <div class="bd-toc-item navbar-nav"><p aria-level="2" class="caption" role="heading"><span class="caption-text">API Reference:</span></p>
 <ul class="current nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="pyaml.accelerator.html">accelerator</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="pyaml.apidoc.html">apidoc</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="pyaml.apidoc.gen_api.html">gen_api</a></li>
+</ul>
+</details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="pyaml.arrays.html">arrays</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="pyaml.arrays.array.html">array</a></li>
 <li class="toctree-l2"><a class="reference internal" href="pyaml.arrays.bpm.html">bpm</a></li>
@@ -423,10 +427,14 @@
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="pyaml.tuning_tools.html">tuning_tools</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="pyaml.tuning_tools.dispersion.html">dispersion</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyaml.tuning_tools.measurement_tool.html">measurement_tool</a></li>
 <li class="toctree-l2"><a class="reference internal" href="pyaml.tuning_tools.orbit.html">orbit</a></li>
 <li class="toctree-l2"><a class="reference internal" href="pyaml.tuning_tools.orbit_response_matrix.html">orbit_response_matrix</a></li>
-<li class="toctree-l2"><a class="reference internal" href="pyaml.tuning_tools.response_matrix.html">response_matrix</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyaml.tuning_tools.orbit_response_matrix_data.html">orbit_response_matrix_data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyaml.tuning_tools.response_matrix_data.html">response_matrix_data</a></li>
 <li class="toctree-l2"><a class="reference internal" href="pyaml.tuning_tools.tune.html">tune</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyaml.tuning_tools.tune_response_matrix.html">tune_response_matrix</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyaml.tuning_tools.tuning_tool.html">tuning_tool</a></li>
 </ul>
 </details></li>
 <li class="toctree-l1"><a class="reference internal" href="pyaml.yellow_pages.html">yellow_pages</a></li>
@@ -497,26 +505,29 @@
 <span id="chromaticity-monitor"></span><h1>chromaticity_monitor<a class="headerlink" href="#module-pyaml.diagnostics.chromaticity_monitor" title="Link to this heading">#</a></h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="pyaml.diagnostics.chromaticity_monitor.ConfigModel">
-<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ConfigModel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">description</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lattice_names</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">betatron_tune</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">RFfreq</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">N_step</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alphac</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">E_delta</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.001</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Max_E_delta</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.004</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">N_tune_meas</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Sleep_between_meas</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Sleep_between_RFvar</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">5.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fit_order</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/diagnostics/chromaticity_monitor.html#ConfigModel"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.diagnostics.chromaticity_monitor.ConfigModel" title="Link to this definition">#</a></dt>
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ConfigModel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">description</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lattice_names</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">betatron_tune_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rf_plant_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bpm_array_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_step</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alphac</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">e_delta</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.001</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_e_delta</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.004</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_tune_meas</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sleep_between_meas</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sleep_between_step</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fit_order</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fit_disp_order</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fit_dispersion</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/diagnostics/chromaticity_monitor.html#ConfigModel"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.diagnostics.chromaticity_monitor.ConfigModel" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference internal" href="pyaml.common.element.html#pyaml.common.element.ElementConfigModel" title="pyaml.common.element.ElementConfigModel"><code class="xref py py-class docutils literal notranslate"><span class="pre">ElementConfigModel</span></code></a></p>
 <p>Configuration model for Chromaticity Monitor.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>betatron_tune</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>) – Name of the diagnostic pyaml device for measuring the tune</p></li>
-<li><p><strong>RFfreq</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>) – Name of main RF frequency plant</p></li>
-<li><p><strong>N_step</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><em>int</em></a><em>, </em><em>optional</em>) – Default number of RF step during chromaticity
+<li><p><strong>betatron_tune_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>) – Name of the diagnostic pyaml device for measuring the tune</p></li>
+<li><p><strong>rf_plant_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>) – Name of main RF frequency plant</p></li>
+<li><p><strong>bpm_array_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em>,</em><em>optional</em>) – Name of main BPM array used for dispersion fit</p></li>
+<li><p><strong>n_step</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><em>int</em></a><em>, </em><em>optional</em>) – Default number of RF step during chromaticity
 measurement, by default 5</p></li>
 <li><p><strong>alphac</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><em>float</em></a><em> or </em><em>None</em><em>, </em><em>optional</em>) – Momentum compaction factor, by default None</p></li>
-<li><p><strong>E_delta</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><em>float</em></a><em>, </em><em>optional</em>) – Default variation of relative energy during chromaticity measurement:
+<li><p><strong>e_delta</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><em>float</em></a><em>, </em><em>optional</em>) – Default variation of relative energy during chromaticity measurement:
 f0 - f0 * E_delta * alphac  &lt; f_RF &lt; f0 + f0 * E_delta * alphac,
 by default 0.001</p></li>
-<li><p><strong>Max_E_delta</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><em>float</em></a><em>, </em><em>optional</em>) – Maximum authorized variation of relative energy during chromaticity
+<li><p><strong>max_e_delta</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><em>float</em></a><em>, </em><em>optional</em>) – Maximum authorized variation of relative energy during chromaticity
 measurement, by default 0.004</p></li>
-<li><p><strong>N_tune_meas</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><em>int</em></a><em>, </em><em>optional</em>) – Default number of tune measurement per RF frequency, by default 1</p></li>
-<li><p><strong>Sleep_between_meas</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><em>float</em></a><em>, </em><em>optional</em>) – Default sleep time in [s] between two tune measurements, by default 2.0</p></li>
-<li><p><strong>Sleep_between_RFvar</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><em>float</em></a><em>, </em><em>optional</em>) – Default sleep time in [s] after RF frequency variation, by default 5.0</p></li>
-<li><p><strong>fit_order</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><em>int</em></a><em>, </em><em>optional</em>) – Fitting order, by default 1</p></li>
+<li><p><strong>n_tune_meas</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><em>int</em></a><em>, </em><em>optional</em>) – Default number of tune/orbit measurement per RF frequency, by default 1</p></li>
+<li><p><strong>sleep_between_meas</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><em>float</em></a><em>, </em><em>optional</em>) – Default sleep time in [s] between two tune measurements, by default 2.0</p></li>
+<li><p><strong>sleep_between_step</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><em>float</em></a><em>, </em><em>optional</em>) – Default sleep time in [s] after RF frequency variation, by default 5.0</p></li>
+<li><p><strong>fit_order</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><em>int</em></a><em>, </em><em>optional</em>) – Chomaticity fitting order, by default 1</p></li>
+<li><p><strong>fit_disp_order</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><em>int</em></a><em>, </em><em>optional</em>) – Dispersion fitting order, by default 1</p></li>
+<li><p><strong>fit_dispersion</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><em>bool</em></a><em>, </em><em>optional</em>) – Dispersion fitting, by default False</p></li>
 </ul>
 </dd>
 </dl>
@@ -525,48 +536,33 @@ measurement, by default 0.004</p></li>
 validated to form a valid model.</p>
 <p><cite>self</cite> is explicitly positional-only to allow <cite>self</cite> as a field name.</p>
 <dl class="py attribute">
-<dt class="sig sig-object py" id="pyaml.diagnostics.chromaticity_monitor.ConfigModel.E_delta">
-<span class="sig-name descname"><span class="pre">E_delta</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><span class="pre">float</span></a></em><a class="headerlink" href="#pyaml.diagnostics.chromaticity_monitor.ConfigModel.E_delta" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pyaml.diagnostics.chromaticity_monitor.ConfigModel.Max_E_delta">
-<span class="sig-name descname"><span class="pre">Max_E_delta</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><span class="pre">float</span></a></em><a class="headerlink" href="#pyaml.diagnostics.chromaticity_monitor.ConfigModel.Max_E_delta" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pyaml.diagnostics.chromaticity_monitor.ConfigModel.N_step">
-<span class="sig-name descname"><span class="pre">N_step</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></em><a class="headerlink" href="#pyaml.diagnostics.chromaticity_monitor.ConfigModel.N_step" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pyaml.diagnostics.chromaticity_monitor.ConfigModel.N_tune_meas">
-<span class="sig-name descname"><span class="pre">N_tune_meas</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></em><a class="headerlink" href="#pyaml.diagnostics.chromaticity_monitor.ConfigModel.N_tune_meas" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pyaml.diagnostics.chromaticity_monitor.ConfigModel.RFfreq">
-<span class="sig-name descname"><span class="pre">RFfreq</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></em><a class="headerlink" href="#pyaml.diagnostics.chromaticity_monitor.ConfigModel.RFfreq" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pyaml.diagnostics.chromaticity_monitor.ConfigModel.Sleep_between_RFvar">
-<span class="sig-name descname"><span class="pre">Sleep_between_RFvar</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><span class="pre">float</span></a></em><a class="headerlink" href="#pyaml.diagnostics.chromaticity_monitor.ConfigModel.Sleep_between_RFvar" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pyaml.diagnostics.chromaticity_monitor.ConfigModel.Sleep_between_meas">
-<span class="sig-name descname"><span class="pre">Sleep_between_meas</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><span class="pre">float</span></a></em><a class="headerlink" href="#pyaml.diagnostics.chromaticity_monitor.ConfigModel.Sleep_between_meas" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
 <dt class="sig sig-object py" id="pyaml.diagnostics.chromaticity_monitor.ConfigModel.alphac">
 <span class="sig-name descname"><span class="pre">alphac</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><span class="pre">float</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></em><a class="headerlink" href="#pyaml.diagnostics.chromaticity_monitor.ConfigModel.alphac" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="pyaml.diagnostics.chromaticity_monitor.ConfigModel.betatron_tune">
-<span class="sig-name descname"><span class="pre">betatron_tune</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></em><a class="headerlink" href="#pyaml.diagnostics.chromaticity_monitor.ConfigModel.betatron_tune" title="Link to this definition">#</a></dt>
+<dt class="sig sig-object py" id="pyaml.diagnostics.chromaticity_monitor.ConfigModel.betatron_tune_name">
+<span class="sig-name descname"><span class="pre">betatron_tune_name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></em><a class="headerlink" href="#pyaml.diagnostics.chromaticity_monitor.ConfigModel.betatron_tune_name" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyaml.diagnostics.chromaticity_monitor.ConfigModel.bpm_array_name">
+<span class="sig-name descname"><span class="pre">bpm_array_name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></em><a class="headerlink" href="#pyaml.diagnostics.chromaticity_monitor.ConfigModel.bpm_array_name" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyaml.diagnostics.chromaticity_monitor.ConfigModel.e_delta">
+<span class="sig-name descname"><span class="pre">e_delta</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><span class="pre">float</span></a></em><a class="headerlink" href="#pyaml.diagnostics.chromaticity_monitor.ConfigModel.e_delta" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyaml.diagnostics.chromaticity_monitor.ConfigModel.fit_disp_order">
+<span class="sig-name descname"><span class="pre">fit_disp_order</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></em><a class="headerlink" href="#pyaml.diagnostics.chromaticity_monitor.ConfigModel.fit_disp_order" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyaml.diagnostics.chromaticity_monitor.ConfigModel.fit_dispersion">
+<span class="sig-name descname"><span class="pre">fit_dispersion</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><span class="pre">bool</span></a></em><a class="headerlink" href="#pyaml.diagnostics.chromaticity_monitor.ConfigModel.fit_dispersion" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
@@ -574,12 +570,42 @@ validated to form a valid model.</p>
 <span class="sig-name descname"><span class="pre">fit_order</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></em><a class="headerlink" href="#pyaml.diagnostics.chromaticity_monitor.ConfigModel.fit_order" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyaml.diagnostics.chromaticity_monitor.ConfigModel.max_e_delta">
+<span class="sig-name descname"><span class="pre">max_e_delta</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><span class="pre">float</span></a></em><a class="headerlink" href="#pyaml.diagnostics.chromaticity_monitor.ConfigModel.max_e_delta" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyaml.diagnostics.chromaticity_monitor.ConfigModel.n_step">
+<span class="sig-name descname"><span class="pre">n_step</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></em><a class="headerlink" href="#pyaml.diagnostics.chromaticity_monitor.ConfigModel.n_step" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyaml.diagnostics.chromaticity_monitor.ConfigModel.n_tune_meas">
+<span class="sig-name descname"><span class="pre">n_tune_meas</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></em><a class="headerlink" href="#pyaml.diagnostics.chromaticity_monitor.ConfigModel.n_tune_meas" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyaml.diagnostics.chromaticity_monitor.ConfigModel.rf_plant_name">
+<span class="sig-name descname"><span class="pre">rf_plant_name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></em><a class="headerlink" href="#pyaml.diagnostics.chromaticity_monitor.ConfigModel.rf_plant_name" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyaml.diagnostics.chromaticity_monitor.ConfigModel.sleep_between_meas">
+<span class="sig-name descname"><span class="pre">sleep_between_meas</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><span class="pre">float</span></a></em><a class="headerlink" href="#pyaml.diagnostics.chromaticity_monitor.ConfigModel.sleep_between_meas" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyaml.diagnostics.chromaticity_monitor.ConfigModel.sleep_between_step">
+<span class="sig-name descname"><span class="pre">sleep_between_step</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><span class="pre">float</span></a></em><a class="headerlink" href="#pyaml.diagnostics.chromaticity_monitor.ConfigModel.sleep_between_step" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="pyaml.diagnostics.chromaticity_monitor.ChomaticityMonitor">
 <em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ChomaticityMonitor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cfg</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/diagnostics/chromaticity_monitor.html#ChomaticityMonitor"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.diagnostics.chromaticity_monitor.ChomaticityMonitor" title="Link to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference internal" href="pyaml.common.element.html#pyaml.common.element.Element" title="pyaml.common.element.Element"><code class="xref py py-class docutils literal notranslate"><span class="pre">Element</span></code></a></p>
+<dd><p>Bases: <a class="reference internal" href="pyaml.tuning_tools.measurement_tool.html#pyaml.tuning_tools.measurement_tool.MeasurementTool" title="pyaml.tuning_tools.measurement_tool.MeasurementTool"><code class="xref py py-class docutils literal notranslate"><span class="pre">MeasurementTool</span></code></a></p>
 <p>Class providing access to a chromaticity monitor
 of a physical or simulated lattice. The monitor provides
 horizontal and vertical chromaticity measurements.</p>
@@ -591,97 +617,52 @@ tune monitor, RF plant, and defaults parameters.</p>
 </dd>
 </dl>
 <dl class="py method">
-<dt class="sig sig-object py" id="pyaml.diagnostics.chromaticity_monitor.ChomaticityMonitor.attach">
-<span class="sig-name descname"><span class="pre">attach</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">peer</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">chromaticity</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/diagnostics/chromaticity_monitor.html#ChomaticityMonitor.attach"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.diagnostics.chromaticity_monitor.ChomaticityMonitor.attach" title="Link to this definition">#</a></dt>
-<dd><p>Attach the chromaticity monitor to a peer with chromaticity data.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>peer</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.14)"><em>object</em></a>) – The peer object (simulator or control system)</p></li>
-<li><p><strong>chromaticity</strong> (<a class="reference internal" href="pyaml.common.abstract.html#pyaml.common.abstract.ReadFloatArray" title="pyaml.common.abstract.ReadFloatArray"><em>ReadFloatArray</em></a>) – The chromaticity array to monitor</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><strong>Self</strong> – A new attached instance of ChromaticityMonitor</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
 <dt class="sig sig-object py" id="pyaml.diagnostics.chromaticity_monitor.ChomaticityMonitor.fit">
-<span class="sig-name descname"><span class="pre">fit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">delta</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">NuX</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">NuY</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">order</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">do_plot</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/diagnostics/chromaticity_monitor.html#ChomaticityMonitor.fit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.diagnostics.chromaticity_monitor.ChomaticityMonitor.fit" title="Link to this definition">#</a></dt>
-<dd><p>Compute chromaticity from measurement data.</p>
+<span class="sig-name descname"><span class="pre">fit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">deltas</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Q</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">order</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">orbit</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fit_disp_order</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">do_plot</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/diagnostics/chromaticity_monitor.html#ChomaticityMonitor.fit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.diagnostics.chromaticity_monitor.ChomaticityMonitor.fit" title="Link to this definition">#</a></dt>
+<dd><p>Compute chromaticity (and dispersion) from measurement data.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>delta</strong> (<em>array</em><em> of </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><em>float</em></a>) – Relative energy (delta) variation steps done.</p></li>
-<li><p><strong>NuX</strong> (<em>array</em><em> of </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><em>float</em></a>) – Horizontal tune measured.</p></li>
-<li><p><strong>NuZ</strong> (<em>array</em><em> of </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><em>float</em></a>) – Vertical tune measured.</p></li>
-<li><p><strong>order</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><em>int</em></a>) – order of polynomial used for fit</p></li>
-<li><p><strong>plot</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><em>bool</em></a><em>, </em><em>optional</em>) – If True, plot the fit.
-Plots are made but not shown. Use plt.show() to show it.</p></li>
+<li><p><strong>deltas</strong> (<em>array</em><em> of </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><em>float</em></a>) – Relative energy (delta) variation steps done.</p></li>
+<li><p><strong>Q</strong> (<em>array</em><em> of </em><em>[</em><em>Qx</em><em>,</em><em>Qy</em><em>]</em>) – Horizontal,Vertical tune measured.</p></li>
+<li><p><strong>orbit</strong> (<em>array</em><em> of </em><em>[</em><em>[</em><em>x0</em><em>,</em><em>y0</em><em>]</em><em>,</em><em>[</em><em>x1</em><em>,</em><em>y1</em><em>]</em><em>,</em><em>...</em><em>]</em>)</p></li>
+<li><p><strong>fit_order</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><em>int</em></a>) – Chromaticity fitting order</p></li>
+<li><p><strong>fit_disp_order</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><em>int</em></a><em>, </em><em>optional</em>) – Dispersion fitting order</p></li>
+<li><p><strong>plot</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><em>bool</em></a><em>, </em><em>optional</em>) – If True, plot the fit.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><strong>chro</strong> (<em>array</em>) – Array with horizontal and veritical chromaticity.</p>
+<dd class="field-even"><p><strong>dict</strong> – Dict with horizontal and veritical chromaticity and dispersion</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pyaml.diagnostics.chromaticity_monitor.ChomaticityMonitor.measure">
-<span class="sig-name descname"><span class="pre">measure</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">N_step</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alphac</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">E_delta</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Max_E_delta</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">N_tune_meas</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Sleep_between_meas</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Sleep_between_RFvar</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fit_order</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">do_plot</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">callback</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/diagnostics/chromaticity_monitor.html#ChomaticityMonitor.measure"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.diagnostics.chromaticity_monitor.ChomaticityMonitor.measure" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">measure</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n_step</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alphac</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">e_delta</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_e_delta</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_tune_meas</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sleep_between_meas</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sleep_between_step</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fit_order</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fit_disp_order</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fit_dispersion</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">do_plot</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">callback</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/diagnostics/chromaticity_monitor.html#ChomaticityMonitor.measure"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.diagnostics.chromaticity_monitor.ChomaticityMonitor.measure" title="Link to this definition">#</a></dt>
 <dd><p>Main function for chromaticity measurment</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>N_step</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><em>int</em></a>) – Default number of RF step during chromaticity
+<li><p><strong>n_step</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><em>int</em></a>) – Default number of RF step during chromaticity
 measurment [default: from config]</p></li>
 <li><p><strong>alphac</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><em>float</em></a><em> | </em><em>None</em>) – Moment compaction factor [default: from config]</p></li>
-<li><p><strong>E_delta</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><em>float</em></a>) – Default variation of relative energy during chromaticity measurment:
+<li><p><strong>w_delta</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><em>float</em></a>) – Default variation of relative energy during chromaticity measurment:
 f0 - f0 * E_delta * alphac  &lt; f_RF &lt; f0 + f0 * E_delta * alphac
 [default: from config]</p></li>
-<li><p><strong>Max_E_delta</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><em>float</em></a>) – Maximum autorized variation of relative energy during chromaticity
+<li><p><strong>max_e_delta</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><em>float</em></a>) – Maximum autorized variation of relative energy during chromaticity
 measurment [default: from config]</p></li>
-<li><p><strong>N_tune_meas</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><em>int</em></a>) – Default number of tune measurment per RF frequency [default: from config]</p></li>
-<li><p><strong>Sleep_between_meas</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><em>float</em></a>) – Default time sleep between two tune measurment [default: from config]</p></li>
-<li><p><strong>Sleep_between_RFvar</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><em>float</em></a>) – Default time sleep after RF frequency variation [default: from config]</p></li>
-<li><p><strong>fit_order</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><em>int</em></a>) – Fitting order [default: 1]</p></li>
+<li><p><strong>n_tune_meas</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><em>int</em></a>) – Default number of tune/orbit measurment per RF frequency [default: from config]</p></li>
+<li><p><strong>sleep_between_meas</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><em>float</em></a>) – Default time sleep between two tune measurment [default: from config]</p></li>
+<li><p><strong>sleep_between_step</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><em>float</em></a>) – Default time sleep after RF frequency variation [default: from config]</p></li>
+<li><p><strong>fit_order</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><em>int</em></a>) – Fitting order [default: from config]</p></li>
+<li><p><strong>fit_disp_order</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><em>int</em></a><em>, </em><em>optional</em>) – Dispersion fitting order [default: from config]</p></li>
+<li><p><strong>fit_dispersion</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><em>bool</em></a><em>, </em><em>optionnal</em>) – Fit dispersion, [default: from config]</p></li>
 <li><p><strong>do_plot</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><em>bool</em></a>) – Do you want to plot the fittinf results ?</p></li>
-<li><p><strong>callback</strong> (<em>Callable</em><em>, </em><em>optional</em>) – User chroma_callback(step:int,action:int,rf:float,tune:np.array)
-Callback is executed after each measurement or setting.
+<li><p><strong>callback</strong> (<em>Callable</em><em>, </em><em>optional</em>) – Callback is executed after each measurement or setting.
 If the callback return false, then the process is aborted.</p></li>
 </ul>
 </dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pyaml.diagnostics.chromaticity_monitor.ChomaticityMonitor.measure_tune_response">
-<span class="sig-name descname"><span class="pre">measure_tune_response</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">N_step</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alphac</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">E_delta</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">N_tune_meas</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Sleep_between_meas</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Sleep_between_RFvar</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">callback</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/diagnostics/chromaticity_monitor.html#ChomaticityMonitor.measure_tune_response"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.diagnostics.chromaticity_monitor.ChomaticityMonitor.measure_tune_response" title="Link to this definition">#</a></dt>
-<dd><p>Main function for chromaticity measurment</p>
-<dl class="simple">
-<dt>N_step: int</dt><dd><p>Default number of RF step during chromaticity
-measurment [default: from config]</p>
-</dd>
-<dt>alphac: float | None</dt><dd><p>Moment compaction factor [default: from config]</p>
-</dd>
-<dt>E_delta: float</dt><dd><p>Default variation of relative energy during chromaticity measurment:
-f0 - f0 * E_delta * alphac  &lt; f_RF &lt; f0 + f0 * E_delta * alphac
-[default: from config]</p>
-</dd>
-<dt>N_tune_meas: int</dt><dd><p>Default number of tune measurment per RF frequency [default: from config]</p>
-</dd>
-<dt>Sleep_between_meas: float</dt><dd><p>Default time sleep between two tune measurment [default: from config]</p>
-</dd>
-<dt>Sleep_between_RFvar: float</dt><dd><p>Default time sleep after RF frequency variation [default: from config]</p>
-</dd>
-<dt>callback: Callable, optional</dt><dd><p>User chroma_callback(step:int,action:int,rf:float,tune:np.array)
-Callback is executed after each measurement or setting.
-If the callback return false, then the process is aborted.</p>
-</dd>
-</dl>
-<dl class="field-list simple">
 </dl>
 </dd></dl>
 
@@ -691,8 +672,45 @@ If the callback return false, then the process is aborted.</p>
 <dd><p>Get the chromaticity values.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>ReadFloatArray</strong> – Array of chromaticity values [horizontal, vertical]</p>
+<dd class="field-odd"><p><strong>ReadFloatArray</strong> – Array of chromaticity values [[q’x, q’y],[q’’x, q’’y],…]</p>
 </dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="pyaml.diagnostics.chromaticity_monitor.ChomaticityMonitor.dispersion">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">dispersion</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="pyaml.common.abstract.html#pyaml.common.abstract.ReadFloatArray" title="pyaml.common.abstract.ReadFloatArray"><span class="pre">ReadFloatArray</span></a></em><a class="headerlink" href="#pyaml.diagnostics.chromaticity_monitor.ChomaticityMonitor.dispersion" title="Link to this definition">#</a></dt>
+<dd><p>Get the dispersion values.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>ReadFloatArray</strong> – Array of dispersion values [[dx, dy],[d’x, d’y],…]</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="pyaml.diagnostics.chromaticity_monitor.RChromaDispArray">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">RChromaDispArray</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">unit</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/diagnostics/chromaticity_monitor.html#RChromaDispArray"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.diagnostics.chromaticity_monitor.RChromaDispArray" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="pyaml.common.abstract.html#pyaml.common.abstract.ReadFloatArray" title="pyaml.common.abstract.ReadFloatArray"><code class="xref py py-class docutils literal notranslate"><span class="pre">ReadFloatArray</span></code></a></p>
+<p>Class providing read access to chromaticity or dispersion.
+Returns arrays of shape (fit_order,2) or None</p>
+<dl class="field-list simple">
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaml.diagnostics.chromaticity_monitor.RChromaDispArray.get">
+<span class="sig-name descname"><span class="pre">get</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/diagnostics/chromaticity_monitor.html#RChromaDispArray.get"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.diagnostics.chromaticity_monitor.RChromaDispArray.get" title="Link to this definition">#</a></dt>
+<dd><p>Get the value</p>
+<dl class="field-list simple">
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaml.diagnostics.chromaticity_monitor.RChromaDispArray.unit">
+<span class="sig-name descname"><span class="pre">unit</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/diagnostics/chromaticity_monitor.html#RChromaDispArray.unit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.diagnostics.chromaticity_monitor.RChromaDispArray.unit" title="Link to this definition">#</a></dt>
+<dd><p>Get the unit of the values</p>
+<dl class="field-list simple">
 </dl>
 </dd></dl>
 
@@ -748,24 +766,31 @@ If the callback return false, then the process is aborted.</p>
   <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.diagnostics.chromaticity_monitor.ConfigModel"><code class="docutils literal notranslate"><span class="pre">ConfigModel</span></code></a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.diagnostics.chromaticity_monitor.ConfigModel.E_delta"><code class="docutils literal notranslate"><span class="pre">ConfigModel.E_delta</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.diagnostics.chromaticity_monitor.ConfigModel.Max_E_delta"><code class="docutils literal notranslate"><span class="pre">ConfigModel.Max_E_delta</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.diagnostics.chromaticity_monitor.ConfigModel.N_step"><code class="docutils literal notranslate"><span class="pre">ConfigModel.N_step</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.diagnostics.chromaticity_monitor.ConfigModel.N_tune_meas"><code class="docutils literal notranslate"><span class="pre">ConfigModel.N_tune_meas</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.diagnostics.chromaticity_monitor.ConfigModel.RFfreq"><code class="docutils literal notranslate"><span class="pre">ConfigModel.RFfreq</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.diagnostics.chromaticity_monitor.ConfigModel.Sleep_between_RFvar"><code class="docutils literal notranslate"><span class="pre">ConfigModel.Sleep_between_RFvar</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.diagnostics.chromaticity_monitor.ConfigModel.Sleep_between_meas"><code class="docutils literal notranslate"><span class="pre">ConfigModel.Sleep_between_meas</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.diagnostics.chromaticity_monitor.ConfigModel.alphac"><code class="docutils literal notranslate"><span class="pre">ConfigModel.alphac</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.diagnostics.chromaticity_monitor.ConfigModel.betatron_tune"><code class="docutils literal notranslate"><span class="pre">ConfigModel.betatron_tune</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.diagnostics.chromaticity_monitor.ConfigModel.betatron_tune_name"><code class="docutils literal notranslate"><span class="pre">ConfigModel.betatron_tune_name</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.diagnostics.chromaticity_monitor.ConfigModel.bpm_array_name"><code class="docutils literal notranslate"><span class="pre">ConfigModel.bpm_array_name</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.diagnostics.chromaticity_monitor.ConfigModel.e_delta"><code class="docutils literal notranslate"><span class="pre">ConfigModel.e_delta</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.diagnostics.chromaticity_monitor.ConfigModel.fit_disp_order"><code class="docutils literal notranslate"><span class="pre">ConfigModel.fit_disp_order</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.diagnostics.chromaticity_monitor.ConfigModel.fit_dispersion"><code class="docutils literal notranslate"><span class="pre">ConfigModel.fit_dispersion</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.diagnostics.chromaticity_monitor.ConfigModel.fit_order"><code class="docutils literal notranslate"><span class="pre">ConfigModel.fit_order</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.diagnostics.chromaticity_monitor.ConfigModel.max_e_delta"><code class="docutils literal notranslate"><span class="pre">ConfigModel.max_e_delta</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.diagnostics.chromaticity_monitor.ConfigModel.n_step"><code class="docutils literal notranslate"><span class="pre">ConfigModel.n_step</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.diagnostics.chromaticity_monitor.ConfigModel.n_tune_meas"><code class="docutils literal notranslate"><span class="pre">ConfigModel.n_tune_meas</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.diagnostics.chromaticity_monitor.ConfigModel.rf_plant_name"><code class="docutils literal notranslate"><span class="pre">ConfigModel.rf_plant_name</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.diagnostics.chromaticity_monitor.ConfigModel.sleep_between_meas"><code class="docutils literal notranslate"><span class="pre">ConfigModel.sleep_between_meas</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.diagnostics.chromaticity_monitor.ConfigModel.sleep_between_step"><code class="docutils literal notranslate"><span class="pre">ConfigModel.sleep_between_step</span></code></a></li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.diagnostics.chromaticity_monitor.ChomaticityMonitor"><code class="docutils literal notranslate"><span class="pre">ChomaticityMonitor</span></code></a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.diagnostics.chromaticity_monitor.ChomaticityMonitor.attach"><code class="docutils literal notranslate"><span class="pre">ChomaticityMonitor.attach()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.diagnostics.chromaticity_monitor.ChomaticityMonitor.fit"><code class="docutils literal notranslate"><span class="pre">ChomaticityMonitor.fit()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.diagnostics.chromaticity_monitor.ChomaticityMonitor.measure"><code class="docutils literal notranslate"><span class="pre">ChomaticityMonitor.measure()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.diagnostics.chromaticity_monitor.ChomaticityMonitor.measure_tune_response"><code class="docutils literal notranslate"><span class="pre">ChomaticityMonitor.measure_tune_response()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.diagnostics.chromaticity_monitor.ChomaticityMonitor.chromaticity"><code class="docutils literal notranslate"><span class="pre">ChomaticityMonitor.chromaticity</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.diagnostics.chromaticity_monitor.ChomaticityMonitor.dispersion"><code class="docutils literal notranslate"><span class="pre">ChomaticityMonitor.dispersion</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.diagnostics.chromaticity_monitor.RChromaDispArray"><code class="docutils literal notranslate"><span class="pre">RChromaDispArray</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.diagnostics.chromaticity_monitor.RChromaDispArray.get"><code class="docutils literal notranslate"><span class="pre">RChromaDispArray.get()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.diagnostics.chromaticity_monitor.RChromaDispArray.unit"><code class="docutils literal notranslate"><span class="pre">RChromaDispArray.unit()</span></code></a></li>
 </ul>
 </li>
 </ul>

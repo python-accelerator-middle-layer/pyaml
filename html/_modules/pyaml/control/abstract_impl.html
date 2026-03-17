@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>pyaml.control.abstract_impl &#8212; Python Accelerator Middle Layer 0.1.dev1+g6b7e7772a documentation</title>
+    <title>pyaml.control.abstract_impl &#8212; Python Accelerator Middle Layer 0.1.dev1+g0cf44ff7c documentation</title>
   
   
   
@@ -41,7 +41,7 @@
   <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
 <link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
-    <script src="../../../_static/documentation_options.js?v=8ba10de4"></script>
+    <script src="../../../_static/documentation_options.js?v=df29db57"></script>
     <script src="../../../_static/doctools.js?v=9bcbadda"></script>
     <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -118,8 +118,8 @@
       
     
     
-    <img src="../../../_static/logo.png" class="logo__image only-light" alt="Python Accelerator Middle Layer 0.1.dev1+g6b7e7772a documentation - Home"/>
-    <img src="../../../_static/dark.png" class="logo__image only-dark pst-js-only" alt="Python Accelerator Middle Layer 0.1.dev1+g6b7e7772a documentation - Home"/>
+    <img src="../../../_static/logo.png" class="logo__image only-light" alt="Python Accelerator Middle Layer 0.1.dev1+g0cf44ff7c documentation - Home"/>
+    <img src="../../../_static/dark.png" class="logo__image only-dark pst-js-only" alt="Python Accelerator Middle Layer 0.1.dev1+g0cf44ff7c documentation - Home"/>
   
   
 </a></div>
@@ -439,10 +439,7 @@
         <span class="n">mins</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">full</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">mins_obj</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">object</span><span class="p">)</span>
         <span class="n">maxs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">full</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">maxs_obj</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">object</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-            <span class="sa">f</span><span class="s2">&quot;Inconsistent sizes: </span><span class="si">{</span><span class="n">n</span><span class="si">}</span><span class="s2"> value(s) for </span><span class="si">{</span><span class="n">k</span><span class="si">}</span><span class="s2"> range(s). &quot;</span>
-            <span class="sa">f</span><span class="s2">&quot;Supported: N==K, N==1, or K==1.&quot;</span>
-        <span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Inconsistent sizes: </span><span class="si">{</span><span class="n">n</span><span class="si">}</span><span class="s2"> value(s) for </span><span class="si">{</span><span class="n">k</span><span class="si">}</span><span class="s2"> range(s). Supported: N==K, N==1, or K==1.&quot;</span><span class="p">)</span>
 
     <span class="c1"># ---- Replace None bounds with -inf / +inf (NumPy-safe) ----</span>
     <span class="n">mins_is_none</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">equal</span><span class="p">(</span><span class="n">mins</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
@@ -473,11 +470,7 @@
 <span class="sd">      - DeviceAccessList: yields N items based on get_devices() and get_range() flattening</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1"># Single device</span>
-    <span class="k">if</span> <span class="p">(</span>
-        <span class="nb">hasattr</span><span class="p">(</span><span class="n">devs</span><span class="p">,</span> <span class="s2">&quot;get&quot;</span><span class="p">)</span>
-        <span class="ow">and</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">devs</span><span class="p">,</span> <span class="s2">&quot;get_range&quot;</span><span class="p">)</span>
-        <span class="ow">and</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">devs</span><span class="p">,</span> <span class="s2">&quot;get_devices&quot;</span><span class="p">)</span>
-    <span class="p">):</span>
+    <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">devs</span><span class="p">,</span> <span class="s2">&quot;get&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">devs</span><span class="p">,</span> <span class="s2">&quot;get_range&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">devs</span><span class="p">,</span> <span class="s2">&quot;get_devices&quot;</span><span class="p">):</span>
         <span class="n">r</span> <span class="o">=</span> <span class="n">devs</span><span class="o">.</span><span class="n">get_range</span><span class="p">()</span>
         <span class="k">if</span> <span class="n">r</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">r</span> <span class="o">=</span> <span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span>
@@ -536,13 +529,10 @@
         <span class="n">vv</span> <span class="o">=</span> <span class="n">v</span>
         <span class="n">pairs</span> <span class="o">=</span> <span class="p">[</span><span class="n">dev_pairs</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span> <span class="o">*</span> <span class="n">n</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-            <span class="sa">f</span><span class="s2">&quot;Inconsistent sizes: </span><span class="si">{</span><span class="n">n</span><span class="si">}</span><span class="s2"> value(s) for </span><span class="si">{</span><span class="n">k</span><span class="si">}</span><span class="s2"> device(s). &quot;</span>
-            <span class="sa">f</span><span class="s2">&quot;Supported: N==K, N==1, or K==1.&quot;</span>
-        <span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Inconsistent sizes: </span><span class="si">{</span><span class="n">n</span><span class="si">}</span><span class="s2"> value(s) for </span><span class="si">{</span><span class="n">k</span><span class="si">}</span><span class="s2"> device(s). Supported: N==K, N==1, or K==1.&quot;</span><span class="p">)</span>
 
     <span class="n">lines</span> <span class="o">=</span> <span class="p">[</span><span class="n">header</span><span class="p">]</span>
-    <span class="k">for</span> <span class="n">val</span><span class="p">,</span> <span class="p">(</span><span class="n">dev</span><span class="p">,</span> <span class="n">r</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">vv</span><span class="p">,</span> <span class="n">pairs</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">val</span><span class="p">,</span> <span class="p">(</span><span class="n">dev</span><span class="p">,</span> <span class="n">r</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">vv</span><span class="p">,</span> <span class="n">pairs</span><span class="p">,</span> <span class="n">strict</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">check_range</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="n">r</span><span class="p">):</span>
             <span class="n">unit</span> <span class="o">=</span> <span class="n">dev</span><span class="o">.</span><span class="n">unit</span><span class="p">()</span> <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">dev</span><span class="p">,</span> <span class="s2">&quot;unit&quot;</span><span class="p">)</span> <span class="k">else</span> <span class="s2">&quot;&quot;</span>
             <span class="n">name</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">dev</span><span class="p">)</span>
@@ -638,11 +628,7 @@
         <span class="c1"># a CombinedFunctionMagnet or simple magnet.</span>
         <span class="c1"># All magnets exported from a same CombinedFunctionMagnet share the same model</span>
         <span class="c1"># TODO: check that strength is supported (m.strength may be None)</span>
-        <span class="n">strengthIndex</span> <span class="o">=</span> <span class="p">(</span>
-            <span class="n">magnet</span><span class="o">.</span><span class="n">strength</span><span class="o">.</span><span class="n">index</span><span class="p">()</span>
-            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">magnet</span><span class="o">.</span><span class="n">strength</span><span class="p">,</span> <span class="n">abstract</span><span class="o">.</span><span class="n">RWMapper</span><span class="p">)</span>
-            <span class="k">else</span> <span class="mi">0</span>
-        <span class="p">)</span>
+        <span class="n">strengthIndex</span> <span class="o">=</span> <span class="n">magnet</span><span class="o">.</span><span class="n">strength</span><span class="o">.</span><span class="n">index</span><span class="p">()</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">magnet</span><span class="o">.</span><span class="n">strength</span><span class="p">,</span> <span class="n">abstract</span><span class="o">.</span><span class="n">RWMapper</span><span class="p">)</span> <span class="k">else</span> <span class="mi">0</span>
         <span class="k">if</span> <span class="n">magnet</span><span class="o">.</span><span class="n">model</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">__models</span><span class="p">:</span>
             <span class="n">index</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__models</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">__models</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">magnet</span><span class="o">.</span><span class="n">model</span><span class="p">)</span>
@@ -662,20 +648,14 @@
         <span class="n">hardwareIndex</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="k">for</span> <span class="n">modelIndex</span><span class="p">,</span> <span class="n">model</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__models</span><span class="p">):</span>
             <span class="n">nbDev</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">get_devices</span><span class="p">())</span>
-            <span class="n">mStrengths</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">compute_strengths</span><span class="p">(</span>
-                <span class="n">allHardwareValues</span><span class="p">[</span><span class="n">hardwareIndex</span> <span class="p">:</span> <span class="n">hardwareIndex</span> <span class="o">+</span> <span class="n">nbDev</span><span class="p">]</span>
-            <span class="p">)</span>
+            <span class="n">mStrengths</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">compute_strengths</span><span class="p">(</span><span class="n">allHardwareValues</span><span class="p">[</span><span class="n">hardwareIndex</span> <span class="p">:</span> <span class="n">hardwareIndex</span> <span class="o">+</span> <span class="n">nbDev</span><span class="p">])</span>
             <span class="k">for</span> <span class="n">valueIdx</span><span class="p">,</span> <span class="n">strengthIdx</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">__modelToMagnet</span><span class="p">[</span><span class="n">modelIndex</span><span class="p">]:</span>
                 <span class="n">mStrengths</span><span class="p">[</span><span class="n">strengthIdx</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span><span class="p">[</span><span class="n">valueIdx</span><span class="p">]</span>
-            <span class="n">newHardwareValues</span><span class="p">[</span><span class="n">hardwareIndex</span> <span class="p">:</span> <span class="n">hardwareIndex</span> <span class="o">+</span> <span class="n">nbDev</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
-                <span class="n">model</span><span class="o">.</span><span class="n">compute_hardware_values</span><span class="p">(</span><span class="n">mStrengths</span><span class="p">)</span>
-            <span class="p">)</span>
+            <span class="n">newHardwareValues</span><span class="p">[</span><span class="n">hardwareIndex</span> <span class="p">:</span> <span class="n">hardwareIndex</span> <span class="o">+</span> <span class="n">nbDev</span><span class="p">]</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">compute_hardware_values</span><span class="p">(</span><span class="n">mStrengths</span><span class="p">)</span>
             <span class="n">hardwareIndex</span> <span class="o">+=</span> <span class="n">nbDev</span>
         <span class="n">dev_range</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_devs</span><span class="o">.</span><span class="n">get_range</span><span class="p">()</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">check_range</span><span class="p">(</span><span class="n">newHardwareValues</span><span class="p">,</span> <span class="n">dev_range</span><span class="p">):</span>
-            <span class="k">raise</span> <span class="n">PyAMLException</span><span class="p">(</span>
-                <span class="n">format_out_of_range_message</span><span class="p">(</span><span class="n">newHardwareValues</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_devs</span><span class="p">)</span>
-            <span class="p">)</span>
+            <span class="k">raise</span> <span class="n">PyAMLException</span><span class="p">(</span><span class="n">format_out_of_range_message</span><span class="p">(</span><span class="n">newHardwareValues</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_devs</span><span class="p">))</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_devs</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">newHardwareValues</span><span class="p">)</span></div>
 
 
@@ -693,9 +673,7 @@
         <span class="n">hardwareIndex</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="k">for</span> <span class="n">modelIndex</span><span class="p">,</span> <span class="n">model</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__models</span><span class="p">):</span>
             <span class="n">nbDev</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">get_devices</span><span class="p">())</span>
-            <span class="n">mStrengths</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">compute_strengths</span><span class="p">(</span>
-                <span class="n">allHardwareValues</span><span class="p">[</span><span class="n">hardwareIndex</span> <span class="p">:</span> <span class="n">hardwareIndex</span> <span class="o">+</span> <span class="n">nbDev</span><span class="p">]</span>
-            <span class="p">)</span>
+            <span class="n">mStrengths</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">compute_strengths</span><span class="p">(</span><span class="n">allHardwareValues</span><span class="p">[</span><span class="n">hardwareIndex</span> <span class="p">:</span> <span class="n">hardwareIndex</span> <span class="o">+</span> <span class="n">nbDev</span><span class="p">])</span>
             <span class="k">for</span> <span class="n">valueIdx</span><span class="p">,</span> <span class="n">strengthIdx</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">__modelToMagnet</span><span class="p">[</span><span class="n">modelIndex</span><span class="p">]:</span>
                 <span class="n">allStrength</span><span class="p">[</span><span class="n">valueIdx</span><span class="p">]</span> <span class="o">=</span> <span class="n">mStrengths</span><span class="p">[</span><span class="n">strengthIdx</span><span class="p">]</span>
             <span class="n">hardwareIndex</span> <span class="o">+=</span> <span class="n">nbDev</span>
@@ -710,9 +688,7 @@
         <span class="n">hardwareIndex</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="k">for</span> <span class="n">modelIndex</span><span class="p">,</span> <span class="n">model</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__models</span><span class="p">):</span>
             <span class="n">nbDev</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">get_devices</span><span class="p">())</span>
-            <span class="n">mStrengths</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">compute_strengths</span><span class="p">(</span>
-                <span class="n">allHardwareValues</span><span class="p">[</span><span class="n">hardwareIndex</span> <span class="p">:</span> <span class="n">hardwareIndex</span> <span class="o">+</span> <span class="n">nbDev</span><span class="p">]</span>
-            <span class="p">)</span>
+            <span class="n">mStrengths</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">compute_strengths</span><span class="p">(</span><span class="n">allHardwareValues</span><span class="p">[</span><span class="n">hardwareIndex</span> <span class="p">:</span> <span class="n">hardwareIndex</span> <span class="o">+</span> <span class="n">nbDev</span><span class="p">])</span>
             <span class="k">for</span> <span class="n">valueIdx</span><span class="p">,</span> <span class="n">strengthIdx</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">__modelToMagnet</span><span class="p">[</span><span class="n">modelIndex</span><span class="p">]:</span>
                 <span class="n">allStrength</span><span class="p">[</span><span class="n">valueIdx</span><span class="p">]</span> <span class="o">=</span> <span class="n">mStrengths</span><span class="p">[</span><span class="n">strengthIdx</span><span class="p">]</span>
             <span class="n">hardwareIndex</span> <span class="o">+=</span> <span class="n">nbDev</span>
@@ -1302,35 +1278,6 @@
 
 
 <span class="c1"># ------------------------------------------------------------------------------</span>
-
-
-<div class="viewcode-block" id="RChromaticityArray">
-<a class="viewcode-back" href="../../../api/pyaml.control.abstract_impl.html#pyaml.control.abstract_impl.RChromaticityArray">[docs]</a>
-<span class="k">class</span><span class="w"> </span><span class="nc">RChromaticityArray</span><span class="p">(</span><span class="n">abstract</span><span class="o">.</span><span class="n">ReadFloatArray</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Class providing read write access to chromaticity of a control system.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-
-    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">chromaticity_monitor</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">__chromaticity_monitor</span> <span class="o">=</span> <span class="n">chromaticity_monitor</span>
-
-    <span class="k">def</span><span class="w"> </span><span class="nf">_update_chromaticity_monitor</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">chromaticity_monitor</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Use to attach the proper chromaticity_monitor and not the one used to create this instance&quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">__chromaticity_monitor</span> <span class="o">=</span> <span class="n">chromaticity_monitor</span>
-
-<div class="viewcode-block" id="RChromaticityArray.get">
-<a class="viewcode-back" href="../../../api/pyaml.control.abstract_impl.html#pyaml.control.abstract_impl.RChromaticityArray.get">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">NDArray</span><span class="p">:</span>
-        <span class="c1"># Return horizontal and vertical chromaticity as a NumPy array</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__chromaticity_monitor</span><span class="o">.</span><span class="n">_last_measured</span></div>
-
-
-<div class="viewcode-block" id="RChromaticityArray.unit">
-<a class="viewcode-back" href="../../../api/pyaml.control.abstract_impl.html#pyaml.control.abstract_impl.RChromaticityArray.unit">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">unit</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-        <span class="k">return</span> <span class="s2">&quot;1&quot;</span></div>
-</div>
-
 </pre></div>
 
                 </article>

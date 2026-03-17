@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>pyaml.common.element_holder &#8212; Python Accelerator Middle Layer 0.1.dev1+g6b7e7772a documentation</title>
+    <title>pyaml.common.element_holder &#8212; Python Accelerator Middle Layer 0.1.dev1+g0cf44ff7c documentation</title>
   
   
   
@@ -41,7 +41,7 @@
   <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
 <link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
-    <script src="../../../_static/documentation_options.js?v=8ba10de4"></script>
+    <script src="../../../_static/documentation_options.js?v=df29db57"></script>
     <script src="../../../_static/doctools.js?v=9bcbadda"></script>
     <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -118,8 +118,8 @@
       
     
     
-    <img src="../../../_static/logo.png" class="logo__image only-light" alt="Python Accelerator Middle Layer 0.1.dev1+g6b7e7772a documentation - Home"/>
-    <img src="../../../_static/dark.png" class="logo__image only-dark pst-js-only" alt="Python Accelerator Middle Layer 0.1.dev1+g6b7e7772a documentation - Home"/>
+    <img src="../../../_static/logo.png" class="logo__image only-light" alt="Python Accelerator Middle Layer 0.1.dev1+g0cf44ff7c documentation - Home"/>
+    <img src="../../../_static/dark.png" class="logo__image only-dark pst-js-only" alt="Python Accelerator Middle Layer 0.1.dev1+g0cf44ff7c documentation - Home"/>
   
   
 </a></div>
@@ -394,10 +394,13 @@
 <span class="kn">from</span><span class="w"> </span><span class="nn">.element</span><span class="w"> </span><span class="kn">import</span> <span class="n">Element</span>
 
 <span class="k">if</span> <span class="n">TYPE_CHECKING</span><span class="p">:</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">..tuning_tools.chromaticity</span><span class="w"> </span><span class="kn">import</span> <span class="n">Chromaticity</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">..tuning_tools.chromaticity_response_matrix</span><span class="w"> </span><span class="kn">import</span> <span class="n">ChromaticityResponseMatrix</span>
     <span class="kn">from</span><span class="w"> </span><span class="nn">..tuning_tools.dispersion</span><span class="w"> </span><span class="kn">import</span> <span class="n">Dispersion</span>
     <span class="kn">from</span><span class="w"> </span><span class="nn">..tuning_tools.orbit</span><span class="w"> </span><span class="kn">import</span> <span class="n">Orbit</span>
     <span class="kn">from</span><span class="w"> </span><span class="nn">..tuning_tools.orbit_response_matrix</span><span class="w"> </span><span class="kn">import</span> <span class="n">OrbitResponseMatrix</span>
     <span class="kn">from</span><span class="w"> </span><span class="nn">..tuning_tools.tune</span><span class="w"> </span><span class="kn">import</span> <span class="n">Tune</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">..tuning_tools.tune_response_matrix</span><span class="w"> </span><span class="kn">import</span> <span class="n">TuneResponseMatrix</span>
 
 
 <div class="viewcode-block" id="ElementHolder">
@@ -733,22 +736,44 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">__add</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__DIAG</span><span class="p">,</span> <span class="n">tune_monitor</span><span class="p">)</span></div>
 
 
-    <span class="c1"># Chromaticity monitor</span>
+    <span class="c1"># Tuning/Measurement tools</span>
+
+<div class="viewcode-block" id="ElementHolder.add_tool">
+<a class="viewcode-back" href="../../../api/pyaml.common.element_holder.html#pyaml.common.element_holder.ElementHolder.add_tool">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">add_tool</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tool</span><span class="p">:</span> <span class="n">Element</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__add</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__TUNING_TOOLS</span><span class="p">,</span> <span class="n">tool</span><span class="p">)</span></div>
+
+
+    <span class="c1"># ---- Chromaticity -------------------------------------------------</span>
 
 <div class="viewcode-block" id="ElementHolder.get_chromaticity_monitor">
 <a class="viewcode-back" href="../../../api/pyaml.common.element_holder.html#pyaml.common.element_holder.ElementHolder.get_chromaticity_monitor">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">get_chromaticity_monitor</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ChomaticityMonitor</span><span class="p">:</span>
-        <span class="n">obj</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__get</span><span class="p">(</span><span class="s2">&quot;Diagnostic&quot;</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__DIAG</span><span class="p">)</span>
+        <span class="n">obj</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__get</span><span class="p">(</span><span class="s2">&quot;Chomaticity monitor&quot;</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__TUNING_TOOLS</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">obj</span></div>
 
 
-<div class="viewcode-block" id="ElementHolder.add_chromaticity_monitor">
-<a class="viewcode-back" href="../../../api/pyaml.common.element_holder.html#pyaml.common.element_holder.ElementHolder.add_chromaticity_monitor">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">add_chromaticity_monitor</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">chromaticity_monitor</span><span class="p">:</span> <span class="n">Element</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">__add</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__DIAG</span><span class="p">,</span> <span class="n">chromaticity_monitor</span><span class="p">)</span></div>
+<div class="viewcode-block" id="ElementHolder.get_chromaticity_tuning">
+<a class="viewcode-back" href="../../../api/pyaml.common.element_holder.html#pyaml.common.element_holder.ElementHolder.get_chromaticity_tuning">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_chromaticity_tuning</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;Chromaticity&quot;</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__get</span><span class="p">(</span><span class="s2">&quot;Chromaticity tool&quot;</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__TUNING_TOOLS</span><span class="p">)</span></div>
 
 
-    <span class="c1"># Tuning tools</span>
+<div class="viewcode-block" id="ElementHolder.get_crm_tuning">
+<a class="viewcode-back" href="../../../api/pyaml.common.element_holder.html#pyaml.common.element_holder.ElementHolder.get_crm_tuning">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_crm_tuning</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;ChromaticityResponseMatrix&quot;</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__get</span><span class="p">(</span><span class="s2">&quot;ChromaticityResponseMatrix tool&quot;</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__TUNING_TOOLS</span><span class="p">)</span></div>
+
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">chromaticity</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;Chromaticity&quot;</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_chromaticity_tuning</span><span class="p">(</span><span class="s2">&quot;DEFAULT_CHROMATICITY_CORRECTION&quot;</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">crm</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;ChromaticityResponseMatrix&quot;</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_crm_tuning</span><span class="p">(</span><span class="s2">&quot;DEFAULT_CHROMATICITY_RESPONSE_MATRIX&quot;</span><span class="p">)</span>
+
+    <span class="c1"># ---- Tune ---------------------------------------------------------</span>
 
 <div class="viewcode-block" id="ElementHolder.get_tune_tuning">
 <a class="viewcode-back" href="../../../api/pyaml.common.element_holder.html#pyaml.common.element_holder.ElementHolder.get_tune_tuning">[docs]</a>
@@ -756,26 +781,26 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__get</span><span class="p">(</span><span class="s2">&quot;Tune tuning tool&quot;</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__TUNING_TOOLS</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="ElementHolder.add_tune_tuning">
-<a class="viewcode-back" href="../../../api/pyaml.common.element_holder.html#pyaml.common.element_holder.ElementHolder.add_tune_tuning">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">add_tune_tuning</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tune</span><span class="p">:</span> <span class="n">Element</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">__add</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__TUNING_TOOLS</span><span class="p">,</span> <span class="n">tune</span><span class="p">)</span></div>
-
-
     <span class="nd">@property</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">tune</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;Tune&quot;</span><span class="p">:</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_tune_tuning</span><span class="p">(</span><span class="s2">&quot;DEFAULT_TUNE_CORRECTION&quot;</span><span class="p">)</span>
+
+<div class="viewcode-block" id="ElementHolder.get_trm_tuning">
+<a class="viewcode-back" href="../../../api/pyaml.common.element_holder.html#pyaml.common.element_holder.ElementHolder.get_trm_tuning">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_trm_tuning</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;TuneResponseMatrix&quot;</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__get</span><span class="p">(</span><span class="s2">&quot;TuneResponseMatrix tool&quot;</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__TUNING_TOOLS</span><span class="p">)</span></div>
+
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">trm</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;TuneResponseMatrix&quot;</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_trm_tuning</span><span class="p">(</span><span class="s2">&quot;DEFAULT_TUNE_RESPONSE_MATRIX&quot;</span><span class="p">)</span>
+
+    <span class="c1"># ---- Orbit --------------------------------------------------------</span>
 
 <div class="viewcode-block" id="ElementHolder.get_orbit_tuning">
 <a class="viewcode-back" href="../../../api/pyaml.common.element_holder.html#pyaml.common.element_holder.ElementHolder.get_orbit_tuning">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">get_orbit_tuning</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;Orbit&quot;</span><span class="p">:</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__get</span><span class="p">(</span><span class="s2">&quot;Orbit tuning tool&quot;</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__TUNING_TOOLS</span><span class="p">)</span></div>
-
-
-<div class="viewcode-block" id="ElementHolder.add_orbit_tuning">
-<a class="viewcode-back" href="../../../api/pyaml.common.element_holder.html#pyaml.common.element_holder.ElementHolder.add_orbit_tuning">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">add_orbit_tuning</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">orbit</span><span class="p">:</span> <span class="n">Element</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">__add</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__TUNING_TOOLS</span><span class="p">,</span> <span class="n">orbit</span><span class="p">)</span></div>
 
 
     <span class="nd">@property</span>
@@ -788,26 +813,16 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__get</span><span class="p">(</span><span class="s2">&quot;OrbitResponseMatrix tool&quot;</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__TUNING_TOOLS</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="ElementHolder.add_orm_tuning">
-<a class="viewcode-back" href="../../../api/pyaml.common.element_holder.html#pyaml.common.element_holder.ElementHolder.add_orm_tuning">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">add_orm_tuning</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">orm</span><span class="p">:</span> <span class="n">Element</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">__add</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__TUNING_TOOLS</span><span class="p">,</span> <span class="n">orm</span><span class="p">)</span></div>
-
-
     <span class="nd">@property</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">orm</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;OrbitResponseMatrix&quot;</span><span class="p">:</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_orm_tuning</span><span class="p">(</span><span class="s2">&quot;DEFAULT_ORBIT_RESPONSE_MATRIX&quot;</span><span class="p">)</span>
+
+    <span class="c1"># ---- Dispersive orbit --------------------------------------------</span>
 
 <div class="viewcode-block" id="ElementHolder.get_dispersion_tuning">
 <a class="viewcode-back" href="../../../api/pyaml.common.element_holder.html#pyaml.common.element_holder.ElementHolder.get_dispersion_tuning">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">get_dispersion_tuning</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;Dispersion&quot;</span><span class="p">:</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__get</span><span class="p">(</span><span class="s2">&quot;Dispersion tool&quot;</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__TUNING_TOOLS</span><span class="p">)</span></div>
-
-
-<div class="viewcode-block" id="ElementHolder.add_dispersion_tuning">
-<a class="viewcode-back" href="../../../api/pyaml.common.element_holder.html#pyaml.common.element_holder.ElementHolder.add_dispersion_tuning">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">add_dispersion_tuning</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dispersion</span><span class="p">:</span> <span class="n">Element</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">__add</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__TUNING_TOOLS</span><span class="p">,</span> <span class="n">dispersion</span><span class="p">)</span></div>
 
 
     <span class="nd">@property</span>

@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>pyaml.tuning_tools.orbit &#8212; Python Accelerator Middle Layer 0.1.dev1+g6b7e7772a documentation</title>
+    <title>pyaml.tuning_tools.orbit &#8212; Python Accelerator Middle Layer 0.1.dev1+g0cf44ff7c documentation</title>
   
   
   
@@ -41,7 +41,7 @@
   <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
 <link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
-    <script src="../../../_static/documentation_options.js?v=8ba10de4"></script>
+    <script src="../../../_static/documentation_options.js?v=df29db57"></script>
     <script src="../../../_static/doctools.js?v=9bcbadda"></script>
     <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -118,8 +118,8 @@
       
     
     
-    <img src="../../../_static/logo.png" class="logo__image only-light" alt="Python Accelerator Middle Layer 0.1.dev1+g6b7e7772a documentation - Home"/>
-    <img src="../../../_static/dark.png" class="logo__image only-dark pst-js-only" alt="Python Accelerator Middle Layer 0.1.dev1+g6b7e7772a documentation - Home"/>
+    <img src="../../../_static/logo.png" class="logo__image only-light" alt="Python Accelerator Middle Layer 0.1.dev1+g0cf44ff7c documentation - Home"/>
+    <img src="../../../_static/dark.png" class="logo__image only-dark pst-js-only" alt="Python Accelerator Middle Layer 0.1.dev1+g0cf44ff7c documentation - Home"/>
   
   
 </a></div>
@@ -391,7 +391,8 @@
 <span class="kn">from</span><span class="w"> </span><span class="nn">..common.exception</span><span class="w"> </span><span class="kn">import</span> <span class="n">PyAMLException</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">..external.pySC_interface</span><span class="w"> </span><span class="kn">import</span> <span class="n">pySCInterface</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">..rf.rf_plant</span><span class="w"> </span><span class="kn">import</span> <span class="n">RFPlant</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">.response_matrix</span><span class="w"> </span><span class="kn">import</span> <span class="n">ResponseMatrix</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.orbit_response_matrix_data</span><span class="w"> </span><span class="kn">import</span> <span class="n">OrbitResponseMatrixData</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.tuning_tool</span><span class="w"> </span><span class="kn">import</span> <span class="n">TuningTool</span>
 
 <span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
 <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s2">&quot;pyaml.external.pySC&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">setLevel</span><span class="p">(</span><span class="n">logging</span><span class="o">.</span><span class="n">WARNING</span><span class="p">)</span>
@@ -412,13 +413,13 @@
     <span class="n">singular_values_H</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="n">singular_values_V</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="n">virtual_target</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">0</span>
-    <span class="n">response_matrix</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">ResponseMatrix</span><span class="p">]</span></div>
+    <span class="n">response_matrix</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">OrbitResponseMatrixData</span><span class="p">]</span></div>
 
 
 
 <div class="viewcode-block" id="Orbit">
 <a class="viewcode-back" href="../../../api/pyaml.tuning_tools.orbit.html#pyaml.tuning_tools.orbit.Orbit">[docs]</a>
-<span class="k">class</span><span class="w"> </span><span class="nc">Orbit</span><span class="p">(</span><span class="n">Element</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">Orbit</span><span class="p">(</span><span class="n">TuningTool</span><span class="p">):</span>
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cfg</span><span class="p">:</span> <span class="n">ConfigModel</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">cfg</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_cfg</span> <span class="o">=</span> <span class="n">cfg</span>
@@ -432,8 +433,7 @@
         <span class="k">if</span> <span class="n">cfg</span><span class="o">.</span><span class="n">singular_values</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">cfg</span><span class="o">.</span><span class="n">singular_values_H</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">cfg</span><span class="o">.</span><span class="n">singular_values_V</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="k">raise</span> <span class="n">PyAMLException</span><span class="p">(</span>
-                    <span class="s2">&quot;Either `singular_values` or `singular_values_H` and &quot;</span>
-                    <span class="s2">&quot;`singular_values_V` must be provided.&quot;</span>
+                    <span class="s2">&quot;Either `singular_values` or `singular_values_H` and `singular_values_V` must be provided.&quot;</span>
                 <span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">singular_values_H</span> <span class="o">=</span> <span class="n">cfg</span><span class="o">.</span><span class="n">singular_values_H</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">singular_values_V</span> <span class="o">=</span> <span class="n">cfg</span><span class="o">.</span><span class="n">singular_values_V</span>
@@ -449,16 +449,19 @@
         <span class="c1"># If the configuration response matrix is a filename, load it</span>
         <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">cfg</span><span class="o">.</span><span class="n">response_matrix</span><span class="p">)</span> <span class="ow">is</span> <span class="nb">str</span><span class="p">:</span>
             <span class="k">try</span><span class="p">:</span>
-                <span class="n">cfg</span><span class="o">.</span><span class="n">response_matrix</span> <span class="o">=</span> <span class="n">ResponseMatrix</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">cfg</span><span class="o">.</span><span class="n">response_matrix</span><span class="p">)</span>
+                <span class="n">cfg</span><span class="o">.</span><span class="n">response_matrix</span> <span class="o">=</span> <span class="n">OrbitResponseMatrixData</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">cfg</span><span class="o">.</span><span class="n">response_matrix</span><span class="p">)</span>
             <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
                 <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
                 <span class="n">cfg</span><span class="o">.</span><span class="n">response_matrix</span> <span class="o">=</span> <span class="kc">None</span>
 
-        <span class="c1"># assigns self._pySC_response_matrix</span>
+        <span class="c1"># Converts to self._pySC_response_matrix</span>
         <span class="k">if</span> <span class="n">cfg</span><span class="o">.</span><span class="n">response_matrix</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_pySC_response_matrix</span> <span class="o">=</span> <span class="n">pySC_ResponseMatrix</span><span class="o">.</span><span class="n">model_validate</span><span class="p">(</span>
-                <span class="n">cfg</span><span class="o">.</span><span class="n">response_matrix</span><span class="o">.</span><span class="n">_cfg</span><span class="o">.</span><span class="n">model_dump</span><span class="p">()</span>
-            <span class="p">)</span>
+            <span class="n">m</span> <span class="o">=</span> <span class="n">cfg</span><span class="o">.</span><span class="n">response_matrix</span><span class="o">.</span><span class="n">_cfg</span><span class="o">.</span><span class="n">model_dump</span><span class="p">()</span>
+            <span class="n">m</span><span class="p">[</span><span class="s2">&quot;input_names&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">m</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;variable_names&quot;</span><span class="p">)</span>
+            <span class="n">m</span><span class="p">[</span><span class="s2">&quot;output_names&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">m</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;observable_names&quot;</span><span class="p">)</span>
+            <span class="n">m</span><span class="p">[</span><span class="s2">&quot;input_planes&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">m</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;variable_planes&quot;</span><span class="p">)</span>
+            <span class="n">m</span><span class="p">[</span><span class="s2">&quot;output_planes&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">m</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;observable_planes&quot;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_pySC_response_matrix</span> <span class="o">=</span> <span class="n">pySC_ResponseMatrix</span><span class="o">.</span><span class="n">model_validate</span><span class="p">(</span><span class="n">m</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_hcorr</span><span class="p">:</span> <span class="n">MagnetArray</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_vcorr</span><span class="p">:</span> <span class="n">MagnetArray</span> <span class="o">=</span> <span class="kc">None</span>
@@ -466,7 +469,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_rf_plant</span><span class="p">:</span> <span class="n">RFPlant</span> <span class="o">=</span> <span class="kc">None</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">reponse_matrix</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ResponseMatrix</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">reponse_matrix</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">OrbitResponseMatrixData</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cfg</span><span class="o">.</span><span class="n">response_matrix</span>
 
 <div class="viewcode-block" id="Orbit.correct">
@@ -623,9 +626,7 @@
 
 <div class="viewcode-block" id="Orbit.set_weight">
 <a class="viewcode-back" href="../../../api/pyaml.tuning_tools.orbit.html#pyaml.tuning_tools.orbit.Orbit.set_weight">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">set_weight</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">weight</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">plane</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;H&quot;</span><span class="p">,</span> <span class="s2">&quot;V&quot;</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">set_weight</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">weight</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">plane</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;H&quot;</span><span class="p">,</span> <span class="s2">&quot;V&quot;</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_pySC_response_matrix</span><span class="o">.</span><span class="n">set_weight</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">weight</span><span class="p">,</span> <span class="n">plane</span><span class="o">=</span><span class="n">plane</span><span class="p">)</span>
         <span class="k">return</span></div>
 
@@ -674,10 +675,7 @@
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">weights</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">weights</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="n">PyAMLException</span><span class="p">(</span>
-                <span class="s2">&quot;More than one weight found, please select plane. &quot;</span>
-                <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">names</span><span class="si">=}</span><span class="s2">, </span><span class="si">{</span><span class="n">planes</span><span class="si">=}</span><span class="s2">, </span><span class="si">{</span><span class="n">weights</span><span class="si">=}</span><span class="s2">&quot;</span>
-            <span class="p">)</span></div>
+            <span class="k">raise</span> <span class="n">PyAMLException</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;More than one weight found, please select plane. </span><span class="si">{</span><span class="n">names</span><span class="si">=}</span><span class="s2">, </span><span class="si">{</span><span class="n">planes</span><span class="si">=}</span><span class="s2">, </span><span class="si">{</span><span class="n">weights</span><span class="si">=}</span><span class="s2">&quot;</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="Orbit.get_virtual_weight">
@@ -703,18 +701,6 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_hvcorr</span> <span class="o">=</span> <span class="n">MagnetArray</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">hvElts</span><span class="p">)</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cfg</span><span class="o">.</span><span class="n">rf_plant_name</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_rf_plant</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_peer</span><span class="o">.</span><span class="n">get_rf_plant</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_cfg</span><span class="o">.</span><span class="n">rf_plant_name</span><span class="p">)</span></div>
-
-
-<div class="viewcode-block" id="Orbit.attach">
-<a class="viewcode-back" href="../../../api/pyaml.tuning_tools.orbit.html#pyaml.tuning_tools.orbit.Orbit.attach">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">attach</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">peer</span><span class="p">:</span> <span class="s2">&quot;ElementHolder&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Self</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Create a new reference to attach this Orbit object to a simulator</span>
-<span class="sd">        or a control system.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">obj</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_cfg</span><span class="p">)</span>
-        <span class="n">obj</span><span class="o">.</span><span class="n">_peer</span> <span class="o">=</span> <span class="n">peer</span>
-        <span class="k">return</span> <span class="n">obj</span></div>
 </div>
 
 </pre></div>
