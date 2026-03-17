@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>pyaml.accelerator &#8212; Python Accelerator Middle Layer 0.1.dev1+g10b1c1633 documentation</title>
+    <title>pyaml.accelerator &#8212; Python Accelerator Middle Layer 0.1.dev1+g6b7e7772a documentation</title>
   
   
   
@@ -41,7 +41,7 @@
   <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
 <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
-    <script src="../../_static/documentation_options.js?v=ea03cfbe"></script>
+    <script src="../../_static/documentation_options.js?v=8ba10de4"></script>
     <script src="../../_static/doctools.js?v=9bcbadda"></script>
     <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -118,8 +118,8 @@
       
     
     
-    <img src="../../_static/logo.png" class="logo__image only-light" alt="Python Accelerator Middle Layer 0.1.dev1+g10b1c1633 documentation - Home"/>
-    <img src="../../_static/dark.png" class="logo__image only-dark pst-js-only" alt="Python Accelerator Middle Layer 0.1.dev1+g10b1c1633 documentation - Home"/>
+    <img src="../../_static/logo.png" class="logo__image only-light" alt="Python Accelerator Middle Layer 0.1.dev1+g6b7e7772a documentation - Home"/>
+    <img src="../../_static/dark.png" class="logo__image only-dark pst-js-only" alt="Python Accelerator Middle Layer 0.1.dev1+g6b7e7772a documentation - Home"/>
   
   
 </a></div>
@@ -379,11 +379,13 @@
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">.arrays.array</span><span class="w"> </span><span class="kn">import</span> <span class="n">ArrayConfig</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">.common.element</span><span class="w"> </span><span class="kn">import</span> <span class="n">Element</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.common.element_holder</span><span class="w"> </span><span class="kn">import</span> <span class="n">ElementHolder</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">.common.exception</span><span class="w"> </span><span class="kn">import</span> <span class="n">PyAMLConfigException</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">.configuration.factory</span><span class="w"> </span><span class="kn">import</span> <span class="n">Factory</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">.configuration.fileloader</span><span class="w"> </span><span class="kn">import</span> <span class="n">load</span><span class="p">,</span> <span class="n">set_root_folder</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">.control.controlsystem</span><span class="w"> </span><span class="kn">import</span> <span class="n">ControlSystem</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">.lattice.simulator</span><span class="w"> </span><span class="kn">import</span> <span class="n">Simulator</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.yellow_pages</span><span class="w"> </span><span class="kn">import</span> <span class="n">YellowPages</span>
 
 <span class="c1"># Define the main class name for this module</span>
 <span class="n">PYAMLCLASS</span> <span class="o">=</span> <span class="s2">&quot;Accelerator&quot;</span>
@@ -442,24 +444,28 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_cfg</span> <span class="o">=</span> <span class="n">cfg</span>
         <span class="n">__design</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="n">__live</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_controls</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">ElementHolder</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_simulators</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">ElementHolder</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
 
         <span class="k">if</span> <span class="n">cfg</span><span class="o">.</span><span class="n">controls</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">cfg</span><span class="o">.</span><span class="n">controls</span><span class="p">:</span>
                 <span class="k">if</span> <span class="n">c</span><span class="o">.</span><span class="n">name</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;live&quot;</span><span class="p">:</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">__live</span> <span class="o">=</span> <span class="n">c</span>
                 <span class="k">else</span><span class="p">:</span>
-                    <span class="c1"># Add as dynacmic attribute</span>
+                    <span class="c1"># Add as dynamic attribute</span>
                     <span class="nb">setattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">c</span><span class="o">.</span><span class="n">name</span><span class="p">(),</span> <span class="n">c</span><span class="p">)</span>
                 <span class="n">c</span><span class="o">.</span><span class="n">fill_device</span><span class="p">(</span><span class="n">cfg</span><span class="o">.</span><span class="n">devices</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_controls</span><span class="p">[</span><span class="n">c</span><span class="o">.</span><span class="n">name</span><span class="p">()]</span> <span class="o">=</span> <span class="n">c</span>
 
         <span class="k">if</span> <span class="n">cfg</span><span class="o">.</span><span class="n">simulators</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">cfg</span><span class="o">.</span><span class="n">simulators</span><span class="p">:</span>
                 <span class="k">if</span> <span class="n">s</span><span class="o">.</span><span class="n">name</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;design&quot;</span><span class="p">:</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">__design</span> <span class="o">=</span> <span class="n">s</span>
                 <span class="k">else</span><span class="p">:</span>
-                    <span class="c1"># Add as dynacmic attribute</span>
+                    <span class="c1"># Add as dynamic attribute</span>
                     <span class="nb">setattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">s</span><span class="o">.</span><span class="n">name</span><span class="p">(),</span> <span class="n">s</span><span class="p">)</span>
                 <span class="n">s</span><span class="o">.</span><span class="n">fill_device</span><span class="p">(</span><span class="n">cfg</span><span class="o">.</span><span class="n">devices</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_simulators</span><span class="p">[</span><span class="n">s</span><span class="o">.</span><span class="n">name</span><span class="p">()]</span> <span class="o">=</span> <span class="n">s</span>
 
         <span class="k">if</span> <span class="n">cfg</span><span class="o">.</span><span class="n">arrays</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">cfg</span><span class="o">.</span><span class="n">arrays</span><span class="p">:</span>
@@ -472,6 +478,8 @@
 
         <span class="k">if</span> <span class="n">cfg</span><span class="o">.</span><span class="n">energy</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">set_energy</span><span class="p">(</span><span class="n">cfg</span><span class="o">.</span><span class="n">energy</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_yellow_pages</span> <span class="o">=</span> <span class="n">YellowPages</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">post_init</span><span class="p">()</span>
 
@@ -541,6 +549,34 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__design</span>
 
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">yellow_pages</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">YellowPages</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_yellow_pages</span>
+
+<div class="viewcode-block" id="Accelerator.simulators">
+<a class="viewcode-back" href="../../api/pyaml.accelerator.html#pyaml.accelerator.Accelerator.simulators">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">simulators</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="s2">&quot;ElementHolder&quot;</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return all registered simulator modes.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_simulators</span></div>
+
+
+<div class="viewcode-block" id="Accelerator.controls">
+<a class="viewcode-back" href="../../api/pyaml.accelerator.html#pyaml.accelerator.Accelerator.controls">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">controls</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="s2">&quot;ElementHolder&quot;</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return all registered control modes.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_controls</span></div>
+
+
+<div class="viewcode-block" id="Accelerator.modes">
+<a class="viewcode-back" href="../../api/pyaml.accelerator.html#pyaml.accelerator.Accelerator.modes">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">modes</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="s2">&quot;ElementHolder&quot;</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return all registered control and simulator modes.&quot;&quot;&quot;</span>
+        <span class="n">modes</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="s2">&quot;ElementHolder&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">modes</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_simulators</span><span class="p">)</span>
+        <span class="n">modes</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_controls</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">modes</span></div>
+
+
     <span class="k">def</span><span class="w"> </span><span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="nb">repr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_cfg</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;ConfigModel&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">)</span>
 
@@ -572,9 +608,7 @@
 <div class="viewcode-block" id="Accelerator.load">
 <a class="viewcode-back" href="../../api/pyaml.accelerator.html#pyaml.accelerator.Accelerator.load">[docs]</a>
     <span class="nd">@staticmethod</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">load</span><span class="p">(</span>
-        <span class="n">filename</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">use_fast_loader</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">ignore_external</span><span class="o">=</span><span class="kc">False</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;Accelerator&quot;</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">load</span><span class="p">(</span><span class="n">filename</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">use_fast_loader</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">ignore_external</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;Accelerator&quot;</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Load an accelerator from a config file.</span>
 

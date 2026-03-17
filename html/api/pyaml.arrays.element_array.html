@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>element_array &#8212; Python Accelerator Middle Layer 0.1.dev1+g10b1c1633 documentation</title>
+    <title>element_array &#8212; Python Accelerator Middle Layer 0.1.dev1+g6b7e7772a documentation</title>
   
   
   
@@ -42,7 +42,7 @@
   <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
 <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
-    <script src="../_static/documentation_options.js?v=ea03cfbe"></script>
+    <script src="../_static/documentation_options.js?v=8ba10de4"></script>
     <script src="../_static/doctools.js?v=9bcbadda"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -121,8 +121,8 @@
       
     
     
-    <img src="../_static/logo.png" class="logo__image only-light" alt="Python Accelerator Middle Layer 0.1.dev1+g10b1c1633 documentation - Home"/>
-    <img src="../_static/dark.png" class="logo__image only-dark pst-js-only" alt="Python Accelerator Middle Layer 0.1.dev1+g10b1c1633 documentation - Home"/>
+    <img src="../_static/logo.png" class="logo__image only-light" alt="Python Accelerator Middle Layer 0.1.dev1+g6b7e7772a documentation - Home"/>
+    <img src="../_static/dark.png" class="logo__image only-dark pst-js-only" alt="Python Accelerator Middle Layer 0.1.dev1+g6b7e7772a documentation - Home"/>
   
   
 </a></div>
@@ -429,6 +429,7 @@
 <li class="toctree-l2"><a class="reference internal" href="pyaml.tuning_tools.tune.html">tune</a></li>
 </ul>
 </details></li>
+<li class="toctree-l1"><a class="reference internal" href="pyaml.yellow_pages.html">yellow_pages</a></li>
 </ul>
 </div>
 </nav></div>
@@ -546,6 +547,7 @@ common base class of the remaining elements which can be:
 <li><p>Array intersection
 If <code class="docutils literal notranslate"><span class="pre">other</span></code> is an ElementArray, the result contains elements
 whose names are present in both arrays.</p>
+<p><strong>Example</strong></p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">cell1</span> <span class="o">=</span> <span class="n">sr</span><span class="o">.</span><span class="n">live</span><span class="o">.</span><span class="n">get_elements</span><span class="p">(</span><span class="s2">&quot;C01&quot;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">sexts</span> <span class="o">=</span> <span class="n">sr</span><span class="o">.</span><span class="n">live</span><span class="o">.</span><span class="n">get_magnets</span><span class="p">(</span><span class="s2">&quot;SEXT&quot;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">cell1_sext</span> <span class="o">=</span> <span class="n">cell1</span> <span class="o">&amp;</span> <span class="n">sexts</span>
@@ -555,6 +557,7 @@ whose names are present in both arrays.</p>
 <li><p>Boolean mask filtering
 If <code class="docutils literal notranslate"><span class="pre">other</span></code> is a boolean mask (list[bool] or numpy.ndarray of bool),
 elements are kept where the mask is True.</p>
+<p><strong>Example</strong></p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">mask</span> <span class="o">=</span> <span class="n">cell1</span><span class="o">.</span><span class="n">mask_by_type</span><span class="p">(</span><span class="n">Magnet</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">magnets</span> <span class="o">=</span> <span class="n">cell1</span> <span class="o">&amp;</span> <span class="n">mask</span>
 </pre></div>
@@ -607,6 +610,7 @@ common base class of the remaining elements which can be:
 <li><p>Array difference
 If <code class="docutils literal notranslate"><span class="pre">other</span></code> is an ElementArray, the result contains elements
 whose names are present in <code class="docutils literal notranslate"><span class="pre">self</span></code> but not in <code class="docutils literal notranslate"><span class="pre">other</span></code>.</p>
+<p><strong>Example</strong></p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">hvcorr</span> <span class="o">=</span> <span class="n">sr</span><span class="o">.</span><span class="n">live</span><span class="o">.</span><span class="n">get_magnets</span><span class="p">(</span><span class="s2">&quot;HVCORR&quot;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">hcorr</span> <span class="o">=</span> <span class="n">sr</span><span class="o">.</span><span class="n">live</span><span class="o">.</span><span class="n">get_magnets</span><span class="p">(</span><span class="s2">&quot;HCORR&quot;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">vcorr_only</span> <span class="o">=</span> <span class="n">hvcorr</span> <span class="o">-</span> <span class="n">hcorr</span>
@@ -617,6 +621,7 @@ whose names are present in <code class="docutils literal notranslate"><span clas
 If <code class="docutils literal notranslate"><span class="pre">other</span></code> is a boolean mask (list[bool] or numpy.ndarray of bool),
 elements are removed where the mask is True.
 This is the inverse of <code class="docutils literal notranslate"><span class="pre">&amp;</span> <span class="pre">mask</span></code>.</p>
+<p><strong>Example</strong></p>
 <blockquote>
 <div><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">mask</span> <span class="o">=</span> <span class="n">cell1</span><span class="o">.</span><span class="n">mask_by_type</span><span class="p">(</span><span class="n">Magnet</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">non_magnets</span> <span class="o">=</span> <span class="n">cell1</span> <span class="o">-</span> <span class="n">mask</span>

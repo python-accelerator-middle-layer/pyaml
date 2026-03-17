@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>accelerator &#8212; Python Accelerator Middle Layer 0.1.dev1+g10b1c1633 documentation</title>
+    <title>accelerator &#8212; Python Accelerator Middle Layer 0.1.dev1+g6b7e7772a documentation</title>
   
   
   
@@ -42,7 +42,7 @@
   <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
 <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
-    <script src="../_static/documentation_options.js?v=ea03cfbe"></script>
+    <script src="../_static/documentation_options.js?v=8ba10de4"></script>
     <script src="../_static/doctools.js?v=9bcbadda"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -121,8 +121,8 @@
       
     
     
-    <img src="../_static/logo.png" class="logo__image only-light" alt="Python Accelerator Middle Layer 0.1.dev1+g10b1c1633 documentation - Home"/>
-    <img src="../_static/dark.png" class="logo__image only-dark pst-js-only" alt="Python Accelerator Middle Layer 0.1.dev1+g10b1c1633 documentation - Home"/>
+    <img src="../_static/logo.png" class="logo__image only-light" alt="Python Accelerator Middle Layer 0.1.dev1+g6b7e7772a documentation - Home"/>
+    <img src="../_static/dark.png" class="logo__image only-dark pst-js-only" alt="Python Accelerator Middle Layer 0.1.dev1+g6b7e7772a documentation - Home"/>
   
   
 </a></div>
@@ -429,6 +429,7 @@
 <li class="toctree-l2"><a class="reference internal" href="pyaml.tuning_tools.tune.html">tune</a></li>
 </ul>
 </details></li>
+<li class="toctree-l1"><a class="reference internal" href="pyaml.yellow_pages.html">yellow_pages</a></li>
 </ul>
 </div>
 </nav></div>
@@ -609,9 +610,25 @@ object is not created should handle None fields.</p></li>
 </dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="pyaml.accelerator.Accelerator.controls">
+<span class="sig-name descname"><span class="pre">controls</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/accelerator.html#Accelerator.controls"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.accelerator.Accelerator.controls" title="Link to this definition">#</a></dt>
+<dd><p>Return all registered control modes.</p>
+<dl class="field-list simple">
+</dl>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="pyaml.accelerator.Accelerator.get_description">
 <span class="sig-name descname"><span class="pre">get_description</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/accelerator.html#Accelerator.get_description"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.accelerator.Accelerator.get_description" title="Link to this definition">#</a></dt>
 <dd><p>Returns the description of the accelerator</p>
+<dl class="field-list simple">
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaml.accelerator.Accelerator.modes">
+<span class="sig-name descname"><span class="pre">modes</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/accelerator.html#Accelerator.modes"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.accelerator.Accelerator.modes" title="Link to this definition">#</a></dt>
+<dd><p>Return all registered control and simulator modes.</p>
 <dl class="field-list simple">
 </dl>
 </dd></dl>
@@ -630,6 +647,14 @@ object is not created should handle None fields.</p></li>
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>E</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><em>float</em></a>) – Energy value to set in eV</p>
 </dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaml.accelerator.Accelerator.simulators">
+<span class="sig-name descname"><span class="pre">simulators</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/accelerator.html#Accelerator.simulators"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.accelerator.Accelerator.simulators" title="Link to this definition">#</a></dt>
+<dd><p>Return all registered simulator modes.</p>
+<dl class="field-list simple">
 </dl>
 </dd></dl>
 
@@ -654,6 +679,11 @@ object is not created should handle None fields.</p></li>
 </dd>
 </dl>
 </dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="pyaml.accelerator.Accelerator.yellow_pages">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">yellow_pages</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="pyaml.yellow_pages.html#pyaml.yellow_pages.YellowPages" title="pyaml.yellow_pages.YellowPages"><span class="pre">YellowPages</span></a></em><a class="headerlink" href="#pyaml.accelerator.Accelerator.yellow_pages" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
 
 </dd></dl>
 
@@ -721,11 +751,15 @@ object is not created should handle None fields.</p></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.accelerator.Accelerator"><code class="docutils literal notranslate"><span class="pre">Accelerator</span></code></a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.accelerator.Accelerator.from_dict"><code class="docutils literal notranslate"><span class="pre">Accelerator.from_dict()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.accelerator.Accelerator.load"><code class="docutils literal notranslate"><span class="pre">Accelerator.load()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.accelerator.Accelerator.controls"><code class="docutils literal notranslate"><span class="pre">Accelerator.controls()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.accelerator.Accelerator.get_description"><code class="docutils literal notranslate"><span class="pre">Accelerator.get_description()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.accelerator.Accelerator.modes"><code class="docutils literal notranslate"><span class="pre">Accelerator.modes()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.accelerator.Accelerator.post_init"><code class="docutils literal notranslate"><span class="pre">Accelerator.post_init()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.accelerator.Accelerator.set_energy"><code class="docutils literal notranslate"><span class="pre">Accelerator.set_energy()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.accelerator.Accelerator.simulators"><code class="docutils literal notranslate"><span class="pre">Accelerator.simulators()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.accelerator.Accelerator.design"><code class="docutils literal notranslate"><span class="pre">Accelerator.design</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.accelerator.Accelerator.live"><code class="docutils literal notranslate"><span class="pre">Accelerator.live</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.accelerator.Accelerator.yellow_pages"><code class="docutils literal notranslate"><span class="pre">Accelerator.yellow_pages</span></code></a></li>
 </ul>
 </li>
 </ul>
