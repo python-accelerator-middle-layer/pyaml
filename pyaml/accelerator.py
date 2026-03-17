@@ -169,15 +169,15 @@ class Accelerator(object):
         return self._yellow_pages
 
     def simulators(self) -> dict[str, "ElementHolder"]:
-        """Return all registered control/simulator modes."""
+        """Return all registered simulator modes."""
         return self._simulators
 
     def controls(self) -> dict[str, "ElementHolder"]:
-        """Return all registered control/simulator modes."""
+        """Return all registered control modes."""
         return self._controls
 
     def modes(self) -> dict[str, "ElementHolder"]:
-        """Return all registered control/simulator modes."""
+        """Return all registered control and simulator modes."""
         modes: dict[str, "ElementHolder"] = {}
         modes.update(self._simulators)
         modes.update(self._controls)
