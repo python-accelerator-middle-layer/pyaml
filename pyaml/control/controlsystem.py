@@ -139,10 +139,7 @@ class ControlSystem(ElementHolder, metaclass=ABCMeta):
                 model = b.model
                 hDev = self._catalog.get_one(model.get_x_pos_device()) if model.get_x_pos_device() is not None else None
                 vDev = self._catalog.get_one(model.get_y_pos_device()) if model.get_y_pos_device() is not None else None
-                devs = self.attach([hDev.get_target(), vDev.get_target()])
-                hDev.set_target(devs[0])
-                vDev.set_target(devs[1])
-                agg.add_devices(devs)
+                agg.add_devices([hDev, vDev])
                 aggh.add_devices(hDev)
                 aggv.add_devices(vDev)
             return [agg, aggh, aggv]
@@ -157,9 +154,6 @@ class ControlSystem(ElementHolder, metaclass=ABCMeta):
             for b in bpms:
                 devH = self._catalog.get_one(b.model.get_x_pos_device())
                 devV = self._catalog.get_one(b.model.get_y_pos_device())
-                devs = self.attach_array([devH.get_target(), devV.get_target()])
-                devH.set_target(devs[0])
-                devV.set_target(devs[1])
                 if devH not in allH:
                     allH.append(devH)
                 if devH not in allHV:
@@ -272,20 +266,11 @@ class ControlSystem(ElementHolder, metaclass=ABCMeta):
                     if model.get_y_offset_device() is not None
                     else None
                 )
-                ahDev = self.attach_indexed(hDev.get_target() if hDev is not None else None, model.x_pos_index())
-                avDev = self.attach_indexed(vDev.get_target() if vDev is not None else None, model.y_pos_index())
-                atiltDev = self.attach_indexed(
-                    tiltDev.get_target() if tiltDev is not None else None,
-                    model.tilt_index(),
-                )
-                ahOffsetDev = self.attach_indexed(
-                    hOffsetDev.get_target() if hOffsetDev is not None else None,
-                    model.x_offset_index(),
-                )
-                avOffsetDev = self.attach_indexed(
-                    vOffsetDev.get_target() if vOffsetDev is not None else None,
-                    model.y_offset_index(),
-                )
+                ahDev = hDev if model.x_pos_index() is not None else None
+                avDev = vDev if model.y_pos_index() is not None else None
+                atiltDev = tiltDev if model.tilt_index() is not None else None
+                ahOffsetDev = hOffsetDev if model.x_offset_index() is not None else None
+                avOffsetDev = vOffsetDev if model.y_offset_index() is not None else None
                 if ahDev is not None:
                     hDev.set_target(ahDev)
                 if avDev is not None:
