@@ -31,6 +31,16 @@ arrays:
     elements:
       - BPM*
 devices:
+- type: pyaml.diagnostics.tune_monitor
+  name: BETATRON_TUNE
+  tune_h:
+    type: tango.pyaml.attribute_read_only
+    attribute: sys/ringsimulator/ebs/Tune_h
+    unit: ""
+  tune_v:
+    type: tango.pyaml.attribute_read_only
+    attribute: sys/ringsimulator/ebs/Tune_v
+    unit: ""
 - type: pyaml.tuning_tools.orbit
   bpm_array_name: BPM
   hcorr_array_name: HCorr
