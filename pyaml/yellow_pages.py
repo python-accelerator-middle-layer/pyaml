@@ -1,7 +1,7 @@
 """
 yellow_pages.py
 
-Fully dynamic YellowPages service attached to Accelerator.
+Fully dynamic YellowPages service attached to :class:`~pyaml.accelerator.Accelerator`.
 
 Key points:
     - Auto-discovery only: arrays, tools and diagnostics are discovered at runtime
@@ -13,20 +13,11 @@ Key points:
         - regular expression:
             yp["re:^SH1A-C0[12]-H$"]
 
-Expected Accelerator interface
+:class:`~pyaml.accelerator.Accelerator` interface
 ------------------------------
     - controls()   -> dict[str, ElementHolder]
     - simulators() -> dict[str, ElementHolder]
     - modes()      -> dict[str, ElementHolder]
-
-Expected ElementHolder interface
---------------------------------
-    - list_arrays() -> set[str]
-    - list_tools() -> set[str]
-    - list_diagnostics() -> set[str]
-    - get_array(name: str) -> Any
-    - get_tool(name: str) -> Any
-    - get_diagnostic(name: str) -> Any
 """
 
 import fnmatch
@@ -67,7 +58,7 @@ class YellowPages:
 
     Entries are discovered dynamically by scanning all
     :class:`~pyaml.element_holder.ElementHolder` instances
-    associated with the accelerator control and simulation modes.
+    associated with the :class:`~pyaml.accelerator.Accelerator` control and simulation modes.
 
     Notes
     -----
@@ -77,12 +68,6 @@ class YellowPages:
     - ``simulators() -> dict[str, ElementHolder]``
     - ``modes() -> dict[str, ElementHolder]``
 
-    Each :class:`~pyaml.element_holder.ElementHolder` must implement:
-
-    - ``list_arrays()`` / ``get_array(name)``
-    - ``list_tools()`` / ``get_tool(name)``
-    - ``list_diagnostics()`` / ``get_diagnostic(name)``
-
     Examples
     --------
 
@@ -90,31 +75,31 @@ class YellowPages:
 
     .. code-block:: python
 
-        print(sr.yellow_pages)
+        >>> print(sr.yellow_pages)
 
     Resolve an entry across all modes:
 
     .. code-block:: python
 
-        sr.yellow_pages.get("BPM")
+        >>> sr.yellow_pages.get("BPM")
 
     Resolve in a specific mode:
 
     .. code-block:: python
 
-        sr.yellow_pages.get("BPM", mode="live")
+        >>> sr.yellow_pages.get("BPM", mode="live")
 
     Search identifiers using wildcards:
 
     .. code-block:: python
 
-        sr.yellow_pages["OH4*"]
+        >>> sr.yellow_pages["OH4*"]
 
     Search identifiers using a regular expression:
 
     .. code-block:: python
 
-        sr.yellow_pages["re:^SH1A-C0[12]-H$"]
+        >>> sr.yellow_pages["re:^SH1A-C0[12]-H$"]
     """
 
     def __init__(self, accelerator: "Accelerator"):
@@ -232,7 +217,7 @@ class YellowPages:
 
         .. code-block:: python
 
-            sr.yellow_pages.BPM
+            >>> sr.yellow_pages.BPM
         """
         if name in self._all_keys():
             return self._get_object(name)
@@ -256,8 +241,8 @@ class YellowPages:
 
         .. code-block:: python
 
-            sr.yellow_pages.availability("BPM")
-            sr.yellow_pages.availability("DEFAULT_ORBIT_CORRECTION")
+            >>> sr.yellow_pages.availability("BPM")
+            >>> sr.yellow_pages.availability("DEFAULT_ORBIT_CORRECTION")
         """
         self._require_key(key)
         avail: set[str] = set()
@@ -349,7 +334,7 @@ class YellowPages:
         query : str
             Search expression.
         mode : str, optional
-            Restrict the search to a specific accelerator mode.
+            Restrict the search to a specific :class:`~pyaml.accelerator.Accelerator` mode.
 
         Returns
         -------
@@ -426,7 +411,7 @@ class YellowPages:
 
         .. code-block:: python
 
-            print(sr.yellow_pages)
+            >>> print(sr.yellow_pages)
 
         Example output:
 
