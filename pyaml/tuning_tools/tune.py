@@ -2,14 +2,12 @@ from pathlib import Path
 from typing import TYPE_CHECKING
 
 from .. import PyAMLException
-from ..common.constants import ACTION_APPLY, ACTION_MEASURE, ACTION_RESTORE
-from ..common.element import Element, ElementConfigModel
+from ..common.element import ElementConfigModel
 from .response_matrix_data import ResponseMatrixData
 from .tuning_tool import TuningTool
 
 if TYPE_CHECKING:
     from ..arrays.magnet_array import MagnetArray
-    from ..common.element_holder import ElementHolder
     from ..diagnostics.tune_monitor import BetatronTuneMonitor
 
 try:

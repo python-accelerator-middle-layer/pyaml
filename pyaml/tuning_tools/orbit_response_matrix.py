@@ -7,7 +7,7 @@ from pydantic import ConfigDict
 from pySC.apps import measure_ORM
 from pySC.apps.codes import ResponseCode
 
-from ..common.constants import ACTION_APPLY, ACTION_MEASURE, ACTION_RESTORE
+from ..common.constants import Action
 from ..common.element import ElementConfigModel
 from ..external.pySC_interface import pySCInterface
 from .measurement_tool import MeasurementTool
@@ -97,16 +97,16 @@ class OrbitResponseMatrix(MeasurementTool):
         for code, measurement in generator:
             callback_data = measurement.response_data  # to be defined better
             if code is ResponseCode.AFTER_SET:
-                if callback and not callback(ACTION_APPLY, callback_data):
+                if not self.send_callback(Action.APPLY, callback, callback_data):
                     if aborted:
                         break
             elif code is ResponseCode.AFTER_GET:
-                if callback and not callback(ACTION_MEASURE, callback_data):
+                if not self.send_callback(Action.MEASURE, callback, callback_data):
                     aborted = True
                     break
             elif code is ResponseCode.AFTER_RESTORE:
                 logger.info(f"Measured response of {measurement.last_input}.")
-                if callback and not callback(ACTION_RESTORE, callback_data):
+                if not self.send_callback(Action.RESTORE, callback, callback_data):
                     aborted = True
                     break
 

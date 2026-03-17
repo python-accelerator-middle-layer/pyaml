@@ -1,5 +1,5 @@
 from ..common.abstract import ReadFloatArray
-from ..common.constants import ACTION_APPLY, ACTION_MEASURE, ACTION_RESTORE
+from ..common.constants import Action
 from ..common.element import ElementConfigModel
 from ..common.exception import PyAMLException
 from ..tuning_tools.measurement_tool import MeasurementTool
@@ -237,7 +237,7 @@ class ChomaticityMonitor(MeasurementTool):
                 rf.frequency.set(f0 + f)
 
                 cb_data = {"step": i, "rf": f0 + f}
-                if not self.send_callback(ACTION_APPLY, callback, cb_data):
+                if not self.send_callback(Action.APPLY, callback, cb_data):
                     # Abort
                     rf.frequency.set(f0)
                     return
@@ -252,7 +252,7 @@ class ChomaticityMonitor(MeasurementTool):
                         orb = bpms.positions.get()
                         orbit[i] += orb
                         cb_data["orbit"] = orb
-                    if not self.send_callback(ACTION_MEASURE, callback, cb_data):
+                    if not self.send_callback(Action.MEASURE, callback, cb_data):
                         # Abort
                         rf.frequency.set(f0)
                         return
@@ -270,7 +270,7 @@ class ChomaticityMonitor(MeasurementTool):
             # TODO : Use set_and_wait once it is implemented !
             rf.frequency.set(f0)
             cb_data = {"step": i, "rf": f0 + f}
-            self.send_callback(ACTION_RESTORE, callback, cb_data)
+            self.send_callback(Action.RESTORE, callback, cb_data)
 
         if err:
             raise (err)

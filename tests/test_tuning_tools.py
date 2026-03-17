@@ -1,30 +1,29 @@
 import numpy as np
 
 from pyaml.accelerator import Accelerator
-from pyaml.common.constants import ACTION_APPLY, ACTION_MEASURE, ACTION_RESTORE
-from pyaml.magnet.magnet import Magnet
+from pyaml.common.constants import Action
 
 
-def tune_callback(action: int, data: dict):
+def tune_callback(action: Action, data: dict):
     source = data["source"]
-    if action == ACTION_APPLY:
+    if action == Action.APPLY:
         # ACTION_APPLY
         step = data["step"]
         m = data["magnet"]
-        print(f"{source}: #{step} {m.get_name()} = {m.strength.get()}")
-    elif action == ACTION_MEASURE:
+        print(f"{action} {source}: #{step} {m.get_name()} = {m.strength.get()}")
+    elif action == Action.MEASURE:
         # On ACTION_MEASURE, the tune is passed as argument
         step = data["step"]
         avg_step = data["avg_step"]
         m = data["magnet"]
         tune = data["tune"]
-        print(f"{source}: #{step} {avg_step} {m.get_name()} q={tune}")
-    elif action == ACTION_RESTORE:
+        print(f"{action} {source}: #{step} {avg_step} {m.get_name()} q={tune}")
+    elif action == Action.RESTORE:
         # On ACTION_RESTORE, the delta tune is passed as argument
         step = data["step"]
         m = data["magnet"]
         dtune = data["dtune"]
-        print(f"{source}: #{step} {m.get_name()} dq/dk={dtune}")
+        print(f"{action} {source}: #{step} {m.get_name()} dq/dk={dtune}")
     return True
 
 

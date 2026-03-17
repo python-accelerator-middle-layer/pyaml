@@ -1,18 +1,13 @@
 import logging
 import time
-from typing import TYPE_CHECKING, Callable, Optional, Self
+from typing import Callable, Optional
 
 import numpy as np
 
-from ..common.constants import ACTION_APPLY, ACTION_MEASURE, ACTION_RESTORE
-from ..common.element import Element, ElementConfigModel
-from ..common.exception import PyAMLException
+from ..common.constants import Action
+from ..common.element import ElementConfigModel
 from .measurement_tool import MeasurementTool
 from .response_matrix_data import ConfigModel as ResponseMatrixDataConfigModel
-from .response_matrix_data import ResponseMatrixData
-
-if TYPE_CHECKING:
-    from ..common.element_holder import ElementHolder
 
 logger = logging.getLogger(__name__)
 
@@ -89,16 +84,19 @@ class TuneResponseMatrix(MeasurementTool):
             Default: from config
         callback : Callable, optional
             Callback executed after each strength setting.
-            action can be :py:data:`~pyaml.common.constant.ACTION_APPLY`,
-            :py:data:`~pyaml.common.constant.ACTION_MEASURE` or :py:data:`~pyaml.common.constant.ACTION_RESTORE`.
-            callback_data dict contains:
-              source: Object that triggered the source
-              step:int The current step
-              avg_step:tin The current avg step
-              m:Magnet The magnet being exited
-              tune:np.array The tune (on ACTION_MEASURE)
-              dtune:np.array The tune variation (on ACTION_RESTORE)
+            See :py:meth:`~.measurement_tool.MeasurementTool.send_callback`.
             If the callback return false, then the scan is aborted and strength restored.
+            callback_data dict contains:
+
+            .. code-block::
+
+              source:str Object that triggered the source
+              step:int The current step
+              avg_step:int The current avg step
+              magnet:Magnet The magnet being excited
+              tune:np.array The measured tune (on Action.MEASURE)
+              dtune:np.array The tune variation (on Action.RESTORE)
+
         """
         # Get devices
         self.check_peer()
@@ -124,7 +122,7 @@ class TuneResponseMatrix(MeasurementTool):
                 # apply strength
                 m.strength.set(str + d)
 
-                if not self.send_callback(ACTION_APPLY, callback, {"step": qidx, "magnet": m}):
+                if not self.send_callback(Action.APPLY, callback, {"step": qidx, "magnet": m}):
                     aborted = True
                     m.strength.set(str)  # restore strength
                     break
@@ -137,7 +135,7 @@ class TuneResponseMatrix(MeasurementTool):
                     tune = tm.tune.get()
                     Q[step] += tune
                     if not self.send_callback(
-                        ACTION_MEASURE, callback, {"step": qidx, "avg_step": avg, "magnet": m, "tune": tune}
+                        Action.MEASURE, callback, {"step": qidx, "avg_step": avg, "magnet": m, "tune": tune}
                     ):
                         aborted = True
                         m.strength.set(str)  # restore strength
@@ -158,7 +156,7 @@ class TuneResponseMatrix(MeasurementTool):
 
             # Restore strength
             m.strength.set(str)
-            if not self.send_callback(ACTION_RESTORE, callback, {"step": qidx, "magnet": m, "dtune": tunemat[qidx]}):
+            if not self.send_callback(Action.RESTORE, callback, {"step": qidx, "magnet": m, "dtune": tunemat[qidx]}):
                 aborted = True
                 break
 

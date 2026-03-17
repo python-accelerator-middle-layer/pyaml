@@ -3,6 +3,7 @@ from abc import ABCMeta, abstractmethod
 from pathlib import Path
 from typing import TYPE_CHECKING, Callable, Self
 
+from ..common.constants import Action
 from ..common.element import Element
 from ..common.exception import PyAMLException
 
@@ -81,16 +82,25 @@ class MeasurementTool(Element, metaclass=ABCMeta):
         else:
             raise PyAMLException(f"ERROR: Unknown file type to save as: {with_type}.")
 
-    def send_callback(self, action: int, callback: Callable, cb_data: dict) -> bool:
+    def send_callback(self, action: Action, callback: Callable, cb_data: dict) -> bool:
         """
         Send callback from this Measurement tool to the caller.
+        If the callback returns False, the scan is aborted and actuators are restored to their orignal values.
+        Callback example:
+
+        .. code-block:: python
+
+            def callback(action: Action, data: dict):
+                print(f"{action}, data:{data}")
+                return True
+
+            # Measure a tune response matrix using the above callback
+            sr.design.trm.measure(callback=callback)
 
         Parameters
         ----------
-        action: int
-          :py:data:`~pyaml.common.constant.ACTION_APPLY`
-          :py:data:`~pyaml.common.constant.ACTION_MEASURE`
-          :py:data:`~pyaml.common.constant.ACTION_RESTORE`
+        action: Action
+          See :py:class:`pyaml.common.constants.Action`
 
         callback: Callable
           Callback to be executed
