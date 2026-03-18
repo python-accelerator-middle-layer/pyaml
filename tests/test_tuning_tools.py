@@ -27,7 +27,7 @@ def tune_callback(action: Action, data: dict):
     return True
 
 
-def _test_tune_tool():
+def test_tune_tool():
     sr = Accelerator.load("tests/config/EBSTune.yaml", use_fast_loader=True)
     sr.design.get_lattice().disable_6d()
     sr.design.trm.measure(callback=tune_callback)
@@ -39,7 +39,7 @@ def _test_tune_tool():
     assert np.abs(tune[1] - 0.32) < 1e-5
 
 
-def _test_tune_add():
+def test_tune_add():
     sr = Accelerator.load("tests/config/EBSTune.yaml", use_fast_loader=True)
     sr.design.get_lattice().disable_6d()
     sr.design.tune.load("tunemat.json")
