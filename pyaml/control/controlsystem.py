@@ -162,19 +162,6 @@ class ControlSystem(ElementHolder, metaclass=ABCMeta):
         else:
             raise PyAMLException("Indexed BPM and scalar values cannot be mixed in the same array")
 
-    def set_energy(self, E: float):
-        """
-        Sets the energy on magnets belonging to this control system
-
-        Parameters
-        ----------
-        E : float
-            Energy in eV
-        """
-        # Needed by energy dependant element (i.e. magnet coil current calculation)
-        for m in self.get_all_elements():
-            m.set_energy(E)
-
     def fill_device(self, elements: list[Element]):
         """
         Fill device of this control system with Element

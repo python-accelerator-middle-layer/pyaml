@@ -2,6 +2,7 @@ type: pyaml.accelerator
 facility: ESRF
 machine: sr
 energy: 6e9
+alphac: 8.623614679299252e-05
 simulators:
   - type: pyaml.lattice.simulator
     lattice: sr/lattices/ebs.mat
@@ -56,6 +57,7 @@ devices:
   sextu_delta: 1e-6
 - type: pyaml.tuning_tools.chromaticity
   name: DEFAULT_CHROMATICITY_CORRECTION
+  chromaticty_monitor_name: CHROMATICITY_MONITOR
   sextu_array_name: Sext
   response_matrix: file:ideal_chroma_resp.json
 - type: pyaml.tuning_tools.orbit

@@ -2,6 +2,7 @@ type: pyaml.accelerator
 facility: ESRF
 machine: sr
 energy: 6e9
+alphac: 8.623614679299252e-05
 simulators:
   - type: pyaml.lattice.simulator
     lattice: sr/lattices/ebs.mat

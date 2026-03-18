@@ -114,12 +114,6 @@ class Simulator(ElementHolder):
         """
         return self._cfg.description
 
-    def set_energy(self, E: float):
-        self.ring.energy = E
-        # Needed by energy dependant element (i.e. magnet coil current calculation)
-        for m in self.get_all_elements():
-            m.set_energy(E)
-
     def create_magnet_strength_aggregator(self, magnets: list[Magnet]) -> ScalarAggregator:
         # No magnet aggregator for simulator
         return None

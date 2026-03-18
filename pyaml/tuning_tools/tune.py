@@ -37,6 +37,8 @@ class ConfigModel(ElementConfigModel):
         Name of the diagnostic pyaml device for measuring the tune
     quad_delta : float
         Delta strength used to get the response matrix
+    response_matrix : str | ResponseMatrixData
+        filename or data of the tune response matrix
     """
 
     quad_array_name: str

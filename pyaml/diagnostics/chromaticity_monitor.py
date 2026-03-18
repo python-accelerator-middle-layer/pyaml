@@ -35,8 +35,6 @@ class ConfigModel(ElementConfigModel):
     n_step : int, optional
         Default number of RF step during chromaticity
         measurement, by default 5
-    alphac : float or None, optional
-        Momentum compaction factor, by default None
     e_delta : float, optional
         Default variation of relative energy during chromaticity measurement:
         f0 - f0 * E_delta * alphac  < f_RF < f0 + f0 * E_delta * alphac,
@@ -64,7 +62,6 @@ class ConfigModel(ElementConfigModel):
     rf_plant_name: str
     bpm_array_name: str | None = None
     n_step: int = 5
-    alphac: float | None = None
     e_delta: float = 0.001
     max_e_delta: float = 0.004
     n_tune_meas: int = 1
@@ -118,6 +115,7 @@ class ChomaticityMonitor(MeasurementTool):
         self._cfg = cfg
         self._chromaticity = RChromaDispArray(self, "chromaticity", "1")
         self._dipsersion = RChromaDispArray(self, "dispersion", "m")
+        self._alphac = None
 
     @property
     def chromaticity(self) -> ReadFloatArray:
@@ -130,6 +128,9 @@ class ChomaticityMonitor(MeasurementTool):
             Array of chromaticity values [[q'x, q'y],[q''x, q''y],...]
         """
         return self._chromaticity
+
+    def set_mcf(self, alphac: float):
+        self._alphac = alphac
 
     @property
     def dispersion(self) -> ReadFloatArray:
@@ -194,7 +195,7 @@ class ChomaticityMonitor(MeasurementTool):
             If the callback return false, then the process is aborted.
         """
         n_step = n_step if n_step is not None else self._cfg.n_step
-        alphac = alphac if alphac is not None else self._cfg.alphac
+        alphac = alphac if alphac is not None else self._alphac
         e_delta = e_delta if e_delta is not None else self._cfg.e_delta
         max_e_delta = max_e_delta if max_e_delta is not None else self._cfg.max_e_delta
         n_tune_meas = n_tune_meas if n_tune_meas is not None else self._cfg.n_tune_meas

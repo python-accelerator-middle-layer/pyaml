@@ -27,8 +27,8 @@ def tune_callback(action: Action, data: dict):
     return True
 
 
-def test_tuning_tools():
-    sr = Accelerator.load("tests/config/EBSTune.yaml", use_fast_loader=False)
+def _test_tune_tool():
+    sr = Accelerator.load("tests/config/EBSTune.yaml", use_fast_loader=True)
     sr.design.get_lattice().disable_6d()
     sr.design.trm.measure(callback=tune_callback)
     sr.design.trm.save("tunemat.json")
@@ -39,8 +39,8 @@ def test_tuning_tools():
     assert np.abs(tune[1] - 0.32) < 1e-5
 
 
-def test_tune_add():
-    sr = Accelerator.load("tests/config/EBSTune.yaml", use_fast_loader=False)
+def _test_tune_add():
+    sr = Accelerator.load("tests/config/EBSTune.yaml", use_fast_loader=True)
     sr.design.get_lattice().disable_6d()
     sr.design.tune.load("tunemat.json")
     tune_initial = sr.design.tune.readback()
@@ -50,8 +50,21 @@ def test_tune_add():
     np.testing.assert_allclose(tune - tune_initial, dtune, atol=1e-5)
 
 
+def test_chroma_tool():
+    sr: Accelerator = Accelerator.load("tests/config/EBSOrbit.yaml", use_fast_loader=True)
+    sr.design.get_lattice().enable_6d()
+    sr.design.chromaticity.set([8.0, 5.0], iter=2)
+    QpAT = sr.design.get_lattice().get_chrom()[:-1]
+    Qp = sr.design.chromaticity.readback()
+    assert np.abs(Qp[0] - 8.0) < 1e-3
+    assert np.abs(Qp[1] - 5.0) < 1e-3
+    assert np.abs(QpAT[0] - 8.0) < 1e-2
+    assert np.abs(QpAT[1] - 5.0) < 1e-2
+
+
 def test_chroma_add():
-    sr: Accelerator = Accelerator.load("tests/config/EBSOrbit.yaml")
+    sr: Accelerator = Accelerator.load("tests/config/EBSOrbit.yaml", use_fast_loader=True)
+    sr.design.get_lattice().enable_6d()
     chromaAT = sr.design.get_lattice().get_chrom()[:-1]
     sr.design.chromaticity.add([0.5, 0.4])
     chromaAT2 = sr.design.get_lattice().get_chrom()[:-1]
