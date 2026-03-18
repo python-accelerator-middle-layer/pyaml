@@ -91,13 +91,13 @@ class Element(object):
         """
         return self._cfg.description
 
-    def set_energy(self, alphac: float):
+    def set_energy(self, E: float):
         """
         Set the instrument energy on this element
         """
         pass
 
-    def set_mcf(self, E: float):
+    def set_mcf(self, alphac: float):
         """
         Set the instrument moment compaction factor on this element
         """
