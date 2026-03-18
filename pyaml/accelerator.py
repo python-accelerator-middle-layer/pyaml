@@ -234,4 +234,4 @@ class Accelerator(object):
         rootfolder = os.path.abspath(os.path.dirname(filename))
         set_root_folder(rootfolder)
         config_dict = load(os.path.basename(filename), None, use_fast_loader)
-        return Accelerator.from_dict(config_dict)
+        return Accelerator.from_dict(config_dict, ignore_external=ignore_external)
