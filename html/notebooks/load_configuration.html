@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Configuration &#8212; Python Accelerator Middle Layer 0.1.dev1+g0cf44ff7c documentation</title>
+    <title>Configuration &#8212; Python Accelerator Middle Layer 0.1.dev1+g41df9f082 documentation</title>
   
   
   
@@ -42,7 +42,7 @@
   <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
 <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
-    <script src="../_static/documentation_options.js?v=df29db57"></script>
+    <script src="../_static/documentation_options.js?v=b8c1c257"></script>
     <script src="../_static/doctools.js?v=9bcbadda"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -121,8 +121,8 @@
       
     
     
-    <img src="../_static/logo.png" class="logo__image only-light" alt="Python Accelerator Middle Layer 0.1.dev1+g0cf44ff7c documentation - Home"/>
-    <img src="../_static/dark.png" class="logo__image only-dark pst-js-only" alt="Python Accelerator Middle Layer 0.1.dev1+g0cf44ff7c documentation - Home"/>
+    <img src="../_static/logo.png" class="logo__image only-light" alt="Python Accelerator Middle Layer 0.1.dev1+g41df9f082 documentation - Home"/>
+    <img src="../_static/dark.png" class="logo__image only-dark pst-js-only" alt="Python Accelerator Middle Layer 0.1.dev1+g41df9f082 documentation - Home"/>
   
   
 </a></div>
@@ -407,7 +407,7 @@
 <span class="nn">File /opt/hostedtoolcache/Python/3.14.3/x64/lib/python3.14/site-packages/pyaml/accelerator.py:237,</span> in <span class="ni">Accelerator.load</span><span class="nt">(filename, use_fast_loader, ignore_external)</span>
 <span class="g g-Whitespace">    </span><span class="mi">235</span> <span class="n">set_root_folder</span><span class="p">(</span><span class="n">rootfolder</span><span class="p">)</span>
 <span class="g g-Whitespace">    </span><span class="mi">236</span> <span class="n">config_dict</span> <span class="o">=</span> <span class="n">load</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">filename</span><span class="p">),</span> <span class="kc">None</span><span class="p">,</span> <span class="n">use_fast_loader</span><span class="p">)</span>
-<span class="ne">--&gt; </span><span class="mi">237</span> <span class="k">return</span> <span class="n">Accelerator</span><span class="o">.</span><span class="n">from_dict</span><span class="p">(</span><span class="n">config_dict</span><span class="p">)</span>
+<span class="ne">--&gt; </span><span class="mi">237</span> <span class="k">return</span> <span class="n">Accelerator</span><span class="o">.</span><span class="n">from_dict</span><span class="p">(</span><span class="n">config_dict</span><span class="p">,</span> <span class="n">ignore_external</span><span class="o">=</span><span class="n">ignore_external</span><span class="p">)</span>
 
 <span class="nn">File /opt/hostedtoolcache/Python/3.14.3/x64/lib/python3.14/site-packages/pyaml/accelerator.py:209,</span> in <span class="ni">Accelerator.from_dict</span><span class="nt">(config_dict, ignore_external)</span>
 <span class="g g-Whitespace">    </span><span class="mi">207</span> <span class="c1"># Ensure factory is clean before building a new accelerator</span>
