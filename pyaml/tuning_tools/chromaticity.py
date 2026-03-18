@@ -102,7 +102,7 @@ class Chromaticity(TuningTool):
 
     def readback(self):
         """
-        Lauch a chromaticty scan and returns the chromaticity measurement.
+        Launch a chromaticty scan and returns the measured chromaticity.
         """
         self._cm.measure()
         return self._cm.chromaticity.get()
@@ -129,7 +129,7 @@ class Chromaticity(TuningTool):
 
     def correct(self, dchroma: np.array) -> np.array:
         """
-        Return delta strengths for tune correction
+        Return delta strengths for chromaticity correction
 
         Parameters
         ----------

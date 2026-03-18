@@ -242,7 +242,7 @@ class ChomaticityMonitor(MeasurementTool):
 
                 rf.frequency.set(f0 + f)
 
-                cb_data = {"step": i, "rf": f0 + f}
+                cb_data = {"step": i, "rf": float(f0 + f)}
                 if not self.send_callback(Action.APPLY, callback, cb_data):
                     # Abort
                     rf.frequency.set(f0)
@@ -253,7 +253,7 @@ class ChomaticityMonitor(MeasurementTool):
                 for j in range(n_tune_meas):
                     tune = tm.tune.get()
                     Q[i] += tune
-                    cb_data = {"step": i, "avg_step": j, "rf": f0 + f, "tune": tune}
+                    cb_data = {"step": i, "avg_step": j, "rf": float(f0 + f), "tune": tune}
                     if bpms is not None:
                         orb = bpms.positions.get()
                         orbit[i] += orb
@@ -281,7 +281,10 @@ class ChomaticityMonitor(MeasurementTool):
         if err:
             raise (err)
 
-        self.fit(delta, Q, fit_order, orbit=orbit, fit_disp_order=fit_disp_order, do_plot=do_plot)
+        if fit_dispersion:
+            self.fit(delta, Q, fit_order, orbit=orbit, fit_disp_order=fit_disp_order, do_plot=do_plot)
+        else:
+            self.fit(delta, Q, fit_order, do_plot=do_plot)
 
         return ok
 
@@ -321,9 +324,15 @@ class ChomaticityMonitor(MeasurementTool):
             self.latest_measurement["dispersion"] = [dispx[:, 1], dispy[:, 1]]  # First order dispersion
 
         if do_plot:
-            fig = plt.figure("Chromaticity_measurement")
+            if fit_disp_order is None:
+                fig = plt.figure("Chromaticity measurement")
+                cols = 1
+            else:
+                fig = plt.figure("Chromaticity/Dispersion measurement")
+                cols = 2
+
             for i in range(2):
-                ax = fig.add_subplot(2, 1, 1 + i)
+                ax = fig.add_subplot(2, cols, 1 + i)
                 ax.scatter(deltas * 100, Q[:, i])
                 title = ""
                 for o in range(order, -1, -1):
@@ -339,8 +348,17 @@ class ChomaticityMonitor(MeasurementTool):
 
                 ax.plot(deltas * 100, np.polyval(chroma[i][::-1], deltas))
                 ax.set_title(title)
-                ax.set_xlabel("Momentum Shift, dp/p [%]")
                 ax.set_ylabel("%s Tune" % ["Horizontal", "Vertical"][i])
-            # ax.legend()
+            ax.set_xlabel("Momentum Shift, dp/p [%]")
+
+            if fit_disp_order is not None:
+                ax = fig.add_subplot(2, cols, 3)
+                ax.plot(dispx[:, 1])
+                ax.set_ylabel("Dispersion [m]")
+                ax = fig.add_subplot(2, cols, 4)
+                ax.plot(dispy[:, 1])
+                ax.set_xlabel("BPM #")
+                ax.set_ylabel("Dispersion [m]")
+
             fig.tight_layout()
             plt.show()
