@@ -131,12 +131,12 @@ class Accelerator(object):
 
     def set_mcf(self, alphac: float):
         """
-        Set the moment compaction for all simulators and control systems.
+        Set the moment compaction factor for all simulators and control systems.
 
         Parameters
         ----------
-        E : float
-            Energy value to set in eV
+        alphac : float
+            Moment compaction factor
         """
         if self._cfg.simulators is not None:
             for s in self._cfg.simulators:

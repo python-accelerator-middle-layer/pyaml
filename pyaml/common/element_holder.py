@@ -402,13 +402,13 @@ class ElementHolder(object):
 
     def _set_mcf(self, alphac: float):
         """
-        Sets the moment compaction on all elements
+        Sets the moment compaction factor on all elements
 
         Parameters
         ----------
         alphac : float
             Moment compaction factor
         """
-        # Needed by energy dependant element (i.e. magnet coil current calculation)
+        # Needed by some off energy dependant element (i.e. chromaticty tools)
         for m in self.get_all_elements():
             m.set_mcf(alphac)
