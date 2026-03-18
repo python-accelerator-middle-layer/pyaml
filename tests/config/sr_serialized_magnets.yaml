@@ -27,7 +27,9 @@ devices:
       calibration_factors: 1.00504
       calibration_offsets: 0.0
       unit: m-1
-      curves: sr/magnet_models/quadcurve.yaml
+      curves:
+        type: pyaml.configuration.csvcurve
+        file: sr/magnet_models/serialized_strength.csv
       powerconverter:
         type: tango.pyaml.attribute
         attribute: srmag/ps-corr-sh1/c01-a-ch1/current

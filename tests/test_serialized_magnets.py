@@ -2,6 +2,7 @@ import numpy as np
 import pytest
 
 from pyaml.accelerator import Accelerator
+from pyaml.magnet.serialized_magnet import SerializedMagnets
 
 
 def check_no_diff(array: list[np.float64]) -> bool:
@@ -23,9 +24,7 @@ def check_no_diff(array: list[np.float64]) -> bool:
     ],
 )
 def test_config_load(sr_file):
-    sr: Accelerator = Accelerator.load(
-        sr_file, use_fast_loader=True, ignore_external=True
-    )
+    sr: Accelerator = Accelerator.load(sr_file, use_fast_loader=True, ignore_external=True)
     assert sr is not None
     magnets = [
         sr.design.get_element("QF8B-C04"),
@@ -47,3 +46,53 @@ def test_config_load(sr_file):
     currents = [magnet.hardware.get() for magnet in magnets]
     assert check_no_diff(strengths)
     assert check_no_diff(currents)
+
+
+@pytest.mark.parametrize(
+    "sr_file",
+    [
+        "tests/config/sr_serialized_magnets.yaml",
+    ],
+)
+def test_magnet_modification(sr_file):
+    sr = Accelerator.load(sr_file, use_fast_loader=True, ignore_external=True)
+
+    sm: SerializedMagnets = sr.design.get_serialized_magnet("mySeriesOfMagnets")
+    element_names = sm._SerializedMagnets__elements
+
+    lattice = sr.design.get_lattice()
+    indices = [ii for ii in range(len(lattice)) if lattice[ii].FamName in element_names]
+
+    print("Reading lattice strengths")
+    print("FamName   K*L                L")
+    for ii in indices:
+        el = lattice[ii]
+        print(el.FamName, el.K * el.Length, el.Length)
+
+    print()
+    print("Reading strengths from serialized magnets")
+
+    for ii in range(len(sm.strengths.elements)):
+        print(element_names[ii], sm.strengths.elements[ii].get())
+
+    print()
+    strength0 = sm.strengths.get()
+    print(f"sm.strengths.get() = {strength0}")
+    print()
+
+    sm.strengths.set(strength0)
+
+    print(f"Running sm.strengths.set({strength0})")
+    print()
+
+    print("Reading lattice strengths")
+    print("FamName   K*L                L")
+    for ii in indices:
+        el = lattice[ii]
+        print(el.FamName, el.K * el.Length, el.Length)
+
+    print()
+    print("Reading strengths from serialized magnets")
+
+    for ii in range(len(sm.strengths.elements)):
+        print(element_names[ii], sm.strengths.elements[ii].get())
