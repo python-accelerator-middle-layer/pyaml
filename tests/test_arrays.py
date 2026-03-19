@@ -70,12 +70,8 @@ def test_arrays(install_test_package):
     # Test on control system
 
     # Assert that the virtual magnet share the same model
-    assert (
-        sr.live.get_magnet("SH1A-C01-H").model == sr.live.get_magnet("SH1A-C01-V").model
-    )
-    assert (
-        sr.live.get_magnet("SH1A-C02-H").model == sr.live.get_magnet("SH1A-C02-V").model
-    )
+    assert sr.live.get_magnet("SH1A-C01-H").model == sr.live.get_magnet("SH1A-C01-V").model
+    assert sr.live.get_magnet("SH1A-C02-H").model == sr.live.get_magnet("SH1A-C02-V").model
 
     # Using aggregators
     sr.live.get_magnets("HCORR").strengths.set([0.000010, -0.000008])
@@ -205,9 +201,7 @@ def test_arrays(install_test_package):
 
     # Test dynamic arrays
 
-    sr: Accelerator = Accelerator.load(
-        "tests/config/EBSOrbit.yaml", use_fast_loader=True
-    )
+    sr: Accelerator = Accelerator.load("tests/config/EBSOrbit.yaml", use_fast_loader=True)
     ae = ElementArray("All", sr.design.get_all_elements())
     acfm = ElementArray("AllCFM", sr.design.get_all_cfm_magnets(), use_aggregator=False)
 
@@ -233,9 +227,7 @@ def test_arrays(install_test_package):
     v = sr.design.get_bpms("emptyBPM").positions.get()  # Ensure good attach
     assert np.shape(v) == (0,)
 
-    emptyCFM = CombinedFunctionMagnet(
-        CombinedFunctionMagnetConfigModel(name="emptyCFM", elements=[])
-    )
+    emptyCFM = CombinedFunctionMagnet(CombinedFunctionMagnetConfigModel(name="emptyCFM", elements=[]))
     emptyCFM.fill_array(sr.design)  # Attach the array
     v = sr.design.get_cfm_magnets("emptyCFM").strengths.get()  # Ensure good attach
     assert np.shape(v) == (0,)
@@ -248,15 +240,13 @@ def test_arrays(install_test_package):
     ],
 )
 def test_serialized_magnets_arrays(sr_file):
-    sr: Accelerator = Accelerator.load(
-        sr_file, use_fast_loader=True, ignore_external=True
-    )
+    sr: Accelerator = Accelerator.load(sr_file, use_fast_loader=True, ignore_external=True)
     the_serie = sr.design.get_serialized_magnets("series")
     strength = the_serie.strengths.get()
-    assert len(strength) == 5
+    assert len(strength) == 1
     print(strength)
     the_serie.strengths.set([0.000010])
     hardwares = the_serie.hardwares.get()
-    assert len(hardwares) == 5
+    assert len(hardwares) == 1
     print(hardwares)
     the_serie.hardwares.set([10])

@@ -48,11 +48,6 @@ def test_config_load(sr_file):
     assert check_no_diff(currents)
 
 
-def print_magnet_list(magnet_list: list) -> None:
-    for magnet in magnet_list:
-        print(f"- {magnet.FamName}")
-
-
 @pytest.mark.parametrize(
     "sr_file",
     [
