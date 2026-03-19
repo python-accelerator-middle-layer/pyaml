@@ -80,7 +80,7 @@ class TuneResponseMatrix(MeasurementTool):
               step:int The current step
               avg_step:int The current avg step
               magnet:Magnet The magnet being excited
-              strength:Magnet strength
+              strength:float Magnet strength
               tune:np.array The measured tune (on Action.MEASURE)
               dtune:np.array The tune variation (on Action.RESTORE)
 
