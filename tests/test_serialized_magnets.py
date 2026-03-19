@@ -96,3 +96,5 @@ def test_magnet_modification(sr_file):
 
     for ii in range(len(sm.strengths.elements)):
         print(element_names[ii], sm.strengths.elements[ii].get())
+
+    assert check_no_diff([sm.strengths.elements[ii].get() for ii in range(len(sm.strengths.elements))])
