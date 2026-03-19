@@ -5,7 +5,7 @@ from ..common.exception import PyAMLException
 from ..magnet.serialized_magnet import SerializedMagnets
 from .element_array import ElementArray
 
-# TODO handle aggregator for CFM
+# TODO handle aggregator for serialized magnets
 
 
 class RWMagnetStrengths(ReadWriteFloatArray):
@@ -16,19 +16,13 @@ class RWMagnetStrengths(ReadWriteFloatArray):
 
     # Gets the values
     def get(self) -> np.array:
-        r = np.zeros(self.__nb)
-        idx = 0
-        for m in self.__magnets:
-            r[idx : idx + m.get_nb_magnets()] = m.strengths.get()
-            idx += m.get_nb_magnets()
-        return r
+        return np.array([m.strengths.get() for m in self.__magnets])
 
     # Sets the values
     def set(self, value: np.array):
-        nvalue = np.ones(self.__nb) * value if isinstance(value, float) else value
-        for idx, m in enumerate(self.__magnets):
-            m.strengths.set(nvalue[idx])
-            idx += m.get_nb_magnets()
+        nvalue = np.ones(len(self.__magnets)) * value if isinstance(value, float) else value
+        for value, m in zip(nvalue, self.__magnets, strict=True):
+            m.strengths.set(value)
 
     # Sets the values and waits that the read values reach their setpoint
     def set_and_wait(self, value: np.array):
@@ -50,18 +44,13 @@ class RWMagnetHardwares(ReadWriteFloatArray):
 
     # Gets the values
     def get(self) -> np.array:
-        r = np.zeros(self.__nb)
-        idx = 0
-        for m in self.__magnets:
-            r[idx : idx + m.get_nb_magnets()] = m.hardwares.get()
-            idx += m.get_nb_magnets()
-        return r
+        return np.array([m.hardwares.get() for m in self.__magnets])
 
     # Sets the values
     def set(self, value: np.array):
-        nvalue = np.ones(self.__nb) * value if isinstance(value, float) else value
-        for idx, m in enumerate(self.__magnets):
-            m.hardwares.set(nvalue[idx])
+        nvalue = np.ones(len(self.__magnets)) * value if isinstance(value, float) else value
+        for value, m in zip(nvalue, self.__magnets, strict=True):
+            m.hardwares.set(value)
 
     # Sets the values and waits that the read values reach their setpoint
     def set_and_wait(self, value: np.array):
@@ -103,11 +92,7 @@ class SerializedMagnetsArray(ElementArray):
         self.__rwhardwares = RWMagnetHardwares(arrayName, magnets)
 
         if use_aggregator:
-            raise (
-                PyAMLException(
-                    "Aggregator not implemented for CombinedFunctionMagnetArray"
-                )
-            )
+            raise (PyAMLException("Aggregator not implemented for CombinedFunctionMagnetArray"))
 
     @property
     def strengths(self) -> RWMagnetStrengths:

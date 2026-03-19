@@ -48,6 +48,11 @@ def test_config_load(sr_file):
     assert check_no_diff(currents)
 
 
+def print_magnet_list(magnet_list: list) -> None:
+    for magnet in magnet_list:
+        print(f"- {magnet.FamName}")
+
+
 @pytest.mark.parametrize(
     "sr_file",
     [
@@ -56,6 +61,8 @@ def test_config_load(sr_file):
 )
 def test_magnet_modification(sr_file):
     sr = Accelerator.load(sr_file, use_fast_loader=True, ignore_external=True)
+
+    print(sr.yellow_pages)
 
     sm: SerializedMagnets = sr.design.get_serialized_magnet("mySeriesOfMagnets")
     element_names = sm._SerializedMagnets__elements
@@ -98,3 +105,53 @@ def test_magnet_modification(sr_file):
         print(element_names[ii], sm.strengths.elements[ii].get())
 
     assert check_no_diff([sm.strengths.elements[ii].get() for ii in range(len(sm.strengths.elements))])
+
+
+@pytest.mark.parametrize(
+    "sr_file",
+    [
+        "tests/config/sr_serialized_magnets.yaml",
+    ],
+)
+def test_tune(sr_file):
+    sr = Accelerator.load(sr_file, use_fast_loader=True, ignore_external=True)
+    sr.design.get_lattice().disable_6d()
+
+    quadForTuneDesign = sr.design.get_serialized_magnets("QForTune")
+    tune_monitor = sr.design.get_betatron_tune_monitor("BETATRON_TUNE")
+    # Build tune response matrix
+    tunemat = np.zeros((len(quadForTuneDesign), 2))
+
+    # Magnet are not actually in series. Here a trick to set them to the same strengths
+    for m in quadForTuneDesign:
+        strength = m.strengths.get()
+        m.strengths.set(strength)
+    tune = tune_monitor.tune.get()
+    print(f"tune={tune}")
+
+    for idx, m in enumerate(quadForTuneDesign):
+        strength = m.strengths.get()
+        m.strengths.set(strength + 1e-4)
+        dq = tune_monitor.tune.get() - tune
+        tunemat[idx] = dq * 1e4
+        m.strengths.set(strength)
+
+    # Compute correction matrix
+    correctionmat = np.linalg.pinv(tunemat.T)
+    print(f"correctionmat.shape={correctionmat.shape}")
+    print(f"correctionmat={correctionmat}")
+
+    # Correct tune
+    strengths = quadForTuneDesign.strengths.get()
+    print(f"len(strengths)={len(strengths)}")
+    print(f"strengths={strengths}")
+    strengths += np.matmul(correctionmat, [0.1, 0.05])  # Ask for correction [dqx,dqy]
+    print(f"strengths={strengths}")
+    quadForTuneDesign.strengths.set(strengths)
+    newTune = tune_monitor.tune.get()
+    print(f"newTune={newTune}")
+    diffTune = newTune - tune
+
+    print(f"diffTune={diffTune}")
+    assert np.abs(diffTune[0] - 0.1) < 1e-3
+    assert np.abs(diffTune[1] - 0.05) < 1e-3
