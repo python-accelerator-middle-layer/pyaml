@@ -211,6 +211,8 @@ class ChomaticityMonitor(MeasurementTool):
         if alphac is None:
             raise PyAMLException("Moment compaction factor is not defined")
 
+        self.register_callback(callback)
+
         # Get devices
         self.check_peer()
         tm = self._peer.get_betatron_tune_monitor(self._cfg.betatron_tune_name)
@@ -235,18 +237,13 @@ class ChomaticityMonitor(MeasurementTool):
         # ensure that, even if there is an issus, the script will finish by
         # reseting the RF frequency to its original value
         err = None
-        ok = True
+        aborted = False
         try:
             for i, f in enumerate(delta_frec):
                 # TODO : Use set_and_wait once it is implemented !
 
                 rf.frequency.set(f0 + f)
-
-                cb_data = {"step": i, "rf": float(f0 + f)}
-                if not self.send_callback(Action.APPLY, callback, cb_data):
-                    # Abort
-                    rf.frequency.set(f0)
-                    return False
+                self.send_callback(Action.APPLY, {"step": i, "rf": float(f0 + f)})
                 sleep(sleep_between_step)
 
                 # Averaging
@@ -258,10 +255,7 @@ class ChomaticityMonitor(MeasurementTool):
                         orb = bpms.positions.get()
                         orbit[i] += orb
                         cb_data["orbit"] = orb
-                    if not self.send_callback(Action.MEASURE, callback, cb_data):
-                        # Abort
-                        rf.frequency.set(f0)
-                        return False
+                    self.send_callback(Action.MEASURE, cb_data)
 
                     if j < n_tune_meas - 1:
                         sleep(sleep_between_meas)
@@ -272,21 +266,26 @@ class ChomaticityMonitor(MeasurementTool):
 
         except Exception as ex:
             err = ex
+        except KeyboardInterrupt as ex:
+            aborted = True
         finally:
-            # TODO : Use set_and_wait once it is implemented !
+            # Restore
             rf.frequency.set(f0)
-            cb_data = {"step": i, "rf": f0}
-            ok = self.send_callback(Action.RESTORE, callback, cb_data)
+            self.send_callback(Action.RESTORE, {"step": i, "rf": f0}, raiseException=False)
 
-        if err:
+        if err is not None:
             raise (err)
+
+        if aborted:
+            logger.warning(f"{self.get_name()} : measurement aborted")
+            return False
 
         if fit_dispersion:
             self.fit(delta, Q, fit_order, orbit=orbit, fit_disp_order=fit_disp_order, do_plot=do_plot)
         else:
             self.fit(delta, Q, fit_order, do_plot=do_plot)
 
-        return ok
+        return True
 
     def fit(self, deltas, Q, order, orbit=None, fit_disp_order=None, do_plot=False):
         """

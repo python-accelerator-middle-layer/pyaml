@@ -53,6 +53,7 @@ class ChromaticityResponseMatrix(MeasurementTool):
     def __init__(self, cfg: ConfigModel):
         super().__init__(cfg.name)
         self._cfg = cfg
+        self.aborted = False
 
     def measure(
         self,
@@ -94,6 +95,7 @@ class ChromaticityResponseMatrix(MeasurementTool):
               step:int The current step
               avg_step:int The current avg step
               magnet:Magnet The magnet being excited
+              strength:Magnet strength
               chroma:np.array The measured chroma (on Action.MEASURE)
               dchroma:np.array The chroma variation (on Action.RESTORE)
 
@@ -103,11 +105,13 @@ class ChromaticityResponseMatrix(MeasurementTool):
         sextus = self._peer.get_magnets(self._cfg.sextu_array_name)
         cm = self._peer.get_chromaticity_monitor(self._cfg.chromaticity_name)
 
+        self.register_callback(callback)
+
         chromamat = np.zeros((len(sextus), 2))
 
         initial_chroma = None
         if not cm.measure(callback=callback):
-            # Abort
+            # Aborted
             return False
         initial_chroma = cm.chromaticity.get()
 
@@ -117,55 +121,71 @@ class ChromaticityResponseMatrix(MeasurementTool):
         sleep_step = sleep_between_step if sleep_between_step is not None else self._cfg.sleep_between_step
         sleep_meas = sleep_between_meas if sleep_between_meas is not None else self._cfg.sleep_between_meas
 
-        for qidx, m in enumerate(sextus):
-            str = m.strength.get()  # Initial strength
-            deltas = np.linspace(-delta, delta, nb_step)
-            Qp = np.zeros((nb_step, 2))
+        err = None
+        aborted = False
+        try:
+            for qidx, m in enumerate(sextus):
+                str = m.strength.get()  # Initial strength
+                deltas = np.linspace(-delta, delta, nb_step)
+                Qp = np.zeros((nb_step, 2))
 
-            for step, d in enumerate(deltas):
-                # apply strength
-                m.strength.set(str + d)
+                for step, d in enumerate(deltas):
+                    # apply strength
+                    m.strength.set(str + d)
 
-                if not self.send_callback(Action.APPLY, callback, {"step": qidx, "magnet": m}):
-                    m.strength.set(str)  # restore strength
-                    return False
+                    self.send_callback(Action.APPLY, {"step": qidx, "magnet": m.get_name(), "strength": float(str + d)})
 
-                time.sleep(sleep_step)
+                    time.sleep(sleep_step)
 
-                # Chroma averaging
-                Qp[step] = np.zeros(2)
-                for avg in range(nb_meas):
-                    if not cm.measure(callback=callback):
-                        aborted = True
-                        m.strength.set(str)  # restore strength
-                        return False
-                    chroma = cm.chromaticity.get()
-                    Qp[step] += chroma
+                    # Chroma averaging
+                    Qp[step] = np.zeros(2)
+                    for avg in range(nb_meas):
+                        if not cm.measure(callback=callback):
+                            raise KeyboardInterrupt
+                        chroma = cm.chromaticity.get()
+                        Qp[step] += chroma
 
-                    if not self.send_callback(
-                        Action.MEASURE, callback, {"step": qidx, "avg_step": avg, "magnet": m, "chroma": chroma}
-                    ):
-                        m.strength.set(str)  # restore strength
-                        return False
+                        self.send_callback(
+                            Action.MEASURE, {"step": qidx, "avg_step": avg, "magnet": m.get_name(), "chroma": chroma}
+                        )
 
-                    if avg < nb_meas - 1:
-                        time.sleep(sleep_meas)
-                Qp[step] /= float(nb_meas)
+                        if avg < nb_meas - 1:
+                            time.sleep(sleep_meas)
+                    Qp[step] /= float(nb_meas)
 
-            # Fit and fill matrix with the slopes
-            if nb_step == 1:
-                chromamat[qidx] = (Qp - initial_chroma) / deltas[0]
-            else:
-                coefs = np.polynomial.polynomial.polyfit(deltas, Qp, 1)
-                chromamat[qidx] = coefs[1]
+                # Fit and fill matrix with the slopes
+                if nb_step == 1:
+                    chromamat[qidx] = (Qp - initial_chroma) / deltas[0]
+                else:
+                    coefs = np.polynomial.polynomial.polyfit(deltas, Qp, 1)
+                    chromamat[qidx] = coefs[1]
 
-            # Restore strength
-            m.strength.set(str)
-            if not self.send_callback(
-                Action.RESTORE, callback, {"step": qidx, "magnet": m, "dchroma": chromamat[qidx]}
-            ):
-                aborted = True
-                break
+                # Restore strength
+                m.strength.set(str)
+                self.send_callback(
+                    Action.RESTORE,
+                    {"step": qidx, "magnet": m.get_name(), "strength": float(str), "dchroma": chromamat[qidx]},
+                )
+
+        except Exception as ex:
+            err = ex
+        except KeyboardInterrupt as ex:
+            aborted = True
+        finally:
+            # Restore
+            m.strength.set(str)  # restore strength
+            self.send_callback(
+                Action.RESTORE,
+                {"step": qidx, "magnet": m.get_name(), "strength": float(str), "dchroma": chromamat[qidx]},
+                raiseException=False,
+            )
+
+        if err is not None:
+            raise (err)
+
+        if aborted:
+            logger.warning(f"{self.get_name()} : measurement aborted")
+            return False
 
         self.latest_measurement = ResponseMatrixDataConfigModel(
             matrix=chromamat.T.tolist(),
@@ -173,3 +193,5 @@ class ChromaticityResponseMatrix(MeasurementTool):
             observable_names=[cm.get_name() + ".x", cm.get_name() + ".y"],
         ).model_dump()
         self.latest_measurement["type"] = "pyaml.tuning_tools.response_matrix_data"
+
+        return True

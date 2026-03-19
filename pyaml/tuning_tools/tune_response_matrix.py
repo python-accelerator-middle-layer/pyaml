@@ -32,7 +32,7 @@ class ConfigModel(ElementConfigModel):
     sleep_between_step: float
         Default time sleep after quad exitation
         Default: 0
-    n_tune_meas : int, optional
+    n_avg_meas : int, optional
         Default number of tune measurement per step used for averaging
         Default 1
     sleep_between_meas: float
@@ -45,7 +45,7 @@ class ConfigModel(ElementConfigModel):
     quad_delta: float
     n_step: Optional[int] = 1
     sleep_between_step: Optional[float] = 0
-    n_tune_meas: Optional[int] = 1
+    n_avg_meas: Optional[int] = 1
     sleep_between_meas: Optional[float] = 0
 
 
@@ -59,7 +59,7 @@ class TuneResponseMatrix(MeasurementTool):
         quad_delta: Optional[float] = None,
         n_step: Optional[int] = None,
         sleep_between_step: Optional[float] = None,
-        n_tune_meas: Optional[int] = None,
+        n_avg_meas: Optional[int] = None,
         sleep_between_meas: Optional[float] = None,
         callback: Optional[Callable] = None,
     ):
@@ -76,7 +76,7 @@ class TuneResponseMatrix(MeasurementTool):
         sleep_between_step: float
             Default time sleep after quad exitation
             Default: from config
-        n_tune_meas : int, optional
+        n_avg_meas : int, optional
             Default number of tune measurement per step used for averaging
             Default from config
         sleep_between_meas: float
@@ -107,58 +107,67 @@ class TuneResponseMatrix(MeasurementTool):
         initial_tune = tm.tune.get()
         delta = quad_delta if quad_delta is not None else self._cfg.quad_delta
         nb_step = n_step if n_step is not None else self._cfg.n_step
-        nb_meas = n_tune_meas if n_tune_meas is not None else self._cfg.n_tune_meas
+        nb_meas = n_avg_meas if n_avg_meas is not None else self._cfg.n_avg_meas
         sleep_step = sleep_between_step if sleep_between_step is not None else self._cfg.sleep_between_step
         sleep_meas = sleep_between_meas if sleep_between_meas is not None else self._cfg.sleep_between_meas
 
+        self.register_callback(callback)
         aborted = False
+        err = None
+        try:
+            for qidx, m in enumerate(quads):
+                str = m.strength.get()  # Initial strength
+                deltas = np.linspace(-delta, delta, nb_step)
+                Q = np.zeros((nb_step, 2))
 
-        for qidx, m in enumerate(quads):
-            str = m.strength.get()  # Initial strength
-            deltas = np.linspace(-delta, delta, nb_step)
-            Q = np.zeros((nb_step, 2))
+                for step, d in enumerate(deltas):
+                    # apply strength
+                    m.strength.set(str + d)
 
-            for step, d in enumerate(deltas):
-                # apply strength
-                m.strength.set(str + d)
+                    self.send_callback(Action.APPLY, {"step": qidx, "magnet": m.get_name(), "strength": float(str + d)})
 
-                if not self.send_callback(Action.APPLY, callback, {"step": qidx, "magnet": m}):
-                    aborted = True
-                    m.strength.set(str)  # restore strength
-                    break
+                    time.sleep(sleep_step)
 
-                time.sleep(sleep_step)
+                    # Tune averaging
+                    Q[step] = np.zeros(2)
+                    for avg in range(nb_meas):
+                        tune = tm.tune.get()
+                        Q[step] += tune
+                        self.send_callback(
+                            Action.MEASURE, {"step": qidx, "avg_step": avg, "magnet": m.get_name(), "tune": tune}
+                        )
+                        if avg < nb_meas - 1:
+                            time.sleep(sleep_meas)
+                    Q[step] /= float(nb_meas)
 
-                # Tune averaging
-                Q[step] = np.zeros(2)
-                for avg in range(nb_meas):
-                    tune = tm.tune.get()
-                    Q[step] += tune
-                    if not self.send_callback(
-                        Action.MEASURE, callback, {"step": qidx, "avg_step": avg, "magnet": m, "tune": tune}
-                    ):
-                        aborted = True
-                        m.strength.set(str)  # restore strength
-                        break
-                    if avg < nb_meas - 1:
-                        time.sleep(sleep_meas)
-                Q[step] /= float(nb_meas)
+                # Fit and fill matrix with the slopes
+                if nb_step == 1:
+                    tunemat[qidx] = (Q - initial_tune) / deltas[0]
+                else:
+                    coefs = np.polynomial.polynomial.polyfit(deltas, Q, 1)
+                    tunemat[qidx] = coefs[1]
 
-            if aborted:
-                break
+                # Restore strength
+                m.strength.set(str)
+                self.send_callback(Action.RESTORE, {"step": qidx, "magnet": m, "dtune": tunemat[qidx]})
 
-            # Fit and fill matrix with the slopes
-            if nb_step == 1:
-                tunemat[qidx] = (Q - initial_tune) / deltas[0]
-            else:
-                coefs = np.polynomial.polynomial.polyfit(deltas, Q, 1)
-                tunemat[qidx] = coefs[1]
-
+        except Exception as ex:
+            err = ex
+        except KeyboardInterrupt as ex:
+            aborted = True
+        finally:
             # Restore strength
             m.strength.set(str)
-            if not self.send_callback(Action.RESTORE, callback, {"step": qidx, "magnet": m, "dtune": tunemat[qidx]}):
-                aborted = True
-                break
+            self.send_callback(
+                Action.RESTORE, {"step": qidx, "magnet": m.get_name(), "dtune": tunemat[qidx]}, raiseException=False
+            )
+
+        if err is not None:
+            raise (err)
+
+        if aborted:
+            logger.warning(f"{self.get_name()} : measurement aborted")
+            return False
 
         self.latest_measurement = ResponseMatrixDataConfigModel(
             matrix=tunemat.T.tolist(),
@@ -166,3 +175,5 @@ class TuneResponseMatrix(MeasurementTool):
             observable_names=[tm.get_name() + ".x", tm.get_name() + ".y"],
         ).model_dump()
         self.latest_measurement["type"] = "pyaml.tuning_tools.response_matrix_data"
+
+        return True

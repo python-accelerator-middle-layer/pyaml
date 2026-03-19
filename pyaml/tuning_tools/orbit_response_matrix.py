@@ -94,19 +94,20 @@ class OrbitResponseMatrix(MeasurementTool):
 
         pySC.disable_pySC_rich()
         aborted = False
+        self.register_callback(callback)
         for code, measurement in generator:
             callback_data = measurement.response_data  # to be defined better
             if code is ResponseCode.AFTER_SET:
-                if not self.send_callback(Action.APPLY, callback, callback_data):
+                if not self.send_callback(Action.APPLY, callback_data):
                     if aborted:
                         break
             elif code is ResponseCode.AFTER_GET:
-                if not self.send_callback(Action.MEASURE, callback, callback_data):
+                if not self.send_callback(Action.MEASURE, callback_data):
                     aborted = True
                     break
             elif code is ResponseCode.AFTER_RESTORE:
                 logger.info(f"Measured response of {measurement.last_input}.")
-                if not self.send_callback(Action.RESTORE, callback, callback_data):
+                if not self.send_callback(Action.RESTORE, callback_data):
                     aborted = True
                     break
 
