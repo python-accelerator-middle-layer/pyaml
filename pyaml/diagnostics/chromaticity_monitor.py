@@ -112,7 +112,7 @@ class ChomaticityMonitor(MeasurementTool):
         Returns
         -------
         ReadFloatArray
-            Array of chromaticity values [[q'x, q'y],[q''x, q''y],...]
+            chromaticity values [q'x, q'y]
         """
         return self._chromaticity
 
