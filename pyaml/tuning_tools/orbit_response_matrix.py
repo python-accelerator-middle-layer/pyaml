@@ -10,16 +10,15 @@ from pySC.apps.codes import ResponseCode
 from ..common.constants import Action
 from ..common.element import ElementConfigModel
 from ..external.pySC_interface import pySCInterface
-from .measurement_tool import MeasurementTool
+from .measurement_tool import MeasurementTool, MeasurementToolConfigModel
 from .orbit_response_matrix_data import ConfigModel as OrbitResponseMatrixDataConfigModel
-from .orbit_response_matrix_data import OrbitResponseMatrixData
 
 logger = logging.getLogger(__name__)
 
 PYAMLCLASS = "OrbitResponseMatrix"
 
 
-class ConfigModel(ElementConfigModel):
+class ConfigModel(MeasurementToolConfigModel):
     """
     Configuration model for orbit response matrix measurement
 
@@ -56,7 +55,9 @@ class OrbitResponseMatrix(MeasurementTool):
     def measure(
         self,
         corrector_names: Optional[List[str]] = None,
-        set_wait_time: float = 0,
+        sleep_between_step: Optional[float] = None,
+        n_avg_meas: Optional[int] = None,
+        sleep_between_meas: Optional[float] = None,
         callback: Optional[Callable] = None,
     ):
         """
@@ -64,18 +65,32 @@ class OrbitResponseMatrix(MeasurementTool):
 
         Parameters
         ----------
+        sleep_between_step: float
+            Default time sleep after quad exitation
+            Default: from config
+        n_avg_meas : int, optional
+            Default number of tune measurement per step used for averaging
+            Default from config
+        sleep_between_meas: float
+            Default time sleep between two tune measurment
+            Default: from config
         callback : Callable, optional
             example: callback(action:int, callback_data: 'Complicated struct')
             callback is executed after each strength setting and after each orbit
             reading.
             If the callback returns false, then the process is aborted.
         """
+        nb_meas = n_avg_meas if n_avg_meas is not None else self._cfg.n_avg_meas
+        sleep_step = sleep_between_step if sleep_between_step is not None else self._cfg.sleep_between_step
+        sleep_meas = sleep_between_meas if sleep_between_meas is not None else self._cfg.sleep_between_meas
+
         element_holder = self._peer
         interface = pySCInterface(
             element_holder=element_holder,
             bpm_array_name=self.bpm_array_name,
         )
-        interface.set_wait_time = set_wait_time
+        # TODO handle sleep_meas
+        interface.set_wait_time = sleep_step
 
         if corrector_names is None:
             logger.info(
@@ -90,30 +105,44 @@ class OrbitResponseMatrix(MeasurementTool):
             corrector_names=corrector_names,
             delta=self.corrector_delta,
             skip_save=True,
+            shots_per_orbit=nb_meas,
         )
 
         pySC.disable_pySC_rich()
         aborted = False
-        self.register_callback(callback)
-        for code, measurement in generator:
-            callback_data = measurement.response_data  # to be defined better
-            if code is ResponseCode.AFTER_SET:
-                if not self.send_callback(Action.APPLY, callback_data):
-                    if aborted:
-                        break
-            elif code is ResponseCode.AFTER_GET:
-                if not self.send_callback(Action.MEASURE, callback_data):
-                    aborted = True
-                    break
-            elif code is ResponseCode.AFTER_RESTORE:
-                logger.info(f"Measured response of {measurement.last_input}.")
-                if not self.send_callback(Action.RESTORE, callback_data):
-                    aborted = True
-                    break
+        err = None
+        step = 0
+        try:
+            self.register_callback(callback)
+            for code, measurement in generator:
+                callback_data = measurement.response_data  # to be defined better
+                if code is ResponseCode.AFTER_SET:
+                    self.send_callback(Action.APPLY, callback_data)
+                elif code is ResponseCode.AFTER_GET:
+                    self.send_callback(Action.MEASURE, callback_data)
+                elif code is ResponseCode.AFTER_RESTORE:
+                    logger.info(f"Measured response of {measurement.last_input}.")
+                    self.send_callback(Action.RESTORE, callback_data)
+                step += 1
+        except Exception as ex:
+            err = ex
+        except KeyboardInterrupt as ex:
+            aborted = True
+        finally:
+            # Restore steerer strength
+            # TODO
+            self.send_callback(
+                Action.RESTORE,
+                {"step": step},
+                raiseException=False,
+            )
+
+        if err is not None:
+            raise (err)
 
         if aborted:
-            logger.warning("Measurement aborted! Settings have not been restored.")
-            return
+            logger.warning(f"{self.get_name()} : measurement aborted (settings not restored)")
+            return False
 
         orm_data = self._pySC_response_data_to_ORMData(measurement.response_data.model_dump())
         self.latest_measurement = orm_data.model_dump()
