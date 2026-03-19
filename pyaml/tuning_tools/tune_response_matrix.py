@@ -1,12 +1,12 @@
 import logging
-import time
+from time import sleep
 from typing import Callable, Optional
 
 import numpy as np
+from pydantic import ConfigDict
 
 from ..common.constants import Action
-from ..common.element import ElementConfigModel
-from .measurement_tool import MeasurementTool
+from .measurement_tool import MeasurementTool, MeasurementToolConfigModel
 from .response_matrix_data import ConfigModel as ResponseMatrixDataConfigModel
 
 logger = logging.getLogger(__name__)
@@ -14,7 +14,7 @@ logger = logging.getLogger(__name__)
 PYAMLCLASS = "TuneResponseMatrix"
 
 
-class ConfigModel(ElementConfigModel):
+class ConfigModel(MeasurementToolConfigModel):
     """
     Configuration model for Tune response matrix
 
@@ -26,27 +26,13 @@ class ConfigModel(ElementConfigModel):
         Name of the diagnostic pyaml device for measuring the tune
     quad_delta : float
         Delta strength used to get the response matrix
-    n_step: int, optional
-        Number of step for fitting the tune [-quad_delta/n_step..quad_delta/n_step]
-        Default 1
-    sleep_between_step: float
-        Default time sleep after quad exitation
-        Default: 0
-    n_avg_meas : int, optional
-        Default number of tune measurement per step used for averaging
-        Default 1
-    sleep_between_meas: float
-        Default time sleep between two tune measurment
-        Default: 0
     """
+
+    model_config = ConfigDict(arbitrary_types_allowed=True, extra="forbid")
 
     quad_array_name: str
     betatron_tune_name: str
     quad_delta: float
-    n_step: Optional[int] = 1
-    sleep_between_step: Optional[float] = 0
-    n_avg_meas: Optional[int] = 1
-    sleep_between_meas: Optional[float] = 0
 
 
 class TuneResponseMatrix(MeasurementTool):
@@ -94,6 +80,7 @@ class TuneResponseMatrix(MeasurementTool):
               step:int The current step
               avg_step:int The current avg step
               magnet:Magnet The magnet being excited
+              strength:Magnet strength
               tune:np.array The measured tune (on Action.MEASURE)
               dtune:np.array The tune variation (on Action.RESTORE)
 
@@ -126,7 +113,7 @@ class TuneResponseMatrix(MeasurementTool):
 
                     self.send_callback(Action.APPLY, {"step": qidx, "magnet": m.get_name(), "strength": float(str + d)})
 
-                    time.sleep(sleep_step)
+                    sleep(sleep_step)
 
                     # Tune averaging
                     Q[step] = np.zeros(2)
@@ -137,7 +124,7 @@ class TuneResponseMatrix(MeasurementTool):
                             Action.MEASURE, {"step": qidx, "avg_step": avg, "magnet": m.get_name(), "tune": tune}
                         )
                         if avg < nb_meas - 1:
-                            time.sleep(sleep_meas)
+                            sleep(sleep_meas)
                     Q[step] /= float(nb_meas)
 
                 # Fit and fill matrix with the slopes
@@ -149,7 +136,10 @@ class TuneResponseMatrix(MeasurementTool):
 
                 # Restore strength
                 m.strength.set(str)
-                self.send_callback(Action.RESTORE, {"step": qidx, "magnet": m, "dtune": tunemat[qidx]})
+                self.send_callback(
+                    Action.RESTORE,
+                    {"step": qidx, "magnet": m.get_name(), "strength": float(str), "dtune": tunemat[qidx]},
+                )
 
         except Exception as ex:
             err = ex
@@ -159,7 +149,9 @@ class TuneResponseMatrix(MeasurementTool):
             # Restore strength
             m.strength.set(str)
             self.send_callback(
-                Action.RESTORE, {"step": qidx, "magnet": m.get_name(), "dtune": tunemat[qidx]}, raiseException=False
+                Action.RESTORE,
+                {"step": qidx, "magnet": m.get_name(), "strength": float(str), "dtune": tunemat[qidx]},
+                raiseException=False,
             )
 
         if err is not None:

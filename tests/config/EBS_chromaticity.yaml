@@ -33,6 +33,7 @@ devices:
   betatron_tune_name: BETATRON_TUNE
   rf_plant_name: RF
   bpm_array_name: BPM
+  n_step: 5
 - type: pyaml.rf.rf_plant
   name: RF
   masterclock:

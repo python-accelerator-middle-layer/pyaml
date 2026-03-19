@@ -3,10 +3,11 @@ import time
 from typing import Callable, Optional
 
 import numpy as np
+from pydantic import ConfigDict
 
 from ..common.constants import Action
 from ..common.element import ElementConfigModel
-from .measurement_tool import MeasurementTool
+from .measurement_tool import MeasurementTool, MeasurementToolConfigModel
 from .response_matrix_data import ConfigModel as ResponseMatrixDataConfigModel
 
 logger = logging.getLogger(__name__)
@@ -14,7 +15,7 @@ logger = logging.getLogger(__name__)
 PYAMLCLASS = "ChromaticityResponseMatrix"
 
 
-class ConfigModel(ElementConfigModel):
+class ConfigModel(MeasurementToolConfigModel):
     """
     Configuration model for Tune response matrix
 
@@ -26,27 +27,13 @@ class ConfigModel(ElementConfigModel):
         Name of the diagnostic chromaticy monitor
     sextu_delta : float
         Delta strength used to get the response matrix
-    n_step: int, optional
-        Number of step for fitting the tune [-quad_delta/n_step..quad_delta/n_step]
-        Default 1
-    sleep_between_step: float
-        Default time sleep after quad exitation
-        Default: 0
-    n_avg_meas : int, optional
-        Default number of tune measurement per step used for averaging
-        Default 1
-    sleep_between_meas: float
-        Default time sleep between two tune measurment
-        Default: 0
     """
+
+    model_config = ConfigDict(arbitrary_types_allowed=True, extra="forbid")
 
     sextu_array_name: str
     chromaticity_name: str
     sextu_delta: float
-    n_step: Optional[int] = 1
-    sleep_between_step: Optional[float] = 0
-    n_avg_meas: Optional[int] = 1
-    sleep_between_meas: Optional[float] = 0
 
 
 class ChromaticityResponseMatrix(MeasurementTool):
