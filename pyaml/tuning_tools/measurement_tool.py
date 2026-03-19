@@ -25,10 +25,10 @@ class MeasurementToolConfigModel(ElementConfigModel):
         Number of measurement step [-delta/n_step..delta/n_step]
         Default 1
     sleep_between_step: float, optional
-        Default sleep time after an actuator exitation
+        Default sleep time after an actuator excitation
         Default: 0
     n_avg_meas : int, optional
-        Default number of tune measurement per step used for averaging
+        Default number of measurement per step used for averaging
         Default 1
     sleep_between_meas: float, optional
         Default sleep time between two measurments
