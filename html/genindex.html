@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Index &#8212; Python Accelerator Middle Layer 0.1.dev1+g41df9f082 documentation</title>
+    <title>Index &#8212; Python Accelerator Middle Layer 0.1.dev1+ge04efa6e8 documentation</title>
   
   
   
@@ -41,7 +41,7 @@
   <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
 <link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
-    <script src="_static/documentation_options.js?v=b8c1c257"></script>
+    <script src="_static/documentation_options.js?v=3094d847"></script>
     <script src="_static/doctools.js?v=9bcbadda"></script>
     <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/clipboard.min.js?v=a7894cd8"></script>
@@ -118,8 +118,8 @@
       
     
     
-    <img src="_static/logo.png" class="logo__image only-light" alt="Python Accelerator Middle Layer 0.1.dev1+g41df9f082 documentation - Home"/>
-    <img src="_static/dark.png" class="logo__image only-dark pst-js-only" alt="Python Accelerator Middle Layer 0.1.dev1+g41df9f082 documentation - Home"/>
+    <img src="_static/logo.png" class="logo__image only-light" alt="Python Accelerator Middle Layer 0.1.dev1+ge04efa6e8 documentation - Home"/>
+    <img src="_static/dark.png" class="logo__image only-dark pst-js-only" alt="Python Accelerator Middle Layer 0.1.dev1+ge04efa6e8 documentation - Home"/>
   
   
 </a></div>
@@ -448,7 +448,7 @@
 </li>
       <li><a href="api/pyaml.magnet.spline_model.html#pyaml.magnet.spline_model.ConfigModel.alpha">alpha (ConfigModel attribute)</a>
 </li>
-      <li><a href="api/pyaml.diagnostics.chromaticity_monitor.html#pyaml.diagnostics.chromaticity_monitor.ConfigModel.alphac">alphac (ConfigModel attribute)</a>
+      <li><a href="api/pyaml.accelerator.html#pyaml.accelerator.ConfigModel.alphac">alphac (ConfigModel attribute)</a>
 </li>
       <li><a href="api/pyaml.magnet.hcorrector.html#pyaml.magnet.hcorrector.HCorrector.angle">angle (HCorrector property)</a>
 
@@ -1452,6 +1452,8 @@
 </li>
       <li><a href="api/pyaml.tuning_tools.measurement_tool.html#pyaml.tuning_tools.measurement_tool.MeasurementTool">MeasurementTool (class in pyaml.tuning_tools.measurement_tool)</a>
 </li>
+      <li><a href="api/pyaml.tuning_tools.measurement_tool.html#pyaml.tuning_tools.measurement_tool.MeasurementToolConfigModel">MeasurementToolConfigModel (class in pyaml.tuning_tools.measurement_tool)</a>
+</li>
       <li><a href="api/pyaml.bpm.bpm.html#pyaml.bpm.bpm.BPM.model">model (BPM property)</a>
 
       <ul>
@@ -1639,9 +1641,9 @@
 <h2 id="N">N</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="api/pyaml.diagnostics.chromaticity_monitor.html#pyaml.diagnostics.chromaticity_monitor.ConfigModel.n_step">n_step (ConfigModel attribute)</a>, <a href="api/pyaml.tuning_tools.tune_response_matrix.html#pyaml.tuning_tools.tune_response_matrix.ConfigModel.n_step">[1]</a>
+      <li><a href="api/pyaml.tuning_tools.measurement_tool.html#pyaml.tuning_tools.measurement_tool.MeasurementToolConfigModel.n_avg_meas">n_avg_meas (MeasurementToolConfigModel attribute)</a>
 </li>
-      <li><a href="api/pyaml.diagnostics.chromaticity_monitor.html#pyaml.diagnostics.chromaticity_monitor.ConfigModel.n_tune_meas">n_tune_meas (ConfigModel attribute)</a>, <a href="api/pyaml.tuning_tools.tune_response_matrix.html#pyaml.tuning_tools.tune_response_matrix.ConfigModel.n_tune_meas">[1]</a>
+      <li><a href="api/pyaml.tuning_tools.measurement_tool.html#pyaml.tuning_tools.measurement_tool.MeasurementToolConfigModel.n_step">n_step (MeasurementToolConfigModel attribute)</a>
 </li>
       <li><a href="api/pyaml.arrays.array.html#pyaml.arrays.array.ArrayConfigModel.name">name (ArrayConfigModel attribute)</a>
 
@@ -2376,6 +2378,8 @@
 </li>
       <li><a href="api/pyaml.magnet.serialized_magnet.html#pyaml.magnet.serialized_magnet.ReadWriteSerializedStrengths">ReadWriteSerializedStrengths (class in pyaml.magnet.serialized_magnet)</a>
 </li>
+      <li><a href="api/pyaml.tuning_tools.measurement_tool.html#pyaml.tuning_tools.measurement_tool.MeasurementTool.register_callback">register_callback() (MeasurementTool method)</a>
+</li>
       <li><a href="api/pyaml.configuration.factory.html#pyaml.configuration.factory.PyAMLFactory.register_element">register_element() (PyAMLFactory method)</a>
 </li>
       <li><a href="api/pyaml.configuration.factory.html#pyaml.configuration.factory.PyAMLFactory.register_strategy">register_strategy() (PyAMLFactory method)</a>
@@ -2655,15 +2659,11 @@
       <ul>
         <li><a href="api/pyaml.magnet.cfm_magnet.html#pyaml.magnet.cfm_magnet.CombinedFunctionMagnet.set_energy">(CombinedFunctionMagnet method)</a>
 </li>
-        <li><a href="api/pyaml.control.controlsystem.html#pyaml.control.controlsystem.ControlSystem.set_energy">(ControlSystem method)</a>
-</li>
         <li><a href="api/pyaml.common.element.html#pyaml.common.element.Element.set_energy">(Element method)</a>
 </li>
         <li><a href="api/pyaml.magnet.magnet.html#pyaml.magnet.magnet.Magnet.set_energy">(Magnet method)</a>
 </li>
         <li><a href="api/pyaml.magnet.serialized_magnet.html#pyaml.magnet.serialized_magnet.SerializedMagnets.set_energy">(SerializedMagnets method)</a>
-</li>
-        <li><a href="api/pyaml.lattice.simulator.html#pyaml.lattice.simulator.Simulator.set_energy">(Simulator method)</a>
 </li>
       </ul></li>
       <li><a href="api/pyaml.lattice.lattice_elements_linker.html#pyaml.lattice.lattice_elements_linker.LatticeElementsLinker.set_lattice">set_lattice() (LatticeElementsLinker method)</a>
@@ -2694,6 +2694,14 @@
         <li><a href="api/pyaml.control.abstract_impl.html#pyaml.control.abstract_impl.RWStrengthScalar.set_magnet_rigidity">(RWStrengthScalar method)</a>
 </li>
         <li><a href="api/pyaml.magnet.spline_model.html#pyaml.magnet.spline_model.SplineMagnetModel.set_magnet_rigidity">(SplineMagnetModel method)</a>
+</li>
+      </ul></li>
+      <li><a href="api/pyaml.accelerator.html#pyaml.accelerator.Accelerator.set_mcf">set_mcf() (Accelerator method)</a>
+
+      <ul>
+        <li><a href="api/pyaml.diagnostics.chromaticity_monitor.html#pyaml.diagnostics.chromaticity_monitor.ChomaticityMonitor.set_mcf">(ChomaticityMonitor method)</a>
+</li>
+        <li><a href="api/pyaml.common.element.html#pyaml.common.element.Element.set_mcf">(Element method)</a>
 </li>
       </ul></li>
       <li><a href="api/pyaml.magnet.magnet.html#pyaml.magnet.magnet.Magnet.set_model_name">set_model_name() (Magnet method)</a>
@@ -2732,9 +2740,9 @@
 </li>
       <li><a href="api/pyaml.magnet.skewsext.html#pyaml.magnet.skewsext.SkewSext">SkewSext (class in pyaml.magnet.skewsext)</a>
 </li>
-      <li><a href="api/pyaml.diagnostics.chromaticity_monitor.html#pyaml.diagnostics.chromaticity_monitor.ConfigModel.sleep_between_meas">sleep_between_meas (ConfigModel attribute)</a>, <a href="api/pyaml.tuning_tools.tune_response_matrix.html#pyaml.tuning_tools.tune_response_matrix.ConfigModel.sleep_between_meas">[1]</a>
+      <li><a href="api/pyaml.tuning_tools.measurement_tool.html#pyaml.tuning_tools.measurement_tool.MeasurementToolConfigModel.sleep_between_meas">sleep_between_meas (MeasurementToolConfigModel attribute)</a>
 </li>
-      <li><a href="api/pyaml.diagnostics.chromaticity_monitor.html#pyaml.diagnostics.chromaticity_monitor.ConfigModel.sleep_between_step">sleep_between_step (ConfigModel attribute)</a>, <a href="api/pyaml.tuning_tools.tune_response_matrix.html#pyaml.tuning_tools.tune_response_matrix.ConfigModel.sleep_between_step">[1]</a>
+      <li><a href="api/pyaml.tuning_tools.measurement_tool.html#pyaml.tuning_tools.measurement_tool.MeasurementToolConfigModel.sleep_between_step">sleep_between_step (MeasurementToolConfigModel attribute)</a>
 </li>
       <li><a href="api/pyaml.magnet.spline_model.html#pyaml.magnet.spline_model.SplineMagnetModel">SplineMagnetModel (class in pyaml.magnet.spline_model)</a>
 </li>

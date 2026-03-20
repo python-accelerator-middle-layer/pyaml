@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>pyaml.tuning_tools.dispersion &#8212; Python Accelerator Middle Layer 0.1.dev1+g41df9f082 documentation</title>
+    <title>pyaml.tuning_tools.dispersion &#8212; Python Accelerator Middle Layer 0.1.dev1+ge04efa6e8 documentation</title>
   
   
   
@@ -41,7 +41,7 @@
   <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
 <link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
-    <script src="../../../_static/documentation_options.js?v=b8c1c257"></script>
+    <script src="../../../_static/documentation_options.js?v=3094d847"></script>
     <script src="../../../_static/doctools.js?v=9bcbadda"></script>
     <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -118,8 +118,8 @@
       
     
     
-    <img src="../../../_static/logo.png" class="logo__image only-light" alt="Python Accelerator Middle Layer 0.1.dev1+g41df9f082 documentation - Home"/>
-    <img src="../../../_static/dark.png" class="logo__image only-dark pst-js-only" alt="Python Accelerator Middle Layer 0.1.dev1+g41df9f082 documentation - Home"/>
+    <img src="../../../_static/logo.png" class="logo__image only-light" alt="Python Accelerator Middle Layer 0.1.dev1+ge04efa6e8 documentation - Home"/>
+    <img src="../../../_static/dark.png" class="logo__image only-dark pst-js-only" alt="Python Accelerator Middle Layer 0.1.dev1+ge04efa6e8 documentation - Home"/>
   
   
 </a></div>
@@ -443,19 +443,21 @@
             <span class="n">skip_save</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
         <span class="p">)</span>
 
+        <span class="bp">self</span><span class="o">.</span><span class="n">register_callback</span><span class="p">(</span><span class="n">callback</span><span class="p">)</span>
+
         <span class="n">aborted</span> <span class="o">=</span> <span class="kc">False</span>
         <span class="k">for</span> <span class="n">code</span><span class="p">,</span> <span class="n">measurement</span> <span class="ow">in</span> <span class="n">generator</span><span class="p">:</span>
             <span class="n">callback_data</span> <span class="o">=</span> <span class="n">measurement</span><span class="o">.</span><span class="n">dispersion_data</span>  <span class="c1"># to be defined better</span>
             <span class="k">if</span> <span class="n">code</span> <span class="ow">is</span> <span class="n">DispersionCode</span><span class="o">.</span><span class="n">AFTER_SET</span><span class="p">:</span>
-                <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">send_callback</span><span class="p">(</span><span class="n">Action</span><span class="o">.</span><span class="n">APPLY</span><span class="p">,</span> <span class="n">callback</span><span class="p">,</span> <span class="n">callback_data</span><span class="p">):</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">send_callback</span><span class="p">(</span><span class="n">Action</span><span class="o">.</span><span class="n">APPLY</span><span class="p">,</span> <span class="n">callback_data</span><span class="p">):</span>
                     <span class="k">if</span> <span class="n">aborted</span><span class="p">:</span>
                         <span class="k">break</span>
             <span class="k">elif</span> <span class="n">code</span> <span class="ow">is</span> <span class="n">DispersionCode</span><span class="o">.</span><span class="n">AFTER_GET</span><span class="p">:</span>
-                <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">send_callback</span><span class="p">(</span><span class="n">Action</span><span class="o">.</span><span class="n">MEASURE</span><span class="p">,</span> <span class="n">callback</span><span class="p">,</span> <span class="n">callback_data</span><span class="p">):</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">send_callback</span><span class="p">(</span><span class="n">Action</span><span class="o">.</span><span class="n">MEASURE</span><span class="p">,</span> <span class="n">callback_data</span><span class="p">):</span>
                     <span class="n">aborted</span> <span class="o">=</span> <span class="kc">True</span>
                     <span class="k">break</span>
             <span class="k">elif</span> <span class="n">code</span> <span class="ow">is</span> <span class="n">DispersionCode</span><span class="o">.</span><span class="n">AFTER_RESTORE</span><span class="p">:</span>
-                <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">send_callback</span><span class="p">(</span><span class="n">Action</span><span class="o">.</span><span class="n">RESTORE</span><span class="p">,</span> <span class="n">callback</span><span class="p">,</span> <span class="n">callback_data</span><span class="p">):</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">send_callback</span><span class="p">(</span><span class="n">Action</span><span class="o">.</span><span class="n">RESTORE</span><span class="p">,</span> <span class="n">callback_data</span><span class="p">):</span>
                     <span class="n">aborted</span> <span class="o">=</span> <span class="kc">True</span>
                     <span class="k">break</span>
 

@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>pyaml.accelerator &#8212; Python Accelerator Middle Layer 0.1.dev1+g41df9f082 documentation</title>
+    <title>pyaml.accelerator &#8212; Python Accelerator Middle Layer 0.1.dev1+ge04efa6e8 documentation</title>
   
   
   
@@ -41,7 +41,7 @@
   <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
 <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
-    <script src="../../_static/documentation_options.js?v=b8c1c257"></script>
+    <script src="../../_static/documentation_options.js?v=3094d847"></script>
     <script src="../../_static/doctools.js?v=9bcbadda"></script>
     <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -118,8 +118,8 @@
       
     
     
-    <img src="../../_static/logo.png" class="logo__image only-light" alt="Python Accelerator Middle Layer 0.1.dev1+g41df9f082 documentation - Home"/>
-    <img src="../../_static/dark.png" class="logo__image only-dark pst-js-only" alt="Python Accelerator Middle Layer 0.1.dev1+g41df9f082 documentation - Home"/>
+    <img src="../../_static/logo.png" class="logo__image only-light" alt="Python Accelerator Middle Layer 0.1.dev1+ge04efa6e8 documentation - Home"/>
+    <img src="../../_static/dark.png" class="logo__image only-dark pst-js-only" alt="Python Accelerator Middle Layer 0.1.dev1+ge04efa6e8 documentation - Home"/>
   
   
 </a></div>
@@ -406,6 +406,8 @@
 <span class="sd">    energy : float</span>
 <span class="sd">        Accelerator nominal energy. For ramped machine,</span>
 <span class="sd">        this value can be dynamically set</span>
+<span class="sd">    alphac : float, optional</span>
+<span class="sd">        Moment compaction factor.</span>
 <span class="sd">    controls : list[ControlSystem], optional</span>
 <span class="sd">        List of control system used. An accelerator</span>
 <span class="sd">        can access several control systems</span>
@@ -426,6 +428,7 @@
     <span class="n">facility</span><span class="p">:</span> <span class="nb">str</span>
     <span class="n">machine</span><span class="p">:</span> <span class="nb">str</span>
     <span class="n">energy</span><span class="p">:</span> <span class="nb">float</span>
+    <span class="n">alphac</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="n">controls</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">ControlSystem</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="n">simulators</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Simulator</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="n">data_folder</span><span class="p">:</span> <span class="nb">str</span>
@@ -479,6 +482,9 @@
         <span class="k">if</span> <span class="n">cfg</span><span class="o">.</span><span class="n">energy</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">set_energy</span><span class="p">(</span><span class="n">cfg</span><span class="o">.</span><span class="n">energy</span><span class="p">)</span>
 
+        <span class="k">if</span> <span class="n">cfg</span><span class="o">.</span><span class="n">alphac</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">set_mcf</span><span class="p">(</span><span class="n">cfg</span><span class="o">.</span><span class="n">alphac</span><span class="p">)</span>
+
         <span class="bp">self</span><span class="o">.</span><span class="n">_yellow_pages</span> <span class="o">=</span> <span class="n">YellowPages</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">post_init</span><span class="p">()</span>
@@ -496,10 +502,29 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cfg</span><span class="o">.</span><span class="n">simulators</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cfg</span><span class="o">.</span><span class="n">simulators</span><span class="p">:</span>
-                <span class="n">s</span><span class="o">.</span><span class="n">set_energy</span><span class="p">(</span><span class="n">E</span><span class="p">)</span>
+                <span class="n">s</span><span class="o">.</span><span class="n">_set_energy</span><span class="p">(</span><span class="n">E</span><span class="p">)</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cfg</span><span class="o">.</span><span class="n">controls</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cfg</span><span class="o">.</span><span class="n">controls</span><span class="p">:</span>
-                <span class="n">c</span><span class="o">.</span><span class="n">set_energy</span><span class="p">(</span><span class="n">E</span><span class="p">)</span></div>
+                <span class="n">c</span><span class="o">.</span><span class="n">_set_energy</span><span class="p">(</span><span class="n">E</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="Accelerator.set_mcf">
+<a class="viewcode-back" href="../../api/pyaml.accelerator.html#pyaml.accelerator.Accelerator.set_mcf">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">set_mcf</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">alphac</span><span class="p">:</span> <span class="nb">float</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Set the moment compaction factor for all simulators and control systems.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        alphac : float</span>
+<span class="sd">            Moment compaction factor</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cfg</span><span class="o">.</span><span class="n">simulators</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cfg</span><span class="o">.</span><span class="n">simulators</span><span class="p">:</span>
+                <span class="n">s</span><span class="o">.</span><span class="n">_set_mcf</span><span class="p">(</span><span class="n">alphac</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cfg</span><span class="o">.</span><span class="n">controls</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cfg</span><span class="o">.</span><span class="n">controls</span><span class="p">:</span>
+                <span class="n">c</span><span class="o">.</span><span class="n">_set_mcf</span><span class="p">(</span><span class="n">alphac</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="Accelerator.post_init">

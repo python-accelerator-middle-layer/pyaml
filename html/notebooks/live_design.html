@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Live/Design: control modes &#8212; Python Accelerator Middle Layer 0.1.dev1+g41df9f082 documentation</title>
+    <title>Live/Design: control modes &#8212; Python Accelerator Middle Layer 0.1.dev1+ge04efa6e8 documentation</title>
   
   
   
@@ -42,7 +42,7 @@
   <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
 <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
-    <script src="../_static/documentation_options.js?v=b8c1c257"></script>
+    <script src="../_static/documentation_options.js?v=3094d847"></script>
     <script src="../_static/doctools.js?v=9bcbadda"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -121,8 +121,8 @@
       
     
     
-    <img src="../_static/logo.png" class="logo__image only-light" alt="Python Accelerator Middle Layer 0.1.dev1+g41df9f082 documentation - Home"/>
-    <img src="../_static/dark.png" class="logo__image only-dark pst-js-only" alt="Python Accelerator Middle Layer 0.1.dev1+g41df9f082 documentation - Home"/>
+    <img src="../_static/logo.png" class="logo__image only-light" alt="Python Accelerator Middle Layer 0.1.dev1+ge04efa6e8 documentation - Home"/>
+    <img src="../_static/dark.png" class="logo__image only-dark pst-js-only" alt="Python Accelerator Middle Layer 0.1.dev1+ge04efa6e8 documentation - Home"/>
   
   
 </a></div>
@@ -426,15 +426,15 @@
 <span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">line</span> <span class="mi">1</span>
 <span class="ne">----&gt; </span><span class="mi">1</span> <span class="n">SR</span><span class="p">:</span> <span class="n">Accelerator</span> <span class="o">=</span> <span class="n">Accelerator</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s2">&quot;../../tests/config/EBSTune.yaml&quot;</span><span class="p">)</span>
 
-<span class="nn">File /opt/hostedtoolcache/Python/3.14.3/x64/lib/python3.14/site-packages/pyaml/accelerator.py:237,</span> in <span class="ni">Accelerator.load</span><span class="nt">(filename, use_fast_loader, ignore_external)</span>
-<span class="g g-Whitespace">    </span><span class="mi">235</span> <span class="n">set_root_folder</span><span class="p">(</span><span class="n">rootfolder</span><span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">236</span> <span class="n">config_dict</span> <span class="o">=</span> <span class="n">load</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">filename</span><span class="p">),</span> <span class="kc">None</span><span class="p">,</span> <span class="n">use_fast_loader</span><span class="p">)</span>
-<span class="ne">--&gt; </span><span class="mi">237</span> <span class="k">return</span> <span class="n">Accelerator</span><span class="o">.</span><span class="n">from_dict</span><span class="p">(</span><span class="n">config_dict</span><span class="p">,</span> <span class="n">ignore_external</span><span class="o">=</span><span class="n">ignore_external</span><span class="p">)</span>
+<span class="nn">File /opt/hostedtoolcache/Python/3.14.3/x64/lib/python3.14/site-packages/pyaml/accelerator.py:259,</span> in <span class="ni">Accelerator.load</span><span class="nt">(filename, use_fast_loader, ignore_external)</span>
+<span class="g g-Whitespace">    </span><span class="mi">257</span> <span class="n">set_root_folder</span><span class="p">(</span><span class="n">rootfolder</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">258</span> <span class="n">config_dict</span> <span class="o">=</span> <span class="n">load</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">filename</span><span class="p">),</span> <span class="kc">None</span><span class="p">,</span> <span class="n">use_fast_loader</span><span class="p">)</span>
+<span class="ne">--&gt; </span><span class="mi">259</span> <span class="k">return</span> <span class="n">Accelerator</span><span class="o">.</span><span class="n">from_dict</span><span class="p">(</span><span class="n">config_dict</span><span class="p">,</span> <span class="n">ignore_external</span><span class="o">=</span><span class="n">ignore_external</span><span class="p">)</span>
 
-<span class="nn">File /opt/hostedtoolcache/Python/3.14.3/x64/lib/python3.14/site-packages/pyaml/accelerator.py:209,</span> in <span class="ni">Accelerator.from_dict</span><span class="nt">(config_dict, ignore_external)</span>
-<span class="g g-Whitespace">    </span><span class="mi">207</span> <span class="c1"># Ensure factory is clean before building a new accelerator</span>
-<span class="g g-Whitespace">    </span><span class="mi">208</span> <span class="n">Factory</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
-<span class="ne">--&gt; </span><span class="mi">209</span> <span class="k">return</span> <span class="n">Factory</span><span class="o">.</span><span class="n">depth_first_build</span><span class="p">(</span><span class="n">config_dict</span><span class="p">,</span> <span class="n">ignore_external</span><span class="p">)</span>
+<span class="nn">File /opt/hostedtoolcache/Python/3.14.3/x64/lib/python3.14/site-packages/pyaml/accelerator.py:231,</span> in <span class="ni">Accelerator.from_dict</span><span class="nt">(config_dict, ignore_external)</span>
+<span class="g g-Whitespace">    </span><span class="mi">229</span> <span class="c1"># Ensure factory is clean before building a new accelerator</span>
+<span class="g g-Whitespace">    </span><span class="mi">230</span> <span class="n">Factory</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+<span class="ne">--&gt; </span><span class="mi">231</span> <span class="k">return</span> <span class="n">Factory</span><span class="o">.</span><span class="n">depth_first_build</span><span class="p">(</span><span class="n">config_dict</span><span class="p">,</span> <span class="n">ignore_external</span><span class="p">)</span>
 
 <span class="nn">File /opt/hostedtoolcache/Python/3.14.3/x64/lib/python3.14/site-packages/pyaml/configuration/factory.py:175,</span> in <span class="ni">PyAMLFactory.depth_first_build</span><span class="nt">(self, d, ignore_external)</span>
 <span class="g g-Whitespace">    </span><span class="mi">173</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">key</span> <span class="o">==</span> <span class="s2">&quot;__fieldlocations__&quot;</span><span class="p">:</span>

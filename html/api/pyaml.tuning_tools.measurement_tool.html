@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>measurement_tool &#8212; Python Accelerator Middle Layer 0.1.dev1+g41df9f082 documentation</title>
+    <title>measurement_tool &#8212; Python Accelerator Middle Layer 0.1.dev1+ge04efa6e8 documentation</title>
   
   
   
@@ -42,7 +42,7 @@
   <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
 <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
-    <script src="../_static/documentation_options.js?v=b8c1c257"></script>
+    <script src="../_static/documentation_options.js?v=3094d847"></script>
     <script src="../_static/doctools.js?v=9bcbadda"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -121,8 +121,8 @@
       
     
     
-    <img src="../_static/logo.png" class="logo__image only-light" alt="Python Accelerator Middle Layer 0.1.dev1+g41df9f082 documentation - Home"/>
-    <img src="../_static/dark.png" class="logo__image only-dark pst-js-only" alt="Python Accelerator Middle Layer 0.1.dev1+g41df9f082 documentation - Home"/>
+    <img src="../_static/logo.png" class="logo__image only-light" alt="Python Accelerator Middle Layer 0.1.dev1+ge04efa6e8 documentation - Home"/>
+    <img src="../_static/dark.png" class="logo__image only-dark pst-js-only" alt="Python Accelerator Middle Layer 0.1.dev1+ge04efa6e8 documentation - Home"/>
   
   
 </a></div>
@@ -504,6 +504,51 @@
   <section id="module-pyaml.tuning_tools.measurement_tool">
 <span id="measurement-tool"></span><h1>measurement_tool<a class="headerlink" href="#module-pyaml.tuning_tools.measurement_tool" title="Link to this heading">#</a></h1>
 <dl class="py class">
+<dt class="sig sig-object py" id="pyaml.tuning_tools.measurement_tool.MeasurementToolConfigModel">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">MeasurementToolConfigModel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">description</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lattice_names</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_step</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sleep_between_step</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_avg_meas</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sleep_between_meas</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/tuning_tools/measurement_tool.html#MeasurementToolConfigModel"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.tuning_tools.measurement_tool.MeasurementToolConfigModel" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="pyaml.common.element.html#pyaml.common.element.ElementConfigModel" title="pyaml.common.element.ElementConfigModel"><code class="xref py py-class docutils literal notranslate"><span class="pre">ElementConfigModel</span></code></a></p>
+<p>Measurement tool configuration model</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>n_step</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><em>int</em></a><em>, </em><em>optional</em>) – Number of measurement step [-delta/n_step..delta/n_step]
+Default 1</p></li>
+<li><p><strong>sleep_between_step</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><em>float</em></a><em>, </em><em>optional</em>) – Default sleep time after an actuator excitation
+Default: 0</p></li>
+<li><p><strong>n_avg_meas</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><em>int</em></a><em>, </em><em>optional</em>) – Default number of measurement per step used for averaging
+Default 1</p></li>
+<li><p><strong>sleep_between_meas</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><em>float</em></a><em>, </em><em>optional</em>) – Default sleep time between two measurments
+Default: 0</p></li>
+</ul>
+</dd>
+</dl>
+<p>Create a new model by parsing and validating input data from keyword arguments.</p>
+<p>Raises [<cite>ValidationError</cite>][pydantic_core.ValidationError] if the input data cannot be
+validated to form a valid model.</p>
+<p><cite>self</cite> is explicitly positional-only to allow <cite>self</cite> as a field name.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyaml.tuning_tools.measurement_tool.MeasurementToolConfigModel.n_avg_meas">
+<span class="sig-name descname"><span class="pre">n_avg_meas</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></em><a class="headerlink" href="#pyaml.tuning_tools.measurement_tool.MeasurementToolConfigModel.n_avg_meas" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyaml.tuning_tools.measurement_tool.MeasurementToolConfigModel.n_step">
+<span class="sig-name descname"><span class="pre">n_step</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></em><a class="headerlink" href="#pyaml.tuning_tools.measurement_tool.MeasurementToolConfigModel.n_step" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyaml.tuning_tools.measurement_tool.MeasurementToolConfigModel.sleep_between_meas">
+<span class="sig-name descname"><span class="pre">sleep_between_meas</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><span class="pre">float</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></em><a class="headerlink" href="#pyaml.tuning_tools.measurement_tool.MeasurementToolConfigModel.sleep_between_meas" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyaml.tuning_tools.measurement_tool.MeasurementToolConfigModel.sleep_between_step">
+<span class="sig-name descname"><span class="pre">sleep_between_step</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><span class="pre">float</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></em><a class="headerlink" href="#pyaml.tuning_tools.measurement_tool.MeasurementToolConfigModel.sleep_between_step" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
 <dt class="sig sig-object py" id="pyaml.tuning_tools.measurement_tool.MeasurementTool">
 <em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">MeasurementTool</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/tuning_tools/measurement_tool.html#MeasurementTool"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.tuning_tools.measurement_tool.MeasurementTool" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference internal" href="pyaml.common.element.html#pyaml.common.element.Element" title="pyaml.common.element.Element"><code class="xref py py-class docutils literal notranslate"><span class="pre">Element</span></code></a></p>
@@ -549,6 +594,13 @@ or a control system.</p>
 </dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="pyaml.tuning_tools.measurement_tool.MeasurementTool.register_callback">
+<span class="sig-name descname"><span class="pre">register_callback</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">callback</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/tuning_tools/measurement_tool.html#MeasurementTool.register_callback"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.tuning_tools.measurement_tool.MeasurementTool.register_callback" title="Link to this definition">#</a></dt>
+<dd><dl class="field-list simple">
+</dl>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="pyaml.tuning_tools.measurement_tool.MeasurementTool.save">
 <span class="sig-name descname"><span class="pre">save</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">save_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">with_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'json'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/tuning_tools/measurement_tool.html#MeasurementTool.save"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.tuning_tools.measurement_tool.MeasurementTool.save" title="Link to this definition">#</a></dt>
 <dd><p>Save measurement data</p>
@@ -564,7 +616,7 @@ or a control system.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pyaml.tuning_tools.measurement_tool.MeasurementTool.send_callback">
-<span class="sig-name descname"><span class="pre">send_callback</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">action</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">callback</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cb_data</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/tuning_tools/measurement_tool.html#MeasurementTool.send_callback"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.tuning_tools.measurement_tool.MeasurementTool.send_callback" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">send_callback</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">action</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cb_data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">raiseException</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/tuning_tools/measurement_tool.html#MeasurementTool.send_callback"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.tuning_tools.measurement_tool.MeasurementTool.send_callback" title="Link to this definition">#</a></dt>
 <dd><p>Send callback from this Measurement tool to the caller.
 If the callback returns False, the scan is aborted and actuators are restored to their orignal values.
 Callback example:</p>
@@ -580,7 +632,6 @@ Callback example:</p>
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>action</strong> (<a class="reference internal" href="pyaml.common.constants.html#pyaml.common.constants.Action" title="pyaml.common.constants.Action"><em>Action</em></a>) – See <a class="reference internal" href="pyaml.common.constants.html#pyaml.common.constants.Action" title="pyaml.common.constants.Action"><code class="xref py py-class docutils literal notranslate"><span class="pre">pyaml.common.constants.Action</span></code></a></p></li>
-<li><p><strong>callback</strong> (<em>Callable</em>) – Callback to be executed</p></li>
 <li><p><strong>cb_data</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.14)"><em>dict</em></a>) – Callback data</p></li>
 </ul>
 </dd>
@@ -638,11 +689,19 @@ Callback example:</p>
   </div>
   <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.tuning_tools.measurement_tool.MeasurementToolConfigModel"><code class="docutils literal notranslate"><span class="pre">MeasurementToolConfigModel</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.tuning_tools.measurement_tool.MeasurementToolConfigModel.n_avg_meas"><code class="docutils literal notranslate"><span class="pre">MeasurementToolConfigModel.n_avg_meas</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.tuning_tools.measurement_tool.MeasurementToolConfigModel.n_step"><code class="docutils literal notranslate"><span class="pre">MeasurementToolConfigModel.n_step</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.tuning_tools.measurement_tool.MeasurementToolConfigModel.sleep_between_meas"><code class="docutils literal notranslate"><span class="pre">MeasurementToolConfigModel.sleep_between_meas</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.tuning_tools.measurement_tool.MeasurementToolConfigModel.sleep_between_step"><code class="docutils literal notranslate"><span class="pre">MeasurementToolConfigModel.sleep_between_step</span></code></a></li>
+</ul>
+</li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.tuning_tools.measurement_tool.MeasurementTool"><code class="docutils literal notranslate"><span class="pre">MeasurementTool</span></code></a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.tuning_tools.measurement_tool.MeasurementTool.attach"><code class="docutils literal notranslate"><span class="pre">MeasurementTool.attach()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.tuning_tools.measurement_tool.MeasurementTool.get"><code class="docutils literal notranslate"><span class="pre">MeasurementTool.get()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.tuning_tools.measurement_tool.MeasurementTool.load"><code class="docutils literal notranslate"><span class="pre">MeasurementTool.load()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.tuning_tools.measurement_tool.MeasurementTool.measure"><code class="docutils literal notranslate"><span class="pre">MeasurementTool.measure()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.tuning_tools.measurement_tool.MeasurementTool.register_callback"><code class="docutils literal notranslate"><span class="pre">MeasurementTool.register_callback()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.tuning_tools.measurement_tool.MeasurementTool.save"><code class="docutils literal notranslate"><span class="pre">MeasurementTool.save()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.tuning_tools.measurement_tool.MeasurementTool.send_callback"><code class="docutils literal notranslate"><span class="pre">MeasurementTool.send_callback()</span></code></a></li>
 </ul>
