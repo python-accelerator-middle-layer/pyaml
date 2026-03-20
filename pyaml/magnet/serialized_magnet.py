@@ -129,10 +129,13 @@ class SerializedMagnets(Element):
         n_ser_mag.__hardwares = ReadWriteSerializedHardwares(self._cfg, hardwares)
         l.append(n_ser_mag)
         # Construct a single magnet for each magnet.
+        sub_magnets: list[Magnet] = []
         for idx, _ in enumerate(self.__elements):
             strength = strengths[idx]
             hardware = hardwares[idx] if self.model.has_hardware() else None
-            l.append(self.__virtuals[idx].attach(peer, strength, hardware))
+            sub_magnets.append(self.__virtuals[idx].attach(peer, strength, hardware))
+        n_ser_mag.__virtuals.extend(sub_magnets)
+        l.extend(sub_magnets)
         return l
 
     @property

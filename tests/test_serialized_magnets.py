@@ -113,7 +113,8 @@ def test_tune(sr_file):
     sr.design.get_lattice().disable_6d()
 
     m = sr.design.get_serialized_magnet("QF1A")
-    print(m.strength.get())
+    print(f"m.strength.get()={m.strength.get()}")
+    assert len(m.get_magnets()) == m.get_nb_magnets()
 
     quadForTuneDesign = sr.design.get_serialized_magnets("QForTune")
     tune_monitor = sr.design.get_betatron_tune_monitor("BETATRON_TUNE")
