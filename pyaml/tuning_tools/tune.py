@@ -81,6 +81,15 @@ class Tune(TuningTool):
         self._setpoint = np.array([np.nan, np.nan])
 
     def load(self, load_path: Path):
+        """
+        Dyanmically loads a response matrix.
+
+        Parameters
+        ----------
+        load_path : Path
+            Filename of the :class:`~.ResponseMatrixData` to load
+
+        """
         self._cfg.response_matrix = ResponseMatrixData.load(load_path)
         self._response_matrix = np.array(self._cfg.response_matrix._cfg.matrix)
         self._correctionmat = np.linalg.pinv(self._response_matrix)

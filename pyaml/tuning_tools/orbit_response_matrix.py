@@ -61,18 +61,30 @@ class OrbitResponseMatrix(MeasurementTool):
         callback: Optional[Callable] = None,
     ):
         """
-        Measure orbit response matrix
+        Measure orbit response matrix.
+
+        **Example**
+
+        .. code-block:: python
+
+            sr = Accelerator.load("MyAccelerator.yaml")
+            acc = sr.design
+
+            if acc.orm.measure():
+                acc.orm.save("ideal_orm.json")
+                acc.orm.save("ideal_orm.yaml", with_type="yaml")
+                acc.orm.save("ideal_orm.npz", with_type="npz")
 
         Parameters
         ----------
         sleep_between_step: float
-            Default time sleep after quad exitation
+            Default time sleep after steerer exitation
             Default: from config
         n_avg_meas : int, optional
-            Default number of tune measurement per step used for averaging
+            Default number of orbit measurement per step used for averaging
             Default from config
         sleep_between_meas: float
-            Default time sleep between two tune measurment
+            Default time sleep between two orbit measurment
             Default: from config
         callback : Callable, optional
             example: callback(action:int, callback_data: 'Complicated struct')

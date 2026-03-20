@@ -52,12 +52,31 @@ class TuneResponseMatrix(MeasurementTool):
         """
         Measure tune response matrix
 
+        **Example**
+
+        .. code-block:: python
+
+            from pyaml.accelerator import Accelerator
+            from pyaml.common.constants import Action
+
+            def callback(action: Action, data:dict):
+                print(f"{action}, data:{data}")
+                return True
+
+            sr = Accelerator.load("tests/config/EBSTune.yaml")
+            acc = sr.design
+
+            if acc.trm.measure(n_avg_meas=3,sleep_between_meas=5,callback=callback):
+                acc.trm.save("ideal_trm.json")
+                acc.trm.save("ideal_trm.yaml", with_type="yaml")
+                acc.trm.save("ideal_trm.npz", with_type="npz")
+
         Parameters
         ----------
         quad_delta : float
             Delta strength used to get the response matrix
         n_step: int, optional
-            Number of step for fitting the tune [-quad_delta/n_step..quad_delta/n_step]
+            Number of step for fitting the tune slope [-quad_delta/n_step..quad_delta/n_step]
             Default from config
         sleep_between_step: float
             Default time sleep after quad exitation
@@ -69,7 +88,7 @@ class TuneResponseMatrix(MeasurementTool):
             Default time sleep between two tune measurment
             Default: from config
         callback : Callable, optional
-            Callback executed after each strength setting.
+            Callback executed after each strength setting or measurement.
             See :py:meth:`~.measurement_tool.MeasurementTool.send_callback`.
             If the callback return false, then the scan is aborted and strength restored.
             callback_data dict contains:
