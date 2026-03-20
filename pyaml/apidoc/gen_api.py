@@ -10,7 +10,6 @@ from pathlib import Path
 
 modules = [
     "pyaml.accelerator",
-    "pyaml.apidoc.gen_api",
     "pyaml.arrays.array",
     "pyaml.arrays.bpm",
     "pyaml.arrays.bpm_array",
@@ -81,8 +80,10 @@ modules = [
     "pyaml.tuning_tools.dispersion",
     "pyaml.tuning_tools.orbit",
     "pyaml.tuning_tools.orbit_response_matrix",
-    "pyaml.tuning_tools.measurement_tool",
+    "pyaml.tuning_tools.chromaticity",
     "pyaml.tuning_tools.tune",
+    "pyaml.tuning_tools.chromaticity_response_matrix",
+    "pyaml.tuning_tools.measurement_tool",
     "pyaml.tuning_tools.orbit_response_matrix_data",
     "pyaml.tuning_tools.response_matrix_data",
     "pyaml.tuning_tools.tune_response_matrix",

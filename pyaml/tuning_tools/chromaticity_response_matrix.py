@@ -22,7 +22,7 @@ class ConfigModel(MeasurementToolConfigModel):
     Parameters
     ----------
     sextu_array_name : str
-        Array name of quad used to adjust the tune
+        Array name of sextupole used to adjust the chromaticity
     chromaticity_name : str
         Name of the diagnostic chromaticy monitor
     sextu_delta : float
@@ -54,24 +54,44 @@ class ChromaticityResponseMatrix(MeasurementTool):
         """
         Measure tune response matrix
 
+        **Example**
+
+        .. code-block:: python
+
+            from pyaml.accelerator import Accelerator
+            from pyaml.common.constants import Action
+
+            def callback(action: Action, data:dict):
+                print(f"{action}, data:{data}")
+                return True
+
+            sr = Accelerator.load("tests/config/EBSOrbit.yaml")
+            acc = sr.design
+
+            if acc.crm.measure(callback=callback):
+                acc.crm.save("ideal_crm.json")
+                acc.crm.save("ideal_crm.yaml", with_type="yaml")
+                acc.crm.save("ideal_crm.npz", with_type="npz")
+
+
         Parameters
         ----------
         sextu_delta : float
             Delta strength used to get the response matrix
         n_step: int, optional
-            Number of step for fitting the tune [-quad_delta/n_step..quad_delta/n_step]
+            Number of step for fitting the chomaticity slope [-sextu_delta/n_step..sextu_delta/n_step]
             Default from config
         sleep_between_step: float
-            Default time sleep after quad exitation
+            Default time sleep after sextu exitation
             Default: from config
         n_avg_meas : int, optional
-            Default number of chroma measurement per step used for averaging
+            Default number of chromaticity measurement per step used for averaging
             Default from config
         sleep_between_meas: float
-            Default time sleep between two tune measurment
+            Default time sleep between two chomaticity measurment
             Default: from config
         callback : Callable, optional
-            Callback executed after each strength setting.
+            Callback executed after each strength setting or measurement.
             See :py:meth:`~.measurement_tool.MeasurementTool.send_callback`.
             If the callback return false, then the scan is aborted and strength restored.
             callback_data dict contains:
