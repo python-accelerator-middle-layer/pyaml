@@ -74,17 +74,17 @@ def test_magnet_modification(sr_file):
     print()
     print("Reading strengths from serialized magnets")
 
-    for ii in range(len(sm.strengths.elements)):
-        print(element_names[ii], sm.strengths.elements[ii].get())
+    for ii in range(len(sm.strength.elements)):
+        print(element_names[ii], sm.strength.elements[ii].get())
 
     print()
-    strength0 = sm.strengths.get()
-    print(f"sm.strengths.get() = {strength0}")
+    strength0 = sm.strength.get()
+    print(f"sm.strength.get() = {strength0}")
     print()
 
-    sm.strengths.set(strength0)
+    sm.strength.set(strength0)
 
-    print(f"Running sm.strengths.set({strength0})")
+    print(f"Running sm.strengt.set({strength0})")
     print()
 
     print("Reading lattice strengths")
@@ -96,10 +96,10 @@ def test_magnet_modification(sr_file):
     print()
     print("Reading strengths from serialized magnets")
 
-    for ii in range(len(sm.strengths.elements)):
-        print(element_names[ii], sm.strengths.elements[ii].get())
+    for ii in range(len(sm.strength.elements)):
+        print(element_names[ii], sm.strength.elements[ii].get())
 
-    assert check_no_diff([sm.strengths.elements[ii].get() for ii in range(len(sm.strengths.elements))])
+    assert check_no_diff([sm.strength.elements[ii].get() for ii in range(len(sm.strength.elements))])
 
 
 @pytest.mark.parametrize(
@@ -112,6 +112,9 @@ def test_tune(sr_file):
     sr = Accelerator.load(sr_file, use_fast_loader=True, ignore_external=True)
     sr.design.get_lattice().disable_6d()
 
+    m = sr.design.get_serialized_magnet("QF1A")
+    print(m.strength.get())
+
     quadForTuneDesign = sr.design.get_serialized_magnets("QForTune")
     tune_monitor = sr.design.get_betatron_tune_monitor("BETATRON_TUNE")
     # Build tune response matrix
@@ -119,17 +122,17 @@ def test_tune(sr_file):
 
     # Magnet are not actually in series. Here a trick to set them to the same strengths
     for m in quadForTuneDesign:
-        strength = m.strengths.get()
-        m.strengths.set(strength)
+        strength = m.strength.get()
+        m.strength.set(strength)
     tune = tune_monitor.tune.get()
     print(f"tune={tune}")
 
     for idx, m in enumerate(quadForTuneDesign):
-        strength = m.strengths.get()
-        m.strengths.set(strength + 1e-4)
+        strength = m.strength.get()
+        m.strength.set(strength + 1e-4)
         dq = tune_monitor.tune.get() - tune
         tunemat[idx] = dq * 1e4
-        m.strengths.set(strength)
+        m.strength.set(strength)
 
     # Compute correction matrix
     correctionmat = np.linalg.pinv(tunemat.T)

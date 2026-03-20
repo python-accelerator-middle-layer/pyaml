@@ -16,13 +16,13 @@ class RWMagnetStrengths(ReadWriteFloatArray):
 
     # Gets the values
     def get(self) -> np.array:
-        return np.array([m.strengths.get() for m in self.__magnets])
+        return np.array([m.strength.get() for m in self.__magnets])
 
     # Sets the values
     def set(self, value: np.array):
         nvalue = np.ones(len(self.__magnets)) * value if isinstance(value, float) else value
         for value, m in zip(nvalue, self.__magnets, strict=True):
-            m.strengths.set(value)
+            m.strength.set(value)
 
     # Sets the values and waits that the read values reach their setpoint
     def set_and_wait(self, value: np.array):
@@ -32,7 +32,7 @@ class RWMagnetStrengths(ReadWriteFloatArray):
     def unit(self) -> list[str]:
         r = []
         for m in self.__magnets:
-            r.extend(m.strengths.unit())
+            r.extend(m.strength.unit())
         return r
 
 
@@ -44,13 +44,13 @@ class RWMagnetHardwares(ReadWriteFloatArray):
 
     # Gets the values
     def get(self) -> np.array:
-        return np.array([m.hardwares.get() for m in self.__magnets])
+        return np.array([m.hardware.get() for m in self.__magnets])
 
     # Sets the values
     def set(self, value: np.array):
         nvalue = np.ones(len(self.__magnets)) * value if isinstance(value, float) else value
         for value, m in zip(nvalue, self.__magnets, strict=True):
-            m.hardwares.set(value)
+            m.hardware.set(value)
 
     # Sets the values and waits that the read values reach their setpoint
     def set_and_wait(self, value: np.array):
@@ -60,13 +60,13 @@ class RWMagnetHardwares(ReadWriteFloatArray):
     def unit(self) -> list[str]:
         r = []
         for m in self.__magnets:
-            r.extend(m.hardwares.unit())
+            r.extend(m.hardware.unit())
         return r
 
 
 class SerializedMagnetsArray(ElementArray):
     """
-    Class that implements access to a combined function magnet array
+    Class that implements access to a serialized magnets array
 
     Parameters
     ----------
@@ -76,7 +76,7 @@ class SerializedMagnetsArray(ElementArray):
         Magnet list, all elements must be attached to the same instance of
         either a Simulator or a ControlSystem.
     use_aggregator : bool
-        Use aggregator to increase performance by using paralell
+        Use aggregator to increase performance by using parallel
         access to underlying devices.
     """
 
@@ -92,7 +92,7 @@ class SerializedMagnetsArray(ElementArray):
         self.__rwhardwares = RWMagnetHardwares(arrayName, magnets)
 
         if use_aggregator:
-            raise (PyAMLException("Aggregator not implemented for CombinedFunctionMagnetArray"))
+            raise (PyAMLException("Aggregator not implemented for SerializedMagnetsArray"))
 
     @property
     def strengths(self) -> RWMagnetStrengths:
