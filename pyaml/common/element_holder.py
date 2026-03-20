@@ -204,7 +204,7 @@ class ElementHolder(object):
             self.__SERIALIZED_MAGNETS_ARRAYS,
         )
 
-    def get_serialized_magnet(self, name: str) -> SerializedMagnets:
+    def get_serialized_magnet(self, name: str) -> Magnet:
         return self.__get("SerializedMagnets", name, self.__SERIALIZED_MAGNETS)
 
     def add_serialized_magnet(self, m: Magnet):
