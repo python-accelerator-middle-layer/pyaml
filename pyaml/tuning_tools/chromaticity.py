@@ -3,6 +3,7 @@ from typing import TYPE_CHECKING
 
 from .. import PyAMLException
 from ..common.element import ElementConfigModel
+from ..diagnostics.chromaticity_monitor import ChomaticityMonitor
 from .response_matrix_data import ResponseMatrixData
 from .tuning_tool import TuningTool
 
@@ -30,15 +31,16 @@ class ConfigModel(ElementConfigModel):
 
     Parameters
     ----------
-    quad_array_name : str
-        Array name of quad used to adjust the tune
-    betatron_tune_name : str
-        Name of the diagnostic pyaml device for measuring the tune
-    quad_delta : float
-        Delta strength used to get the response matrix
+    sextu_array_name : str
+        Array name of sextu used to adjust the chromaticity
+    chromaticty_monitor_name : str
+        Name of the diagnostic pyaml device for measuring the chromaticity
+    response_matrix : str | ResponseMatrixData
+        filename or data of the chromaticity response matrix
     """
 
     sextu_array_name: str
+    chromaticty_monitor_name: str
     response_matrix: str | ResponseMatrixData
 
 
@@ -78,9 +80,22 @@ class Chromaticity(TuningTool):
         self._setpoint = np.array([np.nan, np.nan])
 
     def load(self, load_path: Path):
+        """
+        Dyanmically loads a response matrix.
+
+        Parameters
+        ----------
+        load_path : Path
+            Filename of the :class:`~.ResponseMatrixData` to load
+        """
         self._cfg.response_matrix = ResponseMatrixData.load(load_path)
         self._response_matrix = np.array(self._cfg.response_matrix._cfg.matrix)
         self._correctionmat = np.linalg.pinv(self._response_matrix)
+
+    @property
+    def _cm(self) -> "ChomaticityMonitor":
+        self.check_peer()
+        return self._peer.get_chromaticity_monitor(self._cfg.chromaticty_monitor_name)
 
     @property
     def _sextu(self) -> "MagnetArray":
@@ -93,36 +108,36 @@ class Chromaticity(TuningTool):
         """
         return self._setpoint
 
-    # def readback(self):
-    #    """
-    #    Return the betatron tune measurement
-    #    """
-    #    self.check_peer()
-    #    return self._tm.tune.get()
+    def readback(self):
+        """
+        Launch a chromaticty scan and returns the measured chromaticity.
+        """
+        self._cm.measure()
+        return self._cm.chromaticity.get()
 
-    # def set(self, tune: np.array, iter: int = 1, wait_time: float = 0.0):
-    #    """
-    #    Sets the tune
-    #
-    #    Parameters
-    #    ----------
-    #    tune : np.array
-    #        Tune setpoint
-    #    iter_nb : int
-    #        Number of iteration
-    #    wait_time : float
-    #        Time to wait in second between 2 iterations
-    #    """
-    #    for i in range(iter):
-    #        diff_tune = tune - self.readback()
-    #        if i == iter:
-    #            wait_time = 0  # do not wait on last iteration
-    #        self.add(diff_tune, wait_time)
-    #    self._setpoint = np.array(tune)
+    def set(self, chroma: np.array, iter: int = 1, wait_time: float = 0.0):
+        """
+        Sets the chromaticity
+
+        Parameters
+        ----------
+        chromaticity : np.array
+            Chromaticity setpoint
+        iter_nb : int
+            Number of iteration
+        wait_time : float
+            Time to wait in second between 2 iterations
+        """
+        for i in range(iter):
+            diff_chroma = chroma - self.readback()
+            if i == iter:
+                wait_time = 0  # do not wait on last iteration
+            self.add(diff_chroma, wait_time)
+        self._setpoint = np.array(chroma)
 
     def correct(self, dchroma: np.array) -> np.array:
         """
-        Return delta strengths for tune correction
+        Return delta strengths for chromaticity correction
 
         Parameters
         ----------

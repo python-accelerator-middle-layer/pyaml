@@ -65,19 +65,21 @@ class Dispersion(MeasurementTool):
             skip_save=True,
         )
 
+        self.register_callback(callback)
+
         aborted = False
         for code, measurement in generator:
             callback_data = measurement.dispersion_data  # to be defined better
             if code is DispersionCode.AFTER_SET:
-                if not self.send_callback(Action.APPLY, callback, callback_data):
+                if not self.send_callback(Action.APPLY, callback_data):
                     if aborted:
                         break
             elif code is DispersionCode.AFTER_GET:
-                if not self.send_callback(Action.MEASURE, callback, callback_data):
+                if not self.send_callback(Action.MEASURE, callback_data):
                     aborted = True
                     break
             elif code is DispersionCode.AFTER_RESTORE:
-                if not self.send_callback(Action.RESTORE, callback, callback_data):
+                if not self.send_callback(Action.RESTORE, callback_data):
                     aborted = True
                     break
 

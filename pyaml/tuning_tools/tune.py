@@ -1,5 +1,14 @@
+import logging
 from pathlib import Path
+from time import sleep
 from typing import TYPE_CHECKING
+
+import numpy as np
+
+try:
+    from typing import Self  # Python 3.11+
+except ImportError:
+    from typing_extensions import Self  # Python 3.10 and earlier
 
 from .. import PyAMLException
 from ..common.element import ElementConfigModel
@@ -9,15 +18,6 @@ from .tuning_tool import TuningTool
 if TYPE_CHECKING:
     from ..arrays.magnet_array import MagnetArray
     from ..diagnostics.tune_monitor import BetatronTuneMonitor
-
-try:
-    from typing import Self  # Python 3.11+
-except ImportError:
-    from typing_extensions import Self  # Python 3.10 and earlier
-import logging
-import time
-
-import numpy as np
 
 logger = logging.getLogger(__name__)
 
@@ -37,6 +37,7 @@ class ConfigModel(ElementConfigModel):
         Name of the diagnostic pyaml device for measuring the tune
     quad_delta : float
         Delta strength used to get the response matrix
+
     """
 
     quad_array_name: str
@@ -80,6 +81,15 @@ class Tune(TuningTool):
         self._setpoint = np.array([np.nan, np.nan])
 
     def load(self, load_path: Path):
+        """
+        Dyanmically loads a response matrix.
+
+        Parameters
+        ----------
+        load_path : Path
+            Filename of the :class:`~.ResponseMatrixData` to load
+
+        """
         self._cfg.response_matrix = ResponseMatrixData.load(load_path)
         self._response_matrix = np.array(self._cfg.response_matrix._cfg.matrix)
         self._correctionmat = np.linalg.pinv(self._response_matrix)
@@ -154,5 +164,5 @@ class Tune(TuningTool):
         strengths = self._quads.strengths.get()
         strengths += self.correct(dtune)
         self._quads.strengths.set(strengths)
-        time.sleep(wait_time)
+        sleep(wait_time)
         self._setpoint += dtune

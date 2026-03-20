@@ -1,16 +1,46 @@
 import logging
 from abc import ABCMeta, abstractmethod
 from pathlib import Path
-from typing import TYPE_CHECKING, Callable, Self
+from typing import TYPE_CHECKING, Callable, Optional, Self
+
+from pydantic import ConfigDict
 
 from ..common.constants import Action
-from ..common.element import Element
+from ..common.element import Element, ElementConfigModel
 from ..common.exception import PyAMLException
 
 if TYPE_CHECKING:
     from ..common.element_holder import ElementHolder
 
 logger = logging.getLogger(__name__)
+
+
+class MeasurementToolConfigModel(ElementConfigModel):
+    """
+    Measurement tool configuration model
+
+    Parameters
+    ----------
+    n_step: int, optional
+        Number of measurement step [-delta/n_step..delta/n_step]
+        Default 1
+    sleep_between_step: float, optional
+        Default sleep time after an actuator excitation
+        Default: 0
+    n_avg_meas : int, optional
+        Default number of measurement per step used for averaging
+        Default 1
+    sleep_between_meas: float, optional
+        Default sleep time between two measurments
+        Default: 0
+    """
+
+    model_config = ConfigDict(arbitrary_types_allowed=True, extra="forbid")
+
+    n_step: Optional[int] = 1
+    sleep_between_step: Optional[float] = 0
+    n_avg_meas: Optional[int] = 1
+    sleep_between_meas: Optional[float] = 0
 
 
 class MeasurementTool(Element, metaclass=ABCMeta):
@@ -22,6 +52,7 @@ class MeasurementTool(Element, metaclass=ABCMeta):
         super().__init__(name)
         self.latest_measurement: dict = None
         self._peer: "ElementHolder" = None  # Peer: ControlSystem or Simulator
+        self._callback: Callable = None
 
     @abstractmethod
     def measure(self) -> bool:
@@ -86,7 +117,7 @@ class MeasurementTool(Element, metaclass=ABCMeta):
         else:
             raise PyAMLException(f"ERROR: Unknown file type to save as: {with_type}.")
 
-    def send_callback(self, action: Action, callback: Callable, cb_data: dict) -> bool:
+    def send_callback(self, action: Action, cb_data: dict, raiseException: bool = True):
         """
         Send callback from this Measurement tool to the caller.
         If the callback returns False, the scan is aborted and actuators are restored to their orignal values.
@@ -106,17 +137,22 @@ class MeasurementTool(Element, metaclass=ABCMeta):
         action: Action
           See :py:class:`pyaml.common.constants.Action`
 
-        callback: Callable
-          Callback to be executed
-
         cb_data: dict
           Callback data
         """
-        if callback is not None:
+        ok = True
+        if self._callback is not None:
             # Add source
-            cb_data["source"] = self.__class__.__name__
-            return callback(action, cb_data)
-        return True
+            cb_data["mode"] = f"{self.get_peer()}"
+            cb_data["source_name"] = f"{self.get_name()}"
+            ok = self._callback(action, cb_data)
+        if not ok and raiseException:
+            # Abort, same as ctrl+C
+            raise KeyboardInterrupt
+        return ok
+
+    def register_callback(self, callback: Callable):
+        self._callback = callback
 
     def attach(self, peer: "ElementHolder") -> Self:
         """
