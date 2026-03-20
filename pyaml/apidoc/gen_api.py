@@ -88,7 +88,6 @@ modules = [
     "pyaml.tuning_tools.response_matrix_data",
     "pyaml.tuning_tools.tune_response_matrix",
     "pyaml.tuning_tools.tuning_tool",
-    "pyaml._version",
     "pyaml.yellow_pages",
 ]
 
