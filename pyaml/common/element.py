@@ -97,6 +97,12 @@ class Element(object):
         """
         pass
 
+    def set_mcf(self, alphac: float):
+        """
+        Set the instrument moment compaction factor on this element
+        """
+        pass
+
     def check_peer(self):
         """
         Throws an exception if the element is not attacched

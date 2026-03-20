@@ -11,14 +11,10 @@ def callback(action: int, data: dict):
 
 def test_simulator_chromaticity_monitor():
     sr: Accelerator = Accelerator.load("tests/config/EBS_chromaticity.yaml", ignore_external=True)
-    sr.design.get_lattice().disable_6d()
-    mcf = sr.design.get_lattice().get_mcf()
     sr.design.get_lattice().enable_6d()
     chromaAT = sr.design.get_lattice().get_chrom()[:-1]
     chromaticity_monitor = sr.design.get_chromaticity_monitor("CHROMATICITY_MONITOR")
-    chromaticity_monitor.measure(
-        alphac=mcf, fit_dispersion=True, sleep_between_meas=0, sleep_between_step=0, callback=callback
-    )
+    chromaticity_monitor.measure(fit_dispersion=True, callback=callback)
     chroma = chromaticity_monitor.chromaticity.get()
     assert np.abs(chroma[0] - chromaAT[0]) < 1e-2
     assert np.abs(chroma[1] - chromaAT[1]) < 1e-2

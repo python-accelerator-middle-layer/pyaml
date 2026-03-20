@@ -1,10 +1,7 @@
-import logging
 from typing import Self
 
 from ..common.element import Element
 from ..common.element_holder import ElementHolder
-
-logger = logging.getLogger(__name__)
 
 
 class TuningTool(Element):

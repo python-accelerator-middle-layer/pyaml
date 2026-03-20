@@ -2,7 +2,7 @@ from ..common.abstract import ReadFloatArray
 from ..common.constants import Action
 from ..common.element import ElementConfigModel
 from ..common.exception import PyAMLException
-from ..tuning_tools.measurement_tool import MeasurementTool
+from ..tuning_tools.measurement_tool import MeasurementTool, MeasurementToolConfigModel
 
 try:
     from typing import Self  # Python 3.11+
@@ -20,7 +20,7 @@ logger = logging.getLogger(__name__)
 PYAMLCLASS = "ChomaticityMonitor"
 
 
-class ConfigModel(ElementConfigModel):
+class ConfigModel(MeasurementToolConfigModel):
     """
     Configuration model for Chromaticity Monitor.
 
@@ -32,11 +32,6 @@ class ConfigModel(ElementConfigModel):
         Name of main RF frequency plant
     bpm_array_name : str,optional
         Name of main BPM array used for dispersion fit
-    n_step : int, optional
-        Default number of RF step during chromaticity
-        measurement, by default 5
-    alphac : float or None, optional
-        Momentum compaction factor, by default None
     e_delta : float, optional
         Default variation of relative energy during chromaticity measurement:
         f0 - f0 * E_delta * alphac  < f_RF < f0 + f0 * E_delta * alphac,
@@ -44,12 +39,6 @@ class ConfigModel(ElementConfigModel):
     max_e_delta : float, optional
         Maximum authorized variation of relative energy during chromaticity
         measurement, by default 0.004
-    n_tune_meas : int, optional
-        Default number of tune/orbit measurement per RF frequency, by default 1
-    sleep_between_meas : float, optional
-        Default sleep time in [s] between two tune measurements, by default 2.0
-    sleep_between_step : float, optional
-        Default sleep time in [s] after RF frequency variation, by default 5.0
     fit_order : int, optional
         Chomaticity fitting order, by default 1
     fit_disp_order : int, optional
@@ -63,13 +52,8 @@ class ConfigModel(ElementConfigModel):
     betatron_tune_name: str
     rf_plant_name: str
     bpm_array_name: str | None = None
-    n_step: int = 5
-    alphac: float | None = None
     e_delta: float = 0.001
     max_e_delta: float = 0.004
-    n_tune_meas: int = 1
-    sleep_between_meas: float = 0.0
-    sleep_between_step: float = 0.0
     fit_order: int = 1
     fit_disp_order: int = 1
     fit_dispersion: bool = False
@@ -118,6 +102,7 @@ class ChomaticityMonitor(MeasurementTool):
         self._cfg = cfg
         self._chromaticity = RChromaDispArray(self, "chromaticity", "1")
         self._dipsersion = RChromaDispArray(self, "dispersion", "m")
+        self._alphac = None
 
     @property
     def chromaticity(self) -> ReadFloatArray:
@@ -127,9 +112,12 @@ class ChomaticityMonitor(MeasurementTool):
         Returns
         -------
         ReadFloatArray
-            Array of chromaticity values [[q'x, q'y],[q''x, q''y],...]
+            chromaticity values [q'x, q'y]
         """
         return self._chromaticity
+
+    def set_mcf(self, alphac: float):
+        self._alphac = alphac
 
     @property
     def dispersion(self) -> ReadFloatArray:
@@ -149,7 +137,7 @@ class ChomaticityMonitor(MeasurementTool):
         alphac: float = None,
         e_delta: float = None,
         max_e_delta: float = None,
-        n_tune_meas: int = None,
+        n_avg_meas: int = None,
         sleep_between_meas: float = None,
         sleep_between_step: float = None,
         fit_order: int = None,
@@ -175,7 +163,7 @@ class ChomaticityMonitor(MeasurementTool):
         max_e_delta: float
             Maximum autorized variation of relative energy during chromaticity
             measurment [default: from config]
-        n_tune_meas: int
+        n_avg_meas: int
             Default number of tune/orbit measurment per RF frequency [default: from config]
         sleep_between_meas: float
             Default time sleep between two tune measurment [default: from config]
@@ -194,10 +182,10 @@ class ChomaticityMonitor(MeasurementTool):
             If the callback return false, then the process is aborted.
         """
         n_step = n_step if n_step is not None else self._cfg.n_step
-        alphac = alphac if alphac is not None else self._cfg.alphac
+        alphac = alphac if alphac is not None else self._alphac
         e_delta = e_delta if e_delta is not None else self._cfg.e_delta
         max_e_delta = max_e_delta if max_e_delta is not None else self._cfg.max_e_delta
-        n_tune_meas = n_tune_meas if n_tune_meas is not None else self._cfg.n_tune_meas
+        n_avg_meas = n_avg_meas if n_avg_meas is not None else self._cfg.n_avg_meas
         sleep_between_meas = sleep_between_meas if sleep_between_meas is not None else self._cfg.sleep_between_meas
         sleep_between_step = sleep_between_step if sleep_between_step is not None else self._cfg.sleep_between_step
         fit_order = fit_order if fit_order is not None else self._cfg.fit_order
@@ -205,10 +193,12 @@ class ChomaticityMonitor(MeasurementTool):
         fit_dispersion = fit_dispersion if fit_dispersion is not None else self._cfg.fit_dispersion
 
         if abs(e_delta) > abs(max_e_delta):
-            logger.warning("e_delta={e_delta} is greater than max_e_delta={max_e_delta}")
+            logger.warning(f"e_delta={e_delta} is greater than max_e_delta={max_e_delta}")
 
         if alphac is None:
             raise PyAMLException("Moment compaction factor is not defined")
+
+        self.register_callback(callback)
 
         # Get devices
         self.check_peer()
@@ -234,55 +224,55 @@ class ChomaticityMonitor(MeasurementTool):
         # ensure that, even if there is an issus, the script will finish by
         # reseting the RF frequency to its original value
         err = None
-        ok = True
+        aborted = False
         try:
             for i, f in enumerate(delta_frec):
                 # TODO : Use set_and_wait once it is implemented !
 
                 rf.frequency.set(f0 + f)
-
-                cb_data = {"step": i, "rf": f0 + f}
-                if not self.send_callback(Action.APPLY, callback, cb_data):
-                    # Abort
-                    rf.frequency.set(f0)
-                    return False
+                self.send_callback(Action.APPLY, {"step": i, "rf": float(f0 + f)})
                 sleep(sleep_between_step)
 
                 # Averaging
-                for j in range(n_tune_meas):
+                for j in range(n_avg_meas):
                     tune = tm.tune.get()
                     Q[i] += tune
-                    cb_data = {"step": i, "avg_step": j, "rf": f0 + f, "tune": tune}
+                    cb_data = {"step": i, "avg_step": j, "rf": float(f0 + f), "tune": tune}
                     if bpms is not None:
                         orb = bpms.positions.get()
                         orbit[i] += orb
                         cb_data["orbit"] = orb
-                    if not self.send_callback(Action.MEASURE, callback, cb_data):
-                        # Abort
-                        rf.frequency.set(f0)
-                        return False
+                    self.send_callback(Action.MEASURE, cb_data)
 
-                    if j < n_tune_meas - 1:
+                    if j < n_avg_meas - 1:
                         sleep(sleep_between_meas)
 
-                Q /= float(n_tune_meas)
+                Q /= float(n_avg_meas)
                 if bpms is not None:
-                    orbit /= float(n_tune_meas)
+                    orbit /= float(n_avg_meas)
 
         except Exception as ex:
             err = ex
+        except KeyboardInterrupt as ex:
+            aborted = True
         finally:
-            # TODO : Use set_and_wait once it is implemented !
+            # Restore
             rf.frequency.set(f0)
-            cb_data = {"step": i, "rf": f0}
-            ok = self.send_callback(Action.RESTORE, callback, cb_data)
+            self.send_callback(Action.RESTORE, {"step": i, "rf": f0}, raiseException=False)
 
-        if err:
+        if err is not None:
             raise (err)
 
-        self.fit(delta, Q, fit_order, orbit=orbit, fit_disp_order=fit_disp_order, do_plot=do_plot)
+        if aborted:
+            logger.warning(f"{self.get_name()} : measurement aborted")
+            return False
 
-        return ok
+        if fit_dispersion:
+            self.fit(delta, Q, fit_order, orbit=orbit, fit_disp_order=fit_disp_order, do_plot=do_plot)
+        else:
+            self.fit(delta, Q, fit_order, do_plot=do_plot)
+
+        return True
 
     def fit(self, deltas, Q, order, orbit=None, fit_disp_order=None, do_plot=False):
         """
@@ -320,9 +310,15 @@ class ChomaticityMonitor(MeasurementTool):
             self.latest_measurement["dispersion"] = [dispx[:, 1], dispy[:, 1]]  # First order dispersion
 
         if do_plot:
-            fig = plt.figure("Chromaticity_measurement")
+            if fit_disp_order is None:
+                fig = plt.figure("Chromaticity measurement")
+                cols = 1
+            else:
+                fig = plt.figure("Chromaticity/Dispersion measurement")
+                cols = 2
+
             for i in range(2):
-                ax = fig.add_subplot(2, 1, 1 + i)
+                ax = fig.add_subplot(2, cols, 1 + i)
                 ax.scatter(deltas * 100, Q[:, i])
                 title = ""
                 for o in range(order, -1, -1):
@@ -338,8 +334,17 @@ class ChomaticityMonitor(MeasurementTool):
 
                 ax.plot(deltas * 100, np.polyval(chroma[i][::-1], deltas))
                 ax.set_title(title)
-                ax.set_xlabel("Momentum Shift, dp/p [%]")
                 ax.set_ylabel("%s Tune" % ["Horizontal", "Vertical"][i])
-            # ax.legend()
+            ax.set_xlabel("Momentum Shift, dp/p [%]")
+
+            if fit_disp_order is not None:
+                ax = fig.add_subplot(2, cols, 3)
+                ax.plot(dispx[:, 1])
+                ax.set_ylabel("Dispersion [m]")
+                ax = fig.add_subplot(2, cols, 4)
+                ax.plot(dispy[:, 1])
+                ax.set_xlabel("BPM #")
+                ax.set_ylabel("Dispersion [m]")
+
             fig.tight_layout()
             plt.show()

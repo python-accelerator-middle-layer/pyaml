@@ -386,3 +386,29 @@ class ElementHolder(object):
         Return all diagnostic identifiers available in this holder.
         """
         return list(self.__DIAG.keys())
+
+    def _set_energy(self, E: float):
+        """
+        Sets the energy on all elements
+
+        Parameters
+        ----------
+        E : float
+            Energy in eV
+        """
+        # Needed by energy dependant element (i.e. magnet coil current calculation)
+        for m in self.get_all_elements():
+            m.set_energy(E)
+
+    def _set_mcf(self, alphac: float):
+        """
+        Sets the moment compaction factor on all elements
+
+        Parameters
+        ----------
+        alphac : float
+            Moment compaction factor
+        """
+        # Needed by some off energy dependant element (i.e. chromaticty tools)
+        for m in self.get_all_elements():
+            m.set_mcf(alphac)

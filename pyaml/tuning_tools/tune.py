@@ -1,5 +1,14 @@
+import logging
 from pathlib import Path
+from time import sleep
 from typing import TYPE_CHECKING
+
+import numpy as np
+
+try:
+    from typing import Self  # Python 3.11+
+except ImportError:
+    from typing_extensions import Self  # Python 3.10 and earlier
 
 from .. import PyAMLException
 from ..common.element import ElementConfigModel
@@ -9,15 +18,6 @@ from .tuning_tool import TuningTool
 if TYPE_CHECKING:
     from ..arrays.magnet_array import MagnetArray
     from ..diagnostics.tune_monitor import BetatronTuneMonitor
-
-try:
-    from typing import Self  # Python 3.11+
-except ImportError:
-    from typing_extensions import Self  # Python 3.10 and earlier
-import logging
-import time
-
-import numpy as np
 
 logger = logging.getLogger(__name__)
 
@@ -37,6 +37,7 @@ class ConfigModel(ElementConfigModel):
         Name of the diagnostic pyaml device for measuring the tune
     quad_delta : float
         Delta strength used to get the response matrix
+
     """
 
     quad_array_name: str
@@ -154,5 +155,5 @@ class Tune(TuningTool):
         strengths = self._quads.strengths.get()
         strengths += self.correct(dtune)
         self._quads.strengths.set(strengths)
-        time.sleep(wait_time)
+        sleep(wait_time)
         self._setpoint += dtune
