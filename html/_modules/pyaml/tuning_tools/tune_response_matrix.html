@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>pyaml.tuning_tools.tune_response_matrix &#8212; Python Accelerator Middle Layer 0.1.dev1+ge04efa6e8 documentation</title>
+    <title>pyaml.tuning_tools.tune_response_matrix &#8212; Python Accelerator Middle Layer 0.1.dev1+g883233cf8 documentation</title>
   
   
   
@@ -41,7 +41,7 @@
   <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
 <link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
-    <script src="../../../_static/documentation_options.js?v=3094d847"></script>
+    <script src="../../../_static/documentation_options.js?v=fe8fa384"></script>
     <script src="../../../_static/doctools.js?v=9bcbadda"></script>
     <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -118,8 +118,8 @@
       
     
     
-    <img src="../../../_static/logo.png" class="logo__image only-light" alt="Python Accelerator Middle Layer 0.1.dev1+ge04efa6e8 documentation - Home"/>
-    <img src="../../../_static/dark.png" class="logo__image only-dark pst-js-only" alt="Python Accelerator Middle Layer 0.1.dev1+ge04efa6e8 documentation - Home"/>
+    <img src="../../../_static/logo.png" class="logo__image only-light" alt="Python Accelerator Middle Layer 0.1.dev1+g883233cf8 documentation - Home"/>
+    <img src="../../../_static/dark.png" class="logo__image only-dark pst-js-only" alt="Python Accelerator Middle Layer 0.1.dev1+g883233cf8 documentation - Home"/>
   
   
 </a></div>
@@ -430,12 +430,31 @@
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Measure tune response matrix</span>
 
+<span class="sd">        **Example**</span>
+
+<span class="sd">        .. code-block:: python</span>
+
+<span class="sd">            from pyaml.accelerator import Accelerator</span>
+<span class="sd">            from pyaml.common.constants import Action</span>
+
+<span class="sd">            def callback(action: Action, data:dict):</span>
+<span class="sd">                print(f&quot;{action}, data:{data}&quot;)</span>
+<span class="sd">                return True</span>
+
+<span class="sd">            sr = Accelerator.load(&quot;tests/config/EBSTune.yaml&quot;)</span>
+<span class="sd">            acc = sr.design</span>
+
+<span class="sd">            if acc.trm.measure(n_avg_meas=3,sleep_between_meas=5,callback=callback):</span>
+<span class="sd">                acc.trm.save(&quot;ideal_trm.json&quot;)</span>
+<span class="sd">                acc.trm.save(&quot;ideal_trm.yaml&quot;, with_type=&quot;yaml&quot;)</span>
+<span class="sd">                acc.trm.save(&quot;ideal_trm.npz&quot;, with_type=&quot;npz&quot;)</span>
+
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        quad_delta : float</span>
 <span class="sd">            Delta strength used to get the response matrix</span>
 <span class="sd">        n_step: int, optional</span>
-<span class="sd">            Number of step for fitting the tune [-quad_delta/n_step..quad_delta/n_step]</span>
+<span class="sd">            Number of step for fitting the tune slope [-quad_delta/n_step..quad_delta/n_step]</span>
 <span class="sd">            Default from config</span>
 <span class="sd">        sleep_between_step: float</span>
 <span class="sd">            Default time sleep after quad exitation</span>
@@ -447,7 +466,7 @@
 <span class="sd">            Default time sleep between two tune measurment</span>
 <span class="sd">            Default: from config</span>
 <span class="sd">        callback : Callable, optional</span>
-<span class="sd">            Callback executed after each strength setting.</span>
+<span class="sd">            Callback executed after each strength setting or measurement.</span>
 <span class="sd">            See :py:meth:`~.measurement_tool.MeasurementTool.send_callback`.</span>
 <span class="sd">            If the callback return false, then the scan is aborted and strength restored.</span>
 <span class="sd">            callback_data dict contains:</span>
