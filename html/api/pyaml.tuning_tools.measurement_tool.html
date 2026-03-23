@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>measurement_tool &#8212; Python Accelerator Middle Layer 0.1.dev1+g883233cf8 documentation</title>
+    <title>measurement_tool &#8212; Python Accelerator Middle Layer 0.1.dev1+g71d4765d2 documentation</title>
   
   
   
@@ -42,7 +42,7 @@
   <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
 <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
-    <script src="../_static/documentation_options.js?v=fe8fa384"></script>
+    <script src="../_static/documentation_options.js?v=36e431f0"></script>
     <script src="../_static/doctools.js?v=9bcbadda"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -121,8 +121,8 @@
       
     
     
-    <img src="../_static/logo.png" class="logo__image only-light" alt="Python Accelerator Middle Layer 0.1.dev1+g883233cf8 documentation - Home"/>
-    <img src="../_static/dark.png" class="logo__image only-dark pst-js-only" alt="Python Accelerator Middle Layer 0.1.dev1+g883233cf8 documentation - Home"/>
+    <img src="../_static/logo.png" class="logo__image only-light" alt="Python Accelerator Middle Layer 0.1.dev1+g71d4765d2 documentation - Home"/>
+    <img src="../_static/dark.png" class="logo__image only-dark pst-js-only" alt="Python Accelerator Middle Layer 0.1.dev1+g71d4765d2 documentation - Home"/>
   
   
 </a></div>
@@ -563,21 +563,11 @@ or a control system.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="pyaml.tuning_tools.measurement_tool.MeasurementTool.get">
 <span class="sig-name descname"><span class="pre">get</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/tuning_tools/measurement_tool.html#MeasurementTool.get"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.tuning_tools.measurement_tool.MeasurementTool.get" title="Link to this definition">#</a></dt>
-<dd><p>Return last measurement data</p>
+<dd><p>Return last measurement data, a dictionary containing last measurement data.
+See sub class of MeasurementTool to get description.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>ResponseMatrixData</strong> – Return latest measurement or None</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pyaml.tuning_tools.measurement_tool.MeasurementTool.load">
-<span class="sig-name descname"><span class="pre">load</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">load_path</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/tuning_tools/measurement_tool.html#MeasurementTool.load"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.tuning_tools.measurement_tool.MeasurementTool.load" title="Link to this definition">#</a></dt>
-<dd><p>Load measurement data</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>load_path</strong> (<em>Path</em>) – Matrix filename</p>
+<dd class="field-odd"><p><strong>dict</strong> – Return latest measurement or None</p>
 </dd>
 </dl>
 </dd></dl>
@@ -588,13 +578,6 @@ or a control system.</p>
 <dd><p>Launch measurement
 :Returns: <strong>bool</strong> – True if the process has been aborted</p>
 <dl class="field-list simple">
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pyaml.tuning_tools.measurement_tool.MeasurementTool.register_callback">
-<span class="sig-name descname"><span class="pre">register_callback</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">callback</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/tuning_tools/measurement_tool.html#MeasurementTool.register_callback"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.tuning_tools.measurement_tool.MeasurementTool.register_callback" title="Link to this definition">#</a></dt>
-<dd><dl class="field-list simple">
 </dl>
 </dd></dl>
 
@@ -632,6 +615,18 @@ Callback example:</p>
 <li><p><strong>action</strong> (<a class="reference internal" href="pyaml.common.constants.html#pyaml.common.constants.Action" title="pyaml.common.constants.Action"><em>Action</em></a>) – See <a class="reference internal" href="pyaml.common.constants.html#pyaml.common.constants.Action" title="pyaml.common.constants.Action"><code class="xref py py-class docutils literal notranslate"><span class="pre">pyaml.common.constants.Action</span></code></a></p></li>
 <li><p><strong>cb_data</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.14)"><em>dict</em></a>) – Callback data</p></li>
 </ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="pyaml.tuning_tools.measurement_tool.MeasurementTool.latest_measurement">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">latest_measurement</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.14)"><span class="pre">dict</span></a></em><a class="headerlink" href="#pyaml.tuning_tools.measurement_tool.MeasurementTool.latest_measurement" title="Link to this definition">#</a></dt>
+<dd><p>Return last measurement data, a dictionary containing last measurement data.
+See sub class of MeasurementTool to get description.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>dict</strong> – Return latest measurement or None</p>
 </dd>
 </dl>
 </dd></dl>
@@ -697,11 +692,10 @@ Callback example:</p>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.tuning_tools.measurement_tool.MeasurementTool"><code class="docutils literal notranslate"><span class="pre">MeasurementTool</span></code></a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.tuning_tools.measurement_tool.MeasurementTool.attach"><code class="docutils literal notranslate"><span class="pre">MeasurementTool.attach()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.tuning_tools.measurement_tool.MeasurementTool.get"><code class="docutils literal notranslate"><span class="pre">MeasurementTool.get()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.tuning_tools.measurement_tool.MeasurementTool.load"><code class="docutils literal notranslate"><span class="pre">MeasurementTool.load()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.tuning_tools.measurement_tool.MeasurementTool.measure"><code class="docutils literal notranslate"><span class="pre">MeasurementTool.measure()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.tuning_tools.measurement_tool.MeasurementTool.register_callback"><code class="docutils literal notranslate"><span class="pre">MeasurementTool.register_callback()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.tuning_tools.measurement_tool.MeasurementTool.save"><code class="docutils literal notranslate"><span class="pre">MeasurementTool.save()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.tuning_tools.measurement_tool.MeasurementTool.send_callback"><code class="docutils literal notranslate"><span class="pre">MeasurementTool.send_callback()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.tuning_tools.measurement_tool.MeasurementTool.latest_measurement"><code class="docutils literal notranslate"><span class="pre">MeasurementTool.latest_measurement</span></code></a></li>
 </ul>
 </li>
 </ul>

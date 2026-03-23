@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>pyaml.tuning_tools.measurement_tool &#8212; Python Accelerator Middle Layer 0.1.dev1+g883233cf8 documentation</title>
+    <title>pyaml.tuning_tools.measurement_tool &#8212; Python Accelerator Middle Layer 0.1.dev1+g71d4765d2 documentation</title>
   
   
   
@@ -41,7 +41,7 @@
   <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
 <link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
-    <script src="../../../_static/documentation_options.js?v=fe8fa384"></script>
+    <script src="../../../_static/documentation_options.js?v=36e431f0"></script>
     <script src="../../../_static/doctools.js?v=9bcbadda"></script>
     <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -118,8 +118,8 @@
       
     
     
-    <img src="../../../_static/logo.png" class="logo__image only-light" alt="Python Accelerator Middle Layer 0.1.dev1+g883233cf8 documentation - Home"/>
-    <img src="../../../_static/dark.png" class="logo__image only-dark pst-js-only" alt="Python Accelerator Middle Layer 0.1.dev1+g883233cf8 documentation - Home"/>
+    <img src="../../../_static/logo.png" class="logo__image only-light" alt="Python Accelerator Middle Layer 0.1.dev1+g71d4765d2 documentation - Home"/>
+    <img src="../../../_static/dark.png" class="logo__image only-dark pst-js-only" alt="Python Accelerator Middle Layer 0.1.dev1+g71d4765d2 documentation - Home"/>
   
   
 </a></div>
@@ -426,9 +426,17 @@
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">latest_measurement</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_latest_measurement</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_peer</span><span class="p">:</span> <span class="s2">&quot;ElementHolder&quot;</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># Peer: ControlSystem or Simulator</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_callback</span><span class="p">:</span> <span class="n">Callable</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_init_measure</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">measurement_type</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+        <span class="c1"># Initialize measurement data</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_latest_measurement</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">if</span> <span class="n">measurement_type</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_latest_measurement</span><span class="p">[</span><span class="s2">&quot;type&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">measurement_type</span>
 
 <div class="viewcode-block" id="MeasurementTool.measure">
 <a class="viewcode-back" href="../../../api/pyaml.tuning_tools.measurement_tool.html#pyaml.tuning_tools.measurement_tool.MeasurementTool.measure">[docs]</a>
@@ -444,33 +452,32 @@
         <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span></div>
 
 
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">latest_measurement</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Return last measurement data, a dictionary containing last measurement data.</span>
+<span class="sd">        See sub class of MeasurementTool to get description.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        dict</span>
+<span class="sd">            Return latest measurement or None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_latest_measurement</span>
+
 <div class="viewcode-block" id="MeasurementTool.get">
 <a class="viewcode-back" href="../../../api/pyaml.tuning_tools.measurement_tool.html#pyaml.tuning_tools.measurement_tool.MeasurementTool.get">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Return last measurement data</span>
+<span class="sd">        Return last measurement data, a dictionary containing last measurement data.</span>
+<span class="sd">        See sub class of MeasurementTool to get description.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
-<span class="sd">        ResponseMatrixData</span>
+<span class="sd">        dict</span>
 <span class="sd">            Return latest measurement or None</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">latest_measurement</span></div>
-
-
-    <span class="c1"># TODO: Abstract this method</span>
-<div class="viewcode-block" id="MeasurementTool.load">
-<a class="viewcode-back" href="../../../api/pyaml.tuning_tools.measurement_tool.html#pyaml.tuning_tools.measurement_tool.MeasurementTool.load">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">load</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">load_path</span><span class="p">:</span> <span class="n">Path</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Load measurement data</span>
-
-<span class="sd">        Parameters</span>
-<span class="sd">        ----------</span>
-<span class="sd">        load_path: Path</span>
-<span class="sd">            Matrix filename</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span></div>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_latest_measurement</span></div>
 
 
 <div class="viewcode-block" id="MeasurementTool.save">
@@ -532,9 +539,9 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">ok</span> <span class="o">=</span> <span class="kc">True</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_callback</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="c1"># Add source</span>
+            <span class="c1"># Add source and peer</span>
             <span class="n">cb_data</span><span class="p">[</span><span class="s2">&quot;mode&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">get_peer</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span>
-            <span class="n">cb_data</span><span class="p">[</span><span class="s2">&quot;source_name&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">get_name</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="n">cb_data</span><span class="p">[</span><span class="s2">&quot;source&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span>
             <span class="n">ok</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_callback</span><span class="p">(</span><span class="n">action</span><span class="p">,</span> <span class="n">cb_data</span><span class="p">)</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">ok</span> <span class="ow">and</span> <span class="n">raiseException</span><span class="p">:</span>
             <span class="c1"># Abort, same as ctrl+C</span>
@@ -542,11 +549,8 @@
         <span class="k">return</span> <span class="n">ok</span></div>
 
 
-<div class="viewcode-block" id="MeasurementTool.register_callback">
-<a class="viewcode-back" href="../../../api/pyaml.tuning_tools.measurement_tool.html#pyaml.tuning_tools.measurement_tool.MeasurementTool.register_callback">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">register_callback</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">callback</span><span class="p">:</span> <span class="n">Callable</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_callback</span> <span class="o">=</span> <span class="n">callback</span></div>
-
+    <span class="k">def</span><span class="w"> </span><span class="nf">_register_callback</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">callback</span><span class="p">:</span> <span class="n">Callable</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_callback</span> <span class="o">=</span> <span class="n">callback</span>
 
 <div class="viewcode-block" id="MeasurementTool.attach">
 <a class="viewcode-back" href="../../../api/pyaml.tuning_tools.measurement_tool.html#pyaml.tuning_tools.measurement_tool.MeasurementTool.attach">[docs]</a>

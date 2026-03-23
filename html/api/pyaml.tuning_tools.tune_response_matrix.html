@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>tune_response_matrix &#8212; Python Accelerator Middle Layer 0.1.dev1+g883233cf8 documentation</title>
+    <title>tune_response_matrix &#8212; Python Accelerator Middle Layer 0.1.dev1+g71d4765d2 documentation</title>
   
   
   
@@ -42,7 +42,7 @@
   <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
 <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
-    <script src="../_static/documentation_options.js?v=fe8fa384"></script>
+    <script src="../_static/documentation_options.js?v=36e431f0"></script>
     <script src="../_static/doctools.js?v=9bcbadda"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -121,8 +121,8 @@
       
     
     
-    <img src="../_static/logo.png" class="logo__image only-light" alt="Python Accelerator Middle Layer 0.1.dev1+g883233cf8 documentation - Home"/>
-    <img src="../_static/dark.png" class="logo__image only-dark pst-js-only" alt="Python Accelerator Middle Layer 0.1.dev1+g883233cf8 documentation - Home"/>
+    <img src="../_static/logo.png" class="logo__image only-light" alt="Python Accelerator Middle Layer 0.1.dev1+g71d4765d2 documentation - Home"/>
+    <img src="../_static/dark.png" class="logo__image only-dark pst-js-only" alt="Python Accelerator Middle Layer 0.1.dev1+g71d4765d2 documentation - Home"/>
   
   
 </a></div>
@@ -545,7 +545,13 @@ validated to form a valid model.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="pyaml.tuning_tools.tune_response_matrix.TuneResponseMatrix.measure">
 <span class="sig-name descname"><span class="pre">measure</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">quad_delta</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_step</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sleep_between_step</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_avg_meas</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sleep_between_meas</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">callback</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/tuning_tools/tune_response_matrix.html#TuneResponseMatrix.measure"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.tuning_tools.tune_response_matrix.TuneResponseMatrix.measure" title="Link to this definition">#</a></dt>
-<dd><p>Measure tune response matrix</p>
+<dd><p>Measure tune response matrix.
+<a class="reference internal" href="pyaml.tuning_tools.measurement_tool.html#pyaml.tuning_tools.measurement_tool.MeasurementTool.latest_measurement" title="pyaml.tuning_tools.measurement_tool.MeasurementTool.latest_measurement"><code class="xref py py-attr docutils literal notranslate"><span class="pre">latest_measurement</span></code></a> contains:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">matrix</span><span class="p">:</span><span class="nb">list</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="c1"># The response matrix</span>
+<span class="n">variable_names</span><span class="p">:</span><span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="c1"># Variable names</span>
+<span class="n">observable_names</span><span class="p">:</span><span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="c1"># Observables names</span>
+</pre></div>
+</div>
 <p><strong>Example</strong></p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">pyaml.accelerator</span><span class="w"> </span><span class="kn">import</span> <span class="n">Accelerator</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">pyaml.common.constants</span><span class="w"> </span><span class="kn">import</span> <span class="n">Action</span>
@@ -579,13 +585,14 @@ Default: from config</p></li>
 See <a class="reference internal" href="pyaml.tuning_tools.measurement_tool.html#pyaml.tuning_tools.measurement_tool.MeasurementTool.send_callback" title="pyaml.tuning_tools.measurement_tool.MeasurementTool.send_callback"><code class="xref py py-meth docutils literal notranslate"><span class="pre">send_callback()</span></code></a>.
 If the callback return false, then the scan is aborted and strength restored.
 callback_data dict contains:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">source</span><span class="p">:</span><span class="nb">str</span> <span class="n">Object</span> <span class="n">that</span> <span class="n">triggered</span> <span class="n">the</span> <span class="n">source</span>
-<span class="n">step</span><span class="p">:</span><span class="nb">int</span> <span class="n">The</span> <span class="n">current</span> <span class="n">step</span>
-<span class="n">avg_step</span><span class="p">:</span><span class="nb">int</span> <span class="n">The</span> <span class="n">current</span> <span class="n">avg</span> <span class="n">step</span>
-<span class="n">magnet</span><span class="p">:</span><span class="n">Magnet</span> <span class="n">The</span> <span class="n">magnet</span> <span class="n">being</span> <span class="n">excited</span>
-<span class="n">strength</span><span class="p">:</span><span class="nb">float</span> <span class="n">Magnet</span> <span class="n">strength</span>
-<span class="n">tune</span><span class="p">:</span><span class="n">np</span><span class="o">.</span><span class="n">array</span> <span class="n">The</span> <span class="n">measured</span> <span class="n">tune</span> <span class="p">(</span><span class="n">on</span> <span class="n">Action</span><span class="o">.</span><span class="n">MEASURE</span><span class="p">)</span>
-<span class="n">dtune</span><span class="p">:</span><span class="n">np</span><span class="o">.</span><span class="n">array</span> <span class="n">The</span> <span class="n">tune</span> <span class="n">variation</span> <span class="p">(</span><span class="n">on</span> <span class="n">Action</span><span class="o">.</span><span class="n">RESTORE</span><span class="p">)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">source</span><span class="p">:</span><span class="n">MeasurementTool</span> <span class="c1"># Tool that triggered the callback</span>
+<span class="n">idx</span><span class="p">:</span><span class="nb">int</span> <span class="c1"># The index in the element array being processed</span>
+<span class="n">step</span><span class="p">:</span><span class="nb">int</span> <span class="c1"># The current step</span>
+<span class="n">avg_step</span><span class="p">:</span><span class="nb">int</span> <span class="c1"># The current avg step</span>
+<span class="n">magnet</span><span class="p">:</span><span class="nb">str</span> <span class="c1"># The magnet being excited</span>
+<span class="n">strength</span><span class="p">:</span><span class="nb">float</span> <span class="c1"># Magnet strength</span>
+<span class="n">tune</span><span class="p">:</span><span class="n">np</span><span class="o">.</span><span class="n">array</span> <span class="c1"># The measured tune (on Action.MEASURE)</span>
+<span class="n">dtune</span><span class="p">:</span><span class="n">np</span><span class="o">.</span><span class="n">array</span> <span class="c1"># The tune variation (on Action.RESTORE)</span>
 </pre></div>
 </div>
 </p></li>

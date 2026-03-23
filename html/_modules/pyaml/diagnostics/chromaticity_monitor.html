@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>pyaml.diagnostics.chromaticity_monitor &#8212; Python Accelerator Middle Layer 0.1.dev1+g883233cf8 documentation</title>
+    <title>pyaml.diagnostics.chromaticity_monitor &#8212; Python Accelerator Middle Layer 0.1.dev1+g71d4765d2 documentation</title>
   
   
   
@@ -41,7 +41,7 @@
   <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
 <link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
-    <script src="../../../_static/documentation_options.js?v=fe8fa384"></script>
+    <script src="../../../_static/documentation_options.js?v=36e431f0"></script>
     <script src="../../../_static/doctools.js?v=9bcbadda"></script>
     <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -118,8 +118,8 @@
       
     
     
-    <img src="../../../_static/logo.png" class="logo__image only-light" alt="Python Accelerator Middle Layer 0.1.dev1+g883233cf8 documentation - Home"/>
-    <img src="../../../_static/dark.png" class="logo__image only-dark pst-js-only" alt="Python Accelerator Middle Layer 0.1.dev1+g883233cf8 documentation - Home"/>
+    <img src="../../../_static/logo.png" class="logo__image only-light" alt="Python Accelerator Middle Layer 0.1.dev1+g71d4765d2 documentation - Home"/>
+    <img src="../../../_static/dark.png" class="logo__image only-dark pst-js-only" alt="Python Accelerator Middle Layer 0.1.dev1+g71d4765d2 documentation - Home"/>
   
   
 </a></div>
@@ -537,7 +537,16 @@
         <span class="n">callback</span><span class="p">:</span> <span class="nb">callable</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Main function for chromaticity measurment</span>
+<span class="sd">        Main function for chromaticity measurment.</span>
+<span class="sd">        :py:attr:`~pyaml.tuning_tools.measurement_tool.MeasurementTool.latest_measurement` contains:</span>
+
+<span class="sd">        .. code-block:: python</span>
+
+<span class="sd">            chromaticity:np.array # First order chromaticity, Array of [q&#39;x,q&#39;y]</span>
+<span class="sd">            dispersion:np.array # First order dispersion, [[dx&#39;0,..,dx&#39;n],[dy&#39;0,..,dy&#39;n]]</span>
+<span class="sd">            chromaticity_fit:np.array # Array of [[qx,qy],[q&#39;x,q&#39;y],[q&#39;&#39;x,q&#39;&#39;y],...]</span>
+<span class="sd">            dispersionx_fit:np.array # Array of [[dx0],..,[dxn],[dx&#39;0],..,[dx&#39;n],...]</span>
+<span class="sd">            dispersiony_fit:np.array # Array of [[dy0,..,dyn],[dy&#39;0,..,dy&#39;n],...]</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -566,10 +575,22 @@
 <span class="sd">        fit_dispersion : bool, optionnal</span>
 <span class="sd">            Fit dispersion, [default: from config]</span>
 <span class="sd">        do_plot : bool</span>
-<span class="sd">            Do you want to plot the fittinf results ?</span>
+<span class="sd">            Do you want to plot the fitting results ?</span>
 <span class="sd">        callback: Callable, optional</span>
 <span class="sd">            Callback is executed after each measurement or setting.</span>
 <span class="sd">            If the callback return false, then the process is aborted.</span>
+<span class="sd">            callback_data dict contains:</span>
+
+<span class="sd">            .. code-block:: python</span>
+
+<span class="sd">              source:MeasurementTool # Tool that triggered the callback</span>
+<span class="sd">              step:int # The current step</span>
+<span class="sd">              avg_step:int # The current averaging step</span>
+<span class="sd">              rf:float # RF frequency used for the current step</span>
+<span class="sd">              tune:np.array # The measured tune (on Action.MEASURE)</span>
+<span class="sd">              orbit:np_array # The measured orbit, if fit_dispersion is True, (on Action.MEASURE)</span>
+<span class="sd">              dtune:np.array # The tune variation (on Action.RESTORE)</span>
+
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">n_step</span> <span class="o">=</span> <span class="n">n_step</span> <span class="k">if</span> <span class="n">n_step</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cfg</span><span class="o">.</span><span class="n">n_step</span>
         <span class="n">alphac</span> <span class="o">=</span> <span class="n">alphac</span> <span class="k">if</span> <span class="n">alphac</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">_alphac</span>
@@ -588,7 +609,8 @@
         <span class="k">if</span> <span class="n">alphac</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">raise</span> <span class="n">PyAMLException</span><span class="p">(</span><span class="s2">&quot;Moment compaction factor is not defined&quot;</span><span class="p">)</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">register_callback</span><span class="p">(</span><span class="n">callback</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_init_measure</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_register_callback</span><span class="p">(</span><span class="n">callback</span><span class="p">)</span>
 
         <span class="c1"># Get devices</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">check_peer</span><span class="p">()</span>
@@ -669,7 +691,8 @@
 <a class="viewcode-back" href="../../../api/pyaml.diagnostics.chromaticity_monitor.html#pyaml.diagnostics.chromaticity_monitor.ChomaticityMonitor.fit">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">deltas</span><span class="p">,</span> <span class="n">Q</span><span class="p">,</span> <span class="n">order</span><span class="p">,</span> <span class="n">orbit</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">fit_disp_order</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">do_plot</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Compute chromaticity (and dispersion) from measurement data.</span>
+<span class="sd">        Compute chromaticity (and dispersion) from input data and update</span>
+<span class="sd">        :py:attr:`~pyaml.tuning_tools.measurement_tool.MeasurementTool.latest_measurement`.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -685,14 +708,8 @@
 <span class="sd">        plot : bool, optional</span>
 <span class="sd">            If True, plot the fit.</span>
 
-<span class="sd">        Returns</span>
-<span class="sd">        -------</span>
-<span class="sd">        dict</span>
-<span class="sd">            Dict with horizontal and veritical chromaticity and dispersion</span>
-
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">chroma</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">polynomial</span><span class="o">.</span><span class="n">polynomial</span><span class="o">.</span><span class="n">polyfit</span><span class="p">(</span><span class="n">deltas</span><span class="p">,</span> <span class="n">Q</span><span class="p">,</span> <span class="n">order</span><span class="p">)</span><span class="o">.</span><span class="n">T</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">latest_measurement</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">latest_measurement</span><span class="p">[</span><span class="s2">&quot;chromaticity_fit&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">chroma</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">latest_measurement</span><span class="p">[</span><span class="s2">&quot;chromaticity&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">chroma</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span>  <span class="c1"># First order chroma</span>
         <span class="k">if</span> <span class="n">orbit</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>

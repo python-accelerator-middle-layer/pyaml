@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>pyaml.tuning_tools.orbit_response_matrix &#8212; Python Accelerator Middle Layer 0.1.dev1+g883233cf8 documentation</title>
+    <title>pyaml.tuning_tools.orbit_response_matrix &#8212; Python Accelerator Middle Layer 0.1.dev1+g71d4765d2 documentation</title>
   
   
   
@@ -41,7 +41,7 @@
   <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
 <link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
-    <script src="../../../_static/documentation_options.js?v=fe8fa384"></script>
+    <script src="../../../_static/documentation_options.js?v=36e431f0"></script>
     <script src="../../../_static/doctools.js?v=9bcbadda"></script>
     <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -118,8 +118,8 @@
       
     
     
-    <img src="../../../_static/logo.png" class="logo__image only-light" alt="Python Accelerator Middle Layer 0.1.dev1+g883233cf8 documentation - Home"/>
-    <img src="../../../_static/dark.png" class="logo__image only-dark pst-js-only" alt="Python Accelerator Middle Layer 0.1.dev1+g883233cf8 documentation - Home"/>
+    <img src="../../../_static/logo.png" class="logo__image only-light" alt="Python Accelerator Middle Layer 0.1.dev1+g71d4765d2 documentation - Home"/>
+    <img src="../../../_static/dark.png" class="logo__image only-dark pst-js-only" alt="Python Accelerator Middle Layer 0.1.dev1+g71d4765d2 documentation - Home"/>
   
   
 </a></div>
@@ -501,9 +501,10 @@
         <span class="n">pySC</span><span class="o">.</span><span class="n">disable_pySC_rich</span><span class="p">()</span>
         <span class="n">aborted</span> <span class="o">=</span> <span class="kc">False</span>
         <span class="n">err</span> <span class="o">=</span> <span class="kc">None</span>
-        <span class="n">step</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">idx</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="k">try</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">register_callback</span><span class="p">(</span><span class="n">callback</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_register_callback</span><span class="p">(</span><span class="n">callback</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_init_measure</span><span class="p">()</span>
             <span class="k">for</span> <span class="n">code</span><span class="p">,</span> <span class="n">measurement</span> <span class="ow">in</span> <span class="n">generator</span><span class="p">:</span>
                 <span class="n">callback_data</span> <span class="o">=</span> <span class="n">measurement</span><span class="o">.</span><span class="n">response_data</span>  <span class="c1"># to be defined better</span>
                 <span class="k">if</span> <span class="n">code</span> <span class="ow">is</span> <span class="n">ResponseCode</span><span class="o">.</span><span class="n">AFTER_SET</span><span class="p">:</span>
@@ -513,7 +514,7 @@
                 <span class="k">elif</span> <span class="n">code</span> <span class="ow">is</span> <span class="n">ResponseCode</span><span class="o">.</span><span class="n">AFTER_RESTORE</span><span class="p">:</span>
                     <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Measured response of </span><span class="si">{</span><span class="n">measurement</span><span class="o">.</span><span class="n">last_input</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">)</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">send_callback</span><span class="p">(</span><span class="n">Action</span><span class="o">.</span><span class="n">RESTORE</span><span class="p">,</span> <span class="n">callback_data</span><span class="p">)</span>
-                <span class="n">step</span> <span class="o">+=</span> <span class="mi">1</span>
+                <span class="n">idx</span> <span class="o">+=</span> <span class="mi">1</span>
         <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">ex</span><span class="p">:</span>
             <span class="n">err</span> <span class="o">=</span> <span class="n">ex</span>
         <span class="k">except</span> <span class="ne">KeyboardInterrupt</span> <span class="k">as</span> <span class="n">ex</span><span class="p">:</span>
@@ -523,7 +524,7 @@
             <span class="c1"># TODO</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">send_callback</span><span class="p">(</span>
                 <span class="n">Action</span><span class="o">.</span><span class="n">RESTORE</span><span class="p">,</span>
-                <span class="p">{</span><span class="s2">&quot;step&quot;</span><span class="p">:</span> <span class="n">step</span><span class="p">},</span>
+                <span class="p">{</span><span class="s2">&quot;idx&quot;</span><span class="p">:</span> <span class="n">idx</span><span class="p">},</span>
                 <span class="n">raiseException</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
             <span class="p">)</span>
 
@@ -535,7 +536,7 @@
             <span class="k">return</span> <span class="kc">False</span>
 
         <span class="n">orm_data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_pySC_response_data_to_ORMData</span><span class="p">(</span><span class="n">measurement</span><span class="o">.</span><span class="n">response_data</span><span class="o">.</span><span class="n">model_dump</span><span class="p">())</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">latest_measurement</span> <span class="o">=</span> <span class="n">orm_data</span><span class="o">.</span><span class="n">model_dump</span><span class="p">()</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">latest_measurement</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">orm_data</span><span class="o">.</span><span class="n">model_dump</span><span class="p">())</span></div>
 
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_pySC_response_data_to_ORMData</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="nb">dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">OrbitResponseMatrixDataConfigModel</span><span class="p">:</span>
