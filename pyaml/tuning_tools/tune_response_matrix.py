@@ -50,7 +50,14 @@ class TuneResponseMatrix(MeasurementTool):
         callback: Optional[Callable] = None,
     ):
         """
-        Measure tune response matrix
+        Measure tune response matrix.
+        :py:attr:`~pyaml.tuning_tools.measurement_tool.MeasurementTool.latest_measurement` contains:
+
+        .. code-block:: python
+
+            matrix:list[list[float] # The response matrix
+            variable_names:list[str] # Variable names
+            observable_names:list[str] # Observables names
 
         **Example**
 
@@ -93,15 +100,16 @@ class TuneResponseMatrix(MeasurementTool):
             If the callback return false, then the scan is aborted and strength restored.
             callback_data dict contains:
 
-            .. code-block::
+            .. code-block:: python
 
-              source:str Object that triggered the source
-              step:int The current step
-              avg_step:int The current avg step
-              magnet:Magnet The magnet being excited
-              strength:float Magnet strength
-              tune:np.array The measured tune (on Action.MEASURE)
-              dtune:np.array The tune variation (on Action.RESTORE)
+              source:MeasurementTool # Tool that triggered the callback
+              idx:int # The index in the element array being processed
+              step:int # The current step
+              avg_step:int # The current avg step
+              magnet:str # The magnet being excited
+              strength:float # Magnet strength
+              tune:np.array # The measured tune (on Action.MEASURE)
+              dtune:np.array # The tune variation (on Action.RESTORE)
 
         """
         # Get devices
@@ -117,7 +125,9 @@ class TuneResponseMatrix(MeasurementTool):
         sleep_step = sleep_between_step if sleep_between_step is not None else self._cfg.sleep_between_step
         sleep_meas = sleep_between_meas if sleep_between_meas is not None else self._cfg.sleep_between_meas
 
-        self.register_callback(callback)
+        self._register_callback(callback)
+        self._init_measure("pyaml.tuning_tools.response_matrix_data")
+
         aborted = False
         err = None
         try:
@@ -130,7 +140,9 @@ class TuneResponseMatrix(MeasurementTool):
                     # apply strength
                     m.strength.set(str + d)
 
-                    self.send_callback(Action.APPLY, {"step": qidx, "magnet": m.get_name(), "strength": float(str + d)})
+                    self.send_callback(
+                        Action.APPLY, {"idx": qidx, "step": step, "magnet": m.get_name(), "strength": float(str + d)}
+                    )
 
                     sleep(sleep_step)
 
@@ -140,7 +152,8 @@ class TuneResponseMatrix(MeasurementTool):
                         tune = tm.tune.get()
                         Q[step] += tune
                         self.send_callback(
-                            Action.MEASURE, {"step": qidx, "avg_step": avg, "magnet": m.get_name(), "tune": tune}
+                            Action.MEASURE,
+                            {"idx": qidx, "step": step, "avg_step": avg, "magnet": m.get_name(), "tune": tune},
                         )
                         if avg < nb_meas - 1:
                             sleep(sleep_meas)
@@ -157,7 +170,7 @@ class TuneResponseMatrix(MeasurementTool):
                 m.strength.set(str)
                 self.send_callback(
                     Action.RESTORE,
-                    {"step": qidx, "magnet": m.get_name(), "strength": float(str), "dtune": tunemat[qidx]},
+                    {"idx": qidx, "magnet": m.get_name(), "strength": float(str), "dtune": tunemat[qidx]},
                 )
 
         except Exception as ex:
@@ -180,11 +193,11 @@ class TuneResponseMatrix(MeasurementTool):
             logger.warning(f"{self.get_name()} : measurement aborted")
             return False
 
-        self.latest_measurement = ResponseMatrixDataConfigModel(
+        mat = ResponseMatrixDataConfigModel(
             matrix=tunemat.T.tolist(),
             variable_names=quads.names(),
             observable_names=[tm.get_name() + ".x", tm.get_name() + ".y"],
-        ).model_dump()
-        self.latest_measurement["type"] = "pyaml.tuning_tools.response_matrix_data"
+        )
+        self.latest_measurement.update(mat.model_dump())
 
         return True

@@ -26,8 +26,6 @@ class ConfigModel(BaseModel):
         Observable names, basically the measurements
     """
 
-    model_config = ConfigDict(arbitrary_types_allowed=True, extra="forbid")
-
     matrix: list[list[float]]
     variable_names: Optional[list[str]]
     observable_names: list[str]

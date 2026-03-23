@@ -123,9 +123,10 @@ class OrbitResponseMatrix(MeasurementTool):
         pySC.disable_pySC_rich()
         aborted = False
         err = None
-        step = 0
+        idx = 0
         try:
-            self.register_callback(callback)
+            self._register_callback(callback)
+            self._init_measure()
             for code, measurement in generator:
                 callback_data = measurement.response_data  # to be defined better
                 if code is ResponseCode.AFTER_SET:
@@ -135,7 +136,7 @@ class OrbitResponseMatrix(MeasurementTool):
                 elif code is ResponseCode.AFTER_RESTORE:
                     logger.info(f"Measured response of {measurement.last_input}.")
                     self.send_callback(Action.RESTORE, callback_data)
-                step += 1
+                idx += 1
         except Exception as ex:
             err = ex
         except KeyboardInterrupt as ex:
@@ -145,7 +146,7 @@ class OrbitResponseMatrix(MeasurementTool):
             # TODO
             self.send_callback(
                 Action.RESTORE,
-                {"step": step},
+                {"idx": idx},
                 raiseException=False,
             )
 
@@ -157,7 +158,7 @@ class OrbitResponseMatrix(MeasurementTool):
             return False
 
         orm_data = self._pySC_response_data_to_ORMData(measurement.response_data.model_dump())
-        self.latest_measurement = orm_data.model_dump()
+        self.latest_measurement.update(orm_data.model_dump())
 
     def _pySC_response_data_to_ORMData(self, data: dict) -> OrbitResponseMatrixDataConfigModel:
         # all metadata is discarded here. Should we keep something?
