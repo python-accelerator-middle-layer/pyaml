@@ -52,7 +52,14 @@ class ChromaticityResponseMatrix(MeasurementTool):
         callback: Optional[Callable] = None,
     ):
         """
-        Measure tune response matrix
+        Measure chromaticity response matrix.
+        :py:attr:`~pyaml.tuning_tools.measurement_tool.MeasurementTool.latest_measurement` contains:
+
+        .. code-block:: python
+
+            matrix:list[list[float] # The response matrix
+            variable_names:list[str] # Variable names
+            observable_names:list[str] # Observables names
 
         **Example**
 
@@ -96,15 +103,16 @@ class ChromaticityResponseMatrix(MeasurementTool):
             If the callback return false, then the scan is aborted and strength restored.
             callback_data dict contains:
 
-            .. code-block::
+            .. code-block:: python
 
-              source:str Object that triggered the source
-              step:int The current step
-              avg_step:int The current avg step
-              magnet:Magnet The magnet being excited
-              strength:Magnet strength
-              chroma:np.array The measured chroma (on Action.MEASURE)
-              dchroma:np.array The chroma variation (on Action.RESTORE)
+              source:MeasurementTool # Tool that triggered the callback
+              idx:int # The index in the element array being processed
+              step:int # The current step
+              avg_step:int # The current averaging step
+              magnet:str # The magnet being excited
+              strength:float # Magnet strength
+              chroma:np.array # The measured chroma (on Action.MEASURE)
+              dchroma:np.array # The chroma variation (on Action.RESTORE)
 
         """
         # Get devices
@@ -112,7 +120,8 @@ class ChromaticityResponseMatrix(MeasurementTool):
         sextus = self._peer.get_magnets(self._cfg.sextu_array_name)
         cm = self._peer.get_chromaticity_monitor(self._cfg.chromaticity_name)
 
-        self.register_callback(callback)
+        self._register_callback(callback)
+        self._init_measure("pyaml.tuning_tools.response_matrix_data")
 
         chromamat = np.zeros((len(sextus), 2))
 
@@ -140,7 +149,9 @@ class ChromaticityResponseMatrix(MeasurementTool):
                     # apply strength
                     m.strength.set(str + d)
 
-                    self.send_callback(Action.APPLY, {"step": qidx, "magnet": m.get_name(), "strength": float(str + d)})
+                    self.send_callback(
+                        Action.APPLY, {"idx": qidx, "step": step, "magnet": m.get_name(), "strength": float(str + d)}
+                    )
 
                     time.sleep(sleep_step)
 
@@ -153,7 +164,8 @@ class ChromaticityResponseMatrix(MeasurementTool):
                         Qp[step] += chroma
 
                         self.send_callback(
-                            Action.MEASURE, {"step": qidx, "avg_step": avg, "magnet": m.get_name(), "chroma": chroma}
+                            Action.MEASURE,
+                            {"idx": qidx, "step": step, "avg_step": avg, "magnet": m.get_name(), "chroma": chroma},
                         )
 
                         if avg < nb_meas - 1:
@@ -171,7 +183,7 @@ class ChromaticityResponseMatrix(MeasurementTool):
                 m.strength.set(str)
                 self.send_callback(
                     Action.RESTORE,
-                    {"step": qidx, "magnet": m.get_name(), "strength": float(str), "dchroma": chromamat[qidx]},
+                    {"idx": qidx, "magnet": m.get_name(), "strength": float(str), "dchroma": chromamat[qidx]},
                 )
 
         except Exception as ex:
@@ -179,8 +191,8 @@ class ChromaticityResponseMatrix(MeasurementTool):
         except KeyboardInterrupt as ex:
             aborted = True
         finally:
-            # Restore
-            m.strength.set(str)  # restore strength
+            # Restore strength
+            m.strength.set(str)
             self.send_callback(
                 Action.RESTORE,
                 {"step": qidx, "magnet": m.get_name(), "strength": float(str), "dchroma": chromamat[qidx]},
@@ -194,11 +206,11 @@ class ChromaticityResponseMatrix(MeasurementTool):
             logger.warning(f"{self.get_name()} : measurement aborted")
             return False
 
-        self.latest_measurement = ResponseMatrixDataConfigModel(
+        mat = ResponseMatrixDataConfigModel(
             matrix=chromamat.T.tolist(),
             variable_names=sextus.names(),
             observable_names=[cm.get_name() + ".x", cm.get_name() + ".y"],
-        ).model_dump()
-        self.latest_measurement["type"] = "pyaml.tuning_tools.response_matrix_data"
+        )
+        self.latest_measurement.update(mat.model_dump())
 
         return True
