@@ -29,7 +29,7 @@ class ReadWriteSerializedStrengths(abstract.ReadWriteFloatScalar):
         self._cfg = cfg
 
     def get(self) -> float:
-        return self.elements[0].get()
+        return sum([elem.get() for elem in self.elements])
 
     def set(self, value: float):
         self.elements[0].set(value)

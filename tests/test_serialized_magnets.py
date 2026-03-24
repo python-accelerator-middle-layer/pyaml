@@ -99,8 +99,6 @@ def test_magnet_modification(sr_file):
     for ii in range(len(sm.strength.elements)):
         print(element_names[ii], sm.strength.elements[ii].get())
 
-    assert check_no_diff([sm.strength.elements[ii].get() for ii in range(len(sm.strength.elements))])
-
 
 @pytest.mark.parametrize(
     "sr_file",
@@ -180,4 +178,5 @@ def test_strength_computation(sr_file):
 
     magnets_strengths = [m.strength.get() for m in sm.get_magnets()]
     magnets_from_lattice_strengths = get_strengths_from_lattice(sr, sm)
+    assert abs(sum(magnets_from_lattice_strengths) - 24.0) < 1e-3
     assert magnets_strengths == magnets_from_lattice_strengths

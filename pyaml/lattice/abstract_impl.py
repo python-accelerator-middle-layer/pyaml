@@ -162,7 +162,7 @@ class RWSerializedStrength(abstract.ReadWriteFloatScalar):
 
     # Gets the value
     def get(self) -> float:
-        return sum([element.get() for element in self.__elements_strength])
+        return self.__elements_strength[self.__element_index].get()
 
     # Sets the value
     def set(self, value: float):
