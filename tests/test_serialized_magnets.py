@@ -154,3 +154,30 @@ def test_tune(sr_file):
     print(f"diffTune={diffTune}")
     assert np.abs(diffTune[0] - 0.1) < 1e-3
     assert np.abs(diffTune[1] - 0.05) < 1e-3
+
+
+def get_strengths_from_lattice(sr: Accelerator, sm: SerializedMagnets) -> list:
+    ring = sr.design.get_lattice()
+    strs = []
+    for m in sm.get_magnets():
+        elt = ring.get_elements(f"{m.get_name()}")[0]
+        strs.append(elt.K * elt.Length)
+    return strs
+
+
+@pytest.mark.parametrize(
+    "sr_file",
+    [
+        "tests/config/sr_serialized_magnets.yaml",
+    ],
+)
+def test_strength_computation(sr_file):
+    sr: Accelerator = Accelerator.load(sr_file, use_fast_loader=True, ignore_external=True)
+    sm: SerializedMagnets = sr.design.get_serialized_magnet("QF1A")
+    assert sm.get_nb_magnets() == 31
+    sm.strength.set(24.0)
+    assert abs(sm.strength.get() - 24.0) < 1e-3
+
+    magnets_strengths = [m.strength.get() for m in sm.get_magnets()]
+    magnets_from_lattice_strengths = get_strengths_from_lattice(sr, sm)
+    assert magnets_strengths == magnets_from_lattice_strengths
