@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>pyaml.configuration.fileloader &#8212; Python Accelerator Middle Layer 0.1.dev1+g71d4765d2 documentation</title>
+    <title>pyaml.configuration.fileloader &#8212; Python Accelerator Middle Layer 0.1.dev1+gd1d409edf documentation</title>
   
   
   
@@ -41,7 +41,7 @@
   <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
 <link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
-    <script src="../../../_static/documentation_options.js?v=36e431f0"></script>
+    <script src="../../../_static/documentation_options.js?v=38e6aeac"></script>
     <script src="../../../_static/doctools.js?v=9bcbadda"></script>
     <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -118,8 +118,8 @@
       
     
     
-    <img src="../../../_static/logo.png" class="logo__image only-light" alt="Python Accelerator Middle Layer 0.1.dev1+g71d4765d2 documentation - Home"/>
-    <img src="../../../_static/dark.png" class="logo__image only-dark pst-js-only" alt="Python Accelerator Middle Layer 0.1.dev1+g71d4765d2 documentation - Home"/>
+    <img src="../../../_static/logo.png" class="logo__image only-light" alt="Python Accelerator Middle Layer 0.1.dev1+gd1d409edf documentation - Home"/>
+    <img src="../../../_static/dark.png" class="logo__image only-dark pst-js-only" alt="Python Accelerator Middle Layer 0.1.dev1+gd1d409edf documentation - Home"/>
   
   
 </a></div>
@@ -441,8 +441,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">error_filename</span> <span class="o">=</span> <span class="n">error_filename</span>
         <span class="n">parent_file_stack</span> <span class="o">=</span> <span class="p">[</span><span class="n">parent_path</span><span class="o">.</span><span class="n">name</span> <span class="k">for</span> <span class="n">parent_path</span> <span class="ow">in</span> <span class="n">path_stack</span><span class="p">]</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
-            <span class="sa">f</span><span class="s2">&quot;Circular file inclusion of </span><span class="si">{</span><span class="n">error_filename</span><span class="si">}</span><span class="s2">. &quot;</span>
-            <span class="sa">f</span><span class="s2">&quot;File list before reaching it: </span><span class="si">{</span><span class="n">parent_file_stack</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;Circular file inclusion of </span><span class="si">{</span><span class="n">error_filename</span><span class="si">}</span><span class="s2">. File list before reaching it: </span><span class="si">{</span><span class="n">parent_file_stack</span><span class="si">}</span><span class="s2">&quot;</span>
         <span class="p">)</span>
 
     <span class="k">pass</span></div>
@@ -451,18 +450,14 @@
 
 <div class="viewcode-block" id="load">
 <a class="viewcode-back" href="../../../api/pyaml.configuration.fileloader.html#pyaml.configuration.fileloader.load">[docs]</a>
-<span class="k">def</span><span class="w"> </span><span class="nf">load</span><span class="p">(</span>
-    <span class="n">filename</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">paths_stack</span><span class="p">:</span> <span class="nb">list</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">use_fast_loader</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="nb">dict</span><span class="p">,</span> <span class="nb">list</span><span class="p">]:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">load</span><span class="p">(</span><span class="n">filename</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">paths_stack</span><span class="p">:</span> <span class="nb">list</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">use_fast_loader</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="nb">dict</span><span class="p">,</span> <span class="nb">list</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Load recursively a configuration setup&quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">filename</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;.yaml&quot;</span><span class="p">)</span> <span class="ow">or</span> <span class="n">filename</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;.yml&quot;</span><span class="p">):</span>
         <span class="n">l</span> <span class="o">=</span> <span class="n">YAMLLoader</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">paths_stack</span><span class="p">,</span> <span class="n">use_fast_loader</span><span class="p">)</span>
     <span class="k">elif</span> <span class="n">filename</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;.json&quot;</span><span class="p">):</span>
         <span class="n">l</span> <span class="o">=</span> <span class="n">JSONLoader</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">paths_stack</span><span class="p">,</span> <span class="n">use_fast_loader</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="n">PyAMLException</span><span class="p">(</span>
-            <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">filename</span><span class="si">}</span><span class="s2"> File format not supported (only .yaml .yml or .json)&quot;</span>
-        <span class="p">)</span>
+        <span class="k">raise</span> <span class="n">PyAMLException</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">filename</span><span class="si">}</span><span class="s2"> File format not supported (only .yaml .yml or .json)&quot;</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">l</span><span class="o">.</span><span class="n">load</span><span class="p">()</span></div>
 
 
@@ -471,9 +466,7 @@
 <div class="viewcode-block" id="hasToLoad">
 <a class="viewcode-back" href="../../../api/pyaml.configuration.fileloader.html#pyaml.configuration.fileloader.hasToLoad">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">hasToLoad</span><span class="p">(</span><span class="n">value</span><span class="p">):</span>
-    <span class="k">return</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">any</span><span class="p">(</span>
-        <span class="n">value</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="n">suffix</span><span class="p">)</span> <span class="k">for</span> <span class="n">suffix</span> <span class="ow">in</span> <span class="n">accepted_suffixes</span>
-    <span class="p">)</span></div>
+    <span class="k">return</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">any</span><span class="p">(</span><span class="n">value</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="n">suffix</span><span class="p">)</span> <span class="k">for</span> <span class="n">suffix</span> <span class="ow">in</span> <span class="n">accepted_suffixes</span><span class="p">)</span></div>
 
 
 
@@ -485,9 +478,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">:</span> <span class="n">Path</span> <span class="o">=</span> <span class="n">get_path</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">files_stack</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Path</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">if</span> <span class="n">parent_path_stack</span><span class="p">:</span>
-            <span class="k">if</span> <span class="nb">any</span><span class="p">(</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">samefile</span><span class="p">(</span><span class="n">parent_path</span><span class="p">)</span> <span class="k">for</span> <span class="n">parent_path</span> <span class="ow">in</span> <span class="n">parent_path_stack</span>
-            <span class="p">):</span>
+            <span class="k">if</span> <span class="nb">any</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">samefile</span><span class="p">(</span><span class="n">parent_path</span><span class="p">)</span> <span class="k">for</span> <span class="n">parent_path</span> <span class="ow">in</span> <span class="n">parent_path_stack</span><span class="p">):</span>
                 <span class="k">raise</span> <span class="n">PyAMLConfigCyclingException</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">parent_path_stack</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">files_stack</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">parent_path_stack</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">files_stack</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">)</span>
@@ -518,8 +509,7 @@
                         <span class="n">file</span><span class="p">,</span> <span class="n">line</span><span class="p">,</span> <span class="n">col</span> <span class="o">=</span> <span class="n">location</span>
                     <span class="n">location_str</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot; in </span><span class="si">{</span><span class="n">file</span><span class="si">}</span><span class="s2"> at line </span><span class="si">{</span><span class="n">line</span><span class="si">}</span><span class="s2">, column </span><span class="si">{</span><span class="n">col</span><span class="si">}</span><span class="s2">&quot;</span>
                 <span class="k">raise</span> <span class="n">PyAMLException</span><span class="p">(</span>
-                    <span class="s2">&quot;Circular file inclusion &quot;</span>
-                    <span class="sa">f</span><span class="s2">&quot;of </span><span class="si">{</span><span class="n">pyaml_ex</span><span class="o">.</span><span class="n">error_filename</span><span class="si">}{</span><span class="n">location_str</span><span class="si">}</span><span class="s2">&quot;</span>
+                    <span class="sa">f</span><span class="s2">&quot;Circular file inclusion of </span><span class="si">{</span><span class="n">pyaml_ex</span><span class="o">.</span><span class="n">error_filename</span><span class="si">}{</span><span class="n">location_str</span><span class="si">}</span><span class="s2">&quot;</span>
                 <span class="p">)</span> <span class="kn">from</span><span class="w"> </span><span class="nn">pyaml_ex</span></div>
 
 
@@ -527,11 +517,20 @@
 <div class="viewcode-block" id="Loader.expand_list">
 <a class="viewcode-back" href="../../../api/pyaml.configuration.fileloader.html#pyaml.configuration.fileloader.Loader.expand_list">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">expand_list</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">l</span><span class="p">:</span> <span class="nb">list</span><span class="p">):</span>
-        <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">l</span><span class="p">):</span>
+        <span class="n">idx</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">while</span> <span class="n">idx</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">l</span><span class="p">):</span>
+            <span class="n">value</span> <span class="o">=</span> <span class="n">l</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span>
             <span class="k">if</span> <span class="n">hasToLoad</span><span class="p">(</span><span class="n">value</span><span class="p">):</span>
-                <span class="n">l</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span> <span class="o">=</span> <span class="n">load</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">files_stack</span><span class="p">)</span>
+                <span class="n">obj</span> <span class="o">=</span> <span class="n">load</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">files_stack</span><span class="p">)</span>
+                <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+                    <span class="n">l</span><span class="p">[</span><span class="n">idx</span> <span class="p">:</span> <span class="n">idx</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">obj</span>
+                    <span class="n">idx</span> <span class="o">+=</span> <span class="nb">len</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">l</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span> <span class="o">=</span> <span class="n">obj</span>
+                    <span class="n">idx</span> <span class="o">+=</span> <span class="mi">1</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">expand</span><span class="p">(</span><span class="n">value</span><span class="p">)</span></div>
+                <span class="bp">self</span><span class="o">.</span><span class="n">expand</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+                <span class="n">idx</span> <span class="o">+=</span> <span class="mi">1</span></div>
 
 
     <span class="c1"># Recursively expand an object</span>
