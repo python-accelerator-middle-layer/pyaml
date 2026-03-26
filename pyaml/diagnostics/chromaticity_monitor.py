@@ -147,7 +147,16 @@ class ChomaticityMonitor(MeasurementTool):
         callback: callable = None,
     ):
         """
-        Main function for chromaticity measurment
+        Main function for chromaticity measurment.
+        :py:attr:`~pyaml.tuning_tools.measurement_tool.MeasurementTool.latest_measurement` contains:
+
+        .. code-block:: python
+
+            chromaticity:np.array # First order chromaticity, Array of [q'x,q'y]
+            dispersion:np.array # First order dispersion, [[dx'0,..,dx'n],[dy'0,..,dy'n]]
+            chromaticity_fit:np.array # Array of [[qx,qy],[q'x,q'y],[q''x,q''y],...]
+            dispersionx_fit:np.array # Array of [[dx0],..,[dxn],[dx'0],..,[dx'n],...]
+            dispersiony_fit:np.array # Array of [[dy0,..,dyn],[dy'0,..,dy'n],...]
 
         Parameters
         ----------
@@ -176,10 +185,22 @@ class ChomaticityMonitor(MeasurementTool):
         fit_dispersion : bool, optionnal
             Fit dispersion, [default: from config]
         do_plot : bool
-            Do you want to plot the fittinf results ?
+            Do you want to plot the fitting results ?
         callback: Callable, optional
             Callback is executed after each measurement or setting.
             If the callback return false, then the process is aborted.
+            callback_data dict contains:
+
+            .. code-block:: python
+
+              source:MeasurementTool # Tool that triggered the callback
+              step:int # The current step
+              avg_step:int # The current averaging step
+              rf:float # RF frequency used for the current step
+              tune:np.array # The measured tune (on Action.MEASURE)
+              orbit:np_array # The measured orbit, if fit_dispersion is True, (on Action.MEASURE)
+              dtune:np.array # The tune variation (on Action.RESTORE)
+
         """
         n_step = n_step if n_step is not None else self._cfg.n_step
         alphac = alphac if alphac is not None else self._alphac
@@ -198,7 +219,8 @@ class ChomaticityMonitor(MeasurementTool):
         if alphac is None:
             raise PyAMLException("Moment compaction factor is not defined")
 
-        self.register_callback(callback)
+        self._init_measure("")
+        self._register_callback(callback)
 
         # Get devices
         self.check_peer()
@@ -276,7 +298,8 @@ class ChomaticityMonitor(MeasurementTool):
 
     def fit(self, deltas, Q, order, orbit=None, fit_disp_order=None, do_plot=False):
         """
-        Compute chromaticity (and dispersion) from measurement data.
+        Compute chromaticity (and dispersion) from input data and update
+        :py:attr:`~pyaml.tuning_tools.measurement_tool.MeasurementTool.latest_measurement`.
 
         Parameters
         ----------
@@ -292,14 +315,8 @@ class ChomaticityMonitor(MeasurementTool):
         plot : bool, optional
             If True, plot the fit.
 
-        Returns
-        -------
-        dict
-            Dict with horizontal and veritical chromaticity and dispersion
-
         """
         chroma = np.polynomial.polynomial.polyfit(deltas, Q, order).T
-        self.latest_measurement = dict()
         self.latest_measurement["chromaticity_fit"] = chroma
         self.latest_measurement["chromaticity"] = chroma[:, 1]  # First order chroma
         if orbit is not None:

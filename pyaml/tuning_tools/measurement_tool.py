@@ -50,9 +50,17 @@ class MeasurementTool(Element, metaclass=ABCMeta):
 
     def __init__(self, name):
         super().__init__(name)
-        self.latest_measurement: dict = None
+        self._latest_measurement: dict = None
+        """
+        """
         self._peer: "ElementHolder" = None  # Peer: ControlSystem or Simulator
         self._callback: Callable = None
+
+    def _init_measure(self, measurement_type: str | None = None):
+        # Initialize measurement data
+        self._latest_measurement = {}
+        if measurement_type is not None:
+            self._latest_measurement["type"] = measurement_type
 
     @abstractmethod
     def measure(self) -> bool:
@@ -65,28 +73,30 @@ class MeasurementTool(Element, metaclass=ABCMeta):
         """
         raise NotImplementedError()
 
-    def get(self) -> dict:
+    @property
+    def latest_measurement(self) -> dict:
         """
-        Return last measurement data
+        Return last measurement data, a dictionary containing last measurement data.
+        See sub class of MeasurementTool to get description.
 
         Returns
         -------
-        ResponseMatrixData
+        dict
             Return latest measurement or None
         """
-        return self.latest_measurement
+        return self._latest_measurement
 
-    # TODO: Abstract this method
-    def load(self, load_path: Path):
+    def get(self) -> dict:
         """
-        Load measurement data
+        Return last measurement data, a dictionary containing last measurement data.
+        See sub class of MeasurementTool to get description.
 
-        Parameters
-        ----------
-        load_path: Path
-            Matrix filename
+        Returns
+        -------
+        dict
+            Return latest measurement or None
         """
-        raise NotImplementedError()
+        return self._latest_measurement
 
     def save(self, save_path: Path, with_type: str = "json"):
         """
@@ -142,16 +152,16 @@ class MeasurementTool(Element, metaclass=ABCMeta):
         """
         ok = True
         if self._callback is not None:
-            # Add source
+            # Add source and peer
             cb_data["mode"] = f"{self.get_peer()}"
-            cb_data["source_name"] = f"{self.get_name()}"
+            cb_data["source"] = self
             ok = self._callback(action, cb_data)
         if not ok and raiseException:
             # Abort, same as ctrl+C
             raise KeyboardInterrupt
         return ok
 
-    def register_callback(self, callback: Callable):
+    def _register_callback(self, callback: Callable):
         self._callback = callback
 
     def attach(self, peer: "ElementHolder") -> Self:

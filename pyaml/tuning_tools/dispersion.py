@@ -65,7 +65,8 @@ class Dispersion(MeasurementTool):
             skip_save=True,
         )
 
-        self.register_callback(callback)
+        self._register_callback(callback)
+        self._init_measure()
 
         aborted = False
         for code, measurement in generator:
@@ -93,7 +94,7 @@ class Dispersion(MeasurementTool):
         # dispersion_data.output_names = self.element_holder.get_bpms(
         #     self.bpm_array_name
         # ).names()
-        self.latest_measurement = dispersion_data.model_dump()
+        self.latest_measurement.update(dispersion_data.model_dump())
 
     def get(self):
         return self.latest_measurement
