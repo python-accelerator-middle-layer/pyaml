@@ -41,8 +41,7 @@ arrays:
       - SH1A-C02-H
 devices:
   - sr/quadrupoles/QF1AC01.yaml
-  - sr/correctors/SH1AC01.yaml
-  - sr/correctors/SH1AC02.yaml
+  - sr/correctors/SH1AC01-C02.yaml
   - type: pyaml.bpm.bpm
     name: BPM_C04-01
     model:
