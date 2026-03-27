@@ -28,9 +28,12 @@ class RWHardwareScalar(abstract.ReadWriteFloatScalar):
         self.__poly = [e.__getattribute__(poly.attName) for e in elements]
         self.__sign = poly.sign
         self.__polyIdx = poly.index
-        self.__length = 0
+        self.__length: float = 0.0
         for e in elements:
             self.__length += e.Length
+
+    def get_length(self) -> float:
+        return self.__length
 
     def get(self) -> float:
         s = 0
@@ -71,6 +74,9 @@ class RWStrengthScalar(abstract.ReadWriteFloatScalar):
         for e in elements:
             self.__length += e.Length
 
+    def get_element_length(self) -> float:
+        return self.__length
+
     # Gets the value
     def get(self) -> float:
         s = 0
@@ -103,6 +109,15 @@ class RWSerializedHardware(abstract.ReadWriteFloatScalar):
     def __init__(self, elements: list[RWHardwareScalar], element_index: int):
         self.__elements = elements
         self.__element_index = element_index
+        self.__total_length = 0
+        for e in elements:
+            self.__total_length += e.get_length()
+
+    def get_element_length(self) -> float:
+        return self.__elements[self.__element_index].get_length()
+
+    def get_total_length(self) -> float:
+        return self.__total_length
 
     # Gets the value
     def get(self) -> float:
@@ -127,27 +142,43 @@ class RWSerializedHardware(abstract.ReadWriteFloatScalar):
 class RWSerializedStrength(abstract.ReadWriteFloatScalar):
     def __init__(
         self,
-        element: RWStrengthScalar,
+        elements_strength: list[RWStrengthScalar],
         elements_hardware: list[RWHardwareScalar],
         element_index: int,
     ):
-        self.__element = element
+        self.__element = elements_strength[element_index]
+        self.__elements_strength = elements_strength
         self.__elements_hardware = elements_hardware
         self.__element_index = element_index
+        self.__total_length = 0
+        for e in self.__elements_hardware:
+            self.__total_length += e.get_length()
+
+    def get_element_length(self) -> float:
+        return self.__element.get_element_length()
+
+    def get_total_length(self) -> float:
+        return self.__total_length
 
     # Gets the value
     def get(self) -> float:
-        return self.__element.get()
+        return self.__elements_strength[self.__element_index].get()
 
     # Sets the value
     def set(self, value: float):
-        self.__element.set(value)
+        elements_values = [value * e.get_length() / self.get_total_length() for e in self.__elements_hardware]
+        self.__element.set(elements_values[self.__element_index])
+
+        # compute the local hardware value
         hardware_value = self.__elements_hardware[self.__element_index].get()
-        [
-            element.set(hardware_value)
-            for index, element in enumerate(self.__elements_hardware)
-            if index != self.__element_index
-        ]
+
+        # compute the total hardware value
+        total_hardware = hardware_value * self.get_total_length() / self.get_element_length()
+
+        # dispatch this value
+        for index, element in enumerate(self.__elements_hardware):
+            if index != self.__element_index:
+                element.set(total_hardware * element.get_length() / self.get_total_length())
 
     # Sets the value and wait that the read value reach the setpoint
     def set_and_wait(self, value: float):

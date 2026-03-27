@@ -29,9 +29,13 @@ def test_tune():
 
     # Compute correction matrix
     correctionmat = np.linalg.pinv(tunemat.T)
+    print(correctionmat.shape)
+    print(correctionmat)
 
     # Correct tune
     strs = quadForTuneDesign.strengths.get()
+    print(len(strs))
+    print(strs)
     strs += np.matmul(correctionmat, [0.1, 0.05])  # Ask for correction [dqx,dqy]
     quadForTuneDesign.strengths.set(strs)
     newTune = tune_monitor.tune.get()

@@ -29,7 +29,7 @@ class ReadWriteSerializedStrengths(abstract.ReadWriteFloatScalar):
         self._cfg = cfg
 
     def get(self) -> float:
-        return self.elements[0].get()
+        return sum([elem.get() for elem in self.elements])
 
     def set(self, value: float):
         self.elements[0].set(value)
@@ -87,17 +87,13 @@ class SerializedMagnets(Element):
         self.__strengths = None
         self.__hardwares = None
         self.__virtuals: list[Magnet] = []
-        self.__elements = (
-            cfg.elements if isinstance(cfg.elements, list) else [cfg.elements]
-        )
+        self.__elements = cfg.elements if isinstance(cfg.elements, list) else [cfg.elements]
         self.model.set_number_of_magnets(len(self.__elements))
         if peer is None:
             # Configuration part
             self.polynom = function_map[self._cfg.function].polynom
             if self._cfg.function not in function_map:
-                raise PyAMLException(
-                    self._cfg.function + " not implemented for serialized magnet"
-                )
+                raise PyAMLException(self._cfg.function + " not implemented for serialized magnet")
             for element in self.__elements:
                 # Check mapping validity
                 # Create the virtual magnet for the corresponding magnet
@@ -132,35 +128,34 @@ class SerializedMagnets(Element):
         n_ser_mag.__strengths = ReadWriteSerializedStrengths(self._cfg, strengths)
         n_ser_mag.__hardwares = ReadWriteSerializedHardwares(self._cfg, hardwares)
         l.append(n_ser_mag)
-        # Construct a single function magnet for each multipole of this combined function magnet
-        for idx, magnet in enumerate(self.__elements):
+        # Construct a single magnet for each magnet.
+        sub_magnets: list[Magnet] = []
+        for idx, _ in enumerate(self.__elements):
             strength = strengths[idx]
             hardware = hardwares[idx] if self.model.has_hardware() else None
-            l.append(self.__virtuals[idx].attach(peer, strength, hardware))
+            sub_magnets.append(self.__virtuals[idx].attach(peer, strength, hardware))
+        n_ser_mag.__virtuals.extend(sub_magnets)
+        l.extend(sub_magnets)
         return l
 
     @property
-    def strengths(self) -> abstract.ReadWriteFloatScalar:
+    def strength(self) -> abstract.ReadWriteFloatScalar:
         """
-        Gives access to the strengths of this combined function magnet in physics unit
+        Gives access to the strengths of those magnets in physics unit
         """
         self.check_peer()
         if self.__strengths is None:
-            raise PyAMLException(
-                f"{str(self)} has no model that supports physics units"
-            )
+            raise PyAMLException(f"{str(self)} has no model that supports physics units")
         return self.__strengths
 
     @property
-    def hardwares(self) -> abstract.ReadWriteFloatScalar:
+    def hardware(self) -> abstract.ReadWriteFloatScalar:
         """
-        Gives access to the strengths of this combined function magnet in hardware unit when possible
+        Gives access to the strengths of this those magnets in hardware unit when possible
         """
         self.check_peer()
         if self.__hardwares is None:
-            raise PyAMLException(
-                f"{str(self)} has no model that supports hardware units"
-            )
+            raise PyAMLException(f"{str(self)} has no model that supports hardware units")
         return self.__hardwares
 
     def set_energy(self, energy: float):
