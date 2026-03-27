@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>abstract_impl &#8212; Python Accelerator Middle Layer 0.1.dev1+gd1d409edf documentation</title>
+    <title>abstract_impl &#8212; Python Accelerator Middle Layer 0.1.dev1+g4765bec8f documentation</title>
   
   
   
@@ -42,7 +42,7 @@
   <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
 <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
-    <script src="../_static/documentation_options.js?v=38e6aeac"></script>
+    <script src="../_static/documentation_options.js?v=a8c1eb24"></script>
     <script src="../_static/doctools.js?v=9bcbadda"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -121,8 +121,8 @@
       
     
     
-    <img src="../_static/logo.png" class="logo__image only-light" alt="Python Accelerator Middle Layer 0.1.dev1+gd1d409edf documentation - Home"/>
-    <img src="../_static/dark.png" class="logo__image only-dark pst-js-only" alt="Python Accelerator Middle Layer 0.1.dev1+gd1d409edf documentation - Home"/>
+    <img src="../_static/logo.png" class="logo__image only-light" alt="Python Accelerator Middle Layer 0.1.dev1+g4765bec8f documentation - Home"/>
+    <img src="../_static/dark.png" class="logo__image only-dark pst-js-only" alt="Python Accelerator Middle Layer 0.1.dev1+g4765bec8f documentation - Home"/>
   
   
 </a></div>
@@ -787,6 +787,13 @@ Hardware unit is converted from strength using the magnet model</p>
 </dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="pyaml.lattice.abstract_impl.RWHardwareScalar.get_length">
+<span class="sig-name descname"><span class="pre">get_length</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/lattice/abstract_impl.html#RWHardwareScalar.get_length"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.lattice.abstract_impl.RWHardwareScalar.get_length" title="Link to this definition">#</a></dt>
+<dd><dl class="field-list simple">
+</dl>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="pyaml.lattice.abstract_impl.RWHardwareScalar.get_model">
 <span class="sig-name descname"><span class="pre">get_model</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/lattice/abstract_impl.html#RWHardwareScalar.get_model"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.lattice.abstract_impl.RWHardwareScalar.get_model" title="Link to this definition">#</a></dt>
 <dd><dl class="field-list simple">
@@ -1042,6 +1049,20 @@ of a simulator for a given RF trasnmitter.</p>
 </dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="pyaml.lattice.abstract_impl.RWSerializedHardware.get_element_length">
+<span class="sig-name descname"><span class="pre">get_element_length</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/lattice/abstract_impl.html#RWSerializedHardware.get_element_length"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.lattice.abstract_impl.RWSerializedHardware.get_element_length" title="Link to this definition">#</a></dt>
+<dd><dl class="field-list simple">
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaml.lattice.abstract_impl.RWSerializedHardware.get_total_length">
+<span class="sig-name descname"><span class="pre">get_total_length</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/lattice/abstract_impl.html#RWSerializedHardware.get_total_length"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.lattice.abstract_impl.RWSerializedHardware.get_total_length" title="Link to this definition">#</a></dt>
+<dd><dl class="field-list simple">
+</dl>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="pyaml.lattice.abstract_impl.RWSerializedHardware.set">
 <span class="sig-name descname"><span class="pre">set</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/lattice/abstract_impl.html#RWSerializedHardware.set"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.lattice.abstract_impl.RWSerializedHardware.set" title="Link to this definition">#</a></dt>
 <dd><p>Set the value</p>
@@ -1076,7 +1097,7 @@ of a simulator for a given RF trasnmitter.</p>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="pyaml.lattice.abstract_impl.RWSerializedStrength">
-<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">RWSerializedStrength</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">element</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">elements_hardware</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">element_index</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/lattice/abstract_impl.html#RWSerializedStrength"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.lattice.abstract_impl.RWSerializedStrength" title="Link to this definition">#</a></dt>
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">RWSerializedStrength</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">elements_strength</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">elements_hardware</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">element_index</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/lattice/abstract_impl.html#RWSerializedStrength"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.lattice.abstract_impl.RWSerializedStrength" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference internal" href="pyaml.common.abstract.html#pyaml.common.abstract.ReadWriteFloatScalar" title="pyaml.common.abstract.ReadWriteFloatScalar"><code class="xref py py-class docutils literal notranslate"><span class="pre">ReadWriteFloatScalar</span></code></a></p>
 <dl class="field-list simple">
 </dl>
@@ -1085,6 +1106,20 @@ of a simulator for a given RF trasnmitter.</p>
 <span class="sig-name descname"><span class="pre">get</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/lattice/abstract_impl.html#RWSerializedStrength.get"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.lattice.abstract_impl.RWSerializedStrength.get" title="Link to this definition">#</a></dt>
 <dd><p>Get the value</p>
 <dl class="field-list simple">
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaml.lattice.abstract_impl.RWSerializedStrength.get_element_length">
+<span class="sig-name descname"><span class="pre">get_element_length</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/lattice/abstract_impl.html#RWSerializedStrength.get_element_length"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.lattice.abstract_impl.RWSerializedStrength.get_element_length" title="Link to this definition">#</a></dt>
+<dd><dl class="field-list simple">
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaml.lattice.abstract_impl.RWSerializedStrength.get_total_length">
+<span class="sig-name descname"><span class="pre">get_total_length</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/lattice/abstract_impl.html#RWSerializedStrength.get_total_length"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.lattice.abstract_impl.RWSerializedStrength.get_total_length" title="Link to this definition">#</a></dt>
+<dd><dl class="field-list simple">
 </dl>
 </dd></dl>
 
@@ -1174,6 +1209,13 @@ of a simulator for a given RF trasnmitter.</p>
 <span class="sig-name descname"><span class="pre">get</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/lattice/abstract_impl.html#RWStrengthScalar.get"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.lattice.abstract_impl.RWStrengthScalar.get" title="Link to this definition">#</a></dt>
 <dd><p>Get the value</p>
 <dl class="field-list simple">
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaml.lattice.abstract_impl.RWStrengthScalar.get_element_length">
+<span class="sig-name descname"><span class="pre">get_element_length</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/lattice/abstract_impl.html#RWStrengthScalar.get_element_length"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.lattice.abstract_impl.RWStrengthScalar.get_element_length" title="Link to this definition">#</a></dt>
+<dd><dl class="field-list simple">
 </dl>
 </dd></dl>
 
@@ -1309,6 +1351,7 @@ of a simulator for a given RF trasnmitter.</p>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.lattice.abstract_impl.RWHardwareScalar"><code class="docutils literal notranslate"><span class="pre">RWHardwareScalar</span></code></a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.lattice.abstract_impl.RWHardwareScalar.get"><code class="docutils literal notranslate"><span class="pre">RWHardwareScalar.get()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.lattice.abstract_impl.RWHardwareScalar.get_length"><code class="docutils literal notranslate"><span class="pre">RWHardwareScalar.get_length()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.lattice.abstract_impl.RWHardwareScalar.get_model"><code class="docutils literal notranslate"><span class="pre">RWHardwareScalar.get_model()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.lattice.abstract_impl.RWHardwareScalar.set"><code class="docutils literal notranslate"><span class="pre">RWHardwareScalar.set()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.lattice.abstract_impl.RWHardwareScalar.set_and_wait"><code class="docutils literal notranslate"><span class="pre">RWHardwareScalar.set_and_wait()</span></code></a></li>
@@ -1352,6 +1395,8 @@ of a simulator for a given RF trasnmitter.</p>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.lattice.abstract_impl.RWSerializedHardware"><code class="docutils literal notranslate"><span class="pre">RWSerializedHardware</span></code></a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.lattice.abstract_impl.RWSerializedHardware.get"><code class="docutils literal notranslate"><span class="pre">RWSerializedHardware.get()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.lattice.abstract_impl.RWSerializedHardware.get_element_length"><code class="docutils literal notranslate"><span class="pre">RWSerializedHardware.get_element_length()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.lattice.abstract_impl.RWSerializedHardware.get_total_length"><code class="docutils literal notranslate"><span class="pre">RWSerializedHardware.get_total_length()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.lattice.abstract_impl.RWSerializedHardware.set"><code class="docutils literal notranslate"><span class="pre">RWSerializedHardware.set()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.lattice.abstract_impl.RWSerializedHardware.set_and_wait"><code class="docutils literal notranslate"><span class="pre">RWSerializedHardware.set_and_wait()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.lattice.abstract_impl.RWSerializedHardware.set_magnet_rigidity"><code class="docutils literal notranslate"><span class="pre">RWSerializedHardware.set_magnet_rigidity()</span></code></a></li>
@@ -1360,6 +1405,8 @@ of a simulator for a given RF trasnmitter.</p>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.lattice.abstract_impl.RWSerializedStrength"><code class="docutils literal notranslate"><span class="pre">RWSerializedStrength</span></code></a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.lattice.abstract_impl.RWSerializedStrength.get"><code class="docutils literal notranslate"><span class="pre">RWSerializedStrength.get()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.lattice.abstract_impl.RWSerializedStrength.get_element_length"><code class="docutils literal notranslate"><span class="pre">RWSerializedStrength.get_element_length()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.lattice.abstract_impl.RWSerializedStrength.get_total_length"><code class="docutils literal notranslate"><span class="pre">RWSerializedStrength.get_total_length()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.lattice.abstract_impl.RWSerializedStrength.set"><code class="docutils literal notranslate"><span class="pre">RWSerializedStrength.set()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.lattice.abstract_impl.RWSerializedStrength.set_and_wait"><code class="docutils literal notranslate"><span class="pre">RWSerializedStrength.set_and_wait()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.lattice.abstract_impl.RWSerializedStrength.set_magnet_rigidity"><code class="docutils literal notranslate"><span class="pre">RWSerializedStrength.set_magnet_rigidity()</span></code></a></li>
@@ -1375,6 +1422,7 @@ of a simulator for a given RF trasnmitter.</p>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.lattice.abstract_impl.RWStrengthScalar"><code class="docutils literal notranslate"><span class="pre">RWStrengthScalar</span></code></a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.lattice.abstract_impl.RWStrengthScalar.get"><code class="docutils literal notranslate"><span class="pre">RWStrengthScalar.get()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.lattice.abstract_impl.RWStrengthScalar.get_element_length"><code class="docutils literal notranslate"><span class="pre">RWStrengthScalar.get_element_length()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.lattice.abstract_impl.RWStrengthScalar.get_model"><code class="docutils literal notranslate"><span class="pre">RWStrengthScalar.get_model()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.lattice.abstract_impl.RWStrengthScalar.set"><code class="docutils literal notranslate"><span class="pre">RWStrengthScalar.set()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.lattice.abstract_impl.RWStrengthScalar.set_and_wait"><code class="docutils literal notranslate"><span class="pre">RWStrengthScalar.set_and_wait()</span></code></a></li>

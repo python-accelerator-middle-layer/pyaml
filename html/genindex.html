@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Index &#8212; Python Accelerator Middle Layer 0.1.dev1+gd1d409edf documentation</title>
+    <title>Index &#8212; Python Accelerator Middle Layer 0.1.dev1+g4765bec8f documentation</title>
   
   
   
@@ -41,7 +41,7 @@
   <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
 <link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
-    <script src="_static/documentation_options.js?v=38e6aeac"></script>
+    <script src="_static/documentation_options.js?v=a8c1eb24"></script>
     <script src="_static/doctools.js?v=9bcbadda"></script>
     <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/clipboard.min.js?v=a7894cd8"></script>
@@ -118,8 +118,8 @@
       
     
     
-    <img src="_static/logo.png" class="logo__image only-light" alt="Python Accelerator Middle Layer 0.1.dev1+gd1d409edf documentation - Home"/>
-    <img src="_static/dark.png" class="logo__image only-dark pst-js-only" alt="Python Accelerator Middle Layer 0.1.dev1+gd1d409edf documentation - Home"/>
+    <img src="_static/logo.png" class="logo__image only-light" alt="Python Accelerator Middle Layer 0.1.dev1+g4765bec8f documentation - Home"/>
+    <img src="_static/dark.png" class="logo__image only-dark pst-js-only" alt="Python Accelerator Middle Layer 0.1.dev1+g4765bec8f documentation - Home"/>
   
   
 </a></div>
@@ -1082,10 +1082,10 @@
         <li><a href="api/pyaml.magnet.spline_model.html#pyaml.magnet.spline_model.SplineMagnetModel.get_devices">(SplineMagnetModel method)</a>
 </li>
       </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/pyaml.common.element_holder.html#pyaml.common.element_holder.ElementHolder.get_dispersion_tuning">get_dispersion_tuning() (ElementHolder method)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/pyaml.common.element_holder.html#pyaml.common.element_holder.ElementHolder.get_element">get_element() (ElementHolder method)</a>
 
       <ul>
@@ -1096,6 +1096,14 @@
 
       <ul>
         <li><a href="api/pyaml.lattice.attribute_linker.html#pyaml.lattice.attribute_linker.PyAtAttributeElementsLinker.get_element_identifier">(PyAtAttributeElementsLinker method)</a>
+</li>
+      </ul></li>
+      <li><a href="api/pyaml.lattice.abstract_impl.html#pyaml.lattice.abstract_impl.RWSerializedHardware.get_element_length">get_element_length() (RWSerializedHardware method)</a>
+
+      <ul>
+        <li><a href="api/pyaml.lattice.abstract_impl.html#pyaml.lattice.abstract_impl.RWSerializedStrength.get_element_length">(RWSerializedStrength method)</a>
+</li>
+        <li><a href="api/pyaml.lattice.abstract_impl.html#pyaml.lattice.abstract_impl.RWStrengthScalar.get_element_length">(RWStrengthScalar method)</a>
 </li>
       </ul></li>
       <li><a href="api/pyaml.common.element_holder.html#pyaml.common.element_holder.ElementHolder.get_elements">get_elements() (ElementHolder method)</a>
@@ -1129,6 +1137,8 @@
       <li><a href="api/pyaml.lattice.simulator.html#pyaml.lattice.simulator.Simulator.get_lattice">get_lattice() (Simulator method)</a>
 </li>
       <li><a href="api/pyaml.common.element.html#pyaml.common.element.Element.get_lattice_names">get_lattice_names() (Element method)</a>
+</li>
+      <li><a href="api/pyaml.lattice.abstract_impl.html#pyaml.lattice.abstract_impl.RWHardwareScalar.get_length">get_length() (RWHardwareScalar method)</a>
 </li>
       <li><a href="api/pyaml.common.element_holder.html#pyaml.common.element_holder.ElementHolder.get_magnet">get_magnet() (ElementHolder method)</a>
 </li>
@@ -1248,6 +1258,12 @@
         <li><a href="api/pyaml.bpm.bpm_tiltoffset_model.html#pyaml.bpm.bpm_tiltoffset_model.BPMTiltOffsetModel.get_tilt_device">(BPMTiltOffsetModel method)</a>
 </li>
       </ul></li>
+      <li><a href="api/pyaml.lattice.abstract_impl.html#pyaml.lattice.abstract_impl.RWSerializedHardware.get_total_length">get_total_length() (RWSerializedHardware method)</a>
+
+      <ul>
+        <li><a href="api/pyaml.lattice.abstract_impl.html#pyaml.lattice.abstract_impl.RWSerializedStrength.get_total_length">(RWSerializedStrength method)</a>
+</li>
+      </ul></li>
       <li><a href="api/pyaml.common.element_holder.html#pyaml.common.element_holder.ElementHolder.get_trm_tuning">get_trm_tuning() (ElementHolder method)</a>
 </li>
       <li><a href="api/pyaml.common.element_holder.html#pyaml.common.element_holder.ElementHolder.get_tune_tuning">get_tune_tuning() (ElementHolder method)</a>
@@ -1267,15 +1283,17 @@
       <li><a href="api/pyaml.configuration.factory.html#pyaml.configuration.factory.PyAMLFactory.handle_validation_error">handle_validation_error() (PyAMLFactory method)</a>
 </li>
       <li><a href="api/pyaml.magnet.magnet.html#pyaml.magnet.magnet.Magnet.hardware">hardware (Magnet property)</a>
+
+      <ul>
+        <li><a href="api/pyaml.magnet.serialized_magnet.html#pyaml.magnet.serialized_magnet.SerializedMagnets.hardware">(SerializedMagnets property)</a>
 </li>
+      </ul></li>
       <li><a href="api/pyaml.magnet.cfm_magnet.html#pyaml.magnet.cfm_magnet.CombinedFunctionMagnet.hardwares">hardwares (CombinedFunctionMagnet property)</a>
 
       <ul>
         <li><a href="api/pyaml.arrays.cfm_magnet_array.html#pyaml.arrays.cfm_magnet_array.CombinedFunctionMagnetArray.hardwares">(CombinedFunctionMagnetArray property)</a>
 </li>
         <li><a href="api/pyaml.arrays.magnet_array.html#pyaml.arrays.magnet_array.MagnetArray.hardwares">(MagnetArray property)</a>
-</li>
-        <li><a href="api/pyaml.magnet.serialized_magnet.html#pyaml.magnet.serialized_magnet.SerializedMagnets.hardwares">(SerializedMagnets property)</a>
 </li>
         <li><a href="api/pyaml.arrays.serialized_magnet_array.html#pyaml.arrays.serialized_magnet_array.SerializedMagnetsArray.hardwares">(SerializedMagnetsArray property)</a>
 </li>
@@ -2778,15 +2796,17 @@
       <li><a href="api/pyaml.magnet.spline_model.html#pyaml.magnet.spline_model.SplineMagnetModel">SplineMagnetModel (class in pyaml.magnet.spline_model)</a>
 </li>
       <li><a href="api/pyaml.magnet.magnet.html#pyaml.magnet.magnet.Magnet.strength">strength (Magnet property)</a>
+
+      <ul>
+        <li><a href="api/pyaml.magnet.serialized_magnet.html#pyaml.magnet.serialized_magnet.SerializedMagnets.strength">(SerializedMagnets property)</a>
 </li>
+      </ul></li>
       <li><a href="api/pyaml.magnet.cfm_magnet.html#pyaml.magnet.cfm_magnet.CombinedFunctionMagnet.strengths">strengths (CombinedFunctionMagnet property)</a>
 
       <ul>
         <li><a href="api/pyaml.arrays.cfm_magnet_array.html#pyaml.arrays.cfm_magnet_array.CombinedFunctionMagnetArray.strengths">(CombinedFunctionMagnetArray property)</a>
 </li>
         <li><a href="api/pyaml.arrays.magnet_array.html#pyaml.arrays.magnet_array.MagnetArray.strengths">(MagnetArray property)</a>
-</li>
-        <li><a href="api/pyaml.magnet.serialized_magnet.html#pyaml.magnet.serialized_magnet.SerializedMagnets.strengths">(SerializedMagnets property)</a>
 </li>
         <li><a href="api/pyaml.arrays.serialized_magnet_array.html#pyaml.arrays.serialized_magnet_array.SerializedMagnetsArray.strengths">(SerializedMagnetsArray property)</a>
 </li>

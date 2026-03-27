@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>serialized_magnet_array &#8212; Python Accelerator Middle Layer 0.1.dev1+gd1d409edf documentation</title>
+    <title>serialized_magnet_array &#8212; Python Accelerator Middle Layer 0.1.dev1+g4765bec8f documentation</title>
   
   
   
@@ -42,7 +42,7 @@
   <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
 <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
-    <script src="../_static/documentation_options.js?v=38e6aeac"></script>
+    <script src="../_static/documentation_options.js?v=a8c1eb24"></script>
     <script src="../_static/doctools.js?v=9bcbadda"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -121,8 +121,8 @@
       
     
     
-    <img src="../_static/logo.png" class="logo__image only-light" alt="Python Accelerator Middle Layer 0.1.dev1+gd1d409edf documentation - Home"/>
-    <img src="../_static/dark.png" class="logo__image only-dark pst-js-only" alt="Python Accelerator Middle Layer 0.1.dev1+gd1d409edf documentation - Home"/>
+    <img src="../_static/logo.png" class="logo__image only-light" alt="Python Accelerator Middle Layer 0.1.dev1+g4765bec8f documentation - Home"/>
+    <img src="../_static/dark.png" class="logo__image only-dark pst-js-only" alt="Python Accelerator Middle Layer 0.1.dev1+g4765bec8f documentation - Home"/>
   
   
 </a></div>
@@ -585,14 +585,14 @@
 <dt class="sig sig-object py" id="pyaml.arrays.serialized_magnet_array.SerializedMagnetsArray">
 <em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">SerializedMagnetsArray</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">arrayName</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">magnets</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_aggregator</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/arrays/serialized_magnet_array.html#SerializedMagnetsArray"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.arrays.serialized_magnet_array.SerializedMagnetsArray" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference internal" href="pyaml.arrays.element_array.html#pyaml.arrays.element_array.ElementArray" title="pyaml.arrays.element_array.ElementArray"><code class="xref py py-class docutils literal notranslate"><span class="pre">ElementArray</span></code></a></p>
-<p>Class that implements access to a combined function magnet array</p>
+<p>Class that implements access to a serialized magnets array</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>arrayName</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>) – Array name</p></li>
 <li><p><strong>magnets</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.14)"><em>list</em></a><em>[</em><a class="reference internal" href="pyaml.arrays.magnet.html#pyaml.arrays.magnet.Magnet" title="pyaml.arrays.magnet.Magnet"><em>Magnet</em></a><em>]</em>) – Magnet list, all elements must be attached to the same instance of
 either a Simulator or a ControlSystem.</p></li>
-<li><p><strong>use_aggregator</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><em>bool</em></a>) – Use aggregator to increase performance by using paralell
+<li><p><strong>use_aggregator</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><em>bool</em></a>) – Use aggregator to increase performance by using parallel
 access to underlying devices.</p></li>
 </ul>
 </dd>

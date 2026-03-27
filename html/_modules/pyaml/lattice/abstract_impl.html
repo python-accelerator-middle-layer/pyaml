@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>pyaml.lattice.abstract_impl &#8212; Python Accelerator Middle Layer 0.1.dev1+gd1d409edf documentation</title>
+    <title>pyaml.lattice.abstract_impl &#8212; Python Accelerator Middle Layer 0.1.dev1+g4765bec8f documentation</title>
   
   
   
@@ -41,7 +41,7 @@
   <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
 <link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
-    <script src="../../../_static/documentation_options.js?v=38e6aeac"></script>
+    <script src="../../../_static/documentation_options.js?v=a8c1eb24"></script>
     <script src="../../../_static/doctools.js?v=9bcbadda"></script>
     <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -118,8 +118,8 @@
       
     
     
-    <img src="../../../_static/logo.png" class="logo__image only-light" alt="Python Accelerator Middle Layer 0.1.dev1+gd1d409edf documentation - Home"/>
-    <img src="../../../_static/dark.png" class="logo__image only-dark pst-js-only" alt="Python Accelerator Middle Layer 0.1.dev1+gd1d409edf documentation - Home"/>
+    <img src="../../../_static/logo.png" class="logo__image only-light" alt="Python Accelerator Middle Layer 0.1.dev1+g4765bec8f documentation - Home"/>
+    <img src="../../../_static/dark.png" class="logo__image only-dark pst-js-only" alt="Python Accelerator Middle Layer 0.1.dev1+g4765bec8f documentation - Home"/>
   
   
 </a></div>
@@ -401,9 +401,15 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">__poly</span> <span class="o">=</span> <span class="p">[</span><span class="n">e</span><span class="o">.</span><span class="fm">__getattribute__</span><span class="p">(</span><span class="n">poly</span><span class="o">.</span><span class="n">attName</span><span class="p">)</span> <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">elements</span><span class="p">]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__sign</span> <span class="o">=</span> <span class="n">poly</span><span class="o">.</span><span class="n">sign</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__polyIdx</span> <span class="o">=</span> <span class="n">poly</span><span class="o">.</span><span class="n">index</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">__length</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__length</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.0</span>
         <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">elements</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">__length</span> <span class="o">+=</span> <span class="n">e</span><span class="o">.</span><span class="n">Length</span>
+
+<div class="viewcode-block" id="RWHardwareScalar.get_length">
+<a class="viewcode-back" href="../../../api/pyaml.lattice.abstract_impl.html#pyaml.lattice.abstract_impl.RWHardwareScalar.get_length">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_length</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__length</span></div>
+
 
 <div class="viewcode-block" id="RWHardwareScalar.get">
 <a class="viewcode-back" href="../../../api/pyaml.lattice.abstract_impl.html#pyaml.lattice.abstract_impl.RWHardwareScalar.get">[docs]</a>
@@ -462,6 +468,12 @@
         <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">elements</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">__length</span> <span class="o">+=</span> <span class="n">e</span><span class="o">.</span><span class="n">Length</span>
 
+<div class="viewcode-block" id="RWStrengthScalar.get_element_length">
+<a class="viewcode-back" href="../../../api/pyaml.lattice.abstract_impl.html#pyaml.lattice.abstract_impl.RWStrengthScalar.get_element_length">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_element_length</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__length</span></div>
+
+
     <span class="c1"># Gets the value</span>
 <div class="viewcode-block" id="RWStrengthScalar.get">
 <a class="viewcode-back" href="../../../api/pyaml.lattice.abstract_impl.html#pyaml.lattice.abstract_impl.RWStrengthScalar.get">[docs]</a>
@@ -512,6 +524,21 @@
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">elements</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">RWHardwareScalar</span><span class="p">],</span> <span class="n">element_index</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__elements</span> <span class="o">=</span> <span class="n">elements</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__element_index</span> <span class="o">=</span> <span class="n">element_index</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__total_length</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">elements</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">__total_length</span> <span class="o">+=</span> <span class="n">e</span><span class="o">.</span><span class="n">get_length</span><span class="p">()</span>
+
+<div class="viewcode-block" id="RWSerializedHardware.get_element_length">
+<a class="viewcode-back" href="../../../api/pyaml.lattice.abstract_impl.html#pyaml.lattice.abstract_impl.RWSerializedHardware.get_element_length">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_element_length</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__elements</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">__element_index</span><span class="p">]</span><span class="o">.</span><span class="n">get_length</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="RWSerializedHardware.get_total_length">
+<a class="viewcode-back" href="../../../api/pyaml.lattice.abstract_impl.html#pyaml.lattice.abstract_impl.RWSerializedHardware.get_total_length">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_total_length</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__total_length</span></div>
+
 
     <span class="c1"># Gets the value</span>
 <div class="viewcode-block" id="RWSerializedHardware.get">
@@ -554,32 +581,54 @@
 <span class="k">class</span><span class="w"> </span><span class="nc">RWSerializedStrength</span><span class="p">(</span><span class="n">abstract</span><span class="o">.</span><span class="n">ReadWriteFloatScalar</span><span class="p">):</span>
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
-        <span class="n">element</span><span class="p">:</span> <span class="n">RWStrengthScalar</span><span class="p">,</span>
+        <span class="n">elements_strength</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">RWStrengthScalar</span><span class="p">],</span>
         <span class="n">elements_hardware</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">RWHardwareScalar</span><span class="p">],</span>
         <span class="n">element_index</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
     <span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">__element</span> <span class="o">=</span> <span class="n">element</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__element</span> <span class="o">=</span> <span class="n">elements_strength</span><span class="p">[</span><span class="n">element_index</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__elements_strength</span> <span class="o">=</span> <span class="n">elements_strength</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__elements_hardware</span> <span class="o">=</span> <span class="n">elements_hardware</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__element_index</span> <span class="o">=</span> <span class="n">element_index</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__total_length</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">__elements_hardware</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">__total_length</span> <span class="o">+=</span> <span class="n">e</span><span class="o">.</span><span class="n">get_length</span><span class="p">()</span>
+
+<div class="viewcode-block" id="RWSerializedStrength.get_element_length">
+<a class="viewcode-back" href="../../../api/pyaml.lattice.abstract_impl.html#pyaml.lattice.abstract_impl.RWSerializedStrength.get_element_length">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_element_length</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__element</span><span class="o">.</span><span class="n">get_element_length</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="RWSerializedStrength.get_total_length">
+<a class="viewcode-back" href="../../../api/pyaml.lattice.abstract_impl.html#pyaml.lattice.abstract_impl.RWSerializedStrength.get_total_length">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_total_length</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__total_length</span></div>
+
 
     <span class="c1"># Gets the value</span>
 <div class="viewcode-block" id="RWSerializedStrength.get">
 <a class="viewcode-back" href="../../../api/pyaml.lattice.abstract_impl.html#pyaml.lattice.abstract_impl.RWSerializedStrength.get">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__element</span><span class="o">.</span><span class="n">get</span><span class="p">()</span></div>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__elements_strength</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">__element_index</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">()</span></div>
 
 
     <span class="c1"># Sets the value</span>
 <div class="viewcode-block" id="RWSerializedStrength.set">
 <a class="viewcode-back" href="../../../api/pyaml.lattice.abstract_impl.html#pyaml.lattice.abstract_impl.RWSerializedStrength.set">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">set</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="nb">float</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">__element</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+        <span class="n">elements_values</span> <span class="o">=</span> <span class="p">[</span><span class="n">value</span> <span class="o">*</span> <span class="n">e</span><span class="o">.</span><span class="n">get_length</span><span class="p">()</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_total_length</span><span class="p">()</span> <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">__elements_hardware</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__element</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">elements_values</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">__element_index</span><span class="p">])</span>
+
+        <span class="c1"># compute the local hardware value</span>
         <span class="n">hardware_value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__elements_hardware</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">__element_index</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
-        <span class="p">[</span>
-            <span class="n">element</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">hardware_value</span><span class="p">)</span>
-            <span class="k">for</span> <span class="n">index</span><span class="p">,</span> <span class="n">element</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__elements_hardware</span><span class="p">)</span>
-            <span class="k">if</span> <span class="n">index</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__element_index</span>
-        <span class="p">]</span></div>
+
+        <span class="c1"># compute the total hardware value</span>
+        <span class="n">total_hardware</span> <span class="o">=</span> <span class="n">hardware_value</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_total_length</span><span class="p">()</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_element_length</span><span class="p">()</span>
+
+        <span class="c1"># dispatch this value</span>
+        <span class="k">for</span> <span class="n">index</span><span class="p">,</span> <span class="n">element</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__elements_hardware</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">index</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__element_index</span><span class="p">:</span>
+                <span class="n">element</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">total_hardware</span> <span class="o">*</span> <span class="n">element</span><span class="o">.</span><span class="n">get_length</span><span class="p">()</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_total_length</span><span class="p">())</span></div>
 
 
     <span class="c1"># Sets the value and wait that the read value reach the setpoint</span>

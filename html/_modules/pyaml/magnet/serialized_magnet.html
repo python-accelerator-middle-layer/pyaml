@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>pyaml.magnet.serialized_magnet &#8212; Python Accelerator Middle Layer 0.1.dev1+gd1d409edf documentation</title>
+    <title>pyaml.magnet.serialized_magnet &#8212; Python Accelerator Middle Layer 0.1.dev1+g4765bec8f documentation</title>
   
   
   
@@ -41,7 +41,7 @@
   <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
 <link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
-    <script src="../../../_static/documentation_options.js?v=38e6aeac"></script>
+    <script src="../../../_static/documentation_options.js?v=a8c1eb24"></script>
     <script src="../../../_static/doctools.js?v=9bcbadda"></script>
     <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -118,8 +118,8 @@
       
     
     
-    <img src="../../../_static/logo.png" class="logo__image only-light" alt="Python Accelerator Middle Layer 0.1.dev1+gd1d409edf documentation - Home"/>
-    <img src="../../../_static/dark.png" class="logo__image only-dark pst-js-only" alt="Python Accelerator Middle Layer 0.1.dev1+gd1d409edf documentation - Home"/>
+    <img src="../../../_static/logo.png" class="logo__image only-light" alt="Python Accelerator Middle Layer 0.1.dev1+g4765bec8f documentation - Home"/>
+    <img src="../../../_static/dark.png" class="logo__image only-dark pst-js-only" alt="Python Accelerator Middle Layer 0.1.dev1+g4765bec8f documentation - Home"/>
   
   
 </a></div>
@@ -407,7 +407,7 @@
 <div class="viewcode-block" id="ReadWriteSerializedStrengths.get">
 <a class="viewcode-back" href="../../../api/pyaml.magnet.serialized_magnet.html#pyaml.magnet.serialized_magnet.ReadWriteSerializedStrengths.get">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">elements</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">()</span></div>
+        <span class="k">return</span> <span class="nb">sum</span><span class="p">([</span><span class="n">elem</span><span class="o">.</span><span class="n">get</span><span class="p">()</span> <span class="k">for</span> <span class="n">elem</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">elements</span><span class="p">])</span></div>
 
 
 <div class="viewcode-block" id="ReadWriteSerializedStrengths.set">
@@ -496,17 +496,13 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">__strengths</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__hardwares</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__virtuals</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Magnet</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">__elements</span> <span class="o">=</span> <span class="p">(</span>
-            <span class="n">cfg</span><span class="o">.</span><span class="n">elements</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">cfg</span><span class="o">.</span><span class="n">elements</span><span class="p">,</span> <span class="nb">list</span><span class="p">)</span> <span class="k">else</span> <span class="p">[</span><span class="n">cfg</span><span class="o">.</span><span class="n">elements</span><span class="p">]</span>
-        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__elements</span> <span class="o">=</span> <span class="n">cfg</span><span class="o">.</span><span class="n">elements</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">cfg</span><span class="o">.</span><span class="n">elements</span><span class="p">,</span> <span class="nb">list</span><span class="p">)</span> <span class="k">else</span> <span class="p">[</span><span class="n">cfg</span><span class="o">.</span><span class="n">elements</span><span class="p">]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">set_number_of_magnets</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__elements</span><span class="p">))</span>
         <span class="k">if</span> <span class="n">peer</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="c1"># Configuration part</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">polynom</span> <span class="o">=</span> <span class="n">function_map</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_cfg</span><span class="o">.</span><span class="n">function</span><span class="p">]</span><span class="o">.</span><span class="n">polynom</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cfg</span><span class="o">.</span><span class="n">function</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">function_map</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="n">PyAMLException</span><span class="p">(</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">_cfg</span><span class="o">.</span><span class="n">function</span> <span class="o">+</span> <span class="s2">&quot; not implemented for serialized magnet&quot;</span>
-                <span class="p">)</span>
+                <span class="k">raise</span> <span class="n">PyAMLException</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_cfg</span><span class="o">.</span><span class="n">function</span> <span class="o">+</span> <span class="s2">&quot; not implemented for serialized magnet&quot;</span><span class="p">)</span>
             <span class="k">for</span> <span class="n">element</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">__elements</span><span class="p">:</span>
                 <span class="c1"># Check mapping validity</span>
                 <span class="c1"># Create the virtual magnet for the corresponding magnet</span>
@@ -549,36 +545,35 @@
         <span class="n">n_ser_mag</span><span class="o">.</span><span class="n">__strengths</span> <span class="o">=</span> <span class="n">ReadWriteSerializedStrengths</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_cfg</span><span class="p">,</span> <span class="n">strengths</span><span class="p">)</span>
         <span class="n">n_ser_mag</span><span class="o">.</span><span class="n">__hardwares</span> <span class="o">=</span> <span class="n">ReadWriteSerializedHardwares</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_cfg</span><span class="p">,</span> <span class="n">hardwares</span><span class="p">)</span>
         <span class="n">l</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">n_ser_mag</span><span class="p">)</span>
-        <span class="c1"># Construct a single function magnet for each multipole of this combined function magnet</span>
-        <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">magnet</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__elements</span><span class="p">):</span>
+        <span class="c1"># Construct a single magnet for each magnet.</span>
+        <span class="n">sub_magnets</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Magnet</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__elements</span><span class="p">):</span>
             <span class="n">strength</span> <span class="o">=</span> <span class="n">strengths</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span>
             <span class="n">hardware</span> <span class="o">=</span> <span class="n">hardwares</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">has_hardware</span><span class="p">()</span> <span class="k">else</span> <span class="kc">None</span>
-            <span class="n">l</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__virtuals</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span><span class="o">.</span><span class="n">attach</span><span class="p">(</span><span class="n">peer</span><span class="p">,</span> <span class="n">strength</span><span class="p">,</span> <span class="n">hardware</span><span class="p">))</span>
+            <span class="n">sub_magnets</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__virtuals</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span><span class="o">.</span><span class="n">attach</span><span class="p">(</span><span class="n">peer</span><span class="p">,</span> <span class="n">strength</span><span class="p">,</span> <span class="n">hardware</span><span class="p">))</span>
+        <span class="n">n_ser_mag</span><span class="o">.</span><span class="n">__virtuals</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">sub_magnets</span><span class="p">)</span>
+        <span class="n">l</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">sub_magnets</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">l</span></div>
 
 
     <span class="nd">@property</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">strengths</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">abstract</span><span class="o">.</span><span class="n">ReadWriteFloatScalar</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">strength</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">abstract</span><span class="o">.</span><span class="n">ReadWriteFloatScalar</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Gives access to the strengths of this combined function magnet in physics unit</span>
+<span class="sd">        Gives access to the strengths of those magnets in physics unit</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">check_peer</span><span class="p">()</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__strengths</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="n">PyAMLException</span><span class="p">(</span>
-                <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="si">}</span><span class="s2"> has no model that supports physics units&quot;</span>
-            <span class="p">)</span>
+            <span class="k">raise</span> <span class="n">PyAMLException</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="si">}</span><span class="s2"> has no model that supports physics units&quot;</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__strengths</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">hardwares</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">abstract</span><span class="o">.</span><span class="n">ReadWriteFloatScalar</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">hardware</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">abstract</span><span class="o">.</span><span class="n">ReadWriteFloatScalar</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Gives access to the strengths of this combined function magnet in hardware unit when possible</span>
+<span class="sd">        Gives access to the strengths of this those magnets in hardware unit when possible</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">check_peer</span><span class="p">()</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__hardwares</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="n">PyAMLException</span><span class="p">(</span>
-                <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="si">}</span><span class="s2"> has no model that supports hardware units&quot;</span>
-            <span class="p">)</span>
+            <span class="k">raise</span> <span class="n">PyAMLException</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="si">}</span><span class="s2"> has no model that supports hardware units&quot;</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__hardwares</span>
 
 <div class="viewcode-block" id="SerializedMagnets.set_energy">
