@@ -1,23 +1,25 @@
+import logging
+from pathlib import Path
+from time import sleep
 from typing import TYPE_CHECKING
 
-from .. import PyAMLException
-from ..common.constants import ACTION_APPLY, ACTION_MEASURE, ACTION_RESTORE
-from ..common.element import Element, ElementConfigModel
-
-if TYPE_CHECKING:
-    from ..arrays.magnet_array import MagnetArray
-    from ..common.element_holder import ElementHolder
+import numpy as np
 
 try:
     from typing import Self  # Python 3.11+
 except ImportError:
     from typing_extensions import Self  # Python 3.10 and earlier
-import json
-import time
-from collections.abc import Callable
-from datetime import datetime
 
-import numpy as np
+from .. import PyAMLException
+from ..common.element import ElementConfigModel
+from .response_matrix_data import ResponseMatrixData
+from .tuning_tool import TuningTool
+
+if TYPE_CHECKING:
+    from ..arrays.magnet_array import MagnetArray
+    from ..diagnostics.tune_monitor import BetatronTuneMonitor
+
+logger = logging.getLogger(__name__)
 
 # Define the main class name for this module
 PYAMLCLASS = "Tune"
@@ -29,146 +31,23 @@ class ConfigModel(ElementConfigModel):
 
     Parameters
     ----------
-    quad_array : str
+    quad_array_name : str
         Array name of quad used to adjust the tune
-    betatron_tune : str
+    betatron_tune_name : str
         Name of the diagnostic pyaml device for measuring the tune
-    delta : float
+    quad_delta : float
         Delta strength used to get the response matrix
+
     """
 
-    quad_array: str
-    betatron_tune: str
-    delta: float
+    quad_array_name: str
+    betatron_tune_name: str
+    response_matrix: str | ResponseMatrixData
 
 
-class TuneResponse(object):
-    def __init__(self, parent: "Tune"):
-        self.__parent = parent
-        self.__respmatrix: np.array = None
-        self.__date: str = None
-        self.__correctionmat: np.array = None
-
-    def __set_resp_map(self, mat):
-        self.__respmatrix = mat
-        self.__correctionmat = np.linalg.pinv(mat.T)
-
-    def measure(self, callback: Callable | None = None, set_wait_time: float = 0):
-        """
-        Measure tune response matrix
-
-        Parameters
-        ----------
-        callback : Callable, optional
-            tune_callback(step:int,action:int,m:Magnet,dtune:np.array)
-            Callback executed after each strength setting. The magnet and step are
-            passed as input arguement of the callback.
-            If the callback return false, then the process is aborted.
-        set_wait_time : float
-            Wait after quad has been set
-        """
-        quads = self.quads()  # Returns attached quad devices
-        tunemat = np.zeros((len(quads), 2))
-        initial_tune = self.__parent.readback()
-        delta = self.__parent._cfg.delta  # TODO: handle delta array
-        aborted = False
-
-        for idx, m in enumerate(quads):
-            str = m.strength.get()
-            # apply strength
-            m.strength.set(str + delta)
-
-            if callback and not callback(idx, ACTION_APPLY, m, [np.nan, np.nan]):
-                aborted = True
-                break
-
-            time.sleep(set_wait_time)
-
-            tune = self.__parent.readback()
-            dq = tune - initial_tune
-            tunemat[idx] = dq / delta
-
-            if callback and not callback(idx, ACTION_MEASURE, m, tunemat[idx]):
-                aborted = True
-                break
-
-            # Restore strength
-            m.strength.set(str)
-            if callback and not callback(idx, ACTION_RESTORE, m, tunemat[idx]):
-                aborted = True
-                break
-
-        if not aborted:
-            self.__set_resp_map(tunemat)
-            now = datetime.now()
-            self.__date = now.strftime("%m/%d/%Y, %H:%M:%S")
-
-    def save_json(self, filename: str):
-        """
-        Save tune response matrix
-
-        Parameters
-        ----------
-        filename: str
-            File name to save
-        """
-        if self.__respmatrix is None:
-            raise PyAMLException("TuneResponse.save(): no matrix loaded or measured")
-        d = {
-            "date": self.__date,
-            "input_names": self.quads().names(),
-            "input_delta": self.__parent._cfg.delta,
-            "matrix": self.__respmatrix.tolist(),
-        }
-        with open(filename, "w") as f:
-            json.dump(d, f)
-
-    def load_json(self, filename: str):
-        """
-        Load tune response matrix
-
-        Parameters
-        ----------
-        filename : str
-            File name to load
-        """
-        with open(filename) as f:
-            d = json.load(f)
-        self.__date = d["date"]
-        self.__input_names = d["input_names"]
-        delta = d["input_delta"]
-        self.__set_resp_map(np.array(d["matrix"]))
-
-    def get(self) -> np.array:
-        """
-        Return tune response matrix
-        """
-        return self.__respmatrix
-
-    def correct(self, dtune: np.array) -> np.array:
-        """
-        Return delta strengths for tune correction
-
-        Parameters
-        ----------
-        dtune : np.array
-            Delta tune
-        """
-        if self.__respmatrix is None:
-            raise PyAMLException("TuneResponse.correct(): no matrix loaded or measured")
-        return np.matmul(self.__correctionmat, dtune)
-
-    def quads(self) -> "MagnetArray":
-        """
-        Returns quads used for tune correction
-        """
-        a_name = self.__parent._cfg.quad_array
-        return self.__parent._peer.get_magnets(a_name)
-
-
-class Tune(Element):
+class Tune(TuningTool):
     """
-    Class providing tune response matrix measurement and tune adjustment
+    Class providing tune adjustment tool
     """
 
     def __init__(self, cfg: ConfigModel):
@@ -182,22 +61,61 @@ class Tune(Element):
         """
         super().__init__(cfg.name)
         self._cfg = cfg
-        self.__tm = None
-        self.__tr: TuneResponse = None
-        self.__setpoint = np.array([np.nan, np.nan])
+        self._response_matrix = None
+        self._correctionmat = None
+
+        # If the configuration response matrix is a filename, load it
+        if type(cfg.response_matrix) is str:
+            try:
+                cfg.response_matrix = ResponseMatrixData.load(cfg.response_matrix)
+            except Exception as e:
+                logger.warning(f"{str(e)}")
+                cfg.response_matrix = None
+
+        # Invert matrix
+        if cfg.response_matrix:
+            self._response_matrix = np.array(cfg.response_matrix._cfg.matrix)
+            self._correctionmat = np.linalg.pinv(self._response_matrix)
+
+        # TODO: Initialise first setpoint
+        self._setpoint = np.array([np.nan, np.nan])
+
+    def load(self, load_path: Path):
+        """
+        Dyanmically loads a response matrix.
+
+        Parameters
+        ----------
+        load_path : Path
+            Filename of the :class:`~.ResponseMatrixData` to load
+
+        """
+        self._cfg.response_matrix = ResponseMatrixData.load(load_path)
+        self._response_matrix = np.array(self._cfg.response_matrix._cfg.matrix)
+        self._correctionmat = np.linalg.pinv(self._response_matrix)
+
+    @property
+    def _tm(self) -> "BetatronTuneMonitor":
+        self.check_peer()
+        return self._peer.get_betatron_tune_monitor(self._cfg.betatron_tune_name)
+
+    @property
+    def _quads(self) -> "MagnetArray":
+        self.check_peer()
+        return self._peer.get_magnets(self._cfg.quad_array_name)
 
     def get(self):
         """
         Return the betatron tune setpoint
         """
-        return self.__setpoint
+        return self._setpoint
 
     def readback(self):
         """
         Return the betatron tune measurement
         """
         self.check_peer()
-        return self.__tm.tune.get()
+        return self._tm.tune.get()
 
     def set(self, tune: np.array, iter: int = 1, wait_time: float = 0.0):
         """
@@ -216,12 +134,26 @@ class Tune(Element):
             diff_tune = tune - self.readback()
             if i == iter:
                 wait_time = 0  # do not wait on last iteration
-            self.step(diff_tune, wait_time)
-        self.__setpoint = np.array(tune)
+            self.add(diff_tune, wait_time)
+        self._setpoint = np.array(tune)
 
-    def step(self, dtune: np.array, wait_time: float = 0.0):
+    def correct(self, dtune: np.array) -> np.array:
         """
-        Step the tune by a delta
+        Return delta strengths for tune correction
+
+        Parameters
+        ----------
+        dtune : np.array
+            Delta tune
+        """
+        if self._correctionmat is None:
+            raise PyAMLException("Tune.correct(): no matrix loaded or measured")
+        return np.matmul(self._correctionmat, dtune)
+
+    def add(self, dtune: np.array, wait_time: float = 0.0):
+        """
+        Add delta tune to the tune
+
         Parameters
         ----------
         dtune : np.array
@@ -229,29 +161,8 @@ class Tune(Element):
         iter_nb: int
         wait_time: float
         """
-        strengths = self.__tr.quads().strengths.get()
-        strengths += self.__tr.correct(dtune)
-        self.__tr.quads().strengths.set(strengths)
-        time.sleep(wait_time)
-        self.__setpoint += dtune
-
-    @property
-    def response(self) -> TuneResponse:
-        return self.__tr
-
-    def post_init(self):
-        self.check_peer()
-        self.__tm = self._peer.get_betatron_tune_monitor(self._cfg.betatron_tune)
-
-    def attach(
-        self,
-        peer: "ElementHolder",
-    ) -> Self:
-        """
-        Create a new reference to attach this tune object to a simulator
-        or a control system.
-        """
-        obj = self.__class__(self._cfg)
-        obj._peer = peer
-        obj.__tr = TuneResponse(obj)
-        return obj
+        strengths = self._quads.strengths.get()
+        strengths += self.correct(dtune)
+        self._quads.strengths.set(strengths)
+        sleep(wait_time)
+        self._setpoint += dtune

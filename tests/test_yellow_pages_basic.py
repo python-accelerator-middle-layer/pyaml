@@ -16,9 +16,13 @@ Arrays:
     HCorr                 (pyaml.arrays.magnet_array)             size=288
     VCorr                 (pyaml.arrays.magnet_array)             size=288
     Skews                 (pyaml.arrays.magnet_array)             size=288
+    Sext                  (pyaml.arrays.magnet_array)             size=180
     .
 
 Tools:
+    CHROMATICITY_MONITOR (pyaml.diagnostics.chromaticity_monitor)
+    DEFAULT_CHROMATICITY_RESPONSE_MATRIX (pyaml.tuning_tools.chromaticity_response_matrix)
+    DEFAULT_CHROMATICITY_CORRECTION (pyaml.tuning_tools.chromaticity)
     DEFAULT_ORBIT_CORRECTION (pyaml.tuning_tools.orbit)
     DEFAULT_ORBIT_RESPONSE_MATRIX (pyaml.tuning_tools.orbit_response_matrix)
     DEFAULT_DISPERSION (pyaml.tuning_tools.dispersion)

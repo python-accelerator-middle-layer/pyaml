@@ -97,25 +97,25 @@ class Element(object):
         """
         pass
 
+    def set_mcf(self, alphac: float):
+        """
+        Set the instrument moment compaction factor on this element
+        """
+        pass
+
     def check_peer(self):
         """
         Throws an exception if the element is not attacched
         to a simulator or to a control system
         """
         if self._peer is None:
-            raise PyAMLException(
-                f"{str(self)} is not attachedto a control system or the a simulator"
-            )
+            raise PyAMLException(f"{str(self)} is not attachedto a control system or the a simulator")
 
     def get_peer(self) -> str:
         """
         Returns a string representation of peer simulator or control system
         """
-        return (
-            "None"
-            if self._peer is None
-            else f"{self._peer.__class__.__name__}:{self._peer.name()}"
-        )
+        return "None" if self._peer is None else f"{self._peer.__class__.__name__}:{self._peer.name()}"
 
     def post_init(self):
         """

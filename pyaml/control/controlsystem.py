@@ -17,7 +17,6 @@ from ..control.abstract_impl import (
     CSStrengthScalarAggregator,
     RBetatronTuneArray,
     RBpmArray,
-    RChromaticityArray,
     RWBpmOffsetArray,
     RWBpmTiltScalar,
     RWHardwareArray,
@@ -35,10 +34,8 @@ from ..magnet.magnet import Magnet
 from ..magnet.serialized_magnet import SerializedMagnets
 from ..rf.rf_plant import RFPlant, RWTotalVoltage
 from ..rf.rf_transmitter import RFTransmitter
-from ..tuning_tools.dispersion import Dispersion
-from ..tuning_tools.orbit import Orbit
-from ..tuning_tools.orbit_response_matrix import OrbitResponseMatrix
-from ..tuning_tools.tune import Tune
+from ..tuning_tools.measurement_tool import MeasurementTool
+from ..tuning_tools.tuning_tool import TuningTool
 from .catalog_view import CatalogView
 from .deviceaccess import DeviceAccess
 
@@ -96,12 +93,6 @@ class ControlSystem(ElementHolder, metaclass=ABCMeta):
             elif isinstance(catalog, Catalog):
                 return catalog.get_name()
         return None
-
-    def attach_indexed(self, dev: DeviceAccess, idx: int | None) -> DeviceAccess:
-        if idx is not None:
-            return self.attach_array([dev])[0]
-        else:
-            return self.attach([dev])[0]
 
     def create_scalar_aggregator(self) -> ScalarAggregator:
         mod = self.scalar_aggregator()
@@ -266,21 +257,6 @@ class ControlSystem(ElementHolder, metaclass=ABCMeta):
                     if model.get_y_offset_device() is not None
                     else None
                 )
-                ahDev = hDev if model.x_pos_index() is not None else None
-                avDev = vDev if model.y_pos_index() is not None else None
-                atiltDev = tiltDev if model.tilt_index() is not None else None
-                ahOffsetDev = hOffsetDev if model.x_offset_index() is not None else None
-                avOffsetDev = vOffsetDev if model.y_offset_index() is not None else None
-                if ahDev is not None:
-                    hDev.set_target(ahDev)
-                if avDev is not None:
-                    vDev.set_target(avDev)
-                if atiltDev is not None:
-                    tiltDev.set_target(atiltDev)
-                if ahOffsetDev is not None:
-                    hOffsetDev.set_target(ahOffsetDev)
-                if avOffsetDev is not None:
-                    vOffsetDev.set_target(avOffsetDev)
                 positions = RBpmArray(model, hDev, vDev)
                 tilt = RWBpmTiltScalar(model, tiltDev)
                 offsets = RWBpmOffsetArray(model, hOffsetDev, vOffsetDev)
@@ -311,19 +287,5 @@ class ControlSystem(ElementHolder, metaclass=ABCMeta):
                 e = e.attach(self, betatron_tune)
                 self.add_betatron_tune_monitor(e)
 
-            elif isinstance(e, ChomaticityMonitor):
-                chromaticity = RChromaticityArray(e)
-                e = e.attach(self, chromaticity)
-                self.add_chromaticity_monitor(e)
-
-            elif isinstance(e, Tune):
-                self.add_tune_tuning(e.attach(self))
-
-            elif isinstance(e, Orbit):
-                self.add_orbit_tuning(e.attach(self))
-
-            elif isinstance(e, OrbitResponseMatrix):
-                self.add_orm_tuning(e.attach(self))
-
-            elif isinstance(e, Dispersion):
-                self.add_dispersion_tuning(e.attach(self))
+            elif isinstance(e, TuningTool) | isinstance(e, MeasurementTool):
+                self.add_tool(e.attach(self))

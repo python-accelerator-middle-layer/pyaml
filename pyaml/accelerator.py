@@ -34,6 +34,8 @@ class ConfigModel(BaseModel):
     energy : float
         Accelerator nominal energy. For ramped machine,
         this value can be dynamically set
+    alphac : float, optional
+        Moment compaction factor.
     controls : list[ControlSystem], optional
         List of control system used. An accelerator
         can access several control systems
@@ -56,6 +58,7 @@ class ConfigModel(BaseModel):
     facility: str
     machine: str
     energy: float
+    alphac: float | None = None
     controls: list[ControlSystem] = None
     simulators: list[Simulator] = None
     data_folder: str
@@ -129,6 +132,9 @@ class Accelerator(object):
         if cfg.energy is not None:
             self.set_energy(cfg.energy)
 
+        if cfg.alphac is not None:
+            self.set_mcf(cfg.alphac)
+
         self._yellow_pages = YellowPages(self)
 
         self.post_init()
@@ -144,10 +150,26 @@ class Accelerator(object):
         """
         if self._cfg.simulators is not None:
             for s in self._cfg.simulators:
-                s.set_energy(E)
+                s._set_energy(E)
         if self._cfg.controls is not None:
             for c in self._cfg.controls:
-                c.set_energy(E)
+                c._set_energy(E)
+
+    def set_mcf(self, alphac: float):
+        """
+        Set the moment compaction factor for all simulators and control systems.
+
+        Parameters
+        ----------
+        alphac : float
+            Moment compaction factor
+        """
+        if self._cfg.simulators is not None:
+            for s in self._cfg.simulators:
+                s._set_mcf(alphac)
+        if self._cfg.controls is not None:
+            for c in self._cfg.controls:
+                c._set_mcf(alphac)
 
     def get_catalog(self, catalog_name: str) -> Catalog | None:
         """
@@ -275,4 +297,4 @@ class Accelerator(object):
         rootfolder = os.path.abspath(os.path.dirname(filename))
         set_root_folder(rootfolder)
         config_dict = load(os.path.basename(filename), None, use_fast_loader)
-        return Accelerator.from_dict(config_dict)
+        return Accelerator.from_dict(config_dict, ignore_external=ignore_external)

@@ -1777,6 +1777,11 @@ devices:
     unit: mm
 - type: pyaml.tuning_tools.tune
   name: DEFAULT_TUNE_CORRECTION
-  quad_array: QForTune
-  betatron_tune: BETATRON_TUNE
-  delta: 1e-4
+  quad_array_name: QForTune
+  betatron_tune_name: BETATRON_TUNE
+  response_matrix: file:tune_response.json
+- type: pyaml.tuning_tools.tune_response_matrix
+  name: DEFAULT_TUNE_RESPONSE_MATRIX
+  quad_array_name: QForTune
+  betatron_tune_name: BETATRON_TUNE
+  quad_delta: 1e-4

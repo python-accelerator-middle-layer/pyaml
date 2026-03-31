@@ -38,21 +38,18 @@ def test_catalog_view_get_one_and_identity_stability(install_test_package):
     cfg = sr.get_catalog(sr.live.get_catalog_name())
     view = cfg.view(sr.live)
 
-    proxy_before = view.get_one("BPM_C01-02/x_pos")
+    proxy_before = view.get_one("srdiag/bpm/c01-02/SA_HPosition")
     old_target = proxy_before.get_target()
 
     # Update the config catalog prototype (eager propagation to existing views)
     new_dev = Attribute(AttrConfigModel(attribute="srdiag/bpm/c01-02/SA_HPosition2"))
-    cfg.update_proto("BPM_C01-02/x_pos", new_dev)
+    cfg.update_proto("srdiag/bpm/c01-02/SA_HPosition", new_dev)
 
-    proxy_after = view.get_one("BPM_C01-02/x_pos")
+    proxy_after = view.get_one("srdiag/bpm/c01-02/SA_HPosition")
 
     assert proxy_after is proxy_before
     assert proxy_after.get_target() is not old_target
-    assert (
-        proxy_after.get_target() is new_dev
-        or proxy_after.get_target()._cfg.attribute.endswith("SA_HPosition2")
-    )
+    assert proxy_after.get_target() is new_dev or proxy_after.get_target()._cfg.attribute.endswith("SA_HPosition2")
 
 
 @pytest.mark.parametrize(
@@ -121,7 +118,7 @@ def test_catalog_view_shape_stable_on_update(install_test_package):
     view = cfg.view(sr.live)
 
     # Ensure existing single proxy
-    _ = view.get_one("BPM_C01-02/x_pos")
+    _ = view.get_one("srdiag/bpm/c01-02/SA_HPosition")
 
     # Try to change the prototype to multi -> must raise at refresh time
     devs_multi = [
@@ -129,7 +126,7 @@ def test_catalog_view_shape_stable_on_update(install_test_package):
         _build_ro_attr("srdiag/bpm/c01-02/SA_VPosition"),
     ]
     with pytest.raises(PyAMLException, match="shape change is not supported"):
-        cfg.update_proto("BPM_C01-02/x_pos", devs_multi)
+        cfg.update_proto("srdiag/bpm/c01-02/SA_HPosition", devs_multi)
 
 
 @pytest.mark.parametrize(
@@ -146,10 +143,10 @@ def test_catalog_view_sub_catalog_reuses_proxies(install_test_package):
     cfg = sr.get_catalog(sr.live.get_catalog_name())
     view = cfg.view(sr.live)
 
-    p_parent = view.get_one("BPM_C01-02/x_pos")
+    p_parent = view.get_one("srdiag/bpm/c01-02/SA_HPosition")
 
-    sub = view.get_sub_catalog(r"^BPM_C01-02/")
-    p_sub = sub.get_one("BPM_C01-02/x_pos")
+    sub = view.get_sub_catalog(r"^srdiag/bpm/")
+    p_sub = sub.get_one("srdiag/bpm/c01-02/SA_HPosition")
 
     assert p_sub is p_parent
 
@@ -170,12 +167,12 @@ def test_catalog_view_sub_catalog_by_prefix_strips_prefix_and_reuses_proxies(
     cfg = sr.get_catalog(sr.live.get_catalog_name())
     view = cfg.view(sr.live)
 
-    p_parent = view.get_one("BPM_C01-02/x_pos")
+    p_parent = view.get_one("srdiag/bpm/c01-02/SA_HPosition")
 
-    sub = view.get_sub_catalog_by_prefix("BPM_C01-02/")
-    assert sub.has_reference("x_pos")
+    sub = view.get_sub_catalog_by_prefix("srdiag/bpm/c01-02/")
+    assert sub.has_reference("SA_HPosition")
 
-    p_sub = sub.get_one("x_pos")
+    p_sub = sub.get_one("SA_HPosition")
     assert p_sub is p_parent
 
 
@@ -201,18 +198,16 @@ def test_config_catalog_update_propagates_to_existing_bpm_instance(
     bpm = sr.live.get_bpm("BPM_C01-02")
 
     cfg = sr.get_catalog(sr.live.get_catalog_name())
-    liv_catalog_view = cfg.view(
-        sr.live
-    )  # ensure view exists and is registered for updates
+    liv_catalog_view = cfg.view(sr.live)  # ensure view exists and is registered for updates
 
     dev_x = Attribute(AttrConfigModel(attribute="srdiag/bpm/c01-02/SA_HPosition2"))
     dev_y = Attribute(AttrConfigModel(attribute="srdiag/bpm/c01-02/SA_VPosition2"))
 
-    cfg.update_proto("BPM_C01-02/x_pos", dev_x)
-    cfg.update_proto("BPM_C01-02/y_pos", dev_y)
+    cfg.update_proto("srdiag/bpm/c01-02/SA_HPosition", dev_x)
+    cfg.update_proto("srdiag/bpm/c01-02/SA_VPosition", dev_y)
 
-    dev_x_live = liv_catalog_view.get_one("BPM_C01-02/x_pos")
-    dev_y_live = liv_catalog_view.get_one("BPM_C01-02/y_pos")
+    dev_x_live = liv_catalog_view.get_one("srdiag/bpm/c01-02/SA_HPosition")
+    dev_y_live = liv_catalog_view.get_one("srdiag/bpm/c01-02/SA_VPosition")
 
     # The change is effective
     assert dev_x_live.name() == "srdiag/bpm/c01-02/SA_HPosition2"
