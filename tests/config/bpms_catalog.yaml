@@ -3536,6 +3536,12 @@ refs:
         attribute: srdiag/bpm/c01-03/SA_VPosition
         unit: m
     - type: pyaml.configuration.catalog_entry
+      reference: srdiag/bpm/c01-04/SA_Position
+      device:
+        type: tango.pyaml.attribute_read_only
+        attribute: srdiag/bpm/c01-04/SA_Position
+        unit: m
+    - type: pyaml.configuration.catalog_entry
       reference: srdiag/bpm/c01-04/SA_HPosition
       device:
         type: tango.pyaml.attribute_read_only

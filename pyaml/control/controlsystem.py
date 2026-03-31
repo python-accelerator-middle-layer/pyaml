@@ -130,9 +130,10 @@ class ControlSystem(ElementHolder, metaclass=ABCMeta):
                 model = b.model
                 hDev = self._catalog.get_one(model.get_x_pos_device()) if model.get_x_pos_device() is not None else None
                 vDev = self._catalog.get_one(model.get_y_pos_device()) if model.get_y_pos_device() is not None else None
-                agg.add_devices([hDev, vDev])
-                aggh.add_devices(hDev)
-                aggv.add_devices(vDev)
+                devs = self.attach([hDev, vDev])
+                agg.add_devices(devs)
+                aggh.add_devices(devs[0])
+                aggv.add_devices(devs[1])
             return [agg, aggh, aggv]
 
         elif any([b.model.is_pos_indexed() for b in bpms]):
@@ -145,6 +146,14 @@ class ControlSystem(ElementHolder, metaclass=ABCMeta):
             for b in bpms:
                 devH = self._catalog.get_one(b.model.get_x_pos_device())
                 devV = self._catalog.get_one(b.model.get_y_pos_device())
+                if devH == devV:
+                    dev_attached = self.attach_array([devH])
+                    devH = dev_attached[0]
+                    devV = dev_attached[0]
+                else:
+                    devs = self.attach_array([devH, devV])
+                    devH = devs[0]
+                    devV = devs[1]
                 if devH not in allH:
                     allH.append(devH)
                 if devH not in allHV:
@@ -159,7 +168,7 @@ class ControlSystem(ElementHolder, metaclass=ABCMeta):
             if len(allH) > 1 or len(allV) > 1:
                 # Does not support aggregator for individual BPM that
                 # returns an array of [x,y]
-                print("Warning, Individual BPM that returns [x,y]" + " are not read in parralell")
+                print("Warning, Individual BPM that returns [x,y]" + " are not read in parallel")
                 # Default to serialized readding
                 return [None, None, None]
 
@@ -257,6 +266,24 @@ class ControlSystem(ElementHolder, metaclass=ABCMeta):
                     if model.get_y_offset_device() is not None
                     else None
                 )
+                hdev_is_vdev = hDev == vDev
+                if hDev is not None:
+                    if e.model.x_pos_index() is not None:
+                        hDev = self.attach_array([hDev])[0]
+                    else:
+                        hDev = self.attach([hDev])[0]
+                if vDev is not None:
+                    if hdev_is_vdev:
+                        vDev = hDev
+                    else:
+                        if e.model.y_pos_index() is not None:
+                            vDev = self.attach_array([vDev])[0]
+                        else:
+                            vDev = self.attach([vDev])[0]
+                tilt_offset_devs = self.attach([tiltDev, hOffsetDev, vOffsetDev])
+                tiltDev = tilt_offset_devs[0]
+                hOffsetDev = tilt_offset_devs[1]
+                vOffsetDev = tilt_offset_devs[2]
                 positions = RBpmArray(model, hDev, vDev)
                 tilt = RWBpmTiltScalar(model, tiltDev)
                 offsets = RWBpmOffsetArray(model, hOffsetDev, vOffsetDev)
