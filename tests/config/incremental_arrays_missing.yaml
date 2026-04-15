@@ -1,0 +1,6 @@
+arrays:
+  - type: pyaml.arrays.magnet
+    name: QMissing
+    elements:
+      - QF1E-C04
+      - DOES_NOT_EXIST

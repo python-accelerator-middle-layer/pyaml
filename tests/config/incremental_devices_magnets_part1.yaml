@@ -1,0 +1,30 @@
+devices:
+  - type: pyaml.magnet.quadrupole
+    description: QF1E-C04 quadrupole
+    name: QF1E-C04
+    model:
+      type: pyaml.magnet.linear_model
+      calibration_factor: 1.00054
+      crosstalk: 1.0
+      curve:
+        type: pyaml.configuration.csvcurve
+        file: sr/magnet_models/QF1_strength.csv
+      unit: 1/m
+      powerconverter:
+        type: tango.pyaml.attribute
+        attribute: srmag/vps-qf1/c04-e/current
+        unit: A
+  - type: pyaml.magnet.quadrupole
+    name: QF1A-C05
+    model:
+      type: pyaml.magnet.linear_model
+      calibration_factor: 0.996841
+      crosstalk: 1.0
+      curve:
+        type: pyaml.configuration.csvcurve
+        file: sr/magnet_models/QF1_strength.csv
+      unit: 1/m
+      powerconverter:
+        type: tango.pyaml.attribute
+        attribute: srmag/vps-qf1/c05-a/current
+        unit: A

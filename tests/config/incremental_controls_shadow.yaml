@@ -1,0 +1,4 @@
+controls:
+  - type: tango.pyaml.controlsystem
+    tango_host: ebs-simu-4:10000
+    name: live_shadow
