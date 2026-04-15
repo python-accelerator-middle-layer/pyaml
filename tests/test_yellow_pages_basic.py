@@ -33,11 +33,11 @@ Diagnostics:
     ."""
 
 
-def test_load_conf_with_code():
+def test_load_conf_with_code(accelerator_from_config):
     parent_folder = Path(__file__).parent
     config_path = parent_folder.joinpath("config", "EBSOrbit.yaml").resolve()
 
-    sr: Accelerator = Accelerator.load(config_path)
+    sr: Accelerator = accelerator_from_config(config_path)
     str_repr = str(sr.yellow_pages)
     print(str_repr)
     assert ebs_orbit_str_repr == str_repr

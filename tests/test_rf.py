@@ -5,8 +5,8 @@ from pyaml.accelerator import Accelerator
 from pyaml.common.exception import PyAMLException
 
 
-def test_rf():
-    sr: Accelerator = Accelerator.load("tests/config/EBS_rf.yaml", ignore_external=True)
+def test_rf(accelerator_from_config):
+    sr: Accelerator = accelerator_from_config("tests/config/EBS_rf.yaml", ignore_external=True)
     RF = sr.design.get_rf_plant("RF")
 
     RF.frequency.set(3.523e8)
@@ -38,8 +38,8 @@ def test_rf():
     [{"name": "tango-pyaml", "path": "tests/dummy_cs/tango-pyaml"}],
     indirect=True,
 )
-def test_rf_multi(install_test_package):
-    sr: Accelerator = Accelerator.load("tests/config/EBS_rf_multi.yaml")
+def test_rf_multi(install_test_package, accelerator_from_config):
+    sr: Accelerator = accelerator_from_config("tests/config/EBS_rf_multi.yaml")
 
     # Simulator
     RF = sr.design.get_rf_plant("RF")
@@ -88,8 +88,8 @@ def test_rf_multi(install_test_package):
     [{"name": "tango-pyaml", "path": "tests/dummy_cs/tango-pyaml"}],
     indirect=True,
 )
-def test_rf_multi_notrans(install_test_package):
-    sr: Accelerator = Accelerator.load("tests/config/EBS_rf_notrans.yaml")
+def test_rf_multi_notrans(install_test_package, accelerator_from_config):
+    sr: Accelerator = accelerator_from_config("tests/config/EBS_rf_notrans.yaml")
 
     # Simulator
     RF = sr.design.get_rf_plant("RF")

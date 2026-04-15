@@ -9,8 +9,8 @@ from pyaml.accelerator import Accelerator
     [{"name": "tango-pyaml", "path": "tests/dummy_cs/tango-pyaml"}],
     indirect=True,
 )
-def test_controlsystem_bpm_tilt(install_test_package):
-    sr: Accelerator = Accelerator.load("tests/config/bpms.yaml")
+def test_controlsystem_bpm_tilt(install_test_package, accelerator_from_config):
+    sr: Accelerator = accelerator_from_config("tests/config/bpms.yaml")
     bpm = sr.live.get_bpm("BPM_C01-01")
     print(bpm.tilt.get())
 
@@ -24,8 +24,8 @@ def test_controlsystem_bpm_tilt(install_test_package):
     [{"name": "tango-pyaml", "path": "tests/dummy_cs/tango-pyaml"}],
     indirect=True,
 )
-def test_controlsystem_bpm_offset(install_test_package):
-    sr: Accelerator = Accelerator.load("tests/config/bpms.yaml")
+def test_controlsystem_bpm_offset(install_test_package, accelerator_from_config):
+    sr: Accelerator = accelerator_from_config("tests/config/bpms.yaml")
     bpm = sr.live.get_bpm("BPM_C01-01")
 
     assert bpm.offset.get()[0] == 0
@@ -41,8 +41,8 @@ def test_controlsystem_bpm_offset(install_test_package):
     [{"name": "tango-pyaml", "path": "tests/dummy_cs/tango-pyaml"}],
     indirect=True,
 )
-def test_controlsystem_bpm_position(install_test_package):
-    sr: Accelerator = Accelerator.load("tests/config/bpms.yaml")
+def test_controlsystem_bpm_position(install_test_package, accelerator_from_config):
+    sr: Accelerator = accelerator_from_config("tests/config/bpms.yaml")
     bpm = sr.live.get_bpm("BPM_C01-01")
     bpm_simple = sr.live.get_bpm("BPM_C01-02")
 
@@ -55,8 +55,8 @@ def test_controlsystem_bpm_position(install_test_package):
     [{"name": "tango-pyaml", "path": "tests/dummy_cs/tango-pyaml"}],
     indirect=True,
 )
-def test_controlsystem_bpm_position_indexed(install_test_package):
-    sr: Accelerator = Accelerator.load("tests/config/bpms.yaml")
+def test_controlsystem_bpm_position_indexed(install_test_package, accelerator_from_config):
+    sr: Accelerator = accelerator_from_config("tests/config/bpms.yaml")
     bpm = sr.live.get_bpm("BPM_C01-04")
 
     assert np.allclose(bpm.positions.get(), np.array([0.0, 1.0]))

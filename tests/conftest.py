@@ -8,6 +8,7 @@ import numpy as np
 import pytest
 from pydantic import BaseModel
 
+from pyaml.accelerator import Accelerator
 from pyaml.configuration.factory import BuildStrategy, Factory
 from pyaml.control.readback_value import Value
 
@@ -46,18 +47,13 @@ def install_test_package(request):
     if package_path is None:
         raise RuntimeError("No package_path defined for install_test_package fixture")
 
-    if not (
-        (package_path / "pyproject.toml").exists()
-        or (package_path / "setup.py").exists()
-    ):
+    if not ((package_path / "pyproject.toml").exists() or (package_path / "setup.py").exists()):
         raise RuntimeError(f"No pyproject.toml or setup.py found in {package_path}")
 
     """Install package in a classis way, `--editable` create a .pth entry
     in conda env which is imcompatible with submodule"""
     if package_path is not None:
-        subprocess.check_call(
-            [sys.executable, "-m", "pip", "--quiet", "install", str(package_path)]
-        )
+        subprocess.check_call([sys.executable, "-m", "pip", "--quiet", "install", str(package_path)])
 
     yield package_name
 
@@ -73,6 +69,18 @@ def config_root_dir():
     Returns the absolute path to the `tests/config` directory.
     """
     return str((pathlib.Path(__file__).parent / "config").resolve())
+
+
+@pytest.fixture
+def accelerator_from_config():
+    """Build an accelerator from a config source for tests."""
+
+    def _build(source, ignore_external=False) -> Accelerator:
+        acc = Accelerator.empty(ignore_external=ignore_external)
+        acc.add_config(source)
+        return acc
+
+    return _build
 
 
 @pytest.fixture

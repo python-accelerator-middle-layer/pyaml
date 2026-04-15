@@ -4,8 +4,8 @@ import pytest
 from pyaml.accelerator import Accelerator
 
 
-def test_tune():
-    sr: Accelerator = Accelerator.load("tests/config/EBSTune.yaml", ignore_external=True)
+def test_tune(accelerator_from_config):
+    sr: Accelerator = accelerator_from_config("tests/config/EBSTune.yaml", ignore_external=True)
 
     assert sr.get_description() == "Accelerator configuration for EBS storage ring"
     assert sr.design.get_magnet("QF1E-C04").get_description() == "QF1E-C04 quadrupole"

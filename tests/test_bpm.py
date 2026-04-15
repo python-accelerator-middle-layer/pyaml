@@ -4,8 +4,8 @@ import pytest
 from pyaml.accelerator import Accelerator
 
 
-def test_simulator_bpm_tilt():
-    sr: Accelerator = Accelerator.load("tests/config/bpms.yaml", ignore_external=True)
+def test_simulator_bpm_tilt(accelerator_from_config):
+    sr: Accelerator = accelerator_from_config("tests/config/bpms.yaml", ignore_external=True)
     sr.design.get_lattice().disable_6d()
     bpm = sr.design.get_bpm("BPM_C01-01")
     assert bpm.tilt.get() == 0
@@ -13,8 +13,8 @@ def test_simulator_bpm_tilt():
     assert bpm.tilt.get() == 0.01
 
 
-def test_simulator_bpm_offset():
-    sr: Accelerator = Accelerator.load("tests/config/bpms.yaml", ignore_external=True)
+def test_simulator_bpm_offset(accelerator_from_config):
+    sr: Accelerator = accelerator_from_config("tests/config/bpms.yaml", ignore_external=True)
     sr.design.get_lattice().disable_6d()
     bpm = sr.design.get_bpm("BPM_C01-01")
 
@@ -31,8 +31,8 @@ def test_simulator_bpm_offset():
     [{"name": "tango-pyaml", "path": "tests/dummy_cs/tango-pyaml"}],
     indirect=True,
 )
-def test_simulator_bpm_position(install_test_package):
-    sr: Accelerator = Accelerator.load("tests/config/bpms.yaml")
+def test_simulator_bpm_position(install_test_package, accelerator_from_config):
+    sr: Accelerator = accelerator_from_config("tests/config/bpms.yaml")
     sr.design.get_lattice().disable_6d()
     bpm = sr.design.get_bpm("BPM_C01-01")
     bpm_simple = sr.live.get_bpm("BPM_C01-02")
@@ -41,8 +41,8 @@ def test_simulator_bpm_position(install_test_package):
     assert np.allclose(bpm_simple.positions.get(), np.array([0.0, 0.0]))
 
 
-def test_simulator_bpm_position_with_bad_corrector_strength():
-    sr: Accelerator = Accelerator.load("tests/config/bpms.yaml", ignore_external=True)
+def test_simulator_bpm_position_with_bad_corrector_strength(accelerator_from_config):
+    sr: Accelerator = accelerator_from_config("tests/config/bpms.yaml", ignore_external=True)
     sr.design.get_lattice().disable_6d()
     bpm1 = sr.design.get_bpm("BPM_C01-01")
     bpm_simple = sr.design.get_bpm("BPM_C01-02")
