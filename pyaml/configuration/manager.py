@@ -1,0 +1,480 @@
+import copy
+import fnmatch
+import os
+import re
+from pathlib import Path
+from typing import Any
+from urllib.parse import urlparse
+
+from ..common.exception import PyAMLConfigException
+from .fileloader import get_root_folder, load, set_root_folder
+
+_INTERNAL_METADATA_KEYS = {"__location__", "__fieldlocations__"}
+_VALID_QUERY_KEY_RE = re.compile(r"^[A-Z0-9_]+$")
+_CATEGORY_TITLES = {
+    "controls": "Controls",
+    "simulators": "Simulators",
+    "arrays": "Arrays",
+    "devices": "Devices",
+}
+
+
+class UnsupportedConfigurationRootError(PyAMLConfigException):
+    """Raised when a fragment root is outside ConfigurationManager scope."""
+
+
+class ConfigurationManager:
+    """
+    Aggregate accelerator configuration fragments before runtime build.
+    """
+
+    DEFAULT_TYPE = "pyaml.accelerator"
+    ROOT_FIELDS = (
+        "type",
+        "facility",
+        "machine",
+        "energy",
+        "alphac",
+        "data_folder",
+        "description",
+    )
+    NAMED_CATEGORIES = ("controls", "simulators", "arrays", "devices")
+    _SUPPORTED_FILE_SUFFIXES = {".yaml", ".yml", ".json"}
+
+    def __init__(self):
+        self._state: dict[str, Any] = {"type": self.DEFAULT_TYPE}
+        self._items_by_category: dict[str, dict[str, dict[str, Any]]] = {
+            category: {} for category in self.NAMED_CATEGORIES
+        }
+        self._sources_by_category: dict[str, dict[str, str]] = {category: {} for category in self.NAMED_CATEGORIES}
+        self._field_sources: dict[str, str] = {}
+        self._build_root: Path = get_root_folder()
+        self._build_root_locked = False
+
+    def add(self, payload, **kwargs) -> "ConfigurationManager":
+        """
+        Add a configuration fragment from a dict or a YAML/JSON file.
+        """
+        source_name = kwargs.pop("source_name", None)
+        use_fast_loader = kwargs.pop("use_fast_loader", False)
+        if kwargs:
+            unknown = ", ".join(sorted(kwargs))
+            raise PyAMLConfigException(f"Unsupported ConfigurationManager.add() arguments: {unknown}")
+
+        fragment, inferred_source_name, source_root = self._load_payload(
+            payload,
+            source_name=source_name,
+            use_fast_loader=use_fast_loader,
+        )
+        prepared = self._prepare_fragment(fragment, source_root, inferred_source_name)
+        self._merge_fragment(prepared, inferred_source_name)
+        return self
+
+    def remove(self, category: str, name: str) -> "ConfigurationManager":
+        """
+        Remove a named entry from an aggregated category.
+        """
+        self._require_named_category(category)
+        if name not in self._items_by_category[category]:
+            raise PyAMLConfigException(f"Configuration entry '{name}' not found in category '{category}'.")
+
+        self._state[category] = [entry for entry in self._state.get(category, []) if entry.get("name") != name]
+        self._items_by_category[category].pop(name, None)
+        self._sources_by_category[category].pop(name, None)
+        return self
+
+    def replace(self, category: str, element: dict) -> "ConfigurationManager":
+        """
+        Replace an existing named entry in an aggregated category.
+        """
+        self._require_named_category(category)
+        prepared = self._prepare_fragment(
+            {category: [copy.deepcopy(element)]},
+            self._build_root,
+            f"replace:{category}",
+        )
+        replacement = prepared[category][0]
+        name = replacement["name"]
+
+        if name not in self._items_by_category[category]:
+            raise PyAMLConfigException(
+                f"Configuration entry '{name}' not found in category '{category}'. Use add() to create it."
+            )
+
+        entries = self._state.get(category, [])
+        for index, entry in enumerate(entries):
+            if entry.get("name") == name:
+                entries[index] = replacement
+                break
+
+        self._items_by_category[category][name] = replacement
+        self._sources_by_category[category][name] = "replace()"
+        return self
+
+    def clear(self, category: str | None = None) -> "ConfigurationManager":
+        """
+        Clear the aggregated state, or a single root field/category.
+        """
+        if category is None:
+            self._state = {"type": self.DEFAULT_TYPE}
+            self._field_sources.clear()
+            for name in self.NAMED_CATEGORIES:
+                self._items_by_category[name].clear()
+                self._sources_by_category[name].clear()
+            self._build_root = get_root_folder()
+            self._build_root_locked = False
+            return self
+
+        if category in self.NAMED_CATEGORIES:
+            self._state[category] = []
+            self._items_by_category[category].clear()
+            self._sources_by_category[category].clear()
+            return self
+
+        if category == "type":
+            self._state["type"] = self.DEFAULT_TYPE
+            self._field_sources.pop("type", None)
+            return self
+
+        if category in self._state:
+            self._state.pop(category, None)
+            self._field_sources.pop(category, None)
+            return self
+
+        raise PyAMLConfigException(f"Unknown configuration category '{category}'.")
+
+    def categories(self) -> list[str]:
+        return [
+            category
+            for category in self.NAMED_CATEGORIES
+            if self._state.get(category) and len(self._state[category]) > 0
+        ]
+
+    def keys(self, category: str | None = None) -> list[str]:
+        if category is None:
+            names: list[str] = []
+            for current_category in self.NAMED_CATEGORIES:
+                self._extend_unique(names, self._items_by_category[current_category].keys())
+            return names
+
+        self._require_named_category(category)
+        return list(self._items_by_category[category].keys())
+
+    def has(self, category: str, name: str) -> bool:
+        self._require_named_category(category)
+        return name in self._items_by_category[category]
+
+    def get(self, category: str, name: str) -> dict[str, Any]:
+        self._require_named_category(category)
+        if name not in self._items_by_category[category]:
+            raise KeyError(f"Configuration entry '{name}' not found in category '{category}'.")
+        return self._strip_internal_metadata(copy.deepcopy(self._items_by_category[category][name]))
+
+    def find(self, pattern: str, category: str | None = None) -> list[str]:
+        if not pattern or not pattern.strip():
+            raise PyAMLConfigException("Empty configuration query.")
+
+        names = self.keys(category)
+        pattern = pattern.strip()
+        if pattern.startswith("re:"):
+            regex_source = pattern[3:]
+            try:
+                regex = re.compile(regex_source)
+            except re.error as exc:
+                raise PyAMLConfigException(f"Invalid regex '{regex_source}': {exc}") from exc
+            return [name for name in names if regex.search(name)]
+
+        return [name for name in names if fnmatch.fnmatch(name, pattern)]
+
+    def settings(self) -> dict[str, Any]:
+        settings: dict[str, Any] = {}
+        ordered_fields = [field for field in self.ROOT_FIELDS if field in self._state]
+        extra_fields = [
+            field
+            for field in self._state.keys()
+            if field not in self.NAMED_CATEGORIES
+            and field not in ordered_fields
+            and field not in _INTERNAL_METADATA_KEYS
+        ]
+        for field in ordered_fields + extra_fields:
+            settings[field] = copy.deepcopy(self._state[field])
+        return self._strip_internal_metadata(settings)
+
+    def to_dict(self) -> dict[str, Any]:
+        snapshot = self._snapshot(include_internal_metadata=False)
+        return snapshot
+
+    def build(self, ignore_external: bool = False):
+        """
+        Build an Accelerator from the aggregated configuration snapshot.
+        """
+        from ..accelerator import Accelerator
+
+        set_root_folder(self._build_root)
+        return Accelerator.from_dict(self._snapshot(include_internal_metadata=True), ignore_external=ignore_external)
+
+    def __dir__(self):
+        default = super().__dir__()
+        valid_keys = {key for key in self.keys() if _VALID_QUERY_KEY_RE.match(key)}
+        return sorted(set(default) | valid_keys)
+
+    def __getitem__(self, query: str) -> list[str]:
+        """
+        Alias for :meth:`find`.
+        """
+        return self.find(query)
+
+    def __getattr__(self, name):
+        if name in self._items_by_category:
+            return self.keys(name)
+        categories = self._categories_for_name(name)
+        if len(categories) == 1:
+            return self.get(categories[0], name)
+        if len(categories) > 1:
+            raise AttributeError(
+                f"ConfigurationManager key '{name}' is ambiguous across categories {categories}. "
+                "Use get(category, name)."
+            )
+        raise AttributeError(f"'ConfigurationManager' object has no attribute '{name}'")
+
+    def __repr__(self) -> str:
+        lines: list[str] = []
+
+        settings = self.settings()
+        lines.append("Settings:")
+        if settings:
+            for key, value in settings.items():
+                lines.append(f"    {key}: {value}")
+        lines.append("    .")
+        lines.append("")
+
+        for category in self.NAMED_CATEGORIES:
+            lines.append(f"{_CATEGORY_TITLES[category]}:")
+            entries = self._items_by_category[category]
+            if entries:
+                for entry in self._state.get(category, []):
+                    lines.append(self._format_entry(category, entry))
+            lines.append("    .")
+            lines.append("")
+
+        return "\n".join(lines).rstrip()
+
+    def __str__(self) -> str:
+        return self.__repr__()
+
+    def _load_payload(
+        self,
+        payload,
+        *,
+        source_name: str | None,
+        use_fast_loader: bool,
+    ) -> tuple[dict[str, Any], str, Path | None]:
+        if isinstance(payload, dict):
+            return copy.deepcopy(payload), source_name or "<dict>", None
+
+        payload_path = self._coerce_path(payload)
+        parsed = urlparse(payload_path)
+        if parsed.scheme in {"http", "https"}:
+            raise PyAMLConfigException(f"REST configuration sources are not implemented yet for '{payload_path}'.")
+
+        path = Path(payload_path)
+        suffix = path.suffix.lower()
+        if suffix not in self._SUPPORTED_FILE_SUFFIXES:
+            raise PyAMLConfigException(
+                f"Cannot infer configuration source from '{payload_path}'. "
+                "Supported inputs are dict, .yaml/.yml files or .json files."
+            )
+
+        if not path.exists():
+            raise PyAMLConfigException(f"{payload_path} file not found")
+
+        resolved_path = path.resolve()
+        previous_root = get_root_folder()
+        source_root = resolved_path.parent
+        try:
+            set_root_folder(source_root)
+            fragment = load(resolved_path.name, None, use_fast_loader)
+        finally:
+            set_root_folder(previous_root)
+
+        if not self._build_root_locked:
+            self._build_root = source_root
+            self._build_root_locked = True
+
+        return fragment, source_name or str(resolved_path), source_root
+
+    def _prepare_fragment(
+        self,
+        fragment: dict[str, Any],
+        source_root: Path | None,
+        source_name: str,
+    ) -> dict[str, Any]:
+        if not isinstance(fragment, dict):
+            raise PyAMLConfigException(
+                f"ConfigurationManager.add() expects a mapping at the top level, got '{type(fragment).__name__}'."
+            )
+
+        accelerator_type = fragment.get("type", self.DEFAULT_TYPE)
+        if accelerator_type != self.DEFAULT_TYPE:
+            raise UnsupportedConfigurationRootError(
+                f"ConfigurationManager only supports '{self.DEFAULT_TYPE}' roots, got '{accelerator_type}'."
+            )
+
+        prepared = copy.deepcopy(fragment)
+        prepared["type"] = self.DEFAULT_TYPE
+
+        for category in self.NAMED_CATEGORIES:
+            if category not in prepared:
+                continue
+
+            entries = prepared[category]
+            if not isinstance(entries, list):
+                raise PyAMLConfigException(f"Configuration category '{category}' must be a list.")
+
+            for index, entry in enumerate(entries):
+                if not isinstance(entry, dict):
+                    raise PyAMLConfigException(
+                        f"Configuration category '{category}' expects object entries, "
+                        f"found '{type(entry).__name__}' at index {index} from source '{source_name}'."
+                    )
+                if "name" not in entry:
+                    raise PyAMLConfigException(
+                        f"Configuration category '{category}' expects named objects, "
+                        f"but entry at index {index} from source '{source_name}' has no 'name'."
+                    )
+                if "type" not in entry:
+                    raise PyAMLConfigException(
+                        f"Configuration entry '{entry['name']}' in category '{category}' has no 'type'."
+                    )
+
+                if category == "simulators":
+                    self._normalize_simulator_paths(entry, source_root)
+
+        return prepared
+
+    def _merge_fragment(self, fragment: dict[str, Any], source_name: str) -> None:
+        duplicate_errors: list[str] = []
+        pending_by_category: dict[str, list[dict[str, Any]]] = {}
+
+        for category in self.NAMED_CATEGORIES:
+            if category not in fragment:
+                continue
+
+            entries = fragment[category]
+            seen_in_fragment: set[str] = set()
+            for entry in entries:
+                name = entry["name"]
+                if name in seen_in_fragment:
+                    duplicate_errors.append(
+                        f"Configuration entry '{name}' is duplicated inside category '{category}' in source "
+                        f"'{source_name}'."
+                    )
+                    continue
+                if name in self._items_by_category[category]:
+                    previous_source = self._sources_by_category[category].get(name, "<unknown>")
+                    duplicate_errors.append(
+                        f"Configuration entry '{name}' already exists in category '{category}' "
+                        f"(from '{previous_source}'). Use replace() to override it."
+                    )
+                    continue
+                seen_in_fragment.add(name)
+
+            pending_by_category[category] = entries
+
+        if duplicate_errors:
+            raise PyAMLConfigException(duplicate_errors[0])
+
+        for field, value in fragment.items():
+            if field in self.NAMED_CATEGORIES:
+                continue
+            self._state[field] = copy.deepcopy(value)
+            if field not in _INTERNAL_METADATA_KEYS:
+                self._field_sources[field] = source_name
+
+        for category, entries in pending_by_category.items():
+            target = self._state.setdefault(category, [])
+            for entry in entries:
+                copied = copy.deepcopy(entry)
+                target.append(copied)
+                self._items_by_category[category][copied["name"]] = copied
+                self._sources_by_category[category][copied["name"]] = source_name
+
+    def _snapshot(self, *, include_internal_metadata: bool) -> dict[str, Any]:
+        snapshot = copy.deepcopy(self._state)
+        if include_internal_metadata:
+            return snapshot
+        return self._strip_internal_metadata(snapshot)
+
+    def _normalize_simulator_paths(self, entry: dict[str, Any], source_root: Path | None) -> None:
+        if source_root is None:
+            return
+
+        lattice = entry.get("lattice")
+        if isinstance(lattice, str) and not os.path.isabs(lattice):
+            entry["lattice"] = str((source_root / lattice).resolve())
+
+    def _require_named_category(self, category: str) -> None:
+        if category not in self.NAMED_CATEGORIES:
+            raise PyAMLConfigException(
+                f"Unknown configuration category '{category}'. Expected one of: {', '.join(self.NAMED_CATEGORIES)}."
+            )
+
+    def _categories_for_name(self, name: str) -> list[str]:
+        categories: list[str] = []
+        for category in self.NAMED_CATEGORIES:
+            if name in self._items_by_category[category]:
+                categories.append(category)
+        return categories
+
+    def _format_entry(self, category: str, entry: dict[str, Any]) -> str:
+        name = entry.get("name", "<unnamed>")
+        entry_type = entry.get("type")
+        type_part = f" ({entry_type})" if entry_type else ""
+
+        details: list[str] = []
+        if category == "arrays":
+            selectors = entry.get("elements")
+            if isinstance(selectors, list):
+                details.append(f"selectors={len(selectors)}")
+
+        source = self._sources_by_category[category].get(name)
+        if source is not None:
+            details.append(f"source={self._format_source(source)}")
+
+        detail_part = ""
+        if details:
+            detail_part = " " + " ".join(details)
+
+        return f"    {name}{type_part}{detail_part}"
+
+    def _format_source(self, source: str) -> str:
+        if source.startswith("<") and source.endswith(">"):
+            return source
+        source_path = Path(source)
+        suffix = source_path.suffix.lower()
+        if suffix in self._SUPPORTED_FILE_SUFFIXES:
+            return source_path.name
+        return source
+
+    def _coerce_path(self, payload) -> str:
+        if isinstance(payload, (str, os.PathLike)):
+            return os.fspath(payload)
+        raise PyAMLConfigException(
+            f"Cannot infer configuration source from payload of type '{type(payload).__name__}'."
+        )
+
+    def _extend_unique(self, target: list[str], values) -> None:
+        for value in values:
+            if value not in target:
+                target.append(value)
+
+    def _strip_internal_metadata(self, value):
+        if isinstance(value, list):
+            return [self._strip_internal_metadata(entry) for entry in value]
+        if isinstance(value, dict):
+            return {
+                key: self._strip_internal_metadata(entry)
+                for key, entry in value.items()
+                if key not in _INTERNAL_METADATA_KEYS
+            }
+        return value

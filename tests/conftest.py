@@ -1,5 +1,5 @@
+import importlib
 import pathlib
-import subprocess
 import sys
 import types
 
@@ -8,6 +8,7 @@ import numpy as np
 import pytest
 from pydantic import BaseModel
 
+from pyaml.configuration import ConfigurationManager
 from pyaml.configuration.factory import BuildStrategy, Factory
 from pyaml.control.readback_value import Value
 
@@ -15,10 +16,10 @@ from pyaml.control.readback_value import Value
 @pytest.fixture
 def install_test_package(request):
     """
-    Temporarily install a test package and uninstall it after the test.
+    Temporarily expose a local test package on ``sys.path`` for the test.
 
     The test must provide a dictionary as parameter with:
-    - 'name': name of the installable package (used for pip uninstall)
+    - 'name': logical package name
     - 'path': relative path to the package folder (e.g. 'tests/my_dir').
       Optional, replaced by package name if absent.
 
@@ -46,33 +47,145 @@ def install_test_package(request):
     if package_path is None:
         raise RuntimeError("No package_path defined for install_test_package fixture")
 
-    if not (
-        (package_path / "pyproject.toml").exists()
-        or (package_path / "setup.py").exists()
-    ):
+    if not ((package_path / "pyproject.toml").exists() or (package_path / "setup.py").exists()):
         raise RuntimeError(f"No pyproject.toml or setup.py found in {package_path}")
 
-    """Install package in a classis way, `--editable` create a .pth entry
-    in conda env which is imcompatible with submodule"""
-    if package_path is not None:
-        subprocess.check_call(
-            [sys.executable, "-m", "pip", "--quiet", "install", str(package_path)]
-        )
+    package_path_str = str(package_path)
+    package_roots = _discover_package_roots(package_path)
+
+    _purge_modules(package_roots)
+    if package_path_str not in sys.path:
+        sys.path.insert(0, package_path_str)
+    importlib.invalidate_caches()
 
     yield package_name
 
-    # Do not uninstall package at the end to speed up tests a bit
-    # subprocess.call([
-    #    sys.executable, "-m", "pip", "uninstall", "-y", package_name
-    # ])
+    _purge_modules(package_roots)
+    while package_path_str in sys.path:
+        sys.path.remove(package_path_str)
+    importlib.invalidate_caches()
+
+
+def _discover_package_roots(package_path: pathlib.Path) -> list[str]:
+    roots: list[str] = []
+
+    for top_level_file in package_path.glob("*.egg-info/top_level.txt"):
+        roots.extend(line.strip() for line in top_level_file.read_text().splitlines() if line.strip())
+
+    if roots:
+        return list(dict.fromkeys(roots))
+
+    for child in package_path.iterdir():
+        if child.name.startswith("."):
+            continue
+        if child.is_dir():
+            roots.append(child.name)
+        elif child.suffix == ".py":
+            roots.append(child.stem)
+
+    return list(dict.fromkeys(roots))
+
+
+def _purge_modules(package_roots: list[str]) -> None:
+    for root in package_roots:
+        for module_name in list(sys.modules):
+            if module_name == root or module_name.startswith(f"{root}."):
+                sys.modules.pop(module_name, None)
 
 
 @pytest.fixture
-def config_root_dir():
+def accelerator_from_fragments():
+    """
+    Build an accelerator explicitly from a list of configuration fragments.
+    """
+
+    def _build(*fragments, ignore_external: bool = False):
+        manager = ConfigurationManager()
+        for fragment in fragments:
+            manager.add(fragment)
+        return manager.build(ignore_external=ignore_external)
+
+    return _build
+
+
+@pytest.fixture
+def config_root_path() -> pathlib.Path:
+    """
+    Returns the absolute path to the `tests/config` directory as a Path.
+    """
+    return (pathlib.Path(__file__).parent / "config").resolve()
+
+
+@pytest.fixture
+def config_root_dir(config_root_path):
     """
     Returns the absolute path to the `tests/config` directory.
     """
-    return str((pathlib.Path(__file__).parent / "config").resolve())
+    return str(config_root_path)
+
+
+@pytest.fixture
+def config_manager_base_config(config_root_path) -> pathlib.Path:
+    return config_root_path / "config_manager_base.yaml"
+
+
+@pytest.fixture
+def config_manager_simulator_json(config_root_path) -> pathlib.Path:
+    return config_root_path / "config_manager_simulator.json"
+
+
+@pytest.fixture
+def ebs_lattice_file(config_root_path) -> pathlib.Path:
+    return (config_root_path / "sr" / "lattices" / "ebs.mat").resolve()
+
+
+@pytest.fixture
+def simulator_fragment_factory(ebs_lattice_file):
+    def _build(name: str) -> dict:
+        return {
+            "type": "pyaml.lattice.simulator",
+            "name": name,
+            "lattice": str(ebs_lattice_file),
+        }
+
+    return _build
+
+
+@pytest.fixture
+def sr_base_fragment(config_root_path) -> pathlib.Path:
+    return config_root_path / "config_manager_sr_base.yaml"
+
+
+@pytest.fixture
+def sr_arrays_fragment(config_root_path) -> pathlib.Path:
+    return config_root_path / "config_manager_sr_arrays.yaml"
+
+
+@pytest.fixture
+def sr_devices_fragment(config_root_path) -> pathlib.Path:
+    return config_root_path / "config_manager_sr_devices.yaml"
+
+
+@pytest.fixture
+def sr_configuration_fragments(
+    sr_base_fragment,
+    sr_arrays_fragment,
+    sr_devices_fragment,
+) -> tuple[pathlib.Path, pathlib.Path, pathlib.Path]:
+    return (sr_base_fragment, sr_arrays_fragment, sr_devices_fragment)
+
+
+@pytest.fixture
+def tune_monitor_devices_fragment(config_root_path) -> pathlib.Path:
+    return config_root_path / "config_manager_tune_monitor_devices.yaml"
+
+
+@pytest.fixture
+def tune_monitor_configuration_fragments(
+    sr_base_fragment,
+    tune_monitor_devices_fragment,
+) -> tuple[pathlib.Path, pathlib.Path]:
+    return (sr_base_fragment, tune_monitor_devices_fragment)
 
 
 @pytest.fixture

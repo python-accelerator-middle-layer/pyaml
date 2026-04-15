@@ -10,6 +10,7 @@ from .arrays.array import ArrayConfig
 from .common.element import Element
 from .common.element_holder import ElementHolder
 from .common.exception import PyAMLConfigException
+from .configuration import ConfigurationManager, UnsupportedConfigurationRootError
 from .configuration.factory import Factory
 from .configuration.fileloader import load, set_root_folder
 from .control.controlsystem import ControlSystem
@@ -249,11 +250,15 @@ class Accelerator(object):
             cannot be created. pydantic schema that support that an
             object is not created should handle None fields.
         """
-        # Asume that all files are referenced from
-        # folder where main AML file is stored
         if not os.path.exists(filename):
             raise PyAMLConfigException(f"{filename} file not found")
-        rootfolder = os.path.abspath(os.path.dirname(filename))
-        set_root_folder(rootfolder)
-        config_dict = load(os.path.basename(filename), None, use_fast_loader)
-        return Accelerator.from_dict(config_dict, ignore_external=ignore_external)
+
+        manager = ConfigurationManager()
+        try:
+            manager.add(filename, use_fast_loader=use_fast_loader)
+            return manager.build(ignore_external=ignore_external)
+        except UnsupportedConfigurationRootError:
+            rootfolder = os.path.abspath(os.path.dirname(filename))
+            set_root_folder(rootfolder)
+            config_dict = load(os.path.basename(filename), None, use_fast_loader)
+            return Accelerator.from_dict(config_dict, ignore_external=ignore_external)

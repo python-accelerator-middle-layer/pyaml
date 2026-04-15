@@ -1,0 +1,10 @@
+{
+  "simulators": [
+    {
+      "type": "pyaml.lattice.simulator",
+      "name": "analysis",
+      "lattice": "sr/lattices/ebs.mat",
+      "description": "Secondary simulation mode"
+    }
+  ]
+}

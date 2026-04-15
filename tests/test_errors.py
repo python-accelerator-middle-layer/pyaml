@@ -21,8 +21,8 @@ def test_tune(install_test_package):
 
     with pytest.raises(PyAMLConfigException) as exc:
         ml: Accelerator = Accelerator.load("tests/config/bad_conf_duplicate_3.yaml")
-    assert "element BPM_C04-06 already defined" in str(exc)
-    assert "line 58, column 3" in str(exc)
+    assert "Configuration entry 'BPM_C04-06' is duplicated inside category 'devices'" in str(exc)
+    assert "bad_conf_duplicate_3.yaml" in str(exc)
 
     with pytest.raises(PyAMLConfigException) as exc:
         ml: Accelerator = Accelerator.load("tests/config/bad_conf_duplicate_4.yaml")
@@ -33,10 +33,7 @@ def test_tune(install_test_package):
     m2 = sr.design.get_magnet("QF1A-C05")
     with pytest.raises(PyAMLException) as exc:
         ma = MagnetArray("Test", [m1, m2])
-    assert (
-        "MagnetArray Test: All elements must be attached to the same instance"
-        in str(exc)
-    )
+    assert "MagnetArray Test: All elements must be attached to the same instance" in str(exc)
 
     with pytest.raises(PyAMLException) as exc:
         m2 = sr.design.get_magnet("QF1A-C05XX")
