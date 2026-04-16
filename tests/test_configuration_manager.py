@@ -162,6 +162,37 @@ def test_configuration_manager_build_explicitly(
     assert accelerator.simulators()["tracking"].name() == "tracking"
 
 
+def test_configuration_manager_accumulates_multiple_device_fragments(
+    sr_base_fragment,
+    sr_devices_fragment,
+    tune_monitor_devices_fragment,
+):
+    manager = ConfigurationManager()
+    manager.add(sr_base_fragment)
+    manager.add(sr_devices_fragment)
+    manager.add(tune_monitor_devices_fragment)
+
+    assert manager.categories() == ["controls", "simulators", "devices"]
+    assert manager.keys("devices") == [
+        "QF1A-C01",
+        "SH1A-C01",
+        "SH1A-C02",
+        "BPM_C04-01",
+        "BPM_C04-02",
+        "BETATRON_TUNE",
+    ]
+    assert manager.has("devices", "QF1A-C01")
+    assert manager.has("devices", "SH1A-C01")
+    assert manager.has("devices", "SH1A-C02")
+    assert manager.has("devices", "BPM_C04-01")
+    assert manager.has("devices", "BPM_C04-02")
+    assert manager.has("devices", "BETATRON_TUNE")
+    assert manager.get("devices", "QF1A-C01")["type"] == "pyaml.magnet.quadrupole"
+    assert manager.get("devices", "SH1A-C01")["type"] == "pyaml.magnet.cfm_magnet"
+    assert manager.get("devices", "BPM_C04-01")["type"] == "pyaml.bpm.bpm"
+    assert manager.get("devices", "BETATRON_TUNE")["type"] == "pyaml.diagnostics.tune_monitor"
+
+
 def test_accelerator_load_stays_compatible(config_manager_base_config):
     accelerator = Accelerator.load(config_manager_base_config)
 
