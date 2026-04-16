@@ -16,6 +16,11 @@ from pyaml.configuration import ConfigurationManager
 from pyaml.configuration.factory import BuildStrategy, Factory
 from pyaml.control.readback_value import Value
 
+_TEST_PACKAGE_IMPORTS = {
+    "tango-pyaml": "tango.pyaml.controlsystem",
+    "pyaml_external": "pyaml_external.external_magnet_model",
+}
+
 
 @pytest.fixture
 def install_test_package(request):
@@ -54,6 +59,11 @@ def install_test_package(request):
     if not ((package_path / "pyproject.toml").exists() or (package_path / "setup.py").exists()):
         raise RuntimeError(f"No pyproject.toml or setup.py found in {package_path}")
 
+    target_import = _TEST_PACKAGE_IMPORTS.get(package_name)
+    if target_import and _module_available(target_import):
+        yield package_name
+        return
+
     package_path_str = str(package_path)
     package_roots = _discover_package_roots(package_path)
 
@@ -89,6 +99,14 @@ def _discover_package_roots(package_path: pathlib.Path) -> list[str]:
             roots.append(child.stem)
 
     return list(dict.fromkeys(roots))
+
+
+def _module_available(module_name: str) -> bool:
+    try:
+        importlib.import_module(module_name)
+    except ModuleNotFoundError:
+        return False
+    return True
 
 
 def _purge_modules(package_roots: list[str]) -> None:
@@ -129,6 +147,10 @@ def install_default_test_packages():
         pathlib.Path("tests/dummy_cs/tango-pyaml").resolve(),
         pathlib.Path("tests/external").resolve(),
     ]
+    if all(_module_available(module_name) for module_name in _TEST_PACKAGE_IMPORTS.values()):
+        yield
+        return
+
     package_roots: list[str] = []
 
     for package_path in package_paths:
