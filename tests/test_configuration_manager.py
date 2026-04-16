@@ -212,11 +212,44 @@ def test_configuration_manager_rejects_duplicate_names(
         manager.add({"simulators": [simulator_fragment_factory("design")]})
 
 
-def test_configuration_manager_rejects_rest_source_explicitly():
+def test_configuration_manager_adds_remote_source_with_relative_includes(http_config_server):
+    manager = ConfigurationManager()
+    routes = {
+        "/configs/base.yaml": """
+type: pyaml.accelerator
+facility: Remote Facility
+machine: remote_ring
+energy: 3000000000.0
+data_folder: remote-data
+description: Loaded over HTTP
+simulators: fragments/simulators.json
+devices: []
+""",
+        "/configs/fragments/simulators.json": """
+[
+  {
+    "type": "pyaml.lattice.simulator",
+    "name": "design",
+    "lattice": "../lattices/ebs.mat"
+  }
+]
+""",
+    }
+
+    with http_config_server(routes) as base_url:
+        manager.add(f"{base_url}/configs/base.yaml")
+
+        assert manager.settings()["facility"] == "Remote Facility"
+        assert manager.keys("simulators") == ["design"]
+        assert manager.get("simulators", "design")["lattice"] == f"{base_url}/configs/lattices/ebs.mat"
+
+
+def test_configuration_manager_reports_remote_fetch_failures(http_config_server):
     manager = ConfigurationManager()
 
-    with pytest.raises(PyAMLConfigException, match="REST configuration sources are not implemented yet"):
-        manager.add("https://example.org/config")
+    with http_config_server({}) as base_url:
+        with pytest.raises(PyAMLConfigException, match="Unable to fetch remote configuration"):
+            manager.add(f"{base_url}/missing.yaml")
 
 
 def test_configuration_manager_repr_is_yellow_pages_like(

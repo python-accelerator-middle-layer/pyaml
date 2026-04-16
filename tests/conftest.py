@@ -2,6 +2,9 @@ import importlib
 import pathlib
 import sys
 import types
+from contextlib import contextmanager
+from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
+from threading import Thread
 
 import at
 import numpy as np
@@ -186,6 +189,50 @@ def tune_monitor_configuration_fragments(
     tune_monitor_devices_fragment,
 ) -> tuple[pathlib.Path, pathlib.Path]:
     return (sr_base_fragment, tune_monitor_devices_fragment)
+
+
+@pytest.fixture
+def http_config_server():
+    @contextmanager
+    def _serve(routes: dict[str, str | tuple[str, str, int]]):
+        normalized_routes: dict[str, tuple[bytes, str, int]] = {}
+        for path, response in routes.items():
+            body: str
+            content_type = "text/plain"
+            status = 200
+            if isinstance(response, tuple):
+                body, content_type, status = response
+            else:
+                body = response
+            normalized_routes[path] = (body.encode("utf-8"), content_type, status)
+
+        class Handler(BaseHTTPRequestHandler):
+            def do_GET(self):
+                payload, content_type, status = normalized_routes.get(
+                    self.path,
+                    (b"not found", "text/plain", 404),
+                )
+                self.send_response(status)
+                self.send_header("Content-Type", content_type)
+                self.send_header("Content-Length", str(len(payload)))
+                self.end_headers()
+                self.wfile.write(payload)
+
+            def log_message(self, format, *args):
+                return
+
+        server = ThreadingHTTPServer(("127.0.0.1", 0), Handler)
+        thread = Thread(target=server.serve_forever, daemon=True)
+        thread.start()
+        base_url = f"http://127.0.0.1:{server.server_address[1]}"
+        try:
+            yield base_url
+        finally:
+            server.shutdown()
+            thread.join()
+            server.server_close()
+
+    return _serve
 
 
 @pytest.fixture

@@ -19,12 +19,12 @@ import os
 import re
 from pathlib import Path
 from typing import Any
-from urllib.parse import urlparse
 
 from ..common.exception import PyAMLConfigException
 from .fileloader import get_root_folder, load, set_root_folder
+from .restfetcher import REMOTE_BASE_URL_KEY, SourceRoot, fetch_remote_config, is_remote_url, resolve_reference
 
-_INTERNAL_METADATA_KEYS = {"__location__", "__fieldlocations__"}
+_INTERNAL_METADATA_KEYS = {"__location__", "__fieldlocations__", REMOTE_BASE_URL_KEY}
 _VALID_QUERY_KEY_RE = re.compile(r"^[A-Z0-9_]+$")
 _CATEGORY_TITLES = {
     "controls": "Controls",
@@ -111,7 +111,7 @@ class ConfigurationManager:
         }
         self._sources_by_category: dict[str, dict[str, str]] = {category: {} for category in self.NAMED_CATEGORIES}
         self._field_sources: dict[str, str] = {}
-        self._build_root: Path = get_root_folder()
+        self._build_root: SourceRoot = get_root_folder()
         self._build_root_locked = False
 
     def add(self, payload, **kwargs) -> None:
@@ -498,8 +498,10 @@ class ConfigurationManager:
         """
         from ..accelerator import Accelerator
 
-        set_root_folder(self._build_root)
-        return Accelerator.from_dict(self._snapshot(include_internal_metadata=True), ignore_external=ignore_external)
+        if isinstance(self._build_root, Path):
+            set_root_folder(self._build_root)
+        snapshot = self._strip_runtime_internal_metadata(self._snapshot(include_internal_metadata=True))
+        return Accelerator.from_dict(snapshot, ignore_external=ignore_external)
 
     def __dir__(self):
         """
@@ -607,14 +609,17 @@ class ConfigurationManager:
         *,
         source_name: str | None,
         use_fast_loader: bool,
-    ) -> tuple[dict[str, Any], str, Path | None]:
+    ) -> tuple[dict[str, Any], str, SourceRoot]:
         if isinstance(payload, dict):
             return copy.deepcopy(payload), source_name or "<dict>", None
 
         payload_path = self._coerce_path(payload)
-        parsed = urlparse(payload_path)
-        if parsed.scheme in {"http", "https"}:
-            raise PyAMLConfigException(f"REST configuration sources are not implemented yet for '{payload_path}'.")
+        if is_remote_url(payload_path):
+            fragment, source_root = fetch_remote_config(payload_path, use_fast_loader=use_fast_loader)
+            if not self._build_root_locked:
+                self._build_root = source_root
+                self._build_root_locked = True
+            return fragment, source_name or payload_path, source_root
 
         path = Path(payload_path)
         suffix = path.suffix.lower()
@@ -642,12 +647,7 @@ class ConfigurationManager:
 
         return fragment, source_name or str(resolved_path), source_root
 
-    def _prepare_fragment(
-        self,
-        fragment: dict[str, Any],
-        source_root: Path | None,
-        source_name: str,
-    ) -> dict[str, Any]:
+    def _prepare_fragment(self, fragment: dict[str, Any], source_root: SourceRoot, source_name: str) -> dict[str, Any]:
         if not isinstance(fragment, dict):
             raise PyAMLConfigException(
                 f"ConfigurationManager.add() expects a mapping at the top level, got '{type(fragment).__name__}'."
@@ -687,7 +687,7 @@ class ConfigurationManager:
                     )
 
                 if category == "simulators":
-                    self._normalize_simulator_paths(entry, source_root)
+                    self._normalize_simulator_paths(entry, entry.get(REMOTE_BASE_URL_KEY, source_root))
 
         return prepared
 
@@ -744,13 +744,13 @@ class ConfigurationManager:
             return snapshot
         return self._strip_internal_metadata(snapshot)
 
-    def _normalize_simulator_paths(self, entry: dict[str, Any], source_root: Path | None) -> None:
+    def _normalize_simulator_paths(self, entry: dict[str, Any], source_root: SourceRoot) -> None:
         if source_root is None:
             return
 
         lattice = entry.get("lattice")
-        if isinstance(lattice, str) and not os.path.isabs(lattice):
-            entry["lattice"] = str((source_root / lattice).resolve())
+        if isinstance(lattice, str) and not os.path.isabs(lattice) and not is_remote_url(lattice):
+            entry["lattice"] = resolve_reference(lattice, source_root)
 
     def _require_named_category(self, category: str) -> None:
         if category not in self.NAMED_CATEGORIES:
@@ -815,5 +815,16 @@ class ConfigurationManager:
                 key: self._strip_internal_metadata(entry)
                 for key, entry in value.items()
                 if key not in _INTERNAL_METADATA_KEYS
+            }
+        return value
+
+    def _strip_runtime_internal_metadata(self, value):
+        if isinstance(value, list):
+            return [self._strip_runtime_internal_metadata(entry) for entry in value]
+        if isinstance(value, dict):
+            return {
+                key: self._strip_runtime_internal_metadata(entry)
+                for key, entry in value.items()
+                if key != REMOTE_BASE_URL_KEY
             }
         return value

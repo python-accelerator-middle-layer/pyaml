@@ -2,8 +2,6 @@
 Accelerator class
 """
 
-import os
-
 from pydantic import BaseModel, ConfigDict, Field
 
 from .arrays.array import ArrayConfig
@@ -249,9 +247,6 @@ class Accelerator(object):
             cannot be created. pydantic schema that support that an
             object is not created should handle None fields.
         """
-        if not os.path.exists(filename):
-            raise PyAMLConfigException(f"{filename} file not found")
-
         manager = ConfigurationManager()
         try:
             manager.add(filename, use_fast_loader=use_fast_loader)
