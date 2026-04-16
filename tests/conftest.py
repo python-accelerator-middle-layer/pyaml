@@ -1,4 +1,5 @@
 import importlib
+import importlib.machinery
 import pathlib
 import sys
 import types
@@ -59,6 +60,7 @@ def install_test_package(request):
     _purge_modules(package_roots)
     if package_path_str not in sys.path:
         sys.path.insert(0, package_path_str)
+    _expose_namespace_packages(package_path)
     importlib.invalidate_caches()
 
     yield package_name
@@ -96,6 +98,31 @@ def _purge_modules(package_roots: list[str]) -> None:
                 sys.modules.pop(module_name, None)
 
 
+def _expose_namespace_packages(package_path: pathlib.Path) -> None:
+    for child in package_path.iterdir():
+        if child.name.startswith(".") or not child.is_dir():
+            continue
+        if (child / "__init__.py").exists():
+            continue
+
+        module = sys.modules.get(child.name)
+        if module is None:
+            try:
+                module = importlib.import_module(child.name)
+            except ModuleNotFoundError:
+                module = types.ModuleType(child.name)
+                module.__path__ = []
+                module.__package__ = child.name
+                module.__spec__ = importlib.machinery.ModuleSpec(child.name, loader=None, is_package=True)
+                sys.modules[child.name] = module
+
+        module_path = list(getattr(module, "__path__", []))
+        child_str = str(child)
+        if child_str not in module_path:
+            module_path.append(child_str)
+            module.__path__ = module_path
+
+
 @pytest.fixture(scope="session", autouse=True)
 def install_default_test_packages():
     package_paths = [
@@ -114,6 +141,8 @@ def install_default_test_packages():
     for path_string in reversed(path_strings):
         if path_string not in sys.path:
             sys.path.insert(0, path_string)
+    for package_path in package_paths:
+        _expose_namespace_packages(package_path)
     importlib.invalidate_caches()
 
     yield
