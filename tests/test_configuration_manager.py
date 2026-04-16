@@ -13,7 +13,7 @@ def test_configuration_manager_add_from_dict(
 ):
     manager = ConfigurationManager()
 
-    manager.add(
+    result = manager.add(
         {
             "facility": "Dict Facility",
             "machine": "dict_ring",
@@ -25,6 +25,7 @@ def test_configuration_manager_add_from_dict(
         source_name="dict-fixture",
     )
 
+    assert result is None
     assert manager.categories() == ["simulators"]
     assert manager.keys() == ["design"]
     assert manager.keys("simulators") == ["design"]
@@ -56,8 +57,9 @@ def test_configuration_manager_remove_named_entry(
     manager.add(config_manager_base_config)
     manager.add({"simulators": [simulator_fragment_factory("tracking")]})
 
-    manager.remove("simulators", "tracking")
+    result = manager.remove("simulators", "tracking")
 
+    assert result is None
     assert manager.keys("simulators") == ["design"]
     assert not manager.has("simulators", "tracking")
 
@@ -69,7 +71,7 @@ def test_configuration_manager_replace_named_entry(
     manager = ConfigurationManager()
     manager.add(config_manager_base_config)
 
-    manager.replace(
+    result = manager.replace(
         "simulators",
         {
             "type": "pyaml.lattice.simulator",
@@ -79,6 +81,7 @@ def test_configuration_manager_replace_named_entry(
         },
     )
 
+    assert result is None
     assert manager.get("simulators", "design")["description"] == "Replaced simulator"
 
 
@@ -90,15 +93,42 @@ def test_configuration_manager_clear_category_and_settings(
     manager.add(config_manager_base_config)
     manager.add({"simulators": [simulator_fragment_factory("tracking")]})
 
-    manager.clear("simulators")
+    result = manager.clear("simulators")
 
+    assert result is None
     assert manager.keys("simulators") == []
     assert manager.categories() == []
     assert manager.settings()["facility"] == "Test Facility"
 
-    manager.clear()
+    result = manager.clear()
 
+    assert result is None
     assert manager.to_dict() == {"type": "pyaml.accelerator"}
+
+
+def test_configuration_manager_settings_follow_accelerator_config_model_order():
+    manager = ConfigurationManager()
+    manager.add(
+        {
+            "facility": "Test Facility",
+            "machine": "ring",
+            "energy": 3.0e9,
+            "alphac": 1.0e-4,
+            "data_folder": "data",
+            "description": "Ordered settings",
+            "devices": [],
+        }
+    )
+
+    assert list(manager.settings()) == [
+        "type",
+        "facility",
+        "machine",
+        "energy",
+        "alphac",
+        "data_folder",
+        "description",
+    ]
 
 
 def test_configuration_manager_to_dict_snapshot_can_be_reloaded(
@@ -178,7 +208,7 @@ def test_configuration_manager_repr_is_yellow_pages_like(
     assert "Devices:" in output
     assert "live (tango.pyaml.controlsystem) source=config_manager_sr_base.yaml" in output
     assert "design (pyaml.lattice.simulator) source=config_manager_sr_base.yaml" in output
-    assert "HCORR (pyaml.arrays.magnet) selectors=1 source=config_manager_sr_arrays.yaml" in output
+    assert "HCORR (pyaml.arrays.magnet) patterns=1 source=config_manager_sr_arrays.yaml" in output
     assert "BPM_C04-01 (pyaml.bpm.bpm) source=config_manager_sr_devices.yaml" in output
     assert "    ." in output
 

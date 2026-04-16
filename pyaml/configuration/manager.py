@@ -1,3 +1,18 @@
+"""
+manager.py
+
+Configuration aggregation helpers for :class:`~pyaml.accelerator.Accelerator`.
+
+This module provides :class:`ConfigurationManager`, a lightweight service used
+to collect configuration fragments before runtime objects are built.
+
+Typical usage is:
+
+- load one or more accelerator configuration fragments
+- inspect or query the aggregated state
+- build the final :class:`~pyaml.accelerator.Accelerator`
+"""
+
 import copy
 import fnmatch
 import os
@@ -24,22 +39,70 @@ class UnsupportedConfigurationRootError(PyAMLConfigException):
 
 
 class ConfigurationManager:
-    """
+    r"""
     Aggregate accelerator configuration fragments before runtime build.
+
+    :class:`ConfigurationManager` stores configuration fragments as plain
+    dictionaries and exposes convenience helpers to inspect, query and update
+    them before constructing the final runtime object graph.
+
+    Notes
+    -----
+    The manager only accepts accelerator-root fragments and merges named
+    categories such as ``controls``, ``simulators``, ``arrays`` and
+    ``devices``.
+
+    Examples
+    --------
+
+    Load a base configuration and inspect it:
+
+    .. code-block:: python
+
+        >>> from pyaml.configuration import ConfigurationManager
+        >>> manager = ConfigurationManager()
+        >>> manager.add("tests/config/config_manager_base.yaml")
+        >>> manager.categories()
+        ['simulators']
+
+    Build the final accelerator:
+
+    .. code-block:: python
+
+        >>> sr = manager.build()
+        >>> sr.design.name()
+        'design'
     """
 
     DEFAULT_TYPE = "pyaml.accelerator"
-    ROOT_FIELDS = (
-        "type",
-        "facility",
-        "machine",
-        "energy",
-        "alphac",
-        "data_folder",
-        "description",
-    )
     NAMED_CATEGORIES = ("controls", "simulators", "arrays", "devices")
     _SUPPORTED_FILE_SUFFIXES = {".yaml", ".yml", ".json"}
+
+    @classmethod
+    def root_fields(cls) -> tuple[str, ...]:
+        r"""
+        Return the ordered root fields supported by the accelerator model.
+
+        The field order is derived from
+        :class:`~pyaml.accelerator.ConfigModel`.
+
+        Returns
+        -------
+        tuple[str, ...]
+
+        Examples
+        --------
+
+        .. code-block:: python
+
+            >>> ConfigurationManager.root_fields()
+        """
+        from ..accelerator import ConfigModel as AcceleratorConfigModel
+
+        config_fields = tuple(
+            field_name for field_name in AcceleratorConfigModel.model_fields if field_name not in cls.NAMED_CATEGORIES
+        )
+        return ("type", *config_fields)
 
     def __init__(self):
         self._state: dict[str, Any] = {"type": self.DEFAULT_TYPE}
@@ -51,9 +114,37 @@ class ConfigurationManager:
         self._build_root: Path = get_root_folder()
         self._build_root_locked = False
 
-    def add(self, payload, **kwargs) -> "ConfigurationManager":
-        """
+    def add(self, payload, **kwargs) -> None:
+        r"""
         Add a configuration fragment from a dict or a YAML/JSON file.
+
+        Parameters
+        ----------
+        payload : dict or str or os.PathLike
+            Fragment to merge into the current aggregated state.
+        source_name : str, optional
+            Explicit source label to associate with the fragment.
+        use_fast_loader : bool, optional
+            Forwarded to the configuration loader.
+
+        Examples
+        --------
+
+        .. code-block:: python
+
+            >>> manager.add("tests/config/config_manager_base.yaml")
+
+        .. code-block:: python
+
+            >>> manager.add(
+            ...     {
+            ...         "facility": "ESRF",
+            ...         "machine": "sr",
+            ...         "energy": 6e9,
+            ...         "data_folder": "/data/store",
+            ...         "devices": [],
+            ...     }
+            ... )
         """
         source_name = kwargs.pop("source_name", None)
         use_fast_loader = kwargs.pop("use_fast_loader", False)
@@ -68,11 +159,24 @@ class ConfigurationManager:
         )
         prepared = self._prepare_fragment(fragment, source_root, inferred_source_name)
         self._merge_fragment(prepared, inferred_source_name)
-        return self
 
-    def remove(self, category: str, name: str) -> "ConfigurationManager":
-        """
+    def remove(self, category: str, name: str) -> None:
+        r"""
         Remove a named entry from an aggregated category.
+
+        Parameters
+        ----------
+        category : str
+            Category that contains the entry.
+        name : str
+            Entry name to remove.
+
+        Examples
+        --------
+
+        .. code-block:: python
+
+            >>> manager.remove("simulators", "tracking")
         """
         self._require_named_category(category)
         if name not in self._items_by_category[category]:
@@ -81,11 +185,31 @@ class ConfigurationManager:
         self._state[category] = [entry for entry in self._state.get(category, []) if entry.get("name") != name]
         self._items_by_category[category].pop(name, None)
         self._sources_by_category[category].pop(name, None)
-        return self
 
-    def replace(self, category: str, element: dict) -> "ConfigurationManager":
-        """
+    def replace(self, category: str, element: dict) -> None:
+        r"""
         Replace an existing named entry in an aggregated category.
+
+        Parameters
+        ----------
+        category : str
+            Category that contains the entry.
+        element : dict
+            Replacement configuration entry.
+
+        Examples
+        --------
+
+        .. code-block:: python
+
+            >>> manager.replace(
+            ...     "simulators",
+            ...     {
+            ...         "type": "pyaml.lattice.simulator",
+            ...         "name": "design",
+            ...         "lattice": "tests/config/sr/lattices/ebs.mat",
+            ...     },
+            ... )
         """
         self._require_named_category(category)
         prepared = self._prepare_fragment(
@@ -109,11 +233,26 @@ class ConfigurationManager:
 
         self._items_by_category[category][name] = replacement
         self._sources_by_category[category][name] = "replace()"
-        return self
 
-    def clear(self, category: str | None = None) -> "ConfigurationManager":
-        """
+    def clear(self, category: str | None = None) -> None:
+        r"""
         Clear the aggregated state, or a single root field/category.
+
+        Parameters
+        ----------
+        category : str, optional
+            If provided, only that category or root field is cleared.
+
+        Examples
+        --------
+
+        .. code-block:: python
+
+            >>> manager.clear("simulators")
+
+        .. code-block:: python
+
+            >>> manager.clear()
         """
         if category is None:
             self._state = {"type": self.DEFAULT_TYPE}
@@ -123,27 +262,41 @@ class ConfigurationManager:
                 self._sources_by_category[name].clear()
             self._build_root = get_root_folder()
             self._build_root_locked = False
-            return self
+            return
 
         if category in self.NAMED_CATEGORIES:
             self._state[category] = []
             self._items_by_category[category].clear()
             self._sources_by_category[category].clear()
-            return self
+            return
 
         if category == "type":
             self._state["type"] = self.DEFAULT_TYPE
             self._field_sources.pop("type", None)
-            return self
+            return
 
         if category in self._state:
             self._state.pop(category, None)
             self._field_sources.pop(category, None)
-            return self
+            return
 
         raise PyAMLConfigException(f"Unknown configuration category '{category}'.")
 
     def categories(self) -> list[str]:
+        r"""
+        Return categories that currently contain entries.
+
+        Returns
+        -------
+        list[str]
+
+        Examples
+        --------
+
+        .. code-block:: python
+
+            >>> manager.categories()
+        """
         return [
             category
             for category in self.NAMED_CATEGORIES
@@ -151,6 +304,29 @@ class ConfigurationManager:
         ]
 
     def keys(self, category: str | None = None) -> list[str]:
+        r"""
+        Return known entry names.
+
+        Parameters
+        ----------
+        category : str, optional
+            Restrict the result to one category.
+
+        Returns
+        -------
+        list[str]
+
+        Examples
+        --------
+
+        .. code-block:: python
+
+            >>> manager.keys()
+
+        .. code-block:: python
+
+            >>> manager.keys("simulators")
+        """
         if category is None:
             names: list[str] = []
             for current_category in self.NAMED_CATEGORIES:
@@ -161,16 +337,84 @@ class ConfigurationManager:
         return list(self._items_by_category[category].keys())
 
     def has(self, category: str, name: str) -> bool:
+        r"""
+        Check whether a named entry exists.
+
+        Parameters
+        ----------
+        category : str
+            Category to inspect.
+        name : str
+            Entry name.
+
+        Returns
+        -------
+        bool
+
+        Examples
+        --------
+
+        .. code-block:: python
+
+            >>> manager.has("simulators", "design")
+            True
+        """
         self._require_named_category(category)
         return name in self._items_by_category[category]
 
     def get(self, category: str, name: str) -> dict[str, Any]:
+        r"""
+        Return a named configuration entry.
+
+        Parameters
+        ----------
+        category : str
+            Category to inspect.
+        name : str
+            Entry name.
+
+        Returns
+        -------
+        dict[str, Any]
+
+        Examples
+        --------
+
+        .. code-block:: python
+
+            >>> manager.get("simulators", "design")
+        """
         self._require_named_category(category)
         if name not in self._items_by_category[category]:
             raise KeyError(f"Configuration entry '{name}' not found in category '{category}'.")
         return self._strip_internal_metadata(copy.deepcopy(self._items_by_category[category][name]))
 
     def find(self, pattern: str, category: str | None = None) -> list[str]:
+        r"""
+        Search entry names using wildcards or regular expressions.
+
+        Parameters
+        ----------
+        pattern : str
+            Wildcard pattern or regular expression prefixed with ``re:``.
+        category : str, optional
+            Restrict the search to one category.
+
+        Returns
+        -------
+        list[str]
+
+        Examples
+        --------
+
+        .. code-block:: python
+
+            >>> manager.find("BPM_C04*")
+
+        .. code-block:: python
+
+            >>> manager.find("re:^QF1.*$")
+        """
         if not pattern or not pattern.strip():
             raise PyAMLConfigException("Empty configuration query.")
 
@@ -187,8 +431,22 @@ class ConfigurationManager:
         return [name for name in names if fnmatch.fnmatch(name, pattern)]
 
     def settings(self) -> dict[str, Any]:
+        r"""
+        Return aggregated scalar accelerator settings.
+
+        Returns
+        -------
+        dict[str, Any]
+
+        Examples
+        --------
+
+        .. code-block:: python
+
+            >>> manager.settings()
+        """
         settings: dict[str, Any] = {}
-        ordered_fields = [field for field in self.ROOT_FIELDS if field in self._state]
+        ordered_fields = [field for field in self.root_fields() if field in self._state]
         extra_fields = [
             field
             for field in self._state.keys()
@@ -201,12 +459,42 @@ class ConfigurationManager:
         return self._strip_internal_metadata(settings)
 
     def to_dict(self) -> dict[str, Any]:
+        r"""
+        Return the aggregated configuration as a plain dictionary.
+
+        Returns
+        -------
+        dict[str, Any]
+
+        Examples
+        --------
+
+        .. code-block:: python
+
+            >>> snapshot = manager.to_dict()
+        """
         snapshot = self._snapshot(include_internal_metadata=False)
         return snapshot
 
     def build(self, ignore_external: bool = False):
-        """
+        r"""
         Build an Accelerator from the aggregated configuration snapshot.
+
+        Parameters
+        ----------
+        ignore_external : bool, optional
+            Forwarded to :meth:`pyaml.accelerator.Accelerator.from_dict`.
+
+        Returns
+        -------
+        Accelerator
+
+        Examples
+        --------
+
+        .. code-block:: python
+
+            >>> sr = manager.build()
         """
         from ..accelerator import Accelerator
 
@@ -214,17 +502,48 @@ class ConfigurationManager:
         return Accelerator.from_dict(self._snapshot(include_internal_metadata=True), ignore_external=ignore_external)
 
     def __dir__(self):
+        """
+        Extend ``dir()`` with attribute-friendly entry names.
+
+        Examples
+        --------
+
+        .. code-block:: python
+
+            >>> "HCORR" in dir(manager)
+        """
         default = super().__dir__()
         valid_keys = {key for key in self.keys() if _VALID_QUERY_KEY_RE.match(key)}
         return sorted(set(default) | valid_keys)
 
     def __getitem__(self, query: str) -> list[str]:
-        """
+        r"""
         Alias for :meth:`find`.
+
+        Examples
+        --------
+
+        .. code-block:: python
+
+            >>> manager["BPM_C04*"]
         """
         return self.find(query)
 
     def __getattr__(self, name):
+        """
+        Provide attribute-style access for categories and unambiguous entry names.
+
+        Examples
+        --------
+
+        .. code-block:: python
+
+            >>> manager.simulators
+
+        .. code-block:: python
+
+            >>> manager.HCORR
+        """
         if name in self._items_by_category:
             return self.keys(name)
         categories = self._categories_for_name(name)
@@ -238,6 +557,16 @@ class ConfigurationManager:
         raise AttributeError(f"'ConfigurationManager' object has no attribute '{name}'")
 
     def __repr__(self) -> str:
+        """
+        Return a human-readable overview of the aggregated configuration.
+
+        Examples
+        --------
+
+        .. code-block:: python
+
+            >>> repr(manager)
+        """
         lines: list[str] = []
 
         settings = self.settings()
@@ -260,6 +589,16 @@ class ConfigurationManager:
         return "\n".join(lines).rstrip()
 
     def __str__(self) -> str:
+        """
+        Return the same overview as :meth:`__repr__`.
+
+        Examples
+        --------
+
+        .. code-block:: python
+
+            >>> print(manager)
+        """
         return self.__repr__()
 
     def _load_payload(
@@ -433,9 +772,9 @@ class ConfigurationManager:
 
         details: list[str] = []
         if category == "arrays":
-            selectors = entry.get("elements")
-            if isinstance(selectors, list):
-                details.append(f"selectors={len(selectors)}")
+            patterns = entry.get("elements")
+            if isinstance(patterns, list):
+                details.append(f"patterns={len(patterns)}")
 
         source = self._sources_by_category[category].get(name)
         if source is not None:

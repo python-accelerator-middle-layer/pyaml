@@ -12,7 +12,6 @@ from .common.element_holder import ElementHolder
 from .common.exception import PyAMLConfigException
 from .configuration import ConfigurationManager, UnsupportedConfigurationRootError
 from .configuration.factory import Factory
-from .configuration.fileloader import load, set_root_folder
 from .control.controlsystem import ControlSystem
 from .lattice.simulator import Simulator
 from .yellow_pages import YellowPages
@@ -256,9 +255,9 @@ class Accelerator(object):
         manager = ConfigurationManager()
         try:
             manager.add(filename, use_fast_loader=use_fast_loader)
-            return manager.build(ignore_external=ignore_external)
-        except UnsupportedConfigurationRootError:
-            rootfolder = os.path.abspath(os.path.dirname(filename))
-            set_root_folder(rootfolder)
-            config_dict = load(os.path.basename(filename), None, use_fast_loader)
-            return Accelerator.from_dict(config_dict, ignore_external=ignore_external)
+        except UnsupportedConfigurationRootError as ex:
+            raise PyAMLConfigException(
+                "Accelerator.load() expects a 'pyaml.accelerator' root configuration. "
+                "Use the factory APIs to build sub-elements directly."
+            ) from ex
+        return manager.build(ignore_external=ignore_external)
