@@ -96,6 +96,35 @@ def _purge_modules(package_roots: list[str]) -> None:
                 sys.modules.pop(module_name, None)
 
 
+@pytest.fixture(scope="session", autouse=True)
+def install_default_test_packages():
+    package_paths = [
+        pathlib.Path("tests/dummy_cs/tango-pyaml").resolve(),
+        pathlib.Path("tests/external").resolve(),
+    ]
+    package_roots: list[str] = []
+
+    for package_path in package_paths:
+        package_roots.extend(_discover_package_roots(package_path))
+
+    package_roots = list(dict.fromkeys(package_roots))
+    path_strings = [str(path) for path in package_paths]
+
+    _purge_modules(package_roots)
+    for path_string in reversed(path_strings):
+        if path_string not in sys.path:
+            sys.path.insert(0, path_string)
+    importlib.invalidate_caches()
+
+    yield
+
+    _purge_modules(package_roots)
+    for path_string in path_strings:
+        while path_string in sys.path:
+            sys.path.remove(path_string)
+    importlib.invalidate_caches()
+
+
 @pytest.fixture
 def accelerator_from_fragments():
     """
