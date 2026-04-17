@@ -10,6 +10,7 @@ controls:
   - type: pyaml_cs_oa.controlsystem
     prefix: //ebs-simu-2:10000/
     name: live
+    catalog: live_catalog
 data_folder: /data/store
 arrays:
   - type: pyaml.arrays.magnet

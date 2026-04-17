@@ -11,6 +11,7 @@ controls:
   - type: tango.pyaml.controlsystem
     tango_host: ebs-simu-3:10000
     name: live
+    catalog: live_catalog
 data_folder: /data/store
 devices:
 - type: pyaml.diagnostics.tune_monitor
