@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>pyaml.accelerator &#8212; Python Accelerator Middle Layer 0.1.dev1+gd2c64c5ed documentation</title>
+    <title>pyaml.accelerator &#8212; Python Accelerator Middle Layer 0.1.dev1+g2c74e1c4d documentation</title>
   
   
   
@@ -41,7 +41,7 @@
   <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=7f76b32a3354e82990f2" />
 <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=7f76b32a3354e82990f2" />
 
-    <script src="../../_static/documentation_options.js?v=9eb84b9a"></script>
+    <script src="../../_static/documentation_options.js?v=a44e4bdf"></script>
     <script src="../../_static/doctools.js?v=9bcbadda"></script>
     <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -123,8 +123,8 @@
       
     
     
-    <img src="../../_static/logo.png" class="logo__image only-light" alt="Python Accelerator Middle Layer 0.1.dev1+gd2c64c5ed documentation - Home"/>
-    <img src="../../_static/dark.png" class="logo__image only-dark pst-js-only" alt="Python Accelerator Middle Layer 0.1.dev1+gd2c64c5ed documentation - Home"/>
+    <img src="../../_static/logo.png" class="logo__image only-light" alt="Python Accelerator Middle Layer 0.1.dev1+g2c74e1c4d documentation - Home"/>
+    <img src="../../_static/dark.png" class="logo__image only-dark pst-js-only" alt="Python Accelerator Middle Layer 0.1.dev1+g2c74e1c4d documentation - Home"/>
   
   
 </a></div>
@@ -378,16 +378,14 @@
 <span class="sd">Accelerator class</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
-<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
-
 <span class="kn">from</span><span class="w"> </span><span class="nn">pydantic</span><span class="w"> </span><span class="kn">import</span> <span class="n">BaseModel</span><span class="p">,</span> <span class="n">ConfigDict</span><span class="p">,</span> <span class="n">Field</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">.arrays.array</span><span class="w"> </span><span class="kn">import</span> <span class="n">ArrayConfig</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">.common.element</span><span class="w"> </span><span class="kn">import</span> <span class="n">Element</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">.common.element_holder</span><span class="w"> </span><span class="kn">import</span> <span class="n">ElementHolder</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">.common.exception</span><span class="w"> </span><span class="kn">import</span> <span class="n">PyAMLConfigException</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.configuration</span><span class="w"> </span><span class="kn">import</span> <span class="n">ConfigurationManager</span><span class="p">,</span> <span class="n">UnsupportedConfigurationRootError</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">.configuration.factory</span><span class="w"> </span><span class="kn">import</span> <span class="n">Factory</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">.configuration.fileloader</span><span class="w"> </span><span class="kn">import</span> <span class="n">load</span><span class="p">,</span> <span class="n">set_root_folder</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">.control.controlsystem</span><span class="w"> </span><span class="kn">import</span> <span class="n">ControlSystem</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">.lattice.simulator</span><span class="w"> </span><span class="kn">import</span> <span class="n">Simulator</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">.yellow_pages</span><span class="w"> </span><span class="kn">import</span> <span class="n">YellowPages</span>
@@ -677,14 +675,15 @@
 <span class="sd">            cannot be created. pydantic schema that support that an</span>
 <span class="sd">            object is not created should handle None fields.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="c1"># Asume that all files are referenced from</span>
-        <span class="c1"># folder where main AML file is stored</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
-            <span class="k">raise</span> <span class="n">PyAMLConfigException</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">filename</span><span class="si">}</span><span class="s2"> file not found&quot;</span><span class="p">)</span>
-        <span class="n">rootfolder</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">filename</span><span class="p">))</span>
-        <span class="n">set_root_folder</span><span class="p">(</span><span class="n">rootfolder</span><span class="p">)</span>
-        <span class="n">config_dict</span> <span class="o">=</span> <span class="n">load</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">filename</span><span class="p">),</span> <span class="kc">None</span><span class="p">,</span> <span class="n">use_fast_loader</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">Accelerator</span><span class="o">.</span><span class="n">from_dict</span><span class="p">(</span><span class="n">config_dict</span><span class="p">,</span> <span class="n">ignore_external</span><span class="o">=</span><span class="n">ignore_external</span><span class="p">)</span></div>
+        <span class="n">manager</span> <span class="o">=</span> <span class="n">ConfigurationManager</span><span class="p">()</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">manager</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">use_fast_loader</span><span class="o">=</span><span class="n">use_fast_loader</span><span class="p">)</span>
+        <span class="k">except</span> <span class="n">UnsupportedConfigurationRootError</span> <span class="k">as</span> <span class="n">ex</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">PyAMLConfigException</span><span class="p">(</span>
+                <span class="s2">&quot;Accelerator.load() expects a &#39;pyaml.accelerator&#39; root configuration. &quot;</span>
+                <span class="s2">&quot;Use the factory APIs to build sub-elements directly.&quot;</span>
+            <span class="p">)</span> <span class="kn">from</span><span class="w"> </span><span class="nn">ex</span>
+        <span class="k">return</span> <span class="n">manager</span><span class="o">.</span><span class="n">build</span><span class="p">(</span><span class="n">ignore_external</span><span class="o">=</span><span class="n">ignore_external</span><span class="p">)</span></div>
 </div>
 
 </pre></div>

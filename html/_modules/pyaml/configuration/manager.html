@@ -1,0 +1,1352 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>pyaml.configuration.manager &#8212; Python Accelerator Middle Layer 0.1.dev1+g2c74e1c4d documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../../_static/styles/theme.css?digest=7f76b32a3354e82990f2" rel="stylesheet" />
+<link href="../../../_static/styles/pydata-sphinx-theme.css?digest=7f76b32a3354e82990f2" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/css/custom.css" />
+  
+  <!-- So that users can add custom icons -->
+  <script defer src="../../../_static/scripts/fontawesome.js?digest=7f76b32a3354e82990f2"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=7f76b32a3354e82990f2" />
+<link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=7f76b32a3354e82990f2" />
+
+    <script src="../../../_static/documentation_options.js?v=a44e4bdf"></script>
+    <script src="../../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../../_static/copybutton.js?v=fd10adb8"></script>
+    <script src="../../../_static/design-tabs.js?v=f930bc37"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '_modules/pyaml/configuration/manager';</script>
+    <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="0.1" />
+  
+    
+    <script src="../../../_static/searchtools.js"></script>
+    <script src="../../../_static/language_data.js"></script>
+    <script src="../../../searchindex.js"></script>
+  
+  </head>
+  <body data-default-mode="">
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../../_static/logo.png" class="logo__image only-light" alt="Python Accelerator Middle Layer 0.1.dev1+g2c74e1c4d documentation - Home"/>
+    <img src="../../../_static/dark.png" class="logo__image only-dark pst-js-only" alt="Python Accelerator Middle Layer 0.1.dev1+g2c74e1c4d documentation - Home"/>
+  
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../getting-started/index.html">
+    Getting Started
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../how-to/index.html">
+    How to Guides
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../tutorial/index.html">
+    Tutorials
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../api.html">
+    API Reference
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+        <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+      
+        <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/python-accelerator-middle-layer/pyaml" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+</ul></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar hide-on-wide">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../getting-started/index.html">
+    Getting Started
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../how-to/index.html">
+    How to Guides
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../tutorial/index.html">
+    Tutorials
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../api.html">
+    API Reference
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+        
+          <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/python-accelerator-middle-layer/pyaml" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+</ul></div>
+        
+      </div>
+    
+  </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../../../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="../../index.html" class="nav-link">Module code</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">pyaml.configuration.manager</span></li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <h1>Source code for pyaml.configuration.manager</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">manager.py</span>
+
+<span class="sd">Configuration aggregation helpers for :class:`~pyaml.accelerator.Accelerator`.</span>
+
+<span class="sd">This module provides :class:`ConfigurationManager`, a lightweight service used</span>
+<span class="sd">to collect configuration fragments before runtime objects are built.</span>
+
+<span class="sd">Typical usage is:</span>
+
+<span class="sd">- load one or more accelerator configuration fragments</span>
+<span class="sd">- inspect or query the aggregated state</span>
+<span class="sd">- build the final :class:`~pyaml.accelerator.Accelerator`</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">copy</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">fnmatch</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">re</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Any</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">..common.exception</span><span class="w"> </span><span class="kn">import</span> <span class="n">PyAMLConfigException</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.fileloader</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_root_folder</span><span class="p">,</span> <span class="n">load</span><span class="p">,</span> <span class="n">set_root_folder</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.restfetcher</span><span class="w"> </span><span class="kn">import</span> <span class="n">REMOTE_BASE_URL_KEY</span><span class="p">,</span> <span class="n">SourceRoot</span><span class="p">,</span> <span class="n">fetch_remote_config</span><span class="p">,</span> <span class="n">is_remote_url</span><span class="p">,</span> <span class="n">resolve_reference</span>
+
+<span class="n">_INTERNAL_METADATA_KEYS</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;__location__&quot;</span><span class="p">,</span> <span class="s2">&quot;__fieldlocations__&quot;</span><span class="p">,</span> <span class="n">REMOTE_BASE_URL_KEY</span><span class="p">}</span>
+<span class="n">_VALID_QUERY_KEY_RE</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;^[A-Z0-9_]+$&quot;</span><span class="p">)</span>
+<span class="n">_CATEGORY_TITLES</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;controls&quot;</span><span class="p">:</span> <span class="s2">&quot;Controls&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;simulators&quot;</span><span class="p">:</span> <span class="s2">&quot;Simulators&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;arrays&quot;</span><span class="p">:</span> <span class="s2">&quot;Arrays&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;devices&quot;</span><span class="p">:</span> <span class="s2">&quot;Devices&quot;</span><span class="p">,</span>
+<span class="p">}</span>
+
+
+<div class="viewcode-block" id="UnsupportedConfigurationRootError">
+<a class="viewcode-back" href="../../../api/pyaml.configuration.manager.html#pyaml.configuration.manager.UnsupportedConfigurationRootError">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">UnsupportedConfigurationRootError</span><span class="p">(</span><span class="n">PyAMLConfigException</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Raised when a fragment root is outside ConfigurationManager scope.&quot;&quot;&quot;</span></div>
+
+
+
+<div class="viewcode-block" id="ConfigurationManager">
+<a class="viewcode-back" href="../../../api/pyaml.configuration.manager.html#pyaml.configuration.manager.ConfigurationManager">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">ConfigurationManager</span><span class="p">:</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Aggregate accelerator configuration fragments before runtime build.</span>
+
+<span class="sd">    :class:`ConfigurationManager` stores configuration fragments as plain</span>
+<span class="sd">    dictionaries and exposes convenience helpers to inspect, query and update</span>
+<span class="sd">    them before constructing the final runtime object graph.</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    The manager only accepts accelerator-root fragments and merges named</span>
+<span class="sd">    categories such as ``controls``, ``simulators``, ``arrays`` and</span>
+<span class="sd">    ``devices``.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+
+<span class="sd">    Load a base configuration and inspect it:</span>
+
+<span class="sd">    .. code-block:: python</span>
+
+<span class="sd">        &gt;&gt;&gt; from pyaml.configuration import ConfigurationManager</span>
+<span class="sd">        &gt;&gt;&gt; manager = ConfigurationManager()</span>
+<span class="sd">        &gt;&gt;&gt; manager.add(&quot;tests/config/config_manager_base.yaml&quot;)</span>
+<span class="sd">        &gt;&gt;&gt; manager.categories()</span>
+<span class="sd">        [&#39;simulators&#39;]</span>
+
+<span class="sd">    Build the final accelerator:</span>
+
+<span class="sd">    .. code-block:: python</span>
+
+<span class="sd">        &gt;&gt;&gt; sr = manager.build()</span>
+<span class="sd">        &gt;&gt;&gt; sr.design.name()</span>
+<span class="sd">        &#39;design&#39;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">DEFAULT_TYPE</span> <span class="o">=</span> <span class="s2">&quot;pyaml.accelerator&quot;</span>
+    <span class="n">NAMED_CATEGORIES</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;controls&quot;</span><span class="p">,</span> <span class="s2">&quot;simulators&quot;</span><span class="p">,</span> <span class="s2">&quot;arrays&quot;</span><span class="p">,</span> <span class="s2">&quot;devices&quot;</span><span class="p">)</span>
+    <span class="n">_SUPPORTED_FILE_SUFFIXES</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;.yaml&quot;</span><span class="p">,</span> <span class="s2">&quot;.yml&quot;</span><span class="p">,</span> <span class="s2">&quot;.json&quot;</span><span class="p">}</span>
+
+<div class="viewcode-block" id="ConfigurationManager.root_fields">
+<a class="viewcode-back" href="../../../api/pyaml.configuration.manager.html#pyaml.configuration.manager.ConfigurationManager.root_fields">[docs]</a>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">root_fields</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="o">...</span><span class="p">]:</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Return the ordered root fields supported by the accelerator model.</span>
+
+<span class="sd">        The field order is derived from</span>
+<span class="sd">        :class:`~pyaml.accelerator.ConfigModel`.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        tuple[str, ...]</span>
+
+<span class="sd">        Examples</span>
+<span class="sd">        --------</span>
+
+<span class="sd">        .. code-block:: python</span>
+
+<span class="sd">            &gt;&gt;&gt; ConfigurationManager.root_fields()</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">..accelerator</span><span class="w"> </span><span class="kn">import</span> <span class="n">ConfigModel</span> <span class="k">as</span> <span class="n">AcceleratorConfigModel</span>
+
+        <span class="n">config_fields</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span>
+            <span class="n">field_name</span> <span class="k">for</span> <span class="n">field_name</span> <span class="ow">in</span> <span class="n">AcceleratorConfigModel</span><span class="o">.</span><span class="n">model_fields</span> <span class="k">if</span> <span class="n">field_name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">cls</span><span class="o">.</span><span class="n">NAMED_CATEGORIES</span>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="p">(</span><span class="s2">&quot;type&quot;</span><span class="p">,</span> <span class="o">*</span><span class="n">config_fields</span><span class="p">)</span></div>
+
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_state</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">DEFAULT_TYPE</span><span class="p">}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_items_by_category</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]]</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="n">category</span><span class="p">:</span> <span class="p">{}</span> <span class="k">for</span> <span class="n">category</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">NAMED_CATEGORIES</span>
+        <span class="p">}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_sources_by_category</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="p">{</span><span class="n">category</span><span class="p">:</span> <span class="p">{}</span> <span class="k">for</span> <span class="n">category</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">NAMED_CATEGORIES</span><span class="p">}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_field_sources</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_build_root</span><span class="p">:</span> <span class="n">SourceRoot</span> <span class="o">=</span> <span class="n">get_root_folder</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_build_root_locked</span> <span class="o">=</span> <span class="kc">False</span>
+
+<div class="viewcode-block" id="ConfigurationManager.add">
+<a class="viewcode-back" href="../../../api/pyaml.configuration.manager.html#pyaml.configuration.manager.ConfigurationManager.add">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">add</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">payload</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Add a configuration fragment from a dict or a YAML/JSON file.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        payload : dict or str or os.PathLike</span>
+<span class="sd">            Fragment to merge into the current aggregated state.</span>
+<span class="sd">        source_name : str, optional</span>
+<span class="sd">            Explicit source label to associate with the fragment.</span>
+<span class="sd">        use_fast_loader : bool, optional</span>
+<span class="sd">            Forwarded to the configuration loader.</span>
+
+<span class="sd">        Examples</span>
+<span class="sd">        --------</span>
+
+<span class="sd">        .. code-block:: python</span>
+
+<span class="sd">            &gt;&gt;&gt; manager.add(&quot;tests/config/config_manager_base.yaml&quot;)</span>
+
+<span class="sd">        .. code-block:: python</span>
+
+<span class="sd">            &gt;&gt;&gt; manager.add(</span>
+<span class="sd">            ...     {</span>
+<span class="sd">            ...         &quot;facility&quot;: &quot;ESRF&quot;,</span>
+<span class="sd">            ...         &quot;machine&quot;: &quot;sr&quot;,</span>
+<span class="sd">            ...         &quot;energy&quot;: 6e9,</span>
+<span class="sd">            ...         &quot;data_folder&quot;: &quot;/data/store&quot;,</span>
+<span class="sd">            ...         &quot;devices&quot;: [],</span>
+<span class="sd">            ...     }</span>
+<span class="sd">            ... )</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">source_name</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;source_name&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="n">use_fast_loader</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;use_fast_loader&quot;</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">kwargs</span><span class="p">:</span>
+            <span class="n">unknown</span> <span class="o">=</span> <span class="s2">&quot;, &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">sorted</span><span class="p">(</span><span class="n">kwargs</span><span class="p">))</span>
+            <span class="k">raise</span> <span class="n">PyAMLConfigException</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unsupported ConfigurationManager.add() arguments: </span><span class="si">{</span><span class="n">unknown</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+        <span class="n">fragment</span><span class="p">,</span> <span class="n">inferred_source_name</span><span class="p">,</span> <span class="n">source_root</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_load_payload</span><span class="p">(</span>
+            <span class="n">payload</span><span class="p">,</span>
+            <span class="n">source_name</span><span class="o">=</span><span class="n">source_name</span><span class="p">,</span>
+            <span class="n">use_fast_loader</span><span class="o">=</span><span class="n">use_fast_loader</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="n">prepared</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_prepare_fragment</span><span class="p">(</span><span class="n">fragment</span><span class="p">,</span> <span class="n">source_root</span><span class="p">,</span> <span class="n">inferred_source_name</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_merge_fragment</span><span class="p">(</span><span class="n">prepared</span><span class="p">,</span> <span class="n">inferred_source_name</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="ConfigurationManager.remove">
+<a class="viewcode-back" href="../../../api/pyaml.configuration.manager.html#pyaml.configuration.manager.ConfigurationManager.remove">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">remove</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">category</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Remove a named entry from an aggregated category.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        category : str</span>
+<span class="sd">            Category that contains the entry.</span>
+<span class="sd">        name : str</span>
+<span class="sd">            Entry name to remove.</span>
+
+<span class="sd">        Examples</span>
+<span class="sd">        --------</span>
+
+<span class="sd">        .. code-block:: python</span>
+
+<span class="sd">            &gt;&gt;&gt; manager.remove(&quot;simulators&quot;, &quot;tracking&quot;)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_require_named_category</span><span class="p">(</span><span class="n">category</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_items_by_category</span><span class="p">[</span><span class="n">category</span><span class="p">]:</span>
+            <span class="k">raise</span> <span class="n">PyAMLConfigException</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Configuration entry &#39;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">&#39; not found in category &#39;</span><span class="si">{</span><span class="n">category</span><span class="si">}</span><span class="s2">&#39;.&quot;</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_state</span><span class="p">[</span><span class="n">category</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">entry</span> <span class="k">for</span> <span class="n">entry</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_state</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">category</span><span class="p">,</span> <span class="p">[])</span> <span class="k">if</span> <span class="n">entry</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;name&quot;</span><span class="p">)</span> <span class="o">!=</span> <span class="n">name</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_items_by_category</span><span class="p">[</span><span class="n">category</span><span class="p">]</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_sources_by_category</span><span class="p">[</span><span class="n">category</span><span class="p">]</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="ConfigurationManager.replace">
+<a class="viewcode-back" href="../../../api/pyaml.configuration.manager.html#pyaml.configuration.manager.ConfigurationManager.replace">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">replace</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">category</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">element</span><span class="p">:</span> <span class="nb">dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Replace an existing named entry in an aggregated category.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        category : str</span>
+<span class="sd">            Category that contains the entry.</span>
+<span class="sd">        element : dict</span>
+<span class="sd">            Replacement configuration entry.</span>
+
+<span class="sd">        Examples</span>
+<span class="sd">        --------</span>
+
+<span class="sd">        .. code-block:: python</span>
+
+<span class="sd">            &gt;&gt;&gt; manager.replace(</span>
+<span class="sd">            ...     &quot;simulators&quot;,</span>
+<span class="sd">            ...     {</span>
+<span class="sd">            ...         &quot;type&quot;: &quot;pyaml.lattice.simulator&quot;,</span>
+<span class="sd">            ...         &quot;name&quot;: &quot;design&quot;,</span>
+<span class="sd">            ...         &quot;lattice&quot;: &quot;tests/config/sr/lattices/ebs.mat&quot;,</span>
+<span class="sd">            ...     },</span>
+<span class="sd">            ... )</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_require_named_category</span><span class="p">(</span><span class="n">category</span><span class="p">)</span>
+        <span class="n">prepared</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_prepare_fragment</span><span class="p">(</span>
+            <span class="p">{</span><span class="n">category</span><span class="p">:</span> <span class="p">[</span><span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">element</span><span class="p">)]},</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_build_root</span><span class="p">,</span>
+            <span class="sa">f</span><span class="s2">&quot;replace:</span><span class="si">{</span><span class="n">category</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="n">replacement</span> <span class="o">=</span> <span class="n">prepared</span><span class="p">[</span><span class="n">category</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">name</span> <span class="o">=</span> <span class="n">replacement</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">]</span>
+
+        <span class="k">if</span> <span class="n">name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_items_by_category</span><span class="p">[</span><span class="n">category</span><span class="p">]:</span>
+            <span class="k">raise</span> <span class="n">PyAMLConfigException</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;Configuration entry &#39;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">&#39; not found in category &#39;</span><span class="si">{</span><span class="n">category</span><span class="si">}</span><span class="s2">&#39;. Use add() to create it.&quot;</span>
+            <span class="p">)</span>
+
+        <span class="n">entries</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_state</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">category</span><span class="p">,</span> <span class="p">[])</span>
+        <span class="k">for</span> <span class="n">index</span><span class="p">,</span> <span class="n">entry</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">entries</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">entry</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;name&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="n">name</span><span class="p">:</span>
+                <span class="n">entries</span><span class="p">[</span><span class="n">index</span><span class="p">]</span> <span class="o">=</span> <span class="n">replacement</span>
+                <span class="k">break</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_items_by_category</span><span class="p">[</span><span class="n">category</span><span class="p">][</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">replacement</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_sources_by_category</span><span class="p">[</span><span class="n">category</span><span class="p">][</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;replace()&quot;</span></div>
+
+
+<div class="viewcode-block" id="ConfigurationManager.clear">
+<a class="viewcode-back" href="../../../api/pyaml.configuration.manager.html#pyaml.configuration.manager.ConfigurationManager.clear">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">clear</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">category</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Clear the aggregated state, or a single root field/category.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        category : str, optional</span>
+<span class="sd">            If provided, only that category or root field is cleared.</span>
+
+<span class="sd">        Examples</span>
+<span class="sd">        --------</span>
+
+<span class="sd">        .. code-block:: python</span>
+
+<span class="sd">            &gt;&gt;&gt; manager.clear(&quot;simulators&quot;)</span>
+
+<span class="sd">        .. code-block:: python</span>
+
+<span class="sd">            &gt;&gt;&gt; manager.clear()</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">category</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_state</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">DEFAULT_TYPE</span><span class="p">}</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_field_sources</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+            <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">NAMED_CATEGORIES</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_items_by_category</span><span class="p">[</span><span class="n">name</span><span class="p">]</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_sources_by_category</span><span class="p">[</span><span class="n">name</span><span class="p">]</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_build_root</span> <span class="o">=</span> <span class="n">get_root_folder</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_build_root_locked</span> <span class="o">=</span> <span class="kc">False</span>
+            <span class="k">return</span>
+
+        <span class="k">if</span> <span class="n">category</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">NAMED_CATEGORIES</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_state</span><span class="p">[</span><span class="n">category</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_items_by_category</span><span class="p">[</span><span class="n">category</span><span class="p">]</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_sources_by_category</span><span class="p">[</span><span class="n">category</span><span class="p">]</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+            <span class="k">return</span>
+
+        <span class="k">if</span> <span class="n">category</span> <span class="o">==</span> <span class="s2">&quot;type&quot;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_state</span><span class="p">[</span><span class="s2">&quot;type&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">DEFAULT_TYPE</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_field_sources</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;type&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+            <span class="k">return</span>
+
+        <span class="k">if</span> <span class="n">category</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_state</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_state</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">category</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_field_sources</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">category</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+            <span class="k">return</span>
+
+        <span class="k">raise</span> <span class="n">PyAMLConfigException</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unknown configuration category &#39;</span><span class="si">{</span><span class="n">category</span><span class="si">}</span><span class="s2">&#39;.&quot;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="ConfigurationManager.categories">
+<a class="viewcode-back" href="../../../api/pyaml.configuration.manager.html#pyaml.configuration.manager.ConfigurationManager.categories">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">categories</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Return categories that currently contain entries.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        list[str]</span>
+
+<span class="sd">        Examples</span>
+<span class="sd">        --------</span>
+
+<span class="sd">        .. code-block:: python</span>
+
+<span class="sd">            &gt;&gt;&gt; manager.categories()</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">[</span>
+            <span class="n">category</span>
+            <span class="k">for</span> <span class="n">category</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">NAMED_CATEGORIES</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_state</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">category</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_state</span><span class="p">[</span><span class="n">category</span><span class="p">])</span> <span class="o">&gt;</span> <span class="mi">0</span>
+        <span class="p">]</span></div>
+
+
+<div class="viewcode-block" id="ConfigurationManager.keys">
+<a class="viewcode-back" href="../../../api/pyaml.configuration.manager.html#pyaml.configuration.manager.ConfigurationManager.keys">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">keys</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">category</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Return known entry names.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        category : str, optional</span>
+<span class="sd">            Restrict the result to one category.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        list[str]</span>
+
+<span class="sd">        Examples</span>
+<span class="sd">        --------</span>
+
+<span class="sd">        .. code-block:: python</span>
+
+<span class="sd">            &gt;&gt;&gt; manager.keys()</span>
+
+<span class="sd">        .. code-block:: python</span>
+
+<span class="sd">            &gt;&gt;&gt; manager.keys(&quot;simulators&quot;)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">category</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">names</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">for</span> <span class="n">current_category</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">NAMED_CATEGORIES</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_extend_unique</span><span class="p">(</span><span class="n">names</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_items_by_category</span><span class="p">[</span><span class="n">current_category</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+            <span class="k">return</span> <span class="n">names</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_require_named_category</span><span class="p">(</span><span class="n">category</span><span class="p">)</span>
+        <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_items_by_category</span><span class="p">[</span><span class="n">category</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span></div>
+
+
+<div class="viewcode-block" id="ConfigurationManager.has">
+<a class="viewcode-back" href="../../../api/pyaml.configuration.manager.html#pyaml.configuration.manager.ConfigurationManager.has">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">has</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">category</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Check whether a named entry exists.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        category : str</span>
+<span class="sd">            Category to inspect.</span>
+<span class="sd">        name : str</span>
+<span class="sd">            Entry name.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        bool</span>
+
+<span class="sd">        Examples</span>
+<span class="sd">        --------</span>
+
+<span class="sd">        .. code-block:: python</span>
+
+<span class="sd">            &gt;&gt;&gt; manager.has(&quot;simulators&quot;, &quot;design&quot;)</span>
+<span class="sd">            True</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_require_named_category</span><span class="p">(</span><span class="n">category</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_items_by_category</span><span class="p">[</span><span class="n">category</span><span class="p">]</span></div>
+
+
+<div class="viewcode-block" id="ConfigurationManager.get">
+<a class="viewcode-back" href="../../../api/pyaml.configuration.manager.html#pyaml.configuration.manager.ConfigurationManager.get">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">category</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Return a named configuration entry.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        category : str</span>
+<span class="sd">            Category to inspect.</span>
+<span class="sd">        name : str</span>
+<span class="sd">            Entry name.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        dict[str, Any]</span>
+
+<span class="sd">        Examples</span>
+<span class="sd">        --------</span>
+
+<span class="sd">        .. code-block:: python</span>
+
+<span class="sd">            &gt;&gt;&gt; manager.get(&quot;simulators&quot;, &quot;design&quot;)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_require_named_category</span><span class="p">(</span><span class="n">category</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_items_by_category</span><span class="p">[</span><span class="n">category</span><span class="p">]:</span>
+            <span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Configuration entry &#39;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">&#39; not found in category &#39;</span><span class="si">{</span><span class="n">category</span><span class="si">}</span><span class="s2">&#39;.&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_strip_internal_metadata</span><span class="p">(</span><span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_items_by_category</span><span class="p">[</span><span class="n">category</span><span class="p">][</span><span class="n">name</span><span class="p">]))</span></div>
+
+
+<div class="viewcode-block" id="ConfigurationManager.find">
+<a class="viewcode-back" href="../../../api/pyaml.configuration.manager.html#pyaml.configuration.manager.ConfigurationManager.find">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">find</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pattern</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">category</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Search entry names using wildcards or regular expressions.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        pattern : str</span>
+<span class="sd">            Wildcard pattern or regular expression prefixed with ``re:``.</span>
+<span class="sd">        category : str, optional</span>
+<span class="sd">            Restrict the search to one category.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        list[str]</span>
+
+<span class="sd">        Examples</span>
+<span class="sd">        --------</span>
+
+<span class="sd">        .. code-block:: python</span>
+
+<span class="sd">            &gt;&gt;&gt; manager.find(&quot;BPM_C04*&quot;)</span>
+
+<span class="sd">        .. code-block:: python</span>
+
+<span class="sd">            &gt;&gt;&gt; manager.find(&quot;re:^QF1.*$&quot;)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">pattern</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">pattern</span><span class="o">.</span><span class="n">strip</span><span class="p">():</span>
+            <span class="k">raise</span> <span class="n">PyAMLConfigException</span><span class="p">(</span><span class="s2">&quot;Empty configuration query.&quot;</span><span class="p">)</span>
+
+        <span class="n">names</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">keys</span><span class="p">(</span><span class="n">category</span><span class="p">)</span>
+        <span class="n">pattern</span> <span class="o">=</span> <span class="n">pattern</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">pattern</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;re:&quot;</span><span class="p">):</span>
+            <span class="n">regex_source</span> <span class="o">=</span> <span class="n">pattern</span><span class="p">[</span><span class="mi">3</span><span class="p">:]</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">regex</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="n">regex_source</span><span class="p">)</span>
+            <span class="k">except</span> <span class="n">re</span><span class="o">.</span><span class="n">error</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">PyAMLConfigException</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Invalid regex &#39;</span><span class="si">{</span><span class="n">regex_source</span><span class="si">}</span><span class="s2">&#39;: </span><span class="si">{</span><span class="n">exc</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span> <span class="kn">from</span><span class="w"> </span><span class="nn">exc</span>
+            <span class="k">return</span> <span class="p">[</span><span class="n">name</span> <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">names</span> <span class="k">if</span> <span class="n">regex</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">name</span><span class="p">)]</span>
+
+        <span class="k">return</span> <span class="p">[</span><span class="n">name</span> <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">names</span> <span class="k">if</span> <span class="n">fnmatch</span><span class="o">.</span><span class="n">fnmatch</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">pattern</span><span class="p">)]</span></div>
+
+
+<div class="viewcode-block" id="ConfigurationManager.settings">
+<a class="viewcode-back" href="../../../api/pyaml.configuration.manager.html#pyaml.configuration.manager.ConfigurationManager.settings">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">settings</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Return aggregated scalar accelerator settings.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        dict[str, Any]</span>
+
+<span class="sd">        Examples</span>
+<span class="sd">        --------</span>
+
+<span class="sd">        .. code-block:: python</span>
+
+<span class="sd">            &gt;&gt;&gt; manager.settings()</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">settings</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">ordered_fields</span> <span class="o">=</span> <span class="p">[</span><span class="n">field</span> <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">root_fields</span><span class="p">()</span> <span class="k">if</span> <span class="n">field</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_state</span><span class="p">]</span>
+        <span class="n">extra_fields</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="n">field</span>
+            <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_state</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">field</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">NAMED_CATEGORIES</span>
+            <span class="ow">and</span> <span class="n">field</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">ordered_fields</span>
+            <span class="ow">and</span> <span class="n">field</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">_INTERNAL_METADATA_KEYS</span>
+        <span class="p">]</span>
+        <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="n">ordered_fields</span> <span class="o">+</span> <span class="n">extra_fields</span><span class="p">:</span>
+            <span class="n">settings</span><span class="p">[</span><span class="n">field</span><span class="p">]</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_state</span><span class="p">[</span><span class="n">field</span><span class="p">])</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_strip_internal_metadata</span><span class="p">(</span><span class="n">settings</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="ConfigurationManager.to_dict">
+<a class="viewcode-back" href="../../../api/pyaml.configuration.manager.html#pyaml.configuration.manager.ConfigurationManager.to_dict">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">to_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Return the aggregated configuration as a plain dictionary.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        dict[str, Any]</span>
+
+<span class="sd">        Examples</span>
+<span class="sd">        --------</span>
+
+<span class="sd">        .. code-block:: python</span>
+
+<span class="sd">            &gt;&gt;&gt; snapshot = manager.to_dict()</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">snapshot</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_snapshot</span><span class="p">(</span><span class="n">include_internal_metadata</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">snapshot</span></div>
+
+
+<div class="viewcode-block" id="ConfigurationManager.build">
+<a class="viewcode-back" href="../../../api/pyaml.configuration.manager.html#pyaml.configuration.manager.ConfigurationManager.build">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">build</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ignore_external</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Build an Accelerator from the aggregated configuration snapshot.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        ignore_external : bool, optional</span>
+<span class="sd">            Forwarded to :meth:`pyaml.accelerator.Accelerator.from_dict`.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        Accelerator</span>
+
+<span class="sd">        Examples</span>
+<span class="sd">        --------</span>
+
+<span class="sd">        .. code-block:: python</span>
+
+<span class="sd">            &gt;&gt;&gt; sr = manager.build()</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">..accelerator</span><span class="w"> </span><span class="kn">import</span> <span class="n">Accelerator</span>
+
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_build_root</span><span class="p">,</span> <span class="n">Path</span><span class="p">):</span>
+            <span class="n">set_root_folder</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_build_root</span><span class="p">)</span>
+        <span class="n">snapshot</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_strip_runtime_internal_metadata</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_snapshot</span><span class="p">(</span><span class="n">include_internal_metadata</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">Accelerator</span><span class="o">.</span><span class="n">from_dict</span><span class="p">(</span><span class="n">snapshot</span><span class="p">,</span> <span class="n">ignore_external</span><span class="o">=</span><span class="n">ignore_external</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="ConfigurationManager.__dir__">
+<a class="viewcode-back" href="../../../api/pyaml.configuration.manager.html#pyaml.configuration.manager.ConfigurationManager.__dir__">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__dir__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Extend ``dir()`` with attribute-friendly entry names.</span>
+
+<span class="sd">        Examples</span>
+<span class="sd">        --------</span>
+
+<span class="sd">        .. code-block:: python</span>
+
+<span class="sd">            &gt;&gt;&gt; &quot;HCORR&quot; in dir(manager)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">default</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__dir__</span><span class="p">()</span>
+        <span class="n">valid_keys</span> <span class="o">=</span> <span class="p">{</span><span class="n">key</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span> <span class="k">if</span> <span class="n">_VALID_QUERY_KEY_RE</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">key</span><span class="p">)}</span>
+        <span class="k">return</span> <span class="nb">sorted</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">default</span><span class="p">)</span> <span class="o">|</span> <span class="n">valid_keys</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="ConfigurationManager.__getitem__">
+<a class="viewcode-back" href="../../../api/pyaml.configuration.manager.html#pyaml.configuration.manager.ConfigurationManager.__getitem__">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">query</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Alias for :meth:`find`.</span>
+
+<span class="sd">        Examples</span>
+<span class="sd">        --------</span>
+
+<span class="sd">        .. code-block:: python</span>
+
+<span class="sd">            &gt;&gt;&gt; manager[&quot;BPM_C04*&quot;]</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">query</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="ConfigurationManager.__getattr__">
+<a class="viewcode-back" href="../../../api/pyaml.configuration.manager.html#pyaml.configuration.manager.ConfigurationManager.__getattr__">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__getattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Provide attribute-style access for categories and unambiguous entry names.</span>
+
+<span class="sd">        Examples</span>
+<span class="sd">        --------</span>
+
+<span class="sd">        .. code-block:: python</span>
+
+<span class="sd">            &gt;&gt;&gt; manager.simulators</span>
+
+<span class="sd">        .. code-block:: python</span>
+
+<span class="sd">            &gt;&gt;&gt; manager.HCORR</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_items_by_category</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">keys</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+        <span class="n">categories</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_categories_for_name</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">categories</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">categories</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">name</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">categories</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">AttributeError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;ConfigurationManager key &#39;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">&#39; is ambiguous across categories </span><span class="si">{</span><span class="n">categories</span><span class="si">}</span><span class="s2">. &quot;</span>
+                <span class="s2">&quot;Use get(category, name).&quot;</span>
+            <span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">AttributeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;&#39;ConfigurationManager&#39; object has no attribute &#39;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">&#39;&quot;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="ConfigurationManager.__repr__">
+<a class="viewcode-back" href="../../../api/pyaml.configuration.manager.html#pyaml.configuration.manager.ConfigurationManager.__repr__">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Return a human-readable overview of the aggregated configuration.</span>
+
+<span class="sd">        Examples</span>
+<span class="sd">        --------</span>
+
+<span class="sd">        .. code-block:: python</span>
+
+<span class="sd">            &gt;&gt;&gt; repr(manager)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">lines</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="n">settings</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">()</span>
+        <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;Settings:&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">settings</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">settings</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;    </span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">value</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;    .&quot;</span><span class="p">)</span>
+        <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">category</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">NAMED_CATEGORIES</span><span class="p">:</span>
+            <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">_CATEGORY_TITLES</span><span class="p">[</span><span class="n">category</span><span class="p">]</span><span class="si">}</span><span class="s2">:&quot;</span><span class="p">)</span>
+            <span class="n">entries</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_items_by_category</span><span class="p">[</span><span class="n">category</span><span class="p">]</span>
+            <span class="k">if</span> <span class="n">entries</span><span class="p">:</span>
+                <span class="k">for</span> <span class="n">entry</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_state</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">category</span><span class="p">,</span> <span class="p">[]):</span>
+                    <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_format_entry</span><span class="p">(</span><span class="n">category</span><span class="p">,</span> <span class="n">entry</span><span class="p">))</span>
+            <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;    .&quot;</span><span class="p">)</span>
+            <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">lines</span><span class="p">)</span><span class="o">.</span><span class="n">rstrip</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="ConfigurationManager.__str__">
+<a class="viewcode-back" href="../../../api/pyaml.configuration.manager.html#pyaml.configuration.manager.ConfigurationManager.__str__">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Return the same overview as :meth:`__repr__`.</span>
+
+<span class="sd">        Examples</span>
+<span class="sd">        --------</span>
+
+<span class="sd">        .. code-block:: python</span>
+
+<span class="sd">            &gt;&gt;&gt; print(manager)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="fm">__repr__</span><span class="p">()</span></div>
+
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_load_payload</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">payload</span><span class="p">,</span>
+        <span class="o">*</span><span class="p">,</span>
+        <span class="n">source_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">use_fast_loader</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span> <span class="nb">str</span><span class="p">,</span> <span class="n">SourceRoot</span><span class="p">]:</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">payload</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">payload</span><span class="p">),</span> <span class="n">source_name</span> <span class="ow">or</span> <span class="s2">&quot;&lt;dict&gt;&quot;</span><span class="p">,</span> <span class="kc">None</span>
+
+        <span class="n">payload_path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_coerce_path</span><span class="p">(</span><span class="n">payload</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">is_remote_url</span><span class="p">(</span><span class="n">payload_path</span><span class="p">):</span>
+            <span class="n">fragment</span><span class="p">,</span> <span class="n">source_root</span> <span class="o">=</span> <span class="n">fetch_remote_config</span><span class="p">(</span><span class="n">payload_path</span><span class="p">,</span> <span class="n">use_fast_loader</span><span class="o">=</span><span class="n">use_fast_loader</span><span class="p">)</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_build_root_locked</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_build_root</span> <span class="o">=</span> <span class="n">source_root</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_build_root_locked</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="k">return</span> <span class="n">fragment</span><span class="p">,</span> <span class="n">source_name</span> <span class="ow">or</span> <span class="n">payload_path</span><span class="p">,</span> <span class="n">source_root</span>
+
+        <span class="n">path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">payload_path</span><span class="p">)</span>
+        <span class="n">suffix</span> <span class="o">=</span> <span class="n">path</span><span class="o">.</span><span class="n">suffix</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">suffix</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_SUPPORTED_FILE_SUFFIXES</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">PyAMLConfigException</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;Cannot infer configuration source from &#39;</span><span class="si">{</span><span class="n">payload_path</span><span class="si">}</span><span class="s2">&#39;. &quot;</span>
+                <span class="s2">&quot;Supported inputs are dict, .yaml/.yml files or .json files.&quot;</span>
+            <span class="p">)</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
+            <span class="k">raise</span> <span class="n">PyAMLConfigException</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">payload_path</span><span class="si">}</span><span class="s2"> file not found&quot;</span><span class="p">)</span>
+
+        <span class="n">resolved_path</span> <span class="o">=</span> <span class="n">path</span><span class="o">.</span><span class="n">resolve</span><span class="p">()</span>
+        <span class="n">previous_root</span> <span class="o">=</span> <span class="n">get_root_folder</span><span class="p">()</span>
+        <span class="n">source_root</span> <span class="o">=</span> <span class="n">resolved_path</span><span class="o">.</span><span class="n">parent</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">set_root_folder</span><span class="p">(</span><span class="n">source_root</span><span class="p">)</span>
+            <span class="n">fragment</span> <span class="o">=</span> <span class="n">load</span><span class="p">(</span><span class="n">resolved_path</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="n">use_fast_loader</span><span class="p">)</span>
+        <span class="k">finally</span><span class="p">:</span>
+            <span class="n">set_root_folder</span><span class="p">(</span><span class="n">previous_root</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_build_root_locked</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_build_root</span> <span class="o">=</span> <span class="n">source_root</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_build_root_locked</span> <span class="o">=</span> <span class="kc">True</span>
+
+        <span class="k">return</span> <span class="n">fragment</span><span class="p">,</span> <span class="n">source_name</span> <span class="ow">or</span> <span class="nb">str</span><span class="p">(</span><span class="n">resolved_path</span><span class="p">),</span> <span class="n">source_root</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_prepare_fragment</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fragment</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span> <span class="n">source_root</span><span class="p">:</span> <span class="n">SourceRoot</span><span class="p">,</span> <span class="n">source_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">fragment</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="n">PyAMLConfigException</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;ConfigurationManager.add() expects a mapping at the top level, got &#39;</span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">fragment</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">&#39;.&quot;</span>
+            <span class="p">)</span>
+
+        <span class="n">accelerator_type</span> <span class="o">=</span> <span class="n">fragment</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;type&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">DEFAULT_TYPE</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">accelerator_type</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">DEFAULT_TYPE</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">UnsupportedConfigurationRootError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;ConfigurationManager only supports &#39;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">DEFAULT_TYPE</span><span class="si">}</span><span class="s2">&#39; roots, got &#39;</span><span class="si">{</span><span class="n">accelerator_type</span><span class="si">}</span><span class="s2">&#39;.&quot;</span>
+            <span class="p">)</span>
+
+        <span class="n">prepared</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">fragment</span><span class="p">)</span>
+        <span class="n">prepared</span><span class="p">[</span><span class="s2">&quot;type&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">DEFAULT_TYPE</span>
+
+        <span class="k">for</span> <span class="n">category</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">NAMED_CATEGORIES</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">category</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">prepared</span><span class="p">:</span>
+                <span class="k">continue</span>
+
+            <span class="n">entries</span> <span class="o">=</span> <span class="n">prepared</span><span class="p">[</span><span class="n">category</span><span class="p">]</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">entries</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+                <span class="k">raise</span> <span class="n">PyAMLConfigException</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Configuration category &#39;</span><span class="si">{</span><span class="n">category</span><span class="si">}</span><span class="s2">&#39; must be a list.&quot;</span><span class="p">)</span>
+
+            <span class="k">for</span> <span class="n">index</span><span class="p">,</span> <span class="n">entry</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">entries</span><span class="p">):</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">entry</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+                    <span class="k">raise</span> <span class="n">PyAMLConfigException</span><span class="p">(</span>
+                        <span class="sa">f</span><span class="s2">&quot;Configuration category &#39;</span><span class="si">{</span><span class="n">category</span><span class="si">}</span><span class="s2">&#39; expects object entries, &quot;</span>
+                        <span class="sa">f</span><span class="s2">&quot;found &#39;</span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">entry</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">&#39; at index </span><span class="si">{</span><span class="n">index</span><span class="si">}</span><span class="s2"> from source &#39;</span><span class="si">{</span><span class="n">source_name</span><span class="si">}</span><span class="s2">&#39;.&quot;</span>
+                    <span class="p">)</span>
+                <span class="k">if</span> <span class="s2">&quot;name&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">entry</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="n">PyAMLConfigException</span><span class="p">(</span>
+                        <span class="sa">f</span><span class="s2">&quot;Configuration category &#39;</span><span class="si">{</span><span class="n">category</span><span class="si">}</span><span class="s2">&#39; expects named objects, &quot;</span>
+                        <span class="sa">f</span><span class="s2">&quot;but entry at index </span><span class="si">{</span><span class="n">index</span><span class="si">}</span><span class="s2"> from source &#39;</span><span class="si">{</span><span class="n">source_name</span><span class="si">}</span><span class="s2">&#39; has no &#39;name&#39;.&quot;</span>
+                    <span class="p">)</span>
+                <span class="k">if</span> <span class="s2">&quot;type&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">entry</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="n">PyAMLConfigException</span><span class="p">(</span>
+                        <span class="sa">f</span><span class="s2">&quot;Configuration entry &#39;</span><span class="si">{</span><span class="n">entry</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&#39; in category &#39;</span><span class="si">{</span><span class="n">category</span><span class="si">}</span><span class="s2">&#39; has no &#39;type&#39;.&quot;</span>
+                    <span class="p">)</span>
+
+                <span class="k">if</span> <span class="n">category</span> <span class="o">==</span> <span class="s2">&quot;simulators&quot;</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_normalize_simulator_paths</span><span class="p">(</span><span class="n">entry</span><span class="p">,</span> <span class="n">entry</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">REMOTE_BASE_URL_KEY</span><span class="p">,</span> <span class="n">source_root</span><span class="p">))</span>
+
+        <span class="k">return</span> <span class="n">prepared</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_merge_fragment</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fragment</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span> <span class="n">source_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">duplicate_errors</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">pending_by_category</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]]</span> <span class="o">=</span> <span class="p">{}</span>
+
+        <span class="k">for</span> <span class="n">category</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">NAMED_CATEGORIES</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">category</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">fragment</span><span class="p">:</span>
+                <span class="k">continue</span>
+
+            <span class="n">entries</span> <span class="o">=</span> <span class="n">fragment</span><span class="p">[</span><span class="n">category</span><span class="p">]</span>
+            <span class="n">seen_in_fragment</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]</span> <span class="o">=</span> <span class="p">{}</span>
+            <span class="k">for</span> <span class="n">entry</span> <span class="ow">in</span> <span class="n">entries</span><span class="p">:</span>
+                <span class="n">name</span> <span class="o">=</span> <span class="n">entry</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">]</span>
+                <span class="k">if</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">seen_in_fragment</span><span class="p">:</span>
+                    <span class="n">previous_entry</span> <span class="o">=</span> <span class="n">seen_in_fragment</span><span class="p">[</span><span class="n">name</span><span class="p">]</span>
+                    <span class="n">duplicate_errors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                        <span class="sa">f</span><span class="s2">&quot;Configuration entry &#39;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">&#39; is duplicated inside category &#39;</span><span class="si">{</span><span class="n">category</span><span class="si">}</span><span class="s2">&#39;. &quot;</span>
+                        <span class="sa">f</span><span class="s2">&quot;First declaration: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_describe_entry_source</span><span class="p">(</span><span class="n">previous_entry</span><span class="p">,</span><span class="w"> </span><span class="n">source_name</span><span class="p">)</span><span class="si">}</span><span class="s2">. &quot;</span>
+                        <span class="sa">f</span><span class="s2">&quot;Duplicate declaration: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_describe_entry_source</span><span class="p">(</span><span class="n">entry</span><span class="p">,</span><span class="w"> </span><span class="n">source_name</span><span class="p">)</span><span class="si">}</span><span class="s2">.&quot;</span>
+                    <span class="p">)</span>
+                    <span class="k">continue</span>
+                <span class="k">if</span> <span class="n">name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_items_by_category</span><span class="p">[</span><span class="n">category</span><span class="p">]:</span>
+                    <span class="n">previous_entry</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_items_by_category</span><span class="p">[</span><span class="n">category</span><span class="p">][</span><span class="n">name</span><span class="p">]</span>
+                    <span class="n">previous_source</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sources_by_category</span><span class="p">[</span><span class="n">category</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="s2">&quot;&lt;unknown&gt;&quot;</span><span class="p">)</span>
+                    <span class="n">duplicate_errors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                        <span class="sa">f</span><span class="s2">&quot;Configuration entry &#39;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">&#39; already exists in category &#39;</span><span class="si">{</span><span class="n">category</span><span class="si">}</span><span class="s2">&#39;. &quot;</span>
+                        <span class="sa">f</span><span class="s2">&quot;First declaration: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_describe_entry_source</span><span class="p">(</span><span class="n">previous_entry</span><span class="p">,</span><span class="w"> </span><span class="n">previous_source</span><span class="p">)</span><span class="si">}</span><span class="s2">. &quot;</span>
+                        <span class="sa">f</span><span class="s2">&quot;Duplicate declaration: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_describe_entry_source</span><span class="p">(</span><span class="n">entry</span><span class="p">,</span><span class="w"> </span><span class="n">source_name</span><span class="p">)</span><span class="si">}</span><span class="s2">. &quot;</span>
+                        <span class="s2">&quot;Use replace() to override it.&quot;</span>
+                    <span class="p">)</span>
+                    <span class="k">continue</span>
+                <span class="n">seen_in_fragment</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">entry</span>
+
+            <span class="n">pending_by_category</span><span class="p">[</span><span class="n">category</span><span class="p">]</span> <span class="o">=</span> <span class="n">entries</span>
+
+        <span class="k">if</span> <span class="n">duplicate_errors</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">PyAMLConfigException</span><span class="p">(</span><span class="n">duplicate_errors</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+
+        <span class="k">for</span> <span class="n">field</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">fragment</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="k">if</span> <span class="n">field</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">NAMED_CATEGORIES</span><span class="p">:</span>
+                <span class="k">continue</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_state</span><span class="p">[</span><span class="n">field</span><span class="p">]</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">field</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">_INTERNAL_METADATA_KEYS</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_field_sources</span><span class="p">[</span><span class="n">field</span><span class="p">]</span> <span class="o">=</span> <span class="n">source_name</span>
+
+        <span class="k">for</span> <span class="n">category</span><span class="p">,</span> <span class="n">entries</span> <span class="ow">in</span> <span class="n">pending_by_category</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="n">target</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_state</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="n">category</span><span class="p">,</span> <span class="p">[])</span>
+            <span class="k">for</span> <span class="n">entry</span> <span class="ow">in</span> <span class="n">entries</span><span class="p">:</span>
+                <span class="n">copied</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">entry</span><span class="p">)</span>
+                <span class="n">target</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">copied</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_items_by_category</span><span class="p">[</span><span class="n">category</span><span class="p">][</span><span class="n">copied</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">]]</span> <span class="o">=</span> <span class="n">copied</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_sources_by_category</span><span class="p">[</span><span class="n">category</span><span class="p">][</span><span class="n">copied</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">]]</span> <span class="o">=</span> <span class="n">source_name</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_snapshot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">include_internal_metadata</span><span class="p">:</span> <span class="nb">bool</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
+        <span class="n">snapshot</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_state</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">include_internal_metadata</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">snapshot</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_strip_internal_metadata</span><span class="p">(</span><span class="n">snapshot</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_normalize_simulator_paths</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">entry</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span> <span class="n">source_root</span><span class="p">:</span> <span class="n">SourceRoot</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">source_root</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span>
+
+        <span class="n">lattice</span> <span class="o">=</span> <span class="n">entry</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;lattice&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">lattice</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isabs</span><span class="p">(</span><span class="n">lattice</span><span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">is_remote_url</span><span class="p">(</span><span class="n">lattice</span><span class="p">):</span>
+            <span class="n">entry</span><span class="p">[</span><span class="s2">&quot;lattice&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">resolve_reference</span><span class="p">(</span><span class="n">lattice</span><span class="p">,</span> <span class="n">source_root</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_require_named_category</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">category</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">category</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">NAMED_CATEGORIES</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">PyAMLConfigException</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;Unknown configuration category &#39;</span><span class="si">{</span><span class="n">category</span><span class="si">}</span><span class="s2">&#39;. Expected one of: </span><span class="si">{</span><span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">NAMED_CATEGORIES</span><span class="p">)</span><span class="si">}</span><span class="s2">.&quot;</span>
+            <span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_categories_for_name</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+        <span class="n">categories</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">category</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">NAMED_CATEGORIES</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_items_by_category</span><span class="p">[</span><span class="n">category</span><span class="p">]:</span>
+                <span class="n">categories</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">category</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">categories</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_format_entry</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">category</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">entry</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="n">name</span> <span class="o">=</span> <span class="n">entry</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;name&quot;</span><span class="p">,</span> <span class="s2">&quot;&lt;unnamed&gt;&quot;</span><span class="p">)</span>
+        <span class="n">entry_type</span> <span class="o">=</span> <span class="n">entry</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;type&quot;</span><span class="p">)</span>
+        <span class="n">type_part</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot; (</span><span class="si">{</span><span class="n">entry_type</span><span class="si">}</span><span class="s2">)&quot;</span> <span class="k">if</span> <span class="n">entry_type</span> <span class="k">else</span> <span class="s2">&quot;&quot;</span>
+
+        <span class="n">details</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">if</span> <span class="n">category</span> <span class="o">==</span> <span class="s2">&quot;arrays&quot;</span><span class="p">:</span>
+            <span class="n">patterns</span> <span class="o">=</span> <span class="n">entry</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;elements&quot;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">patterns</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+                <span class="n">details</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;patterns=</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">patterns</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+        <span class="n">source</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sources_by_category</span><span class="p">[</span><span class="n">category</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">source</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">details</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;source=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_format_source</span><span class="p">(</span><span class="n">source</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+        <span class="n">detail_part</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">details</span><span class="p">:</span>
+            <span class="n">detail_part</span> <span class="o">=</span> <span class="s2">&quot; &quot;</span> <span class="o">+</span> <span class="s2">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">details</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;    </span><span class="si">{</span><span class="n">name</span><span class="si">}{</span><span class="n">type_part</span><span class="si">}{</span><span class="n">detail_part</span><span class="si">}</span><span class="s2">&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_format_source</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">source</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">source</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;&lt;&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">source</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;&gt;&quot;</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">source</span>
+        <span class="n">source_path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">source</span><span class="p">)</span>
+        <span class="n">suffix</span> <span class="o">=</span> <span class="n">source_path</span><span class="o">.</span><span class="n">suffix</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">suffix</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_SUPPORTED_FILE_SUFFIXES</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">source_path</span><span class="o">.</span><span class="n">name</span>
+        <span class="k">return</span> <span class="n">source</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_describe_entry_source</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">entry</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span> <span class="n">fallback_source</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="n">location</span> <span class="o">=</span> <span class="n">entry</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;__location__&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">location</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">location</span><span class="p">)</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>
+            <span class="n">source</span><span class="p">,</span> <span class="n">line</span><span class="p">,</span> <span class="n">column</span> <span class="o">=</span> <span class="n">location</span>
+            <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;source &#39;</span><span class="si">{</span><span class="n">source</span><span class="si">}</span><span class="s2">&#39; at line </span><span class="si">{</span><span class="n">line</span><span class="si">}</span><span class="s2">, column </span><span class="si">{</span><span class="n">column</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;source &#39;</span><span class="si">{</span><span class="n">fallback_source</span><span class="si">}</span><span class="s2">&#39;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_coerce_path</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">payload</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">payload</span><span class="p">,</span> <span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">PathLike</span><span class="p">)):</span>
+            <span class="k">return</span> <span class="n">os</span><span class="o">.</span><span class="n">fspath</span><span class="p">(</span><span class="n">payload</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="n">PyAMLConfigException</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;Cannot infer configuration source from payload of type &#39;</span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">payload</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">&#39;.&quot;</span>
+        <span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_extend_unique</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">target</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">values</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">values</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">value</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">target</span><span class="p">:</span>
+                <span class="n">target</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_strip_internal_metadata</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+            <span class="k">return</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_strip_internal_metadata</span><span class="p">(</span><span class="n">entry</span><span class="p">)</span> <span class="k">for</span> <span class="n">entry</span> <span class="ow">in</span> <span class="n">value</span><span class="p">]</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+            <span class="k">return</span> <span class="p">{</span>
+                <span class="n">key</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_strip_internal_metadata</span><span class="p">(</span><span class="n">entry</span><span class="p">)</span>
+                <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">entry</span> <span class="ow">in</span> <span class="n">value</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
+                <span class="k">if</span> <span class="n">key</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">_INTERNAL_METADATA_KEYS</span>
+            <span class="p">}</span>
+        <span class="k">return</span> <span class="n">value</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_strip_runtime_internal_metadata</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+            <span class="k">return</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_strip_runtime_internal_metadata</span><span class="p">(</span><span class="n">entry</span><span class="p">)</span> <span class="k">for</span> <span class="n">entry</span> <span class="ow">in</span> <span class="n">value</span><span class="p">]</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+            <span class="k">return</span> <span class="p">{</span>
+                <span class="n">key</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_strip_runtime_internal_metadata</span><span class="p">(</span><span class="n">entry</span><span class="p">)</span>
+                <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">entry</span> <span class="ow">in</span> <span class="n">value</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
+                <span class="k">if</span> <span class="n">key</span> <span class="o">!=</span> <span class="n">REMOTE_BASE_URL_KEY</span>
+            <span class="p">}</span>
+        <span class="k">return</span> <span class="n">value</span></div>
+
+</pre></div>
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../../../_static/scripts/bootstrap.js?digest=7f76b32a3354e82990f2"></script>
+<script defer src="../../../_static/scripts/pydata-sphinx-theme.js?digest=7f76b32a3354e82990f2"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="copyright">
+    
+      © Copyright 2024, pyAML Collaboration.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.2.3.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+<p class="theme-version">
+  <!-- # L10n: Setting the PST URL as an argument as this does not need to be localized -->
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.17.0.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>
