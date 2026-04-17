@@ -161,6 +161,30 @@ class Accelerator(object):
         """
         self._set_properties("_set_harmonic", h)
 
+    def add_device(self, config: dict, ignore_external=False):
+        """
+        Dynamically add a device to this accelerator
+
+        config_dict : str
+            Dictionary containing accelerator config
+        ignore_external: bool
+            Ignore external modules and return None for object that
+            cannot be created. pydantic schema that support that an
+            object is not created should handle None fields.
+        """
+        dev = Factory.depth_first_build(config, ignore_external)
+        if not isinstance(dev, Element):
+            raise PyAMLConfigException("Invalid device type, Element or sub classes of Element expected")
+
+        self._cfg.devices.append(dev)
+        if self._cfg.controls is not None:
+            for c in self._cfg.controls:
+                c.fill_device([dev])
+
+        if self._cfg.simulators is not None:
+            for s in self._cfg.simulators:
+                s.fill_device([dev])
+
     def post_init(self):
         """
         Method triggered after all initialisations are done
