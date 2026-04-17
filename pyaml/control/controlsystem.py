@@ -25,6 +25,7 @@ from ..control.abstract_impl import (
     RWStrengthArray,
     RWStrengthScalar,
 )
+from ..diagnostics.atune_monitor import ABetatronTuneMonitor
 from ..diagnostics.tune_monitor import BetatronTuneMonitor
 from ..magnet.cfm_magnet import CombinedFunctionMagnet
 from ..magnet.magnet import Magnet
@@ -245,9 +246,14 @@ class ControlSystem(ElementHolder, metaclass=ABCMeta):
                 self.add_rf_plant(ne)
 
             elif isinstance(e, BetatronTuneMonitor):
+                # Built in tune monitor
                 tuneDevs = self.attach([e._cfg.tune_h, e._cfg.tune_v])
                 betatron_tune = RBetatronTuneArray(e, tuneDevs)
                 e = e.attach(self, betatron_tune)
+                self.add_betatron_tune_monitor(e)
+
+            elif isinstance(e, ABetatronTuneMonitor):
+                # External tune monitor
                 self.add_betatron_tune_monitor(e)
 
             elif isinstance(e, TuningTool) | isinstance(e, MeasurementTool):
