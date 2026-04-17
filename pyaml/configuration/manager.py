@@ -700,23 +700,28 @@ class ConfigurationManager:
                 continue
 
             entries = fragment[category]
-            seen_in_fragment: set[str] = set()
+            seen_in_fragment: dict[str, dict[str, Any]] = {}
             for entry in entries:
                 name = entry["name"]
                 if name in seen_in_fragment:
+                    previous_entry = seen_in_fragment[name]
                     duplicate_errors.append(
-                        f"Configuration entry '{name}' is duplicated inside category '{category}' in source "
-                        f"'{source_name}'."
+                        f"Configuration entry '{name}' is duplicated inside category '{category}'. "
+                        f"First declaration: {self._describe_entry_source(previous_entry, source_name)}. "
+                        f"Duplicate declaration: {self._describe_entry_source(entry, source_name)}."
                     )
                     continue
                 if name in self._items_by_category[category]:
+                    previous_entry = self._items_by_category[category][name]
                     previous_source = self._sources_by_category[category].get(name, "<unknown>")
                     duplicate_errors.append(
-                        f"Configuration entry '{name}' already exists in category '{category}' "
-                        f"(from '{previous_source}'). Use replace() to override it."
+                        f"Configuration entry '{name}' already exists in category '{category}'. "
+                        f"First declaration: {self._describe_entry_source(previous_entry, previous_source)}. "
+                        f"Duplicate declaration: {self._describe_entry_source(entry, source_name)}. "
+                        "Use replace() to override it."
                     )
                     continue
-                seen_in_fragment.add(name)
+                seen_in_fragment[name] = entry
 
             pending_by_category[category] = entries
 
@@ -794,6 +799,13 @@ class ConfigurationManager:
         if suffix in self._SUPPORTED_FILE_SUFFIXES:
             return source_path.name
         return source
+
+    def _describe_entry_source(self, entry: dict[str, Any], fallback_source: str) -> str:
+        location = entry.get("__location__")
+        if isinstance(location, tuple) and len(location) == 3:
+            source, line, column = location
+            return f"source '{source}' at line {line}, column {column}"
+        return f"source '{fallback_source}'"
 
     def _coerce_path(self, payload) -> str:
         if isinstance(payload, (str, os.PathLike)):
