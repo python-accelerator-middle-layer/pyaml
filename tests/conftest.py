@@ -327,10 +327,9 @@ def tune_monitor_devices_fragment(config_root_path) -> pathlib.Path:
 
 @pytest.fixture
 def tune_monitor_configuration_fragments(
-    sr_base_fragment,
-    tune_monitor_devices_fragment,
-) -> tuple[pathlib.Path, pathlib.Path]:
-    return (sr_base_fragment, tune_monitor_devices_fragment)
+    config_root_path,
+) -> tuple[pathlib.Path]:
+    return (config_root_path / "tune_monitor.yaml",)
 
 
 @pytest.fixture
