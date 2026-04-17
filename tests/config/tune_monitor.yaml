@@ -1,6 +1,7 @@
 type: pyaml.accelerator
 facility: ESRF
 machine: sr
+harmonic_number: 992
 energy: 6e9
 simulators:
   - type: pyaml.lattice.simulator
@@ -16,9 +17,16 @@ devices:
   name: BETATRON_TUNE
   tune_h:
     type: tango.pyaml.attribute_read_only
-    attribute: srdiag/tune/tune_h
+    attribute: srdiag/beam-tune/main/Qh
     unit: mm
   tune_v:
     type: tango.pyaml.attribute_read_only
-    attribute: srdiag/tune/tune_v
+    attribute: srdiag/beam-tune/main/Qv
     unit: mm
+  rf_plant_name: RF
+- type: pyaml.rf.rf_plant
+  name: RF
+  masterclock:
+    type: tango.pyaml.attribute
+    attribute: sy/ms/1/Frequency
+    unit: Hz

@@ -103,6 +103,12 @@ class Element(object):
         """
         pass
 
+    def set_harmonic(self, h: int):
+        """
+        Sets the harmonic number (number of bucket) on this element
+        """
+        pass
+
     def check_peer(self):
         """
         Throws an exception if the element is not attacched

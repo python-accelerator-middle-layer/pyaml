@@ -35,6 +35,8 @@ class ConfigModel(BaseModel):
         this value can be dynamically set
     alphac : float, optional
         Moment compaction factor.
+    harmonic_number: int, optional
+        Number of bucket
     controls : list[ControlSystem], optional
         List of control system used. An accelerator
         can access several control systems
@@ -56,6 +58,7 @@ class ConfigModel(BaseModel):
     machine: str
     energy: float
     alphac: float | None = None
+    harmonic_number: int | None = None
     controls: list[ControlSystem] = None
     simulators: list[Simulator] = None
     data_folder: str
@@ -109,9 +112,23 @@ class Accelerator(object):
         if cfg.alphac is not None:
             self.set_mcf(cfg.alphac)
 
+        if cfg.harmonic_number is not None:
+            self.set_harmonic_number(cfg.harmonic_number)
+
         self._yellow_pages = YellowPages(self)
 
         self.post_init()
+
+    def _set_properties(self, method: str, value):
+        # Sets global property
+        if self._cfg.simulators is not None:
+            for s in self._cfg.simulators:
+                m = getattr(s, method)
+                m(value)
+        if self._cfg.controls is not None:
+            for c in self._cfg.controls:
+                m = getattr(c, method)
+                m(value)
 
     def set_energy(self, E: float):
         """
@@ -122,12 +139,7 @@ class Accelerator(object):
         E : float
             Energy value to set in eV
         """
-        if self._cfg.simulators is not None:
-            for s in self._cfg.simulators:
-                s._set_energy(E)
-        if self._cfg.controls is not None:
-            for c in self._cfg.controls:
-                c._set_energy(E)
+        self._set_properties("_set_energy", E)
 
     def set_mcf(self, alphac: float):
         """
@@ -138,12 +150,18 @@ class Accelerator(object):
         alphac : float
             Moment compaction factor
         """
-        if self._cfg.simulators is not None:
-            for s in self._cfg.simulators:
-                s._set_mcf(alphac)
-        if self._cfg.controls is not None:
-            for c in self._cfg.controls:
-                c._set_mcf(alphac)
+        self._set_properties("_set_mcf", alphac)
+
+    def set_harmonic_number(self, h: int):
+        """
+        Set the number of bucket.
+
+        Parameters
+        ----------
+        h : int
+            Number of bucket
+        """
+        self._set_properties("_set_harmonic", h)
 
     def post_init(self):
         """
