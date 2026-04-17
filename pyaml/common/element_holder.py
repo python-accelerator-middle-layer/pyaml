@@ -412,3 +412,15 @@ class ElementHolder(object):
         # Needed by some off energy dependant element (i.e. chromaticty tools)
         for m in self.get_all_elements():
             m.set_mcf(alphac)
+
+    def _set_harmonic(self, h: int):
+        """
+        Sets the harmonic number (number of bucket) on elements
+
+        Parameters
+        ----------
+        h : int
+            Harmonic number
+        """
+        for m in self.get_all_elements():
+            m.set_harmonic(h)
