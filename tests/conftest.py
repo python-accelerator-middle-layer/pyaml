@@ -1,9 +1,11 @@
 import importlib
 import importlib.machinery
+import importlib.metadata
 import pathlib
 import sys
 import types
 from contextlib import contextmanager
+from dataclasses import dataclass
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from threading import Thread
 
@@ -16,10 +18,31 @@ from pyaml.configuration import ConfigurationManager
 from pyaml.configuration.factory import BuildStrategy, Factory
 from pyaml.control.readback_value import Value
 
-_TEST_PACKAGE_IMPORTS = {
-    "tango-pyaml": "tango.pyaml.controlsystem",
-    "pyaml_external": "pyaml_external.external_magnet_model",
+
+@dataclass(frozen=True)
+class TestPackageSpec:
+    import_name: str
+    distribution_name: str
+    module_file: str
+    local_path: pathlib.Path
+
+
+_TEST_PACKAGES = {
+    "tango-pyaml": TestPackageSpec(
+        import_name="tango.pyaml.controlsystem",
+        distribution_name="tango-pyaml",
+        module_file="tango/pyaml/controlsystem.py",
+        local_path=pathlib.Path("tests/dummy_cs/tango-pyaml"),
+    ),
+    "pyaml_external": TestPackageSpec(
+        import_name="pyaml_external.external_magnet_model",
+        distribution_name="pyaml_external",
+        module_file="pyaml_external/external_magnet_model.py",
+        local_path=pathlib.Path("tests/external"),
+    ),
 }
+_TESTS_DIR = pathlib.Path(__file__).parent.resolve()
+_CONFIG_DIR = _TESTS_DIR / "config"
 
 
 @pytest.fixture
@@ -47,38 +70,10 @@ def install_test_package(request):
         yield None
         return
     package_name = info["name"]
-    package_path = None
-    if info["path"] is not None:
-        package_path = pathlib.Path(info["path"]).resolve()
-        if not package_path.exists():
-            raise FileNotFoundError(f"Package path not found: {package_path}")
+    package_path = _resolve_test_package_path(info)
 
-    if package_path is None:
-        raise RuntimeError("No package_path defined for install_test_package fixture")
-
-    if not ((package_path / "pyproject.toml").exists() or (package_path / "setup.py").exists()):
-        raise RuntimeError(f"No pyproject.toml or setup.py found in {package_path}")
-
-    target_import = _TEST_PACKAGE_IMPORTS.get(package_name)
-    if target_import and _module_available(target_import):
+    with _installed_test_packages([package_path], skip_if_installed=(package_name,)):
         yield package_name
-        return
-
-    package_path_str = str(package_path)
-    package_roots = _discover_package_roots(package_path)
-
-    _purge_modules(package_roots)
-    if package_path_str not in sys.path:
-        sys.path.insert(0, package_path_str)
-    _expose_namespace_packages(package_path)
-    importlib.invalidate_caches()
-
-    yield package_name
-
-    _purge_modules(package_roots)
-    while package_path_str in sys.path:
-        sys.path.remove(package_path_str)
-    importlib.invalidate_caches()
 
 
 def _discover_package_roots(package_path: pathlib.Path) -> list[str]:
@@ -101,12 +96,62 @@ def _discover_package_roots(package_path: pathlib.Path) -> list[str]:
     return list(dict.fromkeys(roots))
 
 
+def _resolve_test_package_path(info: dict) -> pathlib.Path:
+    package_path_value = info.get("path")
+    if package_path_value is None:
+        raise RuntimeError("No package_path defined for install_test_package fixture")
+
+    package_path = pathlib.Path(package_path_value).resolve()
+    if not package_path.exists():
+        raise FileNotFoundError(f"Package path not found: {package_path}")
+    if not ((package_path / "pyproject.toml").exists() or (package_path / "setup.py").exists()):
+        raise RuntimeError(f"No pyproject.toml or setup.py found in {package_path}")
+    return package_path
+
+
 def _module_available(module_name: str) -> bool:
     try:
         importlib.import_module(module_name)
     except ModuleNotFoundError:
         return False
     return True
+
+
+def _imported_module_path(module_name: str) -> pathlib.Path | None:
+    try:
+        module = importlib.import_module(module_name)
+    except ModuleNotFoundError:
+        return None
+
+    module_file = getattr(module, "__file__", None)
+    if module_file is None:
+        return None
+    return pathlib.Path(module_file).resolve()
+
+
+def _installed_module_path(spec: TestPackageSpec) -> pathlib.Path | None:
+    try:
+        distribution = importlib.metadata.distribution(spec.distribution_name)
+    except importlib.metadata.PackageNotFoundError:
+        return None
+
+    module_path = pathlib.Path(distribution.locate_file(spec.module_file)).resolve()
+    return module_path if module_path.exists() else None
+
+
+def _module_matches_test_package(package_name: str, package_path: pathlib.Path) -> bool:
+    spec = _TEST_PACKAGES.get(package_name)
+    if spec is None:
+        return False
+
+    module_path = _imported_module_path(spec.import_name)
+    if module_path is None:
+        return False
+    if module_path.is_relative_to(package_path):
+        return True
+
+    installed_module_path = _installed_module_path(spec)
+    return installed_module_path is not None and module_path == installed_module_path
 
 
 def _purge_modules(package_roots: list[str]) -> None:
@@ -141,22 +186,28 @@ def _expose_namespace_packages(package_path: pathlib.Path) -> None:
             module.__path__ = module_path
 
 
-@pytest.fixture(scope="session", autouse=True)
-def install_default_test_packages():
-    package_paths = [
-        pathlib.Path("tests/dummy_cs/tango-pyaml").resolve(),
-        pathlib.Path("tests/external").resolve(),
-    ]
-    if all(_module_available(module_name) for module_name in _TEST_PACKAGE_IMPORTS.values()):
-        yield
-        return
+@contextmanager
+def _installed_test_packages(
+    package_paths: list[pathlib.Path],
+    *,
+    skip_if_installed: tuple[str, ...] = (),
+):
+    if skip_if_installed:
+        package_map = {
+            package_name: _TEST_PACKAGES[package_name].local_path.resolve()
+            for package_name in skip_if_installed
+            if package_name in _TEST_PACKAGES
+        }
+        if package_map and all(
+            _module_matches_test_package(package_name, package_path)
+            for package_name, package_path in package_map.items()
+        ):
+            yield
+            return
 
-    package_roots: list[str] = []
-
-    for package_path in package_paths:
-        package_roots.extend(_discover_package_roots(package_path))
-
-    package_roots = list(dict.fromkeys(package_roots))
+    package_roots = list(
+        dict.fromkeys(root for package_path in package_paths for root in _discover_package_roots(package_path))
+    )
     path_strings = [str(path) for path in package_paths]
 
     _purge_modules(package_roots)
@@ -167,13 +218,24 @@ def install_default_test_packages():
         _expose_namespace_packages(package_path)
     importlib.invalidate_caches()
 
-    yield
+    try:
+        yield
+    finally:
+        _purge_modules(package_roots)
+        for path_string in path_strings:
+            while path_string in sys.path:
+                sys.path.remove(path_string)
+        importlib.invalidate_caches()
 
-    _purge_modules(package_roots)
-    for path_string in path_strings:
-        while path_string in sys.path:
-            sys.path.remove(path_string)
-    importlib.invalidate_caches()
+
+@pytest.fixture(scope="session", autouse=True)
+def install_default_test_packages():
+    package_paths = [spec.local_path.resolve() for spec in _TEST_PACKAGES.values()]
+    with _installed_test_packages(
+        package_paths,
+        skip_if_installed=tuple(_TEST_PACKAGES),
+    ):
+        yield
 
 
 @pytest.fixture
@@ -196,7 +258,7 @@ def config_root_path() -> pathlib.Path:
     """
     Returns the absolute path to the `tests/config` directory as a Path.
     """
-    return (pathlib.Path(__file__).parent / "config").resolve()
+    return _CONFIG_DIR
 
 
 @pytest.fixture
