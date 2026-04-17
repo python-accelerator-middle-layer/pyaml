@@ -1,11 +1,13 @@
 from ..common.abstract import ReadFloatArray
 from ..common.element import Element, ElementConfigModel
 from ..control.deviceaccess import DeviceAccess
+from .atune_monitor import ABetatronTuneMonitor
 
 try:
     from typing import Self  # Python 3.11+
 except ImportError:
     from typing_extensions import Self  # Python 3.10 and earlier
+import numpy as np
 from pydantic import ConfigDict
 
 PYAMLCLASS = "BetatronTuneMonitor"
@@ -27,9 +29,10 @@ class ConfigModel(ElementConfigModel):
 
     tune_h: DeviceAccess | None
     tune_v: DeviceAccess | None
+    rf_plant_name: str | None = None
 
 
-class BetatronTuneMonitor(Element):
+class BetatronTuneMonitor(Element, ABetatronTuneMonitor):
     """
     Class providing access to a betatron tune monitor
     of a physical or simulated lattice.
@@ -50,6 +53,10 @@ class BetatronTuneMonitor(Element):
         super().__init__(cfg.name)
         self._cfg = cfg
         self.__tune = None
+        self._h = None
+
+    def set_harmonic(self, h: int):
+        self._h = float(h)
 
     @property
     def tune(self) -> ReadFloatArray:
@@ -63,6 +70,36 @@ class BetatronTuneMonitor(Element):
         """
         self.check_peer()
         return self.__tune
+
+    @property
+    def frequency(self) -> ReadFloatArray:
+        """
+        Get the betatron tune values in frequency
+
+        Returns
+        -------
+        ReadFloatArray
+            Array of tune values in frequency [horizontal, vertical]
+        """
+
+        class TuneFreq(ReadFloatArray):
+            def __init__(self, parent: BetatronTuneMonitor):
+                self.parent = parent
+
+            def get(self) -> np.array:
+                h = self.parent._h
+                rf_name = self.parent._cfg.rf_plant_name
+                if h is not None and rf_name is not None:
+                    tune = self.parent.tune.get()
+                    rf = self.parent._peer.get_rf_plant(rf_name)
+                    freq = rf.frequency.get()
+                    return tune * freq / h
+
+            def unit(self) -> str:
+                return "Hz"
+
+        self.check_peer()
+        return TuneFreq(self)
 
     def attach(self, peer, betatron_tune: ReadFloatArray) -> Self:
         """
