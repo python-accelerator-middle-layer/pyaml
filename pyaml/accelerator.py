@@ -174,7 +174,8 @@ class Accelerator(object):
         """
         dev = Factory.depth_first_build(config, ignore_external)
         if not isinstance(dev, Element):
-            raise PyAMLConfigException("Invalid device type, Element or sub classes of Element expected")
+            raise PyAMLConfigException(f"Invalid device type, Element or sub classes of Element expected "+
+                                       f"but got {dev.__class__.__name__}")
 
         self._cfg.devices.append(dev)
         if self._cfg.controls is not None:
