@@ -8,8 +8,8 @@ from ..common.abstract_aggregator import ScalarAggregator
 from ..common.element import Element
 from ..common.element_holder import ElementHolder
 from ..common.exception import PyAMLException
-from ..configuration.external_element import ExternalElement
 from ..configuration.factory import Factory
+from ..configuration.unbound_element import UnboundElement
 from ..control.abstract_impl import (
     CSBPMArrayMapper,
     CSScalarAggregator,
@@ -71,11 +71,6 @@ class ControlSystem(ElementHolder, metaclass=ABCMeta):
     @abstractmethod
     def vector_aggregator(self) -> str | None:
         """Returns the module name used for handling aggregator of DeviceVectorAccess"""
-        return None
-
-    def prefix(self) -> str | None:
-        if hasattr(self, "_cfg") and hasattr(self._cfg, "prefix"):
-            return self._cfg.prefix
         return None
 
     def attach_indexed(self, dev: DeviceAccess, idx: int | None) -> DeviceAccess:
@@ -261,10 +256,34 @@ class ControlSystem(ElementHolder, metaclass=ABCMeta):
             elif isinstance(e, TuningTool) | isinstance(e, MeasurementTool):
                 self.add_tool(e.attach(self))
 
-            elif isinstance(e, ExternalElement):
-                if self.name() in e._modes:
-                    ne = Factory.build_external(e, self)
+            elif isinstance(e, UnboundElement):
+                if self.name() in e._control_modes:
+                    ne = Factory.build_unbound(e, self)
                     if isinstance(ne, ABetatronTuneMonitor):
                         self.add_betatron_tune_monitor(ne)
                     else:
                         print(f"Warning, {e.get_name()} is not a known object type")
+
+
+class ControlSystemAdapter(ControlSystem):
+    """
+    Control system adapter class
+    """
+
+    def __init__(self):
+        ControlSystem.__init__(self)
+
+    def attach(self, dev: list[DeviceAccess]) -> list[DeviceAccess]:
+        pass
+
+    def attach_array(self, dev: list[DeviceAccess]) -> list[DeviceAccess]:
+        pass
+
+    def name(self) -> str:
+        pass
+
+    def scalar_aggregator(self) -> str | None:
+        return None
+
+    def vector_aggregator(self) -> str | None:
+        return None

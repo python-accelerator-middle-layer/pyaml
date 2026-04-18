@@ -7,7 +7,7 @@ from pydantic import ValidationError
 
 from ..common.element import Element
 from ..common.exception import PyAMLConfigException
-from .external_element import ExternalElement
+from .unbound_element import UnboundElement
 
 
 class BuildStrategy:
@@ -79,80 +79,73 @@ class PyAMLFactory:
 
         if not isinstance(d, dict):
             raise PyAMLConfigException(f"Unexpected object {str(d)} {location_str}")
-        if "type" not in d and "class" not in d:
-            raise PyAMLConfigException(f"No type or class specified for {str(type(d))}:{str(d)} {location_str}")
+        if "type" not in d:
+            raise PyAMLConfigException(f"No type specified for {str(type(d))}:{str(d)} {location_str}")
 
-        type_str = d.pop("type", None)
-        if type_str is not None:
-            try:
-                module = importlib.import_module(type_str)
-            except ModuleNotFoundError as ex:
-                if not ignore_external:
-                    # Discard module not found stack trace
-                    raise PyAMLConfigException(
-                        "Module referenced in type cannot be found:" + f"'{type_str}' {location_str}"
-                    ) from None
-                else:
-                    return None
+        module_str = d.pop("type")
+        class_str = d.pop("class", None)
+        validation_class_str = d.pop("validation_class", "ConfigModel")
 
-            # Try plugin strategies first
-            for strategy in self._strategies:
-                try:
-                    if strategy.can_handle(module, d):
-                        obj = strategy.build(module, d)
-                        self.register_element(obj)
-                        return obj
-                except Exception as e:
-                    raise PyAMLConfigException(f"Custom strategy failed {location_str}") from e
+        # Import the module
+        try:
+            module = importlib.import_module(module_str)
+        except ModuleNotFoundError as ex:
+            if not ignore_external:
+                # Discard module not found stack trace
+                raise PyAMLConfigException(
+                    "Module referenced in type cannot be found:" + f"'{module_str}' {location_str}"
+                ) from None
+            else:
+                return None
 
-            # Default loading strategy
-            # Get the config object
-            config_cls = getattr(module, "ConfigModel", None)
+        # Get the object class name
+        if class_str is None:
+            class_str = getattr(module, "PYAMLCLASS", None)
+        if class_str is None:
+            raise PyAMLConfigException(
+                f"PYAMLCLASS definition not found or class not specified in '{module_str}' {location_str}"
+            )
+
+        control_modes = d.pop("control_modes", None)
+
+        if control_modes is None:
+            # Immediate contruction
+
+            # Get the validation class
+            config_cls = getattr(module, validation_class_str, None)
             if config_cls is None:
-                raise PyAMLConfigException(f"ConfigModel class '{type_str}.ConfigModel' not found {location_str}")
+                raise PyAMLConfigException(f"No validation class for '{module_str}.{class_str}' {location_str}")
 
-            # Get the class name
-            cls_name = getattr(module, "PYAMLCLASS", None)
-            if cls_name is None:
-                raise PyAMLConfigException(f"PYAMLCLASS definition not found in '{type_str}' {location_str}")
-
+            # Validate the model
             try:
-                # Validate the model
                 cfg = config_cls.model_validate(d)
             except ValidationError as e:
-                self.handle_validation_error(e, type_str, location_str, field_locations)
+                self.handle_validation_error(e, module_str, location_str, field_locations)
+
+            elem_cls = getattr(module, class_str, None)
+            if elem_cls is None:
+                raise PyAMLConfigException(f"Unknown element class '{module_str}.{class_str}' {location_str}")
 
             # Construct and return the object
-            elem_cls = getattr(module, cls_name, None)
-            if elem_cls is None:
-                raise PyAMLConfigException(f"Unknown element class '{type_str}.{cls_name}'")
-
             try:
                 obj = elem_cls(cfg)
                 self.register_element(obj)
             except Exception as e:
-                raise PyAMLConfigException(f"{str(e)} when creating '{type_str}.{cls_name}' {location_str}") from e
+                raise PyAMLConfigException(f"{str(e)} when creating '{module_str}.{class_str}' {location_str}") from e
 
-            return obj
+        else:
+            # Delayed construction
+            element_name = d.pop("name", None)
+            if element_name is None:
+                raise PyAMLConfigException(
+                    f"Name not speficied for element class '{module_str}.{class_str}' {location_str}"
+                )
+            obj = UnboundElement(element_name, class_str, module_str, control_modes, d)
 
-        # Construct a random class (no model validation)
+        return obj
 
-        class_str = d.pop("class")
-        idx = class_str.rfind(".")
-        if idx < 0:
-            raise PyAMLConfigException(f"'{class_str}' malformed class name, 'module.class' expected")
-        module_name = class_str[:idx]
-        class_name = class_str[idx + 1 :]
-        element_name = d.pop("name", None)
-        if element_name is None:
-            raise PyAMLConfigException(f"name expected when creating '{class_str}' {location_str}")
-        element_modes = d.pop("modes", None)
-        if element_modes is None:
-            raise PyAMLConfigException(f"modes expected when creating '{class_str}' {location_str}")
-
-        return ExternalElement(element_name, class_name, module_name, element_modes, d)
-
-    def build_external(self, e: ExternalElement, holder) -> Element:
+    def build_unbound(self, e: UnboundElement, holder) -> Element:
+        # Build unbound element (no validation for unbound element)
         try:
             module = importlib.import_module(e._module_name)
         except ModuleNotFoundError as ex:
@@ -166,6 +159,11 @@ class PyAMLFactory:
             obj = elem_cls(e.get_name(), holder, **e._config)
         except Exception as ex:
             raise PyAMLConfigException(f"{str(ex)} when creating '{e._module_name}.{e._class_name}'") from ex
+
+        if not isinstance(obj, Element):
+            raise PyAMLConfigException(f"'{e._module_name}.{e._class_name}' is not a sub class of Element")
+
+        obj._peer = holder
 
         return obj
 
