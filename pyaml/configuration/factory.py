@@ -9,6 +9,7 @@ from ..common.element import Element
 from ..common.exception import PyAMLConfigException
 from .external_element import ExternalElement
 
+
 class BuildStrategy:
     def can_handle(self, module: object, config_dict: dict) -> bool:
         """Return True if this strategy can handle the module/config."""
@@ -142,30 +143,27 @@ class PyAMLFactory:
             raise PyAMLConfigException(f"'{class_str}' malformed class name, 'module.class' expected")
         module_name = class_str[:idx]
         class_name = class_str[idx + 1 :]
-        element_name = d.pop("name",None)
+        element_name = d.pop("name", None)
         if element_name is None:
             raise PyAMLConfigException(f"name expected when creating '{class_str}' {location_str}")
-        element_modes = d.pop("modes",None)
+        element_modes = d.pop("modes", None)
         if element_modes is None:
             raise PyAMLConfigException(f"modes expected when creating '{class_str}' {location_str}")
 
-        return ExternalElement(element_name,class_name,module_name,element_modes,d)
+        return ExternalElement(element_name, class_name, module_name, element_modes, d)
 
-    def build_external(self,e:ExternalElement,holder) -> Element:
-                
+    def build_external(self, e: ExternalElement, holder) -> Element:
         try:
             module = importlib.import_module(e._module_name)
         except ModuleNotFoundError as ex:
-            raise PyAMLConfigException(
-                "Module referenced in type cannot be found:" + f"'{e._module_name}'"
-            ) from None
+            raise PyAMLConfigException("Module referenced in type cannot be found:" + f"'{e._module_name}'") from None
 
         elem_cls = getattr(module, e._class_name, None)
         if elem_cls is None:
             raise PyAMLConfigException(f"Unknown element class '{e._module_name}.{e._class_name}'")
 
         try:
-            obj = elem_cls(e.get_name(),holder,**e._config)
+            obj = elem_cls(e.get_name(), holder, **e._config)
         except Exception as ex:
             raise PyAMLConfigException(f"{str(ex)} when creating '{e._module_name}.{e._class_name}'") from ex
 

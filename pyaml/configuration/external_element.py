@@ -1,11 +1,12 @@
 from ..common.element import Element
 
+
 class ExternalElement(Element):
     """
     Class that holds a configuration for an external element
     """
 
-    def __init__(self, name: str, class_name:str, module_name:str, modes:list[str], config:dict):
+    def __init__(self, name: str, class_name: str, module_name: str, modes: list[str], config: dict):
         """
         Construct an External element
         Parameters
@@ -32,5 +33,5 @@ class ExternalElement(Element):
             self.__class__.__name__,
             self.get_name(),
             self._class_name,
-            self._module_name
+            self._module_name,
         )
