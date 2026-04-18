@@ -98,6 +98,16 @@ class PyAMLFactory:
             else:
                 return None
 
+        # Try plugin strategies first
+        for strategy in self._strategies:
+            try:
+                if strategy.can_handle(module, d):
+                    obj = strategy.build(module, d)
+                    self.register_element(obj)
+                    return obj
+            except Exception as e:
+                raise PyAMLConfigException(f"Custom strategy failed {location_str}") from e
+
         # Get the object class name
         if class_str is None:
             class_str = getattr(module, "PYAMLCLASS", None)
