@@ -1,7 +1,17 @@
 import pytest
 
 from pyaml import PyAMLConfigException
-from pyaml.accelerator import Accelerator
+from pyaml.accelerator import Accelerator, ElementHolder
+
+
+def test_peer():
+    sr = Accelerator.load("tests/config/EBSTune.yaml")
+    tm = sr.design.get_betatron_tune_monitor("BETATRON_TUNE")
+    assert isinstance(tm.peer.peer, Accelerator)
+    assert isinstance(tm.peer, ElementHolder)
+    tm = sr.live.get_betatron_tune_monitor("BETATRON_TUNE")
+    assert isinstance(tm.peer.peer, Accelerator)
+    assert isinstance(tm.peer, ElementHolder)
 
 
 def test_accelerator_load_rejects_non_accelerator_root(tmp_path):

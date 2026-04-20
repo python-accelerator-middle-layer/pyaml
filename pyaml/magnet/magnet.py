@@ -54,9 +54,7 @@ class Magnet(Element):
         """
         self.check_peer()
         if self.__strength is None:
-            raise PyAMLException(
-                f"{str(self)} has no model that supports physics units"
-            )
+            raise PyAMLException(f"{str(self)} has no model that supports physics units")
         return self.__strength
 
     @property
@@ -67,9 +65,7 @@ class Magnet(Element):
         """
         self.check_peer()
         if self.__hardware is None:
-            raise PyAMLException(
-                f"{str(self)} has no model that supports hardware units"
-            )
+            raise PyAMLException(f"{str(self)} has no model that supports hardware units")
         return self.__hardware
 
     @property
@@ -120,7 +116,7 @@ class Magnet(Element):
     def __repr__(self):
         return "%s(peer='%s', name='%s', model_name='%s', magnet_model=%s)" % (
             self.__class__.__name__,
-            self.get_peer(),
+            self.get_peer_name(),
             self.get_name(),
             self.__modelName,
             repr(self.__model),
