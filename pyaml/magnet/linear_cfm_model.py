@@ -5,7 +5,7 @@ from ..common.element import __pyaml_repr__
 from ..common.exception import PyAMLException
 from ..configuration.curve import Curve
 from ..configuration.matrix import Matrix
-from ..control.deviceaccess import DeviceAccessRef, device_unit
+from ..control.deviceaccess import DeviceAccess, device_unit
 from .model import MagnetModel
 
 # Define the main class name for this module
@@ -52,7 +52,7 @@ class ConfigModel(BaseModel):
     calibration_offsets: list[float] = None
     pseudo_factors: list[float] = None
     pseudo_offsets: list[float] = None
-    powerconverters: list[DeviceAccessRef | None]
+    powerconverters: list[DeviceAccess | None]
     matrix: Matrix = None
     units: list[str]
 
@@ -151,7 +151,7 @@ class LinearCFMagnetModel(MagnetModel):
     def get_hardware_units(self) -> list[str]:
         return np.array([device_unit(p) for p in self._cfg.powerconverters])
 
-    def get_devices(self) -> list[DeviceAccessRef]:
+    def get_devices(self) -> list[DeviceAccess]:
         return self._cfg.powerconverters
 
     def set_magnet_rigidity(self, brho: np.double):

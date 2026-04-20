@@ -9,7 +9,7 @@ except ImportError:
 from .. import PyAMLException
 from ..common import abstract
 from ..common.element import Element, ElementConfigModel
-from ..control.deviceaccess import DeviceAccessRef
+from ..control.deviceaccess import DeviceAccess
 from .rf_transmitter import RFTransmitter
 
 # Define the main class name for this module
@@ -17,7 +17,7 @@ PYAMLCLASS = "RFPlant"
 
 
 class ConfigModel(ElementConfigModel):
-    masterclock: DeviceAccessRef | None = None
+    masterclock: DeviceAccess | None = None
     """Device to apply main RF frequency"""
     transmitters: list[RFTransmitter] | None = None
     """List of RF trasnmitters"""

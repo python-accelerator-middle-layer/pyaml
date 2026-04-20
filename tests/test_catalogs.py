@@ -76,21 +76,6 @@ def test_named_catalog_is_shared_and_resolves_devices(install_test_package):
     bpm.tilt.set(0.01)
     assert bpm.tilt.get() == 0.01
 
-    quad = sr.live.get_magnet("QF1A-C01")
-    quad.hardware.set(1.2)
-    assert quad.hardware.get() == 1.2
-
-    cfm_h = sr.live.get_magnet("SH1A-C01-H")
-    cfm_h.hardware.set(2.5)
-    assert cfm_h.hardware.get() == 2.5
-
-    tune_monitor = sr.live.get_betatron_tune_monitor("BETATRON_TUNE")
-    assert np.allclose(tune_monitor.tune.get(), np.array([0.0, 0.0]))
-
-    rf = sr.live.get_rf_plant("RF")
-    rf.frequency.set(1.23)
-    assert rf.frequency.get() == 1.23
-
 
 @pytest.mark.parametrize(
     "install_test_package",

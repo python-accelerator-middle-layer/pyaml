@@ -3,7 +3,7 @@ from pydantic import BaseModel, ConfigDict
 
 from .. import PyAMLException
 from ..common.element import __pyaml_repr__
-from ..control.deviceaccess import DeviceAccessRef
+from ..control.deviceaccess import DeviceAccess
 from .model import MagnetModel
 
 # Define the main class name for this module
@@ -29,8 +29,8 @@ class ConfigModel(BaseModel):
     model_config = ConfigDict(arbitrary_types_allowed=True, extra="forbid")
 
     multipoles: list[str]
-    powerconverters: list[DeviceAccessRef | None] | None = None
-    physics: list[DeviceAccessRef | None] | None = None
+    powerconverters: list[DeviceAccess | None] | None = None
+    physics: list[DeviceAccess | None] | None = None
     units: list[str]
 
 
@@ -81,7 +81,7 @@ class IdentityCFMagnetModel(MagnetModel):
     def get_hardware_units(self) -> list[str]:
         return self._cfg.units
 
-    def get_devices(self) -> list[DeviceAccessRef | None]:
+    def get_devices(self) -> list[DeviceAccess | None]:
         return self.__devices
 
     def set_magnet_rigidity(self, brho: np.double):

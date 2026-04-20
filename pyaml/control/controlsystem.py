@@ -113,7 +113,7 @@ class ControlSystem(ElementHolder, metaclass=ABCMeta):
     def create_magnet_strength_aggregator(self, magnets: list[Magnet]) -> ScalarAggregator:
         agg = CSStrengthScalarAggregator(self.create_scalar_aggregator())
         for m in magnets:
-            devs = self.attach(self.resolve_devices(m.model.get_devices()))
+            devs = self.attach(m.model.get_devices())
             agg.add_magnet(m, devs)
         return agg
 
@@ -126,7 +126,7 @@ class ControlSystem(ElementHolder, metaclass=ABCMeta):
             if not m.model.has_hardware():
                 return None
             psIndex = m.hardware.index() if isinstance(m.hardware, RWMapper) else 0
-            agg.add_devices(self.attach([self.resolve_device(m.model.get_devices()[psIndex])])[0])
+            agg.add_devices(self.attach([m.model.get_devices()[psIndex]])[0])
         return agg
 
     def create_bpm_aggregators(self, bpms: list[BPM]) -> list[ScalarAggregator]:
@@ -203,7 +203,7 @@ class ControlSystem(ElementHolder, metaclass=ABCMeta):
         """
         for e in elements:
             if isinstance(e, Magnet):
-                dev = self.attach(self.resolve_devices(e.model.get_devices()))[0]
+                dev = self.attach(e.model.get_devices())[0]
                 current = RWHardwareScalar(e.model, dev) if e.model.has_hardware() else None
                 strength = RWStrengthScalar(e.model, dev) if e.model.has_physics() else None
                 # Create a unique ref for this control system
@@ -211,7 +211,7 @@ class ControlSystem(ElementHolder, metaclass=ABCMeta):
                 self.add_magnet(m)
 
             elif isinstance(e, CombinedFunctionMagnet):
-                devs = self.attach(self.resolve_devices(e.model.get_devices()))
+                devs = self.attach(e.model.get_devices())
                 currents = RWHardwareArray(e.model, devs)
                 strengths = RWStrengthArray(e.model, devs)
                 # Create unique refs the cfm and
@@ -222,7 +222,7 @@ class ControlSystem(ElementHolder, metaclass=ABCMeta):
                     self.add_magnet(m)
 
             elif isinstance(e, SerializedMagnets):
-                devs = self.attach(self.resolve_devices(e.model.get_devices()))
+                devs = self.attach(e.model.get_devices())
                 currents = []
                 strengths = []
                 # Create unique refs the series and each of its function for this
@@ -258,22 +258,22 @@ class ControlSystem(ElementHolder, metaclass=ABCMeta):
                 attachedTrans: list[RFTransmitter] = []
                 if e._cfg.transmitters:
                     for t in e._cfg.transmitters:
-                        vDev = self.attach([self.resolve_device(t._cfg.voltage)])[0]
-                        pDev = self.attach([self.resolve_device(t._cfg.phase)])[0]
+                        vDev = self.attach([t._cfg.voltage])[0]
+                        pDev = self.attach([t._cfg.phase])[0]
                         voltage = RWRFVoltageScalar(t, vDev)
                         phase = RWRFPhaseScalar(t, pDev)
                         nt = t.attach(self, voltage, phase)
                         self.add_rf_transnmitter(nt)
                         attachedTrans.append(nt)
 
-                fDev = self.attach([self.resolve_device(e._cfg.masterclock)])[0]
+                fDev = self.attach([e._cfg.masterclock])[0]
                 frequency = RWRFFrequencyScalar(e, fDev)
                 voltage = RWTotalVoltage(attachedTrans) if e._cfg.transmitters else None
                 ne = e.attach(self, frequency, voltage)
                 self.add_rf_plant(ne)
 
             elif isinstance(e, BetatronTuneMonitor):
-                tuneDevs = self.attach(self.resolve_devices([e._cfg.tune_h, e._cfg.tune_v]))
+                tuneDevs = self.attach([e._cfg.tune_h, e._cfg.tune_v])
                 betatron_tune = RBetatronTuneArray(e, tuneDevs)
                 e = e.attach(self, betatron_tune)
                 self.add_betatron_tune_monitor(e)

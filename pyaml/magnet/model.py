@@ -3,7 +3,7 @@ from abc import ABCMeta, abstractmethod
 import numpy as np
 import numpy.typing as npt
 
-from ..control.deviceaccess import DeviceAccessRef
+from ..control.deviceaccess import DeviceAccess
 
 
 class MagnetModel(metaclass=ABCMeta):
@@ -75,7 +75,7 @@ class MagnetModel(metaclass=ABCMeta):
         pass
 
     @abstractmethod
-    def get_devices(self) -> list[DeviceAccessRef | None]:
+    def get_devices(self) -> list[DeviceAccess | None]:
         """
         Get device handles
 

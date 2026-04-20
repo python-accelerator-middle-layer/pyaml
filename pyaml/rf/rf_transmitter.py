@@ -9,7 +9,7 @@ except ImportError:
 from .. import PyAMLException
 from ..common import abstract
 from ..common.element import Element, ElementConfigModel
-from ..control.deviceaccess import DeviceAccessRef
+from ..control.deviceaccess import DeviceAccess
 
 # Define the main class name for this module
 PYAMLCLASS = "RFTransmitter"
@@ -36,8 +36,8 @@ class ConfigModel(ElementConfigModel):
 
     model_config = ConfigDict(arbitrary_types_allowed=True, extra="forbid")
 
-    voltage: DeviceAccessRef | None = None
-    phase: DeviceAccessRef | None = None
+    voltage: DeviceAccess | None = None
+    phase: DeviceAccess | None = None
     cavities: list[str]
     harmonic: float = 1.0
     distribution: float = 1.0

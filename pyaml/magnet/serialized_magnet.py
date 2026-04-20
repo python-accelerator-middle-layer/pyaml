@@ -5,7 +5,7 @@ from .. import PyAMLException
 from ..common import abstract
 from ..common.element import Element, ElementConfigModel, __pyaml_repr__
 from ..configuration import Factory
-from ..control.deviceaccess import DeviceAccessRef
+from ..control.deviceaccess import DeviceAccess
 from .function_mapping import function_map
 from .magnet import Magnet, MagnetConfigModel
 from .model import MagnetModel
@@ -170,5 +170,5 @@ class SerializedMagnets(Element):
     def __repr__(self):
         return __pyaml_repr__(self)
 
-    def get_devices(self) -> list[DeviceAccessRef]:
+    def get_devices(self) -> list[DeviceAccess | None]:
         return self.model.get_devices()

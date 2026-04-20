@@ -297,7 +297,7 @@ def test_configuration_manager_repr_includes_catalogs(config_root_path):
 
     assert str(manager) == output
     assert "Catalogs:" in output
-    assert "device-catalog (pyaml.configuration.static_catalog) entries=12 source=catalog_named.yaml" in output
+    assert "device-catalog (pyaml.configuration.static_catalog) entries=5 source=catalog_named.yaml" in output
 
 
 def test_configuration_manager_yellow_pages_like_shortcuts(

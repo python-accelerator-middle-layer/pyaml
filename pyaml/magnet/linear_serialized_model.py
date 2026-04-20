@@ -7,7 +7,7 @@ from ..configuration.curve import Curve
 from ..configuration.inline_curve import ConfigModel as InlineCurveModel
 from ..configuration.inline_curve import InlineCurve
 from ..configuration.matrix import Matrix
-from ..control.deviceaccess import DeviceAccessRef, device_unit
+from ..control.deviceaccess import DeviceAccess, device_unit
 from .linear_model import ConfigModel as LinearConfigModel
 from .linear_model import LinearMagnetModel
 from .model import MagnetModel
@@ -45,7 +45,7 @@ class ConfigModel(BaseModel):
     calibration_factors: float | list[float] = None
     calibration_offsets: float | list[float] = None
     crosstalk: float | list[float] = 1.0
-    powerconverter: DeviceAccessRef
+    powerconverter: DeviceAccess
     unit: str
 
 
@@ -167,7 +167,7 @@ class LinearSerializedMagnetModel(MagnetModel):
     def get_hardware_units(self) -> list[str]:
         return [device_unit(self._cfg.powerconverter)] * self.__nbMagnets
 
-    def get_devices(self) -> list[DeviceAccessRef]:
+    def get_devices(self) -> list[DeviceAccess]:
         return [self._cfg.powerconverter] * self.__nbMagnets
 
     def set_magnet_rigidity(self, brho: np.double):
