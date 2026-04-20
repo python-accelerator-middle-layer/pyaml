@@ -193,6 +193,18 @@ def test_configuration_manager_accumulates_multiple_device_fragments(
     assert manager.get("devices", "BETATRON_TUNE")["type"] == "pyaml.diagnostics.tune_monitor"
 
 
+def test_configuration_manager_tracks_catalogs_as_named_category(config_root_path):
+    manager = ConfigurationManager()
+    manager.add(config_root_path / "catalog_named.yaml")
+
+    assert manager.categories() == ["controls", "catalogs", "devices"]
+    assert manager.keys("catalogs") == ["device-catalog"]
+    assert manager.has("catalogs", "device-catalog")
+    assert manager.get("catalogs", "device-catalog")["type"] == "pyaml.configuration.static_catalog"
+    assert "BPM_C01-01/x" in manager.get("catalogs", "device-catalog")["refs"]
+    assert manager.catalogs == ["device-catalog"]
+
+
 def test_accelerator_load_stays_compatible(config_manager_base_config):
     accelerator = Accelerator.load(config_manager_base_config)
 
@@ -275,6 +287,17 @@ def test_configuration_manager_repr_is_yellow_pages_like(
     assert "HCORR (pyaml.arrays.magnet) patterns=1 source=config_manager_sr_arrays.yaml" in output
     assert "BPM_C04-01 (pyaml.bpm.bpm) source=config_manager_sr_devices.yaml" in output
     assert "    ." in output
+
+
+def test_configuration_manager_repr_includes_catalogs(config_root_path):
+    manager = ConfigurationManager()
+    manager.add(config_root_path / "catalog_named.yaml")
+
+    output = repr(manager)
+
+    assert str(manager) == output
+    assert "Catalogs:" in output
+    assert "device-catalog (pyaml.configuration.static_catalog) refs=14 source=catalog_named.yaml" in output
 
 
 def test_configuration_manager_yellow_pages_like_shortcuts(
