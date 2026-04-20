@@ -83,6 +83,7 @@ class Accelerator(object):
                     # Add as dynamic attribute
                     setattr(self, c.name(), c)
                 c.fill_device(cfg.devices)
+                c._peer = self
                 self._controls[c.name()] = c
 
         if cfg.simulators is not None:
@@ -93,6 +94,7 @@ class Accelerator(object):
                     # Add as dynamic attribute
                     setattr(self, s.name(), s)
                 s.fill_device(cfg.devices)
+                s._peer = self
                 self._simulators[s.name()] = s
 
         if cfg.arrays is not None:
