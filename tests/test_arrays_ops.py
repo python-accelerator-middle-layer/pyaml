@@ -1,7 +1,6 @@
 import numpy as np
 import pytest
 
-from pyaml.accelerator import Accelerator
 from pyaml.arrays.element_array import ElementArray
 from pyaml.arrays.magnet_array import MagnetArray
 from pyaml.configuration.factory import Factory
@@ -13,8 +12,10 @@ from pyaml.magnet.magnet import Magnet
     [{"name": "tango-pyaml", "path": "tests/dummy_cs/tango-pyaml"}],
     indirect=True,
 )
-def test_element_array_and_array_intersection_is_autotyped(install_test_package):
-    sr: Accelerator = Accelerator.load("tests/config/sr.yaml")
+def test_element_array_and_array_intersection_is_autotyped(
+    install_test_package, accelerator_from_fragments, sr_configuration_fragments
+):
+    sr = accelerator_from_fragments(*sr_configuration_fragments)
     sr.design.get_lattice().disable_6d()
 
     hcorr = sr.live.get_magnets("HCORR")
@@ -35,8 +36,10 @@ def test_element_array_and_array_intersection_is_autotyped(install_test_package)
 )
 def test_element_array_and_mask_filters_and_is_autotyped_list_mask(
     install_test_package,
+    accelerator_from_fragments,
+    sr_configuration_fragments,
 ):
-    sr: Accelerator = Accelerator.load("tests/config/sr.yaml")
+    sr = accelerator_from_fragments(*sr_configuration_fragments)
     sr.design.get_lattice().disable_6d()
 
     # "ElArray" is a mixed ElementArray in the dummy config (see existing tests)
@@ -62,8 +65,10 @@ def test_element_array_and_mask_filters_and_is_autotyped_list_mask(
 )
 def test_element_array_and_mask_filters_and_is_autotyped_numpy_mask(
     install_test_package,
+    accelerator_from_fragments,
+    sr_configuration_fragments,
 ):
-    sr: Accelerator = Accelerator.load("tests/config/sr.yaml")
+    sr = accelerator_from_fragments(*sr_configuration_fragments)
     sr.design.get_lattice().disable_6d()
 
     elts = sr.design.get_elements("ElArray")
@@ -86,8 +91,10 @@ def test_element_array_and_mask_filters_and_is_autotyped_numpy_mask(
     [{"name": "tango-pyaml", "path": "tests/dummy_cs/tango-pyaml"}],
     indirect=True,
 )
-def test_element_array_sub_mask_removes_true_inverse_of_and(install_test_package):
-    sr: Accelerator = Accelerator.load("tests/config/sr.yaml")
+def test_element_array_sub_mask_removes_true_inverse_of_and(
+    install_test_package, accelerator_from_fragments, sr_configuration_fragments
+):
+    sr = accelerator_from_fragments(*sr_configuration_fragments)
     sr.design.get_lattice().disable_6d()
 
     elts = sr.design.get_elements("ElArray")
@@ -121,8 +128,10 @@ def test_element_array_sub_mask_removes_true_inverse_of_and(install_test_package
 )
 def test_element_array_mask_length_mismatch_raises_for_and_and_sub(
     install_test_package,
+    accelerator_from_fragments,
+    sr_configuration_fragments,
 ):
-    sr: Accelerator = Accelerator.load("tests/config/sr.yaml")
+    sr = accelerator_from_fragments(*sr_configuration_fragments)
     sr.design.get_lattice().disable_6d()
 
     elts = sr.design.get_elements("ElArray")
@@ -144,8 +153,10 @@ def test_element_array_mask_length_mismatch_raises_for_and_and_sub(
     [{"name": "tango-pyaml", "path": "tests/dummy_cs/tango-pyaml"}],
     indirect=True,
 )
-def test_mask_by_type_returns_correct_boolean_mask(install_test_package):
-    sr: Accelerator = Accelerator.load("tests/config/sr.yaml")
+def test_mask_by_type_returns_correct_boolean_mask(
+    install_test_package, accelerator_from_fragments, sr_configuration_fragments
+):
+    sr = accelerator_from_fragments(*sr_configuration_fragments)
     sr.design.get_lattice().disable_6d()
 
     elts = sr.design.get_elements("ElArray")
@@ -167,8 +178,10 @@ def test_mask_by_type_returns_correct_boolean_mask(install_test_package):
     [{"name": "tango-pyaml", "path": "tests/dummy_cs/tango-pyaml"}],
     indirect=True,
 )
-def test_filter_by_type_returns_autotyped_array(install_test_package):
-    sr: Accelerator = Accelerator.load("tests/config/sr.yaml")
+def test_filter_by_type_returns_autotyped_array(
+    install_test_package, accelerator_from_fragments, sr_configuration_fragments
+):
+    sr = accelerator_from_fragments(*sr_configuration_fragments)
     sr.design.get_lattice().disable_6d()
 
     elts = sr.design.get_elements("ElArray")
@@ -186,8 +199,10 @@ def test_filter_by_type_returns_autotyped_array(install_test_package):
     [{"name": "tango-pyaml", "path": "tests/dummy_cs/tango-pyaml"}],
     indirect=True,
 )
-def test_element_array_or_union_is_unique_stable_and_autotyped(install_test_package):
-    sr: Accelerator = Accelerator.load("tests/config/sr.yaml")
+def test_element_array_or_union_is_unique_stable_and_autotyped(
+    install_test_package, accelerator_from_fragments, sr_configuration_fragments
+):
+    sr = accelerator_from_fragments(*sr_configuration_fragments)
     sr.design.get_lattice().disable_6d()
 
     hcorr = sr.live.get_magnets("HCORR")
@@ -213,8 +228,10 @@ def test_element_array_or_union_is_unique_stable_and_autotyped(install_test_pack
     [{"name": "tango-pyaml", "path": "tests/dummy_cs/tango-pyaml"}],
     indirect=True,
 )
-def test_element_array_add_is_alias_of_union(install_test_package):
-    sr: Accelerator = Accelerator.load("tests/config/sr.yaml")
+def test_element_array_add_is_alias_of_union(
+    install_test_package, accelerator_from_fragments, sr_configuration_fragments
+):
+    sr = accelerator_from_fragments(*sr_configuration_fragments)
     sr.design.get_lattice().disable_6d()
 
     hcorr = sr.live.get_magnets("HCORR")

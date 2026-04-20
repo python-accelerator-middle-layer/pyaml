@@ -2,17 +2,15 @@
 Accelerator class
 """
 
-import os
-
 from pydantic import BaseModel, ConfigDict, Field
 
 from .arrays.array import ArrayConfig
 from .common.element import Element
 from .common.element_holder import ElementHolder
 from .common.exception import PyAMLConfigException
+from .configuration import ConfigurationManager, UnsupportedConfigurationRootError
 from .configuration.catalog import Catalog
 from .configuration.factory import Factory
-from .configuration.fileloader import load, set_root_folder
 from .control.controlsystem import ControlSystem
 from .lattice.simulator import Simulator
 from .yellow_pages import YellowPages
@@ -287,14 +285,15 @@ class Accelerator(object):
             cannot be created. pydantic schema that support that an
             object is not created should handle None fields.
         """
-        # Asume that all files are referenced from
-        # folder where main AML file is stored
-        if not os.path.exists(filename):
-            raise PyAMLConfigException(f"{filename} file not found")
-        rootfolder = os.path.abspath(os.path.dirname(filename))
-        set_root_folder(rootfolder)
-        config_dict = load(os.path.basename(filename), None, use_fast_loader)
-        return Accelerator.from_dict(config_dict, ignore_external=ignore_external)
+        manager = ConfigurationManager()
+        try:
+            manager.add(filename, use_fast_loader=use_fast_loader)
+        except UnsupportedConfigurationRootError as ex:
+            raise PyAMLConfigException(
+                "Accelerator.load() expects a 'pyaml.accelerator' root configuration. "
+                "Use the factory APIs to build sub-elements directly."
+            ) from ex
+        return manager.build(ignore_external=ignore_external)
 
     def _resolve_control_system_catalog(self, control_system: ControlSystem) -> Catalog | None:
         catalog = control_system.get_catalog_config()

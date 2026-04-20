@@ -38,6 +38,7 @@ modules = [
     "pyaml.configuration.fileloader",
     "pyaml.configuration.inline_curve",
     "pyaml.configuration.inline_matrix",
+    "pyaml.configuration.manager",
     "pyaml.configuration.matrix",
     "pyaml.control.abstract_impl",
     "pyaml.control.controlsystem",
@@ -125,7 +126,7 @@ def generate_selective_module(m):
             if m in ["pyaml.arrays.element_array"]:
                 # Include special members for operator overloading
                 file.write("         :special-members: __add__, __and__, __or__, __sub__ \n")
-            if m in ["pyaml.yellow_pages"]:
+            if m in ["pyaml.yellow_pages", "pyaml.configuration.manager"]:
                 # Include special members for exploratory overloading
                 file.write("         :special-members: __dir__, __getattr__, __getitem__, __repr__, __str__ \n")
             file.write("         :exclude-members: model_config\n")
