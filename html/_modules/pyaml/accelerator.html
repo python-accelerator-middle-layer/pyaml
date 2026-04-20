@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>pyaml.accelerator &#8212; Python Accelerator Middle Layer 0.1.dev1+g367999d94 documentation</title>
+    <title>pyaml.accelerator &#8212; Python Accelerator Middle Layer 0.1.dev1+g5a66a087a documentation</title>
   
   
   
@@ -41,7 +41,7 @@
   <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=7f76b32a3354e82990f2" />
 <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=7f76b32a3354e82990f2" />
 
-    <script src="../../_static/documentation_options.js?v=3be13801"></script>
+    <script src="../../_static/documentation_options.js?v=6d807b48"></script>
     <script src="../../_static/doctools.js?v=9bcbadda"></script>
     <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -123,8 +123,8 @@
       
     
     
-    <img src="../../_static/logo.png" class="logo__image only-light" alt="Python Accelerator Middle Layer 0.1.dev1+g367999d94 documentation - Home"/>
-    <img src="../../_static/dark.png" class="logo__image only-dark pst-js-only" alt="Python Accelerator Middle Layer 0.1.dev1+g367999d94 documentation - Home"/>
+    <img src="../../_static/logo.png" class="logo__image only-light" alt="Python Accelerator Middle Layer 0.1.dev1+g5a66a087a documentation - Home"/>
+    <img src="../../_static/dark.png" class="logo__image only-dark pst-js-only" alt="Python Accelerator Middle Layer 0.1.dev1+g5a66a087a documentation - Home"/>
   
   
 </a></div>
@@ -551,6 +551,35 @@
 <span class="sd">            Number of bucket</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_set_properties</span><span class="p">(</span><span class="s2">&quot;_set_harmonic&quot;</span><span class="p">,</span> <span class="n">h</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="Accelerator.add_device">
+<a class="viewcode-back" href="../../api/pyaml.accelerator.html#pyaml.accelerator.Accelerator.add_device">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">add_device</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">ignore_external</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Dynamically add a device to this accelerator</span>
+
+<span class="sd">        config_dict : str</span>
+<span class="sd">            Dictionary containing accelerator config</span>
+<span class="sd">        ignore_external: bool</span>
+<span class="sd">            Ignore external modules and return None for object that</span>
+<span class="sd">            cannot be created. pydantic schema that support that an</span>
+<span class="sd">            object is not created should handle None fields.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">dev</span> <span class="o">=</span> <span class="n">Factory</span><span class="o">.</span><span class="n">depth_first_build</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="n">ignore_external</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">dev</span><span class="p">,</span> <span class="n">Element</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="n">PyAMLConfigException</span><span class="p">(</span>
+                <span class="s2">&quot;Invalid device type, Element or sub classes of Element expected &quot;</span> <span class="o">+</span> <span class="sa">f</span><span class="s2">&quot;but got </span><span class="si">{</span><span class="n">dev</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_cfg</span><span class="o">.</span><span class="n">devices</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">dev</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cfg</span><span class="o">.</span><span class="n">controls</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cfg</span><span class="o">.</span><span class="n">controls</span><span class="p">:</span>
+                <span class="n">c</span><span class="o">.</span><span class="n">fill_device</span><span class="p">([</span><span class="n">dev</span><span class="p">])</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cfg</span><span class="o">.</span><span class="n">simulators</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cfg</span><span class="o">.</span><span class="n">simulators</span><span class="p">:</span>
+                <span class="n">s</span><span class="o">.</span><span class="n">fill_device</span><span class="p">([</span><span class="n">dev</span><span class="p">])</span></div>
 
 
 <div class="viewcode-block" id="Accelerator.post_init">

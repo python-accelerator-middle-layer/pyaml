@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>controlsystem &#8212; Python Accelerator Middle Layer 0.1.dev1+g367999d94 documentation</title>
+    <title>controlsystem &#8212; Python Accelerator Middle Layer 0.1.dev1+g5a66a087a documentation</title>
   
   
   
@@ -42,7 +42,7 @@
   <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=7f76b32a3354e82990f2" />
 <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=7f76b32a3354e82990f2" />
 
-    <script src="../_static/documentation_options.js?v=3be13801"></script>
+    <script src="../_static/documentation_options.js?v=6d807b48"></script>
     <script src="../_static/doctools.js?v=9bcbadda"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -126,8 +126,8 @@
       
     
     
-    <img src="../_static/logo.png" class="logo__image only-light" alt="Python Accelerator Middle Layer 0.1.dev1+g367999d94 documentation - Home"/>
-    <img src="../_static/dark.png" class="logo__image only-dark pst-js-only" alt="Python Accelerator Middle Layer 0.1.dev1+g367999d94 documentation - Home"/>
+    <img src="../_static/logo.png" class="logo__image only-light" alt="Python Accelerator Middle Layer 0.1.dev1+g5a66a087a documentation - Home"/>
+    <img src="../_static/dark.png" class="logo__image only-dark pst-js-only" alt="Python Accelerator Middle Layer 0.1.dev1+g5a66a087a documentation - Home"/>
   
   
 </a></div>
@@ -613,6 +613,55 @@ file to attach to this control system</p>
 
 </dd></dl>
 
+<dl class="py class">
+<dt class="sig sig-object py" id="pyaml.control.controlsystem.ControlSystemAdapter">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ControlSystemAdapter</span></span><a class="reference internal" href="../_modules/pyaml/control/controlsystem.html#ControlSystemAdapter"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.control.controlsystem.ControlSystemAdapter" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pyaml.control.controlsystem.ControlSystem" title="pyaml.control.controlsystem.ControlSystem"><code class="xref py py-class docutils literal notranslate"><span class="pre">ControlSystem</span></code></a></p>
+<p>Control system adapter class</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaml.control.controlsystem.ControlSystemAdapter.attach">
+<span class="sig-name descname"><span class="pre">attach</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dev</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/control/controlsystem.html#ControlSystemAdapter.attach"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.control.controlsystem.ControlSystemAdapter.attach" title="Link to this definition">#</a></dt>
+<dd><p>Return new instances of DeviceAccess objects
+coming from configuration attached to this CS</p>
+<dl class="field-list simple">
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaml.control.controlsystem.ControlSystemAdapter.attach_array">
+<span class="sig-name descname"><span class="pre">attach_array</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dev</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/control/controlsystem.html#ControlSystemAdapter.attach_array"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.control.controlsystem.ControlSystemAdapter.attach_array" title="Link to this definition">#</a></dt>
+<dd><p>Return new instances of DeviceAccess objects
+coming from configuration attached to this CS</p>
+<dl class="field-list simple">
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaml.control.controlsystem.ControlSystemAdapter.name">
+<span class="sig-name descname"><span class="pre">name</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/control/controlsystem.html#ControlSystemAdapter.name"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.control.controlsystem.ControlSystemAdapter.name" title="Link to this definition">#</a></dt>
+<dd><p>Return control system name (i.e. live)</p>
+<dl class="field-list simple">
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaml.control.controlsystem.ControlSystemAdapter.scalar_aggregator">
+<span class="sig-name descname"><span class="pre">scalar_aggregator</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/control/controlsystem.html#ControlSystemAdapter.scalar_aggregator"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.control.controlsystem.ControlSystemAdapter.scalar_aggregator" title="Link to this definition">#</a></dt>
+<dd><p>Returns the module name used for handling aggregator of DeviceAccess</p>
+<dl class="field-list simple">
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaml.control.controlsystem.ControlSystemAdapter.vector_aggregator">
+<span class="sig-name descname"><span class="pre">vector_aggregator</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/control/controlsystem.html#ControlSystemAdapter.vector_aggregator"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.control.controlsystem.ControlSystemAdapter.vector_aggregator" title="Link to this definition">#</a></dt>
+<dd><p>Returns the module name used for handling aggregator of DeviceVectorAccess</p>
+<dl class="field-list simple">
+</dl>
+</dd></dl>
+
+</dd></dl>
+
 </section>
 
 
@@ -674,6 +723,14 @@ file to attach to this control system</p>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.control.controlsystem.ControlSystem.name"><code class="docutils literal notranslate"><span class="pre">ControlSystem.name()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.control.controlsystem.ControlSystem.scalar_aggregator"><code class="docutils literal notranslate"><span class="pre">ControlSystem.scalar_aggregator()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.control.controlsystem.ControlSystem.vector_aggregator"><code class="docutils literal notranslate"><span class="pre">ControlSystem.vector_aggregator()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.control.controlsystem.ControlSystemAdapter"><code class="docutils literal notranslate"><span class="pre">ControlSystemAdapter</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.control.controlsystem.ControlSystemAdapter.attach"><code class="docutils literal notranslate"><span class="pre">ControlSystemAdapter.attach()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.control.controlsystem.ControlSystemAdapter.attach_array"><code class="docutils literal notranslate"><span class="pre">ControlSystemAdapter.attach_array()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.control.controlsystem.ControlSystemAdapter.name"><code class="docutils literal notranslate"><span class="pre">ControlSystemAdapter.name()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.control.controlsystem.ControlSystemAdapter.scalar_aggregator"><code class="docutils literal notranslate"><span class="pre">ControlSystemAdapter.scalar_aggregator()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.control.controlsystem.ControlSystemAdapter.vector_aggregator"><code class="docutils literal notranslate"><span class="pre">ControlSystemAdapter.vector_aggregator()</span></code></a></li>
 </ul>
 </li>
 </ul>

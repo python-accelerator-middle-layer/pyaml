@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>pyaml.control.controlsystem &#8212; Python Accelerator Middle Layer 0.1.dev1+g367999d94 documentation</title>
+    <title>pyaml.control.controlsystem &#8212; Python Accelerator Middle Layer 0.1.dev1+g5a66a087a documentation</title>
   
   
   
@@ -41,7 +41,7 @@
   <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=7f76b32a3354e82990f2" />
 <link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=7f76b32a3354e82990f2" />
 
-    <script src="../../../_static/documentation_options.js?v=3be13801"></script>
+    <script src="../../../_static/documentation_options.js?v=6d807b48"></script>
     <script src="../../../_static/doctools.js?v=9bcbadda"></script>
     <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -123,8 +123,8 @@
       
     
     
-    <img src="../../../_static/logo.png" class="logo__image only-light" alt="Python Accelerator Middle Layer 0.1.dev1+g367999d94 documentation - Home"/>
-    <img src="../../../_static/dark.png" class="logo__image only-dark pst-js-only" alt="Python Accelerator Middle Layer 0.1.dev1+g367999d94 documentation - Home"/>
+    <img src="../../../_static/logo.png" class="logo__image only-light" alt="Python Accelerator Middle Layer 0.1.dev1+g5a66a087a documentation - Home"/>
+    <img src="../../../_static/dark.png" class="logo__image only-dark pst-js-only" alt="Python Accelerator Middle Layer 0.1.dev1+g5a66a087a documentation - Home"/>
   
   
 </a></div>
@@ -385,6 +385,7 @@
 <span class="kn">from</span><span class="w"> </span><span class="nn">..common.element_holder</span><span class="w"> </span><span class="kn">import</span> <span class="n">ElementHolder</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">..common.exception</span><span class="w"> </span><span class="kn">import</span> <span class="n">PyAMLException</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">..configuration.factory</span><span class="w"> </span><span class="kn">import</span> <span class="n">Factory</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">..configuration.unbound_element</span><span class="w"> </span><span class="kn">import</span> <span class="n">UnboundElement</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">..control.abstract_impl</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
     <span class="n">CSBPMArrayMapper</span><span class="p">,</span>
     <span class="n">CSScalarAggregator</span><span class="p">,</span>
@@ -401,6 +402,7 @@
     <span class="n">RWStrengthArray</span><span class="p">,</span>
     <span class="n">RWStrengthScalar</span><span class="p">,</span>
 <span class="p">)</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">..diagnostics.atune_monitor</span><span class="w"> </span><span class="kn">import</span> <span class="n">ABetatronTuneMonitor</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">..diagnostics.tune_monitor</span><span class="w"> </span><span class="kn">import</span> <span class="n">BetatronTuneMonitor</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">..magnet.cfm_magnet</span><span class="w"> </span><span class="kn">import</span> <span class="n">CombinedFunctionMagnet</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">..magnet.magnet</span><span class="w"> </span><span class="kn">import</span> <span class="n">Magnet</span>
@@ -655,13 +657,64 @@
                 <span class="bp">self</span><span class="o">.</span><span class="n">add_rf_plant</span><span class="p">(</span><span class="n">ne</span><span class="p">)</span>
 
             <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="n">BetatronTuneMonitor</span><span class="p">):</span>
+                <span class="c1"># Built in tune monitor</span>
                 <span class="n">tuneDevs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">attach</span><span class="p">([</span><span class="n">e</span><span class="o">.</span><span class="n">_cfg</span><span class="o">.</span><span class="n">tune_h</span><span class="p">,</span> <span class="n">e</span><span class="o">.</span><span class="n">_cfg</span><span class="o">.</span><span class="n">tune_v</span><span class="p">])</span>
                 <span class="n">betatron_tune</span> <span class="o">=</span> <span class="n">RBetatronTuneArray</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="n">tuneDevs</span><span class="p">)</span>
                 <span class="n">e</span> <span class="o">=</span> <span class="n">e</span><span class="o">.</span><span class="n">attach</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">betatron_tune</span><span class="p">)</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">add_betatron_tune_monitor</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
 
             <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="n">TuningTool</span><span class="p">)</span> <span class="o">|</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="n">MeasurementTool</span><span class="p">):</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">add_tool</span><span class="p">(</span><span class="n">e</span><span class="o">.</span><span class="n">attach</span><span class="p">(</span><span class="bp">self</span><span class="p">))</span></div>
+                <span class="bp">self</span><span class="o">.</span><span class="n">add_tool</span><span class="p">(</span><span class="n">e</span><span class="o">.</span><span class="n">attach</span><span class="p">(</span><span class="bp">self</span><span class="p">))</span>
+
+            <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="n">UnboundElement</span><span class="p">):</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">()</span> <span class="ow">in</span> <span class="n">e</span><span class="o">.</span><span class="n">_control_modes</span><span class="p">:</span>
+                    <span class="n">ne</span> <span class="o">=</span> <span class="n">Factory</span><span class="o">.</span><span class="n">build_unbound</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span>
+                    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">ne</span><span class="p">,</span> <span class="n">ABetatronTuneMonitor</span><span class="p">):</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">add_betatron_tune_monitor</span><span class="p">(</span><span class="n">ne</span><span class="p">)</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Warning, </span><span class="si">{</span><span class="n">e</span><span class="o">.</span><span class="n">get_name</span><span class="p">()</span><span class="si">}</span><span class="s2"> is not a known object type&quot;</span><span class="p">)</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="ControlSystemAdapter">
+<a class="viewcode-back" href="../../../api/pyaml.control.controlsystem.html#pyaml.control.controlsystem.ControlSystemAdapter">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">ControlSystemAdapter</span><span class="p">(</span><span class="n">ControlSystem</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Control system adapter class</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">ControlSystem</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+
+<div class="viewcode-block" id="ControlSystemAdapter.attach">
+<a class="viewcode-back" href="../../../api/pyaml.control.controlsystem.html#pyaml.control.controlsystem.ControlSystemAdapter.attach">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">attach</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dev</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">DeviceAccess</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">DeviceAccess</span><span class="p">]:</span>
+        <span class="k">pass</span></div>
+
+
+<div class="viewcode-block" id="ControlSystemAdapter.attach_array">
+<a class="viewcode-back" href="../../../api/pyaml.control.controlsystem.html#pyaml.control.controlsystem.ControlSystemAdapter.attach_array">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">attach_array</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dev</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">DeviceAccess</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">DeviceAccess</span><span class="p">]:</span>
+        <span class="k">pass</span></div>
+
+
+<div class="viewcode-block" id="ControlSystemAdapter.name">
+<a class="viewcode-back" href="../../../api/pyaml.control.controlsystem.html#pyaml.control.controlsystem.ControlSystemAdapter.name">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">name</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="k">pass</span></div>
+
+
+<div class="viewcode-block" id="ControlSystemAdapter.scalar_aggregator">
+<a class="viewcode-back" href="../../../api/pyaml.control.controlsystem.html#pyaml.control.controlsystem.ControlSystemAdapter.scalar_aggregator">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">scalar_aggregator</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">None</span></div>
+
+
+<div class="viewcode-block" id="ControlSystemAdapter.vector_aggregator">
+<a class="viewcode-back" href="../../../api/pyaml.control.controlsystem.html#pyaml.control.controlsystem.ControlSystemAdapter.vector_aggregator">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">vector_aggregator</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">None</span></div>
 </div>
 
 </pre></div>

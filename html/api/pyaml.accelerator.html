@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>accelerator &#8212; Python Accelerator Middle Layer 0.1.dev1+g367999d94 documentation</title>
+    <title>accelerator &#8212; Python Accelerator Middle Layer 0.1.dev1+g5a66a087a documentation</title>
   
   
   
@@ -42,7 +42,7 @@
   <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=7f76b32a3354e82990f2" />
 <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=7f76b32a3354e82990f2" />
 
-    <script src="../_static/documentation_options.js?v=3be13801"></script>
+    <script src="../_static/documentation_options.js?v=6d807b48"></script>
     <script src="../_static/doctools.js?v=9bcbadda"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -126,8 +126,8 @@
       
     
     
-    <img src="../_static/logo.png" class="logo__image only-light" alt="Python Accelerator Middle Layer 0.1.dev1+g367999d94 documentation - Home"/>
-    <img src="../_static/dark.png" class="logo__image only-dark pst-js-only" alt="Python Accelerator Middle Layer 0.1.dev1+g367999d94 documentation - Home"/>
+    <img src="../_static/logo.png" class="logo__image only-light" alt="Python Accelerator Middle Layer 0.1.dev1+g5a66a087a documentation - Home"/>
+    <img src="../_static/dark.png" class="logo__image only-dark pst-js-only" alt="Python Accelerator Middle Layer 0.1.dev1+g5a66a087a documentation - Home"/>
   
   
 </a></div>
@@ -641,6 +641,22 @@ object is not created should handle None fields.</p></li>
 </dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="pyaml.accelerator.Accelerator.add_device">
+<span class="sig-name descname"><span class="pre">add_device</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ignore_external</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/accelerator.html#Accelerator.add_device"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.accelerator.Accelerator.add_device" title="Link to this definition">#</a></dt>
+<dd><p>Dynamically add a device to this accelerator</p>
+<dl class="simple">
+<dt>config_dict<span class="classifier">str</span></dt><dd><p>Dictionary containing accelerator config</p>
+</dd>
+<dt>ignore_external: bool</dt><dd><p>Ignore external modules and return None for object that
+cannot be created. pydantic schema that support that an
+object is not created should handle None fields.</p>
+</dd>
+</dl>
+<dl class="field-list simple">
+</dl>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="pyaml.accelerator.Accelerator.controls">
 <span class="sig-name descname"><span class="pre">controls</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/accelerator.html#Accelerator.controls"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.accelerator.Accelerator.controls" title="Link to this definition">#</a></dt>
 <dd><p>Return all registered control modes.</p>
@@ -806,6 +822,7 @@ object is not created should handle None fields.</p></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.accelerator.Accelerator"><code class="docutils literal notranslate"><span class="pre">Accelerator</span></code></a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.accelerator.Accelerator.from_dict"><code class="docutils literal notranslate"><span class="pre">Accelerator.from_dict()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.accelerator.Accelerator.load"><code class="docutils literal notranslate"><span class="pre">Accelerator.load()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.accelerator.Accelerator.add_device"><code class="docutils literal notranslate"><span class="pre">Accelerator.add_device()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.accelerator.Accelerator.controls"><code class="docutils literal notranslate"><span class="pre">Accelerator.controls()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.accelerator.Accelerator.get_description"><code class="docutils literal notranslate"><span class="pre">Accelerator.get_description()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.accelerator.Accelerator.modes"><code class="docutils literal notranslate"><span class="pre">Accelerator.modes()</span></code></a></li>
