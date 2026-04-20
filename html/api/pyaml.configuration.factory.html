@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>factory &#8212; Python Accelerator Middle Layer 0.1.dev1+ge32de148e documentation</title>
+    <title>factory &#8212; Python Accelerator Middle Layer 0.1.dev1+g4b2373858 documentation</title>
   
   
   
@@ -42,7 +42,7 @@
   <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=7f76b32a3354e82990f2" />
 <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=7f76b32a3354e82990f2" />
 
-    <script src="../_static/documentation_options.js?v=32c2f184"></script>
+    <script src="../_static/documentation_options.js?v=1279279f"></script>
     <script src="../_static/doctools.js?v=9bcbadda"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -126,8 +126,8 @@
       
     
     
-    <img src="../_static/logo.png" class="logo__image only-light" alt="Python Accelerator Middle Layer 0.1.dev1+ge32de148e documentation - Home"/>
-    <img src="../_static/dark.png" class="logo__image only-dark pst-js-only" alt="Python Accelerator Middle Layer 0.1.dev1+ge32de148e documentation - Home"/>
+    <img src="../_static/logo.png" class="logo__image only-light" alt="Python Accelerator Middle Layer 0.1.dev1+g4b2373858 documentation - Home"/>
+    <img src="../_static/dark.png" class="logo__image only-dark pst-js-only" alt="Python Accelerator Middle Layer 0.1.dev1+g4b2373858 documentation - Home"/>
   
   
 </a></div>
@@ -515,28 +515,6 @@
   <section id="module-pyaml.configuration.factory">
 <span id="factory"></span><h1>factory<a class="headerlink" href="#module-pyaml.configuration.factory" title="Link to this heading">#</a></h1>
 <dl class="py class">
-<dt class="sig sig-object py" id="pyaml.configuration.factory.BuildStrategy">
-<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">BuildStrategy</span></span><a class="reference internal" href="../_modules/pyaml/configuration/factory.html#BuildStrategy"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.configuration.factory.BuildStrategy" title="Link to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
-<dl class="py method">
-<dt class="sig sig-object py" id="pyaml.configuration.factory.BuildStrategy.build">
-<span class="sig-name descname"><span class="pre">build</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">module</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">config_dict</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/configuration/factory.html#BuildStrategy.build"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.configuration.factory.BuildStrategy.build" title="Link to this definition">#</a></dt>
-<dd><p>Build the object according to custom logic.</p>
-<dl class="field-list simple">
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pyaml.configuration.factory.BuildStrategy.can_handle">
-<span class="sig-name descname"><span class="pre">can_handle</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">module</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">config_dict</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/configuration/factory.html#BuildStrategy.can_handle"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.configuration.factory.BuildStrategy.can_handle" title="Link to this definition">#</a></dt>
-<dd><p>Return True if this strategy can handle the module/config.</p>
-<dl class="field-list simple">
-</dl>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="py class">
 <dt class="sig sig-object py" id="pyaml.configuration.factory.PyAMLFactory">
 <em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">PyAMLFactory</span></span><a class="reference internal" href="../_modules/pyaml/configuration/factory.html#PyAMLFactory"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.configuration.factory.PyAMLFactory" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
@@ -607,22 +585,6 @@ it will be created only once.</p>
 <span class="sig-name descname"><span class="pre">register_element</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">elt</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/configuration/factory.html#PyAMLFactory.register_element"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.configuration.factory.PyAMLFactory.register_element" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
-<dl class="py method">
-<dt class="sig sig-object py" id="pyaml.configuration.factory.PyAMLFactory.register_strategy">
-<span class="sig-name descname"><span class="pre">register_strategy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">strategy</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/configuration/factory.html#PyAMLFactory.register_strategy"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.configuration.factory.PyAMLFactory.register_strategy" title="Link to this definition">#</a></dt>
-<dd><p>Register a plugin-based strategy for object creation.</p>
-<dl class="field-list simple">
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pyaml.configuration.factory.PyAMLFactory.remove_strategy">
-<span class="sig-name descname"><span class="pre">remove_strategy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">strategy</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/configuration/factory.html#PyAMLFactory.remove_strategy"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.configuration.factory.PyAMLFactory.remove_strategy" title="Link to this definition">#</a></dt>
-<dd><p>Register a plugin-based strategy for object creation.</p>
-<dl class="field-list simple">
-</dl>
-</dd></dl>
-
 </dd></dl>
 
 </section>
@@ -674,11 +636,6 @@ it will be created only once.</p>
   </div>
   <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="pst-show_toc_level nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.configuration.factory.BuildStrategy"><code class="docutils literal notranslate"><span class="pre">BuildStrategy</span></code></a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.configuration.factory.BuildStrategy.build"><code class="docutils literal notranslate"><span class="pre">BuildStrategy.build()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.configuration.factory.BuildStrategy.can_handle"><code class="docutils literal notranslate"><span class="pre">BuildStrategy.can_handle()</span></code></a></li>
-</ul>
-</li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.configuration.factory.PyAMLFactory"><code class="docutils literal notranslate"><span class="pre">PyAMLFactory</span></code></a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.configuration.factory.PyAMLFactory.build_object"><code class="docutils literal notranslate"><span class="pre">PyAMLFactory.build_object()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.configuration.factory.PyAMLFactory.build_unbound"><code class="docutils literal notranslate"><span class="pre">PyAMLFactory.build_unbound()</span></code></a></li>
@@ -689,8 +646,6 @@ it will be created only once.</p>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.configuration.factory.PyAMLFactory.get_elements_by_type"><code class="docutils literal notranslate"><span class="pre">PyAMLFactory.get_elements_by_type()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.configuration.factory.PyAMLFactory.handle_validation_error"><code class="docutils literal notranslate"><span class="pre">PyAMLFactory.handle_validation_error()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.configuration.factory.PyAMLFactory.register_element"><code class="docutils literal notranslate"><span class="pre">PyAMLFactory.register_element()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.configuration.factory.PyAMLFactory.register_strategy"><code class="docutils literal notranslate"><span class="pre">PyAMLFactory.register_strategy()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.configuration.factory.PyAMLFactory.remove_strategy"><code class="docutils literal notranslate"><span class="pre">PyAMLFactory.remove_strategy()</span></code></a></li>
 </ul>
 </li>
 </ul>
