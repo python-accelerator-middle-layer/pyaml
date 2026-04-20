@@ -1,5 +1,4 @@
 from abc import ABCMeta, abstractmethod
-from typing import TypeAlias
 
 # TODO: correctly type value
 
@@ -69,9 +68,6 @@ class DeviceAccess(metaclass=ABCMeta):
         pass
 
 
-DeviceAccessRef: TypeAlias = DeviceAccess | str
-
-
-def device_unit(device: DeviceAccessRef | None) -> str:
-    """Return the unit for a concrete device, or an empty unit for string refs."""
-    return device.unit() if isinstance(device, DeviceAccess) else ""
+def device_unit(device: DeviceAccess | None) -> str:
+    """Return the unit for a concrete device, or an empty unit when unavailable."""
+    return device.unit() if device is not None else ""

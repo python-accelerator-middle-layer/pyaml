@@ -172,7 +172,7 @@ def test_configuration_manager_accumulates_multiple_device_fragments(
     manager.add(sr_devices_fragment)
     manager.add(tune_monitor_devices_fragment)
 
-    assert manager.categories() == ["controls", "simulators", "devices"]
+    assert manager.categories() == ["controls", "catalogs", "simulators", "devices"]
     assert manager.keys("devices") == [
         "QF1A-C01",
         "SH1A-C01",
@@ -203,6 +203,17 @@ def test_configuration_manager_tracks_catalogs_as_named_category(config_root_pat
     assert manager.get("catalogs", "device-catalog")["type"] == "pyaml.configuration.static_catalog"
     assert manager.get("catalogs", "device-catalog")["entries"][0]["key"] == "BPM_C01-01/x"
     assert manager.catalogs == ["device-catalog"]
+
+
+def test_configuration_manager_adds_catalog_fragment(config_root_path):
+    manager = ConfigurationManager()
+    manager.add(config_root_path / "config_manager_sr_catalogs.yaml")
+
+    assert manager.categories() == ["catalogs"]
+    assert manager.keys("catalogs") == ["bpm-catalog"]
+    assert manager.has("catalogs", "bpm-catalog")
+    assert manager.get("catalogs", "bpm-catalog")["type"] == "pyaml.configuration.static_catalog"
+    assert manager.get("catalogs", "bpm-catalog")["entries"][0]["key"] == "BPM_C04-01/x"
 
 
 def test_accelerator_load_stays_compatible(config_manager_base_config):

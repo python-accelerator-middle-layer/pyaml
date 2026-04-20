@@ -1,8 +1,6 @@
 from abc import ABCMeta, abstractmethod
-from typing import Tuple
 
 from ..bpm.bpm import BPM
-from ..bpm.bpm_model import BPMModel
 from ..common.abstract import RWMapper
 from ..common.abstract_aggregator import ScalarAggregator
 from ..common.element import Element
@@ -36,7 +34,7 @@ from ..rf.rf_plant import RFPlant, RWTotalVoltage
 from ..rf.rf_transmitter import RFTransmitter
 from ..tuning_tools.measurement_tool import MeasurementTool
 from ..tuning_tools.tuning_tool import TuningTool
-from .deviceaccess import DeviceAccess, DeviceAccessRef
+from .deviceaccess import DeviceAccess
 
 
 class ControlSystem(ElementHolder, metaclass=ABCMeta):
@@ -86,20 +84,20 @@ class ControlSystem(ElementHolder, metaclass=ABCMeta):
         """Returns the module name used for handling aggregator of DeviceVectorAccess"""
         return None
 
-    def resolve_device(self, dev: DeviceAccessRef | None) -> DeviceAccess | None:
-        if dev is None or isinstance(dev, DeviceAccess):
-            return dev
-        if isinstance(dev, str):
-            if self._catalog_resolver is None:
-                raise PyAMLException(f"Control system '{self.name()}' has no catalog configured for key '{dev}'")
-            return self._catalog_resolver.resolve(dev)
-        raise PyAMLException(f"Unsupported device reference type: {type(dev).__name__}")
+    def resolve_device(self, key: str | None) -> DeviceAccess | None:
+        if key is None:
+            return None
+        if self._catalog_resolver is None:
+            raise PyAMLException(f"Control system '{self.name()}' has no catalog configured for key '{key}'")
+        return self._catalog_resolver.resolve(key)
 
-    def resolve_devices(self, devs: list[DeviceAccessRef | None]) -> list[DeviceAccess | None]:
-        return [self.resolve_device(dev) for dev in devs]
+    def resolve_devices(self, keys: list[str | None]) -> list[DeviceAccess | None]:
+        return [self.resolve_device(key) for key in keys]
 
-    def attach_indexed(self, dev: DeviceAccessRef | None, idx: int | None) -> DeviceAccess | None:
-        dev = self.resolve_device(dev)
+    def attach_indexed(self, key: str | None, idx: int | None) -> DeviceAccess | None:
+        dev = self.resolve_device(key)
+        if dev is None:
+            return None
         if idx is not None:
             return self.attach_array([dev])[0]
         else:
