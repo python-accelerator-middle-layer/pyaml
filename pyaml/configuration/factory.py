@@ -10,16 +10,6 @@ from ..common.exception import PyAMLConfigException
 from .unbound_element import UnboundElement
 
 
-class BuildStrategy:
-    def can_handle(self, module: object, config_dict: dict) -> bool:
-        """Return True if this strategy can handle the module/config."""
-        raise NotImplementedError
-
-    def build(self, module: object, config_dict: dict):
-        """Build the object according to custom logic."""
-        raise NotImplementedError
-
-
 class PyAMLFactory:
     """Singleton factory to build PyAML elements with future compatibility logic."""
 
@@ -37,14 +27,6 @@ class PyAMLFactory:
                 cls._instance._elements = {}
                 cls._instance._strategies = []
             return cls._instance
-
-    def register_strategy(self, strategy: BuildStrategy):
-        """Register a plugin-based strategy for object creation."""
-        self._strategies.append(strategy)
-
-    def remove_strategy(self, strategy: BuildStrategy):
-        """Register a plugin-based strategy for object creation."""
-        self._strategies.remove(strategy)
 
     def handle_validation_error(self, e, type_str: str, location_str: str, field_locations: dict):
         # Handle pydantic errors
@@ -97,16 +79,6 @@ class PyAMLFactory:
                 ) from None
             else:
                 return None
-
-        # Try plugin strategies first
-        for strategy in self._strategies:
-            try:
-                if strategy.can_handle(module, d):
-                    obj = strategy.build(module, d)
-                    self.register_element(obj)
-                    return obj
-            except Exception as e:
-                raise PyAMLConfigException(f"Custom strategy failed {location_str}") from e
 
         # Get the object class name
         if class_str is None:

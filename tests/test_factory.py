@@ -16,14 +16,6 @@ def test_factory_build_default():
     assert obj.name == "simple"
 
 
-def test_factory_with_custom_strategy():
-    """Test that custom BuildStrategy overrides default logic."""
-    data = {"type": "mock_module", "name": "injected", "custom": True}
-    obj = Factory.depth_first_build(data, False)
-    assert isinstance(obj, MockElement)
-    assert obj.name == "custom_injected"
-
-
 @pytest.mark.parametrize(
     "test_file",
     [

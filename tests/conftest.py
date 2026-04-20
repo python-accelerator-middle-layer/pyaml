@@ -15,7 +15,7 @@ import pytest
 from pydantic import BaseModel
 
 from pyaml.configuration import ConfigurationManager
-from pyaml.configuration.factory import BuildStrategy, Factory
+from pyaml.configuration.factory import Factory
 from pyaml.control.readback_value import Value
 
 
@@ -428,18 +428,6 @@ mock_module.PYAMLCLASS = "MockElement"
 mock_module.MockElement = MockElement
 
 
-# ────────────── Custom strategy ──────────────
-
-
-class MockStrategy(BuildStrategy):
-    def can_handle(self, module, config_dict):
-        return config_dict.get("custom") is True
-
-    def build(self, module, config_dict):
-        name = config_dict.get("name", "default")
-        return MockElement(config=MockConfig(name=f"custom_{name}"))
-
-
 # ────────────── Pytest fixtures ──────────────
 
 
@@ -457,15 +445,6 @@ def clear_factory_registry():
     Factory.clear()
     yield
     Factory.clear()
-
-
-@pytest.fixture(autouse=True)
-def register_mock_strategy():
-    """Register and unregister mock build strategy."""
-    strategy = MockStrategy()
-    Factory.register_strategy(strategy)
-    yield
-    Factory.remove_strategy(strategy)
 
 
 # -----------------------
