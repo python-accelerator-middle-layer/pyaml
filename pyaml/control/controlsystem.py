@@ -8,6 +8,7 @@ from ..common.abstract_aggregator import ScalarAggregator
 from ..common.element import Element
 from ..common.element_holder import ElementHolder
 from ..common.exception import PyAMLException
+from ..configuration.catalog import Catalog
 from ..configuration.factory import Factory
 from ..control.abstract_impl import (
     CSBPMArrayMapper,
@@ -33,7 +34,7 @@ from ..rf.rf_plant import RFPlant, RWTotalVoltage
 from ..rf.rf_transmitter import RFTransmitter
 from ..tuning_tools.measurement_tool import MeasurementTool
 from ..tuning_tools.tuning_tool import TuningTool
-from .deviceaccess import DeviceAccess
+from .deviceaccess import DeviceAccess, DeviceAccessRef
 
 
 class ControlSystem(ElementHolder, metaclass=ABCMeta):
@@ -43,6 +44,18 @@ class ControlSystem(ElementHolder, metaclass=ABCMeta):
 
     def __init__(self):
         ElementHolder.__init__(self)
+        self._catalog: Catalog | None = None
+
+    def set_catalog(self, catalog: Catalog | None):
+        self._catalog = catalog
+        if catalog is not None:
+            catalog.attach_control_system(self)
+
+    def get_catalog(self) -> Catalog | None:
+        return self._catalog
+
+    def get_catalog_config(self) -> Catalog | str | None:
+        return getattr(self._cfg, "catalog", None)
 
     @abstractmethod
     def attach(self, dev: list[DeviceAccess]) -> list[DeviceAccess]:
@@ -71,7 +84,20 @@ class ControlSystem(ElementHolder, metaclass=ABCMeta):
         """Returns the module name used for handling aggregator of DeviceVectorAccess"""
         return None
 
-    def attach_indexed(self, dev: DeviceAccess, idx: int | None) -> DeviceAccess:
+    def resolve_device(self, dev: DeviceAccessRef | None) -> DeviceAccess | None:
+        if dev is None or isinstance(dev, DeviceAccess):
+            return dev
+        if isinstance(dev, str):
+            if self._catalog is None:
+                raise PyAMLException(f"Control system '{self.name()}' has no catalog configured for key '{dev}'")
+            return self._catalog.resolve(dev)
+        raise PyAMLException(f"Unsupported device reference type: {type(dev).__name__}")
+
+    def resolve_devices(self, devs: list[DeviceAccessRef | None]) -> list[DeviceAccess | None]:
+        return [self.resolve_device(dev) for dev in devs]
+
+    def attach_indexed(self, dev: DeviceAccessRef | None, idx: int | None) -> DeviceAccess | None:
+        dev = self.resolve_device(dev)
         if idx is not None:
             return self.attach_array([dev])[0]
         else:
@@ -85,7 +111,7 @@ class ControlSystem(ElementHolder, metaclass=ABCMeta):
     def create_magnet_strength_aggregator(self, magnets: list[Magnet]) -> ScalarAggregator:
         agg = CSStrengthScalarAggregator(self.create_scalar_aggregator())
         for m in magnets:
-            devs = self.attach(m.model.get_devices())
+            devs = self.attach(self.resolve_devices(m.model.get_devices()))
             agg.add_magnet(m, devs)
         return agg
 
@@ -98,7 +124,7 @@ class ControlSystem(ElementHolder, metaclass=ABCMeta):
             if not m.model.has_hardware():
                 return None
             psIndex = m.hardware.index() if isinstance(m.hardware, RWMapper) else 0
-            agg.add_devices(self.attach([m.model.get_devices()[psIndex]])[0])
+            agg.add_devices(self.attach([self.resolve_device(m.model.get_devices()[psIndex])])[0])
         return agg
 
     def create_bpm_aggregators(self, bpms: list[BPM]) -> list[ScalarAggregator]:
@@ -110,7 +136,7 @@ class ControlSystem(ElementHolder, metaclass=ABCMeta):
             aggh = self.create_scalar_aggregator()
             aggv = self.create_scalar_aggregator()
             for b in bpms:
-                devs = self.attach(b.model.get_pos_devices())
+                devs = self.attach(self.resolve_devices(b.model.get_pos_devices()))
                 agg.add_devices(devs)
                 aggh.add_devices(devs[0])
                 aggv.add_devices(devs[1])
@@ -124,7 +150,7 @@ class ControlSystem(ElementHolder, metaclass=ABCMeta):
             vIdx = []
             allHV = []
             for b in bpms:
-                devs = self.attach_array(b.model.get_pos_devices())
+                devs = self.attach_array(self.resolve_devices(b.model.get_pos_devices()))
                 devH = devs[0]
                 devV = devs[1]
                 if devH not in allH:
@@ -175,7 +201,7 @@ class ControlSystem(ElementHolder, metaclass=ABCMeta):
         """
         for e in elements:
             if isinstance(e, Magnet):
-                dev = self.attach(e.model.get_devices())[0]
+                dev = self.attach(self.resolve_devices(e.model.get_devices()))[0]
                 current = RWHardwareScalar(e.model, dev) if e.model.has_hardware() else None
                 strength = RWStrengthScalar(e.model, dev) if e.model.has_physics() else None
                 # Create a unique ref for this control system
@@ -183,7 +209,7 @@ class ControlSystem(ElementHolder, metaclass=ABCMeta):
                 self.add_magnet(m)
 
             elif isinstance(e, CombinedFunctionMagnet):
-                devs = self.attach(e.model.get_devices())
+                devs = self.attach(self.resolve_devices(e.model.get_devices()))
                 currents = RWHardwareArray(e.model, devs)
                 strengths = RWStrengthArray(e.model, devs)
                 # Create unique refs the cfm and
@@ -194,7 +220,7 @@ class ControlSystem(ElementHolder, metaclass=ABCMeta):
                     self.add_magnet(m)
 
             elif isinstance(e, SerializedMagnets):
-                devs = self.attach(e.model.get_devices())
+                devs = self.attach(self.resolve_devices(e.model.get_devices()))
                 currents = []
                 strengths = []
                 # Create unique refs the series and each of its function for this
@@ -230,22 +256,22 @@ class ControlSystem(ElementHolder, metaclass=ABCMeta):
                 attachedTrans: list[RFTransmitter] = []
                 if e._cfg.transmitters:
                     for t in e._cfg.transmitters:
-                        vDev = self.attach([t._cfg.voltage])[0]
-                        pDev = self.attach([t._cfg.phase])[0]
+                        vDev = self.attach([self.resolve_device(t._cfg.voltage)])[0]
+                        pDev = self.attach([self.resolve_device(t._cfg.phase)])[0]
                         voltage = RWRFVoltageScalar(t, vDev)
                         phase = RWRFPhaseScalar(t, pDev)
                         nt = t.attach(self, voltage, phase)
                         self.add_rf_transnmitter(nt)
                         attachedTrans.append(nt)
 
-                fDev = self.attach([e._cfg.masterclock])[0]
+                fDev = self.attach([self.resolve_device(e._cfg.masterclock)])[0]
                 frequency = RWRFFrequencyScalar(e, fDev)
                 voltage = RWTotalVoltage(attachedTrans) if e._cfg.transmitters else None
                 ne = e.attach(self, frequency, voltage)
                 self.add_rf_plant(ne)
 
             elif isinstance(e, BetatronTuneMonitor):
-                tuneDevs = self.attach([e._cfg.tune_h, e._cfg.tune_v])
+                tuneDevs = self.attach(self.resolve_devices([e._cfg.tune_h, e._cfg.tune_v]))
                 betatron_tune = RBetatronTuneArray(e, tuneDevs)
                 e = e.attach(self, betatron_tune)
                 self.add_betatron_tune_monitor(e)

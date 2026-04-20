@@ -3,6 +3,7 @@ import os
 
 from pydantic import BaseModel, ConfigDict
 
+from pyaml.configuration.catalog import Catalog
 from pyaml.control.controlsystem import ControlSystem
 from pyaml.control.deviceaccess import DeviceAccess
 
@@ -14,6 +15,7 @@ class ConfigModel(BaseModel):
 
     name: str
     tango_host: str
+    catalog: Catalog | str | None = None
     debug_level: str = None
 
 

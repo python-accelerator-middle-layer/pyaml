@@ -1,0 +1,105 @@
+type: pyaml.accelerator
+facility: ESRF
+machine: sr
+energy: 6e9
+harmonic_number: 992
+controls:
+  - type: tango.pyaml.controlsystem
+    tango_host: ebs-simu-3:10000
+    name: live
+    catalog: device-catalog
+  - type: tango.pyaml.controlsystem
+    tango_host: ebs-simu-3:10000
+    name: ops
+    catalog: device-catalog
+data_folder: /data/store
+catalogs:
+  - type: pyaml.configuration.static_catalog
+    name: device-catalog
+    refs:
+      BPM_C01-01/x:
+        type: tango.pyaml.attribute_read_only
+        attribute: srdiag/bpm/c01-01/SA_HPosition
+        unit: mm
+      BPM_C01-01/y:
+        type: tango.pyaml.attribute_read_only
+        attribute: srdiag/bpm/c01-01/SA_VPosition
+        unit: mm
+      BPM_C01-01/x_offset:
+        type: tango.pyaml.attribute
+        attribute: srdiag/bpm/c01-01/HOffset
+        unit: mm
+      BPM_C01-01/y_offset:
+        type: tango.pyaml.attribute
+        attribute: srdiag/bpm/c01-01/VOffset
+        unit: mm
+      BPM_C01-01/tilt:
+        type: tango.pyaml.attribute
+        attribute: srdiag/bpm/c01-01/Tilt_Angle
+        unit: rad
+      tune/h:
+        type: tango.pyaml.attribute_read_only
+        attribute: srdiag/beam-tune/main/Qh
+        unit: "1"
+      tune/v:
+        type: tango.pyaml.attribute_read_only
+        attribute: srdiag/beam-tune/main/Qv
+        unit: "1"
+      rf/masterclock:
+        type: tango.pyaml.attribute
+        attribute: sy/ms/1/Frequency
+        unit: Hz
+      QF1A-C01/current:
+        type: tango.pyaml.attribute
+        attribute: sr/ps-qf1/c01-a/current
+        unit: A
+      SH1A-C01/ps1:
+        type: tango.pyaml.attribute
+        attribute: srmag/ps-corr-sh1/c01-a-ch1/current
+        unit: A
+      SH1A-C01/ps2:
+        type: tango.pyaml.attribute
+        attribute: srmag/ps-corr-sh1/c01-a-ch2/current
+        unit: A
+      SH1A-C01/ps3:
+        type: tango.pyaml.attribute
+        attribute: srmag/ps-corr-sh1/c01-a-ch3/current
+        unit: A
+devices:
+  - type: pyaml.bpm.bpm
+    name: BPM_C01-01
+    model:
+      type: pyaml.bpm.bpm_tiltoffset_model
+      x_pos: BPM_C01-01/x
+      y_pos: BPM_C01-01/y
+      x_offset: BPM_C01-01/x_offset
+      y_offset: BPM_C01-01/y_offset
+      tilt: BPM_C01-01/tilt
+  - type: pyaml.diagnostics.tune_monitor
+    name: BETATRON_TUNE
+    tune_h: tune/h
+    tune_v: tune/v
+    rf_plant_name: RF
+  - type: pyaml.rf.rf_plant
+    name: RF
+    masterclock: rf/masterclock
+  - type: pyaml.magnet.quadrupole
+    name: QF1A-C01
+    model:
+      type: pyaml.magnet.identity_model
+      unit: A
+      powerconverter: QF1A-C01/current
+  - type: pyaml.magnet.cfm_magnet
+    name: SH1A-C01
+    mapping:
+      - [B0, SH1A-C01-H]
+      - [A0, SH1A-C01-V]
+      - [A1, SH1A-C01-SQ]
+    model:
+      type: pyaml.magnet.identity_cfm_model
+      multipoles: [B0, A0, A1]
+      powerconverters:
+        - SH1A-C01/ps1
+        - SH1A-C01/ps2
+        - SH1A-C01/ps3
+      units: [A, A, A]

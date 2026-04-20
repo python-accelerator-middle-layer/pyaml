@@ -343,7 +343,8 @@ class RWHardwareScalar(abstract.ReadWriteFloatScalar):
         raise NotImplementedError("Not implemented yet.")
 
     def unit(self) -> str:
-        return self.__model.get_hardware_units()[0]
+        unit = self.__model.get_hardware_units()[0]
+        return unit if unit != "" else self.__dev.unit()
 
     def set_magnet_rigidity(self, brho: np.double):
         self.__model.set_magnet_rigidity(brho)
@@ -417,7 +418,10 @@ class RWHardwareArray(abstract.ReadWriteFloatArray):
 
     # Gets the unit of the value
     def unit(self) -> list[str]:
-        return self.__model.get_hardware_units()
+        units = self.__model.get_hardware_units()
+        return [
+            model_unit if model_unit != "" else dev.unit() for model_unit, dev in zip(units, self.__devs, strict=True)
+        ]
 
 
 # ------------------------------------------------------------------------------
@@ -491,7 +495,7 @@ class RBpmArray(abstract.ReadFloatArray):
     # Gets the unit of the value Assume that x and y, offsets and positions
     # have the same unit
     def unit(self) -> str:
-        return self._model.get_pos_devices()[0].unit()
+        return self._hDev.unit()
 
 
 # ------------------------------------------------------------------------------
@@ -523,7 +527,7 @@ class RWBpmTiltScalar(abstract.ReadFloatScalar):
 
     # Gets the unit of the value
     def unit(self) -> str:
-        return self._model.get_tilt_device().unit()
+        return self._dev.unit()
 
 
 # ------------------------------------------------------------------------------
@@ -575,7 +579,7 @@ class RWBpmOffsetArray(abstract.ReadWriteFloatArray):
     # Gets the unit of the value Assume that x and y, offsets and positions
     # have the same unit
     def unit(self) -> str:
-        return self._model.get_pos_devices()[0].unit()
+        return self._hDev.unit()
 
 
 # ------------------------------------------------------------------------------
@@ -601,7 +605,7 @@ class RWRFVoltageScalar(abstract.ReadWriteFloatScalar):
         raise NotImplementedError("Not implemented yet.")
 
     def unit(self) -> str:
-        return self.__transmitter._cfg.voltage.unit()
+        return self.__dev.unit()
 
 
 # ------------------------------------------------------------------------------
@@ -627,7 +631,7 @@ class RWRFPhaseScalar(abstract.ReadWriteFloatScalar):
         raise NotImplementedError("Not implemented yet.")
 
     def unit(self) -> str:
-        return self.__transmitter._cfg.phase.unit()
+        return self.__dev.unit()
 
 
 # ------------------------------------------------------------------------------
@@ -653,7 +657,7 @@ class RWRFFrequencyScalar(abstract.ReadWriteFloatScalar):
         raise NotImplementedError("Not implemented yet.")
 
     def unit(self) -> str:
-        return self.__rf._cfg.masterclock.unit()
+        return self.__dev.unit()
 
 
 # ------------------------------------------------------------------------------
@@ -678,7 +682,7 @@ class RBetatronTuneArray(abstract.ReadFloatArray):
         )
 
     def unit(self) -> str:
-        return self.__tune_monitor._cfg.tune_v.unit()
+        return self.__devs[1].unit()
 
 
 # ------------------------------------------------------------------------------

@@ -45,9 +45,7 @@ class PyAMLFactory:
         """Register a plugin-based strategy for object creation."""
         self._strategies.remove(strategy)
 
-    def handle_validation_error(
-        self, e, type_str: str, location_str: str, field_locations: dict
-    ):
+    def handle_validation_error(self, e, type_str: str, location_str: str, field_locations: dict):
         # Handle pydantic errors
         globalMessage = ""
         for err in e.errors():
@@ -66,9 +64,7 @@ class PyAMLFactory:
             globalMessage += message
             globalMessage += ", "
         # Discard pydantic stack trace
-        raise PyAMLConfigException(
-            f"{globalMessage} for object: '{type_str}' {location_str}"
-        ) from None
+        raise PyAMLConfigException(f"{globalMessage} for object: '{type_str}' {location_str}") from None
 
     def build_object(self, d: dict, ignore_external: bool = False):
         """Build an object from the dict"""
@@ -82,9 +78,7 @@ class PyAMLFactory:
         if not isinstance(d, dict):
             raise PyAMLConfigException(f"Unexpected object {str(d)} {location_str}")
         if "type" not in d:
-            raise PyAMLConfigException(
-                f"No type specified for {str(type(d))}:{str(d)} {location_str}"
-            )
+            raise PyAMLConfigException(f"No type specified for {str(type(d))}:{str(d)} {location_str}")
         type_str = d.pop("type")
 
         try:
@@ -93,8 +87,7 @@ class PyAMLFactory:
             if not ignore_external:
                 # Discard module not found stack trace
                 raise PyAMLConfigException(
-                    "Module referenced in type cannot be found:"
-                    + f"'{type_str}' {location_str}"
+                    "Module referenced in type cannot be found:" + f"'{type_str}' {location_str}"
                 ) from None
             else:
                 return None
@@ -107,24 +100,18 @@ class PyAMLFactory:
                     self.register_element(obj)
                     return obj
             except Exception as e:
-                raise PyAMLConfigException(
-                    f"Custom strategy failed {location_str}"
-                ) from e
+                raise PyAMLConfigException(f"Custom strategy failed {location_str}") from e
 
         # Default loading strategy
         # Get the config object
         config_cls = getattr(module, "ConfigModel", None)
         if config_cls is None:
-            raise PyAMLConfigException(
-                f"ConfigModel class '{type_str}.ConfigModel' not found {location_str}"
-            )
+            raise PyAMLConfigException(f"ConfigModel class '{type_str}.ConfigModel' not found {location_str}")
 
         # Get the class name
         cls_name = getattr(module, "PYAMLCLASS", None)
         if cls_name is None:
-            raise PyAMLConfigException(
-                f"PYAMLCLASS definition not found in '{type_str}' {location_str}"
-            )
+            raise PyAMLConfigException(f"PYAMLCLASS definition not found in '{type_str}' {location_str}")
 
         try:
             # Validate the model
@@ -141,13 +128,11 @@ class PyAMLFactory:
             obj = elem_cls(cfg)
             self.register_element(obj)
         except Exception as e:
-            raise PyAMLConfigException(
-                f"{str(e)} when creating '{type_str}.{cls_name}' {location_str}"
-            ) from e
+            raise PyAMLConfigException(f"{str(e)} when creating '{type_str}.{cls_name}' {location_str}") from e
 
         return obj
 
-    def depth_first_build(self, d, ignore_external: bool):
+    def depth_first_build(self, d, ignore_external: bool, _is_root: bool = True):
         """
         Main factory function (Depth-first factory)
 
@@ -162,7 +147,7 @@ class PyAMLFactory:
             l = []
             for _index, e in enumerate(d):
                 if isinstance(e, dict) or isinstance(e, list):
-                    obj = self.depth_first_build(e, ignore_external)
+                    obj = self.depth_first_build(e, ignore_external, _is_root=False)
                     l.append(obj)
                 else:
                     l.append(e)
@@ -172,16 +157,22 @@ class PyAMLFactory:
             for key, value in d.items():
                 if not key == "__fieldlocations__":
                     if isinstance(value, dict) or isinstance(value, list):
-                        obj = self.depth_first_build(value, ignore_external)
+                        obj = self.depth_first_build(value, ignore_external, _is_root=False)
                         # Replace the inner dict by the object itself
                         d[key] = obj
+
+            if "type" not in d:
+                if _is_root:
+                    raise PyAMLConfigException(f"No type specified for {str(type(d))}:{str(d)} ")
+                d.pop("__location__", None)
+                d.pop("__fieldlocations__", None)
+                return d
 
             # We are now on leaf (no nested object), we can construct
             return self.build_object(d, ignore_external)
 
         raise PyAMLConfigException(
-            "Unexpected element found. 'dict' or 'list' expected "
-            "but got '{d.__class__.__name__}'"
+            "Unexpected element found. 'dict' or 'list' expected but got '{d.__class__.__name__}'"
         )
 
     def register_element(self, elt):

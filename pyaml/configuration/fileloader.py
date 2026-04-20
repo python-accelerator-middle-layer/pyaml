@@ -167,6 +167,13 @@ class SafeLineLoader(SafeLoader):
                     "found unhashable key",
                     key_node.start_mark,
                 )
+            if key in mapping:
+                raise ConstructorError(
+                    "while constructing a mapping",
+                    node.start_mark,
+                    f"found duplicate key ({key})",
+                    key_node.start_mark,
+                )
             value = self.construct_object(value_node, deep=deep)
             mapping[key] = value
             field_mapping[key] = (

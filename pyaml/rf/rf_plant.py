@@ -9,7 +9,7 @@ except ImportError:
 from .. import PyAMLException
 from ..common import abstract
 from ..common.element import Element, ElementConfigModel
-from ..control.deviceaccess import DeviceAccess
+from ..control.deviceaccess import DeviceAccessRef
 from .rf_transmitter import RFTransmitter
 
 # Define the main class name for this module
@@ -17,7 +17,7 @@ PYAMLCLASS = "RFPlant"
 
 
 class ConfigModel(ElementConfigModel):
-    masterclock: DeviceAccess | None = None
+    masterclock: DeviceAccessRef | None = None
     """Device to apply main RF frequency"""
     transmitters: list[RFTransmitter] | None = None
     """List of RF trasnmitters"""
@@ -91,4 +91,4 @@ class RWTotalVoltage(abstract.ReadWriteFloatScalar):
         raise NotImplementedError("Not implemented yet.")
 
     def unit(self) -> str:
-        return self.__trans[0]._cfg.phase.unit()
+        return self.__trans[0].voltage.unit()

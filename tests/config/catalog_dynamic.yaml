@@ -1,0 +1,26 @@
+type: pyaml.accelerator
+facility: ESRF
+machine: sr
+energy: 6e9
+controls:
+  - type: tango.pyaml.controlsystem
+    tango_host: ebs-simu-3:10000
+    name: live
+    catalog: tango-db
+  - type: tango.pyaml.controlsystem
+    tango_host: ebs-simu-3:10000
+    name: ops
+    catalog: tango-db
+data_folder: /data/store
+catalogs:
+  - type: tango.pyaml.attribute_catalog
+    name: tango-db
+    read_only: true
+    unit: mm
+devices:
+  - type: pyaml.bpm.bpm
+    name: BPM_C01-02
+    model:
+      type: pyaml.bpm.bpm_simple_model
+      x_pos: srdiag/bpm/c01-02/SA_HPosition
+      y_pos: srdiag/bpm/c01-02/SA_VPosition

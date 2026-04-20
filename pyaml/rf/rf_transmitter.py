@@ -9,7 +9,7 @@ except ImportError:
 from .. import PyAMLException
 from ..common import abstract
 from ..common.element import Element, ElementConfigModel
-from ..control.deviceaccess import DeviceAccess
+from ..control.deviceaccess import DeviceAccessRef
 
 # Define the main class name for this module
 PYAMLCLASS = "RFTransmitter"
@@ -36,8 +36,8 @@ class ConfigModel(ElementConfigModel):
 
     model_config = ConfigDict(arbitrary_types_allowed=True, extra="forbid")
 
-    voltage: DeviceAccess | None = None
-    phase: DeviceAccess | None = None
+    voltage: DeviceAccessRef | None = None
+    phase: DeviceAccessRef | None = None
     cavities: list[str]
     harmonic: float = 1.0
     distribution: float = 1.0
@@ -70,9 +70,7 @@ class RFTransmitter(Element):
             If transmitter is unattached or has no voltage device defined
         """
         if self.__voltage is None:
-            raise PyAMLException(
-                f"{str(self)} is unattached or has no voltage device defined"
-            )
+            raise PyAMLException(f"{str(self)} is unattached or has no voltage device defined")
         return self.__voltage
 
     @property
@@ -91,9 +89,7 @@ class RFTransmitter(Element):
             If transmitter is unattached or has no phase device defined
         """
         if self.__phase is None:
-            raise PyAMLException(
-                f"{str(self)} is unattached or has no phase device defined"
-            )
+            raise PyAMLException(f"{str(self)} is unattached or has no phase device defined")
         return self.__phase
 
     def attach(

@@ -7,7 +7,7 @@ from ..configuration.curve import Curve
 from ..configuration.inline_curve import ConfigModel as InlineCurveModel
 from ..configuration.inline_curve import InlineCurve
 from ..configuration.matrix import Matrix
-from ..control.deviceaccess import DeviceAccess
+from ..control.deviceaccess import DeviceAccessRef, device_unit
 from .linear_model import ConfigModel as LinearConfigModel
 from .linear_model import LinearMagnetModel
 from .model import MagnetModel
@@ -45,7 +45,7 @@ class ConfigModel(BaseModel):
     calibration_factors: float | list[float] = None
     calibration_offsets: float | list[float] = None
     crosstalk: float | list[float] = 1.0
-    powerconverter: DeviceAccess
+    powerconverter: DeviceAccessRef
     unit: str
 
 
@@ -75,8 +75,7 @@ def _check_len(obj, name, expected_length):
     length = len(obj)
     if length != expected_length:
         raise PyAMLException(
-            f"{name} does not have the expected "
-            f"number of items ({expected_length} items expected but got {length})"
+            f"{name} does not have the expected number of items ({expected_length} items expected but got {length})"
         )
 
 
@@ -105,16 +104,12 @@ class LinearSerializedMagnetModel(MagnetModel):
         if self._cfg.calibration_factors is None:
             self.__calibration_factors = np.ones(self.__nbMagnets)
         else:
-            self.__calibration_factors = _to_list_of_length(
-                self._cfg.calibration_factors, self.__nbMagnets
-            )
+            self.__calibration_factors = _to_list_of_length(self._cfg.calibration_factors, self.__nbMagnets)
 
         if self._cfg.calibration_offsets is None:
             self.__calibration_offsets = np.zeros(self.__nbMagnets)
         else:
-            self.__calibration_offsets = _to_list_of_length(
-                self._cfg.calibration_offsets, self.__nbMagnets
-            )
+            self.__calibration_offsets = _to_list_of_length(self._cfg.calibration_offsets, self.__nbMagnets)
 
         if self._cfg.crosstalk is None:
             self.__crosstalk = np.zeros(self.__nbMagnets)
@@ -157,26 +152,23 @@ class LinearSerializedMagnetModel(MagnetModel):
         return np.array(
             [
                 model.compute_hardware_values([strength])
-                for strength, model in zip(strengths, self.__sub_models)
+                for strength, model in zip(strengths, self.__sub_models, strict=True)
             ]
         )
 
     def compute_strengths(self, currents: np.array) -> np.array:
         return np.array(
-            [
-                model.compute_strengths([current])
-                for current, model in zip(currents, self.__sub_models)
-            ]
+            [model.compute_strengths([current]) for current, model in zip(currents, self.__sub_models, strict=True)]
         )
 
     def get_strength_units(self) -> list[str]:
         return self._cfg.units
 
     def get_hardware_units(self) -> list[str]:
-        return [p.unit() for p in self._cfg.__sub_models]
+        return [device_unit(self._cfg.powerconverter)] * self.__nbMagnets
 
-    def get_devices(self) -> list[DeviceAccess]:
-        return self._cfg.powerconverters
+    def get_devices(self) -> list[DeviceAccessRef]:
+        return [self._cfg.powerconverter] * self.__nbMagnets
 
     def set_magnet_rigidity(self, brho: np.double):
         self.__brho = brho

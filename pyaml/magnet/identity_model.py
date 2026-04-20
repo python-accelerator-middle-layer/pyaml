@@ -3,7 +3,7 @@ from pydantic import BaseModel, ConfigDict
 
 from .. import PyAMLException
 from ..common.element import __pyaml_repr__
-from ..control.deviceaccess import DeviceAccess
+from ..control.deviceaccess import DeviceAccessRef
 from .model import MagnetModel
 
 # Define the main class name for this module
@@ -26,8 +26,8 @@ class ConfigModel(BaseModel):
 
     model_config = ConfigDict(arbitrary_types_allowed=True, extra="forbid")
 
-    powerconverter: DeviceAccess | None = None
-    physics: DeviceAccess | None = None
+    powerconverter: DeviceAccessRef | None = None
+    physics: DeviceAccessRef | None = None
     unit: str
 
 
@@ -40,14 +40,10 @@ class IdentityMagnetModel(MagnetModel):
         self._cfg = cfg
         self.__unit = cfg.unit
         if cfg.physics is None and cfg.powerconverter is None:
-            raise PyAMLException(
-                "Invalid IdentityMagnetModel configuration,"
-                "physics or powerconverter device required"
-            )
+            raise PyAMLException("Invalid IdentityMagnetModel configuration,physics or powerconverter device required")
         if cfg.physics is not None and cfg.powerconverter is not None:
             raise PyAMLException(
-                "Invalid IdentityMagnetModel configuration,"
-                "physics or powerconverter device required but not both"
+                "Invalid IdentityMagnetModel configuration,physics or powerconverter device required but not both"
             )
         if cfg.physics:
             self.__device = cfg.physics
@@ -66,7 +62,7 @@ class IdentityMagnetModel(MagnetModel):
     def get_hardware_units(self) -> list[str]:
         return [self.__unit]
 
-    def get_devices(self) -> list[DeviceAccess]:
+    def get_devices(self) -> list[DeviceAccessRef]:
         return [self.__device]
 
     def set_magnet_rigidity(self, brho: np.double):

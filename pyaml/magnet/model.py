@@ -3,7 +3,7 @@ from abc import ABCMeta, abstractmethod
 import numpy as np
 import numpy.typing as npt
 
-from ..control.deviceaccess import DeviceAccess
+from ..control.deviceaccess import DeviceAccessRef
 
 
 class MagnetModel(metaclass=ABCMeta):
@@ -13,9 +13,7 @@ class MagnetModel(metaclass=ABCMeta):
     """
 
     @abstractmethod
-    def compute_hardware_values(
-        self, strengths: npt.NDArray[np.float64]
-    ) -> npt.NDArray[np.float64]:
+    def compute_hardware_values(self, strengths: npt.NDArray[np.float64]) -> npt.NDArray[np.float64]:
         """
         Compute hardware value(s) from magnet strength(s)
 
@@ -33,9 +31,7 @@ class MagnetModel(metaclass=ABCMeta):
         pass
 
     @abstractmethod
-    def compute_strengths(
-        self, hardware_values: npt.NDArray[np.float64]
-    ) -> npt.NDArray[np.float64]:
+    def compute_strengths(self, hardware_values: npt.NDArray[np.float64]) -> npt.NDArray[np.float64]:
         """
         Compute magnet strength(s) from hardware value(s)
 
@@ -79,7 +75,7 @@ class MagnetModel(metaclass=ABCMeta):
         pass
 
     @abstractmethod
-    def get_devices(self) -> list[DeviceAccess | None]:
+    def get_devices(self) -> list[DeviceAccessRef | None]:
         """
         Get device handles
 

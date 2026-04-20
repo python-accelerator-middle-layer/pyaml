@@ -1,6 +1,6 @@
 from ..common.abstract import ReadFloatArray
 from ..common.element import Element, ElementConfigModel
-from ..control.deviceaccess import DeviceAccess
+from ..control.deviceaccess import DeviceAccessRef
 from .atune_monitor import ABetatronTuneMonitor
 
 try:
@@ -27,8 +27,8 @@ class ConfigModel(ElementConfigModel):
 
     model_config = ConfigDict(arbitrary_types_allowed=True, extra="forbid")
 
-    tune_h: DeviceAccess | None
-    tune_v: DeviceAccess | None
+    tune_h: DeviceAccessRef | None
+    tune_v: DeviceAccessRef | None
     rf_plant_name: str | None = None
 
 

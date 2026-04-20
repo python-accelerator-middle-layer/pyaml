@@ -3,7 +3,7 @@ from pydantic import BaseModel, ConfigDict
 
 from .. import PyAMLException
 from ..common.element import __pyaml_repr__
-from ..control.deviceaccess import DeviceAccess
+from ..control.deviceaccess import DeviceAccessRef
 from .model import MagnetModel
 
 # Define the main class name for this module
@@ -29,8 +29,8 @@ class ConfigModel(BaseModel):
     model_config = ConfigDict(arbitrary_types_allowed=True, extra="forbid")
 
     multipoles: list[str]
-    powerconverters: list[DeviceAccess | None] | None = None
-    physics: list[DeviceAccess | None] | None = None
+    powerconverters: list[DeviceAccessRef | None] | None = None
+    physics: list[DeviceAccessRef | None] | None = None
     units: list[str]
 
 
@@ -47,13 +47,11 @@ class IdentityCFMagnetModel(MagnetModel):
 
         if cfg.physics is None and cfg.powerconverters is None:
             raise PyAMLException(
-                "Invalid IdentityCFMagnetModel configuration,"
-                "physics or powerconverters device required"
+                "Invalid IdentityCFMagnetModel configuration,physics or powerconverters device required"
             )
         if cfg.physics is not None and cfg.powerconverters is not None:
             raise PyAMLException(
-                "Invalid IdentityCFMagnetModel configuration,"
-                "physics or powerconverters device required but not both"
+                "Invalid IdentityCFMagnetModel configuration,physics or powerconverters device required but not both"
             )
         if cfg.physics:
             self.__devices = cfg.physics
@@ -68,8 +66,7 @@ class IdentityCFMagnetModel(MagnetModel):
         lgth = len(obj)
         if lgth != expected_len:
             raise PyAMLException(
-                f"{name} does not have the expected "
-                f"number of items ({expected_len} items expected but got {lgth})"
+                f"{name} does not have the expected number of items ({expected_len} items expected but got {lgth})"
             )
 
     def compute_hardware_values(self, strengths: np.array) -> np.array:
@@ -84,7 +81,7 @@ class IdentityCFMagnetModel(MagnetModel):
     def get_hardware_units(self) -> list[str]:
         return self._cfg.units
 
-    def get_devices(self) -> list[DeviceAccess | None]:
+    def get_devices(self) -> list[DeviceAccessRef | None]:
         return self.__devices
 
     def set_magnet_rigidity(self, brho: np.double):

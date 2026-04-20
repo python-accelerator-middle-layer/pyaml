@@ -4,7 +4,7 @@ from scipy.interpolate import make_smoothing_spline
 
 from ..common.element import __pyaml_repr__
 from ..configuration.curve import Curve
-from ..control.deviceaccess import DeviceAccess
+from ..control.deviceaccess import DeviceAccessRef, device_unit
 from .model import MagnetModel
 
 # Define the main class name for this module
@@ -37,7 +37,7 @@ class ConfigModel(BaseModel):
     model_config = ConfigDict(arbitrary_types_allowed=True, extra="forbid")
 
     curve: Curve
-    powerconverter: DeviceAccess | None
+    powerconverter: DeviceAccessRef | None
     calibration_factor: float = 1.0
     calibration_offset: float = 0.0
     crosstalk: float = 1.0
@@ -54,18 +54,13 @@ class SplineMagnetModel(MagnetModel):
     def __init__(self, cfg: ConfigModel):
         self._cfg = cfg
         self.__curve = cfg.curve.get_curve()
-        self.__curve[:, 1] = (
-            self.__curve[:, 1] * cfg.calibration_factor * cfg.crosstalk
-            + cfg.calibration_offset
-        )
+        self.__curve[:, 1] = self.__curve[:, 1] * cfg.calibration_factor * cfg.crosstalk + cfg.calibration_offset
         rcurve = Curve.inverse(self.__curve)
         self.__strength_unit = cfg.unit
-        self.__hardware_unit = cfg.powerconverter.unit()
+        self.__hardware_unit = device_unit(cfg.powerconverter)
         self.__brho = np.nan
         self.__ps = cfg.powerconverter
-        self.__spl = make_smoothing_spline(
-            self.__curve[:, 0], self.__curve[:, 1], lam=cfg.alpha
-        )
+        self.__spl = make_smoothing_spline(self.__curve[:, 0], self.__curve[:, 1], lam=cfg.alpha)
         self.__rspl = make_smoothing_spline(rcurve[:, 0], rcurve[:, 1], lam=cfg.alpha)
 
     def compute_hardware_values(self, strengths: np.array) -> np.array:
@@ -82,7 +77,7 @@ class SplineMagnetModel(MagnetModel):
     def get_hardware_units(self) -> list[str]:
         return [self.__hardware_unit] if self.__hardware_unit is not None else [""]
 
-    def get_devices(self) -> list[DeviceAccess]:
+    def get_devices(self) -> list[DeviceAccessRef]:
         return [self.__ps]
 
     def set_magnet_rigidity(self, brho: np.double):
