@@ -4,10 +4,11 @@ static_catalog.py
 Built-in mapping-based catalog implementation for PyAML.
 """
 
-from pydantic import ConfigDict, model_validator
+from pydantic import ConfigDict
 
 from pyaml import PyAMLException
 from pyaml.configuration.catalog import Catalog, CatalogConfigModel
+from pyaml.configuration.static_catalog_entry import StaticCatalogEntry
 from pyaml.control.deviceaccess import DeviceAccess
 
 PYAMLCLASS = "StaticCatalog"
@@ -21,32 +22,18 @@ class ConfigModel(CatalogConfigModel):
     ----------
     name : str
         Catalog identifier.
-    refs : dict[str, DeviceAccess]
-        Explicit mapping from catalog keys to device access objects.
+    entries : list[StaticCatalogEntry]
+        Explicit list of typed entries mapping catalog keys to device access objects.
     """
 
     model_config = ConfigDict(arbitrary_types_allowed=True, extra="forbid")
 
-    refs: dict[str, DeviceAccess]
-
-    @model_validator(mode="after")
-    def validate_refs(self) -> "ConfigModel":
-        r"""
-        Validate that the catalog contains at least one mapping entry.
-
-        Returns
-        -------
-        ConfigModel
-            The validated configuration model.
-        """
-        if len(self.refs) == 0:
-            raise ValueError("StaticCatalog.refs must contain at least one entry")
-        return self
+    entries: list[StaticCatalogEntry]
 
 
 class StaticCatalog(Catalog):
     r"""
-    Catalog implementation backed by an explicit ``key -> DeviceAccess`` mapping.
+    Catalog implementation backed by explicit typed entries.
 
     :class:`StaticCatalog` is the standard catalog implementation
     provided by base PyAML. It resolves configuration keys directly
@@ -60,16 +47,26 @@ class StaticCatalog(Catalog):
         catalogs:
           - type: pyaml.configuration.static_catalog
             name: bpm-common
-            refs:
-              BPM_C01-01/x:
-                type: tango.pyaml.attribute_read_only
-                attribute: srdiag/bpm/c01-01/XPosSA
-                unit: mm
+            entries:
+              - type: pyaml.configuration.static_catalog_entry
+                key: BPM_C01-01/x
+                device:
+                  type: tango.pyaml.attribute_read_only
+                  attribute: srdiag/bpm/c01-01/XPosSA
+                  unit: mm
     """
 
     def __init__(self, cfg: ConfigModel):
         super().__init__(cfg)
-        self._refs = cfg.refs
+        if len(cfg.entries) == 0:
+            raise PyAMLException("StaticCatalog.entries must contain at least one entry")
+
+        self._refs: dict[str, DeviceAccess] = {}
+        for entry in cfg.entries:
+            key = entry.get_key()
+            if key in self._refs:
+                raise PyAMLException(f"StaticCatalog.entries contains duplicate key '{key}'")
+            self._refs[key] = entry.get_device()
 
     def resolve(self, key: str) -> DeviceAccess:
         r"""

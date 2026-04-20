@@ -7,6 +7,7 @@ from pydantic import ValidationError
 
 from ..common.element import Element
 from ..common.exception import PyAMLConfigException
+from .unbound_element import UnboundElement
 
 
 class BuildStrategy:
@@ -68,6 +69,7 @@ class PyAMLFactory:
 
     def build_object(self, d: dict, ignore_external: bool = False):
         """Build an object from the dict"""
+
         location = d.pop("__location__", None)
         field_locations = d.pop("__fieldlocations__", None)
         location_str = ""
@@ -79,15 +81,19 @@ class PyAMLFactory:
             raise PyAMLConfigException(f"Unexpected object {str(d)} {location_str}")
         if "type" not in d:
             raise PyAMLConfigException(f"No type specified for {str(type(d))}:{str(d)} {location_str}")
-        type_str = d.pop("type")
 
+        module_str = d.pop("type")
+        class_str = d.pop("class", None)
+        validation_class_str = d.pop("validation_class", "ConfigModel")
+
+        # Import the module
         try:
-            module = importlib.import_module(type_str)
+            module = importlib.import_module(module_str)
         except ModuleNotFoundError as ex:
             if not ignore_external:
                 # Discard module not found stack trace
                 raise PyAMLConfigException(
-                    "Module referenced in type cannot be found:" + f"'{type_str}' {location_str}"
+                    "Module referenced in type cannot be found:" + f"'{module_str}' {location_str}"
                 ) from None
             else:
                 return None
@@ -102,37 +108,76 @@ class PyAMLFactory:
             except Exception as e:
                 raise PyAMLConfigException(f"Custom strategy failed {location_str}") from e
 
-        # Default loading strategy
-        # Get the config object
-        config_cls = getattr(module, "ConfigModel", None)
-        if config_cls is None:
-            raise PyAMLConfigException(f"ConfigModel class '{type_str}.ConfigModel' not found {location_str}")
+        # Get the object class name
+        if class_str is None:
+            class_str = getattr(module, "PYAMLCLASS", None)
+        if class_str is None:
+            raise PyAMLConfigException(
+                f"PYAMLCLASS definition not found or class not specified in '{module_str}' {location_str}"
+            )
 
-        # Get the class name
-        cls_name = getattr(module, "PYAMLCLASS", None)
-        if cls_name is None:
-            raise PyAMLConfigException(f"PYAMLCLASS definition not found in '{type_str}' {location_str}")
+        control_modes = d.pop("control_modes", None)
 
-        try:
+        if control_modes is None:
+            # Immediate contruction
+
+            # Get the validation class
+            config_cls = getattr(module, validation_class_str, None)
+            if config_cls is None:
+                raise PyAMLConfigException(f"No validation class for '{module_str}.{class_str}' {location_str}")
+
             # Validate the model
-            cfg = config_cls.model_validate(d)
-        except ValidationError as e:
-            self.handle_validation_error(e, type_str, location_str, field_locations)
+            try:
+                cfg = config_cls.model_validate(d)
+            except ValidationError as e:
+                self.handle_validation_error(e, module_str, location_str, field_locations)
 
-        # Construct and return the object
-        elem_cls = getattr(module, cls_name, None)
-        if elem_cls is None:
-            raise PyAMLConfigException(f"Unknown element class '{type_str}.{cls_name}'")
+            elem_cls = getattr(module, class_str, None)
+            if elem_cls is None:
+                raise PyAMLConfigException(f"Unknown element class '{module_str}.{class_str}' {location_str}")
 
-        try:
-            obj = elem_cls(cfg)
-            self.register_element(obj)
-        except Exception as e:
-            raise PyAMLConfigException(f"{str(e)} when creating '{type_str}.{cls_name}' {location_str}") from e
+            # Construct and return the object
+            try:
+                obj = elem_cls(cfg)
+                self.register_element(obj)
+            except Exception as e:
+                raise PyAMLConfigException(f"{str(e)} when creating '{module_str}.{class_str}' {location_str}") from e
+
+        else:
+            # Delayed construction
+            element_name = d.pop("name", None)
+            if element_name is None:
+                raise PyAMLConfigException(
+                    f"Name not speficied for element class '{module_str}.{class_str}' {location_str}"
+                )
+            obj = UnboundElement(element_name, class_str, module_str, control_modes, d)
 
         return obj
 
-    def depth_first_build(self, d, ignore_external: bool, _is_root: bool = True):
+    def build_unbound(self, e: UnboundElement, holder) -> Element:
+        # Build unbound element (no validation for unbound element)
+        try:
+            module = importlib.import_module(e._module_name)
+        except ModuleNotFoundError as ex:
+            raise PyAMLConfigException("Module referenced in type cannot be found:" + f"'{e._module_name}'") from None
+
+        elem_cls = getattr(module, e._class_name, None)
+        if elem_cls is None:
+            raise PyAMLConfigException(f"Unknown element class '{e._module_name}.{e._class_name}'")
+
+        try:
+            obj = elem_cls(e.get_name(), holder, **e._config)
+        except Exception as ex:
+            raise PyAMLConfigException(f"{str(ex)} when creating '{e._module_name}.{e._class_name}'") from ex
+
+        if not isinstance(obj, Element):
+            raise PyAMLConfigException(f"'{e._module_name}.{e._class_name}' is not a sub class of Element")
+
+        obj._peer = holder
+
+        return obj
+
+    def depth_first_build(self, d, ignore_external: bool):
         """
         Main factory function (Depth-first factory)
 
@@ -147,7 +192,7 @@ class PyAMLFactory:
             l = []
             for _index, e in enumerate(d):
                 if isinstance(e, dict) or isinstance(e, list):
-                    obj = self.depth_first_build(e, ignore_external, _is_root=False)
+                    obj = self.depth_first_build(e, ignore_external)
                     l.append(obj)
                 else:
                     l.append(e)
@@ -157,16 +202,9 @@ class PyAMLFactory:
             for key, value in d.items():
                 if not key == "__fieldlocations__":
                     if isinstance(value, dict) or isinstance(value, list):
-                        obj = self.depth_first_build(value, ignore_external, _is_root=False)
+                        obj = self.depth_first_build(value, ignore_external)
                         # Replace the inner dict by the object itself
                         d[key] = obj
-
-            if "type" not in d:
-                if _is_root:
-                    raise PyAMLConfigException(f"No type specified for {str(type(d))}:{str(d)} ")
-                d.pop("__location__", None)
-                d.pop("__fieldlocations__", None)
-                return d
 
             # We are now on leaf (no nested object), we can construct
             return self.build_object(d, ignore_external)

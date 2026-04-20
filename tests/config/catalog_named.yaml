@@ -16,55 +16,79 @@ data_folder: /data/store
 catalogs:
   - type: pyaml.configuration.static_catalog
     name: device-catalog
-    refs:
-      BPM_C01-01/x:
-        type: tango.pyaml.attribute_read_only
-        attribute: srdiag/bpm/c01-01/SA_HPosition
-        unit: mm
-      BPM_C01-01/y:
-        type: tango.pyaml.attribute_read_only
-        attribute: srdiag/bpm/c01-01/SA_VPosition
-        unit: mm
-      BPM_C01-01/x_offset:
-        type: tango.pyaml.attribute
-        attribute: srdiag/bpm/c01-01/HOffset
-        unit: mm
-      BPM_C01-01/y_offset:
-        type: tango.pyaml.attribute
-        attribute: srdiag/bpm/c01-01/VOffset
-        unit: mm
-      BPM_C01-01/tilt:
-        type: tango.pyaml.attribute
-        attribute: srdiag/bpm/c01-01/Tilt_Angle
-        unit: rad
-      tune/h:
-        type: tango.pyaml.attribute_read_only
-        attribute: srdiag/beam-tune/main/Qh
-        unit: "1"
-      tune/v:
-        type: tango.pyaml.attribute_read_only
-        attribute: srdiag/beam-tune/main/Qv
-        unit: "1"
-      rf/masterclock:
-        type: tango.pyaml.attribute
-        attribute: sy/ms/1/Frequency
-        unit: Hz
-      QF1A-C01/current:
-        type: tango.pyaml.attribute
-        attribute: sr/ps-qf1/c01-a/current
-        unit: A
-      SH1A-C01/ps1:
-        type: tango.pyaml.attribute
-        attribute: srmag/ps-corr-sh1/c01-a-ch1/current
-        unit: A
-      SH1A-C01/ps2:
-        type: tango.pyaml.attribute
-        attribute: srmag/ps-corr-sh1/c01-a-ch2/current
-        unit: A
-      SH1A-C01/ps3:
-        type: tango.pyaml.attribute
-        attribute: srmag/ps-corr-sh1/c01-a-ch3/current
-        unit: A
+    entries:
+      - type: pyaml.configuration.static_catalog_entry
+        key: BPM_C01-01/x
+        device:
+          type: tango.pyaml.attribute_read_only
+          attribute: srdiag/bpm/c01-01/SA_HPosition
+          unit: mm
+      - type: pyaml.configuration.static_catalog_entry
+        key: BPM_C01-01/y
+        device:
+          type: tango.pyaml.attribute_read_only
+          attribute: srdiag/bpm/c01-01/SA_VPosition
+          unit: mm
+      - type: pyaml.configuration.static_catalog_entry
+        key: BPM_C01-01/x_offset
+        device:
+          type: tango.pyaml.attribute
+          attribute: srdiag/bpm/c01-01/HOffset
+          unit: mm
+      - type: pyaml.configuration.static_catalog_entry
+        key: BPM_C01-01/y_offset
+        device:
+          type: tango.pyaml.attribute
+          attribute: srdiag/bpm/c01-01/VOffset
+          unit: mm
+      - type: pyaml.configuration.static_catalog_entry
+        key: BPM_C01-01/tilt
+        device:
+          type: tango.pyaml.attribute
+          attribute: srdiag/bpm/c01-01/Tilt_Angle
+          unit: rad
+      - type: pyaml.configuration.static_catalog_entry
+        key: tune/h
+        device:
+          type: tango.pyaml.attribute_read_only
+          attribute: srdiag/beam-tune/main/Qh
+          unit: "1"
+      - type: pyaml.configuration.static_catalog_entry
+        key: tune/v
+        device:
+          type: tango.pyaml.attribute_read_only
+          attribute: srdiag/beam-tune/main/Qv
+          unit: "1"
+      - type: pyaml.configuration.static_catalog_entry
+        key: rf/masterclock
+        device:
+          type: tango.pyaml.attribute
+          attribute: sy/ms/1/Frequency
+          unit: Hz
+      - type: pyaml.configuration.static_catalog_entry
+        key: QF1A-C01/current
+        device:
+          type: tango.pyaml.attribute
+          attribute: sr/ps-qf1/c01-a/current
+          unit: A
+      - type: pyaml.configuration.static_catalog_entry
+        key: SH1A-C01/ps1
+        device:
+          type: tango.pyaml.attribute
+          attribute: srmag/ps-corr-sh1/c01-a-ch1/current
+          unit: A
+      - type: pyaml.configuration.static_catalog_entry
+        key: SH1A-C01/ps2
+        device:
+          type: tango.pyaml.attribute
+          attribute: srmag/ps-corr-sh1/c01-a-ch2/current
+          unit: A
+      - type: pyaml.configuration.static_catalog_entry
+        key: SH1A-C01/ps3
+        device:
+          type: tango.pyaml.attribute
+          attribute: srmag/ps-corr-sh1/c01-a-ch3/current
+          unit: A
 devices:
   - type: pyaml.bpm.bpm
     name: BPM_C01-01

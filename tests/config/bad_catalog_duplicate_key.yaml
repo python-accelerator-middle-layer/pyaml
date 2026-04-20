@@ -7,12 +7,16 @@ devices: []
 catalogs:
   - type: pyaml.configuration.static_catalog
     name: duplicate-refs
-    refs:
-      duplicated/key:
-        type: tango.pyaml.attribute
-        attribute: sr/test/one
-        unit: A
-      duplicated/key:
-        type: tango.pyaml.attribute
-        attribute: sr/test/two
-        unit: A
+    entries:
+      - type: pyaml.configuration.static_catalog_entry
+        key: duplicated/key
+        device:
+          type: tango.pyaml.attribute
+          attribute: sr/test/one
+          unit: A
+      - type: pyaml.configuration.static_catalog_entry
+        key: duplicated/key
+        device:
+          type: tango.pyaml.attribute
+          attribute: sr/test/two
+          unit: A

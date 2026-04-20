@@ -778,9 +778,9 @@ class ConfigurationManager:
 
         details: list[str] = []
         if category == "catalogs":
-            refs = entry.get("refs")
-            if isinstance(refs, dict):
-                details.append(f"refs={len(refs)}")
+            entries = entry.get("entries")
+            if isinstance(entries, list):
+                details.append(f"entries={len(entries)}")
         if category == "arrays":
             patterns = entry.get("elements")
             if isinstance(patterns, list):

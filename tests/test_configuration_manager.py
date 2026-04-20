@@ -201,7 +201,7 @@ def test_configuration_manager_tracks_catalogs_as_named_category(config_root_pat
     assert manager.keys("catalogs") == ["device-catalog"]
     assert manager.has("catalogs", "device-catalog")
     assert manager.get("catalogs", "device-catalog")["type"] == "pyaml.configuration.static_catalog"
-    assert "BPM_C01-01/x" in manager.get("catalogs", "device-catalog")["refs"]
+    assert manager.get("catalogs", "device-catalog")["entries"][0]["key"] == "BPM_C01-01/x"
     assert manager.catalogs == ["device-catalog"]
 
 
@@ -297,7 +297,7 @@ def test_configuration_manager_repr_includes_catalogs(config_root_path):
 
     assert str(manager) == output
     assert "Catalogs:" in output
-    assert "device-catalog (pyaml.configuration.static_catalog) refs=14 source=catalog_named.yaml" in output
+    assert "device-catalog (pyaml.configuration.static_catalog) entries=12 source=catalog_named.yaml" in output
 
 
 def test_configuration_manager_yellow_pages_like_shortcuts(

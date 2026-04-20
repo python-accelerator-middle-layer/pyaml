@@ -113,18 +113,26 @@ def test_inline_catalog_is_supported(install_test_package):
                     "catalog": {
                         "type": "pyaml.configuration.static_catalog",
                         "name": "inline-live",
-                        "refs": {
-                            "BPM_C02-01/x": {
-                                "type": "tango.pyaml.attribute_read_only",
-                                "attribute": "srdiag/bpm/c02-01/SA_HPosition",
-                                "unit": "mm",
+                        "entries": [
+                            {
+                                "type": "pyaml.configuration.static_catalog_entry",
+                                "key": "BPM_C02-01/x",
+                                "device": {
+                                    "type": "tango.pyaml.attribute_read_only",
+                                    "attribute": "srdiag/bpm/c02-01/SA_HPosition",
+                                    "unit": "mm",
+                                },
                             },
-                            "BPM_C02-01/y": {
-                                "type": "tango.pyaml.attribute_read_only",
-                                "attribute": "srdiag/bpm/c02-01/SA_VPosition",
-                                "unit": "mm",
+                            {
+                                "type": "pyaml.configuration.static_catalog_entry",
+                                "key": "BPM_C02-01/y",
+                                "device": {
+                                    "type": "tango.pyaml.attribute_read_only",
+                                    "attribute": "srdiag/bpm/c02-01/SA_VPosition",
+                                    "unit": "mm",
+                                },
                             },
-                        },
+                        ],
                     },
                 }
             ],
@@ -248,13 +256,17 @@ def test_unresolved_catalog_key_raises_runtime_error(install_test_package):
                     {
                         "type": "pyaml.configuration.static_catalog",
                         "name": "device-catalog",
-                        "refs": {
-                            "BPM_C03-01/x": {
-                                "type": "tango.pyaml.attribute_read_only",
-                                "attribute": "srdiag/bpm/c03-01/SA_HPosition",
-                                "unit": "mm",
+                        "entries": [
+                            {
+                                "type": "pyaml.configuration.static_catalog_entry",
+                                "key": "BPM_C03-01/x",
+                                "device": {
+                                    "type": "tango.pyaml.attribute_read_only",
+                                    "attribute": "srdiag/bpm/c03-01/SA_HPosition",
+                                    "unit": "mm",
+                                },
                             }
-                        },
+                        ],
                     }
                 ],
                 "controls": [
@@ -299,30 +311,38 @@ def test_duplicate_top_level_catalog_names_raise_config_error(install_test_packa
                     {
                         "type": "pyaml.configuration.static_catalog",
                         "name": "duplicate",
-                        "refs": {
-                            "QF1/current": {
-                                "type": "tango.pyaml.attribute",
-                                "attribute": "sr/test/one",
-                                "unit": "A",
+                        "entries": [
+                            {
+                                "type": "pyaml.configuration.static_catalog_entry",
+                                "key": "QF1/current",
+                                "device": {
+                                    "type": "tango.pyaml.attribute",
+                                    "attribute": "sr/test/one",
+                                    "unit": "A",
+                                },
                             }
-                        },
+                        ],
                     },
                     {
                         "type": "pyaml.configuration.static_catalog",
                         "name": "duplicate",
-                        "refs": {
-                            "QF2/current": {
-                                "type": "tango.pyaml.attribute",
-                                "attribute": "sr/test/two",
-                                "unit": "A",
+                        "entries": [
+                            {
+                                "type": "pyaml.configuration.static_catalog_entry",
+                                "key": "QF2/current",
+                                "device": {
+                                    "type": "tango.pyaml.attribute",
+                                    "attribute": "sr/test/two",
+                                    "unit": "A",
+                                },
                             }
-                        },
+                        ],
                     },
                 ],
             },
         )
 
 
-def test_duplicate_static_catalog_keys_raise_yaml_error():
-    with pytest.raises(PyAMLException, match="duplicate key"):
+def test_duplicate_static_catalog_entry_keys_raise_config_error():
+    with pytest.raises(PyAMLConfigException, match="duplicate key 'duplicated/key'"):
         Accelerator.load("tests/config/bad_catalog_duplicate_key.yaml")
