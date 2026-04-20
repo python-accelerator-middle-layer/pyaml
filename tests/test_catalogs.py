@@ -3,6 +3,7 @@ import pytest
 
 from pyaml import PyAMLConfigException, PyAMLException
 from pyaml.accelerator import Accelerator
+from pyaml.configuration.static_catalog import StaticCatalog
 
 
 @pytest.mark.parametrize(
@@ -100,16 +101,20 @@ def test_inline_catalog_is_supported(install_test_package):
     [{"name": "tango-pyaml", "path": "tests/dummy_cs/tango-pyaml"}],
     indirect=True,
 )
-def test_dynamic_catalog_is_notified_on_attachment(install_test_package):
-    sr = Accelerator.load("tests/config/catalog_dynamic.yaml")
+def test_catalog_is_notified_when_attached_to_control_systems(install_test_package, monkeypatch):
+    attached = []
+    original = StaticCatalog.attach_control_system
 
-    catalog = sr.get_catalog("tango-db")
-    assert sr.live.get_catalog() is catalog
-    assert sr.ops.get_catalog() is catalog
-    assert catalog.attached_control_systems() == ["live", "ops"]
+    def record_attachment(self, control_system):
+        attached.append((self.get_name(), control_system.name()))
+        return original(self, control_system)
 
-    bpm = sr.live.get_bpm("BPM_C01-02")
-    assert np.allclose(bpm.positions.get(), np.array([0.0, 0.0]))
+    monkeypatch.setattr(StaticCatalog, "attach_control_system", record_attachment)
+
+    sr = Accelerator.load("tests/config/catalog_named.yaml")
+
+    assert sr.live.get_catalog() is sr.ops.get_catalog()
+    assert attached == [("device-catalog", "live"), ("device-catalog", "ops")]
 
 
 @pytest.mark.parametrize(
