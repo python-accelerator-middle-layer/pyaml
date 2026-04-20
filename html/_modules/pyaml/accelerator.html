@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>pyaml.accelerator &#8212; Python Accelerator Middle Layer 0.1.dev1+g2c74e1c4d documentation</title>
+    <title>pyaml.accelerator &#8212; Python Accelerator Middle Layer 0.1.dev1+g367999d94 documentation</title>
   
   
   
@@ -41,7 +41,7 @@
   <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=7f76b32a3354e82990f2" />
 <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=7f76b32a3354e82990f2" />
 
-    <script src="../../_static/documentation_options.js?v=a44e4bdf"></script>
+    <script src="../../_static/documentation_options.js?v=3be13801"></script>
     <script src="../../_static/doctools.js?v=9bcbadda"></script>
     <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -123,8 +123,8 @@
       
     
     
-    <img src="../../_static/logo.png" class="logo__image only-light" alt="Python Accelerator Middle Layer 0.1.dev1+g2c74e1c4d documentation - Home"/>
-    <img src="../../_static/dark.png" class="logo__image only-dark pst-js-only" alt="Python Accelerator Middle Layer 0.1.dev1+g2c74e1c4d documentation - Home"/>
+    <img src="../../_static/logo.png" class="logo__image only-light" alt="Python Accelerator Middle Layer 0.1.dev1+g367999d94 documentation - Home"/>
+    <img src="../../_static/dark.png" class="logo__image only-dark pst-js-only" alt="Python Accelerator Middle Layer 0.1.dev1+g367999d94 documentation - Home"/>
   
   
 </a></div>
@@ -464,6 +464,7 @@
                     <span class="c1"># Add as dynamic attribute</span>
                     <span class="nb">setattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">c</span><span class="o">.</span><span class="n">name</span><span class="p">(),</span> <span class="n">c</span><span class="p">)</span>
                 <span class="n">c</span><span class="o">.</span><span class="n">fill_device</span><span class="p">(</span><span class="n">cfg</span><span class="o">.</span><span class="n">devices</span><span class="p">)</span>
+                <span class="n">c</span><span class="o">.</span><span class="n">_peer</span> <span class="o">=</span> <span class="bp">self</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_controls</span><span class="p">[</span><span class="n">c</span><span class="o">.</span><span class="n">name</span><span class="p">()]</span> <span class="o">=</span> <span class="n">c</span>
 
         <span class="k">if</span> <span class="n">cfg</span><span class="o">.</span><span class="n">simulators</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
@@ -474,6 +475,7 @@
                     <span class="c1"># Add as dynamic attribute</span>
                     <span class="nb">setattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">s</span><span class="o">.</span><span class="n">name</span><span class="p">(),</span> <span class="n">s</span><span class="p">)</span>
                 <span class="n">s</span><span class="o">.</span><span class="n">fill_device</span><span class="p">(</span><span class="n">cfg</span><span class="o">.</span><span class="n">devices</span><span class="p">)</span>
+                <span class="n">s</span><span class="o">.</span><span class="n">_peer</span> <span class="o">=</span> <span class="bp">self</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_simulators</span><span class="p">[</span><span class="n">s</span><span class="o">.</span><span class="n">name</span><span class="p">()]</span> <span class="o">=</span> <span class="n">s</span>
 
         <span class="k">if</span> <span class="n">cfg</span><span class="o">.</span><span class="n">arrays</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>

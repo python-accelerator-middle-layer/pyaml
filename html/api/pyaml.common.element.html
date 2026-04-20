@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>element &#8212; Python Accelerator Middle Layer 0.1.dev1+g2c74e1c4d documentation</title>
+    <title>element &#8212; Python Accelerator Middle Layer 0.1.dev1+g367999d94 documentation</title>
   
   
   
@@ -42,7 +42,7 @@
   <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=7f76b32a3354e82990f2" />
 <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=7f76b32a3354e82990f2" />
 
-    <script src="../_static/documentation_options.js?v=a44e4bdf"></script>
+    <script src="../_static/documentation_options.js?v=3be13801"></script>
     <script src="../_static/doctools.js?v=9bcbadda"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -126,8 +126,8 @@
       
     
     
-    <img src="../_static/logo.png" class="logo__image only-light" alt="Python Accelerator Middle Layer 0.1.dev1+g2c74e1c4d documentation - Home"/>
-    <img src="../_static/dark.png" class="logo__image only-dark pst-js-only" alt="Python Accelerator Middle Layer 0.1.dev1+g2c74e1c4d documentation - Home"/>
+    <img src="../_static/logo.png" class="logo__image only-light" alt="Python Accelerator Middle Layer 0.1.dev1+g367999d94 documentation - Home"/>
+    <img src="../_static/dark.png" class="logo__image only-dark pst-js-only" alt="Python Accelerator Middle Layer 0.1.dev1+g367999d94 documentation - Home"/>
   
   
 </a></div>
@@ -602,8 +602,8 @@ to a simulator or to a control system</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="pyaml.common.element.Element.get_peer">
-<span class="sig-name descname"><span class="pre">get_peer</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/common/element.html#Element.get_peer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.common.element.Element.get_peer" title="Link to this definition">#</a></dt>
+<dt class="sig sig-object py" id="pyaml.common.element.Element.get_peer_name">
+<span class="sig-name descname"><span class="pre">get_peer_name</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/common/element.html#Element.get_peer_name"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.common.element.Element.get_peer_name" title="Link to this definition">#</a></dt>
 <dd><p>Returns a string representation of peer simulator or control system</p>
 <dl class="field-list simple">
 </dl>
@@ -637,6 +637,12 @@ to a simulator or to a control system</p>
 <dd><p>Set the instrument moment compaction factor on this element</p>
 <dl class="field-list simple">
 </dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="pyaml.common.element.Element.peer">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">peer</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="pyaml.common.element_holder.html#pyaml.common.element_holder.ElementHolder" title="pyaml.common.element_holder.ElementHolder"><span class="pre">ElementHolder</span></a></em><a class="headerlink" href="#pyaml.common.element.Element.peer" title="Link to this definition">#</a></dt>
+<dd><p>Returns the peer simulator or control system</p>
 </dd></dl>
 
 </dd></dl>
@@ -702,11 +708,12 @@ to a simulator or to a control system</p>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.common.element.Element.get_description"><code class="docutils literal notranslate"><span class="pre">Element.get_description()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.common.element.Element.get_lattice_names"><code class="docutils literal notranslate"><span class="pre">Element.get_lattice_names()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.common.element.Element.get_name"><code class="docutils literal notranslate"><span class="pre">Element.get_name()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.common.element.Element.get_peer"><code class="docutils literal notranslate"><span class="pre">Element.get_peer()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.common.element.Element.get_peer_name"><code class="docutils literal notranslate"><span class="pre">Element.get_peer_name()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.common.element.Element.post_init"><code class="docutils literal notranslate"><span class="pre">Element.post_init()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.common.element.Element.set_energy"><code class="docutils literal notranslate"><span class="pre">Element.set_energy()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.common.element.Element.set_harmonic"><code class="docutils literal notranslate"><span class="pre">Element.set_harmonic()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.common.element.Element.set_mcf"><code class="docutils literal notranslate"><span class="pre">Element.set_mcf()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.common.element.Element.peer"><code class="docutils literal notranslate"><span class="pre">Element.peer</span></code></a></li>
 </ul>
 </li>
 </ul>

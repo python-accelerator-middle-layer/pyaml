@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>pyaml.common.element_holder &#8212; Python Accelerator Middle Layer 0.1.dev1+g2c74e1c4d documentation</title>
+    <title>pyaml.common.element_holder &#8212; Python Accelerator Middle Layer 0.1.dev1+g367999d94 documentation</title>
   
   
   
@@ -41,7 +41,7 @@
   <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=7f76b32a3354e82990f2" />
 <link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=7f76b32a3354e82990f2" />
 
-    <script src="../../../_static/documentation_options.js?v=a44e4bdf"></script>
+    <script src="../../../_static/documentation_options.js?v=3be13801"></script>
     <script src="../../../_static/doctools.js?v=9bcbadda"></script>
     <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -123,8 +123,8 @@
       
     
     
-    <img src="../../../_static/logo.png" class="logo__image only-light" alt="Python Accelerator Middle Layer 0.1.dev1+g2c74e1c4d documentation - Home"/>
-    <img src="../../../_static/dark.png" class="logo__image only-dark pst-js-only" alt="Python Accelerator Middle Layer 0.1.dev1+g2c74e1c4d documentation - Home"/>
+    <img src="../../../_static/logo.png" class="logo__image only-light" alt="Python Accelerator Middle Layer 0.1.dev1+g367999d94 documentation - Home"/>
+    <img src="../../../_static/dark.png" class="logo__image only-dark pst-js-only" alt="Python Accelerator Middle Layer 0.1.dev1+g367999d94 documentation - Home"/>
   
   
 </a></div>
@@ -399,6 +399,7 @@
 <span class="kn">from</span><span class="w"> </span><span class="nn">.element</span><span class="w"> </span><span class="kn">import</span> <span class="n">Element</span>
 
 <span class="k">if</span> <span class="n">TYPE_CHECKING</span><span class="p">:</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">..accelerator</span><span class="w"> </span><span class="kn">import</span> <span class="n">Accelerator</span>
     <span class="kn">from</span><span class="w"> </span><span class="nn">..tuning_tools.chromaticity</span><span class="w"> </span><span class="kn">import</span> <span class="n">Chromaticity</span>
     <span class="kn">from</span><span class="w"> </span><span class="nn">..tuning_tools.chromaticity_response_matrix</span><span class="w"> </span><span class="kn">import</span> <span class="n">ChromaticityResponseMatrix</span>
     <span class="kn">from</span><span class="w"> </span><span class="nn">..tuning_tools.dispersion</span><span class="w"> </span><span class="kn">import</span> <span class="n">Dispersion</span>
@@ -443,6 +444,13 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">__SERIALIZED_MAGNETS_ARRAYS</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__BPM_ARRAYS</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__ELEMENT_ARRAYS</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="p">{}</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">peer</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;Accelerator&quot;</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns the peer accelerator of this holder</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_peer</span>
 
 <div class="viewcode-block" id="ElementHolder.post_init">
 <a class="viewcode-back" href="../../../api/pyaml.common.element_holder.html#pyaml.common.element_holder.ElementHolder.post_init">[docs]</a>
