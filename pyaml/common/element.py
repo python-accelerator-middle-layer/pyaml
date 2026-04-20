@@ -16,7 +16,7 @@ def __pyaml_repr__(obj):
         if isinstance(obj, Element):
             return repr(obj._cfg).replace(
                 "ConfigModel(",
-                obj.__class__.__name__ + "(peer='" + obj.get_peer() + "', ",
+                obj.__class__.__name__ + "(peer='" + obj.get_peer_name() + "', ",
             )
         else:
             # no peer
@@ -67,21 +67,21 @@ class Element(object):
     """
 
     def __init__(self, name: str):
-        self.__name: str = name
+        self._name: str = name
         self._peer: "ElementHolder" = None  # Peer: ControlSystem, Simulator
 
     def get_name(self) -> str:
         """
         Returns the name of the element
         """
-        return self.__name
+        return self._name
 
     def get_lattice_names(self) -> str:
         """
         Returns the name of associated lattice element(s)
         """
         if not hasattr(self, "_cfg"):
-            return self.__name
+            return self._name
         else:
             return self._cfg.lattice_names
 
@@ -117,7 +117,14 @@ class Element(object):
         if self._peer is None:
             raise PyAMLException(f"{str(self)} is not attachedto a control system or the a simulator")
 
-    def get_peer(self) -> str:
+    @property
+    def peer(self) -> "ElementHolder":
+        """
+        Returns the peer simulator or control system
+        """
+        return self._peer
+
+    def get_peer_name(self) -> str:
         """
         Returns a string representation of peer simulator or control system
         """

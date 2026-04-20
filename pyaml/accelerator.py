@@ -94,6 +94,7 @@ class Accelerator(object):
                     setattr(self, c.name(), c)
                 c.set_catalog(self._resolve_control_system_catalog(c))
                 c.fill_device(cfg.devices)
+                c._peer = self
                 self._controls[c.name()] = c
 
         if cfg.simulators is not None:
@@ -104,6 +105,7 @@ class Accelerator(object):
                     # Add as dynamic attribute
                     setattr(self, s.name(), s)
                 s.fill_device(cfg.devices)
+                s._peer = self
                 self._simulators[s.name()] = s
 
         if cfg.arrays is not None:
@@ -171,6 +173,32 @@ class Accelerator(object):
             Number of bucket
         """
         self._set_properties("_set_harmonic", h)
+
+    def add_device(self, config: dict, ignore_external=False):
+        """
+        Dynamically add a device to this accelerator
+
+        config_dict : str
+            Dictionary containing accelerator config
+        ignore_external: bool
+            Ignore external modules and return None for object that
+            cannot be created. pydantic schema that support that an
+            object is not created should handle None fields.
+        """
+        dev = Factory.depth_first_build(config, ignore_external)
+        if not isinstance(dev, Element):
+            raise PyAMLConfigException(
+                "Invalid device type, Element or sub classes of Element expected " + f"but got {dev.__class__.__name__}"
+            )
+
+        self._cfg.devices.append(dev)
+        if self._cfg.controls is not None:
+            for c in self._cfg.controls:
+                c.fill_device([dev])
+
+        if self._cfg.simulators is not None:
+            for s in self._cfg.simulators:
+                s.fill_device([dev])
 
     def post_init(self):
         """

@@ -23,6 +23,7 @@ from ..rf.rf_transmitter import RFTransmitter
 from .element import Element
 
 if TYPE_CHECKING:
+    from ..accelerator import Accelerator
     from ..tuning_tools.chromaticity import Chromaticity
     from ..tuning_tools.chromaticity_response_matrix import ChromaticityResponseMatrix
     from ..tuning_tools.dispersion import Dispersion
@@ -65,6 +66,13 @@ class ElementHolder(object):
         self.__SERIALIZED_MAGNETS_ARRAYS: dict = {}
         self.__BPM_ARRAYS: dict = {}
         self.__ELEMENT_ARRAYS: dict = {}
+
+    @property
+    def peer(self) -> "Accelerator":
+        """
+        Returns the peer accelerator of this holder
+        """
+        return self._peer
 
     def post_init(self):
         """

@@ -153,7 +153,7 @@ class MeasurementTool(Element, metaclass=ABCMeta):
         ok = True
         if self._callback is not None:
             # Add source and peer
-            cb_data["mode"] = f"{self.get_peer()}"
+            cb_data["mode"] = f"{self.get_peer_name()}"
             cb_data["source"] = self
             ok = self._callback(action, cb_data)
         if not ok and raiseException:

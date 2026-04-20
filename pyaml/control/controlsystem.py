@@ -10,6 +10,7 @@ from ..common.element_holder import ElementHolder
 from ..common.exception import PyAMLException
 from ..configuration.catalog import Catalog, CatalogResolver
 from ..configuration.factory import Factory
+from ..configuration.unbound_element import UnboundElement
 from ..control.abstract_impl import (
     CSBPMArrayMapper,
     CSScalarAggregator,
@@ -26,6 +27,7 @@ from ..control.abstract_impl import (
     RWStrengthArray,
     RWStrengthScalar,
 )
+from ..diagnostics.atune_monitor import ABetatronTuneMonitor
 from ..diagnostics.tune_monitor import BetatronTuneMonitor
 from ..magnet.cfm_magnet import CombinedFunctionMagnet
 from ..magnet.magnet import Magnet
@@ -278,3 +280,35 @@ class ControlSystem(ElementHolder, metaclass=ABCMeta):
 
             elif isinstance(e, TuningTool) | isinstance(e, MeasurementTool):
                 self.add_tool(e.attach(self))
+
+            elif isinstance(e, UnboundElement):
+                if self.name() in e._control_modes:
+                    ne = Factory.build_unbound(e, self)
+                    if isinstance(ne, ABetatronTuneMonitor):
+                        self.add_betatron_tune_monitor(ne)
+                    else:
+                        print(f"Warning, {e.get_name()} is not a known object type")
+
+
+class ControlSystemAdapter(ControlSystem):
+    """
+    Control system adapter class
+    """
+
+    def __init__(self):
+        ControlSystem.__init__(self)
+
+    def attach(self, dev: list[DeviceAccess]) -> list[DeviceAccess]:
+        pass
+
+    def attach_array(self, dev: list[DeviceAccess]) -> list[DeviceAccess]:
+        pass
+
+    def name(self) -> str:
+        pass
+
+    def scalar_aggregator(self) -> str | None:
+        return None
+
+    def vector_aggregator(self) -> str | None:
+        return None
