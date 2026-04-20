@@ -35,7 +35,33 @@ class CatalogConfigModel(BaseModel):
     name: str
 
 
-class Catalog(metaclass=ABCMeta):
+class CatalogResolver(metaclass=ABCMeta):
+    r"""
+    Bound resolver used by a control system to resolve catalog keys.
+
+    A :class:`CatalogResolver` encapsulates the runtime resolution logic
+    for one attached control-system context.
+    """
+
+    @abstractmethod
+    def resolve(self, key: str) -> DeviceAccess:
+        r"""
+        Resolve a catalog key into a device access object.
+
+        Parameters
+        ----------
+        key : str
+            Catalog key to resolve.
+
+        Returns
+        -------
+        DeviceAccess
+            Resolved device access instance.
+        """
+        raise NotImplementedError
+
+
+class Catalog(CatalogResolver, metaclass=ABCMeta):
     r"""
     Base abstraction for resolving catalog keys into devices.
 
@@ -69,33 +95,22 @@ class Catalog(metaclass=ABCMeta):
 
     def attach_control_system(self, control_system: "ControlSystem"):
         r"""
-        Notify the catalog that a control system attached it.
+        Create a resolver bound to one control system.
 
         Parameters
         ----------
         control_system : ControlSystem
             Control system using this catalog.
 
-        Notes
-        -----
-        The default implementation is a no-op. Subclasses may override
-        this hook to capture attachment context.
-        """
-        return None
-
-    @abstractmethod
-    def resolve(self, key: str) -> DeviceAccess:
-        r"""
-        Resolve a catalog key into a device access object.
-
-        Parameters
-        ----------
-        key : str
-            Catalog key to resolve.
-
         Returns
         -------
-        DeviceAccess
-            Resolved device access instance.
+        CatalogResolver
+            Resolver instance bound to ``control_system``.
+
+        Notes
+        -----
+        The default implementation returns ``self``. Subclasses may
+        override this hook to return a dedicated per-control-system
+        resolver while keeping the catalog object itself shared.
         """
-        raise NotImplementedError
+        return self

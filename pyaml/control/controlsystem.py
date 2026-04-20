@@ -8,7 +8,7 @@ from ..common.abstract_aggregator import ScalarAggregator
 from ..common.element import Element
 from ..common.element_holder import ElementHolder
 from ..common.exception import PyAMLException
-from ..configuration.catalog import Catalog
+from ..configuration.catalog import Catalog, CatalogResolver
 from ..configuration.factory import Factory
 from ..control.abstract_impl import (
     CSBPMArrayMapper,
@@ -45,11 +45,11 @@ class ControlSystem(ElementHolder, metaclass=ABCMeta):
     def __init__(self):
         ElementHolder.__init__(self)
         self._catalog: Catalog | None = None
+        self._catalog_resolver: CatalogResolver | None = None
 
     def set_catalog(self, catalog: Catalog | None):
         self._catalog = catalog
-        if catalog is not None:
-            catalog.attach_control_system(self)
+        self._catalog_resolver = catalog.attach_control_system(self) if catalog is not None else None
 
     def get_catalog(self) -> Catalog | None:
         return self._catalog
@@ -88,9 +88,9 @@ class ControlSystem(ElementHolder, metaclass=ABCMeta):
         if dev is None or isinstance(dev, DeviceAccess):
             return dev
         if isinstance(dev, str):
-            if self._catalog is None:
+            if self._catalog_resolver is None:
                 raise PyAMLException(f"Control system '{self.name()}' has no catalog configured for key '{dev}'")
-            return self._catalog.resolve(dev)
+            return self._catalog_resolver.resolve(dev)
         raise PyAMLException(f"Unsupported device reference type: {type(dev).__name__}")
 
     def resolve_devices(self, devs: list[DeviceAccessRef | None]) -> list[DeviceAccess | None]:
