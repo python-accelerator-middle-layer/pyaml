@@ -56,6 +56,10 @@ def test_controlsystem_bpm_position(install_test_package):
     indirect=True,
 )
 def test_controlsystem_bpm_position_indexed(install_test_package):
+    from tango.pyaml.attribute_store import set_attribute
+
+    set_attribute("srdiag/bpm/c01-04/Position", [0.0, 1.0], unit="mm")
+
     sr: Accelerator = Accelerator.load("tests/config/bpms.yaml")
     bpm = sr.live.get_bpm("BPM_C01-04")
 

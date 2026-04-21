@@ -1,6 +1,5 @@
 import importlib
 import importlib.machinery
-import importlib.metadata
 import pathlib
 import sys
 import types
@@ -129,16 +128,6 @@ def _imported_module_path(module_name: str) -> pathlib.Path | None:
     return pathlib.Path(module_file).resolve()
 
 
-def _installed_module_path(spec: TestPackageSpec) -> pathlib.Path | None:
-    try:
-        distribution = importlib.metadata.distribution(spec.distribution_name)
-    except importlib.metadata.PackageNotFoundError:
-        return None
-
-    module_path = pathlib.Path(distribution.locate_file(spec.module_file)).resolve()
-    return module_path if module_path.exists() else None
-
-
 def _module_matches_test_package(package_name: str, package_path: pathlib.Path) -> bool:
     spec = _TEST_PACKAGES.get(package_name)
     if spec is None:
@@ -147,11 +136,7 @@ def _module_matches_test_package(package_name: str, package_path: pathlib.Path) 
     module_path = _imported_module_path(spec.import_name)
     if module_path is None:
         return False
-    if module_path.is_relative_to(package_path):
-        return True
-
-    installed_module_path = _installed_module_path(spec)
-    return installed_module_path is not None and module_path == installed_module_path
+    return module_path.is_relative_to(package_path)
 
 
 def _purge_modules(package_roots: list[str]) -> None:
@@ -181,9 +166,10 @@ def _expose_namespace_packages(package_path: pathlib.Path) -> None:
 
         module_path = list(getattr(module, "__path__", []))
         child_str = str(child)
-        if child_str not in module_path:
-            module_path.append(child_str)
-            module.__path__ = module_path
+        if child_str in module_path:
+            module_path.remove(child_str)
+        module_path.insert(0, child_str)
+        module.__path__ = module_path
 
 
 @contextmanager
@@ -445,6 +431,20 @@ def clear_factory_registry():
     Factory.clear()
     yield
     Factory.clear()
+
+
+@pytest.fixture(autouse=True)
+def clear_dummy_tango_attributes():
+    """Clear dummy Tango shared attribute values before/after each test."""
+    try:
+        from tango.pyaml.attribute_store import clear_attributes
+    except ModuleNotFoundError:
+        yield
+        return
+
+    clear_attributes()
+    yield
+    clear_attributes()
 
 
 # -----------------------
