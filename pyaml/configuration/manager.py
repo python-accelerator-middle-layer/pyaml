@@ -387,7 +387,7 @@ class ConfigurationManager:
         self._require_named_category(category)
         if name not in self._items_by_category[category]:
             raise KeyError(f"Configuration entry '{name}' not found in category '{category}'.")
-        return self._strip_internal_metadata(copy.deepcopy(self._items_by_category[category][name]))
+        return ConfigurationManager.strip_internal_metadata(copy.deepcopy(self._items_by_category[category][name]))
 
     def find(self, pattern: str, category: str | None = None) -> list[str]:
         r"""
@@ -456,7 +456,7 @@ class ConfigurationManager:
         ]
         for field in ordered_fields + extra_fields:
             settings[field] = copy.deepcopy(self._state[field])
-        return self._strip_internal_metadata(settings)
+        return ConfigurationManager.strip_internal_metadata(settings)
 
     def to_dict(self) -> dict[str, Any]:
         r"""
@@ -500,7 +500,7 @@ class ConfigurationManager:
 
         if isinstance(self._build_root, Path):
             set_root_folder(self._build_root)
-        snapshot = self._strip_runtime_internal_metadata(self._snapshot(include_internal_metadata=True))
+        snapshot = ConfigurationManager.strip_runtime_internal_metadata(self._snapshot(include_internal_metadata=True))
         return Accelerator.from_dict(snapshot, ignore_external=ignore_external)
 
     def __dir__(self):
@@ -747,7 +747,7 @@ class ConfigurationManager:
         snapshot = copy.deepcopy(self._state)
         if include_internal_metadata:
             return snapshot
-        return self._strip_internal_metadata(snapshot)
+        return ConfigurationManager.strip_internal_metadata(snapshot)
 
     def _normalize_simulator_paths(self, entry: dict[str, Any], source_root: SourceRoot) -> None:
         if source_root is None:
@@ -819,23 +819,31 @@ class ConfigurationManager:
             if value not in target:
                 target.append(value)
 
-    def _strip_internal_metadata(self, value):
+    @staticmethod
+    def strip_internal_metadata(value):
+        """
+        Remove additionnal internal informations info from value
+        """
         if isinstance(value, list):
-            return [self._strip_internal_metadata(entry) for entry in value]
+            return [ConfigurationManager.strip_internal_metadata(entry) for entry in value]
         if isinstance(value, dict):
             return {
-                key: self._strip_internal_metadata(entry)
+                key: ConfigurationManager.strip_internal_metadata(entry)
                 for key, entry in value.items()
                 if key not in _INTERNAL_METADATA_KEYS
             }
         return value
 
-    def _strip_runtime_internal_metadata(self, value):
+    @staticmethod
+    def strip_runtime_internal_metadata(value):
+        """
+        Remove additionnal internal informations info from value
+        """
         if isinstance(value, list):
-            return [self._strip_runtime_internal_metadata(entry) for entry in value]
+            return [ConfigurationManager.strip_runtime_internal_metadata(entry) for entry in value]
         if isinstance(value, dict):
             return {
-                key: self._strip_runtime_internal_metadata(entry)
+                key: ConfigurationManager.strip_runtime_internal_metadata(entry)
                 for key, entry in value.items()
                 if key != REMOTE_BASE_URL_KEY
             }
