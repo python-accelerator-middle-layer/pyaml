@@ -1,5 +1,4 @@
 import pytest
-from pyaml.configuration.cfg_dict import CfgDict
 from pydantic import BaseModel, ConfigDict
 
 from pyaml import PyAMLConfigException
