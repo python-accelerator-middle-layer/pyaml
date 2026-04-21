@@ -1,10 +1,10 @@
 import pytest
+from pyaml.configuration.cfg_dict import CfgDict
 from pydantic import BaseModel, ConfigDict
 
 from pyaml import PyAMLConfigException
 from pyaml.accelerator import Accelerator, ElementHolder
 from pyaml.common.element import __pyaml_repr__
-from pyaml.configuration.cfg_dict import CfgDict
 from pyaml.control.controlsystem import ControlSystemAdapter
 
 
@@ -60,7 +60,7 @@ devices: []
 class MyControlSystemConfigModel(BaseModel):
     model_config = ConfigDict(arbitrary_types_allowed=True, extra="forbid")
     name: str
-    dconfig: CfgDict
+    dconfig: dict
 
 
 class MyControlSystem(ControlSystemAdapter):
@@ -72,7 +72,7 @@ class MyControlSystem(ControlSystemAdapter):
         return self._cfg.name
 
     def dconfig(self) -> dict:
-        return self._cfg.dconfig.get()
+        return self._cfg.dconfig
 
     def __repr__(self):
         return __pyaml_repr__(self)
@@ -91,10 +91,7 @@ def test_config_dict():
                 "class": "MyControlSystem",
                 "validation_class": "MyControlSystemConfigModel",
                 "name": "live",
-                "dconfig": {
-                    "type": "pyaml.configuration.cfg_dict",
-                    "cfg_dict": {"prefix": "VA:", "info": {"param1": "Param1 value", "param2": 12345.0}},
-                },
+                "dconfig": {"prefix": "VA:", "info": {"param1": "Param1 value", "param2": 12345.0}},
             }
         ],
         "devices": [],
