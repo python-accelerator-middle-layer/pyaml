@@ -174,10 +174,7 @@ class PyAMLFactory:
             # Do not recurse CfgDict
             if "type" in d:
                 if d["type"] == "pyaml.configuration.cfg_dict":
-                    d.pop("type")
-                    from .cfg_dict import CfgDict
-
-                    return CfgDict(d)
+                    return self.build_object(d)
 
             for key, value in d.items():
                 if not key == "__fieldlocations__":

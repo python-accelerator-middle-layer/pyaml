@@ -93,8 +93,7 @@ def test_config_dict():
                 "name": "live",
                 "dconfig": {
                     "type": "pyaml.configuration.cfg_dict",
-                    "prefix": "VA:",
-                    "info": {"param1": "Param1 value", "param2": 12345.0},
+                    "cfg_dict": {"prefix": "VA:", "info": {"param1": "Param1 value", "param2": 12345.0}},
                 },
             }
         ],
