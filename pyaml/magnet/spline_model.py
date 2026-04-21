@@ -4,7 +4,7 @@ from scipy.interpolate import make_smoothing_spline
 
 from ..common.element import __pyaml_repr__
 from ..configuration.curve import Curve
-from ..control.deviceaccess import DeviceAccess, device_unit
+from ..control.deviceaccess import DeviceAccess
 from .model import MagnetModel
 
 # Define the main class name for this module
@@ -57,7 +57,7 @@ class SplineMagnetModel(MagnetModel):
         self.__curve[:, 1] = self.__curve[:, 1] * cfg.calibration_factor * cfg.crosstalk + cfg.calibration_offset
         rcurve = Curve.inverse(self.__curve)
         self.__strength_unit = cfg.unit
-        self.__hardware_unit = device_unit(cfg.powerconverter)
+        self.__hardware_unit = cfg.powerconverter.unit()
         self.__brho = np.nan
         self.__ps = cfg.powerconverter
         self.__spl = make_smoothing_spline(self.__curve[:, 0], self.__curve[:, 1], lam=cfg.alpha)

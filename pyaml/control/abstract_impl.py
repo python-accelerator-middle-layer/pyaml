@@ -343,8 +343,7 @@ class RWHardwareScalar(abstract.ReadWriteFloatScalar):
         raise NotImplementedError("Not implemented yet.")
 
     def unit(self) -> str:
-        unit = self.__model.get_hardware_units()[0]
-        return unit if unit != "" else self.__dev.unit()
+        return self.__model.get_hardware_units()[0]
 
     def set_magnet_rigidity(self, brho: np.double):
         self.__model.set_magnet_rigidity(brho)
@@ -418,10 +417,7 @@ class RWHardwareArray(abstract.ReadWriteFloatArray):
 
     # Gets the unit of the value
     def unit(self) -> list[str]:
-        units = self.__model.get_hardware_units()
-        return [
-            model_unit if model_unit != "" else dev.unit() for model_unit, dev in zip(units, self.__devs, strict=True)
-        ]
+        return self.__model.get_hardware_units()
 
 
 # ------------------------------------------------------------------------------
@@ -605,7 +601,7 @@ class RWRFVoltageScalar(abstract.ReadWriteFloatScalar):
         raise NotImplementedError("Not implemented yet.")
 
     def unit(self) -> str:
-        return self.__dev.unit()
+        return self.__transmitter._cfg.voltage.unit()
 
 
 # ------------------------------------------------------------------------------
@@ -631,7 +627,7 @@ class RWRFPhaseScalar(abstract.ReadWriteFloatScalar):
         raise NotImplementedError("Not implemented yet.")
 
     def unit(self) -> str:
-        return self.__dev.unit()
+        return self.__transmitter._cfg.phase.unit()
 
 
 # ------------------------------------------------------------------------------
@@ -657,7 +653,7 @@ class RWRFFrequencyScalar(abstract.ReadWriteFloatScalar):
         raise NotImplementedError("Not implemented yet.")
 
     def unit(self) -> str:
-        return self.__dev.unit()
+        return self.__rf._cfg.masterclock.unit()
 
 
 # ------------------------------------------------------------------------------
@@ -682,7 +678,7 @@ class RBetatronTuneArray(abstract.ReadFloatArray):
         )
 
     def unit(self) -> str:
-        return self.__devs[1].unit()
+        return self.__tune_monitor._cfg.tune_v.unit()
 
 
 # ------------------------------------------------------------------------------

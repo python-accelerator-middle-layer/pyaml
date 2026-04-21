@@ -66,8 +66,3 @@ class DeviceAccess(metaclass=ABCMeta):
             True if device is available, False otherwise
         """
         pass
-
-
-def device_unit(device: DeviceAccess | None) -> str:
-    """Return the unit for a concrete device, or an empty unit when unavailable."""
-    return device.unit() if device is not None else ""

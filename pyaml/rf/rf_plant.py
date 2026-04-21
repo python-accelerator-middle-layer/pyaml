@@ -91,4 +91,4 @@ class RWTotalVoltage(abstract.ReadWriteFloatScalar):
         raise NotImplementedError("Not implemented yet.")
 
     def unit(self) -> str:
-        return self.__trans[0].voltage.unit()
+        return self.__trans[0]._cfg.phase.unit()

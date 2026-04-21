@@ -271,6 +271,7 @@ class ControlSystem(ElementHolder, metaclass=ABCMeta):
                 self.add_rf_plant(ne)
 
             elif isinstance(e, BetatronTuneMonitor):
+                # Built in tune monitor
                 tuneDevs = self.attach([e._cfg.tune_h, e._cfg.tune_v])
                 betatron_tune = RBetatronTuneArray(e, tuneDevs)
                 e = e.attach(self, betatron_tune)

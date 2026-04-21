@@ -3,7 +3,7 @@ from pydantic import BaseModel, ConfigDict
 
 from ..common.element import __pyaml_repr__
 from ..configuration.curve import Curve
-from ..control.deviceaccess import DeviceAccess, device_unit
+from ..control.deviceaccess import DeviceAccess
 from .model import MagnetModel
 
 # Define the main class name for this module
@@ -60,7 +60,7 @@ class LinearMagnetModel(MagnetModel):
             self.__g = cfg.calibration_factor * cfg.crosstalk
             self.__o = cfg.calibration_offset
         self.__strength_unit = cfg.unit
-        self.__hardware_unit = device_unit(cfg.powerconverter)
+        self.__hardware_unit = cfg.powerconverter.unit()
         self.__brho = np.nan
         self.__ps = cfg.powerconverter
 

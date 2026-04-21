@@ -7,7 +7,7 @@ from ..configuration.curve import Curve
 from ..configuration.inline_curve import ConfigModel as InlineCurveModel
 from ..configuration.inline_curve import InlineCurve
 from ..configuration.matrix import Matrix
-from ..control.deviceaccess import DeviceAccess, device_unit
+from ..control.deviceaccess import DeviceAccess
 from .linear_model import ConfigModel as LinearConfigModel
 from .linear_model import LinearMagnetModel
 from .model import MagnetModel
@@ -165,7 +165,7 @@ class LinearSerializedMagnetModel(MagnetModel):
         return self._cfg.units
 
     def get_hardware_units(self) -> list[str]:
-        return [device_unit(self._cfg.powerconverter)] * self.__nbMagnets
+        return [p.unit() for p in self._cfg.__sub_models]
 
     def get_devices(self) -> list[DeviceAccess]:
         return [self._cfg.powerconverter] * self.__nbMagnets

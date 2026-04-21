@@ -5,7 +5,7 @@ from ..common.element import __pyaml_repr__
 from ..common.exception import PyAMLException
 from ..configuration.curve import Curve
 from ..configuration.matrix import Matrix
-from ..control.deviceaccess import DeviceAccess, device_unit
+from ..control.deviceaccess import DeviceAccess
 from .model import MagnetModel
 
 # Define the main class name for this module
@@ -149,7 +149,7 @@ class LinearCFMagnetModel(MagnetModel):
         return self._cfg.units
 
     def get_hardware_units(self) -> list[str]:
-        return np.array([device_unit(p) for p in self._cfg.powerconverters])
+        return np.array([p.unit() for p in self._cfg.powerconverters])
 
     def get_devices(self) -> list[DeviceAccess]:
         return self._cfg.powerconverters
