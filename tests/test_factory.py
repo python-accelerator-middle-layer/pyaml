@@ -34,7 +34,7 @@ def test_error_location(test_file):
     print(str(exc.value))
     test_file_names = test_file.split("/")
     test_file_name = test_file_names[len(test_file_names) - 1]
-    assert f"{test_file_name} at line 8, column 9" in str(exc.value)
+    assert f"{test_file_name} at line 6, column 5" in str(exc.value)
 
 
 @pytest.mark.parametrize(
