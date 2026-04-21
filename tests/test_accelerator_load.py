@@ -1,11 +1,15 @@
 import pytest
+from pydantic import BaseModel, ConfigDict
 
 from pyaml import PyAMLConfigException
 from pyaml.accelerator import Accelerator, ElementHolder
+from pyaml.common.element import __pyaml_repr__
+from pyaml.configuration.cfg_dict import CfgDict
+from pyaml.control.controlsystem import ControlSystemAdapter
 
 
 def test_peer():
-    sr = Accelerator.load("tests/config/EBSTune.yaml")
+    sr = Accelerator.load("tests/config/tune_monitor.yaml")
     tm = sr.design.get_betatron_tune_monitor("BETATRON_TUNE")
     assert isinstance(tm.peer.peer, Accelerator)
     assert isinstance(tm.peer, ElementHolder)
@@ -51,3 +55,52 @@ devices: []
     assert isinstance(accelerator, Accelerator)
     assert accelerator.design.name() == "design"
     assert accelerator.get_description() == "Remote accelerator"
+
+
+class MyControlSystemConfigModel(BaseModel):
+    model_config = ConfigDict(arbitrary_types_allowed=True, extra="forbid")
+    name: str
+    dconfig: CfgDict
+
+
+class MyControlSystem(ControlSystemAdapter):
+    def __init__(self, cfg: MyControlSystemConfigModel):
+        ControlSystemAdapter.__init__(self)
+        self._cfg = cfg
+
+    def name(self) -> str:
+        return self._cfg.name
+
+    def dconfig(self) -> dict:
+        return self._cfg.dconfig.get()
+
+    def __repr__(self):
+        return __pyaml_repr__(self)
+
+
+def test_config_dict():
+    acc_config = {
+        "type": "pyaml.accelerator",
+        "facility": "ACC",
+        "machine": "sr",
+        "energy": 1e9,
+        "data_folder": "/data/store",
+        "controls": [
+            {
+                "type": MyControlSystem.__module__,
+                "class": "MyControlSystem",
+                "validation_class": "MyControlSystemConfigModel",
+                "name": "live",
+                "dconfig": {
+                    "type": "pyaml.configuration.cfg_dict",
+                    "cfg_dict": {"prefix": "VA:", "info": {"param1": "Param1 value", "param2": 12345.0}},
+                },
+            }
+        ],
+        "devices": [],
+    }
+
+    sr = Accelerator.from_dict(acc_config)
+    assert sr.live.dconfig()["prefix"] == "VA:"
+    assert sr.live.dconfig()["info"]["param1"] == "Param1 value"
+    assert sr.live.dconfig()["info"]["param2"] == 12345.0
