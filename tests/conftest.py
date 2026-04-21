@@ -435,7 +435,12 @@ def clear_factory_registry():
 
 @pytest.fixture(autouse=True)
 def clear_dummy_tango_attributes():
-    """Clear dummy Tango shared attribute values before/after each test."""
+    """Clear dummy Tango shared attribute values before/after each test.
+
+    The dummy Tango package is a test dependency and may not be importable for
+    all test environments. When available, its registry must be reset to keep
+    singleton-like attributes from leaking values across tests.
+    """
     try:
         from tango.pyaml.attribute_store import clear_attributes
     except ModuleNotFoundError:

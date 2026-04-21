@@ -1,5 +1,3 @@
-from typing import Optional, Tuple
-
 from pydantic import BaseModel, ConfigDict
 
 from pyaml.control.deviceaccess import DeviceAccess
@@ -15,7 +13,7 @@ class ConfigModel(BaseModel):
 
     attribute: str
     unit: str = ""
-    range: Optional[Tuple[Optional[float], Optional[float]]] = None
+    range: tuple[float | None, float | None] | None = None
 
 
 class Attribute(DeviceAccess):
@@ -29,9 +27,12 @@ class Attribute(DeviceAccess):
         self._cfg = cfg
         self._setpoint = cfg.attribute
         self._readback = cfg.attribute
+        # Register metadata early. The value may already have been initialized
+        # by a test before the accelerator configuration is loaded.
         get_state(cfg.attribute, unit=cfg.unit, range=self._range())
 
     def set_array(self, is_array: bool):
+        """Mark the shared value as array-like without initializing it."""
         get_state(
             self._cfg.attribute,
             unit=self._cfg.unit,
@@ -57,6 +58,7 @@ class Attribute(DeviceAccess):
         return state.value
 
     def readback(self):
+        """Return readback from shared state, preserving scalar/array shape."""
         state = get_state(
             self._cfg.attribute,
             unit=self._cfg.unit,
@@ -91,4 +93,5 @@ class Attribute(DeviceAccess):
         return True
 
     def _range(self):
+        """Return optional range metadata for models that define it."""
         return getattr(self._cfg, "range", None)
