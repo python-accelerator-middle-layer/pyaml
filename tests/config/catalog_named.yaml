@@ -18,31 +18,31 @@ catalogs:
     name: device-catalog
     entries:
       - type: pyaml.configuration.static_catalog_entry
-        key: BPM_C01-01/x
+        key: srdiag/bpm/c01-01/SA_HPosition
         device:
           type: tango.pyaml.attribute_read_only
           attribute: srdiag/bpm/c01-01/SA_HPosition
           unit: mm
       - type: pyaml.configuration.static_catalog_entry
-        key: BPM_C01-01/y
+        key: srdiag/bpm/c01-01/SA_VPosition
         device:
           type: tango.pyaml.attribute_read_only
           attribute: srdiag/bpm/c01-01/SA_VPosition
           unit: mm
       - type: pyaml.configuration.static_catalog_entry
-        key: BPM_C01-01/x_offset
+        key: srdiag/bpm/c01-01/HOffset
         device:
           type: tango.pyaml.attribute
           attribute: srdiag/bpm/c01-01/HOffset
           unit: mm
       - type: pyaml.configuration.static_catalog_entry
-        key: BPM_C01-01/y_offset
+        key: srdiag/bpm/c01-01/VOffset
         device:
           type: tango.pyaml.attribute
           attribute: srdiag/bpm/c01-01/VOffset
           unit: mm
       - type: pyaml.configuration.static_catalog_entry
-        key: BPM_C01-01/tilt
+        key: srdiag/bpm/c01-01/Tilt_Angle
         device:
           type: tango.pyaml.attribute
           attribute: srdiag/bpm/c01-01/Tilt_Angle
@@ -52,8 +52,8 @@ devices:
     name: BPM_C01-01
     model:
       type: pyaml.bpm.bpm_tiltoffset_model
-      x_pos: BPM_C01-01/x
-      y_pos: BPM_C01-01/y
-      x_offset: BPM_C01-01/x_offset
-      y_offset: BPM_C01-01/y_offset
-      tilt: BPM_C01-01/tilt
+      x_pos: srdiag/bpm/c01-01/SA_HPosition
+      y_pos: srdiag/bpm/c01-01/SA_VPosition
+      x_offset: srdiag/bpm/c01-01/HOffset
+      y_offset: srdiag/bpm/c01-01/VOffset
+      tilt: srdiag/bpm/c01-01/Tilt_Angle

@@ -201,7 +201,7 @@ def test_configuration_manager_tracks_catalogs_as_named_category(config_root_pat
     assert manager.keys("catalogs") == ["device-catalog"]
     assert manager.has("catalogs", "device-catalog")
     assert manager.get("catalogs", "device-catalog")["type"] == "pyaml.configuration.static_catalog"
-    assert manager.get("catalogs", "device-catalog")["entries"][0]["key"] == "BPM_C01-01/x"
+    assert manager.get("catalogs", "device-catalog")["entries"][0]["key"] == "srdiag/bpm/c01-01/SA_HPosition"
     assert manager.catalogs == ["device-catalog"]
 
 
@@ -213,7 +213,7 @@ def test_configuration_manager_adds_catalog_fragment(config_root_path):
     assert manager.keys("catalogs") == ["bpm-catalog"]
     assert manager.has("catalogs", "bpm-catalog")
     assert manager.get("catalogs", "bpm-catalog")["type"] == "pyaml.configuration.static_catalog"
-    assert manager.get("catalogs", "bpm-catalog")["entries"][0]["key"] == "BPM_C04-01/x"
+    assert manager.get("catalogs", "bpm-catalog")["entries"][0]["key"] == "srdiag/bpm/c04-01/SA_HPosition"
 
 
 def test_accelerator_load_stays_compatible(config_manager_base_config):

@@ -26,23 +26,23 @@ devices:
   name: BPM_C04-04
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos: BPM_C04-04/x
-    y_pos: BPM_C04-04/y
+    x_pos: srdiag/bpm/c04-04/SA_HPosition
+    y_pos: srdiag/bpm/c04-04/SA_VPosition
 - type: pyaml.bpm.bpm
   name: BPM_C04-05
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos: BPM_C04-05/x
-    y_pos: BPM_C04-05/y
+    x_pos: srdiag/bpm/c04-05/SA_HPosition
+    y_pos: srdiag/bpm/c04-05/SA_VPosition
 - type: pyaml.bpm.bpm
   name: BPM_C04-06
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos: BPM_C04-06/x
-    y_pos: BPM_C04-06/y
+    x_pos: srdiag/bpm/c04-06/SA_HPosition
+    y_pos: srdiag/bpm/c04-06/SA_VPosition
 - type: pyaml.bpm.bpm # duplicate device
   name: BPM_C04-06
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos: BPM_C04-06_2/x
-    y_pos: BPM_C04-06_2/y
+    x_pos: srdiag/bpm/c04-06/SA_HPosition
+    y_pos: srdiag/bpm/c04-06/SA_VPosition

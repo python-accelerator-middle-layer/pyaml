@@ -2,73 +2,61 @@ type: pyaml.configuration.static_catalog
 name: bpm-catalog
 entries:
   - type: pyaml.configuration.static_catalog_entry
-    key: BPM_C04-01/x
+    key: srdiag/bpm/c04-01/SA_HPosition
     device:
       type: tango.pyaml.attribute_read_only
       attribute: srdiag/bpm/c04-01/SA_HPosition
       unit: m
   - type: pyaml.configuration.static_catalog_entry
-    key: BPM_C04-01/y
+    key: srdiag/bpm/c04-01/SA_VPosition
     device:
       type: tango.pyaml.attribute_read_only
       attribute: srdiag/bpm/c04-01/SA_VPosition
       unit: m
   - type: pyaml.configuration.static_catalog_entry
-    key: BPM_C04-02/x
+    key: srdiag/bpm/c04-02/SA_HPosition
     device:
       type: tango.pyaml.attribute_read_only
       attribute: srdiag/bpm/c04-02/SA_HPosition
       unit: m
   - type: pyaml.configuration.static_catalog_entry
-    key: BPM_C04-02/y
+    key: srdiag/bpm/c04-02/SA_VPosition
     device:
       type: tango.pyaml.attribute_read_only
       attribute: srdiag/bpm/c04-02/SA_VPosition
       unit: m
   - type: pyaml.configuration.static_catalog_entry
-    key: BPM_C04-04/x
+    key: srdiag/bpm/c04-04/SA_HPosition
     device:
       type: tango.pyaml.attribute_read_only
       attribute: srdiag/bpm/c04-04/SA_HPosition
       unit: m
   - type: pyaml.configuration.static_catalog_entry
-    key: BPM_C04-04/y
+    key: srdiag/bpm/c04-04/SA_VPosition
     device:
       type: tango.pyaml.attribute_read_only
       attribute: srdiag/bpm/c04-04/SA_VPosition
       unit: m
   - type: pyaml.configuration.static_catalog_entry
-    key: BPM_C04-05/x
+    key: srdiag/bpm/c04-05/SA_HPosition
     device:
       type: tango.pyaml.attribute_read_only
       attribute: srdiag/bpm/c04-05/SA_HPosition
       unit: m
   - type: pyaml.configuration.static_catalog_entry
-    key: BPM_C04-05/y
+    key: srdiag/bpm/c04-05/SA_VPosition
     device:
       type: tango.pyaml.attribute_read_only
       attribute: srdiag/bpm/c04-05/SA_VPosition
       unit: m
   - type: pyaml.configuration.static_catalog_entry
-    key: BPM_C04-06/x
+    key: srdiag/bpm/c04-06/SA_HPosition
     device:
       type: tango.pyaml.attribute_read_only
       attribute: srdiag/bpm/c04-06/SA_HPosition
       unit: m
   - type: pyaml.configuration.static_catalog_entry
-    key: BPM_C04-06/y
-    device:
-      type: tango.pyaml.attribute_read_only
-      attribute: srdiag/bpm/c04-06/SA_VPosition
-      unit: m
-  - type: pyaml.configuration.static_catalog_entry
-    key: BPM_C04-06_2/x
-    device:
-      type: tango.pyaml.attribute_read_only
-      attribute: srdiag/bpm/c04-06/SA_HPosition
-      unit: m
-  - type: pyaml.configuration.static_catalog_entry
-    key: BPM_C04-06_2/y
+    key: srdiag/bpm/c04-06/SA_VPosition
     device:
       type: tango.pyaml.attribute_read_only
       attribute: srdiag/bpm/c04-06/SA_VPosition

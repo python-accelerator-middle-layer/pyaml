@@ -49,11 +49,11 @@ devices:
     name: BPM_C04-01
     model:
       type: pyaml.bpm.bpm_simple_model
-      x_pos: BPM_C04-01/x
-      y_pos: BPM_C04-01/y
+      x_pos: srdiag/bpm/c04-01/SA_HPosition
+      y_pos: srdiag/bpm/c04-01/SA_VPosition
   - type: pyaml.bpm.bpm
     name: BPM_C04-02
     model:
       type: pyaml.bpm.bpm_simple_model
-      x_pos: BPM_C04-02/x
-      y_pos: BPM_C04-02/y
+      x_pos: srdiag/bpm/c04-02/SA_HPosition
+      y_pos: srdiag/bpm/c04-02/SA_VPosition
