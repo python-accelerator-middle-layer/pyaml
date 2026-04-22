@@ -51,12 +51,14 @@ class PyAMLFactory:
         raise PyAMLConfigException(f"{globalMessage} for object: '{type_str}' {location_str}") from None
 
     def get_field_type(self, config_cls, field_name) -> type:
+        # Get type of a pydantic ConfigModel field
         if config_cls is None:
             return None
         type_hints = get_type_hints(config_cls)
         return type_hints[field_name] if field_name in type_hints else None
 
     def get_infos(self, d, ignore_external: bool):
+        # Retrieve informations of object to be constructed
         location = d["__location__"] if "__location__" in d else None
         field_locations = d["__fieldlocations__"] if "__fieldlocations__" in d else None
         location_str = ""
@@ -111,23 +113,20 @@ class PyAMLFactory:
         d.pop("type")
         d.pop("class", None)
         d.pop("validation_class", None)
-
         control_modes = d.pop("control_modes", None)
 
+        # Validate the model
+        try:
+            cfg = config_cls.model_validate(d)
+        except ValidationError as e:
+            self.handle_validation_error(e, module.__name__, location_str, field_locations)
+
+        elem_cls = getattr(module, class_str, None)
+        if elem_cls is None:
+            raise PyAMLConfigException(f"Unknown element class '{module.__name__}.{class_str}' {location_str}")
+
         if control_modes is None:
-            # Immediate contruction
-
-            # Validate the model
-            try:
-                cfg = config_cls.model_validate(d)
-            except ValidationError as e:
-                self.handle_validation_error(e, module.__name__, location_str, field_locations)
-
-            elem_cls = getattr(module, class_str, None)
-            if elem_cls is None:
-                raise PyAMLConfigException(f"Unknown element class '{module.__name__}.{class_str}' {location_str}")
-
-            # Construct and return the object
+            # Immediate contruction of the object
             try:
                 obj = elem_cls(cfg)
                 self.register_element(obj)
@@ -138,17 +137,19 @@ class PyAMLFactory:
 
         else:
             # Delayed construction
-            element_name = d.pop("name", None)
-            if element_name is None:
+            # An UnboundElement will be constructuced during the filling of the ElementHolder
+            try:
+                obj = UnboundElement(class_str, module.__name__, control_modes, cfg)
+                self.register_element(obj)
+            except Exception as e:
                 raise PyAMLConfigException(
-                    f"Name not speficied for element class '{module.__name__}.{class_str}' {location_str}"
-                )
-            obj = UnboundElement(element_name, class_str, module.__name__, control_modes, d)
+                    f"{str(e)} when creating '{module.__name__}.{class_str}' {location_str}"
+                ) from e
 
         return obj
 
     def build_unbound(self, e: UnboundElement, holder) -> Element:
-        # Build unbound element (no validation for unbound element)
+        # Build unbound element
         try:
             module = importlib.import_module(e._module_name)
         except ModuleNotFoundError as ex:
@@ -159,7 +160,7 @@ class PyAMLFactory:
             raise PyAMLConfigException(f"Unknown element class '{e._module_name}.{e._class_name}'")
 
         try:
-            obj = elem_cls(e.get_name(), holder, **e._config)
+            obj = elem_cls(holder, e._config)
         except Exception as ex:
             raise PyAMLConfigException(f"{str(ex)} when creating '{e._module_name}.{e._class_name}'") from ex
 

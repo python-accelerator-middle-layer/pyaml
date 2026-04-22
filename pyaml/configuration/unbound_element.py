@@ -1,3 +1,5 @@
+from pydantic import BaseModel
+
 from ..common.element import Element
 
 
@@ -6,23 +8,21 @@ class UnboundElement(Element):
     Class that holds a configuration for an element created on the fly when ElementHolder is filled
     """
 
-    def __init__(self, name: str, class_name: str, module_name: str, modes: list[str], config: dict):
+    def __init__(self, class_name: str, module_name: str, modes: list[str], config: BaseModel):
         """
         Construct an External element
         Parameters
         ----------
-        name : str
-            Element name
         class_name : str
             Element class
         module_name : str
             Element module
         control_modes: list[str]
             List of control modes to add the element to
-        config: dict
+        config: BaseModel
             Element configuration
         """
-        super().__init__(name)
+        super().__init__(config.name)
         self._class_name = class_name
         self._module_name = module_name
         self._control_modes = modes
