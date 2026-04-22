@@ -212,5 +212,6 @@ class ChromaticityResponseMatrix(MeasurementTool):
             observable_names=[cm.get_name() + ".x", cm.get_name() + ".y"],
         )
         self.latest_measurement.update(mat.model_dump())
+        self.latest_measurement["type"] = "pyaml.tuning_tools.response_matrix_data"
 
         return True

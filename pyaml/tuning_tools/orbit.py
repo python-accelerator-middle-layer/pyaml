@@ -75,25 +75,44 @@ class Orbit(TuningTool):
             try:
                 cfg.response_matrix = OrbitResponseMatrixData.load(cfg.response_matrix)
             except Exception as e:
-                logger.warning(f"{str(e)}")
+                logger.warning(f"Loading {cfg.response_matrix} failed {str(e)}")
                 cfg.response_matrix = None
 
         # Converts to self._pySC_response_matrix
         if cfg.response_matrix:
-            m = cfg.response_matrix._cfg.model_dump()
-            m["input_names"] = m.pop("variable_names")
-            m["output_names"] = m.pop("observable_names")
-            m["input_planes"] = m.pop("variable_planes")
-            m["output_planes"] = m.pop("observable_planes")
-            self._pySC_response_matrix = pySC_ResponseMatrix.model_validate(m)
+            self._set_response_matrix(cfg.response_matrix)
 
         self._hcorr: MagnetArray = None
         self._vcorr: MagnetArray = None
         self._hvcorr: MagnetArray = None
         self._rf_plant: RFPlant = None
 
+    def load(self, load_path: Path):
+        """
+        Dynamically loads a response matrix.
+
+        Parameters
+        ----------
+        load_path : Path
+            Filename of the :class:`~.OrbitResponseMatrixData` to load
+        """
+        self._cfg.response_matrix = OrbitResponseMatrixData.load(load_path)
+        self._set_response_matrix(self._cfg.response_matrix)
+
+    def _set_response_matrix(self, mat):
+        m = mat._cfg.model_dump()
+        m["input_names"] = m.pop("variable_names")
+        m["output_names"] = m.pop("observable_names")
+        m["input_planes"] = m.pop("variable_planes")
+        m["output_planes"] = m.pop("observable_planes")
+        self._cfg.response_matrix = mat
+        self._pySC_response_matrix = pySC_ResponseMatrix.model_validate(m)
+
     @property
     def response_matrix(self) -> OrbitResponseMatrixData | None:
+        """
+        Return the response matrix if it has been loaded None otherwise
+        """
         return self._cfg.response_matrix
 
     def correct(
