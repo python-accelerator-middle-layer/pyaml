@@ -91,7 +91,7 @@ class BetatronTuneMonitor(Element, ABetatronTuneMonitor):
                 rf_name = self.parent._cfg.rf_plant_name
                 if h is not None and rf_name is not None:
                     tune = self.parent.tune.get()
-                    rf = self.parent._peer.get_rf_plant(rf_name)
+                    rf = self.parent.peer.get_rf_plant(rf_name)
                     freq = rf.frequency.get()
                     return tune * freq / h
 

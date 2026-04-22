@@ -148,7 +148,7 @@ class Orbit(TuningTool):
             raise PyAMLException(f"{self.get_name()} does not have a response_matrix.")
 
         interface = pySCInterface(
-            element_holder=self._peer,
+            element_holder=self.peer,
             bpm_array_name=self.bpm_array_name,
         )
 
@@ -294,11 +294,11 @@ class Orbit(TuningTool):
         return self._pySC_response_matrix.rf_weight
 
     def post_init(self):
-        self._hcorr = self._peer.get_magnets(self._cfg.hcorr_array_name)
-        self._vcorr = self._peer.get_magnets(self._cfg.vcorr_array_name)
+        self._hcorr = self.peer.get_magnets(self._cfg.hcorr_array_name)
+        self._vcorr = self.peer.get_magnets(self._cfg.vcorr_array_name)
         hvElts = []
         hvElts.extend(self._hcorr)
         hvElts.extend(self._vcorr)
         self._hvcorr = MagnetArray("", hvElts)
         if self._cfg.rf_plant_name is not None:
-            self._rf_plant = self._peer.get_rf_plant(self._cfg.rf_plant_name)
+            self._rf_plant = self.peer.get_rf_plant(self._cfg.rf_plant_name)
