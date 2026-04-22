@@ -8,7 +8,7 @@ from pydantic import BaseModel
 
 from pyaml.accelerator import Accelerator
 from pyaml.common.abstract import ReadFloatArray
-from pyaml.common.element import Element
+from pyaml.common.element import Element, ElementConfigModel
 from pyaml.control.controlsystem import ControlSystemAdapter
 from pyaml.diagnostics.atune_monitor import ABetatronTuneMonitor
 
@@ -84,16 +84,22 @@ class Tune1D(StandardReadable):
         super().__init__(name=name)
 
 
+class MyTuneMonitorConfigModel(ElementConfigModel):
+    device_h: str
+    device_v: str
+    frev: float
+
+
 class MyTuneMonitor(Element, ABetatronTuneMonitor, StandardReadable):
-    def __init__(self, name: str, cs: MyControlSystem, device_h: str, device_v: str, frev: float):
-        Element.__init__(self, name)
-        self.frev = frev
-        tune_h = Tune1D(self, cs, cs.prefix() + device_h)
-        tune_v = Tune1D(self, cs, cs.prefix() + device_v)
+    def __init__(self, cs: MyControlSystem, cfg: MyTuneMonitorConfigModel):
+        Element.__init__(self, cfg.name)
+        self.frev = cfg.frev
+        tune_h = Tune1D(self, cs, cs.prefix() + cfg.device_h)
+        tune_v = Tune1D(self, cs, cs.prefix() + cfg.device_v)
         with self.add_children_as_readables():
             self.hor = tune_h
             self.ver = tune_v
-        StandardReadable.__init__(self, name=name)
+        StandardReadable.__init__(self, name=cfg.name)
 
     def arun(self, coro):
         return evloop.run_until_complete(coro)
@@ -157,6 +163,7 @@ acc_config = {
         {
             "type": MyTuneMonitor.__module__,
             "class": "MyTuneMonitor",
+            "validation_class": "MyTuneMonitorConfigModel",
             "name": "MY_TUNE_MONITOR",
             "control_modes": ["live"],
             "device_h": "TUNEZR:rdH",
