@@ -143,7 +143,7 @@ class PyAMLFactory:
                 self.register_element(obj)
             except Exception as e:
                 raise PyAMLConfigException(
-                    f"{str(e)} when creating '{module.__name__}.{class_str}' {location_str}"
+                    f"{str(e)} when creating unbounded '{module.__name__}.{class_str}' {location_str}"
                 ) from e
 
         return obj
@@ -152,7 +152,7 @@ class PyAMLFactory:
         try:
             obj = e._class(holder, e._config)
         except Exception as ex:
-            raise PyAMLConfigException(f"{str(ex)} when creating '{e._module_name}.{e._class_name}'") from ex
+            raise PyAMLConfigException(f"{str(ex)} when creating '{e._module_name}.{e._class.__name__}'") from ex
 
         if not isinstance(obj, Element):
             raise PyAMLConfigException(f"'{e._module_name}.{e._class.__name__}' is not a sub class of Element")
