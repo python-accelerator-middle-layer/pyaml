@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>pyaml.configuration.factory &#8212; Python Accelerator Middle Layer 0.1.dev1+g156951388 documentation</title>
+    <title>pyaml.configuration.factory &#8212; Python Accelerator Middle Layer 0.1.dev1+gd764608bd documentation</title>
   
   
   
@@ -41,7 +41,7 @@
   <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=55c26ed414f5f8a31ebb" />
 <link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=55c26ed414f5f8a31ebb" />
 
-    <script src="../../../_static/documentation_options.js?v=f0e0ee5c"></script>
+    <script src="../../../_static/documentation_options.js?v=b7af25b8"></script>
     <script src="../../../_static/doctools.js?v=9bcbadda"></script>
     <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -125,8 +125,8 @@
       
     
     
-    <img src="../../../_static/logo.png" class="logo__image only-light" alt="Python Accelerator Middle Layer 0.1.dev1+g156951388 documentation - Home"/>
-    <img src="../../../_static/dark.png" class="logo__image only-dark pst-js-only" alt="Python Accelerator Middle Layer 0.1.dev1+g156951388 documentation - Home"/>
+    <img src="../../../_static/logo.png" class="logo__image only-light" alt="Python Accelerator Middle Layer 0.1.dev1+gd764608bd documentation - Home"/>
+    <img src="../../../_static/dark.png" class="logo__image only-dark pst-js-only" alt="Python Accelerator Middle Layer 0.1.dev1+gd764608bd documentation - Home"/>
   
   
 </a></div>
@@ -436,6 +436,7 @@
 <div class="viewcode-block" id="PyAMLFactory.get_field_type">
 <a class="viewcode-back" href="../../../api/pyaml.configuration.factory.html#pyaml.configuration.factory.PyAMLFactory.get_field_type">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">get_field_type</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config_cls</span><span class="p">,</span> <span class="n">field_name</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">type</span><span class="p">:</span>
+        <span class="c1"># Get type of a pydantic ConfigModel field</span>
         <span class="k">if</span> <span class="n">config_cls</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">return</span> <span class="kc">None</span>
         <span class="n">type_hints</span> <span class="o">=</span> <span class="n">get_type_hints</span><span class="p">(</span><span class="n">config_cls</span><span class="p">)</span>
@@ -445,6 +446,7 @@
 <div class="viewcode-block" id="PyAMLFactory.get_infos">
 <a class="viewcode-back" href="../../../api/pyaml.configuration.factory.html#pyaml.configuration.factory.PyAMLFactory.get_infos">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">get_infos</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="n">ignore_external</span><span class="p">:</span> <span class="nb">bool</span><span class="p">):</span>
+        <span class="c1"># Retrieve informations of object to be constructed</span>
         <span class="n">location</span> <span class="o">=</span> <span class="n">d</span><span class="p">[</span><span class="s2">&quot;__location__&quot;</span><span class="p">]</span> <span class="k">if</span> <span class="s2">&quot;__location__&quot;</span> <span class="ow">in</span> <span class="n">d</span> <span class="k">else</span> <span class="kc">None</span>
         <span class="n">field_locations</span> <span class="o">=</span> <span class="n">d</span><span class="p">[</span><span class="s2">&quot;__fieldlocations__&quot;</span><span class="p">]</span> <span class="k">if</span> <span class="s2">&quot;__fieldlocations__&quot;</span> <span class="ow">in</span> <span class="n">d</span> <span class="k">else</span> <span class="kc">None</span>
         <span class="n">location_str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
@@ -502,23 +504,20 @@
         <span class="n">d</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;type&quot;</span><span class="p">)</span>
         <span class="n">d</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;class&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
         <span class="n">d</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;validation_class&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
-
         <span class="n">control_modes</span> <span class="o">=</span> <span class="n">d</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;control_modes&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
 
+        <span class="c1"># Validate the model</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">cfg</span> <span class="o">=</span> <span class="n">config_cls</span><span class="o">.</span><span class="n">model_validate</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
+        <span class="k">except</span> <span class="n">ValidationError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">handle_validation_error</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="n">module</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span> <span class="n">location_str</span><span class="p">,</span> <span class="n">field_locations</span><span class="p">)</span>
+
+        <span class="n">elem_cls</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">module</span><span class="p">,</span> <span class="n">class_str</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">elem_cls</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">PyAMLConfigException</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unknown element class &#39;</span><span class="si">{</span><span class="n">module</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">.</span><span class="si">{</span><span class="n">class_str</span><span class="si">}</span><span class="s2">&#39; </span><span class="si">{</span><span class="n">location_str</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
         <span class="k">if</span> <span class="n">control_modes</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="c1"># Immediate contruction</span>
-
-            <span class="c1"># Validate the model</span>
-            <span class="k">try</span><span class="p">:</span>
-                <span class="n">cfg</span> <span class="o">=</span> <span class="n">config_cls</span><span class="o">.</span><span class="n">model_validate</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
-            <span class="k">except</span> <span class="n">ValidationError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">handle_validation_error</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="n">module</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span> <span class="n">location_str</span><span class="p">,</span> <span class="n">field_locations</span><span class="p">)</span>
-
-            <span class="n">elem_cls</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">module</span><span class="p">,</span> <span class="n">class_str</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
-            <span class="k">if</span> <span class="n">elem_cls</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="n">PyAMLConfigException</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unknown element class &#39;</span><span class="si">{</span><span class="n">module</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">.</span><span class="si">{</span><span class="n">class_str</span><span class="si">}</span><span class="s2">&#39; </span><span class="si">{</span><span class="n">location_str</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-
-            <span class="c1"># Construct and return the object</span>
+            <span class="c1"># Immediate contruction of the object</span>
             <span class="k">try</span><span class="p">:</span>
                 <span class="n">obj</span> <span class="o">=</span> <span class="n">elem_cls</span><span class="p">(</span><span class="n">cfg</span><span class="p">)</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">register_element</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>
@@ -529,12 +528,14 @@
 
         <span class="k">else</span><span class="p">:</span>
             <span class="c1"># Delayed construction</span>
-            <span class="n">element_name</span> <span class="o">=</span> <span class="n">d</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;name&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
-            <span class="k">if</span> <span class="n">element_name</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="c1"># An UnboundElement will be constructuced during the filling of the ElementHolder</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">obj</span> <span class="o">=</span> <span class="n">UnboundElement</span><span class="p">(</span><span class="n">elem_cls</span><span class="p">,</span> <span class="n">module</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span> <span class="n">control_modes</span><span class="p">,</span> <span class="n">cfg</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">register_element</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>
+            <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
                 <span class="k">raise</span> <span class="n">PyAMLConfigException</span><span class="p">(</span>
-                    <span class="sa">f</span><span class="s2">&quot;Name not speficied for element class &#39;</span><span class="si">{</span><span class="n">module</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">.</span><span class="si">{</span><span class="n">class_str</span><span class="si">}</span><span class="s2">&#39; </span><span class="si">{</span><span class="n">location_str</span><span class="si">}</span><span class="s2">&quot;</span>
-                <span class="p">)</span>
-            <span class="n">obj</span> <span class="o">=</span> <span class="n">UnboundElement</span><span class="p">(</span><span class="n">element_name</span><span class="p">,</span> <span class="n">class_str</span><span class="p">,</span> <span class="n">module</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span> <span class="n">control_modes</span><span class="p">,</span> <span class="n">d</span><span class="p">)</span>
+                    <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">)</span><span class="si">}</span><span class="s2"> when creating &#39;</span><span class="si">{</span><span class="n">module</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">.</span><span class="si">{</span><span class="n">class_str</span><span class="si">}</span><span class="s2">&#39; </span><span class="si">{</span><span class="n">location_str</span><span class="si">}</span><span class="s2">&quot;</span>
+                <span class="p">)</span> <span class="kn">from</span><span class="w"> </span><span class="nn">e</span>
 
         <span class="k">return</span> <span class="n">obj</span></div>
 
@@ -542,23 +543,13 @@
 <div class="viewcode-block" id="PyAMLFactory.build_unbound">
 <a class="viewcode-back" href="../../../api/pyaml.configuration.factory.html#pyaml.configuration.factory.PyAMLFactory.build_unbound">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">build_unbound</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">e</span><span class="p">:</span> <span class="n">UnboundElement</span><span class="p">,</span> <span class="n">holder</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Element</span><span class="p">:</span>
-        <span class="c1"># Build unbound element (no validation for unbound element)</span>
         <span class="k">try</span><span class="p">:</span>
-            <span class="n">module</span> <span class="o">=</span> <span class="n">importlib</span><span class="o">.</span><span class="n">import_module</span><span class="p">(</span><span class="n">e</span><span class="o">.</span><span class="n">_module_name</span><span class="p">)</span>
-        <span class="k">except</span> <span class="ne">ModuleNotFoundError</span> <span class="k">as</span> <span class="n">ex</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="n">PyAMLConfigException</span><span class="p">(</span><span class="s2">&quot;Module referenced in type cannot be found:&quot;</span> <span class="o">+</span> <span class="sa">f</span><span class="s2">&quot;&#39;</span><span class="si">{</span><span class="n">e</span><span class="o">.</span><span class="n">_module_name</span><span class="si">}</span><span class="s2">&#39;&quot;</span><span class="p">)</span> <span class="kn">from</span><span class="w"> </span><span class="kc">None</span>
-
-        <span class="n">elem_cls</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">module</span><span class="p">,</span> <span class="n">e</span><span class="o">.</span><span class="n">_class_name</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">elem_cls</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="n">PyAMLConfigException</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unknown element class &#39;</span><span class="si">{</span><span class="n">e</span><span class="o">.</span><span class="n">_module_name</span><span class="si">}</span><span class="s2">.</span><span class="si">{</span><span class="n">e</span><span class="o">.</span><span class="n">_class_name</span><span class="si">}</span><span class="s2">&#39;&quot;</span><span class="p">)</span>
-
-        <span class="k">try</span><span class="p">:</span>
-            <span class="n">obj</span> <span class="o">=</span> <span class="n">elem_cls</span><span class="p">(</span><span class="n">e</span><span class="o">.</span><span class="n">get_name</span><span class="p">(),</span> <span class="n">holder</span><span class="p">,</span> <span class="o">**</span><span class="n">e</span><span class="o">.</span><span class="n">_config</span><span class="p">)</span>
+            <span class="n">obj</span> <span class="o">=</span> <span class="n">e</span><span class="o">.</span><span class="n">_class</span><span class="p">(</span><span class="n">holder</span><span class="p">,</span> <span class="n">e</span><span class="o">.</span><span class="n">_config</span><span class="p">)</span>
         <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">ex</span><span class="p">:</span>
             <span class="k">raise</span> <span class="n">PyAMLConfigException</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">ex</span><span class="p">)</span><span class="si">}</span><span class="s2"> when creating &#39;</span><span class="si">{</span><span class="n">e</span><span class="o">.</span><span class="n">_module_name</span><span class="si">}</span><span class="s2">.</span><span class="si">{</span><span class="n">e</span><span class="o">.</span><span class="n">_class_name</span><span class="si">}</span><span class="s2">&#39;&quot;</span><span class="p">)</span> <span class="kn">from</span><span class="w"> </span><span class="nn">ex</span>
 
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">Element</span><span class="p">):</span>
-            <span class="k">raise</span> <span class="n">PyAMLConfigException</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;&#39;</span><span class="si">{</span><span class="n">e</span><span class="o">.</span><span class="n">_module_name</span><span class="si">}</span><span class="s2">.</span><span class="si">{</span><span class="n">e</span><span class="o">.</span><span class="n">_class_name</span><span class="si">}</span><span class="s2">&#39; is not a sub class of Element&quot;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="n">PyAMLConfigException</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;&#39;</span><span class="si">{</span><span class="n">e</span><span class="o">.</span><span class="n">_module_name</span><span class="si">}</span><span class="s2">.</span><span class="si">{</span><span class="n">e</span><span class="o">.</span><span class="n">_class</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">&#39; is not a sub class of Element&quot;</span><span class="p">)</span>
 
         <span class="n">obj</span><span class="o">.</span><span class="n">_peer</span> <span class="o">=</span> <span class="n">holder</span>
 
