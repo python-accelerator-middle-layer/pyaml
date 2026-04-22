@@ -95,12 +95,12 @@ class Chromaticity(TuningTool):
     @property
     def _cm(self) -> "ChomaticityMonitor":
         self.check_peer()
-        return self._peer.get_chromaticity_monitor(self._cfg.chromaticty_monitor_name)
+        return self.peer.get_chromaticity_monitor(self._cfg.chromaticty_monitor_name)
 
     @property
     def _sextu(self) -> "MagnetArray":
         self.check_peer()
-        return self._peer.get_magnets(self._cfg.sextu_array_name)
+        return self.peer.get_magnets(self._cfg.sextu_array_name)
 
     def get(self):
         """
