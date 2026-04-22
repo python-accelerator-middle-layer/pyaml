@@ -262,7 +262,8 @@ class ControlSystem(ElementHolder, metaclass=ABCMeta):
                     if isinstance(ne, ABetatronTuneMonitor):
                         self.add_betatron_tune_monitor(ne)
                     else:
-                        print(f"Warning, {e.get_name()} is not a known object type")
+                        # Default to standard Element
+                        self.add_element(ne)
 
 
 class ControlSystemAdapter(ControlSystem):

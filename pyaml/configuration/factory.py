@@ -139,7 +139,7 @@ class PyAMLFactory:
             # Delayed construction
             # An UnboundElement will be constructuced during the filling of the ElementHolder
             try:
-                obj = UnboundElement(class_str, module.__name__, control_modes, cfg)
+                obj = UnboundElement(elem_cls, module.__name__, control_modes, cfg)
                 self.register_element(obj)
             except Exception as e:
                 raise PyAMLConfigException(
@@ -149,23 +149,13 @@ class PyAMLFactory:
         return obj
 
     def build_unbound(self, e: UnboundElement, holder) -> Element:
-        # Build unbound element
         try:
-            module = importlib.import_module(e._module_name)
-        except ModuleNotFoundError as ex:
-            raise PyAMLConfigException("Module referenced in type cannot be found:" + f"'{e._module_name}'") from None
-
-        elem_cls = getattr(module, e._class_name, None)
-        if elem_cls is None:
-            raise PyAMLConfigException(f"Unknown element class '{e._module_name}.{e._class_name}'")
-
-        try:
-            obj = elem_cls(holder, e._config)
+            obj = e._class(holder, e._config)
         except Exception as ex:
             raise PyAMLConfigException(f"{str(ex)} when creating '{e._module_name}.{e._class_name}'") from ex
 
         if not isinstance(obj, Element):
-            raise PyAMLConfigException(f"'{e._module_name}.{e._class_name}' is not a sub class of Element")
+            raise PyAMLConfigException(f"'{e._module_name}.{e._class.__name__}' is not a sub class of Element")
 
         obj._peer = holder
 

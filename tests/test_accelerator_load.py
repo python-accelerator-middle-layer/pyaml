@@ -3,7 +3,7 @@ from pydantic import BaseModel, ConfigDict
 
 from pyaml import PyAMLConfigException
 from pyaml.accelerator import Accelerator, ElementHolder
-from pyaml.common.element import __pyaml_repr__
+from pyaml.common.element import Element, ElementConfigModel, __pyaml_repr__
 from pyaml.control.controlsystem import ControlSystemAdapter
 
 
@@ -77,6 +77,17 @@ class MyControlSystem(ControlSystemAdapter):
         return __pyaml_repr__(self)
 
 
+class MyElementConfigModel(ElementConfigModel):
+    device_h: str
+    device_v: str
+
+
+class MyElement(Element):
+    def __init__(self, cs: MyControlSystem, cfg: MyElementConfigModel):
+        Element.__init__(self, cfg.name)
+        self._cfg = cfg
+
+
 def test_config_dict():
     acc_config = {
         "type": "pyaml.accelerator",
@@ -93,10 +104,22 @@ def test_config_dict():
                 "dconfig": {"prefix": "VA:", "info": {"param1": "Param1 value", "param2": 12345.0}},
             }
         ],
-        "devices": [],
+        "devices": [
+            {
+                "type": MyElement.__module__,
+                "class": "MyElement",
+                "validation_class": "MyElementConfigModel",
+                "name": "MY_ELEMENT",
+                "control_modes": ["live"],
+                "device_h": "TUNEZR:rdH",
+                "device_v": "TUNEZR:rdV",
+            }
+        ],
     }
 
     sr = Accelerator.from_dict(acc_config)
     assert sr.live.dconfig()["prefix"] == "VA:"
     assert sr.live.dconfig()["info"]["param1"] == "Param1 value"
     assert sr.live.dconfig()["info"]["param2"] == 12345.0
+    assert isinstance(sr.live.get_element("MY_ELEMENT"), MyElement)
+    assert sr.live.get_element("MY_ELEMENT")._cfg.device_h == "TUNEZR:rdH"
