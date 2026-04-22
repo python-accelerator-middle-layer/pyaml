@@ -199,5 +199,6 @@ class TuneResponseMatrix(MeasurementTool):
             observable_names=[tm.get_name() + ".x", tm.get_name() + ".y"],
         )
         self.latest_measurement.update(mat.model_dump())
+        self.latest_measurement["type"] = "pyaml.tuning_tools.response_matrix_data"
 
         return True

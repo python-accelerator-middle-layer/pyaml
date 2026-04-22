@@ -10,7 +10,7 @@ container before running the script.
 import numpy as np
 
 from pyaml.accelerator import Accelerator
-from pyaml.common.constants import ACTION_MEASURE
+from pyaml.common.constants import Action
 
 # ----- Load the configuration -----
 # Remember to change the prefix for the live mode to the one matching
@@ -22,9 +22,9 @@ sr = Accelerator.load("BESSY2Chroma.yaml")
 # This callback is used to print output during the chromaticity measurement.
 
 
-def chroma_callback(step: int, action: int, rf: float, tune: np.array):
-    if action == ACTION_MEASURE:
-        print(f"Chromaticy measurement: #{step} RF={rf} Tune={tune}")
+def chroma_callback(action: int, cb_data: dict):
+    if action == Action.MEASURE:
+        print(f"Chromaticy measurement: #{cb_data['step']} RF={cb_data['rf']} Tune={cb_data['tune']}")
     return True
 
 

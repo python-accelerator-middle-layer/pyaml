@@ -13,8 +13,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 from pyaml.accelerator import Accelerator
-from pyaml.tuning_tools.orbit_response_matrix import ConfigModel as ORM_ConfigModel
-from pyaml.tuning_tools.orbit_response_matrix import OrbitResponseMatrix
+from pyaml.tuning_tools.orbit_response_matrix_data import OrbitResponseMatrixData
 
 # ----- Load the configuration -----
 # Remember to change the prefix for the live mode to the one matching your virtual
@@ -34,26 +33,10 @@ SR = sr.design
 
 # if the ORM is not present measure it
 if sr.design.orbit.response_matrix is None:
-    SR.orm.measure(set_wait_time=0.0 if SR == sr.design else 2.0)
-    orm_data = SR.orm.get()
-
-    # Save the data to json
-    ORM_data = {
-        "type": "pyaml.tuning_tools.response_matrix",
-        "matrix": orm_data["matrix"],
-        "input_names": orm_data["input_names"],
-        "output_names": orm_data["output_names"],
-        "input_planes": orm_data["input_planes"],
-        "output_planes": orm_data["output_planes"],
-    }
-    json.dump(ORM_data, open("orm.json", "w"))
-
-# ----- Load the response matrix -----
-# The example does the correction for the live mode but it can also be done on the
-# design mode.
-
-# Load the ORM for the live mode
-sr.live.orbit.load_response_matrix("orm.json")
+    SR.orm.measure(sleep_between_step=0.0 if SR == sr.design else 2.0)
+    SR.orm.save("orm.json")
+    # Load it on live
+    sr.live.orbit.load("orm.json")
 
 # ----- Correct the orbit -----
 

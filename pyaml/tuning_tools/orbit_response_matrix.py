@@ -159,6 +159,7 @@ class OrbitResponseMatrix(MeasurementTool):
 
         orm_data = self._pySC_response_data_to_ORMData(measurement.response_data.model_dump())
         self.latest_measurement.update(orm_data.model_dump())
+        self.latest_measurement["type"] = "pyaml.tuning_tools.orbit_response_matrix_data"
 
     def _pySC_response_data_to_ORMData(self, data: dict) -> OrbitResponseMatrixDataConfigModel:
         # all metadata is discarded here. Should we keep something?

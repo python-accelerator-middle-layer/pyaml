@@ -40,7 +40,7 @@ class ResponseMatrixData(object):
         self._cfg = cfg
 
     @staticmethod
-    def load(filename: str) -> None:
+    def load(filename: str) -> "ResponseMatrixData":
         """
         Load a reponse matrix from a configuration file
         """
