@@ -152,6 +152,9 @@ class ElementHolder(object):
             self.__ELEMENT_ARRAYS,
         )
 
+    def add_element(self, element: Element):
+        self.__ALL[element.get_name()] = element
+
     def get_element(self, name: str) -> Element:
         return self.__get("Element", name, self.__ALL)
 
