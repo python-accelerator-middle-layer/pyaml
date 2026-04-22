@@ -93,7 +93,7 @@ class Orbit(TuningTool):
         self._rf_plant: RFPlant = None
 
     @property
-    def reponse_matrix(self) -> OrbitResponseMatrixData | None:
+    def response_matrix(self) -> OrbitResponseMatrixData | None:
         return self._cfg.response_matrix
 
     def correct(
