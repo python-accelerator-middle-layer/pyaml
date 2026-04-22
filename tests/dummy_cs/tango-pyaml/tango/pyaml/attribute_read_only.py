@@ -30,10 +30,10 @@ class AttributeReadOnly(Attribute):
         raise Exception(f"{self._cfg.attribute} is read only attribute")
 
     def unit(self) -> str:
-        return self._unit
+        return super().unit()
 
     def get_range(self) -> list[float]:
-        return [None, None]
+        return super().get_range()
 
     def check_device_availability(self) -> bool:
         return True
