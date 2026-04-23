@@ -20,6 +20,5 @@ dispersion_data = ebs.dispersion.get()
 rf_response = dispersion_data["frequency_response_x"] + dispersion_data["frequency_response_y"]
 
 orm_data["rf_response"] = rf_response
-orm_data["type"] = "pyaml.tuning_tools.orbit_response_matrix_data"
 
-json.dump(orm_data, open("ideal_orm_disp.json", "w"))
+ebs.orm.save("ideal_orm_disp.json")

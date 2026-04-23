@@ -126,7 +126,7 @@ class OrbitResponseMatrix(MeasurementTool):
             self._register_callback(callback)
             self._init_measure()
             for code, measurement in generator:
-                callback_data = measurement.response_data  # to be defined better
+                callback_data = {"idx": idx, "reponse_data": measurement.response_data}
                 if code is ResponseCode.AFTER_SET:
                     self.send_callback(Action.APPLY, callback_data)
                 elif code is ResponseCode.AFTER_GET:

@@ -15,7 +15,7 @@ from tango.server import Device, attribute, command, device_property, run
 from pyaml.accelerator import Accelerator
 
 # Additional import
-from pyaml.common.constants import ACTION_RESTORE
+from pyaml.common.constants import Action
 
 __all__ = ["ORM", "main"]
 
@@ -81,13 +81,14 @@ class ORM(Device):
 
     # Orbit callback
     def orbit_callback(self, action: int, cdata):
-        if action == ACTION_RESTORE:
-            i = cdata.last_number
-            n_bpms = cdata.raw_up.shape[0] // 2
-            n_correctors = cdata.raw_up.shape[1]
-            corrector = cdata.last_input
-            response = cdata.raw_up[:, i] - cdata.raw_down[:, i]
-            response = response / cdata.inputs_delta[i]
+        if action == Action.RESTORE:
+            rdata = cdata["reponse_data"]
+            i = rdata.last_number
+            n_bpms = rdata.raw_up.shape[0] // 2
+            n_correctors = rdata.raw_up.shape[1]
+            corrector = rdata.last_input
+            response = rdata.raw_up[:, i] - rdata.raw_down[:, i]
+            response = response / rdata.inputs_delta[i]
             std_x_resp = np.std(response[:n_bpms])
             std_y_resp = np.std(response[n_bpms:])
             self.progress_data[2 * i : 2 * i + 2] = [std_x_resp, std_y_resp]
@@ -100,7 +101,7 @@ class ORM(Device):
 
     def orm_run(self):
         # On design sleep 10ms to allow thread schedule
-        self.SR.design.orm.measure(callback=orbit_callback, set_wait_time=0.01)
+        self.SR.design.orm.measure(callback=orbit_callback, sleep_between_meas=0.01)
         self.orm_data = self.SR.design.orm.get()
         self.set_status(f"Ready to scan: {self.ConfigFileName}")
         self.set_state(DevState.ON)
