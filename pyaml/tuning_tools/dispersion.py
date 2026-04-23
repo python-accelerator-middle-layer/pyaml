@@ -65,28 +65,46 @@ class Dispersion(MeasurementTool):
             skip_save=True,
         )
 
-        self._register_callback(callback)
-        self._init_measure()
-
         aborted = False
-        for code, measurement in generator:
-            callback_data = measurement.dispersion_data  # to be defined better
-            if code is DispersionCode.AFTER_SET:
-                if not self.send_callback(Action.APPLY, callback_data):
-                    if aborted:
+        idx = 0
+        err = None
+        try:
+            self._register_callback(callback)
+            self._init_measure()
+            for code, measurement in generator:
+                callback_data = {"idx": idx, "dispersion_data": measurement.dispersion_data}
+                if code is DispersionCode.AFTER_SET:
+                    if not self.send_callback(Action.APPLY, callback_data):
+                        if aborted:
+                            break
+                elif code is DispersionCode.AFTER_GET:
+                    if not self.send_callback(Action.MEASURE, callback_data):
+                        aborted = True
                         break
-            elif code is DispersionCode.AFTER_GET:
-                if not self.send_callback(Action.MEASURE, callback_data):
-                    aborted = True
-                    break
-            elif code is DispersionCode.AFTER_RESTORE:
-                if not self.send_callback(Action.RESTORE, callback_data):
-                    aborted = True
-                    break
+                elif code is DispersionCode.AFTER_RESTORE:
+                    if not self.send_callback(Action.RESTORE, callback_data):
+                        aborted = True
+                        break
+                idx += 1
+        except Exception as ex:
+            err = ex
+        except KeyboardInterrupt as ex:
+            aborted = True
+        finally:
+            # Restore RF
+            # TODO
+            self.send_callback(
+                Action.RESTORE,
+                {"idx": idx},
+                raiseException=False,
+            )
+
+        if err is not None:
+            raise (err)
 
         if aborted:
-            logger.warning("Measurement aborted! Settings have not been restored.")
-            return
+            logger.warning(f"{self.get_name()} : measurement aborted (settings not restored)")
+            return False
 
         dispersion_data = measurement.dispersion_data
         # contains also pre-processed data
@@ -95,6 +113,8 @@ class Dispersion(MeasurementTool):
         #     self.bpm_array_name
         # ).names()
         self.latest_measurement.update(dispersion_data.model_dump())
+
+        return True
 
     def get(self):
         return self.latest_measurement

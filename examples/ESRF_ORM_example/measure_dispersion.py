@@ -3,9 +3,7 @@ from pathlib import Path
 import matplotlib.pyplot as plt
 
 from pyaml.accelerator import Accelerator
-from pyaml.common.constants import ACTION_APPLY, ACTION_MEASURE, ACTION_RESTORE
-from pyaml.tuning_tools.dispersion import ConfigModel as Disp_ConfigModel
-from pyaml.tuning_tools.dispersion import Dispersion
+from pyaml.common.constants import Action
 
 parent_folder = Path(__file__).parent
 config_path = parent_folder.parent.parent.joinpath("tests", "config", "EBSOrbit.yaml").resolve()
@@ -14,11 +12,11 @@ ebs = sr.design
 
 
 def callback(action: int, callback_data) -> bool:
-    if action == ACTION_APPLY:
-        print("Changing RF frequency.")
-    elif action == ACTION_MEASURE:
+    if action == Action.APPLY:
+        print("Changing RF frequency")
+    elif action == Action.MEASURE:
         print("Reading orbit.")
-    elif action == ACTION_RESTORE:
+    elif action == Action.RESTORE:
         print("Restoring RF frequency.")
     return True
 
