@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>pyaml.magnet.spline_model &#8212; Python Accelerator Middle Layer 0.1.dev1+g33e2b9cc8 documentation</title>
+    <title>pyaml.magnet.spline_model &#8212; Python Accelerator Middle Layer 0.1.dev1+gc88531c50 documentation</title>
   
   
   
@@ -41,7 +41,7 @@
   <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=55c26ed414f5f8a31ebb" />
 <link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=55c26ed414f5f8a31ebb" />
 
-    <script src="../../../_static/documentation_options.js?v=b61a99c0"></script>
+    <script src="../../../_static/documentation_options.js?v=96608fea"></script>
     <script src="../../../_static/doctools.js?v=9bcbadda"></script>
     <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -125,8 +125,8 @@
       
     
     
-    <img src="../../../_static/logo.png" class="logo__image only-light" alt="Python Accelerator Middle Layer 0.1.dev1+g33e2b9cc8 documentation - Home"/>
-    <img src="../../../_static/dark.png" class="logo__image only-dark pst-js-only" alt="Python Accelerator Middle Layer 0.1.dev1+g33e2b9cc8 documentation - Home"/>
+    <img src="../../../_static/logo.png" class="logo__image only-light" alt="Python Accelerator Middle Layer 0.1.dev1+gc88531c50 documentation - Home"/>
+    <img src="../../../_static/dark.png" class="logo__image only-dark pst-js-only" alt="Python Accelerator Middle Layer 0.1.dev1+gc88531c50 documentation - Home"/>
   
   
 </a></div>
@@ -437,18 +437,13 @@
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cfg</span><span class="p">:</span> <span class="n">ConfigModel</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_cfg</span> <span class="o">=</span> <span class="n">cfg</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__curve</span> <span class="o">=</span> <span class="n">cfg</span><span class="o">.</span><span class="n">curve</span><span class="o">.</span><span class="n">get_curve</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">__curve</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">__curve</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">cfg</span><span class="o">.</span><span class="n">calibration_factor</span> <span class="o">*</span> <span class="n">cfg</span><span class="o">.</span><span class="n">crosstalk</span>
-            <span class="o">+</span> <span class="n">cfg</span><span class="o">.</span><span class="n">calibration_offset</span>
-        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__curve</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__curve</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">cfg</span><span class="o">.</span><span class="n">calibration_factor</span> <span class="o">*</span> <span class="n">cfg</span><span class="o">.</span><span class="n">crosstalk</span> <span class="o">+</span> <span class="n">cfg</span><span class="o">.</span><span class="n">calibration_offset</span>
         <span class="n">rcurve</span> <span class="o">=</span> <span class="n">Curve</span><span class="o">.</span><span class="n">inverse</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__curve</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__strength_unit</span> <span class="o">=</span> <span class="n">cfg</span><span class="o">.</span><span class="n">unit</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__hardware_unit</span> <span class="o">=</span> <span class="n">cfg</span><span class="o">.</span><span class="n">powerconverter</span><span class="o">.</span><span class="n">unit</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__brho</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__ps</span> <span class="o">=</span> <span class="n">cfg</span><span class="o">.</span><span class="n">powerconverter</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">__spl</span> <span class="o">=</span> <span class="n">make_smoothing_spline</span><span class="p">(</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">__curve</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">__curve</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">lam</span><span class="o">=</span><span class="n">cfg</span><span class="o">.</span><span class="n">alpha</span>
-        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__spl</span> <span class="o">=</span> <span class="n">make_smoothing_spline</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__curve</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">__curve</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">lam</span><span class="o">=</span><span class="n">cfg</span><span class="o">.</span><span class="n">alpha</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__rspl</span> <span class="o">=</span> <span class="n">make_smoothing_spline</span><span class="p">(</span><span class="n">rcurve</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">rcurve</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">lam</span><span class="o">=</span><span class="n">cfg</span><span class="o">.</span><span class="n">alpha</span><span class="p">)</span>
 
 <div class="viewcode-block" id="SplineMagnetModel.compute_hardware_values">

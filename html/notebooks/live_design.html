@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Live/Design: control modes &#8212; Python Accelerator Middle Layer 0.1.dev1+g33e2b9cc8 documentation</title>
+    <title>Live/Design: control modes &#8212; Python Accelerator Middle Layer 0.1.dev1+gc88531c50 documentation</title>
   
   
   
@@ -42,7 +42,7 @@
   <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=55c26ed414f5f8a31ebb" />
 <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=55c26ed414f5f8a31ebb" />
 
-    <script src="../_static/documentation_options.js?v=b61a99c0"></script>
+    <script src="../_static/documentation_options.js?v=96608fea"></script>
     <script src="../_static/doctools.js?v=9bcbadda"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -128,8 +128,8 @@
       
     
     
-    <img src="../_static/logo.png" class="logo__image only-light" alt="Python Accelerator Middle Layer 0.1.dev1+g33e2b9cc8 documentation - Home"/>
-    <img src="../_static/dark.png" class="logo__image only-dark pst-js-only" alt="Python Accelerator Middle Layer 0.1.dev1+g33e2b9cc8 documentation - Home"/>
+    <img src="../_static/logo.png" class="logo__image only-light" alt="Python Accelerator Middle Layer 0.1.dev1+gc88531c50 documentation - Home"/>
+    <img src="../_static/dark.png" class="logo__image only-dark pst-js-only" alt="Python Accelerator Middle Layer 0.1.dev1+gc88531c50 documentation - Home"/>
   
   
 </a></div>
@@ -448,37 +448,37 @@
 <span class="g g-Whitespace">    </span><span class="mi">303</span>     <span class="p">)</span> <span class="kn">from</span><span class="w"> </span><span class="nn">ex</span>
 <span class="ne">--&gt; </span><span class="mi">304</span> <span class="k">return</span> <span class="n">manager</span><span class="o">.</span><span class="n">build</span><span class="p">(</span><span class="n">ignore_external</span><span class="o">=</span><span class="n">ignore_external</span><span class="p">)</span>
 
-<span class="nn">File /opt/hostedtoolcache/Python/3.14.4/x64/lib/python3.14/site-packages/pyaml/configuration/manager.py:504,</span> in <span class="ni">ConfigurationManager.build</span><span class="nt">(self, ignore_external)</span>
-<span class="g g-Whitespace">    </span><span class="mi">502</span>     <span class="n">set_root_folder</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_build_root</span><span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">503</span> <span class="n">snapshot</span> <span class="o">=</span> <span class="n">ConfigurationManager</span><span class="o">.</span><span class="n">strip_runtime_internal_metadata</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_snapshot</span><span class="p">(</span><span class="n">include_internal_metadata</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
-<span class="ne">--&gt; </span><span class="mi">504</span> <span class="k">return</span> <span class="n">Accelerator</span><span class="o">.</span><span class="n">from_dict</span><span class="p">(</span><span class="n">snapshot</span><span class="p">,</span> <span class="n">ignore_external</span><span class="o">=</span><span class="n">ignore_external</span><span class="p">)</span>
+<span class="nn">File /opt/hostedtoolcache/Python/3.14.4/x64/lib/python3.14/site-packages/pyaml/configuration/manager.py:496,</span> in <span class="ni">ConfigurationManager.build</span><span class="nt">(self, ignore_external)</span>
+<span class="g g-Whitespace">    </span><span class="mi">494</span>     <span class="n">set_root_folder</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_build_root</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">495</span> <span class="n">snapshot</span> <span class="o">=</span> <span class="n">ConfigurationManager</span><span class="o">.</span><span class="n">strip_runtime_internal_metadata</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_snapshot</span><span class="p">(</span><span class="n">include_internal_metadata</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
+<span class="ne">--&gt; </span><span class="mi">496</span> <span class="k">return</span> <span class="n">Accelerator</span><span class="o">.</span><span class="n">from_dict</span><span class="p">(</span><span class="n">snapshot</span><span class="p">,</span> <span class="n">ignore_external</span><span class="o">=</span><span class="n">ignore_external</span><span class="p">)</span>
 
 <span class="nn">File /opt/hostedtoolcache/Python/3.14.4/x64/lib/python3.14/site-packages/pyaml/accelerator.py:275,</span> in <span class="ni">Accelerator.from_dict</span><span class="nt">(config_dict, ignore_external)</span>
 <span class="g g-Whitespace">    </span><span class="mi">273</span> <span class="c1"># Ensure factory is clean before building a new accelerator</span>
 <span class="g g-Whitespace">    </span><span class="mi">274</span> <span class="n">Factory</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
 <span class="ne">--&gt; </span><span class="mi">275</span> <span class="k">return</span> <span class="n">Factory</span><span class="o">.</span><span class="n">depth_first_build</span><span class="p">(</span><span class="n">config_dict</span><span class="p">,</span> <span class="n">ignore_external</span><span class="p">)</span>
 
-<span class="nn">File /opt/hostedtoolcache/Python/3.14.4/x64/lib/python3.14/site-packages/pyaml/configuration/factory.py:196,</span> in <span class="ni">PyAMLFactory.depth_first_build</span><span class="nt">(self, d, ignore_external)</span>
-<span class="g g-Whitespace">    </span><span class="mi">193</span> <span class="c1"># Do not recurse dict defined in ConfigModel</span>
-<span class="g g-Whitespace">    </span><span class="mi">194</span> <span class="c1"># pydantic use TypedDict not usable with isinstance</span>
-<span class="g g-Whitespace">    </span><span class="mi">195</span> <span class="k">if</span> <span class="nb">str</span><span class="p">(</span><span class="n">fieldType</span><span class="p">)</span> <span class="o">!=</span> <span class="s2">&quot;&lt;class &#39;dict&#39;&gt;&quot;</span><span class="p">:</span>
-<span class="ne">--&gt; </span><span class="mi">196</span>     <span class="n">obj</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">depth_first_build</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">ignore_external</span><span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">197</span>     <span class="c1"># Replace the inner dict by the object itself</span>
-<span class="g g-Whitespace">    </span><span class="mi">198</span>     <span class="n">d</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">obj</span>
+<span class="nn">File /opt/hostedtoolcache/Python/3.14.4/x64/lib/python3.14/site-packages/pyaml/configuration/factory.py:194,</span> in <span class="ni">PyAMLFactory.depth_first_build</span><span class="nt">(self, d, ignore_external)</span>
+<span class="g g-Whitespace">    </span><span class="mi">191</span> <span class="c1"># Do not recurse dict defined in ConfigModel</span>
+<span class="g g-Whitespace">    </span><span class="mi">192</span> <span class="c1"># pydantic use TypedDict not usable with isinstance</span>
+<span class="g g-Whitespace">    </span><span class="mi">193</span> <span class="k">if</span> <span class="nb">str</span><span class="p">(</span><span class="n">fieldType</span><span class="p">)</span> <span class="o">!=</span> <span class="s2">&quot;&lt;class &#39;dict&#39;&gt;&quot;</span><span class="p">:</span>
+<span class="ne">--&gt; </span><span class="mi">194</span>     <span class="n">obj</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">depth_first_build</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">ignore_external</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">195</span>     <span class="c1"># Replace the inner dict by the object itself</span>
+<span class="g g-Whitespace">    </span><span class="mi">196</span>     <span class="n">d</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">obj</span>
 
-<span class="nn">File /opt/hostedtoolcache/Python/3.14.4/x64/lib/python3.14/site-packages/pyaml/configuration/factory.py:179,</span> in <span class="ni">PyAMLFactory.depth_first_build</span><span class="nt">(self, d, ignore_external)</span>
-<span class="g g-Whitespace">    </span><span class="mi">177</span> <span class="k">for</span> <span class="n">_index</span><span class="p">,</span> <span class="n">e</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">d</span><span class="p">):</span>
-<span class="g g-Whitespace">    </span><span class="mi">178</span>     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="nb">dict</span><span class="p">)</span> <span class="ow">or</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
-<span class="ne">--&gt; </span><span class="mi">179</span>         <span class="n">obj</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">depth_first_build</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="n">ignore_external</span><span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">180</span>         <span class="n">l</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">181</span>     <span class="k">else</span><span class="p">:</span>
+<span class="nn">File /opt/hostedtoolcache/Python/3.14.4/x64/lib/python3.14/site-packages/pyaml/configuration/factory.py:177,</span> in <span class="ni">PyAMLFactory.depth_first_build</span><span class="nt">(self, d, ignore_external)</span>
+<span class="g g-Whitespace">    </span><span class="mi">175</span> <span class="k">for</span> <span class="n">_index</span><span class="p">,</span> <span class="n">e</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">d</span><span class="p">):</span>
+<span class="g g-Whitespace">    </span><span class="mi">176</span>     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="nb">dict</span><span class="p">)</span> <span class="ow">or</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+<span class="ne">--&gt; </span><span class="mi">177</span>         <span class="n">obj</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">depth_first_build</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="n">ignore_external</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">178</span>         <span class="n">l</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">179</span>     <span class="k">else</span><span class="p">:</span>
 
-<span class="nn">File /opt/hostedtoolcache/Python/3.14.4/x64/lib/python3.14/site-packages/pyaml/configuration/factory.py:186,</span> in <span class="ni">PyAMLFactory.depth_first_build</span><span class="nt">(self, d, ignore_external)</span>
-<span class="g g-Whitespace">    </span><span class="mi">183</span>     <span class="k">return</span> <span class="n">l</span>
-<span class="g g-Whitespace">    </span><span class="mi">185</span> <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
-<span class="ne">--&gt; </span><span class="mi">186</span>     <span class="n">_</span><span class="p">,</span> <span class="n">config_cls</span><span class="p">,</span> <span class="o">*</span><span class="n">_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_infos</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">ignore_external</span><span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">188</span>     <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">d</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-<span class="g g-Whitespace">    </span><span class="mi">189</span>         <span class="k">if</span> <span class="ow">not</span> <span class="n">key</span> <span class="o">==</span> <span class="s2">&quot;__fieldlocations__&quot;</span><span class="p">:</span>
+<span class="nn">File /opt/hostedtoolcache/Python/3.14.4/x64/lib/python3.14/site-packages/pyaml/configuration/factory.py:184,</span> in <span class="ni">PyAMLFactory.depth_first_build</span><span class="nt">(self, d, ignore_external)</span>
+<span class="g g-Whitespace">    </span><span class="mi">181</span>     <span class="k">return</span> <span class="n">l</span>
+<span class="g g-Whitespace">    </span><span class="mi">183</span> <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+<span class="ne">--&gt; </span><span class="mi">184</span>     <span class="n">_</span><span class="p">,</span> <span class="n">config_cls</span><span class="p">,</span> <span class="o">*</span><span class="n">_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_infos</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">ignore_external</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">186</span>     <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">d</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+<span class="g g-Whitespace">    </span><span class="mi">187</span>         <span class="k">if</span> <span class="ow">not</span> <span class="n">key</span> <span class="o">==</span> <span class="s2">&quot;__fieldlocations__&quot;</span><span class="p">:</span>
 
 <span class="nn">File /opt/hostedtoolcache/Python/3.14.4/x64/lib/python3.14/site-packages/pyaml/configuration/factory.py:84,</span> in <span class="ni">PyAMLFactory.get_infos</span><span class="nt">(self, d, ignore_external)</span>
 <span class="g g-Whitespace">     </span><span class="mi">81</span> <span class="k">except</span> <span class="ne">ModuleNotFoundError</span> <span class="k">as</span> <span class="n">ex</span><span class="p">:</span>

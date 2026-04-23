@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>pyaml.magnet.cfm_magnet &#8212; Python Accelerator Middle Layer 0.1.dev1+g33e2b9cc8 documentation</title>
+    <title>pyaml.magnet.cfm_magnet &#8212; Python Accelerator Middle Layer 0.1.dev1+gc88531c50 documentation</title>
   
   
   
@@ -41,7 +41,7 @@
   <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=55c26ed414f5f8a31ebb" />
 <link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=55c26ed414f5f8a31ebb" />
 
-    <script src="../../../_static/documentation_options.js?v=b61a99c0"></script>
+    <script src="../../../_static/documentation_options.js?v=96608fea"></script>
     <script src="../../../_static/doctools.js?v=9bcbadda"></script>
     <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -125,8 +125,8 @@
       
     
     
-    <img src="../../../_static/logo.png" class="logo__image only-light" alt="Python Accelerator Middle Layer 0.1.dev1+g33e2b9cc8 documentation - Home"/>
-    <img src="../../../_static/dark.png" class="logo__image only-dark pst-js-only" alt="Python Accelerator Middle Layer 0.1.dev1+g33e2b9cc8 documentation - Home"/>
+    <img src="../../../_static/logo.png" class="logo__image only-light" alt="Python Accelerator Middle Layer 0.1.dev1+gc88531c50 documentation - Home"/>
+    <img src="../../../_static/dark.png" class="logo__image only-dark pst-js-only" alt="Python Accelerator Middle Layer 0.1.dev1+gc88531c50 documentation - Home"/>
   
   
 </a></div>
@@ -436,23 +436,16 @@
         <span class="k">if</span> <span class="n">peer</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="c1"># Configuration part</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">_cfg</span><span class="p">,</span> <span class="s2">&quot;multipoles&quot;</span><span class="p">):</span>
-                <span class="k">raise</span> <span class="n">PyAMLException</span><span class="p">(</span>
-                    <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">cfg</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2"> model: mutipoles&quot;</span>
-                    <span class="s2">&quot;field required for combined function magnet&quot;</span>
-                <span class="p">)</span>
+                <span class="k">raise</span> <span class="n">PyAMLException</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">cfg</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2"> model: mutipolesfield required for combined function magnet&quot;</span><span class="p">)</span>
 
             <span class="n">idx</span> <span class="o">=</span> <span class="mi">0</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">polynoms</span> <span class="o">=</span> <span class="p">[]</span>
             <span class="k">for</span> <span class="n">_idx</span><span class="p">,</span> <span class="n">m</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">cfg</span><span class="o">.</span><span class="n">mapping</span><span class="p">):</span>
                 <span class="c1"># Check mapping validity</span>
                 <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">m</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">2</span><span class="p">:</span>
-                    <span class="k">raise</span> <span class="n">PyAMLException</span><span class="p">(</span>
-                        <span class="s2">&quot;Invalid CombinedFunctionMagnet mapping for </span><span class="si">{m}</span><span class="s2">&quot;</span>
-                    <span class="p">)</span>
+                    <span class="k">raise</span> <span class="n">PyAMLException</span><span class="p">(</span><span class="s2">&quot;Invalid CombinedFunctionMagnet mapping for </span><span class="si">{m}</span><span class="s2">&quot;</span><span class="p">)</span>
                 <span class="k">if</span> <span class="n">m</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">_fmap</span><span class="p">:</span>
-                    <span class="k">raise</span> <span class="n">PyAMLException</span><span class="p">(</span>
-                        <span class="n">m</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="s2">&quot; not implemented for combined function magnet&quot;</span>
-                    <span class="p">)</span>
+                    <span class="k">raise</span> <span class="n">PyAMLException</span><span class="p">(</span><span class="n">m</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="s2">&quot; not implemented for combined function magnet&quot;</span><span class="p">)</span>
                 <span class="k">if</span> <span class="n">m</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">_cfg</span><span class="o">.</span><span class="n">multipoles</span><span class="p">:</span>
                     <span class="k">raise</span> <span class="n">PyAMLException</span><span class="p">(</span><span class="n">m</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="s2">&quot; not found in underlying magnet model&quot;</span><span class="p">)</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">polynoms</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">_fmap</span><span class="p">[</span><span class="n">m</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span><span class="o">.</span><span class="n">polynom</span><span class="p">)</span>
@@ -519,9 +512,7 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">check_peer</span><span class="p">()</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__strengths</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="n">PyAMLException</span><span class="p">(</span>
-                <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="si">}</span><span class="s2"> has no model that supports physics units&quot;</span>
-            <span class="p">)</span>
+            <span class="k">raise</span> <span class="n">PyAMLException</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="si">}</span><span class="s2"> has no model that supports physics units&quot;</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__strengths</span>
 
     <span class="nd">@property</span>
@@ -532,9 +523,7 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">check_peer</span><span class="p">()</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__hardwares</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="n">PyAMLException</span><span class="p">(</span>
-                <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="si">}</span><span class="s2"> has no model that supports hardware units&quot;</span>
-            <span class="p">)</span>
+            <span class="k">raise</span> <span class="n">PyAMLException</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="si">}</span><span class="s2"> has no model that supports hardware units&quot;</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__hardwares</span>
 
 <div class="viewcode-block" id="CombinedFunctionMagnet.set_energy">

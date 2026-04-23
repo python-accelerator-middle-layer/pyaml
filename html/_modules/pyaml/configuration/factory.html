@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>pyaml.configuration.factory &#8212; Python Accelerator Middle Layer 0.1.dev1+g33e2b9cc8 documentation</title>
+    <title>pyaml.configuration.factory &#8212; Python Accelerator Middle Layer 0.1.dev1+gc88531c50 documentation</title>
   
   
   
@@ -41,7 +41,7 @@
   <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=55c26ed414f5f8a31ebb" />
 <link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=55c26ed414f5f8a31ebb" />
 
-    <script src="../../../_static/documentation_options.js?v=b61a99c0"></script>
+    <script src="../../../_static/documentation_options.js?v=96608fea"></script>
     <script src="../../../_static/doctools.js?v=9bcbadda"></script>
     <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -125,8 +125,8 @@
       
     
     
-    <img src="../../../_static/logo.png" class="logo__image only-light" alt="Python Accelerator Middle Layer 0.1.dev1+g33e2b9cc8 documentation - Home"/>
-    <img src="../../../_static/dark.png" class="logo__image only-dark pst-js-only" alt="Python Accelerator Middle Layer 0.1.dev1+g33e2b9cc8 documentation - Home"/>
+    <img src="../../../_static/logo.png" class="logo__image only-light" alt="Python Accelerator Middle Layer 0.1.dev1+gc88531c50 documentation - Home"/>
+    <img src="../../../_static/dark.png" class="logo__image only-dark pst-js-only" alt="Python Accelerator Middle Layer 0.1.dev1+gc88531c50 documentation - Home"/>
   
   
 </a></div>
@@ -522,9 +522,7 @@
                 <span class="n">obj</span> <span class="o">=</span> <span class="n">elem_cls</span><span class="p">(</span><span class="n">cfg</span><span class="p">)</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">register_element</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>
             <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="n">PyAMLConfigException</span><span class="p">(</span>
-                    <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">)</span><span class="si">}</span><span class="s2"> when creating &#39;</span><span class="si">{</span><span class="n">module</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">.</span><span class="si">{</span><span class="n">class_str</span><span class="si">}</span><span class="s2">&#39; </span><span class="si">{</span><span class="n">location_str</span><span class="si">}</span><span class="s2">&quot;</span>
-                <span class="p">)</span> <span class="kn">from</span><span class="w"> </span><span class="nn">e</span>
+                <span class="k">raise</span> <span class="n">PyAMLConfigException</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">)</span><span class="si">}</span><span class="s2"> when creating &#39;</span><span class="si">{</span><span class="n">module</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">.</span><span class="si">{</span><span class="n">class_str</span><span class="si">}</span><span class="s2">&#39; </span><span class="si">{</span><span class="n">location_str</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span> <span class="kn">from</span><span class="w"> </span><span class="nn">e</span>
 
         <span class="k">else</span><span class="p">:</span>
             <span class="c1"># Delayed construction</span>
@@ -597,9 +595,7 @@
             <span class="c1"># We are now on leaf (no nested object), we can construct</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">build_object</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">ignore_external</span><span class="p">)</span>
 
-        <span class="k">raise</span> <span class="n">PyAMLConfigException</span><span class="p">(</span>
-            <span class="s2">&quot;Unexpected element found. &#39;dict&#39; or &#39;list&#39; expected but got &#39;</span><span class="si">{d.__class__.__name__}</span><span class="s2">&#39;&quot;</span>
-        <span class="p">)</span></div>
+        <span class="k">raise</span> <span class="n">PyAMLConfigException</span><span class="p">(</span><span class="s2">&quot;Unexpected element found. &#39;dict&#39; or &#39;list&#39; expected but got &#39;</span><span class="si">{d.__class__.__name__}</span><span class="s2">&#39;&quot;</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="PyAMLFactory.register_element">
