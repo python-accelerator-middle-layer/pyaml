@@ -10,8 +10,12 @@ __pycache__/
 # C extensions
 *.so
 
-# File produced by tests
+# Files produced by tests
 tunemat.json
+examples/BESSY2_example/orm.json
+examples/BESSY2_example/trm.json
+examples/ESRF_ORM_example/ideal_orm_disp.json
+examples/ESRF_ORM_example/reduced_orm.json
 
 # Private test
 tests/jlp*.ipynb
