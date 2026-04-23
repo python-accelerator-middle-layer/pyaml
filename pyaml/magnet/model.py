@@ -2,8 +2,13 @@ from abc import ABCMeta, abstractmethod
 
 import numpy as np
 import numpy.typing as npt
+from pydantic import BaseModel, ConfigDict
 
 from ..control.deviceaccess import DeviceAccess
+
+
+class MagnetModelSchema(BaseModel):
+    model_config = ConfigDict(extra="forbid")
 
 
 class MagnetModel(metaclass=ABCMeta):

@@ -1,6 +1,12 @@
 from abc import ABCMeta, abstractmethod
 
+from pydantic import BaseModel, ConfigDict
+
 # TODO: correctly type value
+
+
+class DeviceAccessSchema(BaseModel):
+    model_config = ConfigDict(extra="forbid")
 
 
 class DeviceAccess(metaclass=ABCMeta):
