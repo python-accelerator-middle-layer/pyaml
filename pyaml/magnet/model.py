@@ -2,8 +2,13 @@ from abc import ABCMeta, abstractmethod
 
 import numpy as np
 import numpy.typing as npt
+from pydantic import BaseModel, ConfigDict
 
 from ..control.deviceaccess import DeviceAccess
+
+
+class MagnetModelSchema(BaseModel):
+    model_config = ConfigDict(extra="forbid")
 
 
 class MagnetModel(metaclass=ABCMeta):
@@ -13,9 +18,7 @@ class MagnetModel(metaclass=ABCMeta):
     """
 
     @abstractmethod
-    def compute_hardware_values(
-        self, strengths: npt.NDArray[np.float64]
-    ) -> npt.NDArray[np.float64]:
+    def compute_hardware_values(self, strengths: npt.NDArray[np.float64]) -> npt.NDArray[np.float64]:
         """
         Compute hardware value(s) from magnet strength(s)
 
@@ -33,9 +36,7 @@ class MagnetModel(metaclass=ABCMeta):
         pass
 
     @abstractmethod
-    def compute_strengths(
-        self, hardware_values: npt.NDArray[np.float64]
-    ) -> npt.NDArray[np.float64]:
+    def compute_strengths(self, hardware_values: npt.NDArray[np.float64]) -> npt.NDArray[np.float64]:
         """
         Compute magnet strength(s) from hardware value(s)
 

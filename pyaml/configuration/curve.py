@@ -1,6 +1,11 @@
 from abc import ABCMeta, abstractmethod
 
 import numpy as np
+from pydantic import BaseModel, ConfigDict
+
+
+class CurveSchema(BaseModel):
+    model_config = ConfigDict(extra="forbid")
 
 
 class Curve(metaclass=ABCMeta):

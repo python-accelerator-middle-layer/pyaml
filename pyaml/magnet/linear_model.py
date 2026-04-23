@@ -1,16 +1,12 @@
 import numpy as np
-from pydantic import BaseModel, ConfigDict
 
-from ..common.element import __pyaml_repr__
-from ..configuration.curve import Curve
-from ..control.deviceaccess import DeviceAccess
-from .model import MagnetModel
-
-# Define the main class name for this module
-PYAMLCLASS = "LinearMagnetModel"
+# from ..common.element import __pyaml_repr__
+from ..configuration.curve import Curve, CurveSchema
+from ..control.deviceaccess import DeviceAccess, DeviceAccessSchema
+from .model import MagnetModel, MagnetModelSchema
 
 
-class ConfigModel(BaseModel):
+class LinearMagnetModelSchema(MagnetModelSchema):
     """
     Linear magnet model.
 
@@ -32,14 +28,12 @@ class ConfigModel(BaseModel):
 
     """
 
-    model_config = ConfigDict(arbitrary_types_allowed=True, extra="forbid")
-
-    curve: Curve | None = None
-    powerconverter: DeviceAccess | None
+    curve: CurveSchema | None = None
+    powerconverter: DeviceAccessSchema | None = None
     calibration_factor: float = 1.0
     calibration_offset: float = 0.0
     crosstalk: float = 1.0
-    unit: str
+    unit: str = ""
 
 
 class LinearMagnetModel(MagnetModel):
@@ -48,40 +42,41 @@ class LinearMagnetModel(MagnetModel):
     linear interpolation for a single function magnet
     """
 
-    def __init__(self, cfg: ConfigModel):
-        self._cfg = cfg
-        if self._cfg.curve:
-            self.__curve = cfg.curve.get_curve()
-            self.__curve[:, 1] = (
-                self.__curve[:, 1] * cfg.calibration_factor * cfg.crosstalk
-                + cfg.calibration_offset
-            )
-            self.__rcurve = Curve.inverse(self.__curve)
+    def __init__(
+        self,
+        curve: Curve | None = None,
+        powerconverter: DeviceAccess | None = None,
+        calibration_factor: float = 1.0,
+        calibration_offset: float = 0.0,
+        crosstalk: float = 1.0,
+        unit: str = "",
+    ):
+        if curve:
+            self.__curve = curve.get_curve()
+            self.__curve[:, 1] = self.__curve[:, 1] * calibration_factor * crosstalk + calibration_offset
+            self.__rcurve = Curve.inverse(self._curve)
         else:
             self.__curve = None
             self.__rcurve = None
-            self.__g = cfg.calibration_factor * cfg.crosstalk
-            self.__o = cfg.calibration_offset
-        self.__strength_unit = cfg.unit
-        self.__hardware_unit = cfg.powerconverter.unit()
+            self.__g = calibration_factor * crosstalk
+            self.__o = calibration_offset
+
+        self.__strength_unit = unit
+        if powerconverter:
+            self.__hardware_unit = powerconverter.unit()
         self.__brho = np.nan
-        self.__ps = cfg.powerconverter
+        self.__ps = powerconverter
 
     def compute_hardware_values(self, strengths: np.array) -> np.array:
         if self.__rcurve is not None:
-            _current = np.interp(
-                strengths[0] * self.__brho, self.__rcurve[:, 0], self.__rcurve[:, 1]
-            )
+            _current = np.interp(strengths[0] * self.__brho, self.__rcurve[:, 0], self.__rcurve[:, 1])
         else:
             _current = (strengths[0] * self.__brho) / self.__g + self.__o
         return np.array([_current])
 
     def compute_strengths(self, currents: np.array) -> np.array:
         if self.__curve is not None:
-            _strength = (
-                np.interp(currents[0], self.__curve[:, 0], self.__curve[:, 1])
-                / self.__brho
-            )
+            _strength = np.interp(currents[0], self.__curve[:, 0], self.__curve[:, 1]) / self.__brho
         else:
             _strength = ((currents[0] - self.__o) * self.__g) / self.__brho
         return np.array([_strength])
@@ -98,5 +93,6 @@ class LinearMagnetModel(MagnetModel):
     def set_magnet_rigidity(self, brho: np.double):
         self.__brho = brho
 
-    def __repr__(self):
-        return __pyaml_repr__(self)
+
+#    def __repr__(self):
+#        return __pyaml_repr__(self)
