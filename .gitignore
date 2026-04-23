@@ -10,7 +10,11 @@ __pycache__/
 # C extensions
 *.so
 
+# File produced by tests
+tunemat.json
+
 # Private test
+tests/jlp*.ipynb
 tests/jlp*.py
 tests/jlp*.yaml
 
