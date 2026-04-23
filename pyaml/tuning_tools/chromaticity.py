@@ -88,7 +88,7 @@ class Chromaticity(TuningTool):
 
     def load(self, load_path: Path):
         """
-        Dyanmically loads a response matrix.
+        Dynamically loads a response matrix.
 
         Parameters
         ----------
