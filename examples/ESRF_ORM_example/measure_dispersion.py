@@ -13,8 +13,7 @@ ebs = sr.design
 
 def callback(action: int, callback_data) -> bool:
     if action == Action.APPLY:
-        ddata = callback_data["dispersion_data"]
-        print("Changing RF frequency.{ddata}")
+        print("Changing RF frequency")
     elif action == Action.MEASURE:
         print("Reading orbit.")
     elif action == Action.RESTORE:
