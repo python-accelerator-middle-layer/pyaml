@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>pyaml.tuning_tools.dispersion &#8212; Python Accelerator Middle Layer 0.1.dev1+g49611d665 documentation</title>
+    <title>pyaml.tuning_tools.dispersion &#8212; Python Accelerator Middle Layer 0.1.dev1+g915e92fc0 documentation</title>
   
   
   
@@ -41,7 +41,7 @@
   <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=55c26ed414f5f8a31ebb" />
 <link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=55c26ed414f5f8a31ebb" />
 
-    <script src="../../../_static/documentation_options.js?v=7cb9e2be"></script>
+    <script src="../../../_static/documentation_options.js?v=7c9aa61c"></script>
     <script src="../../../_static/doctools.js?v=9bcbadda"></script>
     <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -125,8 +125,8 @@
       
     
     
-    <img src="../../../_static/logo.png" class="logo__image only-light" alt="Python Accelerator Middle Layer 0.1.dev1+g49611d665 documentation - Home"/>
-    <img src="../../../_static/dark.png" class="logo__image only-dark pst-js-only" alt="Python Accelerator Middle Layer 0.1.dev1+g49611d665 documentation - Home"/>
+    <img src="../../../_static/logo.png" class="logo__image only-light" alt="Python Accelerator Middle Layer 0.1.dev1+g915e92fc0 documentation - Home"/>
+    <img src="../../../_static/dark.png" class="logo__image only-dark pst-js-only" alt="Python Accelerator Middle Layer 0.1.dev1+g915e92fc0 documentation - Home"/>
   
   
 </a></div>
@@ -450,28 +450,46 @@
             <span class="n">skip_save</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
         <span class="p">)</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">_register_callback</span><span class="p">(</span><span class="n">callback</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_init_measure</span><span class="p">()</span>
-
         <span class="n">aborted</span> <span class="o">=</span> <span class="kc">False</span>
-        <span class="k">for</span> <span class="n">code</span><span class="p">,</span> <span class="n">measurement</span> <span class="ow">in</span> <span class="n">generator</span><span class="p">:</span>
-            <span class="n">callback_data</span> <span class="o">=</span> <span class="n">measurement</span><span class="o">.</span><span class="n">dispersion_data</span>  <span class="c1"># to be defined better</span>
-            <span class="k">if</span> <span class="n">code</span> <span class="ow">is</span> <span class="n">DispersionCode</span><span class="o">.</span><span class="n">AFTER_SET</span><span class="p">:</span>
-                <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">send_callback</span><span class="p">(</span><span class="n">Action</span><span class="o">.</span><span class="n">APPLY</span><span class="p">,</span> <span class="n">callback_data</span><span class="p">):</span>
-                    <span class="k">if</span> <span class="n">aborted</span><span class="p">:</span>
+        <span class="n">idx</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">err</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_register_callback</span><span class="p">(</span><span class="n">callback</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_init_measure</span><span class="p">()</span>
+            <span class="k">for</span> <span class="n">code</span><span class="p">,</span> <span class="n">measurement</span> <span class="ow">in</span> <span class="n">generator</span><span class="p">:</span>
+                <span class="n">callback_data</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;idx&quot;</span><span class="p">:</span> <span class="n">idx</span><span class="p">,</span> <span class="s2">&quot;dispersion_data&quot;</span><span class="p">:</span> <span class="n">measurement</span><span class="o">.</span><span class="n">dispersion_data</span><span class="p">}</span>
+                <span class="k">if</span> <span class="n">code</span> <span class="ow">is</span> <span class="n">DispersionCode</span><span class="o">.</span><span class="n">AFTER_SET</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">send_callback</span><span class="p">(</span><span class="n">Action</span><span class="o">.</span><span class="n">APPLY</span><span class="p">,</span> <span class="n">callback_data</span><span class="p">):</span>
+                        <span class="k">if</span> <span class="n">aborted</span><span class="p">:</span>
+                            <span class="k">break</span>
+                <span class="k">elif</span> <span class="n">code</span> <span class="ow">is</span> <span class="n">DispersionCode</span><span class="o">.</span><span class="n">AFTER_GET</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">send_callback</span><span class="p">(</span><span class="n">Action</span><span class="o">.</span><span class="n">MEASURE</span><span class="p">,</span> <span class="n">callback_data</span><span class="p">):</span>
+                        <span class="n">aborted</span> <span class="o">=</span> <span class="kc">True</span>
                         <span class="k">break</span>
-            <span class="k">elif</span> <span class="n">code</span> <span class="ow">is</span> <span class="n">DispersionCode</span><span class="o">.</span><span class="n">AFTER_GET</span><span class="p">:</span>
-                <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">send_callback</span><span class="p">(</span><span class="n">Action</span><span class="o">.</span><span class="n">MEASURE</span><span class="p">,</span> <span class="n">callback_data</span><span class="p">):</span>
-                    <span class="n">aborted</span> <span class="o">=</span> <span class="kc">True</span>
-                    <span class="k">break</span>
-            <span class="k">elif</span> <span class="n">code</span> <span class="ow">is</span> <span class="n">DispersionCode</span><span class="o">.</span><span class="n">AFTER_RESTORE</span><span class="p">:</span>
-                <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">send_callback</span><span class="p">(</span><span class="n">Action</span><span class="o">.</span><span class="n">RESTORE</span><span class="p">,</span> <span class="n">callback_data</span><span class="p">):</span>
-                    <span class="n">aborted</span> <span class="o">=</span> <span class="kc">True</span>
-                    <span class="k">break</span>
+                <span class="k">elif</span> <span class="n">code</span> <span class="ow">is</span> <span class="n">DispersionCode</span><span class="o">.</span><span class="n">AFTER_RESTORE</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">send_callback</span><span class="p">(</span><span class="n">Action</span><span class="o">.</span><span class="n">RESTORE</span><span class="p">,</span> <span class="n">callback_data</span><span class="p">):</span>
+                        <span class="n">aborted</span> <span class="o">=</span> <span class="kc">True</span>
+                        <span class="k">break</span>
+                <span class="n">idx</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">ex</span><span class="p">:</span>
+            <span class="n">err</span> <span class="o">=</span> <span class="n">ex</span>
+        <span class="k">except</span> <span class="ne">KeyboardInterrupt</span> <span class="k">as</span> <span class="n">ex</span><span class="p">:</span>
+            <span class="n">aborted</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="k">finally</span><span class="p">:</span>
+            <span class="c1"># Restore RF</span>
+            <span class="c1"># TODO</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">send_callback</span><span class="p">(</span>
+                <span class="n">Action</span><span class="o">.</span><span class="n">RESTORE</span><span class="p">,</span>
+                <span class="p">{</span><span class="s2">&quot;idx&quot;</span><span class="p">:</span> <span class="n">idx</span><span class="p">},</span>
+                <span class="n">raiseException</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">err</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="p">(</span><span class="n">err</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="n">aborted</span><span class="p">:</span>
-            <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;Measurement aborted! Settings have not been restored.&quot;</span><span class="p">)</span>
-            <span class="k">return</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">get_name</span><span class="p">()</span><span class="si">}</span><span class="s2"> : measurement aborted (settings not restored)&quot;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="kc">False</span>
 
         <span class="n">dispersion_data</span> <span class="o">=</span> <span class="n">measurement</span><span class="o">.</span><span class="n">dispersion_data</span>
         <span class="c1"># contains also pre-processed data</span>
@@ -479,7 +497,9 @@
         <span class="c1"># dispersion_data.output_names = self.element_holder.get_bpms(</span>
         <span class="c1">#     self.bpm_array_name</span>
         <span class="c1"># ).names()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">latest_measurement</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">dispersion_data</span><span class="o">.</span><span class="n">model_dump</span><span class="p">())</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">latest_measurement</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">dispersion_data</span><span class="o">.</span><span class="n">model_dump</span><span class="p">())</span>
+
+        <span class="k">return</span> <span class="kc">True</span></div>
 
 
 <div class="viewcode-block" id="Dispersion.get">
