@@ -79,9 +79,16 @@ class Chromaticity(TuningTool):
         # TODO: Initialise first setpoint
         self._setpoint = np.array([np.nan, np.nan])
 
+    @property
+    def response_matrix(self) -> ResponseMatrixData | None:
+        """
+        Return the response matrix if it has been loaded None otherwise
+        """
+        return self._cfg.response_matrix
+
     def load(self, load_path: Path):
         """
-        Dyanmically loads a response matrix.
+        Dynamically loads a response matrix.
 
         Parameters
         ----------

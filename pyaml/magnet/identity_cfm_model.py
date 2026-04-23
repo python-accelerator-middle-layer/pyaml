@@ -46,9 +46,7 @@ class IdentityCFMagnetModel(MagnetModel):
         self.__nbFunction: int = len(cfg.multipoles)
 
         if cfg.physics is None and cfg.powerconverters is None:
-            raise PyAMLException(
-                "Invalid IdentityCFMagnetModel configuration,physics or powerconverters device required"
-            )
+            raise PyAMLException("Invalid IdentityCFMagnetModel configuration,physics or powerconverters device required")
         if cfg.physics is not None and cfg.powerconverters is not None:
             raise PyAMLException(
                 "Invalid IdentityCFMagnetModel configuration,physics or powerconverters device required but not both"

@@ -185,8 +185,7 @@ def _installed_test_packages(
             if package_name in _TEST_PACKAGES
         }
         if package_map and all(
-            _module_matches_test_package(package_name, package_path)
-            for package_name, package_path in package_map.items()
+            _module_matches_test_package(package_name, package_path) for package_name, package_path in package_map.items()
         ):
             yield
             return

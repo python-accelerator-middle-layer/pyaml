@@ -82,7 +82,7 @@ class Tune(TuningTool):
 
     def load(self, load_path: Path):
         """
-        Dyanmically loads a response matrix.
+        Dynamically loads a response matrix.
 
         Parameters
         ----------
@@ -93,6 +93,13 @@ class Tune(TuningTool):
         self._cfg.response_matrix = ResponseMatrixData.load(load_path)
         self._response_matrix = np.array(self._cfg.response_matrix._cfg.matrix)
         self._correctionmat = np.linalg.pinv(self._response_matrix)
+
+    @property
+    def response_matrix(self) -> ResponseMatrixData | None:
+        """
+        Return the response matrix if it has been loaded None otherwise
+        """
+        return self._cfg.response_matrix
 
     @property
     def _tm(self) -> "BetatronTuneMonitor":

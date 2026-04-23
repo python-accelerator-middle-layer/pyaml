@@ -8,11 +8,7 @@ def prepare_and_save():
     # Add cell number to FamName
     for e in ring:
         attrs = e.__dict__
-        toremove = [
-            k
-            for k, v in attrs.items()
-            if k.startswith("Calibration") or k == "SerialNumber"
-        ]
+        toremove = [k for k, v in attrs.items() if k.startswith("Calibration") or k == "SerialNumber"]
         for tr in toremove:
             delattr(e, tr)
         if hasattr(e, "Device") and not isinstance(e, at.Monitor):

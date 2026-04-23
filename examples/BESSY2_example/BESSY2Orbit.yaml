@@ -8,7 +8,7 @@ simulators:
     name: design
 controls:
   - type: pyaml_cs_oa.controlsystem
-    prefix: "a3744:"
+    prefix: "pons:"
     name: live
     catalog: bpm-catalog
 catalogs:

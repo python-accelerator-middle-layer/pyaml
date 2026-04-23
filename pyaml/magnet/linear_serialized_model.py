@@ -91,9 +91,7 @@ class LinearSerializedMagnetModel(MagnetModel):
         self.__brho = np.nan
 
         # Check config
-        self.__nbMagnets: int = _get_max_length(
-            cfg.curves, cfg.calibration_factors, cfg.calibration_offsets, cfg.crosstalk
-        )
+        self.__nbMagnets: int = _get_max_length(cfg.curves, cfg.calibration_factors, cfg.calibration_offsets, cfg.crosstalk)
         self.__calibration_factors = np.ones(self.__nbMagnets)
         self.__calibration_offsets = np.ones(self.__nbMagnets)
         self.__crosstalk = np.ones(self.__nbMagnets)
@@ -150,10 +148,7 @@ class LinearSerializedMagnetModel(MagnetModel):
 
     def compute_hardware_values(self, strengths: np.array) -> np.array:
         return np.array(
-            [
-                model.compute_hardware_values([strength])
-                for strength, model in zip(strengths, self.__sub_models, strict=True)
-            ]
+            [model.compute_hardware_values([strength]) for strength, model in zip(strengths, self.__sub_models, strict=True)]
         )
 
     def compute_strengths(self, currents: np.array) -> np.array:

@@ -20,9 +20,7 @@ def _out_of_range(vmin, vmax) -> float:
         return float(vmax) + 0.1
     if vmin is not None:
         return float(vmin) - 0.1
-    raise RuntimeError(
-        "Unbounded range [None, None], cannot build an out-of-range value."
-    )
+    raise RuntimeError("Unbounded range [None, None], cannot build an out-of-range value.")
 
 
 @pytest.mark.parametrize(
@@ -35,9 +33,7 @@ def _out_of_range(vmin, vmax) -> float:
     ],
     indirect=["install_test_package"],
 )
-def test_cfm_ranges_from_yaml_are_propagated_and_enforced(
-    magnet_file, install_test_package
-):
+def test_cfm_ranges_from_yaml_are_propagated_and_enforced(magnet_file, install_test_package):
     sr: Accelerator = Accelerator.load(magnet_file)
     sr.design.get_lattice().disable_6d()
 

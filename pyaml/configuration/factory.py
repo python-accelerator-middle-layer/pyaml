@@ -131,9 +131,7 @@ class PyAMLFactory:
                 obj = elem_cls(cfg)
                 self.register_element(obj)
             except Exception as e:
-                raise PyAMLConfigException(
-                    f"{str(e)} when creating '{module.__name__}.{class_str}' {location_str}"
-                ) from e
+                raise PyAMLConfigException(f"{str(e)} when creating '{module.__name__}.{class_str}' {location_str}") from e
 
         else:
             # Delayed construction
@@ -200,9 +198,7 @@ class PyAMLFactory:
             # We are now on leaf (no nested object), we can construct
             return self.build_object(d, ignore_external)
 
-        raise PyAMLConfigException(
-            "Unexpected element found. 'dict' or 'list' expected but got '{d.__class__.__name__}'"
-        )
+        raise PyAMLConfigException("Unexpected element found. 'dict' or 'list' expected but got '{d.__class__.__name__}'")
 
     def register_element(self, elt):
         if isinstance(elt, Element):
