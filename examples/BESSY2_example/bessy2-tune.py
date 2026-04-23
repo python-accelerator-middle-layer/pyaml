@@ -39,23 +39,24 @@ def tune_callback(action: int, cb_data: dict):
 
 # Choose which backend to use.
 SR = sr.design
+# SR = sr.live
 
 # if the TRM is not present measure it
 if sr.design.tune.response_matrix is None:
     SR.trm.measure(sleep_between_step=0.0 if SR == sr.design else 2.0, callback=tune_callback)
     SR.trm.save("trm.json")
-    # Load it on live
-    sr.live.tune.load("trm.json")
+    # Load it on tune tuning tool
+    SR.tune.load("trm.json")
 
 # ----- Correct the tune -----
 
 print("\nRun tune correction:")
 
-initial_tunes = np.array2string(sr.live.tune.readback(), precision=6, floatmode="fixed")
+initial_tunes = np.array2string(SR.tune.readback(), precision=6, floatmode="fixed")
 print(f"Initial tunes: {initial_tunes}")
 
-sr.live.tune.set([0.83, 0.84], iter=2, wait_time=3)
+SR.tune.set([0.83, 0.84], iter=2, wait_time=3)
 time.sleep(3)
 
-final_tunes = np.array2string(sr.live.tune.readback(), precision=6, floatmode="fixed")
+final_tunes = np.array2string(SR.tune.readback(), precision=6, floatmode="fixed")
 print(f"Final tunes: {final_tunes}")
