@@ -64,8 +64,7 @@ class Orbit(TuningTool):
         else:
             if cfg.singular_values_H is not None or cfg.singular_values_V is not None:
                 raise PyAMLException(
-                    "Either `singular_values` or `singular_values_H` and "
-                    "`singular_values_V` must be provided, not both."
+                    "Either `singular_values` or `singular_values_H` and `singular_values_V` must be provided, not both."
                 )
             self.singular_values_H = cfg.singular_values
             self.singular_values_V = cfg.singular_values

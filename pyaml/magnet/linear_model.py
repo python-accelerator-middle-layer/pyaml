@@ -52,10 +52,7 @@ class LinearMagnetModel(MagnetModel):
         self._cfg = cfg
         if self._cfg.curve:
             self.__curve = cfg.curve.get_curve()
-            self.__curve[:, 1] = (
-                self.__curve[:, 1] * cfg.calibration_factor * cfg.crosstalk
-                + cfg.calibration_offset
-            )
+            self.__curve[:, 1] = self.__curve[:, 1] * cfg.calibration_factor * cfg.crosstalk + cfg.calibration_offset
             self.__rcurve = Curve.inverse(self.__curve)
         else:
             self.__curve = None
@@ -69,19 +66,14 @@ class LinearMagnetModel(MagnetModel):
 
     def compute_hardware_values(self, strengths: np.array) -> np.array:
         if self.__rcurve is not None:
-            _current = np.interp(
-                strengths[0] * self.__brho, self.__rcurve[:, 0], self.__rcurve[:, 1]
-            )
+            _current = np.interp(strengths[0] * self.__brho, self.__rcurve[:, 0], self.__rcurve[:, 1])
         else:
             _current = (strengths[0] * self.__brho) / self.__g + self.__o
         return np.array([_current])
 
     def compute_strengths(self, currents: np.array) -> np.array:
         if self.__curve is not None:
-            _strength = (
-                np.interp(currents[0], self.__curve[:, 0], self.__curve[:, 1])
-                / self.__brho
-            )
+            _strength = np.interp(currents[0], self.__curve[:, 0], self.__curve[:, 1]) / self.__brho
         else:
             _strength = ((currents[0] - self.__o) * self.__g) / self.__brho
         return np.array([_strength])

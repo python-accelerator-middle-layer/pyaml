@@ -38,9 +38,7 @@ class CSVMatrix(Matrix):
         try:
             self._mat = np.genfromtxt(path, delimiter=",", dtype=float, loose=False)
         except ValueError as e:
-            raise PyAMLException(
-                f"CSVMatrix(file='{cfg.file}',dtype=float): {str(e)}"
-            ) from None
+            raise PyAMLException(f"CSVMatrix(file='{cfg.file}',dtype=float): {str(e)}") from None
 
     def get_matrix(self) -> np.array:
         """

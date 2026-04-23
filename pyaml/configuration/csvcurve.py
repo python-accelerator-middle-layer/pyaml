@@ -39,16 +39,11 @@ class CSVCurve(Curve):
         try:
             self._curve = np.genfromtxt(path, delimiter=",", dtype=float, loose=False)
         except ValueError as e:
-            raise PyAMLException(
-                f"CSVCurve(file='{cfg.file}',dtype=float): {str(e)}"
-            ) from None
+            raise PyAMLException(f"CSVCurve(file='{cfg.file}',dtype=float): {str(e)}") from None
 
         _s = np.shape(self._curve)
         if len(_s) != 2 or _s[1] != 2:
-            raise PyAMLException(
-                f"CSVCurve(file='{cfg.file}',dtype=float):"
-                f"wrong shape (2,2) expected but got {str(_s)}"
-            )
+            raise PyAMLException(f"CSVCurve(file='{cfg.file}',dtype=float):wrong shape (2,2) expected but got {str(_s)}")
 
     def get_curve(self) -> np.array:
         """

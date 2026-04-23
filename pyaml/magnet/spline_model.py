@@ -54,18 +54,13 @@ class SplineMagnetModel(MagnetModel):
     def __init__(self, cfg: ConfigModel):
         self._cfg = cfg
         self.__curve = cfg.curve.get_curve()
-        self.__curve[:, 1] = (
-            self.__curve[:, 1] * cfg.calibration_factor * cfg.crosstalk
-            + cfg.calibration_offset
-        )
+        self.__curve[:, 1] = self.__curve[:, 1] * cfg.calibration_factor * cfg.crosstalk + cfg.calibration_offset
         rcurve = Curve.inverse(self.__curve)
         self.__strength_unit = cfg.unit
         self.__hardware_unit = cfg.powerconverter.unit()
         self.__brho = np.nan
         self.__ps = cfg.powerconverter
-        self.__spl = make_smoothing_spline(
-            self.__curve[:, 0], self.__curve[:, 1], lam=cfg.alpha
-        )
+        self.__spl = make_smoothing_spline(self.__curve[:, 0], self.__curve[:, 1], lam=cfg.alpha)
         self.__rspl = make_smoothing_spline(rcurve[:, 0], rcurve[:, 1], lam=cfg.alpha)
 
     def compute_hardware_values(self, strengths: np.array) -> np.array:

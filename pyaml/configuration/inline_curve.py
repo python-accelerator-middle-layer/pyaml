@@ -38,9 +38,7 @@ class InlineCurve(Curve):
 
         _s = np.shape(self._curve)
         if len(_s) != 2 or _s[1] != 2:
-            raise PyAMLException(
-                f"InlineCurve(mat='{cfg.mat}',dtype=float): wrong shape (2,2) expected but got {str(_s)}"
-            )
+            raise PyAMLException(f"InlineCurve(mat='{cfg.mat}',dtype=float): wrong shape (2,2) expected but got {str(_s)}")
 
     def get_curve(self) -> np.array:
         """

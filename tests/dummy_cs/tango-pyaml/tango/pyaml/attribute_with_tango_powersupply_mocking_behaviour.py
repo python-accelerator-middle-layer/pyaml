@@ -70,15 +70,11 @@ class TangoDevice:
             self._current = self.compute_hardware_values(np.array([self._strength]))[0]
 
     def compute_hardware_values(self, strengths: np.array) -> np.array:
-        _current = np.interp(
-            strengths[0] * self.__brho, self.__rcurve[:, 0], self.__rcurve[:, 1]
-        )
+        _current = np.interp(strengths[0] * self.__brho, self.__rcurve[:, 0], self.__rcurve[:, 1])
         return np.array([_current])
 
     def compute_strengths(self, currents: np.array) -> np.array:
-        _strength = (
-            np.interp(currents[0], self.__curve[:, 0], self.__curve[:, 1]) / self.__brho
-        )
+        _strength = np.interp(currents[0], self.__curve[:, 0], self.__curve[:, 1]) / self.__brho
         return np.array([_strength])
 
     def set_magnet_model_data(
@@ -98,9 +94,7 @@ class TangoDevice:
         _s = np.shape(self.__curve)
         if len(_s) != 2 or _s[1] != 2:
             raise Exception(curve_file + " wrong dimension")
-        self.__curve[:, 1] = (
-            self.__curve[:, 1] * calibration_factor * crosstalk + calibration_offset
-        )
+        self.__curve[:, 1] = self.__curve[:, 1] * calibration_factor * crosstalk + calibration_offset
         self.__rcurve = Curve.inverse(self.__curve)
 
 

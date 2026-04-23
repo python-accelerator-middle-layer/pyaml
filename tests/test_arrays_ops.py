@@ -178,9 +178,7 @@ def test_mask_by_type_returns_correct_boolean_mask(
     [{"name": "tango-pyaml", "path": "tests/dummy_cs/tango-pyaml"}],
     indirect=True,
 )
-def test_filter_by_type_returns_autotyped_array(
-    install_test_package, accelerator_from_fragments, sr_configuration_fragments
-):
+def test_filter_by_type_returns_autotyped_array(install_test_package, accelerator_from_fragments, sr_configuration_fragments):
     sr = accelerator_from_fragments(*sr_configuration_fragments)
     sr.design.get_lattice().disable_6d()
 
@@ -228,9 +226,7 @@ def test_element_array_or_union_is_unique_stable_and_autotyped(
     [{"name": "tango-pyaml", "path": "tests/dummy_cs/tango-pyaml"}],
     indirect=True,
 )
-def test_element_array_add_is_alias_of_union(
-    install_test_package, accelerator_from_fragments, sr_configuration_fragments
-):
+def test_element_array_add_is_alias_of_union(install_test_package, accelerator_from_fragments, sr_configuration_fragments):
     sr = accelerator_from_fragments(*sr_configuration_fragments)
     sr.design.get_lattice().disable_6d()
 

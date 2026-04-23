@@ -69,10 +69,7 @@ class Value:
         str
             Human-readable representation.
         """
-        return (
-            f"Value({self.value}, quality='{self.quality}',"
-            + f"timestamp='{self.timestamp}')"
-        )
+        return f"Value({self.value}, quality='{self.quality}'," + f"timestamp='{self.timestamp}')"
 
     def __float__(self):
         """

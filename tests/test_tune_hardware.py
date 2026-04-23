@@ -5,9 +5,7 @@ from pyaml.accelerator import Accelerator
 
 
 def test_tune():
-    sr: Accelerator = Accelerator.load(
-        "tests/config/EBSTune.yaml", ignore_external=True
-    )
+    sr: Accelerator = Accelerator.load("tests/config/EBSTune.yaml", ignore_external=True)
     sr.design.get_lattice().disable_6d()
 
     quadForTuneDesign = sr.design.get_magnets("QForTune")
