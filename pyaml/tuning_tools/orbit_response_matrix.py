@@ -8,7 +8,6 @@ from pySC.apps import measure_ORM
 from pySC.apps.codes import ResponseCode
 
 from ..common.constants import Action
-from ..common.element import ElementConfigModel
 from ..external.pySC_interface import pySCInterface
 from .measurement_tool import MeasurementTool, MeasurementToolConfigModel
 from .orbit_response_matrix_data import ConfigModel as OrbitResponseMatrixDataConfigModel
@@ -126,7 +125,7 @@ class OrbitResponseMatrix(MeasurementTool):
             self._register_callback(callback)
             self._init_measure()
             for code, measurement in generator:
-                callback_data = {"idx": idx, "reponse_data": measurement.response_data}
+                callback_data = {"idx": idx, "response_data": measurement.response_data}
                 if code is ResponseCode.AFTER_SET:
                     self.send_callback(Action.APPLY, callback_data)
                 elif code is ResponseCode.AFTER_GET:
@@ -158,6 +157,8 @@ class OrbitResponseMatrix(MeasurementTool):
         orm_data = self._pySC_response_data_to_ORMData(measurement.response_data.model_dump())
         self.latest_measurement.update(orm_data.model_dump())
         self.latest_measurement["type"] = "pyaml.tuning_tools.orbit_response_matrix_data"
+
+        return True
 
     def _pySC_response_data_to_ORMData(self, data: dict) -> OrbitResponseMatrixDataConfigModel:
         # all metadata is discarded here. Should we keep something?

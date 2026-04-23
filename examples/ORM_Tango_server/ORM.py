@@ -82,21 +82,22 @@ class ORM(Device):
     # Orbit callback
     def orbit_callback(self, action: int, cdata):
         if action == Action.RESTORE:
-            rdata = cdata["reponse_data"]
-            i = rdata.last_number
-            n_bpms = rdata.raw_up.shape[0] // 2
-            n_correctors = rdata.raw_up.shape[1]
-            corrector = rdata.last_input
-            response = rdata.raw_up[:, i] - rdata.raw_down[:, i]
-            response = response / rdata.inputs_delta[i]
-            std_x_resp = np.std(response[:n_bpms])
-            std_y_resp = np.std(response[n_bpms:])
-            self.progress_data[2 * i : 2 * i + 2] = [std_x_resp, std_y_resp]
-            self.set_status(
-                f"[{i}/{n_correctors}], Measured response of {corrector}: "
-                f"r.m.s H.: {std_x_resp:.2f} um/mrad, "
-                f"r.n.s V: {std_y_resp:.2f} um/mrad"
-            )
+            if "response_data" in cdata:
+                rdata = cdata["response_data"]
+                i = rdata.last_number
+                n_bpms = rdata.raw_up.shape[0] // 2
+                n_correctors = rdata.raw_up.shape[1]
+                corrector = rdata.last_input
+                response = rdata.raw_up[:, i] - rdata.raw_down[:, i]
+                response = response / rdata.inputs_delta[i]
+                std_x_resp = np.std(response[:n_bpms])
+                std_y_resp = np.std(response[n_bpms:])
+                self.progress_data[2 * i : 2 * i + 2] = [std_x_resp, std_y_resp]
+                self.set_status(
+                    f"[{i}/{n_correctors}], Measured response of {corrector}: "
+                    f"r.m.s H.: {std_x_resp:.2f} um/mrad, "
+                    f"r.n.s V: {std_y_resp:.2f} um/mrad"
+                )
         return True
 
     def orm_run(self):
