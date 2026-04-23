@@ -79,12 +79,8 @@ class PyAtAttributeElementsLinker(LatticeElementsLinker):
         LinkerIdentifier
             The identifier for linking the element
         """
-        return PyAtAttributeIdentifier(
-            self.linker_config_model.attribute_name, element.get_name()
-        )
+        return PyAtAttributeIdentifier(self.linker_config_model.attribute_name, element.get_name())
 
-    def _test_at_element(
-        self, identifier: PyAtAttributeIdentifier, element: at.Element
-    ) -> bool:
+    def _test_at_element(self, identifier: PyAtAttributeIdentifier, element: at.Element) -> bool:
         attr_value = getattr(element, identifier.attribute_name, None)
         return attr_value == identifier.identifier

@@ -106,11 +106,7 @@ class CombinedFunctionMagnetArray(ElementArray):
         self.__rwhardwares = RWMagnetHardwares(arrayName, magnets)
 
         if use_aggregator:
-            raise (
-                PyAMLException(
-                    "Aggregator not implemented for CombinedFunctionMagnetArray"
-                )
-            )
+            raise (PyAMLException("Aggregator not implemented for CombinedFunctionMagnetArray"))
 
     @property
     def strengths(self) -> RWMagnetStrengths:

@@ -30,10 +30,7 @@ class ExternalMagnetModel(MagnetModel):
     """
 
     def __init__(self, cfg: ConfigModel):
-        print(
-            "ExternalMagnetModel:\n  powersupply:%s\n  param:%s"
-            % (cfg.powersupply.name(), cfg.param)
-        )
+        print("ExternalMagnetModel:\n  powersupply:%s\n  param:%s" % (cfg.powersupply.name(), cfg.param))
         self._cfg = cfg
 
     # Implementation of the MagnetModel abstract class

@@ -190,14 +190,10 @@ def test_various_naming_addressing():
     assert len(elts) == 3
     check_index(ring, elts, [140, 290, 424])
 
-    elts = sr.design.get_magnet(
-        "QF1E-C04-C05-C06-2"
-    ).strength._RWStrengthScalar__elements
+    elts = sr.design.get_magnet("QF1E-C04-C05-C06-2").strength._RWStrengthScalar__elements
     assert len(elts) == 3
     check_index(ring, elts, [140, 290, 424])
 
-    elts = sr.design.get_magnet(
-        "QF1E-C04-C05-C06-3"
-    ).strength._RWStrengthScalar__elements
+    elts = sr.design.get_magnet("QF1E-C04-C05-C06-3").strength._RWStrengthScalar__elements
     assert len(elts) == 3
     check_index(ring, elts, [140, 290, 424])

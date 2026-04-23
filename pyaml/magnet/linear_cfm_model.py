@@ -92,12 +92,8 @@ class LinearCFMagnetModel(MagnetModel):
         else:
             self.__po = cfg.pseudo_factors
 
-        self.__check_len(
-            self.__calibration_factors, "calibration_factors", self.__nbFunction
-        )
-        self.__check_len(
-            self.__calibration_offsets, "calibration_offsets", self.__nbFunction
-        )
+        self.__check_len(self.__calibration_factors, "calibration_factors", self.__nbFunction)
+        self.__check_len(self.__calibration_offsets, "calibration_offsets", self.__nbFunction)
         self.__check_len(self.__pf, "pseudo_factors", self.__nbFunction)
         self.__check_len(self.__po, "pseudo_offsets", self.__nbFunction)
         self.__check_len(cfg.units, "units", self.__nbFunction)
@@ -112,8 +108,7 @@ class LinearCFMagnetModel(MagnetModel):
 
         if len(_s) != 2 or _s[0] != self.__nbFunction or _s[1] != self.__nbPS:
             raise PyAMLException(
-                "matrix wrong dimension "
-                f"({self.__nbFunction}x{self.__nbPS} expected but got {_s[0]}x{_s[1]})"
+                f"matrix wrong dimension ({self.__nbFunction}x{self.__nbPS} expected but got {_s[0]}x{_s[1]})"
             )
 
         self.__curves = []
@@ -133,18 +128,13 @@ class LinearCFMagnetModel(MagnetModel):
         lgth = len(obj)
         if lgth != expected_len:
             raise PyAMLException(
-                f"{name} does not have the expected "
-                f"number of items ({expected_len} items expected but got {lgth})"
+                f"{name} does not have the expected number of items ({expected_len} items expected but got {lgth})"
             )
 
     def compute_hardware_values(self, strengths: np.array) -> np.array:
         _pI = np.zeros(self.__nbFunction)
         for idx, c in enumerate(self.__rcurves):
-            _pI[idx] = (
-                self.__pf[idx]
-                * np.interp(strengths[idx] * self._brho, c[:, 0], c[:, 1])
-                + self.__po[idx]
-            )
+            _pI[idx] = self.__pf[idx] * np.interp(strengths[idx] * self._brho, c[:, 0], c[:, 1]) + self.__po[idx]
         _currents = np.matmul(self.__inv, _pI)
         return _currents
 
@@ -152,12 +142,7 @@ class LinearCFMagnetModel(MagnetModel):
         _strength = np.zeros(self.__nbFunction)
         _pI = np.matmul(self.__matrix, currents)
         for idx, c in enumerate(self.__curves):
-            _strength[idx] = (
-                np.interp(
-                    (_pI[idx] - self.__po[idx]) / self.__pf[idx], c[:, 0], c[:, 1]
-                )
-                / self._brho
-            )
+            _strength[idx] = np.interp((_pI[idx] - self.__po[idx]) / self.__pf[idx], c[:, 0], c[:, 1]) / self._brho
         return _strength
 
     def get_strength_units(self) -> list[str]:
@@ -173,9 +158,7 @@ class LinearCFMagnetModel(MagnetModel):
         self._brho = brho
 
     def has_hardware(self) -> bool:
-        return (self.__nbPS == self.__nbFunction) and np.allclose(
-            self.__matrix, np.eye(self.__nbFunction)
-        )
+        return (self.__nbPS == self.__nbFunction) and np.allclose(self.__matrix, np.eye(self.__nbFunction))
 
     def __repr__(self):
         return __pyaml_repr__(self)

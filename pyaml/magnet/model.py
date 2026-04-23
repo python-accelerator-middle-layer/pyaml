@@ -13,9 +13,7 @@ class MagnetModel(metaclass=ABCMeta):
     """
 
     @abstractmethod
-    def compute_hardware_values(
-        self, strengths: npt.NDArray[np.float64]
-    ) -> npt.NDArray[np.float64]:
+    def compute_hardware_values(self, strengths: npt.NDArray[np.float64]) -> npt.NDArray[np.float64]:
         """
         Compute hardware value(s) from magnet strength(s)
 
@@ -33,9 +31,7 @@ class MagnetModel(metaclass=ABCMeta):
         pass
 
     @abstractmethod
-    def compute_strengths(
-        self, hardware_values: npt.NDArray[np.float64]
-    ) -> npt.NDArray[np.float64]:
+    def compute_strengths(self, hardware_values: npt.NDArray[np.float64]) -> npt.NDArray[np.float64]:
         """
         Compute magnet strength(s) from hardware value(s)
 

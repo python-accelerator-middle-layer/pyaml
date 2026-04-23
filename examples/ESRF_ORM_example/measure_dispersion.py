@@ -8,9 +8,7 @@ from pyaml.tuning_tools.dispersion import ConfigModel as Disp_ConfigModel
 from pyaml.tuning_tools.dispersion import Dispersion
 
 parent_folder = Path(__file__).parent
-config_path = parent_folder.parent.parent.joinpath(
-    "tests", "config", "EBSOrbit.yaml"
-).resolve()
+config_path = parent_folder.parent.parent.joinpath("tests", "config", "EBSOrbit.yaml").resolve()
 sr = Accelerator.load(config_path)
 ebs = sr.design
 

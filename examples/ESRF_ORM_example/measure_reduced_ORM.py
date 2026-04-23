@@ -9,14 +9,10 @@ from pyaml.tuning_tools.orbit_response_matrix import ConfigModel as ORM_ConfigMo
 from pyaml.tuning_tools.orbit_response_matrix import OrbitResponseMatrix
 
 # disable printing during ORM measurement to illustrate callback.
-logger = logging.getLogger("pyaml.tuning_tools.orbit_response_matrix").setLevel(
-    logging.WARNING
-)
+logger = logging.getLogger("pyaml.tuning_tools.orbit_response_matrix").setLevel(logging.WARNING)
 
 parent_folder = Path(__file__).parent
-config_path = parent_folder.parent.parent.joinpath(
-    "tests", "config", "EBSOrbit.yaml"
-).resolve()
+config_path = parent_folder.parent.parent.joinpath("tests", "config", "EBSOrbit.yaml").resolve()
 sr = Accelerator.load(config_path)
 ebs = sr.design
 orm = ebs.orm

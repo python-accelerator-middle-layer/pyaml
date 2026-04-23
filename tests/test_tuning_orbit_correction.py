@@ -221,13 +221,9 @@ def test_tuning_orbit_correction():
     element_holder.orbit.set_rf_weight(rf_weight)
 
     # test getters of weights
-    assert np.isclose(
-        element_holder.orbit.get_weight("BPM_C04-05", plane="H"), 1, rtol=0, atol=1e-16
-    )
+    assert np.isclose(element_holder.orbit.get_weight("BPM_C04-05", plane="H"), 1, rtol=0, atol=1e-16)
     assert np.isclose(element_holder.orbit.get_virtual_weight(), 1, rtol=0, atol=1e-16)
-    assert np.isclose(
-        element_holder.orbit.get_rf_weight(), rf_weight, rtol=0, atol=1e-16
-    )
+    assert np.isclose(element_holder.orbit.get_rf_weight(), rf_weight, rtol=0, atol=1e-16)
 
 
 def test_tuning_orbit_correction_config():

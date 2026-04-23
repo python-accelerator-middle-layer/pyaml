@@ -145,9 +145,7 @@ class Simulator(ElementHolder):
 
             elif isinstance(e, CombinedFunctionMagnet):
                 currents = RWHardwareArray(self.get_at_elems(e), e.polynoms, e.model) if e.model.has_physics() else None
-                strengths = (
-                    RWStrengthArray(self.get_at_elems(e), e.polynoms, e.model) if e.model.has_physics() else None
-                )
+                strengths = RWStrengthArray(self.get_at_elems(e), e.polynoms, e.model) if e.model.has_physics() else None
                 # Create unique refs of each function for this simulator
                 ms = e.attach(self, strengths, currents)
                 self.add_cfm_magnet(ms[0])
@@ -212,9 +210,7 @@ class Simulator(ElementHolder):
                             # Expect unique name for cavities
                             cav = self.get_at_elems(Element(c))
                             if len(cav) > 1:
-                                raise PyAMLException(
-                                    f"RF transmitter {t.get_name()},multiple cavity definition:{{cav[0]}}"
-                                )
+                                raise PyAMLException(f"RF transmitter {t.get_name()},multiple cavity definition:{{cav[0]}}")
                             if len(cav) == 0:
                                 raise PyAMLException(f"RF transmitter {t.get_name()}, No cavity found")
                             cavsPerTrans.append(cav[0])

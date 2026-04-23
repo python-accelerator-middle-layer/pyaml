@@ -41,9 +41,7 @@ def test_quad_external_model(install_test_package, config_root_dir):
             "tango_host": "ebs-simu-3:10000",
         }
     )
-    hcorr_with_external_model: HCorrector = Factory.depth_first_build(
-        cfg_hcorr_yaml, False
-    )
+    hcorr_with_external_model: HCorrector = Factory.depth_first_build(cfg_hcorr_yaml, False)
     dev = cs.attach(hcorr_with_external_model.model.get_devices())[0]
     strength = RWStrengthScalar(hcorr_with_external_model.model, dev)
     hardware = RWHardwareScalar(hcorr_with_external_model.model, dev)

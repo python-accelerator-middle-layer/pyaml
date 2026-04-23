@@ -105,9 +105,7 @@ class OrbitResponseMatrix(MeasurementTool):
         interface.set_wait_time = sleep_step
 
         if corrector_names is None:
-            logger.info(
-                f"Measuring correctors from the default arrays: {self.hcorr_array_name} and {self.vcorr_array_name}."
-            )
+            logger.info(f"Measuring correctors from the default arrays: {self.hcorr_array_name} and {self.vcorr_array_name}.")
             hcorrector_names = element_holder.get_magnets(self.hcorr_array_name).names()
             vcorrector_names = element_holder.get_magnets(self.vcorr_array_name).names()
             corrector_names = hcorrector_names + vcorrector_names

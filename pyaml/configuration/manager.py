@@ -106,9 +106,7 @@ class ConfigurationManager:
 
     def __init__(self):
         self._state: dict[str, Any] = {"type": self.DEFAULT_TYPE}
-        self._items_by_category: dict[str, dict[str, dict[str, Any]]] = {
-            category: {} for category in self.NAMED_CATEGORIES
-        }
+        self._items_by_category: dict[str, dict[str, dict[str, Any]]] = {category: {} for category in self.NAMED_CATEGORIES}
         self._sources_by_category: dict[str, dict[str, str]] = {category: {} for category in self.NAMED_CATEGORIES}
         self._field_sources: dict[str, str] = {}
         self._build_root: SourceRoot = get_root_folder()
@@ -297,11 +295,7 @@ class ConfigurationManager:
 
             >>> manager.categories()
         """
-        return [
-            category
-            for category in self.NAMED_CATEGORIES
-            if self._state.get(category) and len(self._state[category]) > 0
-        ]
+        return [category for category in self.NAMED_CATEGORIES if self._state.get(category) and len(self._state[category]) > 0]
 
     def keys(self, category: str | None = None) -> list[str]:
         r"""
@@ -450,9 +444,7 @@ class ConfigurationManager:
         extra_fields = [
             field
             for field in self._state.keys()
-            if field not in self.NAMED_CATEGORIES
-            and field not in ordered_fields
-            and field not in _INTERNAL_METADATA_KEYS
+            if field not in self.NAMED_CATEGORIES and field not in ordered_fields and field not in _INTERNAL_METADATA_KEYS
         ]
         for field in ordered_fields + extra_fields:
             settings[field] = copy.deepcopy(self._state[field])
@@ -553,8 +545,7 @@ class ConfigurationManager:
             return self.get(categories[0], name)
         if len(categories) > 1:
             raise AttributeError(
-                f"ConfigurationManager key '{name}' is ambiguous across categories {categories}. "
-                "Use get(category, name)."
+                f"ConfigurationManager key '{name}' is ambiguous across categories {categories}. Use get(category, name)."
             )
         raise AttributeError(f"'ConfigurationManager' object has no attribute '{name}'")
 
@@ -810,9 +801,7 @@ class ConfigurationManager:
     def _coerce_path(self, payload) -> str:
         if isinstance(payload, (str, os.PathLike)):
             return os.fspath(payload)
-        raise PyAMLConfigException(
-            f"Cannot infer configuration source from payload of type '{type(payload).__name__}'."
-        )
+        raise PyAMLConfigException(f"Cannot infer configuration source from payload of type '{type(payload).__name__}'.")
 
     def _extend_unique(self, target: list[str], values) -> None:
         for value in values:

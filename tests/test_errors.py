@@ -132,9 +132,7 @@ def test_malformed_remote_included_yaml_reports_source_line_and_column(http_conf
             "data_folder: /data/store\n"
             "devices: fragments/broken_devices.yaml\n"
         ),
-        "/configs/fragments/broken_devices.yaml": (
-            "- type: pyaml.bpm.bpm\n  name: BPM_BROKEN\n  model:\n    type: [oops\n"
-        ),
+        "/configs/fragments/broken_devices.yaml": ("- type: pyaml.bpm.bpm\n  name: BPM_BROKEN\n  model:\n    type: [oops\n"),
     }
 
     with http_config_server(routes) as base_url:

@@ -75,8 +75,7 @@ def _check_len(obj, name, expected_length):
     length = len(obj)
     if length != expected_length:
         raise PyAMLException(
-            f"{name} does not have the expected "
-            f"number of items ({expected_length} items expected but got {length})"
+            f"{name} does not have the expected number of items ({expected_length} items expected but got {length})"
         )
 
 
@@ -92,9 +91,7 @@ class LinearSerializedMagnetModel(MagnetModel):
         self.__brho = np.nan
 
         # Check config
-        self.__nbMagnets: int = _get_max_length(
-            cfg.curves, cfg.calibration_factors, cfg.calibration_offsets, cfg.crosstalk
-        )
+        self.__nbMagnets: int = _get_max_length(cfg.curves, cfg.calibration_factors, cfg.calibration_offsets, cfg.crosstalk)
         self.__calibration_factors = np.ones(self.__nbMagnets)
         self.__calibration_offsets = np.ones(self.__nbMagnets)
         self.__crosstalk = np.ones(self.__nbMagnets)
@@ -105,16 +102,12 @@ class LinearSerializedMagnetModel(MagnetModel):
         if self._cfg.calibration_factors is None:
             self.__calibration_factors = np.ones(self.__nbMagnets)
         else:
-            self.__calibration_factors = _to_list_of_length(
-                self._cfg.calibration_factors, self.__nbMagnets
-            )
+            self.__calibration_factors = _to_list_of_length(self._cfg.calibration_factors, self.__nbMagnets)
 
         if self._cfg.calibration_offsets is None:
             self.__calibration_offsets = np.zeros(self.__nbMagnets)
         else:
-            self.__calibration_offsets = _to_list_of_length(
-                self._cfg.calibration_offsets, self.__nbMagnets
-            )
+            self.__calibration_offsets = _to_list_of_length(self._cfg.calibration_offsets, self.__nbMagnets)
 
         if self._cfg.crosstalk is None:
             self.__crosstalk = np.zeros(self.__nbMagnets)
@@ -155,18 +148,12 @@ class LinearSerializedMagnetModel(MagnetModel):
 
     def compute_hardware_values(self, strengths: np.array) -> np.array:
         return np.array(
-            [
-                model.compute_hardware_values([strength])
-                for strength, model in zip(strengths, self.__sub_models)
-            ]
+            [model.compute_hardware_values([strength]) for strength, model in zip(strengths, self.__sub_models, strict=True)]
         )
 
     def compute_strengths(self, currents: np.array) -> np.array:
         return np.array(
-            [
-                model.compute_strengths([current])
-                for current, model in zip(currents, self.__sub_models)
-            ]
+            [model.compute_strengths([current]) for current, model in zip(currents, self.__sub_models, strict=True)]
         )
 
     def get_strength_units(self) -> list[str]:

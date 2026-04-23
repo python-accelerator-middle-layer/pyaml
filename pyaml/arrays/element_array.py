@@ -113,9 +113,7 @@ class ElementArray(list[Element]):
         if len(self) > 0 and len(other) > 0:
             if self.get_peer() is not None and other.get_peer() is not None:
                 if self.get_peer() != other.get_peer():
-                    raise PyAMLException(
-                        f"{self.__class__.__name__}: cannot operate on arrays attached to different peers"
-                    )
+                    raise PyAMLException(f"{self.__class__.__name__}: cannot operate on arrays attached to different peers")
         return other
 
     def __auto_array(self, elements: list[Element]):
