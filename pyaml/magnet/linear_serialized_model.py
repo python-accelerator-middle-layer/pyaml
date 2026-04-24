@@ -163,7 +163,7 @@ class LinearSerializedMagnetModel(MagnetModel):
         return [p.unit() for p in self._cfg.__sub_models]
 
     def get_devices(self) -> list[DeviceAccess]:
-        return [self._cfg.powerconverter] * self.__nbMagnets
+        return self._cfg.powerconverters
 
     def set_magnet_rigidity(self, brho: np.double):
         self.__brho = brho

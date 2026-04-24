@@ -170,5 +170,8 @@ class SerializedMagnets(Element):
     def __repr__(self):
         return __pyaml_repr__(self)
 
-    def get_devices(self) -> list[DeviceAccess | None]:
-        return self.model.get_devices()
+    def get_devices(self) -> list[DeviceAccess]:
+        if isinstance(self.model.powerconverter, list):
+            return self.model.powerconverter
+        else:
+            return [self._cfg.powerconverter]
