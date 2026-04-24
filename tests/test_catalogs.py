@@ -366,7 +366,7 @@ def test_indexed_catalog_entry_extracts_scalar_from_vector_attribute(install_tes
                             "type": "tango.pyaml.static_catalog_entry",
                             "key": "bpm/SA_HPosition",
                             "device": {
-                                "type": "tango.pyaml.attribute_indexed",
+                                "type": "tango.pyaml.attribute",
                                 "attribute": "srdiag/bpm/c01-04/Position",
                                 "index": 0,
                                 "unit": "mm",
@@ -376,7 +376,7 @@ def test_indexed_catalog_entry_extracts_scalar_from_vector_attribute(install_tes
                             "type": "tango.pyaml.static_catalog_entry",
                             "key": "bpm/SA_VPosition",
                             "device": {
-                                "type": "tango.pyaml.attribute_indexed",
+                                "type": "tango.pyaml.attribute",
                                 "attribute": "srdiag/bpm/c01-04/Position",
                                 "index": 1,
                                 "unit": "mm",

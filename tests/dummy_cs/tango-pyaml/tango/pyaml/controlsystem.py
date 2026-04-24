@@ -1,5 +1,4 @@
 import copy
-import os
 
 from pydantic import BaseModel, ConfigDict
 
@@ -14,17 +13,20 @@ class ConfigModel(BaseModel):
     model_config = ConfigDict(arbitrary_types_allowed=True, extra="forbid")
 
     name: str
-    tango_host: str
+    tango_host: str | None = None
     catalog: Catalog | str | None = None
-    debug_level: str = None
+    debug_level: str | None = None
+    lazy_devices: bool = True
+    scalar_aggregator: str | None = "tango.pyaml.multi_attribute"
+    vector_aggregator: str | None = None
+    timeout_ms: int = 3000
 
 
 class TangoControlSystem(ControlSystem):
     def __init__(self, cfg: ConfigModel):
         super().__init__()
         self._cfg = cfg
-        print(f"Creating dummy TangoControlSystem: {cfg.name}")
-        self.__DEVICES = {}
+        self.__devices = {}
 
     def attach_array(self, devs: list[DeviceAccess]) -> list[DeviceAccess]:
         return self._attach(devs, True)
@@ -36,22 +38,19 @@ class TangoControlSystem(ControlSystem):
         newDevs = []
         for d in devs:
             if d is not None:
-                full_name = "//" + self._cfg.tango_host + "/" + d._cfg.attribute
-                # Include the index (if any) so that two AttributeIndexed devices
-                # pointing to the same vector attribute but different indices get
-                # separate entries in the cache.
+                if self._cfg.tango_host:
+                    full_name = "//" + self._cfg.tango_host + "/" + d._cfg.attribute
+                else:
+                    full_name = d._cfg.attribute
                 index = getattr(d._cfg, "index", None)
                 cache_key = full_name if index is None else f"{full_name}[{index}]"
-                if cache_key not in self.__DEVICES:
-                    # Shallow copy the object
+                if cache_key not in self.__devices:
                     newDev = copy.copy(d)
-                    # Shallow copy the config object
-                    # to allow a new attribute name
                     newDev._cfg = copy.copy(d._cfg)
                     newDev._cfg.attribute = full_name
                     newDev.set_array(is_array)
-                    self.__DEVICES[cache_key] = newDev
-                newDevs.append(self.__DEVICES[cache_key])
+                    self.__devices[cache_key] = newDev
+                newDevs.append(self.__devices[cache_key])
             else:
                 newDevs.append(None)
         return newDevs
@@ -60,10 +59,10 @@ class TangoControlSystem(ControlSystem):
         return self._cfg.name
 
     def scalar_aggregator(self) -> str | None:
-        return "tango.pyaml.multi_attribute"
+        return self._cfg.scalar_aggregator
 
     def vector_aggregator(self) -> str | None:
-        return None
+        return self._cfg.vector_aggregator
 
     def __repr__(self):
         return repr(self._cfg).replace("ConfigModel", self.__class__.__name__)

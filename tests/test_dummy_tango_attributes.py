@@ -66,5 +66,5 @@ def test_dummy_tango_read_only_attribute_can_be_initialized(install_test_package
 
     assert attribute.get() == 0.37
     assert attribute.unit() == "1"
-    with pytest.raises(Exception, match="read only attribute"):
+    with pytest.raises(Exception, match="not writable"):
         attribute.set(0.38)

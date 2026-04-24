@@ -58,14 +58,14 @@ entries:
   - type: tango.pyaml.static_catalog_entry
     key: srdiag/bpm/c01-04/SA_HPosition
     device:
-      type: tango.pyaml.attribute_indexed
+      type: tango.pyaml.attribute
       attribute: srdiag/bpm/c01-04/Position
       index: 0
       unit: mm
   - type: tango.pyaml.static_catalog_entry
     key: srdiag/bpm/c01-04/SA_VPosition
     device:
-      type: tango.pyaml.attribute_indexed
+      type: tango.pyaml.attribute
       attribute: srdiag/bpm/c01-04/Position
       index: 1
       unit: mm
