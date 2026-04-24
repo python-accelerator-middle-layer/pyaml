@@ -10,7 +10,6 @@ from ..configuration.catalog import Catalog, CatalogResolver
 from ..configuration.factory import Factory
 from ..configuration.unbound_element import UnboundElement
 from ..control.abstract_impl import (
-    CSBPMArrayMapper,
     CSScalarAggregator,
     CSStrengthScalarAggregator,
     RBetatronTuneArray,
@@ -94,15 +93,6 @@ class ControlSystem(ElementHolder, metaclass=ABCMeta):
     def resolve_devices(self, keys: list[str | None]) -> list[DeviceAccess | None]:
         return [self.resolve_device(key) for key in keys]
 
-    def attach_indexed(self, key: str | None, idx: int | None) -> DeviceAccess | None:
-        dev = self.resolve_device(key)
-        if dev is None:
-            return None
-        if idx is not None:
-            return self.attach_array([dev])[0]
-        else:
-            return self.attach([dev])[0]
-
     def create_scalar_aggregator(self) -> ScalarAggregator:
         mod = self.scalar_aggregator()
         agg = Factory.build_object({"type": mod}) if mod is not None else None
@@ -128,65 +118,15 @@ class ControlSystem(ElementHolder, metaclass=ABCMeta):
         return agg
 
     def create_bpm_aggregators(self, bpms: list[BPM]) -> list[ScalarAggregator]:
-        # return [None,None,None]
-
-        if any([not b.model.is_pos_indexed() for b in bpms]):
-            # Aggregator for single BPM (all values are scalar)
-            agg = self.create_scalar_aggregator()
-            aggh = self.create_scalar_aggregator()
-            aggv = self.create_scalar_aggregator()
-            for b in bpms:
-                devs = self.attach(self.resolve_devices(b.model.get_pos_devices()))
-                agg.add_devices(devs)
-                aggh.add_devices(devs[0])
-                aggv.add_devices(devs[1])
-            return [agg, aggh, aggv]
-
-        elif any([b.model.is_pos_indexed() for b in bpms]):
-            # Aggregator for indexed BPMs
-            allH = []
-            hIdx = []
-            allV = []
-            vIdx = []
-            allHV = []
-            for b in bpms:
-                devs = self.attach_array(self.resolve_devices(b.model.get_pos_devices()))
-                devH = devs[0]
-                devV = devs[1]
-                if devH not in allH:
-                    allH.append(devH)
-                if devH not in allHV:
-                    allHV.append(devH)
-                if devV not in allV:
-                    allV.append(devV)
-                if devV not in allHV:
-                    allHV.append(devV)
-                hIdx.append(b.model.x_pos_index())
-                vIdx.append(b.model.y_pos_index())
-
-            if len(allH) > 1 or len(allV) > 1:
-                # Does not support aggregator for individual BPM that
-                # returns an array of [x,y]
-                print("Warning, Individual BPM that returns [x,y]" + " are not read in parralell")
-                # Default to serialized readding
-                return [None, None, None]
-
-            if devH == devV:
-                # [x0,y0,x1,y0,....]
-                idx = []
-                for b in bpms:
-                    idx.append(b.model.x_pos_index())
-                    idx.append(b.model.y_pos_index())
-                hvIdx = [idx]
-            else:
-                hvIdx = [hIdx, vIdx]
-
-            agg = CSBPMArrayMapper(allHV, hvIdx)
-            aggh = CSBPMArrayMapper(allH, [hIdx])
-            aggv = CSBPMArrayMapper(allV, [vIdx])
-            return [agg, aggh, aggv]
-        else:
-            raise PyAMLException("Indexed BPM and scalar values cannot be mixed in the same array")
+        agg = self.create_scalar_aggregator()
+        aggh = self.create_scalar_aggregator()
+        aggv = self.create_scalar_aggregator()
+        for b in bpms:
+            devs = self.attach(self.resolve_devices(b.model.get_pos_devices()))
+            agg.add_devices(devs)
+            aggh.add_devices(devs[0])
+            aggv.add_devices(devs[1])
+        return [agg, aggh, aggv]
 
     def fill_device(self, elements: list[Element]):
         """
@@ -236,19 +176,12 @@ class ControlSystem(ElementHolder, metaclass=ABCMeta):
                     self.add_magnet(m)
 
             elif isinstance(e, BPM):
-                hDev = e.model.get_pos_devices()[0]
-                vDev = e.model.get_pos_devices()[1]
-                tiltDev = e.model.get_tilt_device()
-                hOffsetDev = e.model.get_offset_devices()[0]
-                vOffsetDev = e.model.get_offset_devices()[1]
-                ahDev = self.attach_indexed(hDev, e.model.x_pos_index())
-                avDev = self.attach_indexed(vDev, e.model.y_pos_index())
-                atiltDev = self.attach_indexed(tiltDev, e.model.tilt_index())
-                ahOffsetDev = self.attach_indexed(hOffsetDev, e.model.x_offset_index())
-                avOffsetDev = self.attach_indexed(vOffsetDev, e.model.y_offset_index())
-                positions = RBpmArray(e.model, ahDev, avDev)
-                tilt = RWBpmTiltScalar(e.model, atiltDev)
-                offsets = RWBpmOffsetArray(e.model, ahOffsetDev, avOffsetDev)
+                pos_devs = self.attach(self.resolve_devices(e.model.get_pos_devices()))
+                tilt_devs = self.attach(self.resolve_devices([e.model.get_tilt_device()]))
+                offset_devs = self.attach(self.resolve_devices(e.model.get_offset_devices()))
+                positions = RBpmArray(pos_devs[0], pos_devs[1])
+                tilt = RWBpmTiltScalar(tilt_devs[0])
+                offsets = RWBpmOffsetArray(offset_devs[0], offset_devs[1])
                 e = e.attach(self, positions, offsets, tilt)
                 self.add_bpm(e)
 

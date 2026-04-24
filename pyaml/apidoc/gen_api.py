@@ -41,8 +41,6 @@ modules = [
     "pyaml.configuration.inline_matrix",
     "pyaml.configuration.manager",
     "pyaml.configuration.matrix",
-    "pyaml.configuration.static_catalog",
-    "pyaml.configuration.static_catalog_entry",
     "pyaml.control.abstract_impl",
     "pyaml.control.controlsystem",
     "pyaml.control.deviceaccess",

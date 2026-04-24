@@ -200,7 +200,7 @@ def test_configuration_manager_tracks_catalogs_as_named_category(config_root_pat
     assert manager.categories() == ["controls", "catalogs", "devices"]
     assert manager.keys("catalogs") == ["device-catalog"]
     assert manager.has("catalogs", "device-catalog")
-    assert manager.get("catalogs", "device-catalog")["type"] == "pyaml.configuration.static_catalog"
+    assert manager.get("catalogs", "device-catalog")["type"] == "tango.pyaml.static_catalog"
     assert manager.get("catalogs", "device-catalog")["entries"][0]["key"] == "srdiag/bpm/c01-01/SA_HPosition"
     assert manager.catalogs == ["device-catalog"]
 
@@ -212,7 +212,7 @@ def test_configuration_manager_adds_catalog_fragment(config_root_path):
     assert manager.categories() == ["catalogs"]
     assert manager.keys("catalogs") == ["bpm-catalog"]
     assert manager.has("catalogs", "bpm-catalog")
-    assert manager.get("catalogs", "bpm-catalog")["type"] == "pyaml.configuration.static_catalog"
+    assert manager.get("catalogs", "bpm-catalog")["type"] == "tango.pyaml.static_catalog"
     assert manager.get("catalogs", "bpm-catalog")["entries"][0]["key"] == "srdiag/bpm/c04-01/SA_HPosition"
 
 
@@ -308,7 +308,7 @@ def test_configuration_manager_repr_includes_catalogs(config_root_path):
 
     assert str(manager) == output
     assert "Catalogs:" in output
-    assert "device-catalog (pyaml.configuration.static_catalog) entries=5 source=catalog_named.yaml" in output
+    assert "device-catalog (tango.pyaml.static_catalog) entries=5 source=catalog_named.yaml" in output
 
 
 def test_configuration_manager_yellow_pages_like_shortcuts(

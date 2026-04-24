@@ -5,7 +5,6 @@ from numpy import double
 from numpy.typing import NDArray
 
 from .. import PyAMLException
-from ..bpm.bpm_model import BPMModel
 from ..common import abstract
 from ..common.abstract_aggregator import ScalarAggregator
 from ..control.deviceaccess import DeviceAccess
@@ -284,39 +283,6 @@ class CSStrengthScalarAggregator(CSScalarAggregator):
 # ------------------------------------------------------------------------------
 
 
-class CSBPMArrayMapper(CSScalarAggregator):
-    """
-    Wrapper to a native CS aggregator for BPM
-    """
-
-    def __init__(self, devs: list[DeviceAccess], indices: list[list[int]]):
-        self._indices = indices
-        self._devs = devs
-
-    def set(self, value: NDArray[np.float64]):
-        raise Exception("BPM are not writable")
-
-    def get(self) -> NDArray[np.float64]:
-        if len(self._devs) == 1:
-            v = self._devs[0].get()
-            return v[self._indices[0]]
-        else:
-            # TODO read using DeviceAccessList
-            v0 = self._devs[0].get()[self._indices[0]]
-            v1 = self._devs[1].get()[self._indices[1]]
-            # Interleave
-            xy = np.zeros(v0.size + v1.size)
-            xy[0::2] = v0
-            xy[1::2] = v1
-            return xy
-
-    def readback(self) -> np.array:
-        return self.get()
-
-    def unit(self) -> str:
-        return self._dev.unit()
-
-
 # ------------------------------------------------------------------------------
 
 
@@ -466,27 +432,12 @@ class RBpmArray(abstract.ReadFloatArray):
     Class providing read access to a BPM position [x,y] of a control system
     """
 
-    def __init__(self, model: BPMModel, hDev: DeviceAccess, vDev: DeviceAccess):
-        self._model = model
+    def __init__(self, hDev: DeviceAccess, vDev: DeviceAccess):
         self._hDev = hDev
         self._vDev = vDev
-        self._hIdx = self._model.x_pos_index()
-        self._vIdx = self._model.y_pos_index()
 
-    # Gets the values
     def get(self) -> np.array:
-        if self._hDev != self._vDev:
-            allhVal = self._hDev.get()
-            allvVal = self._vDev.get()
-            hVal = allhVal if self._hIdx is None else allhVal[self._hIdx]
-            vVal = allvVal if self._vIdx is None else allvVal[self._vIdx]
-        else:
-            # When h and v devices are identical, indexed
-            # values are expected
-            allVal = self._hDev.get()
-            hVal = allVal[self._hIdx]
-            vVal = allVal[self._vIdx]
-        return np.array([hVal, vVal])
+        return np.array([self._hDev.get(), self._vDev.get()])
 
     # Gets the unit of the value Assume that x and y, offsets and positions
     # have the same unit
@@ -502,18 +453,11 @@ class RWBpmTiltScalar(abstract.ReadFloatScalar):
     Class providing read access to a BPM tilt of a control system
     """
 
-    def __init__(self, model: BPMModel, dev: DeviceAccess):
-        self._model = model
+    def __init__(self, dev: DeviceAccess):
         self._dev = dev
-        self._idx = model.tilt_index()
 
-    # Gets the value
     def get(self) -> float:
-        allTilt = self._dev.get()
-        if self._idx is not None:
-            return allTilt[self._idx]
-        else:
-            return allTilt
+        return self._dev.get()
 
     def set(self, value: float):
         self._dev.set(value)
@@ -534,40 +478,16 @@ class RWBpmOffsetArray(abstract.ReadWriteFloatArray):
     Class providing read write access to a BPM offset [x,y] of a control system
     """
 
-    def __init__(self, model: BPMModel, hDev: DeviceAccess, vDev: DeviceAccess):
-        self._model = model
+    def __init__(self, hDev: DeviceAccess, vDev: DeviceAccess):
         self._hDev = hDev
         self._vDev = vDev
-        self._hIdx = self._model.x_pos_index()
-        self._vIdx = self._model.y_pos_index()
 
-    # Gets the values
     def get(self) -> np.array:
-        if self._hDev != self._vDev:
-            allhVal = self._hDev.get()
-            allvVal = self._vDev.get()
-            hVal = allhVal if self._hIdx is None else allhVal[self._hIdx]
-            vVal = allvVal if self._vIdx is None else allvVal[self._vIdx]
-        else:
-            # When h and v devices are identical, indexed
-            # values are expected
-            allVal = self._hDev.get()
-            hVal = allVal[self._hIdx]
-            vVal = allVal[self._vIdx]
-        return np.array([hVal, vVal])
+        return np.array([self._hDev.get(), self._vDev.get()])
 
-    # Sets the values
     def set(self, value: NDArray[np.float64]):
-        if self._hDev != self._vDev:
-            self._hDev.set(value[0])
-            self._vDev.set(value[1])
-        else:
-            # When h and v devices are identical, indexed
-            # values are expected
-            newValue = self._hDev.get()
-            newValue[self._hIdx] = value[0]
-            newValue[self._vIdx] = value[1]
-            self._hDev.set(newValue)
+        self._hDev.set(value[0])
+        self._vDev.set(value[1])
 
     def set_and_wait(self, value: NDArray[np.float64]):
         raise NotImplementedError("Not implemented yet.")

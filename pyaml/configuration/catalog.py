@@ -73,8 +73,8 @@ class Catalog(CatalogResolver, metaclass=ABCMeta):
 
     Notes
     -----
-    Base PyAML provides :class:`~pyaml.configuration.static_catalog.StaticCatalog`
-    as the standard mapping-based implementation. External projects may
+    Concrete implementations live in each control-system package
+    (e.g. ``tango.pyaml.static_catalog``). External projects may
     derive from :class:`Catalog` to implement different resolution
     strategies while preserving the same public API.
     """

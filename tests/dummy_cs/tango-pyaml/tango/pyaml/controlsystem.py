@@ -37,7 +37,12 @@ class TangoControlSystem(ControlSystem):
         for d in devs:
             if d is not None:
                 full_name = "//" + self._cfg.tango_host + "/" + d._cfg.attribute
-                if full_name not in self.__DEVICES:
+                # Include the index (if any) so that two AttributeIndexed devices
+                # pointing to the same vector attribute but different indices get
+                # separate entries in the cache.
+                index = getattr(d._cfg, "index", None)
+                cache_key = full_name if index is None else f"{full_name}[{index}]"
+                if cache_key not in self.__DEVICES:
                     # Shallow copy the object
                     newDev = copy.copy(d)
                     # Shallow copy the config object
@@ -45,8 +50,8 @@ class TangoControlSystem(ControlSystem):
                     newDev._cfg = copy.copy(d._cfg)
                     newDev._cfg.attribute = full_name
                     newDev.set_array(is_array)
-                    self.__DEVICES[full_name] = newDev
-                newDevs.append(self.__DEVICES[full_name])
+                    self.__DEVICES[cache_key] = newDev
+                newDevs.append(self.__DEVICES[cache_key])
             else:
                 newDevs.append(None)
         return newDevs

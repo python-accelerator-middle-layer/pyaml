@@ -12,10 +12,10 @@ controls:
     name: live
     catalog: bpm-catalog
 catalogs:
-  - type: pyaml.configuration.static_catalog
+  - type: pyaml_cs_oa.static_catalog
     name: bpm-catalog
     entries:
-      - type: pyaml.configuration.static_catalog_entry
+      - type: pyaml_cs_oa.static_catalog_entry
         key: ORBITCC:rdPos
         device:
           type: pyaml_cs_oa.epicsR

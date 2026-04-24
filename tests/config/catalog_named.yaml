@@ -14,34 +14,34 @@ controls:
     catalog: device-catalog
 data_folder: /data/store
 catalogs:
-  - type: pyaml.configuration.static_catalog
+  - type: tango.pyaml.static_catalog
     name: device-catalog
     entries:
-      - type: pyaml.configuration.static_catalog_entry
+      - type: tango.pyaml.static_catalog_entry
         key: srdiag/bpm/c01-01/SA_HPosition
         device:
           type: tango.pyaml.attribute_read_only
           attribute: srdiag/bpm/c01-01/SA_HPosition
           unit: mm
-      - type: pyaml.configuration.static_catalog_entry
+      - type: tango.pyaml.static_catalog_entry
         key: srdiag/bpm/c01-01/SA_VPosition
         device:
           type: tango.pyaml.attribute_read_only
           attribute: srdiag/bpm/c01-01/SA_VPosition
           unit: mm
-      - type: pyaml.configuration.static_catalog_entry
+      - type: tango.pyaml.static_catalog_entry
         key: srdiag/bpm/c01-01/HOffset
         device:
           type: tango.pyaml.attribute
           attribute: srdiag/bpm/c01-01/HOffset
           unit: mm
-      - type: pyaml.configuration.static_catalog_entry
+      - type: tango.pyaml.static_catalog_entry
         key: srdiag/bpm/c01-01/VOffset
         device:
           type: tango.pyaml.attribute
           attribute: srdiag/bpm/c01-01/VOffset
           unit: mm
-      - type: pyaml.configuration.static_catalog_entry
+      - type: tango.pyaml.static_catalog_entry
         key: srdiag/bpm/c01-01/Tilt_Angle
         device:
           type: tango.pyaml.attribute

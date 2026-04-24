@@ -32,8 +32,6 @@ class ConfigModel(BaseModel):
 
     x_pos: str
     y_pos: str
-    x_pos_index: int | None = None
-    y_pos_index: int | None = None
     x_offset: str
     y_offset: str
     tilt: str

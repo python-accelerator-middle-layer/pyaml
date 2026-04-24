@@ -16,2164 +16,2164 @@ controls:
   tango_host: localhost:11000
   catalog: bpm-catalog
 catalogs:
-- type: pyaml.configuration.static_catalog
+- type: tango.pyaml.static_catalog
   name: bpm-catalog
   entries:
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN01-SD/DG-EPOS/BPM.02/x_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN01-SD/DG-EPOS/BPM.02/x_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN01-SD/DG-EPOS/BPM.02/y_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN01-SD/DG-EPOS/BPM.02/y_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN01-AR/DG-EPOS/BPM.03/x_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN01-AR/DG-EPOS/BPM.03/x_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN01-AR/DG-EPOS/BPM.03/y_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN01-AR/DG-EPOS/BPM.03/y_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN01-AR/DG-EPOS/BPM.04/x_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN01-AR/DG-EPOS/BPM.04/x_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN01-AR/DG-EPOS/BPM.04/y_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN01-AR/DG-EPOS/BPM.04/y_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN01-AR/DG-EPOS/BPM.05/x_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN01-AR/DG-EPOS/BPM.05/x_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN01-AR/DG-EPOS/BPM.05/y_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN01-AR/DG-EPOS/BPM.05/y_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN01-AR/DG-EPOS/BPM.06/x_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN01-AR/DG-EPOS/BPM.06/x_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN01-AR/DG-EPOS/BPM.06/y_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN01-AR/DG-EPOS/BPM.06/y_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN01-AR/DG-EPOS/BPM.07/x_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN01-AR/DG-EPOS/BPM.07/x_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN01-AR/DG-EPOS/BPM.07/y_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN01-AR/DG-EPOS/BPM.07/y_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN01-AR/DG-EPOS/BPM.08/x_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN01-AR/DG-EPOS/BPM.08/x_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN01-AR/DG-EPOS/BPM.08/y_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN01-AR/DG-EPOS/BPM.08/y_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN01-AR/DG-EPOS/BPM.09/x_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN01-AR/DG-EPOS/BPM.09/x_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN01-AR/DG-EPOS/BPM.09/y_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN01-AR/DG-EPOS/BPM.09/y_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN01-AR/DG-EPOS/BPM.10/x_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN01-AR/DG-EPOS/BPM.10/x_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN01-AR/DG-EPOS/BPM.10/y_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN01-AR/DG-EPOS/BPM.10/y_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN02-SD/DG-EPOS/BPM.01/x_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN02-SD/DG-EPOS/BPM.01/x_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN02-SD/DG-EPOS/BPM.01/y_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN02-SD/DG-EPOS/BPM.01/y_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN02-SD/DG-EPOS/BPM.02/x_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN02-SD/DG-EPOS/BPM.02/x_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN02-SD/DG-EPOS/BPM.02/y_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN02-SD/DG-EPOS/BPM.02/y_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN02-AR/DG-EPOS/BPM.03/x_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN02-AR/DG-EPOS/BPM.03/x_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN02-AR/DG-EPOS/BPM.03/y_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN02-AR/DG-EPOS/BPM.03/y_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN02-AR/DG-EPOS/BPM.04/x_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN02-AR/DG-EPOS/BPM.04/x_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN02-AR/DG-EPOS/BPM.04/y_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN02-AR/DG-EPOS/BPM.04/y_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN02-AR/DG-EPOS/BPM.05/x_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN02-AR/DG-EPOS/BPM.05/x_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN02-AR/DG-EPOS/BPM.05/y_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN02-AR/DG-EPOS/BPM.05/y_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN02-AR/DG-EPOS/BPM.06/x_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN02-AR/DG-EPOS/BPM.06/x_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN02-AR/DG-EPOS/BPM.06/y_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN02-AR/DG-EPOS/BPM.06/y_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN02-AR/DG-EPOS/BPM.07/x_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN02-AR/DG-EPOS/BPM.07/x_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN02-AR/DG-EPOS/BPM.07/y_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN02-AR/DG-EPOS/BPM.07/y_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN03-SD/DG-EPOS/BPM.01/x_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN03-SD/DG-EPOS/BPM.01/x_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN03-SD/DG-EPOS/BPM.01/y_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN03-SD/DG-EPOS/BPM.01/y_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN03-SD/DG-EPOS/BPM.02/x_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN03-SD/DG-EPOS/BPM.02/x_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN03-SD/DG-EPOS/BPM.02/y_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN03-SD/DG-EPOS/BPM.02/y_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN03-AR/DG-EPOS/BPM.03/x_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN03-AR/DG-EPOS/BPM.03/x_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN03-AR/DG-EPOS/BPM.03/y_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN03-AR/DG-EPOS/BPM.03/y_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN03-AR/DG-EPOS/BPM.04/x_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN03-AR/DG-EPOS/BPM.04/x_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN03-AR/DG-EPOS/BPM.04/y_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN03-AR/DG-EPOS/BPM.04/y_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN03-AR/DG-EPOS/BPM.05/x_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN03-AR/DG-EPOS/BPM.05/x_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN03-AR/DG-EPOS/BPM.05/y_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN03-AR/DG-EPOS/BPM.05/y_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN03-AR/DG-EPOS/BPM.06/x_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN03-AR/DG-EPOS/BPM.06/x_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN03-AR/DG-EPOS/BPM.06/y_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN03-AR/DG-EPOS/BPM.06/y_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN03-AR/DG-EPOS/BPM.07/x_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN03-AR/DG-EPOS/BPM.07/x_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN03-AR/DG-EPOS/BPM.07/y_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN03-AR/DG-EPOS/BPM.07/y_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN03-AR/DG-EPOS/BPM.08/x_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN03-AR/DG-EPOS/BPM.08/x_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN03-AR/DG-EPOS/BPM.08/y_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN03-AR/DG-EPOS/BPM.08/y_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN03-AR/DG-EPOS/BPM.09/x_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN03-AR/DG-EPOS/BPM.09/x_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN03-AR/DG-EPOS/BPM.09/y_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN03-AR/DG-EPOS/BPM.09/y_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN03-AR/DG-EPOS/BPM.10/x_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN03-AR/DG-EPOS/BPM.10/x_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN03-AR/DG-EPOS/BPM.10/y_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN03-AR/DG-EPOS/BPM.10/y_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN04-SD/DG-EPOS/BPM.01/x_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN04-SD/DG-EPOS/BPM.01/x_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN04-SD/DG-EPOS/BPM.01/y_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN04-SD/DG-EPOS/BPM.01/y_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN04-SD/DG-EPOS/BPM.02/x_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN04-SD/DG-EPOS/BPM.02/x_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN04-SD/DG-EPOS/BPM.02/y_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN04-SD/DG-EPOS/BPM.02/y_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN04-AR/DG-EPOS/BPM.03/x_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN04-AR/DG-EPOS/BPM.03/x_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN04-AR/DG-EPOS/BPM.03/y_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN04-AR/DG-EPOS/BPM.03/y_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN04-AR/DG-EPOS/BPM.04/x_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN04-AR/DG-EPOS/BPM.04/x_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN04-AR/DG-EPOS/BPM.04/y_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN04-AR/DG-EPOS/BPM.04/y_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN04-AR/DG-EPOS/BPM.05/x_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN04-AR/DG-EPOS/BPM.05/x_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN04-AR/DG-EPOS/BPM.05/y_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN04-AR/DG-EPOS/BPM.05/y_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN04-AR/DG-EPOS/BPM.06/x_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN04-AR/DG-EPOS/BPM.06/x_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN04-AR/DG-EPOS/BPM.06/y_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN04-AR/DG-EPOS/BPM.06/y_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN04-AR/DG-EPOS/BPM.07/x_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN04-AR/DG-EPOS/BPM.07/x_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN04-AR/DG-EPOS/BPM.07/y_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN04-AR/DG-EPOS/BPM.07/y_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN05-SD/DG-EPOS/BPM.01/x_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN05-SD/DG-EPOS/BPM.01/x_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN05-SD/DG-EPOS/BPM.01/y_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN05-SD/DG-EPOS/BPM.01/y_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN05-SD/DG-EPOS/BPM.02/x_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN05-SD/DG-EPOS/BPM.02/x_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN05-SD/DG-EPOS/BPM.02/y_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN05-SD/DG-EPOS/BPM.02/y_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN05-AR/DG-EPOS/BPM.03/x_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN05-AR/DG-EPOS/BPM.03/x_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN05-AR/DG-EPOS/BPM.03/y_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN05-AR/DG-EPOS/BPM.03/y_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN05-AR/DG-EPOS/BPM.04/x_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN05-AR/DG-EPOS/BPM.04/x_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN05-AR/DG-EPOS/BPM.04/y_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN05-AR/DG-EPOS/BPM.04/y_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN05-AR/DG-EPOS/BPM.05/x_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN05-AR/DG-EPOS/BPM.05/x_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN05-AR/DG-EPOS/BPM.05/y_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN05-AR/DG-EPOS/BPM.05/y_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN05-AR/DG-EPOS/BPM.06/x_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN05-AR/DG-EPOS/BPM.06/x_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN05-AR/DG-EPOS/BPM.06/y_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN05-AR/DG-EPOS/BPM.06/y_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN05-AR/DG-EPOS/BPM.07/x_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN05-AR/DG-EPOS/BPM.07/x_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN05-AR/DG-EPOS/BPM.07/y_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN05-AR/DG-EPOS/BPM.07/y_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN05-AR/DG-EPOS/BPM.08/x_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN05-AR/DG-EPOS/BPM.08/x_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN05-AR/DG-EPOS/BPM.08/y_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN05-AR/DG-EPOS/BPM.08/y_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN05-AR/DG-EPOS/BPM.09/x_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN05-AR/DG-EPOS/BPM.09/x_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN05-AR/DG-EPOS/BPM.09/y_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN05-AR/DG-EPOS/BPM.09/y_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN05-AR/DG-EPOS/BPM.10/x_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN05-AR/DG-EPOS/BPM.10/x_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN05-AR/DG-EPOS/BPM.10/y_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN05-AR/DG-EPOS/BPM.10/y_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN06-SD/DG-EPOS/BPM.01/x_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN06-SD/DG-EPOS/BPM.01/x_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN06-SD/DG-EPOS/BPM.01/y_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN06-SD/DG-EPOS/BPM.01/y_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN06-SD/DG-EPOS/BPM.02/x_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN06-SD/DG-EPOS/BPM.02/x_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN06-SD/DG-EPOS/BPM.02/y_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN06-SD/DG-EPOS/BPM.02/y_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN06-SD/DG-EPOS/BPM.03/x_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN06-SD/DG-EPOS/BPM.03/x_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN06-SD/DG-EPOS/BPM.03/y_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN06-SD/DG-EPOS/BPM.03/y_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN06-SD/DG-EPOS/BPM.04/x_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN06-SD/DG-EPOS/BPM.04/x_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN06-SD/DG-EPOS/BPM.04/y_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN06-SD/DG-EPOS/BPM.04/y_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN06-AR/DG-EPOS/BPM.05/x_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN06-AR/DG-EPOS/BPM.05/x_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN06-AR/DG-EPOS/BPM.05/y_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN06-AR/DG-EPOS/BPM.05/y_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN06-AR/DG-EPOS/BPM.06/x_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN06-AR/DG-EPOS/BPM.06/x_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN06-AR/DG-EPOS/BPM.06/y_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN06-AR/DG-EPOS/BPM.06/y_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN06-AR/DG-EPOS/BPM.07/x_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN06-AR/DG-EPOS/BPM.07/x_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN06-AR/DG-EPOS/BPM.07/y_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN06-AR/DG-EPOS/BPM.07/y_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN06-AR/DG-EPOS/BPM.08/x_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN06-AR/DG-EPOS/BPM.08/x_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN06-AR/DG-EPOS/BPM.08/y_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN06-AR/DG-EPOS/BPM.08/y_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN06-AR/DG-EPOS/BPM.09/x_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN06-AR/DG-EPOS/BPM.09/x_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN06-AR/DG-EPOS/BPM.09/y_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN06-AR/DG-EPOS/BPM.09/y_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN06-AR/DG-EPOS/BPM.10/x_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN06-AR/DG-EPOS/BPM.10/x_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN06-AR/DG-EPOS/BPM.10/y_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN06-AR/DG-EPOS/BPM.10/y_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN06-AR/DG-EPOS/BPM.11/x_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN06-AR/DG-EPOS/BPM.11/x_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN06-AR/DG-EPOS/BPM.11/y_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN06-AR/DG-EPOS/BPM.11/y_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN06-AR/DG-EPOS/BPM.12/x_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN06-AR/DG-EPOS/BPM.12/x_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN06-AR/DG-EPOS/BPM.12/y_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN06-AR/DG-EPOS/BPM.12/y_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN07-SD/DG-EPOS/BPM.01/x_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN07-SD/DG-EPOS/BPM.01/x_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN07-SD/DG-EPOS/BPM.01/y_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN07-SD/DG-EPOS/BPM.01/y_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN07-SD/DG-EPOS/BPM.02/x_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN07-SD/DG-EPOS/BPM.02/x_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN07-SD/DG-EPOS/BPM.02/y_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN07-SD/DG-EPOS/BPM.02/y_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN07-AR/DG-EPOS/BPM.03/x_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN07-AR/DG-EPOS/BPM.03/x_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN07-AR/DG-EPOS/BPM.03/y_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN07-AR/DG-EPOS/BPM.03/y_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN07-AR/DG-EPOS/BPM.04/x_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN07-AR/DG-EPOS/BPM.04/x_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN07-AR/DG-EPOS/BPM.04/y_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN07-AR/DG-EPOS/BPM.04/y_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN07-AR/DG-EPOS/BPM.05/x_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN07-AR/DG-EPOS/BPM.05/x_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN07-AR/DG-EPOS/BPM.05/y_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN07-AR/DG-EPOS/BPM.05/y_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN07-AR/DG-EPOS/BPM.06/x_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN07-AR/DG-EPOS/BPM.06/x_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN07-AR/DG-EPOS/BPM.06/y_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN07-AR/DG-EPOS/BPM.06/y_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN07-AR/DG-EPOS/BPM.07/x_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN07-AR/DG-EPOS/BPM.07/x_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN07-AR/DG-EPOS/BPM.07/y_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN07-AR/DG-EPOS/BPM.07/y_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN08-SD/DG-EPOS/BPM.01/x_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN08-SD/DG-EPOS/BPM.01/x_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN08-SD/DG-EPOS/BPM.01/y_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN08-SD/DG-EPOS/BPM.01/y_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN08-SD/DG-EPOS/BPM.02/x_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN08-SD/DG-EPOS/BPM.02/x_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN08-SD/DG-EPOS/BPM.02/y_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN08-SD/DG-EPOS/BPM.02/y_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN08-AR/DG-EPOS/BPM.03/x_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN08-AR/DG-EPOS/BPM.03/x_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN08-AR/DG-EPOS/BPM.03/y_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN08-AR/DG-EPOS/BPM.03/y_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN08-AR/DG-EPOS/BPM.04/x_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN08-AR/DG-EPOS/BPM.04/x_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN08-AR/DG-EPOS/BPM.04/y_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN08-AR/DG-EPOS/BPM.04/y_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN08-AR/DG-EPOS/BPM.05/x_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN08-AR/DG-EPOS/BPM.05/x_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN08-AR/DG-EPOS/BPM.05/y_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN08-AR/DG-EPOS/BPM.05/y_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN08-AR/DG-EPOS/BPM.06/x_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN08-AR/DG-EPOS/BPM.06/x_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN08-AR/DG-EPOS/BPM.06/y_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN08-AR/DG-EPOS/BPM.06/y_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN08-AR/DG-EPOS/BPM.07/x_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN08-AR/DG-EPOS/BPM.07/x_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN08-AR/DG-EPOS/BPM.07/y_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN08-AR/DG-EPOS/BPM.07/y_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN08-AR/DG-EPOS/BPM.08/x_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN08-AR/DG-EPOS/BPM.08/x_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN08-AR/DG-EPOS/BPM.08/y_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN08-AR/DG-EPOS/BPM.08/y_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN08-AR/DG-EPOS/BPM.09/x_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN08-AR/DG-EPOS/BPM.09/x_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN08-AR/DG-EPOS/BPM.09/y_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN08-AR/DG-EPOS/BPM.09/y_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN08-AR/DG-EPOS/BPM.10/x_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN08-AR/DG-EPOS/BPM.10/x_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN08-AR/DG-EPOS/BPM.10/y_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN08-AR/DG-EPOS/BPM.10/y_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN09-SD/DG-EPOS/BPM.01/x_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN09-SD/DG-EPOS/BPM.01/x_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN09-SD/DG-EPOS/BPM.01/y_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN09-SD/DG-EPOS/BPM.01/y_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN09-SD/DG-EPOS/BPM.02/x_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN09-SD/DG-EPOS/BPM.02/x_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN09-SD/DG-EPOS/BPM.02/y_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN09-SD/DG-EPOS/BPM.02/y_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN09-AR/DG-EPOS/BPM.03/x_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN09-AR/DG-EPOS/BPM.03/x_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN09-AR/DG-EPOS/BPM.03/y_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN09-AR/DG-EPOS/BPM.03/y_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN09-AR/DG-EPOS/BPM.04/x_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN09-AR/DG-EPOS/BPM.04/x_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN09-AR/DG-EPOS/BPM.04/y_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN09-AR/DG-EPOS/BPM.04/y_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN09-AR/DG-EPOS/BPM.05/x_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN09-AR/DG-EPOS/BPM.05/x_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN09-AR/DG-EPOS/BPM.05/y_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN09-AR/DG-EPOS/BPM.05/y_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN09-AR/DG-EPOS/BPM.06/x_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN09-AR/DG-EPOS/BPM.06/x_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN09-AR/DG-EPOS/BPM.06/y_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN09-AR/DG-EPOS/BPM.06/y_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN09-AR/DG-EPOS/BPM.07/x_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN09-AR/DG-EPOS/BPM.07/x_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN09-AR/DG-EPOS/BPM.07/y_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN09-AR/DG-EPOS/BPM.07/y_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN10-SD/DG-EPOS/BPM.01/x_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN10-SD/DG-EPOS/BPM.01/x_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN10-SD/DG-EPOS/BPM.01/y_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN10-SD/DG-EPOS/BPM.01/y_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN10-SD/DG-EPOS/BPM.02/x_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN10-SD/DG-EPOS/BPM.02/x_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN10-SD/DG-EPOS/BPM.02/y_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN10-SD/DG-EPOS/BPM.02/y_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN10-AR/DG-EPOS/BPM.03/x_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN10-AR/DG-EPOS/BPM.03/x_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN10-AR/DG-EPOS/BPM.03/y_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN10-AR/DG-EPOS/BPM.03/y_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN10-AR/DG-EPOS/BPM.04/x_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN10-AR/DG-EPOS/BPM.04/x_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN10-AR/DG-EPOS/BPM.04/y_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN10-AR/DG-EPOS/BPM.04/y_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN10-AR/DG-EPOS/BPM.05/x_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN10-AR/DG-EPOS/BPM.05/x_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN10-AR/DG-EPOS/BPM.05/y_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN10-AR/DG-EPOS/BPM.05/y_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN10-AR/DG-EPOS/BPM.06/x_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN10-AR/DG-EPOS/BPM.06/x_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN10-AR/DG-EPOS/BPM.06/y_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN10-AR/DG-EPOS/BPM.06/y_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN10-AR/DG-EPOS/BPM.07/x_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN10-AR/DG-EPOS/BPM.07/x_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN10-AR/DG-EPOS/BPM.07/y_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN10-AR/DG-EPOS/BPM.07/y_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN10-AR/DG-EPOS/BPM.08/x_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN10-AR/DG-EPOS/BPM.08/x_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN10-AR/DG-EPOS/BPM.08/y_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN10-AR/DG-EPOS/BPM.08/y_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN10-AR/DG-EPOS/BPM.09/x_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN10-AR/DG-EPOS/BPM.09/x_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN10-AR/DG-EPOS/BPM.09/y_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN10-AR/DG-EPOS/BPM.09/y_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN10-AR/DG-EPOS/BPM.10/x_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN10-AR/DG-EPOS/BPM.10/x_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN10-AR/DG-EPOS/BPM.10/y_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN10-AR/DG-EPOS/BPM.10/y_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN11-SD/DG-EPOS/BPM.01/x_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN11-SD/DG-EPOS/BPM.01/x_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN11-SD/DG-EPOS/BPM.01/y_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN11-SD/DG-EPOS/BPM.01/y_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN11-SD/DG-EPOS/BPM.02/x_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN11-SD/DG-EPOS/BPM.02/x_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN11-SD/DG-EPOS/BPM.02/y_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN11-SD/DG-EPOS/BPM.02/y_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN11-AR/DG-EPOS/BPM.03/x_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN11-AR/DG-EPOS/BPM.03/x_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN11-AR/DG-EPOS/BPM.03/y_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN11-AR/DG-EPOS/BPM.03/y_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN11-AR/DG-EPOS/BPM.04/x_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN11-AR/DG-EPOS/BPM.04/x_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN11-AR/DG-EPOS/BPM.04/y_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN11-AR/DG-EPOS/BPM.04/y_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN11-AR/DG-EPOS/BPM.05/x_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN11-AR/DG-EPOS/BPM.05/x_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN11-AR/DG-EPOS/BPM.05/y_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN11-AR/DG-EPOS/BPM.05/y_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN11-AR/DG-EPOS/BPM.06/x_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN11-AR/DG-EPOS/BPM.06/x_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN11-AR/DG-EPOS/BPM.06/y_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN11-AR/DG-EPOS/BPM.06/y_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN11-AR/DG-EPOS/BPM.07/x_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN11-AR/DG-EPOS/BPM.07/x_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN11-AR/DG-EPOS/BPM.07/y_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN11-AR/DG-EPOS/BPM.07/y_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN11-AR/DG-EPOS/BPM.08/x_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN11-AR/DG-EPOS/BPM.08/x_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN11-AR/DG-EPOS/BPM.08/y_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN11-AR/DG-EPOS/BPM.08/y_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN11-AR/DG-EPOS/BPM.09/x_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN11-AR/DG-EPOS/BPM.09/x_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN11-AR/DG-EPOS/BPM.09/y_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN11-AR/DG-EPOS/BPM.09/y_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN11-AR/DG-EPOS/BPM.10/x_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN11-AR/DG-EPOS/BPM.10/x_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN11-AR/DG-EPOS/BPM.10/y_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN11-AR/DG-EPOS/BPM.10/y_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN12-SD/DG-EPOS/BPM.01/x_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN12-SD/DG-EPOS/BPM.01/x_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN12-SD/DG-EPOS/BPM.01/y_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN12-SD/DG-EPOS/BPM.01/y_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN12-SD/DG-EPOS/BPM.02/x_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN12-SD/DG-EPOS/BPM.02/x_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN12-SD/DG-EPOS/BPM.02/y_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN12-SD/DG-EPOS/BPM.02/y_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN12-AR/DG-EPOS/BPM.03/x_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN12-AR/DG-EPOS/BPM.03/x_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN12-AR/DG-EPOS/BPM.03/y_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN12-AR/DG-EPOS/BPM.03/y_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN12-AR/DG-EPOS/BPM.04/x_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN12-AR/DG-EPOS/BPM.04/x_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN12-AR/DG-EPOS/BPM.04/y_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN12-AR/DG-EPOS/BPM.04/y_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN12-AR/DG-EPOS/BPM.05/x_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN12-AR/DG-EPOS/BPM.05/x_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN12-AR/DG-EPOS/BPM.05/y_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN12-AR/DG-EPOS/BPM.05/y_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN12-AR/DG-EPOS/BPM.06/x_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN12-AR/DG-EPOS/BPM.06/x_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN12-AR/DG-EPOS/BPM.06/y_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN12-AR/DG-EPOS/BPM.06/y_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN12-AR/DG-EPOS/BPM.07/x_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN12-AR/DG-EPOS/BPM.07/x_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN12-AR/DG-EPOS/BPM.07/y_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN12-AR/DG-EPOS/BPM.07/y_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN13-SD/DG-EPOS/BPM.01/x_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN13-SD/DG-EPOS/BPM.01/x_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN13-SD/DG-EPOS/BPM.01/y_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN13-SD/DG-EPOS/BPM.01/y_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN13-SD/DG-EPOS/BPM.02/x_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN13-SD/DG-EPOS/BPM.02/x_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN13-SD/DG-EPOS/BPM.02/y_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN13-SD/DG-EPOS/BPM.02/y_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN13-AR/DG-EPOS/BPM.03/x_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN13-AR/DG-EPOS/BPM.03/x_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN13-AR/DG-EPOS/BPM.03/y_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN13-AR/DG-EPOS/BPM.03/y_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN13-AR/DG-EPOS/BPM.04/x_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN13-AR/DG-EPOS/BPM.04/x_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN13-AR/DG-EPOS/BPM.04/y_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN13-AR/DG-EPOS/BPM.04/y_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN13-AR/DG-EPOS/BPM.05/x_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN13-AR/DG-EPOS/BPM.05/x_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN13-AR/DG-EPOS/BPM.05/y_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN13-AR/DG-EPOS/BPM.05/y_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN13-AR/DG-EPOS/BPM.06/x_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN13-AR/DG-EPOS/BPM.06/x_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN13-AR/DG-EPOS/BPM.06/y_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN13-AR/DG-EPOS/BPM.06/y_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN13-AR/DG-EPOS/BPM.07/x_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN13-AR/DG-EPOS/BPM.07/x_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN13-AR/DG-EPOS/BPM.07/y_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN13-AR/DG-EPOS/BPM.07/y_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN13-AR/DG-EPOS/BPM.08/x_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN13-AR/DG-EPOS/BPM.08/x_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN13-AR/DG-EPOS/BPM.08/y_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN13-AR/DG-EPOS/BPM.08/y_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN13-AR/DG-EPOS/BPM.09/x_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN13-AR/DG-EPOS/BPM.09/x_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN13-AR/DG-EPOS/BPM.09/y_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN13-AR/DG-EPOS/BPM.09/y_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN13-AR/DG-EPOS/BPM.10/x_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN13-AR/DG-EPOS/BPM.10/x_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN13-AR/DG-EPOS/BPM.10/y_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN13-AR/DG-EPOS/BPM.10/y_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN14-SD/DG-EPOS/BPM.01/x_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN14-SD/DG-EPOS/BPM.01/x_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN14-SD/DG-EPOS/BPM.01/y_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN14-SD/DG-EPOS/BPM.01/y_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN14-SD/DG-EPOS/BPM.02/x_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN14-SD/DG-EPOS/BPM.02/x_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN14-SD/DG-EPOS/BPM.02/y_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN14-SD/DG-EPOS/BPM.02/y_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN14-AR/DG-EPOS/BPM.03/x_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN14-AR/DG-EPOS/BPM.03/x_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN14-AR/DG-EPOS/BPM.03/y_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN14-AR/DG-EPOS/BPM.03/y_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN14-AR/DG-EPOS/BPM.04/x_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN14-AR/DG-EPOS/BPM.04/x_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN14-AR/DG-EPOS/BPM.04/y_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN14-AR/DG-EPOS/BPM.04/y_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN14-AR/DG-EPOS/BPM.05/x_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN14-AR/DG-EPOS/BPM.05/x_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN14-AR/DG-EPOS/BPM.05/y_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN14-AR/DG-EPOS/BPM.05/y_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN14-AR/DG-EPOS/BPM.06/x_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN14-AR/DG-EPOS/BPM.06/x_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN14-AR/DG-EPOS/BPM.06/y_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN14-AR/DG-EPOS/BPM.06/y_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN14-AR/DG-EPOS/BPM.07/x_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN14-AR/DG-EPOS/BPM.07/x_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN14-AR/DG-EPOS/BPM.07/y_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN14-AR/DG-EPOS/BPM.07/y_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN15-SD/DG-EPOS/BPM.01/x_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN15-SD/DG-EPOS/BPM.01/x_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN15-SD/DG-EPOS/BPM.01/y_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN15-SD/DG-EPOS/BPM.01/y_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN15-SD/DG-EPOS/BPM.02/x_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN15-SD/DG-EPOS/BPM.02/x_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN15-SD/DG-EPOS/BPM.02/y_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN15-SD/DG-EPOS/BPM.02/y_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN15-AR/DG-EPOS/BPM.03/x_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN15-AR/DG-EPOS/BPM.03/x_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN15-AR/DG-EPOS/BPM.03/y_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN15-AR/DG-EPOS/BPM.03/y_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN15-AR/DG-EPOS/BPM.04/x_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN15-AR/DG-EPOS/BPM.04/x_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN15-AR/DG-EPOS/BPM.04/y_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN15-AR/DG-EPOS/BPM.04/y_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN15-AR/DG-EPOS/BPM.05/x_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN15-AR/DG-EPOS/BPM.05/x_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN15-AR/DG-EPOS/BPM.05/y_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN15-AR/DG-EPOS/BPM.05/y_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN15-AR/DG-EPOS/BPM.06/x_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN15-AR/DG-EPOS/BPM.06/x_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN15-AR/DG-EPOS/BPM.06/y_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN15-AR/DG-EPOS/BPM.06/y_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN15-AR/DG-EPOS/BPM.07/x_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN15-AR/DG-EPOS/BPM.07/x_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN15-AR/DG-EPOS/BPM.07/y_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN15-AR/DG-EPOS/BPM.07/y_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN15-AR/DG-EPOS/BPM.08/x_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN15-AR/DG-EPOS/BPM.08/x_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN15-AR/DG-EPOS/BPM.08/y_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN15-AR/DG-EPOS/BPM.08/y_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN15-AR/DG-EPOS/BPM.09/x_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN15-AR/DG-EPOS/BPM.09/x_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN15-AR/DG-EPOS/BPM.09/y_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN15-AR/DG-EPOS/BPM.09/y_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN15-AR/DG-EPOS/BPM.10/x_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN15-AR/DG-EPOS/BPM.10/x_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN15-AR/DG-EPOS/BPM.10/y_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN15-AR/DG-EPOS/BPM.10/y_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN16-SD/DG-EPOS/BPM.01/x_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN16-SD/DG-EPOS/BPM.01/x_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN16-SD/DG-EPOS/BPM.01/y_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN16-SD/DG-EPOS/BPM.01/y_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN16-SD/DG-EPOS/BPM.02/x_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN16-SD/DG-EPOS/BPM.02/x_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN16-SD/DG-EPOS/BPM.02/y_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN16-SD/DG-EPOS/BPM.02/y_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN16-SD/DG-EPOS/BPM.03/x_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN16-SD/DG-EPOS/BPM.03/x_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN16-SD/DG-EPOS/BPM.03/y_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN16-SD/DG-EPOS/BPM.03/y_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN16-SD/DG-EPOS/BPM.04/x_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN16-SD/DG-EPOS/BPM.04/x_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN16-SD/DG-EPOS/BPM.04/y_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN16-SD/DG-EPOS/BPM.04/y_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN16-AR/DG-EPOS/BPM.05/x_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN16-AR/DG-EPOS/BPM.05/x_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN16-AR/DG-EPOS/BPM.05/y_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN16-AR/DG-EPOS/BPM.05/y_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN16-AR/DG-EPOS/BPM.06/x_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN16-AR/DG-EPOS/BPM.06/x_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN16-AR/DG-EPOS/BPM.06/y_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN16-AR/DG-EPOS/BPM.06/y_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN16-AR/DG-EPOS/BPM.07/x_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN16-AR/DG-EPOS/BPM.07/x_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN16-AR/DG-EPOS/BPM.07/y_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN16-AR/DG-EPOS/BPM.07/y_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN16-AR/DG-EPOS/BPM.08/x_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN16-AR/DG-EPOS/BPM.08/x_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN16-AR/DG-EPOS/BPM.08/y_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN16-AR/DG-EPOS/BPM.08/y_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN16-AR/DG-EPOS/BPM.09/x_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN16-AR/DG-EPOS/BPM.09/x_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN16-AR/DG-EPOS/BPM.09/y_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN16-AR/DG-EPOS/BPM.09/y_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN16-AR/DG-EPOS/BPM.10/x_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN16-AR/DG-EPOS/BPM.10/x_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN16-AR/DG-EPOS/BPM.10/y_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN16-AR/DG-EPOS/BPM.10/y_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN16-AR/DG-EPOS/BPM.11/x_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN16-AR/DG-EPOS/BPM.11/x_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN16-AR/DG-EPOS/BPM.11/y_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN16-AR/DG-EPOS/BPM.11/y_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN16-AR/DG-EPOS/BPM.12/x_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN16-AR/DG-EPOS/BPM.12/x_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN16-AR/DG-EPOS/BPM.12/y_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN16-AR/DG-EPOS/BPM.12/y_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN17-SD/DG-EPOS/BPM.01/x_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN17-SD/DG-EPOS/BPM.01/x_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN17-SD/DG-EPOS/BPM.01/y_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN17-SD/DG-EPOS/BPM.01/y_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN17-SD/DG-EPOS/BPM.02/x_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN17-SD/DG-EPOS/BPM.02/x_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN17-SD/DG-EPOS/BPM.02/y_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN17-SD/DG-EPOS/BPM.02/y_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN17-AR/DG-EPOS/BPM.03/x_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN17-AR/DG-EPOS/BPM.03/x_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN17-AR/DG-EPOS/BPM.03/y_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN17-AR/DG-EPOS/BPM.03/y_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN17-AR/DG-EPOS/BPM.04/x_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN17-AR/DG-EPOS/BPM.04/x_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN17-AR/DG-EPOS/BPM.04/y_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN17-AR/DG-EPOS/BPM.04/y_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN17-AR/DG-EPOS/BPM.05/x_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN17-AR/DG-EPOS/BPM.05/x_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN17-AR/DG-EPOS/BPM.05/y_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN17-AR/DG-EPOS/BPM.05/y_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN17-AR/DG-EPOS/BPM.06/x_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN17-AR/DG-EPOS/BPM.06/x_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN17-AR/DG-EPOS/BPM.06/y_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN17-AR/DG-EPOS/BPM.06/y_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN17-AR/DG-EPOS/BPM.07/x_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN17-AR/DG-EPOS/BPM.07/x_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN17-AR/DG-EPOS/BPM.07/y_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN17-AR/DG-EPOS/BPM.07/y_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN18-SD/DG-EPOS/BPM.01/x_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN18-SD/DG-EPOS/BPM.01/x_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN18-SD/DG-EPOS/BPM.01/y_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN18-SD/DG-EPOS/BPM.01/y_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN18-SD/DG-EPOS/BPM.02/x_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN18-SD/DG-EPOS/BPM.02/x_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN18-SD/DG-EPOS/BPM.02/y_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN18-SD/DG-EPOS/BPM.02/y_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN18-AR/DG-EPOS/BPM.03/x_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN18-AR/DG-EPOS/BPM.03/x_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN18-AR/DG-EPOS/BPM.03/y_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN18-AR/DG-EPOS/BPM.03/y_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN18-AR/DG-EPOS/BPM.04/x_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN18-AR/DG-EPOS/BPM.04/x_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN18-AR/DG-EPOS/BPM.04/y_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN18-AR/DG-EPOS/BPM.04/y_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN18-AR/DG-EPOS/BPM.05/x_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN18-AR/DG-EPOS/BPM.05/x_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN18-AR/DG-EPOS/BPM.05/y_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN18-AR/DG-EPOS/BPM.05/y_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN18-AR/DG-EPOS/BPM.06/x_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN18-AR/DG-EPOS/BPM.06/x_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN18-AR/DG-EPOS/BPM.06/y_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN18-AR/DG-EPOS/BPM.06/y_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN18-AR/DG-EPOS/BPM.07/x_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN18-AR/DG-EPOS/BPM.07/x_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN18-AR/DG-EPOS/BPM.07/y_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN18-AR/DG-EPOS/BPM.07/y_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN18-AR/DG-EPOS/BPM.08/x_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN18-AR/DG-EPOS/BPM.08/x_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN18-AR/DG-EPOS/BPM.08/y_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN18-AR/DG-EPOS/BPM.08/y_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN18-AR/DG-EPOS/BPM.09/x_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN18-AR/DG-EPOS/BPM.09/x_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN18-AR/DG-EPOS/BPM.09/y_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN18-AR/DG-EPOS/BPM.09/y_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN18-AR/DG-EPOS/BPM.10/x_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN18-AR/DG-EPOS/BPM.10/x_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN18-AR/DG-EPOS/BPM.10/y_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN18-AR/DG-EPOS/BPM.10/y_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN19-SD/DG-EPOS/BPM.01/x_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN19-SD/DG-EPOS/BPM.01/x_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN19-SD/DG-EPOS/BPM.01/y_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN19-SD/DG-EPOS/BPM.01/y_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN19-SD/DG-EPOS/BPM.02/x_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN19-SD/DG-EPOS/BPM.02/x_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN19-SD/DG-EPOS/BPM.02/y_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN19-SD/DG-EPOS/BPM.02/y_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN19-AR/DG-EPOS/BPM.03/x_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN19-AR/DG-EPOS/BPM.03/x_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN19-AR/DG-EPOS/BPM.03/y_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN19-AR/DG-EPOS/BPM.03/y_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN19-AR/DG-EPOS/BPM.04/x_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN19-AR/DG-EPOS/BPM.04/x_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN19-AR/DG-EPOS/BPM.04/y_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN19-AR/DG-EPOS/BPM.04/y_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN19-AR/DG-EPOS/BPM.05/x_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN19-AR/DG-EPOS/BPM.05/x_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN19-AR/DG-EPOS/BPM.05/y_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN19-AR/DG-EPOS/BPM.05/y_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN19-AR/DG-EPOS/BPM.06/x_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN19-AR/DG-EPOS/BPM.06/x_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN19-AR/DG-EPOS/BPM.06/y_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN19-AR/DG-EPOS/BPM.06/y_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN19-AR/DG-EPOS/BPM.07/x_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN19-AR/DG-EPOS/BPM.07/x_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN19-AR/DG-EPOS/BPM.07/y_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN19-AR/DG-EPOS/BPM.07/y_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN20-SD/DG-EPOS/BPM.01/x_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN20-SD/DG-EPOS/BPM.01/x_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN20-SD/DG-EPOS/BPM.01/y_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN20-SD/DG-EPOS/BPM.01/y_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN20-SD/DG-EPOS/BPM.02/x_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN20-SD/DG-EPOS/BPM.02/x_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN20-SD/DG-EPOS/BPM.02/y_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN20-SD/DG-EPOS/BPM.02/y_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN20-AR/DG-EPOS/BPM.03/x_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN20-AR/DG-EPOS/BPM.03/x_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN20-AR/DG-EPOS/BPM.03/y_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN20-AR/DG-EPOS/BPM.03/y_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN20-AR/DG-EPOS/BPM.04/x_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN20-AR/DG-EPOS/BPM.04/x_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN20-AR/DG-EPOS/BPM.04/y_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN20-AR/DG-EPOS/BPM.04/y_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN20-AR/DG-EPOS/BPM.05/x_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN20-AR/DG-EPOS/BPM.05/x_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN20-AR/DG-EPOS/BPM.05/y_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN20-AR/DG-EPOS/BPM.05/y_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN20-AR/DG-EPOS/BPM.06/x_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN20-AR/DG-EPOS/BPM.06/x_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN20-AR/DG-EPOS/BPM.06/y_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN20-AR/DG-EPOS/BPM.06/y_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN20-AR/DG-EPOS/BPM.07/x_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN20-AR/DG-EPOS/BPM.07/x_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN20-AR/DG-EPOS/BPM.07/y_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN20-AR/DG-EPOS/BPM.07/y_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN20-AR/DG-EPOS/BPM.08/x_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN20-AR/DG-EPOS/BPM.08/x_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN20-AR/DG-EPOS/BPM.08/y_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN20-AR/DG-EPOS/BPM.08/y_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN20-AR/DG-EPOS/BPM.09/x_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN20-AR/DG-EPOS/BPM.09/x_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN20-AR/DG-EPOS/BPM.09/y_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN20-AR/DG-EPOS/BPM.09/y_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN20-AR/DG-EPOS/BPM.10/x_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN20-AR/DG-EPOS/BPM.10/x_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN20-AR/DG-EPOS/BPM.10/y_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN20-AR/DG-EPOS/BPM.10/y_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN01-SD/DG-EPOS/BPM.01/x_pos
     device:
       type: tango.pyaml.attribute_read_only
       attribute: AN01-SD/DG-EPOS/BPM.01/x_pos
       unit: mm
-  - type: pyaml.configuration.static_catalog_entry
+  - type: tango.pyaml.static_catalog_entry
     key: AN01-SD/DG-EPOS/BPM.01/y_pos
     device:
       type: tango.pyaml.attribute_read_only
