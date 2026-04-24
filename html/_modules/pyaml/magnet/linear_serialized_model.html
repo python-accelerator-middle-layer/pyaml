@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>pyaml.magnet.linear_serialized_model &#8212; Python Accelerator Middle Layer 0.1.dev1+g915e92fc0 documentation</title>
+    <title>pyaml.magnet.linear_serialized_model &#8212; Python Accelerator Middle Layer 0.1.dev1+g1b002f259 documentation</title>
   
   
   
@@ -41,7 +41,7 @@
   <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=55c26ed414f5f8a31ebb" />
 <link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=55c26ed414f5f8a31ebb" />
 
-    <script src="../../../_static/documentation_options.js?v=7c9aa61c"></script>
+    <script src="../../../_static/documentation_options.js?v=cccecf14"></script>
     <script src="../../../_static/doctools.js?v=9bcbadda"></script>
     <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -125,8 +125,8 @@
       
     
     
-    <img src="../../../_static/logo.png" class="logo__image only-light" alt="Python Accelerator Middle Layer 0.1.dev1+g915e92fc0 documentation - Home"/>
-    <img src="../../../_static/dark.png" class="logo__image only-dark pst-js-only" alt="Python Accelerator Middle Layer 0.1.dev1+g915e92fc0 documentation - Home"/>
+    <img src="../../../_static/logo.png" class="logo__image only-light" alt="Python Accelerator Middle Layer 0.1.dev1+g1b002f259 documentation - Home"/>
+    <img src="../../../_static/dark.png" class="logo__image only-dark pst-js-only" alt="Python Accelerator Middle Layer 0.1.dev1+g1b002f259 documentation - Home"/>
   
   
 </a></div>
@@ -538,35 +538,33 @@
 <div class="viewcode-block" id="LinearSerializedMagnetModel.compute_hardware_values">
 <a class="viewcode-back" href="../../../api/pyaml.magnet.linear_serialized_model.html#pyaml.magnet.linear_serialized_model.LinearSerializedMagnetModel.compute_hardware_values">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">compute_hardware_values</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">strengths</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">:</span>
-        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
-            <span class="p">[</span><span class="n">model</span><span class="o">.</span><span class="n">compute_hardware_values</span><span class="p">([</span><span class="n">strength</span><span class="p">])</span> <span class="k">for</span> <span class="n">strength</span><span class="p">,</span> <span class="n">model</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">strengths</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__sub_models</span><span class="p">,</span> <span class="n">strict</span><span class="o">=</span><span class="kc">True</span><span class="p">)]</span>
-        <span class="p">)</span></div>
+        <span class="n">currents</span> <span class="o">=</span> <span class="p">[</span><span class="n">model</span><span class="o">.</span><span class="n">compute_hardware_values</span><span class="p">([</span><span class="n">s</span><span class="p">])[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">s</span><span class="p">,</span> <span class="n">model</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">strengths</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__sub_models</span><span class="p">,</span> <span class="n">strict</span><span class="o">=</span><span class="kc">True</span><span class="p">)]</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">currents</span><span class="p">)])</span></div>
 
 
 <div class="viewcode-block" id="LinearSerializedMagnetModel.compute_strengths">
 <a class="viewcode-back" href="../../../api/pyaml.magnet.linear_serialized_model.html#pyaml.magnet.linear_serialized_model.LinearSerializedMagnetModel.compute_strengths">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">compute_strengths</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">currents</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">:</span>
-        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
-            <span class="p">[</span><span class="n">model</span><span class="o">.</span><span class="n">compute_strengths</span><span class="p">([</span><span class="n">current</span><span class="p">])</span> <span class="k">for</span> <span class="n">current</span><span class="p">,</span> <span class="n">model</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">currents</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__sub_models</span><span class="p">,</span> <span class="n">strict</span><span class="o">=</span><span class="kc">True</span><span class="p">)]</span>
-        <span class="p">)</span></div>
+        <span class="n">current</span> <span class="o">=</span> <span class="n">currents</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">model</span><span class="o">.</span><span class="n">compute_strengths</span><span class="p">([</span><span class="n">current</span><span class="p">])[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">model</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">__sub_models</span><span class="p">])</span></div>
 
 
 <div class="viewcode-block" id="LinearSerializedMagnetModel.get_strength_units">
 <a class="viewcode-back" href="../../../api/pyaml.magnet.linear_serialized_model.html#pyaml.magnet.linear_serialized_model.LinearSerializedMagnetModel.get_strength_units">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">get_strength_units</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cfg</span><span class="o">.</span><span class="n">units</span></div>
+        <span class="k">return</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_cfg</span><span class="o">.</span><span class="n">unit</span><span class="p">]</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">__nbMagnets</span></div>
 
 
 <div class="viewcode-block" id="LinearSerializedMagnetModel.get_hardware_units">
 <a class="viewcode-back" href="../../../api/pyaml.magnet.linear_serialized_model.html#pyaml.magnet.linear_serialized_model.LinearSerializedMagnetModel.get_hardware_units">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">get_hardware_units</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
-        <span class="k">return</span> <span class="p">[</span><span class="n">p</span><span class="o">.</span><span class="n">unit</span><span class="p">()</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cfg</span><span class="o">.</span><span class="n">__sub_models</span><span class="p">]</span></div>
+        <span class="k">return</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">__sub_models</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">get_hardware_units</span><span class="p">()[</span><span class="mi">0</span><span class="p">]]</span></div>
 
 
 <div class="viewcode-block" id="LinearSerializedMagnetModel.get_devices">
 <a class="viewcode-back" href="../../../api/pyaml.magnet.linear_serialized_model.html#pyaml.magnet.linear_serialized_model.LinearSerializedMagnetModel.get_devices">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">get_devices</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">DeviceAccess</span><span class="p">]:</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cfg</span><span class="o">.</span><span class="n">powerconverters</span></div>
+        <span class="k">return</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_cfg</span><span class="o">.</span><span class="n">powerconverter</span><span class="p">]</span></div>
 
 
 <div class="viewcode-block" id="LinearSerializedMagnetModel.set_magnet_rigidity">
