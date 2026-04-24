@@ -147,23 +147,21 @@ class LinearSerializedMagnetModel(MagnetModel):
         return self.__sub_models[index]
 
     def compute_hardware_values(self, strengths: np.array) -> np.array:
-        return np.array(
-            [model.compute_hardware_values([strength]) for strength, model in zip(strengths, self.__sub_models, strict=True)]
-        )
+        currents = [model.compute_hardware_values([s])[0] for s, model in zip(strengths, self.__sub_models, strict=True)]
+        return np.array([np.mean(currents)])
 
     def compute_strengths(self, currents: np.array) -> np.array:
-        return np.array(
-            [model.compute_strengths([current]) for current, model in zip(currents, self.__sub_models, strict=True)]
-        )
+        current = currents[0]
+        return np.array([model.compute_strengths([current])[0] for model in self.__sub_models])
 
     def get_strength_units(self) -> list[str]:
-        return self._cfg.units
+        return [self._cfg.unit] * self.__nbMagnets
 
     def get_hardware_units(self) -> list[str]:
-        return [p.unit() for p in self._cfg.__sub_models]
+        return [self.__sub_models[0].get_hardware_units()[0]]
 
     def get_devices(self) -> list[DeviceAccess]:
-        return self._cfg.powerconverters
+        return [self._cfg.powerconverter]
 
     def set_magnet_rigidity(self, brho: np.double):
         self.__brho = brho
