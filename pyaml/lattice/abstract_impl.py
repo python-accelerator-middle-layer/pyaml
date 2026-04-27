@@ -22,17 +22,18 @@ class RWHardwareScalar(abstract.ReadWriteFloatScalar):
     Hardware unit is converted from strength using the magnet model
     """
 
-    def __init__(
-        self, elements: list[at.Element], poly: PolynomInfo, model: MagnetModel
-    ):
+    def __init__(self, elements: list[at.Element], poly: PolynomInfo, model: MagnetModel):
         self.__model = model
         self.__elements = elements
         self.__poly = [e.__getattribute__(poly.attName) for e in elements]
         self.__sign = poly.sign
         self.__polyIdx = poly.index
-        self.__length = 0
+        self.__length: float = 0.0
         for e in elements:
             self.__length += e.Length
+
+    def get_length(self) -> float:
+        return self.__length
 
     def get(self) -> float:
         s = 0
@@ -63,9 +64,7 @@ class RWStrengthScalar(abstract.ReadWriteFloatScalar):
     Class providing read write access to a strength of a simulator
     """
 
-    def __init__(
-        self, elements: list[at.Element], poly: PolynomInfo, model: MagnetModel
-    ):
+    def __init__(self, elements: list[at.Element], poly: PolynomInfo, model: MagnetModel):
         self.__model = model
         self.__elements = elements
         self.__poly = [e.__getattribute__(poly.attName) for e in elements]
@@ -74,6 +73,9 @@ class RWStrengthScalar(abstract.ReadWriteFloatScalar):
         self.__length = 0
         for e in elements:
             self.__length += e.Length
+
+    def get_element_length(self) -> float:
+        return self.__length
 
     # Gets the value
     def get(self) -> float:
@@ -107,6 +109,15 @@ class RWSerializedHardware(abstract.ReadWriteFloatScalar):
     def __init__(self, elements: list[RWHardwareScalar], element_index: int):
         self.__elements = elements
         self.__element_index = element_index
+        self.__total_length = 0
+        for e in elements:
+            self.__total_length += e.get_length()
+
+    def get_element_length(self) -> float:
+        return self.__elements[self.__element_index].get_length()
+
+    def get_total_length(self) -> float:
+        return self.__total_length
 
     # Gets the value
     def get(self) -> float:
@@ -131,27 +142,43 @@ class RWSerializedHardware(abstract.ReadWriteFloatScalar):
 class RWSerializedStrength(abstract.ReadWriteFloatScalar):
     def __init__(
         self,
-        element: RWStrengthScalar,
+        elements_strength: list[RWStrengthScalar],
         elements_hardware: list[RWHardwareScalar],
         element_index: int,
     ):
-        self.__element = element
+        self.__element = elements_strength[element_index]
+        self.__elements_strength = elements_strength
         self.__elements_hardware = elements_hardware
         self.__element_index = element_index
+        self.__total_length = 0
+        for e in self.__elements_hardware:
+            self.__total_length += e.get_length()
+
+    def get_element_length(self) -> float:
+        return self.__element.get_element_length()
+
+    def get_total_length(self) -> float:
+        return self.__total_length
 
     # Gets the value
     def get(self) -> float:
-        return self.__element.get()
+        return self.__elements_strength[self.__element_index].get()
 
     # Sets the value
     def set(self, value: float):
-        self.__element.set(value)
+        elements_values = [value * e.get_length() / self.get_total_length() for e in self.__elements_hardware]
+        self.__element.set(elements_values[self.__element_index])
+
+        # compute the local hardware value
         hardware_value = self.__elements_hardware[self.__element_index].get()
-        [
-            element.set(hardware_value)
-            for index, element in enumerate(self.__elements_hardware)
-            if index != self.__element_index
-        ]
+
+        # compute the total hardware value
+        total_hardware = hardware_value * self.get_total_length() / self.get_element_length()
+
+        # dispatch this value
+        for index, element in enumerate(self.__elements_hardware):
+            if index != self.__element_index:
+                element.set(total_hardware * element.get_length() / self.get_total_length())
 
     # Sets the value and wait that the read value reach the setpoint
     def set_and_wait(self, value: float):
@@ -171,9 +198,7 @@ class RWHardwareArray(abstract.ReadWriteFloatArray):
     Hardware units are converted from strengths using the magnet model
     """
 
-    def __init__(
-        self, elements: list[at.Element], poly: list[PolynomInfo], model: MagnetModel
-    ):
+    def __init__(self, elements: list[at.Element], poly: list[PolynomInfo], model: MagnetModel):
         self.__elements = elements
         self.__poly = []
         self.__polyIdx = []
@@ -189,11 +214,7 @@ class RWHardwareArray(abstract.ReadWriteFloatArray):
         nbStrength = len(self.__poly)
         s = np.zeros(nbStrength)
         for i in range(nbStrength):
-            s[i] = (
-                self.__poly[i][self.__polyIdx[i]]
-                * self.__sign[i]
-                * self.__elements[0].Length
-            )
+            s[i] = self.__poly[i][self.__polyIdx[i]] * self.__sign[i] * self.__elements[0].Length
         return self.__model.compute_hardware_values(s)
 
     # Sets the value
@@ -201,9 +222,7 @@ class RWHardwareArray(abstract.ReadWriteFloatArray):
         nbStrength = len(self.__poly)
         s = self.__model.compute_strengths(value)
         for i in range(nbStrength):
-            self.__poly[i][self.__polyIdx[i]] = s[i] / (
-                self.__elements[0].Length * self.__sign[i]
-            )
+            self.__poly[i][self.__polyIdx[i]] = s[i] / (self.__elements[0].Length * self.__sign[i])
 
     # Sets the value and wait that the read value reach the setpoint
     def set_and_wait(self, value: np.array):
@@ -222,9 +241,7 @@ class RWStrengthArray(abstract.ReadWriteFloatArray):
     Class providing read write access to a strength (array) of a simulator
     """
 
-    def __init__(
-        self, elements: list[at.Element], poly: list[PolynomInfo], model: MagnetModel
-    ):
+    def __init__(self, elements: list[at.Element], poly: list[PolynomInfo], model: MagnetModel):
         self.__elements = elements
         self.__poly = []
         self.__polyIdx = []
@@ -240,11 +257,7 @@ class RWStrengthArray(abstract.ReadWriteFloatArray):
         nbStrength = len(self.__poly)
         s = np.zeros(nbStrength)
         for i in range(nbStrength):
-            s[i] = (
-                self.__poly[i][self.__polyIdx[i]]
-                * self.__sign[i]
-                * self.__elements[0].Length
-            )
+            s[i] = self.__poly[i][self.__polyIdx[i]] * self.__sign[i] * self.__elements[0].Length
         return s
 
     # Sets the value
@@ -252,9 +265,7 @@ class RWStrengthArray(abstract.ReadWriteFloatArray):
         nbStrength = len(self.__poly)
         s = np.zeros(nbStrength)
         for i in range(nbStrength):
-            self.__poly[i][self.__polyIdx[i]] = value[i] / (
-                self.__elements[0].Length * self.__sign[i]
-            )
+            self.__poly[i][self.__polyIdx[i]] = value[i] / (self.__elements[0].Length * self.__sign[i])
 
     # Sets the value and wait that the read value reach the setpoint
     def set_and_wait(self, value: np.array):
@@ -582,22 +593,3 @@ class RBetatronTuneArray(abstract.ReadFloatArray):
 
 
 # ------------------------------------------------------------------------------
-
-
-class RChromaticityArray(abstract.ReadFloatArray):
-    """
-    Class providing read-only access to the chromaticity of a ring.
-    """
-
-    def __init__(self, ring: at.Lattice):
-        self.__ring = ring
-
-    def _update_chromaticity_monitor(self, chromaticity_monitor):
-        """Use to attach the rigth object in control.abstract_impl.RChromaticityArray. Nothing needed here"""
-        pass
-
-    def get(self) -> float:
-        return self.__ring.get_chrom()[:2]
-
-    def unit(self) -> str:
-        return "1"

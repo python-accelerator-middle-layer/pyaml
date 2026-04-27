@@ -40,14 +40,10 @@ class IdentityMagnetModel(MagnetModel):
         self._cfg = cfg
         self.__unit = cfg.unit
         if cfg.physics is None and cfg.powerconverter is None:
-            raise PyAMLException(
-                "Invalid IdentityMagnetModel configuration,"
-                "physics or powerconverter device required"
-            )
+            raise PyAMLException("Invalid IdentityMagnetModel configuration,physics or powerconverter device required")
         if cfg.physics is not None and cfg.powerconverter is not None:
             raise PyAMLException(
-                "Invalid IdentityMagnetModel configuration,"
-                "physics or powerconverter device required but not both"
+                "Invalid IdentityMagnetModel configuration,physics or powerconverter device required but not both"
             )
         if cfg.physics:
             self.__device = cfg.physics

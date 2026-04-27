@@ -1,9 +1,9 @@
-from typing import Optional, Tuple
-
 from pydantic import BaseModel, ConfigDict
 
 from pyaml.control.deviceaccess import DeviceAccess
 from pyaml.control.readback_value import Value
+
+from .attribute_store import get_state
 
 PYAMLCLASS: str = "Attribute"
 
@@ -13,7 +13,7 @@ class ConfigModel(BaseModel):
 
     attribute: str
     unit: str = ""
-    range: Optional[Tuple[Optional[float], Optional[float]]] = None
+    range: tuple[float | None, float | None] | None = None
 
 
 class Attribute(DeviceAccess):
@@ -27,11 +27,17 @@ class Attribute(DeviceAccess):
         self._cfg = cfg
         self._setpoint = cfg.attribute
         self._readback = cfg.attribute
-        self._unit = cfg.unit
+        # Register metadata early. The value may already have been initialized
+        # by a test before the accelerator configuration is loaded.
+        get_state(cfg.attribute, unit=cfg.unit, range=self._range())
 
     def set_array(self, is_array: bool):
-        self._is_array = is_array
-        self._cache = 0.0 if not is_array else [0.0, 1.0]
+        """Mark the shared value as array-like without initializing it."""
+        get_state(
+            self._cfg.attribute,
+            unit=self._cfg.unit,
+            range=self._range(),
+        ).is_array = is_array
 
     def name(self) -> str:
         return self._setpoint
@@ -41,36 +47,51 @@ class Attribute(DeviceAccess):
 
     def set(self, value):
         print(f"{self._cfg.attribute}:{value}")
-        self._cache = value
+        state = get_state(self._cfg.attribute, unit=self._cfg.unit, range=self._range())
+        state.value = value
 
     def set_and_wait(self, value):
         self.set(value)
 
     def get(self):
-        return self._cache
+        state = get_state(self._cfg.attribute, unit=self._cfg.unit, range=self._range())
+        return state.value
 
     def readback(self):
-        if self._is_array:
-            return [Value(v) for v in self._cache]
-        else:
-            return Value(self._cache)
+        """Return readback from shared state, preserving scalar/array shape."""
+        state = get_state(
+            self._cfg.attribute,
+            unit=self._cfg.unit,
+            range=self._range(),
+        )
+        value = state.value if state.readback is None else state.readback
+        if state.is_array:
+            return [Value(v) for v in value]
+        return Value(value)
 
     def unit(self) -> str:
-        return self._unit
+        state = get_state(self._cfg.attribute, unit=self._cfg.unit, range=self._range())
+        return state.unit
 
     def __repr__(self):
         return repr(self._cfg).replace("ConfigModel", self.__class__.__name__)
 
     def get_range(self) -> list[float]:
-        attr_range: list[float] = [None, None]
-        if self._cfg.range is not None:
-            attr_range[0] = (
-                self._cfg.range[0] if self._cfg.range[0] is not None else None
-            )
-            attr_range[1] = (
-                self._cfg.range[1] if self._cfg.range[1] is not None else None
-            )
-        return attr_range
+        state = get_state(
+            self._cfg.attribute,
+            unit=self._cfg.unit,
+            range=self._range(),
+        )
+        if state.range is None:
+            return [None, None]
+        return [
+            state.range[0] if state.range[0] is not None else None,
+            state.range[1] if state.range[1] is not None else None,
+        ]
 
     def check_device_availability(self) -> bool:
         return True
+
+    def _range(self):
+        """Return optional range metadata for models that define it."""
+        return getattr(self._cfg, "range", None)

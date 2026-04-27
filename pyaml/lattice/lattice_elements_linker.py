@@ -75,9 +75,7 @@ class LatticeElementsLinker(metaclass=ABCMeta):
         self.lattice = lattice
 
     @abstractmethod
-    def _test_at_element(
-        self, identifier: LinkerIdentifier, element: at.Element
-    ) -> bool:
+    def _test_at_element(self, identifier: LinkerIdentifier, element: at.Element) -> bool:
         pass
 
     @abstractmethod
@@ -103,9 +101,7 @@ class LatticeElementsLinker(metaclass=ABCMeta):
             if self._test_at_element(identifier, elem):
                 yield elem
 
-    def get_at_elements(
-        self, element_id: LinkerIdentifier | list[LinkerIdentifier]
-    ) -> list[at.Element]:
+    def get_at_elements(self, element_id: LinkerIdentifier | list[LinkerIdentifier]) -> list[at.Element]:
         """Return a list of PyAT elements matching the given identifiers.
 
         This method should resolve one or multiple PyAML identifiers
@@ -138,10 +134,7 @@ class LatticeElementsLinker(metaclass=ABCMeta):
             results.extend(self._iter_matches(ident))
 
         if not results:
-            raise PyAMLException(
-                f"No PyAT elements found for identifier(s): "
-                f"{', '.join(i.__repr__() for i in identifiers)}"
-            )
+            raise PyAMLException(f"No PyAT elements found for identifier(s): {', '.join(i.__repr__() for i in identifiers)}")
         return results
 
     def get_at_element(self, element_id: LinkerIdentifier) -> at.Element:
@@ -164,6 +157,4 @@ class LatticeElementsLinker(metaclass=ABCMeta):
         """
         for elem in self._iter_matches(element_id):
             return elem
-        raise PyAMLException(
-            f"No PyAT element found for FamName: {element_id.__repr__()}"
-        )
+        raise PyAMLException(f"No PyAT element found for FamName: {element_id.__repr__()}")

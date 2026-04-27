@@ -2,17 +2,17 @@
 Accelerator class
 """
 
-import os
-
 from pydantic import BaseModel, ConfigDict, Field
 
 from .arrays.array import ArrayConfig
 from .common.element import Element
+from .common.element_holder import ElementHolder
 from .common.exception import PyAMLConfigException
+from .configuration import ConfigurationManager, UnsupportedConfigurationRootError
 from .configuration.factory import Factory
-from .configuration.fileloader import load, set_root_folder
 from .control.controlsystem import ControlSystem
 from .lattice.simulator import Simulator
+from .yellow_pages import YellowPages
 
 # Define the main class name for this module
 PYAMLCLASS = "Accelerator"
@@ -31,6 +31,10 @@ class ConfigModel(BaseModel):
     energy : float
         Accelerator nominal energy. For ramped machine,
         this value can be dynamically set
+    alphac : float, optional
+        Moment compaction factor.
+    harmonic_number: int, optional
+        Number of bucket
     controls : list[ControlSystem], optional
         List of control system used. An accelerator
         can access several control systems
@@ -51,6 +55,8 @@ class ConfigModel(BaseModel):
     facility: str
     machine: str
     energy: float
+    alphac: float | None = None
+    harmonic_number: int | None = None
     controls: list[ControlSystem] = None
     simulators: list[Simulator] = None
     data_folder: str
@@ -66,24 +72,30 @@ class Accelerator(object):
         self._cfg = cfg
         __design = None
         __live = None
+        self._controls: dict[str, ElementHolder] = {}
+        self._simulators: dict[str, ElementHolder] = {}
 
         if cfg.controls is not None:
             for c in cfg.controls:
                 if c.name() == "live":
                     self.__live = c
                 else:
-                    # Add as dynacmic attribute
+                    # Add as dynamic attribute
                     setattr(self, c.name(), c)
                 c.fill_device(cfg.devices)
+                c._peer = self
+                self._controls[c.name()] = c
 
         if cfg.simulators is not None:
             for s in cfg.simulators:
                 if s.name() == "design":
                     self.__design = s
                 else:
-                    # Add as dynacmic attribute
+                    # Add as dynamic attribute
                     setattr(self, s.name(), s)
                 s.fill_device(cfg.devices)
+                s._peer = self
+                self._simulators[s.name()] = s
 
         if cfg.arrays is not None:
             for a in cfg.arrays:
@@ -97,7 +109,26 @@ class Accelerator(object):
         if cfg.energy is not None:
             self.set_energy(cfg.energy)
 
+        if cfg.alphac is not None:
+            self.set_mcf(cfg.alphac)
+
+        if cfg.harmonic_number is not None:
+            self.set_harmonic_number(cfg.harmonic_number)
+
+        self._yellow_pages = YellowPages(self)
+
         self.post_init()
+
+    def _set_properties(self, method: str, value):
+        # Sets global property
+        if self._cfg.simulators is not None:
+            for s in self._cfg.simulators:
+                m = getattr(s, method)
+                m(value)
+        if self._cfg.controls is not None:
+            for c in self._cfg.controls:
+                m = getattr(c, method)
+                m(value)
 
     def set_energy(self, E: float):
         """
@@ -108,12 +139,55 @@ class Accelerator(object):
         E : float
             Energy value to set in eV
         """
-        if self._cfg.simulators is not None:
-            for s in self._cfg.simulators:
-                s.set_energy(E)
+        self._set_properties("_set_energy", E)
+
+    def set_mcf(self, alphac: float):
+        """
+        Set the moment compaction factor for all simulators and control systems.
+
+        Parameters
+        ----------
+        alphac : float
+            Moment compaction factor
+        """
+        self._set_properties("_set_mcf", alphac)
+
+    def set_harmonic_number(self, h: int):
+        """
+        Set the number of bucket.
+
+        Parameters
+        ----------
+        h : int
+            Number of bucket
+        """
+        self._set_properties("_set_harmonic", h)
+
+    def add_device(self, config: dict, ignore_external=False):
+        """
+        Dynamically add a device to this accelerator
+
+        config_dict : str
+            Dictionary containing accelerator config
+        ignore_external: bool
+            Ignore external modules and return None for object that
+            cannot be created. pydantic schema that support that an
+            object is not created should handle None fields.
+        """
+        dev = Factory.depth_first_build(config, ignore_external)
+        if not isinstance(dev, Element):
+            raise PyAMLConfigException(
+                "Invalid device type, Element or sub classes of Element expected " + f"but got {dev.__class__.__name__}"
+            )
+
+        self._cfg.devices.append(dev)
         if self._cfg.controls is not None:
             for c in self._cfg.controls:
-                c.set_energy(E)
+                c.fill_device([dev])
+
+        if self._cfg.simulators is not None:
+            for s in self._cfg.simulators:
+                s.fill_device([dev])
 
     def post_init(self):
         """
@@ -156,6 +230,25 @@ class Accelerator(object):
         """
         return self.__design
 
+    @property
+    def yellow_pages(self) -> YellowPages:
+        return self._yellow_pages
+
+    def simulators(self) -> dict[str, "ElementHolder"]:
+        """Return all registered simulator modes."""
+        return self._simulators
+
+    def controls(self) -> dict[str, "ElementHolder"]:
+        """Return all registered control modes."""
+        return self._controls
+
+    def modes(self) -> dict[str, "ElementHolder"]:
+        """Return all registered control and simulator modes."""
+        modes: dict[str, "ElementHolder"] = {}
+        modes.update(self._simulators)
+        modes.update(self._controls)
+        return modes
+
     def __repr__(self):
         return repr(self._cfg).replace("ConfigModel", self.__class__.__name__)
 
@@ -182,9 +275,7 @@ class Accelerator(object):
         return Factory.depth_first_build(config_dict, ignore_external)
 
     @staticmethod
-    def load(
-        filename: str, use_fast_loader: bool = False, ignore_external=False
-    ) -> "Accelerator":
+    def load(filename: str, use_fast_loader: bool = False, ignore_external=False) -> "Accelerator":
         """
         Load an accelerator from a config file.
 
@@ -202,11 +293,12 @@ class Accelerator(object):
             cannot be created. pydantic schema that support that an
             object is not created should handle None fields.
         """
-        # Asume that all files are referenced from
-        # folder where main AML file is stored
-        if not os.path.exists(filename):
-            raise PyAMLConfigException(f"{filename} file not found")
-        rootfolder = os.path.abspath(os.path.dirname(filename))
-        set_root_folder(rootfolder)
-        config_dict = load(os.path.basename(filename), None, use_fast_loader)
-        return Accelerator.from_dict(config_dict)
+        manager = ConfigurationManager()
+        try:
+            manager.add(filename, use_fast_loader=use_fast_loader)
+        except UnsupportedConfigurationRootError as ex:
+            raise PyAMLConfigException(
+                "Accelerator.load() expects a 'pyaml.accelerator' root configuration. "
+                "Use the factory APIs to build sub-elements directly."
+            ) from ex
+        return manager.build(ignore_external=ignore_external)

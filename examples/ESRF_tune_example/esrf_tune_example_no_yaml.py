@@ -97,9 +97,7 @@ for cfg in elemConfig:
     names.append(cfg["name"])
 
 
-simulator = Simulator(
-    SimulatorConfigModel(name="design", lattice="config/sr/lattices/ebs.mat")
-)
+simulator = Simulator(SimulatorConfigModel(name="design", lattice="config/sr/lattices/ebs.mat"))
 
 quads = Magnet(MagnetArrayConfigModel(name="quadsForTune", elements=names))
 
@@ -142,12 +140,8 @@ correctionmat = np.linalg.pinv(tunemat.T)
 # we directly connect to th CS
 qxAtt, qyAtt = control.attach(
     [
-        AttributeReadOnly(
-            AttributeReadOnlyConfig(attribute="sys/ringsimulator/ebs/Tune_h", unit="")
-        ),
-        AttributeReadOnly(
-            AttributeReadOnlyConfig(attribute="sys/ringsimulator/ebs/Tune_v", unit="")
-        ),
+        AttributeReadOnly(AttributeReadOnlyConfig(attribute="sys/ringsimulator/ebs/Tune_h", unit="")),
+        AttributeReadOnly(AttributeReadOnlyConfig(attribute="sys/ringsimulator/ebs/Tune_v", unit="")),
     ]
 )
 

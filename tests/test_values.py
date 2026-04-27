@@ -30,9 +30,7 @@ class TestBasicValue:
         assert allez_venez == 6
         assert allez_venez == Value(6)
 
-        laissez_faire_l_insouciance = Value(allez_venez) / Value(
-            et_entrez_dans_la_danse
-        )
+        laissez_faire_l_insouciance = Value(allez_venez) / Value(et_entrez_dans_la_danse)
         assert isinstance(laissez_faire_l_insouciance, float)
         assert laissez_faire_l_insouciance == 3
 

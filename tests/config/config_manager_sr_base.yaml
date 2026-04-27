@@ -1,0 +1,13 @@
+type: pyaml.accelerator
+facility: ESRF
+machine: sr
+energy: 6e9
+simulators:
+  - type: pyaml.lattice.simulator
+    lattice: sr/lattices/ebs.mat
+    name: design
+controls:
+  - type: tango.pyaml.controlsystem
+    tango_host: ebs-simu-3:10000
+    name: live
+data_folder: /data/store

@@ -5,9 +5,7 @@ from pyaml.accelerator import Accelerator
 
 
 def test_tune():
-    sr: Accelerator = Accelerator.load(
-        "tests/config/EBSTune.yaml", ignore_external=True
-    )
+    sr: Accelerator = Accelerator.load("tests/config/EBSTune.yaml", ignore_external=True)
 
     assert sr.get_description() == "Accelerator configuration for EBS storage ring"
     assert sr.design.get_magnet("QF1E-C04").get_description() == "QF1E-C04 quadrupole"
@@ -16,7 +14,6 @@ def test_tune():
     sr.design.get_lattice().disable_6d()
 
     quadForTuneDesign = sr.design.get_magnets("QForTune")
-    quadForTuneLive = sr.live.get_magnets("QForTune")
     tune_monitor = sr.design.get_betatron_tune_monitor("BETATRON_TUNE")
     # Build tune response matrix
     tune = tune_monitor.tune.get()
@@ -32,9 +29,13 @@ def test_tune():
 
     # Compute correction matrix
     correctionmat = np.linalg.pinv(tunemat.T)
+    print(correctionmat.shape)
+    print(correctionmat)
 
     # Correct tune
     strs = quadForTuneDesign.strengths.get()
+    print(len(strs))
+    print(strs)
     strs += np.matmul(correctionmat, [0.1, 0.05])  # Ask for correction [dqx,dqy]
     quadForTuneDesign.strengths.set(strs)
     newTune = tune_monitor.tune.get()

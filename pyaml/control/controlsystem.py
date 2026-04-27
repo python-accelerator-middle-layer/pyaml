@@ -9,13 +9,13 @@ from ..common.element import Element
 from ..common.element_holder import ElementHolder
 from ..common.exception import PyAMLException
 from ..configuration.factory import Factory
+from ..configuration.unbound_element import UnboundElement
 from ..control.abstract_impl import (
     CSBPMArrayMapper,
     CSScalarAggregator,
     CSStrengthScalarAggregator,
     RBetatronTuneArray,
     RBpmArray,
-    RChromaticityArray,
     RWBpmOffsetArray,
     RWBpmTiltScalar,
     RWHardwareArray,
@@ -26,17 +26,15 @@ from ..control.abstract_impl import (
     RWStrengthArray,
     RWStrengthScalar,
 )
-from ..diagnostics.chromaticity_monitor import ChomaticityMonitor
+from ..diagnostics.atune_monitor import ABetatronTuneMonitor
 from ..diagnostics.tune_monitor import BetatronTuneMonitor
 from ..magnet.cfm_magnet import CombinedFunctionMagnet
 from ..magnet.magnet import Magnet
 from ..magnet.serialized_magnet import SerializedMagnets
 from ..rf.rf_plant import RFPlant, RWTotalVoltage
 from ..rf.rf_transmitter import RFTransmitter
-from ..tuning_tools.dispersion import Dispersion
-from ..tuning_tools.orbit import Orbit
-from ..tuning_tools.orbit_response_matrix import OrbitResponseMatrix
-from ..tuning_tools.tune import Tune
+from ..tuning_tools.measurement_tool import MeasurementTool
+from ..tuning_tools.tuning_tool import TuningTool
 from .deviceaccess import DeviceAccess
 
 
@@ -86,18 +84,14 @@ class ControlSystem(ElementHolder, metaclass=ABCMeta):
         agg = Factory.build_object({"type": mod}) if mod is not None else None
         return CSScalarAggregator(agg)
 
-    def create_magnet_strength_aggregator(
-        self, magnets: list[Magnet]
-    ) -> ScalarAggregator:
+    def create_magnet_strength_aggregator(self, magnets: list[Magnet]) -> ScalarAggregator:
         agg = CSStrengthScalarAggregator(self.create_scalar_aggregator())
         for m in magnets:
             devs = self.attach(m.model.get_devices())
             agg.add_magnet(m, devs)
         return agg
 
-    def create_magnet_hardware_aggregator(
-        self, magnets: list[Magnet]
-    ) -> ScalarAggregator:
+    def create_magnet_hardware_aggregator(self, magnets: list[Magnet]) -> ScalarAggregator:
         """When working in hardware space, 1 single power
         supply device per multipolar strength is required
         """
@@ -149,10 +143,7 @@ class ControlSystem(ElementHolder, metaclass=ABCMeta):
             if len(allH) > 1 or len(allV) > 1:
                 # Does not support aggregator for individual BPM that
                 # returns an array of [x,y]
-                print(
-                    "Warning, Individual BPM that returns [x,y]"
-                    + " are not read in parralell"
-                )
+                print("Warning, Individual BPM that returns [x,y]" + " are not read in parralell")
                 # Default to serialized readding
                 return [None, None, None]
 
@@ -171,22 +162,7 @@ class ControlSystem(ElementHolder, metaclass=ABCMeta):
             aggv = CSBPMArrayMapper(allV, [vIdx])
             return [agg, aggh, aggv]
         else:
-            raise PyAMLException(
-                "Indexed BPM and scalar values cannot be mixed in the same array"
-            )
-
-    def set_energy(self, E: float):
-        """
-        Sets the energy on magnets belonging to this control system
-
-        Parameters
-        ----------
-        E : float
-            Energy in eV
-        """
-        # Needed by energy dependant element (i.e. magnet coil current calculation)
-        for m in self.get_all_elements():
-            m.set_energy(E)
+            raise PyAMLException("Indexed BPM and scalar values cannot be mixed in the same array")
 
     def fill_device(self, elements: list[Element]):
         """
@@ -202,12 +178,8 @@ class ControlSystem(ElementHolder, metaclass=ABCMeta):
         for e in elements:
             if isinstance(e, Magnet):
                 dev = self.attach(e.model.get_devices())[0]
-                current = (
-                    RWHardwareScalar(e.model, dev) if e.model.has_hardware() else None
-                )
-                strength = (
-                    RWStrengthScalar(e.model, dev) if e.model.has_physics() else None
-                )
+                current = RWHardwareScalar(e.model, dev) if e.model.has_hardware() else None
+                strength = RWStrengthScalar(e.model, dev) if e.model.has_physics() else None
                 # Create a unique ref for this control system
                 m = e.attach(self, strength, current)
                 self.add_magnet(m)
@@ -230,16 +202,8 @@ class ControlSystem(ElementHolder, metaclass=ABCMeta):
                 # Create unique refs the series and each of its function for this
                 # control system
                 for i in range(e.get_nb_magnets()):
-                    current = (
-                        RWHardwareScalar(e.model.get_sub_model(i), devs[i])
-                        if e.model.has_hardware()
-                        else None
-                    )
-                    strength = (
-                        RWStrengthScalar(e.model.get_sub_model(i), devs[i])
-                        if e.model.has_physics()
-                        else None
-                    )
+                    current = RWHardwareScalar(e.model.get_sub_model(i), devs[i]) if e.model.has_hardware() else None
+                    strength = RWStrengthScalar(e.model.get_sub_model(i), devs[i]) if e.model.has_physics() else None
                     currents.append(current)
                     strengths.append(strength)
                 ms = e.attach(self, strengths, currents)
@@ -283,24 +247,44 @@ class ControlSystem(ElementHolder, metaclass=ABCMeta):
                 self.add_rf_plant(ne)
 
             elif isinstance(e, BetatronTuneMonitor):
+                # Built in tune monitor
                 tuneDevs = self.attach([e._cfg.tune_h, e._cfg.tune_v])
                 betatron_tune = RBetatronTuneArray(e, tuneDevs)
                 e = e.attach(self, betatron_tune)
                 self.add_betatron_tune_monitor(e)
 
-            elif isinstance(e, ChomaticityMonitor):
-                chromaticity = RChromaticityArray(e)
-                e = e.attach(self, chromaticity)
-                self.add_chromaticity_monitor(e)
+            elif isinstance(e, TuningTool) | isinstance(e, MeasurementTool):
+                self.add_tool(e.attach(self))
 
-            elif isinstance(e, Tune):
-                self.add_tune_tuning(e.attach(self))
+            elif isinstance(e, UnboundElement):
+                if self.name() in e._control_modes:
+                    ne = Factory.build_unbound(e, self)
+                    if isinstance(ne, ABetatronTuneMonitor):
+                        self.add_betatron_tune_monitor(ne)
+                    else:
+                        # Default to standard Element
+                        self.add_element(ne)
 
-            elif isinstance(e, Orbit):
-                self.add_orbit_tuning(e.attach(self))
 
-            elif isinstance(e, OrbitResponseMatrix):
-                self.add_orm_tuning(e.attach(self))
+class ControlSystemAdapter(ControlSystem):
+    """
+    Control system adapter class
+    """
 
-            elif isinstance(e, Dispersion):
-                self.add_dispersion_tuning(e.attach(self))
+    def __init__(self):
+        ControlSystem.__init__(self)
+
+    def attach(self, dev: list[DeviceAccess]) -> list[DeviceAccess]:
+        pass
+
+    def attach_array(self, dev: list[DeviceAccess]) -> list[DeviceAccess]:
+        pass
+
+    def name(self) -> str:
+        pass
+
+    def scalar_aggregator(self) -> str | None:
+        return None
+
+    def vector_aggregator(self) -> str | None:
+        return None

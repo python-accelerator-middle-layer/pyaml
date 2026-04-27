@@ -46,14 +46,10 @@ class IdentityCFMagnetModel(MagnetModel):
         self.__nbFunction: int = len(cfg.multipoles)
 
         if cfg.physics is None and cfg.powerconverters is None:
-            raise PyAMLException(
-                "Invalid IdentityCFMagnetModel configuration,"
-                "physics or powerconverters device required"
-            )
+            raise PyAMLException("Invalid IdentityCFMagnetModel configuration,physics or powerconverters device required")
         if cfg.physics is not None and cfg.powerconverters is not None:
             raise PyAMLException(
-                "Invalid IdentityCFMagnetModel configuration,"
-                "physics or powerconverters device required but not both"
+                "Invalid IdentityCFMagnetModel configuration,physics or powerconverters device required but not both"
             )
         if cfg.physics:
             self.__devices = cfg.physics
@@ -68,8 +64,7 @@ class IdentityCFMagnetModel(MagnetModel):
         lgth = len(obj)
         if lgth != expected_len:
             raise PyAMLException(
-                f"{name} does not have the expected "
-                f"number of items ({expected_len} items expected but got {lgth})"
+                f"{name} does not have the expected number of items ({expected_len} items expected but got {lgth})"
             )
 
     def compute_hardware_values(self, strengths: np.array) -> np.array:

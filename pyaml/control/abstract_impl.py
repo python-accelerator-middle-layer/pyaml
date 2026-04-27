@@ -66,10 +66,7 @@ def check_range(values: Any, dev_range: Any) -> bool:
         mins = np.full(n, mins_obj[0], dtype=object)
         maxs = np.full(n, maxs_obj[0], dtype=object)
     else:
-        raise ValueError(
-            f"Inconsistent sizes: {n} value(s) for {k} range(s). "
-            f"Supported: N==K, N==1, or K==1."
-        )
+        raise ValueError(f"Inconsistent sizes: {n} value(s) for {k} range(s). Supported: N==K, N==1, or K==1.")
 
     # ---- Replace None bounds with -inf / +inf (NumPy-safe) ----
     mins_is_none = np.equal(mins, None)
@@ -99,11 +96,7 @@ def _iter_devices_and_ranges(devs: DeviceAccess | DeviceAccessList):
       - DeviceAccessList: yields N items based on get_devices() and get_range() flattening
     """
     # Single device
-    if (
-        hasattr(devs, "get")
-        and hasattr(devs, "get_range")
-        and not hasattr(devs, "get_devices")
-    ):
+    if hasattr(devs, "get") and hasattr(devs, "get_range") and not hasattr(devs, "get_devices"):
         r = devs.get_range()
         if r is None:
             r = [None, None]
@@ -160,13 +153,10 @@ def format_out_of_range_message(
         vv = v
         pairs = [dev_pairs[0]] * n
     else:
-        raise ValueError(
-            f"Inconsistent sizes: {n} value(s) for {k} device(s). "
-            f"Supported: N==K, N==1, or K==1."
-        )
+        raise ValueError(f"Inconsistent sizes: {n} value(s) for {k} device(s). Supported: N==K, N==1, or K==1.")
 
     lines = [header]
-    for val, (dev, r) in zip(vv, pairs):
+    for val, (dev, r) in zip(vv, pairs, strict=True):
         if not check_range(val, r):
             unit = dev.unit() if hasattr(dev, "unit") else ""
             name = str(dev)
@@ -233,11 +223,7 @@ class CSStrengthScalarAggregator(CSScalarAggregator):
         # a CombinedFunctionMagnet or simple magnet.
         # All magnets exported from a same CombinedFunctionMagnet share the same model
         # TODO: check that strength is supported (m.strength may be None)
-        strengthIndex = (
-            magnet.strength.index()
-            if isinstance(magnet.strength, abstract.RWMapper)
-            else 0
-        )
+        strengthIndex = magnet.strength.index() if isinstance(magnet.strength, abstract.RWMapper) else 0
         if magnet.model not in self.__models:
             index = len(self.__models)
             self.__models.append(magnet.model)
@@ -254,20 +240,14 @@ class CSStrengthScalarAggregator(CSScalarAggregator):
         hardwareIndex = 0
         for modelIndex, model in enumerate(self.__models):
             nbDev = len(model.get_devices())
-            mStrengths = model.compute_strengths(
-                allHardwareValues[hardwareIndex : hardwareIndex + nbDev]
-            )
+            mStrengths = model.compute_strengths(allHardwareValues[hardwareIndex : hardwareIndex + nbDev])
             for valueIdx, strengthIdx in self.__modelToMagnet[modelIndex]:
                 mStrengths[strengthIdx] = value[valueIdx]
-            newHardwareValues[hardwareIndex : hardwareIndex + nbDev] = (
-                model.compute_hardware_values(mStrengths)
-            )
+            newHardwareValues[hardwareIndex : hardwareIndex + nbDev] = model.compute_hardware_values(mStrengths)
             hardwareIndex += nbDev
         dev_range = self._devs.get_range()
         if not check_range(newHardwareValues, dev_range):
-            raise PyAMLException(
-                format_out_of_range_message(newHardwareValues, self._devs)
-            )
+            raise PyAMLException(format_out_of_range_message(newHardwareValues, self._devs))
         self._devs.set(newHardwareValues)
 
     def set_and_wait(self, value: NDArray[np.float64]):
@@ -279,9 +259,7 @@ class CSStrengthScalarAggregator(CSScalarAggregator):
         hardwareIndex = 0
         for modelIndex, model in enumerate(self.__models):
             nbDev = len(model.get_devices())
-            mStrengths = model.compute_strengths(
-                allHardwareValues[hardwareIndex : hardwareIndex + nbDev]
-            )
+            mStrengths = model.compute_strengths(allHardwareValues[hardwareIndex : hardwareIndex + nbDev])
             for valueIdx, strengthIdx in self.__modelToMagnet[modelIndex]:
                 allStrength[valueIdx] = mStrengths[strengthIdx]
             hardwareIndex += nbDev
@@ -293,9 +271,7 @@ class CSStrengthScalarAggregator(CSScalarAggregator):
         hardwareIndex = 0
         for modelIndex, model in enumerate(self.__models):
             nbDev = len(model.get_devices())
-            mStrengths = model.compute_strengths(
-                allHardwareValues[hardwareIndex : hardwareIndex + nbDev]
-            )
+            mStrengths = model.compute_strengths(allHardwareValues[hardwareIndex : hardwareIndex + nbDev])
             for valueIdx, strengthIdx in self.__modelToMagnet[modelIndex]:
                 allStrength[valueIdx] = mStrengths[strengthIdx]
             hardwareIndex += nbDev
@@ -706,23 +682,3 @@ class RBetatronTuneArray(abstract.ReadFloatArray):
 
 
 # ------------------------------------------------------------------------------
-
-
-class RChromaticityArray(abstract.ReadFloatArray):
-    """
-    Class providing read write access to chromaticity of a control system.
-    """
-
-    def __init__(self, chromaticity_monitor):
-        self.__chromaticity_monitor = chromaticity_monitor
-
-    def _update_chromaticity_monitor(self, chromaticity_monitor):
-        """Use to attach the proper chromaticity_monitor and not the one used to create this instance"""
-        self.__chromaticity_monitor = chromaticity_monitor
-
-    def get(self) -> NDArray:
-        # Return horizontal and vertical chromaticity as a NumPy array
-        return self.__chromaticity_monitor._last_measured
-
-    def unit(self) -> str:
-        return "1"

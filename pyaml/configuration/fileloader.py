@@ -58,34 +58,25 @@ class PyAMLConfigCyclingException(PyAMLException):
     def __init__(self, error_filename: str, path_stack: list[Path]):
         self.error_filename = error_filename
         parent_file_stack = [parent_path.name for parent_path in path_stack]
-        super().__init__(
-            f"Circular file inclusion of {error_filename}. "
-            f"File list before reaching it: {parent_file_stack}"
-        )
+        super().__init__(f"Circular file inclusion of {error_filename}. File list before reaching it: {parent_file_stack}")
 
     pass
 
 
-def load(
-    filename: str, paths_stack: list = None, use_fast_loader: bool = False
-) -> Union[dict, list]:
+def load(filename: str, paths_stack: list = None, use_fast_loader: bool = False) -> Union[dict, list]:
     """Load recursively a configuration setup"""
     if filename.endswith(".yaml") or filename.endswith(".yml"):
         l = YAMLLoader(filename, paths_stack, use_fast_loader)
     elif filename.endswith(".json"):
         l = JSONLoader(filename, paths_stack, use_fast_loader)
     else:
-        raise PyAMLException(
-            f"{filename} File format not supported (only .yaml .yml or .json)"
-        )
+        raise PyAMLException(f"{filename} File format not supported (only .yaml .yml or .json)")
     return l.load()
 
 
 # Expand condition
 def hasToLoad(value):
-    return isinstance(value, str) and any(
-        value.endswith(suffix) for suffix in accepted_suffixes
-    )
+    return isinstance(value, str) and any(value.endswith(suffix) for suffix in accepted_suffixes)
 
 
 # Loader base class (nested files expansion)
@@ -94,9 +85,7 @@ class Loader:
         self.path: Path = get_path(filename)
         self.files_stack: list[Path] = []
         if parent_path_stack:
-            if any(
-                self.path.samefile(parent_path) for parent_path in parent_path_stack
-            ):
+            if any(self.path.samefile(parent_path) for parent_path in parent_path_stack):
                 raise PyAMLConfigCyclingException(filename, parent_path_stack)
             self.files_stack.extend(parent_path_stack)
         self.files_stack.append(self.path)
@@ -124,18 +113,24 @@ class Loader:
                         location = field_locations[key]
                         file, line, col = location
                     location_str = f" in {file} at line {line}, column {col}"
-                raise PyAMLException(
-                    "Circular file inclusion "
-                    f"of {pyaml_ex.error_filename}{location_str}"
-                ) from pyaml_ex
+                raise PyAMLException(f"Circular file inclusion of {pyaml_ex.error_filename}{location_str}") from pyaml_ex
 
     # Recursively expand a list
     def expand_list(self, l: list):
-        for idx, value in enumerate(l):
+        idx = 0
+        while idx < len(l):
+            value = l[idx]
             if hasToLoad(value):
-                l[idx] = load(value, self.files_stack)
+                obj = load(value, self.files_stack)
+                if isinstance(obj, list):
+                    l[idx : idx + 1] = obj
+                    idx += len(obj)
+                else:
+                    l[idx] = obj
+                    idx += 1
             else:
                 self.expand(value)
+                idx += 1
 
     # Recursively expand an object
     def expand(self, obj: Union[dict, list]):

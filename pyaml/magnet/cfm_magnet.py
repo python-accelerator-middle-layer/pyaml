@@ -53,23 +53,16 @@ class CombinedFunctionMagnet(Element):
         if peer is None:
             # Configuration part
             if self.model is not None and not hasattr(self.model._cfg, "multipoles"):
-                raise PyAMLException(
-                    f"{cfg.name} model: mutipoles"
-                    "field required for combined function magnet"
-                )
+                raise PyAMLException(f"{cfg.name} model: mutipolesfield required for combined function magnet")
 
             idx = 0
             self.polynoms = []
             for _idx, m in enumerate(cfg.mapping):
                 # Check mapping validity
                 if len(m) != 2:
-                    raise PyAMLException(
-                        "Invalid CombinedFunctionMagnet mapping for {m}"
-                    )
+                    raise PyAMLException("Invalid CombinedFunctionMagnet mapping for {m}")
                 if m[0] not in _fmap:
-                    raise PyAMLException(
-                        m[0] + " not implemented for combined function magnet"
-                    )
+                    raise PyAMLException(m[0] + " not implemented for combined function magnet")
                 if m[0] not in self.model._cfg.multipoles:
                     raise PyAMLException(m[0] + " not found in underlying magnet model")
                 self.polynoms.append(_fmap[m[0]].polynom)
@@ -127,9 +120,7 @@ class CombinedFunctionMagnet(Element):
         """
         self.check_peer()
         if self.__strengths is None:
-            raise PyAMLException(
-                f"{str(self)} has no model that supports physics units"
-            )
+            raise PyAMLException(f"{str(self)} has no model that supports physics units")
         return self.__strengths
 
     @property
@@ -140,9 +131,7 @@ class CombinedFunctionMagnet(Element):
         """
         self.check_peer()
         if self.__hardwares is None:
-            raise PyAMLException(
-                f"{str(self)} has no model that supports hardware units"
-            )
+            raise PyAMLException(f"{str(self)} has no model that supports hardware units")
         return self.__hardwares
 
     def set_energy(self, E: float):

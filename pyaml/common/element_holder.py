@@ -2,6 +2,8 @@
 Module handling element references for simulators and control system
 """
 
+import fnmatch
+import re
 from typing import TYPE_CHECKING
 
 from ..arrays.bpm_array import BPMArray
@@ -21,10 +23,14 @@ from ..rf.rf_transmitter import RFTransmitter
 from .element import Element
 
 if TYPE_CHECKING:
+    from ..accelerator import Accelerator
+    from ..tuning_tools.chromaticity import Chromaticity
+    from ..tuning_tools.chromaticity_response_matrix import ChromaticityResponseMatrix
     from ..tuning_tools.dispersion import Dispersion
     from ..tuning_tools.orbit import Orbit
     from ..tuning_tools.orbit_response_matrix import OrbitResponseMatrix
     from ..tuning_tools.tune import Tune
+    from ..tuning_tools.tune_response_matrix import TuneResponseMatrix
 
 
 class ElementHolder(object):
@@ -35,15 +41,24 @@ class ElementHolder(object):
 
     def __init__(self):
         # Device handle
-        self.__MAGNETS: dict = {}
-        self.__CFM_MAGNETS: dict = {}
-        self.__SERIALIZED_MAGNETS: dict = {}
-        self.__BPMS: dict = {}
-        self.__RFPLANT: dict = {}
-        self.__RFTRANSMITTER: dict = {}
-        self.__DIAG: dict = {}
-        self.__TUNING_TOOLS = {}
-        self.__ALL: dict = {}
+        self.__MAGNETS: dict[str, Magnet] = {}
+        self.__CFM_MAGNETS: dict[str, CombinedFunctionMagnet] = {}
+        self.__SERIALIZED_MAGNETS: dict[str, SerializedMagnets] = {}
+        self.__BPMS: dict[str, BPM] = {}
+        self.__RFPLANT: dict[str, RFPlant] = {}
+        self.__RFTRANSMITTER: dict[str, RFTransmitter] = {}
+        self.__DIAG: dict[str, Element] = {}
+        self.__TUNING_TOOLS: dict[str, Element] = {}
+        self.__ALL: dict[str, Element] = {}
+
+        self.__by_class_elements: dict[type, dict] = {
+            Magnet: self.__MAGNETS,
+            CombinedFunctionMagnet: self.__CFM_MAGNETS,
+            SerializedMagnets: self.__SERIALIZED_MAGNETS,
+            BPM: self.__BPMS,
+            RFPlant: self.__RFPLANT,
+            RFTransmitter: self.__RFTRANSMITTER,
+        }
 
         # Array handle
         self.__MAGNET_ARRAYS: dict = {}
@@ -51,6 +66,13 @@ class ElementHolder(object):
         self.__SERIALIZED_MAGNETS_ARRAYS: dict = {}
         self.__BPM_ARRAYS: dict = {}
         self.__ELEMENT_ARRAYS: dict = {}
+
+    @property
+    def peer(self) -> "Accelerator":
+        """
+        Returns the peer accelerator of this holder
+        """
+        return self._peer
 
     def post_init(self):
         """
@@ -62,31 +84,52 @@ class ElementHolder(object):
     def fill_device(self, elements: list[Element]):
         raise PyAMLException("ElementHolder.fill_device() is not subclassed")
 
+    def find_elements(self, filter: str) -> list[str]:
+        if filter.startswith("re:"):
+            pattern = re.compile(rf"{filter[3:]}")
+            elements = [k for k in self.__ALL.keys() if pattern.fullmatch(k)]
+        elif "*" in filter or "?" in filter:
+            elements = [k for k in self.__ALL.keys() if fnmatch.fnmatch(k, filter)]
+        else:
+            elements = [filter]
+
+        return elements
+
     def fill_array(
-        self, arrayName: str, elementNames: list[str], get_func, constructor, ARR: dict
+        self,
+        array_name: str,
+        element_names: list[str],
+        get_func,
+        constructor,
+        ARR: dict,
     ):
+        # Handle wildcard, regexp and exclusion pattern
+        all_names: list[str] = []
+        excluded_names: list[str] = []
+        for name in element_names:
+            if name.startswith("~"):
+                names = self.find_elements(name[1:])
+                excluded_names.extend(names)
+            else:
+                names = self.find_elements(name)
+                all_names.extend(names)
+
+        [all_names.remove(name) for name in excluded_names]
+
         a = []
-        for name in elementNames:
+        for n in all_names:
             try:
-                m = get_func(name)
+                m = get_func(n)
             except Exception as err:
-                raise PyAMLException(
-                    f"{constructor.__name__} {arrayName} : {err} @index {len(a)}"
-                ) from None
+                raise PyAMLException(f"{constructor.__name__} {array_name} : {err} @index {len(a)}") from None
             if m in a:
-                raise PyAMLException(
-                    f"{constructor.__name__} {arrayName} : "
-                    f"duplicate name {name} @index {len(a)}"
-                ) from None
+                raise PyAMLException(f"{constructor.__name__} {array_name} : duplicate name {name} @index {len(a)}") from None
             a.append(m)
-        ARR[arrayName] = constructor(arrayName, a)
+        ARR[array_name] = constructor(array_name, a)
 
     def __add(self, array, element: Element):
         if element.get_name() in self.__ALL:  # Ensure name unicity
-            raise PyAMLException(
-                f"Duplicate element {element.__class__.__name__} "
-                "name {element.get_name()}"
-            ) from None
+            raise PyAMLException(f"Duplicate element {element.__class__.__name__} name {{element.get_name()}}") from None
         array[element.get_name()] = element
         self.__ALL[element.get_name()] = element
 
@@ -105,6 +148,9 @@ class ElementHolder(object):
             self.__ELEMENT_ARRAYS,
         )
 
+    def add_element(self, element: Element):
+        self.__ALL[element.get_name()] = element
+
     def get_element(self, name: str) -> Element:
         return self.__get("Element", name, self.__ALL)
 
@@ -117,9 +163,7 @@ class ElementHolder(object):
     # Magnets
 
     def fill_magnet_array(self, arrayName: str, elementNames: list[str]):
-        self.fill_array(
-            arrayName, elementNames, self.get_magnet, MagnetArray, self.__MAGNET_ARRAYS
-        )
+        self.fill_array(arrayName, elementNames, self.get_magnet, MagnetArray, self.__MAGNET_ARRAYS)
 
     def get_magnet(self, name: str) -> Magnet:
         return self.__get("Magnet", name, self.__MAGNETS)
@@ -151,9 +195,7 @@ class ElementHolder(object):
         self.__add(self.__CFM_MAGNETS, m)
 
     def get_cfm_magnets(self, name: str) -> CombinedFunctionMagnetArray:
-        return self.__get(
-            "CombinedFunctionMagnet array", name, self.__CFM_MAGNET_ARRAYS
-        )
+        return self.__get("CombinedFunctionMagnet array", name, self.__CFM_MAGNET_ARRAYS)
 
     def get_all_cfm_magnets(self) -> list[CombinedFunctionMagnet]:
         return [value for key, value in self.__CFM_MAGNETS.items()]
@@ -176,9 +218,7 @@ class ElementHolder(object):
         self.__add(self.__SERIALIZED_MAGNETS, m)
 
     def get_serialized_magnets(self, name: str) -> SerializedMagnetsArray:
-        return self.__get(
-            "SerializedMagnets array", name, self.__SERIALIZED_MAGNETS_ARRAYS
-        )
+        return self.__get("SerializedMagnets array", name, self.__SERIALIZED_MAGNETS_ARRAYS)
 
     def get_all_serialized_magnets(self) -> list[SerializedMagnets]:
         return [value for key, value in self.__SERIALIZED_MAGNETS.items()]
@@ -187,7 +227,11 @@ class ElementHolder(object):
 
     def fill_bpm_array(self, arrayName: str, elementNames: list[str]):
         self.fill_array(
-            arrayName, elementNames, self.get_bpm, BPMArray, self.__BPM_ARRAYS
+            arrayName,
+            elementNames,
+            self.get_bpm,
+            BPMArray,
+            self.__BPM_ARRAYS,
         )
 
     def get_bpm(self, name: str) -> Element:
@@ -224,32 +268,51 @@ class ElementHolder(object):
     def add_betatron_tune_monitor(self, tune_monitor: Element):
         self.__add(self.__DIAG, tune_monitor)
 
-    # Chromaticity monitor
+    # Tuning/Measurement tools
+
+    def add_tool(self, tool: Element):
+        self.__add(self.__TUNING_TOOLS, tool)
+
+    # ---- Chromaticity -------------------------------------------------
 
     def get_chromaticity_monitor(self, name: str) -> ChomaticityMonitor:
-        obj = self.__get("Diagnostic", name, self.__DIAG)
+        obj = self.__get("Chomaticity monitor", name, self.__TUNING_TOOLS)
         return obj
 
-    def add_chromaticity_monitor(self, chromaticity_monitor: Element):
-        self.__add(self.__DIAG, chromaticity_monitor)
+    def get_chromaticity_tuning(self, name: str) -> "Chromaticity":
+        return self.__get("Chromaticity tool", name, self.__TUNING_TOOLS)
 
-    # Tuning tools
+    def get_crm_tuning(self, name: str) -> "ChromaticityResponseMatrix":
+        return self.__get("ChromaticityResponseMatrix tool", name, self.__TUNING_TOOLS)
+
+    @property
+    def chromaticity(self) -> "Chromaticity":
+        return self.get_chromaticity_tuning("DEFAULT_CHROMATICITY_CORRECTION")
+
+    @property
+    def crm(self) -> "ChromaticityResponseMatrix":
+        return self.get_crm_tuning("DEFAULT_CHROMATICITY_RESPONSE_MATRIX")
+
+    # ---- Tune ---------------------------------------------------------
 
     def get_tune_tuning(self, name: str) -> "Tune":
         return self.__get("Tune tuning tool", name, self.__TUNING_TOOLS)
-
-    def add_tune_tuning(self, tune: Element):
-        self.__add(self.__TUNING_TOOLS, tune)
 
     @property
     def tune(self) -> "Tune":
         return self.get_tune_tuning("DEFAULT_TUNE_CORRECTION")
 
+    def get_trm_tuning(self, name: str) -> "TuneResponseMatrix":
+        return self.__get("TuneResponseMatrix tool", name, self.__TUNING_TOOLS)
+
+    @property
+    def trm(self) -> "TuneResponseMatrix":
+        return self.get_trm_tuning("DEFAULT_TUNE_RESPONSE_MATRIX")
+
+    # ---- Orbit --------------------------------------------------------
+
     def get_orbit_tuning(self, name: str) -> "Orbit":
         return self.__get("Orbit tuning tool", name, self.__TUNING_TOOLS)
-
-    def add_orbit_tuning(self, orbit: Element):
-        self.__add(self.__TUNING_TOOLS, orbit)
 
     @property
     def orbit(self) -> "Orbit":
@@ -258,19 +321,113 @@ class ElementHolder(object):
     def get_orm_tuning(self, name: str) -> "OrbitResponseMatrix":
         return self.__get("OrbitResponseMatrix tool", name, self.__TUNING_TOOLS)
 
-    def add_orm_tuning(self, orm: Element):
-        self.__add(self.__TUNING_TOOLS, orm)
-
     @property
     def orm(self) -> "OrbitResponseMatrix":
         return self.get_orm_tuning("DEFAULT_ORBIT_RESPONSE_MATRIX")
 
+    # ---- Dispersive orbit --------------------------------------------
+
     def get_dispersion_tuning(self, name: str) -> "Dispersion":
         return self.__get("Dispersion tool", name, self.__TUNING_TOOLS)
-
-    def add_dispersion_tuning(self, dispersion: Element):
-        self.__add(self.__TUNING_TOOLS, dispersion)
 
     @property
     def dispersion(self) -> "Dispersion":
         return self.get_dispersion_tuning("DEFAULT_DISPERSION")
+
+    def _get_array(self, name: str):
+        """
+        Generic array resolver used by YellowPages.
+
+        The method returns the array object referenced by 'name', regardless of its
+        concrete type.
+        """
+        if name in self.__BPM_ARRAYS:
+            return self.__BPM_ARRAYS[name]
+        if name in self.__MAGNET_ARRAYS:
+            return self.__MAGNET_ARRAYS[name]
+        if name in self.__CFM_MAGNET_ARRAYS:
+            return self.__CFM_MAGNET_ARRAYS[name]
+        if name in self.__SERIALIZED_MAGNETS_ARRAYS:
+            return self.__SERIALIZED_MAGNETS_ARRAYS[name]
+        if name in self.__ELEMENT_ARRAYS:
+            return self.__ELEMENT_ARRAYS[name]
+
+        raise PyAMLException(f"Array {name} not defined")
+
+    def _get_tool(self, name: str):
+        """
+        Generic tuning tool resolver used by YellowPages.
+        """
+        if name not in self.__TUNING_TOOLS:
+            raise PyAMLException(f"Tool {name} not defined")
+        return self.__TUNING_TOOLS[name]
+
+    def _get_diagnostic(self, name: str):
+        """
+        Generic diagnostic resolver used by YellowPages.
+        """
+        if name not in self.__DIAG:
+            raise PyAMLException(f"Diagnostic {name} not defined")
+        return self.__DIAG[name]
+
+    def _list_arrays(self) -> list[str]:
+        """
+        Return all array identifiers available in this holder.
+        """
+        arrays: list[str] = []
+        arrays.extend(self.__BPM_ARRAYS.keys())
+        arrays.extend(self.__MAGNET_ARRAYS.keys())
+        arrays.extend(self.__CFM_MAGNET_ARRAYS.keys())
+        arrays.extend(self.__SERIALIZED_MAGNETS_ARRAYS.keys())
+        arrays.extend(self.__ELEMENT_ARRAYS.keys())
+        return arrays
+
+    def _list_tools(self) -> list[str]:
+        """
+        Return all tuning tool identifiers available in this holder.
+        """
+        return list(self.__TUNING_TOOLS.keys())
+
+    def _list_diagnostics(self) -> list[str]:
+        """
+        Return all diagnostic identifiers available in this holder.
+        """
+        return list(self.__DIAG.keys())
+
+    def _set_energy(self, E: float):
+        """
+        Sets the energy on all elements
+
+        Parameters
+        ----------
+        E : float
+            Energy in eV
+        """
+        # Needed by energy dependant element (i.e. magnet coil current calculation)
+        for m in self.get_all_elements():
+            m.set_energy(E)
+
+    def _set_mcf(self, alphac: float):
+        """
+        Sets the moment compaction factor on all elements
+
+        Parameters
+        ----------
+        alphac : float
+            Moment compaction factor
+        """
+        # Needed by some off energy dependant element (i.e. chromaticty tools)
+        for m in self.get_all_elements():
+            m.set_mcf(alphac)
+
+    def _set_harmonic(self, h: int):
+        """
+        Sets the harmonic number (number of bucket) on elements
+
+        Parameters
+        ----------
+        h : int
+            Harmonic number
+        """
+        for m in self.get_all_elements():
+            m.set_harmonic(h)

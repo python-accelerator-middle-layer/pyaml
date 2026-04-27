@@ -32,19 +32,12 @@ vcorr = ebs.get_magnets("VCorr")
 bpms = ebs.get_bpms("BPM")
 
 # mangle orbit
-hcorr.strengths.set(
-    hcorr.strengths.get() + std_kick * np.random.normal(size=len(hcorr))
-)
-vcorr.strengths.set(
-    vcorr.strengths.get() + std_kick * np.random.normal(size=len(vcorr))
-)
+hcorr.strengths.set(hcorr.strengths.get() + std_kick * np.random.normal(size=len(hcorr)))
+vcorr.strengths.set(vcorr.strengths.get() + std_kick * np.random.normal(size=len(vcorr)))
 
 positions_bc = bpms.positions.get()
 std_bc = np.std(positions_bc, axis=0)
-print(
-    "R.m.s. orbit before correction "
-    f"H: {1e6 * std_bc[0]: .1f} µm, V: {1e6 * std_bc[1]: .1f} µm."
-)
+print(f"R.m.s. orbit before correction H: {1e6 * std_bc[0]: .1f} µm, V: {1e6 * std_bc[1]: .1f} µm.")
 ########################################################
 
 ## Correct the orbit
@@ -58,10 +51,7 @@ ebs.orbit.correct(reference=reference, rf=True, gain_H=1, gain_V=1, gain_RF=1)
 ## inspect orbit correction
 positions_ac = bpms.positions.get()
 std_ac = np.std(positions_ac, axis=0)
-print(
-    "R.m.s. orbit after correction H: "
-    f"{1e6 * std_ac[0]: .1f} µm, V: {1e6 * std_ac[1]: .1f} µm,"
-)
+print(f"R.m.s. orbit after correction H: {1e6 * std_ac[0]: .1f} µm, V: {1e6 * std_ac[1]: .1f} µm,")
 
 fig = plt.figure()
 ax1 = fig.add_subplot(311)

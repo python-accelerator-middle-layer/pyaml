@@ -2,21 +2,13 @@
 import fnmatch
 import importlib
 from threading import Lock
+from typing import TypedDict, get_type_hints
 
 from pydantic import ValidationError
 
 from ..common.element import Element
 from ..common.exception import PyAMLConfigException
-
-
-class BuildStrategy:
-    def can_handle(self, module: object, config_dict: dict) -> bool:
-        """Return True if this strategy can handle the module/config."""
-        raise NotImplementedError
-
-    def build(self, module: object, config_dict: dict):
-        """Build the object according to custom logic."""
-        raise NotImplementedError
+from .unbound_element import UnboundElement
 
 
 class PyAMLFactory:
@@ -37,17 +29,7 @@ class PyAMLFactory:
                 cls._instance._strategies = []
             return cls._instance
 
-    def register_strategy(self, strategy: BuildStrategy):
-        """Register a plugin-based strategy for object creation."""
-        self._strategies.append(strategy)
-
-    def remove_strategy(self, strategy: BuildStrategy):
-        """Register a plugin-based strategy for object creation."""
-        self._strategies.remove(strategy)
-
-    def handle_validation_error(
-        self, e, type_str: str, location_str: str, field_locations: dict
-    ):
+    def handle_validation_error(self, e, type_str: str, location_str: str, field_locations: dict):
         # Handle pydantic errors
         globalMessage = ""
         for err in e.errors():
@@ -66,14 +48,19 @@ class PyAMLFactory:
             globalMessage += message
             globalMessage += ", "
         # Discard pydantic stack trace
-        raise PyAMLConfigException(
-            f"{globalMessage} for object: '{type_str}' {location_str}"
-        ) from None
+        raise PyAMLConfigException(f"{globalMessage} for object: '{type_str}' {location_str}") from None
 
-    def build_object(self, d: dict, ignore_external: bool = False):
-        """Build an object from the dict"""
-        location = d.pop("__location__", None)
-        field_locations = d.pop("__fieldlocations__", None)
+    def get_field_type(self, config_cls, field_name) -> type:
+        # Get type of a pydantic ConfigModel field
+        if config_cls is None:
+            return None
+        type_hints = get_type_hints(config_cls)
+        return type_hints[field_name] if field_name in type_hints else None
+
+    def get_infos(self, d, ignore_external: bool):
+        # Retrieve informations of object to be constructed
+        location = d["__location__"] if "__location__" in d else None
+        field_locations = d["__fieldlocations__"] if "__fieldlocations__" in d else None
         location_str = ""
         if location:
             file, line, col = location
@@ -82,68 +69,93 @@ class PyAMLFactory:
         if not isinstance(d, dict):
             raise PyAMLConfigException(f"Unexpected object {str(d)} {location_str}")
         if "type" not in d:
-            raise PyAMLConfigException(
-                f"No type specified for {str(type(d))}:{str(d)} {location_str}"
-            )
-        type_str = d.pop("type")
+            raise PyAMLConfigException(f"No type specified for {str(type(d))}:{str(d)} {location_str}")
 
+        module_str = d["type"]
+        class_str = d["class"] if "class" in d else None
+        validation_class_str = d["validation_class"] if "validation_class" in d else "ConfigModel"
+
+        # Import the module
         try:
-            module = importlib.import_module(type_str)
+            module = importlib.import_module(module_str)
         except ModuleNotFoundError as ex:
             if not ignore_external:
                 # Discard module not found stack trace
                 raise PyAMLConfigException(
-                    "Module referenced in type cannot be found:"
-                    + f"'{type_str}' {location_str}"
+                    "Module referenced in type cannot be found:" + f"'{module_str}' {location_str}"
                 ) from None
             else:
                 return None
 
-        # Try plugin strategies first
-        for strategy in self._strategies:
-            try:
-                if strategy.can_handle(module, d):
-                    obj = strategy.build(module, d)
-                    self.register_element(obj)
-                    return obj
-            except Exception as e:
-                raise PyAMLConfigException(
-                    f"Custom strategy failed {location_str}"
-                ) from e
+        # Get the object class name
+        if class_str is None:
+            class_str = getattr(module, "PYAMLCLASS", None)
+        if class_str is None:
+            raise PyAMLConfigException(
+                f"PYAMLCLASS definition not found or class not specified in '{module_str}' {location_str}"
+            )
 
-        # Default loading strategy
-        # Get the config object
-        config_cls = getattr(module, "ConfigModel", None)
+        # Get the validation class
+        config_cls = getattr(module, validation_class_str, None)
         if config_cls is None:
-            raise PyAMLConfigException(
-                f"ConfigModel class '{type_str}.ConfigModel' not found {location_str}"
-            )
+            raise PyAMLConfigException(f"No validation class for '{module.__name__}.{class_str}' {location_str}")
 
-        # Get the class name
-        cls_name = getattr(module, "PYAMLCLASS", None)
-        if cls_name is None:
-            raise PyAMLConfigException(
-                f"PYAMLCLASS definition not found in '{type_str}' {location_str}"
-            )
+        return (module, config_cls, class_str, field_locations, location_str)
 
+    def build_object(self, d: dict, ignore_external: bool = False):
+        """Build an object from the dict"""
+
+        (module, config_cls, class_str, field_locations, location_str) = self.get_infos(d, ignore_external)
+
+        # Clean up dict
+        d.pop("__location__", None)
+        d.pop("__fieldlocations__", None)
+        d.pop("type")
+        d.pop("class", None)
+        d.pop("validation_class", None)
+        control_modes = d.pop("control_modes", None)
+
+        # Validate the model
         try:
-            # Validate the model
             cfg = config_cls.model_validate(d)
         except ValidationError as e:
-            self.handle_validation_error(e, type_str, location_str, field_locations)
+            self.handle_validation_error(e, module.__name__, location_str, field_locations)
 
-        # Construct and return the object
-        elem_cls = getattr(module, cls_name, None)
+        elem_cls = getattr(module, class_str, None)
         if elem_cls is None:
-            raise PyAMLConfigException(f"Unknown element class '{type_str}.{cls_name}'")
+            raise PyAMLConfigException(f"Unknown element class '{module.__name__}.{class_str}' {location_str}")
 
+        if control_modes is None:
+            # Immediate contruction of the object
+            try:
+                obj = elem_cls(cfg)
+                self.register_element(obj)
+            except Exception as e:
+                raise PyAMLConfigException(f"{str(e)} when creating '{module.__name__}.{class_str}' {location_str}") from e
+
+        else:
+            # Delayed construction
+            # An UnboundElement will be constructuced during the filling of the ElementHolder
+            try:
+                obj = UnboundElement(elem_cls, module.__name__, control_modes, cfg)
+                self.register_element(obj)
+            except Exception as e:
+                raise PyAMLConfigException(
+                    f"{str(e)} when creating unbounded '{module.__name__}.{class_str}' {location_str}"
+                ) from e
+
+        return obj
+
+    def build_unbound(self, e: UnboundElement, holder) -> Element:
         try:
-            obj = elem_cls(cfg)
-            self.register_element(obj)
-        except Exception as e:
-            raise PyAMLConfigException(
-                f"{str(e)} when creating '{type_str}.{cls_name}' {location_str}"
-            ) from e
+            obj = e._class(holder, e._config)
+        except Exception as ex:
+            raise PyAMLConfigException(f"{str(ex)} when creating '{e._module_name}.{e._class.__name__}'") from ex
+
+        if not isinstance(obj, Element):
+            raise PyAMLConfigException(f"'{e._module_name}.{e._class.__name__}' is not a sub class of Element")
+
+        obj._peer = holder
 
         return obj
 
@@ -169,20 +181,24 @@ class PyAMLFactory:
             return l
 
         elif isinstance(d, dict):
+            _, config_cls, *_ = self.get_infos(d, ignore_external)
+
             for key, value in d.items():
                 if not key == "__fieldlocations__":
                     if isinstance(value, dict) or isinstance(value, list):
-                        obj = self.depth_first_build(value, ignore_external)
-                        # Replace the inner dict by the object itself
-                        d[key] = obj
+                        # Get the type of the field
+                        fieldType = self.get_field_type(config_cls, key)
+                        # Do not recurse dict defined in ConfigModel
+                        # pydantic use TypedDict not usable with isinstance
+                        if str(fieldType) != "<class 'dict'>":
+                            obj = self.depth_first_build(value, ignore_external)
+                            # Replace the inner dict by the object itself
+                            d[key] = obj
 
             # We are now on leaf (no nested object), we can construct
             return self.build_object(d, ignore_external)
 
-        raise PyAMLConfigException(
-            "Unexpected element found. 'dict' or 'list' expected "
-            "but got '{d.__class__.__name__}'"
-        )
+        raise PyAMLConfigException("Unexpected element found. 'dict' or 'list' expected but got '{d.__class__.__name__}'")
 
     def register_element(self, elt):
         if isinstance(elt, Element):

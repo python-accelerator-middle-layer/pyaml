@@ -18,11 +18,10 @@ from pySC.apps import orbit_correction
 from ..arrays.magnet_array import MagnetArray
 from ..common.element import Element, ElementConfigModel
 from ..common.exception import PyAMLException
-from ..configuration.factory import Factory
-from ..configuration.fileloader import load
 from ..external.pySC_interface import pySCInterface
 from ..rf.rf_plant import RFPlant
-from .response_matrix import ResponseMatrix
+from .orbit_response_matrix_data import OrbitResponseMatrixData
+from .tuning_tool import TuningTool
 
 logger = logging.getLogger(__name__)
 logging.getLogger("pyaml.external.pySC").setLevel(logging.WARNING)
@@ -41,53 +40,79 @@ class ConfigModel(ElementConfigModel):
     singular_values_H: Optional[int] = None
     singular_values_V: Optional[int] = None
     virtual_target: float = 0
-    response_matrix: Union[str, ResponseMatrix]
+    response_matrix: Union[str, OrbitResponseMatrixData]
 
 
-class Orbit(Element):
+class Orbit(TuningTool):
     def __init__(self, cfg: ConfigModel):
         super().__init__(cfg.name)
         self._cfg = cfg
         self.bpm_array_name = cfg.bpm_array_name
         self.hcorr_array_name = cfg.hcorr_array_name
         self.vcorr_array_name = cfg.vcorr_array_name
+        self._pySC_response_matrix = None
 
         self.virtual_target = cfg.virtual_target
 
         if cfg.singular_values is None:
             if cfg.singular_values_H is None or cfg.singular_values_V is None:
                 raise PyAMLException(
-                    "Either `singular_values` or `singular_values_H` and "
-                    "`singular_values_V` must be provided."
+                    "Either `singular_values` or `singular_values_H` and `singular_values_V` must be provided."
                 )
             self.singular_values_H = cfg.singular_values_H
             self.singular_values_V = cfg.singular_values_V
         else:
             if cfg.singular_values_H is not None or cfg.singular_values_V is not None:
                 raise PyAMLException(
-                    "Either `singular_values` or `singular_values_H` and "
-                    "`singular_values_V` must be provided, not both."
+                    "Either `singular_values` or `singular_values_H` and `singular_values_V` must be provided, not both."
                 )
             self.singular_values_H = cfg.singular_values
             self.singular_values_V = cfg.singular_values
 
+        # If the configuration response matrix is a filename, load it
         if type(cfg.response_matrix) is str:
-            response_matrix_filename = cfg.response_matrix
-            # assigns self.response_matrix
-            if Path(response_matrix_filename).exists():
-                self.load_response_matrix(response_matrix_filename)
-            else:
-                logger.warning(f"{response_matrix_filename} does not exist.")
-                self.response_matrix = None
-        else:
-            self.response_matrix = pySC_ResponseMatrix.model_validate(
-                cfg.response_matrix._cfg.model_dump()
-            )
+            try:
+                cfg.response_matrix = OrbitResponseMatrixData.load(cfg.response_matrix)
+            except Exception as e:
+                logger.warning(f"Loading {cfg.response_matrix} failed {str(e)}")
+                cfg.response_matrix = None
+
+        # Converts to self._pySC_response_matrix
+        if cfg.response_matrix:
+            self._set_response_matrix(cfg.response_matrix)
 
         self._hcorr: MagnetArray = None
         self._vcorr: MagnetArray = None
         self._hvcorr: MagnetArray = None
         self._rf_plant: RFPlant = None
+
+    def load(self, load_path: Path):
+        """
+        Dynamically loads a response matrix.
+
+        Parameters
+        ----------
+        load_path : Path
+            Filename of the :class:`~.OrbitResponseMatrixData` to load
+        """
+        self._cfg.response_matrix = OrbitResponseMatrixData.load(load_path)
+        self._set_response_matrix(self._cfg.response_matrix)
+
+    def _set_response_matrix(self, mat):
+        m = mat._cfg.model_dump()
+        m["input_names"] = m.pop("variable_names")
+        m["output_names"] = m.pop("observable_names")
+        m["input_planes"] = m.pop("variable_planes")
+        m["output_planes"] = m.pop("observable_planes")
+        self._cfg.response_matrix = mat
+        self._pySC_response_matrix = pySC_ResponseMatrix.model_validate(m)
+
+    @property
+    def response_matrix(self) -> OrbitResponseMatrixData | None:
+        """
+        Return the response matrix if it has been loaded None otherwise
+        """
+        return self._cfg.response_matrix
 
     def correct(
         self,
@@ -137,11 +162,11 @@ class Orbit(Element):
             None or if plane = 'H'.
         """
 
-        if self.response_matrix is None:
+        if self._pySC_response_matrix is None:
             raise PyAMLException(f"{self.get_name()} does not have a response_matrix.")
 
         interface = pySCInterface(
-            element_holder=self._peer,
+            element_holder=self.peer,
             bpm_array_name=self.bpm_array_name,
         )
 
@@ -161,7 +186,7 @@ class Orbit(Element):
         if plane is None or plane == "H":
             trims_h = orbit_correction(
                 interface=interface,
-                response_matrix=self.response_matrix,
+                response_matrix=self._pySC_response_matrix,
                 method="svd_values",
                 parameter=svH,
                 virtual=True,
@@ -175,7 +200,7 @@ class Orbit(Element):
         if plane is None or plane == "V":
             trims_v = orbit_correction(
                 interface=interface,
-                response_matrix=self.response_matrix,
+                response_matrix=self._pySC_response_matrix,
                 method="svd_values",
                 parameter=svV,
                 virtual=False,
@@ -238,18 +263,16 @@ class Orbit(Element):
 
         return
 
-    def set_weight(
-        self, name: str, weight: float, plane: Optional[Literal["H", "V"]] = None
-    ) -> None:
-        self.response_matrix.set_weight(name, weight, plane=plane)
+    def set_weight(self, name: str, weight: float, plane: Optional[Literal["H", "V"]] = None) -> None:
+        self._pySC_response_matrix.set_weight(name, weight, plane=plane)
         return
 
     def set_virtual_weight(self, weight: float) -> None:
-        self.response_matrix.virtual_weight = weight
+        self._pySC_response_matrix.virtual_weight = weight
         return
 
     def set_rf_weight(self, weight: float) -> None:
-        self.response_matrix.rf_weight = weight
+        self._pySC_response_matrix.rf_weight = weight
         return
 
     def get_weight(self, name: str, plane: Optional[Literal["H", "V"]] = None) -> float:
@@ -257,9 +280,9 @@ class Orbit(Element):
         planes = []
         weights = []
 
-        inames = self.response_matrix.input_names
-        iplanes = self.response_matrix.input_planes
-        iweights = self.response_matrix.input_weights
+        inames = self._pySC_response_matrix.input_names
+        iplanes = self._pySC_response_matrix.input_planes
+        iweights = self._pySC_response_matrix.input_weights
         for iname, iplane, iw in zip(inames, iplanes, iweights, strict=True):
             if name == iname:
                 if plane is None or plane == iplane:
@@ -267,9 +290,9 @@ class Orbit(Element):
                     planes.append(iplane)
                     weights.append(iw)
 
-        onames = self.response_matrix.output_names
-        oplanes = self.response_matrix.output_planes
-        oweights = self.response_matrix.output_weights
+        onames = self._pySC_response_matrix.output_names
+        oplanes = self._pySC_response_matrix.output_planes
+        oweights = self._pySC_response_matrix.output_weights
         for oname, oplane, ow in zip(onames, oplanes, oweights, strict=True):
             if name == oname:
                 if plane is None or plane == oplane:
@@ -280,39 +303,20 @@ class Orbit(Element):
         if len(weights) == 1:
             return weights[0]
         else:
-            raise PyAMLException(
-                "More than one weight found, please select plane. "
-                f"{names=}, {planes=}, {weights=}"
-            )
+            raise PyAMLException(f"More than one weight found, please select plane. {names=}, {planes=}, {weights=}")
 
     def get_virtual_weight(self) -> float:
-        return self.response_matrix.virtual_weight
+        return self._pySC_response_matrix.virtual_weight
 
     def get_rf_weight(self) -> float:
-        return self.response_matrix.rf_weight
+        return self._pySC_response_matrix.rf_weight
 
     def post_init(self):
-        self._hcorr = self._peer.get_magnets(self._cfg.hcorr_array_name)
-        self._vcorr = self._peer.get_magnets(self._cfg.vcorr_array_name)
+        self._hcorr = self.peer.get_magnets(self._cfg.hcorr_array_name)
+        self._vcorr = self.peer.get_magnets(self._cfg.vcorr_array_name)
         hvElts = []
         hvElts.extend(self._hcorr)
         hvElts.extend(self._vcorr)
         self._hvcorr = MagnetArray("", hvElts)
         if self._cfg.rf_plant_name is not None:
-            self._rf_plant = self._peer.get_rf_plant(self._cfg.rf_plant_name)
-
-    def attach(self, peer: "ElementHolder") -> Self:
-        """
-        Create a new reference to attach this Orbit object to a simulator
-        or a control system.
-        """
-        obj = self.__class__(self._cfg)
-        obj._peer = peer
-        return obj
-
-    def load_response_matrix(self, filename: str) -> None:
-        path = Path(filename)
-        config_dict = load(str(path.resolve()))
-        rm = Factory.depth_first_build(config_dict, ignore_external=False)
-        self.response_matrix = pySC_ResponseMatrix.model_validate(rm._cfg.model_dump())
-        return None
+            self._rf_plant = self.peer.get_rf_plant(self._cfg.rf_plant_name)
