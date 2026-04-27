@@ -76,4 +76,4 @@ NOTE: This is just a demonstration of pyAML functionality. Certain things may be
 
   ## Run the examples
 
-    There are three jupyter notebook available with some basic examples. Feel free to play around and modify them. A .yaml configuration file is already provided; it was generated procedurally from the .m lattice file and nomenclature description file.
+    There are three jupyter notebook available with some basic examples. Feel free to play around and modify them. The main configuration entry point is `p.yaml`; it now loads `arrays.yaml`, `devices.yaml`, and `tuning_tools.yaml`, all generated procedurally from the .m lattice file and nomenclature description file.
