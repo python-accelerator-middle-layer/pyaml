@@ -5,6 +5,8 @@ pyAML package
 pyAML
 """
 
+from ._version import __version__
+
 __title__ = "pyAML"
 __description__ = "Python Accelerator Middle Layer"
 __url__ = "https://github.com/python-accelerator-middle-layer/pyaml"
