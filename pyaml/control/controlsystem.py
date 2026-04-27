@@ -83,15 +83,15 @@ class ControlSystem(ElementHolder, metaclass=ABCMeta):
         """Returns the module name used for handling aggregator of DeviceVectorAccess"""
         return None
 
-    def resolve_device(self, key: str | None) -> DeviceAccess | None:
+    def get_device(self, key: str | None) -> DeviceAccess | None:
         if key is None:
             return None
         if self._catalog_resolver is None:
             raise PyAMLException(f"Control system '{self.name()}' has no catalog configured for key '{key}'")
         return self._catalog_resolver.resolve(key)
 
-    def resolve_devices(self, keys: list[str | None]) -> list[DeviceAccess | None]:
-        return [self.resolve_device(key) for key in keys]
+    def get_devices(self, keys: list[str | None]) -> list[DeviceAccess | None]:
+        return [self.get_device(key) for key in keys]
 
     def create_scalar_aggregator(self) -> ScalarAggregator:
         mod = self.scalar_aggregator()
@@ -122,7 +122,7 @@ class ControlSystem(ElementHolder, metaclass=ABCMeta):
         aggh = self.create_scalar_aggregator()
         aggv = self.create_scalar_aggregator()
         for b in bpms:
-            devs = self.attach(self.resolve_devices(b.model.get_pos_devices()))
+            devs = self.attach(self.get_devices(b.model.get_pos_devices()))
             agg.add_devices(devs)
             aggh.add_devices(devs[0])
             aggv.add_devices(devs[1])
@@ -176,9 +176,9 @@ class ControlSystem(ElementHolder, metaclass=ABCMeta):
                     self.add_magnet(m)
 
             elif isinstance(e, BPM):
-                pos_devs = self.attach(self.resolve_devices(e.model.get_pos_devices()))
-                tilt_devs = self.attach(self.resolve_devices([e.model.get_tilt_device()]))
-                offset_devs = self.attach(self.resolve_devices(e.model.get_offset_devices()))
+                pos_devs = self.attach(self.get_devices(e.model.get_pos_devices()))
+                tilt_devs = self.attach(self.get_devices([e.model.get_tilt_device()]))
+                offset_devs = self.attach(self.get_devices(e.model.get_offset_devices()))
                 positions = RBpmArray(pos_devs[0], pos_devs[1])
                 tilt = RWBpmTiltScalar(tilt_devs[0])
                 offsets = RWBpmOffsetArray(offset_devs[0], offset_devs[1])
