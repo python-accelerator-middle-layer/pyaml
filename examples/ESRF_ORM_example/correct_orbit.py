@@ -10,7 +10,7 @@ parent_folder = Path(__file__).parent
 pyaml_folder = parent_folder.parent.parent
 config_path = pyaml_folder.joinpath("tests/config/EBSOrbit.yaml").resolve()
 sr = Accelerator.load(config_path)
-#ebs = sr.live
+# ebs = sr.live
 ebs = sr.design
 
 ## get reference

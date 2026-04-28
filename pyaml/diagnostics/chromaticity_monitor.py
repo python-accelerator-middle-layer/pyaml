@@ -269,9 +269,9 @@ class ChomaticityMonitor(MeasurementTool):
                     if j < n_avg_meas - 1:
                         sleep(sleep_between_meas)
 
-                Q /= float(n_avg_meas)
+                Q[i] /= float(n_avg_meas)
                 if bpms is not None:
-                    orbit /= float(n_avg_meas)
+                    orbit[i] /= float(n_avg_meas)
 
         except Exception as ex:
             err = ex
