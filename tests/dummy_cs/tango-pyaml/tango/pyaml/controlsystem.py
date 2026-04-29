@@ -28,13 +28,13 @@ class TangoControlSystem(ControlSystem):
         self._cfg = cfg
         self.__devices = {}
 
-    def attach_array(self, devs: list[DeviceAccess]) -> list[DeviceAccess]:
+    def attach_array(self, devs: list[DeviceAccess | None]) -> list[DeviceAccess | None]:
         return self._attach(devs, True)
 
-    def attach(self, devs: list[DeviceAccess]) -> list[DeviceAccess]:
+    def attach(self, devs: list[DeviceAccess | None]) -> list[DeviceAccess | None]:
         return self._attach(devs, False)
 
-    def _attach(self, devs: list[DeviceAccess], is_array: bool) -> list[DeviceAccess]:
+    def _attach(self, devs: list[DeviceAccess | None], is_array: bool) -> list[DeviceAccess | None]:
         newDevs = []
         for d in devs:
             if d is not None:

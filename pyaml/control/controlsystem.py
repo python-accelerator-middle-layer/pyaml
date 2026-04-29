@@ -57,13 +57,13 @@ class ControlSystem(ElementHolder, metaclass=ABCMeta):
         return getattr(self._cfg, "catalog", None)
 
     @abstractmethod
-    def attach(self, dev: list[DeviceAccess]) -> list[DeviceAccess]:
+    def attach(self, dev: list[DeviceAccess | None]) -> list[DeviceAccess | None]:
         """Return new instances of DeviceAccess objects
         coming from configuration attached to this CS"""
         pass
 
     @abstractmethod
-    def attach_array(self, dev: list[DeviceAccess]) -> list[DeviceAccess]:
+    def attach_array(self, dev: list[DeviceAccess | None]) -> list[DeviceAccess | None]:
         """Return new instances of DeviceAccess objects
         coming from configuration attached to this CS"""
         pass
@@ -88,10 +88,16 @@ class ControlSystem(ElementHolder, metaclass=ABCMeta):
             return None
         if self._catalog_resolver is None:
             raise PyAMLException(f"Control system '{self.name()}' has no catalog configured for key '{key}'")
-        return self._catalog_resolver.resolve(key)
+        return self.attach([self._catalog_resolver.resolve(key)])[0]
 
     def get_devices(self, keys: list[str | None]) -> list[DeviceAccess | None]:
-        return [self.get_device(key) for key in keys]
+        if self._catalog_resolver is None:
+            missing_keys = [key for key in keys if key is not None]
+            if missing_keys:
+                raise PyAMLException(f"Control system '{self.name()}' has no catalog configured for key '{missing_keys[0]}'")
+            return [None for _ in keys]
+        devs = [self._catalog_resolver.resolve(key) if key is not None else None for key in keys]
+        return self.attach(devs)
 
     def create_scalar_aggregator(self) -> ScalarAggregator:
         mod = self.scalar_aggregator()
@@ -122,7 +128,7 @@ class ControlSystem(ElementHolder, metaclass=ABCMeta):
         aggh = self.create_scalar_aggregator()
         aggv = self.create_scalar_aggregator()
         for b in bpms:
-            devs = self.attach(self.get_devices(b.model.get_pos_devices()))
+            devs = self.get_devices(b.model.get_pos_devices())
             agg.add_devices(devs)
             aggh.add_devices(devs[0])
             aggv.add_devices(devs[1])
@@ -176,9 +182,9 @@ class ControlSystem(ElementHolder, metaclass=ABCMeta):
                     self.add_magnet(m)
 
             elif isinstance(e, BPM):
-                pos_devs = self.attach(self.get_devices(e.model.get_pos_devices()))
-                tilt_devs = self.attach(self.get_devices([e.model.get_tilt_device()]))
-                offset_devs = self.attach(self.get_devices(e.model.get_offset_devices()))
+                pos_devs = self.get_devices(e.model.get_pos_devices())
+                tilt_devs = self.get_devices([e.model.get_tilt_device()])
+                offset_devs = self.get_devices(e.model.get_offset_devices())
                 positions = RBpmArray(pos_devs[0], pos_devs[1])
                 tilt = RWBpmTiltScalar(tilt_devs[0])
                 offsets = RWBpmOffsetArray(offset_devs[0], offset_devs[1])
@@ -231,10 +237,10 @@ class ControlSystemAdapter(ControlSystem):
     def __init__(self):
         ControlSystem.__init__(self)
 
-    def attach(self, dev: list[DeviceAccess]) -> list[DeviceAccess]:
+    def attach(self, dev: list[DeviceAccess | None]) -> list[DeviceAccess | None]:
         pass
 
-    def attach_array(self, dev: list[DeviceAccess]) -> list[DeviceAccess]:
+    def attach_array(self, dev: list[DeviceAccess | None]) -> list[DeviceAccess | None]:
         pass
 
     def name(self) -> str:
