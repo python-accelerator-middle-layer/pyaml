@@ -1,0 +1,59 @@
+type: pyaml.accelerator
+facility: ESRF
+machine: sr
+energy: 6e9
+harmonic_number: 992
+controls:
+  - type: tango.pyaml.controlsystem
+    tango_host: ebs-simu-3:10000
+    name: live
+    catalog: device-catalog
+  - type: tango.pyaml.controlsystem
+    tango_host: ebs-simu-3:10000
+    name: ops
+    catalog: device-catalog
+data_folder: /data/store
+catalogs:
+  - type: tango.pyaml.static_catalog
+    name: device-catalog
+    entries:
+      - type: tango.pyaml.static_catalog_entry
+        key: srdiag/bpm/c01-01/SA_HPosition
+        device:
+          type: tango.pyaml.attribute_read_only
+          attribute: srdiag/bpm/c01-01/SA_HPosition
+          unit: mm
+      - type: tango.pyaml.static_catalog_entry
+        key: srdiag/bpm/c01-01/SA_VPosition
+        device:
+          type: tango.pyaml.attribute_read_only
+          attribute: srdiag/bpm/c01-01/SA_VPosition
+          unit: mm
+      - type: tango.pyaml.static_catalog_entry
+        key: srdiag/bpm/c01-01/HOffset
+        device:
+          type: tango.pyaml.attribute
+          attribute: srdiag/bpm/c01-01/HOffset
+          unit: mm
+      - type: tango.pyaml.static_catalog_entry
+        key: srdiag/bpm/c01-01/VOffset
+        device:
+          type: tango.pyaml.attribute
+          attribute: srdiag/bpm/c01-01/VOffset
+          unit: mm
+      - type: tango.pyaml.static_catalog_entry
+        key: srdiag/bpm/c01-01/Tilt_Angle
+        device:
+          type: tango.pyaml.attribute
+          attribute: srdiag/bpm/c01-01/Tilt_Angle
+          unit: rad
+devices:
+  - type: pyaml.bpm.bpm
+    name: BPM_C01-01
+    model:
+      type: pyaml.bpm.bpm_tiltoffset_model
+      x_pos: srdiag/bpm/c01-01/SA_HPosition
+      y_pos: srdiag/bpm/c01-01/SA_VPosition
+      x_offset: srdiag/bpm/c01-01/HOffset
+      y_offset: srdiag/bpm/c01-01/VOffset
+      tilt: srdiag/bpm/c01-01/Tilt_Angle

@@ -1,0 +1,22 @@
+type: pyaml.accelerator
+facility: ESRF
+machine: sr
+energy: 6e9
+data_folder: /data/store
+devices: []
+catalogs:
+  - type: tango.pyaml.static_catalog
+    name: duplicate-refs
+    entries:
+      - type: tango.pyaml.static_catalog_entry
+        key: duplicated/key
+        device:
+          type: tango.pyaml.attribute
+          attribute: sr/test/one
+          unit: A
+      - type: tango.pyaml.static_catalog_entry
+        key: duplicated/key
+        device:
+          type: tango.pyaml.attribute
+          attribute: sr/test/two
+          unit: A

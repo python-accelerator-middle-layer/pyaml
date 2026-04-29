@@ -9,6 +9,7 @@ from .common.element import Element
 from .common.element_holder import ElementHolder
 from .common.exception import PyAMLConfigException
 from .configuration import ConfigurationManager, UnsupportedConfigurationRootError
+from .configuration.catalog import Catalog
 from .configuration.factory import Factory
 from .control.controlsystem import ControlSystem
 from .lattice.simulator import Simulator
@@ -58,6 +59,7 @@ class ConfigModel(BaseModel):
     alphac: float | None = None
     harmonic_number: int | None = None
     controls: list[ControlSystem] = None
+    catalogs: list[Catalog] = None
     simulators: list[Simulator] = None
     data_folder: str
     description: str | None = None
@@ -74,6 +76,14 @@ class Accelerator(object):
         __live = None
         self._controls: dict[str, ElementHolder] = {}
         self._simulators: dict[str, ElementHolder] = {}
+        self._catalogs: dict[str, Catalog] = {}
+
+        if cfg.catalogs is not None:
+            for catalog in cfg.catalogs:
+                name = catalog.get_name()
+                if name in self._catalogs:
+                    raise PyAMLConfigException(f"catalog {name} already defined")
+                self._catalogs[name] = catalog
 
         if cfg.controls is not None:
             for c in cfg.controls:
@@ -82,6 +92,7 @@ class Accelerator(object):
                 else:
                     # Add as dynamic attribute
                     setattr(self, c.name(), c)
+                c.set_catalog(self._resolve_control_system_catalog(c))
                 c.fill_device(cfg.devices)
                 c._peer = self
                 self._controls[c.name()] = c
@@ -249,6 +260,14 @@ class Accelerator(object):
         modes.update(self._controls)
         return modes
 
+    def get_catalog(self, name: str) -> Catalog:
+        if name not in self._catalogs:
+            raise PyAMLConfigException(f"catalog {name} not defined")
+        return self._catalogs[name]
+
+    def catalogs(self) -> dict[str, Catalog]:
+        return self._catalogs
+
     def __repr__(self):
         return repr(self._cfg).replace("ConfigModel", self.__class__.__name__)
 
@@ -270,6 +289,7 @@ class Accelerator(object):
         if ignore_external:
             # control systems are external, so remove controls field
             config_dict.pop("controls", None)
+            config_dict.pop("catalogs", None)
         # Ensure factory is clean before building a new accelerator
         Factory.clear()
         return Factory.depth_first_build(config_dict, ignore_external)
@@ -302,3 +322,13 @@ class Accelerator(object):
                 "Use the factory APIs to build sub-elements directly."
             ) from ex
         return manager.build(ignore_external=ignore_external)
+
+    def _resolve_control_system_catalog(self, control_system: ControlSystem) -> Catalog | None:
+        catalog = control_system.get_catalog_config()
+        if catalog is None:
+            return None
+        if isinstance(catalog, str):
+            return self.get_catalog(catalog)
+        if isinstance(catalog, Catalog):
+            return catalog
+        raise PyAMLConfigException(f"Invalid catalog configuration for control system {control_system.name()}")

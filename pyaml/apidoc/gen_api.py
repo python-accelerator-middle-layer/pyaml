@@ -31,6 +31,7 @@ modules = [
     "pyaml.common.element",
     "pyaml.common.element_holder",
     "pyaml.common.exception",
+    "pyaml.configuration.catalog",
     "pyaml.configuration.csvcurve",
     "pyaml.configuration.csvmatrix",
     "pyaml.configuration.curve",

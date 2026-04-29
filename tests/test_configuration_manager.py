@@ -172,7 +172,7 @@ def test_configuration_manager_accumulates_multiple_device_fragments(
     manager.add(sr_devices_fragment)
     manager.add(tune_monitor_devices_fragment)
 
-    assert manager.categories() == ["controls", "simulators", "devices"]
+    assert manager.categories() == ["controls", "catalogs", "simulators", "devices"]
     assert manager.keys("devices") == [
         "QF1A-C01",
         "SH1A-C01",
@@ -191,6 +191,29 @@ def test_configuration_manager_accumulates_multiple_device_fragments(
     assert manager.get("devices", "SH1A-C01")["type"] == "pyaml.magnet.cfm_magnet"
     assert manager.get("devices", "BPM_C04-01")["type"] == "pyaml.bpm.bpm"
     assert manager.get("devices", "BETATRON_TUNE")["type"] == "pyaml.diagnostics.tune_monitor"
+
+
+def test_configuration_manager_tracks_catalogs_as_named_category(config_root_path):
+    manager = ConfigurationManager()
+    manager.add(config_root_path / "catalog_named.yaml")
+
+    assert manager.categories() == ["controls", "catalogs", "devices"]
+    assert manager.keys("catalogs") == ["device-catalog"]
+    assert manager.has("catalogs", "device-catalog")
+    assert manager.get("catalogs", "device-catalog")["type"] == "tango.pyaml.static_catalog"
+    assert manager.get("catalogs", "device-catalog")["entries"][0]["key"] == "srdiag/bpm/c01-01/SA_HPosition"
+    assert manager.catalogs == ["device-catalog"]
+
+
+def test_configuration_manager_adds_catalog_fragment(config_root_path):
+    manager = ConfigurationManager()
+    manager.add(config_root_path / "config_manager_sr_catalogs.yaml")
+
+    assert manager.categories() == ["catalogs"]
+    assert manager.keys("catalogs") == ["bpm-catalog"]
+    assert manager.has("catalogs", "bpm-catalog")
+    assert manager.get("catalogs", "bpm-catalog")["type"] == "tango.pyaml.static_catalog"
+    assert manager.get("catalogs", "bpm-catalog")["entries"][0]["key"] == "srdiag/bpm/c04-01/SA_HPosition"
 
 
 def test_accelerator_load_stays_compatible(config_manager_base_config):
@@ -275,6 +298,17 @@ def test_configuration_manager_repr_is_yellow_pages_like(
     assert "HCORR (pyaml.arrays.magnet) patterns=1 source=config_manager_sr_arrays.yaml" in output
     assert "BPM_C04-01 (pyaml.bpm.bpm) source=config_manager_sr_devices.yaml" in output
     assert "    ." in output
+
+
+def test_configuration_manager_repr_includes_catalogs(config_root_path):
+    manager = ConfigurationManager()
+    manager.add(config_root_path / "catalog_named.yaml")
+
+    output = repr(manager)
+
+    assert str(manager) == output
+    assert "Catalogs:" in output
+    assert "device-catalog (tango.pyaml.static_catalog) entries=5 source=catalog_named.yaml" in output
 
 
 def test_configuration_manager_yellow_pages_like_shortcuts(

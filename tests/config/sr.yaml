@@ -10,6 +10,9 @@ controls:
   - type: tango.pyaml.controlsystem
     tango_host: ebs-simu-3:10000
     name: live
+    catalog: bpm-catalog
+catalogs:
+  - catalogs/shared_c04_bpm_catalogs.yaml
 data_folder: /data/store
 arrays:
   - type: pyaml.arrays.magnet
@@ -46,23 +49,11 @@ devices:
     name: BPM_C04-01
     model:
       type: pyaml.bpm.bpm_simple_model
-      x_pos:
-        type: tango.pyaml.attribute_read_only
-        attribute: srdiag/bpm/c04-01/SA_HPosition
-        unit: m
-      y_pos:
-        type: tango.pyaml.attribute_read_only
-        attribute: srdiag/bpm/c04-01/SA_VPosition
-        unit: m
+      x_pos: srdiag/bpm/c04-01/SA_HPosition
+      y_pos: srdiag/bpm/c04-01/SA_VPosition
   - type: pyaml.bpm.bpm
     name: BPM_C04-02
     model:
       type: pyaml.bpm.bpm_simple_model
-      x_pos:
-        type: tango.pyaml.attribute_read_only
-        attribute: srdiag/bpm/c04-02/SA_HPosition
-        unit: m
-      y_pos:
-        type: tango.pyaml.attribute_read_only
-        attribute: srdiag/bpm/c04-02/SA_VPosition
-        unit: m
+      x_pos: srdiag/bpm/c04-02/SA_HPosition
+      y_pos: srdiag/bpm/c04-02/SA_VPosition
