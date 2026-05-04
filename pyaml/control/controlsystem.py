@@ -1,12 +1,13 @@
 from abc import ABCMeta, abstractmethod
 
+from pydantic import BaseModel
+
 from ..bpm.bpm import BPM
 from ..common.abstract import RWMapper
 from ..common.abstract_aggregator import ScalarAggregator
 from ..common.element import Element
 from ..common.element_holder import ElementHolder
-from ..common.exception import PyAMLException
-from ..configuration.catalog import Catalog, CatalogResolver
+from ..configuration.catalog import Catalog
 from ..configuration.factory import Factory
 from ..configuration.unbound_element import UnboundElement
 from ..control.abstract_impl import (
@@ -43,18 +44,18 @@ class ControlSystem(ElementHolder, metaclass=ABCMeta):
 
     def __init__(self):
         ElementHolder.__init__(self)
-        self._catalog: Catalog | None = None
-        self._catalog_resolver: CatalogResolver | None = None
+        self._catalog = None
 
     def set_catalog(self, catalog: Catalog | None):
         self._catalog = catalog
-        self._catalog_resolver = catalog.attach_control_system(self) if catalog is not None else None
 
     def get_catalog(self) -> Catalog | None:
         return self._catalog
 
+    @abstractmethod
     def get_catalog_config(self) -> Catalog | str | None:
-        return getattr(self._cfg, "catalog", None)
+        """Return backend catalog configuration for this control system, if any."""
+        pass
 
     @abstractmethod
     def attach(self, dev: list[DeviceAccess | None]) -> list[DeviceAccess | None]:
@@ -83,21 +84,19 @@ class ControlSystem(ElementHolder, metaclass=ABCMeta):
         """Returns the module name used for handling aggregator of DeviceVectorAccess"""
         return None
 
-    def get_device(self, key: str | None) -> DeviceAccess | None:
-        if key is None:
-            return None
-        if self._catalog_resolver is None:
-            raise PyAMLException(f"Control system '{self.name()}' has no catalog configured for key '{key}'")
-        return self.attach([self._catalog_resolver.resolve(key)])[0]
+    @abstractmethod
+    def get_device(self, ref: str | BaseModel | None) -> DeviceAccess | None:
+        """
+        Resolve a public device reference for this control system.
 
-    def get_devices(self, keys: list[str | None]) -> list[DeviceAccess | None]:
-        if self._catalog_resolver is None:
-            missing_keys = [key for key in keys if key is not None]
-            if missing_keys:
-                raise PyAMLException(f"Control system '{self.name()}' has no catalog configured for key '{missing_keys[0]}'")
-            return [None for _ in keys]
-        devs = [self._catalog_resolver.resolve(key) if key is not None else None for key in keys]
-        return self.attach(devs)
+        YAML element configuration passes opaque strings. Public Python APIs may
+        also pass backend ConfigModel instances. Concrete backends own all
+        catalog lookup, parsing and DeviceAccess construction.
+        """
+        pass
+
+    def get_devices(self, refs: list[str | BaseModel | None]) -> list[DeviceAccess | None]:
+        return [self.get_device(ref) for ref in refs]
 
     def create_scalar_aggregator(self) -> ScalarAggregator:
         mod = self.scalar_aggregator()
@@ -246,8 +245,14 @@ class ControlSystemAdapter(ControlSystem):
     def name(self) -> str:
         pass
 
+    def get_catalog_config(self) -> Catalog | str | None:
+        return None
+
     def scalar_aggregator(self) -> str | None:
         return None
 
     def vector_aggregator(self) -> str | None:
         return None
+
+    def get_device(self, ref: str | BaseModel | None) -> DeviceAccess | None:
+        pass

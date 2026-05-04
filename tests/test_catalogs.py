@@ -1,59 +1,8 @@
 import numpy as np
 import pytest
 
-from pyaml import PyAMLConfigException, PyAMLException
+from pyaml import PyAMLConfigException
 from pyaml.accelerator import Accelerator
-from pyaml.configuration.catalog import Catalog, CatalogConfigModel, CatalogResolver
-from pyaml.control.deviceaccess import DeviceAccess
-
-
-class FakeDeviceAccess(DeviceAccess):
-    def __init__(self, name: str, unit: str = ""):
-        self._name = name
-        self._unit = unit
-
-    def name(self) -> str:
-        return self._name
-
-    def measure_name(self) -> str:
-        return self._name
-
-    def set(self, value):
-        return None
-
-    def set_and_wait(self, value):
-        return None
-
-    def get(self):
-        return None
-
-    def readback(self):
-        return None
-
-    def unit(self) -> str:
-        return self._unit
-
-    def get_range(self) -> list[float]:
-        return []
-
-    def check_device_availability(self) -> bool:
-        return True
-
-
-class DummyCatalogBinding(CatalogResolver):
-    def __init__(self, control_system_name: str):
-        self._control_system_name = control_system_name
-
-    def resolve(self, key: str) -> DeviceAccess:
-        return FakeDeviceAccess(name=f"{self._control_system_name}:{key}", unit="")
-
-
-class DummyContextCatalog(Catalog):
-    def attach_control_system(self, control_system):
-        return DummyCatalogBinding(control_system.name())
-
-    def resolve(self, key: str) -> DeviceAccess:
-        raise AssertionError("Shared catalog object must not resolve keys directly")
 
 
 @pytest.mark.parametrize(
@@ -144,54 +93,12 @@ def test_inline_catalog_is_supported(install_test_package):
     [{"name": "tango-pyaml", "path": "tests/dummy_cs/tango-pyaml"}],
     indirect=True,
 )
-def test_catalog_is_notified_when_attached_to_control_systems(install_test_package, monkeypatch):
-    from tango.pyaml.static_catalog import StaticCatalog
-
-    attached = []
-    original = StaticCatalog.attach_control_system
-
-    def record_attachment(self, control_system):
-        attached.append((self.get_name(), control_system.name()))
-        return original(self, control_system)
-
-    monkeypatch.setattr(StaticCatalog, "attach_control_system", record_attachment)
-
+def test_catalog_object_is_passed_to_control_systems_without_pyaml_resolver(install_test_package):
     sr = Accelerator.load("tests/config/catalog_named.yaml")
 
-    assert sr.live.get_catalog() is sr.ops.get_catalog()
-    assert attached == [("device-catalog", "live"), ("device-catalog", "ops")]
-
-
-def test_shared_catalog_can_bind_different_resolvers_per_control_system():
-    catalog = DummyContextCatalog(CatalogConfigModel(name="contextual"))
-
-    class DummyControlSystem:
-        def __init__(self, name: str):
-            self._name = name
-            self._catalog = None
-            self._catalog_resolver = None
-
-        def name(self) -> str:
-            return self._name
-
-        def set_catalog(self, bound_catalog: Catalog | None):
-            self._catalog = bound_catalog
-            self._catalog_resolver = bound_catalog.attach_control_system(self) if bound_catalog is not None else None
-
-        def get_catalog(self):
-            return self._catalog
-
-        def resolve(self, key: str) -> DeviceAccess:
-            return self._catalog_resolver.resolve(key)
-
-    live = DummyControlSystem("live")
-    ops = DummyControlSystem("ops")
-    live.set_catalog(catalog)
-    ops.set_catalog(catalog)
-
-    assert live.get_catalog() is ops.get_catalog() is catalog
-    assert live.resolve("BPM/X").name() == "live:BPM/X"
-    assert ops.resolve("BPM/X").name() == "ops:BPM/X"
+    shared_catalog = sr.get_catalog("device-catalog")
+    assert sr.live.get_catalog() is shared_catalog
+    assert sr.ops.get_catalog() is shared_catalog
 
 
 @pytest.mark.parametrize(

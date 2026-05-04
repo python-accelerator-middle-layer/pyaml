@@ -1,7 +1,9 @@
 import copy
+from typing import Any
 
 from pydantic import BaseModel, ConfigDict
 
+from pyaml import PyAMLException
 from pyaml.configuration.catalog import Catalog
 from pyaml.control.controlsystem import ControlSystem
 from pyaml.control.deviceaccess import DeviceAccess
@@ -34,6 +36,27 @@ class TangoControlSystem(ControlSystem):
     def attach(self, devs: list[DeviceAccess | None]) -> list[DeviceAccess | None]:
         return self._attach(devs, False)
 
+    def get_device(self, ref: str | BaseModel | None) -> DeviceAccess | None:
+        if ref is None:
+            return None
+
+        if isinstance(ref, str):
+            if self._catalog is None:
+                raise PyAMLException(f"Control system '{self.name()}' has no catalog configured for key '{ref}'")
+            try:
+                dev = self._catalog.resolve(ref)
+            except AttributeError as exc:
+                raise PyAMLException(f"Control system '{self.name()}' catalog cannot resolve key '{ref}'") from exc
+            return self.attach([dev])[0]
+
+        from .attribute import Attribute
+        from .attribute import ConfigModel as AttributeConfigModel
+
+        if isinstance(ref, AttributeConfigModel):
+            return self.attach([Attribute(ref)])[0]
+
+        raise PyAMLException(f"Control system '{self.name()}' cannot build a device from {type(ref).__name__}")
+
     def _attach(self, devs: list[DeviceAccess | None], is_array: bool) -> list[DeviceAccess | None]:
         newDevs = []
         for d in devs:
@@ -57,6 +80,9 @@ class TangoControlSystem(ControlSystem):
 
     def name(self) -> str:
         return self._cfg.name
+
+    def get_catalog_config(self) -> Catalog | str | None:
+        return self._cfg.catalog
 
     def scalar_aggregator(self) -> str | None:
         return self._cfg.scalar_aggregator
