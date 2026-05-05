@@ -9,10 +9,8 @@ from pyaml.configuration.factory import Factory
 from .. import PyAMLException
 from ..configuration.fileloader import load
 
-PYAMLCLASS = "ResponseMatrixData"
 
-
-class ConfigModel(BaseModel):
+class ResponseMatrixDataSchema(BaseModel):
     """
     Base configuration model for response matrix
 
@@ -36,8 +34,15 @@ class ResponseMatrixData(object):
     Generic response matrix loader
     """
 
-    def __init__(self, cfg: ConfigModel):
-        self._cfg = cfg
+    def __init__(
+        self,
+        matrix: list[list[float]],
+        variable_names: Optional[list[str]],
+        observable_names: list[str],
+    ):
+        self._matrix = matrix
+        self._variable_names = variable_names
+        self._observable_names = observable_names
 
     @staticmethod
     def load(filename: str) -> "ResponseMatrixData":
