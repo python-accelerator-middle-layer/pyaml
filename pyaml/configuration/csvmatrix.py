@@ -5,13 +5,10 @@ from pydantic import BaseModel, ConfigDict
 
 from ..common.exception import PyAMLException
 from ..configuration.fileloader import get_path
-from .matrix import Matrix
-
-# Define the main class name for this module
-PYAMLCLASS = "CSVMatrix"
+from .matrix import Matrix, MatrixSchema
 
 
-class ConfigModel(BaseModel):
+class CSVMatrixSchema(MatrixSchema):
     """
     Configuration model for CSV matrix
 
@@ -21,7 +18,7 @@ class ConfigModel(BaseModel):
         CSV file that contains the matrix
     """
 
-    model_config = ConfigDict(arbitrary_types_allowed=True, extra="forbid")
+    model_config = ConfigDict(extra="forbid")
 
     file: str
 
@@ -31,16 +28,15 @@ class CSVMatrix(Matrix):
     Class for loading CSV matrix
     """
 
-    def __init__(self, cfg: ConfigModel):
-        self._cfg = cfg
+    def __init__(self, file: str):
+        self._file = file
+
         # Load CSV matrix
-        path = get_path(cfg.file)
+        path = get_path(self._file)
         try:
             self._mat = np.genfromtxt(path, delimiter=",", dtype=float, loose=False)
         except ValueError as e:
-            raise PyAMLException(
-                f"CSVMatrix(file='{cfg.file}',dtype=float): {str(e)}"
-            ) from None
+            raise PyAMLException(f"CSVMatrix(file='{self._file}',dtype=float): {str(e)}") from None
 
     def get_matrix(self) -> np.array:
         """
@@ -53,5 +49,6 @@ class CSVMatrix(Matrix):
         """
         return self._mat
 
-    def __repr__(self):
-        return repr(self._cfg).replace("ConfigModel", self.__class__.__name__)
+
+#    def __repr__(self):
+#        return repr(self._cfg).replace("ConfigModel", self.__class__.__name__)

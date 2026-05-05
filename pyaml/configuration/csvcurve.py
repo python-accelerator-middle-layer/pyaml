@@ -5,13 +5,10 @@ from pydantic import BaseModel, ConfigDict
 
 from ..common.exception import PyAMLException
 from ..configuration.fileloader import get_path
-from .curve import Curve
-
-# Define the main class name for this module
-PYAMLCLASS = "CSVCurve"
+from .curve import Curve, CurveSchema
 
 
-class ConfigModel(BaseModel):
+class CSVCurveSchema(CurveSchema):
     """
     Configuration model for CSV curve
 
@@ -21,7 +18,7 @@ class ConfigModel(BaseModel):
         CSV file that contains the curve (n rows, 2 columns)
     """
 
-    model_config = ConfigDict(arbitrary_types_allowed=True, extra="forbid")
+    model_config = ConfigDict(extra="forbid")
 
     file: str
 
@@ -31,23 +28,20 @@ class CSVCurve(Curve):
     Class for load CSV (x,y) curve
     """
 
-    def __init__(self, cfg: ConfigModel):
-        self._cfg = cfg
+    def __init__(self, file: str):
+        self._file = file
 
         # Load CSV curve
-        path = get_path(cfg.file)
+        path = get_path(self._file)
         try:
             self._curve = np.genfromtxt(path, delimiter=",", dtype=float, loose=False)
         except ValueError as e:
-            raise PyAMLException(
-                f"CSVCurve(file='{cfg.file}',dtype=float): {str(e)}"
-            ) from None
+            raise PyAMLException(f"CSVCurve(file='{self._file}',dtype=float): {str(e)}") from None
 
         _s = np.shape(self._curve)
         if len(_s) != 2 or _s[1] != 2:
             raise PyAMLException(
-                f"CSVCurve(file='{cfg.file}',dtype=float):"
-                f"wrong shape (2,2) expected but got {str(_s)}"
+                f"CSVCurve(file='{self._file}',dtype=float):wrong shape (2,2) expected but got {str(_s)}"
             )
 
     def get_curve(self) -> np.array:
@@ -61,5 +55,6 @@ class CSVCurve(Curve):
         """
         return self._curve
 
-    def __repr__(self):
-        return repr(self._cfg).replace("ConfigModel", self.__class__.__name__)
+
+#    def __repr__(self):
+#        return repr(self._cfg).replace("ConfigModel", self.__class__.__name__)
