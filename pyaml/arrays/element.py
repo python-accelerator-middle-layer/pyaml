@@ -1,36 +1,20 @@
 from ..common.element_holder import ElementHolder
-from .array import ArrayConfig, ArrayConfigModel
-
-# Define the main class name for this module
-PYAMLCLASS = "Element"
+from .array import Array
 
 
-class ConfigModel(ArrayConfigModel):
-    """Configuration model for :py:class:`.ElementArray`."""
-
-
-class Element(ArrayConfig):
+class Element(Array):
     """
     :py:class:`.ElementArray` configuration.
 
-    Example
-    -------
-
-    An element array configuration can also be created by code using
-    the following example:
-
-    .. code-block:: python
-
-        from pyaml.arrays.element import Element,ConfigModel as ElementArrayConfigModel
-        elt_cfg = Element(
-           ElementArrayConfigModel(name="MyArray", elements=["BPM_C04-01","SH1A-C04-H"])
-        )
-
-
     """
 
-    def __init__(self, cfg: ArrayConfigModel):
-        super().__init__(cfg)
+    def __init__(
+        self,
+        name: str,
+        elements: list[str],
+    ):
+        self._name = name
+        self._elements = elements
 
     def fill_array(self, holder: ElementHolder):
         """
@@ -54,4 +38,4 @@ class Element(ArrayConfig):
         holder : ElementHolder
             The element holder to populate with element array
         """
-        holder.fill_element_array(self._cfg.name, self._cfg.elements)
+        holder.fill_element_array(self._name, self._elements)
