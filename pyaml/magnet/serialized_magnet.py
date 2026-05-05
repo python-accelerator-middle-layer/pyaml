@@ -3,18 +3,15 @@ from scipy.constants import speed_of_light
 
 from .. import PyAMLException
 from ..common import abstract
-from ..common.element import Element, ElementConfigModel, __pyaml_repr__
+from ..common.element import Element, ElementSchema, __pyaml_repr__
 from ..configuration import Factory
 from ..control.deviceaccess import DeviceAccess
 from .function_mapping import function_map
-from .magnet import Magnet, MagnetConfigModel
+from .magnet import Magnet, MagnetSchema
 from .model import MagnetModel
 
-# Define the main class name for this module
-PYAMLCLASS = "SerializedMagnets"
 
-
-class ConfigModel(ElementConfigModel):
+class SerializedMagnetsSchema(ElementSchema):
     function: str
     """List of magnets"""
     elements: list[str] | str
@@ -24,9 +21,15 @@ class ConfigModel(ElementConfigModel):
 
 
 class ReadWriteSerializedStrengths(abstract.ReadWriteFloatScalar):
-    def __init__(self, cfg: ConfigModel, elements: list[abstract.ReadWriteFloatScalar]):
-        self.elements = elements
-        self._cfg = cfg
+    def __init__(
+        self,
+        function: str,
+        elements: list[abstract.ReadWriteFloatScalar],
+        model: MagnetModel | None = None,
+    ):
+        self._function = function
+        self._elements = elements
+        self._model = model
 
     def get(self) -> float:
         return sum([elem.get() for elem in self.elements])
@@ -38,10 +41,10 @@ class ReadWriteSerializedStrengths(abstract.ReadWriteFloatScalar):
         raise NotImplementedError("Not implemented yet.")
 
     def unit(self) -> str:
-        return self._cfg.model.get_strength_units()[0]
+        return self._model.get_strength_units()[0]
 
     def get_model(self) -> MagnetModel:
-        return self._cfg.model
+        return self._model
 
     def get_elements(self):
         return self.elements
@@ -51,11 +54,16 @@ class ReadWriteSerializedStrengths(abstract.ReadWriteFloatScalar):
 
 
 class ReadWriteSerializedHardwares(ReadWriteSerializedStrengths):
-    def __init__(self, cfg: ConfigModel, elements: list[abstract.ReadWriteFloatScalar]):
-        super().__init__(cfg, elements)
+    def __init__(
+        self,
+        function: str,
+        elements: list[abstract.ReadWriteFloatScalar],
+        model: MagnetModel | None = None,
+    ):
+        super().__init__(function, elements, model)
 
     def unit(self) -> str:
-        return self._cfg.model.get_hardware_units()[0]
+        return self._model.get_hardware_units()[0]
 
     def set_magnet_rigidity(self, brho: np.double):
         [element.set_magnet_rigidity(brho) for element in self.elements]
@@ -67,33 +75,30 @@ class SerializedMagnets(Element):
     The set point is usually managed by only one power supply but it can be covered by several ones.
     If several power supplies
 
-
-    Parameters
-    ----------
-    cfg : ConfigModel
-        Configuration object TODO: to describe
-
-    Raises
-    ------
-    pyaml.PyAMLException
-        In case of wrong initialization
     """
 
-    def __init__(self, cfg: ConfigModel, peer=None):
-        super().__init__(cfg.name)
-        self._cfg = cfg
-        self.model = cfg.model
+    def __init__(
+        self,
+        name: str,
+        function: str,
+        elements: list[abstract.ReadWriteFloatScalar],
+        model: MagnetModel | None = None,
+        peer=None,
+    ):
+        super().__init__(name)
+        self._function = function
+        self.model = model
         self.polynom = None
         self.__strengths = None
         self.__hardwares = None
         self.__virtuals: list[Magnet] = []
-        self.__elements = cfg.elements if isinstance(cfg.elements, list) else [cfg.elements]
+        self.__elements = elements if isinstance(elements, list) else [elements]
         self.model.set_number_of_magnets(len(self.__elements))
         if peer is None:
             # Configuration part
-            self.polynom = function_map[self._cfg.function].polynom
-            if self._cfg.function not in function_map:
-                raise PyAMLException(self._cfg.function + " not implemented for serialized magnet")
+            self.polynom = function_map[self._function].polynom
+            if self._function not in function_map:
+                raise PyAMLException(self._function + " not implemented for serialized magnet")
             for element in self.__elements:
                 # Check mapping validity
                 # Create the virtual magnet for the corresponding magnet
@@ -107,7 +112,7 @@ class SerializedMagnets(Element):
 
     def __create_virtual_magnet(self, name: str) -> Magnet:
         args = {"name": name, "model": self.model}
-        virtual: Magnet = function_map[self._cfg.function](MagnetConfigModel(**args))
+        virtual: Magnet = function_map[self._function](**args)
         virtual.set_model_name(self.get_name())
         return virtual
 
@@ -124,9 +129,9 @@ class SerializedMagnets(Element):
         hardwares: list[abstract.ReadWriteFloatScalar],
     ) -> list[Magnet]:
         l = []
-        n_ser_mag = SerializedMagnets(self._cfg, peer)
-        n_ser_mag.__strengths = ReadWriteSerializedStrengths(self._cfg, strengths)
-        n_ser_mag.__hardwares = ReadWriteSerializedHardwares(self._cfg, hardwares)
+        n_ser_mag = SerializedMagnets(self._name, self._function, self.__elements, self.model, peer)
+        n_ser_mag.__strengths = ReadWriteSerializedStrengths(self._function, self.__elements, self.model, strengths)
+        n_ser_mag.__hardwares = ReadWriteSerializedHardwares(self._function, self.__elements, self.model, hardwares)
         l.append(n_ser_mag)
         # Construct a single magnet for each magnet.
         sub_magnets: list[Magnet] = []
@@ -174,4 +179,4 @@ class SerializedMagnets(Element):
         if isinstance(self.model.powerconverter, list):
             return self.model.powerconverter
         else:
-            return [self._cfg.powerconverter]
+            return [self._powerconverter]

@@ -3,14 +3,14 @@ from pydantic import BaseModel, ConfigDict
 
 from .. import PyAMLException
 from ..common.element import __pyaml_repr__
-from ..control.deviceaccess import DeviceAccess
+from ..control.deviceaccess import DeviceAccess, DeviceAccessSchema
 from .model import MagnetModel
 
 # Define the main class name for this module
 PYAMLCLASS = "IdentityCFMagnetModel"
 
 
-class ConfigModel(BaseModel):
+class IdentityCFMagnetModelSchema(BaseModel):
     """
     Configuration model for identity combined function magnet model
 
@@ -26,12 +26,12 @@ class ConfigModel(BaseModel):
         List of strength units (i.e. ['rad', 'm-1', 'm-2'])
     """
 
-    model_config = ConfigDict(arbitrary_types_allowed=True, extra="forbid")
+    model_config = ConfigDict(extra="forbid")
 
     multipoles: list[str]
-    powerconverters: list[DeviceAccess | None] | None = None
-    physics: list[DeviceAccess | None] | None = None
-    units: list[str]
+    powerconverters: list[DeviceAccessSchema | None] | None = None
+    physics: list[DeviceAccessSchema | None] | None = None
+    units: list[str] = ""
 
 
 class IdentityCFMagnetModel(MagnetModel):
@@ -39,37 +39,43 @@ class IdentityCFMagnetModel(MagnetModel):
     Class that map values to underlying devices without conversion
     """
 
-    def __init__(self, cfg: ConfigModel):
-        self._cfg = cfg
+    def __init__(
+        self,
+        multipoles: list[str],
+        powerconverters: list[DeviceAccess | None] | None = None,
+        physics: list[DeviceAccess | None] | None = None,
+        units: list[str] = "",
+    ):
+        self._multipoles = multipoles
+        self._powerconverters = powerconverters
+        self._physics = physics
+        self._units = units
 
         # Check config
-        self.__nbFunction: int = len(cfg.multipoles)
+        self.__nbFunction: int = len(self._multipoles)
 
-        if cfg.physics is None and cfg.powerconverters is None:
+        if self._physics is None and self._powerconverters is None:
             raise PyAMLException(
-                "Invalid IdentityCFMagnetModel configuration,"
-                "physics or powerconverters device required"
+                "Invalid IdentityCFMagnetModel configuration,physics or powerconverters device required"
             )
-        if cfg.physics is not None and cfg.powerconverters is not None:
+        if self._physics is not None and self._powerconverters is not None:
             raise PyAMLException(
-                "Invalid IdentityCFMagnetModel configuration,"
-                "physics or powerconverters device required but not both"
+                "Invalid IdentityCFMagnetModel configuration,physics or powerconverters device required but not both"
             )
-        if cfg.physics:
-            self.__devices = cfg.physics
+        if self._physics:
+            self.__devices = self._physics
         else:
-            self.__devices = cfg.powerconverters
+            self.__devices = self._powerconverters
 
         self.__nbDev: int = len(self.__devices)
 
-        self.__check_len(cfg.units, "units", self.__nbFunction)
+        self.__check_len(self._units, "units", self.__nbFunction)
 
     def __check_len(self, obj, name, expected_len):
         lgth = len(obj)
         if lgth != expected_len:
             raise PyAMLException(
-                f"{name} does not have the expected "
-                f"number of items ({expected_len} items expected but got {lgth})"
+                f"{name} does not have the expected number of items ({expected_len} items expected but got {lgth})"
             )
 
     def compute_hardware_values(self, strengths: np.array) -> np.array:
@@ -79,10 +85,10 @@ class IdentityCFMagnetModel(MagnetModel):
         return currents
 
     def get_strength_units(self) -> list[str]:
-        return self._cfg.units
+        return self._units
 
     def get_hardware_units(self) -> list[str]:
-        return self._cfg.units
+        return self._units
 
     def get_devices(self) -> list[DeviceAccess | None]:
         return self.__devices
@@ -91,10 +97,10 @@ class IdentityCFMagnetModel(MagnetModel):
         pass
 
     def has_physics(self) -> bool:
-        return self._cfg.physics is not None
+        return self._physics is not None
 
     def has_hardware(self) -> bool:
-        return self._cfg.powerconverters is not None
+        return self._powerconverters is not None
 
     def __repr__(self):
         return __pyaml_repr__(self)

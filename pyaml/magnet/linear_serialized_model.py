@@ -7,16 +7,13 @@ from ..configuration.curve import Curve
 from ..configuration.inline_curve import ConfigModel as InlineCurveModel
 from ..configuration.inline_curve import InlineCurve
 from ..configuration.matrix import Matrix
-from ..control.deviceaccess import DeviceAccess
+from ..control.deviceaccess import DeviceAccess, DeviceAccessSchema
 from .linear_model import ConfigModel as LinearConfigModel
 from .linear_model import LinearMagnetModel
 from .model import MagnetModel
 
-# Define the main class name for this module
-PYAMLCLASS = "LinearSerializedMagnetModel"
 
-
-class ConfigModel(BaseModel):
+class LinearSerializedMagnetModelSchema(BaseModel):
     """
     Configuration model for linear serialized magnet model
 
@@ -39,13 +36,13 @@ class ConfigModel(BaseModel):
         Strength unit: rad, m-1, m-2
     """
 
-    model_config = ConfigDict(arbitrary_types_allowed=True, extra="forbid")
+    model_config = ConfigDict(extra="forbid")
 
     curves: Curve | list[Curve]
     calibration_factors: float | list[float] = None
     calibration_offsets: float | list[float] = None
     crosstalk: float | list[float] = 1.0
-    powerconverter: DeviceAccess
+    powerconverter: DeviceAccessSchema
     unit: str
 
 
@@ -75,8 +72,7 @@ def _check_len(obj, name, expected_length):
     length = len(obj)
     if length != expected_length:
         raise PyAMLException(
-            f"{name} does not have the expected "
-            f"number of items ({expected_length} items expected but got {length})"
+            f"{name} does not have the expected number of items ({expected_length} items expected but got {length})"
         )
 
 
@@ -87,46 +83,54 @@ class LinearSerializedMagnetModel(MagnetModel):
     of power supply currents associated to a single function.
     """
 
-    def __init__(self, cfg: ConfigModel):
-        self._cfg = cfg
+    def __init__(
+        self,
+        curves: Curve | list[Curve],
+        powerconverter: DeviceAccess,
+        unit: str,
+        calibration_factors: float | list[float] = None,
+        calibration_offsets: float | list[float] = None,
+        crosstalk: float | list[float] = 1.0,
+    ):
+        self._curves = curves
+        self._powerconverter = powerconverter
+        self._calibration_factors = calibration_factors
+        self._calibration_offsets = calibration_offsets
+        self._unit = unit
         self.__brho = np.nan
 
         # Check config
         self.__nbMagnets: int = _get_max_length(
-            cfg.curves, cfg.calibration_factors, cfg.calibration_offsets, cfg.crosstalk
+            self._curves, self._calibration_factors, self._calibration_offsets, self._crosstalk
         )
         self.__calibration_factors = np.ones(self.__nbMagnets)
         self.__calibration_offsets = np.ones(self.__nbMagnets)
         self.__crosstalk = np.ones(self.__nbMagnets)
-        self.__curves = _to_list_of_length(self._cfg.curves, self.__nbMagnets)
+        self.__curves = _to_list_of_length(curves, self.__nbMagnets)
         self.__sub_models: list[LinearMagnetModel] = []
 
     def __initialize(self):
-        if self._cfg.calibration_factors is None:
+        if self._calibration_factors is None:
             self.__calibration_factors = np.ones(self.__nbMagnets)
         else:
-            self.__calibration_factors = _to_list_of_length(
-                self._cfg.calibration_factors, self.__nbMagnets
-            )
+            self.__calibration_factors = _to_list_of_length(self._calibration_factors, self.__nbMagnets)
 
-        if self._cfg.calibration_offsets is None:
+        if self._calibration_offsets is None:
             self.__calibration_offsets = np.zeros(self.__nbMagnets)
         else:
-            self.__calibration_offsets = _to_list_of_length(
-                self._cfg.calibration_offsets, self.__nbMagnets
-            )
+            self.__calibration_offsets = _to_list_of_length(self._calibration_offsets, self.__nbMagnets)
 
-        if self._cfg.crosstalk is None:
+        if self._crosstalk is None:
             self.__crosstalk = np.zeros(self.__nbMagnets)
         else:
-            self.__crosstalk = _to_list_of_length(self._cfg.crosstalk, self.__nbMagnets)
-        self.__curves = _to_list_of_length(self._cfg.curves, self.__nbMagnets)
-        if isinstance(self._cfg.curves, list):
-            self.__curves = self._cfg.curves
+            self.__crosstalk = _to_list_of_length(self._crosstalk, self.__nbMagnets)
+        self.__curves = _to_list_of_length(self._curves, self.__nbMagnets)
+        if isinstance(self._curves, list):
+            self.__curves = self._curves
         else:
             self.__curves: list[Curve] = []
             for _ in range(self.__nbMagnets):
-                curve = InlineCurve(InlineCurveModel(mat=self._cfg.curves.get_curve()))
+                curve = InlineCurve(InlineCurveModel(mat=self._curves.get_curve()))
                 self.__curves.append(curve)
 
         _check_len(self.__calibration_factors, "calibration_factors", self.__nbMagnets)
@@ -141,8 +145,8 @@ class LinearSerializedMagnetModel(MagnetModel):
                 calibration_factor=self.__calibration_factors[magnet_idx],
                 calibration_offset=self.__calibration_offsets[magnet_idx],
                 crosstalk=self.__crosstalk[magnet_idx],
-                powerconverter=self._cfg.powerconverter,
-                unit=self._cfg.unit,
+                powerconverter=self._powerconverter,
+                unit=self._unit,
             )
             self.__sub_models.append(LinearMagnetModel(sub_model))
 
@@ -157,26 +161,23 @@ class LinearSerializedMagnetModel(MagnetModel):
         return np.array(
             [
                 model.compute_hardware_values([strength])
-                for strength, model in zip(strengths, self.__sub_models)
+                for strength, model in zip(strengths, self.__sub_models, strict=True)
             ]
         )
 
     def compute_strengths(self, currents: np.array) -> np.array:
         return np.array(
-            [
-                model.compute_strengths([current])
-                for current, model in zip(currents, self.__sub_models)
-            ]
+            [model.compute_strengths([current]) for current, model in zip(currents, self.__sub_models, strict=True)]
         )
 
     def get_strength_units(self) -> list[str]:
-        return self._cfg.units
+        return self._units
 
     def get_hardware_units(self) -> list[str]:
-        return [p.unit() for p in self._cfg.__sub_models]
+        return [p.unit() for p in self.__sub_models]
 
     def get_devices(self) -> list[DeviceAccess]:
-        return self._cfg.powerconverters
+        return self._powerconverters
 
     def set_magnet_rigidity(self, brho: np.double):
         self.__brho = brho
