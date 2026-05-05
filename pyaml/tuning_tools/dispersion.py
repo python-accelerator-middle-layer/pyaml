@@ -6,17 +6,15 @@ from pySC.apps import measure_dispersion
 from pySC.apps.codes import DispersionCode
 
 from ..common.constants import Action
-from ..common.element import ElementConfigModel
+from ..common.element import ElementSchema
 from ..common.element_holder import ElementHolder
 from ..external.pySC_interface import pySCInterface
 from .measurement_tool import MeasurementTool
 
 logger = logging.getLogger(__name__)
 
-PYAMLCLASS = "Dispersion"
 
-
-class ConfigModel(ElementConfigModel):
+class DispersionSchema(ElementSchema):
     """
     Configuration model for dispersion measurement
 
@@ -30,7 +28,7 @@ class ConfigModel(ElementConfigModel):
         Frequency delta for measurement
     """
 
-    model_config = ConfigDict(arbitrary_types_allowed=True, extra="forbid")
+    model_config = ConfigDict(extra="forbid")
 
     bpm_array_name: str
     rf_plant_name: str
@@ -38,13 +36,17 @@ class ConfigModel(ElementConfigModel):
 
 
 class Dispersion(MeasurementTool):
-    def __init__(self, cfg: ConfigModel):
-        super().__init__(cfg.name)
-        self._cfg = cfg
-
-        self.bpm_array_name = cfg.bpm_array_name
-        self.rf_plant_name = cfg.rf_plant_name
-        self.frequency_delta = cfg.frequency_delta
+    def __init__(
+        self,
+        name: str,
+        bpm_array_name: str,
+        rf_plant_name: str,
+        frequency_delta: float,
+    ):
+        super().__init__(name)
+        self.bpm_array_name = bpm_array_name
+        self.rf_plant_name = rf_plant_name
+        self.frequency_delta = frequency_delta
 
     def measure(
         self,

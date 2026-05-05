@@ -12,7 +12,7 @@ except ImportError:
 
 from .. import PyAMLException
 from ..common.element import ElementConfigModel
-from .response_matrix_data import ResponseMatrixData
+from .response_matrix_data import ResponseMatrixData, ResponseMatrixDataSchema
 from .tuning_tool import TuningTool
 
 if TYPE_CHECKING:
@@ -21,11 +21,8 @@ if TYPE_CHECKING:
 
 logger = logging.getLogger(__name__)
 
-# Define the main class name for this module
-PYAMLCLASS = "Tune"
 
-
-class ConfigModel(ElementConfigModel):
+class TuneSchema(ElementConfigModel):
     """
     Configuration model for Tune
 
@@ -42,7 +39,7 @@ class ConfigModel(ElementConfigModel):
 
     quad_array_name: str
     betatron_tune_name: str
-    response_matrix: str | ResponseMatrixData
+    response_matrix: str | ResponseMatrixDataSchema
 
 
 class Tune(TuningTool):
@@ -50,31 +47,34 @@ class Tune(TuningTool):
     Class providing tune adjustment tool
     """
 
-    def __init__(self, cfg: ConfigModel):
+    def __init__(
+        self,
+        name: str,
+        quad_array_name: str,
+        betatron_tune_name: str,
+        response_matrix: str | ResponseMatrixData,
+    ):
         """
         Construct a Tune adjustment object.
 
-        Parameters
-        ----------
-        cfg : ConfigModel
-            Configuration for the tune adjustment.
         """
-        super().__init__(cfg.name)
-        self._cfg = cfg
+        super().__init__(name)
+        self._quad_array_name = quad_array_name
+        self._betatron_tune_name = betatron_tune_name
         self._response_matrix = None
         self._correctionmat = None
 
         # If the configuration response matrix is a filename, load it
-        if type(cfg.response_matrix) is str:
+        if type(response_matrix) is str:
             try:
-                cfg.response_matrix = ResponseMatrixData.load(cfg.response_matrix)
+                response_matrix = ResponseMatrixData.load(response_matrix)
             except Exception as e:
                 logger.warning(f"{str(e)}")
-                cfg.response_matrix = None
+                response_matrix = None
 
         # Invert matrix
-        if cfg.response_matrix:
-            self._response_matrix = np.array(cfg.response_matrix._cfg.matrix)
+        if response_matrix:
+            self._response_matrix = np.array(response_matrix._matrix)
             self._correctionmat = np.linalg.pinv(self._response_matrix)
 
         # TODO: Initialise first setpoint
@@ -90,8 +90,8 @@ class Tune(TuningTool):
             Filename of the :class:`~.ResponseMatrixData` to load
 
         """
-        self._cfg.response_matrix = ResponseMatrixData.load(load_path)
-        self._response_matrix = np.array(self._cfg.response_matrix._cfg.matrix)
+        self._response_matrix = ResponseMatrixData.load(load_path)
+        self._response_matrix = np.array(self._response_matrix._matrix)
         self._correctionmat = np.linalg.pinv(self._response_matrix)
 
     @property
@@ -99,17 +99,17 @@ class Tune(TuningTool):
         """
         Return the response matrix if it has been loaded None otherwise
         """
-        return self._cfg.response_matrix
+        return self._response_matrix
 
     @property
     def _tm(self) -> "BetatronTuneMonitor":
         self.check_peer()
-        return self.peer.get_betatron_tune_monitor(self._cfg.betatron_tune_name)
+        return self.peer.get_betatron_tune_monitor(self._betatron_tune_name)
 
     @property
     def _quads(self) -> "MagnetArray":
         self.check_peer()
-        return self.peer.get_magnets(self._cfg.quad_array_name)
+        return self.peer.get_magnets(self._quad_array_name)
 
     def get(self):
         """

@@ -6,15 +6,13 @@ import numpy as np
 from pydantic import ConfigDict
 
 from ..common.constants import Action
-from .measurement_tool import MeasurementTool, MeasurementToolConfigModel
-from .response_matrix_data import ConfigModel as ResponseMatrixDataConfigModel
+from .measurement_tool import MeasurementTool, MeasurementToolSchema
+from .response_matrix_data import ResponseMatrixDataSchema
 
 logger = logging.getLogger(__name__)
 
-PYAMLCLASS = "TuneResponseMatrix"
 
-
-class ConfigModel(MeasurementToolConfigModel):
+class TuneResponseMatrixSchema(MeasurementToolSchema):
     """
     Configuration model for Tune response matrix
 
@@ -28,7 +26,7 @@ class ConfigModel(MeasurementToolConfigModel):
         Delta strength used to get the response matrix
     """
 
-    model_config = ConfigDict(arbitrary_types_allowed=True, extra="forbid")
+    model_config = ConfigDict(extra="forbid")
 
     quad_array_name: str
     betatron_tune_name: str
@@ -36,9 +34,17 @@ class ConfigModel(MeasurementToolConfigModel):
 
 
 class TuneResponseMatrix(MeasurementTool):
-    def __init__(self, cfg: ConfigModel):
-        super().__init__(cfg.name)
-        self._cfg = cfg
+    def __init__(
+        self,
+        name: str,
+        quad_array_name: str,
+        betatron_tune_name: str,
+        quad_delta: float,
+    ):
+        super().__init__(name)
+        self._quad_array_name = quad_array_name
+        self._betatron_tune_name = betatron_tune_name
+        self._quad_delta = quad_delta
 
     def measure(
         self,
@@ -114,16 +120,16 @@ class TuneResponseMatrix(MeasurementTool):
         """
         # Get devices
         self.check_peer()
-        quads = self._peer.get_magnets(self._cfg.quad_array_name)
-        tm = self._peer.get_betatron_tune_monitor(self._cfg.betatron_tune_name)
+        quads = self._peer.get_magnets(self._quad_array_name)
+        tm = self._peer.get_betatron_tune_monitor(self._betatron_tune_name)
 
         tunemat = np.zeros((len(quads), 2))
         initial_tune = tm.tune.get()
-        delta = quad_delta if quad_delta is not None else self._cfg.quad_delta
-        nb_step = n_step if n_step is not None else self._cfg.n_step
-        nb_meas = n_avg_meas if n_avg_meas is not None else self._cfg.n_avg_meas
-        sleep_step = sleep_between_step if sleep_between_step is not None else self._cfg.sleep_between_step
-        sleep_meas = sleep_between_meas if sleep_between_meas is not None else self._cfg.sleep_between_meas
+        delta = quad_delta if quad_delta is not None else self._quad_delta
+        nb_step = n_step if n_step is not None else self._n_step
+        nb_meas = n_avg_meas if n_avg_meas is not None else self._n_avg_meas
+        sleep_step = sleep_between_step if sleep_between_step is not None else self._sleep_between_step
+        sleep_meas = sleep_between_meas if sleep_between_meas is not None else self._sleep_between_meas
 
         self._register_callback(callback)
         self._init_measure("pyaml.tuning_tools.response_matrix_data")
@@ -193,7 +199,7 @@ class TuneResponseMatrix(MeasurementTool):
             logger.warning(f"{self.get_name()} : measurement aborted")
             return False
 
-        mat = ResponseMatrixDataConfigModel(
+        mat = ResponseMatrixDataSchema(
             matrix=tunemat.T.tolist(),
             variable_names=quads.names(),
             observable_names=[tm.get_name() + ".x", tm.get_name() + ".y"],
