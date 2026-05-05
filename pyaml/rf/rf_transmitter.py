@@ -8,14 +8,11 @@ except ImportError:
 
 from .. import PyAMLException
 from ..common import abstract
-from ..common.element import Element, ElementConfigModel
+from ..common.element import Element, ElementSchema
 from ..control.deviceaccess import DeviceAccess
 
-# Define the main class name for this module
-PYAMLCLASS = "RFTransmitter"
 
-
-class ConfigModel(ElementConfigModel):
+class RFTransmitterSchema(ElementSchema):
     """
     Configuration model for RF Transmitter.
 
@@ -34,7 +31,7 @@ class ConfigModel(ElementConfigModel):
         by default 1.0
     """
 
-    model_config = ConfigDict(arbitrary_types_allowed=True, extra="forbid")
+    model_config = ConfigDict(extra="forbid")
 
     voltage: DeviceAccess | None = None
     phase: DeviceAccess | None = None
@@ -48,9 +45,22 @@ class RFTransmitter(Element):
     Class that handle a RF transmitter
     """
 
-    def __init__(self, cfg: ConfigModel):
-        super().__init__(cfg.name)
-        self._cfg = cfg
+    def __init__(
+        self,
+        name: str,
+        cavities: list[str],
+        voltage: DeviceAccess | None = None,
+        phase: DeviceAccess | None = None,
+        harmonic: float = 1.0,
+        distribution: float = 1.0,
+    ):
+        super().__init__(name)
+        self._cavities = cavities
+        self._voltage = voltage
+        self._phase = phase
+        self._harmonic = harmonic
+        self._distribution = distribution
+
         self.__voltage = None
         self.__phase = None
 
@@ -70,9 +80,7 @@ class RFTransmitter(Element):
             If transmitter is unattached or has no voltage device defined
         """
         if self.__voltage is None:
-            raise PyAMLException(
-                f"{str(self)} is unattached or has no voltage device defined"
-            )
+            raise PyAMLException(f"{str(self)} is unattached or has no voltage device defined")
         return self.__voltage
 
     @property
@@ -91,9 +99,7 @@ class RFTransmitter(Element):
             If transmitter is unattached or has no phase device defined
         """
         if self.__phase is None:
-            raise PyAMLException(
-                f"{str(self)} is unattached or has no phase device defined"
-            )
+            raise PyAMLException(f"{str(self)} is unattached or has no phase device defined")
         return self.__phase
 
     def attach(
@@ -120,7 +126,7 @@ class RFTransmitter(Element):
             A new attached instance of RFTransmitter
         """
         # Attach voltage and phase attribute and returns a new reference
-        obj = self.__class__(self._cfg)
+        obj = self.__class__(self._name, self._cavities, self._voltage, self._phase, self._harmonic, self._distribution)
         obj.__voltage = voltage
         obj.__phase = phase
         obj._peer = peer

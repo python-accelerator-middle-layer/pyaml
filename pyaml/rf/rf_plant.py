@@ -8,18 +8,15 @@ except ImportError:
 
 from .. import PyAMLException
 from ..common import abstract
-from ..common.element import Element, ElementConfigModel
-from ..control.deviceaccess import DeviceAccess
-from .rf_transmitter import RFTransmitter
-
-# Define the main class name for this module
-PYAMLCLASS = "RFPlant"
+from ..common.element import Element, ElementSchema
+from ..control.deviceaccess import DeviceAccess, DeviceAccessSchema
+from .rf_transmitter import RFTransmitter, RFTransmitterSchema
 
 
-class ConfigModel(ElementConfigModel):
-    masterclock: DeviceAccess | None = None
+class RFPlantSchema(ElementSchema):
+    masterclock: DeviceAccessSchema | None = None
     """Device to apply main RF frequency"""
-    transmitters: list[RFTransmitter] | None = None
+    transmitters: list[RFTransmitterSchema] | None = None
     """List of RF trasnmitters"""
 
 
@@ -28,9 +25,15 @@ class RFPlant(Element):
     Main RF object
     """
 
-    def __init__(self, cfg: ConfigModel):
-        super().__init__(cfg.name)
-        self._cfg = cfg
+    def __init__(
+        self,
+        name: str,
+        masterclock: DeviceAccess | None = None,
+        transmitters: list[RFTransmitter] | None = None,
+    ):
+        super().__init__(name)
+        self.__masterclock = masterclock
+        self.__transmitters = transmitters
         self.__frequency = None
         self.__voltage = None
 
@@ -53,7 +56,7 @@ class RFPlant(Element):
         voltage: abstract.ReadWriteFloatScalar,
     ) -> Self:
         # Attach frequency attribute and returns a new reference
-        obj = self.__class__(self._cfg)
+        obj = self.__class__(self._name, self.__masterclock, self.__transmitters)
         obj.__frequency = frequency
         obj.__voltage = voltage
         obj._peer = peer
