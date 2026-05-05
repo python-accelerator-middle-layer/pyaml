@@ -99,7 +99,7 @@ class Magnet(Element):
         Create a new reference to attach this magnet to a simulator
         or a control systemand.
         """
-        obj = self.__class__(self._cfg)
+        obj = self.__class__(self._name, self._description, self._lattice_names, self.__model)
         obj.__modelName = self.__modelName
         obj.__strength = strength
         obj.__hardware = hardware

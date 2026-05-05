@@ -3,14 +3,11 @@ from pydantic import BaseModel, ConfigDict
 
 from .. import PyAMLException
 from ..common.element import __pyaml_repr__
-from ..control.deviceaccess import DeviceAccess
+from ..control.deviceaccess import DeviceAccess, DeviceAccessSchema
 from .model import MagnetModel
 
-# Define the main class name for this module
-PYAMLCLASS = "IdentityMagnetModel"
 
-
-class ConfigModel(BaseModel):
+class IdentityMagnetModelSchema(BaseModel):
     """
     Configuration model for identity magnet model
 
@@ -24,11 +21,11 @@ class ConfigModel(BaseModel):
         Unit of the strength (i.e. 1/m or m-1)
     """
 
-    model_config = ConfigDict(arbitrary_types_allowed=True, extra="forbid")
+    model_config = ConfigDict(extra="forbid")
 
-    powerconverter: DeviceAccess | None = None
-    physics: DeviceAccess | None = None
-    unit: str
+    powerconverter: DeviceAccessSchema | None = None
+    physics: DeviceAccessSchema | None = None
+    unit: str = ""
 
 
 class IdentityMagnetModel(MagnetModel):
@@ -36,19 +33,26 @@ class IdentityMagnetModel(MagnetModel):
     Class that map value to underlying device without conversion
     """
 
-    def __init__(self, cfg: ConfigModel):
-        self._cfg = cfg
-        self.__unit = cfg.unit
-        if cfg.physics is None and cfg.powerconverter is None:
+    def __init__(
+        self,
+        powerconverter: DeviceAccess | None = None,
+        physics: DeviceAccess | None = None,
+        unit: str = "",
+    ):
+        self._powerconverter = powerconverter
+        self._physics = physics
+        self.__unit = unit
+
+        if self._physics is None and self._powerconverter is None:
             raise PyAMLException("Invalid IdentityMagnetModel configuration,physics or powerconverter device required")
-        if cfg.physics is not None and cfg.powerconverter is not None:
+        if self._physics is not None and self._powerconverter is not None:
             raise PyAMLException(
                 "Invalid IdentityMagnetModel configuration,physics or powerconverter device required but not both"
             )
-        if cfg.physics:
-            self.__device = cfg.physics
+        if self._physics:
+            self.__device = self._physics
         else:
-            self.__device = cfg.powerconverter
+            self.__device = self._powerconverter
 
     def compute_hardware_values(self, strengths: np.array) -> np.array:
         return strengths
@@ -69,10 +73,10 @@ class IdentityMagnetModel(MagnetModel):
         pass
 
     def has_physics(self) -> bool:
-        return self._cfg.physics is not None
+        return self._physics is not None
 
     def has_hardware(self) -> bool:
-        return self._cfg.powerconverter is not None
+        return self._powerconverter is not None
 
     def __repr__(self):
         return __pyaml_repr__(self)

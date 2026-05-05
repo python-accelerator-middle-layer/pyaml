@@ -3,15 +3,12 @@ from pydantic import BaseModel, ConfigDict
 from scipy.interpolate import make_smoothing_spline
 
 from ..common.element import __pyaml_repr__
-from ..configuration.curve import Curve
-from ..control.deviceaccess import DeviceAccess
+from ..configuration.curve import Curve, CurveSchema
+from ..control.deviceaccess import DeviceAccess, DeviceAccessSchema
 from .model import MagnetModel
 
-# Define the main class name for this module
-PYAMLCLASS = "SplineMagnetModel"
 
-
-class ConfigModel(BaseModel):
+class SplineMagnetModelSchema(BaseModel):
     """
     Configuration model for spline magnet model
 
@@ -34,10 +31,10 @@ class ConfigModel(BaseModel):
         passes through all the points of the curve. Default: 0.0
     """
 
-    model_config = ConfigDict(arbitrary_types_allowed=True, extra="forbid")
+    model_config = ConfigDict(extra="forbid")
 
-    curve: Curve
-    powerconverter: DeviceAccess | None
+    curve: CurveSchema
+    powerconverter: DeviceAccessSchema | None
     calibration_factor: float = 1.0
     calibration_offset: float = 0.0
     crosstalk: float = 1.0
@@ -51,17 +48,25 @@ class SplineMagnetModel(MagnetModel):
     spline interpolation for a single function magnet
     """
 
-    def __init__(self, cfg: ConfigModel):
-        self._cfg = cfg
-        self.__curve = cfg.curve.get_curve()
-        self.__curve[:, 1] = self.__curve[:, 1] * cfg.calibration_factor * cfg.crosstalk + cfg.calibration_offset
+    def __init__(
+        self,
+        curve: Curve,
+        unit: str,
+        powerconverter: DeviceAccessSchema | None,
+        calibration_factor: float = 1.0,
+        calibration_offset: float = 0.0,
+        crosstalk: float = 1.0,
+        alpha: float = 0.0,
+    ):
+        self.__curve = curve.get_curve()
+        self.__curve[:, 1] = self.__curve[:, 1] * calibration_factor * crosstalk + calibration_offset
         rcurve = Curve.inverse(self.__curve)
-        self.__strength_unit = cfg.unit
-        self.__hardware_unit = cfg.powerconverter.unit()
+        self.__strength_unit = unit
+        self.__hardware_unit = powerconverter.unit()
         self.__brho = np.nan
-        self.__ps = cfg.powerconverter
-        self.__spl = make_smoothing_spline(self.__curve[:, 0], self.__curve[:, 1], lam=cfg.alpha)
-        self.__rspl = make_smoothing_spline(rcurve[:, 0], rcurve[:, 1], lam=cfg.alpha)
+        self.__ps = powerconverter
+        self.__spl = make_smoothing_spline(self.__curve[:, 0], self.__curve[:, 1], lam=alpha)
+        self.__rspl = make_smoothing_spline(rcurve[:, 0], rcurve[:, 1], lam=alpha)
 
     def compute_hardware_values(self, strengths: np.array) -> np.array:
         _current = self.__rspl(strengths[0] * self.__brho)
