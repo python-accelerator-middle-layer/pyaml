@@ -1,6 +1,6 @@
 from ..common.abstract import ReadFloatArray
-from ..common.element import Element, ElementConfigModel
-from ..control.deviceaccess import DeviceAccess
+from ..common.element import Element, ElementSchema
+from ..control.deviceaccess import DeviceAccess, DeviceAccessSchema
 from .atune_monitor import ABetatronTuneMonitor
 
 try:
@@ -13,7 +13,7 @@ from pydantic import ConfigDict
 PYAMLCLASS = "BetatronTuneMonitor"
 
 
-class ConfigModel(ElementConfigModel):
+class ConfigModel(ElementSchema):
     """
     Configuration model for BetatronTuneMonitor
 
@@ -25,10 +25,10 @@ class ConfigModel(ElementConfigModel):
         Vertical betatron tune device
     """
 
-    model_config = ConfigDict(arbitrary_types_allowed=True, extra="forbid")
+    model_config = ConfigDict(extra="forbid")
 
-    tune_h: DeviceAccess | None
-    tune_v: DeviceAccess | None
+    tune_h: DeviceAccessSchema | None = None
+    tune_v: DeviceAccessSchema | None = None
     rf_plant_name: str | None = None
 
 
@@ -39,19 +39,23 @@ class BetatronTuneMonitor(Element, ABetatronTuneMonitor):
     The monitor provides horizontal and vertical betatron tune measurements.
     """
 
-    def __init__(self, cfg: ConfigModel):
+    def __init__(
+        self,
+        name: str,
+        tune_h: DeviceAccess | None = None,
+        tune_v: DeviceAccess | None = None,
+        rf_plant_name: str | None = None,
+    ):
         """
         Construct a BetatronTuneMonitor
-
-        Parameters
-        ----------
-        cfg : ConfigModel
-            Configuration for the BetatronTuneMonitor, including
-            device access for horizontal and vertical tunes.
         """
 
-        super().__init__(cfg.name)
-        self._cfg = cfg
+        super().__init__(name)
+
+        self._tune_h = tune_h
+        self._tune_v = tune_v
+        self._rf_plant_name = rf_plant_name
+
         self.__tune = None
         self._h = None
 
@@ -88,7 +92,7 @@ class BetatronTuneMonitor(Element, ABetatronTuneMonitor):
 
             def get(self) -> np.array:
                 h = self.parent._h
-                rf_name = self.parent._cfg.rf_plant_name
+                rf_name = self.parent._rf_plant_name
                 if h is not None and rf_name is not None:
                     tune = self.parent.tune.get()
                     rf = self.parent.peer.get_rf_plant(rf_name)
@@ -117,7 +121,7 @@ class BetatronTuneMonitor(Element, ABetatronTuneMonitor):
         Self
             A new attached instance of TuneMonitor
         """
-        obj = self.__class__(self._cfg)
+        obj = self.__class__(self._name, self._tune_h, self._tune_v, self._rf_plant_name)
         obj.__tune = betatron_tune
         obj._peer = peer
         return obj

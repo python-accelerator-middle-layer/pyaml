@@ -6,7 +6,7 @@ from typing import TYPE_CHECKING, Callable, Optional, Self
 from pydantic import ConfigDict
 
 from ..common.constants import Action
-from ..common.element import Element, ElementConfigModel
+from ..common.element import Element, ElementSchema
 from ..common.exception import PyAMLException
 
 if TYPE_CHECKING:
@@ -15,7 +15,7 @@ if TYPE_CHECKING:
 logger = logging.getLogger(__name__)
 
 
-class MeasurementToolConfigModel(ElementConfigModel):
+class MeasurementToolSchema(ElementSchema):
     """
     Measurement tool configuration model
 
@@ -35,7 +35,7 @@ class MeasurementToolConfigModel(ElementConfigModel):
         Default: 0
     """
 
-    model_config = ConfigDict(arbitrary_types_allowed=True, extra="forbid")
+    model_config = ConfigDict(extra="forbid")
 
     n_step: Optional[int] = 1
     sleep_between_step: Optional[float] = 0
