@@ -2,8 +2,12 @@ from abc import ABCMeta, abstractmethod
 
 import numpy as np
 from numpy.typing import NDArray
+from pydantic import BaseModel
 
 from ..control.deviceaccess import DeviceAccess
+
+
+class BPMModelSchema(BaseModel): ...
 
 
 class BPMModel(metaclass=ABCMeta):
