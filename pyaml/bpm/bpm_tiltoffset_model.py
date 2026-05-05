@@ -3,18 +3,15 @@ from numpy.typing import NDArray
 from pydantic import BaseModel, ConfigDict
 
 from pyaml.bpm.bpm_model import BPMModel
-from pyaml.bpm.bpm_simple_model import BPMSimpleModel
+from pyaml.bpm.bpm_simple_model import BPMSimpleModel, BPMSimpleModelSchema
 
 from ..common.element import __pyaml_repr__
 from ..control.deviceaccess import DeviceAccess
 
-# Define the main class name for this module
-PYAMLCLASS = "BPMTiltOffsetModel"
-
 # TODO: Implepement indexed offset and tilt
 
 
-class ConfigModel(BaseModel):
+class BPMTiltOffsetModelSchema(BPMSimpleModelSchema):
     """
     Configuration model for BPM with tilt and offset
 
@@ -32,15 +29,11 @@ class ConfigModel(BaseModel):
         BPM tilt device
     """
 
-    model_config = ConfigDict(arbitrary_types_allowed=True, extra="forbid")
+    model_config = ConfigDict(extra="forbid")
 
-    x_pos: DeviceAccess | None
-    y_pos: DeviceAccess | None
-    x_pos_index: int | None = None
-    y_pos_index: int | None = None
-    x_offset: DeviceAccess | None
-    y_offset: DeviceAccess | None
-    tilt: DeviceAccess | None
+    x_offset: DeviceAccess | None = None
+    y_offset: DeviceAccess | None = None
+    tilt: DeviceAccess | None = None
 
 
 class BPMTiltOffsetModel(BPMSimpleModel):
@@ -49,13 +42,21 @@ class BPMTiltOffsetModel(BPMSimpleModel):
     offset values.
     """
 
-    def __init__(self, cfg: ConfigModel):
-        super().__init__(cfg)
-        self.__x_pos = cfg.x_pos
-        self.__y_pos = cfg.y_pos
-        self.__x_offset = cfg.x_offset
-        self.__y_offset = cfg.y_offset
-        self.__tilt = cfg.tilt
+    def __init__(
+        self,
+        x_pos: DeviceAccess | None,
+        y_pos: DeviceAccess | None,
+        x_pos_index: int | None = None,
+        y_pos_index: int | None = None,
+        x_offset: DeviceAccess | None = None,
+        y_offset: DeviceAccess | None = None,
+        tilt: DeviceAccess | None = None,
+    ):
+        super().__init__(x_pos=x_pos, y_pos=y_pos, x_pos_index=x_pos_index, y_pos_index=y_pos_index)
+
+        self.__x_offset = x_offset
+        self.__y_offset = y_offset
+        self.__tilt = tilt
 
     def get_pos_devices(self) -> list[DeviceAccess | None]:
         """
@@ -90,5 +91,6 @@ class BPMTiltOffsetModel(BPMSimpleModel):
         """
         return [self.__x_offset, self.__y_offset]
 
-    def __repr__(self):
-        return __pyaml_repr__(self)
+
+#    def __repr__(self):
+#        return __pyaml_repr__(self)
