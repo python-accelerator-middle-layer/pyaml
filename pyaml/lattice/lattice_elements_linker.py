@@ -9,7 +9,7 @@ from pyaml import PyAMLException
 from pyaml.common.element import Element
 
 
-class LinkerConfigModel(BaseModel):
+class LinkerSchema(BaseModel):
     """Base configuration model for linker definitions.
 
     This class defines the configuration structure used to instantiate
@@ -24,7 +24,7 @@ class LinkerConfigModel(BaseModel):
         unexpected extra keys.
     """
 
-    model_config = ConfigDict(arbitrary_types_allowed=True, extra="forbid")
+    model_config = ConfigDict(extra="forbid")
 
 
 class LinkerIdentifier(metaclass=ABCMeta):
@@ -48,19 +48,13 @@ class LatticeElementsLinker(metaclass=ABCMeta):
     to PyAT elements based on a given linking strategy (e.g., by family name,
     by index, or by a custom attribute).
 
-    Parameters
-    ----------
-    linker_config_model : LinkerConfigModel
-        The configuration model for the linking strategy.
-
     Attributes
     ----------
     lattice : at.Lattice
         Reference to the PyAT lattice handled by this linker.
     """
 
-    def __init__(self, linker_config_model: LinkerConfigModel):
-        self.linker_config_model = linker_config_model
+    def __init__(self):
         self.lattice: Lattice = None
 
     def set_lattice(self, lattice: Lattice):
