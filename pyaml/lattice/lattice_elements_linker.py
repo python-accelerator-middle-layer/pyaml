@@ -9,7 +9,7 @@ from pyaml import PyAMLException
 from pyaml.common.element import Element
 
 
-class LinkerSchema(BaseModel):
+class LatticeElementsLinkerSchema(BaseModel):
     """Base configuration model for linker definitions.
 
     This class defines the configuration structure used to instantiate
