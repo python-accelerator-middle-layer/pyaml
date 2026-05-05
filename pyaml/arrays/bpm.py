@@ -1,15 +1,8 @@
 from ..common.element_holder import ElementHolder
-from .array import ArrayConfig, ArrayConfigModel
-
-# Define the main class name for this module
-PYAMLCLASS = "BPM"
+from .array import Array
 
 
-class ConfigModel(ArrayConfigModel):
-    """Configuration model for :py:class:`.BPMArray`."""
-
-
-class BPM(ArrayConfig):
+class BPM(Array):
     """
     :py:class:`.BPMArray` configuration.
 
@@ -27,21 +20,15 @@ class BPM(ArrayConfig):
             - BPM_C04-02
             - BPM_C04-03
 
-    A :py:class:`.BPMArray` configuration can also be created by code using the
-    following example:
-
-    .. code-block:: python
-
-        >>>  from pyaml.arrays.bpm import BPM,ConfigModel as BPMArrayConfigModel
-        >>>  bpm_cfg = BPM(BPMArrayConfigModel(
-                        name="BPM",
-                        elements=["BPM_C04-01","BPM_C04-02","BPM_C04-03"]
-                       ))
-
     """
 
-    def __init__(self, cfg: ArrayConfigModel):
-        super().__init__(cfg)
+    def __init__(
+        self,
+        name: str,
+        elements: list[str],
+    ):
+        self._name = name
+        self._elements = elements
 
     def fill_array(self, holder: ElementHolder):
         """
@@ -66,4 +53,4 @@ class BPM(ArrayConfig):
         holder : ElementHolder
             The element holder to populate the :py:class:`.BPMArray` with.
         """
-        holder.fill_bpm_array(self._cfg.name, self._cfg.elements)
+        holder.fill_bpm_array(self._name, self._elements)

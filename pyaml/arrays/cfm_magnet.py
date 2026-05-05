@@ -1,35 +1,20 @@
 from ..common.element_holder import ElementHolder
-from .array import ArrayConfig, ArrayConfigModel
-
-# Define the main class name for this module
-PYAMLCLASS = "CombinedFunctionMagnet"
+from .array import Array
 
 
-class ConfigModel(ArrayConfigModel):
-    """Configuration model for Combined Function Magnet array."""
-
-    ...
-
-
-class CombinedFunctionMagnet(ArrayConfig):
+class CombinedFunctionMagnet(Array):
     """
-    Combined function magnet array confirguration
+    Combined function magnet array confirguration.
 
-    Example
-    -------
-
-    A magnet array configuration can also be created by code using
-    the following example::
-
-        from pyaml.arrays.cfm_magnet import CombinedFunctionMagnet
-        from pyaml.arrays.cfm_magnet import ConfigModel as CFMagnetConfigModel
-        magArray = CombinedFunctionMagnet(
-                     CFMagnetConfigModel(name="myCFM", elements=["mag1","mag2"])
-                   )
     """
 
-    def __init__(self, cfg: ArrayConfigModel):
-        super().__init__(cfg)
+    def __init__(
+        self,
+        name: str,
+        elements: list[str],
+    ):
+        self._name = name
+        self._elements = elements
 
     def fill_array(self, holder: ElementHolder):
         """
@@ -40,4 +25,4 @@ class CombinedFunctionMagnet(ArrayConfig):
         holder : ElementHolder
             The element holder to populate with combined function magnet array
         """
-        holder.fill_cfm_magnet_array(self._cfg.name, self._cfg.elements)
+        holder.fill_cfm_magnet_array(self._name, self._elements)
