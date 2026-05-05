@@ -4,14 +4,12 @@ from pydantic import ConfigDict
 from pyaml.common.element import Element
 from pyaml.lattice.lattice_elements_linker import (
     LatticeElementsLinker,
-    LinkerConfigModel,
     LinkerIdentifier,
+    LinkerSchema,
 )
 
-PYAMLCLASS = "PyAtAttributeElementsLinker"
 
-
-class ConfigModel(LinkerConfigModel):
+class PyAtAttributeIdentifierSchema(LinkerSchema):
     """Base configuration model for linker definitions.
 
     This class defines the configuration structure used to instantiate
@@ -26,7 +24,7 @@ class ConfigModel(LinkerConfigModel):
         unexpected extra keys.
     """
 
-    model_config = ConfigDict(arbitrary_types_allowed=True, extra="forbid")
+    model_config = ConfigDict(extra="forbid")
     attribute_name: str
 
 
@@ -62,8 +60,9 @@ class PyAtAttributeElementsLinker(LatticeElementsLinker):
         The configuration model for the linking strategy.
     """
 
-    def __init__(self, config_model: ConfigModel):
-        super().__init__(config_model)
+    def __init__(self, attribute_name: str):
+        super().__init__(self)
+        self._attribute_name = attribute_name
 
     def get_element_identifier(self, element: Element) -> LinkerIdentifier:
         """
@@ -79,12 +78,8 @@ class PyAtAttributeElementsLinker(LatticeElementsLinker):
         LinkerIdentifier
             The identifier for linking the element
         """
-        return PyAtAttributeIdentifier(
-            self.linker_config_model.attribute_name, element.get_name()
-        )
+        return PyAtAttributeIdentifier(self.self._attribute_name, element.get_name())
 
-    def _test_at_element(
-        self, identifier: PyAtAttributeIdentifier, element: at.Element
-    ) -> bool:
+    def _test_at_element(self, identifier: PyAtAttributeIdentifier, element: at.Element) -> bool:
         attr_value = getattr(element, identifier.attribute_name, None)
         return attr_value == identifier.identifier
