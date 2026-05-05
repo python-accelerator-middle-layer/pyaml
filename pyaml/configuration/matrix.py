@@ -1,6 +1,11 @@
 from abc import ABCMeta, abstractmethod
 
 from numpy import array
+from pydantic import BaseModel, ConfigDict
+
+
+class MatrixSchema(BaseModel):
+    model_config = ConfigDict(extra="forbid")
 
 
 class Matrix(metaclass=ABCMeta):
