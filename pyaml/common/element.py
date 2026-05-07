@@ -16,7 +16,7 @@ def __pyaml_repr__(obj):
         if isinstance(obj, Element):
             return repr(obj._cfg).replace(
                 "ConfigModel(",
-                obj.__class__.__name__ + "(peer='" + obj.get_peer_name() + "', ",
+                obj.__class__.__name__ + "(peer='" + obj.attached_to() + "', ",
             )
         else:
             # no peer
