@@ -22,7 +22,7 @@ devices:
     type: pyaml_cs_oa.epicsR
     read_pvname: beam:twiss:y:tune
     unit: ''
-- type: pyaml.diagnostics.chromaticity_monitor
+- type: pyaml.tuning_tools.chromaticity_monitor
   name: KSI
   betatron_tune_name: BETATRON_TUNE
   rf_plant_name: RF

@@ -45,7 +45,7 @@ modules = [
     "pyaml.control.deviceaccess",
     "pyaml.control.deviceaccesslist",
     "pyaml.control.readback_value",
-    "pyaml.diagnostics.chromaticity_monitor",
+    "pyaml.tuning_tools.chromaticity_monitor",
     "pyaml.diagnostics.tune_monitor",
     "pyaml.external.pySC_interface",
     "pyaml.lattice.abstract_impl",
