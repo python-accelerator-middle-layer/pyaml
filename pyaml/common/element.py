@@ -124,9 +124,9 @@ class Element(object):
         """
         return self._peer
 
-    def get_peer_name(self) -> str:
+    def attached_to(self) -> str:
         """
-        Returns a string representation of peer simulator or control system
+        Returns a string of which peer the element is attached to.
         """
         return "None" if self._peer is None else f"{self._peer.__class__.__name__}:{self._peer.name()}"
 
