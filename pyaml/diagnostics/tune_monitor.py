@@ -10,18 +10,16 @@ except ImportError:
 import numpy as np
 from pydantic import ConfigDict
 
-PYAMLCLASS = "BetatronTuneMonitor"
 
-
-class ConfigModel(ElementSchema):
+class BetatronTuneMonitorSchema(ElementSchema):
     """
-    Configuration model for BetatronTuneMonitor
+    Configuration schema for BetatronTuneMonitor
 
     Parameters
     ----------
-    tune_h : DeviceAccess, optional
+    tune_h : DeviceAccessSchema, optional
         Horizontal betatron tune device
-    tune_v : DeviceAccess, optional
+    tune_v : DeviceAccessSchema, optional
         Vertical betatron tune device
     """
 
@@ -42,6 +40,8 @@ class BetatronTuneMonitor(Element, ABetatronTuneMonitor):
     def __init__(
         self,
         name: str,
+        description: str | None = None,
+        lattice_names: str | None = None,
         tune_h: DeviceAccess | None = None,
         tune_v: DeviceAccess | None = None,
         rf_plant_name: str | None = None,
@@ -50,17 +50,17 @@ class BetatronTuneMonitor(Element, ABetatronTuneMonitor):
         Construct a BetatronTuneMonitor
         """
 
-        super().__init__(name)
+        super().__init__(name, description, lattice_names)
 
         self._tune_h = tune_h
         self._tune_v = tune_v
-        self._rf_plant_name = rf_plant_name
+        self.rf_plant_name = rf_plant_name
 
-        self.__tune = None
-        self._h = None
+        self._tune = None
+        self._harmonic_number = None
 
     def set_harmonic(self, h: int):
-        self._h = float(h)
+        self._harmonic_number = float(h)
 
     @property
     def tune(self) -> ReadFloatArray:
@@ -91,13 +91,13 @@ class BetatronTuneMonitor(Element, ABetatronTuneMonitor):
                 self.parent = parent
 
             def get(self) -> np.array:
-                h = self.parent._h
-                rf_name = self.parent._rf_plant_name
-                if h is not None and rf_name is not None:
+                harmonic_number = self.parent._harmonic_number
+                rf_name = self.parent.rf_plant_name
+                if harmonic_number is not None and rf_name is not None:
                     tune = self.parent.tune.get()
                     rf = self.parent.peer.get_rf_plant(rf_name)
                     freq = rf.frequency.get()
-                    return tune * freq / h
+                    return tune * freq / harmonic_number
 
             def unit(self) -> str:
                 return "Hz"
@@ -121,7 +121,9 @@ class BetatronTuneMonitor(Element, ABetatronTuneMonitor):
         Self
             A new attached instance of TuneMonitor
         """
-        obj = self.__class__(self._name, self._tune_h, self._tune_v, self._rf_plant_name)
-        obj.__tune = betatron_tune
+        obj = self.__class__(
+            self.name, self._description, self._lattice_names, self._tune_h, self._tune_v, self.rf_plant_name
+        )
+        obj._tune = betatron_tune
         obj._peer = peer
         return obj
