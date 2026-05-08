@@ -45,7 +45,7 @@ devices:
     type: tango.pyaml.attribute_read_only
     attribute: sys/ringsimulator/ebs/Tune_v
     unit: ""
-- type: pyaml.diagnostics.chromaticity_monitor
+- type: pyaml.tuning_tools.chromaticity_monitor
   name: CHROMATICITY_MONITOR
   betatron_tune_name: BETATRON_TUNE
   rf_plant_name: RF

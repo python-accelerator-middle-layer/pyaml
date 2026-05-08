@@ -20,7 +20,7 @@ Arrays:
     .
 
 Tools:
-    CHROMATICITY_MONITOR (pyaml.diagnostics.chromaticity_monitor)
+    CHROMATICITY_MONITOR (pyaml.tuning_tools.chromaticity_monitor)
     DEFAULT_CHROMATICITY_RESPONSE_MATRIX (pyaml.tuning_tools.chromaticity_response_matrix)
     DEFAULT_CHROMATICITY_CORRECTION (pyaml.tuning_tools.chromaticity)
     DEFAULT_ORBIT_CORRECTION (pyaml.tuning_tools.orbit)
