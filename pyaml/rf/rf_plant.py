@@ -17,7 +17,7 @@ class RFPlantSchema(ElementSchema):
     masterclock: DeviceAccessSchema | None = None
     """Device to apply main RF frequency"""
     transmitters: list[RFTransmitterSchema] | None = None
-    """List of RF trasnmitters"""
+    """List of RF transmitters"""
 
 
 class RFPlant(Element):
@@ -28,26 +28,28 @@ class RFPlant(Element):
     def __init__(
         self,
         name: str,
+        description: str | None = None,
+        lattice_names: str | None = None,
         masterclock: DeviceAccess | None = None,
         transmitters: list[RFTransmitter] | None = None,
     ):
-        super().__init__(name)
-        self.__masterclock = masterclock
-        self.__transmitters = transmitters
-        self.__frequency = None
-        self.__voltage = None
+        super().__init__(name, description, lattice_names)
+        self._masterclock = masterclock
+        self._transmitters = transmitters
+        self._frequency = None
+        self._voltage = None
 
     @property
     def frequency(self) -> abstract.ReadWriteFloatScalar:
-        if self.__frequency is None:
+        if self._frequency is None:
             raise PyAMLException(f"{str(self)} has no masterclock device defined")
-        return self.__frequency
+        return self._frequency
 
     @property
     def voltage(self) -> abstract.ReadWriteFloatScalar:
-        if self.__voltage is None:
-            raise PyAMLException(f"{str(self)} has no trasmitter device defined")
-        return self.__voltage
+        if self._voltage is None:
+            raise PyAMLException(f"{str(self)} has no transmitter device defined")
+        return self._voltage
 
     def attach(
         self,
@@ -56,9 +58,9 @@ class RFPlant(Element):
         voltage: abstract.ReadWriteFloatScalar,
     ) -> Self:
         # Attach frequency attribute and returns a new reference
-        obj = self.__class__(self._name, self.__masterclock, self.__transmitters)
-        obj.__frequency = frequency
-        obj.__voltage = voltage
+        obj = self.__class__(self._name, self._description, self._lattice_names, self._masterclock, self._transmitters)
+        obj._frequency = frequency
+        obj._voltage = voltage
         obj._peer = peer
         return obj
 
@@ -73,25 +75,25 @@ class RWTotalVoltage(abstract.ReadWriteFloatScalar):
         transmitters : list[RFTransmitter]
             List of attached transmitters
         """
-        self.__trans = transmitters
+        self._trans = transmitters
 
     def get(self) -> float:
         sum = 0
         # Count only fundamental harmonic
-        for t in self.__trans:
-            if t._cfg.harmonic == 1.0:
+        for t in self._trans:
+            if t.harmonic == 1.0:
                 sum += t.voltage.get()
         return sum
 
     def set(self, value: float):
         # Assume that sum of transmitter (fundamental harmonic) distribution is 1
-        for t in self.__trans:
-            if t._cfg.harmonic == 1.0:
-                v = value * t._cfg.distribution
+        for t in self._trans:
+            if t.harmonic == 1.0:
+                v = value * t.distribution
                 t.voltage.set(v)
 
     def set_and_wait(self, value: float):
         raise NotImplementedError("Not implemented yet.")
 
     def unit(self) -> str:
-        return self.__trans[0]._cfg.phase.unit()
+        return self._trans[0].phase.unit()

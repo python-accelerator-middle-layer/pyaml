@@ -49,6 +49,8 @@ class RFTransmitter(Element):
         self,
         name: str,
         cavities: list[str],
+        description: str | None = None,
+        lattice_names: str | None = None,
         voltage: DeviceAccess | None = None,
         phase: DeviceAccess | None = None,
         harmonic: float = 1.0,
@@ -58,11 +60,11 @@ class RFTransmitter(Element):
         self._cavities = cavities
         self._voltage = voltage
         self._phase = phase
-        self._harmonic = harmonic
-        self._distribution = distribution
+        self.harmonic = harmonic
+        self.distribution = distribution
 
-        self.__voltage = None
-        self.__phase = None
+        self._voltage = None
+        self._phase = None
 
     @property
     def voltage(self) -> abstract.ReadWriteFloatScalar:
@@ -79,9 +81,9 @@ class RFTransmitter(Element):
         PyAMLException
             If transmitter is unattached or has no voltage device defined
         """
-        if self.__voltage is None:
+        if self._voltage is None:
             raise PyAMLException(f"{str(self)} is unattached or has no voltage device defined")
-        return self.__voltage
+        return self._voltage
 
     @property
     def phase(self) -> abstract.ReadWriteFloatScalar:
@@ -98,9 +100,9 @@ class RFTransmitter(Element):
         PyAMLException
             If transmitter is unattached or has no phase device defined
         """
-        if self.__phase is None:
+        if self._phase is None:
             raise PyAMLException(f"{str(self)} is unattached or has no phase device defined")
-        return self.__phase
+        return self._phase
 
     def attach(
         self,
@@ -126,8 +128,17 @@ class RFTransmitter(Element):
             A new attached instance of RFTransmitter
         """
         # Attach voltage and phase attribute and returns a new reference
-        obj = self.__class__(self._name, self._cavities, self._voltage, self._phase, self._harmonic, self._distribution)
-        obj.__voltage = voltage
-        obj.__phase = phase
+        obj = self.__class__(
+            self._name,
+            self._cavities,
+            self.description,
+            self.lattice_names,
+            self.voltage,
+            self.phase,
+            self.harmonic,
+            self.distribution,
+        )
+        obj._voltage = voltage
+        obj._phase = phase
         obj._peer = peer
         return obj
