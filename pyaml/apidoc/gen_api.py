@@ -50,7 +50,6 @@ modules = [
     "pyaml.external.pySC_interface",
     "pyaml.lattice.abstract_impl",
     "pyaml.lattice.attribute_linker",
-    "pyaml.lattice.element",
     "pyaml.lattice.lattice_elements_linker",
     "pyaml.lattice.polynom_info",
     "pyaml.lattice.simulator",
