@@ -1,6 +1,8 @@
 from abc import ABCMeta, abstractmethod
 from typing import Tuple
 
+from pydantic import BaseModel
+
 from ..bpm.bpm import BPM
 from ..bpm.bpm_model import BPMModel
 from ..common.abstract import RWMapper
@@ -36,6 +38,13 @@ from ..rf.rf_transmitter import RFTransmitter
 from ..tuning_tools.measurement_tool import MeasurementTool
 from ..tuning_tools.tuning_tool import TuningTool
 from .deviceaccess import DeviceAccess
+
+
+class ControlSystemSchema(BaseModel):
+    name: str
+    debug_level: str = None
+    scalar_aggregator: str | None = None
+    vector_aggregator: str | None = None
 
 
 class ControlSystem(ElementHolder, metaclass=ABCMeta):
