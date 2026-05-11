@@ -19,7 +19,7 @@ devices:
     calibration_factor: 1.00054
     crosstalk: 1.0
     curve:
-      type: pyaml.configuration.csvcurve
+      type: pyaml.magnet.csvcurve
       file: sr/magnet_models/QF1_strength.csv
     unit: 1/m
     powerconverter:
@@ -34,7 +34,7 @@ devices:
     calibration_factor: 1.00054
     crosstalk: 1.0
     curve:
-      type: pyaml.configuration.csvcurve
+      type: pyaml.magnet.csvcurve
       file: sr/magnet_models/QF1_strength.csv
     unit: 1/m
     powerconverter:
@@ -49,7 +49,7 @@ devices:
     calibration_factor: 0.996841
     crosstalk: 1.0
     curve:
-      type: pyaml.configuration.csvcurve
+      type: pyaml.magnet.csvcurve
       file: sr/magnet_models/QF1_strength.csv
     unit: 1/m
     powerconverter:
@@ -64,7 +64,7 @@ devices:
     calibration_factor: 1.00191
     crosstalk: 1.0
     curve:
-      type: pyaml.configuration.csvcurve
+      type: pyaml.magnet.csvcurve
       file: sr/magnet_models/QF1_strength.csv
     unit: 1/m
     powerconverter:
@@ -79,7 +79,7 @@ devices:
     calibration_factor: 1.00191
     crosstalk: 1.0
     curve:
-      type: pyaml.configuration.csvcurve
+      type: pyaml.magnet.csvcurve
       file: sr/magnet_models/QF1_strength.csv
     unit: 1/m
     powerconverter:
@@ -94,7 +94,7 @@ devices:
     calibration_factor: 1.00191
     crosstalk: 1.0
     curve:
-      type: pyaml.configuration.csvcurve
+      type: pyaml.magnet.csvcurve
       file: sr/magnet_models/QF1_strength.csv
     unit: 1/m
     powerconverter:

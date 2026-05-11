@@ -3,14 +3,14 @@
   units: [rad,rad,m-1]
   pseudo_factors: [1.0,-1.0,-1.0]
   curves:
-    - type: pyaml.configuration.csvcurve
+    - type: pyaml.magnet.csvcurve
       file: sr/magnet_models/SH1_SH3_h_strength.csv
-    - type: pyaml.configuration.csvcurve
+    - type: pyaml.magnet.csvcurve
       file: sr/magnet_models/SH1_SH3_v_strength.csv
-    - type: pyaml.configuration.csvcurve
+    - type: pyaml.magnet.csvcurve
       file: sr/magnet_models/SH1_SH3_sq_strength.csv
   matrix:
-    type: pyaml.configuration.csvmatrix
+    type: pyaml.magnet.csvmatrix
     file: sr/magnet_models/SH_matrix.csv
   powerconverters:
     - type: tango.pyaml.attribute

@@ -1,8 +1,8 @@
 import numpy as np
 
 from pyaml.configuration import set_root_folder
-from pyaml.configuration.csvcurve import ConfigModel, CSVCurve
-from pyaml.configuration.curve import Curve
+from pyaml.magnet.csvcurve import ConfigModel, CSVCurve
+from pyaml.magnet.curve import Curve
 
 
 def curve_test(file: str, current: float, strength: float):

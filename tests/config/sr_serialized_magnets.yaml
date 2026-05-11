@@ -33,7 +33,7 @@ devices:
       calibration_offsets: 0.0
       unit: m-1
       curves:
-        type: pyaml.configuration.csvcurve
+        type: pyaml.magnet.csvcurve
         file: sr/magnet_models/serialized_strength.csv
       powerconverter:
         type: tango.pyaml.attribute
@@ -80,7 +80,7 @@ devices:
       calibration_offsets: 0.0
       unit: m-1
       curves:
-        type: pyaml.configuration.csvcurve
+        type: pyaml.magnet.csvcurve
         file: sr/magnet_models/QF1_strength.csv
       powerconverter:
         type: tango.pyaml.attribute
@@ -127,7 +127,7 @@ devices:
       calibration_offsets: 0.0
       unit: m-1
       curves:
-        type: pyaml.configuration.csvcurve
+        type: pyaml.magnet.csvcurve
         file: sr/magnet_models/QF1_strength.csv
       powerconverter:
         type: tango.pyaml.attribute
@@ -174,7 +174,7 @@ devices:
       calibration_offsets: 0.0
       unit: m-1
       curves:
-        type: pyaml.configuration.csvcurve
+        type: pyaml.magnet.csvcurve
         file: sr/magnet_models/QD2_strength.csv
       powerconverter:
         type: tango.pyaml.attribute
@@ -221,7 +221,7 @@ devices:
       calibration_offsets: 0.0
       unit: m-1
       curves:
-        type: pyaml.configuration.csvcurve
+        type: pyaml.magnet.csvcurve
         file: sr/magnet_models/QD2_strength.csv
       powerconverter:
         type: tango.pyaml.attribute
