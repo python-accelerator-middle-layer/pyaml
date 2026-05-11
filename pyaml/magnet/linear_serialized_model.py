@@ -3,13 +3,13 @@ from pydantic import BaseModel, ConfigDict
 
 from ..common.element import __pyaml_repr__
 from ..common.exception import PyAMLException
-from ..configuration.curve import Curve
-from ..configuration.inline_curve import ConfigModel as InlineCurveModel
-from ..configuration.inline_curve import InlineCurve
-from ..configuration.matrix import Matrix
 from ..control.deviceaccess import DeviceAccess
+from .curve import Curve
+from .inline_curve import ConfigModel as InlineCurveModel
+from .inline_curve import InlineCurve
 from .linear_model import ConfigModel as LinearConfigModel
 from .linear_model import LinearMagnetModel
+from .matrix import Matrix
 from .model import MagnetModel
 
 # Define the main class name for this module
