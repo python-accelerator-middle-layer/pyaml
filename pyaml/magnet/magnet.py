@@ -116,7 +116,7 @@ class Magnet(Element):
     def __repr__(self):
         return "%s(peer='%s', name='%s', model_name='%s', magnet_model=%s)" % (
             self.__class__.__name__,
-            self.get_peer_name(),
+            self.attached_to(),
             self.get_name(),
             self.__modelName,
             repr(self.__model),
