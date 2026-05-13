@@ -1,10 +1,9 @@
 from typing import Optional
 
-from .response_matrix_data import ConfigModel as ReponseMatrixDataSchema
-from .response_matrix_data import ResponseMatrixData
+from .response_matrix_data import ResponseMatrixData, ResponseMatrixDataSchema
 
 
-class OrbitResponseMatrixDataSchema(ReponseMatrixDataSchema):
+class OrbitResponseMatrixDataSchema(ResponseMatrixDataSchema):
     """
     Configuration model for orbit response matrix
 

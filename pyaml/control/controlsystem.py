@@ -10,6 +10,7 @@ from ..common.abstract_aggregator import ScalarAggregator
 from ..common.element import Element
 from ..common.element_holder import ElementHolder
 from ..common.exception import PyAMLException
+from ..configuration.configuration_models import ConfigurationSchema
 from ..configuration.factory import Factory
 from ..configuration.unbound_element import UnboundElement
 from ..control.abstract_impl import (
@@ -40,7 +41,7 @@ from ..tuning_tools.tuning_tool import TuningTool
 from .deviceaccess import DeviceAccess
 
 
-class ControlSystemSchema(BaseModel):
+class ControlSystemSchema(ConfigurationSchema):
     name: str
     debug_level: str = None
     scalar_aggregator: str | None = None

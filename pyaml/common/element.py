@@ -1,7 +1,7 @@
 import warnings
 from typing import TYPE_CHECKING
 
-from pydantic import BaseModel, ConfigDict, Field, field_validator
+from pydantic import BaseModel, ConfigDict, Field, model_validator
 
 from .exception import PyAMLException
 from .utils import __pyaml_repr__
@@ -9,8 +9,10 @@ from .utils import __pyaml_repr__
 if TYPE_CHECKING:
     from ..common.element_holder import ElementHolder
 
+from ..configuration.configuration_models import ConfigurationSchema
 
-class ElementSchema(BaseModel):
+
+class ElementSchema(ConfigurationSchema):
     """
     Base schema for element configuration.
 
@@ -39,19 +41,25 @@ class ElementSchema(BaseModel):
 
     # Validate the syntax for the lattice_names field
     # This validation is currently very basic and can be improved
-    @field_validator("lattice_names")
-    @classmethod
-    def validate_lattice_names(cls, v):
-        if v is None:
-            return v
+    @model_validator(mode="after")
+    def validate_lattice_names(self):
+        v = self.lattice_names
 
-        # Example: very simplified checks
+        if v is None:
+            return self
+
+        if v == self.name:
+            return self
+
         if v.startswith("list(") and v.endswith(")"):
-            return v
+            return self
+
         if "@" in v:
-            return v
+            return self
+
         if "#" in v and ".." in v:
-            return v
+            return self
+
         raise ValueError("Invalid lattice_names syntax")
 
 

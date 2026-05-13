@@ -9,7 +9,7 @@ except ImportError:
 from .. import PyAMLException
 from ..common import abstract
 from ..common.element import Element, ElementSchema
-from ..control.deviceaccess import DeviceAccess
+from ..control.deviceaccess import DeviceAccess, DeviceAccessSchema
 
 
 class RFTransmitterSchema(ElementSchema):
@@ -33,8 +33,8 @@ class RFTransmitterSchema(ElementSchema):
 
     model_config = ConfigDict(extra="forbid")
 
-    voltage: DeviceAccess | None = None
-    phase: DeviceAccess | None = None
+    voltage: DeviceAccessSchema | None = None
+    phase: DeviceAccessSchema | None = None
     cavities: list[str]
     harmonic: float = 1.0
     distribution: float = 1.0

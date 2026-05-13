@@ -9,13 +9,14 @@ from .common.element import Element, ElementSchema
 from .common.element_holder import ElementHolder
 from .common.exception import PyAMLConfigException
 from .configuration import ConfigurationManager, UnsupportedConfigurationRootError
+from .configuration.configuration_models import ConfigurationSchema
 from .configuration.factory import Factory
 from .control.controlsystem import ControlSystem, ControlSystemSchema
 from .lattice.simulator import Simulator, SimulatorSchema
 from .yellow_pages import YellowPages
 
 
-class AcceleratorSchema(BaseModel):
+class AcceleratorSchema(ConfigurationSchema):
     """
     Schema for Accelerator
 

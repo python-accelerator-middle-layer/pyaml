@@ -2,6 +2,7 @@ import numpy as np
 
 # from ..common.element import __pyaml_repr__
 from ..configuration.curve import Curve, CurveSchema
+from ..configuration.schema_registry import register_schema
 from ..control.deviceaccess import DeviceAccess, DeviceAccessSchema
 from .model import MagnetModel, MagnetModelSchema
 
@@ -36,6 +37,7 @@ class LinearMagnetModelSchema(MagnetModelSchema):
     unit: str = ""
 
 
+@register_schema(LinearMagnetModelSchema)
 class LinearMagnetModel(MagnetModel):
     """
     Class that handle manget current/strength conversion using

@@ -11,7 +11,7 @@ except ImportError:
     from typing_extensions import Self  # Python 3.10 and earlier
 
 from .. import PyAMLException
-from ..common.element import ElementConfigModel
+from ..common.element import ElementSchema
 from .response_matrix_data import ResponseMatrixData, ResponseMatrixDataSchema
 from .tuning_tool import TuningTool
 
@@ -22,7 +22,7 @@ if TYPE_CHECKING:
 logger = logging.getLogger(__name__)
 
 
-class TuneSchema(ElementConfigModel):
+class TuneSchema(ElementSchema):
     """
     Configuration model for Tune
 
