@@ -1,6 +1,6 @@
 from ..common.abstract import ReadFloatArray
 from ..common.constants import Action
-from ..common.element import ElementConfigModel
+from ..common.element import ElementSchema
 from ..common.exception import PyAMLException
 from ..tuning_tools.measurement_tool import MeasurementTool, MeasurementToolSchema
 

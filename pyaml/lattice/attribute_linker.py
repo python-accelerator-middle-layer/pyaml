@@ -4,12 +4,12 @@ from pydantic import ConfigDict
 from pyaml.common.element import Element
 from pyaml.lattice.lattice_elements_linker import (
     LatticeElementsLinker,
+    LatticeElementsLinkerSchema,
     LinkerIdentifier,
-    LinkerSchema,
 )
 
 
-class PyAtAttributeIdentifierSchema(LinkerSchema):
+class PyAtAttributeIdentifierSchema(LatticeElementsLinkerSchema):
     """Base configuration model for linker definitions.
 
     This class defines the configuration structure used to instantiate

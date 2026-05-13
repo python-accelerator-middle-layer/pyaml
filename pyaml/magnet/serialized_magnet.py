@@ -7,8 +7,8 @@ from ..common.element import Element, ElementSchema, __pyaml_repr__
 from ..configuration import Factory
 from ..control.deviceaccess import DeviceAccess
 from .function_mapping import function_map
-from .magnet import Magnet, MagnetSchema
-from .model import MagnetModel
+from .magnet import Magnet
+from .model import MagnetModel, MagnetModelSchema
 
 
 class SerializedMagnetsSchema(ElementSchema):
@@ -16,7 +16,7 @@ class SerializedMagnetsSchema(ElementSchema):
     """List of magnets"""
     elements: list[str] | str
     """List of magnets"""
-    model: MagnetModel | None = None
+    model: MagnetModelSchema | None = None
     """Object in charge of converting magnet strengths to currents"""
 
 

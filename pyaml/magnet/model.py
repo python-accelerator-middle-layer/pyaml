@@ -4,10 +4,11 @@ import numpy as np
 import numpy.typing as npt
 from pydantic import BaseModel, ConfigDict
 
+from ..configuration.configuration_models import ConfigurationSchema
 from ..control.deviceaccess import DeviceAccess
 
 
-class MagnetModelSchema(BaseModel):
+class MagnetModelSchema(ConfigurationSchema):
     model_config = ConfigDict(extra="forbid")
 
 

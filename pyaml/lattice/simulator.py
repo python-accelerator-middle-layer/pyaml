@@ -9,6 +9,7 @@ from ..common.element import Element
 from ..common.element_holder import ElementHolder
 from ..common.exception import PyAMLException
 from ..configuration import get_root_folder
+from ..configuration.configuration_models import ConfigurationSchema
 from ..diagnostics.tune_monitor import BetatronTuneMonitor
 from ..lattice.abstract_impl import (
     BPMHScalarAggregator,
@@ -37,16 +38,11 @@ from ..rf.rf_plant import RFPlant, RWTotalVoltage
 from ..rf.rf_transmitter import RFTransmitter
 from ..tuning_tools.measurement_tool import MeasurementTool
 from ..tuning_tools.tuning_tool import TuningTool
-from .attribute_linker import (
-    ConfigModel as PyAtAttrLinkerConfigModel,
-)
-from .attribute_linker import (
-    PyAtAttributeElementsLinker,
-)
+from .attribute_linker import PyAtAttributeElementsLinker
 from .lattice_elements_linker import LatticeElementsLinker, LatticeElementsLinkerSchema
 
 
-class SimulatorSchema(BaseModel):
+class SimulatorSchema(ConfigurationSchema):
     """
     Configuration model for Simulator
 

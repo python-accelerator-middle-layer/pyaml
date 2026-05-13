@@ -8,7 +8,7 @@ from pySC.apps import measure_ORM
 from pySC.apps.codes import ResponseCode
 
 from ..common.constants import Action
-from ..common.element import ElementConfigModel
+from ..common.element import ElementSchema
 from ..external.pySC_interface import pySCInterface
 from .measurement_tool import MeasurementTool, MeasurementToolSchema
 from .orbit_response_matrix_data import OrbitResponseMatrixDataSchema

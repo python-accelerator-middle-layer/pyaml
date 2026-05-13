@@ -3,8 +3,8 @@ from pydantic import BaseModel, ConfigDict
 
 # from ..common.element import __pyaml_repr__
 from ..common.exception import PyAMLException
-from ..configuration.curve import Curve
-from ..configuration.matrix import Matrix
+from ..configuration.curve import Curve, CurveSchema
+from ..configuration.matrix import Matrix, MatrixSchema
 from ..control.deviceaccess import DeviceAccess, DeviceAccessSchema
 from .model import MagnetModel
 
@@ -47,13 +47,13 @@ class LinearCFMagnetModelSchema(BaseModel):
     model_config = ConfigDict(extra="forbid")
 
     multipoles: list[str]
-    curves: list[Curve]
+    curves: list[CurveSchema]
     calibration_factors: list[float] = None
     calibration_offsets: list[float] = None
     pseudo_factors: list[float] = None
     pseudo_offsets: list[float] = None
     powerconverters: list[DeviceAccessSchema | None]
-    matrix: Matrix = None
+    matrix: MatrixSchema = None
     units: list[str]
 
 
