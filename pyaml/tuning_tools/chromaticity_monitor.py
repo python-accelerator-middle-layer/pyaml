@@ -3,7 +3,7 @@ from ..common.constants import Action
 from ..common.element import ElementSchema
 from ..common.exception import PyAMLException
 from ..configuration.schema_registry import register_schema
-from ..tuning_tools.measurement_tool import MeasurementTool, MeasurementToolSchema
+from .measurement_tool import MeasurementTool, MeasurementToolSchema
 
 try:
     from typing import Self  # Python 3.11+

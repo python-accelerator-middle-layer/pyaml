@@ -3,7 +3,7 @@ from typing import TYPE_CHECKING
 
 from .. import PyAMLException
 from ..common.element import ElementSchema
-from ..diagnostics.chromaticity_monitor import ChomaticityMonitor
+from .chromaticity_monitor import ChomaticityMonitor
 from .response_matrix_data import ResponseMatrixData, ResponseMatrixDataSchema
 from .tuning_tool import TuningTool
 

@@ -13,13 +13,13 @@ from ..arrays.magnet_array import MagnetArray
 from ..arrays.serialized_magnet_array import SerializedMagnetsArray
 from ..bpm.bpm import BPM
 from ..common.exception import PyAMLException
-from ..diagnostics.chromaticity_monitor import ChomaticityMonitor
 from ..diagnostics.tune_monitor import BetatronTuneMonitor
 from ..magnet.cfm_magnet import CombinedFunctionMagnet
 from ..magnet.magnet import Magnet
 from ..magnet.serialized_magnet import SerializedMagnets
 from ..rf.rf_plant import RFPlant
 from ..rf.rf_transmitter import RFTransmitter
+from ..tuning_tools.chromaticity_monitor import ChomaticityMonitor
 from .element import Element
 
 if TYPE_CHECKING:
