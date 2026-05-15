@@ -3,6 +3,7 @@ from __future__ import annotations
 import importlib
 import logging
 import pkgutil
+import warnings
 from typing import Any, Callable, Type, TypeVar
 
 from pydantic import BaseModel, ValidationError
@@ -11,6 +12,7 @@ from .configuration_models import (
     ConfigurationSchema,
     ModuleConfigurationSchema,
 )
+from .legacy_handler import discover_legacy_schemas
 
 logger = logging.getLogger(__name__)
 
@@ -62,6 +64,8 @@ class SchemaRegistry:
             package.__name__ + ".",
         ):
             importlib.import_module(module_name)
+
+        discover_legacy_schemas(self)
 
     # ==========================================================
     # Interaction
@@ -123,8 +127,7 @@ class SchemaRegistry:
                     module_config = ModuleConfigurationSchema.model_validate(validated_dict, extra="allow")
                 except ValidationError:
                     logger.debug("Could not validate against ModuleConfigurationSchema. Dict: %s is returned.", obj)
-                    # Dict is normal dict so return it as is
-
+                    # Dict is normal dict so return as is
                     return validated_dict
 
                 config = module_config.to_configuration()
@@ -133,10 +136,14 @@ class SchemaRegistry:
             class_path = config.class_path
 
             if class_path not in self:
-                raise KeyError(f"Unknown schema for '{class_path}'")
+                warnings.warn(
+                    f"Unknown schema for '{class_path}', leaving as raw dict.",
+                    stacklevel=2,
+                )
+                return validated_dict
+            #                raise KeyError(f"Unknown schema for '{class_path}'")
 
             schema = self[class_path]
-
             return schema.model_validate(validated_dict)
 
         return obj

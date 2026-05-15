@@ -3,16 +3,15 @@ from pydantic import BaseModel, ConfigDict
 
 # from ..common.element import __pyaml_repr__
 from ..common.exception import PyAMLException
+from ..configuration.configuration_models import ConfigurationSchema
 from ..configuration.curve import Curve, CurveSchema
 from ..configuration.matrix import Matrix, MatrixSchema
+from ..configuration.schema_registry import register_schema
 from ..control.deviceaccess import DeviceAccess, DeviceAccessSchema
 from .model import MagnetModel
 
-# Define the main class name for this module
-PYAMLCLASS = "LinearCFMagnetModel"
 
-
-class LinearCFMagnetModelSchema(BaseModel):
+class LinearCFMagnetModelSchema(ConfigurationSchema):
     """
     Configuration model for linear combined function magnet model
 
@@ -57,6 +56,7 @@ class LinearCFMagnetModelSchema(BaseModel):
     units: list[str]
 
 
+@register_schema(LinearCFMagnetModelSchema)
 class LinearCFMagnetModel(MagnetModel):
     """
     Class providing a simple linear model for combined function magnets. A matrix

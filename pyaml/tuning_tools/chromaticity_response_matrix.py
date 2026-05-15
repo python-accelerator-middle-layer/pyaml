@@ -7,6 +7,7 @@ from pydantic import ConfigDict
 
 from ..common.constants import Action
 from ..common.element import ElementSchema
+from ..configuration.schema_registry import register_schema
 from .measurement_tool import MeasurementTool, MeasurementToolSchema
 from .response_matrix_data import ResponseMatrixDataSchema
 
@@ -34,6 +35,7 @@ class ChromaticityResponseMatrixSchema(MeasurementToolSchema):
     sextu_delta: float
 
 
+@register_schema(ChromaticityResponseMatrixSchema)
 class ChromaticityResponseMatrix(MeasurementTool):
     def __init__(
         self,

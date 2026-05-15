@@ -5,6 +5,7 @@ import numpy.typing as npt
 from pydantic import BaseModel, ConfigDict
 
 from ..configuration.configuration_models import ConfigurationSchema
+from ..configuration.schema_registry import register_schema
 from ..control.deviceaccess import DeviceAccess
 
 
@@ -12,6 +13,7 @@ class MagnetModelSchema(ConfigurationSchema):
     model_config = ConfigDict(extra="forbid")
 
 
+@register_schema(MagnetModelSchema)
 class MagnetModel(metaclass=ABCMeta):
     """
     Abstract class providing strength to coil current conversion

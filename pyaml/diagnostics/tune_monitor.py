@@ -10,6 +10,8 @@ except ImportError:
 import numpy as np
 from pydantic import ConfigDict
 
+from ..configuration.schema_registry import register_schema
+
 
 class BetatronTuneMonitorSchema(ElementSchema):
     """
@@ -30,6 +32,7 @@ class BetatronTuneMonitorSchema(ElementSchema):
     rf_plant_name: str | None = None
 
 
+@register_schema(BetatronTuneMonitorSchema)
 class BetatronTuneMonitor(Element, ABetatronTuneMonitor):
     """
     Class providing access to a betatron tune monitor
@@ -121,9 +124,7 @@ class BetatronTuneMonitor(Element, ABetatronTuneMonitor):
         Self
             A new attached instance of TuneMonitor
         """
-        obj = self.__class__(
-            self.name, self._description, self._lattice_names, self._tune_h, self._tune_v, self.rf_plant_name
-        )
+        obj = self.__class__(self.name, self._description, self._lattice_names, self._tune_h, self._tune_v, self.rf_plant_name)
         obj._tune = betatron_tune
         obj._peer = peer
         return obj

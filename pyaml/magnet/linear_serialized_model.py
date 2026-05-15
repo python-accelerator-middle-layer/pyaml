@@ -3,15 +3,17 @@ from pydantic import BaseModel, ConfigDict
 
 from ..common.element import __pyaml_repr__
 from ..common.exception import PyAMLException
+from ..configuration.configuration_models import ConfigurationSchema
 from ..configuration.curve import Curve, CurveSchema
 from ..configuration.inline_curve import InlineCurve, InlineCurveSchema
 from ..configuration.matrix import Matrix
+from ..configuration.schema_registry import register_schema
 from ..control.deviceaccess import DeviceAccess, DeviceAccessSchema
 from .linear_model import LinearMagnetModel, LinearMagnetModelSchema
 from .model import MagnetModel
 
 
-class LinearSerializedMagnetModelSchema(BaseModel):
+class LinearSerializedMagnetModelSchema(ConfigurationSchema):
     """
     Configuration model for linear serialized magnet model
 
@@ -74,6 +76,7 @@ def _check_len(obj, name, expected_length):
         )
 
 
+@register_schema(LinearSerializedMagnetModelSchema)
 class LinearSerializedMagnetModel(MagnetModel):
     """
     Class providing a simple linear model for combined function magnets. A matrix

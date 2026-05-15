@@ -1,3 +1,4 @@
+from ..configuration.schema_registry import register_schema
 from ..lattice.polynom_info import PolynomInfo
 from .magnet import Magnet, MagnetSchema
 from .model import MagnetModel
@@ -9,6 +10,7 @@ class SkewQuadSchema(MagnetSchema):
     ...
 
 
+@register_schema(SkewQuadSchema)
 class SkewQuad(Magnet):
     """SkewQuad class"""
 

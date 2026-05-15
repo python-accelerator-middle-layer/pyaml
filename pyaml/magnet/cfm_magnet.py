@@ -5,6 +5,7 @@ from ..common.abstract import RWMapper
 from ..common.element import Element, ElementSchema, __pyaml_repr__
 from ..common.exception import PyAMLException
 from ..configuration import Factory
+from ..configuration.schema_registry import register_schema
 from .hcorrector import HCorrector
 from .magnet import Magnet, MagnetSchema
 from .model import MagnetModel, MagnetModelSchema
@@ -36,6 +37,7 @@ class CombinedFunctionMagnetSchema(ElementSchema):
     """Object in charge of converting magnet strenghts to currents"""
 
 
+@register_schema(CombinedFunctionMagnetSchema)
 class CombinedFunctionMagnet(Element):
     """CombinedFunctionMagnet class"""
 

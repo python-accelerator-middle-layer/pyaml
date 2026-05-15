@@ -6,6 +6,7 @@ from pyaml.bpm.bpm_model import BPMModel
 from pyaml.bpm.bpm_simple_model import BPMSimpleModel, BPMSimpleModelSchema
 
 from ..common.element import __pyaml_repr__
+from ..configuration.schema_registry import register_schema
 from ..control.deviceaccess import DeviceAccess
 
 # TODO: Implepement indexed offset and tilt
@@ -36,6 +37,7 @@ class BPMTiltOffsetModelSchema(BPMSimpleModelSchema):
     tilt: DeviceAccess | None = None
 
 
+@register_schema(BPMTiltOffsetModelSchema)
 class BPMTiltOffsetModel(BPMSimpleModel):
     """
     Concrete implementation of BPMModel that simulates a BPM with tilt and

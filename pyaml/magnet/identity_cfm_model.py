@@ -3,14 +3,13 @@ from pydantic import BaseModel, ConfigDict
 
 from .. import PyAMLException
 from ..common.element import __pyaml_repr__
+from ..configuration.configuration_models import ConfigurationSchema
+from ..configuration.schema_registry import register_schema
 from ..control.deviceaccess import DeviceAccess, DeviceAccessSchema
 from .model import MagnetModel
 
-# Define the main class name for this module
-PYAMLCLASS = "IdentityCFMagnetModel"
 
-
-class IdentityCFMagnetModelSchema(BaseModel):
+class IdentityCFMagnetModelSchema(ConfigurationSchema):
     """
     Configuration model for identity combined function magnet model
 
@@ -34,6 +33,7 @@ class IdentityCFMagnetModelSchema(BaseModel):
     units: list[str] = ""
 
 
+@register_schema(IdentityCFMagnetModelSchema)
 class IdentityCFMagnetModel(MagnetModel):
     """
     Class that map values to underlying devices without conversion

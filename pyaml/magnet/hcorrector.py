@@ -1,5 +1,6 @@
 from ..common import abstract
 from ..common.constants import HORIZONTAL_KICK_SIGN
+from ..configuration.schema_registry import register_schema
 from ..lattice.polynom_info import PolynomInfo
 from .corrector import RWCorrectorAngle
 from .magnet import Magnet, MagnetSchema
@@ -12,6 +13,7 @@ class HCorrectorSchema(MagnetSchema):
     ...
 
 
+@register_schema(HCorrectorSchema)
 class HCorrector(Magnet):
     """Horizontal Corrector class"""
 

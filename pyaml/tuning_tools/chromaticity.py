@@ -19,6 +19,8 @@ import time
 
 import numpy as np
 
+from ..configuration.schema_registry import register_schema
+
 logger = logging.getLogger(__name__)
 
 
@@ -41,6 +43,7 @@ class ChromaticitySchema(ElementSchema):
     response_matrix: str | ResponseMatrixDataSchema
 
 
+@register_schema(ChromaticitySchema)
 class Chromaticity(TuningTool):
     """
     Class providing chromaticity adjustment tool

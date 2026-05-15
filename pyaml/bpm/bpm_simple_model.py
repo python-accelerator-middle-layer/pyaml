@@ -5,6 +5,7 @@ from pydantic import BaseModel, ConfigDict
 from pyaml.bpm.bpm_model import BPMModel
 
 from ..common.element import __pyaml_repr__
+from ..configuration.schema_registry import register_schema
 from ..control.deviceaccess import DeviceAccess, DeviceAccessSchema
 from .bpm_model import BPMModelSchema
 
@@ -35,6 +36,7 @@ class BPMSimpleModelSchema(BPMModelSchema):
     y_pos_index: int | None = None
 
 
+@register_schema(BPMSimpleModelSchema)
 class BPMSimpleModel(BPMModel):
     """
     Concrete implementation of BPMModel that simulates a BPM with tilt and

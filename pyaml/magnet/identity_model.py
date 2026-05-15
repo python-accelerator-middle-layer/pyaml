@@ -3,11 +3,13 @@ from pydantic import BaseModel, ConfigDict
 
 from .. import PyAMLException
 from ..common.element import __pyaml_repr__
+from ..configuration.configuration_models import ConfigurationSchema
+from ..configuration.schema_registry import register_schema
 from ..control.deviceaccess import DeviceAccess, DeviceAccessSchema
 from .model import MagnetModel
 
 
-class IdentityMagnetModelSchema(BaseModel):
+class IdentityMagnetModelSchema(ConfigurationSchema):
     """
     Configuration model for identity magnet model
 
@@ -28,6 +30,7 @@ class IdentityMagnetModelSchema(BaseModel):
     unit: str = ""
 
 
+@register_schema(IdentityMagnetModelSchema)
 class IdentityMagnetModel(MagnetModel):
     """
     Class that map value to underlying device without conversion

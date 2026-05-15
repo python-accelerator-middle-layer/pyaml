@@ -6,6 +6,7 @@ import numpy as np
 from pydantic import ConfigDict
 
 from ..common.constants import Action
+from ..configuration.schema_registry import register_schema
 from .measurement_tool import MeasurementTool, MeasurementToolSchema
 from .response_matrix_data import ResponseMatrixDataSchema
 
@@ -33,6 +34,7 @@ class TuneResponseMatrixSchema(MeasurementToolSchema):
     quad_delta: float
 
 
+@register_schema(TuneResponseMatrixSchema)
 class TuneResponseMatrix(MeasurementTool):
     def __init__(
         self,
