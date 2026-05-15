@@ -1,12 +1,18 @@
 from __future__ import annotations
 
 import importlib
+import logging
 import pkgutil
 from typing import Any, Callable, Type, TypeVar
 
-from pydantic import BaseModel
+from pydantic import BaseModel, ValidationError
 
-from .configuration_models import ConfigurationSchema
+from .configuration_models import (
+    ConfigurationSchema,
+    ModuleConfigurationSchema,
+)
+
+logger = logging.getLogger(__name__)
 
 
 class SchemaRegistry:
@@ -16,50 +22,35 @@ class SchemaRegistry:
 
     _instance: "SchemaRegistry | None" = None
 
-    # class_str -> schema
+    # Schemas as registered as class_path -> schema
     _schemas: dict[str, Type[BaseModel]]
-
-    # # base schema -> subclasses
-    # _subclasses: dict[
-    #     Type[BaseModel],
-    #     list[Type[BaseModel]],
-    # ]
 
     def __new__(cls) -> "SchemaRegistry":
         if cls._instance is None:
             cls._instance = super().__new__(cls)
             cls._instance._schemas = {}
-            # cls._instance._subclasses = defaultdict(list)
-
         return cls._instance
+
+    # ==========================================================
+    # Registration
+    # ==========================================================
 
     def register(
         self,
-        class_str: str,
+        class_path: str,
         schema: Type[ConfigurationSchema],
     ) -> None:
         if not issubclass(
             schema,
             ConfigurationSchema,
         ):
-            raise TypeError(f"{schema.__name__} must inherit from ConfigurationSchema.")
+            raise TypeError(f"{schema.__name__} must inherit from ClassConfigurationSchema.")
 
-        # # Track inheritance hierarchy
-        # for base in schema.__bases__:
+        # TODO: handle this so no error if already registered the same.
+        if class_path in self._schemas:
+            raise ValueError(f"{class_path} already registered.")
 
-        #     if (
-        #         issubclass(base, BaseModel)
-        #         and base is not BaseModel
-        #     ):
-        #         self._subclasses[base].append(
-        #             schema
-        #         )
-
-        # TODO: handle this
-        if class_str in self._schemas:
-            raise ValueError(f"{class_str} already registered.")
-
-        self._schemas[class_str] = schema
+        self._schemas[class_path] = schema
 
     def discover(self) -> None:
         root_package = __package__.split(".")[0]
@@ -72,47 +63,31 @@ class SchemaRegistry:
         ):
             importlib.import_module(module_name)
 
+    # ==========================================================
+    # Interaction
+    # ==========================================================
+
     def __getitem__(
         self,
-        class_str: str,
+        class_path: str,
     ) -> Type[BaseModel]:
         try:
-            return self._schemas[class_str]
+            return self._schemas[class_path]
 
         except KeyError:
-            raise KeyError(f"No schema registered for '{class_str}'") from None
+            raise KeyError(f"No schema registered for '{class_path}'") from None
 
     def __contains__(
         self,
-        class_str: str,
+        class_path: str,
     ) -> bool:
-        return class_str in self._schemas
+        return class_path in self._schemas
 
-    def _ensure_schema_loaded(
-        self,
-        class_str: str,
-    ) -> None:
-        if class_str in self:
-            return
+    # ==========================================================
+    # Validation
+    # ==========================================================
 
-        module_name, _, _ = class_str.rpartition(".")
-
-        if not module_name:
-            raise ValueError(f"Invalid class_str '{class_str}'")
-
-        try:
-            importlib.import_module(module_name)
-
-        except ModuleNotFoundError as e:
-            raise KeyError(f"Could not import module '{module_name}' for '{class_str}'") from e
-
-        if class_str not in self:
-            raise RuntimeError(f"Module '{module_name}' imported but schema '{class_str}' was not registered.")
-
-    def validate(
-        self,
-        data: dict[str, Any],
-    ) -> BaseModel:
+    def validate(self, data: dict[str, Any]) -> BaseModel:
         """
         Recursively validate nested configuration.
         """
@@ -124,96 +99,47 @@ class SchemaRegistry:
 
         return validated
 
-    def _recursive_validate(
-        self,
-        obj: Any,
-    ) -> Any:
+    def _recursive_validate(self, obj: Any) -> Any:
         # List
         if isinstance(obj, list):
             return [self._recursive_validate(item) for item in obj]
 
         # Dict
         if isinstance(obj, dict):
+            logger.debug("Validating dict: %s", obj)
             # First recurse children
             validated_dict = {key: self._recursive_validate(value) for key, value in obj.items()}
 
-            # Then instantiate schema object
-            if "class_str" in validated_dict:
-                class_str = validated_dict["class_str"]
+            # Check if the dict contains keys for a new item
+            # Try class-based config first
+            try:
+                config = ConfigurationSchema.model_validate(validated_dict, extra="allow")
+            except ValidationError:
+                logger.debug(
+                    "Could not validate against ConfigurationSchema. Falling back to legacy ModuleConfigurationSchema."
+                )
+                # Fall back to legacy module-based config
+                try:
+                    module_config = ModuleConfigurationSchema.model_validate(validated_dict, extra="allow")
+                except ValidationError:
+                    logger.debug("Could not validate against ModuleConfigurationSchema. Dict: %s is returned.", obj)
+                    # Dict is normal dict so return it as is
 
-                # # Lazy import
-                # self._ensure_schema_loaded(
-                #     class_str
-                # )
+                    return validated_dict
 
-                if class_str not in self:
-                    raise KeyError(f"Unknown schema '{class_str}'")
+                config = module_config.to_configuration()
+                logger.debug("Dict transformed from legacy config.")
 
-                schema = self[class_str]
+            class_path = config.class_path
 
-                return schema.model_validate(validated_dict)
+            if class_path not in self:
+                raise KeyError(f"Unknown schema for '{class_path}'")
 
-            return validated_dict
+            schema = self[class_path]
+
+            return schema.model_validate(validated_dict)
 
         return obj
-
-    # # ==========================================================
-    # # POLYMORPHIC SCHEMA GENERATION
-    # # ==========================================================
-
-    # def subclasses_of(
-    #     self,
-    #     base_schema: Type[BaseModel],
-    # ) -> list[Type[BaseModel]]:
-
-    #     return self._subclasses.get(
-    #         base_schema,
-    #         [],
-    #     )
-
-    # def make_union(
-    #     self,
-    #     base_schema: Type[BaseModel],
-    # ) -> Any:
-    #     """
-    #     Create discriminated union dynamically.
-    #     """
-
-    #     subclasses = self.subclasses_of(
-    #         base_schema
-    #     )
-
-    #     if not subclasses:
-    #         raise ValueError(
-    #             f"No subclasses registered for "
-    #             f"{base_schema.__name__}"
-    #         )
-
-    #     union = subclasses[0]
-
-    #     for subclass in subclasses[1:]:
-    #         union = union | subclass
-
-    #     return Annotated[
-    #         union,
-    #         Field(discriminator="class_str"),
-    #     ]
-
-    # def json_schema_for(
-    #     self,
-    #     base_schema: Type[BaseModel],
-    # ) -> dict[str, Any]:
-    #     """
-    #     Generate polymorphic JSON schema.
-    #     """
-
-    #     union = self.make_union(
-    #         base_schema
-    #     )
-
-    #     adapter = TypeAdapter(union)
-
-    #     return adapter.json_schema()
 
 
 ModelT = TypeVar(
@@ -243,10 +169,10 @@ def register_schema(
     def decorator(
         cls: Type[ClassT],
     ) -> Type[ClassT]:
-        class_str = f"{cls.__module__}.{cls.__name__}"
+        class_path = f"{cls.__module__}.{cls.__name__}"
 
         registry.register(
-            class_str=class_str,
+            class_path=class_path,
             schema=schema,
         )
 
