@@ -8,8 +8,10 @@ from pyaml.lattice.lattice_elements_linker import (
     LinkerIdentifier,
 )
 
+from ..configuration.schema_registry import register_schema
 
-class PyAtAttributeIdentifierSchema(LatticeElementsLinkerSchema):
+
+class PyAtAttributeElementsLinkerSchema(LatticeElementsLinkerSchema):
     """Base configuration model for linker definitions.
 
     This class defines the configuration structure used to instantiate
@@ -47,6 +49,7 @@ class PyAtAttributeIdentifier(LinkerIdentifier):
         return f"{self.attribute_name}={self.identifier}"
 
 
+@register_schema(PyAtAttributeElementsLinkerSchema)
 class PyAtAttributeElementsLinker(LatticeElementsLinker):
     """Abstract base class defining the interface for PyAT–PyAML element linking.
 

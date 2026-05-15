@@ -8,8 +8,10 @@ from pydantic import BaseModel, ConfigDict
 from pyaml import PyAMLException
 from pyaml.common.element import Element
 
+from ..configuration.configuration_models import ConfigurationSchema
 
-class LatticeElementsLinkerSchema(BaseModel):
+
+class LatticeElementsLinkerSchema(ConfigurationSchema):
     """Base configuration model for linker definitions.
 
     This class defines the configuration structure used to instantiate

@@ -1,12 +1,10 @@
+from typing import Self
+
 from ..bpm.bpm_model import BPMModel, BPMModelSchema
 from ..common.element import Element, ElementSchema
 from ..common.exception import PyAMLException
+from ..configuration.schema_registry import register_schema
 from ..lattice.abstract_impl import RBpmArray, RWBpmOffsetArray, RWBpmTiltScalar
-
-try:
-    from typing import Self  # Python 3.11+
-except ImportError:
-    from typing_extensions import Self  # Python 3.10 and earlier
 
 
 class BPMSchema(ElementSchema):
@@ -22,6 +20,7 @@ class BPMSchema(ElementSchema):
     model: BPMModelSchema | None = None
 
 
+@register_schema(BPMSchema)
 class BPM(Element):
     """
     Class providing access to one BPM of a physical or simulated lattice

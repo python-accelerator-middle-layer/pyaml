@@ -5,6 +5,7 @@ from .. import PyAMLException
 from ..common import abstract
 from ..common.element import Element, ElementSchema, __pyaml_repr__
 from ..configuration import Factory
+from ..configuration.schema_registry import register_schema
 from ..control.deviceaccess import DeviceAccess
 from .function_mapping import function_map
 from .magnet import Magnet
@@ -69,6 +70,7 @@ class ReadWriteSerializedHardwares(ReadWriteSerializedStrengths):
         [element.set_magnet_rigidity(brho) for element in self.elements]
 
 
+@register_schema(SerializedMagnetsSchema)
 class SerializedMagnets(Element):
     """
     Class managing serialized magnets: a set of magnet with the same set point.

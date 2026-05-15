@@ -8,6 +8,7 @@ from pySC.apps.codes import DispersionCode
 from ..common.constants import Action
 from ..common.element import ElementSchema
 from ..common.element_holder import ElementHolder
+from ..configuration.schema_registry import register_schema
 from ..external.pySC_interface import pySCInterface
 from .measurement_tool import MeasurementTool
 
@@ -35,6 +36,7 @@ class DispersionSchema(ElementSchema):
     frequency_delta: float
 
 
+@register_schema(DispersionSchema)
 class Dispersion(MeasurementTool):
     def __init__(
         self,

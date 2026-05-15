@@ -12,12 +12,14 @@ except ImportError:
 
 from .. import PyAMLException
 from ..common.element import ElementSchema
+from ..configuration.schema_registry import register_schema
 from .response_matrix_data import ResponseMatrixData, ResponseMatrixDataSchema
 from .tuning_tool import TuningTool
 
 if TYPE_CHECKING:
     from ..arrays.magnet_array import MagnetArray
     from ..diagnostics.tune_monitor import BetatronTuneMonitor
+
 
 logger = logging.getLogger(__name__)
 
@@ -42,6 +44,7 @@ class TuneSchema(ElementSchema):
     response_matrix: str | ResponseMatrixDataSchema
 
 
+@register_schema(TuneSchema)
 class Tune(TuningTool):
     """
     Class providing tune adjustment tool

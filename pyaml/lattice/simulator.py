@@ -10,6 +10,7 @@ from ..common.element_holder import ElementHolder
 from ..common.exception import PyAMLException
 from ..configuration import get_root_folder
 from ..configuration.configuration_models import ConfigurationSchema
+from ..configuration.schema_registry import register_schema
 from ..diagnostics.tune_monitor import BetatronTuneMonitor
 from ..lattice.abstract_impl import (
     BPMHScalarAggregator,
@@ -69,6 +70,7 @@ class SimulatorSchema(ConfigurationSchema):
     description: str | None = None
 
 
+@register_schema(SimulatorSchema)
 class Simulator(ElementHolder):
     """
     Class that implements access to AT simulator

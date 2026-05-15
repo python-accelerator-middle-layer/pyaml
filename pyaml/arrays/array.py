@@ -8,6 +8,7 @@ from pyaml.common.exception import PyAMLException
 
 from ..common.element_holder import ElementHolder
 from ..configuration.configuration_models import ConfigurationSchema
+from ..configuration.schema_registry import register_schema
 
 
 class ArraySchema(ConfigurationSchema):
@@ -28,6 +29,7 @@ class ArraySchema(ConfigurationSchema):
     elements: list[str]
 
 
+@register_schema(ArraySchema)
 class Array:
     """
     Base class that implements configuration for access to arrays (families)

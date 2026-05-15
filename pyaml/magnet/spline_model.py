@@ -3,12 +3,14 @@ from pydantic import BaseModel, ConfigDict
 from scipy.interpolate import make_smoothing_spline
 
 from ..common.element import __pyaml_repr__
+from ..configuration.configuration_models import ConfigurationSchema
 from ..configuration.curve import Curve, CurveSchema
+from ..configuration.schema_registry import register_schema
 from ..control.deviceaccess import DeviceAccess, DeviceAccessSchema
 from .model import MagnetModel
 
 
-class SplineMagnetModelSchema(BaseModel):
+class SplineMagnetModelSchema(ConfigurationSchema):
     """
     Configuration model for spline magnet model
 
@@ -42,6 +44,7 @@ class SplineMagnetModelSchema(BaseModel):
     alpha: float = 0.0
 
 
+@register_schema(SplineMagnetModelSchema)
 class SplineMagnetModel(MagnetModel):
     """
     Class that handle manget current/strength conversion using

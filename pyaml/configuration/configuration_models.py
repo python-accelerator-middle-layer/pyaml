@@ -22,7 +22,9 @@ class PyAMLBaseModel(BaseModel):
 
 
 class ConfigurationSchema(PyAMLBaseModel):
-    model_config = ConfigDict(validate_by_name=True, validate_by_alias=True, extra="forbid")
+    model_config = ConfigDict(
+        validate_by_name=True, validate_by_alias=True, arbitrary_types_allowed=False, extra="forbid"
+    )
 
     CLASS_PATH_ALIASES: ClassVar[tuple[str, ...]] = ("class",)
 

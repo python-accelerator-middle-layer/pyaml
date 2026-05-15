@@ -6,10 +6,18 @@ import importlib
 import json
 import logging
 import pkgutil
+import tomllib
 from pathlib import Path
-from typing import Any
+from typing import TYPE_CHECKING, Any, Type
 
 import yaml
+from pydantic import BaseModel
+
+from .configuration_models import ConfigurationSchema
+
+if TYPE_CHECKING:
+    from .schema_registry import SchemaRegistry
+
 
 logger = logging.getLogger(__name__)
 
@@ -17,7 +25,7 @@ DEFAULT_REGISTRY_PATH = Path(__file__).resolve().parent / "legacy_registry.json"
 
 
 # ==========================================================
-# Build legacy mapping
+# Build mapping between module and pyamlclass
 # ==========================================================
 
 
@@ -31,11 +39,10 @@ def build_legacy_registry(package_name: str) -> dict[str, str]:
         prefix=package.__name__ + ".",
     ):
         module_name = module_info.name
-        print("VISITING:", module_name)
+        logger.debug("VISITING:", module_name)
 
         try:
             module = importlib.import_module(module_name)
-            print(module)
         except Exception as ex:
             print(f"FAILED importing {module_name}: {ex}")
             continue
@@ -122,3 +129,79 @@ def convert_yaml_file(
 
     with output_path.open("w", encoding="utf-8") as f:
         yaml.safe_dump(converted, f, sort_keys=False)
+
+
+# ==========================================================
+# Handle schemas
+# ==========================================================
+
+
+def load_legacy_schema_mapping() -> list[str]:
+    pyproject = Path(__file__).resolve().parents[2] / "pyproject.toml"
+
+    with pyproject.open("rb") as f:
+        data = tomllib.load(f)
+
+    schema_map = data.get("tool", {}).get("pyaml", {}).get("legacy_schema_mapping", [])
+
+    return schema_map
+
+
+def adapt_legacy_schema(config_model: Type[BaseModel], baseschema: Type[BaseModel]) -> type[BaseModel]:
+    return type(
+        f"Adapted_{config_model.__module__.replace('.', '_')}_{config_model.__name__}",
+        (config_model, baseschema),
+        {
+            "__module__": config_model.__module__,
+        },
+    )
+
+
+def discover_legacy_schemas(registry: SchemaRegistry):
+    schema_map = load_legacy_schema_mapping()
+
+    for module_name, baseschema in schema_map.items():
+        # Import the baseschema
+        module_path, class_name = baseschema.rsplit(".", 1)
+        module = importlib.import_module(module_path)
+        basecls = getattr(module, class_name)
+
+        # Import the external package module
+        try:
+            module = importlib.import_module(module_name)
+        except Exception as ex:
+            print(f"FAILED importing {module_name}: {ex}")
+            continue
+
+        if hasattr(module, "PYAMLCLASS"):
+            pyamlclass = module.PYAMLCLASS
+            pyamlclass = f"{module_name}.{pyamlclass}"
+
+            config_model = getattr(module, "ConfigModel", None)
+            schema = adapt_legacy_schema(config_model, basecls)
+            registry.register(pyamlclass, schema)
+
+    # for package_name in external_packages:
+
+    #     package = importlib.import_module(package_name)
+
+    #     for module_info in pkgutil.walk_packages(
+    #         package.__path__,
+    #         prefix=package.__name__ + ".",
+    #     ):
+    #         module_name = module_info.name
+    #         logger.debug("VISITING:", module_name)
+
+    #         try:
+    #             module = importlib.import_module(module_name)
+    #         except Exception as ex:
+    #             print(f"FAILED importing {module_name}: {ex}")
+    #             continue
+
+    #         if hasattr(module, "PYAMLCLASS"):
+    #             pyamlclass = module.PYAMLCLASS
+    #             pyamlclass = f"{module_name}.{pyamlclass}"
+
+    #             config_model = getattr(module, "ConfigModel", None)
+    #             schema = adapt_legacy_schema(config_model)
+    #             registry.register(pyamlclass, schema)

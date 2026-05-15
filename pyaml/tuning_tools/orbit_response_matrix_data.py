@@ -1,5 +1,6 @@
 from typing import Optional
 
+from ..configuration.schema_registry import register_schema
 from .response_matrix_data import ResponseMatrixData, ResponseMatrixDataSchema
 
 
@@ -22,6 +23,7 @@ class OrbitResponseMatrixDataSchema(ResponseMatrixDataSchema):
     observable_planes: Optional[list[str]] = None
 
 
+@register_schema(OrbitResponseMatrixDataSchema)
 class OrbitResponseMatrixData(ResponseMatrixData):
     """
     Orbit response matrix loader

@@ -9,6 +9,7 @@ except ImportError:
 from .. import PyAMLException
 from ..common import abstract
 from ..common.element import Element, ElementSchema
+from ..configuration.schema_registry import register_schema
 from ..control.deviceaccess import DeviceAccess, DeviceAccessSchema
 
 
@@ -40,6 +41,7 @@ class RFTransmitterSchema(ElementSchema):
     distribution: float = 1.0
 
 
+@register_schema(RFTransmitterSchema)
 class RFTransmitter(Element):
     """
     Class that handle a RF transmitter

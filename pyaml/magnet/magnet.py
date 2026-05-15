@@ -1,16 +1,14 @@
+from typing import Self
+
+import numpy as np
 from pydantic import Field
 from scipy.constants import speed_of_light
 
 from .. import PyAMLException
 from ..common import abstract
 from ..common.element import Element, ElementSchema
+from ..configuration.schema_registry import register_schema
 from .model import MagnetModel, MagnetModelSchema
-
-try:
-    from typing import Self  # Python 3.11+
-except ImportError:
-    from typing_extensions import Self  # Python 3.10 and earlier
-import numpy as np
 
 
 class MagnetSchema(ElementSchema):
@@ -28,6 +26,7 @@ class MagnetSchema(ElementSchema):
     )
 
 
+@register_schema(MagnetSchema)
 class Magnet(Element):
     """
     Class providing access to one magnet of a physical or simulated lattice

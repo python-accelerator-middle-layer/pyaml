@@ -1,4 +1,5 @@
 from ..common import abstract
+from ..configuration.schema_registry import register_schema
 from ..lattice.polynom_info import PolynomInfo
 from .corrector import RWCorrectorAngle
 from .magnet import Magnet, MagnetSchema
@@ -11,6 +12,7 @@ class VCorrectorSchema(MagnetSchema):
     ...
 
 
+@register_schema(VCorrectorSchema)
 class VCorrector(Magnet):
     """Vertical Corrector class"""
 

@@ -7,10 +7,12 @@ from pyaml.common.element import __pyaml_repr__
 from pyaml.configuration.factory import Factory
 
 from .. import PyAMLException
+from ..configuration.configuration_models import ConfigurationSchema
 from ..configuration.fileloader import load
+from ..configuration.schema_registry import register_schema
 
 
-class ResponseMatrixDataSchema(BaseModel):
+class ResponseMatrixDataSchema(ConfigurationSchema):
     """
     Base configuration model for response matrix
 
@@ -29,6 +31,7 @@ class ResponseMatrixDataSchema(BaseModel):
     observable_names: list[str]
 
 
+@register_schema(ResponseMatrixDataSchema)
 class ResponseMatrixData(object):
     """
     Generic response matrix loader

@@ -1,7 +1,9 @@
 from ..common.element_holder import ElementHolder
-from .array import Array
+from ..configuration.schema_registry import register_schema
+from .array import Array, ArraySchema
 
 
+@register_schema(ArraySchema)
 class Magnet(Array):
     """
     Magnet array confirguration.
