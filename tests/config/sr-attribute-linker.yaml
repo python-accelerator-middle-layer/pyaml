@@ -1,27 +1,27 @@
-type: pyaml.accelerator
+class_path: pyaml.accelerator.Accelerator
 facility: ESRF
 machine: sr
 energy: 6e9
 simulators:
-  - type: pyaml.lattice.simulator
-    lattice: sr/lattices/ebs.mat
-    name: design
-    linker:
-      type: pyaml.lattice.attribute_linker
-      attribute_name: FamName # equivalent to the default linker
+- class_path: pyaml.lattice.simulator.Simulator
+  lattice: sr/lattices/ebs.mat
+  name: design
+  linker:
+    class_path: pyaml.lattice.attribute_linker.PyAtAttributeElementsLinker
+    attribute_name: FamName
 data_folder: /data/store
 arrays:
-  - type: pyaml.arrays.magnet
-    name: HCORR
-    elements:
-      - SH1A-C01-H
-      - SH1A-C02-H
-  - type: pyaml.arrays.magnet
-    name: VCORR
-    elements:
-      - SH1A-C01-V
-      - SH1A-C02-V
+- class_path: pyaml.arrays.magnet.Magnet
+  name: HCORR
+  elements:
+  - SH1A-C01-H
+  - SH1A-C02-H
+- class_path: pyaml.arrays.magnet.Magnet
+  name: VCORR
+  elements:
+  - SH1A-C01-V
+  - SH1A-C02-V
 devices:
-  - sr/quadrupoles/QF1AC01.yaml
-  - sr/correctors/SH1AC01.yaml
-  - sr/correctors/SH1AC02.yaml
+- sr/quadrupoles/QF1AC01.yaml
+- sr/correctors/SH1AC01.yaml
+- sr/correctors/SH1AC02.yaml

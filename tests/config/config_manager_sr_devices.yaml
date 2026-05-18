@@ -1,27 +1,27 @@
 devices:
-  - sr/quadrupoles/QF1AC01.yaml
-  - sr/correctors/SH1AC01-C02.yaml
-  - type: pyaml.bpm.bpm
-    name: BPM_C04-01
-    model:
-      type: pyaml.bpm.bpm_simple_model
-      x_pos:
-        type: tango.pyaml.attribute_read_only
-        attribute: srdiag/bpm/c04-01/SA_HPosition
-        unit: m
-      y_pos:
-        type: tango.pyaml.attribute_read_only
-        attribute: srdiag/bpm/c04-01/SA_VPosition
-        unit: m
-  - type: pyaml.bpm.bpm
-    name: BPM_C04-02
-    model:
-      type: pyaml.bpm.bpm_simple_model
-      x_pos:
-        type: tango.pyaml.attribute_read_only
-        attribute: srdiag/bpm/c04-02/SA_HPosition
-        unit: m
-      y_pos:
-        type: tango.pyaml.attribute_read_only
-        attribute: srdiag/bpm/c04-02/SA_VPosition
-        unit: m
+- sr/quadrupoles/QF1AC01.yaml
+- sr/correctors/SH1AC01-C02.yaml
+- class_path: pyaml.bpm.bpm.BPM
+  name: BPM_C04-01
+  model:
+    class_path: pyaml.bpm.bpm_simple_model.BPMSimpleModel
+    x_pos:
+      class_path: tango.pyaml.attribute_read_only.AttributeReadOnly
+      attribute: srdiag/bpm/c04-01/SA_HPosition
+      unit: m
+    y_pos:
+      class_path: tango.pyaml.attribute_read_only.AttributeReadOnly
+      attribute: srdiag/bpm/c04-01/SA_VPosition
+      unit: m
+- class_path: pyaml.bpm.bpm.BPM
+  name: BPM_C04-02
+  model:
+    class_path: pyaml.bpm.bpm_simple_model.BPMSimpleModel
+    x_pos:
+      class_path: tango.pyaml.attribute_read_only.AttributeReadOnly
+      attribute: srdiag/bpm/c04-02/SA_HPosition
+      unit: m
+    y_pos:
+      class_path: tango.pyaml.attribute_read_only.AttributeReadOnly
+      attribute: srdiag/bpm/c04-02/SA_VPosition
+      unit: m

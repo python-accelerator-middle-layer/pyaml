@@ -1,32 +1,32 @@
-type: pyaml.accelerator
+class_path: pyaml.accelerator.Accelerator
 facility: ESRF
 machine: sr
 harmonic_number: 992
 energy: 6e9
 simulators:
-  - type: pyaml.lattice.simulator
-    lattice: sr/lattices/ebs.mat
-    name: design
+- class_path: pyaml.lattice.simulator.Simulator
+  lattice: sr/lattices/ebs.mat
+  name: design
 controls:
-  - type: tango.pyaml.controlsystem
-    tango_host: ebs-simu-3:10000
-    name: live
+- class_path: tango.pyaml.controlsystem.TangoControlSystem
+  tango_host: ebs-simu-3:10000
+  name: live
 data_folder: /data/store
 devices:
-- type: pyaml.diagnostics.tune_monitor
+- class_path: pyaml.diagnostics.tune_monitor.BetatronTuneMonitor
   name: BETATRON_TUNE
   tune_h:
-    type: tango.pyaml.attribute_read_only
+    class_path: tango.pyaml.attribute_read_only.AttributeReadOnly
     attribute: srdiag/beam-tune/main/Qh
     unit: mm
   tune_v:
-    type: tango.pyaml.attribute_read_only
+    class_path: tango.pyaml.attribute_read_only.AttributeReadOnly
     attribute: srdiag/beam-tune/main/Qv
     unit: mm
   rf_plant_name: RF
-- type: pyaml.rf.rf_plant
+- class_path: pyaml.rf.rf_plant.RFPlant
   name: RF
   masterclock:
-    type: tango.pyaml.attribute
+    class_path: tango.pyaml.attribute.Attribute
     attribute: sy/ms/1/Frequency
     unit: Hz

@@ -1,10 +1,5 @@
-{
-  "simulators": [
-    {
-      "type": "pyaml.lattice.simulator",
-      "name": "analysis",
-      "lattice": "sr/lattices/ebs.mat",
-      "description": "Secondary simulation mode"
-    }
-  ]
-}
+simulators:
+- class_path: pyaml.lattice.simulator.Simulator
+  name: analysis
+  lattice: sr/lattices/ebs.mat
+  description: Secondary simulation mode
