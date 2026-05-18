@@ -1,9 +1,9 @@
-type: pyaml.magnet.quadrupole
+class_path: pyaml.magnet.quadrupole.Quadrupole
 name: QF1A-C01
 model:
-  type: pyaml.magnet.identity_model
+  class_path: pyaml.magnet.identity_model.IdentityMagnetModel
   unit: A
   powerconverter:
-    type: tango.pyaml.attribute
+    class_path: tango.pyaml.attribute.Attribute
     attribute: sr/ps-qf1/c01-a/strength
     unit: 1/m

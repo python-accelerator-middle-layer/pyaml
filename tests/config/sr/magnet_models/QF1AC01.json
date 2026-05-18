@@ -1,12 +1,9 @@
-{
-      "type": "pyaml.magnet.linear_model",
-      "calibration_factor": 1.00504,
-      "calibration_offset": 0.0,
-      "curve": "sr/magnet_models/quadcurve.json",
-      "unit": "1/m",
-      "powerconverter": {
-        "type": "tango.pyaml.attribute",
-        "attribute": "sr/ps-qf1/c01-a/current",
-        "unit": "A"
-      }
-}
+class_path: pyaml.magnet.linear_model.LinearMagnetModel
+calibration_factor: 1.00504
+calibration_offset: 0.0
+curve: sr/magnet_models/quadcurve.json
+unit: 1/m
+powerconverter:
+  class_path: tango.pyaml.attribute.Attribute
+  attribute: sr/ps-qf1/c01-a/current
+  unit: A

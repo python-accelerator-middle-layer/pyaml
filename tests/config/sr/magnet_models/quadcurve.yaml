@@ -1,2 +1,2 @@
-type: pyaml.configuration.csvcurve
+class_path: pyaml.configuration.csvcurve.CSVCurve
 file: sr/magnet_models/QF1_strength.csv

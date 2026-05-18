@@ -1,12 +1,12 @@
 import numpy as np
 
 from pyaml.configuration import set_root_folder
-from pyaml.configuration.csvcurve import ConfigModel, CSVCurve
+from pyaml.configuration.csvcurve import CSVCurve, CSVCurveSchema
 from pyaml.configuration.curve import Curve
 
 
 def curve_test(file: str, current: float, strength: float):
-    curveConfig = ConfigModel(file=file)
+    curveConfig = CSVCurveSchema(file=file)
     curve = CSVCurve(curveConfig)
     curveData = curve.get_curve()
     icurveData = Curve.inverse(curveData)

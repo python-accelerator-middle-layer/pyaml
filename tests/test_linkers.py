@@ -3,10 +3,8 @@ import pytest
 from pyaml import PyAMLException
 from pyaml.accelerator import Accelerator
 from pyaml.lattice.attribute_linker import (
-    ConfigModel as AttrConfigModel,
-)
-from pyaml.lattice.attribute_linker import (
     PyAtAttributeElementsLinker,
+    PyAtAttributeElementsLinkerSchema,
     PyAtAttributeIdentifier,
 )
 
@@ -40,7 +38,7 @@ def test_conf_with_linker():
 def test_attribute_identifier_from_pyaml_name(lattice_with_custom_attr):
     """We bind to AT element attribute 'Tag';
     identifier value comes from PyAML element .name"""
-    linker = PyAtAttributeElementsLinker(AttrConfigModel(attribute_name="Tag"))
+    linker = PyAtAttributeElementsLinker(PyAtAttributeElementsLinkerSchema(attribute_name="Tag"))
     linker.set_lattice(lattice_with_custom_attr)
     pyaml_elem = DummyPyAMLElement(name="QF")  # identifier="QF"
     ident = linker.get_element_identifier(pyaml_elem)
@@ -50,7 +48,7 @@ def test_attribute_identifier_from_pyaml_name(lattice_with_custom_attr):
 
 
 def test_attribute_get_at_elements_all_matches(lattice_with_custom_attr):
-    linker = PyAtAttributeElementsLinker(AttrConfigModel(attribute_name="Tag"))
+    linker = PyAtAttributeElementsLinker(PyAtAttributeElementsLinkerSchema(attribute_name="Tag"))
     linker.set_lattice(lattice_with_custom_attr)
     ident = PyAtAttributeIdentifier("Tag", "QF")
     matches = linker.get_at_elements(ident)
@@ -60,7 +58,7 @@ def test_attribute_get_at_elements_all_matches(lattice_with_custom_attr):
 
 
 def test_attribute_get_at_element_first_match(lattice_with_custom_attr):
-    linker = PyAtAttributeElementsLinker(AttrConfigModel(attribute_name="Tag"))
+    linker = PyAtAttributeElementsLinker(PyAtAttributeElementsLinkerSchema(attribute_name="Tag"))
     linker.set_lattice(lattice_with_custom_attr)
     ident = PyAtAttributeIdentifier("Tag", "QD")
     first = linker.get_at_element(ident)
@@ -73,7 +71,7 @@ def test_attribute_get_at_element_first_match(lattice_with_custom_attr):
 
 
 def test_attribute_no_match_raises(lattice_with_custom_attr):
-    linker = PyAtAttributeElementsLinker(AttrConfigModel(attribute_name="Tag"))
+    linker = PyAtAttributeElementsLinker(PyAtAttributeElementsLinkerSchema(attribute_name="Tag"))
     linker.set_lattice(lattice_with_custom_attr)
     ident = PyAtAttributeIdentifier("Tag", "ZZ")
     with pytest.raises(PyAMLException):
@@ -83,7 +81,7 @@ def test_attribute_no_match_raises(lattice_with_custom_attr):
 
 
 def test_attribute_multiple_identifiers_accumulate(lattice_with_custom_attr):
-    linker = PyAtAttributeElementsLinker(AttrConfigModel(attribute_name="Tag"))
+    linker = PyAtAttributeElementsLinker(PyAtAttributeElementsLinkerSchema(attribute_name="Tag"))
     linker.set_lattice(lattice_with_custom_attr)
     ids = [PyAtAttributeIdentifier("Tag", "QF"), PyAtAttributeIdentifier("Tag", "QD")]
     res = linker.get_at_elements(ids)
@@ -190,14 +188,10 @@ def test_various_naming_addressing():
     assert len(elts) == 3
     check_index(ring, elts, [140, 290, 424])
 
-    elts = sr.design.get_magnet(
-        "QF1E-C04-C05-C06-2"
-    ).strength._RWStrengthScalar__elements
+    elts = sr.design.get_magnet("QF1E-C04-C05-C06-2").strength._RWStrengthScalar__elements
     assert len(elts) == 3
     check_index(ring, elts, [140, 290, 424])
 
-    elts = sr.design.get_magnet(
-        "QF1E-C04-C05-C06-3"
-    ).strength._RWStrengthScalar__elements
+    elts = sr.design.get_magnet("QF1E-C04-C05-C06-3").strength._RWStrengthScalar__elements
     assert len(elts) == 3
     check_index(ring, elts, [140, 290, 424])

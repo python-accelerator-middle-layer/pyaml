@@ -4,13 +4,11 @@ import numpy as np
 import pytest
 
 from pyaml.accelerator import Accelerator
+from pyaml.arrays.array import ArraySchema
 from pyaml.arrays.bpm import BPM
-from pyaml.arrays.bpm import ConfigModel as BPMArrayConfigModel
 from pyaml.arrays.bpm_array import BPMArray
 from pyaml.arrays.cfm_magnet import CombinedFunctionMagnet
-from pyaml.arrays.cfm_magnet import ConfigModel as CombinedFunctionMagnetConfigModel
 from pyaml.arrays.element_array import ElementArray
-from pyaml.arrays.magnet import ConfigModel as MagnetArrayConfigModel
 from pyaml.arrays.magnet import Magnet
 from pyaml.arrays.magnet_array import MagnetArray
 
@@ -217,17 +215,17 @@ def test_arrays(install_test_package):
     assert isinstance(magSH1AC, ElementArray) and len(magSH1AC) == 32
 
     # Empty arrays
-    emptyMag = Magnet(MagnetArrayConfigModel(name="EmptyMag", elements=[]))
+    emptyMag = Magnet(ArraySchema(name="EmptyMag", elements=[]))
     emptyMag.fill_array(sr.design)  # Attach the array
     v = sr.design.get_magnets("EmptyMag").strengths.get()  # Ensure good attach
     assert np.shape(v) == (0,)
 
-    emptyBPM = BPM(BPMArrayConfigModel(name="emptyBPM", elements=[]))
+    emptyBPM = BPM(ArraySchema(name="emptyBPM", elements=[]))
     emptyBPM.fill_array(sr.design)  # Attach the array
     v = sr.design.get_bpms("emptyBPM").positions.get()  # Ensure good attach
     assert np.shape(v) == (0,)
 
-    emptyCFM = CombinedFunctionMagnet(CombinedFunctionMagnetConfigModel(name="emptyCFM", elements=[]))
+    emptyCFM = CombinedFunctionMagnet(ArraySchema(name="emptyCFM", elements=[]))
     emptyCFM.fill_array(sr.design)  # Attach the array
     v = sr.design.get_cfm_magnets("emptyCFM").strengths.get()  # Ensure good attach
     assert np.shape(v) == (0,)

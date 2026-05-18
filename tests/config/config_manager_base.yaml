@@ -1,11 +1,11 @@
-type: pyaml.accelerator
+class_path: pyaml.accelerator.Accelerator
 facility: Test Facility
 machine: test_ring
 energy: 3000000000.0
 data_folder: data
 description: Base configuration for ConfigurationManager tests
 simulators:
-  - type: pyaml.lattice.simulator
-    name: design
-    lattice: sr/lattices/ebs.mat
+- class_path: pyaml.lattice.simulator.Simulator
+  name: design
+  lattice: sr/lattices/ebs.mat
 devices: []

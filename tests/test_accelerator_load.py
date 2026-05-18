@@ -3,7 +3,7 @@ from pydantic import BaseModel, ConfigDict
 
 from pyaml import PyAMLConfigException
 from pyaml.accelerator import Accelerator, ElementHolder
-from pyaml.common.element import Element, ElementConfigModel, __pyaml_repr__
+from pyaml.common.element import Element, ElementSchema, __pyaml_repr__
 from pyaml.control.controlsystem import ControlSystemAdapter
 
 
@@ -77,7 +77,7 @@ class MyControlSystem(ControlSystemAdapter):
         return __pyaml_repr__(self)
 
 
-class MyElementConfigModel(ElementConfigModel):
+class MyElementConfigModel(ElementSchema):
     device_h: str
     device_v: str
 
