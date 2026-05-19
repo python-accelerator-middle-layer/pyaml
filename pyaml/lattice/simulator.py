@@ -65,8 +65,8 @@ class SimulatorSchema(ConfigurationSchema):
 
     name: str
     lattice: str
-    mat_key: str = None
-    linker: LatticeElementsLinkerSchema = None
+    mat_key: str | None = None
+    linker: LatticeElementsLinkerSchema | None = None
     description: str | None = None
 
 
