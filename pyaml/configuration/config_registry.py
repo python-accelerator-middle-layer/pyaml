@@ -145,6 +145,21 @@ class ConfigurationItem:
         return self._data[key]
 
     def get(self, key: str, default: Any = None) -> Any:
+        """Return a configuration value or a default value.
+
+        Parameters
+        ----------
+        key : str
+            Configuration field name.
+        default : Any, optional
+            Value returned if ``key`` does not exist.
+
+        Returns
+        -------
+        Any
+            Stored configuration value or ``default``.
+        """
+
         return self._data.get(key, default)
 
     def __setitem__(self, key: str, value: Any) -> None:
@@ -234,12 +249,40 @@ class ConfigurationItem:
 
 
 class Registry:
+    """Dictionary-like registry for configuration items.
+
+    Items are stored under explicit string keys and wrapped as
+    :class:`ConfigurationItem` instances. The registry supports both
+    dictionary-style and attribute-style access.
+
+    Parameters
+    ----------
+    validate : bool, optional
+        If ``True``, validate stored configuration items during creation
+        and modification.
+    """
+
     def __init__(self, *, validate: bool = True) -> None:
         self._items: dict[str, ConfigurationItem] = {}
         self._validate = validate
 
     def add(self, key: str, value: dict[str, Any]) -> None:
-        """Store one configuration item under an explicit key."""
+        """Add a configuration item to the registry.
+
+        Parameters
+        ----------
+        key : str
+            Registry key.
+        value : dict[str, Any]
+            Configuration data.
+
+        Raises
+        ------
+        TypeError
+            If ``key`` is not a string or ``value`` is not a dictionary.
+        ValueError
+            If ``key`` already exists in the registry.
+        """
 
         if not isinstance(key, str):
             raise TypeError("Registry key must be a string.")
@@ -257,6 +300,26 @@ class Registry:
         )
 
     def rename(self, old: str, new: str) -> None:
+        """Rename a stored configuration item.
+
+        The registry key and the internal ``name`` field are updated
+        together to maintain consistency.
+
+        Parameters
+        ----------
+        old : str
+            Existing registry key.
+        new : str
+            New registry key.
+
+        Raises
+        ------
+        KeyError
+            If ``old`` does not exist.
+        ValueError
+            If ``new`` already exists.
+        """
+
         if old not in self._items:
             raise KeyError(f"No configuration stored for {old!r}.")
         if new in self._items:
@@ -267,6 +330,18 @@ class Registry:
         self._items[new] = item
 
     def __getitem__(self, key: str) -> ConfigurationItem:
+        """Return a stored configuration item.
+
+        Parameters
+        ----------
+        key : str
+            Registry key.
+
+        Returns
+        -------
+        ConfigurationItem
+            Stored configuration item.
+        """
         return self._items[key]
 
     def get(
@@ -274,9 +349,41 @@ class Registry:
         key: str,
         default: ConfigurationItem | None = None,
     ) -> ConfigurationItem | None:
+        """Return a stored configuration item or a default value.
+
+        Parameters
+        ----------
+        key : str
+            Registry key.
+        default : ConfigurationItem | None, optional
+            Value returned if ``key`` does not exist.
+
+        Returns
+        -------
+        ConfigurationItem | None
+            Stored configuration item or ``default``.
+        """
+
         return self._items.get(key, default)
 
     def __setitem__(self, key: str, value: dict[str, Any]) -> None:
+        """Replace an existing configuration item.
+
+        Parameters
+        ----------
+        key : str
+            Registry key.
+        value : dict[str, Any]
+            Replacement configuration data.
+
+        Raises
+        ------
+        KeyError
+            If ``key`` does not exist.
+        TypeError
+            If ``value`` is not a dictionary.
+        """
+
         if key not in self._items:
             raise KeyError(f"No configuration stored for '{key}'.")
 
@@ -289,12 +396,43 @@ class Registry:
         )
 
     def __getattr__(self, key: str) -> ConfigurationItem:
+        """Provide attribute-style access to stored items.
+
+        Parameters
+        ----------
+        key : str
+            Registry key.
+
+        Returns
+        -------
+        ConfigurationItem
+            Stored configuration item.
+
+        Raises
+        ------
+        AttributeError
+            If the key does not exist.
+        """
+
         try:
             return self._items[key]
         except KeyError as exc:
             raise AttributeError(key) from exc
 
     def __setattr__(self, key: str, value: Any) -> None:
+        """Provide attribute-style assignment for stored items.
+
+        Internal attributes beginning with ``_`` bypass the registry
+        update machinery and are stored directly on the instance.
+
+        Parameters
+        ----------
+        key : str
+            Registry key or internal attribute name.
+        value : Any
+            Replacement value.
+        """
+
         if key.startswith("_"):
             object.__setattr__(self, key, value)
             return
@@ -302,24 +440,38 @@ class Registry:
         self.__setitem__(key, value)
 
     def __contains__(self, key: str) -> bool:
+        """Return whether a key exists in the registry."""
+
         return key in self._items
 
     def items(self) -> ItemsView[str, ConfigurationItem]:
+        """Return a view of stored items."""
+
         return self._items.items()
 
     def keys(self) -> KeysView[str]:
+        """Return a view of stored keys."""
+
         return self._items.keys()
 
     def values(self) -> ValuesView[ConfigurationItem]:
+        """Return a view of stored configuration items."""
+
         return self._items.values()
 
     def __iter__(self) -> Iterator[str]:
+        """Iterate over stored keys."""
+
         return iter(self._items)
 
     def __len__(self) -> int:
+        """Return the number of stored items."""
+
         return len(self._items)
 
     def clear(self) -> None:
+        """Remove all stored configuration items."""
+
         self._items.clear()
 
     def __repr__(self) -> str:
@@ -351,6 +503,12 @@ class Registry:
 
 @dataclass(slots=True)
 class ConfigurationRegistry:
+    """Container grouping configuration registries by category.
+
+    The registry separates configuration objects into logical sections
+    such as controls, simulators, arrays, and devices.
+    """
+
     data: Registry = field(default_factory=Registry)
     controls: Registry = field(default_factory=Registry)
     simulators: Registry = field(default_factory=Registry)
@@ -359,6 +517,24 @@ class ConfigurationRegistry:
 
     @classmethod
     def create(cls, config: dict[str, Any]) -> "ConfigurationRegistry":
+        """Create a configuration registry from nested configuration data.
+
+        Parameters
+        ----------
+        config : dict[str, Any]
+            Top-level configuration dictionary.
+
+        Returns
+        -------
+        ConfigurationRegistry
+            Populated configuration registry.
+
+        Raises
+        ------
+        TypeError
+            If ``config`` is not a dictionary.
+        """
+
         if not isinstance(config, dict):
             raise TypeError("Configuration must be a dictionary.")
 
@@ -393,6 +569,28 @@ class ConfigurationRegistry:
 
     @staticmethod
     def _add_tree(target: Registry, obj: Any) -> None:
+        """Recursively add named configuration objects to a registry.
+
+        Every dictionary containing a top-level ``name`` field is added
+        to ``target`` under that name.
+
+        Nested dictionaries are traversed recursively.
+
+        Parameters
+        ----------
+        target : Registry
+            Target registry.
+        obj : Any
+            Object to traverse.
+
+        Raises
+        ------
+        TypeError
+            If a configuration ``name`` is not a string.
+        ValueError
+            If nested dictionaries contain a ``name`` field.
+        """
+
         if isinstance(obj, list):
             for item in obj:
                 ConfigurationRegistry._add_tree(target, item)
@@ -419,6 +617,19 @@ class ConfigurationRegistry:
 
     @staticmethod
     def _check_no_nested_names(obj: Any) -> None:
+        """Ensure nested dictionaries do not contain ``name`` fields.
+
+        Parameters
+        ----------
+        obj : Any
+            Object to validate.
+
+        Raises
+        ------
+        ValueError
+            If a nested dictionary contains a ``name`` field.
+        """
+
         if isinstance(obj, list):
             for item in obj:
                 ConfigurationRegistry._check_no_nested_names(item)
