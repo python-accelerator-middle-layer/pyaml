@@ -43,7 +43,7 @@ from .deviceaccess import DeviceAccess
 
 class ControlSystemSchema(ConfigurationSchema):
     name: str
-    debug_level: str | None = None
+    debug_level: str | int | None = None
     scalar_aggregator: str | None = None
     vector_aggregator: str | None = None
 
