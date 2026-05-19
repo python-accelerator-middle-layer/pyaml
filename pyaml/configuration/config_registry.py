@@ -1,6 +1,9 @@
 import logging
+from collections import defaultdict
 from collections.abc import ItemsView, Iterator, KeysView, ValuesView
 from copy import deepcopy
+from dataclasses import dataclass, field
+from pprint import pformat
 from typing import Any
 
 from .schema_registry import SchemaRegistry
@@ -8,233 +11,434 @@ from .schema_registry import SchemaRegistry
 logger = logging.getLogger(__name__)
 
 
-class ConfigurationRegistry:
-    """Singleton registry for configuration objects.
+class ConfigurationItem:
+    """Mutable configuration object with optional schema validation.
 
-    Items are registered as name -> configuration data.
-    The registry can store both validated and unvalidated data.
+    Nested dictionaries containing a ``class_path`` field are wrapped as
+    :class:`ConfigurationItem` instances so validation and mutation logic
+    propagate recursively through configuration trees.
+
+    Plain dictionaries without ``class_path`` remain ordinary dictionaries,
+    but their contents are still traversed recursively.
+
+    Parameters
+    ----------
+    data : dict[str, Any]
+        Configuration data.
+    validate : bool, optional
+        If ``True``, validate the configuration against the registered
+        schema associated with its ``class_path`` field.
     """
 
-    _instance: "ConfigurationRegistry | None" = None
-    _configs: dict[str, dict[str, Any]]
+    def __init__(
+        self,
+        data: dict[str, Any],
+        *,
+        validate: bool = True,
+    ) -> None:
+        object.__setattr__(self, "_data", {})
+        object.__setattr__(self, "_validate_enabled", validate)
 
-    def __new__(cls) -> "ConfigurationRegistry":
-        if cls._instance is None:
-            cls._instance = super().__new__(cls)
-            cls._instance._configs = {}
-        return cls._instance
+        for key, value in data.items():
+            self._data[key] = self._wrap(value)
 
-    def add(self, value: dict[str, Any]) -> None:
-        """Add a configuration under its internal name.
+        if self._validate_enabled:
+            self._validate()
 
-        The ``name`` field is removed before storing the configuration.
+    def _wrap(self, value: Any) -> Any:
+        """Recursively wrap configuration values.
+
+        Dictionaries containing a ``class_path`` field are converted into
+        :class:`ConfigurationItem` instances. Other dictionaries remain
+        plain dictionaries, but their contents are traversed recursively.
+
+        Lists are traversed element by element.
 
         Parameters
         ----------
-        value : dict[str, Any]
-            Configuration data. Must contain a ``name`` field.
+        value : Any
+            Value to wrap.
+
+        Returns
+        -------
+        Any
+            Wrapped value.
+        """
+
+        if isinstance(value, dict):
+            if "class_path" in value:
+                return ConfigurationItem(value, validate=self._validate_enabled)
+            return {key: self._wrap(item) for key, item in value.items()}
+
+        if isinstance(value, dict):
+            return ConfigurationItem(value, validate=self._validate_enabled)
+
+        if isinstance(value, list):
+            return [self._wrap(item) for item in value]
+        return value
+
+    def _unwrap(self, value: Any) -> Any:
+        """Recursively convert wrapped values back to plain Python objects.
+
+        Parameters
+        ----------
+        value : Any
+            Value to unwrap.
+
+        Returns
+        -------
+        Any
+            Plain Python representation.
+        """
+
+        if isinstance(value, ConfigurationItem):
+            return value.to_dict()
+
+        if isinstance(value, list):
+            return [self._unwrap(item) for item in value]
+
+        if isinstance(value, dict):
+            return {key: self._unwrap(item) for key, item in value.items()}
+        return value
+
+    def to_dict(self) -> dict[str, Any]:
+        """Return the configuration as a plain dictionary.
+
+        Returns
+        -------
+        dict[str, Any]
+            Plain Python representation of the configuration.
+        """
+
+        return {key: self._unwrap(value) for key, value in self._data.items()}
+
+    def _validate(self) -> None:
+        """Validate the configuration against its registered schema.
+
+        Validation is performed recursively using
+        :class:`SchemaRegistry`.
 
         Raises
         ------
         KeyError
-            If ``name`` is missing.
-        ValueError
-            If a configuration with the same name already exists.
-        TypeError
-            If ``name`` is not a string.
+            If no schema is registered for the configuration
+            ``class_path``.
+        ValidationError
+            If schema validation fails.
         """
-        data = dict(value)
 
-        try:
-            name = data.pop("name")
-        except KeyError:
-            raise KeyError("Configuration is missing a 'name' field.") from None
+        data = self.to_dict()
 
-        if not isinstance(name, str):
-            raise TypeError("Configuration name must be a string.")
+        class_path = data.get("class_path")
+        if not isinstance(class_path, str):
+            return
 
-        if name in self._configs:
-            raise ValueError(f"Configuration '{name}' already exists.")
+        schema_registry = SchemaRegistry()
+        if class_path not in schema_registry:
+            raise KeyError(f"No schema registered for class_path {class_path!r}.")
 
-        self._configs[name] = data
+        schema_registry.validate(data)
 
-    def _parse_path(self, path: str) -> tuple[str | int, ...]:
-        """Parse a dotted/indexed update path."""
-        if not path:
-            raise ValueError("Path must not be empty.")
+    def __getitem__(self, key: str) -> Any:
+        """Return a configuration value."""
 
-        parts: list[str | int] = []
-        token: list[str] = []
-        i = 0
+        return self._data[key]
 
-        while i < len(path):
-            char = path[i]
+    def get(self, key: str, default: Any = None) -> Any:
+        return self._data.get(key, default)
 
-            if char == ".":
-                if not token:
-                    raise ValueError(f"Invalid path {path!r}: empty segment.")
-                parts.append("".join(token))
-                token.clear()
-                i += 1
-                continue
+    def __setitem__(self, key: str, value: Any) -> None:
+        """Set a configuration value with optional validation.
 
-            if char == "[":
-                if token:
-                    parts.append("".join(token))
-                    token.clear()
-
-                end = path.find("]", i + 1)
-                if end == -1:
-                    raise ValueError(f"Invalid path {path!r}: missing ']'.")
-                index_text = path[i + 1 : end]
-                if not index_text.isdigit():
-                    raise ValueError(f"Invalid path {path!r}: list indexes must be integers.")
-
-                parts.append(int(index_text))
-                i = end + 1
-                continue
-
-            if char == "]":
-                raise ValueError(f"Invalid path {path!r}: unexpected ']'.")
-
-            token.append(char)
-            i += 1
-
-        if token:
-            parts.append("".join(token))
-        elif path.endswith("."):
-            raise ValueError(f"Invalid path {path!r}: trailing '.'.")
-
-        return tuple(parts)
-
-    def _set_in(
-        self,
-        data: Any,
-        path: tuple[str | int, ...],
-        value: Any,
-    ) -> Any:
-        """Return a copy of data with one nested value replaced."""
-        if not path:
-            return deepcopy(value)
-
-        head, *tail = path
-
-        if isinstance(data, dict):
-            if not isinstance(head, str):
-                raise TypeError("Dictionary path segments must be strings.")
-            if head not in data:
-                raise KeyError(f"Key '{head}' does not exist.")
-
-            updated = dict(data)
-            updated[head] = self._set_in(updated[head], tuple(tail), value)
-            return updated
-
-        if isinstance(data, list):
-            if not isinstance(head, int):
-                raise TypeError("List path segments must be integers.")
-            if head < 0 or head >= len(data):
-                raise IndexError(f"List index {head} out of range.")
-
-            updated = list(data)
-            updated[head] = self._set_in(updated[head], tuple(tail), value)
-            return updated
-
-        raise TypeError(f"Cannot descend into object of type {type(data).__name__}.")
-
-    def update(
-        self,
-        name: str,
-        path: str | None,
-        value: Any,
-        *,
-        validate: bool = True,
-    ) -> None:
-        """Update a stored configuration.
+        The update is rolled back automatically if validation fails.
 
         Parameters
         ----------
-        name : str
-            Registry name.
-        path : str | None, optional
-            Dotted/indexed path to the nested value to update. If
-            ``None``, replace the entire configuration.
+        key : str
+            Configuration field name.
         value : Any
             Replacement value.
-        validate : bool, optional
-            If ``True``, validate the updated configuration with
-            :class:`SchemaRegistry` before storing it.
+
+        Raises
+        ------
+        ValidationError
+            If validation fails after the update.
         """
-        current = deepcopy(self._configs[name])
 
-        if path is None:
-            if not isinstance(value, dict):
-                raise TypeError("Replacing a configuration requires a dictionary.")
-            updated = dict(value)
-        else:
-            parsed_path = self._parse_path(path)
-            updated = self._set_in(current, parsed_path, value)
+        if key == "name" and "name" in self._data and value != self._data["name"]:
+            raise ValueError("The 'name' field is immutable. Rename the item through the Registry instead.")
 
-        if not isinstance(updated, dict):
-            raise TypeError("Top-level configuration must remain a dictionary.")
+        old_value = self._data.get(key)
+        had_key = key in self._data
 
-        if validate:
-            candidate = dict(updated)
-            candidate["name"] = name
-            validated = SchemaRegistry().validate(candidate)
-            self._configs[name] = validated.model_dump(exclude={"name"})
-        else:
-            self._configs[name] = updated
+        self._data[key] = self._wrap(value)
 
-    def rename(self, old_name: str, new_name: str) -> None:
-        """Rename a stored configuration."""
-        if old_name not in self._configs:
-            raise KeyError(f"No configuration stored for '{old_name}'.")
+        if not self._validate_enabled:
+            return
 
-        if new_name in self._configs:
-            raise ValueError(f"Configuration '{new_name}' already exists.")
+        try:
+            self._validate()
+        except Exception:
+            if had_key:
+                self._data[key] = old_value
+            else:
+                del self._data[key]
+            raise
 
-        self._configs[new_name] = self._configs.pop(old_name)
+    def __getattr__(self, key: str) -> Any:
+        """Provide attribute-style access to configuration fields.
 
-    def __getitem__(self, name: str) -> dict[str, Any]:
-        """Return the stored configuration for a name."""
-        return self._configs[name]
+        Parameters
+        ----------
+        key : str
+            Configuration field name.
 
-    def get(self, name: str, default: dict[str, Any] | None = None) -> dict[str, Any] | None:
-        """Return the stored configuration for a name."""
-        return self._configs.get(name, default)
+        Returns
+        -------
+        Any
+            Stored configuration value.
 
-    def __contains__(self, name: str) -> bool:
-        return name in self._configs
+        Raises
+        ------
+        AttributeError
+            If the field does not exist.
+        """
 
-    def items(self) -> ItemsView[str, dict[str, Any]]:
-        return self._configs.items()
+        try:
+            return self._data[key]
+        except KeyError as exc:
+            raise AttributeError(key) from exc
 
-    def keys(self) -> KeysView[str]:
-        return self._configs.keys()
+    def __setattr__(self, key: str, value: Any) -> None:
+        """Provide attribute-style assignment for configuration fields.
 
-    def values(self) -> ValuesView[dict[str, Any]]:
-        return self._configs.values()
+        Internal attributes beginning with ``_`` bypass the configuration
+        update machinery and are stored directly on the instance.
 
-    def __iter__(self) -> Iterator[str]:
-        return iter(self._configs)
+        Parameters
+        ----------
+        key : str
+            Attribute name.
+        value : Any
+            Attribute value.
+        """
 
-    def __len__(self) -> int:
-        return len(self._configs)
-
-    def clear(self) -> None:
-        """Remove all stored configurations."""
-        self._configs.clear()
+        if key.startswith("_"):
+            object.__setattr__(self, key, value)
+            return
+        self.__setitem__(key, value)
 
     def __repr__(self) -> str:
-        """Return a pretty representation of the registry."""
-        if not self._configs:
+        """Return a pretty string representation of the :class:`ConfigurationItem`."""
+        return f"{self.__class__.__name__}(\n{pformat(self.to_dict(), indent=4)}\n)"
+
+
+class Registry:
+    def __init__(self, *, validate: bool = True) -> None:
+        self._items: dict[str, ConfigurationItem] = {}
+        self._validate = validate
+
+    def add(self, key: str, value: dict[str, Any]) -> None:
+        """Store one configuration item under an explicit key."""
+
+        if not isinstance(key, str):
+            raise TypeError("Registry key must be a string.")
+
+        if not isinstance(value, dict):
+            raise TypeError("Configuration must be a dictionary.")
+
+        if key in self._items:
+            raise ValueError(f"Configuration '{key}' already exists.")
+
+        logger.debug("Adding %s to registry", key)
+        self._items[key] = ConfigurationItem(
+            deepcopy(value),
+            validate=self._validate,
+        )
+
+    def rename(self, old: str, new: str) -> None:
+        if old not in self._items:
+            raise KeyError(f"No configuration stored for {old!r}.")
+        if new in self._items:
+            raise ValueError(f"Configuration {new!r} already exists.")
+
+        item = self._items.pop(old)
+        item._data["name"] = new
+        self._items[new] = item
+
+    def __getitem__(self, key: str) -> ConfigurationItem:
+        return self._items[key]
+
+    def get(
+        self,
+        key: str,
+        default: ConfigurationItem | None = None,
+    ) -> ConfigurationItem | None:
+        return self._items.get(key, default)
+
+    def __setitem__(self, key: str, value: dict[str, Any]) -> None:
+        if key not in self._items:
+            raise KeyError(f"No configuration stored for '{key}'.")
+
+        if not isinstance(value, dict):
+            raise TypeError("Configuration must be a dictionary.")
+
+        self._items[key] = ConfigurationItem(
+            deepcopy(value),
+            validate=self._validate,
+        )
+
+    def __getattr__(self, key: str) -> ConfigurationItem:
+        try:
+            return self._items[key]
+        except KeyError as exc:
+            raise AttributeError(key) from exc
+
+    def __setattr__(self, key: str, value: Any) -> None:
+        if key.startswith("_"):
+            object.__setattr__(self, key, value)
+            return
+
+        self.__setitem__(key, value)
+
+    def __contains__(self, key: str) -> bool:
+        return key in self._items
+
+    def items(self) -> ItemsView[str, ConfigurationItem]:
+        return self._items.items()
+
+    def keys(self) -> KeysView[str]:
+        return self._items.keys()
+
+    def values(self) -> ValuesView[ConfigurationItem]:
+        return self._items.values()
+
+    def __iter__(self) -> Iterator[str]:
+        return iter(self._items)
+
+    def __len__(self) -> int:
+        return len(self._items)
+
+    def clear(self) -> None:
+        self._items.clear()
+
+    def __repr__(self) -> str:
+        """Return a pretty string representation of the registry."""
+
+        if not self._items:
             return f"{self.__class__.__name__}({{}})"
+
+        grouped: dict[str, list[str]] = defaultdict(list)
+
+        for key, item in self._items.items():
+            class_path = item.get("class_path", "unknown")
+            grouped[class_path].append(key)
 
         lines = [f"{self.__class__.__name__}("]
 
-        for name in sorted(self._configs):
-            lines.append(f"    {name!r}: dict,")
+        for class_path in sorted(grouped):
+            lines.append(f"    {class_path}:")
+
+            for key in sorted(grouped[class_path]):
+                lines.append(f"        {key!r}")
+
+            lines.append("")
 
         lines.append(")")
 
         return "\n".join(lines)
+
+
+@dataclass(slots=True)
+class ConfigurationRegistry:
+    data: Registry = field(default_factory=Registry)
+    controls: Registry = field(default_factory=Registry)
+    simulators: Registry = field(default_factory=Registry)
+    arrays: Registry = field(default_factory=Registry)
+    devices: Registry = field(default_factory=Registry)
+
+    @classmethod
+    def create(cls, config: dict[str, Any]) -> "ConfigurationRegistry":
+        if not isinstance(config, dict):
+            raise TypeError("Configuration must be a dictionary.")
+
+        registry = cls()
+
+        registry.data.add(
+            "accelerator",
+            {
+                "class_path": "pyaml.accelerator.AcceleratorData",
+                "facility": config.get("facility", ""),
+                "machine": config.get("machine", ""),
+                "data_folder": config.get("data_folder", ""),
+                "energy": config.get("energy"),
+                "alphac": config.get("alphac"),
+                "harmonic_number": config.get("harmonic_number"),
+            },
+        )
+
+        for item in config.get("controls", []):
+            cls._add_tree(registry.controls, item)
+
+        for item in config.get("simulators", []):
+            cls._add_tree(registry.simulators, item)
+
+        for item in config.get("arrays", []):
+            cls._add_tree(registry.arrays, item)
+
+        for item in config.get("devices", []):
+            cls._add_tree(registry.devices, item)
+
+        return registry
+
+    @staticmethod
+    def _add_tree(target: Registry, obj: Any) -> None:
+        if isinstance(obj, list):
+            for item in obj:
+                ConfigurationRegistry._add_tree(target, item)
+            return
+
+        if not isinstance(obj, dict):
+            return
+
+        if "name" in obj:
+            name = obj["name"]
+            if not isinstance(name, str):
+                raise TypeError("Configuration name must be a string.")
+
+            data = deepcopy(obj)
+            data.pop("name")
+            ConfigurationRegistry._check_no_nested_names(data)
+
+            data["name"] = name
+            target.add(name, data)
+            logger.debug(f"Added {name} to registry {target}")
+
+        for value in obj.values():
+            ConfigurationRegistry._add_tree(target, value)
+
+    @staticmethod
+    def _check_no_nested_names(obj: Any) -> None:
+        if isinstance(obj, list):
+            for item in obj:
+                ConfigurationRegistry._check_no_nested_names(item)
+            return
+
+        if not isinstance(obj, dict):
+            return
+
+        if "name" in obj:
+            raise ValueError("Nested dictionaries may not contain a 'name' field.")
+
+        for value in obj.values():
+            ConfigurationRegistry._check_no_nested_names(value)
+
+    def __repr__(self) -> str:
+        return (
+            f"{self.__class__.__name__}(\n"
+            f"  controls={self.controls!r},\n"
+            f"  simulators={self.simulators!r},\n"
+            f"  arrays={self.arrays!r},\n"
+            f"  devices={self.devices!r},\n"
+            f")"
+        )

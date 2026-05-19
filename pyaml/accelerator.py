@@ -2,7 +2,10 @@
 Accelerator class
 """
 
-from pydantic import BaseModel, ConfigDict, Field
+from dataclasses import dataclass
+from typing import Any
+
+from pydantic import BaseModel, ConfigDict, Field, model_validator
 
 from .arrays.array import Array, ArraySchema
 from .common.element import Element, ElementSchema
@@ -15,6 +18,26 @@ from .configuration.schema_registry import register_schema
 from .control.controlsystem import ControlSystem, ControlSystemSchema
 from .lattice.simulator import Simulator, SimulatorSchema
 from .yellow_pages import YellowPages
+
+
+class AcceleratorDataSchema(ConfigurationSchema):
+    facility: str
+    machine: str
+    energy: float
+    data_folder: str
+    alphac: float | None = None
+    harmonic_number: int | None = None
+
+
+@register_schema(AcceleratorDataSchema)
+@dataclass
+class AcceleratorData:
+    facility: str
+    machine: str
+    energy: float
+    data_folder: str
+    alphac: float | None = None
+    harmonic_number: int | None = None
 
 
 class AcceleratorSchema(ConfigurationSchema):
@@ -50,7 +73,7 @@ class AcceleratorSchema(ConfigurationSchema):
     """
 
     model_config = ConfigDict(extra="forbid")
-
+    name: str | None = None
     facility: str
     machine: str
     energy: float
@@ -62,6 +85,19 @@ class AcceleratorSchema(ConfigurationSchema):
     description: str | None = None
     arrays: list[ArraySchema] = Field(default=None, repr=False)
     devices: list[ElementSchema] = Field(default=None, repr=False)
+
+    @model_validator(mode="before")
+    @classmethod
+    def set_default_name(cls, data: Any) -> Any:
+        """Set default name from facility and machine."""
+        if isinstance(data, dict) and not data.get("name"):
+            facility = data.get("facility")
+            machine = data.get("machine")
+
+            if facility and machine:
+                data["name"] = f"{facility}_{machine}"
+
+        return data
 
 
 @register_schema(AcceleratorSchema)
