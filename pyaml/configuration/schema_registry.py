@@ -36,7 +36,7 @@ class SchemaRegistry:
         return cls._instance
 
     # ==========================================================
-    # Interaction and modification
+    # Lookup
     # ==========================================================
 
     def __getitem__(
@@ -65,7 +65,7 @@ class SchemaRegistry:
             return self._schemas[class_path]
 
         except KeyError:
-            raise KeyError(f"No schema registered for '{class_path}'") from None
+            raise KeyError(f"No schema registered for '{class_path}.'") from None
 
     def get(
         self,
@@ -85,6 +85,10 @@ class SchemaRegistry:
             registered for ``class_path``.
         """
         return self._schemas.get(class_path)
+
+    # ==========================================================
+    # Contents
+    # ==========================================================
 
     def __contains__(
         self,
@@ -164,6 +168,10 @@ class SchemaRegistry:
             Iterator over registered class paths.
         """
         return iter(self._schemas)
+
+    # ==========================================================
+    # Updating
+    # ==========================================================
 
     def update(
         self,
