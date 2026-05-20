@@ -70,25 +70,21 @@ class SchemaRegistry:
     def get(
         self,
         class_path: str,
-        default: Type[ConfigurationSchema] | None = None,
-    ) -> Type[ConfigurationSchema] | None:
+    ) -> type[ConfigurationSchema] | None:
         """Return the registered schema for a class path.
 
         Parameters
         ----------
         class_path : str
             Fully qualified class path.
-        default : Type[ConfigurationSchema] | None, optional
-            Value to return if no schema is registered for
-            ``class_path``.
 
         Returns
         -------
-        Type[ConfigurationSchema] | None
-            Registered schema class, or ``default`` if no schema
-            is registered for ``class_path``.
+        type[ConfigurationSchema] | None
+            Registered schema class, or ``None`` if no schema is
+            registered for ``class_path``.
         """
-        return self._schemas.get(class_path, default)
+        return self._schemas.get(class_path)
 
     def __contains__(
         self,
