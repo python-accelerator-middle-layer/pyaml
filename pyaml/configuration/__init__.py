@@ -16,5 +16,5 @@ __all__ = [
     "SchemaRegistry",
     "get_root_folder",
     "set_root_folder",
-    register_schema,
+    "register_schema",
 ]
