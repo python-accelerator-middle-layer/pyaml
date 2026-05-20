@@ -13,6 +13,8 @@ __all__ = [
     "ConfigurationSchema",
     "UnsupportedConfigurationRootError",
     "Factory",
-    "SchemaRegistryget_root_folder",
+    "SchemaRegistry",
+    "get_root_folder",
     "set_root_folder",
+    register_schema,
 ]
