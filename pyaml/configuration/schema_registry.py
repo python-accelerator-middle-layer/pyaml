@@ -5,7 +5,7 @@ import warnings
 from collections.abc import ItemsView, Iterator, KeysView, ValuesView
 from typing import Any, Callable, Type, TypeVar
 
-from pydantic import BaseModel, ValidationError
+from pydantic import ValidationError
 
 from .configuration_models import (
     ConfigurationSchema,
@@ -38,32 +38,6 @@ class SchemaRegistry:
     # ==========================================================
     # Interaction and modification
     # ==========================================================
-
-    def __setitem__(
-        self,
-        class_path: str,
-        schema: Type[ConfigurationSchema],
-    ) -> None:
-        """Register or update a schema for a class path.
-
-        Parameters
-        ----------
-        class_path : str
-            Fully qualified class path.
-        schema : Type[ConfigurationSchema]
-            Schema class used for validation. Must inherit from
-            :class:`ConfigurationSchema`.
-
-        Raises
-        ------
-        TypeError
-            If ``schema`` is not a subclass of
-            :class:`ConfigurationSchema`.
-        """
-        if not isinstance(schema, type) or not issubclass(schema, ConfigurationSchema):
-            raise TypeError(f"{schema!r} must inherit from ConfigurationSchema.")
-
-        self._schemas[class_path] = schema
 
     def __getitem__(
         self,
@@ -195,6 +169,37 @@ class SchemaRegistry:
         """
         return iter(self._schemas)
 
+    def update(
+        self,
+        class_path: str,
+        schema: type[ConfigurationSchema],
+    ) -> None:
+        """Replace the schema registered for a class path.
+
+        Parameters
+        ----------
+        class_path : str
+            Fully qualified class path.
+        schema : type[ConfigurationSchema]
+            Schema class used for validation. Must inherit from
+            :class:`ConfigurationSchema`.
+
+        Raises
+        ------
+        TypeError
+            If ``schema`` is not a subclass of
+            :class:`ConfigurationSchema`.
+        KeyError
+            If no schema has been registered for ``class_path``.
+        """
+        if not isinstance(schema, type) or not issubclass(schema, ConfigurationSchema):
+            raise TypeError(f"{schema!r} must inherit from ConfigurationSchema.")
+
+        if class_path not in self._schemas:
+            raise KeyError(f"{class_path} is not registered.")
+
+        self._schemas[class_path] = schema
+
     # ==========================================================
     # Registration
     # ==========================================================
@@ -202,15 +207,15 @@ class SchemaRegistry:
     def register(
         self,
         class_path: str,
-        schema: Type[ConfigurationSchema],
+        schema: type[ConfigurationSchema],
     ) -> None:
-        """Register a schema.
+        """Register a schema for a class path.
 
         Parameters
         ----------
         class_path : str
             Fully qualified class path.
-        schema : Type[ConfigurationSchema]
+        schema : type[ConfigurationSchema]
             Schema class used for validation. Must inherit from
             :class:`ConfigurationSchema`.
 
@@ -220,14 +225,17 @@ class SchemaRegistry:
             If ``schema`` is not a subclass of
             :class:`ConfigurationSchema`.
         ValueError
-            If a different schema has already been registered for ``class_path``.
+            If a different schema has already been registered for
+            ``class_path``.
         """
-
         existing = self._schemas.get(class_path)
         if existing is not None and existing is not schema:
             raise ValueError(f"{class_path} already registered with a different schema.")
 
-        self[class_path] = schema
+        if not isinstance(schema, type) or not issubclass(schema, ConfigurationSchema):
+            raise TypeError(f"{schema!r} must inherit from ConfigurationSchema.")
+
+        self._schemas[class_path] = schema
 
     def discover(self) -> None:
         """Discover and register schemas.
