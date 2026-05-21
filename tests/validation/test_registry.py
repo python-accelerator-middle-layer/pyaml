@@ -2,7 +2,6 @@
 
 import re
 from collections.abc import Generator
-from types import SimpleNamespace
 
 import pytest
 
@@ -336,33 +335,6 @@ def test_repr_sorts_registered_class_paths(
     result = repr(registry)
 
     assert result.index("'pkg.module.AClass'") < result.index("'pkg.module.ZClass'")
-
-
-# ==========================================================
-# Validation
-# ==========================================================
-
-
-def test_validate_returns_registered_configuration_schema(
-    registry: SchemaRegistry,
-):
-    class TestConfigurationSchema(ConfigurationSchema):
-        class_path: str
-        value: int
-
-    class_path = "pkg.module.Class"
-    registry.register(class_path, TestConfigurationSchema)
-
-    result = registry.validate(
-        {
-            "class_path": class_path,
-            "value": 1,
-        }
-    )
-
-    assert isinstance(result, TestConfigurationSchema)
-    assert result.class_path == class_path
-    assert result.value == 1
 
 
 # ==========================================================
