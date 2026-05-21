@@ -16,3 +16,11 @@ __all__ = [
     "set_root_folder",
     "register_schema",
 ]
+
+
+def __getattr__(name: str):
+    if name == "SchemaValidator":
+        from .validation import SchemaValidator
+
+        return SchemaValidator
+    raise AttributeError(name)
