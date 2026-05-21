@@ -19,7 +19,7 @@ import time
 
 import numpy as np
 
-from ..configuration.schema_registry import register_schema
+from ..configuration.validation.registry import register_schema
 
 logger = logging.getLogger(__name__)
 

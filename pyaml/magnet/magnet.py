@@ -7,7 +7,7 @@ from scipy.constants import speed_of_light
 from .. import PyAMLException
 from ..common import abstract
 from ..common.element import Element, ElementSchema
-from ..configuration.schema_registry import register_schema
+from ..configuration import register_schema
 from .model import MagnetModel, MagnetModelSchema
 
 

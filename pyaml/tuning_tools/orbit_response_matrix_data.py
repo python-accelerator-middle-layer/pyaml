@@ -1,6 +1,6 @@
 from typing import Optional
 
-from ..configuration.schema_registry import register_schema
+from ..configuration import register_schema
 from .response_matrix_data import ResponseMatrixData, ResponseMatrixDataSchema
 
 

@@ -9,7 +9,7 @@ from pySC.apps.codes import ResponseCode
 
 from ..common.constants import Action
 from ..common.element import ElementSchema
-from ..configuration.schema_registry import register_schema
+from ..configuration import register_schema
 from ..external.pySC_interface import pySCInterface
 from .measurement_tool import MeasurementTool, MeasurementToolSchema
 from .orbit_response_matrix_data import OrbitResponseMatrixDataSchema

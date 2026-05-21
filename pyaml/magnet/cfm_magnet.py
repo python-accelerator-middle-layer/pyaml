@@ -4,8 +4,7 @@ from ..common import abstract
 from ..common.abstract import RWMapper
 from ..common.element import Element, ElementSchema, __pyaml_repr__
 from ..common.exception import PyAMLException
-from ..configuration import Factory
-from ..configuration.schema_registry import register_schema
+from ..configuration import Factory, register_schema
 from .hcorrector import HCorrector
 from .magnet import Magnet, MagnetSchema
 from .model import MagnetModel, MagnetModelSchema

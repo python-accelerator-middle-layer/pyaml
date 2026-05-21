@@ -4,8 +4,7 @@ import numpy as np
 import numpy.typing as npt
 from pydantic import BaseModel, ConfigDict
 
-from ..configuration.configuration_models import ConfigurationSchema
-from ..configuration.schema_registry import register_schema
+from ..configuration import ConfigurationSchema, register_schema
 from ..control.deviceaccess import DeviceAccess
 
 

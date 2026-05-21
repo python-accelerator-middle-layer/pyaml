@@ -1,4 +1,4 @@
-from ..configuration.schema_registry import register_schema
+from ..configuration import register_schema
 from ..lattice.polynom_info import PolynomInfo
 from .magnet import Magnet, MagnetSchema
 from .model import MagnetModel

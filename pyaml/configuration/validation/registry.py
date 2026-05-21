@@ -1,3 +1,5 @@
+"""Registry for schemas."""
+
 import importlib
 import logging
 import pkgutil
@@ -7,11 +9,11 @@ from typing import Any, Callable, Type, TypeVar
 
 from pydantic import ValidationError
 
-from .configuration_models import (
+from .legacy import discover_legacy_schemas
+from .models import (
     ConfigurationSchema,
     ModuleConfigurationSchema,
 )
-from .legacy_handler import discover_legacy_schemas
 
 logger = logging.getLogger(__name__)
 

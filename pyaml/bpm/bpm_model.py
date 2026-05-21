@@ -4,7 +4,7 @@ import numpy as np
 from numpy.typing import NDArray
 from pydantic import BaseModel
 
-from ..configuration.configuration_models import ConfigurationSchema
+from ..configuration import ConfigurationSchema
 from ..control.deviceaccess import DeviceAccess
 
 

@@ -6,7 +6,7 @@ import numpy as np
 from pydantic import ConfigDict
 
 from ..common.constants import Action
-from ..configuration.schema_registry import register_schema
+from ..configuration import register_schema
 from .measurement_tool import MeasurementTool, MeasurementToolSchema
 from .response_matrix_data import ResponseMatrixDataSchema
 

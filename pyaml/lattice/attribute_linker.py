@@ -8,7 +8,7 @@ from pyaml.lattice.lattice_elements_linker import (
     LinkerIdentifier,
 )
 
-from ..configuration.schema_registry import register_schema
+from ..configuration import register_schema
 
 
 class PyAtAttributeElementsLinkerSchema(LatticeElementsLinkerSchema):

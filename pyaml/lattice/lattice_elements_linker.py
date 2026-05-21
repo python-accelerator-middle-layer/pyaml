@@ -8,7 +8,7 @@ from pydantic import BaseModel, ConfigDict
 from pyaml import PyAMLException
 from pyaml.common.element import Element
 
-from ..configuration.configuration_models import ConfigurationSchema
+from ..configuration import ConfigurationSchema
 
 
 class LatticeElementsLinkerSchema(ConfigurationSchema):

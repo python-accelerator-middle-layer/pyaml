@@ -1,6 +1,4 @@
-"""Functionality to handle transition from legacy configuration to new format."""
-
-from __future__ import annotations
+"""Module to handle transition from old to new configuration format."""
 
 import importlib
 import json
@@ -13,10 +11,8 @@ from typing import TYPE_CHECKING, Any, Type
 import yaml
 from pydantic import BaseModel
 
-from .configuration_models import ConfigurationSchema
-
 if TYPE_CHECKING:
-    from .schema_registry import SchemaRegistry
+    from .registry import SchemaRegistry
 
 
 logger = logging.getLogger(__name__)
@@ -137,7 +133,17 @@ def convert_yaml_file(
 
 
 def load_legacy_schema_mapping() -> list[str]:
-    pyproject = Path(__file__).resolve().parents[2] / "pyproject.toml"
+    current = Path(__file__).resolve()
+    pyproject = None
+
+    for parent in current.parents:
+        candidate = parent / "pyproject.toml"
+        if candidate.exists():
+            pyproject = candidate
+            break
+
+    if pyproject is None:
+        raise FileNotFoundError("Could not find pyproject.toml")
 
     with pyproject.open("rb") as f:
         data = tomllib.load(f)
@@ -157,7 +163,7 @@ def adapt_legacy_schema(config_model: Type[BaseModel], baseschema: Type[BaseMode
     )
 
 
-def discover_legacy_schemas(registry: SchemaRegistry):
+def discover_legacy_schemas(registry: "SchemaRegistry"):
     schema_map = load_legacy_schema_mapping()
 
     for module_name, baseschema in schema_map.items():
@@ -180,28 +186,3 @@ def discover_legacy_schemas(registry: SchemaRegistry):
             config_model = getattr(module, "ConfigModel", None)
             schema = adapt_legacy_schema(config_model, basecls)
             registry.register(pyamlclass, schema)
-
-    # for package_name in external_packages:
-
-    #     package = importlib.import_module(package_name)
-
-    #     for module_info in pkgutil.walk_packages(
-    #         package.__path__,
-    #         prefix=package.__name__ + ".",
-    #     ):
-    #         module_name = module_info.name
-    #         logger.debug("VISITING:", module_name)
-
-    #         try:
-    #             module = importlib.import_module(module_name)
-    #         except Exception as ex:
-    #             print(f"FAILED importing {module_name}: {ex}")
-    #             continue
-
-    #         if hasattr(module, "PYAMLCLASS"):
-    #             pyamlclass = module.PYAMLCLASS
-    #             pyamlclass = f"{module_name}.{pyamlclass}"
-
-    #             config_model = getattr(module, "ConfigModel", None)
-    #             schema = adapt_legacy_schema(config_model)
-    #             registry.register(pyamlclass, schema)

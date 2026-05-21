@@ -3,7 +3,7 @@ from typing import Self
 from ..bpm.bpm_model import BPMModel, BPMModelSchema
 from ..common.element import Element, ElementSchema
 from ..common.exception import PyAMLException
-from ..configuration.schema_registry import register_schema
+from ..configuration import register_schema
 from ..lattice.abstract_impl import RBpmArray, RWBpmOffsetArray, RWBpmTiltScalar
 
 

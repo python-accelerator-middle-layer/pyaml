@@ -1,4 +1,4 @@
-"""Datamodels for the configuration."""
+"""Datamodels for the validating the configuration."""
 
 import importlib
 from typing import ClassVar

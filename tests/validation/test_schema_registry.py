@@ -6,7 +6,7 @@ from types import SimpleNamespace
 
 import pytest
 
-from pyaml.configuration import ConfigurationSchema, SchemaRegistry, register_schema
+from pyaml.configuration.validation import ConfigurationSchema, SchemaRegistry, register_schema
 
 # ==========================================================
 # Dummy schemas
