@@ -2,12 +2,14 @@
 PyAML validation subpackage.
 """
 
+from .generator import SchemaGenerator
 from .models import ConfigurationSchema
 from .registry import SchemaRegistry, register_schema
 
 __all__ = [
     "ConfigurationSchema",
     "SchemaRegistry",
+    "SchemaGenerator",
     "register_schema",
 ]
 
