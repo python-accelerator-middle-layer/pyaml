@@ -51,13 +51,13 @@ class AcceleratorSchema(ConfigurationSchema):
 
     facility: str
     machine: str
+    description: str | None = None
     energy: float
     alphac: float | None = None
     harmonic_number: int | None = None
+    data_folder: str
     controls: list[ControlSystemSchema] = None
     simulators: list[SimulatorSchema] = None
-    data_folder: str
-    description: str | None = None
     arrays: list[ArraySchema] = Field(default=None, repr=False)
     devices: list[ElementSchema] = Field(default=None, repr=False)
 
