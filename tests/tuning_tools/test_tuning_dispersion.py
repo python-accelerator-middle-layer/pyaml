@@ -8,7 +8,7 @@ def test_tuning_orm():
     logging.getLogger("pyaml.tuning_tools").setLevel(logging.WARNING)
 
     parent_folder = Path(__file__).parent
-    config_path = parent_folder.joinpath("config", "EBSOrbit.yaml").resolve()
+    config_path = parent_folder.joinpath("..", "config", "EBSOrbit.yaml").resolve()
     sr = Accelerator.load(config_path)
     element_holder = sr.design
 
