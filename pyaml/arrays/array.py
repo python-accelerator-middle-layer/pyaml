@@ -2,7 +2,7 @@
 Base classes for arrays
 """
 
-from pydantic import BaseModel, ConfigDict
+from pydantic import Field
 
 from pyaml.common.exception import PyAMLException
 
@@ -22,10 +22,8 @@ class ArraySchema(ConfigurationSchema):
         List of element names
     """
 
-    model_config = ConfigDict(extra="forbid")
-
-    name: str
-    elements: list[str]
+    name: str = Field(description="Name of the array.")
+    elements: list[str] = Field(description="List of element names.")
 
 
 @register_schema(ArraySchema)
