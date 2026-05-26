@@ -1,6 +1,6 @@
 from ..common import abstract
-from ..configuration import register_schema
 from ..lattice.polynom_info import PolynomInfo
+from ..validation import register_schema
 from .corrector import RWCorrectorAngle
 from .magnet import Magnet, MagnetSchema
 from .model import MagnetModel

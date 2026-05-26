@@ -9,7 +9,7 @@ from .utils import __pyaml_repr__
 if TYPE_CHECKING:
     from ..common.element_holder import ElementHolder
 
-from ..configuration.validation import ConfigurationSchema
+from ..validation import ConfigurationSchema
 
 
 class ElementSchema(ConfigurationSchema):

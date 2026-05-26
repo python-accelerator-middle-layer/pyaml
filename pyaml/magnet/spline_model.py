@@ -3,9 +3,9 @@ from pydantic import BaseModel, ConfigDict
 from scipy.interpolate import make_smoothing_spline
 
 from ..common.element import __pyaml_repr__
-from ..configuration import ConfigurationSchema, register_schema
 from ..configuration.curve import Curve, CurveSchema
 from ..control.deviceaccess import DeviceAccess, DeviceAccessSchema
+from ..validation import ConfigurationSchema, register_schema
 from .model import MagnetModel
 
 

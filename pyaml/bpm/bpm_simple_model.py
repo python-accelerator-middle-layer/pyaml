@@ -5,8 +5,8 @@ from pydantic import BaseModel, ConfigDict
 from pyaml.bpm.bpm_model import BPMModel
 
 from ..common.element import __pyaml_repr__
-from ..configuration import register_schema
 from ..control.deviceaccess import DeviceAccess, DeviceAccessSchema
+from ..validation import register_schema
 from .bpm_model import BPMModelSchema
 
 

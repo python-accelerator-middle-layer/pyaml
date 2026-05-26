@@ -1,6 +1,6 @@
 from abc import ABCMeta, abstractmethod
 
-from ..configuration import ConfigurationSchema
+from ..validation import ConfigurationSchema
 
 # TODO: correctly type value
 

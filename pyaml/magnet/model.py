@@ -4,8 +4,8 @@ import numpy as np
 import numpy.typing as npt
 from pydantic import BaseModel, ConfigDict
 
-from ..configuration import ConfigurationSchema, register_schema
 from ..control.deviceaccess import DeviceAccess
+from ..validation import ConfigurationSchema, register_schema
 
 
 class MagnetModelSchema(ConfigurationSchema):

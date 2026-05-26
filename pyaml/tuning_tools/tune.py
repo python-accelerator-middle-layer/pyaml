@@ -12,7 +12,7 @@ except ImportError:
 
 from .. import PyAMLException
 from ..common.element import ElementSchema
-from ..configuration import register_schema
+from ..validation import register_schema
 from .response_matrix_data import ResponseMatrixData, ResponseMatrixDataSchema
 from .tuning_tool import TuningTool
 

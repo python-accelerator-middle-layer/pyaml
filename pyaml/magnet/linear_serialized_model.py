@@ -3,11 +3,11 @@ from pydantic import BaseModel, ConfigDict
 
 from ..common.element import __pyaml_repr__
 from ..common.exception import PyAMLException
-from ..configuration import ConfigurationSchema, register_schema
 from ..configuration.curve import Curve, CurveSchema
 from ..configuration.inline_curve import InlineCurve, InlineCurveSchema
 from ..configuration.matrix import Matrix
 from ..control.deviceaccess import DeviceAccess, DeviceAccessSchema
+from ..validation import ConfigurationSchema, register_schema
 from .linear_model import LinearMagnetModel, LinearMagnetModelSchema
 from .model import MagnetModel
 

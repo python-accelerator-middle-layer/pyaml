@@ -8,10 +8,11 @@ from .arrays.array import Array, ArraySchema
 from .common.element import Element, ElementSchema
 from .common.element_holder import ElementHolder
 from .common.exception import PyAMLConfigException
-from .configuration import ConfigurationManager, ConfigurationSchema, UnsupportedConfigurationRootError, register_schema
+from .configuration import ConfigurationManager, UnsupportedConfigurationRootError
 from .configuration.factory import Factory
 from .control.controlsystem import ControlSystem, ControlSystemSchema
 from .lattice.simulator import Simulator, SimulatorSchema
+from .validation import ConfigurationSchema, register_schema
 from .yellow_pages import YellowPages
 
 

@@ -4,8 +4,9 @@ from scipy.constants import speed_of_light
 from .. import PyAMLException
 from ..common import abstract
 from ..common.element import Element, ElementSchema, __pyaml_repr__
-from ..configuration import ConfigurationSchema, Factory, register_schema
+from ..configuration import Factory
 from ..control.deviceaccess import DeviceAccess
+from ..validation import ConfigurationSchema, register_schema
 from .function_mapping import function_map
 from .magnet import Magnet
 from .model import MagnetModel, MagnetModelSchema

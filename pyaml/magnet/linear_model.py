@@ -1,10 +1,9 @@
 import numpy as np
 
-from ..configuration import register_schema
-
 # from ..common.element import __pyaml_repr__
 from ..configuration.curve import Curve, CurveSchema
 from ..control.deviceaccess import DeviceAccess, DeviceAccessSchema
+from ..validation import register_schema
 from .model import MagnetModel, MagnetModelSchema
 
 

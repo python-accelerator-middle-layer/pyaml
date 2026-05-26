@@ -3,8 +3,8 @@ from pydantic import BaseModel, ConfigDict
 
 from .. import PyAMLException
 from ..common.element import __pyaml_repr__
-from ..configuration import ConfigurationSchema, register_schema
 from ..control.deviceaccess import DeviceAccess, DeviceAccessSchema
+from ..validation import ConfigurationSchema, register_schema
 from .model import MagnetModel
 
 

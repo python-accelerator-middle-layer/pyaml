@@ -7,7 +7,7 @@ from pydantic import BaseModel, ConfigDict
 from pyaml.common.exception import PyAMLException
 
 from ..common.element_holder import ElementHolder
-from ..configuration import ConfigurationSchema, register_schema
+from ..validation import ConfigurationSchema, register_schema
 
 
 class ArraySchema(ConfigurationSchema):

@@ -1,5 +1,5 @@
 from ..common.element_holder import ElementHolder
-from ..configuration import register_schema
+from ..validation import register_schema
 from .array import Array, ArraySchema
 
 

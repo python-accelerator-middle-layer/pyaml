@@ -18,9 +18,9 @@ from pySC.apps import orbit_correction
 from ..arrays.magnet_array import MagnetArray
 from ..common.element import Element, ElementSchema
 from ..common.exception import PyAMLException
-from ..configuration import register_schema
 from ..external.pySC_interface import pySCInterface
 from ..rf.rf_plant import RFPlant
+from ..validation import register_schema
 from .orbit_response_matrix_data import OrbitResponseMatrixData, OrbitResponseMatrixDataSchema
 from .tuning_tool import TuningTool
 

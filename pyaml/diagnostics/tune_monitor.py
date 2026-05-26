@@ -10,7 +10,7 @@ except ImportError:
 import numpy as np
 from pydantic import ConfigDict
 
-from ..configuration import register_schema
+from ..validation import register_schema
 
 
 class BetatronTuneMonitorSchema(ElementSchema):

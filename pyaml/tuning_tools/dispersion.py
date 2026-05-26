@@ -8,8 +8,8 @@ from pySC.apps.codes import DispersionCode
 from ..common.constants import Action
 from ..common.element import ElementSchema
 from ..common.element_holder import ElementHolder
-from ..configuration import register_schema
 from ..external.pySC_interface import pySCInterface
+from ..validation import register_schema
 from .measurement_tool import MeasurementTool
 
 logger = logging.getLogger(__name__)

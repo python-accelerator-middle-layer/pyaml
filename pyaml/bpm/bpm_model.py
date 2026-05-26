@@ -4,8 +4,8 @@ import numpy as np
 from numpy.typing import NDArray
 from pydantic import BaseModel
 
-from ..configuration import ConfigurationSchema
 from ..control.deviceaccess import DeviceAccess
+from ..validation import ConfigurationSchema
 
 
 class BPMModelSchema(ConfigurationSchema): ...

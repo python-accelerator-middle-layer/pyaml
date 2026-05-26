@@ -6,8 +6,8 @@ from pyaml.bpm.bpm_model import BPMModel
 from pyaml.bpm.bpm_simple_model import BPMSimpleModel, BPMSimpleModelSchema
 
 from ..common.element import __pyaml_repr__
-from ..configuration import register_schema
 from ..control.deviceaccess import DeviceAccess, DeviceAccessSchema
+from ..validation import register_schema
 
 # TODO: Implepement indexed offset and tilt
 

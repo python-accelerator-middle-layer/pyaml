@@ -2,7 +2,7 @@ from ..common.abstract import ReadFloatArray
 from ..common.constants import Action
 from ..common.element import ElementSchema
 from ..common.exception import PyAMLException
-from ..configuration import register_schema
+from ..validation import register_schema
 from .measurement_tool import MeasurementTool, MeasurementToolSchema
 
 try:

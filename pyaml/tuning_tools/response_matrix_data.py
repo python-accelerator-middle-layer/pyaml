@@ -7,8 +7,8 @@ from pyaml.common.element import __pyaml_repr__
 from pyaml.configuration.factory import Factory
 
 from .. import PyAMLException
-from ..configuration import ConfigurationSchema, register_schema
 from ..configuration.fileloader import load
+from ..validation import ConfigurationSchema, register_schema
 
 
 class ResponseMatrixDataSchema(ConfigurationSchema):

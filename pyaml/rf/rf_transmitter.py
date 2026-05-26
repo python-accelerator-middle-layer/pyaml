@@ -9,8 +9,8 @@ except ImportError:
 from .. import PyAMLException
 from ..common import abstract
 from ..common.element import Element, ElementSchema
-from ..configuration import register_schema
 from ..control.deviceaccess import DeviceAccess, DeviceAccessSchema
+from ..validation import register_schema
 
 
 class RFTransmitterSchema(ElementSchema):
