@@ -1,5 +1,5 @@
-from pyaml.configuration.validation import SchemaRegistry
-from pyaml.configuration.validation.generator import SchemaGenerator
+from pyaml.validation import SchemaRegistry
+from pyaml.validation.generator import SchemaGenerator
 
 # Create schema registry and discover all schemas.
 schema_registry = SchemaRegistry()
