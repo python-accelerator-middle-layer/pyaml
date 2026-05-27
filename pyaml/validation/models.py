@@ -24,11 +24,9 @@ class PyAMLBaseModel(BaseModel):
 class ConfigurationSchema(PyAMLBaseModel):
     model_config = ConfigDict(validate_by_name=True, validate_by_alias=True, arbitrary_types_allowed=False, extra="forbid")
 
-    CLASS_PATH_ALIASES: ClassVar[tuple[str, ...]] = ("class",)
-
     class_path: str = Field(
         description="Fully qualified class path.",
-        validation_alias=AliasChoices(*CLASS_PATH_ALIASES),
+        alias="class",
     )
 
 
@@ -39,7 +37,7 @@ class ModuleConfigurationSchema(PyAMLBaseModel):
 
     module_path: str = Field(
         description="Fully qualified module path.",
-        validation_alias=AliasChoices(*MODULE_PATH_ALIASES),
+        alias=AliasChoices(*MODULE_PATH_ALIASES),
     )
 
     def to_configuration(self) -> ConfigurationSchema:
