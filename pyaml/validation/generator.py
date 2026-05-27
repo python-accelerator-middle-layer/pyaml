@@ -240,9 +240,10 @@ class RegistryJsonSchema(GenerateJsonSchema):
         schema = super().get_union_of_schemas(schemas)
         logging.debug(f"Modifying union schema for {schema}.")
 
-        if "anyOf" in schema:
-            schema = deepcopy(schema)
-            schema["oneOf"] = schema.pop("anyOf")
+        # TODO: make is possible to use oneOf
+        # if "anyOf" in schema:
+        #     schema = deepcopy(schema)
+        #     schema["oneOf"] = schema.pop("anyOf")
 
         return schema
 
