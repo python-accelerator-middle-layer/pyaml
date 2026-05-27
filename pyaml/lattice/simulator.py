@@ -60,12 +60,10 @@ class SimulatorSchema(ConfigurationSchema):
         Simulator description
     """
 
-    model_config = ConfigDict(extra="forbid")
-
     name: str
     lattice: str
-    mat_key: str = None
-    linker: LatticeElementsLinkerSchema = None
+    mat_key: str | None = None
+    linker: LatticeElementsLinkerSchema | None = None
     description: str | None = None
 
 
