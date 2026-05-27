@@ -2,7 +2,9 @@
 Accelerator class
 """
 
-from pydantic import BaseModel, ConfigDict, Field
+from typing import Literal
+
+from pydantic import Field
 
 from .arrays.array import Array, ArraySchema
 from .common.element import Element, ElementSchema
@@ -48,8 +50,6 @@ class AcceleratorSchema(ConfigurationSchema):
         Element list
     """
 
-    model_config = ConfigDict(extra="forbid")
-
     facility: str
     machine: str
     description: str | None = None
@@ -57,10 +57,10 @@ class AcceleratorSchema(ConfigurationSchema):
     alphac: float | None = None
     harmonic_number: int | None = None
     data_folder: str
-    controls: list[ControlSystemSchema] = None
-    simulators: list[SimulatorSchema] = None
-    arrays: list[ArraySchema] = Field(default=None, repr=False)
-    devices: list[ElementSchema] = Field(default=None, repr=False)
+    controls: list[ControlSystemSchema] = Field(default_factory=list)
+    simulators: list[SimulatorSchema] = Field(default_factory=list)
+    arrays: list[ArraySchema] = Field(default_factory=list, repr=False)
+    devices: list[ElementSchema] = Field(default_factory=list, repr=False)
 
 
 @register_schema(AcceleratorSchema)
