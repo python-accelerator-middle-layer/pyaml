@@ -102,6 +102,7 @@ class SchemaGenerator:
             raise KeyError(f"No schema registered for '{class_path}'")
 
         return schema_cls.model_json_schema(
+            by_alias=True,
             union_format="primitive_type_array",
             schema_generator=RegistryJsonSchema,
         )
@@ -115,6 +116,8 @@ METADATA_KEYS = (
     "readOnly",
     "writeOnly",
 )
+
+CLASS_ALIAS = "class"
 
 
 class RegistryJsonSchema(GenerateJsonSchema):
@@ -141,10 +144,17 @@ class RegistryJsonSchema(GenerateJsonSchema):
         """
         Generate a JSON Schema for a Pydantic model.
 
-        For ``ConfigurationSchema`` subclasses with registered concrete
-        subclasses, the generated schema is replaced by a ``oneOf`` union
-        over all registered subclasses. Metadata fields from the original
-        schema, such as titles and descriptions, are preserved.
+        For ``ConfigurationSchema`` subclasses, the generated schema may be
+        transformed into a polymorphic schema based on the registered schema
+        registry:
+
+        - If the model defines a ``class`` field, all registered aliases
+        corresponding to the model are added as allowed literal values.
+        - If registered subclasses exist, the schema is replaced by an
+        ``anyOf`` union containing the schemas of all registered subclasses.
+
+        Metadata fields from the original schema, such as titles and
+        descriptions, are preserved in the merged schema.
 
         Parameters
         ----------
@@ -154,7 +164,14 @@ class RegistryJsonSchema(GenerateJsonSchema):
         Returns
         -------
         dict[str, Any]
-            Generated JSON Schema for the model.
+            Generated JSON Schema for the model or polymorphic union schema.
+
+        Notes
+        -----
+        The generated polymorphic schema uses ``anyOf`` instead of ``oneOf``
+        because nested ``oneOf`` unions may lead to ambiguous validation in
+        downstream JSON Schema tooling when subclass schemas contain nullable
+        or overlapping branches.
         """
 
         base_schema = super().model_schema(schema)
@@ -164,21 +181,37 @@ class RegistryJsonSchema(GenerateJsonSchema):
         if not isinstance(model_cls, type) or not issubclass(model_cls, ConfigurationSchema):
             return base_schema
 
-        candidates = [
-            schema_cls
-            for _, schema_cls in self._registry.items()
-            if (isinstance(schema_cls, type) and issubclass(schema_cls, model_cls) and schema_cls is not model_cls)
-        ]
+        # If the baseschema has a class field, add literal for all keys.
+        properties = base_schema.get("properties")
+        if isinstance(properties, dict) and CLASS_ALIAS in properties and isinstance(properties[CLASS_ALIAS], dict):
+            logging.debug(f"Adding list of classes to: {model_cls}.")
 
-        logging.debug(f"Subclasses for found in registry: {candidates}.")
+            # Find keys that correspond to the same schema
+            base_keys = sorted(key for key, schema_cls in self._registry.items() if schema_cls is model_cls)
 
-        if not candidates:
+            base_schema = deepcopy(base_schema)
+            properties = base_schema["properties"]
+            self._add_literals_to_class_path(properties[CLASS_ALIAS], base_keys)
+
+        # Get subclasses in registry sorted by module name
+        subclasses = sorted(
+            {
+                schema_cls
+                for _, schema_cls in self._registry.items()
+                if isinstance(schema_cls, type) and issubclass(schema_cls, model_cls) and schema_cls is not model_cls
+            },
+            key=lambda cls: f"{cls.__module__}.{cls.__name__}",
+        )
+        logging.debug(f"Subclasses found in registry: {subclasses}.")
+
+        if not subclasses:
             return base_schema
 
         # Generate schemas of subclasses
-        subschemas = [self.generate_inner(candidate.__pydantic_core_schema__) for candidate in candidates]
+        subschemas = [self.generate_inner(item.__pydantic_core_schema__) for item in subclasses]
 
-        merged: dict[str, Any] = {"oneOf": subschemas}
+        # TODO: get the schemas to work when using oneOf instead
+        merged: dict[str, Any] = {"anyOf": subschemas}
 
         for key in METADATA_KEYS:
             if key in base_schema and key not in merged:
@@ -213,194 +246,44 @@ class RegistryJsonSchema(GenerateJsonSchema):
 
         return schema
 
+    @staticmethod
+    def _add_literals_to_class_path(schema: dict[str, Any], literals: list[str]) -> None:
+        """
+        Add allowed literal values to a JSON Schema string field.
 
-# #        return cls._expand_registry_refs(schema, model_cls)
+        The provided literals are merged with any existing ``enum`` values in
+        the schema while preserving insertion order and removing duplicates.
 
-#     @classmethod
-#     def _expand_registry_refs(
-#         cls,
-#         schema: dict[str, Any],
-#         model_cls: type[ConfigurationSchema],
-#     ) -> dict[str, Any]:
-#         """
-#         Replace nested configuration-model fields with registry-backed schemas.
+        If the resulting set contains only a single value, the schema is
+        simplified by replacing ``enum`` with ``const``.
 
-#         The input schema is usually produced by Pydantic. This method walks the
-#         model fields and replaces fields whose annotations contain configuration
-#         models with expanded schemas built from the registry.
-#         """
-#         expanded = deepcopy(schema)
+        The schema is modified in place.
 
-#         properties = expanded.get("properties")
-#         if not isinstance(properties, dict):
-#             return expanded
+        Parameters
+        ----------
+        schema : dict[str, Any]
+            JSON Schema fragment representing a string-like field.
+        literals : list[str]
+            Literal values to add to the schema.
 
-#         for field_name, field_info in model_cls.model_fields.items():
-#             if field_name not in properties:
-#                 continue
+        Notes
+        -----
+        Only schemas representing string values or existing enumerations are
+        modified. Empty literal lists are ignored.
+        """
 
-#             replacement = cls._schema_for_annotation(field_info.annotation)
-#             if replacement is None:
-#                 continue
+        if not literals:
+            return
 
-#             properties[field_name] = cls._merge_field_schema(
-#                 base_schema=properties[field_name],
-#                 replacement_schema=replacement,
-#             )
+        # Add registry keys as literals
+        if schema.get("type") == "string" or "enum" in schema:
+            existing = schema.get("enum", [])
+            merged = list(dict.fromkeys([*existing, *literals]))
+            schema["enum"] = merged
 
-#         return expanded
+            # If only one value exists use const
+            if len(merged) == 1:
+                schema["const"] = merged[0]
+                schema.pop("enum", None)
 
-#     @classmethod
-#     def _schema_for_annotation(cls, annotation: Any) -> dict[str, Any] | None:
-#         """
-#         Build a replacement JSON Schema for an annotation only when it contains
-#         a configuration model that should be expanded via the registry.
-
-#         Returns None when the base Pydantic schema should be kept as-is.
-#         """
-#         annotation = cls._unwrap_annotated(annotation)
-#         origin = get_origin(annotation)
-#         args = get_args(annotation)
-
-#         if cls._is_union(origin):
-#             branch_schemas: list[dict[str, Any]] = []
-#             changed = False
-
-#             for arg in args:
-#                 if arg is NoneType:
-#                     branch_schemas.append({"type": "null"})
-#                     changed = True
-#                     continue
-
-#                 branch_schema = cls._schema_for_annotation(arg)
-#                 if branch_schema is None:
-#                     branch_schema = TypeAdapter(arg).json_schema(
-#                         ref_template="#/$defs/{model}",
-#                     )
-#                 else:
-#                     changed = True
-
-#                 branch_schemas.append(branch_schema)
-
-#             return {"anyOf": branch_schemas} if changed else None
-
-#         if origin in (list, tuple):
-#             item_annotation = args[0] if args else Any
-#             item_schema = cls._schema_for_annotation(item_annotation)
-
-#             if item_schema is None:
-#                 return None
-
-#             return {
-#                 "type": "array",
-#                 "items": item_schema,
-#             }
-
-#         if origin is dict:
-#             value_annotation = args[1] if len(args) > 1 else Any
-#             value_schema = cls._schema_for_annotation(value_annotation)
-
-#             if value_schema is None:
-#                 return None
-
-#             return {
-#                 "type": "object",
-#                 "additionalProperties": value_schema,
-#             }
-
-#         if cls._is_configuration_model(annotation):
-#             return cls._schema_for_configuration_model(annotation)
-
-#         return None
-
-#     @classmethod
-#     def _schema_for_configuration_model(
-#         cls,
-#         base_model_cls: type[ConfigurationSchema],
-#     ) -> dict[str, Any]:
-#         """
-#         Return a schema for one configuration model type.
-
-#         If the registry contains concrete subclasses of the base model, return a
-#         oneOf schema over those subclasses. Otherwise, fall back to the model's
-#         own JSON Schema.
-#         """
-#         candidates = cls._concrete_registered_subclasses(base_model_cls)
-
-#         if not candidates:
-#             return base_model_cls.model_json_schema(ref_template="#/$defs/{model}")
-
-#         if len(candidates) == 1:
-#             return cls._generate_schema_for_model(candidates[0])
-
-#         return {
-#             "oneOf": [
-#                 cls._generate_schema_for_model(schema_cls)
-#                 for schema_cls in candidates
-#             ]
-#         }
-
-#     @classmethod
-#     def _concrete_registered_subclasses(
-#         cls,
-#         base_model_cls: type[ConfigurationSchema],
-#     ) -> list[type[ConfigurationSchema]]:
-#         """Return all registered schemas that inherit from the given base model."""
-#         candidates: list[type[ConfigurationSchema]] = []
-
-#         for _, schema_cls in cls._registry.items():
-#             if (
-#                 isinstance(schema_cls, type)
-#                 and issubclass(schema_cls, base_model_cls)
-#                 and schema_cls is not base_model_cls
-#             ):
-#                 candidates.append(schema_cls)
-
-#         return candidates
-
-#     @classmethod
-#     def _merge_field_schema(
-#         cls,
-#         base_schema: dict[str, Any],
-#         replacement_schema: dict[str, Any],
-#     ) -> dict[str, Any]:
-#         """
-#         Preserve human-facing metadata from the original Pydantic field schema
-#         while replacing the structural part with our registry-expanded schema.
-#         """
-#         merged = deepcopy(replacement_schema)
-
-#         for key in (
-#             "title",
-#             "description",
-#             "default",
-#             "examples",
-#             "deprecated",
-#             "readOnly",
-#             "writeOnly",
-#         ):
-#             if key in base_schema and key not in merged:
-#                 merged[key] = deepcopy(base_schema[key])
-
-#         return merged
-
-#     @classmethod
-#     def _is_configuration_model(cls, annotation: Any) -> bool:
-#         """Check whether an annotation is a configuration model class."""
-#         return (
-#             isinstance(annotation, type)
-#             and issubclass(annotation, ConfigurationSchema)
-#         )
-
-#     @classmethod
-#     def _is_union(cls, origin: Any) -> bool:
-#         """Check whether an annotation origin represents a union."""
-#         return origin in (Union, UnionType)
-
-#     @classmethod
-#     def _unwrap_annotated(cls, annotation: Any) -> Any:
-#         """Strip typing.Annotated[...] wrappers."""
-#         origin = get_origin(annotation)
-#         if origin is Annotated:
-#             return get_args(annotation)[0]
-#         return annotation
+            return
