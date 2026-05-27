@@ -1,18 +1,16 @@
 import numpy as np
 from pydantic import BaseModel, ConfigDict
 
-from ..common.element import __pyaml_repr__
+# from ..common.element import __pyaml_repr__
 from ..common.exception import PyAMLException
-from ..configuration.curve import Curve
-from ..configuration.matrix import Matrix
-from ..control.deviceaccess import DeviceAccess
+from ..configuration.curve import Curve, CurveSchema
+from ..configuration.matrix import Matrix, MatrixSchema
+from ..control.deviceaccess import DeviceAccess, DeviceAccessSchema
+from ..validation import ConfigurationSchema, register_schema
 from .model import MagnetModel
 
-# Define the main class name for this module
-PYAMLCLASS = "LinearCFMagnetModel"
 
-
-class ConfigModel(BaseModel):
+class LinearCFMagnetModelSchema(ConfigurationSchema):
     """
     Configuration model for linear combined function magnet model
 
@@ -44,19 +42,20 @@ class ConfigModel(BaseModel):
         List of strength units (i.e. ['rad', 'm-1', 'm-2'])
     """
 
-    model_config = ConfigDict(arbitrary_types_allowed=True, extra="forbid")
+    model_config = ConfigDict(extra="forbid")
 
     multipoles: list[str]
-    curves: list[Curve]
+    curves: list[CurveSchema]
     calibration_factors: list[float] = None
     calibration_offsets: list[float] = None
     pseudo_factors: list[float] = None
     pseudo_offsets: list[float] = None
-    powerconverters: list[DeviceAccess | None]
-    matrix: Matrix = None
+    powerconverters: list[DeviceAccessSchema | None]
+    matrix: MatrixSchema = None
     units: list[str]
 
 
+@register_schema(LinearCFMagnetModelSchema)
 class LinearCFMagnetModel(MagnetModel):
     """
     Class providing a simple linear model for combined function magnets. A matrix
@@ -64,45 +63,64 @@ class LinearCFMagnetModel(MagnetModel):
     of power supply currents associated to a single function.
     """
 
-    def __init__(self, cfg: ConfigModel):
-        self._cfg = cfg
+    def __init__(
+        self,
+        multipoles: list[str],
+        curves: list[Curve],
+        powerconverters: list[DeviceAccess | None],
+        units: list[str],
+        calibration_factors: list[float] = None,
+        calibration_offsets: list[float] = None,
+        pseudo_factors: list[float] = None,
+        pseudo_offsets: list[float] = None,
+        matrix: Matrix = None,
+    ):
+        self._multipoles = (multipoles,)
+        self._curves = (curves,)
+        self._powerconverters = (powerconverters,)
+        self.units = (units,)
+        self._calibration_factors = (calibration_factors,)
+        self._calibration_offsets = (calibration_offsets,)
+        self._pseudo_factors = (pseudo_factors,)
+        self._pseudo_offsets = (pseudo_offsets,)
+        self._matrix = (matrix,)
         self._brho = np.nan
 
         # Check config
-        self.__nbFunction: int = len(cfg.multipoles)
-        self.__nbPS: int = len(cfg.powerconverters)
+        self.__nbFunction: int = len(self._multipoles)
+        self.__nbPS: int = len(self._powerconverters)
 
-        if cfg.calibration_factors is None:
+        if self._calibration_factors is None:
             self.__calibration_factors = np.ones(self.__nbFunction)
         else:
-            self.__calibration_factors = cfg.calibration_factors
+            self.__calibration_factors = self._calibration_factors
 
-        if cfg.calibration_offsets is None:
+        if self._calibration_offsets is None:
             self.__calibration_offsets = np.zeros(self.__nbFunction)
         else:
-            self.__calibration_offsets = cfg.calibration_offsets
+            self.__calibration_offsets = self._calibration_offsets
 
-        if cfg.pseudo_factors is None:
+        if self._pseudo_factors is None:
             self.__pf = np.ones(self.__nbFunction)
         else:
-            self.__pf = cfg.pseudo_factors
+            self.__pf = self._pseudo_factors
 
-        if cfg.pseudo_offsets is None:
+        if self._pseudo_offsets is None:
             self.__po = np.zeros(self.__nbFunction)
         else:
-            self.__po = cfg.pseudo_factors
+            self.__po = self._pseudo_factors
 
         self.__check_len(self.__calibration_factors, "calibration_factors", self.__nbFunction)
         self.__check_len(self.__calibration_offsets, "calibration_offsets", self.__nbFunction)
         self.__check_len(self.__pf, "pseudo_factors", self.__nbFunction)
         self.__check_len(self.__po, "pseudo_offsets", self.__nbFunction)
-        self.__check_len(cfg.units, "units", self.__nbFunction)
-        self.__check_len(cfg.curves, "curves", self.__nbFunction)
+        self.__check_len(self._units, "units", self.__nbFunction)
+        self.__check_len(self._curves, "curves", self.__nbFunction)
 
-        if cfg.matrix is None:
+        if self._matrix is None:
             self.__matrix = np.identity(self.__nbFunction)
         else:
-            self.__matrix = cfg.matrix.get_matrix()
+            self.__matrix = self._matrix.get_matrix()
 
         _s = np.shape(self.__matrix)
 
@@ -115,7 +133,7 @@ class LinearCFMagnetModel(MagnetModel):
         self.__rcurves = []
 
         # Apply factor and offset
-        for idx, c in enumerate(cfg.curves):
+        for idx, c in enumerate(self._curves):
             self.__curves.append(c.get_curve())
             self.__curves[idx][:, 1] *= self.__calibration_factors[idx]
             self.__curves[idx][:, 1] += self.__calibration_offsets[idx]
@@ -146,13 +164,13 @@ class LinearCFMagnetModel(MagnetModel):
         return _strength
 
     def get_strength_units(self) -> list[str]:
-        return self._cfg.units
+        return self._units
 
     def get_hardware_units(self) -> list[str]:
-        return np.array([p.unit() for p in self._cfg.powerconverters])
+        return np.array([p.unit() for p in self._powerconverters])
 
     def get_devices(self) -> list[DeviceAccess]:
-        return self._cfg.powerconverters
+        return self._powerconverters
 
     def set_magnet_rigidity(self, brho: np.double):
         self._brho = brho
@@ -160,5 +178,6 @@ class LinearCFMagnetModel(MagnetModel):
     def has_hardware(self) -> bool:
         return (self.__nbPS == self.__nbFunction) and np.allclose(self.__matrix, np.eye(self.__nbFunction))
 
-    def __repr__(self):
-        return __pyaml_repr__(self)
+
+#    def __repr__(self):
+#        return __pyaml_repr__(self)

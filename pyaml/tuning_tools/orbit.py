@@ -16,21 +16,20 @@ from pySC import ResponseMatrix as pySC_ResponseMatrix
 from pySC.apps import orbit_correction
 
 from ..arrays.magnet_array import MagnetArray
-from ..common.element import Element, ElementConfigModel
+from ..common.element import Element, ElementSchema
 from ..common.exception import PyAMLException
 from ..external.pySC_interface import pySCInterface
 from ..rf.rf_plant import RFPlant
-from .orbit_response_matrix_data import OrbitResponseMatrixData
+from ..validation import register_schema
+from .orbit_response_matrix_data import OrbitResponseMatrixData, OrbitResponseMatrixDataSchema
 from .tuning_tool import TuningTool
 
 logger = logging.getLogger(__name__)
 logging.getLogger("pyaml.external.pySC").setLevel(logging.WARNING)
 
-PYAMLCLASS = "Orbit"
 
-
-class ConfigModel(ElementConfigModel):
-    model_config = ConfigDict(arbitrary_types_allowed=True, extra="forbid")
+class OrbitSchema(ElementSchema):
+    model_config = ConfigDict(extra="forbid")
 
     bpm_array_name: str
     hcorr_array_name: str
@@ -40,46 +39,58 @@ class ConfigModel(ElementConfigModel):
     singular_values_H: Optional[int] = None
     singular_values_V: Optional[int] = None
     virtual_target: float = 0
-    response_matrix: Union[str, OrbitResponseMatrixData]
+    response_matrix: Union[str, OrbitResponseMatrixDataSchema]
 
 
+@register_schema(OrbitSchema)
 class Orbit(TuningTool):
-    def __init__(self, cfg: ConfigModel):
-        super().__init__(cfg.name)
-        self._cfg = cfg
-        self.bpm_array_name = cfg.bpm_array_name
-        self.hcorr_array_name = cfg.hcorr_array_name
-        self.vcorr_array_name = cfg.vcorr_array_name
+    def __init__(
+        self,
+        name,
+        bpm_array_name: str,
+        hcorr_array_name: str,
+        vcorr_array_name: str,
+        response_matrix: Union[str, OrbitResponseMatrixData],
+        rf_plant_name: Optional[str] = None,
+        singular_values: Optional[int] = None,
+        singular_values_H: Optional[int] = None,
+        singular_values_V: Optional[int] = None,
+        virtual_target: float = 0,
+    ):
+        super().__init__(name)
+        self.bpm_array_name = bpm_array_name
+        self.hcorr_array_name = hcorr_array_name
+        self.vcorr_array_name = vcorr_array_name
         self._pySC_response_matrix = None
 
-        self.virtual_target = cfg.virtual_target
+        self.virtual_target = virtual_target
 
-        if cfg.singular_values is None:
-            if cfg.singular_values_H is None or cfg.singular_values_V is None:
+        if singular_values is None:
+            if singular_values_H is None or singular_values_V is None:
                 raise PyAMLException(
                     "Either `singular_values` or `singular_values_H` and `singular_values_V` must be provided."
                 )
-            self.singular_values_H = cfg.singular_values_H
-            self.singular_values_V = cfg.singular_values_V
+            self.singular_values_H = singular_values_H
+            self.singular_values_V = singular_values_V
         else:
-            if cfg.singular_values_H is not None or cfg.singular_values_V is not None:
+            if singular_values_H is not None or singular_values_V is not None:
                 raise PyAMLException(
                     "Either `singular_values` or `singular_values_H` and `singular_values_V` must be provided, not both."
                 )
-            self.singular_values_H = cfg.singular_values
-            self.singular_values_V = cfg.singular_values
+            self.singular_values_H = singular_values
+            self.singular_values_V = singular_values
 
         # If the configuration response matrix is a filename, load it
-        if type(cfg.response_matrix) is str:
+        if type(response_matrix) is str:
             try:
-                cfg.response_matrix = OrbitResponseMatrixData.load(cfg.response_matrix)
+                response_matrix = OrbitResponseMatrixData.load(response_matrix)
             except Exception as e:
-                logger.warning(f"Loading {cfg.response_matrix} failed {str(e)}")
-                cfg.response_matrix = None
+                logger.warning(f"Loading {response_matrix} failed {str(e)}")
+                response_matrix = None
 
         # Converts to self._pySC_response_matrix
-        if cfg.response_matrix:
-            self._set_response_matrix(cfg.response_matrix)
+        if response_matrix:
+            self._set_response_matrix(response_matrix)
 
         self._hcorr: MagnetArray = None
         self._vcorr: MagnetArray = None
@@ -95,16 +106,17 @@ class Orbit(TuningTool):
         load_path : Path
             Filename of the :class:`~.OrbitResponseMatrixData` to load
         """
-        self._cfg.response_matrix = OrbitResponseMatrixData.load(load_path)
-        self._set_response_matrix(self._cfg.response_matrix)
+        self._response_matrix = OrbitResponseMatrixData.load(load_path)
+        self._set_response_matrix(self._response_matrix)
 
-    def _set_response_matrix(self, mat):
-        m = mat._cfg.model_dump()
-        m["input_names"] = m.pop("variable_names")
-        m["output_names"] = m.pop("observable_names")
-        m["input_planes"] = m.pop("variable_planes")
-        m["output_planes"] = m.pop("observable_planes")
-        self._cfg.response_matrix = mat
+    def _set_response_matrix(self, mat: OrbitResponseMatrixData):
+        m = mat
+        m["input_names"] = m._variable_names
+        m["output_names"] = m._observable_names
+        m["input_planes"] = m._variable_planes
+        m["output_planes"] = m._observable_planes
+
+        self._response_matrix = mat
         self._pySC_response_matrix = pySC_ResponseMatrix.model_validate(m)
 
     @property
@@ -112,7 +124,7 @@ class Orbit(TuningTool):
         """
         Return the response matrix if it has been loaded None otherwise
         """
-        return self._cfg.response_matrix
+        return self._response_matrix
 
     def correct(
         self,
@@ -312,11 +324,11 @@ class Orbit(TuningTool):
         return self._pySC_response_matrix.rf_weight
 
     def post_init(self):
-        self._hcorr = self.peer.get_magnets(self._cfg.hcorr_array_name)
-        self._vcorr = self.peer.get_magnets(self._cfg.vcorr_array_name)
+        self._hcorr = self.peer.get_magnets(self._hcorr_array_name)
+        self._vcorr = self.peer.get_magnets(self._vcorr_array_name)
         hvElts = []
         hvElts.extend(self._hcorr)
         hvElts.extend(self._vcorr)
         self._hvcorr = MagnetArray("", hvElts)
-        if self._cfg.rf_plant_name is not None:
-            self._rf_plant = self.peer.get_rf_plant(self._cfg.rf_plant_name)
+        if self._rf_plant_name is not None:
+            self._rf_plant = self.peer.get_rf_plant(self._rf_plant_name)

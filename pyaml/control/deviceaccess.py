@@ -1,6 +1,11 @@
 from abc import ABCMeta, abstractmethod
 
+from ..validation import ConfigurationSchema
+
 # TODO: correctly type value
+
+
+class DeviceAccessSchema(ConfigurationSchema): ...
 
 
 class DeviceAccess(metaclass=ABCMeta):

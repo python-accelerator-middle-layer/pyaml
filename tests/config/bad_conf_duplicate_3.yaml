@@ -1,69 +1,69 @@
-type: pyaml.accelerator
+class_path: pyaml.accelerator.Accelerator
 facility: ESRF
 machine: sr
 energy: 6e9
 simulators:
-  - type: pyaml.lattice.simulator
-    lattice: sr/lattices/ebs.mat
-    name: design
+- class_path: pyaml.lattice.simulator.Simulator
+  lattice: sr/lattices/ebs.mat
+  name: design
 controls:
-  - type: tango.pyaml.controlsystem
-    tango_host: ebs-simu-3:10000
-    name: live
+- class_path: tango.pyaml.controlsystem.TangoControlSystem
+  tango_host: ebs-simu-3:10000
+  name: live
 data_folder: /data/store
 arrays:
-  - type: pyaml.arrays.bpm
-    name: BPM
-    elements:
-      - BPM_C04-04
-      - BPM_C04-05
-      - BPM_C04-06
+- class_path: pyaml.arrays.bpm.BPM
+  name: BPM
+  elements:
+  - BPM_C04-04
+  - BPM_C04-05
+  - BPM_C04-06
 devices:
-- type: pyaml.bpm.bpm
+- class_path: pyaml.bpm.bpm.BPM
   name: BPM_C04-04
   model:
-    type: pyaml.bpm.bpm_simple_model
+    class_path: pyaml.bpm.bpm_simple_model.BPMSimpleModel
     x_pos:
-      type: tango.pyaml.attribute_read_only
+      class_path: tango.pyaml.attribute_read_only.AttributeReadOnly
       attribute: srdiag/bpm/c04-04/SA_HPosition
       unit: m
     y_pos:
-      type: tango.pyaml.attribute_read_only
+      class_path: tango.pyaml.attribute_read_only.AttributeReadOnly
       attribute: srdiag/bpm/c04-04/SA_VPosition
       unit: m
-- type: pyaml.bpm.bpm
+- class_path: pyaml.bpm.bpm.BPM
   name: BPM_C04-05
   model:
-    type: pyaml.bpm.bpm_simple_model
+    class_path: pyaml.bpm.bpm_simple_model.BPMSimpleModel
     x_pos:
-      type: tango.pyaml.attribute_read_only
+      class_path: tango.pyaml.attribute_read_only.AttributeReadOnly
       attribute: srdiag/bpm/c04-05/SA_HPosition
       unit: m
     y_pos:
-      type: tango.pyaml.attribute_read_only
+      class_path: tango.pyaml.attribute_read_only.AttributeReadOnly
       attribute: srdiag/bpm/c04-05/SA_VPosition
       unit: m
-- type: pyaml.bpm.bpm
+- class_path: pyaml.bpm.bpm.BPM
   name: BPM_C04-06
   model:
-    type: pyaml.bpm.bpm_simple_model
+    class_path: pyaml.bpm.bpm_simple_model.BPMSimpleModel
     x_pos:
-      type: tango.pyaml.attribute_read_only
+      class_path: tango.pyaml.attribute_read_only.AttributeReadOnly
       attribute: srdiag/bpm/c04-06/SA_HPosition
       unit: m
     y_pos:
-      type: tango.pyaml.attribute_read_only
+      class_path: tango.pyaml.attribute_read_only.AttributeReadOnly
       attribute: srdiag/bpm/c04-06/SA_VPosition
       unit: m
-- type: pyaml.bpm.bpm # duplicate device
+- class_path: pyaml.bpm.bpm.BPM
   name: BPM_C04-06
   model:
-    type: pyaml.bpm.bpm_simple_model
+    class_path: pyaml.bpm.bpm_simple_model.BPMSimpleModel
     x_pos:
-      type: tango.pyaml.attribute_read_only
+      class_path: tango.pyaml.attribute_read_only.AttributeReadOnly
       attribute: srdiag/bpm/c04-06/SA_HPosition
       unit: m
     y_pos:
-      type: tango.pyaml.attribute_read_only
+      class_path: tango.pyaml.attribute_read_only.AttributeReadOnly
       attribute: srdiag/bpm/c04-06/SA_VPosition
       unit: m

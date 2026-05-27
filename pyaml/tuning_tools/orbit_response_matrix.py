@@ -8,16 +8,16 @@ from pySC.apps import measure_ORM
 from pySC.apps.codes import ResponseCode
 
 from ..common.constants import Action
+from ..common.element import ElementSchema
 from ..external.pySC_interface import pySCInterface
-from .measurement_tool import MeasurementTool, MeasurementToolConfigModel
-from .orbit_response_matrix_data import ConfigModel as OrbitResponseMatrixDataConfigModel
+from ..validation import register_schema
+from .measurement_tool import MeasurementTool, MeasurementToolSchema
+from .orbit_response_matrix_data import OrbitResponseMatrixDataSchema
 
 logger = logging.getLogger(__name__)
 
-PYAMLCLASS = "OrbitResponseMatrix"
 
-
-class ConfigModel(MeasurementToolConfigModel):
+class OrbitResponseMatrixSchema(MeasurementToolSchema):
     """
     Configuration model for orbit response matrix measurement
 
@@ -33,7 +33,7 @@ class ConfigModel(MeasurementToolConfigModel):
         Corrector delta for measurement
     """
 
-    model_config = ConfigDict(arbitrary_types_allowed=True, extra="forbid")
+    model_config = ConfigDict(extra="forbid")
 
     bpm_array_name: str
     hcorr_array_name: str
@@ -41,15 +41,22 @@ class ConfigModel(MeasurementToolConfigModel):
     corrector_delta: float
 
 
+@register_schema(OrbitResponseMatrixSchema)
 class OrbitResponseMatrix(MeasurementTool):
-    def __init__(self, cfg: ConfigModel):
-        super().__init__(cfg.name)
-        self._cfg = cfg
+    def __init__(
+        self,
+        name: str,
+        bpm_array_name: str,
+        hcorr_array_name: str,
+        vcorr_array_name: str,
+        corrector_delta: float,
+    ):
+        super().__init__(name)
 
-        self.bpm_array_name = cfg.bpm_array_name
-        self.hcorr_array_name = cfg.hcorr_array_name
-        self.vcorr_array_name = cfg.vcorr_array_name
-        self.corrector_delta = cfg.corrector_delta
+        self.bpm_array_name = bpm_array_name
+        self.hcorr_array_name = hcorr_array_name
+        self.vcorr_array_name = vcorr_array_name
+        self.corrector_delta = corrector_delta
 
     def measure(
         self,
@@ -91,9 +98,9 @@ class OrbitResponseMatrix(MeasurementTool):
             reading.
             If the callback returns false, then the process is aborted.
         """
-        nb_meas = n_avg_meas if n_avg_meas is not None else self._cfg.n_avg_meas
-        sleep_step = sleep_between_step if sleep_between_step is not None else self._cfg.sleep_between_step
-        sleep_meas = sleep_between_meas if sleep_between_meas is not None else self._cfg.sleep_between_meas
+        nb_meas = n_avg_meas if n_avg_meas is not None else self._n_avg_meas
+        sleep_step = sleep_between_step if sleep_between_step is not None else self._sleep_between_step
+        sleep_meas = sleep_between_meas if sleep_between_meas is not None else self._sleep_between_meas
 
         element_holder = self._peer
         interface = pySCInterface(
@@ -160,7 +167,7 @@ class OrbitResponseMatrix(MeasurementTool):
 
         return True
 
-    def _pySC_response_data_to_ORMData(self, data: dict) -> OrbitResponseMatrixDataConfigModel:
+    def _pySC_response_data_to_ORMData(self, data: dict) -> OrbitResponseMatrixDataSchema:
         # all metadata is discarded here. Should we keep something?
 
         element_holder = self._peer
@@ -188,5 +195,5 @@ class OrbitResponseMatrix(MeasurementTool):
             "observable_planes": observable_planes,
         }
 
-        orm_data = OrbitResponseMatrixDataConfigModel(**orm_data_model)
+        orm_data = OrbitResponseMatrixDataSchema(**orm_data_model)
         return orm_data

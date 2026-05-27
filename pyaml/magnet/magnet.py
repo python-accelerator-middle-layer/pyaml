@@ -1,47 +1,60 @@
+from typing import Self
+
+import numpy as np
+from pydantic import Field
 from scipy.constants import speed_of_light
 
 from .. import PyAMLException
 from ..common import abstract
-from ..common.element import Element, ElementConfigModel
-from .model import MagnetModel
-
-try:
-    from typing import Self  # Python 3.11+
-except ImportError:
-    from typing_extensions import Self  # Python 3.10 and earlier
-import numpy as np
+from ..common.element import Element, ElementSchema
+from ..validation import register_schema
+from .model import MagnetModel, MagnetModelSchema
 
 
-class MagnetConfigModel(ElementConfigModel):
+class MagnetSchema(ElementSchema):
     """
     Configuration model for magnet elements.
 
     Attributes
     ----------
-    model : MagnetModel or None, optional
-        Object in charge of converting magnet strengths to power supply values
+    model : MagnetModelSchema or None, optional
+        Schema for object in charge of converting magnet strengths to power supply values
     """
 
-    model: MagnetModel | None = None
+    model: MagnetModelSchema | None = Field(
+        default=None, description="Schema for object in charge of converting magnet strengths to power supply values"
+    )
 
 
+@register_schema(MagnetSchema)
 class Magnet(Element):
     """
     Class providing access to one magnet of a physical or simulated lattice
     """
 
-    def __init__(self, name: str, model: MagnetModel = None):
+    def __init__(self, name: str, description: str | None = None, lattice_names: str | None = None, model: MagnetModel = None):
         """
         Construct a magnet
 
         Parameters
         ----------
-        name : str
+        name: str
             Element name
+        description : str, optional
+                Description of the element.
+        lattice_names : str or None, optional
+                The name(s) of the associated element(s) in the lattice. By default,
+                the PyAML element name is used. lattice_name accept the following
+                syntax:
+                - list(name,[name]) : Element names
+                - [name]@idx[,idx] : Element indices in the subset formed by name.
+                - [name]#start_idx..end_idx : Element range in the subset formed by name.
+                In the above syntax, if the name is not specficied, the whole set
+                of lattice element is used for indexing.
         model : MagnetModel
             Magnet model in charge of computing coil(s) current
         """
-        super().__init__(name)
+        super().__init__(name, description, lattice_names)
         self.__model = model
         self.__strength: abstract.ReadWriteFloatScalar = None
         self.__hardware: abstract.ReadWriteFloatScalar = None
@@ -85,7 +98,7 @@ class Magnet(Element):
         Create a new reference to attach this magnet to a simulator
         or a control systemand.
         """
-        obj = self.__class__(self._cfg)
+        obj = self.__class__(self._name, self._description, self._lattice_names, self.__model)
         obj.__modelName = self.__modelName
         obj.__strength = strength
         obj.__hardware = hardware

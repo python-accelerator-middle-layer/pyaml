@@ -1,47 +1,60 @@
-type: pyaml.accelerator
+class_path: pyaml.accelerator.Accelerator
 facility: ESRF
 machine: sr
 energy: 6e9
 simulators:
-  - type: pyaml.lattice.simulator
-    lattice: sr/lattices/ebs.mat
-    name: design
+- class_path: pyaml.lattice.simulator.Simulator
+  lattice: sr/lattices/ebs.mat
+  name: design
 controls:
-  - type: tango.pyaml.controlsystem
-    tango_host: ebs-simu-3:10000
-    name: live
+- class_path: tango.pyaml.controlsystem.TangoControlSystem
+  tango_host: ebs-simu-3:10000
+  name: live
 data_folder: /data/store
 devices:
-  - type: pyaml.rf.rf_plant
-    name: RF
-    masterclock:
-      type: tango.pyaml.attribute
-      attribute: sy/ms/1/Frequency
-      unit: Hz
-    transmitters:
-      - type: pyaml.rf.rf_transmitter
-        name: RFTRA1
-        cavities: [CAV_C05_01,CAV_C05_02,CAV_C05_03,CAV_C05_04,CAV_C05_05,CAV_C07_01,CAV_C07_02,CAV_C07_03,CAV_C07_04,CAV_C07_05]
-        harmonic: 1
-        distribution: 0.83333333333
-        voltage:
-          type: tango.pyaml.attribute
-          attribute: sr/tra/1/RfVoltage
-          unit: V
-      - type: pyaml.rf.rf_transmitter
-        name: RFTRA2
-        cavities: [CAV_C25_01,CAV_C25_02]
-        harmonic: 1
-        distribution: 0.16666666666
-        voltage:
-          type: tango.pyaml.attribute
-          attribute: sr/tra/2/RfVoltage
-          unit: V
-      - type: pyaml.rf.rf_transmitter
-        name: RFTRA_HARMONIC
-        cavities: [CAV_C25_03]
-        harmonic: 4
-        voltage:
-          type: tango.pyaml.attribute
-          attribute: sr/tra/harm/RfVoltage
-          unit: V
+- class_path: pyaml.rf.rf_plant.RFPlant
+  name: RF
+  masterclock:
+    class_path: tango.pyaml.attribute.Attribute
+    attribute: sy/ms/1/Frequency
+    unit: Hz
+  transmitters:
+  - class_path: pyaml.rf.rf_transmitter.RFTransmitter
+    name: RFTRA1
+    cavities:
+    - CAV_C05_01
+    - CAV_C05_02
+    - CAV_C05_03
+    - CAV_C05_04
+    - CAV_C05_05
+    - CAV_C07_01
+    - CAV_C07_02
+    - CAV_C07_03
+    - CAV_C07_04
+    - CAV_C07_05
+    harmonic: 1
+    distribution: 0.83333333333
+    voltage:
+      class_path: tango.pyaml.attribute.Attribute
+      attribute: sr/tra/1/RfVoltage
+      unit: V
+  - class_path: pyaml.rf.rf_transmitter.RFTransmitter
+    name: RFTRA2
+    cavities:
+    - CAV_C25_01
+    - CAV_C25_02
+    harmonic: 1
+    distribution: 0.16666666666
+    voltage:
+      class_path: tango.pyaml.attribute.Attribute
+      attribute: sr/tra/2/RfVoltage
+      unit: V
+  - class_path: pyaml.rf.rf_transmitter.RFTransmitter
+    name: RFTRA_HARMONIC
+    cavities:
+    - CAV_C25_03
+    harmonic: 4
+    voltage:
+      class_path: tango.pyaml.attribute.Attribute
+      attribute: sr/tra/harm/RfVoltage
+      unit: V

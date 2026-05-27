@@ -37,19 +37,12 @@ from ..rf.rf_plant import RFPlant, RWTotalVoltage
 from ..rf.rf_transmitter import RFTransmitter
 from ..tuning_tools.measurement_tool import MeasurementTool
 from ..tuning_tools.tuning_tool import TuningTool
-from .attribute_linker import (
-    ConfigModel as PyAtAttrLinkerConfigModel,
-)
-from .attribute_linker import (
-    PyAtAttributeElementsLinker,
-)
-from .lattice_elements_linker import LatticeElementsLinker
-
-# Define the main class name for this module
-PYAMLCLASS = "Simulator"
+from ..validation import ConfigurationSchema, register_schema
+from .attribute_linker import PyAtAttributeElementsLinker
+from .lattice_elements_linker import LatticeElementsLinker, LatticeElementsLinkerSchema
 
 
-class ConfigModel(BaseModel):
+class SimulatorSchema(ConfigurationSchema):
     """
     Configuration model for Simulator
 
@@ -61,37 +54,48 @@ class ConfigModel(BaseModel):
         AT lattice file
     mat_key : str, optional
         AT lattice ring name
-    linker : LatticeElementsLinker, optional
+    linker : LatticeElementsLinkerSchema, optional
         The linker configuration model
     description : str , optional
         Simulator description
     """
 
-    model_config = ConfigDict(arbitrary_types_allowed=True, extra="forbid")
-
     name: str
     lattice: str
-    mat_key: str = None
-    linker: LatticeElementsLinker = None
+    mat_key: str | None = None
+    linker: LatticeElementsLinkerSchema | None = None
     description: str | None = None
 
 
+@register_schema(SimulatorSchema)
 class Simulator(ElementHolder):
     """
     Class that implements access to AT simulator
     """
 
-    def __init__(self, cfg: ConfigModel):
+    def __init__(
+        self,
+        name: str,
+        lattice: str,
+        mat_key: str = None,
+        linker: LatticeElementsLinker = None,
+        description: str | None = None,
+    ):
         super().__init__()
-        self._cfg = cfg
-        path: Path = get_root_folder() / cfg.lattice
+        self._name = name
+        self._lattice = lattice
+        self._mat_key = mat_key
+        self._linker = linker
+        self._description = description
 
-        if self._cfg.mat_key is None:
+        path: Path = get_root_folder() / self._lattice
+
+        if self._mat_key is None:
             self.ring = at.load_lattice(path)
         else:
-            self.ring = at.load_lattice(path, mat_key=f"{self._cfg.mat_key}")
+            self.ring = at.load_lattice(path, mat_key=f"{self._mat_key}")
 
-        self._linker = cfg.linker
+        self._linker = self._linker
         if self._linker:
             self._linker.set_lattice(self.ring)
         else:
@@ -103,7 +107,7 @@ class Simulator(ElementHolder):
                     self._elements_indexing[e.FamName] = [e]
 
     def name(self) -> str:
-        return self._cfg.name
+        return self._name
 
     def get_lattice(self) -> at.Lattice:
         return self.ring
@@ -112,7 +116,7 @@ class Simulator(ElementHolder):
         """
         Returns the description of the accelerator
         """
-        return self._cfg.description
+        return self._description
 
     def create_magnet_strength_aggregator(self, magnets: list[Magnet]) -> ScalarAggregator:
         # No magnet aggregator for simulator
@@ -200,13 +204,13 @@ class Simulator(ElementHolder):
                 self.add_bpm(e)
 
             elif isinstance(e, RFPlant):
-                if e._cfg.transmitters:
+                if e._transmitters:
                     cavs: list[at.Element] = []
                     harmonics: list[float] = []
                     attachedTrans: list[RFTransmitter] = []
-                    for t in e._cfg.transmitters:
+                    for t in e._transmitters:
                         cavsPerTrans: list[at.Element] = []
-                        for c in t._cfg.cavities:
+                        for c in t._cavities:
                             # Expect unique name for cavities
                             cav = self.get_at_elems(Element(c))
                             if len(cav) > 1:
@@ -214,7 +218,7 @@ class Simulator(ElementHolder):
                             if len(cav) == 0:
                                 raise PyAMLException(f"RF transmitter {t.get_name()}, No cavity found")
                             cavsPerTrans.append(cav[0])
-                            harmonics.append(t._cfg.harmonic)
+                            harmonics.append(t._harmonic)
                         voltage = RWRFVoltageScalar(cavsPerTrans)
                         phase = RWRFPhaseScalar(cavsPerTrans)
                         nt = t.attach(self, voltage, phase)
@@ -302,7 +306,7 @@ class Simulator(ElementHolder):
             identifier = self._linker.get_element_identifier(element)
             element_list = self._linker.get_at_elements(identifier)
             if not element_list:
-                raise PyAMLException(f"{identifier} not found in lattice:{self._cfg.lattice}")
+                raise PyAMLException(f"{identifier} not found in lattice:{self._lattice}")
             return element_list
         else:
             # By list
@@ -312,7 +316,7 @@ class Simulator(ElementHolder):
                 names = []
                 for name in nameList:
                     if name not in self._elements_indexing:
-                        raise PyAMLException(f"{name} not found in lattice:{self._cfg.lattice}")
+                        raise PyAMLException(f"{name} not found in lattice:{self._lattice}")
                     elts = self._elements_indexing[name]
                     names.extend(elts)
                 return names
@@ -325,12 +329,13 @@ class Simulator(ElementHolder):
                 return [self.ring[idx] for idx in indices]
             else:
                 if name not in self._elements_indexing:
-                    raise PyAMLException(f"{name} not found in lattice:{self._cfg.lattice}")
+                    raise PyAMLException(f"{name} not found in lattice:{self._lattice}")
                 elts = self._elements_indexing[name]
                 if indices is None:
                     return elts
                 else:
                     return [elts[idx] for idx in indices]
 
-    def __repr__(self):
-        return repr(self._cfg).replace("ConfigModel", self.__class__.__name__)
+
+#    def __repr__(self):
+#        return repr(self._cfg).replace("ConfigModel", self.__class__.__name__)

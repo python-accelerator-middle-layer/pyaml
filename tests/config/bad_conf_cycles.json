@@ -1,5 +1,5 @@
 {
-    "type": "pyaml.accelerator",
+    "class_path": "pyaml.accelerator.Accelerator",
     "facility": "ESRF",
     "machine": "sr",
     "energy": 6e9,
@@ -7,7 +7,7 @@
     "data_folder": "/data/store",
     "arrays": [
       {
-        "type": "pyaml.arrays.magnet",
+        "class_path": "pyaml.arrays.magnet.Magnet",
         "name": "HCORR",
         "elements": [
           "SH1A-C01-H",
@@ -15,7 +15,7 @@
         ]
       },
       {
-        "type": "pyaml.arrays.magnet",
+        "class_path": "pyaml.arrays.magnet.Magnet",
         "name": "VCORR",
         "elements": ["SH1A-C01-V", "SH1A-C02-V"]
       }

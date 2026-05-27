@@ -1,17 +1,13 @@
-from ..bpm.bpm_model import BPMModel
-from ..common.element import Element, ElementConfigModel
+from typing import Self
+
+from ..bpm.bpm_model import BPMModel, BPMModelSchema
+from ..common.element import Element, ElementSchema
 from ..common.exception import PyAMLException
 from ..lattice.abstract_impl import RBpmArray, RWBpmOffsetArray, RWBpmTiltScalar
-
-try:
-    from typing import Self  # Python 3.11+
-except ImportError:
-    from typing_extensions import Self  # Python 3.10 and earlier
-
-PYAMLCLASS = "BPM"
+from ..validation import register_schema
 
 
-class ConfigModel(ElementConfigModel):
+class BPMSchema(ElementSchema):
     """
     Configuration model for BPM element.
 
@@ -21,15 +17,20 @@ class ConfigModel(ElementConfigModel):
         Object in charge of BPM modeling
     """
 
-    model: BPMModel | None = None
+    model: BPMModelSchema | None = None
 
 
+@register_schema(BPMSchema)
 class BPM(Element):
     """
     Class providing access to one BPM of a physical or simulated lattice
     """
 
-    def __init__(self, cfg: ConfigModel):
+    def __init__(
+        self,
+        name: str,
+        model: BPMModel | None = None,
+    ):
         """
         Construct a BPM
 
@@ -41,10 +42,8 @@ class BPM(Element):
             BPM model in charge of computing beam position
         """
 
-        super().__init__(cfg.name)
-
-        self.__model = cfg.model if hasattr(cfg, "model") else None
-        self._cfg = cfg
+        super().__init__(name)
+        self.__model = model
         self.__positions = None
         self.__offset = None
         self.__tilt = None
@@ -146,7 +145,7 @@ class BPM(Element):
         """
         # Attach positions, offset and tilt attributes and returns a new
         # reference
-        obj = self.__class__(self._cfg)
+        obj = self.__class__(self.name, self.__model)
         obj.__model = self.__model
         obj.__positions = positions
         obj.__offset = offset

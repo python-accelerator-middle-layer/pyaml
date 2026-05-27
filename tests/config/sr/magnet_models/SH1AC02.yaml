@@ -1,24 +1,33 @@
-  type: pyaml.magnet.linear_cfm_model
-  multipoles: [B0,A0,A1]
-  units: [rad,rad,m-1]
-  pseudo_factors: [1.0,-1.0,-1.0]
-  curves:
-    - type: pyaml.configuration.csvcurve
-      file: sr/magnet_models/SH1_SH3_h_strength.csv
-    - type: pyaml.configuration.csvcurve
-      file: sr/magnet_models/SH1_SH3_v_strength.csv
-    - type: pyaml.configuration.csvcurve
-      file: sr/magnet_models/SH1_SH3_sq_strength.csv
-  matrix:
-    type: pyaml.configuration.csvmatrix
-    file: sr/magnet_models/SH_matrix.csv
-  powerconverters:
-    - type: tango.pyaml.attribute
-      attribute:  srmag/ps-corr-sh1/c02-a-ch1/current
-      unit: A
-    - type: tango.pyaml.attribute
-      attribute:  srmag/ps-corr-sh1/c02-a-ch2/current
-      unit: A
-    - type: tango.pyaml.attribute
-      attribute:  srmag/ps-corr-sh1/c02-a-ch3/current
-      unit: A
+class_path: pyaml.magnet.linear_cfm_model.LinearCFMagnetModel
+multipoles:
+- B0
+- A0
+- A1
+units:
+- rad
+- rad
+- m-1
+pseudo_factors:
+- 1.0
+- -1.0
+- -1.0
+curves:
+- class_path: pyaml.configuration.csvcurve.CSVCurve
+  file: sr/magnet_models/SH1_SH3_h_strength.csv
+- class_path: pyaml.configuration.csvcurve.CSVCurve
+  file: sr/magnet_models/SH1_SH3_v_strength.csv
+- class_path: pyaml.configuration.csvcurve.CSVCurve
+  file: sr/magnet_models/SH1_SH3_sq_strength.csv
+matrix:
+  class_path: pyaml.configuration.csvmatrix.CSVMatrix
+  file: sr/magnet_models/SH_matrix.csv
+powerconverters:
+- class_path: tango.pyaml.attribute.Attribute
+  attribute: srmag/ps-corr-sh1/c02-a-ch1/current
+  unit: A
+- class_path: tango.pyaml.attribute.Attribute
+  attribute: srmag/ps-corr-sh1/c02-a-ch2/current
+  unit: A
+- class_path: tango.pyaml.attribute.Attribute
+  attribute: srmag/ps-corr-sh1/c02-a-ch3/current
+  unit: A

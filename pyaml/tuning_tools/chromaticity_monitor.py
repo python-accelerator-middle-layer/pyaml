@@ -1,8 +1,9 @@
 from ..common.abstract import ReadFloatArray
 from ..common.constants import Action
-from ..common.element import ElementConfigModel
+from ..common.element import ElementSchema
 from ..common.exception import PyAMLException
-from ..tuning_tools.measurement_tool import MeasurementTool, MeasurementToolConfigModel
+from ..validation import register_schema
+from .measurement_tool import MeasurementTool, MeasurementToolSchema
 
 try:
     from typing import Self  # Python 3.11+
@@ -17,10 +18,8 @@ from pydantic import ConfigDict
 
 logger = logging.getLogger(__name__)
 
-PYAMLCLASS = "ChomaticityMonitor"
 
-
-class ConfigModel(MeasurementToolConfigModel):
+class ChomaticityMonitorSchema(MeasurementToolSchema):
     """
     Configuration model for Chromaticity Monitor.
 
@@ -47,7 +46,7 @@ class ConfigModel(MeasurementToolConfigModel):
         Dispersion fitting, by default False
     """
 
-    model_config = ConfigDict(arbitrary_types_allowed=True, extra="forbid")
+    model_config = ConfigDict(extra="forbid")
 
     betatron_tune_name: str
     rf_plant_name: str
@@ -81,6 +80,7 @@ class RChromaDispArray(ReadFloatArray):
         return self.unit
 
 
+@register_schema(ChomaticityMonitorSchema)
 class ChomaticityMonitor(MeasurementTool):
     """
     Class providing access to a chromaticity monitor
@@ -88,20 +88,35 @@ class ChomaticityMonitor(MeasurementTool):
     horizontal and vertical chromaticity measurements.
     """
 
-    def __init__(self, cfg: ConfigModel):
+    def __init__(
+        self,
+        name: str,
+        betatron_tune_name: str,
+        rf_plant_name: str,
+        bpm_array_name: str | None = None,
+        e_delta: float = 0.001,
+        max_e_delta: float = 0.004,
+        fit_order: int = 1,
+        fit_disp_order: int = 1,
+        fit_dispersion: bool = False,
+    ):
         """
         Construct a ChomaticityMonitor.
 
-        Parameters
-        ----------
-        cfg : ConfigModel
-            Configuration for the ChromaticityMonitor, including betatron
-            tune monitor, RF plant, and defaults parameters.
         """
-        super().__init__(cfg.name)
-        self._cfg = cfg
+        super().__init__(name)
+
+        self._betatron_tune_name = betatron_tune_name
+        self._rf_plant_name = rf_plant_name
+        self._bpm_array_name = bpm_array_name
+        self._e_delta = e_delta
+        self._max_e_delta = max_e_delta
+        self._fit_order = fit_order
+        self._fit_disp_order = fit_disp_order
+        self._fit_dispersion = fit_dispersion
+
         self._chromaticity = RChromaDispArray(self, "chromaticity", "1")
-        self._dipsersion = RChromaDispArray(self, "dispersion", "m")
+        self._dispersion = RChromaDispArray(self, "dispersion", "m")
         self._alphac = None
 
     @property
@@ -129,7 +144,7 @@ class ChomaticityMonitor(MeasurementTool):
         ReadFloatArray
             Array of dispersion values [[dx, dy],[d'x, d'y],...]
         """
-        return self._dipsersion
+        return self._dispersion
 
     def measure(
         self,
@@ -202,19 +217,19 @@ class ChomaticityMonitor(MeasurementTool):
               dtune:np.array # The tune variation (on Action.RESTORE)
 
         """
-        n_step = n_step if n_step is not None else self._cfg.n_step
+        n_step = n_step if n_step is not None else self._n_step
         alphac = alphac if alphac is not None else self._alphac
-        e_delta = e_delta if e_delta is not None else self._cfg.e_delta
-        max_e_delta = max_e_delta if max_e_delta is not None else self._cfg.max_e_delta
-        n_avg_meas = n_avg_meas if n_avg_meas is not None else self._cfg.n_avg_meas
-        sleep_between_meas = sleep_between_meas if sleep_between_meas is not None else self._cfg.sleep_between_meas
-        sleep_between_step = sleep_between_step if sleep_between_step is not None else self._cfg.sleep_between_step
-        fit_order = fit_order if fit_order is not None else self._cfg.fit_order
-        fit_disp_order = fit_disp_order if fit_disp_order is not None else self._cfg.fit_disp_order
-        fit_dispersion = fit_dispersion if fit_dispersion is not None else self._cfg.fit_dispersion
+        e_delta = e_delta if e_delta is not None else self._e_delta
+        max_e_delta = max_e_delta if max_e_delta is not None else self._max_e_delta
+        n_avg_meas = n_avg_meas if n_avg_meas is not None else self._.n_avg_meas
+        sleep_between_meas = sleep_between_meas if sleep_between_meas is not None else self._sleep_between_meas
+        sleep_between_step = sleep_between_step if sleep_between_step is not None else self._sleep_between_step
+        fit_order = fit_order if fit_order is not None else self._fit_order
+        fit_disp_order = fit_disp_order if fit_disp_order is not None else self._fit_disp_order
+        fit_dispersion = fit_dispersion if fit_dispersion is not None else self._fit_dispersion
 
         if abs(e_delta) > abs(max_e_delta):
-            logger.warning(f"e_delta={e_delta} is greater than max_e_delta={max_e_delta}")
+            logger.warning(f"e_delta={self._e_delta} is greater than max_e_delta={self._max_e_delta}")
 
         if alphac is None:
             raise PyAMLException("Moment compaction factor is not defined")
@@ -224,14 +239,14 @@ class ChomaticityMonitor(MeasurementTool):
 
         # Get devices
         self.check_peer()
-        tm = self.peer.get_betatron_tune_monitor(self._cfg.betatron_tune_name)
-        rf = self.peer.get_rf_plant(self._cfg.rf_plant_name)
+        tm = self.peer.get_betatron_tune_monitor(self._betatron_tune_name)
+        rf = self.peer.get_rf_plant(self._rf_plant_name)
         bpms = None
         n_bpm = 0
         orbit = None
-        if fit_dispersion and fit_disp_order is not None and self._cfg.bpm_array_name is not None:
+        if fit_dispersion and fit_disp_order is not None and self._bpm_array_name is not None:
             # For dispersion fit
-            bpms = self.peer.get_bpms(self._cfg.bpm_array_name)
+            bpms = self.peer.get_bpms(self._bpm_array_name)
             n_bpm = len(bpms)
 
         f0 = rf.frequency.get()

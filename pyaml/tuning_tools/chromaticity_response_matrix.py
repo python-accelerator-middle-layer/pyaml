@@ -6,16 +6,15 @@ import numpy as np
 from pydantic import ConfigDict
 
 from ..common.constants import Action
-from ..common.element import ElementConfigModel
-from .measurement_tool import MeasurementTool, MeasurementToolConfigModel
-from .response_matrix_data import ConfigModel as ResponseMatrixDataConfigModel
+from ..common.element import ElementSchema
+from ..validation import register_schema
+from .measurement_tool import MeasurementTool, MeasurementToolSchema
+from .response_matrix_data import ResponseMatrixDataSchema
 
 logger = logging.getLogger(__name__)
 
-PYAMLCLASS = "ChromaticityResponseMatrix"
 
-
-class ConfigModel(MeasurementToolConfigModel):
+class ChromaticityResponseMatrixSchema(MeasurementToolSchema):
     """
     Configuration model for Tune response matrix
 
@@ -29,17 +28,26 @@ class ConfigModel(MeasurementToolConfigModel):
         Delta strength used to get the response matrix
     """
 
-    model_config = ConfigDict(arbitrary_types_allowed=True, extra="forbid")
+    model_config = ConfigDict(extra="forbid")
 
     sextu_array_name: str
     chromaticity_name: str
     sextu_delta: float
 
 
+@register_schema(ChromaticityResponseMatrixSchema)
 class ChromaticityResponseMatrix(MeasurementTool):
-    def __init__(self, cfg: ConfigModel):
-        super().__init__(cfg.name)
-        self._cfg = cfg
+    def __init__(
+        self,
+        name: str,
+        sextu_array_name: str,
+        chromaticity_name: str,
+        sextu_delta: float,
+    ):
+        super().__init__(name)
+        self._sextu_array_name = (sextu_array_name,)
+        self._chromaticity_name = (chromaticity_name,)
+        self._sextu_delta = (sextu_delta,)
         self.aborted = False
 
     def measure(
@@ -117,8 +125,8 @@ class ChromaticityResponseMatrix(MeasurementTool):
         """
         # Get devices
         self.check_peer()
-        sextus = self._peer.get_magnets(self._cfg.sextu_array_name)
-        cm = self._peer.get_chromaticity_monitor(self._cfg.chromaticity_name)
+        sextus = self._peer.get_magnets(self._sextu_array_name)
+        cm = self._peer.get_chromaticity_monitor(self._chromaticity_name)
 
         self._register_callback(callback)
         self._init_measure("pyaml.tuning_tools.response_matrix_data")
@@ -131,11 +139,11 @@ class ChromaticityResponseMatrix(MeasurementTool):
             return False
         initial_chroma = cm.chromaticity.get()
 
-        delta = sextu_delta if sextu_delta is not None else self._cfg.sextu_delta
-        nb_step = n_step if n_step is not None else self._cfg.n_step
-        nb_meas = n_avg_meas if n_avg_meas is not None else self._cfg.n_avg_meas
-        sleep_step = sleep_between_step if sleep_between_step is not None else self._cfg.sleep_between_step
-        sleep_meas = sleep_between_meas if sleep_between_meas is not None else self._cfg.sleep_between_meas
+        delta = sextu_delta if sextu_delta is not None else self._sextu_delta
+        nb_step = n_step if n_step is not None else self._n_step
+        nb_meas = n_avg_meas if n_avg_meas is not None else self._n_avg_meas
+        sleep_step = sleep_between_step if sleep_between_step is not None else self._.sleep_between_step
+        sleep_meas = sleep_between_meas if sleep_between_meas is not None else self._sleep_between_meas
 
         err = None
         aborted = False
@@ -206,7 +214,7 @@ class ChromaticityResponseMatrix(MeasurementTool):
             logger.warning(f"{self.get_name()} : measurement aborted")
             return False
 
-        mat = ResponseMatrixDataConfigModel(
+        mat = ResponseMatrixDataSchema(
             matrix=chromamat.T.tolist(),
             variable_names=sextus.names(),
             observable_names=[cm.get_name() + ".x", cm.get_name() + ".y"],

@@ -109,7 +109,7 @@ select = [
     "I",  # isort-style import sorting
 ]
 ignore = [
-    "E203",  # so it's compatible with black-style formatting
+    "E203",  # so it"s compatible with black-style formatting
     "F401",  # unused imports
     "F841",  # unused local variables
     "E741",  # ambiguous variable name
@@ -126,3 +126,18 @@ skip-magic-trailing-comma = false
 python_version = "3.11"
 strict = false
 ignore_missing_imports = true
+
+[tool.pyaml.legacy_schema_mapping]
+"pyaml_cs_oa.controlsystem" = "pyaml.control.controlsystem.ControlSystemSchema"
+ "pyaml_cs_oa.epicsR" = "pyaml.control.deviceaccess.DeviceAccessSchema"
+ "pyaml_cs_oa.epicsRW" = "pyaml.control.deviceaccess.DeviceAccessSchema"
+ "pyaml_cs_oa.epicsW" = "pyaml.control.deviceaccess.DeviceAccessSchema"
+ "pyaml_cs_oa.scalar_aggregator" = "pyaml.control.deviceaccess.DeviceAccessSchema"
+ "pyaml_cs_oa.tangoR" = "pyaml.control.deviceaccess.DeviceAccessSchema"
+ "pyaml_cs_oa.tangoRW" = "pyaml.control.deviceaccess.DeviceAccessSchema"
+ "tango.pyaml.attribute" = "pyaml.control.deviceaccess.DeviceAccessSchema"
+ "tango.pyaml.attribute_list" = "pyaml.control.deviceaccess.DeviceAccessSchema"
+ "tango.pyaml.attribute_list_read_only" = "pyaml.control.deviceaccess.DeviceAccessSchema"
+ "tango.pyaml.attribute_read_only" = "pyaml.control.deviceaccess.DeviceAccessSchema"
+ "tango.pyaml.controlsystem" = "pyaml.control.controlsystem.ControlSystemSchema"
+ "tango.pyaml.multi_attribute" = "pyaml.control.deviceaccess.DeviceAccessSchema"

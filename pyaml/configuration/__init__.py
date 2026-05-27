@@ -1,5 +1,5 @@
 """
-PyAML configuration module
+PyAML configuration subpackage.
 """
 
 from .factory import Factory

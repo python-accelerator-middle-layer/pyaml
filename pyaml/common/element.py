@@ -1,47 +1,30 @@
+import warnings
 from typing import TYPE_CHECKING
 
-from pydantic import BaseModel, ConfigDict
+from pydantic import BaseModel, ConfigDict, Field, model_validator
 
 from .exception import PyAMLException
+from .utils import __pyaml_repr__
 
 if TYPE_CHECKING:
     from ..common.element_holder import ElementHolder
 
-
-def __pyaml_repr__(obj):
-    """
-    Returns a string representation of a pyaml object
-    """
-    if hasattr(obj, "_cfg"):
-        if isinstance(obj, Element):
-            return repr(obj._cfg).replace(
-                "ConfigModel(",
-                obj.__class__.__name__ + "(peer='" + obj.attached_to() + "', ",
-            )
-        else:
-            # no peer
-            return repr(obj._cfg).replace("ConfigModel", obj.__class__.__name__)
-    else:
-        # Object is not yet fully constructed
-        if isinstance(obj, Element):
-            return f"{obj.__class__.__name__}: {obj.get_name()}"
-        else:
-            return f"{obj.__class__.__name__}"
+from ..validation import ConfigurationSchema
 
 
-class ElementConfigModel(BaseModel):
+class ElementSchema(ConfigurationSchema):
     """
-    Base class for element configuration.
+    Base schema for element configuration.
 
     Parameters
     ----------
     name : str
-        The name of the PyAML element.
+        The name of the element.
     description : str, optional
         Description of the element.
     lattice_names : str or None, optional
         The name(s) of the associated element(s) in the lattice. By default,
-        the PyAML element name is used. lattice_name accept the following
+        the element name is used. lattice_name accept the following
         syntax:
         - list(name,[name]) : Element names
         - [name]@idx[,idx] : Element indices in the subset formed by name.
@@ -50,46 +33,88 @@ class ElementConfigModel(BaseModel):
         of lattice element is used for indexing.
     """
 
-    model_config = ConfigDict(arbitrary_types_allowed=True, extra="forbid")
+    model_config = ConfigDict(extra="forbid")
 
-    name: str
-    description: str | None = None
-    lattice_names: str | None = None
+    name: str = Field(description="Name of the element")
+    description: str | None = Field(default=None, description="Description of the element.")
+    lattice_names: str | None = Field(default=None, description="The name(s) of the associated element(s) in the lattice.")
+
+    # Validate the syntax for the lattice_names field
+    # This validation is currently very basic and can be improved
+    @model_validator(mode="after")
+    def validate_lattice_names(self):
+        v = self.lattice_names
+
+        if v is None:
+            return self
+
+        if v == self.name:
+            return self
+
+        if v.startswith("list(") and v.endswith(")"):
+            return self
+
+        if "@" in v:
+            return self
+
+        if "#" in v and ".." in v:
+            return self
+
+        raise ValueError("Invalid lattice_names syntax")
 
 
-class Element(object):
+class Element:
     """
     Class providing access to one element of a physical or simulated lattice
 
-    Attributes:
-      name: str
-        The unique name identifying the element in the configuration file
+    Parameters
+    ----------
+    name : str
+        The name of the element.
+    description : str, optional
+        Description of the element.
+    lattice_names : str or None, optional
+        The name(s) of the associated element(s) in the lattice. By default,
+        the element name is used. lattice_name accept the following
+        syntax:
+        - list(name,[name]) : Element names
+        - [name]@idx[,idx] : Element indices in the subset formed by name.
+        - [name]#start_idx..end_idx : Element range in the subset formed by name.
+        In the above syntax, if the name is not specficied, the whole set
+        of lattice element is used for indexing.
     """
 
-    def __init__(self, name: str):
+    def __init__(self, name: str, description: str | None = None, lattice_names: str | None = None):
         self._name: str = name
-        self._peer: "ElementHolder" = None  # Peer: ControlSystem, Simulator
+        self.description = description
 
-    def get_name(self) -> str:
-        """
-        Returns the name of the element
-        """
+        # If no lattice names are given put it to the name of the element
+        if lattice_names:
+            self._lattice_names = lattice_names
+        else:
+            self._lattice_names = self._name
+
+        self._peer: ElementHolder | None = None  # Peer: ControlSystem, Simulator
+
+    @property
+    def name(self) -> str:
         return self._name
 
-    def get_lattice_names(self) -> str:
-        """
-        Returns the name of associated lattice element(s)
-        """
-        if not hasattr(self, "_cfg"):
-            return self._name
-        else:
-            return self._cfg.lattice_names
+    # TODO: implement name setter -> this requires checking so the name is unique
 
-    def get_description(self) -> str:
-        """
-        Returns the description of the element
-        """
-        return self._cfg.description
+    def get_name(self) -> str:
+        warnings.warn(
+            "get_name() is deprecated; use .name instead",
+            DeprecationWarning,
+            stacklevel=2,
+        )
+        return self.name
+
+    @property
+    def lattice_names(self) -> str:
+        return self._lattice_names
+
+    # TODO: implement lattice_names setter -> this requires validation of the format
 
     def set_energy(self, E: float):
         """
@@ -115,7 +140,7 @@ class Element(object):
         to a simulator or to a control system
         """
         if self._peer is None:
-            raise PyAMLException(f"{str(self)} is not attachedto a control system or the a simulator")
+            raise PyAMLException(f"{str(self)} is not attached to a control system or a simulator.")
 
     @property
     def peer(self) -> "ElementHolder":

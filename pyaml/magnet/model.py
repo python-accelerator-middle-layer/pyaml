@@ -2,10 +2,17 @@ from abc import ABCMeta, abstractmethod
 
 import numpy as np
 import numpy.typing as npt
+from pydantic import BaseModel, ConfigDict
 
 from ..control.deviceaccess import DeviceAccess
+from ..validation import ConfigurationSchema, register_schema
 
 
+class MagnetModelSchema(ConfigurationSchema):
+    model_config = ConfigDict(extra="forbid")
+
+
+@register_schema(MagnetModelSchema)
 class MagnetModel(metaclass=ABCMeta):
     """
     Abstract class providing strength to coil current conversion

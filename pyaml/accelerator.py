@@ -2,25 +2,25 @@
 Accelerator class
 """
 
-from pydantic import BaseModel, ConfigDict, Field
+from typing import Literal
 
-from .arrays.array import ArrayConfig
-from .common.element import Element
+from pydantic import Field
+
+from .arrays.array import Array, ArraySchema
+from .common.element import Element, ElementSchema
 from .common.element_holder import ElementHolder
 from .common.exception import PyAMLConfigException
 from .configuration import ConfigurationManager, UnsupportedConfigurationRootError
 from .configuration.factory import Factory
-from .control.controlsystem import ControlSystem
-from .lattice.simulator import Simulator
+from .control.controlsystem import ControlSystem, ControlSystemSchema
+from .lattice.simulator import Simulator, SimulatorSchema
+from .validation import ConfigurationSchema, register_schema
 from .yellow_pages import YellowPages
 
-# Define the main class name for this module
-PYAMLCLASS = "Accelerator"
 
-
-class ConfigModel(BaseModel):
+class AcceleratorSchema(ConfigurationSchema):
     """
-    Configuration model for Accelerator
+    Schema for Accelerator
 
     Parameters
     ----------
@@ -50,70 +50,85 @@ class ConfigModel(BaseModel):
         Element list
     """
 
-    model_config = ConfigDict(arbitrary_types_allowed=True, extra="forbid")
-
     facility: str
     machine: str
+    description: str | None = None
     energy: float
     alphac: float | None = None
     harmonic_number: int | None = None
-    controls: list[ControlSystem] = None
-    simulators: list[Simulator] = None
     data_folder: str
-    description: str | None = None
-    arrays: list[ArrayConfig] = Field(default=None, repr=False)
-    devices: list[Element] = Field(repr=False)
+    controls: list[ControlSystemSchema] = Field(default_factory=list)
+    simulators: list[SimulatorSchema] = Field(default_factory=list)
+    arrays: list[ArraySchema] = Field(default_factory=list, repr=False)
+    devices: list[ElementSchema] = Field(default_factory=list, repr=False)
 
 
+@register_schema(AcceleratorSchema)
 class Accelerator(object):
     """PyAML top level class"""
 
-    def __init__(self, cfg: ConfigModel):
-        self._cfg = cfg
+    def __init__(
+        self,
+        facility: str,
+        machine: str,
+        energy: float,
+        data_folder: str,
+        alphac: float | None = None,
+        harmonic_number: int | None = None,
+        controls: list[ControlSystem] = None,
+        simulators: list[Simulator] = None,
+        description: str | None = None,
+        arrays: list[Array] | None = None,
+        devices: list[Element] | None = None,
+    ):
+        self.facility = facility
+        self.machine = machine
+
         __design = None
         __live = None
+
         self._controls: dict[str, ElementHolder] = {}
         self._simulators: dict[str, ElementHolder] = {}
 
-        if cfg.controls is not None:
-            for c in cfg.controls:
+        if controls is not None:
+            for c in controls:
                 if c.name() == "live":
                     self.__live = c
                 else:
                     # Add as dynamic attribute
                     setattr(self, c.name(), c)
-                c.fill_device(cfg.devices)
+                c.fill_device(devices)
                 c._peer = self
                 self._controls[c.name()] = c
 
-        if cfg.simulators is not None:
-            for s in cfg.simulators:
+        if simulators is not None:
+            for s in simulators:
                 if s.name() == "design":
                     self.__design = s
                 else:
                     # Add as dynamic attribute
                     setattr(self, s.name(), s)
-                s.fill_device(cfg.devices)
+                s.fill_device(devices)
                 s._peer = self
                 self._simulators[s.name()] = s
 
-        if cfg.arrays is not None:
-            for a in cfg.arrays:
-                if cfg.simulators is not None:
-                    for s in cfg.simulators:
+        if arrays is not None:
+            for a in arrays:
+                if simulators is not None:
+                    for s in simulators:
                         a.fill_array(s)
-                if cfg.controls is not None:
-                    for c in cfg.controls:
+                if controls is not None:
+                    for c in controls:
                         a.fill_array(c)
 
-        if cfg.energy is not None:
-            self.set_energy(cfg.energy)
+        if energy is not None:
+            self.set_energy(energy)
 
-        if cfg.alphac is not None:
-            self.set_mcf(cfg.alphac)
+        if alphac is not None:
+            self.set_mcf(alphac)
 
-        if cfg.harmonic_number is not None:
-            self.set_harmonic_number(cfg.harmonic_number)
+        if harmonic_number is not None:
+            self.set_harmonic_number(harmonic_number)
 
         self._yellow_pages = YellowPages(self)
 
@@ -121,12 +136,12 @@ class Accelerator(object):
 
     def _set_properties(self, method: str, value):
         # Sets global property
-        if self._cfg.simulators is not None:
-            for s in self._cfg.simulators:
+        if self._simulators is not None:
+            for s in self._simulators:
                 m = getattr(s, method)
                 m(value)
-        if self._cfg.controls is not None:
-            for c in self._cfg.controls:
+        if self._controls is not None:
+            for c in self._controls:
                 m = getattr(c, method)
                 m(value)
 
@@ -180,24 +195,24 @@ class Accelerator(object):
                 "Invalid device type, Element or sub classes of Element expected " + f"but got {dev.__class__.__name__}"
             )
 
-        self._cfg.devices.append(dev)
-        if self._cfg.controls is not None:
-            for c in self._cfg.controls:
+        self._devices.append(dev)
+        if self._controls is not None:
+            for c in self._controls:
                 c.fill_device([dev])
 
-        if self._cfg.simulators is not None:
-            for s in self._cfg.simulators:
+        if self._simulators is not None:
+            for s in self._simulators:
                 s.fill_device([dev])
 
     def post_init(self):
         """
         Method triggered after all initialisations are done
         """
-        if self._cfg.simulators is not None:
-            for s in self._cfg.simulators:
+        if self._simulators is not None:
+            for s in self._simulators:
                 s.post_init()
-        if self._cfg.controls is not None:
-            for c in self._cfg.controls:
+        if self._controls is not None:
+            for c in self._controls:
                 c.post_init()
 
     def get_description(self) -> str:

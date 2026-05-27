@@ -1,25 +1,23 @@
 import numpy as np
 from numpy.typing import NDArray
-from pydantic import BaseModel, ConfigDict
 
 from pyaml.bpm.bpm_model import BPMModel
 
 from ..common.element import __pyaml_repr__
-from ..control.deviceaccess import DeviceAccess
+from ..control.deviceaccess import DeviceAccess, DeviceAccessSchema
+from ..validation import register_schema
+from .bpm_model import BPMModelSchema
 
-# Define the main class name for this module
-PYAMLCLASS = "BPMSimpleModel"
 
-
-class ConfigModel(BaseModel):
+class BPMSimpleModelSchema(BPMModelSchema):
     """
     Configuration model for BPM simple model
 
     Parameters
     ----------
-    x_pos : DeviceAccess, optional
+    x_pos : DeviceAccessSchema, optional
         Horizontal position device
-    y_pos : DeviceAccess, optional
+    y_pos : DeviceAccessSchema, optional
         Vertical position device
     x_pos_index : int, optional
         Index in the array when specified, otherwise scalar
@@ -29,24 +27,30 @@ class ConfigModel(BaseModel):
         value is expected
     """
 
-    model_config = ConfigDict(arbitrary_types_allowed=True, extra="forbid")
-
-    x_pos: DeviceAccess | None
-    y_pos: DeviceAccess | None
+    x_pos: DeviceAccessSchema | None = None
+    y_pos: DeviceAccessSchema | None = None
     x_pos_index: int | None = None
     y_pos_index: int | None = None
 
 
+@register_schema(BPMSimpleModelSchema)
 class BPMSimpleModel(BPMModel):
     """
     Concrete implementation of BPMModel that simulates a BPM with tilt and
     offset values.
     """
 
-    def __init__(self, cfg: ConfigModel):
-        self._cfg = cfg
-        self.__x_pos = cfg.x_pos
-        self.__y_pos = cfg.y_pos
+    def __init__(
+        self,
+        x_pos: DeviceAccess | None,
+        y_pos: DeviceAccess | None,
+        x_pos_index: int | None = None,
+        y_pos_index: int | None = None,
+    ):
+        self.__x_pos = x_pos
+        self.__y_pos = y_pos
+        self.__x_pos_index = x_pos_index
+        self.__y_pos_index = y_pos_index
 
     def get_pos_devices(self) -> list[DeviceAccess | None]:
         """
@@ -92,7 +96,7 @@ class BPMSimpleModel(BPMModel):
         int
             Index in the array, None for a scalar value
         """
-        return self._cfg.x_pos_index
+        return self.__x_pos_index
 
     def y_pos_index(self) -> int | None:
         """
@@ -105,7 +109,8 @@ class BPMSimpleModel(BPMModel):
         int
             Index in the array, None for a scalar value
         """
-        return self._cfg.y_pos_index
+        return self.__.y_pos_index
 
-    def __repr__(self):
-        return __pyaml_repr__(self)
+
+#    def __repr__(self):
+#        return __pyaml_repr__(self)
