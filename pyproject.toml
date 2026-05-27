@@ -139,5 +139,5 @@ ignore_missing_imports = true
  "tango.pyaml.attribute_list" = "pyaml.control.deviceaccess.DeviceAccessSchema"
  "tango.pyaml.attribute_list_read_only" = "pyaml.control.deviceaccess.DeviceAccessSchema"
  "tango.pyaml.attribute_read_only" = "pyaml.control.deviceaccess.DeviceAccessSchema"
- "tango.pyaml.controlsystem" = "pyaml.control.deviceaccess.DeviceAccessSchema"
+ "tango.pyaml.controlsystem" = "pyaml.control.controlsystem.ControlSystemSchema"
  "tango.pyaml.multi_attribute" = "pyaml.control.deviceaccess.DeviceAccessSchema"
