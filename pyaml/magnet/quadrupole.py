@@ -4,13 +4,7 @@ from .magnet import Magnet, MagnetSchema
 from .model import MagnetModel
 
 
-class QuadrupoleSchema(MagnetSchema):
-    """Schema for Quadrupole magnet."""
-
-    ...
-
-
-@register_schema(QuadrupoleSchema)
+@register_schema(MagnetSchema)
 class Quadrupole(Magnet):
     """Quadrupole class"""
 

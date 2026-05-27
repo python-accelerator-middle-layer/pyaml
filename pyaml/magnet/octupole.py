@@ -4,13 +4,7 @@ from .magnet import Magnet, MagnetSchema
 from .model import MagnetModel
 
 
-class OctupoleSchema(MagnetSchema):
-    """Configuration model for Sextupole magnet."""
-
-    ...
-
-
-@register_schema(OctupoleSchema)
+@register_schema(MagnetSchema)
 class Octupole(Magnet):
     """Octupole class"""
 

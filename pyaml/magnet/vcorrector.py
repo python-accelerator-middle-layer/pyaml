@@ -6,13 +6,7 @@ from .magnet import Magnet, MagnetSchema
 from .model import MagnetModel
 
 
-class VCorrectorSchema(MagnetSchema):
-    """Configuration model for Vertical Corrector magnet."""
-
-    ...
-
-
-@register_schema(VCorrectorSchema)
+@register_schema(MagnetSchema)
 class VCorrector(Magnet):
     """Vertical Corrector class"""
 

@@ -7,13 +7,7 @@ from .magnet import Magnet, MagnetSchema
 from .model import MagnetModel
 
 
-class HCorrectorSchema(MagnetSchema):
-    """Configuration model for Horizontal Corrector magnet."""
-
-    ...
-
-
-@register_schema(HCorrectorSchema)
+@register_schema(MagnetSchema)
 class HCorrector(Magnet):
     """Horizontal Corrector class"""
 

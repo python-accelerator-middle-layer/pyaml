@@ -4,13 +4,7 @@ from .magnet import Magnet, MagnetSchema
 from .model import MagnetModel
 
 
-class SkewOctuSchema(MagnetSchema):
-    """Configuration model for SkewOctu magnet."""
-
-    ...
-
-
-@register_schema(SkewOctuSchema)
+@register_schema(MagnetSchema)
 class SkewOctu(Magnet):
     """SkewOctu class"""
 
