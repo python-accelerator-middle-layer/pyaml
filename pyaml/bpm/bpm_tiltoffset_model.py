@@ -8,11 +8,12 @@ from pyaml.bpm.bpm_simple_model import BPMSimpleModel, BPMSimpleModelSchema
 from ..common.element import __pyaml_repr__
 from ..control.deviceaccess import DeviceAccess, DeviceAccessSchema
 from ..validation import register_schema
+from .bpm_model import BPMModelSchema
 
 # TODO: Implepement indexed offset and tilt
 
 
-class BPMTiltOffsetModelSchema(BPMSimpleModelSchema):
+class BPMTiltOffsetModelSchema(BPMModelSchema):
     """
     Configuration model for BPM with tilt and offset
 
@@ -30,8 +31,10 @@ class BPMTiltOffsetModelSchema(BPMSimpleModelSchema):
         BPM tilt device
     """
 
-    model_config = ConfigDict(extra="forbid")
-
+    x_pos: DeviceAccessSchema | None = None
+    y_pos: DeviceAccessSchema | None = None
+    x_pos_index: int | None = None
+    y_pos_index: int | None = None
     x_offset: DeviceAccessSchema | None = None
     y_offset: DeviceAccessSchema | None = None
     tilt: DeviceAccessSchema | None = None

@@ -1,6 +1,5 @@
 import numpy as np
 from numpy.typing import NDArray
-from pydantic import BaseModel, ConfigDict
 
 from pyaml.bpm.bpm_model import BPMModel
 
@@ -28,10 +27,8 @@ class BPMSimpleModelSchema(BPMModelSchema):
         value is expected
     """
 
-    model_config = ConfigDict(extra="forbid")
-
-    x_pos: DeviceAccessSchema | None
-    y_pos: DeviceAccessSchema | None
+    x_pos: DeviceAccessSchema | None = None
+    y_pos: DeviceAccessSchema | None = None
     x_pos_index: int | None = None
     y_pos_index: int | None = None
 
