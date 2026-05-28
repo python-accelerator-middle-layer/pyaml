@@ -22,10 +22,10 @@ from pyaml.accelerator import ConfigModel as AcceleratorConfigModel
 from pyaml.arrays.magnet import ConfigModel as MagnetArrayConfigModel
 from pyaml.arrays.magnet import Magnet
 from pyaml.configuration import set_root_folder
-from pyaml.configuration.csvcurve import ConfigModel as CSVCureveConfig
-from pyaml.configuration.csvcurve import CSVCurve
 from pyaml.lattice.simulator import ConfigModel as SimulatorConfigModel
 from pyaml.lattice.simulator import Simulator
+from pyaml.magnet.csvcurve import ConfigModel as CSVCureveConfig
+from pyaml.magnet.csvcurve import CSVCurve
 from pyaml.magnet.linear_model import (
     ConfigModel as LinearMagnetModelConfig,
 )

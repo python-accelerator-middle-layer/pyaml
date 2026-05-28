@@ -5,9 +5,9 @@ from pydantic import BaseModel, ConfigDict
 from scipy.constants import speed_of_light
 
 from pyaml.configuration import get_root_folder
-from pyaml.configuration.curve import Curve
 from pyaml.control.deviceaccess import DeviceAccess
 from pyaml.control.readback_value import Value
+from pyaml.magnet.curve import Curve
 
 PYAMLCLASS: str = "AttributeWithTangoMockingBehaviour"
 
