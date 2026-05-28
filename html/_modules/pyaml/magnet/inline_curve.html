@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>pyaml.configuration.inline_curve &#8212; Python Accelerator Middle Layer 0.1.dev1+g1c944e39a documentation</title>
+    <title>pyaml.magnet.inline_curve &#8212; Python Accelerator Middle Layer 0.1.dev1+g3a714a876 documentation</title>
   
   
   
@@ -41,13 +41,13 @@
   <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=0790524f97105ba85085" />
 <link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=0790524f97105ba85085" />
 
-    <script src="../../../_static/documentation_options.js?v=f6da0453"></script>
+    <script src="../../../_static/documentation_options.js?v=766b4580"></script>
     <script src="../../../_static/doctools.js?v=9bcbadda"></script>
     <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="../../../_static/copybutton.js?v=fd10adb8"></script>
     <script src="../../../_static/design-tabs.js?v=f930bc37"></script>
-    <script>DOCUMENTATION_OPTIONS.pagename = '_modules/pyaml/configuration/inline_curve';</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '_modules/pyaml/magnet/inline_curve';</script>
     <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" />
@@ -125,8 +125,8 @@
       
     
     
-    <img src="../../../_static/logo.png" class="logo__image only-light" alt="Python Accelerator Middle Layer 0.1.dev1+g1c944e39a documentation - Home"/>
-    <img src="../../../_static/dark.png" class="logo__image only-dark pst-js-only" alt="Python Accelerator Middle Layer 0.1.dev1+g1c944e39a documentation - Home"/>
+    <img src="../../../_static/logo.png" class="logo__image only-light" alt="Python Accelerator Middle Layer 0.1.dev1+g3a714a876 documentation - Home"/>
+    <img src="../../../_static/dark.png" class="logo__image only-dark pst-js-only" alt="Python Accelerator Middle Layer 0.1.dev1+g3a714a876 documentation - Home"/>
   
   
 </a></div>
@@ -370,7 +370,7 @@
     
     <li class="breadcrumb-item"><a href="../../index.html" class="nav-link">Module code</a></li>
     
-    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">pyaml.configuration.inline_curve</span></li>
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">pyaml.magnet.inline_curve</span></li>
   </ul>
 </nav>
 </div>
@@ -387,7 +387,7 @@
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <h1>Source code for pyaml.configuration.inline_curve</h1><div class="highlight"><pre>
+  <h1>Source code for pyaml.magnet.inline_curve</h1><div class="highlight"><pre>
 <span></span><span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
@@ -402,7 +402,7 @@
 
 
 <div class="viewcode-block" id="ConfigModel">
-<a class="viewcode-back" href="../../../api/pyaml.configuration.inline_curve.html#pyaml.configuration.inline_curve.ConfigModel">[docs]</a>
+<a class="viewcode-back" href="../../../api/pyaml.magnet.inline_curve.html#pyaml.magnet.inline_curve.ConfigModel">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">ConfigModel</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Configuration model for inline curve</span>
@@ -420,7 +420,7 @@
 
 
 <div class="viewcode-block" id="InlineCurve">
-<a class="viewcode-back" href="../../../api/pyaml.configuration.inline_curve.html#pyaml.configuration.inline_curve.InlineCurve">[docs]</a>
+<a class="viewcode-back" href="../../../api/pyaml.magnet.inline_curve.html#pyaml.magnet.inline_curve.InlineCurve">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">InlineCurve</span><span class="p">(</span><span class="n">Curve</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Class for load CSV (x,y) curve</span>
@@ -436,7 +436,7 @@
             <span class="k">raise</span> <span class="n">PyAMLException</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;InlineCurve(mat=&#39;</span><span class="si">{</span><span class="n">cfg</span><span class="o">.</span><span class="n">mat</span><span class="si">}</span><span class="s2">&#39;,dtype=float): wrong shape (2,2) expected but got </span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">_s</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
 <div class="viewcode-block" id="InlineCurve.get_curve">
-<a class="viewcode-back" href="../../../api/pyaml.configuration.inline_curve.html#pyaml.configuration.inline_curve.InlineCurve.get_curve">[docs]</a>
+<a class="viewcode-back" href="../../../api/pyaml.magnet.inline_curve.html#pyaml.magnet.inline_curve.InlineCurve.get_curve">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">get_curve</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Get the curve data.</span>
