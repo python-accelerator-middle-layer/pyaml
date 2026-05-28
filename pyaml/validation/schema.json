@@ -1,0 +1,2354 @@
+{
+  "$defs": {
+    "Adapted_pyaml_cs_oa_controlsystem_ConfigModel": {
+      "additionalProperties": false,
+      "properties": {
+        "class": {
+          "const": "pyaml_cs_oa.controlsystem.OphydAsyncControlSystem",
+          "description": "Fully qualified class path.",
+          "title": "Class",
+          "type": "string"
+        },
+        "name": {
+          "title": "Name",
+          "type": "string"
+        },
+        "debug_level": {
+          "default": null,
+          "title": "Debug Level",
+          "type": [
+            "string",
+            "integer",
+            "null"
+          ]
+        },
+        "scalar_aggregator": {
+          "default": "pyaml_cs_oa.scalar_aggregator",
+          "title": "Scalar Aggregator",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "vector_aggregator": {
+          "default": null,
+          "title": "Vector Aggregator",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "prefix": {
+          "default": "",
+          "title": "Prefix",
+          "type": "string"
+        }
+      },
+      "required": [
+        "class",
+        "name"
+      ],
+      "title": "Adapted_pyaml_cs_oa_controlsystem_ConfigModel",
+      "type": "object"
+    },
+    "Adapted_pyaml_cs_oa_epicsRW_ConfigModel": {
+      "additionalProperties": false,
+      "properties": {
+        "class": {
+          "const": "pyaml_cs_oa.epicsRW.EpicsRW",
+          "description": "Fully qualified class path.",
+          "title": "Class",
+          "type": "string"
+        },
+        "read_pvname": {
+          "title": "Read Pvname",
+          "type": "string"
+        },
+        "write_pvname": {
+          "title": "Write Pvname",
+          "type": "string"
+        },
+        "timeout_ms": {
+          "default": 3000,
+          "title": "Timeout Ms",
+          "type": "integer"
+        },
+        "range": {
+          "anyOf": [
+            {
+              "items": {
+                "type": "number"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Range"
+        },
+        "unit": {
+          "default": "",
+          "title": "Unit",
+          "type": "string"
+        }
+      },
+      "required": [
+        "class",
+        "read_pvname",
+        "write_pvname"
+      ],
+      "title": "Adapted_pyaml_cs_oa_epicsRW_ConfigModel",
+      "type": "object"
+    },
+    "Adapted_pyaml_cs_oa_epicsR_ConfigModel": {
+      "additionalProperties": false,
+      "properties": {
+        "class": {
+          "const": "pyaml_cs_oa.epicsR.EpicsR",
+          "description": "Fully qualified class path.",
+          "title": "Class",
+          "type": "string"
+        },
+        "read_pvname": {
+          "title": "Read Pvname",
+          "type": "string"
+        },
+        "timeout_ms": {
+          "default": 3000,
+          "title": "Timeout Ms",
+          "type": "integer"
+        },
+        "unit": {
+          "default": "",
+          "title": "Unit",
+          "type": "string"
+        }
+      },
+      "required": [
+        "class",
+        "read_pvname"
+      ],
+      "title": "Adapted_pyaml_cs_oa_epicsR_ConfigModel",
+      "type": "object"
+    },
+    "Adapted_pyaml_cs_oa_epicsW_ConfigModel": {
+      "additionalProperties": false,
+      "properties": {
+        "class": {
+          "const": "pyaml_cs_oa.epicsW.EpicsW",
+          "description": "Fully qualified class path.",
+          "title": "Class",
+          "type": "string"
+        },
+        "write_pvname": {
+          "title": "Write Pvname",
+          "type": "string"
+        },
+        "timeout_ms": {
+          "default": 3000,
+          "title": "Timeout Ms",
+          "type": "integer"
+        },
+        "range": {
+          "anyOf": [
+            {
+              "items": {
+                "type": "number"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Range"
+        },
+        "unit": {
+          "default": "",
+          "title": "Unit",
+          "type": "string"
+        }
+      },
+      "required": [
+        "class",
+        "write_pvname"
+      ],
+      "title": "Adapted_pyaml_cs_oa_epicsW_ConfigModel",
+      "type": "object"
+    },
+    "Adapted_pyaml_cs_oa_scalar_aggregator_ConfigModel": {
+      "additionalProperties": false,
+      "properties": {
+        "class": {
+          "const": "pyaml_cs_oa.scalar_aggregator.OAScalarAggregator",
+          "description": "Fully qualified class path.",
+          "title": "Class",
+          "type": "string"
+        }
+      },
+      "required": [
+        "class"
+      ],
+      "title": "Adapted_pyaml_cs_oa_scalar_aggregator_ConfigModel",
+      "type": "object"
+    },
+    "Adapted_pyaml_cs_oa_tangoRW_ConfigModel": {
+      "additionalProperties": false,
+      "properties": {
+        "class": {
+          "const": "pyaml_cs_oa.tangoRW.TangoRW",
+          "description": "Fully qualified class path.",
+          "title": "Class",
+          "type": "string"
+        },
+        "attribute": {
+          "title": "Attribute",
+          "type": "string"
+        },
+        "timeout_ms": {
+          "default": 3000,
+          "title": "Timeout Ms",
+          "type": "integer"
+        },
+        "range": {
+          "anyOf": [
+            {
+              "items": {
+                "type": "number"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Range"
+        },
+        "unit": {
+          "default": "",
+          "title": "Unit",
+          "type": "string"
+        }
+      },
+      "required": [
+        "class",
+        "attribute"
+      ],
+      "title": "Adapted_pyaml_cs_oa_tangoRW_ConfigModel",
+      "type": "object"
+    },
+    "Adapted_pyaml_cs_oa_tangoR_ConfigModel": {
+      "additionalProperties": false,
+      "properties": {
+        "class": {
+          "const": "pyaml_cs_oa.tangoR.TangoR",
+          "description": "Fully qualified class path.",
+          "title": "Class",
+          "type": "string"
+        },
+        "attribute": {
+          "title": "Attribute",
+          "type": "string"
+        },
+        "timeout_ms": {
+          "default": 3000,
+          "title": "Timeout Ms",
+          "type": "integer"
+        },
+        "unit": {
+          "default": "",
+          "title": "Unit",
+          "type": "string"
+        }
+      },
+      "required": [
+        "class",
+        "attribute"
+      ],
+      "title": "Adapted_pyaml_cs_oa_tangoR_ConfigModel",
+      "type": "object"
+    },
+    "Adapted_tango_pyaml_controlsystem_ConfigModel": {
+      "additionalProperties": false,
+      "properties": {
+        "class": {
+          "const": "tango.pyaml.controlsystem.TangoControlSystem",
+          "description": "Fully qualified class path.",
+          "title": "Class",
+          "type": "string"
+        },
+        "name": {
+          "title": "Name",
+          "type": "string"
+        },
+        "debug_level": {
+          "default": null,
+          "title": "Debug Level",
+          "type": "string"
+        },
+        "scalar_aggregator": {
+          "default": "tango.pyaml.multi_attribute",
+          "title": "Scalar Aggregator",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "vector_aggregator": {
+          "default": null,
+          "title": "Vector Aggregator",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "tango_host": {
+          "default": null,
+          "title": "Tango Host",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "lazy_devices": {
+          "default": true,
+          "title": "Lazy Devices",
+          "type": "boolean"
+        },
+        "timeout_ms": {
+          "default": 3000,
+          "title": "Timeout Ms",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "class",
+        "name"
+      ],
+      "title": "Adapted_tango_pyaml_controlsystem_ConfigModel",
+      "type": "object"
+    },
+    "Adapted_tango_pyaml_multi_attribute_ConfigModel": {
+      "additionalProperties": false,
+      "properties": {
+        "class": {
+          "const": "tango.pyaml.multi_attribute.MultiAttribute",
+          "description": "Fully qualified class path.",
+          "title": "Class",
+          "type": "string"
+        },
+        "attributes": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Attributes",
+          "type": "array"
+        },
+        "name": {
+          "default": "",
+          "title": "Name",
+          "type": "string"
+        },
+        "unit": {
+          "default": "",
+          "title": "Unit",
+          "type": "string"
+        },
+        "range": {
+          "anyOf": [
+            {
+              "maxItems": 2,
+              "minItems": 2,
+              "prefixItems": [
+                {
+                  "type": [
+                    "number",
+                    "null"
+                  ]
+                },
+                {
+                  "type": [
+                    "number",
+                    "null"
+                  ]
+                }
+              ],
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Range"
+        }
+      },
+      "required": [
+        "class"
+      ],
+      "title": "Adapted_tango_pyaml_multi_attribute_ConfigModel",
+      "type": "object"
+    },
+    "ArraySchema": {
+      "additionalProperties": false,
+      "description": "Schema for configuration of array.\n\nParameters\n----------\nname : str\n    Name of the array\nelements : list[str]\n    List of element names",
+      "properties": {
+        "class": {
+          "description": "Fully qualified class path.",
+          "enum": [
+            "pyaml.arrays.array.Array",
+            "pyaml.arrays.bpm.BPM",
+            "pyaml.arrays.cfm_magnet.CombinedFunctionMagnet",
+            "pyaml.arrays.element.Element",
+            "pyaml.arrays.magnet.Magnet",
+            "pyaml.arrays.serialized_magnet.SerializedMagnets"
+          ],
+          "title": "Class",
+          "type": "string"
+        },
+        "name": {
+          "description": "Name of the array.",
+          "title": "Name",
+          "type": "string"
+        },
+        "elements": {
+          "description": "List of element names.",
+          "items": {
+            "type": "string"
+          },
+          "title": "Elements",
+          "type": "array"
+        }
+      },
+      "required": [
+        "class",
+        "name",
+        "elements"
+      ],
+      "title": "ArraySchema",
+      "type": "object"
+    },
+    "BPMModelSchema": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/BPMSimpleModelSchema"
+        },
+        {
+          "$ref": "#/$defs/BPMTiltOffsetModelSchema"
+        }
+      ],
+      "title": "BPMModelSchema"
+    },
+    "BPMSchema": {
+      "additionalProperties": false,
+      "description": "Configuration model for BPM element.\n\nAttributes\n----------\nmodel : BPMModel or None, optional\n    Object in charge of BPM modeling",
+      "properties": {
+        "class": {
+          "const": "pyaml.bpm.bpm.BPM",
+          "description": "Fully qualified class path.",
+          "title": "Class",
+          "type": "string"
+        },
+        "name": {
+          "description": "Name of the element",
+          "title": "Name",
+          "type": "string"
+        },
+        "description": {
+          "default": null,
+          "description": "Description of the element.",
+          "title": "Description",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "lattice_names": {
+          "default": null,
+          "description": "The name(s) of the associated element(s) in the lattice.",
+          "title": "Lattice Names",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "model": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/BPMModelSchema"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        }
+      },
+      "required": [
+        "class",
+        "name"
+      ],
+      "title": "BPMSchema",
+      "type": "object"
+    },
+    "BPMSimpleModelSchema": {
+      "additionalProperties": false,
+      "description": "Configuration model for BPM simple model\n\nParameters\n----------\nx_pos : DeviceAccessSchema, optional\n    Horizontal position device\ny_pos : DeviceAccessSchema, optional\n    Vertical position device\nx_pos_index : int, optional\n    Index in the array when specified, otherwise scalar\n    value is expected\ny_pos_index : int, optional\n    Index in the array when specified, otherwise scalar\n    value is expected",
+      "properties": {
+        "class": {
+          "const": "pyaml.bpm.bpm_simple_model.BPMSimpleModel",
+          "description": "Fully qualified class path.",
+          "title": "Class",
+          "type": "string"
+        },
+        "x_pos": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/DeviceAccessSchema"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "y_pos": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/DeviceAccessSchema"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "x_pos_index": {
+          "default": null,
+          "title": "X Pos Index",
+          "type": [
+            "integer",
+            "null"
+          ]
+        },
+        "y_pos_index": {
+          "default": null,
+          "title": "Y Pos Index",
+          "type": [
+            "integer",
+            "null"
+          ]
+        }
+      },
+      "required": [
+        "class"
+      ],
+      "title": "BPMSimpleModelSchema",
+      "type": "object"
+    },
+    "BPMTiltOffsetModelSchema": {
+      "additionalProperties": false,
+      "description": "Configuration model for BPM with tilt and offset\n\nParameters\n----------\nx_pos : DeviceAccess, optional\n    Horizontal position device\ny_pos : DeviceAccess, optional\n    Vertical position device\nx_offset : DeviceAccess, optional\n    Horizontal BPM offset device\ny_offset : DeviceAccess, optional\n    Vertical BPM offset device\ntilt : DeviceAccess, optional\n    BPM tilt device",
+      "properties": {
+        "class": {
+          "const": "pyaml.bpm.bpm_tiltoffset_model.BPMTiltOffsetModel",
+          "description": "Fully qualified class path.",
+          "title": "Class",
+          "type": "string"
+        },
+        "x_pos": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/DeviceAccessSchema"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "y_pos": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/DeviceAccessSchema"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "x_pos_index": {
+          "default": null,
+          "title": "X Pos Index",
+          "type": [
+            "integer",
+            "null"
+          ]
+        },
+        "y_pos_index": {
+          "default": null,
+          "title": "Y Pos Index",
+          "type": [
+            "integer",
+            "null"
+          ]
+        },
+        "x_offset": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/DeviceAccessSchema"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "y_offset": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/DeviceAccessSchema"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "tilt": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/DeviceAccessSchema"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        }
+      },
+      "required": [
+        "class"
+      ],
+      "title": "BPMTiltOffsetModelSchema",
+      "type": "object"
+    },
+    "BetatronTuneMonitorSchema": {
+      "additionalProperties": false,
+      "description": "Configuration schema for BetatronTuneMonitor\n\nParameters\n----------\ntune_h : DeviceAccessSchema, optional\n    Horizontal betatron tune device\ntune_v : DeviceAccessSchema, optional\n    Vertical betatron tune device",
+      "properties": {
+        "class": {
+          "const": "pyaml.diagnostics.tune_monitor.BetatronTuneMonitor",
+          "description": "Fully qualified class path.",
+          "title": "Class",
+          "type": "string"
+        },
+        "name": {
+          "description": "Name of the element",
+          "title": "Name",
+          "type": "string"
+        },
+        "description": {
+          "default": null,
+          "description": "Description of the element.",
+          "title": "Description",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "lattice_names": {
+          "default": null,
+          "description": "The name(s) of the associated element(s) in the lattice.",
+          "title": "Lattice Names",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "tune_h": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/DeviceAccessSchema"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "tune_v": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/DeviceAccessSchema"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "rf_plant_name": {
+          "default": null,
+          "title": "Rf Plant Name",
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      },
+      "required": [
+        "class",
+        "name"
+      ],
+      "title": "BetatronTuneMonitorSchema",
+      "type": "object"
+    },
+    "ChomaticityMonitorSchema": {
+      "additionalProperties": false,
+      "description": "Configuration model for Chromaticity Monitor.\n\nParameters\n----------\nbetatron_tune_name : str\n    Name of the diagnostic pyaml device for measuring the tune\nrf_plant_name : str\n    Name of main RF frequency plant\nbpm_array_name : str,optional\n    Name of main BPM array used for dispersion fit\ne_delta : float, optional\n    Default variation of relative energy during chromaticity measurement:\n    f0 - f0 * E_delta * alphac  < f_RF < f0 + f0 * E_delta * alphac,\n    by default 0.001\nmax_e_delta : float, optional\n    Maximum authorized variation of relative energy during chromaticity\n    measurement, by default 0.004\nfit_order : int, optional\n    Chomaticity fitting order, by default 1\nfit_disp_order : int, optional\n    Dispersion fitting order, by default 1\nfit_dispersion : bool, optional\n    Dispersion fitting, by default False",
+      "properties": {
+        "class": {
+          "const": "pyaml.tuning_tools.chromaticity_monitor.ChomaticityMonitor",
+          "description": "Fully qualified class path.",
+          "title": "Class",
+          "type": "string"
+        },
+        "name": {
+          "description": "Name of the element",
+          "title": "Name",
+          "type": "string"
+        },
+        "description": {
+          "default": null,
+          "description": "Description of the element.",
+          "title": "Description",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "lattice_names": {
+          "default": null,
+          "description": "The name(s) of the associated element(s) in the lattice.",
+          "title": "Lattice Names",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "n_step": {
+          "default": 1,
+          "title": "N Step",
+          "type": [
+            "integer",
+            "null"
+          ]
+        },
+        "sleep_between_step": {
+          "default": 0,
+          "title": "Sleep Between Step",
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "n_avg_meas": {
+          "default": 1,
+          "title": "N Avg Meas",
+          "type": [
+            "integer",
+            "null"
+          ]
+        },
+        "sleep_between_meas": {
+          "default": 0,
+          "title": "Sleep Between Meas",
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "betatron_tune_name": {
+          "title": "Betatron Tune Name",
+          "type": "string"
+        },
+        "rf_plant_name": {
+          "title": "Rf Plant Name",
+          "type": "string"
+        },
+        "bpm_array_name": {
+          "default": null,
+          "title": "Bpm Array Name",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "e_delta": {
+          "default": 0.001,
+          "title": "E Delta",
+          "type": "number"
+        },
+        "max_e_delta": {
+          "default": 0.004,
+          "title": "Max E Delta",
+          "type": "number"
+        },
+        "fit_order": {
+          "default": 1,
+          "title": "Fit Order",
+          "type": "integer"
+        },
+        "fit_disp_order": {
+          "default": 1,
+          "title": "Fit Disp Order",
+          "type": "integer"
+        },
+        "fit_dispersion": {
+          "default": false,
+          "title": "Fit Dispersion",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "class",
+        "name",
+        "betatron_tune_name",
+        "rf_plant_name"
+      ],
+      "title": "ChomaticityMonitorSchema",
+      "type": "object"
+    },
+    "ChromaticityResponseMatrixSchema": {
+      "additionalProperties": false,
+      "description": "Configuration model for Tune response matrix\n\nParameters\n----------\nsextu_array_name : str\n    Array name of sextupole used to adjust the chromaticity\nchromaticity_name : str\n    Name of the diagnostic chromaticy monitor\nsextu_delta : float\n    Delta strength used to get the response matrix",
+      "properties": {
+        "class": {
+          "const": "pyaml.tuning_tools.chromaticity_response_matrix.ChromaticityResponseMatrix",
+          "description": "Fully qualified class path.",
+          "title": "Class",
+          "type": "string"
+        },
+        "name": {
+          "description": "Name of the element",
+          "title": "Name",
+          "type": "string"
+        },
+        "description": {
+          "default": null,
+          "description": "Description of the element.",
+          "title": "Description",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "lattice_names": {
+          "default": null,
+          "description": "The name(s) of the associated element(s) in the lattice.",
+          "title": "Lattice Names",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "n_step": {
+          "default": 1,
+          "title": "N Step",
+          "type": [
+            "integer",
+            "null"
+          ]
+        },
+        "sleep_between_step": {
+          "default": 0,
+          "title": "Sleep Between Step",
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "n_avg_meas": {
+          "default": 1,
+          "title": "N Avg Meas",
+          "type": [
+            "integer",
+            "null"
+          ]
+        },
+        "sleep_between_meas": {
+          "default": 0,
+          "title": "Sleep Between Meas",
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "sextu_array_name": {
+          "title": "Sextu Array Name",
+          "type": "string"
+        },
+        "chromaticity_name": {
+          "title": "Chromaticity Name",
+          "type": "string"
+        },
+        "sextu_delta": {
+          "title": "Sextu Delta",
+          "type": "number"
+        }
+      },
+      "required": [
+        "class",
+        "name",
+        "sextu_array_name",
+        "chromaticity_name",
+        "sextu_delta"
+      ],
+      "title": "ChromaticityResponseMatrixSchema",
+      "type": "object"
+    },
+    "ChromaticitySchema": {
+      "additionalProperties": false,
+      "description": "Configuration model for Tune\n\nParameters\n----------\nsextu_array_name : str\n    Array name of sextu used to adjust the chromaticity\nchromaticty_monitor_name : str\n    Name of the diagnostic pyaml device for measuring the chromaticity\nresponse_matrix : str | ResponseMatrixData\n    filename or data of the chromaticity response matrix",
+      "properties": {
+        "class": {
+          "const": "pyaml.tuning_tools.chromaticity.Chromaticity",
+          "description": "Fully qualified class path.",
+          "title": "Class",
+          "type": "string"
+        },
+        "name": {
+          "description": "Name of the element",
+          "title": "Name",
+          "type": "string"
+        },
+        "description": {
+          "default": null,
+          "description": "Description of the element.",
+          "title": "Description",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "lattice_names": {
+          "default": null,
+          "description": "The name(s) of the associated element(s) in the lattice.",
+          "title": "Lattice Names",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "sextu_array_name": {
+          "title": "Sextu Array Name",
+          "type": "string"
+        },
+        "chromaticty_monitor_name": {
+          "title": "Chromaticty Monitor Name",
+          "type": "string"
+        },
+        "response_matrix": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "$ref": "#/$defs/ResponseMatrixDataSchema"
+            }
+          ],
+          "title": "Response Matrix"
+        }
+      },
+      "required": [
+        "class",
+        "name",
+        "sextu_array_name",
+        "chromaticty_monitor_name",
+        "response_matrix"
+      ],
+      "title": "ChromaticitySchema",
+      "type": "object"
+    },
+    "CombinedFunctionMagnetSchema": {
+      "additionalProperties": false,
+      "properties": {
+        "class": {
+          "const": "pyaml.magnet.cfm_magnet.CombinedFunctionMagnet",
+          "description": "Fully qualified class path.",
+          "title": "Class",
+          "type": "string"
+        },
+        "name": {
+          "description": "Name of the element",
+          "title": "Name",
+          "type": "string"
+        },
+        "description": {
+          "default": null,
+          "description": "Description of the element.",
+          "title": "Description",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "lattice_names": {
+          "default": null,
+          "description": "The name(s) of the associated element(s) in the lattice.",
+          "title": "Lattice Names",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "mapping": {
+          "items": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "title": "Mapping",
+          "type": "array"
+        },
+        "model": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/MagnetModelSchema"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        }
+      },
+      "required": [
+        "class",
+        "name",
+        "mapping"
+      ],
+      "title": "CombinedFunctionMagnetSchema",
+      "type": "object"
+    },
+    "ControlSystemSchema": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/Adapted_pyaml_cs_oa_controlsystem_ConfigModel"
+        },
+        {
+          "$ref": "#/$defs/Adapted_tango_pyaml_controlsystem_ConfigModel"
+        }
+      ],
+      "title": "ControlSystemSchema"
+    },
+    "CurveSchema": {
+      "additionalProperties": false,
+      "properties": {},
+      "title": "CurveSchema",
+      "type": "object"
+    },
+    "DeviceAccessSchema": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/Adapted_pyaml_cs_oa_epicsR_ConfigModel"
+        },
+        {
+          "$ref": "#/$defs/Adapted_pyaml_cs_oa_epicsRW_ConfigModel"
+        },
+        {
+          "$ref": "#/$defs/Adapted_pyaml_cs_oa_epicsW_ConfigModel"
+        },
+        {
+          "$ref": "#/$defs/Adapted_pyaml_cs_oa_scalar_aggregator_ConfigModel"
+        },
+        {
+          "$ref": "#/$defs/Adapted_pyaml_cs_oa_tangoR_ConfigModel"
+        },
+        {
+          "$ref": "#/$defs/Adapted_pyaml_cs_oa_tangoRW_ConfigModel"
+        },
+        {
+          "$ref": "#/$defs/tango__pyaml__attribute__Adapted_tango_pyaml_attribute_ConfigModel__1"
+        },
+        {
+          "$ref": "#/$defs/tango__pyaml__attribute__Adapted_tango_pyaml_attribute_ConfigModel__2"
+        },
+        {
+          "$ref": "#/$defs/tango__pyaml__attribute_list__Adapted_tango_pyaml_attribute_list_ConfigModel__1"
+        },
+        {
+          "$ref": "#/$defs/tango__pyaml__attribute_list__Adapted_tango_pyaml_attribute_list_ConfigModel__2"
+        },
+        {
+          "$ref": "#/$defs/Adapted_tango_pyaml_multi_attribute_ConfigModel"
+        }
+      ],
+      "title": "DeviceAccessSchema"
+    },
+    "DispersionSchema": {
+      "additionalProperties": false,
+      "description": "Configuration model for dispersion measurement\n\nParameters\n----------\nbpm_array_name : str\n    BPM array name\nrf_plant_name : str\n    RF plant name\nfrequency_delta : float\n    Frequency delta for measurement",
+      "properties": {
+        "class": {
+          "const": "pyaml.tuning_tools.dispersion.Dispersion",
+          "description": "Fully qualified class path.",
+          "title": "Class",
+          "type": "string"
+        },
+        "name": {
+          "description": "Name of the element",
+          "title": "Name",
+          "type": "string"
+        },
+        "description": {
+          "default": null,
+          "description": "Description of the element.",
+          "title": "Description",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "lattice_names": {
+          "default": null,
+          "description": "The name(s) of the associated element(s) in the lattice.",
+          "title": "Lattice Names",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "bpm_array_name": {
+          "title": "Bpm Array Name",
+          "type": "string"
+        },
+        "rf_plant_name": {
+          "title": "Rf Plant Name",
+          "type": "string"
+        },
+        "frequency_delta": {
+          "title": "Frequency Delta",
+          "type": "number"
+        }
+      },
+      "required": [
+        "class",
+        "name",
+        "bpm_array_name",
+        "rf_plant_name",
+        "frequency_delta"
+      ],
+      "title": "DispersionSchema",
+      "type": "object"
+    },
+    "ElementSchema": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/BPMSchema"
+        },
+        {
+          "$ref": "#/$defs/BetatronTuneMonitorSchema"
+        },
+        {
+          "$ref": "#/$defs/CombinedFunctionMagnetSchema"
+        },
+        {
+          "$ref": "#/$defs/MagnetSchema"
+        },
+        {
+          "$ref": "#/$defs/SerializedMagnetsSchema"
+        },
+        {
+          "$ref": "#/$defs/RFPlantSchema"
+        },
+        {
+          "$ref": "#/$defs/RFTransmitterSchema"
+        },
+        {
+          "$ref": "#/$defs/ChromaticitySchema"
+        },
+        {
+          "$ref": "#/$defs/ChomaticityMonitorSchema"
+        },
+        {
+          "$ref": "#/$defs/ChromaticityResponseMatrixSchema"
+        },
+        {
+          "$ref": "#/$defs/DispersionSchema"
+        },
+        {
+          "$ref": "#/$defs/OrbitSchema"
+        },
+        {
+          "$ref": "#/$defs/OrbitResponseMatrixSchema"
+        },
+        {
+          "$ref": "#/$defs/TuneSchema"
+        },
+        {
+          "$ref": "#/$defs/TuneResponseMatrixSchema"
+        }
+      ],
+      "description": "Base schema for element configuration.\n\nParameters\n----------\nname : str\n    The name of the element.\ndescription : str, optional\n    Description of the element.\nlattice_names : str or None, optional\n    The name(s) of the associated element(s) in the lattice. By default,\n    the element name is used. lattice_name accept the following\n    syntax:\n    - list(name,[name]) : Element names\n    - [name]@idx[,idx] : Element indices in the subset formed by name.\n    - [name]#start_idx..end_idx : Element range in the subset formed by name.\n    In the above syntax, if the name is not specficied, the whole set\n    of lattice element is used for indexing.",
+      "title": "ElementSchema"
+    },
+    "LatticeElementsLinkerSchema": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/PyAtAttributeElementsLinkerSchema"
+        }
+      ],
+      "description": "Base configuration model for linker definitions.\n\nThis class defines the configuration structure used to instantiate\na specific linking strategy. Each concrete implementation of a\n`LatticeElementsLinker` may define its own subclass extending this model\nto include additional configuration parameters.\n\nAttributes\n----------\nmodel_config : ConfigDict\n    Pydantic configuration allowing arbitrary field types and forbidding\n    unexpected extra keys.",
+      "title": "LatticeElementsLinkerSchema"
+    },
+    "LinearMagnetModelSchema": {
+      "additionalProperties": false,
+      "description": "Linear magnet model.\n\nParameters\n----------\ncurve : Curve or None, optional\n    Curve object used for interpolation. By default,\n    identity curve is used.\npowerconverter : DeviceAccess or None, optional\n    Power converter device to apply currrent\ncalibration_factor : float, optional\n    Correction factor applied to the curve. Default: 1.0\ncalibration_offset : float, optional\n    Correction offset applied to the curve. Default: 0.0\ncrosstalk : float, optional\n    Crosstalk factor. Default: 1.0\nunit : str\n    Unit of the strength (i.e. 1/m or m-1)",
+      "properties": {
+        "class": {
+          "const": "pyaml.magnet.linear_model.LinearMagnetModel",
+          "description": "Fully qualified class path.",
+          "title": "Class",
+          "type": "string"
+        },
+        "curve": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/CurveSchema"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "powerconverter": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/DeviceAccessSchema"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "calibration_factor": {
+          "default": 1.0,
+          "title": "Calibration Factor",
+          "type": "number"
+        },
+        "calibration_offset": {
+          "default": 0.0,
+          "title": "Calibration Offset",
+          "type": "number"
+        },
+        "crosstalk": {
+          "default": 1.0,
+          "title": "Crosstalk",
+          "type": "number"
+        },
+        "unit": {
+          "default": "",
+          "title": "Unit",
+          "type": "string"
+        }
+      },
+      "required": [
+        "class"
+      ],
+      "title": "LinearMagnetModelSchema",
+      "type": "object"
+    },
+    "MagnetModelSchema": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/LinearMagnetModelSchema"
+        }
+      ],
+      "title": "MagnetModelSchema"
+    },
+    "MagnetSchema": {
+      "additionalProperties": false,
+      "description": "Configuration model for magnet elements.\n\nAttributes\n----------\nmodel : MagnetModelSchema or None, optional\n    Schema for object in charge of converting magnet strengths to power supply values",
+      "properties": {
+        "class": {
+          "description": "Fully qualified class path.",
+          "enum": [
+            "pyaml.magnet.hcorrector.HCorrector",
+            "pyaml.magnet.magnet.Magnet",
+            "pyaml.magnet.octupole.Octupole",
+            "pyaml.magnet.quadrupole.Quadrupole",
+            "pyaml.magnet.sextupole.Sextupole",
+            "pyaml.magnet.skewoctu.SkewOctu",
+            "pyaml.magnet.skewquad.SkewQuad",
+            "pyaml.magnet.skewsext.SkewSext",
+            "pyaml.magnet.vcorrector.VCorrector"
+          ],
+          "title": "Class",
+          "type": "string"
+        },
+        "name": {
+          "description": "Name of the element",
+          "title": "Name",
+          "type": "string"
+        },
+        "description": {
+          "default": null,
+          "description": "Description of the element.",
+          "title": "Description",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "lattice_names": {
+          "default": null,
+          "description": "The name(s) of the associated element(s) in the lattice.",
+          "title": "Lattice Names",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "model": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/MagnetModelSchema"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Schema for object in charge of converting magnet strengths to power supply values"
+        }
+      },
+      "required": [
+        "class",
+        "name"
+      ],
+      "title": "MagnetSchema",
+      "type": "object"
+    },
+    "OrbitResponseMatrixDataSchema": {
+      "additionalProperties": false,
+      "description": "Configuration model for orbit response matrix\n\nParameters\n----------\nrf_response : list[float], optional\n    RF response data\nvariable_names : list[str], optional\n    Vaiable plane names, basically the plane of the actuators\nobservable_names : list[str], optional\n    Observable plane names, basically the plane of measurements",
+      "properties": {
+        "class": {
+          "const": "pyaml.tuning_tools.orbit_response_matrix_data.OrbitResponseMatrixData",
+          "description": "Fully qualified class path.",
+          "title": "Class",
+          "type": "string"
+        },
+        "matrix": {
+          "items": {
+            "items": {
+              "type": "number"
+            },
+            "type": "array"
+          },
+          "title": "Matrix",
+          "type": "array"
+        },
+        "variable_names": {
+          "anyOf": [
+            {
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Variable Names"
+        },
+        "observable_names": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Observable Names",
+          "type": "array"
+        },
+        "rf_response": {
+          "anyOf": [
+            {
+              "items": {
+                "type": "number"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Rf Response"
+        },
+        "variable_planes": {
+          "anyOf": [
+            {
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Variable Planes"
+        },
+        "observable_planes": {
+          "anyOf": [
+            {
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Observable Planes"
+        }
+      },
+      "required": [
+        "class",
+        "matrix",
+        "variable_names",
+        "observable_names"
+      ],
+      "title": "OrbitResponseMatrixDataSchema",
+      "type": "object"
+    },
+    "OrbitResponseMatrixSchema": {
+      "additionalProperties": false,
+      "description": "Configuration model for orbit response matrix measurement\n\nParameters\n----------\nbpm_array_name : str\n    BPM array name\nhcorr_array_name : str\n    Horizontal corrector array name\nvcorr_array_name : str\n    Vertical corrector array name\ncorrector_delta : float\n    Corrector delta for measurement",
+      "properties": {
+        "class": {
+          "const": "pyaml.tuning_tools.orbit_response_matrix.OrbitResponseMatrix",
+          "description": "Fully qualified class path.",
+          "title": "Class",
+          "type": "string"
+        },
+        "name": {
+          "description": "Name of the element",
+          "title": "Name",
+          "type": "string"
+        },
+        "description": {
+          "default": null,
+          "description": "Description of the element.",
+          "title": "Description",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "lattice_names": {
+          "default": null,
+          "description": "The name(s) of the associated element(s) in the lattice.",
+          "title": "Lattice Names",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "n_step": {
+          "default": 1,
+          "title": "N Step",
+          "type": [
+            "integer",
+            "null"
+          ]
+        },
+        "sleep_between_step": {
+          "default": 0,
+          "title": "Sleep Between Step",
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "n_avg_meas": {
+          "default": 1,
+          "title": "N Avg Meas",
+          "type": [
+            "integer",
+            "null"
+          ]
+        },
+        "sleep_between_meas": {
+          "default": 0,
+          "title": "Sleep Between Meas",
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "bpm_array_name": {
+          "title": "Bpm Array Name",
+          "type": "string"
+        },
+        "hcorr_array_name": {
+          "title": "Hcorr Array Name",
+          "type": "string"
+        },
+        "vcorr_array_name": {
+          "title": "Vcorr Array Name",
+          "type": "string"
+        },
+        "corrector_delta": {
+          "title": "Corrector Delta",
+          "type": "number"
+        }
+      },
+      "required": [
+        "class",
+        "name",
+        "bpm_array_name",
+        "hcorr_array_name",
+        "vcorr_array_name",
+        "corrector_delta"
+      ],
+      "title": "OrbitResponseMatrixSchema",
+      "type": "object"
+    },
+    "OrbitSchema": {
+      "additionalProperties": false,
+      "properties": {
+        "class": {
+          "const": "pyaml.tuning_tools.orbit.Orbit",
+          "description": "Fully qualified class path.",
+          "title": "Class",
+          "type": "string"
+        },
+        "name": {
+          "description": "Name of the element",
+          "title": "Name",
+          "type": "string"
+        },
+        "description": {
+          "default": null,
+          "description": "Description of the element.",
+          "title": "Description",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "lattice_names": {
+          "default": null,
+          "description": "The name(s) of the associated element(s) in the lattice.",
+          "title": "Lattice Names",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "bpm_array_name": {
+          "title": "Bpm Array Name",
+          "type": "string"
+        },
+        "hcorr_array_name": {
+          "title": "Hcorr Array Name",
+          "type": "string"
+        },
+        "vcorr_array_name": {
+          "title": "Vcorr Array Name",
+          "type": "string"
+        },
+        "rf_plant_name": {
+          "default": null,
+          "title": "Rf Plant Name",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "singular_values": {
+          "default": null,
+          "title": "Singular Values",
+          "type": [
+            "integer",
+            "null"
+          ]
+        },
+        "singular_values_H": {
+          "default": null,
+          "title": "Singular Values H",
+          "type": [
+            "integer",
+            "null"
+          ]
+        },
+        "singular_values_V": {
+          "default": null,
+          "title": "Singular Values V",
+          "type": [
+            "integer",
+            "null"
+          ]
+        },
+        "virtual_target": {
+          "default": 0,
+          "title": "Virtual Target",
+          "type": "number"
+        },
+        "response_matrix": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "$ref": "#/$defs/OrbitResponseMatrixDataSchema"
+            }
+          ],
+          "title": "Response Matrix"
+        }
+      },
+      "required": [
+        "class",
+        "name",
+        "bpm_array_name",
+        "hcorr_array_name",
+        "vcorr_array_name",
+        "response_matrix"
+      ],
+      "title": "OrbitSchema",
+      "type": "object"
+    },
+    "PyAtAttributeElementsLinkerSchema": {
+      "additionalProperties": false,
+      "description": "Base configuration model for linker definitions.\n\nThis class defines the configuration structure used to instantiate\na specific linking strategy. Each concrete implementation of a\n`LatticeElementsLinker` may define its own subclass extending this model\nto include additional configuration parameters.\n\nAttributes\n----------\nmodel_config : ConfigDict\n    Pydantic configuration allowing arbitrary field types and forbidding\n    unexpected extra keys.",
+      "properties": {
+        "class": {
+          "const": "pyaml.lattice.attribute_linker.PyAtAttributeElementsLinker",
+          "description": "Fully qualified class path.",
+          "title": "Class",
+          "type": "string"
+        },
+        "attribute_name": {
+          "title": "Attribute Name",
+          "type": "string"
+        }
+      },
+      "required": [
+        "class",
+        "attribute_name"
+      ],
+      "title": "PyAtAttributeElementsLinkerSchema",
+      "type": "object"
+    },
+    "RFPlantSchema": {
+      "additionalProperties": false,
+      "properties": {
+        "class": {
+          "const": "pyaml.rf.rf_plant.RFPlant",
+          "description": "Fully qualified class path.",
+          "title": "Class",
+          "type": "string"
+        },
+        "name": {
+          "description": "Name of the element",
+          "title": "Name",
+          "type": "string"
+        },
+        "description": {
+          "default": null,
+          "description": "Description of the element.",
+          "title": "Description",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "lattice_names": {
+          "default": null,
+          "description": "The name(s) of the associated element(s) in the lattice.",
+          "title": "Lattice Names",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "masterclock": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/DeviceAccessSchema"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "transmitters": {
+          "anyOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/RFTransmitterSchema"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Transmitters"
+        }
+      },
+      "required": [
+        "class",
+        "name"
+      ],
+      "title": "RFPlantSchema",
+      "type": "object"
+    },
+    "RFTransmitterSchema": {
+      "additionalProperties": false,
+      "description": "Configuration model for RF Transmitter.\n\nAttributes\n----------\nvoltage : DeviceAccess or None, optional\n    Device to apply cavity voltage\nphase : DeviceAccess or None, optional\n    Device to apply cavity phase\ncavities : list[str]\n    List of cavity names connected to this transmitter\nharmonic : float, optional\n    Harmonic frequency ratio, 1.0 for main frequency, by default 1.0\ndistribution : float, optional\n    RF distribution (Part of the total RF voltage powered by this transmitter),\n    by default 1.0",
+      "properties": {
+        "class": {
+          "const": "pyaml.rf.rf_transmitter.RFTransmitter",
+          "description": "Fully qualified class path.",
+          "title": "Class",
+          "type": "string"
+        },
+        "name": {
+          "description": "Name of the element",
+          "title": "Name",
+          "type": "string"
+        },
+        "description": {
+          "default": null,
+          "description": "Description of the element.",
+          "title": "Description",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "lattice_names": {
+          "default": null,
+          "description": "The name(s) of the associated element(s) in the lattice.",
+          "title": "Lattice Names",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "voltage": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/DeviceAccessSchema"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "phase": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/DeviceAccessSchema"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "cavities": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Cavities",
+          "type": "array"
+        },
+        "harmonic": {
+          "default": 1.0,
+          "title": "Harmonic",
+          "type": "number"
+        },
+        "distribution": {
+          "default": 1.0,
+          "title": "Distribution",
+          "type": "number"
+        }
+      },
+      "required": [
+        "class",
+        "name",
+        "cavities"
+      ],
+      "title": "RFTransmitterSchema",
+      "type": "object"
+    },
+    "ResponseMatrixDataSchema": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/OrbitResponseMatrixDataSchema"
+        }
+      ],
+      "description": "Base configuration model for response matrix\n\nParameters\n----------\nmatrix : list[list[float]]\n    Response matrix data (rows for observable, cols for variables)\nvariable_names : list[str], optional\n    Variable names, basically the actuators\nobservables_names : list[str]\n    Observable names, basically the measurements",
+      "title": "ResponseMatrixDataSchema"
+    },
+    "SerializedMagnetsSchema": {
+      "additionalProperties": false,
+      "properties": {
+        "class": {
+          "const": "pyaml.magnet.serialized_magnet.SerializedMagnets",
+          "description": "Fully qualified class path.",
+          "title": "Class",
+          "type": "string"
+        },
+        "name": {
+          "description": "Name of the element",
+          "title": "Name",
+          "type": "string"
+        },
+        "description": {
+          "default": null,
+          "description": "Description of the element.",
+          "title": "Description",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "lattice_names": {
+          "default": null,
+          "description": "The name(s) of the associated element(s) in the lattice.",
+          "title": "Lattice Names",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "function": {
+          "title": "Function",
+          "type": "string"
+        },
+        "elements": {
+          "anyOf": [
+            {
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            },
+            {
+              "type": "string"
+            }
+          ],
+          "title": "Elements"
+        },
+        "model": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/MagnetModelSchema"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        }
+      },
+      "required": [
+        "class",
+        "name",
+        "function",
+        "elements"
+      ],
+      "title": "SerializedMagnetsSchema",
+      "type": "object"
+    },
+    "SimulatorSchema": {
+      "additionalProperties": false,
+      "description": "Configuration model for Simulator\n\nParameters\n----------\nname : str\n    Simulator name\nlattice : str\n    AT lattice file\nmat_key : str, optional\n    AT lattice ring name\nlinker : LatticeElementsLinkerSchema, optional\n    The linker configuration model\ndescription : str , optional\n    Simulator description",
+      "properties": {
+        "class": {
+          "const": "pyaml.lattice.simulator.Simulator",
+          "description": "Fully qualified class path.",
+          "title": "Class",
+          "type": "string"
+        },
+        "name": {
+          "title": "Name",
+          "type": "string"
+        },
+        "lattice": {
+          "title": "Lattice",
+          "type": "string"
+        },
+        "mat_key": {
+          "default": null,
+          "title": "Mat Key",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "linker": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/LatticeElementsLinkerSchema"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "description": {
+          "default": null,
+          "title": "Description",
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      },
+      "required": [
+        "class",
+        "name",
+        "lattice"
+      ],
+      "title": "SimulatorSchema",
+      "type": "object"
+    },
+    "TuneResponseMatrixSchema": {
+      "additionalProperties": false,
+      "description": "Configuration model for Tune response matrix\n\nParameters\n----------\nquad_array_name : str\n    Array name of quad used to adjust the tune\nbetatron_tune_name : str\n    Name of the diagnostic pyaml device for measuring the tune\nquad_delta : float\n    Delta strength used to get the response matrix",
+      "properties": {
+        "class": {
+          "const": "pyaml.tuning_tools.tune_response_matrix.TuneResponseMatrix",
+          "description": "Fully qualified class path.",
+          "title": "Class",
+          "type": "string"
+        },
+        "name": {
+          "description": "Name of the element",
+          "title": "Name",
+          "type": "string"
+        },
+        "description": {
+          "default": null,
+          "description": "Description of the element.",
+          "title": "Description",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "lattice_names": {
+          "default": null,
+          "description": "The name(s) of the associated element(s) in the lattice.",
+          "title": "Lattice Names",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "n_step": {
+          "default": 1,
+          "title": "N Step",
+          "type": [
+            "integer",
+            "null"
+          ]
+        },
+        "sleep_between_step": {
+          "default": 0,
+          "title": "Sleep Between Step",
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "n_avg_meas": {
+          "default": 1,
+          "title": "N Avg Meas",
+          "type": [
+            "integer",
+            "null"
+          ]
+        },
+        "sleep_between_meas": {
+          "default": 0,
+          "title": "Sleep Between Meas",
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "quad_array_name": {
+          "title": "Quad Array Name",
+          "type": "string"
+        },
+        "betatron_tune_name": {
+          "title": "Betatron Tune Name",
+          "type": "string"
+        },
+        "quad_delta": {
+          "title": "Quad Delta",
+          "type": "number"
+        }
+      },
+      "required": [
+        "class",
+        "name",
+        "quad_array_name",
+        "betatron_tune_name",
+        "quad_delta"
+      ],
+      "title": "TuneResponseMatrixSchema",
+      "type": "object"
+    },
+    "TuneSchema": {
+      "additionalProperties": false,
+      "description": "Configuration model for Tune\n\nParameters\n----------\nquad_array_name : str\n    Array name of quad used to adjust the tune\nbetatron_tune_name : str\n    Name of the diagnostic pyaml device for measuring the tune\nquad_delta : float\n    Delta strength used to get the response matrix",
+      "properties": {
+        "class": {
+          "const": "pyaml.tuning_tools.tune.Tune",
+          "description": "Fully qualified class path.",
+          "title": "Class",
+          "type": "string"
+        },
+        "name": {
+          "description": "Name of the element",
+          "title": "Name",
+          "type": "string"
+        },
+        "description": {
+          "default": null,
+          "description": "Description of the element.",
+          "title": "Description",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "lattice_names": {
+          "default": null,
+          "description": "The name(s) of the associated element(s) in the lattice.",
+          "title": "Lattice Names",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "quad_array_name": {
+          "title": "Quad Array Name",
+          "type": "string"
+        },
+        "betatron_tune_name": {
+          "title": "Betatron Tune Name",
+          "type": "string"
+        },
+        "response_matrix": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "$ref": "#/$defs/ResponseMatrixDataSchema"
+            }
+          ],
+          "title": "Response Matrix"
+        }
+      },
+      "required": [
+        "class",
+        "name",
+        "quad_array_name",
+        "betatron_tune_name",
+        "response_matrix"
+      ],
+      "title": "TuneSchema",
+      "type": "object"
+    },
+    "tango__pyaml__attribute__Adapted_tango_pyaml_attribute_ConfigModel__1": {
+      "additionalProperties": false,
+      "properties": {
+        "class": {
+          "const": "tango.pyaml.attribute_read_only.AttributeReadOnly",
+          "description": "Fully qualified class path.",
+          "title": "Class",
+          "type": "string"
+        },
+        "attribute": {
+          "title": "Attribute",
+          "type": "string"
+        },
+        "unit": {
+          "default": "",
+          "title": "Unit",
+          "type": "string"
+        },
+        "range": {
+          "anyOf": [
+            {
+              "maxItems": 2,
+              "minItems": 2,
+              "prefixItems": [
+                {
+                  "type": [
+                    "number",
+                    "null"
+                  ]
+                },
+                {
+                  "type": [
+                    "number",
+                    "null"
+                  ]
+                }
+              ],
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Range"
+        }
+      },
+      "required": [
+        "class",
+        "attribute"
+      ],
+      "title": "Adapted_tango_pyaml_attribute_ConfigModel",
+      "type": "object"
+    },
+    "tango__pyaml__attribute__Adapted_tango_pyaml_attribute_ConfigModel__2": {
+      "additionalProperties": false,
+      "properties": {
+        "class": {
+          "const": "tango.pyaml.attribute.Attribute",
+          "description": "Fully qualified class path.",
+          "title": "Class",
+          "type": "string"
+        },
+        "attribute": {
+          "title": "Attribute",
+          "type": "string"
+        },
+        "unit": {
+          "default": "",
+          "title": "Unit",
+          "type": "string"
+        },
+        "range": {
+          "anyOf": [
+            {
+              "maxItems": 2,
+              "minItems": 2,
+              "prefixItems": [
+                {
+                  "type": [
+                    "number",
+                    "null"
+                  ]
+                },
+                {
+                  "type": [
+                    "number",
+                    "null"
+                  ]
+                }
+              ],
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Range"
+        }
+      },
+      "required": [
+        "class",
+        "attribute"
+      ],
+      "title": "Adapted_tango_pyaml_attribute_ConfigModel",
+      "type": "object"
+    },
+    "tango__pyaml__attribute_list__Adapted_tango_pyaml_attribute_list_ConfigModel__1": {
+      "additionalProperties": false,
+      "properties": {
+        "class": {
+          "const": "tango.pyaml.attribute_list.AttributeList",
+          "description": "Fully qualified class path.",
+          "title": "Class",
+          "type": "string"
+        },
+        "attributes": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Attributes",
+          "type": "array"
+        },
+        "name": {
+          "default": "",
+          "title": "Name",
+          "type": "string"
+        },
+        "unit": {
+          "default": "",
+          "title": "Unit",
+          "type": "string"
+        }
+      },
+      "required": [
+        "class",
+        "attributes"
+      ],
+      "title": "Adapted_tango_pyaml_attribute_list_ConfigModel",
+      "type": "object"
+    },
+    "tango__pyaml__attribute_list__Adapted_tango_pyaml_attribute_list_ConfigModel__2": {
+      "additionalProperties": false,
+      "properties": {
+        "class": {
+          "const": "tango.pyaml.attribute_list_read_only.AttributeListReadOnly",
+          "description": "Fully qualified class path.",
+          "title": "Class",
+          "type": "string"
+        },
+        "attributes": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Attributes",
+          "type": "array"
+        },
+        "name": {
+          "default": "",
+          "title": "Name",
+          "type": "string"
+        },
+        "unit": {
+          "default": "",
+          "title": "Unit",
+          "type": "string"
+        }
+      },
+      "required": [
+        "class",
+        "attributes"
+      ],
+      "title": "Adapted_tango_pyaml_attribute_list_ConfigModel",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "description": "Schema for Accelerator\n\nParameters\n----------\nfacility : str\n    Facility name\nmachine : str\n    Accelerator name\nenergy : float\n    Accelerator nominal energy. For ramped machine,\n    this value can be dynamically set\nalphac : float, optional\n    Moment compaction factor.\nharmonic_number: int, optional\n    Number of bucket\ncontrols : list[ControlSystem], optional\n    List of control system used. An accelerator\n    can access several control systems\nsimulators : list[Simulator], optional\n    Simulator list\ndata_folder : str\n    Data folder\narrays : list[ArrayConfig], optional\n    Element family\ndescription : str , optional\n    Acceleration description\ndevices : list[.common.element.Element]\n    Element list",
+  "properties": {
+    "class": {
+      "const": "pyaml.accelerator.Accelerator",
+      "description": "Fully qualified class path.",
+      "title": "Class",
+      "type": "string"
+    },
+    "facility": {
+      "title": "Facility",
+      "type": "string"
+    },
+    "machine": {
+      "title": "Machine",
+      "type": "string"
+    },
+    "description": {
+      "default": null,
+      "title": "Description",
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "energy": {
+      "title": "Energy",
+      "type": "number"
+    },
+    "alphac": {
+      "default": null,
+      "title": "Alphac",
+      "type": [
+        "number",
+        "null"
+      ]
+    },
+    "harmonic_number": {
+      "default": null,
+      "title": "Harmonic Number",
+      "type": [
+        "integer",
+        "null"
+      ]
+    },
+    "data_folder": {
+      "title": "Data Folder",
+      "type": "string"
+    },
+    "controls": {
+      "items": {
+        "$ref": "#/$defs/ControlSystemSchema"
+      },
+      "title": "Controls",
+      "type": "array"
+    },
+    "simulators": {
+      "items": {
+        "$ref": "#/$defs/SimulatorSchema"
+      },
+      "title": "Simulators",
+      "type": "array"
+    },
+    "arrays": {
+      "items": {
+        "$ref": "#/$defs/ArraySchema"
+      },
+      "title": "Arrays",
+      "type": "array"
+    },
+    "devices": {
+      "items": {
+        "$ref": "#/$defs/ElementSchema"
+      },
+      "title": "Devices",
+      "type": "array"
+    }
+  },
+  "required": [
+    "class",
+    "facility",
+    "machine",
+    "energy",
+    "data_folder"
+  ],
+  "title": "AcceleratorSchema",
+  "type": "object"
+}
