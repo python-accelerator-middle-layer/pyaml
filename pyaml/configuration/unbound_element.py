@@ -38,6 +38,30 @@ class UnboundElement(Element):
         )
 
     def instantiate(self, holder) -> Element:
+        """
+        Instantiate the element represented by this UnboundElement.
+
+        The element is constructed using the stored configuration and
+        attached to the given ElementHolder. The returned element is
+        linked back to the holder through its ``_peer`` attribute.
+
+        Parameters
+        ----------
+        holder : ElementHolder
+            Holder that owns the instantiated element.
+
+        Returns
+        -------
+        Element
+            Instantiated element attached to the given holder.
+
+        Raises
+        ------
+        PyAMLConfigException
+            If the element cannot be instantiated or if the resulting
+            object is not a subclass of Element.
+        """
+
         cls = self._class
 
         try:
