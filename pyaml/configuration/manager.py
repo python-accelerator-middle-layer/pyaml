@@ -28,7 +28,6 @@ _INTERNAL_METADATA_KEYS = {"__location__", "__fieldlocations__", REMOTE_BASE_URL
 _VALID_QUERY_KEY_RE = re.compile(r"^[A-Z0-9_]+$")
 _CATEGORY_TITLES = {
     "controls": "Controls",
-    "catalogs": "Catalogs",
     "simulators": "Simulators",
     "arrays": "Arrays",
     "devices": "Devices",
@@ -50,8 +49,8 @@ class ConfigurationManager:
     Notes
     -----
     The manager only accepts accelerator-root fragments and merges named
-    categories such as ``controls``, ``catalogs``, ``simulators``,
-    ``arrays`` and ``devices``.
+    categories such as ``controls``, ``simulators``, ``arrays`` and
+    ``devices``.
 
     Examples
     --------
@@ -76,7 +75,7 @@ class ConfigurationManager:
     """
 
     DEFAULT_TYPE = "pyaml.accelerator"
-    NAMED_CATEGORIES = ("controls", "catalogs", "simulators", "arrays", "devices")
+    NAMED_CATEGORIES = ("controls", "simulators", "arrays", "devices")
     _SUPPORTED_FILE_SUFFIXES = {".yaml", ".yml", ".json"}
 
     @classmethod
@@ -768,10 +767,6 @@ class ConfigurationManager:
         type_part = f" ({entry_type})" if entry_type else ""
 
         details: list[str] = []
-        if category == "catalogs":
-            entries = entry.get("entries")
-            if isinstance(entries, list):
-                details.append(f"entries={len(entries)}")
         if category == "arrays":
             patterns = entry.get("elements")
             if isinstance(patterns, list):

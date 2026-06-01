@@ -4,9 +4,10 @@ from typing import Any
 from pydantic import BaseModel, ConfigDict
 
 from pyaml import PyAMLException
-from pyaml.configuration.catalog import Catalog
 from pyaml.control.controlsystem import ControlSystem
 from pyaml.control.deviceaccess import DeviceAccess
+
+from .catalog import Catalog
 
 PYAMLCLASS: str = "TangoControlSystem"
 
@@ -16,7 +17,7 @@ class ConfigModel(BaseModel):
 
     name: str
     tango_host: str | None = None
-    catalog: Catalog | str | None = None
+    catalog: Catalog | None = None
     debug_level: str | None = None
     lazy_devices: bool = True
     scalar_aggregator: str | None = "tango.pyaml.multi_attribute"
@@ -41,19 +42,19 @@ class TangoControlSystem(ControlSystem):
             return None
 
         if isinstance(ref, str):
-            if self._catalog is None:
+            if self._cfg.catalog is None:
                 raise PyAMLException(f"Control system '{self.name()}' has no catalog configured for key '{ref}'")
             try:
-                dev = self._catalog.resolve(ref)
+                dev = self._cfg.catalog.resolve(ref)
             except AttributeError as exc:
                 raise PyAMLException(f"Control system '{self.name()}' catalog cannot resolve key '{ref}'") from exc
-            return self.attach([dev])[0]
+            return self._attach([dev], False)[0]
 
         from .attribute import Attribute
         from .attribute import ConfigModel as AttributeConfigModel
 
         if isinstance(ref, AttributeConfigModel):
-            return self.attach([Attribute(ref)])[0]
+            return self._attach([Attribute(ref)], False)[0]
 
         raise PyAMLException(f"Control system '{self.name()}' cannot build a device from {type(ref).__name__}")
 
@@ -80,9 +81,6 @@ class TangoControlSystem(ControlSystem):
 
     def name(self) -> str:
         return self._cfg.name
-
-    def get_catalog_config(self) -> Catalog | str | None:
-        return self._cfg.catalog
 
     def scalar_aggregator(self) -> str | None:
         return self._cfg.scalar_aggregator

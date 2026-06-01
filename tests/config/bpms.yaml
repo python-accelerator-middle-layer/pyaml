@@ -10,9 +10,7 @@ controls:
   - type: tango.pyaml.controlsystem
     tango_host: ebs-simu-3:10000
     name: live
-    catalog: bpm-catalog
-catalogs:
-  - catalogs/bpms_catalogs.yaml
+    catalog: catalogs/bpms_catalogs.yaml
 data_folder: /data/store
 devices:
 - type: pyaml.bpm.bpm

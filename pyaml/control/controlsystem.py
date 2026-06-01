@@ -1,5 +1,6 @@
 from abc import ABCMeta, abstractmethod
 
+from deprecated import deprecated
 from pydantic import BaseModel
 
 from ..bpm.bpm import BPM
@@ -7,7 +8,6 @@ from ..common.abstract import RWMapper
 from ..common.abstract_aggregator import ScalarAggregator
 from ..common.element import Element
 from ..common.element_holder import ElementHolder
-from ..configuration.catalog import Catalog
 from ..configuration.factory import Factory
 from ..configuration.unbound_element import UnboundElement
 from ..control.abstract_impl import (
@@ -44,26 +44,16 @@ class ControlSystem(ElementHolder, metaclass=ABCMeta):
 
     def __init__(self):
         ElementHolder.__init__(self)
-        self._catalog = None
-
-    def set_catalog(self, catalog: Catalog | None):
-        self._catalog = catalog
-
-    def get_catalog(self) -> Catalog | None:
-        return self._catalog
 
     @abstractmethod
-    def get_catalog_config(self) -> Catalog | str | None:
-        """Return backend catalog configuration for this control system, if any."""
-        pass
-
-    @abstractmethod
+    @deprecated
     def attach(self, dev: list[DeviceAccess | None]) -> list[DeviceAccess | None]:
         """Return new instances of DeviceAccess objects
         coming from configuration attached to this CS"""
         pass
 
     @abstractmethod
+    @deprecated
     def attach_array(self, dev: list[DeviceAccess | None]) -> list[DeviceAccess | None]:
         """Return new instances of DeviceAccess objects
         coming from configuration attached to this CS"""
@@ -85,17 +75,22 @@ class ControlSystem(ElementHolder, metaclass=ABCMeta):
         return None
 
     @abstractmethod
-    def get_device(self, ref: str | BaseModel | None) -> DeviceAccess | None:
+    def get_device(self, ref: str | BaseModel | None) -> DeviceAccess:
         """
-        Resolve a public device reference for this control system.
-
+        Return a device reference for this control system.
         YAML element configuration passes opaque strings. Public Python APIs may
         also pass backend ConfigModel instances. Concrete backends own all
-        catalog lookup, parsing and DeviceAccess construction.
+        lookup, parsing and DeviceAccess construction.
         """
         pass
 
-    def get_devices(self, refs: list[str | BaseModel | None]) -> list[DeviceAccess | None]:
+    def get_devices(self, refs: list[str | BaseModel | None]) -> list[DeviceAccess]:
+        """
+        Return a device reference for this control system.
+        YAML element configuration passes opaque strings. Public Python APIs may
+        also pass backend ConfigModel instances. Concrete backends own all
+        lookup, parsing and DeviceAccess construction.
+        """
         return [self.get_device(ref) for ref in refs]
 
     def create_scalar_aggregator(self) -> ScalarAggregator:
@@ -244,9 +239,6 @@ class ControlSystemAdapter(ControlSystem):
 
     def name(self) -> str:
         pass
-
-    def get_catalog_config(self) -> Catalog | str | None:
-        return None
 
     def scalar_aggregator(self) -> str | None:
         return None

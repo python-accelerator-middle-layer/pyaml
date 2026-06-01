@@ -11,9 +11,7 @@ controls:
   - type: tango.pyaml.controlsystem
     tango_host: ebs-simu-2:10000
     name: live
-    catalog: bpm-catalog
-catalogs:
-  - catalogs/ebs_orbit_bpm_catalogs.yaml
+    catalog: catalogs/ebs_orbit_bpm_catalogs.yaml
 data_folder: /data/store
 arrays:
   - type: pyaml.arrays.bpm
