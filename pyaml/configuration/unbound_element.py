@@ -1,6 +1,7 @@
 from pydantic import BaseModel
 
 from ..common.element import Element
+from ..common.exception import PyAMLConfigException
 
 
 class UnboundElement(Element):
@@ -35,3 +36,17 @@ class UnboundElement(Element):
             self._class.__name__,
             self._module_name,
         )
+
+    def instantiate(self, holder) -> Element:
+        cls = self._class
+
+        try:
+            obj = cls(holder, self._config)
+        except Exception as exc:
+            raise PyAMLConfigException(f"{exc} when creating '{self._module_name}.{cls.__name__}'") from exc
+
+        if not isinstance(obj, Element):
+            raise PyAMLConfigException(f"'{self._module_name}.{cls.__name__}' is not a subclass of Element")
+
+        obj._peer = holder
+        return obj
