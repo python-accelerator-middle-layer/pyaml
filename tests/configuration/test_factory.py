@@ -11,7 +11,7 @@ from tests.conftest import MockElement
 def test_factory_build_default():
     """Test default PyAML module loading."""
     data = {"type": "mock_module", "name": "simple"}
-    obj = Factory.depth_first_build(data, False)
+    obj = Factory.build(data, False)
     assert isinstance(obj, MockElement)
     assert obj.name == "simple"
 
@@ -28,7 +28,7 @@ def test_error_location(test_file):
         with pytest.raises(PyAMLConfigException) as exc:
             set_root_folder("tests/config")
             cfg = load("bad_conf.yml")
-            Factory.depth_first_build(cfg, False)
+            Factory.build(cfg, False)
     finally:
         set_root_folder(previous_root)
     print(str(exc.value))

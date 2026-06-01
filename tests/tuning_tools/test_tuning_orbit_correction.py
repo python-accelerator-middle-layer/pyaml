@@ -237,7 +237,7 @@ def test_tuning_orbit_correction_config():
         "singular_values": "162",
         "response_matrix": "file:does_not_exist.json",
     }
-    orbit_cor = Factory.depth_first_build(config_dict, ignore_external=False)
+    orbit_cor = Factory.build(config_dict, ignore_external=False)
     Factory.clear()
 
     config_dict = {
@@ -250,7 +250,7 @@ def test_tuning_orbit_correction_config():
         "response_matrix": "file:does_not_exist.json",
     }
     try:
-        orbit_cor = Factory.depth_first_build(config_dict, ignore_external=False)
+        orbit_cor = Factory.build(config_dict, ignore_external=False)
     except PyAMLConfigException as exc:
         # failed successfully!
         Factory.clear()
@@ -265,5 +265,5 @@ def test_tuning_orbit_correction_config():
         "singular_values_V": "162",
         "response_matrix": "file:does_not_exist.json",
     }
-    orbit_cor = Factory.depth_first_build(config_dict, ignore_external=False)
+    orbit_cor = Factory.build(config_dict, ignore_external=False)
     Factory.clear()
