@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>factory &#8212; Python Accelerator Middle Layer 0.1.dev1+g3a714a876 documentation</title>
+    <title>factory &#8212; Python Accelerator Middle Layer 0.1.dev1+g477133970 documentation</title>
   
   
   
@@ -42,7 +42,7 @@
   <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=0790524f97105ba85085" />
 <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=0790524f97105ba85085" />
 
-    <script src="../_static/documentation_options.js?v=766b4580"></script>
+    <script src="../_static/documentation_options.js?v=7ad4e2c1"></script>
     <script src="../_static/doctools.js?v=9bcbadda"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -128,8 +128,8 @@
       
     
     
-    <img src="../_static/logo.png" class="logo__image only-light" alt="Python Accelerator Middle Layer 0.1.dev1+g3a714a876 documentation - Home"/>
-    <img src="../_static/dark.png" class="logo__image only-dark pst-js-only" alt="Python Accelerator Middle Layer 0.1.dev1+g3a714a876 documentation - Home"/>
+    <img src="../_static/logo.png" class="logo__image only-light" alt="Python Accelerator Middle Layer 0.1.dev1+g477133970 documentation - Home"/>
+    <img src="../_static/dark.png" class="logo__image only-dark pst-js-only" alt="Python Accelerator Middle Layer 0.1.dev1+g477133970 documentation - Home"/>
   
   
 </a></div>
@@ -528,90 +528,296 @@
   <section id="module-pyaml.configuration.factory">
 <span id="factory"></span><h1>factory<a class="headerlink" href="#module-pyaml.configuration.factory" title="Link to this heading">#</a></h1>
 <dl class="py class">
-<dt class="sig sig-object py" id="pyaml.configuration.factory.PyAMLFactory">
-<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">PyAMLFactory</span></span><a class="reference internal" href="../_modules/pyaml/configuration/factory.html#PyAMLFactory"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.configuration.factory.PyAMLFactory" title="Link to this definition">#</a></dt>
+<dt class="sig sig-object py" id="pyaml.configuration.factory.BuildInfo">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">BuildInfo</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">module</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">config_cls</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">class_str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">field_locations</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">location_str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/configuration/factory.html#BuildInfo"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.configuration.factory.BuildInfo" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
-<p>Singleton factory to build PyAML elements with future compatibility logic.</p>
-<p>No matter how many times you call PyAMLFactory(),
-it will be created only once.</p>
+<p>Information required to construct an object from a configuration
+dictionary.</p>
+<dl class="field-list simple">
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyaml.configuration.factory.BuildInfo.module">
+<span class="sig-name descname"><span class="pre">module</span></span><a class="headerlink" href="#pyaml.configuration.factory.BuildInfo.module" title="Link to this definition">#</a></dt>
+<dd><p>Imported module containing the object class and validation model.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>ModuleType</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyaml.configuration.factory.BuildInfo.config_cls">
+<span class="sig-name descname"><span class="pre">config_cls</span></span><a class="headerlink" href="#pyaml.configuration.factory.BuildInfo.config_cls" title="Link to this definition">#</a></dt>
+<dd><p>Pydantic model used to validate the configuration.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#type" title="(in Python v3.14)">type</a>[BaseModel]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyaml.configuration.factory.BuildInfo.class_str">
+<span class="sig-name descname"><span class="pre">class_str</span></span><a class="headerlink" href="#pyaml.configuration.factory.BuildInfo.class_str" title="Link to this definition">#</a></dt>
+<dd><p>Name of the class to instantiate.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)">str</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyaml.configuration.factory.BuildInfo.field_locations">
+<span class="sig-name descname"><span class="pre">field_locations</span></span><a class="headerlink" href="#pyaml.configuration.factory.BuildInfo.field_locations" title="Link to this definition">#</a></dt>
+<dd><p>Mapping between configuration fields and their source locations
+in the configuration file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.14)">dict</a> | None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyaml.configuration.factory.BuildInfo.location_str">
+<span class="sig-name descname"><span class="pre">location_str</span></span><a class="headerlink" href="#pyaml.configuration.factory.BuildInfo.location_str" title="Link to this definition">#</a></dt>
+<dd><p>Human-readable location of the object definition in the
+configuration file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)">str</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id0">
+<span class="sig-name descname"><span class="pre">class_str</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></em><a class="headerlink" href="#id0" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id1">
+<span class="sig-name descname"><span class="pre">config_cls</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#type" title="(in Python v3.14)"><span class="pre">type</span></a><span class="p"><span class="pre">[</span></span><span class="pre">BaseModel</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#id1" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id2">
+<span class="sig-name descname"><span class="pre">field_locations</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.14)"><span class="pre">dict</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></em><a class="headerlink" href="#id2" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id3">
+<span class="sig-name descname"><span class="pre">location_str</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></em><a class="headerlink" href="#id3" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id4">
+<span class="sig-name descname"><span class="pre">module</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/types.html#types.ModuleType" title="(in Python v3.14)"><span class="pre">ModuleType</span></a></em><a class="headerlink" href="#id4" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="pyaml.configuration.factory.ElementRegistry">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ElementRegistry</span></span><a class="reference internal" href="../_modules/pyaml/configuration/factory.html#ElementRegistry"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.configuration.factory.ElementRegistry" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<p>Singleton registry of all instantiated Elements.</p>
+<p>Elements are registered by name and can later be retrieved
+individually, by wildcard pattern, or by type.</p>
+<p>Return the singleton registry instance.</p>
 <dl class="py method">
-<dt class="sig sig-object py" id="pyaml.configuration.factory.PyAMLFactory.build_object">
-<span class="sig-name descname"><span class="pre">build_object</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">d</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ignore_external</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/configuration/factory.html#PyAMLFactory.build_object"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.configuration.factory.PyAMLFactory.build_object" title="Link to this definition">#</a></dt>
-<dd><p>Build an object from the dict</p>
+<dt class="sig sig-object py" id="pyaml.configuration.factory.ElementRegistry.clear">
+<span class="sig-name descname"><span class="pre">clear</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/configuration/factory.html#ElementRegistry.clear"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.configuration.factory.ElementRegistry.clear" title="Link to this definition">#</a></dt>
+<dd><p>Remove all registered elements.</p>
 <dl class="field-list simple">
 </dl>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="pyaml.configuration.factory.PyAMLFactory.build_unbound">
-<span class="sig-name descname"><span class="pre">build_unbound</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">e</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">holder</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/configuration/factory.html#PyAMLFactory.build_unbound"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.configuration.factory.PyAMLFactory.build_unbound" title="Link to this definition">#</a></dt>
-<dd><dl class="field-list simple">
+<dt class="sig sig-object py" id="pyaml.configuration.factory.ElementRegistry.get">
+<span class="sig-name descname"><span class="pre">get</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/configuration/factory.html#ElementRegistry.get"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.configuration.factory.ElementRegistry.get" title="Link to this definition">#</a></dt>
+<dd><p>Return an Element by name.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>) – Element name.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>Element</strong> – Registered element.</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="pyaml.common.exception.html#pyaml.common.exception.PyAMLConfigException" title="pyaml.common.exception.PyAMLConfigException"><strong>PyAMLConfigException</strong></a> – If the element is not registered.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaml.configuration.factory.ElementRegistry.get_by_name">
+<span class="sig-name descname"><span class="pre">get_by_name</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">wildcard</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/configuration/factory.html#ElementRegistry.get_by_name"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.configuration.factory.ElementRegistry.get_by_name" title="Link to this definition">#</a></dt>
+<dd><p>Return all elements whose name matches a wildcard pattern.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>wildcard</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>) – Wildcard expression compatible with <code class="docutils literal notranslate"><span class="pre">fnmatch</span></code>.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>list[Element]</strong> – Matching elements.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaml.configuration.factory.ElementRegistry.get_by_type">
+<span class="sig-name descname"><span class="pre">get_by_type</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">element_type</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/configuration/factory.html#ElementRegistry.get_by_type"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.configuration.factory.ElementRegistry.get_by_type" title="Link to this definition">#</a></dt>
+<dd><p>Return all registered elements of the given type.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>element_type</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#type" title="(in Python v3.14)"><em>type</em></a><em>[</em><a class="reference internal" href="pyaml.arrays.element.html#pyaml.arrays.element.Element" title="pyaml.arrays.element.Element"><em>Element</em></a><em>]</em>) – Element type to match.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>list[TElement]</strong> – Matching elements.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaml.configuration.factory.ElementRegistry.register">
+<span class="sig-name descname"><span class="pre">register</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">element</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/configuration/factory.html#ElementRegistry.register"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.configuration.factory.ElementRegistry.register" title="Link to this definition">#</a></dt>
+<dd><p>Register an Element by name.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>element</strong> (<a class="reference internal" href="pyaml.arrays.element.html#pyaml.arrays.element.Element" title="pyaml.arrays.element.Element"><em>Element</em></a>) – Element to register.</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="pyaml.common.exception.html#pyaml.common.exception.PyAMLConfigException" title="pyaml.common.exception.PyAMLConfigException"><strong>PyAMLConfigException</strong></a> – If the object is not an Element or if another element
+    with the same name is already registered.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="pyaml.configuration.factory.PyAMLFactory">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">PyAMLFactory</span></span><a class="reference internal" href="../_modules/pyaml/configuration/factory.html#PyAMLFactory"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.configuration.factory.PyAMLFactory" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<p>Factory for constructing PyAML objects from configuration data.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaml.configuration.factory.PyAMLFactory.build">
+<span class="sig-name descname"><span class="pre">build</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ignore_external</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/configuration/factory.html#PyAMLFactory.build"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.configuration.factory.PyAMLFactory.build" title="Link to this definition">#</a></dt>
+<dd><p>Recursively build objects from configuration data.</p>
+<p>Lists are traversed recursively and configuration dictionaries
+are converted into instantiated objects.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>data</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.14)"><em>dict</em></a><em> | </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.14)"><em>list</em></a>) – Configuration data to build.</p></li>
+<li><p><strong>ignore_external</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><em>bool</em></a>) – Ignore missing external modules and return <code class="docutils literal notranslate"><span class="pre">None</span></code> for
+objects that cannot be constructed.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>Any</strong> – Built object, list of objects, or native value.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaml.configuration.factory.PyAMLFactory.build_object">
+<span class="sig-name descname"><span class="pre">build_object</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ignore_external</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/configuration/factory.html#PyAMLFactory.build_object"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.configuration.factory.PyAMLFactory.build_object" title="Link to this definition">#</a></dt>
+<dd><p>Build a single object from a configuration dictionary.</p>
+<p>The configuration is validated using the associated Pydantic
+model before the target class is instantiated.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>data</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.14)"><em>dict</em></a>) – Object configuration.</p></li>
+<li><p><strong>ignore_external</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><em>bool</em></a>) – Ignore missing external modules.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>Any</strong> – Instantiated object or UnboundElement.</p>
+</dd>
 </dl>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pyaml.configuration.factory.PyAMLFactory.clear">
 <span class="sig-name descname"><span class="pre">clear</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/configuration/factory.html#PyAMLFactory.clear"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.configuration.factory.PyAMLFactory.clear" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Remove all registered elements from the global registry.</p>
+</dd></dl>
 
-<dl class="py method">
-<dt class="sig sig-object py" id="pyaml.configuration.factory.PyAMLFactory.depth_first_build">
-<span class="sig-name descname"><span class="pre">depth_first_build</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">d</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ignore_external</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/configuration/factory.html#PyAMLFactory.depth_first_build"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.configuration.factory.PyAMLFactory.depth_first_build" title="Link to this definition">#</a></dt>
-<dd><p>Main factory function (Depth-first factory)</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyaml.configuration.factory.get_field_type">
+<span class="sig-name descname"><span class="pre">get_field_type</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config_cls</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">field_name</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/configuration/factory.html#get_field_type"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.configuration.factory.get_field_type" title="Link to this definition">#</a></dt>
+<dd><p>Return the annotated type of a configuration field.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>ignore_external</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><em>bool</em></a>) – Ignore <cite>module not found</cite> and return None when an object cannot be created</p>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>config_cls</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#type" title="(in Python v3.14)"><em>type</em></a><em>[</em><em>BaseModel</em><em>] </em><em>| </em><em>None</em>) – Pydantic configuration model.</p></li>
+<li><p><strong>field_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>) – Name of the field.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>type | None</strong> – Annotated field type, or <code class="docutils literal notranslate"><span class="pre">None</span></code> if the field is not defined
+in the model.</p>
 </dd>
 </dl>
 </dd></dl>
 
-<dl class="py method">
-<dt class="sig sig-object py" id="pyaml.configuration.factory.PyAMLFactory.get_element">
-<span class="sig-name descname"><span class="pre">get_element</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/configuration/factory.html#PyAMLFactory.get_element"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.configuration.factory.PyAMLFactory.get_element" title="Link to this definition">#</a></dt>
-<dd><dl class="field-list simple">
+<dl class="py function">
+<dt class="sig sig-object py" id="pyaml.configuration.factory.handle_validation_error">
+<span class="sig-name descname"><span class="pre">handle_validation_error</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">exc</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">type_str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">location_str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">field_locations</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/configuration/factory.html#handle_validation_error"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.configuration.factory.handle_validation_error" title="Link to this definition">#</a></dt>
+<dd><p>Convert a Pydantic validation error into a PyAMLConfigException.</p>
+<p>Validation errors are reformatted to include the corresponding
+configuration field and, when available, the source file location
+of the field in the configuration file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>exc</strong> (<em>ValidationError</em>) – Pydantic validation error.</p></li>
+<li><p><strong>type_str</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>) – Name of the object type being validated.</p></li>
+<li><p><strong>location_str</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>) – Human-readable location of the object definition in the
+configuration file.</p></li>
+<li><p><strong>field_locations</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.14)"><em>dict</em></a><em> | </em><em>None</em>) – Mapping between field names and their source locations in the
+configuration file.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="pyaml.common.exception.html#pyaml.common.exception.PyAMLConfigException" title="pyaml.common.exception.PyAMLConfigException"><strong>PyAMLConfigException</strong></a> – Always raised with a formatted summary of the validation
+    errors. The original Pydantic exception traceback is
+    suppressed.</p>
+</dd>
 </dl>
 </dd></dl>
 
-<dl class="py method">
-<dt class="sig sig-object py" id="pyaml.configuration.factory.PyAMLFactory.get_elements_by_name">
-<span class="sig-name descname"><span class="pre">get_elements_by_name</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">wildcard</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/configuration/factory.html#PyAMLFactory.get_elements_by_name"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.configuration.factory.PyAMLFactory.get_elements_by_name" title="Link to this definition">#</a></dt>
-<dd><dl class="field-list simple">
+<dl class="py function">
+<dt class="sig sig-object py" id="pyaml.configuration.factory.resolve_build_info">
+<span class="sig-name descname"><span class="pre">resolve_build_info</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ignore_external</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/configuration/factory.html#resolve_build_info"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.configuration.factory.resolve_build_info" title="Link to this definition">#</a></dt>
+<dd><p>Resolve the information required to construct an object.</p>
+<p>The configuration dictionary is inspected to determine the module,
+object class and validation model to use. The referenced module is
+imported and the corresponding validation class is retrieved.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>data</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.14)"><em>dict</em></a>) – Configuration dictionary describing the object.</p></li>
+<li><p><strong>ignore_external</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><em>bool</em></a>) – Ignore missing modules and return <code class="docutils literal notranslate"><span class="pre">None</span></code> instead of raising an
+exception.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>BuildInfo | None</strong> – Information required to construct the object, or <code class="docutils literal notranslate"><span class="pre">None</span></code> when
+<code class="docutils literal notranslate"><span class="pre">ignore_external</span></code> is enabled and the referenced module cannot
+be imported.</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="pyaml.common.exception.html#pyaml.common.exception.PyAMLConfigException" title="pyaml.common.exception.PyAMLConfigException"><strong>PyAMLConfigException</strong></a> – If the configuration is invalid, the referenced class cannot be
+    resolved, or the validation model cannot be found.</p>
+</dd>
 </dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pyaml.configuration.factory.PyAMLFactory.get_elements_by_type">
-<span class="sig-name descname"><span class="pre">get_elements_by_type</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">type</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/configuration/factory.html#PyAMLFactory.get_elements_by_type"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.configuration.factory.PyAMLFactory.get_elements_by_type" title="Link to this definition">#</a></dt>
-<dd><dl class="field-list simple">
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pyaml.configuration.factory.PyAMLFactory.get_field_type">
-<span class="sig-name descname"><span class="pre">get_field_type</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config_cls</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">field_name</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/configuration/factory.html#PyAMLFactory.get_field_type"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.configuration.factory.PyAMLFactory.get_field_type" title="Link to this definition">#</a></dt>
-<dd><dl class="field-list simple">
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pyaml.configuration.factory.PyAMLFactory.get_infos">
-<span class="sig-name descname"><span class="pre">get_infos</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">d</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ignore_external</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/configuration/factory.html#PyAMLFactory.get_infos"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.configuration.factory.PyAMLFactory.get_infos" title="Link to this definition">#</a></dt>
-<dd><dl class="field-list simple">
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pyaml.configuration.factory.PyAMLFactory.handle_validation_error">
-<span class="sig-name descname"><span class="pre">handle_validation_error</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">e</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">type_str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">location_str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">field_locations</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/configuration/factory.html#PyAMLFactory.handle_validation_error"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.configuration.factory.PyAMLFactory.handle_validation_error" title="Link to this definition">#</a></dt>
-<dd><dl class="field-list simple">
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pyaml.configuration.factory.PyAMLFactory.register_element">
-<span class="sig-name descname"><span class="pre">register_element</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">elt</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/configuration/factory.html#PyAMLFactory.register_element"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.configuration.factory.PyAMLFactory.register_element" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
-
 </dd></dl>
 
 </section>
@@ -663,20 +869,36 @@ it will be created only once.</p>
   </div>
   <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="pst-show_toc_level nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.configuration.factory.PyAMLFactory"><code class="docutils literal notranslate"><span class="pre">PyAMLFactory</span></code></a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.configuration.factory.PyAMLFactory.build_object"><code class="docutils literal notranslate"><span class="pre">PyAMLFactory.build_object()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.configuration.factory.PyAMLFactory.build_unbound"><code class="docutils literal notranslate"><span class="pre">PyAMLFactory.build_unbound()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.configuration.factory.PyAMLFactory.clear"><code class="docutils literal notranslate"><span class="pre">PyAMLFactory.clear()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.configuration.factory.PyAMLFactory.depth_first_build"><code class="docutils literal notranslate"><span class="pre">PyAMLFactory.depth_first_build()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.configuration.factory.PyAMLFactory.get_element"><code class="docutils literal notranslate"><span class="pre">PyAMLFactory.get_element()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.configuration.factory.PyAMLFactory.get_elements_by_name"><code class="docutils literal notranslate"><span class="pre">PyAMLFactory.get_elements_by_name()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.configuration.factory.PyAMLFactory.get_elements_by_type"><code class="docutils literal notranslate"><span class="pre">PyAMLFactory.get_elements_by_type()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.configuration.factory.PyAMLFactory.get_field_type"><code class="docutils literal notranslate"><span class="pre">PyAMLFactory.get_field_type()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.configuration.factory.PyAMLFactory.get_infos"><code class="docutils literal notranslate"><span class="pre">PyAMLFactory.get_infos()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.configuration.factory.PyAMLFactory.handle_validation_error"><code class="docutils literal notranslate"><span class="pre">PyAMLFactory.handle_validation_error()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.configuration.factory.PyAMLFactory.register_element"><code class="docutils literal notranslate"><span class="pre">PyAMLFactory.register_element()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.configuration.factory.BuildInfo"><code class="docutils literal notranslate"><span class="pre">BuildInfo</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.configuration.factory.BuildInfo.module"><code class="docutils literal notranslate"><span class="pre">BuildInfo.module</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.configuration.factory.BuildInfo.config_cls"><code class="docutils literal notranslate"><span class="pre">BuildInfo.config_cls</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.configuration.factory.BuildInfo.class_str"><code class="docutils literal notranslate"><span class="pre">BuildInfo.class_str</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.configuration.factory.BuildInfo.field_locations"><code class="docutils literal notranslate"><span class="pre">BuildInfo.field_locations</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.configuration.factory.BuildInfo.location_str"><code class="docutils literal notranslate"><span class="pre">BuildInfo.location_str</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id0"><code class="docutils literal notranslate"><span class="pre">BuildInfo.class_str</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id1"><code class="docutils literal notranslate"><span class="pre">BuildInfo.config_cls</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id2"><code class="docutils literal notranslate"><span class="pre">BuildInfo.field_locations</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id3"><code class="docutils literal notranslate"><span class="pre">BuildInfo.location_str</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id4"><code class="docutils literal notranslate"><span class="pre">BuildInfo.module</span></code></a></li>
 </ul>
 </li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.configuration.factory.ElementRegistry"><code class="docutils literal notranslate"><span class="pre">ElementRegistry</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.configuration.factory.ElementRegistry.clear"><code class="docutils literal notranslate"><span class="pre">ElementRegistry.clear()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.configuration.factory.ElementRegistry.get"><code class="docutils literal notranslate"><span class="pre">ElementRegistry.get()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.configuration.factory.ElementRegistry.get_by_name"><code class="docutils literal notranslate"><span class="pre">ElementRegistry.get_by_name()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.configuration.factory.ElementRegistry.get_by_type"><code class="docutils literal notranslate"><span class="pre">ElementRegistry.get_by_type()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.configuration.factory.ElementRegistry.register"><code class="docutils literal notranslate"><span class="pre">ElementRegistry.register()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.configuration.factory.PyAMLFactory"><code class="docutils literal notranslate"><span class="pre">PyAMLFactory</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.configuration.factory.PyAMLFactory.build"><code class="docutils literal notranslate"><span class="pre">PyAMLFactory.build()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.configuration.factory.PyAMLFactory.build_object"><code class="docutils literal notranslate"><span class="pre">PyAMLFactory.build_object()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.configuration.factory.PyAMLFactory.clear"><code class="docutils literal notranslate"><span class="pre">PyAMLFactory.clear()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.configuration.factory.get_field_type"><code class="docutils literal notranslate"><span class="pre">get_field_type()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.configuration.factory.handle_validation_error"><code class="docutils literal notranslate"><span class="pre">handle_validation_error()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.configuration.factory.resolve_build_info"><code class="docutils literal notranslate"><span class="pre">resolve_build_info()</span></code></a></li>
 </ul>
   </nav></div>
 

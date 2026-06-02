@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>pyaml.configuration.factory &#8212; Python Accelerator Middle Layer 0.1.dev1+g3a714a876 documentation</title>
+    <title>pyaml.configuration.factory &#8212; Python Accelerator Middle Layer 0.1.dev1+g477133970 documentation</title>
   
   
   
@@ -41,7 +41,7 @@
   <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=0790524f97105ba85085" />
 <link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=0790524f97105ba85085" />
 
-    <script src="../../../_static/documentation_options.js?v=766b4580"></script>
+    <script src="../../../_static/documentation_options.js?v=7ad4e2c1"></script>
     <script src="../../../_static/doctools.js?v=9bcbadda"></script>
     <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -125,8 +125,8 @@
       
     
     
-    <img src="../../../_static/logo.png" class="logo__image only-light" alt="Python Accelerator Middle Layer 0.1.dev1+g3a714a876 documentation - Home"/>
-    <img src="../../../_static/dark.png" class="logo__image only-dark pst-js-only" alt="Python Accelerator Middle Layer 0.1.dev1+g3a714a876 documentation - Home"/>
+    <img src="../../../_static/logo.png" class="logo__image only-light" alt="Python Accelerator Middle Layer 0.1.dev1+g477133970 documentation - Home"/>
+    <img src="../../../_static/dark.png" class="logo__image only-dark pst-js-only" alt="Python Accelerator Middle Layer 0.1.dev1+g477133970 documentation - Home"/>
   
   
 </a></div>
@@ -388,266 +388,616 @@
                 <article class="bd-article">
                   
   <h1>Source code for pyaml.configuration.factory</h1><div class="highlight"><pre>
-<span></span><span class="c1"># PyAML factory (construct AML objects from config files)</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">fnmatch</span>
+<span></span><span class="kn">import</span><span class="w"> </span><span class="nn">fnmatch</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">importlib</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">dataclasses</span><span class="w"> </span><span class="kn">import</span> <span class="n">dataclass</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">threading</span><span class="w"> </span><span class="kn">import</span> <span class="n">Lock</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">TypedDict</span><span class="p">,</span> <span class="n">get_type_hints</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">types</span><span class="w"> </span><span class="kn">import</span> <span class="n">ModuleType</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">TypeVar</span><span class="p">,</span> <span class="n">get_origin</span><span class="p">,</span> <span class="n">get_type_hints</span>
 
-<span class="kn">from</span><span class="w"> </span><span class="nn">pydantic</span><span class="w"> </span><span class="kn">import</span> <span class="n">ValidationError</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pydantic</span><span class="w"> </span><span class="kn">import</span> <span class="n">BaseModel</span><span class="p">,</span> <span class="n">ValidationError</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">..common.element</span><span class="w"> </span><span class="kn">import</span> <span class="n">Element</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">..common.exception</span><span class="w"> </span><span class="kn">import</span> <span class="n">PyAMLConfigException</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">.unbound_element</span><span class="w"> </span><span class="kn">import</span> <span class="n">UnboundElement</span>
 
+<span class="n">TElement</span> <span class="o">=</span> <span class="n">TypeVar</span><span class="p">(</span><span class="s2">&quot;TElement&quot;</span><span class="p">,</span> <span class="n">bound</span><span class="o">=</span><span class="n">Element</span><span class="p">)</span>
 
-<div class="viewcode-block" id="PyAMLFactory">
-<a class="viewcode-back" href="../../../api/pyaml.configuration.factory.html#pyaml.configuration.factory.PyAMLFactory">[docs]</a>
-<span class="k">class</span><span class="w"> </span><span class="nc">PyAMLFactory</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Singleton factory to build PyAML elements with future compatibility logic.&quot;&quot;&quot;</span>
+<span class="c1"># ---------------------------------------------------------------------</span>
+<span class="c1"># Element registry</span>
+<span class="c1"># ---------------------------------------------------------------------</span>
+
+
+<div class="viewcode-block" id="ElementRegistry">
+<a class="viewcode-back" href="../../../api/pyaml.configuration.factory.html#pyaml.configuration.factory.ElementRegistry">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">ElementRegistry</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Singleton registry of all instantiated Elements.</span>
+
+<span class="sd">    Elements are registered by name and can later be retrieved</span>
+<span class="sd">    individually, by wildcard pattern, or by type.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">_instance</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="n">_lock</span> <span class="o">=</span> <span class="n">Lock</span><span class="p">()</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__new__</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        No matter how many times you call PyAMLFactory(),</span>
-<span class="sd">        it will be created only once.</span>
+<span class="sd">        Return the singleton registry instance.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+
         <span class="k">with</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_lock</span><span class="p">:</span>
             <span class="k">if</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_instance</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="bp">cls</span><span class="o">.</span><span class="n">_instance</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__new__</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span>
                 <span class="bp">cls</span><span class="o">.</span><span class="n">_instance</span><span class="o">.</span><span class="n">_elements</span> <span class="o">=</span> <span class="p">{}</span>
-                <span class="bp">cls</span><span class="o">.</span><span class="n">_instance</span><span class="o">.</span><span class="n">_strategies</span> <span class="o">=</span> <span class="p">[]</span>
             <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_instance</span>
 
-<div class="viewcode-block" id="PyAMLFactory.handle_validation_error">
-<a class="viewcode-back" href="../../../api/pyaml.configuration.factory.html#pyaml.configuration.factory.PyAMLFactory.handle_validation_error">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">handle_validation_error</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">e</span><span class="p">,</span> <span class="n">type_str</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">location_str</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">field_locations</span><span class="p">:</span> <span class="nb">dict</span><span class="p">):</span>
-        <span class="c1"># Handle pydantic errors</span>
-        <span class="n">globalMessage</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
-        <span class="k">for</span> <span class="n">err</span> <span class="ow">in</span> <span class="n">e</span><span class="o">.</span><span class="n">errors</span><span class="p">():</span>
-            <span class="n">msg</span> <span class="o">=</span> <span class="n">err</span><span class="p">[</span><span class="s2">&quot;msg&quot;</span><span class="p">]</span>
-            <span class="n">field</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
-            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">err</span><span class="p">[</span><span class="s2">&quot;loc&quot;</span><span class="p">])</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
-                <span class="n">field</span><span class="p">,</span> <span class="n">fieldIdx</span> <span class="o">=</span> <span class="n">err</span><span class="p">[</span><span class="s2">&quot;loc&quot;</span><span class="p">]</span>
-                <span class="n">message</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;&#39;</span><span class="si">{</span><span class="n">field</span><span class="si">}</span><span class="s2">.</span><span class="si">{</span><span class="n">fieldIdx</span><span class="si">}</span><span class="s2">&#39;: </span><span class="si">{</span><span class="n">msg</span><span class="si">}</span><span class="s2">&quot;</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="n">field</span> <span class="o">=</span> <span class="n">err</span><span class="p">[</span><span class="s2">&quot;loc&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
-                <span class="n">message</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;&#39;</span><span class="si">{</span><span class="n">field</span><span class="si">}</span><span class="s2">&#39;: </span><span class="si">{</span><span class="n">msg</span><span class="si">}</span><span class="s2">&quot;</span>
-            <span class="k">if</span> <span class="n">field_locations</span> <span class="ow">and</span> <span class="n">field</span> <span class="ow">in</span> <span class="n">field_locations</span><span class="p">:</span>
-                <span class="n">file</span><span class="p">,</span> <span class="n">line</span><span class="p">,</span> <span class="n">col</span> <span class="o">=</span> <span class="n">field_locations</span><span class="p">[</span><span class="n">field</span><span class="p">]</span>
-                <span class="n">loc</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">file</span><span class="si">}</span><span class="s2"> at line </span><span class="si">{</span><span class="n">line</span><span class="si">}</span><span class="s2">, colum </span><span class="si">{</span><span class="n">col</span><span class="si">}</span><span class="s2">&quot;</span>
-                <span class="n">message</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot; </span><span class="si">{</span><span class="n">loc</span><span class="si">}</span><span class="s2">&quot;</span>
-            <span class="n">globalMessage</span> <span class="o">+=</span> <span class="n">message</span>
-            <span class="n">globalMessage</span> <span class="o">+=</span> <span class="s2">&quot;, &quot;</span>
-        <span class="c1"># Discard pydantic stack trace</span>
-        <span class="k">raise</span> <span class="n">PyAMLConfigException</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">globalMessage</span><span class="si">}</span><span class="s2"> for object: &#39;</span><span class="si">{</span><span class="n">type_str</span><span class="si">}</span><span class="s2">&#39; </span><span class="si">{</span><span class="n">location_str</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span> <span class="kn">from</span><span class="w"> </span><span class="kc">None</span></div>
+<div class="viewcode-block" id="ElementRegistry.register">
+<a class="viewcode-back" href="../../../api/pyaml.configuration.factory.html#pyaml.configuration.factory.ElementRegistry.register">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">register</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">element</span><span class="p">:</span> <span class="n">Element</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Register an Element by name.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        element : Element</span>
+<span class="sd">            Element to register.</span>
+
+<span class="sd">        Raises</span>
+<span class="sd">        ------</span>
+<span class="sd">        PyAMLConfigException</span>
+<span class="sd">            If the object is not an Element or if another element</span>
+<span class="sd">            with the same name is already registered.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">element</span><span class="p">,</span> <span class="n">Element</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="n">PyAMLConfigException</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Cannot register object of type &#39;</span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">element</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">&#39; since expected Element.&quot;</span><span class="p">)</span>
+
+        <span class="n">name</span> <span class="o">=</span> <span class="n">element</span><span class="o">.</span><span class="n">get_name</span><span class="p">()</span>
+        <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">_lock</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_elements</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">PyAMLConfigException</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Element </span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2"> already defined.&quot;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_elements</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">element</span></div>
 
 
-<div class="viewcode-block" id="PyAMLFactory.get_field_type">
-<a class="viewcode-back" href="../../../api/pyaml.configuration.factory.html#pyaml.configuration.factory.PyAMLFactory.get_field_type">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">get_field_type</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config_cls</span><span class="p">,</span> <span class="n">field_name</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">type</span><span class="p">:</span>
-        <span class="c1"># Get type of a pydantic ConfigModel field</span>
-        <span class="k">if</span> <span class="n">config_cls</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">return</span> <span class="kc">None</span>
-        <span class="n">type_hints</span> <span class="o">=</span> <span class="n">get_type_hints</span><span class="p">(</span><span class="n">config_cls</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">type_hints</span><span class="p">[</span><span class="n">field_name</span><span class="p">]</span> <span class="k">if</span> <span class="n">field_name</span> <span class="ow">in</span> <span class="n">type_hints</span> <span class="k">else</span> <span class="kc">None</span></div>
+<div class="viewcode-block" id="ElementRegistry.get">
+<a class="viewcode-back" href="../../../api/pyaml.configuration.factory.html#pyaml.configuration.factory.ElementRegistry.get">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Element</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Return an Element by name.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        name : str</span>
+<span class="sd">            Element name.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        Element</span>
+<span class="sd">            Registered element.</span>
+
+<span class="sd">        Raises</span>
+<span class="sd">        ------</span>
+<span class="sd">        PyAMLConfigException</span>
+<span class="sd">            If the element is not registered.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">_lock</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_elements</span><span class="p">[</span><span class="n">name</span><span class="p">]</span>
+            <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">PyAMLConfigException</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Element </span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2"> not defined.&quot;</span><span class="p">)</span> <span class="kn">from</span><span class="w"> </span><span class="kc">None</span></div>
 
 
-<div class="viewcode-block" id="PyAMLFactory.get_infos">
-<a class="viewcode-back" href="../../../api/pyaml.configuration.factory.html#pyaml.configuration.factory.PyAMLFactory.get_infos">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">get_infos</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="n">ignore_external</span><span class="p">:</span> <span class="nb">bool</span><span class="p">):</span>
-        <span class="c1"># Retrieve informations of object to be constructed</span>
-        <span class="n">location</span> <span class="o">=</span> <span class="n">d</span><span class="p">[</span><span class="s2">&quot;__location__&quot;</span><span class="p">]</span> <span class="k">if</span> <span class="s2">&quot;__location__&quot;</span> <span class="ow">in</span> <span class="n">d</span> <span class="k">else</span> <span class="kc">None</span>
-        <span class="n">field_locations</span> <span class="o">=</span> <span class="n">d</span><span class="p">[</span><span class="s2">&quot;__fieldlocations__&quot;</span><span class="p">]</span> <span class="k">if</span> <span class="s2">&quot;__fieldlocations__&quot;</span> <span class="ow">in</span> <span class="n">d</span> <span class="k">else</span> <span class="kc">None</span>
+<div class="viewcode-block" id="ElementRegistry.get_by_name">
+<a class="viewcode-back" href="../../../api/pyaml.configuration.factory.html#pyaml.configuration.factory.ElementRegistry.get_by_name">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_by_name</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">wildcard</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">Element</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Return all elements whose name matches a wildcard pattern.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        wildcard : str</span>
+<span class="sd">            Wildcard expression compatible with ``fnmatch``.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        list[Element]</span>
+<span class="sd">            Matching elements.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">_lock</span><span class="p">:</span>
+            <span class="k">return</span> <span class="p">[</span><span class="n">e</span> <span class="k">for</span> <span class="n">n</span><span class="p">,</span> <span class="n">e</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_elements</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">if</span> <span class="n">fnmatch</span><span class="o">.</span><span class="n">fnmatch</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">wildcard</span><span class="p">)]</span></div>
+
+
+<div class="viewcode-block" id="ElementRegistry.get_by_type">
+<a class="viewcode-back" href="../../../api/pyaml.configuration.factory.html#pyaml.configuration.factory.ElementRegistry.get_by_type">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_by_type</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">element_type</span><span class="p">:</span> <span class="nb">type</span><span class="p">[</span><span class="n">TElement</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">TElement</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Return all registered elements of the given type.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        element_type : type[Element]</span>
+<span class="sd">            Element type to match.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        list[TElement]</span>
+<span class="sd">            Matching elements.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">_lock</span><span class="p">:</span>
+            <span class="k">return</span> <span class="p">[</span><span class="n">e</span> <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_elements</span><span class="o">.</span><span class="n">values</span><span class="p">()</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="n">element_type</span><span class="p">)]</span></div>
+
+
+<div class="viewcode-block" id="ElementRegistry.clear">
+<a class="viewcode-back" href="../../../api/pyaml.configuration.factory.html#pyaml.configuration.factory.ElementRegistry.clear">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">clear</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Remove all registered elements.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">_lock</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_elements</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span></div>
+
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__contains__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Return whether an element with the given name is registered.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">_lock</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_elements</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Return the number of registered elements.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">_lock</span><span class="p">:</span>
+            <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_elements</span><span class="p">)</span></div>
+
+
+
+<span class="c1"># Global element registry used during configuration loading.</span>
+<span class="n">ELEMENT_REGISTRY</span> <span class="o">=</span> <span class="n">ElementRegistry</span><span class="p">()</span>
+
+<span class="c1"># ---------------------------------------------------------------------</span>
+<span class="c1"># Handle build information</span>
+<span class="c1"># ---------------------------------------------------------------------</span>
+
+
+<div class="viewcode-block" id="BuildInfo">
+<a class="viewcode-back" href="../../../api/pyaml.configuration.factory.html#pyaml.configuration.factory.BuildInfo">[docs]</a>
+<span class="nd">@dataclass</span><span class="p">(</span><span class="n">frozen</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">BuildInfo</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Information required to construct an object from a configuration</span>
+<span class="sd">    dictionary.</span>
+
+<span class="sd">    Attributes</span>
+<span class="sd">    ----------</span>
+<span class="sd">    module : ModuleType</span>
+<span class="sd">        Imported module containing the object class and validation model.</span>
+<span class="sd">    config_cls : type[BaseModel]</span>
+<span class="sd">        Pydantic model used to validate the configuration.</span>
+<span class="sd">    class_str : str</span>
+<span class="sd">        Name of the class to instantiate.</span>
+<span class="sd">    field_locations : dict | None</span>
+<span class="sd">        Mapping between configuration fields and their source locations</span>
+<span class="sd">        in the configuration file.</span>
+<span class="sd">    location_str : str</span>
+<span class="sd">        Human-readable location of the object definition in the</span>
+<span class="sd">        configuration file.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">module</span><span class="p">:</span> <span class="n">ModuleType</span>
+    <span class="n">config_cls</span><span class="p">:</span> <span class="nb">type</span><span class="p">[</span><span class="n">BaseModel</span><span class="p">]</span>
+    <span class="n">class_str</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">field_locations</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">|</span> <span class="kc">None</span>
+    <span class="n">location_str</span><span class="p">:</span> <span class="nb">str</span></div>
+
+
+
+<div class="viewcode-block" id="resolve_build_info">
+<a class="viewcode-back" href="../../../api/pyaml.configuration.factory.html#pyaml.configuration.factory.resolve_build_info">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">resolve_build_info</span><span class="p">(</span><span class="n">data</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">ignore_external</span><span class="p">:</span> <span class="nb">bool</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">BuildInfo</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Resolve the information required to construct an object.</span>
+
+<span class="sd">    The configuration dictionary is inspected to determine the module,</span>
+<span class="sd">    object class and validation model to use. The referenced module is</span>
+<span class="sd">    imported and the corresponding validation class is retrieved.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    data : dict</span>
+<span class="sd">        Configuration dictionary describing the object.</span>
+<span class="sd">    ignore_external : bool</span>
+<span class="sd">        Ignore missing modules and return ``None`` instead of raising an</span>
+<span class="sd">        exception.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    BuildInfo | None</span>
+<span class="sd">        Information required to construct the object, or ``None`` when</span>
+<span class="sd">        ``ignore_external`` is enabled and the referenced module cannot</span>
+<span class="sd">        be imported.</span>
+
+<span class="sd">    Raises</span>
+<span class="sd">    ------</span>
+<span class="sd">    PyAMLConfigException</span>
+<span class="sd">        If the configuration is invalid, the referenced class cannot be</span>
+<span class="sd">        resolved, or the validation model cannot be found.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="n">PyAMLConfigException</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unexpected object </span><span class="si">{</span><span class="n">data</span><span class="si">!r}</span><span class="s2">. It needs to be a dict.&quot;</span><span class="p">)</span>
+
+    <span class="n">location</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;__location__&quot;</span><span class="p">)</span>
+    <span class="n">field_locations</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;__fieldlocations__&quot;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">location</span><span class="p">:</span>
+        <span class="n">file</span><span class="p">,</span> <span class="n">line</span><span class="p">,</span> <span class="n">col</span> <span class="o">=</span> <span class="n">location</span>
+        <span class="n">location_str</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">file</span><span class="si">}</span><span class="s2"> at line </span><span class="si">{</span><span class="n">line</span><span class="si">}</span><span class="s2">, column </span><span class="si">{</span><span class="n">col</span><span class="si">}</span><span class="s2">.&quot;</span>
+    <span class="k">else</span><span class="p">:</span>
         <span class="n">location_str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
-        <span class="k">if</span> <span class="n">location</span><span class="p">:</span>
-            <span class="n">file</span><span class="p">,</span> <span class="n">line</span><span class="p">,</span> <span class="n">col</span> <span class="o">=</span> <span class="n">location</span>
-            <span class="n">location_str</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">file</span><span class="si">}</span><span class="s2"> at line </span><span class="si">{</span><span class="n">line</span><span class="si">}</span><span class="s2">, column </span><span class="si">{</span><span class="n">col</span><span class="si">}</span><span class="s2">.&quot;</span>
 
-        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
-            <span class="k">raise</span> <span class="n">PyAMLConfigException</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unexpected object </span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">d</span><span class="p">)</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">location_str</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-        <span class="k">if</span> <span class="s2">&quot;type&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">d</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="n">PyAMLConfigException</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;No type specified for </span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">d</span><span class="p">))</span><span class="si">}</span><span class="s2">:</span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">d</span><span class="p">)</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">location_str</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="s2">&quot;type&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">data</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="n">PyAMLConfigException</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;No type specified for </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">data</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">:</span><span class="si">{</span><span class="n">data</span><span class="si">!r}</span><span class="s2"> </span><span class="si">{</span><span class="n">location_str</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
-        <span class="n">module_str</span> <span class="o">=</span> <span class="n">d</span><span class="p">[</span><span class="s2">&quot;type&quot;</span><span class="p">]</span>
-        <span class="n">class_str</span> <span class="o">=</span> <span class="n">d</span><span class="p">[</span><span class="s2">&quot;class&quot;</span><span class="p">]</span> <span class="k">if</span> <span class="s2">&quot;class&quot;</span> <span class="ow">in</span> <span class="n">d</span> <span class="k">else</span> <span class="kc">None</span>
-        <span class="n">validation_class_str</span> <span class="o">=</span> <span class="n">d</span><span class="p">[</span><span class="s2">&quot;validation_class&quot;</span><span class="p">]</span> <span class="k">if</span> <span class="s2">&quot;validation_class&quot;</span> <span class="ow">in</span> <span class="n">d</span> <span class="k">else</span> <span class="s2">&quot;ConfigModel&quot;</span>
+    <span class="n">module_str</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;type&quot;</span><span class="p">]</span>
+    <span class="n">class_str</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;class&quot;</span><span class="p">)</span>
+    <span class="n">validation_class_str</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;validation_class&quot;</span><span class="p">,</span> <span class="s2">&quot;ConfigModel&quot;</span><span class="p">)</span>
 
-        <span class="c1"># Import the module</span>
-        <span class="k">try</span><span class="p">:</span>
-            <span class="n">module</span> <span class="o">=</span> <span class="n">importlib</span><span class="o">.</span><span class="n">import_module</span><span class="p">(</span><span class="n">module_str</span><span class="p">)</span>
-        <span class="k">except</span> <span class="ne">ModuleNotFoundError</span> <span class="k">as</span> <span class="n">ex</span><span class="p">:</span>
-            <span class="k">if</span> <span class="ow">not</span> <span class="n">ignore_external</span><span class="p">:</span>
-                <span class="c1"># Discard module not found stack trace</span>
-                <span class="k">raise</span> <span class="n">PyAMLConfigException</span><span class="p">(</span>
-                    <span class="s2">&quot;Module referenced in type cannot be found:&quot;</span> <span class="o">+</span> <span class="sa">f</span><span class="s2">&quot;&#39;</span><span class="si">{</span><span class="n">module_str</span><span class="si">}</span><span class="s2">&#39; </span><span class="si">{</span><span class="n">location_str</span><span class="si">}</span><span class="s2">&quot;</span>
-                <span class="p">)</span> <span class="kn">from</span><span class="w"> </span><span class="kc">None</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="k">return</span> <span class="kc">None</span>
+    <span class="c1"># Import the module</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">module</span> <span class="o">=</span> <span class="n">importlib</span><span class="o">.</span><span class="n">import_module</span><span class="p">(</span><span class="n">module_str</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">ModuleNotFoundError</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">ignore_external</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span>
+        <span class="k">raise</span> <span class="n">PyAMLConfigException</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Module referenced in type cannot be found: &#39;</span><span class="si">{</span><span class="n">module_str</span><span class="si">}</span><span class="s2">&#39; </span><span class="si">{</span><span class="n">location_str</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span> <span class="kn">from</span><span class="w"> </span><span class="kc">None</span>
 
-        <span class="c1"># Get the object class name</span>
-        <span class="k">if</span> <span class="n">class_str</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">class_str</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">module</span><span class="p">,</span> <span class="s2">&quot;PYAMLCLASS&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">class_str</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="n">PyAMLConfigException</span><span class="p">(</span>
-                <span class="sa">f</span><span class="s2">&quot;PYAMLCLASS definition not found or class not specified in &#39;</span><span class="si">{</span><span class="n">module_str</span><span class="si">}</span><span class="s2">&#39; </span><span class="si">{</span><span class="n">location_str</span><span class="si">}</span><span class="s2">&quot;</span>
-            <span class="p">)</span>
+    <span class="c1"># Get the object class name</span>
+    <span class="k">if</span> <span class="n">class_str</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">class_str</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">module</span><span class="p">,</span> <span class="s2">&quot;PYAMLCLASS&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
 
-        <span class="c1"># Get the validation class</span>
-        <span class="n">config_cls</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">module</span><span class="p">,</span> <span class="n">validation_class_str</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">config_cls</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="n">PyAMLConfigException</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;No validation class for &#39;</span><span class="si">{</span><span class="n">module</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">.</span><span class="si">{</span><span class="n">class_str</span><span class="si">}</span><span class="s2">&#39; </span><span class="si">{</span><span class="n">location_str</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">class_str</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="n">PyAMLConfigException</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;PYAMLCLASS definition not found or class not specified in &#39;</span><span class="si">{</span><span class="n">module_str</span><span class="si">}</span><span class="s2">&#39; </span><span class="si">{</span><span class="n">location_str</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
-        <span class="k">return</span> <span class="p">(</span><span class="n">module</span><span class="p">,</span> <span class="n">config_cls</span><span class="p">,</span> <span class="n">class_str</span><span class="p">,</span> <span class="n">field_locations</span><span class="p">,</span> <span class="n">location_str</span><span class="p">)</span></div>
+    <span class="c1"># Get the validation class</span>
+    <span class="n">config_cls</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">module</span><span class="p">,</span> <span class="n">validation_class_str</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">config_cls</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="n">PyAMLConfigException</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;No validation class for &#39;</span><span class="si">{</span><span class="n">module</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">.</span><span class="si">{</span><span class="n">class_str</span><span class="si">}</span><span class="s2">&#39; </span><span class="si">{</span><span class="n">location_str</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">BuildInfo</span><span class="p">(</span>
+        <span class="n">module</span><span class="o">=</span><span class="n">module</span><span class="p">,</span>
+        <span class="n">config_cls</span><span class="o">=</span><span class="n">config_cls</span><span class="p">,</span>
+        <span class="n">class_str</span><span class="o">=</span><span class="n">class_str</span><span class="p">,</span>
+        <span class="n">field_locations</span><span class="o">=</span><span class="n">field_locations</span><span class="p">,</span>
+        <span class="n">location_str</span><span class="o">=</span><span class="n">location_str</span><span class="p">,</span>
+    <span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="PyAMLFactory.build_object">
-<a class="viewcode-back" href="../../../api/pyaml.configuration.factory.html#pyaml.configuration.factory.PyAMLFactory.build_object">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">build_object</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">d</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">ignore_external</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Build an object from the dict&quot;&quot;&quot;</span>
 
-        <span class="p">(</span><span class="n">module</span><span class="p">,</span> <span class="n">config_cls</span><span class="p">,</span> <span class="n">class_str</span><span class="p">,</span> <span class="n">field_locations</span><span class="p">,</span> <span class="n">location_str</span><span class="p">)</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_infos</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">ignore_external</span><span class="p">)</span>
+<div class="viewcode-block" id="get_field_type">
+<a class="viewcode-back" href="../../../api/pyaml.configuration.factory.html#pyaml.configuration.factory.get_field_type">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_field_type</span><span class="p">(</span><span class="n">config_cls</span><span class="p">,</span> <span class="n">field_name</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Return the annotated type of a configuration field.</span>
 
-        <span class="c1"># Clean up dict</span>
-        <span class="n">d</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;__location__&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
-        <span class="n">d</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;__fieldlocations__&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
-        <span class="n">d</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;type&quot;</span><span class="p">)</span>
-        <span class="n">d</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;class&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
-        <span class="n">d</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;validation_class&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
-        <span class="n">control_modes</span> <span class="o">=</span> <span class="n">d</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;control_modes&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    config_cls : type[BaseModel] | None</span>
+<span class="sd">        Pydantic configuration model.</span>
+<span class="sd">    field_name : str</span>
+<span class="sd">        Name of the field.</span>
 
-        <span class="c1"># Validate the model</span>
-        <span class="k">try</span><span class="p">:</span>
-            <span class="n">cfg</span> <span class="o">=</span> <span class="n">config_cls</span><span class="o">.</span><span class="n">model_validate</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
-        <span class="k">except</span> <span class="n">ValidationError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">handle_validation_error</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="n">module</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span> <span class="n">location_str</span><span class="p">,</span> <span class="n">field_locations</span><span class="p">)</span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    type | None</span>
+<span class="sd">        Annotated field type, or ``None`` if the field is not defined</span>
+<span class="sd">        in the model.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">if</span> <span class="n">config_cls</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">None</span>
+
+    <span class="k">return</span> <span class="n">get_type_hints</span><span class="p">(</span><span class="n">config_cls</span><span class="p">)</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">field_name</span><span class="p">)</span></div>
+
+
+
+<span class="c1"># ---------------------------------------------------------------------</span>
+<span class="c1"># Validation error</span>
+<span class="c1"># ---------------------------------------------------------------------</span>
+
+
+<div class="viewcode-block" id="handle_validation_error">
+<a class="viewcode-back" href="../../../api/pyaml.configuration.factory.html#pyaml.configuration.factory.handle_validation_error">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">handle_validation_error</span><span class="p">(</span><span class="n">exc</span><span class="p">,</span> <span class="n">type_str</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">location_str</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">field_locations</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">|</span> <span class="kc">None</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Convert a Pydantic validation error into a PyAMLConfigException.</span>
+
+<span class="sd">    Validation errors are reformatted to include the corresponding</span>
+<span class="sd">    configuration field and, when available, the source file location</span>
+<span class="sd">    of the field in the configuration file.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    exc : ValidationError</span>
+<span class="sd">        Pydantic validation error.</span>
+<span class="sd">    type_str : str</span>
+<span class="sd">        Name of the object type being validated.</span>
+<span class="sd">    location_str : str</span>
+<span class="sd">        Human-readable location of the object definition in the</span>
+<span class="sd">        configuration file.</span>
+<span class="sd">    field_locations : dict | None</span>
+<span class="sd">        Mapping between field names and their source locations in the</span>
+<span class="sd">        configuration file.</span>
+
+<span class="sd">    Raises</span>
+<span class="sd">    ------</span>
+<span class="sd">    PyAMLConfigException</span>
+<span class="sd">        Always raised with a formatted summary of the validation</span>
+<span class="sd">        errors. The original Pydantic exception traceback is</span>
+<span class="sd">        suppressed.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">messages</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="k">for</span> <span class="n">err</span> <span class="ow">in</span> <span class="n">exc</span><span class="o">.</span><span class="n">errors</span><span class="p">():</span>
+        <span class="n">loc</span> <span class="o">=</span> <span class="n">err</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;loc&quot;</span><span class="p">,</span> <span class="p">())</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="n">err</span><span class="p">[</span><span class="s2">&quot;msg&quot;</span><span class="p">]</span>
+
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">loc</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+            <span class="n">field</span><span class="p">,</span> <span class="n">field_idx</span> <span class="o">=</span> <span class="n">loc</span>
+            <span class="n">message</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;&#39;</span><span class="si">{</span><span class="n">field</span><span class="si">}</span><span class="s2">.</span><span class="si">{</span><span class="n">field_idx</span><span class="si">}</span><span class="s2">&#39;: </span><span class="si">{</span><span class="n">msg</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="n">field_name</span> <span class="o">=</span> <span class="n">field</span>
+        <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">loc</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">field_name</span> <span class="o">=</span> <span class="n">loc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">message</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;&#39;</span><span class="si">{</span><span class="n">field_name</span><span class="si">}</span><span class="s2">&#39;: </span><span class="si">{</span><span class="n">msg</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">field_name</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="n">message</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">loc</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">msg</span><span class="si">}</span><span class="s2">&quot;</span>
+
+        <span class="k">if</span> <span class="n">field_locations</span> <span class="ow">and</span> <span class="n">field_name</span> <span class="ow">in</span> <span class="n">field_locations</span><span class="p">:</span>
+            <span class="n">file</span><span class="p">,</span> <span class="n">line</span><span class="p">,</span> <span class="n">col</span> <span class="o">=</span> <span class="n">field_locations</span><span class="p">[</span><span class="n">field_name</span><span class="p">]</span>
+            <span class="n">message</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot; (</span><span class="si">{</span><span class="n">file</span><span class="si">}</span><span class="s2"> at line </span><span class="si">{</span><span class="n">line</span><span class="si">}</span><span class="s2">, column </span><span class="si">{</span><span class="n">col</span><span class="si">}</span><span class="s2">)&quot;</span>
+
+        <span class="n">messages</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
+
+    <span class="k">raise</span> <span class="n">PyAMLConfigException</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="s1">&#39;; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">messages</span><span class="p">)</span><span class="si">}</span><span class="s2"> for object: &#39;</span><span class="si">{</span><span class="n">type_str</span><span class="si">}</span><span class="s2">&#39; </span><span class="si">{</span><span class="n">location_str</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span> <span class="kn">from</span><span class="w"> </span><span class="kc">None</span></div>
+
+
+
+<span class="c1"># ---------------------------------------------------------------------</span>
+<span class="c1"># Factory</span>
+<span class="c1"># ---------------------------------------------------------------------</span>
+
+
+<div class="viewcode-block" id="PyAMLFactory">
+<a class="viewcode-back" href="../../../api/pyaml.configuration.factory.html#pyaml.configuration.factory.PyAMLFactory">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">PyAMLFactory</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Factory for constructing PyAML objects from configuration data.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_build_list</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">items</span><span class="p">,</span> <span class="n">ignore_external</span><span class="p">:</span> <span class="nb">bool</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Recursively build all nested objects contained in a list.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">build</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="n">ignore_external</span><span class="p">)</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="p">(</span><span class="nb">dict</span><span class="p">,</span> <span class="nb">list</span><span class="p">))</span> <span class="k">else</span> <span class="n">item</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">items</span><span class="p">]</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_is_plain_dict_type</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">field_type</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Return whether a field type represents a plain dictionary.</span>
+
+<span class="sd">        Plain dictionary fields are not recursively processed by the</span>
+<span class="sd">        factory and are passed unchanged to the validation model.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">field_type</span> <span class="ow">is</span> <span class="nb">dict</span> <span class="ow">or</span> <span class="n">get_origin</span><span class="p">(</span><span class="n">field_type</span><span class="p">)</span> <span class="ow">is</span> <span class="nb">dict</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_build_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">ignore_external</span><span class="p">:</span> <span class="nb">bool</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Recursively build nested objects referenced by a configuration</span>
+<span class="sd">        dictionary.</span>
+
+<span class="sd">        Fields annotated as plain dictionaries are excluded from the</span>
+<span class="sd">        recursive build process and are left unchanged.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">build_info</span> <span class="o">=</span> <span class="n">resolve_build_info</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">ignore_external</span><span class="p">)</span>
+        <span class="n">config_cls</span> <span class="o">=</span> <span class="n">build_info</span><span class="o">.</span><span class="n">config_cls</span>
+
+        <span class="n">result</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">data</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="k">if</span> <span class="n">key</span> <span class="o">==</span> <span class="s2">&quot;__fieldlocations__&quot;</span><span class="p">:</span>
+                <span class="k">continue</span>
+
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="p">(</span><span class="nb">dict</span><span class="p">,</span> <span class="nb">list</span><span class="p">)):</span>
+                <span class="n">field_type</span> <span class="o">=</span> <span class="n">get_field_type</span><span class="p">(</span><span class="n">config_cls</span><span class="p">,</span> <span class="n">key</span><span class="p">)</span>
+
+                <span class="c1"># Do not recurse dict defined in ConfigModel</span>
+                <span class="c1"># pydantic use TypedDict not usable with isinstance</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_is_plain_dict_type</span><span class="p">(</span><span class="n">field_type</span><span class="p">):</span>
+                    <span class="n">result</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">build</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">ignore_external</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">result</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_strip_build_metadata</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="nb">dict</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Remove PyAML-specific metadata from a configuration dictionary.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        tuple[dict, list[str] | None]</span>
+<span class="sd">            Cleaned configuration dictionary and the associated</span>
+<span class="sd">            control modes, if any.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">cleaned</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+        <span class="n">cleaned</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;__location__&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="n">cleaned</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;__fieldlocations__&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="n">cleaned</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;type&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="n">cleaned</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;class&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="n">cleaned</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;validation_class&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="n">control_modes</span> <span class="o">=</span> <span class="n">cleaned</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;control_modes&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">cleaned</span><span class="p">,</span> <span class="n">control_modes</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_resolve_element_class</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">module</span><span class="p">,</span> <span class="n">class_str</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">location_str</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Resolve the class to instantiate from a module.</span>
+
+<span class="sd">        Raises</span>
+<span class="sd">        ------</span>
+<span class="sd">        PyAMLConfigException</span>
+<span class="sd">            If the requested class cannot be found.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="n">elem_cls</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">module</span><span class="p">,</span> <span class="n">class_str</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">elem_cls</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">raise</span> <span class="n">PyAMLConfigException</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unknown element class &#39;</span><span class="si">{</span><span class="n">module</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">.</span><span class="si">{</span><span class="n">class_str</span><span class="si">}</span><span class="s2">&#39; </span><span class="si">{</span><span class="n">location_str</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">elem_cls</span>
 
-        <span class="k">if</span> <span class="n">control_modes</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="c1"># Immediate contruction of the object</span>
-            <span class="k">try</span><span class="p">:</span>
-                <span class="n">obj</span> <span class="o">=</span> <span class="n">elem_cls</span><span class="p">(</span><span class="n">cfg</span><span class="p">)</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">register_element</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>
-            <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="n">PyAMLConfigException</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">)</span><span class="si">}</span><span class="s2"> when creating &#39;</span><span class="si">{</span><span class="n">module</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">.</span><span class="si">{</span><span class="n">class_str</span><span class="si">}</span><span class="s2">&#39; </span><span class="si">{</span><span class="n">location_str</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span> <span class="kn">from</span><span class="w"> </span><span class="nn">e</span>
-
-        <span class="k">else</span><span class="p">:</span>
-            <span class="c1"># Delayed construction</span>
-            <span class="c1"># An UnboundElement will be constructuced during the filling of the ElementHolder</span>
-            <span class="k">try</span><span class="p">:</span>
-                <span class="n">obj</span> <span class="o">=</span> <span class="n">UnboundElement</span><span class="p">(</span><span class="n">elem_cls</span><span class="p">,</span> <span class="n">module</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span> <span class="n">control_modes</span><span class="p">,</span> <span class="n">cfg</span><span class="p">)</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">register_element</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>
-            <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="n">PyAMLConfigException</span><span class="p">(</span>
-                    <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">)</span><span class="si">}</span><span class="s2"> when creating unbounded &#39;</span><span class="si">{</span><span class="n">module</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">.</span><span class="si">{</span><span class="n">class_str</span><span class="si">}</span><span class="s2">&#39; </span><span class="si">{</span><span class="n">location_str</span><span class="si">}</span><span class="s2">&quot;</span>
-                <span class="p">)</span> <span class="kn">from</span><span class="w"> </span><span class="nn">e</span>
-
-        <span class="k">return</span> <span class="n">obj</span></div>
-
-
-<div class="viewcode-block" id="PyAMLFactory.build_unbound">
-<a class="viewcode-back" href="../../../api/pyaml.configuration.factory.html#pyaml.configuration.factory.PyAMLFactory.build_unbound">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">build_unbound</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">e</span><span class="p">:</span> <span class="n">UnboundElement</span><span class="p">,</span> <span class="n">holder</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Element</span><span class="p">:</span>
-        <span class="k">try</span><span class="p">:</span>
-            <span class="n">obj</span> <span class="o">=</span> <span class="n">e</span><span class="o">.</span><span class="n">_class</span><span class="p">(</span><span class="n">holder</span><span class="p">,</span> <span class="n">e</span><span class="o">.</span><span class="n">_config</span><span class="p">)</span>
-        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">ex</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="n">PyAMLConfigException</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">ex</span><span class="p">)</span><span class="si">}</span><span class="s2"> when creating &#39;</span><span class="si">{</span><span class="n">e</span><span class="o">.</span><span class="n">_module_name</span><span class="si">}</span><span class="s2">.</span><span class="si">{</span><span class="n">e</span><span class="o">.</span><span class="n">_class</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">&#39;&quot;</span><span class="p">)</span> <span class="kn">from</span><span class="w"> </span><span class="nn">ex</span>
-
-        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">Element</span><span class="p">):</span>
-            <span class="k">raise</span> <span class="n">PyAMLConfigException</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;&#39;</span><span class="si">{</span><span class="n">e</span><span class="o">.</span><span class="n">_module_name</span><span class="si">}</span><span class="s2">.</span><span class="si">{</span><span class="n">e</span><span class="o">.</span><span class="n">_class</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">&#39; is not a sub class of Element&quot;</span><span class="p">)</span>
-
-        <span class="n">obj</span><span class="o">.</span><span class="n">_peer</span> <span class="o">=</span> <span class="n">holder</span>
-
-        <span class="k">return</span> <span class="n">obj</span></div>
-
-
-<div class="viewcode-block" id="PyAMLFactory.depth_first_build">
-<a class="viewcode-back" href="../../../api/pyaml.configuration.factory.html#pyaml.configuration.factory.PyAMLFactory.depth_first_build">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">depth_first_build</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="n">ignore_external</span><span class="p">:</span> <span class="nb">bool</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_construct_element</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">elem_cls</span><span class="p">,</span>
+        <span class="n">module_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">class_str</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">cfg</span><span class="p">,</span>
+        <span class="n">control_modes</span><span class="p">,</span>
+        <span class="n">location_str</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Main factory function (Depth-first factory)</span>
+<span class="sd">        Construct an object from a validated configuration.</span>
+
+<span class="sd">        When control modes are specified, an UnboundElement is created</span>
+<span class="sd">        instead of immediately instantiating the target class.</span>
+
+<span class="sd">        Raises</span>
+<span class="sd">        ------</span>
+<span class="sd">        PyAMLConfigException</span>
+<span class="sd">            If object construction fails.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">control_modes</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">elem_cls</span><span class="p">(</span><span class="n">cfg</span><span class="p">)</span>
+
+            <span class="k">return</span> <span class="n">UnboundElement</span><span class="p">(</span><span class="n">elem_cls</span><span class="p">,</span> <span class="n">module_name</span><span class="p">,</span> <span class="n">control_modes</span><span class="p">,</span> <span class="n">cfg</span><span class="p">)</span>
+
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="n">mode</span> <span class="o">=</span> <span class="s2">&quot;unbounded&quot;</span> <span class="k">if</span> <span class="n">control_modes</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="s2">&quot;&quot;</span>
+            <span class="n">suffix</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot; </span><span class="si">{</span><span class="n">mode</span><span class="si">}</span><span class="s2">&quot;</span> <span class="k">if</span> <span class="n">mode</span> <span class="k">else</span> <span class="s2">&quot;&quot;</span>
+            <span class="k">raise</span> <span class="n">PyAMLConfigException</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2"> when creating</span><span class="si">{</span><span class="n">suffix</span><span class="si">}</span><span class="s2"> &#39;</span><span class="si">{</span><span class="n">module_name</span><span class="si">}</span><span class="s2">.</span><span class="si">{</span><span class="n">class_str</span><span class="si">}</span><span class="s2">&#39; </span><span class="si">{</span><span class="n">location_str</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span> <span class="kn">from</span><span class="w"> </span><span class="nn">e</span>
+
+<div class="viewcode-block" id="PyAMLFactory.build_object">
+<a class="viewcode-back" href="../../../api/pyaml.configuration.factory.html#pyaml.configuration.factory.PyAMLFactory.build_object">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">build_object</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">ignore_external</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Build a single object from a configuration dictionary.</span>
+
+<span class="sd">        The configuration is validated using the associated Pydantic</span>
+<span class="sd">        model before the target class is instantiated.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        ignore_external: bool</span>
-<span class="sd">            Ignore `module not found` and return None when an object cannot be created</span>
+<span class="sd">        data : dict</span>
+<span class="sd">            Object configuration.</span>
+<span class="sd">        ignore_external : bool</span>
+<span class="sd">            Ignore missing external modules.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        Any</span>
+<span class="sd">            Instantiated object or UnboundElement.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
-        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
-            <span class="c1"># list can be a list of objects or a list of native types</span>
-            <span class="n">l</span> <span class="o">=</span> <span class="p">[]</span>
-            <span class="k">for</span> <span class="n">_index</span><span class="p">,</span> <span class="n">e</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">d</span><span class="p">):</span>
-                <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="nb">dict</span><span class="p">)</span> <span class="ow">or</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
-                    <span class="n">obj</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">depth_first_build</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="n">ignore_external</span><span class="p">)</span>
-                    <span class="n">l</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>
-                <span class="k">else</span><span class="p">:</span>
-                    <span class="n">l</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
-            <span class="k">return</span> <span class="n">l</span>
+        <span class="c1"># Get the build information</span>
+        <span class="n">build_info</span> <span class="o">=</span> <span class="n">resolve_build_info</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">ignore_external</span><span class="p">)</span>
+        <span class="n">module</span> <span class="o">=</span> <span class="n">build_info</span><span class="o">.</span><span class="n">module</span>
+        <span class="n">config_cls</span> <span class="o">=</span> <span class="n">build_info</span><span class="o">.</span><span class="n">config_cls</span>
+        <span class="n">class_str</span> <span class="o">=</span> <span class="n">build_info</span><span class="o">.</span><span class="n">class_str</span>
+        <span class="n">field_locations</span> <span class="o">=</span> <span class="n">build_info</span><span class="o">.</span><span class="n">field_locations</span>
+        <span class="n">location_str</span> <span class="o">=</span> <span class="n">build_info</span><span class="o">.</span><span class="n">location_str</span>
 
-        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
-            <span class="n">_</span><span class="p">,</span> <span class="n">config_cls</span><span class="p">,</span> <span class="o">*</span><span class="n">_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_infos</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">ignore_external</span><span class="p">)</span>
+        <span class="n">cleaned_data</span><span class="p">,</span> <span class="n">control_modes</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_strip_build_metadata</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
 
-            <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">d</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-                <span class="k">if</span> <span class="ow">not</span> <span class="n">key</span> <span class="o">==</span> <span class="s2">&quot;__fieldlocations__&quot;</span><span class="p">:</span>
-                    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">dict</span><span class="p">)</span> <span class="ow">or</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
-                        <span class="c1"># Get the type of the field</span>
-                        <span class="n">fieldType</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_field_type</span><span class="p">(</span><span class="n">config_cls</span><span class="p">,</span> <span class="n">key</span><span class="p">)</span>
-                        <span class="c1"># Do not recurse dict defined in ConfigModel</span>
-                        <span class="c1"># pydantic use TypedDict not usable with isinstance</span>
-                        <span class="k">if</span> <span class="nb">str</span><span class="p">(</span><span class="n">fieldType</span><span class="p">)</span> <span class="o">!=</span> <span class="s2">&quot;&lt;class &#39;dict&#39;&gt;&quot;</span><span class="p">:</span>
-                            <span class="n">obj</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">depth_first_build</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">ignore_external</span><span class="p">)</span>
-                            <span class="c1"># Replace the inner dict by the object itself</span>
-                            <span class="n">d</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">obj</span>
+        <span class="c1"># Validate the model</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">cfg</span> <span class="o">=</span> <span class="n">config_cls</span><span class="o">.</span><span class="n">model_validate</span><span class="p">(</span><span class="n">cleaned_data</span><span class="p">)</span>
+        <span class="k">except</span> <span class="n">ValidationError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="n">handle_validation_error</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="n">module</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span> <span class="n">location_str</span><span class="p">,</span> <span class="n">field_locations</span><span class="p">)</span>
 
-            <span class="c1"># We are now on leaf (no nested object), we can construct</span>
-            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">build_object</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">ignore_external</span><span class="p">)</span>
+        <span class="c1"># Get the class</span>
+        <span class="n">elem_cls</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_resolve_element_class</span><span class="p">(</span><span class="n">module</span><span class="p">,</span> <span class="n">class_str</span><span class="p">,</span> <span class="n">location_str</span><span class="p">)</span>
 
-        <span class="k">raise</span> <span class="n">PyAMLConfigException</span><span class="p">(</span><span class="s2">&quot;Unexpected element found. &#39;dict&#39; or &#39;list&#39; expected but got &#39;</span><span class="si">{d.__class__.__name__}</span><span class="s2">&#39;&quot;</span><span class="p">)</span></div>
+        <span class="c1"># Build the object</span>
+        <span class="n">obj</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_construct_element</span><span class="p">(</span>
+            <span class="n">elem_cls</span><span class="o">=</span><span class="n">elem_cls</span><span class="p">,</span>
+            <span class="n">module_name</span><span class="o">=</span><span class="n">module</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span>
+            <span class="n">class_str</span><span class="o">=</span><span class="n">class_str</span><span class="p">,</span>
+            <span class="n">cfg</span><span class="o">=</span><span class="n">cfg</span><span class="p">,</span>
+            <span class="n">control_modes</span><span class="o">=</span><span class="n">control_modes</span><span class="p">,</span>
+            <span class="n">location_str</span><span class="o">=</span><span class="n">location_str</span><span class="p">,</span>
+        <span class="p">)</span>
 
-
-<div class="viewcode-block" id="PyAMLFactory.register_element">
-<a class="viewcode-back" href="../../../api/pyaml.configuration.factory.html#pyaml.configuration.factory.PyAMLFactory.register_element">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">register_element</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">elt</span><span class="p">):</span>
-        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">elt</span><span class="p">,</span> <span class="n">Element</span><span class="p">):</span>
-            <span class="n">name</span> <span class="o">=</span> <span class="n">elt</span><span class="o">.</span><span class="n">get_name</span><span class="p">()</span>
-            <span class="k">if</span> <span class="n">name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_elements</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="n">PyAMLConfigException</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;element </span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2"> already defined&quot;</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_elements</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">elt</span></div>
+        <span class="c1"># Register the element</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">Element</span><span class="p">):</span>
+            <span class="n">ELEMENT_REGISTRY</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">obj</span></div>
 
 
-<div class="viewcode-block" id="PyAMLFactory.get_element">
-<a class="viewcode-back" href="../../../api/pyaml.configuration.factory.html#pyaml.configuration.factory.PyAMLFactory.get_element">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">get_element</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
-        <span class="k">if</span> <span class="n">name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_elements</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="n">PyAMLConfigException</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;element </span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2"> not defined&quot;</span><span class="p">)</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_elements</span><span class="p">[</span><span class="n">name</span><span class="p">]</span></div>
+<div class="viewcode-block" id="PyAMLFactory.build">
+<a class="viewcode-back" href="../../../api/pyaml.configuration.factory.html#pyaml.configuration.factory.PyAMLFactory.build">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">build</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">|</span> <span class="nb">list</span><span class="p">,</span> <span class="n">ignore_external</span><span class="p">:</span> <span class="nb">bool</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Recursively build objects from configuration data.</span>
 
+<span class="sd">        Lists are traversed recursively and configuration dictionaries</span>
+<span class="sd">        are converted into instantiated objects.</span>
 
-<div class="viewcode-block" id="PyAMLFactory.get_elements_by_name">
-<a class="viewcode-back" href="../../../api/pyaml.configuration.factory.html#pyaml.configuration.factory.PyAMLFactory.get_elements_by_name">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">get_elements_by_name</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">wildcard</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">Element</span><span class="p">]:</span>
-        <span class="k">return</span> <span class="p">[</span><span class="n">e</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">e</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_elements</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">if</span> <span class="n">fnmatch</span><span class="o">.</span><span class="n">fnmatch</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">wildcard</span><span class="p">)]</span></div>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        data : dict | list</span>
+<span class="sd">            Configuration data to build.</span>
+<span class="sd">        ignore_external : bool</span>
+<span class="sd">            Ignore missing external modules and return ``None`` for</span>
+<span class="sd">            objects that cannot be constructed.</span>
 
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        Any</span>
+<span class="sd">            Built object, list of objects, or native value.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
 
-<div class="viewcode-block" id="PyAMLFactory.get_elements_by_type">
-<a class="viewcode-back" href="../../../api/pyaml.configuration.factory.html#pyaml.configuration.factory.PyAMLFactory.get_elements_by_type">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">get_elements_by_type</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">type</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">Element</span><span class="p">]:</span>
-        <span class="k">return</span> <span class="p">[</span><span class="n">e</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">e</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_elements</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="nb">type</span><span class="p">)]</span></div>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="p">(</span><span class="nb">dict</span><span class="p">,</span> <span class="nb">list</span><span class="p">)):</span>
+            <span class="k">raise</span> <span class="n">PyAMLConfigException</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unexpected element found. &#39;dict&#39; or &#39;list&#39; expected but got &#39;</span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">data</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">&#39;&quot;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_build_list</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">ignore_external</span><span class="p">)</span>
+
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+            <span class="n">data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_build_dict</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">ignore_external</span><span class="p">)</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">build_object</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">ignore_external</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="PyAMLFactory.clear">
 <a class="viewcode-back" href="../../../api/pyaml.configuration.factory.html#pyaml.configuration.factory.PyAMLFactory.clear">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">clear</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_elements</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span></div>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Remove all registered elements from the global registry.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">ELEMENT_REGISTRY</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span></div>
 </div>
 
 
 
+<span class="c1"># Shared factory instance maintained for compatibility with</span>
+<span class="c1"># existing code using Factory.build(...) and Factory.clear(...).</span>
 <span class="n">Factory</span> <span class="o">=</span> <span class="n">PyAMLFactory</span><span class="p">()</span>
 </pre></div>
 
