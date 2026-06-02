@@ -2,14 +2,8 @@
   name: BPM_001
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN01-SD/DG-EPOS/BPM.02/x_pos
-      unit: mm
-    y_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN01-SD/DG-EPOS/BPM.02/y_pos
-      unit: mm
+    x_pos: AN01-SD/DG-EPOS/BPM.02/x_pos
+    y_pos: AN01-SD/DG-EPOS/BPM.02/y_pos
 - type: pyaml.magnet.cfm_magnet
   name: SH1_COR_001
   mapping:
@@ -86,14 +80,8 @@
   name: BPM_002
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN01-AR/DG-EPOS/BPM.03/x_pos
-      unit: mm
-    y_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN01-AR/DG-EPOS/BPM.03/y_pos
-      unit: mm
+    x_pos: AN01-AR/DG-EPOS/BPM.03/x_pos
+    y_pos: AN01-AR/DG-EPOS/BPM.03/y_pos
 - type: pyaml.magnet.cfm_magnet
   name: SH3_VCOR_001
   mapping:
@@ -168,14 +156,8 @@
   name: BPM_003
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN01-AR/DG-EPOS/BPM.04/x_pos
-      unit: mm
-    y_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN01-AR/DG-EPOS/BPM.04/y_pos
-      unit: mm
+    x_pos: AN01-AR/DG-EPOS/BPM.04/x_pos
+    y_pos: AN01-AR/DG-EPOS/BPM.04/y_pos
 - type: pyaml.magnet.cfm_magnet
   name: SXD11_VCOR_001
   mapping:
@@ -259,14 +241,8 @@
   name: BPM_004
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN01-AR/DG-EPOS/BPM.05/x_pos
-      unit: mm
-    y_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN01-AR/DG-EPOS/BPM.05/y_pos
-      unit: mm
+    x_pos: AN01-AR/DG-EPOS/BPM.05/x_pos
+    y_pos: AN01-AR/DG-EPOS/BPM.05/y_pos
 - type: pyaml.magnet.cfm_magnet
   name: SXD1_VCOR_001
   mapping:
@@ -350,14 +326,8 @@
   name: BPM_005
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN01-AR/DG-EPOS/BPM.06/x_pos
-      unit: mm
-    y_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN01-AR/DG-EPOS/BPM.06/y_pos
-      unit: mm
+    x_pos: AN01-AR/DG-EPOS/BPM.06/x_pos
+    y_pos: AN01-AR/DG-EPOS/BPM.06/y_pos
 - type: pyaml.magnet.cfm_magnet
   name: SXD13_VCOR_001
   mapping:
@@ -441,14 +411,8 @@
   name: BPM_006
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN01-AR/DG-EPOS/BPM.07/x_pos
-      unit: mm
-    y_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN01-AR/DG-EPOS/BPM.07/y_pos
-      unit: mm
+    x_pos: AN01-AR/DG-EPOS/BPM.07/x_pos
+    y_pos: AN01-AR/DG-EPOS/BPM.07/y_pos
 - type: pyaml.magnet.cfm_magnet
   name: SXD1_VCOR_002
   mapping:
@@ -532,14 +496,8 @@
   name: BPM_007
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN01-AR/DG-EPOS/BPM.08/x_pos
-      unit: mm
-    y_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN01-AR/DG-EPOS/BPM.08/y_pos
-      unit: mm
+    x_pos: AN01-AR/DG-EPOS/BPM.08/x_pos
+    y_pos: AN01-AR/DG-EPOS/BPM.08/y_pos
 - type: pyaml.magnet.cfm_magnet
   name: SXD1_VCOR_003
   mapping:
@@ -639,14 +597,8 @@
   name: BPM_008
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN01-AR/DG-EPOS/BPM.09/x_pos
-      unit: mm
-    y_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN01-AR/DG-EPOS/BPM.09/y_pos
-      unit: mm
+    x_pos: AN01-AR/DG-EPOS/BPM.09/x_pos
+    y_pos: AN01-AR/DG-EPOS/BPM.09/y_pos
 - type: pyaml.magnet.cfm_magnet
   name: SH6_COR_001
   mapping:
@@ -705,14 +657,8 @@
   name: BPM_009
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN01-AR/DG-EPOS/BPM.10/x_pos
-      unit: mm
-    y_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN01-AR/DG-EPOS/BPM.10/y_pos
-      unit: mm
+    x_pos: AN01-AR/DG-EPOS/BPM.10/x_pos
+    y_pos: AN01-AR/DG-EPOS/BPM.10/y_pos
 - type: pyaml.magnet.cfm_magnet
   name: SH4_COR_001
   mapping:
@@ -757,26 +703,14 @@
   name: BPM_010
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN02-SD/DG-EPOS/BPM.01/x_pos
-      unit: mm
-    y_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN02-SD/DG-EPOS/BPM.01/y_pos
-      unit: mm
+    x_pos: AN02-SD/DG-EPOS/BPM.01/x_pos
+    y_pos: AN02-SD/DG-EPOS/BPM.01/y_pos
 - type: pyaml.bpm.bpm
   name: BPM_011
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN02-SD/DG-EPOS/BPM.02/x_pos
-      unit: mm
-    y_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN02-SD/DG-EPOS/BPM.02/y_pos
-      unit: mm
+    x_pos: AN02-SD/DG-EPOS/BPM.02/x_pos
+    y_pos: AN02-SD/DG-EPOS/BPM.02/y_pos
 - type: pyaml.magnet.cfm_magnet
   name: OH4_QCORROCT_11_QT_001
   mapping:
@@ -821,14 +755,8 @@
   name: BPM_012
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN02-AR/DG-EPOS/BPM.03/x_pos
-      unit: mm
-    y_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN02-AR/DG-EPOS/BPM.03/y_pos
-      unit: mm
+    x_pos: AN02-AR/DG-EPOS/BPM.03/x_pos
+    y_pos: AN02-AR/DG-EPOS/BPM.03/y_pos
 - type: pyaml.magnet.cfm_magnet
   name: OH5_QCORROCT_12_001
   mapping:
@@ -932,14 +860,8 @@
   name: BPM_013
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN02-AR/DG-EPOS/BPM.04/x_pos
-      unit: mm
-    y_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN02-AR/DG-EPOS/BPM.04/y_pos
-      unit: mm
+    x_pos: AN02-AR/DG-EPOS/BPM.04/x_pos
+    y_pos: AN02-AR/DG-EPOS/BPM.04/y_pos
 - type: pyaml.magnet.cfm_magnet
   name: SXD21_VCOR_001
   mapping:
@@ -1023,14 +945,8 @@
   name: BPM_014
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN02-AR/DG-EPOS/BPM.05/x_pos
-      unit: mm
-    y_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN02-AR/DG-EPOS/BPM.05/y_pos
-      unit: mm
+    x_pos: AN02-AR/DG-EPOS/BPM.05/x_pos
+    y_pos: AN02-AR/DG-EPOS/BPM.05/y_pos
 - type: pyaml.magnet.cfm_magnet
   name: SXD2_VCOR_001
   mapping:
@@ -1130,14 +1046,8 @@
   name: BPM_015
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN02-AR/DG-EPOS/BPM.06/x_pos
-      unit: mm
-    y_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN02-AR/DG-EPOS/BPM.06/y_pos
-      unit: mm
+    x_pos: AN02-AR/DG-EPOS/BPM.06/x_pos
+    y_pos: AN02-AR/DG-EPOS/BPM.06/y_pos
 - type: pyaml.magnet.cfm_magnet
   name: SH9_COR_001
   mapping:
@@ -1189,14 +1099,8 @@
   name: BPM_016
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN02-AR/DG-EPOS/BPM.07/x_pos
-      unit: mm
-    y_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN02-AR/DG-EPOS/BPM.07/y_pos
-      unit: mm
+    x_pos: AN02-AR/DG-EPOS/BPM.07/x_pos
+    y_pos: AN02-AR/DG-EPOS/BPM.07/y_pos
 - type: pyaml.magnet.cfm_magnet
   name: SH7_COR_001
   mapping:
@@ -1241,26 +1145,14 @@
   name: BPM_017
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN03-SD/DG-EPOS/BPM.01/x_pos
-      unit: mm
-    y_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN03-SD/DG-EPOS/BPM.01/y_pos
-      unit: mm
+    x_pos: AN03-SD/DG-EPOS/BPM.01/x_pos
+    y_pos: AN03-SD/DG-EPOS/BPM.01/y_pos
 - type: pyaml.bpm.bpm
   name: BPM_018
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN03-SD/DG-EPOS/BPM.02/x_pos
-      unit: mm
-    y_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN03-SD/DG-EPOS/BPM.02/y_pos
-      unit: mm
+    x_pos: AN03-SD/DG-EPOS/BPM.02/x_pos
+    y_pos: AN03-SD/DG-EPOS/BPM.02/y_pos
 - type: pyaml.magnet.cfm_magnet
   name: OH7_QCORROCT_17_QT_001
   mapping:
@@ -1305,14 +1197,8 @@
   name: BPM_019
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN03-AR/DG-EPOS/BPM.03/x_pos
-      unit: mm
-    y_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN03-AR/DG-EPOS/BPM.03/y_pos
-      unit: mm
+    x_pos: AN03-AR/DG-EPOS/BPM.03/x_pos
+    y_pos: AN03-AR/DG-EPOS/BPM.03/y_pos
 - type: pyaml.magnet.quadrupole
   name: QCORR_020
   model:
@@ -1409,14 +1295,8 @@
   name: BPM_020
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN03-AR/DG-EPOS/BPM.04/x_pos
-      unit: mm
-    y_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN03-AR/DG-EPOS/BPM.04/y_pos
-      unit: mm
+    x_pos: AN03-AR/DG-EPOS/BPM.04/x_pos
+    y_pos: AN03-AR/DG-EPOS/BPM.04/y_pos
 - type: pyaml.magnet.cfm_magnet
   name: SXD31_VCOR_001
   mapping:
@@ -1500,14 +1380,8 @@
   name: BPM_021
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN03-AR/DG-EPOS/BPM.05/x_pos
-      unit: mm
-    y_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN03-AR/DG-EPOS/BPM.05/y_pos
-      unit: mm
+    x_pos: AN03-AR/DG-EPOS/BPM.05/x_pos
+    y_pos: AN03-AR/DG-EPOS/BPM.05/y_pos
 - type: pyaml.magnet.cfm_magnet
   name: SXD3_VCOR_001
   mapping:
@@ -1591,14 +1465,8 @@
   name: BPM_022
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN03-AR/DG-EPOS/BPM.06/x_pos
-      unit: mm
-    y_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN03-AR/DG-EPOS/BPM.06/y_pos
-      unit: mm
+    x_pos: AN03-AR/DG-EPOS/BPM.06/x_pos
+    y_pos: AN03-AR/DG-EPOS/BPM.06/y_pos
 - type: pyaml.magnet.cfm_magnet
   name: SXD33_VCOR_001
   mapping:
@@ -1682,14 +1550,8 @@
   name: BPM_023
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN03-AR/DG-EPOS/BPM.07/x_pos
-      unit: mm
-    y_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN03-AR/DG-EPOS/BPM.07/y_pos
-      unit: mm
+    x_pos: AN03-AR/DG-EPOS/BPM.07/x_pos
+    y_pos: AN03-AR/DG-EPOS/BPM.07/y_pos
 - type: pyaml.magnet.cfm_magnet
   name: SXD3_VCOR_002
   mapping:
@@ -1773,14 +1635,8 @@
   name: BPM_024
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN03-AR/DG-EPOS/BPM.08/x_pos
-      unit: mm
-    y_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN03-AR/DG-EPOS/BPM.08/y_pos
-      unit: mm
+    x_pos: AN03-AR/DG-EPOS/BPM.08/x_pos
+    y_pos: AN03-AR/DG-EPOS/BPM.08/y_pos
 - type: pyaml.magnet.cfm_magnet
   name: SXD3_VCOR_003
   mapping:
@@ -1880,14 +1736,8 @@
   name: BPM_025
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN03-AR/DG-EPOS/BPM.09/x_pos
-      unit: mm
-    y_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN03-AR/DG-EPOS/BPM.09/y_pos
-      unit: mm
+    x_pos: AN03-AR/DG-EPOS/BPM.09/x_pos
+    y_pos: AN03-AR/DG-EPOS/BPM.09/y_pos
 - type: pyaml.magnet.cfm_magnet
   name: SH9_COR_003
   mapping:
@@ -1939,14 +1789,8 @@
   name: BPM_026
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN03-AR/DG-EPOS/BPM.10/x_pos
-      unit: mm
-    y_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN03-AR/DG-EPOS/BPM.10/y_pos
-      unit: mm
+    x_pos: AN03-AR/DG-EPOS/BPM.10/x_pos
+    y_pos: AN03-AR/DG-EPOS/BPM.10/y_pos
 - type: pyaml.magnet.cfm_magnet
   name: SH7_COR_003
   mapping:
@@ -1991,26 +1835,14 @@
   name: BPM_027
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN04-SD/DG-EPOS/BPM.01/x_pos
-      unit: mm
-    y_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN04-SD/DG-EPOS/BPM.01/y_pos
-      unit: mm
+    x_pos: AN04-SD/DG-EPOS/BPM.01/x_pos
+    y_pos: AN04-SD/DG-EPOS/BPM.01/y_pos
 - type: pyaml.bpm.bpm
   name: BPM_028
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN04-SD/DG-EPOS/BPM.02/x_pos
-      unit: mm
-    y_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN04-SD/DG-EPOS/BPM.02/y_pos
-      unit: mm
+    x_pos: AN04-SD/DG-EPOS/BPM.02/x_pos
+    y_pos: AN04-SD/DG-EPOS/BPM.02/y_pos
 - type: pyaml.magnet.cfm_magnet
   name: OH7_QCORROCT_25_QT_001
   mapping:
@@ -2055,14 +1887,8 @@
   name: BPM_029
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN04-AR/DG-EPOS/BPM.03/x_pos
-      unit: mm
-    y_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN04-AR/DG-EPOS/BPM.03/y_pos
-      unit: mm
+    x_pos: AN04-AR/DG-EPOS/BPM.03/x_pos
+    y_pos: AN04-AR/DG-EPOS/BPM.03/y_pos
 - type: pyaml.magnet.quadrupole
   name: QCORR_034
   model:
@@ -2159,14 +1985,8 @@
   name: BPM_030
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN04-AR/DG-EPOS/BPM.04/x_pos
-      unit: mm
-    y_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN04-AR/DG-EPOS/BPM.04/y_pos
-      unit: mm
+    x_pos: AN04-AR/DG-EPOS/BPM.04/x_pos
+    y_pos: AN04-AR/DG-EPOS/BPM.04/y_pos
 - type: pyaml.magnet.cfm_magnet
   name: SXD41_VCOR_001
   mapping:
@@ -2250,14 +2070,8 @@
   name: BPM_031
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN04-AR/DG-EPOS/BPM.05/x_pos
-      unit: mm
-    y_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN04-AR/DG-EPOS/BPM.05/y_pos
-      unit: mm
+    x_pos: AN04-AR/DG-EPOS/BPM.05/x_pos
+    y_pos: AN04-AR/DG-EPOS/BPM.05/y_pos
 - type: pyaml.magnet.cfm_magnet
   name: SXD4_VCOR_001
   mapping:
@@ -2357,14 +2171,8 @@
   name: BPM_032
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN04-AR/DG-EPOS/BPM.06/x_pos
-      unit: mm
-    y_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN04-AR/DG-EPOS/BPM.06/y_pos
-      unit: mm
+    x_pos: AN04-AR/DG-EPOS/BPM.06/x_pos
+    y_pos: AN04-AR/DG-EPOS/BPM.06/y_pos
 - type: pyaml.magnet.cfm_magnet
   name: SH12_COR_001
   mapping:
@@ -2423,14 +2231,8 @@
   name: BPM_033
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN04-AR/DG-EPOS/BPM.07/x_pos
-      unit: mm
-    y_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN04-AR/DG-EPOS/BPM.07/y_pos
-      unit: mm
+    x_pos: AN04-AR/DG-EPOS/BPM.07/x_pos
+    y_pos: AN04-AR/DG-EPOS/BPM.07/y_pos
 - type: pyaml.magnet.cfm_magnet
   name: SH10_COR_001
   mapping:
@@ -2475,26 +2277,14 @@
   name: BPM_034
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN05-SD/DG-EPOS/BPM.01/x_pos
-      unit: mm
-    y_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN05-SD/DG-EPOS/BPM.01/y_pos
-      unit: mm
+    x_pos: AN05-SD/DG-EPOS/BPM.01/x_pos
+    y_pos: AN05-SD/DG-EPOS/BPM.01/y_pos
 - type: pyaml.bpm.bpm
   name: BPM_035
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN05-SD/DG-EPOS/BPM.02/x_pos
-      unit: mm
-    y_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN05-SD/DG-EPOS/BPM.02/y_pos
-      unit: mm
+    x_pos: AN05-SD/DG-EPOS/BPM.02/x_pos
+    y_pos: AN05-SD/DG-EPOS/BPM.02/y_pos
 - type: pyaml.magnet.cfm_magnet
   name: OH10_QCORROCT_31_QT_001
   mapping:
@@ -2539,14 +2329,8 @@
   name: BPM_036
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN05-AR/DG-EPOS/BPM.03/x_pos
-      unit: mm
-    y_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN05-AR/DG-EPOS/BPM.03/y_pos
-      unit: mm
+    x_pos: AN05-AR/DG-EPOS/BPM.03/x_pos
+    y_pos: AN05-AR/DG-EPOS/BPM.03/y_pos
 - type: pyaml.magnet.cfm_magnet
   name: OH11_QCORROCT_32_001
   mapping:
@@ -2650,14 +2434,8 @@
   name: BPM_037
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN05-AR/DG-EPOS/BPM.04/x_pos
-      unit: mm
-    y_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN05-AR/DG-EPOS/BPM.04/y_pos
-      unit: mm
+    x_pos: AN05-AR/DG-EPOS/BPM.04/x_pos
+    y_pos: AN05-AR/DG-EPOS/BPM.04/y_pos
 - type: pyaml.magnet.cfm_magnet
   name: SXD51_VCOR_001
   mapping:
@@ -2741,14 +2519,8 @@
   name: BPM_038
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN05-AR/DG-EPOS/BPM.05/x_pos
-      unit: mm
-    y_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN05-AR/DG-EPOS/BPM.05/y_pos
-      unit: mm
+    x_pos: AN05-AR/DG-EPOS/BPM.05/x_pos
+    y_pos: AN05-AR/DG-EPOS/BPM.05/y_pos
 - type: pyaml.magnet.cfm_magnet
   name: SXD5_VCOR_001
   mapping:
@@ -2832,14 +2604,8 @@
   name: BPM_039
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN05-AR/DG-EPOS/BPM.06/x_pos
-      unit: mm
-    y_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN05-AR/DG-EPOS/BPM.06/y_pos
-      unit: mm
+    x_pos: AN05-AR/DG-EPOS/BPM.06/x_pos
+    y_pos: AN05-AR/DG-EPOS/BPM.06/y_pos
 - type: pyaml.magnet.cfm_magnet
   name: SXD53_VCOR_001
   mapping:
@@ -2923,14 +2689,8 @@
   name: BPM_040
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN05-AR/DG-EPOS/BPM.07/x_pos
-      unit: mm
-    y_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN05-AR/DG-EPOS/BPM.07/y_pos
-      unit: mm
+    x_pos: AN05-AR/DG-EPOS/BPM.07/x_pos
+    y_pos: AN05-AR/DG-EPOS/BPM.07/y_pos
 - type: pyaml.magnet.cfm_magnet
   name: SXD5_VCOR_002
   mapping:
@@ -3014,14 +2774,8 @@
   name: BPM_041
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN05-AR/DG-EPOS/BPM.08/x_pos
-      unit: mm
-    y_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN05-AR/DG-EPOS/BPM.08/y_pos
-      unit: mm
+    x_pos: AN05-AR/DG-EPOS/BPM.08/x_pos
+    y_pos: AN05-AR/DG-EPOS/BPM.08/y_pos
 - type: pyaml.magnet.cfm_magnet
   name: SXD5_VCOR_003
   mapping:
@@ -3121,14 +2875,8 @@
   name: BPM_042
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN05-AR/DG-EPOS/BPM.09/x_pos
-      unit: mm
-    y_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN05-AR/DG-EPOS/BPM.09/y_pos
-      unit: mm
+    x_pos: AN05-AR/DG-EPOS/BPM.09/x_pos
+    y_pos: AN05-AR/DG-EPOS/BPM.09/y_pos
 - type: pyaml.magnet.quadrupole
   name: QCORR_052
   model:
@@ -3158,14 +2906,8 @@
   name: BPM_043
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN05-AR/DG-EPOS/BPM.10/x_pos
-      unit: mm
-    y_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN05-AR/DG-EPOS/BPM.10/y_pos
-      unit: mm
+    x_pos: AN05-AR/DG-EPOS/BPM.10/x_pos
+    y_pos: AN05-AR/DG-EPOS/BPM.10/y_pos
 - type: pyaml.magnet.cfm_magnet
   name: SH14_HCOR_001
   mapping:
@@ -3242,26 +2984,14 @@
   name: BPM_044
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN06-SD/DG-EPOS/BPM.01/x_pos
-      unit: mm
-    y_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN06-SD/DG-EPOS/BPM.01/y_pos
-      unit: mm
+    x_pos: AN06-SD/DG-EPOS/BPM.01/x_pos
+    y_pos: AN06-SD/DG-EPOS/BPM.01/y_pos
 - type: pyaml.bpm.bpm
   name: BPM_045
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN06-SD/DG-EPOS/BPM.02/x_pos
-      unit: mm
-    y_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN06-SD/DG-EPOS/BPM.02/y_pos
-      unit: mm
+    x_pos: AN06-SD/DG-EPOS/BPM.02/x_pos
+    y_pos: AN06-SD/DG-EPOS/BPM.02/y_pos
 - type: pyaml.magnet.cfm_magnet
   name: OH16_QCORROCT_41_001
   mapping:
@@ -3338,26 +3068,14 @@
   name: BPM_046
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN06-SD/DG-EPOS/BPM.03/x_pos
-      unit: mm
-    y_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN06-SD/DG-EPOS/BPM.03/y_pos
-      unit: mm
+    x_pos: AN06-SD/DG-EPOS/BPM.03/x_pos
+    y_pos: AN06-SD/DG-EPOS/BPM.03/y_pos
 - type: pyaml.bpm.bpm
   name: BPM_047
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN06-SD/DG-EPOS/BPM.04/x_pos
-      unit: mm
-    y_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN06-SD/DG-EPOS/BPM.04/y_pos
-      unit: mm
+    x_pos: AN06-SD/DG-EPOS/BPM.04/x_pos
+    y_pos: AN06-SD/DG-EPOS/BPM.04/y_pos
 - type: pyaml.magnet.cfm_magnet
   name: OH13_QCORROCT_43_QT_001
   mapping:
@@ -3434,14 +3152,8 @@
   name: BPM_048
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN06-AR/DG-EPOS/BPM.05/x_pos
-      unit: mm
-    y_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN06-AR/DG-EPOS/BPM.05/y_pos
-      unit: mm
+    x_pos: AN06-AR/DG-EPOS/BPM.05/x_pos
+    y_pos: AN06-AR/DG-EPOS/BPM.05/y_pos
 - type: pyaml.magnet.cfm_magnet
   name: SH15_VCOR_002
   mapping:
@@ -3516,14 +3228,8 @@
   name: BPM_049
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN06-AR/DG-EPOS/BPM.06/x_pos
-      unit: mm
-    y_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN06-AR/DG-EPOS/BPM.06/y_pos
-      unit: mm
+    x_pos: AN06-AR/DG-EPOS/BPM.06/x_pos
+    y_pos: AN06-AR/DG-EPOS/BPM.06/y_pos
 - type: pyaml.magnet.cfm_magnet
   name: SXD52_VCOR_002
   mapping:
@@ -3607,14 +3313,8 @@
   name: BPM_050
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN06-AR/DG-EPOS/BPM.07/x_pos
-      unit: mm
-    y_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN06-AR/DG-EPOS/BPM.07/y_pos
-      unit: mm
+    x_pos: AN06-AR/DG-EPOS/BPM.07/x_pos
+    y_pos: AN06-AR/DG-EPOS/BPM.07/y_pos
 - type: pyaml.magnet.cfm_magnet
   name: SXD5_VCOR_004
   mapping:
@@ -3698,14 +3398,8 @@
   name: BPM_051
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN06-AR/DG-EPOS/BPM.08/x_pos
-      unit: mm
-    y_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN06-AR/DG-EPOS/BPM.08/y_pos
-      unit: mm
+    x_pos: AN06-AR/DG-EPOS/BPM.08/x_pos
+    y_pos: AN06-AR/DG-EPOS/BPM.08/y_pos
 - type: pyaml.magnet.cfm_magnet
   name: SXD53_VCOR_002
   mapping:
@@ -3789,14 +3483,8 @@
   name: BPM_052
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN06-AR/DG-EPOS/BPM.09/x_pos
-      unit: mm
-    y_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN06-AR/DG-EPOS/BPM.09/y_pos
-      unit: mm
+    x_pos: AN06-AR/DG-EPOS/BPM.09/x_pos
+    y_pos: AN06-AR/DG-EPOS/BPM.09/y_pos
 - type: pyaml.magnet.cfm_magnet
   name: SXD5_VCOR_005
   mapping:
@@ -3880,14 +3568,8 @@
   name: BPM_053
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN06-AR/DG-EPOS/BPM.10/x_pos
-      unit: mm
-    y_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN06-AR/DG-EPOS/BPM.10/y_pos
-      unit: mm
+    x_pos: AN06-AR/DG-EPOS/BPM.10/x_pos
+    y_pos: AN06-AR/DG-EPOS/BPM.10/y_pos
 - type: pyaml.magnet.cfm_magnet
   name: SXD5_VCOR_006
   mapping:
@@ -3987,14 +3669,8 @@
   name: BPM_054
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN06-AR/DG-EPOS/BPM.11/x_pos
-      unit: mm
-    y_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN06-AR/DG-EPOS/BPM.11/y_pos
-      unit: mm
+    x_pos: AN06-AR/DG-EPOS/BPM.11/x_pos
+    y_pos: AN06-AR/DG-EPOS/BPM.11/y_pos
 - type: pyaml.magnet.cfm_magnet
   name: SH12_COR_003
   mapping:
@@ -4053,14 +3729,8 @@
   name: BPM_055
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN06-AR/DG-EPOS/BPM.12/x_pos
-      unit: mm
-    y_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN06-AR/DG-EPOS/BPM.12/y_pos
-      unit: mm
+    x_pos: AN06-AR/DG-EPOS/BPM.12/x_pos
+    y_pos: AN06-AR/DG-EPOS/BPM.12/y_pos
 - type: pyaml.magnet.cfm_magnet
   name: SH10_COR_003
   mapping:
@@ -4105,26 +3775,14 @@
   name: BPM_056
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN07-SD/DG-EPOS/BPM.01/x_pos
-      unit: mm
-    y_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN07-SD/DG-EPOS/BPM.01/y_pos
-      unit: mm
+    x_pos: AN07-SD/DG-EPOS/BPM.01/x_pos
+    y_pos: AN07-SD/DG-EPOS/BPM.01/y_pos
 - type: pyaml.bpm.bpm
   name: BPM_057
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN07-SD/DG-EPOS/BPM.02/x_pos
-      unit: mm
-    y_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN07-SD/DG-EPOS/BPM.02/y_pos
-      unit: mm
+    x_pos: AN07-SD/DG-EPOS/BPM.02/x_pos
+    y_pos: AN07-SD/DG-EPOS/BPM.02/y_pos
 - type: pyaml.magnet.cfm_magnet
   name: OH10_QCORROCT_53_QT_001
   mapping:
@@ -4169,14 +3827,8 @@
   name: BPM_058
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN07-AR/DG-EPOS/BPM.03/x_pos
-      unit: mm
-    y_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN07-AR/DG-EPOS/BPM.03/y_pos
-      unit: mm
+    x_pos: AN07-AR/DG-EPOS/BPM.03/x_pos
+    y_pos: AN07-AR/DG-EPOS/BPM.03/y_pos
 - type: pyaml.magnet.cfm_magnet
   name: OH11_QCORROCT_54_001
   mapping:
@@ -4280,14 +3932,8 @@
   name: BPM_059
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN07-AR/DG-EPOS/BPM.04/x_pos
-      unit: mm
-    y_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN07-AR/DG-EPOS/BPM.04/y_pos
-      unit: mm
+    x_pos: AN07-AR/DG-EPOS/BPM.04/x_pos
+    y_pos: AN07-AR/DG-EPOS/BPM.04/y_pos
 - type: pyaml.magnet.cfm_magnet
   name: SXD42_VCOR_002
   mapping:
@@ -4371,14 +4017,8 @@
   name: BPM_060
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN07-AR/DG-EPOS/BPM.05/x_pos
-      unit: mm
-    y_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN07-AR/DG-EPOS/BPM.05/y_pos
-      unit: mm
+    x_pos: AN07-AR/DG-EPOS/BPM.05/x_pos
+    y_pos: AN07-AR/DG-EPOS/BPM.05/y_pos
 - type: pyaml.magnet.cfm_magnet
   name: SXD4_VCOR_002
   mapping:
@@ -4478,14 +4118,8 @@
   name: BPM_061
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN07-AR/DG-EPOS/BPM.06/x_pos
-      unit: mm
-    y_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN07-AR/DG-EPOS/BPM.06/y_pos
-      unit: mm
+    x_pos: AN07-AR/DG-EPOS/BPM.06/x_pos
+    y_pos: AN07-AR/DG-EPOS/BPM.06/y_pos
 - type: pyaml.magnet.cfm_magnet
   name: SH9_COR_005
   mapping:
@@ -4537,14 +4171,8 @@
   name: BPM_062
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN07-AR/DG-EPOS/BPM.07/x_pos
-      unit: mm
-    y_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN07-AR/DG-EPOS/BPM.07/y_pos
-      unit: mm
+    x_pos: AN07-AR/DG-EPOS/BPM.07/x_pos
+    y_pos: AN07-AR/DG-EPOS/BPM.07/y_pos
 - type: pyaml.magnet.cfm_magnet
   name: SH7_COR_005
   mapping:
@@ -4589,26 +4217,14 @@
   name: BPM_063
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN08-SD/DG-EPOS/BPM.01/x_pos
-      unit: mm
-    y_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN08-SD/DG-EPOS/BPM.01/y_pos
-      unit: mm
+    x_pos: AN08-SD/DG-EPOS/BPM.01/x_pos
+    y_pos: AN08-SD/DG-EPOS/BPM.01/y_pos
 - type: pyaml.bpm.bpm
   name: BPM_064
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN08-SD/DG-EPOS/BPM.02/x_pos
-      unit: mm
-    y_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN08-SD/DG-EPOS/BPM.02/y_pos
-      unit: mm
+    x_pos: AN08-SD/DG-EPOS/BPM.02/x_pos
+    y_pos: AN08-SD/DG-EPOS/BPM.02/y_pos
 - type: pyaml.magnet.cfm_magnet
   name: OH7_QCORROCT_59_QT_001
   mapping:
@@ -4653,14 +4269,8 @@
   name: BPM_065
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN08-AR/DG-EPOS/BPM.03/x_pos
-      unit: mm
-    y_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN08-AR/DG-EPOS/BPM.03/y_pos
-      unit: mm
+    x_pos: AN08-AR/DG-EPOS/BPM.03/x_pos
+    y_pos: AN08-AR/DG-EPOS/BPM.03/y_pos
 - type: pyaml.magnet.quadrupole
   name: QCORR_072
   model:
@@ -4757,14 +4367,8 @@
   name: BPM_066
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN08-AR/DG-EPOS/BPM.04/x_pos
-      unit: mm
-    y_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN08-AR/DG-EPOS/BPM.04/y_pos
-      unit: mm
+    x_pos: AN08-AR/DG-EPOS/BPM.04/x_pos
+    y_pos: AN08-AR/DG-EPOS/BPM.04/y_pos
 - type: pyaml.magnet.cfm_magnet
   name: SXD32_VCOR_002
   mapping:
@@ -4848,14 +4452,8 @@
   name: BPM_067
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN08-AR/DG-EPOS/BPM.05/x_pos
-      unit: mm
-    y_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN08-AR/DG-EPOS/BPM.05/y_pos
-      unit: mm
+    x_pos: AN08-AR/DG-EPOS/BPM.05/x_pos
+    y_pos: AN08-AR/DG-EPOS/BPM.05/y_pos
 - type: pyaml.magnet.cfm_magnet
   name: SXD3_VCOR_004
   mapping:
@@ -4939,14 +4537,8 @@
   name: BPM_068
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN08-AR/DG-EPOS/BPM.06/x_pos
-      unit: mm
-    y_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN08-AR/DG-EPOS/BPM.06/y_pos
-      unit: mm
+    x_pos: AN08-AR/DG-EPOS/BPM.06/x_pos
+    y_pos: AN08-AR/DG-EPOS/BPM.06/y_pos
 - type: pyaml.magnet.cfm_magnet
   name: SXD33_VCOR_002
   mapping:
@@ -5030,14 +4622,8 @@
   name: BPM_069
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN08-AR/DG-EPOS/BPM.07/x_pos
-      unit: mm
-    y_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN08-AR/DG-EPOS/BPM.07/y_pos
-      unit: mm
+    x_pos: AN08-AR/DG-EPOS/BPM.07/x_pos
+    y_pos: AN08-AR/DG-EPOS/BPM.07/y_pos
 - type: pyaml.magnet.cfm_magnet
   name: SXD3_VCOR_005
   mapping:
@@ -5121,14 +4707,8 @@
   name: BPM_070
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN08-AR/DG-EPOS/BPM.08/x_pos
-      unit: mm
-    y_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN08-AR/DG-EPOS/BPM.08/y_pos
-      unit: mm
+    x_pos: AN08-AR/DG-EPOS/BPM.08/x_pos
+    y_pos: AN08-AR/DG-EPOS/BPM.08/y_pos
 - type: pyaml.magnet.cfm_magnet
   name: SXD3_VCOR_006
   mapping:
@@ -5228,14 +4808,8 @@
   name: BPM_071
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN08-AR/DG-EPOS/BPM.09/x_pos
-      unit: mm
-    y_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN08-AR/DG-EPOS/BPM.09/y_pos
-      unit: mm
+    x_pos: AN08-AR/DG-EPOS/BPM.09/x_pos
+    y_pos: AN08-AR/DG-EPOS/BPM.09/y_pos
 - type: pyaml.magnet.cfm_magnet
   name: SH9_COR_007
   mapping:
@@ -5287,14 +4861,8 @@
   name: BPM_072
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN08-AR/DG-EPOS/BPM.10/x_pos
-      unit: mm
-    y_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN08-AR/DG-EPOS/BPM.10/y_pos
-      unit: mm
+    x_pos: AN08-AR/DG-EPOS/BPM.10/x_pos
+    y_pos: AN08-AR/DG-EPOS/BPM.10/y_pos
 - type: pyaml.magnet.cfm_magnet
   name: SH7_COR_007
   mapping:
@@ -5339,26 +4907,14 @@
   name: BPM_073
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN09-SD/DG-EPOS/BPM.01/x_pos
-      unit: mm
-    y_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN09-SD/DG-EPOS/BPM.01/y_pos
-      unit: mm
+    x_pos: AN09-SD/DG-EPOS/BPM.01/x_pos
+    y_pos: AN09-SD/DG-EPOS/BPM.01/y_pos
 - type: pyaml.bpm.bpm
   name: BPM_074
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN09-SD/DG-EPOS/BPM.02/x_pos
-      unit: mm
-    y_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN09-SD/DG-EPOS/BPM.02/y_pos
-      unit: mm
+    x_pos: AN09-SD/DG-EPOS/BPM.02/x_pos
+    y_pos: AN09-SD/DG-EPOS/BPM.02/y_pos
 - type: pyaml.magnet.cfm_magnet
   name: OH7_QCORROCT_67_QT_001
   mapping:
@@ -5403,14 +4959,8 @@
   name: BPM_075
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN09-AR/DG-EPOS/BPM.03/x_pos
-      unit: mm
-    y_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN09-AR/DG-EPOS/BPM.03/y_pos
-      unit: mm
+    x_pos: AN09-AR/DG-EPOS/BPM.03/x_pos
+    y_pos: AN09-AR/DG-EPOS/BPM.03/y_pos
 - type: pyaml.magnet.quadrupole
   name: QCORR_086
   model:
@@ -5507,14 +5057,8 @@
   name: BPM_076
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN09-AR/DG-EPOS/BPM.04/x_pos
-      unit: mm
-    y_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN09-AR/DG-EPOS/BPM.04/y_pos
-      unit: mm
+    x_pos: AN09-AR/DG-EPOS/BPM.04/x_pos
+    y_pos: AN09-AR/DG-EPOS/BPM.04/y_pos
 - type: pyaml.magnet.cfm_magnet
   name: SXD22_VCOR_002
   mapping:
@@ -5598,14 +5142,8 @@
   name: BPM_077
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN09-AR/DG-EPOS/BPM.05/x_pos
-      unit: mm
-    y_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN09-AR/DG-EPOS/BPM.05/y_pos
-      unit: mm
+    x_pos: AN09-AR/DG-EPOS/BPM.05/x_pos
+    y_pos: AN09-AR/DG-EPOS/BPM.05/y_pos
 - type: pyaml.magnet.cfm_magnet
   name: SXD2_VCOR_002
   mapping:
@@ -5705,14 +5243,8 @@
   name: BPM_078
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN09-AR/DG-EPOS/BPM.06/x_pos
-      unit: mm
-    y_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN09-AR/DG-EPOS/BPM.06/y_pos
-      unit: mm
+    x_pos: AN09-AR/DG-EPOS/BPM.06/x_pos
+    y_pos: AN09-AR/DG-EPOS/BPM.06/y_pos
 - type: pyaml.magnet.cfm_magnet
   name: SH6_COR_003
   mapping:
@@ -5771,14 +5303,8 @@
   name: BPM_079
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN09-AR/DG-EPOS/BPM.07/x_pos
-      unit: mm
-    y_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN09-AR/DG-EPOS/BPM.07/y_pos
-      unit: mm
+    x_pos: AN09-AR/DG-EPOS/BPM.07/x_pos
+    y_pos: AN09-AR/DG-EPOS/BPM.07/y_pos
 - type: pyaml.magnet.cfm_magnet
   name: SH4_COR_003
   mapping:
@@ -5823,26 +5349,14 @@
   name: BPM_080
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN10-SD/DG-EPOS/BPM.01/x_pos
-      unit: mm
-    y_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN10-SD/DG-EPOS/BPM.01/y_pos
-      unit: mm
+    x_pos: AN10-SD/DG-EPOS/BPM.01/x_pos
+    y_pos: AN10-SD/DG-EPOS/BPM.01/y_pos
 - type: pyaml.bpm.bpm
   name: BPM_081
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN10-SD/DG-EPOS/BPM.02/x_pos
-      unit: mm
-    y_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN10-SD/DG-EPOS/BPM.02/y_pos
-      unit: mm
+    x_pos: AN10-SD/DG-EPOS/BPM.02/x_pos
+    y_pos: AN10-SD/DG-EPOS/BPM.02/y_pos
 - type: pyaml.magnet.cfm_magnet
   name: OH4_QCORROCT_73_QT_001
   mapping:
@@ -5887,14 +5401,8 @@
   name: BPM_082
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN10-AR/DG-EPOS/BPM.03/x_pos
-      unit: mm
-    y_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN10-AR/DG-EPOS/BPM.03/y_pos
-      unit: mm
+    x_pos: AN10-AR/DG-EPOS/BPM.03/x_pos
+    y_pos: AN10-AR/DG-EPOS/BPM.03/y_pos
 - type: pyaml.magnet.cfm_magnet
   name: OH5_QCORROCT_74_001
   mapping:
@@ -5998,14 +5506,8 @@
   name: BPM_083
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN10-AR/DG-EPOS/BPM.04/x_pos
-      unit: mm
-    y_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN10-AR/DG-EPOS/BPM.04/y_pos
-      unit: mm
+    x_pos: AN10-AR/DG-EPOS/BPM.04/x_pos
+    y_pos: AN10-AR/DG-EPOS/BPM.04/y_pos
 - type: pyaml.magnet.cfm_magnet
   name: SXD12_VCOR_002
   mapping:
@@ -6089,14 +5591,8 @@
   name: BPM_084
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN10-AR/DG-EPOS/BPM.05/x_pos
-      unit: mm
-    y_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN10-AR/DG-EPOS/BPM.05/y_pos
-      unit: mm
+    x_pos: AN10-AR/DG-EPOS/BPM.05/x_pos
+    y_pos: AN10-AR/DG-EPOS/BPM.05/y_pos
 - type: pyaml.magnet.cfm_magnet
   name: SXD1_VCOR_004
   mapping:
@@ -6180,14 +5676,8 @@
   name: BPM_085
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN10-AR/DG-EPOS/BPM.06/x_pos
-      unit: mm
-    y_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN10-AR/DG-EPOS/BPM.06/y_pos
-      unit: mm
+    x_pos: AN10-AR/DG-EPOS/BPM.06/x_pos
+    y_pos: AN10-AR/DG-EPOS/BPM.06/y_pos
 - type: pyaml.magnet.cfm_magnet
   name: SXD13_VCOR_002
   mapping:
@@ -6271,14 +5761,8 @@
   name: BPM_086
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN10-AR/DG-EPOS/BPM.07/x_pos
-      unit: mm
-    y_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN10-AR/DG-EPOS/BPM.07/y_pos
-      unit: mm
+    x_pos: AN10-AR/DG-EPOS/BPM.07/x_pos
+    y_pos: AN10-AR/DG-EPOS/BPM.07/y_pos
 - type: pyaml.magnet.cfm_magnet
   name: SXD1_VCOR_005
   mapping:
@@ -6362,14 +5846,8 @@
   name: BPM_087
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN10-AR/DG-EPOS/BPM.08/x_pos
-      unit: mm
-    y_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN10-AR/DG-EPOS/BPM.08/y_pos
-      unit: mm
+    x_pos: AN10-AR/DG-EPOS/BPM.08/x_pos
+    y_pos: AN10-AR/DG-EPOS/BPM.08/y_pos
 - type: pyaml.magnet.cfm_magnet
   name: SXD1_VCOR_006
   mapping:
@@ -6469,14 +5947,8 @@
   name: BPM_088
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN10-AR/DG-EPOS/BPM.09/x_pos
-      unit: mm
-    y_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN10-AR/DG-EPOS/BPM.09/y_pos
-      unit: mm
+    x_pos: AN10-AR/DG-EPOS/BPM.09/x_pos
+    y_pos: AN10-AR/DG-EPOS/BPM.09/y_pos
 - type: pyaml.magnet.quadrupole
   name: QCORR_104
   model:
@@ -6506,14 +5978,8 @@
   name: BPM_089
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN10-AR/DG-EPOS/BPM.10/x_pos
-      unit: mm
-    y_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN10-AR/DG-EPOS/BPM.10/y_pos
-      unit: mm
+    x_pos: AN10-AR/DG-EPOS/BPM.10/x_pos
+    y_pos: AN10-AR/DG-EPOS/BPM.10/y_pos
 - type: pyaml.magnet.cfm_magnet
   name: OH2_QCORROCT_81_001
   mapping:
@@ -6590,26 +6056,14 @@
   name: BPM_090
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN11-SD/DG-EPOS/BPM.01/x_pos
-      unit: mm
-    y_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN11-SD/DG-EPOS/BPM.01/y_pos
-      unit: mm
+    x_pos: AN11-SD/DG-EPOS/BPM.01/x_pos
+    y_pos: AN11-SD/DG-EPOS/BPM.01/y_pos
 - type: pyaml.bpm.bpm
   name: BPM_091
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN11-SD/DG-EPOS/BPM.02/x_pos
-      unit: mm
-    y_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN11-SD/DG-EPOS/BPM.02/y_pos
-      unit: mm
+    x_pos: AN11-SD/DG-EPOS/BPM.02/x_pos
+    y_pos: AN11-SD/DG-EPOS/BPM.02/y_pos
 - type: pyaml.magnet.cfm_magnet
   name: SH1_COR_003
   mapping:
@@ -6686,14 +6140,8 @@
   name: BPM_092
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN11-AR/DG-EPOS/BPM.03/x_pos
-      unit: mm
-    y_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN11-AR/DG-EPOS/BPM.03/y_pos
-      unit: mm
+    x_pos: AN11-AR/DG-EPOS/BPM.03/x_pos
+    y_pos: AN11-AR/DG-EPOS/BPM.03/y_pos
 - type: pyaml.magnet.cfm_magnet
   name: SH3_VCOR_003
   mapping:
@@ -6768,14 +6216,8 @@
   name: BPM_093
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN11-AR/DG-EPOS/BPM.04/x_pos
-      unit: mm
-    y_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN11-AR/DG-EPOS/BPM.04/y_pos
-      unit: mm
+    x_pos: AN11-AR/DG-EPOS/BPM.04/x_pos
+    y_pos: AN11-AR/DG-EPOS/BPM.04/y_pos
 - type: pyaml.magnet.cfm_magnet
   name: SXD11_VCOR_003
   mapping:
@@ -6859,14 +6301,8 @@
   name: BPM_094
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN11-AR/DG-EPOS/BPM.05/x_pos
-      unit: mm
-    y_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN11-AR/DG-EPOS/BPM.05/y_pos
-      unit: mm
+    x_pos: AN11-AR/DG-EPOS/BPM.05/x_pos
+    y_pos: AN11-AR/DG-EPOS/BPM.05/y_pos
 - type: pyaml.magnet.cfm_magnet
   name: SXD1_VCOR_007
   mapping:
@@ -6950,14 +6386,8 @@
   name: BPM_095
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN11-AR/DG-EPOS/BPM.06/x_pos
-      unit: mm
-    y_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN11-AR/DG-EPOS/BPM.06/y_pos
-      unit: mm
+    x_pos: AN11-AR/DG-EPOS/BPM.06/x_pos
+    y_pos: AN11-AR/DG-EPOS/BPM.06/y_pos
 - type: pyaml.magnet.cfm_magnet
   name: SXD13_VCOR_003
   mapping:
@@ -7041,14 +6471,8 @@
   name: BPM_096
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN11-AR/DG-EPOS/BPM.07/x_pos
-      unit: mm
-    y_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN11-AR/DG-EPOS/BPM.07/y_pos
-      unit: mm
+    x_pos: AN11-AR/DG-EPOS/BPM.07/x_pos
+    y_pos: AN11-AR/DG-EPOS/BPM.07/y_pos
 - type: pyaml.magnet.cfm_magnet
   name: SXD1_VCOR_008
   mapping:
@@ -7132,14 +6556,8 @@
   name: BPM_097
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN11-AR/DG-EPOS/BPM.08/x_pos
-      unit: mm
-    y_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN11-AR/DG-EPOS/BPM.08/y_pos
-      unit: mm
+    x_pos: AN11-AR/DG-EPOS/BPM.08/x_pos
+    y_pos: AN11-AR/DG-EPOS/BPM.08/y_pos
 - type: pyaml.magnet.cfm_magnet
   name: SXD1_VCOR_009
   mapping:
@@ -7239,14 +6657,8 @@
   name: BPM_098
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN11-AR/DG-EPOS/BPM.09/x_pos
-      unit: mm
-    y_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN11-AR/DG-EPOS/BPM.09/y_pos
-      unit: mm
+    x_pos: AN11-AR/DG-EPOS/BPM.09/x_pos
+    y_pos: AN11-AR/DG-EPOS/BPM.09/y_pos
 - type: pyaml.magnet.cfm_magnet
   name: SH6_COR_005
   mapping:
@@ -7305,14 +6717,8 @@
   name: BPM_099
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN11-AR/DG-EPOS/BPM.10/x_pos
-      unit: mm
-    y_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN11-AR/DG-EPOS/BPM.10/y_pos
-      unit: mm
+    x_pos: AN11-AR/DG-EPOS/BPM.10/x_pos
+    y_pos: AN11-AR/DG-EPOS/BPM.10/y_pos
 - type: pyaml.magnet.cfm_magnet
   name: SH4_COR_005
   mapping:
@@ -7357,26 +6763,14 @@
   name: BPM_100
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN12-SD/DG-EPOS/BPM.01/x_pos
-      unit: mm
-    y_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN12-SD/DG-EPOS/BPM.01/y_pos
-      unit: mm
+    x_pos: AN12-SD/DG-EPOS/BPM.01/x_pos
+    y_pos: AN12-SD/DG-EPOS/BPM.01/y_pos
 - type: pyaml.bpm.bpm
   name: BPM_101
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN12-SD/DG-EPOS/BPM.02/x_pos
-      unit: mm
-    y_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN12-SD/DG-EPOS/BPM.02/y_pos
-      unit: mm
+    x_pos: AN12-SD/DG-EPOS/BPM.02/x_pos
+    y_pos: AN12-SD/DG-EPOS/BPM.02/y_pos
 - type: pyaml.magnet.cfm_magnet
   name: OH4_QCORROCT_93_QT_001
   mapping:
@@ -7421,14 +6815,8 @@
   name: BPM_102
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN12-AR/DG-EPOS/BPM.03/x_pos
-      unit: mm
-    y_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN12-AR/DG-EPOS/BPM.03/y_pos
-      unit: mm
+    x_pos: AN12-AR/DG-EPOS/BPM.03/x_pos
+    y_pos: AN12-AR/DG-EPOS/BPM.03/y_pos
 - type: pyaml.magnet.cfm_magnet
   name: OH5_QCORROCT_94_001
   mapping:
@@ -7532,14 +6920,8 @@
   name: BPM_103
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN12-AR/DG-EPOS/BPM.04/x_pos
-      unit: mm
-    y_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN12-AR/DG-EPOS/BPM.04/y_pos
-      unit: mm
+    x_pos: AN12-AR/DG-EPOS/BPM.04/x_pos
+    y_pos: AN12-AR/DG-EPOS/BPM.04/y_pos
 - type: pyaml.magnet.cfm_magnet
   name: SXD21_VCOR_003
   mapping:
@@ -7623,14 +7005,8 @@
   name: BPM_104
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN12-AR/DG-EPOS/BPM.05/x_pos
-      unit: mm
-    y_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN12-AR/DG-EPOS/BPM.05/y_pos
-      unit: mm
+    x_pos: AN12-AR/DG-EPOS/BPM.05/x_pos
+    y_pos: AN12-AR/DG-EPOS/BPM.05/y_pos
 - type: pyaml.magnet.cfm_magnet
   name: SXD2_VCOR_003
   mapping:
@@ -7730,14 +7106,8 @@
   name: BPM_105
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN12-AR/DG-EPOS/BPM.06/x_pos
-      unit: mm
-    y_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN12-AR/DG-EPOS/BPM.06/y_pos
-      unit: mm
+    x_pos: AN12-AR/DG-EPOS/BPM.06/x_pos
+    y_pos: AN12-AR/DG-EPOS/BPM.06/y_pos
 - type: pyaml.magnet.cfm_magnet
   name: SH9_COR_009
   mapping:
@@ -7789,14 +7159,8 @@
   name: BPM_106
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN12-AR/DG-EPOS/BPM.07/x_pos
-      unit: mm
-    y_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN12-AR/DG-EPOS/BPM.07/y_pos
-      unit: mm
+    x_pos: AN12-AR/DG-EPOS/BPM.07/x_pos
+    y_pos: AN12-AR/DG-EPOS/BPM.07/y_pos
 - type: pyaml.magnet.cfm_magnet
   name: SH7_COR_009
   mapping:
@@ -7841,26 +7205,14 @@
   name: BPM_107
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN13-SD/DG-EPOS/BPM.01/x_pos
-      unit: mm
-    y_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN13-SD/DG-EPOS/BPM.01/y_pos
-      unit: mm
+    x_pos: AN13-SD/DG-EPOS/BPM.01/x_pos
+    y_pos: AN13-SD/DG-EPOS/BPM.01/y_pos
 - type: pyaml.bpm.bpm
   name: BPM_108
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN13-SD/DG-EPOS/BPM.02/x_pos
-      unit: mm
-    y_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN13-SD/DG-EPOS/BPM.02/y_pos
-      unit: mm
+    x_pos: AN13-SD/DG-EPOS/BPM.02/x_pos
+    y_pos: AN13-SD/DG-EPOS/BPM.02/y_pos
 - type: pyaml.magnet.cfm_magnet
   name: OH7_QCORROCT_99_QT_001
   mapping:
@@ -7905,14 +7257,8 @@
   name: BPM_109
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN13-AR/DG-EPOS/BPM.03/x_pos
-      unit: mm
-    y_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN13-AR/DG-EPOS/BPM.03/y_pos
-      unit: mm
+    x_pos: AN13-AR/DG-EPOS/BPM.03/x_pos
+    y_pos: AN13-AR/DG-EPOS/BPM.03/y_pos
 - type: pyaml.magnet.quadrupole
   name: QCORR_124
   model:
@@ -8009,14 +7355,8 @@
   name: BPM_110
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN13-AR/DG-EPOS/BPM.04/x_pos
-      unit: mm
-    y_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN13-AR/DG-EPOS/BPM.04/y_pos
-      unit: mm
+    x_pos: AN13-AR/DG-EPOS/BPM.04/x_pos
+    y_pos: AN13-AR/DG-EPOS/BPM.04/y_pos
 - type: pyaml.magnet.cfm_magnet
   name: SXD31_VCOR_003
   mapping:
@@ -8100,14 +7440,8 @@
   name: BPM_111
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN13-AR/DG-EPOS/BPM.05/x_pos
-      unit: mm
-    y_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN13-AR/DG-EPOS/BPM.05/y_pos
-      unit: mm
+    x_pos: AN13-AR/DG-EPOS/BPM.05/x_pos
+    y_pos: AN13-AR/DG-EPOS/BPM.05/y_pos
 - type: pyaml.magnet.cfm_magnet
   name: SXD3_VCOR_007
   mapping:
@@ -8191,14 +7525,8 @@
   name: BPM_112
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN13-AR/DG-EPOS/BPM.06/x_pos
-      unit: mm
-    y_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN13-AR/DG-EPOS/BPM.06/y_pos
-      unit: mm
+    x_pos: AN13-AR/DG-EPOS/BPM.06/x_pos
+    y_pos: AN13-AR/DG-EPOS/BPM.06/y_pos
 - type: pyaml.magnet.cfm_magnet
   name: SXD33_VCOR_003
   mapping:
@@ -8282,14 +7610,8 @@
   name: BPM_113
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN13-AR/DG-EPOS/BPM.07/x_pos
-      unit: mm
-    y_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN13-AR/DG-EPOS/BPM.07/y_pos
-      unit: mm
+    x_pos: AN13-AR/DG-EPOS/BPM.07/x_pos
+    y_pos: AN13-AR/DG-EPOS/BPM.07/y_pos
 - type: pyaml.magnet.cfm_magnet
   name: SXD3_VCOR_008
   mapping:
@@ -8373,14 +7695,8 @@
   name: BPM_114
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN13-AR/DG-EPOS/BPM.08/x_pos
-      unit: mm
-    y_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN13-AR/DG-EPOS/BPM.08/y_pos
-      unit: mm
+    x_pos: AN13-AR/DG-EPOS/BPM.08/x_pos
+    y_pos: AN13-AR/DG-EPOS/BPM.08/y_pos
 - type: pyaml.magnet.cfm_magnet
   name: SXD3_VCOR_009
   mapping:
@@ -8480,14 +7796,8 @@
   name: BPM_115
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN13-AR/DG-EPOS/BPM.09/x_pos
-      unit: mm
-    y_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN13-AR/DG-EPOS/BPM.09/y_pos
-      unit: mm
+    x_pos: AN13-AR/DG-EPOS/BPM.09/x_pos
+    y_pos: AN13-AR/DG-EPOS/BPM.09/y_pos
 - type: pyaml.magnet.cfm_magnet
   name: SH9_COR_011
   mapping:
@@ -8539,14 +7849,8 @@
   name: BPM_116
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN13-AR/DG-EPOS/BPM.10/x_pos
-      unit: mm
-    y_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN13-AR/DG-EPOS/BPM.10/y_pos
-      unit: mm
+    x_pos: AN13-AR/DG-EPOS/BPM.10/x_pos
+    y_pos: AN13-AR/DG-EPOS/BPM.10/y_pos
 - type: pyaml.magnet.cfm_magnet
   name: SH7_COR_011
   mapping:
@@ -8591,26 +7895,14 @@
   name: BPM_117
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN14-SD/DG-EPOS/BPM.01/x_pos
-      unit: mm
-    y_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN14-SD/DG-EPOS/BPM.01/y_pos
-      unit: mm
+    x_pos: AN14-SD/DG-EPOS/BPM.01/x_pos
+    y_pos: AN14-SD/DG-EPOS/BPM.01/y_pos
 - type: pyaml.bpm.bpm
   name: BPM_118
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN14-SD/DG-EPOS/BPM.02/x_pos
-      unit: mm
-    y_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN14-SD/DG-EPOS/BPM.02/y_pos
-      unit: mm
+    x_pos: AN14-SD/DG-EPOS/BPM.02/x_pos
+    y_pos: AN14-SD/DG-EPOS/BPM.02/y_pos
 - type: pyaml.magnet.cfm_magnet
   name: OH7_QCORROCT_107_QT_001
   mapping:
@@ -8655,14 +7947,8 @@
   name: BPM_119
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN14-AR/DG-EPOS/BPM.03/x_pos
-      unit: mm
-    y_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN14-AR/DG-EPOS/BPM.03/y_pos
-      unit: mm
+    x_pos: AN14-AR/DG-EPOS/BPM.03/x_pos
+    y_pos: AN14-AR/DG-EPOS/BPM.03/y_pos
 - type: pyaml.magnet.quadrupole
   name: QCORR_138
   model:
@@ -8759,14 +8045,8 @@
   name: BPM_120
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN14-AR/DG-EPOS/BPM.04/x_pos
-      unit: mm
-    y_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN14-AR/DG-EPOS/BPM.04/y_pos
-      unit: mm
+    x_pos: AN14-AR/DG-EPOS/BPM.04/x_pos
+    y_pos: AN14-AR/DG-EPOS/BPM.04/y_pos
 - type: pyaml.magnet.cfm_magnet
   name: SXD41_VCOR_003
   mapping:
@@ -8850,14 +8130,8 @@
   name: BPM_121
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN14-AR/DG-EPOS/BPM.05/x_pos
-      unit: mm
-    y_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN14-AR/DG-EPOS/BPM.05/y_pos
-      unit: mm
+    x_pos: AN14-AR/DG-EPOS/BPM.05/x_pos
+    y_pos: AN14-AR/DG-EPOS/BPM.05/y_pos
 - type: pyaml.magnet.cfm_magnet
   name: SXD4_VCOR_003
   mapping:
@@ -8957,14 +8231,8 @@
   name: BPM_122
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN14-AR/DG-EPOS/BPM.06/x_pos
-      unit: mm
-    y_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN14-AR/DG-EPOS/BPM.06/y_pos
-      unit: mm
+    x_pos: AN14-AR/DG-EPOS/BPM.06/x_pos
+    y_pos: AN14-AR/DG-EPOS/BPM.06/y_pos
 - type: pyaml.magnet.cfm_magnet
   name: SH12_COR_005
   mapping:
@@ -9023,14 +8291,8 @@
   name: BPM_123
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN14-AR/DG-EPOS/BPM.07/x_pos
-      unit: mm
-    y_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN14-AR/DG-EPOS/BPM.07/y_pos
-      unit: mm
+    x_pos: AN14-AR/DG-EPOS/BPM.07/x_pos
+    y_pos: AN14-AR/DG-EPOS/BPM.07/y_pos
 - type: pyaml.magnet.cfm_magnet
   name: SH10_COR_005
   mapping:
@@ -9075,26 +8337,14 @@
   name: BPM_124
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN15-SD/DG-EPOS/BPM.01/x_pos
-      unit: mm
-    y_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN15-SD/DG-EPOS/BPM.01/y_pos
-      unit: mm
+    x_pos: AN15-SD/DG-EPOS/BPM.01/x_pos
+    y_pos: AN15-SD/DG-EPOS/BPM.01/y_pos
 - type: pyaml.bpm.bpm
   name: BPM_125
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN15-SD/DG-EPOS/BPM.02/x_pos
-      unit: mm
-    y_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN15-SD/DG-EPOS/BPM.02/y_pos
-      unit: mm
+    x_pos: AN15-SD/DG-EPOS/BPM.02/x_pos
+    y_pos: AN15-SD/DG-EPOS/BPM.02/y_pos
 - type: pyaml.magnet.cfm_magnet
   name: OH10_QCORROCT_113_QT_001
   mapping:
@@ -9139,14 +8389,8 @@
   name: BPM_126
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN15-AR/DG-EPOS/BPM.03/x_pos
-      unit: mm
-    y_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN15-AR/DG-EPOS/BPM.03/y_pos
-      unit: mm
+    x_pos: AN15-AR/DG-EPOS/BPM.03/x_pos
+    y_pos: AN15-AR/DG-EPOS/BPM.03/y_pos
 - type: pyaml.magnet.cfm_magnet
   name: OH11_QCORROCT_114_001
   mapping:
@@ -9250,14 +8494,8 @@
   name: BPM_127
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN15-AR/DG-EPOS/BPM.04/x_pos
-      unit: mm
-    y_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN15-AR/DG-EPOS/BPM.04/y_pos
-      unit: mm
+    x_pos: AN15-AR/DG-EPOS/BPM.04/x_pos
+    y_pos: AN15-AR/DG-EPOS/BPM.04/y_pos
 - type: pyaml.magnet.cfm_magnet
   name: SXD51_VCOR_003
   mapping:
@@ -9341,14 +8579,8 @@
   name: BPM_128
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN15-AR/DG-EPOS/BPM.05/x_pos
-      unit: mm
-    y_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN15-AR/DG-EPOS/BPM.05/y_pos
-      unit: mm
+    x_pos: AN15-AR/DG-EPOS/BPM.05/x_pos
+    y_pos: AN15-AR/DG-EPOS/BPM.05/y_pos
 - type: pyaml.magnet.cfm_magnet
   name: SXD5_VCOR_007
   mapping:
@@ -9432,14 +8664,8 @@
   name: BPM_129
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN15-AR/DG-EPOS/BPM.06/x_pos
-      unit: mm
-    y_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN15-AR/DG-EPOS/BPM.06/y_pos
-      unit: mm
+    x_pos: AN15-AR/DG-EPOS/BPM.06/x_pos
+    y_pos: AN15-AR/DG-EPOS/BPM.06/y_pos
 - type: pyaml.magnet.cfm_magnet
   name: SXD53_VCOR_003
   mapping:
@@ -9523,14 +8749,8 @@
   name: BPM_130
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN15-AR/DG-EPOS/BPM.07/x_pos
-      unit: mm
-    y_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN15-AR/DG-EPOS/BPM.07/y_pos
-      unit: mm
+    x_pos: AN15-AR/DG-EPOS/BPM.07/x_pos
+    y_pos: AN15-AR/DG-EPOS/BPM.07/y_pos
 - type: pyaml.magnet.cfm_magnet
   name: SXD5_VCOR_008
   mapping:
@@ -9614,14 +8834,8 @@
   name: BPM_131
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN15-AR/DG-EPOS/BPM.08/x_pos
-      unit: mm
-    y_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN15-AR/DG-EPOS/BPM.08/y_pos
-      unit: mm
+    x_pos: AN15-AR/DG-EPOS/BPM.08/x_pos
+    y_pos: AN15-AR/DG-EPOS/BPM.08/y_pos
 - type: pyaml.magnet.cfm_magnet
   name: SXD5_VCOR_009
   mapping:
@@ -9721,14 +8935,8 @@
   name: BPM_132
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN15-AR/DG-EPOS/BPM.09/x_pos
-      unit: mm
-    y_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN15-AR/DG-EPOS/BPM.09/y_pos
-      unit: mm
+    x_pos: AN15-AR/DG-EPOS/BPM.09/x_pos
+    y_pos: AN15-AR/DG-EPOS/BPM.09/y_pos
 - type: pyaml.magnet.quadrupole
   name: QCORR_156
   model:
@@ -9758,14 +8966,8 @@
   name: BPM_133
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN15-AR/DG-EPOS/BPM.10/x_pos
-      unit: mm
-    y_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN15-AR/DG-EPOS/BPM.10/y_pos
-      unit: mm
+    x_pos: AN15-AR/DG-EPOS/BPM.10/x_pos
+    y_pos: AN15-AR/DG-EPOS/BPM.10/y_pos
 - type: pyaml.magnet.cfm_magnet
   name: SH14_HCOR_003
   mapping:
@@ -9838,26 +9040,14 @@
   name: BPM_134
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN16-SD/DG-EPOS/BPM.01/x_pos
-      unit: mm
-    y_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN16-SD/DG-EPOS/BPM.01/y_pos
-      unit: mm
+    x_pos: AN16-SD/DG-EPOS/BPM.01/x_pos
+    y_pos: AN16-SD/DG-EPOS/BPM.01/y_pos
 - type: pyaml.bpm.bpm
   name: BPM_135
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN16-SD/DG-EPOS/BPM.02/x_pos
-      unit: mm
-    y_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN16-SD/DG-EPOS/BPM.02/y_pos
-      unit: mm
+    x_pos: AN16-SD/DG-EPOS/BPM.02/x_pos
+    y_pos: AN16-SD/DG-EPOS/BPM.02/y_pos
 - type: pyaml.magnet.cfm_magnet
   name: OH16_QCORROCT_123_001
   mapping:
@@ -9934,26 +9124,14 @@
   name: BPM_136
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN16-SD/DG-EPOS/BPM.03/x_pos
-      unit: mm
-    y_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN16-SD/DG-EPOS/BPM.03/y_pos
-      unit: mm
+    x_pos: AN16-SD/DG-EPOS/BPM.03/x_pos
+    y_pos: AN16-SD/DG-EPOS/BPM.03/y_pos
 - type: pyaml.bpm.bpm
   name: BPM_137
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN16-SD/DG-EPOS/BPM.04/x_pos
-      unit: mm
-    y_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN16-SD/DG-EPOS/BPM.04/y_pos
-      unit: mm
+    x_pos: AN16-SD/DG-EPOS/BPM.04/x_pos
+    y_pos: AN16-SD/DG-EPOS/BPM.04/y_pos
 - type: pyaml.magnet.cfm_magnet
   name: OH132_QCORROCT_125_001
   mapping:
@@ -10026,14 +9204,8 @@
   name: BPM_138
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN16-AR/DG-EPOS/BPM.05/x_pos
-      unit: mm
-    y_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN16-AR/DG-EPOS/BPM.05/y_pos
-      unit: mm
+    x_pos: AN16-AR/DG-EPOS/BPM.05/x_pos
+    y_pos: AN16-AR/DG-EPOS/BPM.05/y_pos
 - type: pyaml.magnet.cfm_magnet
   name: SH15_VCOR_004
   mapping:
@@ -10108,14 +9280,8 @@
   name: BPM_139
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN16-AR/DG-EPOS/BPM.06/x_pos
-      unit: mm
-    y_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN16-AR/DG-EPOS/BPM.06/y_pos
-      unit: mm
+    x_pos: AN16-AR/DG-EPOS/BPM.06/x_pos
+    y_pos: AN16-AR/DG-EPOS/BPM.06/y_pos
 - type: pyaml.magnet.cfm_magnet
   name: SXD52_VCOR_004
   mapping:
@@ -10199,14 +9365,8 @@
   name: BPM_140
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN16-AR/DG-EPOS/BPM.07/x_pos
-      unit: mm
-    y_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN16-AR/DG-EPOS/BPM.07/y_pos
-      unit: mm
+    x_pos: AN16-AR/DG-EPOS/BPM.07/x_pos
+    y_pos: AN16-AR/DG-EPOS/BPM.07/y_pos
 - type: pyaml.magnet.cfm_magnet
   name: SXD5_VCOR_010
   mapping:
@@ -10290,14 +9450,8 @@
   name: BPM_141
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN16-AR/DG-EPOS/BPM.08/x_pos
-      unit: mm
-    y_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN16-AR/DG-EPOS/BPM.08/y_pos
-      unit: mm
+    x_pos: AN16-AR/DG-EPOS/BPM.08/x_pos
+    y_pos: AN16-AR/DG-EPOS/BPM.08/y_pos
 - type: pyaml.magnet.cfm_magnet
   name: SXD53_VCOR_004
   mapping:
@@ -10381,14 +9535,8 @@
   name: BPM_142
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN16-AR/DG-EPOS/BPM.09/x_pos
-      unit: mm
-    y_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN16-AR/DG-EPOS/BPM.09/y_pos
-      unit: mm
+    x_pos: AN16-AR/DG-EPOS/BPM.09/x_pos
+    y_pos: AN16-AR/DG-EPOS/BPM.09/y_pos
 - type: pyaml.magnet.cfm_magnet
   name: SXD5_VCOR_011
   mapping:
@@ -10472,14 +9620,8 @@
   name: BPM_143
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN16-AR/DG-EPOS/BPM.10/x_pos
-      unit: mm
-    y_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN16-AR/DG-EPOS/BPM.10/y_pos
-      unit: mm
+    x_pos: AN16-AR/DG-EPOS/BPM.10/x_pos
+    y_pos: AN16-AR/DG-EPOS/BPM.10/y_pos
 - type: pyaml.magnet.cfm_magnet
   name: SXD5_VCOR_012
   mapping:
@@ -10579,14 +9721,8 @@
   name: BPM_144
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN16-AR/DG-EPOS/BPM.11/x_pos
-      unit: mm
-    y_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN16-AR/DG-EPOS/BPM.11/y_pos
-      unit: mm
+    x_pos: AN16-AR/DG-EPOS/BPM.11/x_pos
+    y_pos: AN16-AR/DG-EPOS/BPM.11/y_pos
 - type: pyaml.magnet.cfm_magnet
   name: SH12_COR_007
   mapping:
@@ -10645,14 +9781,8 @@
   name: BPM_145
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN16-AR/DG-EPOS/BPM.12/x_pos
-      unit: mm
-    y_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN16-AR/DG-EPOS/BPM.12/y_pos
-      unit: mm
+    x_pos: AN16-AR/DG-EPOS/BPM.12/x_pos
+    y_pos: AN16-AR/DG-EPOS/BPM.12/y_pos
 - type: pyaml.magnet.cfm_magnet
   name: SH10_COR_007
   mapping:
@@ -10697,26 +9827,14 @@
   name: BPM_146
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN17-SD/DG-EPOS/BPM.01/x_pos
-      unit: mm
-    y_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN17-SD/DG-EPOS/BPM.01/y_pos
-      unit: mm
+    x_pos: AN17-SD/DG-EPOS/BPM.01/x_pos
+    y_pos: AN17-SD/DG-EPOS/BPM.01/y_pos
 - type: pyaml.bpm.bpm
   name: BPM_147
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN17-SD/DG-EPOS/BPM.02/x_pos
-      unit: mm
-    y_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN17-SD/DG-EPOS/BPM.02/y_pos
-      unit: mm
+    x_pos: AN17-SD/DG-EPOS/BPM.02/x_pos
+    y_pos: AN17-SD/DG-EPOS/BPM.02/y_pos
 - type: pyaml.magnet.cfm_magnet
   name: OH10_QCORROCT_135_QT_001
   mapping:
@@ -10761,14 +9879,8 @@
   name: BPM_148
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN17-AR/DG-EPOS/BPM.03/x_pos
-      unit: mm
-    y_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN17-AR/DG-EPOS/BPM.03/y_pos
-      unit: mm
+    x_pos: AN17-AR/DG-EPOS/BPM.03/x_pos
+    y_pos: AN17-AR/DG-EPOS/BPM.03/y_pos
 - type: pyaml.magnet.cfm_magnet
   name: OH11_QCORROCT_136_001
   mapping:
@@ -10872,14 +9984,8 @@
   name: BPM_149
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN17-AR/DG-EPOS/BPM.04/x_pos
-      unit: mm
-    y_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN17-AR/DG-EPOS/BPM.04/y_pos
-      unit: mm
+    x_pos: AN17-AR/DG-EPOS/BPM.04/x_pos
+    y_pos: AN17-AR/DG-EPOS/BPM.04/y_pos
 - type: pyaml.magnet.cfm_magnet
   name: SXD42_VCOR_004
   mapping:
@@ -10963,14 +10069,8 @@
   name: BPM_150
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN17-AR/DG-EPOS/BPM.05/x_pos
-      unit: mm
-    y_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN17-AR/DG-EPOS/BPM.05/y_pos
-      unit: mm
+    x_pos: AN17-AR/DG-EPOS/BPM.05/x_pos
+    y_pos: AN17-AR/DG-EPOS/BPM.05/y_pos
 - type: pyaml.magnet.cfm_magnet
   name: SXD4_VCOR_004
   mapping:
@@ -11070,14 +10170,8 @@
   name: BPM_151
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN17-AR/DG-EPOS/BPM.06/x_pos
-      unit: mm
-    y_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN17-AR/DG-EPOS/BPM.06/y_pos
-      unit: mm
+    x_pos: AN17-AR/DG-EPOS/BPM.06/x_pos
+    y_pos: AN17-AR/DG-EPOS/BPM.06/y_pos
 - type: pyaml.magnet.cfm_magnet
   name: SH9_COR_013
   mapping:
@@ -11129,14 +10223,8 @@
   name: BPM_152
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN17-AR/DG-EPOS/BPM.07/x_pos
-      unit: mm
-    y_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN17-AR/DG-EPOS/BPM.07/y_pos
-      unit: mm
+    x_pos: AN17-AR/DG-EPOS/BPM.07/x_pos
+    y_pos: AN17-AR/DG-EPOS/BPM.07/y_pos
 - type: pyaml.magnet.cfm_magnet
   name: SH7_COR_013
   mapping:
@@ -11181,26 +10269,14 @@
   name: BPM_153
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN18-SD/DG-EPOS/BPM.01/x_pos
-      unit: mm
-    y_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN18-SD/DG-EPOS/BPM.01/y_pos
-      unit: mm
+    x_pos: AN18-SD/DG-EPOS/BPM.01/x_pos
+    y_pos: AN18-SD/DG-EPOS/BPM.01/y_pos
 - type: pyaml.bpm.bpm
   name: BPM_154
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN18-SD/DG-EPOS/BPM.02/x_pos
-      unit: mm
-    y_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN18-SD/DG-EPOS/BPM.02/y_pos
-      unit: mm
+    x_pos: AN18-SD/DG-EPOS/BPM.02/x_pos
+    y_pos: AN18-SD/DG-EPOS/BPM.02/y_pos
 - type: pyaml.magnet.cfm_magnet
   name: OH7_QCORROCT_141_QT_001
   mapping:
@@ -11245,14 +10321,8 @@
   name: BPM_155
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN18-AR/DG-EPOS/BPM.03/x_pos
-      unit: mm
-    y_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN18-AR/DG-EPOS/BPM.03/y_pos
-      unit: mm
+    x_pos: AN18-AR/DG-EPOS/BPM.03/x_pos
+    y_pos: AN18-AR/DG-EPOS/BPM.03/y_pos
 - type: pyaml.magnet.quadrupole
   name: QCORR_176
   model:
@@ -11349,14 +10419,8 @@
   name: BPM_156
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN18-AR/DG-EPOS/BPM.04/x_pos
-      unit: mm
-    y_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN18-AR/DG-EPOS/BPM.04/y_pos
-      unit: mm
+    x_pos: AN18-AR/DG-EPOS/BPM.04/x_pos
+    y_pos: AN18-AR/DG-EPOS/BPM.04/y_pos
 - type: pyaml.magnet.cfm_magnet
   name: SXD32_VCOR_004
   mapping:
@@ -11440,14 +10504,8 @@
   name: BPM_157
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN18-AR/DG-EPOS/BPM.05/x_pos
-      unit: mm
-    y_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN18-AR/DG-EPOS/BPM.05/y_pos
-      unit: mm
+    x_pos: AN18-AR/DG-EPOS/BPM.05/x_pos
+    y_pos: AN18-AR/DG-EPOS/BPM.05/y_pos
 - type: pyaml.magnet.cfm_magnet
   name: SXD3_VCOR_010
   mapping:
@@ -11531,14 +10589,8 @@
   name: BPM_158
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN18-AR/DG-EPOS/BPM.06/x_pos
-      unit: mm
-    y_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN18-AR/DG-EPOS/BPM.06/y_pos
-      unit: mm
+    x_pos: AN18-AR/DG-EPOS/BPM.06/x_pos
+    y_pos: AN18-AR/DG-EPOS/BPM.06/y_pos
 - type: pyaml.magnet.cfm_magnet
   name: SXD33_VCOR_004
   mapping:
@@ -11622,14 +10674,8 @@
   name: BPM_159
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN18-AR/DG-EPOS/BPM.07/x_pos
-      unit: mm
-    y_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN18-AR/DG-EPOS/BPM.07/y_pos
-      unit: mm
+    x_pos: AN18-AR/DG-EPOS/BPM.07/x_pos
+    y_pos: AN18-AR/DG-EPOS/BPM.07/y_pos
 - type: pyaml.magnet.cfm_magnet
   name: SXD3_VCOR_011
   mapping:
@@ -11713,14 +10759,8 @@
   name: BPM_160
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN18-AR/DG-EPOS/BPM.08/x_pos
-      unit: mm
-    y_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN18-AR/DG-EPOS/BPM.08/y_pos
-      unit: mm
+    x_pos: AN18-AR/DG-EPOS/BPM.08/x_pos
+    y_pos: AN18-AR/DG-EPOS/BPM.08/y_pos
 - type: pyaml.magnet.cfm_magnet
   name: SXD3_VCOR_012
   mapping:
@@ -11820,14 +10860,8 @@
   name: BPM_161
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN18-AR/DG-EPOS/BPM.09/x_pos
-      unit: mm
-    y_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN18-AR/DG-EPOS/BPM.09/y_pos
-      unit: mm
+    x_pos: AN18-AR/DG-EPOS/BPM.09/x_pos
+    y_pos: AN18-AR/DG-EPOS/BPM.09/y_pos
 - type: pyaml.magnet.cfm_magnet
   name: SH9_COR_015
   mapping:
@@ -11879,14 +10913,8 @@
   name: BPM_162
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN18-AR/DG-EPOS/BPM.10/x_pos
-      unit: mm
-    y_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN18-AR/DG-EPOS/BPM.10/y_pos
-      unit: mm
+    x_pos: AN18-AR/DG-EPOS/BPM.10/x_pos
+    y_pos: AN18-AR/DG-EPOS/BPM.10/y_pos
 - type: pyaml.magnet.cfm_magnet
   name: SH7_COR_015
   mapping:
@@ -11931,26 +10959,14 @@
   name: BPM_163
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN19-SD/DG-EPOS/BPM.01/x_pos
-      unit: mm
-    y_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN19-SD/DG-EPOS/BPM.01/y_pos
-      unit: mm
+    x_pos: AN19-SD/DG-EPOS/BPM.01/x_pos
+    y_pos: AN19-SD/DG-EPOS/BPM.01/y_pos
 - type: pyaml.bpm.bpm
   name: BPM_164
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN19-SD/DG-EPOS/BPM.02/x_pos
-      unit: mm
-    y_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN19-SD/DG-EPOS/BPM.02/y_pos
-      unit: mm
+    x_pos: AN19-SD/DG-EPOS/BPM.02/x_pos
+    y_pos: AN19-SD/DG-EPOS/BPM.02/y_pos
 - type: pyaml.magnet.cfm_magnet
   name: OH7_QCORROCT_149_QT_001
   mapping:
@@ -11995,14 +11011,8 @@
   name: BPM_165
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN19-AR/DG-EPOS/BPM.03/x_pos
-      unit: mm
-    y_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN19-AR/DG-EPOS/BPM.03/y_pos
-      unit: mm
+    x_pos: AN19-AR/DG-EPOS/BPM.03/x_pos
+    y_pos: AN19-AR/DG-EPOS/BPM.03/y_pos
 - type: pyaml.magnet.quadrupole
   name: QCORR_190
   model:
@@ -12099,14 +11109,8 @@
   name: BPM_166
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN19-AR/DG-EPOS/BPM.04/x_pos
-      unit: mm
-    y_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN19-AR/DG-EPOS/BPM.04/y_pos
-      unit: mm
+    x_pos: AN19-AR/DG-EPOS/BPM.04/x_pos
+    y_pos: AN19-AR/DG-EPOS/BPM.04/y_pos
 - type: pyaml.magnet.cfm_magnet
   name: SXD22_VCOR_004
   mapping:
@@ -12190,14 +11194,8 @@
   name: BPM_167
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN19-AR/DG-EPOS/BPM.05/x_pos
-      unit: mm
-    y_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN19-AR/DG-EPOS/BPM.05/y_pos
-      unit: mm
+    x_pos: AN19-AR/DG-EPOS/BPM.05/x_pos
+    y_pos: AN19-AR/DG-EPOS/BPM.05/y_pos
 - type: pyaml.magnet.cfm_magnet
   name: SXD2_VCOR_004
   mapping:
@@ -12297,14 +11295,8 @@
   name: BPM_168
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN19-AR/DG-EPOS/BPM.06/x_pos
-      unit: mm
-    y_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN19-AR/DG-EPOS/BPM.06/y_pos
-      unit: mm
+    x_pos: AN19-AR/DG-EPOS/BPM.06/x_pos
+    y_pos: AN19-AR/DG-EPOS/BPM.06/y_pos
 - type: pyaml.magnet.cfm_magnet
   name: SH6_COR_007
   mapping:
@@ -12363,14 +11355,8 @@
   name: BPM_169
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN19-AR/DG-EPOS/BPM.07/x_pos
-      unit: mm
-    y_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN19-AR/DG-EPOS/BPM.07/y_pos
-      unit: mm
+    x_pos: AN19-AR/DG-EPOS/BPM.07/x_pos
+    y_pos: AN19-AR/DG-EPOS/BPM.07/y_pos
 - type: pyaml.magnet.cfm_magnet
   name: SH4_COR_007
   mapping:
@@ -12415,26 +11401,14 @@
   name: BPM_170
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN20-SD/DG-EPOS/BPM.01/x_pos
-      unit: mm
-    y_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN20-SD/DG-EPOS/BPM.01/y_pos
-      unit: mm
+    x_pos: AN20-SD/DG-EPOS/BPM.01/x_pos
+    y_pos: AN20-SD/DG-EPOS/BPM.01/y_pos
 - type: pyaml.bpm.bpm
   name: BPM_171
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN20-SD/DG-EPOS/BPM.02/x_pos
-      unit: mm
-    y_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN20-SD/DG-EPOS/BPM.02/y_pos
-      unit: mm
+    x_pos: AN20-SD/DG-EPOS/BPM.02/x_pos
+    y_pos: AN20-SD/DG-EPOS/BPM.02/y_pos
 - type: pyaml.magnet.cfm_magnet
   name: OH4_QCORROCT_155_QT_001
   mapping:
@@ -12479,14 +11453,8 @@
   name: BPM_172
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN20-AR/DG-EPOS/BPM.03/x_pos
-      unit: mm
-    y_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN20-AR/DG-EPOS/BPM.03/y_pos
-      unit: mm
+    x_pos: AN20-AR/DG-EPOS/BPM.03/x_pos
+    y_pos: AN20-AR/DG-EPOS/BPM.03/y_pos
 - type: pyaml.magnet.cfm_magnet
   name: OH5_QCORROCT_156_001
   mapping:
@@ -12590,14 +11558,8 @@
   name: BPM_173
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN20-AR/DG-EPOS/BPM.04/x_pos
-      unit: mm
-    y_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN20-AR/DG-EPOS/BPM.04/y_pos
-      unit: mm
+    x_pos: AN20-AR/DG-EPOS/BPM.04/x_pos
+    y_pos: AN20-AR/DG-EPOS/BPM.04/y_pos
 - type: pyaml.magnet.cfm_magnet
   name: SXD12_VCOR_004
   mapping:
@@ -12681,14 +11643,8 @@
   name: BPM_174
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN20-AR/DG-EPOS/BPM.05/x_pos
-      unit: mm
-    y_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN20-AR/DG-EPOS/BPM.05/y_pos
-      unit: mm
+    x_pos: AN20-AR/DG-EPOS/BPM.05/x_pos
+    y_pos: AN20-AR/DG-EPOS/BPM.05/y_pos
 - type: pyaml.magnet.cfm_magnet
   name: SXD1_VCOR_010
   mapping:
@@ -12772,14 +11728,8 @@
   name: BPM_175
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN20-AR/DG-EPOS/BPM.06/x_pos
-      unit: mm
-    y_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN20-AR/DG-EPOS/BPM.06/y_pos
-      unit: mm
+    x_pos: AN20-AR/DG-EPOS/BPM.06/x_pos
+    y_pos: AN20-AR/DG-EPOS/BPM.06/y_pos
 - type: pyaml.magnet.cfm_magnet
   name: SXD13_VCOR_004
   mapping:
@@ -12863,14 +11813,8 @@
   name: BPM_176
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN20-AR/DG-EPOS/BPM.07/x_pos
-      unit: mm
-    y_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN20-AR/DG-EPOS/BPM.07/y_pos
-      unit: mm
+    x_pos: AN20-AR/DG-EPOS/BPM.07/x_pos
+    y_pos: AN20-AR/DG-EPOS/BPM.07/y_pos
 - type: pyaml.magnet.cfm_magnet
   name: SXD1_VCOR_011
   mapping:
@@ -12954,14 +11898,8 @@
   name: BPM_177
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN20-AR/DG-EPOS/BPM.08/x_pos
-      unit: mm
-    y_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN20-AR/DG-EPOS/BPM.08/y_pos
-      unit: mm
+    x_pos: AN20-AR/DG-EPOS/BPM.08/x_pos
+    y_pos: AN20-AR/DG-EPOS/BPM.08/y_pos
 - type: pyaml.magnet.cfm_magnet
   name: SXD1_VCOR_012
   mapping:
@@ -13061,14 +11999,8 @@
   name: BPM_178
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN20-AR/DG-EPOS/BPM.09/x_pos
-      unit: mm
-    y_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN20-AR/DG-EPOS/BPM.09/y_pos
-      unit: mm
+    x_pos: AN20-AR/DG-EPOS/BPM.09/x_pos
+    y_pos: AN20-AR/DG-EPOS/BPM.09/y_pos
 - type: pyaml.magnet.quadrupole
   name: QCORR_208
   model:
@@ -13098,14 +12030,8 @@
   name: BPM_179
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN20-AR/DG-EPOS/BPM.10/x_pos
-      unit: mm
-    y_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN20-AR/DG-EPOS/BPM.10/y_pos
-      unit: mm
+    x_pos: AN20-AR/DG-EPOS/BPM.10/x_pos
+    y_pos: AN20-AR/DG-EPOS/BPM.10/y_pos
 - type: pyaml.magnet.cfm_magnet
   name: OH2_QCORROCT_163_001
   mapping:
@@ -13182,14 +12108,8 @@
   name: BPM_180
   model:
     type: pyaml.bpm.bpm_simple_model
-    x_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN01-SD/DG-EPOS/BPM.01/x_pos
-      unit: mm
-    y_pos:
-      type: tango.pyaml.attribute_read_only
-      attribute: AN01-SD/DG-EPOS/BPM.01/y_pos
-      unit: mm
+    x_pos: AN01-SD/DG-EPOS/BPM.01/x_pos
+    y_pos: AN01-SD/DG-EPOS/BPM.01/y_pos
 - type: pyaml.rf.rf_plant
   name: RF
   masterclock:

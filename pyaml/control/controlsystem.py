@@ -1,17 +1,15 @@
 from abc import ABCMeta, abstractmethod
-from typing import Tuple
+
+from pydantic import BaseModel
 
 from ..bpm.bpm import BPM
-from ..bpm.bpm_model import BPMModel
 from ..common.abstract import RWMapper
 from ..common.abstract_aggregator import ScalarAggregator
 from ..common.element import Element
 from ..common.element_holder import ElementHolder
-from ..common.exception import PyAMLException
 from ..configuration.factory import Factory
 from ..configuration.unbound_element import UnboundElement
 from ..control.abstract_impl import (
-    CSBPMArrayMapper,
     CSScalarAggregator,
     CSStrengthScalarAggregator,
     RBetatronTuneArray,
@@ -47,13 +45,13 @@ class ControlSystem(ElementHolder, metaclass=ABCMeta):
         ElementHolder.__init__(self)
 
     @abstractmethod
-    def attach(self, dev: list[DeviceAccess]) -> list[DeviceAccess]:
+    def attach(self, dev: list[DeviceAccess | None]) -> list[DeviceAccess | None]:
         """Return new instances of DeviceAccess objects
         coming from configuration attached to this CS"""
         pass
 
     @abstractmethod
-    def attach_array(self, dev: list[DeviceAccess]) -> list[DeviceAccess]:
+    def attach_array(self, dev: list[DeviceAccess | None]) -> list[DeviceAccess | None]:
         """Return new instances of DeviceAccess objects
         coming from configuration attached to this CS"""
         pass
@@ -73,11 +71,24 @@ class ControlSystem(ElementHolder, metaclass=ABCMeta):
         """Returns the module name used for handling aggregator of DeviceVectorAccess"""
         return None
 
-    def attach_indexed(self, dev: DeviceAccess, idx: int | None) -> DeviceAccess:
-        if idx is not None:
-            return self.attach_array([dev])[0]
-        else:
-            return self.attach([dev])[0]
+    @abstractmethod
+    def get_device(self, ref: str | BaseModel | None) -> DeviceAccess:
+        """
+        Return a device reference for this control system.
+        YAML element configuration passes opaque strings. Public Python APIs may
+        also pass backend ConfigModel instances. Concrete backends own all
+        lookup, parsing and DeviceAccess construction.
+        """
+        pass
+
+    def get_devices(self, refs: list[str | BaseModel | None]) -> list[DeviceAccess]:
+        """
+        Return a device reference for this control system.
+        YAML element configuration passes opaque strings. Public Python APIs may
+        also pass backend ConfigModel instances. Concrete backends own all
+        lookup, parsing and DeviceAccess construction.
+        """
+        return [self.get_device(ref) for ref in refs]
 
     def create_scalar_aggregator(self) -> ScalarAggregator:
         mod = self.scalar_aggregator()
@@ -104,65 +115,15 @@ class ControlSystem(ElementHolder, metaclass=ABCMeta):
         return agg
 
     def create_bpm_aggregators(self, bpms: list[BPM]) -> list[ScalarAggregator]:
-        # return [None,None,None]
-
-        if any([not b.model.is_pos_indexed() for b in bpms]):
-            # Aggregator for single BPM (all values are scalar)
-            agg = self.create_scalar_aggregator()
-            aggh = self.create_scalar_aggregator()
-            aggv = self.create_scalar_aggregator()
-            for b in bpms:
-                devs = self.attach(b.model.get_pos_devices())
-                agg.add_devices(devs)
-                aggh.add_devices(devs[0])
-                aggv.add_devices(devs[1])
-            return [agg, aggh, aggv]
-
-        elif any([b.model.is_pos_indexed() for b in bpms]):
-            # Aggregator for indexed BPMs
-            allH = []
-            hIdx = []
-            allV = []
-            vIdx = []
-            allHV = []
-            for b in bpms:
-                devs = self.attach_array(b.model.get_pos_devices())
-                devH = devs[0]
-                devV = devs[1]
-                if devH not in allH:
-                    allH.append(devH)
-                if devH not in allHV:
-                    allHV.append(devH)
-                if devV not in allV:
-                    allV.append(devV)
-                if devV not in allHV:
-                    allHV.append(devV)
-                hIdx.append(b.model.x_pos_index())
-                vIdx.append(b.model.y_pos_index())
-
-            if len(allH) > 1 or len(allV) > 1:
-                # Does not support aggregator for individual BPM that
-                # returns an array of [x,y]
-                print("Warning, Individual BPM that returns [x,y]" + " are not read in parralell")
-                # Default to serialized readding
-                return [None, None, None]
-
-            if devH == devV:
-                # [x0,y0,x1,y0,....]
-                idx = []
-                for b in bpms:
-                    idx.append(b.model.x_pos_index())
-                    idx.append(b.model.y_pos_index())
-                hvIdx = [idx]
-            else:
-                hvIdx = [hIdx, vIdx]
-
-            agg = CSBPMArrayMapper(allHV, hvIdx)
-            aggh = CSBPMArrayMapper(allH, [hIdx])
-            aggv = CSBPMArrayMapper(allV, [vIdx])
-            return [agg, aggh, aggv]
-        else:
-            raise PyAMLException("Indexed BPM and scalar values cannot be mixed in the same array")
+        agg = self.create_scalar_aggregator()
+        aggh = self.create_scalar_aggregator()
+        aggv = self.create_scalar_aggregator()
+        for b in bpms:
+            devs = self.get_devices(b.model.get_pos_devices())
+            agg.add_devices(devs)
+            aggh.add_devices(devs[0])
+            aggv.add_devices(devs[1])
+        return [agg, aggh, aggv]
 
     def fill_device(self, elements: list[Element]):
         """
@@ -212,19 +173,12 @@ class ControlSystem(ElementHolder, metaclass=ABCMeta):
                     self.add_magnet(m)
 
             elif isinstance(e, BPM):
-                hDev = e.model.get_pos_devices()[0]
-                vDev = e.model.get_pos_devices()[1]
-                tiltDev = e.model.get_tilt_device()
-                hOffsetDev = e.model.get_offset_devices()[0]
-                vOffsetDev = e.model.get_offset_devices()[1]
-                ahDev = self.attach_indexed(hDev, e.model.x_pos_index())
-                avDev = self.attach_indexed(vDev, e.model.y_pos_index())
-                atiltDev = self.attach_indexed(tiltDev, e.model.tilt_index())
-                ahOffsetDev = self.attach_indexed(hOffsetDev, e.model.x_offset_index())
-                avOffsetDev = self.attach_indexed(vOffsetDev, e.model.y_offset_index())
-                positions = RBpmArray(e.model, ahDev, avDev)
-                tilt = RWBpmTiltScalar(e.model, atiltDev)
-                offsets = RWBpmOffsetArray(e.model, ahOffsetDev, avOffsetDev)
+                pos_devs = self.get_devices(e.model.get_pos_devices())
+                tilt_devs = self.get_devices([e.model.get_tilt_device()])
+                offset_devs = self.get_devices(e.model.get_offset_devices())
+                positions = RBpmArray(pos_devs[0], pos_devs[1])
+                tilt = RWBpmTiltScalar(tilt_devs[0])
+                offsets = RWBpmOffsetArray(offset_devs[0], offset_devs[1])
                 e = e.attach(self, positions, offsets, tilt)
                 self.add_bpm(e)
 
@@ -275,10 +229,10 @@ class ControlSystemAdapter(ControlSystem):
     def __init__(self):
         ControlSystem.__init__(self)
 
-    def attach(self, dev: list[DeviceAccess]) -> list[DeviceAccess]:
+    def attach(self, dev: list[DeviceAccess | None]) -> list[DeviceAccess | None]:
         pass
 
-    def attach_array(self, dev: list[DeviceAccess]) -> list[DeviceAccess]:
+    def attach_array(self, dev: list[DeviceAccess | None]) -> list[DeviceAccess | None]:
         pass
 
     def name(self) -> str:
@@ -289,3 +243,6 @@ class ControlSystemAdapter(ControlSystem):
 
     def vector_aggregator(self) -> str | None:
         return None
+
+    def get_device(self, ref: str | BaseModel | None) -> DeviceAccess | None:
+        pass
