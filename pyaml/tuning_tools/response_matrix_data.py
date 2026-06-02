@@ -47,7 +47,7 @@ class ResponseMatrixData(object):
         path = Path(filename)
         if path.exists():
             config_dict = load(str(path.resolve()))
-            return Factory.depth_first_build(config_dict, ignore_external=False)
+            return Factory.build(config_dict, ignore_external=False)
         else:
             raise PyAMLException(f"{filename}: file not found")
 

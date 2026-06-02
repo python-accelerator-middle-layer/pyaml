@@ -4,7 +4,7 @@ from scipy.constants import speed_of_light
 from .. import PyAMLException
 from ..common import abstract
 from ..common.element import Element, ElementConfigModel, __pyaml_repr__
-from ..configuration import Factory
+from ..configuration.factory import ELEMENT_REGISTRY
 from ..control.deviceaccess import DeviceAccess
 from .function_mapping import function_map
 from .magnet import Magnet, MagnetConfigModel
@@ -100,7 +100,7 @@ class SerializedMagnets(Element):
                 vm = self.__create_virtual_magnet(element)
                 self.__virtuals.append(vm)
                 # Register the virtual element in the factory to have a coherent factory and improve error reporting
-                Factory.register_element(vm)
+                ELEMENT_REGISTRY.register(vm)
         else:
             # Attach
             self._peer = peer
