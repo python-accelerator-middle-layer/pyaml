@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>controlsystem &#8212; Python Accelerator Middle Layer 0.1.dev1+g477133970 documentation</title>
+    <title>controlsystem &#8212; Python Accelerator Middle Layer 0.1.dev1+ge89f2e51f documentation</title>
   
   
   
@@ -42,7 +42,7 @@
   <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=0790524f97105ba85085" />
 <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=0790524f97105ba85085" />
 
-    <script src="../_static/documentation_options.js?v=7ad4e2c1"></script>
+    <script src="../_static/documentation_options.js?v=6c5b254d"></script>
     <script src="../_static/doctools.js?v=9bcbadda"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -128,8 +128,8 @@
       
     
     
-    <img src="../_static/logo.png" class="logo__image only-light" alt="Python Accelerator Middle Layer 0.1.dev1+g477133970 documentation - Home"/>
-    <img src="../_static/dark.png" class="logo__image only-dark pst-js-only" alt="Python Accelerator Middle Layer 0.1.dev1+g477133970 documentation - Home"/>
+    <img src="../_static/logo.png" class="logo__image only-light" alt="Python Accelerator Middle Layer 0.1.dev1+ge89f2e51f documentation - Home"/>
+    <img src="../_static/dark.png" class="logo__image only-dark pst-js-only" alt="Python Accelerator Middle Layer 0.1.dev1+ge89f2e51f documentation - Home"/>
   
   
 </a></div>
@@ -551,13 +551,6 @@ coming from configuration attached to this CS</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="pyaml.control.controlsystem.ControlSystem.attach_indexed">
-<span class="sig-name descname"><span class="pre">attach_indexed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dev</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">idx</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/control/controlsystem.html#ControlSystem.attach_indexed"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.control.controlsystem.ControlSystem.attach_indexed" title="Link to this definition">#</a></dt>
-<dd><dl class="field-list simple">
-</dl>
-</dd></dl>
-
-<dl class="py method">
 <dt class="sig sig-object py" id="pyaml.control.controlsystem.ControlSystem.create_bpm_aggregators">
 <span class="sig-name descname"><span class="pre">create_bpm_aggregators</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">bpms</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/control/controlsystem.html#ControlSystem.create_bpm_aggregators"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.control.controlsystem.ControlSystem.create_bpm_aggregators" title="Link to this definition">#</a></dt>
 <dd><dl class="field-list simple">
@@ -597,6 +590,28 @@ coming from the configuration file</p>
 <dd class="field-odd"><p><strong>elements</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.14)"><em>list</em></a><em>[</em><a class="reference internal" href="pyaml.arrays.element.html#pyaml.arrays.element.Element" title="pyaml.arrays.element.Element"><em>Element</em></a><em>]</em>) – List of elements coming from the configuration
 file to attach to this control system</p>
 </dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaml.control.controlsystem.ControlSystem.get_device">
+<em class="property"><span class="k"><span class="pre">abstractmethod</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_device</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ref</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/control/controlsystem.html#ControlSystem.get_device"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.control.controlsystem.ControlSystem.get_device" title="Link to this definition">#</a></dt>
+<dd><p>Return a device reference for this control system.
+YAML element configuration passes opaque strings. Public Python APIs may
+also pass backend ConfigModel instances. Concrete backends own all
+lookup, parsing and DeviceAccess construction.</p>
+<dl class="field-list simple">
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaml.control.controlsystem.ControlSystem.get_devices">
+<span class="sig-name descname"><span class="pre">get_devices</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">refs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/control/controlsystem.html#ControlSystem.get_devices"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.control.controlsystem.ControlSystem.get_devices" title="Link to this definition">#</a></dt>
+<dd><p>Return a device reference for this control system.
+YAML element configuration passes opaque strings. Public Python APIs may
+also pass backend ConfigModel instances. Concrete backends own all
+lookup, parsing and DeviceAccess construction.</p>
+<dl class="field-list simple">
 </dl>
 </dd></dl>
 
@@ -645,6 +660,17 @@ coming from configuration attached to this CS</p>
 <span class="sig-name descname"><span class="pre">attach_array</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dev</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/control/controlsystem.html#ControlSystemAdapter.attach_array"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.control.controlsystem.ControlSystemAdapter.attach_array" title="Link to this definition">#</a></dt>
 <dd><p>Return new instances of DeviceAccess objects
 coming from configuration attached to this CS</p>
+<dl class="field-list simple">
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaml.control.controlsystem.ControlSystemAdapter.get_device">
+<span class="sig-name descname"><span class="pre">get_device</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ref</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/control/controlsystem.html#ControlSystemAdapter.get_device"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.control.controlsystem.ControlSystemAdapter.get_device" title="Link to this definition">#</a></dt>
+<dd><p>Return a device reference for this control system.
+YAML element configuration passes opaque strings. Public Python APIs may
+also pass backend ConfigModel instances. Concrete backends own all
+lookup, parsing and DeviceAccess construction.</p>
 <dl class="field-list simple">
 </dl>
 </dd></dl>
@@ -727,12 +753,13 @@ coming from configuration attached to this CS</p>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.control.controlsystem.ControlSystem"><code class="docutils literal notranslate"><span class="pre">ControlSystem</span></code></a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.control.controlsystem.ControlSystem.attach"><code class="docutils literal notranslate"><span class="pre">ControlSystem.attach()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.control.controlsystem.ControlSystem.attach_array"><code class="docutils literal notranslate"><span class="pre">ControlSystem.attach_array()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.control.controlsystem.ControlSystem.attach_indexed"><code class="docutils literal notranslate"><span class="pre">ControlSystem.attach_indexed()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.control.controlsystem.ControlSystem.create_bpm_aggregators"><code class="docutils literal notranslate"><span class="pre">ControlSystem.create_bpm_aggregators()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.control.controlsystem.ControlSystem.create_magnet_hardware_aggregator"><code class="docutils literal notranslate"><span class="pre">ControlSystem.create_magnet_hardware_aggregator()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.control.controlsystem.ControlSystem.create_magnet_strength_aggregator"><code class="docutils literal notranslate"><span class="pre">ControlSystem.create_magnet_strength_aggregator()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.control.controlsystem.ControlSystem.create_scalar_aggregator"><code class="docutils literal notranslate"><span class="pre">ControlSystem.create_scalar_aggregator()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.control.controlsystem.ControlSystem.fill_device"><code class="docutils literal notranslate"><span class="pre">ControlSystem.fill_device()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.control.controlsystem.ControlSystem.get_device"><code class="docutils literal notranslate"><span class="pre">ControlSystem.get_device()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.control.controlsystem.ControlSystem.get_devices"><code class="docutils literal notranslate"><span class="pre">ControlSystem.get_devices()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.control.controlsystem.ControlSystem.name"><code class="docutils literal notranslate"><span class="pre">ControlSystem.name()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.control.controlsystem.ControlSystem.scalar_aggregator"><code class="docutils literal notranslate"><span class="pre">ControlSystem.scalar_aggregator()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.control.controlsystem.ControlSystem.vector_aggregator"><code class="docutils literal notranslate"><span class="pre">ControlSystem.vector_aggregator()</span></code></a></li>
@@ -741,6 +768,7 @@ coming from configuration attached to this CS</p>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.control.controlsystem.ControlSystemAdapter"><code class="docutils literal notranslate"><span class="pre">ControlSystemAdapter</span></code></a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.control.controlsystem.ControlSystemAdapter.attach"><code class="docutils literal notranslate"><span class="pre">ControlSystemAdapter.attach()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.control.controlsystem.ControlSystemAdapter.attach_array"><code class="docutils literal notranslate"><span class="pre">ControlSystemAdapter.attach_array()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.control.controlsystem.ControlSystemAdapter.get_device"><code class="docutils literal notranslate"><span class="pre">ControlSystemAdapter.get_device()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.control.controlsystem.ControlSystemAdapter.name"><code class="docutils literal notranslate"><span class="pre">ControlSystemAdapter.name()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.control.controlsystem.ControlSystemAdapter.scalar_aggregator"><code class="docutils literal notranslate"><span class="pre">ControlSystemAdapter.scalar_aggregator()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.control.controlsystem.ControlSystemAdapter.vector_aggregator"><code class="docutils literal notranslate"><span class="pre">ControlSystemAdapter.vector_aggregator()</span></code></a></li>
