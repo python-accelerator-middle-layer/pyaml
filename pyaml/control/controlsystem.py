@@ -1,6 +1,5 @@
 from abc import ABCMeta, abstractmethod
 
-from deprecated import deprecated
 from pydantic import BaseModel
 
 from ..bpm.bpm import BPM
@@ -46,14 +45,12 @@ class ControlSystem(ElementHolder, metaclass=ABCMeta):
         ElementHolder.__init__(self)
 
     @abstractmethod
-    @deprecated
     def attach(self, dev: list[DeviceAccess | None]) -> list[DeviceAccess | None]:
         """Return new instances of DeviceAccess objects
         coming from configuration attached to this CS"""
         pass
 
     @abstractmethod
-    @deprecated
     def attach_array(self, dev: list[DeviceAccess | None]) -> list[DeviceAccess | None]:
         """Return new instances of DeviceAccess objects
         coming from configuration attached to this CS"""
