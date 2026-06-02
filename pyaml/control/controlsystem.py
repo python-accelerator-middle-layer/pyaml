@@ -215,7 +215,8 @@ class ControlSystem(ElementHolder, metaclass=ABCMeta):
 
             elif isinstance(e, UnboundElement):
                 if self.name() in e._control_modes:
-                    ne = Factory.build_unbound(e, self)
+                    ne = e.instantiate(self)
+
                     if isinstance(ne, ABetatronTuneMonitor):
                         self.add_betatron_tune_monitor(ne)
                     else:

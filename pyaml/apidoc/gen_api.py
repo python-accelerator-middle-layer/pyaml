@@ -31,27 +31,25 @@ modules = [
     "pyaml.common.element",
     "pyaml.common.element_holder",
     "pyaml.common.exception",
-    "pyaml.configuration.catalog",
-    "pyaml.configuration.csvcurve",
-    "pyaml.configuration.csvmatrix",
-    "pyaml.configuration.curve",
+    "pyaml.magnet.csvcurve",
+    "pyaml.magnet.csvmatrix",
+    "pyaml.magnet.curve",
     "pyaml.configuration.factory",
     "pyaml.configuration.fileloader",
-    "pyaml.configuration.inline_curve",
-    "pyaml.configuration.inline_matrix",
+    "pyaml.magnet.inline_curve",
+    "pyaml.magnet.inline_matrix",
     "pyaml.configuration.manager",
-    "pyaml.configuration.matrix",
+    "pyaml.magnet.matrix",
     "pyaml.control.abstract_impl",
     "pyaml.control.controlsystem",
     "pyaml.control.deviceaccess",
     "pyaml.control.deviceaccesslist",
     "pyaml.control.readback_value",
-    "pyaml.diagnostics.chromaticity_monitor",
+    "pyaml.tuning_tools.chromaticity_monitor",
     "pyaml.diagnostics.tune_monitor",
     "pyaml.external.pySC_interface",
     "pyaml.lattice.abstract_impl",
     "pyaml.lattice.attribute_linker",
-    "pyaml.lattice.element",
     "pyaml.lattice.lattice_elements_linker",
     "pyaml.lattice.polynom_info",
     "pyaml.lattice.simulator",
@@ -127,7 +125,7 @@ def generate_selective_module(m):
             if m in ["pyaml.arrays.element_array"]:
                 # Include special members for operator overloading
                 file.write("         :special-members: __add__, __and__, __or__, __sub__ \n")
-            if m in ["pyaml.yellow_pages", "pyaml.configuration.manager"]:
+            if m in ["pyaml.yellow_pages", "pyaml.magnet.manager"]:
                 # Include special members for exploratory overloading
                 file.write("         :special-members: __dir__, __getattr__, __getitem__, __repr__, __str__ \n")
             file.write("         :exclude-members: model_config\n")

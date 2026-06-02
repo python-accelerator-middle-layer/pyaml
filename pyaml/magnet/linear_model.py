@@ -2,8 +2,8 @@ import numpy as np
 from pydantic import BaseModel, ConfigDict
 
 from ..common.element import __pyaml_repr__
-from ..configuration.curve import Curve
 from ..control.deviceaccess import DeviceAccess
+from .curve import Curve
 from .model import MagnetModel
 
 # Define the main class name for this module

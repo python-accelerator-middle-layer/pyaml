@@ -4,7 +4,7 @@ from ..common import abstract
 from ..common.abstract import RWMapper
 from ..common.element import Element, ElementConfigModel, __pyaml_repr__
 from ..common.exception import PyAMLException
-from ..configuration import Factory
+from ..configuration.factory import ELEMENT_REGISTRY
 from .hcorrector import HCorrector
 from .magnet import Magnet, MagnetConfigModel
 from .model import MagnetModel
@@ -71,7 +71,7 @@ class CombinedFunctionMagnet(Element):
                 self.__virtuals.append(vm)
                 # Register the virtual element in the factory to have
                 # a coherent factory and improve error reporting
-                Factory.register_element(vm)
+                ELEMENT_REGISTRY.register(vm)
 
         else:
             # Attach

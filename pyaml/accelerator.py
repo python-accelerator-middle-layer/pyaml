@@ -174,7 +174,7 @@ class Accelerator(object):
             cannot be created. pydantic schema that support that an
             object is not created should handle None fields.
         """
-        dev = Factory.depth_first_build(config, ignore_external)
+        dev = Factory.build(config, ignore_external)
         if not isinstance(dev, Element):
             raise PyAMLConfigException(
                 "Invalid device type, Element or sub classes of Element expected " + f"but got {dev.__class__.__name__}"
@@ -272,7 +272,7 @@ class Accelerator(object):
             config_dict.pop("controls", None)
         # Ensure factory is clean before building a new accelerator
         Factory.clear()
-        return Factory.depth_first_build(config_dict, ignore_external)
+        return Factory.build(config_dict, ignore_external)
 
     @staticmethod
     def load(filename: str, use_fast_loader: bool = False, ignore_external=False) -> "Accelerator":

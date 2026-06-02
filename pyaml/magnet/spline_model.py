@@ -3,8 +3,8 @@ from pydantic import BaseModel, ConfigDict
 from scipy.interpolate import make_smoothing_spline
 
 from ..common.element import __pyaml_repr__
-from ..configuration.curve import Curve
 from ..control.deviceaccess import DeviceAccess
+from .curve import Curve
 from .model import MagnetModel
 
 # Define the main class name for this module

@@ -29,7 +29,7 @@ devices:
     type: tango.pyaml.attribute_read_only
     attribute: srdiag/beam-tune/main/Qv
     unit: "1"
-- type: pyaml.diagnostics.chromaticity_monitor
+- type: pyaml.tuning_tools.chromaticity_monitor
   name: CHROMATICITY_MONITOR
   betatron_tune_name: BETATRON_TUNE
   rf_plant_name: RF

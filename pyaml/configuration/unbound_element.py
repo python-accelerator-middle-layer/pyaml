@@ -1,6 +1,7 @@
 from pydantic import BaseModel
 
 from ..common.element import Element
+from ..common.exception import PyAMLConfigException
 
 
 class UnboundElement(Element):
@@ -35,3 +36,41 @@ class UnboundElement(Element):
             self._class.__name__,
             self._module_name,
         )
+
+    def instantiate(self, holder) -> Element:
+        """
+        Instantiate the element represented by this UnboundElement.
+
+        The element is constructed using the stored configuration and
+        attached to the given ElementHolder. The returned element is
+        linked back to the holder through its ``_peer`` attribute.
+
+        Parameters
+        ----------
+        holder : ElementHolder
+            Holder that owns the instantiated element.
+
+        Returns
+        -------
+        Element
+            Instantiated element attached to the given holder.
+
+        Raises
+        ------
+        PyAMLConfigException
+            If the element cannot be instantiated or if the resulting
+            object is not a subclass of Element.
+        """
+
+        cls = self._class
+
+        try:
+            obj = cls(holder, self._config)
+        except Exception as exc:
+            raise PyAMLConfigException(f"{exc} when creating '{self._module_name}.{cls.__name__}'") from exc
+
+        if not isinstance(obj, Element):
+            raise PyAMLConfigException(f"'{self._module_name}.{cls.__name__}' is not a subclass of Element")
+
+        obj._peer = holder
+        return obj
