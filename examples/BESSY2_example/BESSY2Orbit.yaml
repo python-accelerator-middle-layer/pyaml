@@ -10,11 +10,9 @@ controls:
   - type: pyaml_cs_oa.controlsystem
     prefix: "pons:"
     name: live
-    catalog: bpm-catalog
-catalogs:
-  - type: pyaml_cs_oa.epics_catalog
-    name: bpm-catalog
-    prefix: ""
+    catalog:
+      type: pyaml_cs_oa.dynamic_catalog
+      backend: epics
 data_folder: /data/store
 arrays:
   - type: pyaml.arrays.magnet
