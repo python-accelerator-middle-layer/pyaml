@@ -27,18 +27,16 @@ class ElementRegistry:
     """
 
     _instance = None
-    _lock = Lock()
 
     def __new__(cls):
         """
         Return the singleton registry instance.
         """
 
-        with cls._lock:
-            if cls._instance is None:
-                cls._instance = super().__new__(cls)
-                cls._instance._elements = {}
-            return cls._instance
+        if cls._instance is None:
+            cls._instance = super().__new__(cls)
+            cls._instance._elements = {}
+        return cls._instance
 
     def register(self, element: Element) -> None:
         """
@@ -60,10 +58,9 @@ class ElementRegistry:
             raise PyAMLConfigException(f"Cannot register object of type '{type(element).__name__}' since expected Element.")
 
         name = element.get_name()
-        with self._lock:
-            if name in self._elements:
-                raise PyAMLConfigException(f"Element {name} already defined.")
-            self._elements[name] = element
+        if name in self._elements:
+            raise PyAMLConfigException(f"Element {name} already defined.")
+        self._elements[name] = element
 
     def get(self, name: str) -> Element:
         """
@@ -85,11 +82,10 @@ class ElementRegistry:
             If the element is not registered.
         """
 
-        with self._lock:
-            try:
-                return self._elements[name]
-            except KeyError:
-                raise PyAMLConfigException(f"Element {name} not defined.") from None
+        try:
+            return self._elements[name]
+        except KeyError:
+            raise PyAMLConfigException(f"Element {name} not defined.") from None
 
     def get_by_name(self, wildcard: str) -> list[Element]:
         """
@@ -106,8 +102,7 @@ class ElementRegistry:
             Matching elements.
         """
 
-        with self._lock:
-            return [e for n, e in self._elements.items() if fnmatch.fnmatch(n, wildcard)]
+        return [e for n, e in self._elements.items() if fnmatch.fnmatch(n, wildcard)]
 
     def get_by_type(self, element_type: type[TElement]) -> list[TElement]:
         """
@@ -124,32 +119,28 @@ class ElementRegistry:
             Matching elements.
         """
 
-        with self._lock:
-            return [e for e in self._elements.values() if isinstance(e, element_type)]
+        return [e for e in self._elements.values() if isinstance(e, element_type)]
 
     def clear(self) -> None:
         """
         Remove all registered elements.
         """
 
-        with self._lock:
-            self._elements.clear()
+        self._elements.clear()
 
     def __contains__(self, name: str) -> bool:
         """
         Return whether an element with the given name is registered.
         """
 
-        with self._lock:
-            return name in self._elements
+        return name in self._elements
 
     def __len__(self) -> int:
         """
         Return the number of registered elements.
         """
 
-        with self._lock:
-            return len(self._elements)
+        return len(self._elements)
 
 
 # Global element registry used during configuration loading.
