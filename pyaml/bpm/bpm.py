@@ -1,7 +1,7 @@
 from ..bpm.bpm_model import BPMModel
+from ..common.abstract import ReadFloatArray, ReadWriteFloatArray, ReadWriteFloatScalar
 from ..common.element import Element, ElementConfigModel
 from ..common.exception import PyAMLException
-from ..lattice.abstract_impl import RBpmArray, RWBpmOffsetArray, RWBpmTiltScalar
 
 try:
     from typing import Self  # Python 3.11+
@@ -62,7 +62,7 @@ class BPM(Element):
         return self.__model
 
     @property
-    def positions(self) -> RBpmArray:
+    def positions(self) -> ReadFloatArray:
         """
         Get the BPM position readings.
 
@@ -81,7 +81,7 @@ class BPM(Element):
         return self.__positions
 
     @property
-    def offset(self) -> RWBpmOffsetArray:
+    def offset(self) -> ReadWriteFloatArray:
         """
         Get the BPM offset values.
 
@@ -100,7 +100,7 @@ class BPM(Element):
         return self.__offset
 
     @property
-    def tilt(self) -> RWBpmTiltScalar:
+    def tilt(self) -> ReadWriteFloatScalar:
         """
         Get the BPM tilt angle.
 
@@ -121,9 +121,9 @@ class BPM(Element):
     def attach(
         self,
         peer,
-        positions: RBpmArray,
-        offset: RWBpmOffsetArray,
-        tilt: RWBpmTiltScalar,
+        positions: ReadFloatArray,
+        offset: ReadWriteFloatArray,
+        tilt: ReadWriteFloatScalar,
     ) -> Self:
         """
         Attach BPM attributes to a peer.
