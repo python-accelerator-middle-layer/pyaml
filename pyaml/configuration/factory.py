@@ -232,10 +232,12 @@ def resolve_build_info(data: dict, ignore_external: bool) -> BuildInfo | None:
     # Import the module
     try:
         module = importlib.import_module(module_str)
-    except ModuleNotFoundError:
+    except ModuleNotFoundError as module_ex:
         if ignore_external:
             return None
-        raise PyAMLConfigException(f"Module referenced in type cannot be found: '{module_str}' {location_str}") from None
+        raise PyAMLConfigException(
+            f"Module referenced in {module_str} cannot be found: {module_ex} {location_str} while"
+        ) from None
 
     # Get the object class name
     if class_str is None:
