@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Control System set up &#8212; Python Accelerator Middle Layer 0.1.dev1+g49c5f3fc3 documentation</title>
+    <title>Control System set up &#8212; Python Accelerator Middle Layer 0.1.dev1+gd7f0d55e4 documentation</title>
   
   
   
@@ -42,7 +42,7 @@
   <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=0790524f97105ba85085" />
 <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=0790524f97105ba85085" />
 
-    <script src="../_static/documentation_options.js?v=62231253"></script>
+    <script src="../_static/documentation_options.js?v=9105136c"></script>
     <script src="../_static/doctools.js?v=9bcbadda"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -128,8 +128,8 @@
       
     
     
-    <img src="../_static/logo.png" class="logo__image only-light" alt="Python Accelerator Middle Layer 0.1.dev1+g49c5f3fc3 documentation - Home"/>
-    <img src="../_static/dark.png" class="logo__image only-dark pst-js-only" alt="Python Accelerator Middle Layer 0.1.dev1+g49c5f3fc3 documentation - Home"/>
+    <img src="../_static/logo.png" class="logo__image only-light" alt="Python Accelerator Middle Layer 0.1.dev1+gd7f0d55e4 documentation - Home"/>
+    <img src="../_static/dark.png" class="logo__image only-dark pst-js-only" alt="Python Accelerator Middle Layer 0.1.dev1+gd7f0d55e4 documentation - Home"/>
   
   
 </a></div>
@@ -479,58 +479,60 @@ pip install pyaml-oa-cs</p>
 <span class="g g-Whitespace">    </span><span class="mi">274</span> <span class="n">Factory</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
 <span class="ne">--&gt; </span><span class="mi">275</span> <span class="k">return</span> <span class="n">Factory</span><span class="o">.</span><span class="n">build</span><span class="p">(</span><span class="n">config_dict</span><span class="p">,</span> <span class="n">ignore_external</span><span class="p">)</span>
 
-<span class="nn">File /opt/hostedtoolcache/Python/3.14.5/x64/lib/python3.14/site-packages/pyaml/configuration/factory.py:548,</span> in <span class="ni">PyAMLFactory.build</span><span class="nt">(self, data, ignore_external)</span>
-<span class="g g-Whitespace">    </span><span class="mi">545</span>     <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_build_list</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">ignore_external</span><span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">547</span> <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
-<span class="ne">--&gt; </span><span class="mi">548</span>     <span class="n">data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_build_dict</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">ignore_external</span><span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">549</span>     <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">build_object</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">ignore_external</span><span class="p">)</span>
+<span class="nn">File /opt/hostedtoolcache/Python/3.14.5/x64/lib/python3.14/site-packages/pyaml/configuration/factory.py:550,</span> in <span class="ni">PyAMLFactory.build</span><span class="nt">(self, data, ignore_external)</span>
+<span class="g g-Whitespace">    </span><span class="mi">547</span>     <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_build_list</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">ignore_external</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">549</span> <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+<span class="ne">--&gt; </span><span class="mi">550</span>     <span class="n">data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_build_dict</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">ignore_external</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">551</span>     <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">build_object</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">ignore_external</span><span class="p">)</span>
 
-<span class="nn">File /opt/hostedtoolcache/Python/3.14.5/x64/lib/python3.14/site-packages/pyaml/configuration/factory.py:395,</span> in <span class="ni">PyAMLFactory._build_dict</span><span class="nt">(self, data, ignore_external)</span>
-<span class="g g-Whitespace">    </span><span class="mi">392</span>         <span class="c1"># Do not recurse dict defined in ConfigModel</span>
-<span class="g g-Whitespace">    </span><span class="mi">393</span>         <span class="c1"># pydantic use TypedDict not usable with isinstance</span>
-<span class="g g-Whitespace">    </span><span class="mi">394</span>         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_is_plain_dict_type</span><span class="p">(</span><span class="n">field_type</span><span class="p">):</span>
-<span class="ne">--&gt; </span><span class="mi">395</span>             <span class="n">result</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">build</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">ignore_external</span><span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">397</span> <span class="k">return</span> <span class="n">result</span>
+<span class="nn">File /opt/hostedtoolcache/Python/3.14.5/x64/lib/python3.14/site-packages/pyaml/configuration/factory.py:397,</span> in <span class="ni">PyAMLFactory._build_dict</span><span class="nt">(self, data, ignore_external)</span>
+<span class="g g-Whitespace">    </span><span class="mi">394</span>         <span class="c1"># Do not recurse dict defined in ConfigModel</span>
+<span class="g g-Whitespace">    </span><span class="mi">395</span>         <span class="c1"># pydantic use TypedDict not usable with isinstance</span>
+<span class="g g-Whitespace">    </span><span class="mi">396</span>         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_is_plain_dict_type</span><span class="p">(</span><span class="n">field_type</span><span class="p">):</span>
+<span class="ne">--&gt; </span><span class="mi">397</span>             <span class="n">result</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">build</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">ignore_external</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">399</span> <span class="k">return</span> <span class="n">result</span>
 
-<span class="nn">File /opt/hostedtoolcache/Python/3.14.5/x64/lib/python3.14/site-packages/pyaml/configuration/factory.py:545,</span> in <span class="ni">PyAMLFactory.build</span><span class="nt">(self, data, ignore_external)</span>
-<span class="g g-Whitespace">    </span><span class="mi">542</span>     <span class="k">raise</span> <span class="n">PyAMLConfigException</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unexpected element found. &#39;dict&#39; or &#39;list&#39; expected but got &#39;</span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">data</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">&#39;&quot;</span><span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">544</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
-<span class="ne">--&gt; </span><span class="mi">545</span>     <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_build_list</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">ignore_external</span><span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">547</span> <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
-<span class="g g-Whitespace">    </span><span class="mi">548</span>     <span class="n">data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_build_dict</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">ignore_external</span><span class="p">)</span>
+<span class="nn">File /opt/hostedtoolcache/Python/3.14.5/x64/lib/python3.14/site-packages/pyaml/configuration/factory.py:547,</span> in <span class="ni">PyAMLFactory.build</span><span class="nt">(self, data, ignore_external)</span>
+<span class="g g-Whitespace">    </span><span class="mi">544</span>     <span class="k">raise</span> <span class="n">PyAMLConfigException</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unexpected element found. &#39;dict&#39; or &#39;list&#39; expected but got &#39;</span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">data</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">&#39;&quot;</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">546</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+<span class="ne">--&gt; </span><span class="mi">547</span>     <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_build_list</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">ignore_external</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">549</span> <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+<span class="g g-Whitespace">    </span><span class="mi">550</span>     <span class="n">data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_build_dict</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">ignore_external</span><span class="p">)</span>
 
-<span class="nn">File /opt/hostedtoolcache/Python/3.14.5/x64/lib/python3.14/site-packages/pyaml/configuration/factory.py:360,</span> in <span class="ni">PyAMLFactory._build_list</span><span class="nt">(self, items, ignore_external)</span>
-<span class="g g-Whitespace">    </span><span class="mi">355</span> <span class="k">def</span><span class="w"> </span><span class="nf">_build_list</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">items</span><span class="p">,</span> <span class="n">ignore_external</span><span class="p">:</span> <span class="nb">bool</span><span class="p">):</span>
-<span class="g g-Whitespace">    </span><span class="mi">356</span><span class="w">     </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="g g-Whitespace">    </span><span class="mi">357</span><span class="sd">     Recursively build all nested objects contained in a list.</span>
-<span class="g g-Whitespace">    </span><span class="mi">358</span><span class="sd">     &quot;&quot;&quot;</span>
-<span class="ne">--&gt; </span><span class="mi">360</span>     <span class="k">return</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">build</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="n">ignore_external</span><span class="p">)</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="p">(</span><span class="nb">dict</span><span class="p">,</span> <span class="nb">list</span><span class="p">))</span> <span class="k">else</span> <span class="n">item</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">items</span><span class="p">]</span>
+<span class="nn">File /opt/hostedtoolcache/Python/3.14.5/x64/lib/python3.14/site-packages/pyaml/configuration/factory.py:362,</span> in <span class="ni">PyAMLFactory._build_list</span><span class="nt">(self, items, ignore_external)</span>
+<span class="g g-Whitespace">    </span><span class="mi">357</span> <span class="k">def</span><span class="w"> </span><span class="nf">_build_list</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">items</span><span class="p">,</span> <span class="n">ignore_external</span><span class="p">:</span> <span class="nb">bool</span><span class="p">):</span>
+<span class="g g-Whitespace">    </span><span class="mi">358</span><span class="w">     </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="g g-Whitespace">    </span><span class="mi">359</span><span class="sd">     Recursively build all nested objects contained in a list.</span>
+<span class="g g-Whitespace">    </span><span class="mi">360</span><span class="sd">     &quot;&quot;&quot;</span>
+<span class="ne">--&gt; </span><span class="mi">362</span>     <span class="k">return</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">build</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="n">ignore_external</span><span class="p">)</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="p">(</span><span class="nb">dict</span><span class="p">,</span> <span class="nb">list</span><span class="p">))</span> <span class="k">else</span> <span class="n">item</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">items</span><span class="p">]</span>
 
-<span class="nn">File /opt/hostedtoolcache/Python/3.14.5/x64/lib/python3.14/site-packages/pyaml/configuration/factory.py:548,</span> in <span class="ni">PyAMLFactory.build</span><span class="nt">(self, data, ignore_external)</span>
-<span class="g g-Whitespace">    </span><span class="mi">545</span>     <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_build_list</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">ignore_external</span><span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">547</span> <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
-<span class="ne">--&gt; </span><span class="mi">548</span>     <span class="n">data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_build_dict</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">ignore_external</span><span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">549</span>     <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">build_object</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">ignore_external</span><span class="p">)</span>
+<span class="nn">File /opt/hostedtoolcache/Python/3.14.5/x64/lib/python3.14/site-packages/pyaml/configuration/factory.py:550,</span> in <span class="ni">PyAMLFactory.build</span><span class="nt">(self, data, ignore_external)</span>
+<span class="g g-Whitespace">    </span><span class="mi">547</span>     <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_build_list</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">ignore_external</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">549</span> <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+<span class="ne">--&gt; </span><span class="mi">550</span>     <span class="n">data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_build_dict</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">ignore_external</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">551</span>     <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">build_object</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">ignore_external</span><span class="p">)</span>
 
-<span class="nn">File /opt/hostedtoolcache/Python/3.14.5/x64/lib/python3.14/site-packages/pyaml/configuration/factory.py:380,</span> in <span class="ni">PyAMLFactory._build_dict</span><span class="nt">(self, data, ignore_external)</span>
-<span class="g g-Whitespace">    </span><span class="mi">371</span> <span class="k">def</span><span class="w"> </span><span class="nf">_build_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">ignore_external</span><span class="p">:</span> <span class="nb">bool</span><span class="p">):</span>
-<span class="g g-Whitespace">    </span><span class="mi">372</span><span class="w">     </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="g g-Whitespace">    </span><span class="mi">373</span><span class="sd">     Recursively build nested objects referenced by a configuration</span>
-<span class="g g-Whitespace">    </span><span class="mi">374</span><span class="sd">     dictionary.</span>
-<span class="sd">   (...)    377     recursive build process and are left unchanged.</span>
-<span class="g g-Whitespace">    </span><span class="mi">378</span><span class="sd">     &quot;&quot;&quot;</span>
-<span class="ne">--&gt; </span><span class="mi">380</span>     <span class="n">build_info</span> <span class="o">=</span> <span class="n">resolve_build_info</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">ignore_external</span><span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">381</span>     <span class="n">config_cls</span> <span class="o">=</span> <span class="n">build_info</span><span class="o">.</span><span class="n">config_cls</span>
-<span class="g g-Whitespace">    </span><span class="mi">383</span>     <span class="n">result</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+<span class="nn">File /opt/hostedtoolcache/Python/3.14.5/x64/lib/python3.14/site-packages/pyaml/configuration/factory.py:382,</span> in <span class="ni">PyAMLFactory._build_dict</span><span class="nt">(self, data, ignore_external)</span>
+<span class="g g-Whitespace">    </span><span class="mi">373</span> <span class="k">def</span><span class="w"> </span><span class="nf">_build_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">ignore_external</span><span class="p">:</span> <span class="nb">bool</span><span class="p">):</span>
+<span class="g g-Whitespace">    </span><span class="mi">374</span><span class="w">     </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="g g-Whitespace">    </span><span class="mi">375</span><span class="sd">     Recursively build nested objects referenced by a configuration</span>
+<span class="g g-Whitespace">    </span><span class="mi">376</span><span class="sd">     dictionary.</span>
+<span class="sd">   (...)    379     recursive build process and are left unchanged.</span>
+<span class="g g-Whitespace">    </span><span class="mi">380</span><span class="sd">     &quot;&quot;&quot;</span>
+<span class="ne">--&gt; </span><span class="mi">382</span>     <span class="n">build_info</span> <span class="o">=</span> <span class="n">resolve_build_info</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">ignore_external</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">383</span>     <span class="n">config_cls</span> <span class="o">=</span> <span class="n">build_info</span><span class="o">.</span><span class="n">config_cls</span>
+<span class="g g-Whitespace">    </span><span class="mi">385</span>     <span class="n">result</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
 
 <span class="nn">File /opt/hostedtoolcache/Python/3.14.5/x64/lib/python3.14/site-packages/pyaml/configuration/factory.py:238,</span> in <span class="ni">resolve_build_info</span><span class="nt">(data, ignore_external)</span>
 <span class="g g-Whitespace">    </span><span class="mi">236</span>     <span class="k">if</span> <span class="n">ignore_external</span><span class="p">:</span>
 <span class="g g-Whitespace">    </span><span class="mi">237</span>         <span class="k">return</span> <span class="kc">None</span>
-<span class="ne">--&gt; </span><span class="mi">238</span>     <span class="k">raise</span> <span class="n">PyAMLConfigException</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Module referenced in type cannot be found: &#39;</span><span class="si">{</span><span class="n">module_str</span><span class="si">}</span><span class="s2">&#39; </span><span class="si">{</span><span class="n">location_str</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span> <span class="kn">from</span><span class="w"> </span><span class="kc">None</span>
-<span class="g g-Whitespace">    </span><span class="mi">240</span> <span class="c1"># Get the object class name</span>
-<span class="g g-Whitespace">    </span><span class="mi">241</span> <span class="k">if</span> <span class="n">class_str</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+<span class="ne">--&gt; </span><span class="mi">238</span>     <span class="k">raise</span> <span class="n">PyAMLConfigException</span><span class="p">(</span>
+<span class="g g-Whitespace">    </span><span class="mi">239</span>         <span class="sa">f</span><span class="s2">&quot;Module referenced in </span><span class="si">{</span><span class="n">module_str</span><span class="si">}</span><span class="s2"> cannot be found: </span><span class="si">{</span><span class="n">module_ex</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">location_str</span><span class="si">}</span><span class="s2"> while&quot;</span>
+<span class="g g-Whitespace">    </span><span class="mi">240</span>     <span class="p">)</span> <span class="kn">from</span><span class="w"> </span><span class="kc">None</span>
+<span class="g g-Whitespace">    </span><span class="mi">242</span> <span class="c1"># Get the object class name</span>
+<span class="g g-Whitespace">    </span><span class="mi">243</span> <span class="k">if</span> <span class="n">class_str</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
 
-<span class="ne">PyAMLConfigException</span>: Module referenced in type cannot be found: &#39;tango.pyaml.controlsystem&#39; /home/runner/work/pyaml/pyaml/tests/config/EBSTune.yaml at line 12, column 5.
+<span class="ne">PyAMLConfigException</span>: Module referenced in tango.pyaml.controlsystem cannot be found: No module named &#39;tango&#39; /home/runner/work/pyaml/pyaml/tests/config/EBSTune.yaml at line 12, column 5. while
 </pre></div>
 </div>
 </div>
