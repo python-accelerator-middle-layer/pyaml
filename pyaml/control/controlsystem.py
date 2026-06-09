@@ -186,15 +186,15 @@ class ControlSystem(ElementHolder, metaclass=ABCMeta):
                 attachedTrans: list[RFTransmitter] = []
                 if e._cfg.transmitters:
                     for t in e._cfg.transmitters:
-                        vDev = self.attach([t._cfg.voltage])[0]
-                        pDev = self.attach([t._cfg.phase])[0]
+                        vDev = self.get_device(t._cfg.voltage)
+                        pDev = self.get_device(t._cfg.phase)
                         voltage = RWRFVoltageScalar(t, vDev)
                         phase = RWRFPhaseScalar(t, pDev)
                         nt = t.attach(self, voltage, phase)
                         self.add_rf_transnmitter(nt)
                         attachedTrans.append(nt)
 
-                fDev = self.attach([e._cfg.masterclock])[0]
+                fDev = self.get_device(e._cfg.masterclock)
                 frequency = RWRFFrequencyScalar(e, fDev)
                 voltage = RWTotalVoltage(attachedTrans) if e._cfg.transmitters else None
                 ne = e.attach(self, frequency, voltage)

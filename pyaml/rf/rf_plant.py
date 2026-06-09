@@ -17,7 +17,7 @@ PYAMLCLASS = "RFPlant"
 
 
 class ConfigModel(ElementConfigModel):
-    masterclock: DeviceAccess | None = None
+    masterclock: str | None = None
     """Device to apply main RF frequency"""
     transmitters: list[RFTransmitter] | None = None
     """List of RF trasnmitters"""
