@@ -11,7 +11,7 @@ controls:
   - type: tango.pyaml.controlsystem
     tango_host: ebs-simu-3:10000
     name: live
-    catalog: catalogs/ebs_orbit_bpm_catalogs.yaml
+    catalog: catalogs/ebs_catalogs.yaml
 data_folder: /data/store
 arrays:
   - type: pyaml.arrays.magnet
@@ -83,20 +83,14 @@ devices:
   name: DEFAULT_DISPERSION
 - type: pyaml.rf.rf_plant
   name: RF
-  masterclock:
-    type: tango.pyaml.attribute
-    attribute: sy/ms/1/Frequency
-    unit: Hz
+  masterclock: sy/ms/1/Frequency
   transmitters:
     - type: pyaml.rf.rf_transmitter
       name: RFTRA
       cavities: [CAV_C05_01,CAV_C05_02,CAV_C05_03,CAV_C05_04,CAV_C05_05,CAV_C07_01,CAV_C07_02,CAV_C07_03,CAV_C07_04,CAV_C07_05,CAV_C25_01,CAV_C25_02,CAV_C25_03]
       harmonic: 1
       distribution: 1
-      voltage:
-        type: tango.pyaml.attribute
-        attribute: sys/ringsimulator/ebs/RfVoltage
-        unit: V
+      voltage: sys/ringsimulator/ebs/RfVoltage
 - type: pyaml.magnet.cfm_magnet
   name: SH1A-C04
   mapping:

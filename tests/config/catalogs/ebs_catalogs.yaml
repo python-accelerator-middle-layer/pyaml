@@ -1,0 +1,5 @@
+type: tango.pyaml.static_catalog
+name: ebs-catalog
+entries:
+  - catalogs/ebs_bpm_catalogs.yaml
+  - catalogs/ebs_rf_catalogs.yaml

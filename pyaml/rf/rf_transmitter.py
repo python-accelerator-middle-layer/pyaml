@@ -21,9 +21,9 @@ class ConfigModel(ElementConfigModel):
 
     Attributes
     ----------
-    voltage : DeviceAccess or None, optional
+    voltage : str or None, optional
         Device to apply cavity voltage
-    phase : DeviceAccess or None, optional
+    phase : str or None, optional
         Device to apply cavity phase
     cavities : list[str]
         List of cavity names connected to this transmitter
@@ -36,8 +36,8 @@ class ConfigModel(ElementConfigModel):
 
     model_config = ConfigDict(arbitrary_types_allowed=True, extra="forbid")
 
-    voltage: DeviceAccess | None = None
-    phase: DeviceAccess | None = None
+    voltage: str | None = None
+    phase: str | None = None
     cavities: list[str]
     harmonic: float = 1.0
     distribution: float = 1.0
