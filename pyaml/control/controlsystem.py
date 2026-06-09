@@ -7,6 +7,7 @@ from ..common.abstract import RWMapper
 from ..common.abstract_aggregator import ScalarAggregator
 from ..common.element import Element
 from ..common.element_holder import ElementHolder
+from ..common.exception import PyAMLException
 from ..configuration.factory import Factory
 from ..configuration.unbound_element import UnboundElement
 from ..control.abstract_impl import (
@@ -88,6 +89,8 @@ class ControlSystem(ElementHolder, metaclass=ABCMeta):
         also pass backend ConfigModel instances. Concrete backends own all
         lookup, parsing and DeviceAccess construction.
         """
+        if not isinstance(refs, list):
+            raise PyAMLException(f"get_devices() expect a list as input arguments but got {str(type(refs))}")
         return [self.get_device(ref) for ref in refs]
 
     def create_scalar_aggregator(self) -> ScalarAggregator:
