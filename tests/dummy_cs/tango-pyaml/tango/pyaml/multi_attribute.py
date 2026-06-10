@@ -1,44 +1,18 @@
 import numpy as np
 from numpy import typing as npt
-from pydantic import BaseModel
 
 import pyaml
 from pyaml.control.deviceaccess import DeviceAccess
 from pyaml.control.deviceaccesslist import DeviceAccessList
 
 from .attribute import Attribute
-from .attribute import ConfigModel as AttributeConfigModel
-
-PYAMLCLASS: str = "MultiAttribute"
 
 LAST_NB_WRITTEN = 0
 
 
-class ConfigModel(BaseModel):
-    """
-    Configuration model for a list of DeviceAccess.
-
-    Attributes
-    ----------
-    attributes : list of str
-        List of Tango attribute paths.
-    name : str, optional
-        Group name.
-    unit : str, optional
-        Unit of the attributes.
-    """
-
-    attributes: list[str] = []
-    name: str = ""
-
-
 class MultiAttribute(DeviceAccessList):
-    def __init__(self, cfg: ConfigModel = None):
+    def __init__(self):
         super().__init__()
-        self._cfg = cfg
-        if cfg.attributes:
-            for name in cfg.attributes:
-                self.add_devices(Attribute(AttributeConfigModel(name, cfg.unit)))
 
     def add_devices(self, devices: DeviceAccess | list[DeviceAccess]):
         if isinstance(devices, list):

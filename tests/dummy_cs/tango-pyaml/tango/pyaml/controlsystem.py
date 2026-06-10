@@ -6,8 +6,10 @@ from pydantic import BaseModel, ConfigDict
 from pyaml import PyAMLException
 from pyaml.control.controlsystem import ControlSystem
 from pyaml.control.deviceaccess import DeviceAccess
+from pyaml.control.deviceaccesslist import DeviceAccessList
 
 from .catalog import Catalog
+from .multi_attribute import MultiAttribute
 
 PYAMLCLASS: str = "TangoControlSystem"
 
@@ -20,8 +22,6 @@ class ConfigModel(BaseModel):
     catalog: Catalog | None = None
     debug_level: str | None = None
     lazy_devices: bool = True
-    scalar_aggregator: str | None = "tango.pyaml.multi_attribute"
-    vector_aggregator: str | None = None
     timeout_ms: int = 3000
 
 
@@ -82,8 +82,8 @@ class TangoControlSystem(ControlSystem):
     def name(self) -> str:
         return self._cfg.name
 
-    def scalar_aggregator(self) -> str | None:
-        return self._cfg.scalar_aggregator
+    def get_aggregator(self) -> str | None:
+        return MultiAttribute()
 
     def vector_aggregator(self) -> str | None:
         return self._cfg.vector_aggregator

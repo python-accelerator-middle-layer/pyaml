@@ -35,6 +35,7 @@ from ..rf.rf_transmitter import RFTransmitter
 from ..tuning_tools.measurement_tool import MeasurementTool
 from ..tuning_tools.tuning_tool import TuningTool
 from .deviceaccess import DeviceAccess
+from .deviceaccesslist import DeviceAccessList
 
 
 class ControlSystem(ElementHolder, metaclass=ABCMeta):
@@ -63,14 +64,9 @@ class ControlSystem(ElementHolder, metaclass=ABCMeta):
         pass
 
     @abstractmethod
-    def scalar_aggregator(self) -> str | None:
-        """Returns the module name used for handling aggregator of DeviceAccess"""
-        return None
-
-    @abstractmethod
-    def vector_aggregator(self) -> str | None:
-        """Returns the module name used for handling aggregator of DeviceVectorAccess"""
-        return None
+    def get_aggregator(self) -> DeviceAccessList | None:
+        """Returns a new empty DeviceAccessList. If None is returned serialized readings/writtings are performed"""
+        pass
 
     @abstractmethod
     def get_device(self, ref: str | BaseModel | None) -> DeviceAccess:
@@ -93,23 +89,29 @@ class ControlSystem(ElementHolder, metaclass=ABCMeta):
             raise PyAMLException(f"get_devices() expect a list as input arguments but got {str(type(refs))}")
         return [self.get_device(ref) for ref in refs]
 
-    def create_scalar_aggregator(self) -> ScalarAggregator:
-        mod = self.scalar_aggregator()
-        agg = Factory.build_object({"type": mod}) if mod is not None else None
+    def _create_scalar_aggregator(self) -> ScalarAggregator | None:
+        agg = self.get_aggregator()
+        if agg is None:
+            return None
         return CSScalarAggregator(agg)
 
-    def create_magnet_strength_aggregator(self, magnets: list[Magnet]) -> ScalarAggregator:
-        agg = CSStrengthScalarAggregator(self.create_scalar_aggregator())
+    def create_magnet_strength_aggregator(self, magnets: list[Magnet]) -> ScalarAggregator | None:
+        agg = self._create_scalar_aggregator()
+        if agg is None:
+            return None
+        magg = CSStrengthScalarAggregator(agg)
         for m in magnets:
             devs = self.attach(m.model.get_devices())
-            agg.add_magnet(m, devs)
-        return agg
+            magg.add_magnet(m, devs)
+        return magg
 
-    def create_magnet_hardware_aggregator(self, magnets: list[Magnet]) -> ScalarAggregator:
+    def create_magnet_hardware_aggregator(self, magnets: list[Magnet]) -> ScalarAggregator | None:
         """When working in hardware space, 1 single power
         supply device per multipolar strength is required
         """
-        agg = self.create_scalar_aggregator()
+        agg = self._create_scalar_aggregator()
+        if agg is None:
+            return None
         for m in magnets:
             if not m.model.has_hardware():
                 return None
@@ -117,10 +119,12 @@ class ControlSystem(ElementHolder, metaclass=ABCMeta):
             agg.add_devices(self.attach([m.model.get_devices()[psIndex]])[0])
         return agg
 
-    def create_bpm_aggregators(self, bpms: list[BPM]) -> list[ScalarAggregator]:
-        agg = self.create_scalar_aggregator()
-        aggh = self.create_scalar_aggregator()
-        aggv = self.create_scalar_aggregator()
+    def create_bpm_aggregators(self, bpms: list[BPM]) -> list[ScalarAggregator | None]:
+        agg = self._create_scalar_aggregator()
+        aggh = self._create_scalar_aggregator()
+        aggv = self._create_scalar_aggregator()
+        if agg is None or aggh is None or aggv is None:
+            return [None, None, None]
         for b in bpms:
             devs = self.get_devices(b.model.get_pos_devices())
             agg.add_devices(devs)
@@ -241,10 +245,7 @@ class ControlSystemAdapter(ControlSystem):
     def name(self) -> str:
         pass
 
-    def scalar_aggregator(self) -> str | None:
-        return None
-
-    def vector_aggregator(self) -> str | None:
+    def get_aggregator(self) -> DeviceAccessList | None:
         return None
 
     def get_device(self, ref: str | BaseModel | None) -> DeviceAccess | None:
