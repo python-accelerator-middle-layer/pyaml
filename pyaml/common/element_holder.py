@@ -4,6 +4,7 @@ Module handling element references for simulators and control system
 
 import fnmatch
 import re
+from abc import ABCMeta, abstractmethod
 from typing import TYPE_CHECKING
 
 from ..arrays.bpm_array import BPMArray
@@ -12,6 +13,7 @@ from ..arrays.element_array import ElementArray
 from ..arrays.magnet_array import MagnetArray
 from ..arrays.serialized_magnet_array import SerializedMagnetsArray
 from ..bpm.bpm import BPM
+from ..common.abstract_aggregator import ScalarAggregator
 from ..common.exception import PyAMLException
 from ..diagnostics.tune_monitor import BetatronTuneMonitor
 from ..magnet.cfm_magnet import CombinedFunctionMagnet
@@ -33,7 +35,7 @@ if TYPE_CHECKING:
     from ..tuning_tools.tune_response_matrix import TuneResponseMatrix
 
 
-class ElementHolder(object):
+class ElementHolder(metaclass=ABCMeta):
     """
     Class that store references of objects used from both
     simulators and control system
@@ -83,6 +85,22 @@ class ElementHolder(object):
 
     def fill_device(self, elements: list[Element]):
         raise PyAMLException("ElementHolder.fill_device() is not subclassed")
+
+    # Aggregators
+
+    @abstractmethod
+    def create_magnet_strength_aggregator(self, magnets: list[Magnet]) -> ScalarAggregator | None:
+        pass
+
+    @abstractmethod
+    def create_magnet_hardware_aggregator(self, magnets: list[Magnet]) -> ScalarAggregator | None:
+        pass
+
+    @abstractmethod
+    def create_bpm_aggregators(self, bpms: list[BPM]) -> list[ScalarAggregator | None]:
+        pass
+
+    # Elements
 
     def find_elements(self, filter: str) -> list[str]:
         if filter.startswith("re:"):
