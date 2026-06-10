@@ -219,34 +219,6 @@ class RegistryJsonSchema(GenerateJsonSchema):
 
         return merged
 
-    def get_union_of_schemas(self, schemas: list[JsonSchemaValue]) -> JsonSchemaValue:
-        """
-        Combine multiple JSON Schemas into a union schema.
-
-        This override normalizes generated union schemas to use ``oneOf``
-        instead of ``anyOf`` for improved downstream compatibility.
-
-        Parameters
-        ----------
-        schemas : list[JsonSchemaValue]
-            JSON Schemas to combine into a union.
-
-        Returns
-        -------
-        JsonSchemaValue
-            Combined union schema.
-        """
-
-        schema = super().get_union_of_schemas(schemas)
-        logging.debug(f"Modifying union schema for {schema}.")
-
-        # TODO: make is possible to use oneOf
-        # if "anyOf" in schema:
-        #     schema = deepcopy(schema)
-        #     schema["oneOf"] = schema.pop("anyOf")
-
-        return schema
-
     @staticmethod
     def _add_literals_to_class_path(schema: dict[str, Any], literals: list[str]) -> None:
         """
