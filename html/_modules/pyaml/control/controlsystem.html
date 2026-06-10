@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>pyaml.control.controlsystem &#8212; Python Accelerator Middle Layer 0.1.dev1+ge4a630ebc documentation</title>
+    <title>pyaml.control.controlsystem &#8212; Python Accelerator Middle Layer 0.1.dev1+geba023b3b documentation</title>
   
   
   
@@ -41,7 +41,7 @@
   <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=0790524f97105ba85085" />
 <link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=0790524f97105ba85085" />
 
-    <script src="../../../_static/documentation_options.js?v=47903c55"></script>
+    <script src="../../../_static/documentation_options.js?v=8f0a2182"></script>
     <script src="../../../_static/doctools.js?v=9bcbadda"></script>
     <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -125,8 +125,8 @@
       
     
     
-    <img src="../../../_static/logo.png" class="logo__image only-light" alt="Python Accelerator Middle Layer 0.1.dev1+ge4a630ebc documentation - Home"/>
-    <img src="../../../_static/dark.png" class="logo__image only-dark pst-js-only" alt="Python Accelerator Middle Layer 0.1.dev1+ge4a630ebc documentation - Home"/>
+    <img src="../../../_static/logo.png" class="logo__image only-light" alt="Python Accelerator Middle Layer 0.1.dev1+geba023b3b documentation - Home"/>
+    <img src="../../../_static/dark.png" class="logo__image only-dark pst-js-only" alt="Python Accelerator Middle Layer 0.1.dev1+geba023b3b documentation - Home"/>
   
   
 </a></div>
@@ -425,6 +425,7 @@
 <span class="kn">from</span><span class="w"> </span><span class="nn">..tuning_tools.measurement_tool</span><span class="w"> </span><span class="kn">import</span> <span class="n">MeasurementTool</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">..tuning_tools.tuning_tool</span><span class="w"> </span><span class="kn">import</span> <span class="n">TuningTool</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">.deviceaccess</span><span class="w"> </span><span class="kn">import</span> <span class="n">DeviceAccess</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.deviceaccesslist</span><span class="w"> </span><span class="kn">import</span> <span class="n">DeviceAccessList</span>
 
 
 <div class="viewcode-block" id="ControlSystem">
@@ -463,20 +464,12 @@
         <span class="k">pass</span></div>
 
 
-<div class="viewcode-block" id="ControlSystem.scalar_aggregator">
-<a class="viewcode-back" href="../../../api/pyaml.control.controlsystem.html#pyaml.control.controlsystem.ControlSystem.scalar_aggregator">[docs]</a>
+<div class="viewcode-block" id="ControlSystem.get_aggregator">
+<a class="viewcode-back" href="../../../api/pyaml.control.controlsystem.html#pyaml.control.controlsystem.ControlSystem.get_aggregator">[docs]</a>
     <span class="nd">@abstractmethod</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">scalar_aggregator</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns the module name used for handling aggregator of DeviceAccess&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="kc">None</span></div>
-
-
-<div class="viewcode-block" id="ControlSystem.vector_aggregator">
-<a class="viewcode-back" href="../../../api/pyaml.control.controlsystem.html#pyaml.control.controlsystem.ControlSystem.vector_aggregator">[docs]</a>
-    <span class="nd">@abstractmethod</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">vector_aggregator</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns the module name used for handling aggregator of DeviceVectorAccess&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="kc">None</span></div>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_aggregator</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">DeviceAccessList</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns a new empty DeviceAccessList. If None is returned serialized readings/writtings are performed&quot;&quot;&quot;</span>
+        <span class="k">pass</span></div>
 
 
 <div class="viewcode-block" id="ControlSystem.get_device">
@@ -506,31 +499,34 @@
         <span class="k">return</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">get_device</span><span class="p">(</span><span class="n">ref</span><span class="p">)</span> <span class="k">for</span> <span class="n">ref</span> <span class="ow">in</span> <span class="n">refs</span><span class="p">]</span></div>
 
 
-<div class="viewcode-block" id="ControlSystem.create_scalar_aggregator">
-<a class="viewcode-back" href="../../../api/pyaml.control.controlsystem.html#pyaml.control.controlsystem.ControlSystem.create_scalar_aggregator">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">create_scalar_aggregator</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ScalarAggregator</span><span class="p">:</span>
-        <span class="n">mod</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">scalar_aggregator</span><span class="p">()</span>
-        <span class="n">agg</span> <span class="o">=</span> <span class="n">Factory</span><span class="o">.</span><span class="n">build_object</span><span class="p">({</span><span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="n">mod</span><span class="p">})</span> <span class="k">if</span> <span class="n">mod</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="kc">None</span>
-        <span class="k">return</span> <span class="n">CSScalarAggregator</span><span class="p">(</span><span class="n">agg</span><span class="p">)</span></div>
-
+    <span class="k">def</span><span class="w"> </span><span class="nf">_create_scalar_aggregator</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ScalarAggregator</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">agg</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_aggregator</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">agg</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span>
+        <span class="k">return</span> <span class="n">CSScalarAggregator</span><span class="p">(</span><span class="n">agg</span><span class="p">)</span>
 
 <div class="viewcode-block" id="ControlSystem.create_magnet_strength_aggregator">
 <a class="viewcode-back" href="../../../api/pyaml.control.controlsystem.html#pyaml.control.controlsystem.ControlSystem.create_magnet_strength_aggregator">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">create_magnet_strength_aggregator</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">magnets</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Magnet</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">ScalarAggregator</span><span class="p">:</span>
-        <span class="n">agg</span> <span class="o">=</span> <span class="n">CSStrengthScalarAggregator</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">create_scalar_aggregator</span><span class="p">())</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">create_magnet_strength_aggregator</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">magnets</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Magnet</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">ScalarAggregator</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">agg</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_create_scalar_aggregator</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">agg</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span>
+        <span class="n">magg</span> <span class="o">=</span> <span class="n">CSStrengthScalarAggregator</span><span class="p">(</span><span class="n">agg</span><span class="p">)</span>
         <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="n">magnets</span><span class="p">:</span>
             <span class="n">devs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">attach</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">get_devices</span><span class="p">())</span>
-            <span class="n">agg</span><span class="o">.</span><span class="n">add_magnet</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">devs</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">agg</span></div>
+            <span class="n">magg</span><span class="o">.</span><span class="n">add_magnet</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">devs</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">magg</span></div>
 
 
 <div class="viewcode-block" id="ControlSystem.create_magnet_hardware_aggregator">
 <a class="viewcode-back" href="../../../api/pyaml.control.controlsystem.html#pyaml.control.controlsystem.ControlSystem.create_magnet_hardware_aggregator">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">create_magnet_hardware_aggregator</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">magnets</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Magnet</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">ScalarAggregator</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">create_magnet_hardware_aggregator</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">magnets</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Magnet</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">ScalarAggregator</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;When working in hardware space, 1 single power</span>
 <span class="sd">        supply device per multipolar strength is required</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">agg</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">create_scalar_aggregator</span><span class="p">()</span>
+        <span class="n">agg</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_create_scalar_aggregator</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">agg</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span>
         <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="n">magnets</span><span class="p">:</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="n">m</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">has_hardware</span><span class="p">():</span>
                 <span class="k">return</span> <span class="kc">None</span>
@@ -541,10 +537,12 @@
 
 <div class="viewcode-block" id="ControlSystem.create_bpm_aggregators">
 <a class="viewcode-back" href="../../../api/pyaml.control.controlsystem.html#pyaml.control.controlsystem.ControlSystem.create_bpm_aggregators">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">create_bpm_aggregators</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">bpms</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">BPM</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">ScalarAggregator</span><span class="p">]:</span>
-        <span class="n">agg</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">create_scalar_aggregator</span><span class="p">()</span>
-        <span class="n">aggh</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">create_scalar_aggregator</span><span class="p">()</span>
-        <span class="n">aggv</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">create_scalar_aggregator</span><span class="p">()</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">create_bpm_aggregators</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">bpms</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">BPM</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">ScalarAggregator</span> <span class="o">|</span> <span class="kc">None</span><span class="p">]:</span>
+        <span class="n">agg</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_create_scalar_aggregator</span><span class="p">()</span>
+        <span class="n">aggh</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_create_scalar_aggregator</span><span class="p">()</span>
+        <span class="n">aggv</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_create_scalar_aggregator</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">agg</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">aggh</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">aggv</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span>
         <span class="k">for</span> <span class="n">b</span> <span class="ow">in</span> <span class="n">bpms</span><span class="p">:</span>
             <span class="n">devs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_devices</span><span class="p">(</span><span class="n">b</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">get_pos_devices</span><span class="p">())</span>
             <span class="n">agg</span><span class="o">.</span><span class="n">add_devices</span><span class="p">(</span><span class="n">devs</span><span class="p">)</span>
@@ -681,15 +679,9 @@
         <span class="k">pass</span></div>
 
 
-<div class="viewcode-block" id="ControlSystemAdapter.scalar_aggregator">
-<a class="viewcode-back" href="../../../api/pyaml.control.controlsystem.html#pyaml.control.controlsystem.ControlSystemAdapter.scalar_aggregator">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">scalar_aggregator</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="k">return</span> <span class="kc">None</span></div>
-
-
-<div class="viewcode-block" id="ControlSystemAdapter.vector_aggregator">
-<a class="viewcode-back" href="../../../api/pyaml.control.controlsystem.html#pyaml.control.controlsystem.ControlSystemAdapter.vector_aggregator">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">vector_aggregator</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
+<div class="viewcode-block" id="ControlSystemAdapter.get_aggregator">
+<a class="viewcode-back" href="../../../api/pyaml.control.controlsystem.html#pyaml.control.controlsystem.ControlSystemAdapter.get_aggregator">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_aggregator</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">DeviceAccessList</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
         <span class="k">return</span> <span class="kc">None</span></div>
 
 
