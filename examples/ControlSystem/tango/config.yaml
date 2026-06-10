@@ -1,0 +1,16 @@
+type: pyaml.accelerator
+facility: ESRF
+machine: sr
+energy: 6e9
+controls:
+  - type: tango_controlsystem
+    prefix: //ebs-simu-3:10000/
+    name: live
+data_folder: /data/store
+devices:
+- type: pyaml.bpm.bpm
+  name: BPM_C01-01
+  model:
+    type: pyaml.bpm.bpm_simple_model
+    x_pos: srdiag/bpm/c01-01/SA_HPosition
+    y_pos: srdiag/bpm/c01-01/SA_VPosition
