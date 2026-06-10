@@ -16,14 +16,8 @@ data_folder: /data/store
 devices:
 - type: pyaml.diagnostics.tune_monitor
   name: BETATRON_TUNE
-  tune_h:
-    type: tango.pyaml.attribute_read_only
-    attribute: srdiag/beam-tune/main/Qh
-    unit: mm
-  tune_v:
-    type: tango.pyaml.attribute_read_only
-    attribute: srdiag/beam-tune/main/Qv
-    unit: mm
+  tune_h: srdiag/beam-tune/main/Qh
+  tune_v: srdiag/beam-tune/main/Qv
   rf_plant_name: RF
 - type: pyaml.rf.rf_plant
   name: RF

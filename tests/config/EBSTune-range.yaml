@@ -10,6 +10,7 @@ controls:
   - type: tango.pyaml.controlsystem
     tango_host: ebs-simu-3:10000
     name: live
+    catalog: catalogs/ebs_catalogs.yaml
 data_folder: /data/store
 arrays:
   - type: pyaml.arrays.magnet
@@ -1757,14 +1758,8 @@ devices:
       unit: A
 - type: pyaml.diagnostics.tune_monitor
   name: BETATRON_TUNE
-  tune_h:
-    type: tango.pyaml.attribute_read_only
-    attribute: srdiag/beam-tune/main/Qh
-    unit: mm
-  tune_v:
-    type: tango.pyaml.attribute_read_only
-    attribute: srdiag/beam-tune/main/Qv
-    unit: mm
+  tune_h: srdiag/beam-tune/main/Qh
+  tune_v: srdiag/beam-tune/main/Qv
 - type: pyaml.tuning_tools.tune
   name: DEFAULT_TUNE_CORRECTION
   quad_array_name: QForTune
