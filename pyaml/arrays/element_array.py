@@ -1,6 +1,6 @@
 import fnmatch
 import importlib
-from typing import Sequence
+from typing import TYPE_CHECKING, Sequence
 
 import numpy as np
 
@@ -10,6 +10,9 @@ from ..common.exception import PyAMLException
 from ..magnet.cfm_magnet import CombinedFunctionMagnet
 from ..magnet.magnet import Magnet
 from ..magnet.serialized_magnet import SerializedMagnets
+
+if TYPE_CHECKING:
+    from ..common.element_holder import ElementHolder
 
 
 class ElementArray(list[Element]):
@@ -53,7 +56,7 @@ class ElementArray(list[Element]):
                     "of either a Simulator or a ControlSystem"
                 )
 
-    def get_peer(self):
+    def get_peer(self) -> "ElementHolder":
         """
         Returns the peer (:py:class:`~pyaml.lattice.simulator.Simulator`
         or :py:class:`~pyaml.control.controlsystem.ControlSystem`) of
