@@ -328,12 +328,17 @@ def register_schema(
     ...     pass
     """
 
+    if not (isinstance(schema, type) and issubclass(schema, ConfigurationSchema)):
+        raise TypeError("register_schema must be called with a schema class, e.g. @register_schema(MySchema)")
+
     registry = SchemaRegistry()
 
     def decorator(
         cls: Type[ClassT],
     ) -> Type[ClassT]:
         class_path = f"{cls.__module__}.{cls.__name__}"
+
+        logger.debug("Register schema for %s.", class_path)
 
         registry.register(
             class_path=class_path,
