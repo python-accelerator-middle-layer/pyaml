@@ -17,14 +17,8 @@ data_folder: /data/store
 devices:
 - type: pyaml.diagnostics.tune_monitor
   name: BETATRON_TUNE
-  tune_h:
-    type: pyaml_cs_oa.epicsR
-    read_pvname: beam:twiss:x:tune
-    unit: ''
-  tune_v:
-    type: pyaml_cs_oa.epicsR
-    read_pvname: beam:twiss:y:tune
-    unit: ''
+  tune_h: beam:twiss:x:tune
+  tune_v: beam:twiss:y:tune
 - type: pyaml.tuning_tools.chromaticity_monitor
   name: KSI
   betatron_tune_name: BETATRON_TUNE
