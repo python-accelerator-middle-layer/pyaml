@@ -4,22 +4,27 @@ import numpy as np
 import numpy.typing as npt
 
 from .deviceaccess import DeviceAccess
-from .readback_value import Value
 
 
-class DeviceAccessList(list[DeviceAccess], metaclass=ABCMeta):
+class DeviceAccessList(metaclass=ABCMeta):
     """
-    Abstract class providing access to a list of control system float variable
+    Abstract class providing access to a list of control system variales.
+    Internal structure depends on the backend and might not be trivially iterable.
     """
 
     @abstractmethod
     def add_devices(self, devices: DeviceAccess | list[DeviceAccess]):
-        """Add a DeviceAccess to this list"""
+        """Add a DeviceAccess (or a list) to this list"""
         pass
 
     @abstractmethod
-    def get_devices(self) -> DeviceAccess | list[DeviceAccess]:
-        """Get the DeviceAccess list"""
+    def get_device_at(self, index: int) -> DeviceAccess:
+        """Returns the device at the given index"""
+        pass
+
+    @abstractmethod
+    def len(self) -> int:
+        """Get the DeviceAccessList length"""
         pass
 
     @abstractmethod
@@ -56,7 +61,7 @@ class DeviceAccessList(list[DeviceAccess], metaclass=ABCMeta):
         Returns
         -------
         list[float]
-            List containing [min, max] values
+            List containing [min0, max0, min1, max1, ...] values
         """
         pass
 

@@ -95,21 +95,21 @@ def _iter_devices_and_ranges(devs: DeviceAccess | DeviceAccessList):
       - DeviceAccessList: yields N items based on get_devices() and get_range() flattening
     """
     # Single device
-    if hasattr(devs, "get") and hasattr(devs, "get_range") and not hasattr(devs, "get_devices"):
+    if isinstance(devs, DeviceAccess):
         r = devs.get_range()
         if r is None:
             r = [None, None]
         return [(devs, [r[0], r[1]])]
 
-    # Device list (expects get_devices() + get_range() flat list)
-    devices = devs.get_devices()
-    flat = np.asarray(devs.get_range(), dtype=object).ravel()
-    if (flat.size % 2) != 0:
+    # get_range() return a flat list
+    flat = devs.get_range()
+    if (len(flat) % 2) != 0:
         raise ValueError(f"dev_range must have an even length, got {flat.size}")
 
+    # Reshape
     pairs = []
-    for i, d in enumerate(devices):
-        pairs.append((d, [flat[2 * i], flat[2 * i + 1]]))
+    for i in range(devs.len()):
+        pairs.append((devs.get_device_at(i), [flat[2 * i], flat[2 * i + 1]]))
     return pairs
 
 
@@ -196,7 +196,7 @@ class CSScalarAggregator(ScalarAggregator):
         return self._devs.unit()
 
     def nb_device(self) -> int:
-        return self._devs.__len__()
+        return self._devs.len()
 
 
 # ------------------------------------------------------------------------------
