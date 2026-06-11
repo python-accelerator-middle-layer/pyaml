@@ -10,6 +10,9 @@ controls:
 - type: pyaml_cs_oa.controlsystem
   prefix: 'pons:'
   name: live
+  catalog:
+      type: pyaml_cs_oa.dynamic_catalog
+      backend: epics
 data_folder: /data/store
 devices:
 - type: pyaml.diagnostics.tune_monitor
@@ -35,7 +38,4 @@ devices:
   max_e_delta: 1e-3
 - type: pyaml.rf.rf_plant
   name: RF
-  masterclock:
-    type: pyaml_cs_oa.epicsW
-    write_pvname: MCLKHX251C:freq
-    unit: KHz
+  masterclock: (MCLKHX251C:freq)[KHz]

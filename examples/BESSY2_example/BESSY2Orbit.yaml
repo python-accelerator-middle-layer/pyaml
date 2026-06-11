@@ -280,10 +280,7 @@ devices:
   response_matrix: file:orm.json
 - type: pyaml.rf.rf_plant
   name: RF
-  masterclock:
-    type: pyaml_cs_oa.epicsW
-    write_pvname: MCLKHX251C:freq
-    unit: KHz
+  masterclock: (MCLKHX251C:freq)[KHz]
 - type: pyaml.magnet.hcorrector
   name: HS4M2D1R
   lattice_names: S4M2D1R@0
