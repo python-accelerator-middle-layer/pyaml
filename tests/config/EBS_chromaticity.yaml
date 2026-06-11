@@ -21,14 +21,8 @@ arrays:
 devices:
 - type: pyaml.diagnostics.tune_monitor
   name: BETATRON_TUNE
-  tune_h:
-    type: tango.pyaml.attribute_read_only
-    attribute: srdiag/beam-tune/main/Qh
-    unit: "1"
-  tune_v:
-    type: tango.pyaml.attribute_read_only
-    attribute: srdiag/beam-tune/main/Qv
-    unit: "1"
+  tune_h: srdiag/beam-tune/main/Qh
+  tune_v: srdiag/beam-tune/main/Qv
 - type: pyaml.tuning_tools.chromaticity_monitor
   name: CHROMATICITY_MONITOR
   betatron_tune_name: BETATRON_TUNE

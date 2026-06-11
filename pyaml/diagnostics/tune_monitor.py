@@ -19,16 +19,18 @@ class ConfigModel(ElementConfigModel):
 
     Parameters
     ----------
-    tune_h : DeviceAccess, optional
+    tune_h : str, optional
         Horizontal betatron tune device
-    tune_v : DeviceAccess, optional
+    tune_v : str, optional
         Vertical betatron tune device
+    rf_plant_name : str, optional
+        PyAML element name of the RF plant
     """
 
     model_config = ConfigDict(arbitrary_types_allowed=True, extra="forbid")
 
-    tune_h: DeviceAccess | None
-    tune_v: DeviceAccess | None
+    tune_h: str | None
+    tune_v: str | None
     rf_plant_name: str | None = None
 
 
