@@ -12112,17 +12112,11 @@
     y_pos: AN01-SD/DG-EPOS/BPM.01/y_pos
 - type: pyaml.rf.rf_plant
   name: RF
-  masterclock:
-    type: tango.pyaml.attribute
-    attribute: simulator/ringsimulator/ringsimulator/RfFrequency
-    unit: Hz
+  masterclock: simulator/ringsimulator/ringsimulator/RfFrequency
   transmitters:
   - type: pyaml.rf.rf_transmitter
     name: RFTRA
     cavities: [RF_002, RFHARMON_002]
     harmonic: 1
     distribution: 1
-    voltage:
-      type: tango.pyaml.attribute
-      attribute: simulator/ringsimulator/ringsimulator/RfVoltage
-      unit: V
+    voltage: simulator/ringsimulator/ringsimulator/RfVoltage
