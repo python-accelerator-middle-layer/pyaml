@@ -85,8 +85,5 @@ class TangoControlSystem(ControlSystem):
     def get_aggregator(self) -> str | None:
         return MultiAttribute()
 
-    def vector_aggregator(self) -> str | None:
-        return self._cfg.vector_aggregator
-
     def __repr__(self):
         return repr(self._cfg).replace("ConfigModel", self.__class__.__name__)
