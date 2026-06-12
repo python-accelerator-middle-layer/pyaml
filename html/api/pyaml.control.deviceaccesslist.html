@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>deviceaccesslist &#8212; Python Accelerator Middle Layer 0.1.dev1+g7e30323dd documentation</title>
+    <title>deviceaccesslist &#8212; Python Accelerator Middle Layer 0.1.dev1+g4d606fa7f documentation</title>
   
   
   
@@ -42,7 +42,7 @@
   <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=0790524f97105ba85085" />
 <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=0790524f97105ba85085" />
 
-    <script src="../_static/documentation_options.js?v=9b8fde6e"></script>
+    <script src="../_static/documentation_options.js?v=8f5d3095"></script>
     <script src="../_static/doctools.js?v=9bcbadda"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -128,8 +128,8 @@
       
     
     
-    <img src="../_static/logo.png" class="logo__image only-light" alt="Python Accelerator Middle Layer 0.1.dev1+g7e30323dd documentation - Home"/>
-    <img src="../_static/dark.png" class="logo__image only-dark pst-js-only" alt="Python Accelerator Middle Layer 0.1.dev1+g7e30323dd documentation - Home"/>
+    <img src="../_static/logo.png" class="logo__image only-light" alt="Python Accelerator Middle Layer 0.1.dev1+g4d606fa7f documentation - Home"/>
+    <img src="../_static/dark.png" class="logo__image only-dark pst-js-only" alt="Python Accelerator Middle Layer 0.1.dev1+g4d606fa7f documentation - Home"/>
   
   
 </a></div>
@@ -529,13 +529,14 @@
 <span id="deviceaccesslist"></span><h1>deviceaccesslist<a class="headerlink" href="#module-pyaml.control.deviceaccesslist" title="Link to this heading">#</a></h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="pyaml.control.deviceaccesslist.DeviceAccessList">
-<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">DeviceAccessList</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">iterable</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">()</span></span></em>, <em class="sig-param"><span class="positional-only-separator o"><abbr title="Positional-only parameter separator (PEP 570)"><span class="pre">/</span></abbr></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/control/deviceaccesslist.html#DeviceAccessList"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.control.deviceaccesslist.DeviceAccessList" title="Link to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code></a>[<a class="reference internal" href="pyaml.control.deviceaccess.html#pyaml.control.deviceaccess.DeviceAccess" title="pyaml.control.deviceaccess.DeviceAccess"><code class="xref py py-class docutils literal notranslate"><span class="pre">DeviceAccess</span></code></a>]</p>
-<p>Abstract class providing access to a list of control system float variable</p>
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">DeviceAccessList</span></span><a class="reference internal" href="../_modules/pyaml/control/deviceaccesslist.html#DeviceAccessList"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.control.deviceaccesslist.DeviceAccessList" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<p>Abstract class providing access to a list of control system variales.
+Internal structure depends on the backend and might not be trivially iterable.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="pyaml.control.deviceaccesslist.DeviceAccessList.add_devices">
 <em class="property"><span class="k"><span class="pre">abstractmethod</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">add_devices</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">devices</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/control/deviceaccesslist.html#DeviceAccessList.add_devices"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.control.deviceaccesslist.DeviceAccessList.add_devices" title="Link to this definition">#</a></dt>
-<dd><p>Add a DeviceAccess to this list</p>
+<dd><p>Add a DeviceAccess (or a list) to this list</p>
 <dl class="field-list simple">
 </dl>
 </dd></dl>
@@ -560,9 +561,9 @@
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="pyaml.control.deviceaccesslist.DeviceAccessList.get_devices">
-<em class="property"><span class="k"><span class="pre">abstractmethod</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_devices</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/control/deviceaccesslist.html#DeviceAccessList.get_devices"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.control.deviceaccesslist.DeviceAccessList.get_devices" title="Link to this definition">#</a></dt>
-<dd><p>Get the DeviceAccess list</p>
+<dt class="sig sig-object py" id="pyaml.control.deviceaccesslist.DeviceAccessList.get_device_at">
+<em class="property"><span class="k"><span class="pre">abstractmethod</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_device_at</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">index</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/control/deviceaccesslist.html#DeviceAccessList.get_device_at"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.control.deviceaccesslist.DeviceAccessList.get_device_at" title="Link to this definition">#</a></dt>
+<dd><p>Returns the device at the given index</p>
 <dl class="field-list simple">
 </dl>
 </dd></dl>
@@ -573,8 +574,16 @@
 <dd><p>Get the valid range for the device variables.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>list[float]</strong> – List containing [min, max] values</p>
+<dd class="field-odd"><p><strong>list[float]</strong> – List containing [min0, max0, min1, max1, …] values</p>
 </dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaml.control.deviceaccesslist.DeviceAccessList.len">
+<em class="property"><span class="k"><span class="pre">abstractmethod</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">len</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/control/deviceaccesslist.html#DeviceAccessList.len"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.control.deviceaccesslist.DeviceAccessList.len" title="Link to this definition">#</a></dt>
+<dd><p>Get the DeviceAccessList length</p>
+<dl class="field-list simple">
 </dl>
 </dd></dl>
 
@@ -666,8 +675,9 @@
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.control.deviceaccesslist.DeviceAccessList.add_devices"><code class="docutils literal notranslate"><span class="pre">DeviceAccessList.add_devices()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.control.deviceaccesslist.DeviceAccessList.check_device_availability"><code class="docutils literal notranslate"><span class="pre">DeviceAccessList.check_device_availability()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.control.deviceaccesslist.DeviceAccessList.get"><code class="docutils literal notranslate"><span class="pre">DeviceAccessList.get()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.control.deviceaccesslist.DeviceAccessList.get_devices"><code class="docutils literal notranslate"><span class="pre">DeviceAccessList.get_devices()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.control.deviceaccesslist.DeviceAccessList.get_device_at"><code class="docutils literal notranslate"><span class="pre">DeviceAccessList.get_device_at()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.control.deviceaccesslist.DeviceAccessList.get_range"><code class="docutils literal notranslate"><span class="pre">DeviceAccessList.get_range()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.control.deviceaccesslist.DeviceAccessList.len"><code class="docutils literal notranslate"><span class="pre">DeviceAccessList.len()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.control.deviceaccesslist.DeviceAccessList.readback"><code class="docutils literal notranslate"><span class="pre">DeviceAccessList.readback()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.control.deviceaccesslist.DeviceAccessList.set"><code class="docutils literal notranslate"><span class="pre">DeviceAccessList.set()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.control.deviceaccesslist.DeviceAccessList.set_and_wait"><code class="docutils literal notranslate"><span class="pre">DeviceAccessList.set_and_wait()</span></code></a></li>
