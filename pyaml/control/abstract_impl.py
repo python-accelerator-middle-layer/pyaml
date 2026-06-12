@@ -108,8 +108,8 @@ def _iter_devices_and_ranges(devs: DeviceAccess | DeviceAccessList):
 
     # Reshape
     pairs = []
-    for i in range(devs.len()):
-        pairs.append((devs.get_device_at(i), [flat[2 * i], flat[2 * i + 1]]))
+    for i, dev in enumerate(devs):
+        pairs.append((dev, [flat[2 * i], flat[2 * i + 1]]))
     return pairs
 
 
