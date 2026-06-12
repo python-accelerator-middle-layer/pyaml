@@ -123,7 +123,7 @@ class OrbitResponseMatrix(MeasurementTool):
         idx = 0
         try:
             self._register_callback(callback)
-            self._init_measure()
+            self._init_measure("pyaml.tuning_tools.orbit_response_matrix_data")
             for code, measurement in generator:
                 callback_data = {"idx": idx, "response_data": measurement.response_data}
                 if code is ResponseCode.AFTER_SET:
@@ -156,7 +156,6 @@ class OrbitResponseMatrix(MeasurementTool):
 
         orm_data = self._pySC_response_data_to_ORMData(measurement.response_data.model_dump())
         self.latest_measurement.update(orm_data.model_dump())
-        self.latest_measurement["type"] = "pyaml.tuning_tools.orbit_response_matrix_data"
 
         return True
 

@@ -58,6 +58,7 @@ class MeasurementTool(Element, metaclass=ABCMeta):
 
     def _init_measure(self, measurement_type: str | None = None):
         # Initialize measurement data
+        # type is used there to be able to reload a measurement, typically a reponse matrix, using the PyAML factory.
         self._latest_measurement = {}
         if measurement_type is not None:
             self._latest_measurement["type"] = measurement_type
