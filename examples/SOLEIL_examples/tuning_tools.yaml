@@ -1,11 +1,7 @@
 - type: pyaml.diagnostics.tune_monitor
   name: BETATRON_TUNE
-  tune_h:
-    type: tango.pyaml.attribute_read_only
-    attribute: simulator/ringsimulator/ringsimulator/Tune_h
-  tune_v:
-    type: tango.pyaml.attribute_read_only
-    attribute: simulator/ringsimulator/ringsimulator/Tune_v
+  tune_h: simulator/ringsimulator/ringsimulator/Tune_h
+  tune_v: simulator/ringsimulator/ringsimulator/Tune_v
 - type: pyaml.tuning_tools.tune
   name: DEFAULT_TUNE_CORRECTION
   quad_array_name: QCORR

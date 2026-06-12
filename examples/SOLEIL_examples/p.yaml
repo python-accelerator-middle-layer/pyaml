@@ -14,9 +14,7 @@ controls:
 - type: tango.pyaml.controlsystem
   name: live
   tango_host: localhost:11000
-  catalog: bpm-catalog
-catalogs:
-- catalogs.yaml
+  catalog: catalogs.yaml
 arrays: arrays.yaml
 devices:
 - devices.yaml
