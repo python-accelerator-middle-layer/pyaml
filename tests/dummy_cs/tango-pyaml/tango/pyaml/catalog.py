@@ -20,8 +20,6 @@ class CatalogConfigModel(BaseModel):
 
     model_config = ConfigDict(arbitrary_types_allowed=True, extra="forbid")
 
-    name: str
-
 
 class Catalog(metaclass=ABCMeta):
     r"""
@@ -36,17 +34,6 @@ class Catalog(metaclass=ABCMeta):
 
     def __init__(self, cfg: CatalogConfigModel):
         self._cfg = cfg
-
-    def get_name(self) -> str:
-        r"""
-        Return the catalog name.
-
-        Returns
-        -------
-        str
-            Catalog identifier.
-        """
-        return self._cfg.name
 
     @abstractmethod
     def resolve(self, key: str) -> DeviceAccess:

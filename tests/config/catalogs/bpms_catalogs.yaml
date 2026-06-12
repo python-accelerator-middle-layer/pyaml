@@ -1,5 +1,4 @@
 type: tango.pyaml.static_catalog
-name: bpm-catalog
 entries:
   - type: tango.pyaml.static_catalog_entry
     key: srdiag/bpm/c01-01/SA_HPosition

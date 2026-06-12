@@ -25,7 +25,6 @@ def test_inline_catalog_is_supported(install_test_package):
                     "name": "live",
                     "catalog": {
                         "type": "tango.pyaml.static_catalog",
-                        "name": "inline-live",
                         "entries": [
                             {
                                 "type": "tango.pyaml.static_catalog_entry",
@@ -75,7 +74,7 @@ def test_inline_catalog_is_supported(install_test_package):
 def test_unresolved_catalog_key_raises_runtime_error(install_test_package):
     with pytest.raises(
         PyAMLConfigException,
-        match="Catalog 'device-catalog' cannot resolve key 'BPM_C03-01/y'",
+        match="Control system 'live' catalog cannot resolve key 'BPM_C03-01/y'",
     ):
         Accelerator.from_dict(
             {
@@ -91,7 +90,6 @@ def test_unresolved_catalog_key_raises_runtime_error(install_test_package):
                         "name": "live",
                         "catalog": {
                             "type": "tango.pyaml.static_catalog",
-                            "name": "device-catalog",
                             "entries": [
                                 {
                                     "type": "tango.pyaml.static_catalog_entry",
@@ -156,7 +154,6 @@ def test_indexed_catalog_entry_extracts_scalar_from_vector_attribute(install_tes
                     "name": "live",
                     "catalog": {
                         "type": "tango.pyaml.static_catalog",
-                        "name": "bpm-catalog",
                         "entries": [
                             {
                                 "type": "tango.pyaml.static_catalog_entry",
