@@ -9,7 +9,7 @@ from .deviceaccess import DeviceAccess
 class DeviceAccessList(metaclass=ABCMeta):
     """
     Abstract class providing access to a list of control system variales.
-    Internal structure depends on the backend and might not be trivially iterable.
+    Internal structure depends on the backend and might not be trivially mutable.
     """
 
     @abstractmethod
@@ -76,3 +76,22 @@ class DeviceAccessList(metaclass=ABCMeta):
             True if all devices are available, False otherwise
         """
         pass
+
+    # Immutable list implementation
+
+    def __getitem__(self, index):
+        return self.get_device_at(index)
+
+    def __len__(self):
+        return self.len()
+
+    def __iter__(self):
+        self._iter_pos = 0
+        return self
+
+    def __next__(self):
+        if self._iter_pos < len(self._items):
+            self._iter_pos += 1
+            return self._items[self._iter_pos - 1]
+        else:
+            raise StopIteration
