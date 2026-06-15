@@ -12,10 +12,10 @@ from pyaml.accelerator import Accelerator
 def test_aggregator(install_test_package):
     sr = Accelerator.load("tests/config/sr.yaml")
     agg = sr.live.get_aggregator()
-    agg.add_devices(sr.live.get_device("srdiag/bpm/c04-01/SA_HPosition"))
-    agg.add_devices(sr.live.get_device("srdiag/bpm/c04-01/SA_VPosition"))
-    agg.add_devices(sr.live.get_device("srdiag/bpm/c04-02/SA_HPosition"))
-    agg.add_devices(sr.live.get_device("srdiag/bpm/c04-02/SA_VPosition"))
+    agg.add_devices(sr.live.get_device_access("srdiag/bpm/c04-01/SA_HPosition"))
+    agg.add_devices(sr.live.get_device_access("srdiag/bpm/c04-01/SA_VPosition"))
+    agg.add_devices(sr.live.get_device_access("srdiag/bpm/c04-02/SA_HPosition"))
+    agg.add_devices(sr.live.get_device_access("srdiag/bpm/c04-02/SA_VPosition"))
 
     # Iterator and index
     assert agg.len() == 4
@@ -28,7 +28,7 @@ def test_aggregator(install_test_package):
 
     # Immutable behavior
     with pytest.raises(TypeError, match="does not support item assignment"):
-        agg[1] = sr.live.get_device("srdiag/bpm/c04-01/SA_HPosition")
+        agg[1] = sr.live.get_device_access("srdiag/bpm/c04-01/SA_HPosition")
 
     # Values
     assert np.shape(agg.get()) == (4,)
