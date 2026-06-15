@@ -112,7 +112,7 @@ class MyControlSystem(ControlSystemAdapter):
         super().__init__()
         self._cfg = cfg
 
-    def get_device(self, ref: str | BaseModel | None) -> DeviceAccess | None:
+    def get_device_access(self, ref: str | BaseModel | None) -> DeviceAccess | None:
         if ref is None:
             return None
         return MyDevice(self._cfg.prefix + ref)

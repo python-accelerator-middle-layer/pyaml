@@ -69,7 +69,7 @@ class ControlSystem(ElementHolder, metaclass=ABCMeta):
         pass
 
     @abstractmethod
-    def get_device(self, ref: str | BaseModel | None) -> DeviceAccess:
+    def get_device_access(self, ref: str | BaseModel | None) -> DeviceAccess:
         """
         Return a device reference for this control system.
         YAML element configuration passes opaque strings. Public Python APIs may
@@ -78,7 +78,7 @@ class ControlSystem(ElementHolder, metaclass=ABCMeta):
         """
         pass
 
-    def get_devices(self, refs: list[str | BaseModel | None]) -> list[DeviceAccess]:
+    def get_devices_access(self, refs: list[str | BaseModel | None]) -> list[DeviceAccess]:
         """
         Return a device reference for this control system.
         YAML element configuration passes opaque strings. Public Python APIs may
@@ -87,7 +87,7 @@ class ControlSystem(ElementHolder, metaclass=ABCMeta):
         """
         if not isinstance(refs, list):
             raise PyAMLException(f"get_devices() expect a list as input arguments but got {str(type(refs))}")
-        return [self.get_device(ref) for ref in refs]
+        return [self.get_device_access(ref) for ref in refs]
 
     def _create_scalar_aggregator(self) -> ScalarAggregator | None:
         agg = self.get_aggregator()
@@ -126,7 +126,7 @@ class ControlSystem(ElementHolder, metaclass=ABCMeta):
         if agg is None or aggh is None or aggv is None:
             return [None, None, None]
         for b in bpms:
-            devs = self.get_devices(b.model.get_pos_devices())
+            devs = self.get_devices_access(b.model.get_pos_devices())
             agg.add_devices(devs)
             aggh.add_devices(devs[0])
             aggv.add_devices(devs[1])
@@ -180,9 +180,9 @@ class ControlSystem(ElementHolder, metaclass=ABCMeta):
                     self.add_magnet(m)
 
             elif isinstance(e, BPM):
-                pos_devs = self.get_devices(e.model.get_pos_devices())
-                tilt_devs = self.get_devices([e.model.get_tilt_device()])
-                offset_devs = self.get_devices(e.model.get_offset_devices())
+                pos_devs = self.get_devices_access(e.model.get_pos_devices())
+                tilt_devs = self.get_devices_access([e.model.get_tilt_device()])
+                offset_devs = self.get_devices_access(e.model.get_offset_devices())
                 positions = RBpmArray(pos_devs[0], pos_devs[1])
                 tilt = RWBpmTiltScalar(tilt_devs[0])
                 offsets = RWBpmOffsetArray(offset_devs[0], offset_devs[1])
@@ -193,15 +193,15 @@ class ControlSystem(ElementHolder, metaclass=ABCMeta):
                 attachedTrans: list[RFTransmitter] = []
                 if e._cfg.transmitters:
                     for t in e._cfg.transmitters:
-                        vDev = self.get_device(t._cfg.voltage)
-                        pDev = self.get_device(t._cfg.phase)
+                        vDev = self.get_device_access(t._cfg.voltage)
+                        pDev = self.get_device_access(t._cfg.phase)
                         voltage = RWRFVoltageScalar(t, vDev)
                         phase = RWRFPhaseScalar(t, pDev)
                         nt = t.attach(self, voltage, phase)
                         self.add_rf_transnmitter(nt)
                         attachedTrans.append(nt)
 
-                fDev = self.get_device(e._cfg.masterclock)
+                fDev = self.get_device_access(e._cfg.masterclock)
                 frequency = RWRFFrequencyScalar(e, fDev)
                 voltage = RWTotalVoltage(attachedTrans) if e._cfg.transmitters else None
                 ne = e.attach(self, frequency, voltage)
@@ -209,7 +209,7 @@ class ControlSystem(ElementHolder, metaclass=ABCMeta):
 
             elif isinstance(e, BetatronTuneMonitor):
                 # Built in tune monitor
-                tuneDevs = self.get_devices([e._cfg.tune_h, e._cfg.tune_v])
+                tuneDevs = self.get_devices_access([e._cfg.tune_h, e._cfg.tune_v])
                 betatron_tune = RBetatronTuneArray(e, tuneDevs)
                 e = e.attach(self, betatron_tune)
                 self.add_betatron_tune_monitor(e)
@@ -248,5 +248,5 @@ class ControlSystemAdapter(ControlSystem):
     def get_aggregator(self) -> DeviceAccessList | None:
         return None
 
-    def get_device(self, ref: str | BaseModel | None) -> DeviceAccess | None:
+    def get_device_access(self, ref: str | BaseModel | None) -> DeviceAccess | None:
         pass
