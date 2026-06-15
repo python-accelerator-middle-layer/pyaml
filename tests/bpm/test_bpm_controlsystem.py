@@ -58,7 +58,7 @@ def test_controlsystem_bpm_position(install_test_package):
 def test_controlsystem_get_devices_returns_attached_devices(install_test_package):
     sr: Accelerator = Accelerator.load("tests/config/bpms.yaml")
 
-    devs = sr.live.get_devices(["srdiag/bpm/c01-01/SA_HPosition", "srdiag/bpm/c01-01/SA_VPosition"])
+    devs = sr.live.get_devices_access(["srdiag/bpm/c01-01/SA_HPosition", "srdiag/bpm/c01-01/SA_VPosition"])
 
     assert devs[0].name() == "//ebs-simu-3:10000/srdiag/bpm/c01-01/SA_HPosition"
     assert devs[1].name() == "//ebs-simu-3:10000/srdiag/bpm/c01-01/SA_VPosition"
@@ -74,7 +74,7 @@ def test_controlsystem_get_device_accepts_backend_config_model(install_test_pack
 
     sr: Accelerator = Accelerator.load("tests/config/bpms.yaml")
 
-    dev = sr.live.get_device(AttributeConfigModel(attribute="srdiag/bpm/c01-05/SA_HPosition", unit="mm"))
+    dev = sr.live.get_device_access(AttributeConfigModel(attribute="srdiag/bpm/c01-05/SA_HPosition", unit="mm"))
 
     assert dev.name() == "//ebs-simu-3:10000/srdiag/bpm/c01-05/SA_HPosition"
     assert dev.unit() == "mm"

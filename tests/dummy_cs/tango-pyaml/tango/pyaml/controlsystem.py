@@ -37,7 +37,7 @@ class TangoControlSystem(ControlSystem):
     def attach(self, devs: list[DeviceAccess | None]) -> list[DeviceAccess | None]:
         return self._attach(devs, False)
 
-    def get_device(self, ref: str | BaseModel | None) -> DeviceAccess | None:
+    def get_device_access(self, ref: str | BaseModel | None) -> DeviceAccess | None:
         if ref is None:
             return None
 
