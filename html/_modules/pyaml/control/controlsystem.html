@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>pyaml.control.controlsystem &#8212; Python Accelerator Middle Layer 0.1.dev1+gf3f45c781 documentation</title>
+    <title>pyaml.control.controlsystem &#8212; Python Accelerator Middle Layer 0.1.dev1+gef687e4b7 documentation</title>
   
   
   
@@ -41,7 +41,7 @@
   <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=0790524f97105ba85085" />
 <link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=0790524f97105ba85085" />
 
-    <script src="../../../_static/documentation_options.js?v=57597e49"></script>
+    <script src="../../../_static/documentation_options.js?v=77c7bd5c"></script>
     <script src="../../../_static/doctools.js?v=9bcbadda"></script>
     <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -125,8 +125,8 @@
       
     
     
-    <img src="../../../_static/logo.png" class="logo__image only-light" alt="Python Accelerator Middle Layer 0.1.dev1+gf3f45c781 documentation - Home"/>
-    <img src="../../../_static/dark.png" class="logo__image only-dark pst-js-only" alt="Python Accelerator Middle Layer 0.1.dev1+gf3f45c781 documentation - Home"/>
+    <img src="../../../_static/logo.png" class="logo__image only-light" alt="Python Accelerator Middle Layer 0.1.dev1+gef687e4b7 documentation - Home"/>
+    <img src="../../../_static/dark.png" class="logo__image only-dark pst-js-only" alt="Python Accelerator Middle Layer 0.1.dev1+gef687e4b7 documentation - Home"/>
   
   
 </a></div>
@@ -472,10 +472,10 @@
         <span class="k">pass</span></div>
 
 
-<div class="viewcode-block" id="ControlSystem.get_device">
-<a class="viewcode-back" href="../../../api/pyaml.control.controlsystem.html#pyaml.control.controlsystem.ControlSystem.get_device">[docs]</a>
+<div class="viewcode-block" id="ControlSystem.get_device_access">
+<a class="viewcode-back" href="../../../api/pyaml.control.controlsystem.html#pyaml.control.controlsystem.ControlSystem.get_device_access">[docs]</a>
     <span class="nd">@abstractmethod</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">get_device</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ref</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">BaseModel</span> <span class="o">|</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">DeviceAccess</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_device_access</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ref</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">BaseModel</span> <span class="o">|</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">DeviceAccess</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Return a device reference for this control system.</span>
 <span class="sd">        YAML element configuration passes opaque strings. Public Python APIs may</span>
@@ -485,9 +485,9 @@
         <span class="k">pass</span></div>
 
 
-<div class="viewcode-block" id="ControlSystem.get_devices">
-<a class="viewcode-back" href="../../../api/pyaml.control.controlsystem.html#pyaml.control.controlsystem.ControlSystem.get_devices">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">get_devices</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">refs</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span> <span class="o">|</span> <span class="n">BaseModel</span> <span class="o">|</span> <span class="kc">None</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">DeviceAccess</span><span class="p">]:</span>
+<div class="viewcode-block" id="ControlSystem.get_devices_access">
+<a class="viewcode-back" href="../../../api/pyaml.control.controlsystem.html#pyaml.control.controlsystem.ControlSystem.get_devices_access">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_devices_access</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">refs</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span> <span class="o">|</span> <span class="n">BaseModel</span> <span class="o">|</span> <span class="kc">None</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">DeviceAccess</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Return a device reference for this control system.</span>
 <span class="sd">        YAML element configuration passes opaque strings. Public Python APIs may</span>
@@ -496,7 +496,7 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">refs</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
             <span class="k">raise</span> <span class="n">PyAMLException</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;get_devices() expect a list as input arguments but got </span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">refs</span><span class="p">))</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-        <span class="k">return</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">get_device</span><span class="p">(</span><span class="n">ref</span><span class="p">)</span> <span class="k">for</span> <span class="n">ref</span> <span class="ow">in</span> <span class="n">refs</span><span class="p">]</span></div>
+        <span class="k">return</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">get_device_access</span><span class="p">(</span><span class="n">ref</span><span class="p">)</span> <span class="k">for</span> <span class="n">ref</span> <span class="ow">in</span> <span class="n">refs</span><span class="p">]</span></div>
 
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_create_scalar_aggregator</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ScalarAggregator</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
@@ -544,7 +544,7 @@
         <span class="k">if</span> <span class="n">agg</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">aggh</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">aggv</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">return</span> <span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span>
         <span class="k">for</span> <span class="n">b</span> <span class="ow">in</span> <span class="n">bpms</span><span class="p">:</span>
-            <span class="n">devs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_devices</span><span class="p">(</span><span class="n">b</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">get_pos_devices</span><span class="p">())</span>
+            <span class="n">devs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_devices_access</span><span class="p">(</span><span class="n">b</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">get_pos_devices</span><span class="p">())</span>
             <span class="n">agg</span><span class="o">.</span><span class="n">add_devices</span><span class="p">(</span><span class="n">devs</span><span class="p">)</span>
             <span class="n">aggh</span><span class="o">.</span><span class="n">add_devices</span><span class="p">(</span><span class="n">devs</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
             <span class="n">aggv</span><span class="o">.</span><span class="n">add_devices</span><span class="p">(</span><span class="n">devs</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
@@ -601,9 +601,9 @@
                     <span class="bp">self</span><span class="o">.</span><span class="n">add_magnet</span><span class="p">(</span><span class="n">m</span><span class="p">)</span>
 
             <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="n">BPM</span><span class="p">):</span>
-                <span class="n">pos_devs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_devices</span><span class="p">(</span><span class="n">e</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">get_pos_devices</span><span class="p">())</span>
-                <span class="n">tilt_devs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_devices</span><span class="p">([</span><span class="n">e</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">get_tilt_device</span><span class="p">()])</span>
-                <span class="n">offset_devs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_devices</span><span class="p">(</span><span class="n">e</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">get_offset_devices</span><span class="p">())</span>
+                <span class="n">pos_devs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_devices_access</span><span class="p">(</span><span class="n">e</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">get_pos_devices</span><span class="p">())</span>
+                <span class="n">tilt_devs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_devices_access</span><span class="p">([</span><span class="n">e</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">get_tilt_device</span><span class="p">()])</span>
+                <span class="n">offset_devs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_devices_access</span><span class="p">(</span><span class="n">e</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">get_offset_devices</span><span class="p">())</span>
                 <span class="n">positions</span> <span class="o">=</span> <span class="n">RBpmArray</span><span class="p">(</span><span class="n">pos_devs</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">pos_devs</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
                 <span class="n">tilt</span> <span class="o">=</span> <span class="n">RWBpmTiltScalar</span><span class="p">(</span><span class="n">tilt_devs</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
                 <span class="n">offsets</span> <span class="o">=</span> <span class="n">RWBpmOffsetArray</span><span class="p">(</span><span class="n">offset_devs</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">offset_devs</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
@@ -614,15 +614,15 @@
                 <span class="n">attachedTrans</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">RFTransmitter</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
                 <span class="k">if</span> <span class="n">e</span><span class="o">.</span><span class="n">_cfg</span><span class="o">.</span><span class="n">transmitters</span><span class="p">:</span>
                     <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">e</span><span class="o">.</span><span class="n">_cfg</span><span class="o">.</span><span class="n">transmitters</span><span class="p">:</span>
-                        <span class="n">vDev</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_device</span><span class="p">(</span><span class="n">t</span><span class="o">.</span><span class="n">_cfg</span><span class="o">.</span><span class="n">voltage</span><span class="p">)</span>
-                        <span class="n">pDev</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_device</span><span class="p">(</span><span class="n">t</span><span class="o">.</span><span class="n">_cfg</span><span class="o">.</span><span class="n">phase</span><span class="p">)</span>
+                        <span class="n">vDev</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_device_access</span><span class="p">(</span><span class="n">t</span><span class="o">.</span><span class="n">_cfg</span><span class="o">.</span><span class="n">voltage</span><span class="p">)</span>
+                        <span class="n">pDev</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_device_access</span><span class="p">(</span><span class="n">t</span><span class="o">.</span><span class="n">_cfg</span><span class="o">.</span><span class="n">phase</span><span class="p">)</span>
                         <span class="n">voltage</span> <span class="o">=</span> <span class="n">RWRFVoltageScalar</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">vDev</span><span class="p">)</span>
                         <span class="n">phase</span> <span class="o">=</span> <span class="n">RWRFPhaseScalar</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">pDev</span><span class="p">)</span>
                         <span class="n">nt</span> <span class="o">=</span> <span class="n">t</span><span class="o">.</span><span class="n">attach</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">voltage</span><span class="p">,</span> <span class="n">phase</span><span class="p">)</span>
                         <span class="bp">self</span><span class="o">.</span><span class="n">add_rf_transnmitter</span><span class="p">(</span><span class="n">nt</span><span class="p">)</span>
                         <span class="n">attachedTrans</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">nt</span><span class="p">)</span>
 
-                <span class="n">fDev</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_device</span><span class="p">(</span><span class="n">e</span><span class="o">.</span><span class="n">_cfg</span><span class="o">.</span><span class="n">masterclock</span><span class="p">)</span>
+                <span class="n">fDev</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_device_access</span><span class="p">(</span><span class="n">e</span><span class="o">.</span><span class="n">_cfg</span><span class="o">.</span><span class="n">masterclock</span><span class="p">)</span>
                 <span class="n">frequency</span> <span class="o">=</span> <span class="n">RWRFFrequencyScalar</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="n">fDev</span><span class="p">)</span>
                 <span class="n">voltage</span> <span class="o">=</span> <span class="n">RWTotalVoltage</span><span class="p">(</span><span class="n">attachedTrans</span><span class="p">)</span> <span class="k">if</span> <span class="n">e</span><span class="o">.</span><span class="n">_cfg</span><span class="o">.</span><span class="n">transmitters</span> <span class="k">else</span> <span class="kc">None</span>
                 <span class="n">ne</span> <span class="o">=</span> <span class="n">e</span><span class="o">.</span><span class="n">attach</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">frequency</span><span class="p">,</span> <span class="n">voltage</span><span class="p">)</span>
@@ -630,7 +630,7 @@
 
             <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="n">BetatronTuneMonitor</span><span class="p">):</span>
                 <span class="c1"># Built in tune monitor</span>
-                <span class="n">tuneDevs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_devices</span><span class="p">([</span><span class="n">e</span><span class="o">.</span><span class="n">_cfg</span><span class="o">.</span><span class="n">tune_h</span><span class="p">,</span> <span class="n">e</span><span class="o">.</span><span class="n">_cfg</span><span class="o">.</span><span class="n">tune_v</span><span class="p">])</span>
+                <span class="n">tuneDevs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_devices_access</span><span class="p">([</span><span class="n">e</span><span class="o">.</span><span class="n">_cfg</span><span class="o">.</span><span class="n">tune_h</span><span class="p">,</span> <span class="n">e</span><span class="o">.</span><span class="n">_cfg</span><span class="o">.</span><span class="n">tune_v</span><span class="p">])</span>
                 <span class="n">betatron_tune</span> <span class="o">=</span> <span class="n">RBetatronTuneArray</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="n">tuneDevs</span><span class="p">)</span>
                 <span class="n">e</span> <span class="o">=</span> <span class="n">e</span><span class="o">.</span><span class="n">attach</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">betatron_tune</span><span class="p">)</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">add_betatron_tune_monitor</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
@@ -685,9 +685,9 @@
         <span class="k">return</span> <span class="kc">None</span></div>
 
 
-<div class="viewcode-block" id="ControlSystemAdapter.get_device">
-<a class="viewcode-back" href="../../../api/pyaml.control.controlsystem.html#pyaml.control.controlsystem.ControlSystemAdapter.get_device">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">get_device</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ref</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">BaseModel</span> <span class="o">|</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">DeviceAccess</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
+<div class="viewcode-block" id="ControlSystemAdapter.get_device_access">
+<a class="viewcode-back" href="../../../api/pyaml.control.controlsystem.html#pyaml.control.controlsystem.ControlSystemAdapter.get_device_access">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_device_access</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ref</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">BaseModel</span> <span class="o">|</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">DeviceAccess</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
         <span class="k">pass</span></div>
 </div>
 
