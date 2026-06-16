@@ -1,4 +1,4 @@
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Any
 
 from pydantic import BaseModel, ConfigDict
 
@@ -12,21 +12,45 @@ def __pyaml_repr__(obj):
     """
     Returns a string representation of a pyaml object
     """
-    if hasattr(obj, "_cfg"):
+
+    cls_name = obj.__class__.__name__
+
+    # Keep the old behavior when _cfg exists
+    cfg = getattr(obj, "_cfg", None)
+    if cfg is not None:
         if isinstance(obj, Element):
-            return repr(obj._cfg).replace(
+            return repr(cfg).replace(
                 "ConfigModel(",
-                obj.__class__.__name__ + "(peer='" + obj.attached_to() + "', ",
+                f"{cls_name}(peer={obj.attached_to()!r}, ",
+                1,
             )
-        else:
-            # no peer
-            return repr(obj._cfg).replace("ConfigModel", obj.__class__.__name__)
-    else:
-        # Object is not yet fully constructed
-        if isinstance(obj, Element):
-            return f"{obj.__class__.__name__}: {obj.get_name()}"
-        else:
-            return f"{obj.__class__.__name__}"
+        return repr(cfg).replace("ConfigModel", cls_name, 1)
+
+    # Generic fallback when there is no _cfg
+    attrs = {}
+
+    # Instance attributes
+    for k, v in obj.__dict__.items():
+        # Exclude private attributes
+        if not k.startswith("_"):
+            attrs[k] = v
+
+    # Properties
+    for name, attr in vars(type(obj)).items():
+        if isinstance(attr, property):
+            try:
+                attrs[name] = getattr(obj, name)
+            except Exception as e:
+                attrs[name] = f"<error: {e}>"
+
+    if isinstance(obj, Element) and "name" not in attrs:
+        try:
+            attrs["name"] = obj.get_name()
+        except Exception as e:
+            attrs["name"] = f"<error: {e}>"
+
+    parts = ", ".join(f"{k}={v!r}" for k, v in attrs.items())
+    return f"{cls_name}({parts})" if parts else cls_name
 
 
 class ElementConfigModel(BaseModel):
@@ -57,39 +81,64 @@ class ElementConfigModel(BaseModel):
     lattice_names: str | None = None
 
 
-class Element(object):
+class Element:
     """
     Class providing access to one element of a physical or simulated lattice
-
-    Attributes:
-      name: str
-        The unique name identifying the element in the configuration file
     """
 
-    def __init__(self, name: str):
-        self._name: str = name
-        self._peer: "ElementHolder" = None  # Peer: ControlSystem, Simulator
+    def __init__(
+        self,
+        name: str,
+        lattice_names: str | None = None,
+        description: str | None = None,
+    ):
+        self._name = name
+        self._lattice_names = lattice_names
+        self._description = description
+        self._peer: ElementHolder | None = None
+
+    def _cfg_value(self, attr: str, fallback: Any) -> Any:
+        """
+        Return an attribute from _cfg if available, otherwise fallback.
+        """
+        cfg = getattr(self, "_cfg", None)
+        if cfg is not None:
+            value = getattr(cfg, attr, None)
+            if value is not None:
+                return value
+        return fallback
+
+    @property
+    def name(self) -> str:
+        return self._cfg_value("name", self._name)
+
+    @property
+    def lattice_names(self) -> str:
+        cfg = getattr(self, "_cfg", None)
+
+        if cfg is not None and cfg.lattice_names is not None:
+            return cfg.lattice_names
+
+        if self._lattice_names is not None:
+            return self._lattice_names
+
+        return self.name
+
+    @property
+    def description(self) -> str | None:
+        return self._cfg_value("description", self._description)
 
     def get_name(self) -> str:
         """
         Returns the name of the element
         """
-        return self._name
+        return self.name
 
-    def get_lattice_names(self) -> str:
-        """
-        Returns the name of associated lattice element(s)
-        """
-        if not hasattr(self, "_cfg"):
-            return self._name
-        else:
-            return self._cfg.lattice_names
+    def get_lattice_names(self) -> str | None:
+        return self.lattice_names
 
-    def get_description(self) -> str:
-        """
-        Returns the description of the element
-        """
-        return self._cfg.description
+    def get_description(self) -> str | None:
+        return self.description
 
     def set_energy(self, E: float):
         """
