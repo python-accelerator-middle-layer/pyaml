@@ -50,7 +50,7 @@ class ValidationSchema(PyAMLBaseModel):
     Provides common fields and functionality for schemas used to validate arguments during object creation.
     """
 
-    model_config = ConfigDict(arbitrary_types_allowed=False, extra="forbid")
+    model_config = ConfigDict(arbitrary_types_allowed=True, extra="forbid")
 
 
 class ValidationMeta(type):
