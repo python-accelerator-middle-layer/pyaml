@@ -78,7 +78,7 @@ def test_configuration_schema_forbids_extra_fields():
     assert "extra_forbidden" in str(exc_info.value)
 
 
-def test_models_do_not_allow_arbitrary_types():
+def test_configuration_schema_do_not_allow_arbitrary_types():
     class ArbitraryType:
         pass
 
@@ -94,6 +94,32 @@ def test_configuration_schema_dump_uses_alias_when_requested():
     dumped = schema.model_dump(by_alias=True)
 
     assert dumped == {"class": "pkg.module.Class"}
+
+
+# ==========================================================
+# ValidationSchema
+# ==========================================================
+
+
+class DummyDevice:
+    pass
+
+
+class DummySchema(ValidationSchema):
+    device: DummyDevice
+
+
+def test_validation_schema_allows_arbitrary_types():
+    device = DummyDevice()
+
+    schema = DummySchema.model_validate({"device": device})
+
+    assert schema.device is device
+
+
+def test_validation_schema_forbids_extra_fields():
+    with pytest.raises(ValidationError):
+        DummySchema.model_validate({"device": DummyDevice(), "extra_field": 123})
 
 
 # ==========================================================
