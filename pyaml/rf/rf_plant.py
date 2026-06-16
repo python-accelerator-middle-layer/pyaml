@@ -76,19 +76,19 @@ class RWTotalVoltage(abstract.ReadWriteFloatScalar):
         sum = 0
         # Count only fundamental harmonic
         for t in self.__trans:
-            if t._cfg.harmonic == 1.0:
+            if t.harmonic == 1.0:
                 sum += t.voltage.get()
         return sum
 
     def set(self, value: float):
         # Assume that sum of transmitter (fundamental harmonic) distribution is 1
         for t in self.__trans:
-            if t._cfg.harmonic == 1.0:
-                v = value * t._cfg.distribution
+            if t.harmonic == 1.0:
+                v = value * t.distribution
                 t.voltage.set(v)
 
     def set_and_wait(self, value: float):
         raise NotImplementedError("Not implemented yet.")
 
     def unit(self) -> str:
-        return self.__trans[0]._cfg.phase.unit()
+        return self.__trans[0].phase_device_access.unit()

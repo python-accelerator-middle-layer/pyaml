@@ -193,8 +193,8 @@ class ControlSystem(ElementHolder, metaclass=ABCMeta):
                 attachedTrans: list[RFTransmitter] = []
                 if e._cfg.transmitters:
                     for t in e._cfg.transmitters:
-                        vDev = self.get_device_access(t._cfg.voltage)
-                        pDev = self.get_device_access(t._cfg.phase)
+                        vDev = self.get_device_access(t.voltage_str)
+                        pDev = self.get_device_access(t.phase_str)
                         voltage = RWRFVoltageScalar(t, vDev)
                         phase = RWRFPhaseScalar(t, pDev)
                         nt = t.attach(self, voltage, phase)

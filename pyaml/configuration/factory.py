@@ -161,7 +161,7 @@ class BuildInfo:
     ----------
     module : ModuleType
         Imported module containing the object class and validation model.
-    config_cls : type[BaseModel]
+    config_cls : type[BaseModel], optional
         Pydantic model used to validate the configuration.
     class_str : str
         Name of the class to instantiate.
@@ -174,7 +174,7 @@ class BuildInfo:
     """
 
     module: ModuleType
-    config_cls: type[BaseModel]
+    config_cls: type[BaseModel] | None
     class_str: str
     field_locations: dict | None
     location_str: str
@@ -248,8 +248,6 @@ def resolve_build_info(data: dict, ignore_external: bool) -> BuildInfo | None:
 
     # Get the validation class
     config_cls = getattr(module, validation_class_str, None)
-    if config_cls is None:
-        raise PyAMLConfigException(f"No validation class for '{module.__name__}.{class_str}' {location_str}")
 
     return BuildInfo(
         module=module,
@@ -456,6 +454,8 @@ class PyAMLFactory:
 
         try:
             if control_modes is None:
+                if isinstance(cfg, dict):
+                    return elem_cls(**cfg)
                 return elem_cls(cfg)
 
             return UnboundElement(elem_cls, module_name, control_modes, cfg)
@@ -495,9 +495,11 @@ class PyAMLFactory:
 
         cleaned_data, control_modes = self._strip_build_metadata(data)
 
-        # Validate the model
         try:
-            cfg = config_cls.model_validate(cleaned_data)
+            if config_cls is not None:
+                cfg = config_cls.model_validate(cleaned_data)
+            else:
+                cfg = cleaned_data
         except ValidationError as e:
             handle_validation_error(e, module.__name__, location_str, field_locations)
 

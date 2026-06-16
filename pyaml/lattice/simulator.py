@@ -206,7 +206,7 @@ class Simulator(ElementHolder):
                     attachedTrans: list[RFTransmitter] = []
                     for t in e._cfg.transmitters:
                         cavsPerTrans: list[at.Element] = []
-                        for c in t._cfg.cavities:
+                        for c in t.cavities:
                             # Expect unique name for cavities
                             cav = self.get_at_elems(Element(c))
                             if len(cav) > 1:
@@ -214,7 +214,7 @@ class Simulator(ElementHolder):
                             if len(cav) == 0:
                                 raise PyAMLException(f"RF transmitter {t.get_name()}, No cavity found")
                             cavsPerTrans.append(cav[0])
-                            harmonics.append(t._cfg.harmonic)
+                            harmonics.append(t.harmonic)
                         voltage = RWRFVoltageScalar(cavsPerTrans)
                         phase = RWRFPhaseScalar(cavsPerTrans)
                         nt = t.attach(self, voltage, phase)
