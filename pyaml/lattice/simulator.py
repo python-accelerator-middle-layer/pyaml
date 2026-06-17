@@ -200,11 +200,11 @@ class Simulator(ElementHolder):
                 self.add_bpm(e)
 
             elif isinstance(e, RFPlant):
-                if e._cfg.transmitters:
+                if e.transmitters:
                     cavs: list[at.Element] = []
                     harmonics: list[float] = []
                     attachedTrans: list[RFTransmitter] = []
-                    for t in e._cfg.transmitters:
+                    for t in e.transmitters:
                         cavsPerTrans: list[at.Element] = []
                         for c in t.cavities:
                             # Expect unique name for cavities
@@ -218,7 +218,7 @@ class Simulator(ElementHolder):
                         voltage = RWRFVoltageScalar(cavsPerTrans)
                         phase = RWRFPhaseScalar(cavsPerTrans)
                         nt = t.attach(self, voltage, phase)
-                        self.add_rf_transnmitter(nt)
+                        self.add_rf_transmitter(nt)
                         cavs.extend(cavsPerTrans)
                         attachedTrans.append(nt)
 
