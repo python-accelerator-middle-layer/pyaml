@@ -4,7 +4,6 @@ from typing import Self
 from .. import PyAMLException
 from ..common import abstract
 from ..common.element import Element
-from ..control.deviceaccess import DeviceAccess
 from ..validation import DynamicValidation
 
 # Define the main class name for this module
