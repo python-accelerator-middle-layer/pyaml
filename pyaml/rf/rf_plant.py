@@ -1,49 +1,45 @@
-import numpy as np
-from pydantic import BaseModel, ConfigDict
-
-try:
-    from typing import Self  # Python 3.11+
-except ImportError:
-    from typing_extensions import Self  # Python 3.10 and earlier
+from typing import Self
 
 from .. import PyAMLException
 from ..common import abstract
-from ..common.element import Element, ElementConfigModel
-from ..control.deviceaccess import DeviceAccess
+from ..common.element import Element
+from ..validation import DynamicValidation
 from .rf_transmitter import RFTransmitter
 
 # Define the main class name for this module
 PYAMLCLASS = "RFPlant"
 
 
-class ConfigModel(ElementConfigModel):
-    masterclock: str | None = None
-    """Device to apply main RF frequency"""
-    transmitters: list[RFTransmitter] | None = None
-    """List of RF trasnmitters"""
-
-
-class RFPlant(Element):
+class RFPlant(Element, DynamicValidation):
     """
     Main RF object
     """
 
-    def __init__(self, cfg: ConfigModel):
-        super().__init__(cfg.name)
-        self._cfg = cfg
+    def __init__(
+        self,
+        name: str,
+        masterclock: str | None = None,
+        transmitters: list[RFTransmitter] | None = None,
+        lattice_names: str | None = None,
+        description: str | None = None,
+    ):
+        super().__init__(name, lattice_names, description)
+
+        self.masterclock = masterclock
+        self.transmitters = transmitters
         self.__frequency = None
         self.__voltage = None
 
     @property
     def frequency(self) -> abstract.ReadWriteFloatScalar:
         if self.__frequency is None:
-            raise PyAMLException(f"{str(self)} has no masterclock device defined")
+            raise PyAMLException(f"{str(self.name)} has no masterclock device defined")
         return self.__frequency
 
     @property
     def voltage(self) -> abstract.ReadWriteFloatScalar:
         if self.__voltage is None:
-            raise PyAMLException(f"{str(self)} has no trasmitter device defined")
+            raise PyAMLException(f"{str(self.name)} has no transmitter device defined")
         return self.__voltage
 
     def attach(
@@ -53,7 +49,13 @@ class RFPlant(Element):
         voltage: abstract.ReadWriteFloatScalar,
     ) -> Self:
         # Attach frequency attribute and returns a new reference
-        obj = self.__class__(self._cfg)
+        obj = self.__class__(
+            name=self.name,
+            masterclock=self.masterclock,
+            transmitters=self.transmitters,
+            lattice_names=self.lattice_names,
+            description=self.description,
+        )
         obj.__frequency = frequency
         obj.__voltage = voltage
         obj._peer = peer
