@@ -60,9 +60,15 @@ class LinearMagnetModel(MagnetModel):
             self.__g = cfg.calibration_factor * cfg.crosstalk
             self.__o = cfg.calibration_offset
         self.__strength_unit = cfg.unit
-        self.__hardware_unit = cfg.powerconverter.unit()
+
+        if cfg.powerconverter is not None:
+            self.__hardware_unit = cfg.powerconverter.unit()
+            self.__ps = cfg.powerconverter
+        else:
+            self.__hardware_unit = None
+            self.__ps = None
+
         self.__brho = np.nan
-        self.__ps = cfg.powerconverter
 
     def compute_hardware_values(self, strengths: np.array) -> np.array:
         if self.__rcurve is not None:
