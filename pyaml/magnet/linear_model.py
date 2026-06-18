@@ -60,7 +60,7 @@ class LinearMagnetModel(MagnetModel):
             self.__g = cfg.calibration_factor * cfg.crosstalk
             self.__o = cfg.calibration_offset
         self.__strength_unit = cfg.unit
-        self.__hardware_unit = cfg.powerconverter.unit()
+        self.__hardware_unit = None  # cfg.powerconverter.unit()
         self.__brho = np.nan
         self.__ps = cfg.powerconverter
 
