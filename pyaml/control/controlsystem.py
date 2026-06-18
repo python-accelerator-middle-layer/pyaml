@@ -101,7 +101,7 @@ class ControlSystem(ElementHolder, metaclass=ABCMeta):
             return None
         magg = CSStrengthScalarAggregator(agg)
         for m in magnets:
-            devs = self.attach(m.model.get_device_names())
+            devs = self.get_devices_access(m.model.get_device_names())
             magg.add_magnet(m, devs)
         return magg
 
@@ -116,7 +116,7 @@ class ControlSystem(ElementHolder, metaclass=ABCMeta):
             if not m.model.has_hardware():
                 return None
             psIndex = m.hardware.index() if isinstance(m.hardware, RWMapper) else 0
-            agg.add_devices(self.attach([m.model.get_device_names()[psIndex]])[0])
+            agg.add_devices(self.get_devices_access([m.model.get_device_names()[psIndex]])[0])
         return agg
 
     def create_bpm_aggregators(self, bpms: list[BPM]) -> list[ScalarAggregator | None]:
