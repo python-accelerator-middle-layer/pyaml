@@ -27,8 +27,8 @@ class RFTransmitter(Element, DynamicValidation):
         description: str | None = None,
     ):
         super().__init__(name, lattice_names, description)
-        self.voltage_str = voltage
-        self.phase_str = phase
+        self.voltage_name = voltage
+        self.phase_name = phase
         self.cavities = cavities
         self.harmonic = harmonic
         self.distribution = distribution
