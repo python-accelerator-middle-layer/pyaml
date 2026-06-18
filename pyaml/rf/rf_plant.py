@@ -1,3 +1,4 @@
+import copy
 from typing import Self
 
 from .. import PyAMLException
@@ -49,13 +50,7 @@ class RFPlant(Element, DynamicValidation):
         voltage: abstract.ReadWriteFloatScalar,
     ) -> Self:
         # Attach frequency attribute and returns a new reference
-        obj = self.__class__(
-            name=self.name,
-            masterclock=self.masterclock,
-            transmitters=self.transmitters,
-            lattice_names=self.lattice_names,
-            description=self.description,
-        )
+        obj = copy.copy(self)
         obj.__frequency = frequency
         obj.__voltage = voltage
         obj._peer = peer

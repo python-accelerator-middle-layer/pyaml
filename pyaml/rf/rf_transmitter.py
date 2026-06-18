@@ -1,4 +1,4 @@
-from copy import copy
+import copy
 from typing import Self
 
 from .. import PyAMLException
@@ -98,16 +98,7 @@ class RFTransmitter(Element, DynamicValidation):
             A new attached instance of RFTransmitter
         """
         # Attach voltage and phase attribute and returns a new reference
-        obj = type(self)(
-            name=self.name,
-            cavities=self.cavities,
-            voltage=self.voltage_str,
-            phase=self.phase_str,
-            harmonic=self.harmonic,
-            distribution=self.distribution,
-            lattice_names=self.lattice_names,
-            description=self.description,
-        )
+        obj = copy.copy(self)
         obj.__voltage = voltage
         obj.__phase = phase
         obj._peer = peer
