@@ -40,7 +40,7 @@ def test_cfm_ranges_from_yaml_are_propagated_and_enforced(magnet_file, install_t
     # Parent CFM magnet (the one defined in SH1AC01-range.yaml)
     m = sr.live.get_cfm_magnet("SH1A-C01")
 
-    devs = m.model.get_devices()
+    devs = m.model.get_device_names()
     assert len(devs) == 3
 
     # Exact ranges coming from the YAML configuration file (powerconverters[*].range)

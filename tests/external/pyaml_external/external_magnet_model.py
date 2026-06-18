@@ -53,7 +53,7 @@ class ExternalMagnetModel(MagnetModel):
     def get_hardware_units(self) -> list[str]:
         return ["A"]
 
-    def get_devices(self) -> list[DeviceAccess]:
+    def get_device_names(self) -> list[DeviceAccess]:
         return [self._cfg.powersupply]
 
     def has_hardware(self) -> bool:

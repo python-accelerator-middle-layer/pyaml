@@ -34,7 +34,7 @@ class ConfigModel(BaseModel):
     pseudo_offsets : list[float], optional
         Offsets applied to 'pseudo currents', 1 offset per function.
         Default: zeros
-    powerconverters : list[DeviceAccess]
+    powerconverters : list[str]
         List of power converter devices to apply currents (can be different
         from number of functions)
     matrix : Matrix, optional
@@ -52,7 +52,7 @@ class ConfigModel(BaseModel):
     calibration_offsets: list[float] = None
     pseudo_factors: list[float] = None
     pseudo_offsets: list[float] = None
-    powerconverters: list[DeviceAccess | None]
+    powerconverters: list[str | None]
     matrix: Matrix = None
     units: list[str]
 
@@ -151,7 +151,7 @@ class LinearCFMagnetModel(MagnetModel):
     def get_hardware_units(self) -> list[str]:
         return np.array([p.unit() for p in self._cfg.powerconverters])
 
-    def get_devices(self) -> list[DeviceAccess]:
+    def get_device_names(self) -> list[str | None]:
         return self._cfg.powerconverters
 
     def set_magnet_rigidity(self, brho: np.double):

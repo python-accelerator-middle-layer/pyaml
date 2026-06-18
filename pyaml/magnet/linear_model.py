@@ -19,7 +19,7 @@ class ConfigModel(BaseModel):
     curve : Curve or None, optional
         Curve object used for interpolation. By default,
         identity curve is used.
-    powerconverter : DeviceAccess or None, optional
+    powerconverter : str or None, optional
         Power converter device to apply currrent
     calibration_factor : float, optional
         Correction factor applied to the curve. Default: 1.0
@@ -35,7 +35,7 @@ class ConfigModel(BaseModel):
     model_config = ConfigDict(arbitrary_types_allowed=True, extra="forbid")
 
     curve: Curve | None = None
-    powerconverter: DeviceAccess | None
+    powerconverter: str | None
     calibration_factor: float = 1.0
     calibration_offset: float = 0.0
     crosstalk: float = 1.0
@@ -84,7 +84,7 @@ class LinearMagnetModel(MagnetModel):
     def get_hardware_units(self) -> list[str]:
         return [self.__hardware_unit] if self.__hardware_unit is not None else [""]
 
-    def get_devices(self) -> list[DeviceAccess]:
+    def get_device_names(self) -> list[str | None]:
         return [self.__ps]
 
     def set_magnet_rigidity(self, brho: np.double):

@@ -171,4 +171,4 @@ class SerializedMagnets(Element):
         return __pyaml_repr__(self)
 
     def get_devices(self) -> list[DeviceAccess]:
-        return self.model.get_devices()
+        return self.model.get_device_names()

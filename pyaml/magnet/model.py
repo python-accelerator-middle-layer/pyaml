@@ -75,14 +75,14 @@ class MagnetModel(metaclass=ABCMeta):
         pass
 
     @abstractmethod
-    def get_devices(self) -> list[DeviceAccess | None]:
+    def get_device_names(self) -> list[str | None]:
         """
-        Get device handles
+        Get device names
 
         Returns
         -------
-        list[DeviceAccess]
-            Array of DeviceAcess
+        list[DevstriceAccess]
+            Array of device name
         """
         pass
 

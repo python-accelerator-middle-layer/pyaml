@@ -45,7 +45,7 @@ class ConfigModel(BaseModel):
     calibration_factors: float | list[float] = None
     calibration_offsets: float | list[float] = None
     crosstalk: float | list[float] = 1.0
-    powerconverter: DeviceAccess
+    powerconverter: str | None
     unit: str
 
 
@@ -160,7 +160,7 @@ class LinearSerializedMagnetModel(MagnetModel):
     def get_hardware_units(self) -> list[str]:
         return [self.__sub_models[0].get_hardware_units()[0]]
 
-    def get_devices(self) -> list[DeviceAccess]:
+    def get_device_names(self) -> list[str | None]:
         return [self._cfg.powerconverter]
 
     def set_magnet_rigidity(self, brho: np.double):
