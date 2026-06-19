@@ -37,10 +37,11 @@ def test_quad_external_model(install_test_package, config_root_dir):
             "type": "tango.pyaml.controlsystem",
             "name": "live",
             "tango_host": "ebs-simu-3:10000",
+            "catalog": Factory.build(load("catalogs/sr_catalogs.yaml"), False),
         }
     )
     hcorr_with_external_model: HCorrector = Factory.build(cfg_hcorr_yaml, False)
-    dev = cs.attach(hcorr_with_external_model.model.get_device_names())[0]
+    dev = cs.get_device_access(hcorr_with_external_model.model.get_device_names()[0])
     strength = RWStrengthScalar(hcorr_with_external_model.model, dev)
     hardware = RWHardwareScalar(hcorr_with_external_model.model, dev)
     ref_corr = hcorr_with_external_model.attach(cs, strength, hardware)

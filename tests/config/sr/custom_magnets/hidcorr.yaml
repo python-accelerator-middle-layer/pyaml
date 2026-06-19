@@ -3,7 +3,4 @@ name: IDCORR
 model:
   type: pyaml_external.external_magnet_model
   param: my random param
-  powersupply:
-    type: tango.pyaml.attribute
-    attribute: sr/ps-qf1/c01-a/current
-    unit: A
+  powersupply: sr/ps-qf1/c01-a/current
