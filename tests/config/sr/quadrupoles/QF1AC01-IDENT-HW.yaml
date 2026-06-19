@@ -3,4 +3,4 @@ name: QF1A-C01
 model:
   type: pyaml.magnet.identity_model
   unit: A
-  powerconverter: sr/m-qf1/c01-a/strength
+  powerconverter: sr/ps-qf1/c01-a/current

@@ -10,7 +10,7 @@ from pyaml.accelerator import Accelerator
     indirect=True,
 )
 def test_ranges_array(install_test_package):
-    sr: Accelerator = Accelerator.load("tests/config/EBSTune-range.yaml")
+    sr: Accelerator = Accelerator.load("tests/config/EBSTune.yaml")
     mag_cur = sr.live.get_magnets("QForTune").hardwares
     mag_cur.set(mag_cur.get() + 50)
 
