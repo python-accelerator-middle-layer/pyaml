@@ -2,7 +2,6 @@ import numpy as np
 from pydantic import BaseModel, ConfigDict
 
 from ..common.element import __pyaml_repr__
-from ..control.deviceaccess import DeviceAccess
 from .curve import Curve
 from .model import MagnetModel
 
@@ -63,8 +62,8 @@ class LinearMagnetModel(MagnetModel):
             self.__o = cfg.calibration_offset
         self.__strength_unit = cfg.unit
         self.__hardware_unit = cfg.hardware_unit
-        self.__brho = np.nan
         self.__ps = cfg.powerconverter
+        self.__brho = np.nan
 
     def compute_hardware_values(self, strengths: np.array) -> np.array:
         if self.__rcurve is not None:
