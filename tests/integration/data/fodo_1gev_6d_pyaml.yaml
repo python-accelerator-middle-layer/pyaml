@@ -1,0 +1,986 @@
+type: pyaml.accelerator
+facility: Synchrotron SOLEIL
+machine: sr
+data_folder: /data/store
+energy: 1000000000.0
+simulators:
+- type: pyaml.lattice.simulator
+  lattice: fodo_1gev_6d.m
+  name: design
+  linker:
+    type: pyaml.lattice.attribute_linker
+    attribute_name: UUID
+controls:
+- type: tango.pyaml.controlsystem
+  name: live
+  tango_host: 127.0.0.1:10000
+arrays:
+- type: pyaml.arrays.magnet
+  name: QF_001
+  elements:
+  - QF_001
+- type: pyaml.arrays.element
+  name: Cell1
+  elements:
+  - QF_001
+  - SF_001
+  - QD_001
+  - SD_001
+- type: pyaml.arrays.magnet
+  name: SF_001
+  elements:
+  - SF_001
+- type: pyaml.arrays.magnet
+  name: QD_001
+  elements:
+  - QD_001
+- type: pyaml.arrays.magnet
+  name: SD_001
+  elements:
+  - SD_001
+- type: pyaml.arrays.magnet
+  name: QF_002
+  elements:
+  - QF_002
+- type: pyaml.arrays.element
+  name: Cell2
+  elements:
+  - QF_002
+  - SF_002
+  - QD_002
+  - SD_002
+- type: pyaml.arrays.magnet
+  name: SF_002
+  elements:
+  - SF_002
+- type: pyaml.arrays.magnet
+  name: QD_002
+  elements:
+  - QD_002
+- type: pyaml.arrays.magnet
+  name: SD_002
+  elements:
+  - SD_002
+- type: pyaml.arrays.magnet
+  name: QF_003
+  elements:
+  - QF_003
+- type: pyaml.arrays.element
+  name: Cell3
+  elements:
+  - QF_003
+  - SF_003
+  - QD_003
+  - SD_003
+- type: pyaml.arrays.magnet
+  name: SF_003
+  elements:
+  - SF_003
+- type: pyaml.arrays.magnet
+  name: QD_003
+  elements:
+  - QD_003
+- type: pyaml.arrays.magnet
+  name: SD_003
+  elements:
+  - SD_003
+- type: pyaml.arrays.magnet
+  name: QF_004
+  elements:
+  - QF_004
+- type: pyaml.arrays.element
+  name: Cell4
+  elements:
+  - QF_004
+  - SF_004
+  - QD_004
+  - SD_004
+- type: pyaml.arrays.magnet
+  name: SF_004
+  elements:
+  - SF_004
+- type: pyaml.arrays.magnet
+  name: QD_004
+  elements:
+  - QD_004
+- type: pyaml.arrays.magnet
+  name: SD_004
+  elements:
+  - SD_004
+- type: pyaml.arrays.magnet
+  name: QF_005
+  elements:
+  - QF_005
+- type: pyaml.arrays.element
+  name: Cell5
+  elements:
+  - QF_005
+  - SF_005
+  - QD_005
+  - SD_005
+- type: pyaml.arrays.magnet
+  name: SF_005
+  elements:
+  - SF_005
+- type: pyaml.arrays.magnet
+  name: QD_005
+  elements:
+  - QD_005
+- type: pyaml.arrays.magnet
+  name: SD_005
+  elements:
+  - SD_005
+- type: pyaml.arrays.magnet
+  name: QF_006
+  elements:
+  - QF_006
+- type: pyaml.arrays.element
+  name: Cell6
+  elements:
+  - QF_006
+  - SF_006
+  - QD_006
+  - SD_006
+- type: pyaml.arrays.magnet
+  name: SF_006
+  elements:
+  - SF_006
+- type: pyaml.arrays.magnet
+  name: QD_006
+  elements:
+  - QD_006
+- type: pyaml.arrays.magnet
+  name: SD_006
+  elements:
+  - SD_006
+- type: pyaml.arrays.magnet
+  name: QF_007
+  elements:
+  - QF_007
+- type: pyaml.arrays.element
+  name: Cell7
+  elements:
+  - QF_007
+  - SF_007
+  - QD_007
+  - SD_007
+- type: pyaml.arrays.magnet
+  name: SF_007
+  elements:
+  - SF_007
+- type: pyaml.arrays.magnet
+  name: QD_007
+  elements:
+  - QD_007
+- type: pyaml.arrays.magnet
+  name: SD_007
+  elements:
+  - SD_007
+- type: pyaml.arrays.magnet
+  name: QF_008
+  elements:
+  - QF_008
+- type: pyaml.arrays.element
+  name: Cell8
+  elements:
+  - QF_008
+  - SF_008
+  - QD_008
+  - SD_008
+- type: pyaml.arrays.magnet
+  name: SF_008
+  elements:
+  - SF_008
+- type: pyaml.arrays.magnet
+  name: QD_008
+  elements:
+  - QD_008
+- type: pyaml.arrays.magnet
+  name: SD_008
+  elements:
+  - SD_008
+- type: pyaml.arrays.magnet
+  name: QF_009
+  elements:
+  - QF_009
+- type: pyaml.arrays.element
+  name: Cell9
+  elements:
+  - QF_009
+  - SF_009
+  - QD_009
+  - SD_009
+- type: pyaml.arrays.magnet
+  name: SF_009
+  elements:
+  - SF_009
+- type: pyaml.arrays.magnet
+  name: QD_009
+  elements:
+  - QD_009
+- type: pyaml.arrays.magnet
+  name: SD_009
+  elements:
+  - SD_009
+- type: pyaml.arrays.magnet
+  name: QF_010
+  elements:
+  - QF_010
+- type: pyaml.arrays.element
+  name: Cell10
+  elements:
+  - QF_010
+  - SF_010
+  - QD_010
+  - SD_010
+- type: pyaml.arrays.magnet
+  name: SF_010
+  elements:
+  - SF_010
+- type: pyaml.arrays.magnet
+  name: QD_010
+  elements:
+  - QD_010
+- type: pyaml.arrays.magnet
+  name: SD_010
+  elements:
+  - SD_010
+- type: pyaml.arrays.magnet
+  name: QF_011
+  elements:
+  - QF_011
+- type: pyaml.arrays.element
+  name: Cell11
+  elements:
+  - QF_011
+  - SF_011
+  - QD_011
+  - SD_011
+- type: pyaml.arrays.magnet
+  name: SF_011
+  elements:
+  - SF_011
+- type: pyaml.arrays.magnet
+  name: QD_011
+  elements:
+  - QD_011
+- type: pyaml.arrays.magnet
+  name: SD_011
+  elements:
+  - SD_011
+- type: pyaml.arrays.magnet
+  name: QF_012
+  elements:
+  - QF_012
+- type: pyaml.arrays.element
+  name: Cell12
+  elements:
+  - QF_012
+  - SF_012
+  - QD_012
+  - SD_012
+- type: pyaml.arrays.magnet
+  name: SF_012
+  elements:
+  - SF_012
+- type: pyaml.arrays.magnet
+  name: QD_012
+  elements:
+  - QD_012
+- type: pyaml.arrays.magnet
+  name: SD_012
+  elements:
+  - SD_012
+- type: pyaml.arrays.magnet
+  name: QF_013
+  elements:
+  - QF_013
+- type: pyaml.arrays.element
+  name: Cell13
+  elements:
+  - QF_013
+  - SF_013
+  - QD_013
+  - SD_013
+- type: pyaml.arrays.magnet
+  name: SF_013
+  elements:
+  - SF_013
+- type: pyaml.arrays.magnet
+  name: QD_013
+  elements:
+  - QD_013
+- type: pyaml.arrays.magnet
+  name: SD_013
+  elements:
+  - SD_013
+- type: pyaml.arrays.magnet
+  name: QF_014
+  elements:
+  - QF_014
+- type: pyaml.arrays.element
+  name: Cell14
+  elements:
+  - QF_014
+  - SF_014
+  - QD_014
+  - SD_014
+- type: pyaml.arrays.magnet
+  name: SF_014
+  elements:
+  - SF_014
+- type: pyaml.arrays.magnet
+  name: QD_014
+  elements:
+  - QD_014
+- type: pyaml.arrays.magnet
+  name: SD_014
+  elements:
+  - SD_014
+- type: pyaml.arrays.magnet
+  name: QF_015
+  elements:
+  - QF_015
+- type: pyaml.arrays.element
+  name: Cell15
+  elements:
+  - QF_015
+  - SF_015
+  - QD_015
+  - SD_015
+- type: pyaml.arrays.magnet
+  name: SF_015
+  elements:
+  - SF_015
+- type: pyaml.arrays.magnet
+  name: QD_015
+  elements:
+  - QD_015
+- type: pyaml.arrays.magnet
+  name: SD_015
+  elements:
+  - SD_015
+- type: pyaml.arrays.magnet
+  name: QF_016
+  elements:
+  - QF_016
+- type: pyaml.arrays.element
+  name: Cell16
+  elements:
+  - QF_016
+  - SF_016
+  - QD_016
+  - SD_016
+- type: pyaml.arrays.magnet
+  name: SF_016
+  elements:
+  - SF_016
+- type: pyaml.arrays.magnet
+  name: QD_016
+  elements:
+  - QD_016
+- type: pyaml.arrays.magnet
+  name: SD_016
+  elements:
+  - SD_016
+devices:
+- type: pyaml.magnet.quadrupole
+  name: QF_001
+  model:
+    type: pyaml.magnet.identity_model
+    unit: 1/m
+    physics:
+      type: tango.pyaml.attribute
+      attribute: AN01-AR/EM-QP/QF.01/magnetic_strength
+      unit: 1/m
+- type: pyaml.magnet.sextupole
+  name: SF_001
+  model:
+    type: pyaml.magnet.identity_model
+    unit: 1/m**2
+    physics:
+      type: tango.pyaml.attribute
+      attribute: AN01-AR/EM-SX/SF.01/magnetic_strength
+      unit: 1/m**2
+- type: pyaml.magnet.quadrupole
+  name: QD_001
+  model:
+    type: pyaml.magnet.identity_model
+    unit: 1/m
+    physics:
+      type: tango.pyaml.attribute
+      attribute: AN01-AR/EM-QP/QD.01/magnetic_strength
+      unit: 1/m
+- type: pyaml.magnet.sextupole
+  name: SD_001
+  model:
+    type: pyaml.magnet.identity_model
+    unit: 1/m**2
+    physics:
+      type: tango.pyaml.attribute
+      attribute: AN01-AR/EM-SX/SD.01/magnetic_strength
+      unit: 1/m**2
+- type: pyaml.magnet.quadrupole
+  name: QF_002
+  model:
+    type: pyaml.magnet.identity_model
+    unit: 1/m
+    physics:
+      type: tango.pyaml.attribute
+      attribute: AN02-AR/EM-QP/QF.01/magnetic_strength
+      unit: 1/m
+- type: pyaml.magnet.sextupole
+  name: SF_002
+  model:
+    type: pyaml.magnet.identity_model
+    unit: 1/m**2
+    physics:
+      type: tango.pyaml.attribute
+      attribute: AN02-AR/EM-SX/SF.01/magnetic_strength
+      unit: 1/m**2
+- type: pyaml.magnet.quadrupole
+  name: QD_002
+  model:
+    type: pyaml.magnet.identity_model
+    unit: 1/m
+    physics:
+      type: tango.pyaml.attribute
+      attribute: AN02-AR/EM-QP/QD.01/magnetic_strength
+      unit: 1/m
+- type: pyaml.magnet.sextupole
+  name: SD_002
+  model:
+    type: pyaml.magnet.identity_model
+    unit: 1/m**2
+    physics:
+      type: tango.pyaml.attribute
+      attribute: AN02-AR/EM-SX/SD.01/magnetic_strength
+      unit: 1/m**2
+- type: pyaml.magnet.quadrupole
+  name: QF_003
+  model:
+    type: pyaml.magnet.identity_model
+    unit: 1/m
+    physics:
+      type: tango.pyaml.attribute
+      attribute: AN03-AR/EM-QP/QF.01/magnetic_strength
+      unit: 1/m
+- type: pyaml.magnet.sextupole
+  name: SF_003
+  model:
+    type: pyaml.magnet.identity_model
+    unit: 1/m**2
+    physics:
+      type: tango.pyaml.attribute
+      attribute: AN03-AR/EM-SX/SF.01/magnetic_strength
+      unit: 1/m**2
+- type: pyaml.magnet.quadrupole
+  name: QD_003
+  model:
+    type: pyaml.magnet.identity_model
+    unit: 1/m
+    physics:
+      type: tango.pyaml.attribute
+      attribute: AN03-AR/EM-QP/QD.01/magnetic_strength
+      unit: 1/m
+- type: pyaml.magnet.sextupole
+  name: SD_003
+  model:
+    type: pyaml.magnet.identity_model
+    unit: 1/m**2
+    physics:
+      type: tango.pyaml.attribute
+      attribute: AN03-AR/EM-SX/SD.01/magnetic_strength
+      unit: 1/m**2
+- type: pyaml.magnet.quadrupole
+  name: QF_004
+  model:
+    type: pyaml.magnet.identity_model
+    unit: 1/m
+    physics:
+      type: tango.pyaml.attribute
+      attribute: AN04-AR/EM-QP/QF.01/magnetic_strength
+      unit: 1/m
+- type: pyaml.magnet.sextupole
+  name: SF_004
+  model:
+    type: pyaml.magnet.identity_model
+    unit: 1/m**2
+    physics:
+      type: tango.pyaml.attribute
+      attribute: AN04-AR/EM-SX/SF.01/magnetic_strength
+      unit: 1/m**2
+- type: pyaml.magnet.quadrupole
+  name: QD_004
+  model:
+    type: pyaml.magnet.identity_model
+    unit: 1/m
+    physics:
+      type: tango.pyaml.attribute
+      attribute: AN04-AR/EM-QP/QD.01/magnetic_strength
+      unit: 1/m
+- type: pyaml.magnet.sextupole
+  name: SD_004
+  model:
+    type: pyaml.magnet.identity_model
+    unit: 1/m**2
+    physics:
+      type: tango.pyaml.attribute
+      attribute: AN04-AR/EM-SX/SD.01/magnetic_strength
+      unit: 1/m**2
+- type: pyaml.magnet.quadrupole
+  name: QF_005
+  model:
+    type: pyaml.magnet.identity_model
+    unit: 1/m
+    physics:
+      type: tango.pyaml.attribute
+      attribute: AN05-AR/EM-QP/QF.01/magnetic_strength
+      unit: 1/m
+- type: pyaml.magnet.sextupole
+  name: SF_005
+  model:
+    type: pyaml.magnet.identity_model
+    unit: 1/m**2
+    physics:
+      type: tango.pyaml.attribute
+      attribute: AN05-AR/EM-SX/SF.01/magnetic_strength
+      unit: 1/m**2
+- type: pyaml.magnet.quadrupole
+  name: QD_005
+  model:
+    type: pyaml.magnet.identity_model
+    unit: 1/m
+    physics:
+      type: tango.pyaml.attribute
+      attribute: AN05-AR/EM-QP/QD.01/magnetic_strength
+      unit: 1/m
+- type: pyaml.magnet.sextupole
+  name: SD_005
+  model:
+    type: pyaml.magnet.identity_model
+    unit: 1/m**2
+    physics:
+      type: tango.pyaml.attribute
+      attribute: AN05-AR/EM-SX/SD.01/magnetic_strength
+      unit: 1/m**2
+- type: pyaml.magnet.quadrupole
+  name: QF_006
+  model:
+    type: pyaml.magnet.identity_model
+    unit: 1/m
+    physics:
+      type: tango.pyaml.attribute
+      attribute: AN06-AR/EM-QP/QF.01/magnetic_strength
+      unit: 1/m
+- type: pyaml.magnet.sextupole
+  name: SF_006
+  model:
+    type: pyaml.magnet.identity_model
+    unit: 1/m**2
+    physics:
+      type: tango.pyaml.attribute
+      attribute: AN06-AR/EM-SX/SF.01/magnetic_strength
+      unit: 1/m**2
+- type: pyaml.magnet.quadrupole
+  name: QD_006
+  model:
+    type: pyaml.magnet.identity_model
+    unit: 1/m
+    physics:
+      type: tango.pyaml.attribute
+      attribute: AN06-AR/EM-QP/QD.01/magnetic_strength
+      unit: 1/m
+- type: pyaml.magnet.sextupole
+  name: SD_006
+  model:
+    type: pyaml.magnet.identity_model
+    unit: 1/m**2
+    physics:
+      type: tango.pyaml.attribute
+      attribute: AN06-AR/EM-SX/SD.01/magnetic_strength
+      unit: 1/m**2
+- type: pyaml.magnet.quadrupole
+  name: QF_007
+  model:
+    type: pyaml.magnet.identity_model
+    unit: 1/m
+    physics:
+      type: tango.pyaml.attribute
+      attribute: AN07-AR/EM-QP/QF.01/magnetic_strength
+      unit: 1/m
+- type: pyaml.magnet.sextupole
+  name: SF_007
+  model:
+    type: pyaml.magnet.identity_model
+    unit: 1/m**2
+    physics:
+      type: tango.pyaml.attribute
+      attribute: AN07-AR/EM-SX/SF.01/magnetic_strength
+      unit: 1/m**2
+- type: pyaml.magnet.quadrupole
+  name: QD_007
+  model:
+    type: pyaml.magnet.identity_model
+    unit: 1/m
+    physics:
+      type: tango.pyaml.attribute
+      attribute: AN07-AR/EM-QP/QD.01/magnetic_strength
+      unit: 1/m
+- type: pyaml.magnet.sextupole
+  name: SD_007
+  model:
+    type: pyaml.magnet.identity_model
+    unit: 1/m**2
+    physics:
+      type: tango.pyaml.attribute
+      attribute: AN07-AR/EM-SX/SD.01/magnetic_strength
+      unit: 1/m**2
+- type: pyaml.magnet.quadrupole
+  name: QF_008
+  model:
+    type: pyaml.magnet.identity_model
+    unit: 1/m
+    physics:
+      type: tango.pyaml.attribute
+      attribute: AN08-AR/EM-QP/QF.01/magnetic_strength
+      unit: 1/m
+- type: pyaml.magnet.sextupole
+  name: SF_008
+  model:
+    type: pyaml.magnet.identity_model
+    unit: 1/m**2
+    physics:
+      type: tango.pyaml.attribute
+      attribute: AN08-AR/EM-SX/SF.01/magnetic_strength
+      unit: 1/m**2
+- type: pyaml.magnet.quadrupole
+  name: QD_008
+  model:
+    type: pyaml.magnet.identity_model
+    unit: 1/m
+    physics:
+      type: tango.pyaml.attribute
+      attribute: AN08-AR/EM-QP/QD.01/magnetic_strength
+      unit: 1/m
+- type: pyaml.magnet.sextupole
+  name: SD_008
+  model:
+    type: pyaml.magnet.identity_model
+    unit: 1/m**2
+    physics:
+      type: tango.pyaml.attribute
+      attribute: AN08-AR/EM-SX/SD.01/magnetic_strength
+      unit: 1/m**2
+- type: pyaml.magnet.quadrupole
+  name: QF_009
+  model:
+    type: pyaml.magnet.identity_model
+    unit: 1/m
+    physics:
+      type: tango.pyaml.attribute
+      attribute: AN09-AR/EM-QP/QF.01/magnetic_strength
+      unit: 1/m
+- type: pyaml.magnet.sextupole
+  name: SF_009
+  model:
+    type: pyaml.magnet.identity_model
+    unit: 1/m**2
+    physics:
+      type: tango.pyaml.attribute
+      attribute: AN09-AR/EM-SX/SF.01/magnetic_strength
+      unit: 1/m**2
+- type: pyaml.magnet.quadrupole
+  name: QD_009
+  model:
+    type: pyaml.magnet.identity_model
+    unit: 1/m
+    physics:
+      type: tango.pyaml.attribute
+      attribute: AN09-AR/EM-QP/QD.01/magnetic_strength
+      unit: 1/m
+- type: pyaml.magnet.sextupole
+  name: SD_009
+  model:
+    type: pyaml.magnet.identity_model
+    unit: 1/m**2
+    physics:
+      type: tango.pyaml.attribute
+      attribute: AN09-AR/EM-SX/SD.01/magnetic_strength
+      unit: 1/m**2
+- type: pyaml.magnet.quadrupole
+  name: QF_010
+  model:
+    type: pyaml.magnet.identity_model
+    unit: 1/m
+    physics:
+      type: tango.pyaml.attribute
+      attribute: AN10-AR/EM-QP/QF.01/magnetic_strength
+      unit: 1/m
+- type: pyaml.magnet.sextupole
+  name: SF_010
+  model:
+    type: pyaml.magnet.identity_model
+    unit: 1/m**2
+    physics:
+      type: tango.pyaml.attribute
+      attribute: AN10-AR/EM-SX/SF.01/magnetic_strength
+      unit: 1/m**2
+- type: pyaml.magnet.quadrupole
+  name: QD_010
+  model:
+    type: pyaml.magnet.identity_model
+    unit: 1/m
+    physics:
+      type: tango.pyaml.attribute
+      attribute: AN10-AR/EM-QP/QD.01/magnetic_strength
+      unit: 1/m
+- type: pyaml.magnet.sextupole
+  name: SD_010
+  model:
+    type: pyaml.magnet.identity_model
+    unit: 1/m**2
+    physics:
+      type: tango.pyaml.attribute
+      attribute: AN10-AR/EM-SX/SD.01/magnetic_strength
+      unit: 1/m**2
+- type: pyaml.magnet.quadrupole
+  name: QF_011
+  model:
+    type: pyaml.magnet.identity_model
+    unit: 1/m
+    physics:
+      type: tango.pyaml.attribute
+      attribute: AN11-AR/EM-QP/QF.01/magnetic_strength
+      unit: 1/m
+- type: pyaml.magnet.sextupole
+  name: SF_011
+  model:
+    type: pyaml.magnet.identity_model
+    unit: 1/m**2
+    physics:
+      type: tango.pyaml.attribute
+      attribute: AN11-AR/EM-SX/SF.01/magnetic_strength
+      unit: 1/m**2
+- type: pyaml.magnet.quadrupole
+  name: QD_011
+  model:
+    type: pyaml.magnet.identity_model
+    unit: 1/m
+    physics:
+      type: tango.pyaml.attribute
+      attribute: AN11-AR/EM-QP/QD.01/magnetic_strength
+      unit: 1/m
+- type: pyaml.magnet.sextupole
+  name: SD_011
+  model:
+    type: pyaml.magnet.identity_model
+    unit: 1/m**2
+    physics:
+      type: tango.pyaml.attribute
+      attribute: AN11-AR/EM-SX/SD.01/magnetic_strength
+      unit: 1/m**2
+- type: pyaml.magnet.quadrupole
+  name: QF_012
+  model:
+    type: pyaml.magnet.identity_model
+    unit: 1/m
+    physics:
+      type: tango.pyaml.attribute
+      attribute: AN12-AR/EM-QP/QF.01/magnetic_strength
+      unit: 1/m
+- type: pyaml.magnet.sextupole
+  name: SF_012
+  model:
+    type: pyaml.magnet.identity_model
+    unit: 1/m**2
+    physics:
+      type: tango.pyaml.attribute
+      attribute: AN12-AR/EM-SX/SF.01/magnetic_strength
+      unit: 1/m**2
+- type: pyaml.magnet.quadrupole
+  name: QD_012
+  model:
+    type: pyaml.magnet.identity_model
+    unit: 1/m
+    physics:
+      type: tango.pyaml.attribute
+      attribute: AN12-AR/EM-QP/QD.01/magnetic_strength
+      unit: 1/m
+- type: pyaml.magnet.sextupole
+  name: SD_012
+  model:
+    type: pyaml.magnet.identity_model
+    unit: 1/m**2
+    physics:
+      type: tango.pyaml.attribute
+      attribute: AN12-AR/EM-SX/SD.01/magnetic_strength
+      unit: 1/m**2
+- type: pyaml.magnet.quadrupole
+  name: QF_013
+  model:
+    type: pyaml.magnet.identity_model
+    unit: 1/m
+    physics:
+      type: tango.pyaml.attribute
+      attribute: AN13-AR/EM-QP/QF.01/magnetic_strength
+      unit: 1/m
+- type: pyaml.magnet.sextupole
+  name: SF_013
+  model:
+    type: pyaml.magnet.identity_model
+    unit: 1/m**2
+    physics:
+      type: tango.pyaml.attribute
+      attribute: AN13-AR/EM-SX/SF.01/magnetic_strength
+      unit: 1/m**2
+- type: pyaml.magnet.quadrupole
+  name: QD_013
+  model:
+    type: pyaml.magnet.identity_model
+    unit: 1/m
+    physics:
+      type: tango.pyaml.attribute
+      attribute: AN13-AR/EM-QP/QD.01/magnetic_strength
+      unit: 1/m
+- type: pyaml.magnet.sextupole
+  name: SD_013
+  model:
+    type: pyaml.magnet.identity_model
+    unit: 1/m**2
+    physics:
+      type: tango.pyaml.attribute
+      attribute: AN13-AR/EM-SX/SD.01/magnetic_strength
+      unit: 1/m**2
+- type: pyaml.magnet.quadrupole
+  name: QF_014
+  model:
+    type: pyaml.magnet.identity_model
+    unit: 1/m
+    physics:
+      type: tango.pyaml.attribute
+      attribute: AN14-AR/EM-QP/QF.01/magnetic_strength
+      unit: 1/m
+- type: pyaml.magnet.sextupole
+  name: SF_014
+  model:
+    type: pyaml.magnet.identity_model
+    unit: 1/m**2
+    physics:
+      type: tango.pyaml.attribute
+      attribute: AN14-AR/EM-SX/SF.01/magnetic_strength
+      unit: 1/m**2
+- type: pyaml.magnet.quadrupole
+  name: QD_014
+  model:
+    type: pyaml.magnet.identity_model
+    unit: 1/m
+    physics:
+      type: tango.pyaml.attribute
+      attribute: AN14-AR/EM-QP/QD.01/magnetic_strength
+      unit: 1/m
+- type: pyaml.magnet.sextupole
+  name: SD_014
+  model:
+    type: pyaml.magnet.identity_model
+    unit: 1/m**2
+    physics:
+      type: tango.pyaml.attribute
+      attribute: AN14-AR/EM-SX/SD.01/magnetic_strength
+      unit: 1/m**2
+- type: pyaml.magnet.quadrupole
+  name: QF_015
+  model:
+    type: pyaml.magnet.identity_model
+    unit: 1/m
+    physics:
+      type: tango.pyaml.attribute
+      attribute: AN15-AR/EM-QP/QF.01/magnetic_strength
+      unit: 1/m
+- type: pyaml.magnet.sextupole
+  name: SF_015
+  model:
+    type: pyaml.magnet.identity_model
+    unit: 1/m**2
+    physics:
+      type: tango.pyaml.attribute
+      attribute: AN15-AR/EM-SX/SF.01/magnetic_strength
+      unit: 1/m**2
+- type: pyaml.magnet.quadrupole
+  name: QD_015
+  model:
+    type: pyaml.magnet.identity_model
+    unit: 1/m
+    physics:
+      type: tango.pyaml.attribute
+      attribute: AN15-AR/EM-QP/QD.01/magnetic_strength
+      unit: 1/m
+- type: pyaml.magnet.sextupole
+  name: SD_015
+  model:
+    type: pyaml.magnet.identity_model
+    unit: 1/m**2
+    physics:
+      type: tango.pyaml.attribute
+      attribute: AN15-AR/EM-SX/SD.01/magnetic_strength
+      unit: 1/m**2
+- type: pyaml.magnet.quadrupole
+  name: QF_016
+  model:
+    type: pyaml.magnet.identity_model
+    unit: 1/m
+    physics:
+      type: tango.pyaml.attribute
+      attribute: AN16-AR/EM-QP/QF.01/magnetic_strength
+      unit: 1/m
+- type: pyaml.magnet.sextupole
+  name: SF_016
+  model:
+    type: pyaml.magnet.identity_model
+    unit: 1/m**2
+    physics:
+      type: tango.pyaml.attribute
+      attribute: AN16-AR/EM-SX/SF.01/magnetic_strength
+      unit: 1/m**2
+- type: pyaml.magnet.quadrupole
+  name: QD_016
+  model:
+    type: pyaml.magnet.identity_model
+    unit: 1/m
+    physics:
+      type: tango.pyaml.attribute
+      attribute: AN16-AR/EM-QP/QD.01/magnetic_strength
+      unit: 1/m
+- type: pyaml.magnet.sextupole
+  name: SD_016
+  model:
+    type: pyaml.magnet.identity_model
+    unit: 1/m**2
+    physics:
+      type: tango.pyaml.attribute
+      attribute: AN16-AR/EM-SX/SD.01/magnetic_strength
+      unit: 1/m**2
+- type: pyaml.rf.rf_plant
+  name: RF
+  masterclock:
+    type: tango.pyaml.attribute
+    attribute: simulator/ringsimulator/ringsimulator/reference_frequency
+    unit: kHz
+  transmitters:
+  - type: pyaml.rf.rf_transmitter
+    name: RFTRA
+    cavities: [RF_001]
+    harmonic: 1
+    distribution: 1
+    voltage:
+      type: tango.pyaml.attribute
+      attribute: simulator/ringsimulator/ringsimulator/voltage
+      unit: V
+- type: pyaml.diagnostics.tune_monitor
+  name: BETATRON_TUNE
+  tune_h:
+    type: tango.pyaml.attribute
+    attribute: simulator/ringsimulator/ringsimulator/hor
+  tune_v:
+    type: tango.pyaml.attribute
+    attribute: simulator/ringsimulator/ringsimulator/vert

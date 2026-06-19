@@ -1,0 +1,782 @@
+[
+  {
+    "_id": {
+      "$oid": "d15381c0-cc52-502c-be3a-a83763e36c53"
+    },
+    "uuid": "RF_001",
+    "type": "RFCavity",
+    "FamName": "RF_001",
+    "name": "AN01-SD/RF-CAV/CAV",
+    "magnetic_strength": 1.0,
+    "pc": "AN01-SD/RF-CAV/CAV-pc",
+    "k": 1.0
+  },
+  {
+    "_id": {
+      "$oid": "e724bab8-a93d-5f58-b71d-77c328c216c6"
+    },
+    "uuid": "QF_001",
+    "type": "Quadrupole",
+    "FamName": "QF_001",
+    "name": "AN01-AR/EM-QP/QF.01",
+    "magnetic_strength": 1.0,
+    "pc": "AN01-AR/EM-QP/QF.01-pc",
+    "k": 1.0
+  },
+  {
+    "_id": {
+      "$oid": "c4412657-22e4-51a0-8c14-63ec441fd561"
+    },
+    "uuid": "SF_001",
+    "type": "Sextupole",
+    "FamName": "SF_001",
+    "name": "AN01-AR/EM-SX/SF.01",
+    "magnetic_strength": 1.0,
+    "pc": "AN01-AR/EM-SX/SF.01-pc",
+    "k": 1.0
+  },
+  {
+    "_id": {
+      "$oid": "a1374bd0-e17c-5c40-8836-8e292561557c"
+    },
+    "uuid": "QD_001",
+    "type": "Quadrupole",
+    "FamName": "QD_001",
+    "name": "AN01-AR/EM-QP/QD.01",
+    "magnetic_strength": 1.0,
+    "pc": "AN01-AR/EM-QP/QD.01-pc",
+    "k": 1.0
+  },
+  {
+    "_id": {
+      "$oid": "ed183939-2643-5d91-9dd4-d1cc15cd38e9"
+    },
+    "uuid": "SD_001",
+    "type": "Sextupole",
+    "FamName": "SD_001",
+    "name": "AN01-AR/EM-SX/SD.01",
+    "magnetic_strength": 1.0,
+    "pc": "AN01-AR/EM-SX/SD.01-pc",
+    "k": 1.0
+  },
+  {
+    "_id": {
+      "$oid": "be0d6359-5495-580b-894a-84df5a1c9567"
+    },
+    "uuid": "QF_002",
+    "type": "Quadrupole",
+    "FamName": "QF_002",
+    "name": "AN02-AR/EM-QP/QF.01",
+    "magnetic_strength": 1.0,
+    "pc": "AN02-AR/EM-QP/QF.01-pc",
+    "k": 1.0
+  },
+  {
+    "_id": {
+      "$oid": "cf78afb7-e69b-5dab-9c36-371f5bdfae90"
+    },
+    "uuid": "SF_002",
+    "type": "Sextupole",
+    "FamName": "SF_002",
+    "name": "AN02-AR/EM-SX/SF.01",
+    "magnetic_strength": 1.0,
+    "pc": "AN02-AR/EM-SX/SF.01-pc",
+    "k": 1.0
+  },
+  {
+    "_id": {
+      "$oid": "1e566985-7506-5ab9-94e7-0d524c200ba6"
+    },
+    "uuid": "QD_002",
+    "type": "Quadrupole",
+    "FamName": "QD_002",
+    "name": "AN02-AR/EM-QP/QD.01",
+    "magnetic_strength": 1.0,
+    "pc": "AN02-AR/EM-QP/QD.01-pc",
+    "k": 1.0
+  },
+  {
+    "_id": {
+      "$oid": "9df96046-682f-5c9a-995a-96bdaf3cc092"
+    },
+    "uuid": "SD_002",
+    "type": "Sextupole",
+    "FamName": "SD_002",
+    "name": "AN02-AR/EM-SX/SD.01",
+    "magnetic_strength": 1.0,
+    "pc": "AN02-AR/EM-SX/SD.01-pc",
+    "k": 1.0
+  },
+  {
+    "_id": {
+      "$oid": "d641a664-7b56-5b06-a8bb-4846437fd7e5"
+    },
+    "uuid": "QF_003",
+    "type": "Quadrupole",
+    "FamName": "QF_003",
+    "name": "AN03-AR/EM-QP/QF.01",
+    "magnetic_strength": 1.0,
+    "pc": "AN03-AR/EM-QP/QF.01-pc",
+    "k": 1.0
+  },
+  {
+    "_id": {
+      "$oid": "5f527b9a-1f42-5d81-ba3a-c83e124f2f68"
+    },
+    "uuid": "SF_003",
+    "type": "Sextupole",
+    "FamName": "SF_003",
+    "name": "AN03-AR/EM-SX/SF.01",
+    "magnetic_strength": 1.0,
+    "pc": "AN03-AR/EM-SX/SF.01-pc",
+    "k": 1.0
+  },
+  {
+    "_id": {
+      "$oid": "441509d5-b256-57c0-97da-3c28fc0df9a7"
+    },
+    "uuid": "QD_003",
+    "type": "Quadrupole",
+    "FamName": "QD_003",
+    "name": "AN03-AR/EM-QP/QD.01",
+    "magnetic_strength": 1.0,
+    "pc": "AN03-AR/EM-QP/QD.01-pc",
+    "k": 1.0
+  },
+  {
+    "_id": {
+      "$oid": "61b5cd3f-e0e5-5b9a-b129-d0e0736d43df"
+    },
+    "uuid": "SD_003",
+    "type": "Sextupole",
+    "FamName": "SD_003",
+    "name": "AN03-AR/EM-SX/SD.01",
+    "magnetic_strength": 1.0,
+    "pc": "AN03-AR/EM-SX/SD.01-pc",
+    "k": 1.0
+  },
+  {
+    "_id": {
+      "$oid": "891e22f3-ff24-5622-9510-52ab5b24aa09"
+    },
+    "uuid": "QF_004",
+    "type": "Quadrupole",
+    "FamName": "QF_004",
+    "name": "AN04-AR/EM-QP/QF.01",
+    "magnetic_strength": 1.0,
+    "pc": "AN04-AR/EM-QP/QF.01-pc",
+    "k": 1.0
+  },
+  {
+    "_id": {
+      "$oid": "feeb9f15-e30a-5608-937d-9639ecf3ea14"
+    },
+    "uuid": "SF_004",
+    "type": "Sextupole",
+    "FamName": "SF_004",
+    "name": "AN04-AR/EM-SX/SF.01",
+    "magnetic_strength": 1.0,
+    "pc": "AN04-AR/EM-SX/SF.01-pc",
+    "k": 1.0
+  },
+  {
+    "_id": {
+      "$oid": "7521c207-693f-5acd-87d7-dfcacd349c4a"
+    },
+    "uuid": "QD_004",
+    "type": "Quadrupole",
+    "FamName": "QD_004",
+    "name": "AN04-AR/EM-QP/QD.01",
+    "magnetic_strength": 1.0,
+    "pc": "AN04-AR/EM-QP/QD.01-pc",
+    "k": 1.0
+  },
+  {
+    "_id": {
+      "$oid": "49544335-fb60-5b52-8cee-0d4ccff1b867"
+    },
+    "uuid": "SD_004",
+    "type": "Sextupole",
+    "FamName": "SD_004",
+    "name": "AN04-AR/EM-SX/SD.01",
+    "magnetic_strength": 1.0,
+    "pc": "AN04-AR/EM-SX/SD.01-pc",
+    "k": 1.0
+  },
+  {
+    "_id": {
+      "$oid": "0ef21fd1-cac7-5fc9-8a73-894bf34e081b"
+    },
+    "uuid": "QF_005",
+    "type": "Quadrupole",
+    "FamName": "QF_005",
+    "name": "AN05-AR/EM-QP/QF.01",
+    "magnetic_strength": 1.0,
+    "pc": "AN05-AR/EM-QP/QF.01-pc",
+    "k": 1.0
+  },
+  {
+    "_id": {
+      "$oid": "af7075b1-26ad-5a31-ab08-8f7062e6ca60"
+    },
+    "uuid": "SF_005",
+    "type": "Sextupole",
+    "FamName": "SF_005",
+    "name": "AN05-AR/EM-SX/SF.01",
+    "magnetic_strength": 1.0,
+    "pc": "AN05-AR/EM-SX/SF.01-pc",
+    "k": 1.0
+  },
+  {
+    "_id": {
+      "$oid": "5670d70b-4721-5811-979e-176485b8d42b"
+    },
+    "uuid": "QD_005",
+    "type": "Quadrupole",
+    "FamName": "QD_005",
+    "name": "AN05-AR/EM-QP/QD.01",
+    "magnetic_strength": 1.0,
+    "pc": "AN05-AR/EM-QP/QD.01-pc",
+    "k": 1.0
+  },
+  {
+    "_id": {
+      "$oid": "58dd07d3-7836-57f3-83e4-85e8285859a2"
+    },
+    "uuid": "SD_005",
+    "type": "Sextupole",
+    "FamName": "SD_005",
+    "name": "AN05-AR/EM-SX/SD.01",
+    "magnetic_strength": 1.0,
+    "pc": "AN05-AR/EM-SX/SD.01-pc",
+    "k": 1.0
+  },
+  {
+    "_id": {
+      "$oid": "ae5e0eca-9b54-5b91-9402-b7b1dfd130e4"
+    },
+    "uuid": "QF_006",
+    "type": "Quadrupole",
+    "FamName": "QF_006",
+    "name": "AN06-AR/EM-QP/QF.01",
+    "magnetic_strength": 1.0,
+    "pc": "AN06-AR/EM-QP/QF.01-pc",
+    "k": 1.0
+  },
+  {
+    "_id": {
+      "$oid": "490aa48d-c1e7-5a94-910e-973778191436"
+    },
+    "uuid": "SF_006",
+    "type": "Sextupole",
+    "FamName": "SF_006",
+    "name": "AN06-AR/EM-SX/SF.01",
+    "magnetic_strength": 1.0,
+    "pc": "AN06-AR/EM-SX/SF.01-pc",
+    "k": 1.0
+  },
+  {
+    "_id": {
+      "$oid": "1624f49f-7550-55ef-97b5-55ee7070d911"
+    },
+    "uuid": "QD_006",
+    "type": "Quadrupole",
+    "FamName": "QD_006",
+    "name": "AN06-AR/EM-QP/QD.01",
+    "magnetic_strength": 1.0,
+    "pc": "AN06-AR/EM-QP/QD.01-pc",
+    "k": 1.0
+  },
+  {
+    "_id": {
+      "$oid": "e41d50e9-71ca-5f0b-8a75-100d380472ef"
+    },
+    "uuid": "SD_006",
+    "type": "Sextupole",
+    "FamName": "SD_006",
+    "name": "AN06-AR/EM-SX/SD.01",
+    "magnetic_strength": 1.0,
+    "pc": "AN06-AR/EM-SX/SD.01-pc",
+    "k": 1.0
+  },
+  {
+    "_id": {
+      "$oid": "6af09284-24c8-5345-8406-2cf231e50ef6"
+    },
+    "uuid": "QF_007",
+    "type": "Quadrupole",
+    "FamName": "QF_007",
+    "name": "AN07-AR/EM-QP/QF.01",
+    "magnetic_strength": 1.0,
+    "pc": "AN07-AR/EM-QP/QF.01-pc",
+    "k": 1.0
+  },
+  {
+    "_id": {
+      "$oid": "72137e58-e406-5afa-88e9-8a18a9d3733c"
+    },
+    "uuid": "SF_007",
+    "type": "Sextupole",
+    "FamName": "SF_007",
+    "name": "AN07-AR/EM-SX/SF.01",
+    "magnetic_strength": 1.0,
+    "pc": "AN07-AR/EM-SX/SF.01-pc",
+    "k": 1.0
+  },
+  {
+    "_id": {
+      "$oid": "5ba832fa-ebd6-57a6-80dd-65bc942bafb6"
+    },
+    "uuid": "QD_007",
+    "type": "Quadrupole",
+    "FamName": "QD_007",
+    "name": "AN07-AR/EM-QP/QD.01",
+    "magnetic_strength": 1.0,
+    "pc": "AN07-AR/EM-QP/QD.01-pc",
+    "k": 1.0
+  },
+  {
+    "_id": {
+      "$oid": "33b3c2cb-0b2a-5b42-b3b7-f0e4c6d898e4"
+    },
+    "uuid": "SD_007",
+    "type": "Sextupole",
+    "FamName": "SD_007",
+    "name": "AN07-AR/EM-SX/SD.01",
+    "magnetic_strength": 1.0,
+    "pc": "AN07-AR/EM-SX/SD.01-pc",
+    "k": 1.0
+  },
+  {
+    "_id": {
+      "$oid": "5a814706-c71b-5e90-a6c9-a99caec58b23"
+    },
+    "uuid": "QF_008",
+    "type": "Quadrupole",
+    "FamName": "QF_008",
+    "name": "AN08-AR/EM-QP/QF.01",
+    "magnetic_strength": 1.0,
+    "pc": "AN08-AR/EM-QP/QF.01-pc",
+    "k": 1.0
+  },
+  {
+    "_id": {
+      "$oid": "5030394b-4dc0-5837-9742-9180be5a02cd"
+    },
+    "uuid": "SF_008",
+    "type": "Sextupole",
+    "FamName": "SF_008",
+    "name": "AN08-AR/EM-SX/SF.01",
+    "magnetic_strength": 1.0,
+    "pc": "AN08-AR/EM-SX/SF.01-pc",
+    "k": 1.0
+  },
+  {
+    "_id": {
+      "$oid": "19da961b-a51c-5ede-8d3a-8043e259efb9"
+    },
+    "uuid": "QD_008",
+    "type": "Quadrupole",
+    "FamName": "QD_008",
+    "name": "AN08-AR/EM-QP/QD.01",
+    "magnetic_strength": 1.0,
+    "pc": "AN08-AR/EM-QP/QD.01-pc",
+    "k": 1.0
+  },
+  {
+    "_id": {
+      "$oid": "a24217f8-eb3d-52a0-865e-41e718b2cc6e"
+    },
+    "uuid": "SD_008",
+    "type": "Sextupole",
+    "FamName": "SD_008",
+    "name": "AN08-AR/EM-SX/SD.01",
+    "magnetic_strength": 1.0,
+    "pc": "AN08-AR/EM-SX/SD.01-pc",
+    "k": 1.0
+  },
+  {
+    "_id": {
+      "$oid": "767d73ae-6a19-55c5-988c-90237d81bb8d"
+    },
+    "uuid": "QF_009",
+    "type": "Quadrupole",
+    "FamName": "QF_009",
+    "name": "AN09-AR/EM-QP/QF.01",
+    "magnetic_strength": 1.0,
+    "pc": "AN09-AR/EM-QP/QF.01-pc",
+    "k": 1.0
+  },
+  {
+    "_id": {
+      "$oid": "b2d6f337-468b-5c4b-9ee7-cc918db90251"
+    },
+    "uuid": "SF_009",
+    "type": "Sextupole",
+    "FamName": "SF_009",
+    "name": "AN09-AR/EM-SX/SF.01",
+    "magnetic_strength": 1.0,
+    "pc": "AN09-AR/EM-SX/SF.01-pc",
+    "k": 1.0
+  },
+  {
+    "_id": {
+      "$oid": "f3bee840-0f4b-5729-9082-d0f504402a5c"
+    },
+    "uuid": "QD_009",
+    "type": "Quadrupole",
+    "FamName": "QD_009",
+    "name": "AN09-AR/EM-QP/QD.01",
+    "magnetic_strength": 1.0,
+    "pc": "AN09-AR/EM-QP/QD.01-pc",
+    "k": 1.0
+  },
+  {
+    "_id": {
+      "$oid": "d6ec300a-f287-5121-8a59-4c08fe713af1"
+    },
+    "uuid": "SD_009",
+    "type": "Sextupole",
+    "FamName": "SD_009",
+    "name": "AN09-AR/EM-SX/SD.01",
+    "magnetic_strength": 1.0,
+    "pc": "AN09-AR/EM-SX/SD.01-pc",
+    "k": 1.0
+  },
+  {
+    "_id": {
+      "$oid": "7cc0e235-03e3-5712-93ba-8d1875a88b86"
+    },
+    "uuid": "QF_010",
+    "type": "Quadrupole",
+    "FamName": "QF_010",
+    "name": "AN10-AR/EM-QP/QF.01",
+    "magnetic_strength": 1.0,
+    "pc": "AN10-AR/EM-QP/QF.01-pc",
+    "k": 1.0
+  },
+  {
+    "_id": {
+      "$oid": "10e4d9de-339c-5e84-a92f-d08a8b287169"
+    },
+    "uuid": "SF_010",
+    "type": "Sextupole",
+    "FamName": "SF_010",
+    "name": "AN10-AR/EM-SX/SF.01",
+    "magnetic_strength": 1.0,
+    "pc": "AN10-AR/EM-SX/SF.01-pc",
+    "k": 1.0
+  },
+  {
+    "_id": {
+      "$oid": "11e7b1e5-3f55-59ca-857e-649e4c70d020"
+    },
+    "uuid": "QD_010",
+    "type": "Quadrupole",
+    "FamName": "QD_010",
+    "name": "AN10-AR/EM-QP/QD.01",
+    "magnetic_strength": 1.0,
+    "pc": "AN10-AR/EM-QP/QD.01-pc",
+    "k": 1.0
+  },
+  {
+    "_id": {
+      "$oid": "caa38e33-b165-5e0b-aed4-93881fb730cd"
+    },
+    "uuid": "SD_010",
+    "type": "Sextupole",
+    "FamName": "SD_010",
+    "name": "AN10-AR/EM-SX/SD.01",
+    "magnetic_strength": 1.0,
+    "pc": "AN10-AR/EM-SX/SD.01-pc",
+    "k": 1.0
+  },
+  {
+    "_id": {
+      "$oid": "4cfd1215-053e-5000-b3b7-864f9917d3f0"
+    },
+    "uuid": "QF_011",
+    "type": "Quadrupole",
+    "FamName": "QF_011",
+    "name": "AN11-AR/EM-QP/QF.01",
+    "magnetic_strength": 1.0,
+    "pc": "AN11-AR/EM-QP/QF.01-pc",
+    "k": 1.0
+  },
+  {
+    "_id": {
+      "$oid": "f7661cb1-ad6c-5eda-8356-326147467f47"
+    },
+    "uuid": "SF_011",
+    "type": "Sextupole",
+    "FamName": "SF_011",
+    "name": "AN11-AR/EM-SX/SF.01",
+    "magnetic_strength": 1.0,
+    "pc": "AN11-AR/EM-SX/SF.01-pc",
+    "k": 1.0
+  },
+  {
+    "_id": {
+      "$oid": "ff6cbf40-2dc3-534c-a08d-c41ced2aaf4c"
+    },
+    "uuid": "QD_011",
+    "type": "Quadrupole",
+    "FamName": "QD_011",
+    "name": "AN11-AR/EM-QP/QD.01",
+    "magnetic_strength": 1.0,
+    "pc": "AN11-AR/EM-QP/QD.01-pc",
+    "k": 1.0
+  },
+  {
+    "_id": {
+      "$oid": "3698ebc4-17fd-59a9-99c6-6ca2ab2e344b"
+    },
+    "uuid": "SD_011",
+    "type": "Sextupole",
+    "FamName": "SD_011",
+    "name": "AN11-AR/EM-SX/SD.01",
+    "magnetic_strength": 1.0,
+    "pc": "AN11-AR/EM-SX/SD.01-pc",
+    "k": 1.0
+  },
+  {
+    "_id": {
+      "$oid": "a436f15b-0d11-525b-a8c9-cc547ab8aa5d"
+    },
+    "uuid": "QF_012",
+    "type": "Quadrupole",
+    "FamName": "QF_012",
+    "name": "AN12-AR/EM-QP/QF.01",
+    "magnetic_strength": 1.0,
+    "pc": "AN12-AR/EM-QP/QF.01-pc",
+    "k": 1.0
+  },
+  {
+    "_id": {
+      "$oid": "51d28361-2ec8-5807-a1f9-a57aabc9fb56"
+    },
+    "uuid": "SF_012",
+    "type": "Sextupole",
+    "FamName": "SF_012",
+    "name": "AN12-AR/EM-SX/SF.01",
+    "magnetic_strength": 1.0,
+    "pc": "AN12-AR/EM-SX/SF.01-pc",
+    "k": 1.0
+  },
+  {
+    "_id": {
+      "$oid": "6f2bb822-ee84-5676-87c0-128140e00935"
+    },
+    "uuid": "QD_012",
+    "type": "Quadrupole",
+    "FamName": "QD_012",
+    "name": "AN12-AR/EM-QP/QD.01",
+    "magnetic_strength": 1.0,
+    "pc": "AN12-AR/EM-QP/QD.01-pc",
+    "k": 1.0
+  },
+  {
+    "_id": {
+      "$oid": "26b08f28-d728-58e8-a1e3-eb0e9062382c"
+    },
+    "uuid": "SD_012",
+    "type": "Sextupole",
+    "FamName": "SD_012",
+    "name": "AN12-AR/EM-SX/SD.01",
+    "magnetic_strength": 1.0,
+    "pc": "AN12-AR/EM-SX/SD.01-pc",
+    "k": 1.0
+  },
+  {
+    "_id": {
+      "$oid": "33f55d8d-9c26-5e23-badf-673bb94fa6b2"
+    },
+    "uuid": "QF_013",
+    "type": "Quadrupole",
+    "FamName": "QF_013",
+    "name": "AN13-AR/EM-QP/QF.01",
+    "magnetic_strength": 1.0,
+    "pc": "AN13-AR/EM-QP/QF.01-pc",
+    "k": 1.0
+  },
+  {
+    "_id": {
+      "$oid": "46763d57-709a-59d0-b30a-cd86510396d4"
+    },
+    "uuid": "SF_013",
+    "type": "Sextupole",
+    "FamName": "SF_013",
+    "name": "AN13-AR/EM-SX/SF.01",
+    "magnetic_strength": 1.0,
+    "pc": "AN13-AR/EM-SX/SF.01-pc",
+    "k": 1.0
+  },
+  {
+    "_id": {
+      "$oid": "47d6c1b1-fa5a-5b8a-a9fa-63eb22fb872d"
+    },
+    "uuid": "QD_013",
+    "type": "Quadrupole",
+    "FamName": "QD_013",
+    "name": "AN13-AR/EM-QP/QD.01",
+    "magnetic_strength": 1.0,
+    "pc": "AN13-AR/EM-QP/QD.01-pc",
+    "k": 1.0
+  },
+  {
+    "_id": {
+      "$oid": "b8349a86-6b07-56ca-8f16-d14933706ba1"
+    },
+    "uuid": "SD_013",
+    "type": "Sextupole",
+    "FamName": "SD_013",
+    "name": "AN13-AR/EM-SX/SD.01",
+    "magnetic_strength": 1.0,
+    "pc": "AN13-AR/EM-SX/SD.01-pc",
+    "k": 1.0
+  },
+  {
+    "_id": {
+      "$oid": "263e1dbc-3d4f-5216-8a48-00e7959cf09b"
+    },
+    "uuid": "QF_014",
+    "type": "Quadrupole",
+    "FamName": "QF_014",
+    "name": "AN14-AR/EM-QP/QF.01",
+    "magnetic_strength": 1.0,
+    "pc": "AN14-AR/EM-QP/QF.01-pc",
+    "k": 1.0
+  },
+  {
+    "_id": {
+      "$oid": "71bd34de-3569-59d1-84a0-42fbb8f62e79"
+    },
+    "uuid": "SF_014",
+    "type": "Sextupole",
+    "FamName": "SF_014",
+    "name": "AN14-AR/EM-SX/SF.01",
+    "magnetic_strength": 1.0,
+    "pc": "AN14-AR/EM-SX/SF.01-pc",
+    "k": 1.0
+  },
+  {
+    "_id": {
+      "$oid": "7917210d-4e8a-552b-b880-9f83a2abec35"
+    },
+    "uuid": "QD_014",
+    "type": "Quadrupole",
+    "FamName": "QD_014",
+    "name": "AN14-AR/EM-QP/QD.01",
+    "magnetic_strength": 1.0,
+    "pc": "AN14-AR/EM-QP/QD.01-pc",
+    "k": 1.0
+  },
+  {
+    "_id": {
+      "$oid": "fcffc304-d2e9-58bc-910a-4d786fd318f7"
+    },
+    "uuid": "SD_014",
+    "type": "Sextupole",
+    "FamName": "SD_014",
+    "name": "AN14-AR/EM-SX/SD.01",
+    "magnetic_strength": 1.0,
+    "pc": "AN14-AR/EM-SX/SD.01-pc",
+    "k": 1.0
+  },
+  {
+    "_id": {
+      "$oid": "27eb37f0-4514-54ed-8a8e-fed9464ac4d9"
+    },
+    "uuid": "QF_015",
+    "type": "Quadrupole",
+    "FamName": "QF_015",
+    "name": "AN15-AR/EM-QP/QF.01",
+    "magnetic_strength": 1.0,
+    "pc": "AN15-AR/EM-QP/QF.01-pc",
+    "k": 1.0
+  },
+  {
+    "_id": {
+      "$oid": "5b091057-f5b8-5093-a6d9-1de44709069a"
+    },
+    "uuid": "SF_015",
+    "type": "Sextupole",
+    "FamName": "SF_015",
+    "name": "AN15-AR/EM-SX/SF.01",
+    "magnetic_strength": 1.0,
+    "pc": "AN15-AR/EM-SX/SF.01-pc",
+    "k": 1.0
+  },
+  {
+    "_id": {
+      "$oid": "1cb4f347-2707-5a41-9eda-f501b47691cd"
+    },
+    "uuid": "QD_015",
+    "type": "Quadrupole",
+    "FamName": "QD_015",
+    "name": "AN15-AR/EM-QP/QD.01",
+    "magnetic_strength": 1.0,
+    "pc": "AN15-AR/EM-QP/QD.01-pc",
+    "k": 1.0
+  },
+  {
+    "_id": {
+      "$oid": "eff92193-25bf-54cb-885d-6558818ef03e"
+    },
+    "uuid": "SD_015",
+    "type": "Sextupole",
+    "FamName": "SD_015",
+    "name": "AN15-AR/EM-SX/SD.01",
+    "magnetic_strength": 1.0,
+    "pc": "AN15-AR/EM-SX/SD.01-pc",
+    "k": 1.0
+  },
+  {
+    "_id": {
+      "$oid": "56b7f625-5e4a-5398-80b5-5efe544d2550"
+    },
+    "uuid": "QF_016",
+    "type": "Quadrupole",
+    "FamName": "QF_016",
+    "name": "AN16-AR/EM-QP/QF.01",
+    "magnetic_strength": 1.0,
+    "pc": "AN16-AR/EM-QP/QF.01-pc",
+    "k": 1.0
+  },
+  {
+    "_id": {
+      "$oid": "7f021924-5767-5a2e-bb85-fbbfe90a2c1f"
+    },
+    "uuid": "SF_016",
+    "type": "Sextupole",
+    "FamName": "SF_016",
+    "name": "AN16-AR/EM-SX/SF.01",
+    "magnetic_strength": 1.0,
+    "pc": "AN16-AR/EM-SX/SF.01-pc",
+    "k": 1.0
+  },
+  {
+    "_id": {
+      "$oid": "beac2750-fca8-5a2f-98c0-ff8c805f8724"
+    },
+    "uuid": "QD_016",
+    "type": "Quadrupole",
+    "FamName": "QD_016",
+    "name": "AN16-AR/EM-QP/QD.01",
+    "magnetic_strength": 1.0,
+    "pc": "AN16-AR/EM-QP/QD.01-pc",
+    "k": 1.0
+  },
+  {
+    "_id": {
+      "$oid": "cabf0416-14f9-5442-8aac-a652f60f50d3"
+    },
+    "uuid": "SD_016",
+    "type": "Sextupole",
+    "FamName": "SD_016",
+    "name": "AN16-AR/EM-SX/SD.01",
+    "magnetic_strength": 1.0,
+    "pc": "AN16-AR/EM-SX/SD.01-pc",
+    "k": 1.0
+  }
+]

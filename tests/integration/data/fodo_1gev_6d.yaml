@@ -1,0 +1,1164 @@
+RF_001:
+  UUID: RF_001_cc245d84ca2b4ba9b54051069a4cfb8f
+  Lattice:
+    FamName: RF_001
+    Class: RFCavity
+    Length: 0.0
+    Controllable: true
+  Nomenclature:
+    TANGO: AN01-SD/RF-CAV/CAV
+  Localisation:
+    S_pos: 0.0
+    Cell: 1
+QF_001:
+  UUID: QF_001_f2013521b99e4a76bed1db7ec67464b0
+  Lattice:
+    FamName: QF_001
+    Class: Quadrupole
+    Length: 0.4
+    Controllable: true
+  Nomenclature:
+    TANGO: AN01-AR/EM-QP/QF.01
+  Localisation:
+    S_pos: 0.0
+    Cell: 1
+SF_001:
+  UUID: SF_001_f934c7cf2c704132acfce86bc2419e36
+  Lattice:
+    FamName: SF_001
+    Class: Sextupole
+    Length: 0.1
+    Controllable: true
+  Nomenclature:
+    TANGO: AN01-AR/EM-SX/SF.01
+  Localisation:
+    S_pos: 0.4
+    Cell: 1
+B_001:
+  UUID: B_001_6182cf9bb0184f0bb9afc6655b5a6be6
+  Lattice:
+    FamName: B_001
+    Class: Bend
+    Length: 1.0
+    Controllable: true
+  Nomenclature:
+    TANGO: AN01-AR/EM-DIP/B.01
+  Localisation:
+    S_pos: 0.9
+    Cell: 1
+QD_001:
+  UUID: QD_001_15812e1906ee4bc7b94abb8ccd910f5b
+  Lattice:
+    FamName: QD_001
+    Class: Quadrupole
+    Length: 0.4
+    Controllable: true
+  Nomenclature:
+    TANGO: AN01-AR/EM-QP/QD.01
+  Localisation:
+    S_pos: 2.4
+    Cell: 1
+SD_001:
+  UUID: SD_001_4e39bd9617e7428486da49e4b5cc3981
+  Lattice:
+    FamName: SD_001
+    Class: Sextupole
+    Length: 0.1
+    Controllable: true
+  Nomenclature:
+    TANGO: AN01-AR/EM-SX/SD.01
+  Localisation:
+    S_pos: 2.8
+    Cell: 1
+B_002:
+  UUID: B_002_8fd91332121b43c79d649fb2a1a18ca6
+  Lattice:
+    FamName: B_002
+    Class: Bend
+    Length: 1.0
+    Controllable: true
+  Nomenclature:
+    TANGO: AN01-AR/EM-DIP/B.02
+  Localisation:
+    S_pos: 3.3
+    Cell: 1
+QF_002:
+  UUID: QF_002_d8a6e63c07c94aed87878d113cf22194
+  Lattice:
+    FamName: QF_002
+    Class: Quadrupole
+    Length: 0.4
+    Controllable: true
+  Nomenclature:
+    TANGO: AN02-AR/EM-QP/QF.01
+  Localisation:
+    S_pos: 4.8
+    Cell: 2
+SF_002:
+  UUID: SF_002_f7c48af5504649a09b8e9434b2509ce4
+  Lattice:
+    FamName: SF_002
+    Class: Sextupole
+    Length: 0.1
+    Controllable: true
+  Nomenclature:
+    TANGO: AN02-AR/EM-SX/SF.01
+  Localisation:
+    S_pos: 5.2
+    Cell: 2
+B_003:
+  UUID: B_003_fb4cc089236e4345b0a3f4a39ae6f49b
+  Lattice:
+    FamName: B_003
+    Class: Bend
+    Length: 1.0
+    Controllable: true
+  Nomenclature:
+    TANGO: AN02-AR/EM-DIP/B.01
+  Localisation:
+    S_pos: 5.7
+    Cell: 2
+QD_002:
+  UUID: QD_002_c212a1d7ea41484f925303959213cc32
+  Lattice:
+    FamName: QD_002
+    Class: Quadrupole
+    Length: 0.4
+    Controllable: true
+  Nomenclature:
+    TANGO: AN02-AR/EM-QP/QD.01
+  Localisation:
+    S_pos: 7.2
+    Cell: 2
+SD_002:
+  UUID: SD_002_178b0b0cfcc046c6ac9a1eac2328963e
+  Lattice:
+    FamName: SD_002
+    Class: Sextupole
+    Length: 0.1
+    Controllable: true
+  Nomenclature:
+    TANGO: AN02-AR/EM-SX/SD.01
+  Localisation:
+    S_pos: 7.6
+    Cell: 2
+B_004:
+  UUID: B_004_00d0b0b840a74028b751a6a7f72025fa
+  Lattice:
+    FamName: B_004
+    Class: Bend
+    Length: 1.0
+    Controllable: true
+  Nomenclature:
+    TANGO: AN02-AR/EM-DIP/B.02
+  Localisation:
+    S_pos: 8.1
+    Cell: 2
+QF_003:
+  UUID: QF_003_d6bf77b8f23b45e0b1e96bb88f7b3d40
+  Lattice:
+    FamName: QF_003
+    Class: Quadrupole
+    Length: 0.4
+    Controllable: true
+  Nomenclature:
+    TANGO: AN03-AR/EM-QP/QF.01
+  Localisation:
+    S_pos: 9.6
+    Cell: 3
+SF_003:
+  UUID: SF_003_bd75202a28b243d0bc604fa6e8ad0dd2
+  Lattice:
+    FamName: SF_003
+    Class: Sextupole
+    Length: 0.1
+    Controllable: true
+  Nomenclature:
+    TANGO: AN03-AR/EM-SX/SF.01
+  Localisation:
+    S_pos: 10.0
+    Cell: 3
+B_005:
+  UUID: B_005_270a6ec2a6ea465a959a5f47f2434fb0
+  Lattice:
+    FamName: B_005
+    Class: Bend
+    Length: 1.0
+    Controllable: true
+  Nomenclature:
+    TANGO: AN03-AR/EM-DIP/B.01
+  Localisation:
+    S_pos: 10.5
+    Cell: 3
+QD_003:
+  UUID: QD_003_ad775f317e7b4408a72e09c7db4236ad
+  Lattice:
+    FamName: QD_003
+    Class: Quadrupole
+    Length: 0.4
+    Controllable: true
+  Nomenclature:
+    TANGO: AN03-AR/EM-QP/QD.01
+  Localisation:
+    S_pos: 12.0
+    Cell: 3
+SD_003:
+  UUID: SD_003_63a3ec9ceeef453f8e793acc437ce116
+  Lattice:
+    FamName: SD_003
+    Class: Sextupole
+    Length: 0.1
+    Controllable: true
+  Nomenclature:
+    TANGO: AN03-AR/EM-SX/SD.01
+  Localisation:
+    S_pos: 12.4
+    Cell: 3
+B_006:
+  UUID: B_006_730f427ca9814851801be691784b96e9
+  Lattice:
+    FamName: B_006
+    Class: Bend
+    Length: 1.0
+    Controllable: true
+  Nomenclature:
+    TANGO: AN03-AR/EM-DIP/B.02
+  Localisation:
+    S_pos: 12.9
+    Cell: 3
+QF_004:
+  UUID: QF_004_ce31bb358fad4cc7aadb86711031acd0
+  Lattice:
+    FamName: QF_004
+    Class: Quadrupole
+    Length: 0.4
+    Controllable: true
+  Nomenclature:
+    TANGO: AN04-AR/EM-QP/QF.01
+  Localisation:
+    S_pos: 14.4
+    Cell: 4
+SF_004:
+  UUID: SF_004_faa5bb6858e64051a54f4f01340684e6
+  Lattice:
+    FamName: SF_004
+    Class: Sextupole
+    Length: 0.1
+    Controllable: true
+  Nomenclature:
+    TANGO: AN04-AR/EM-SX/SF.01
+  Localisation:
+    S_pos: 14.8
+    Cell: 4
+B_007:
+  UUID: B_007_c74ee44ff12e425b9bcb21277c6efc59
+  Lattice:
+    FamName: B_007
+    Class: Bend
+    Length: 1.0
+    Controllable: true
+  Nomenclature:
+    TANGO: AN04-AR/EM-DIP/B.01
+  Localisation:
+    S_pos: 15.3
+    Cell: 4
+QD_004:
+  UUID: QD_004_82625fab961945c0aba57174ebcbf51f
+  Lattice:
+    FamName: QD_004
+    Class: Quadrupole
+    Length: 0.4
+    Controllable: true
+  Nomenclature:
+    TANGO: AN04-AR/EM-QP/QD.01
+  Localisation:
+    S_pos: 16.8
+    Cell: 4
+SD_004:
+  UUID: SD_004_3e0e59ac94f945f2be40eccc30f3a2d3
+  Lattice:
+    FamName: SD_004
+    Class: Sextupole
+    Length: 0.1
+    Controllable: true
+  Nomenclature:
+    TANGO: AN04-AR/EM-SX/SD.01
+  Localisation:
+    S_pos: 17.2
+    Cell: 4
+B_008:
+  UUID: B_008_47727693f2b14c6089c1b12a0331c942
+  Lattice:
+    FamName: B_008
+    Class: Bend
+    Length: 1.0
+    Controllable: true
+  Nomenclature:
+    TANGO: AN04-AR/EM-DIP/B.02
+  Localisation:
+    S_pos: 17.7
+    Cell: 4
+QF_005:
+  UUID: QF_005_d812a0f116044852a2dfc809ca0b87bf
+  Lattice:
+    FamName: QF_005
+    Class: Quadrupole
+    Length: 0.4
+    Controllable: true
+  Nomenclature:
+    TANGO: AN05-AR/EM-QP/QF.01
+  Localisation:
+    S_pos: 19.2
+    Cell: 5
+SF_005:
+  UUID: SF_005_ab16d309e1e341e58d7ae1598098bb69
+  Lattice:
+    FamName: SF_005
+    Class: Sextupole
+    Length: 0.1
+    Controllable: true
+  Nomenclature:
+    TANGO: AN05-AR/EM-SX/SF.01
+  Localisation:
+    S_pos: 19.6
+    Cell: 5
+B_009:
+  UUID: B_009_ddd2050e98164ab9b3d3b052188a3247
+  Lattice:
+    FamName: B_009
+    Class: Bend
+    Length: 1.0
+    Controllable: true
+  Nomenclature:
+    TANGO: AN05-AR/EM-DIP/B.01
+  Localisation:
+    S_pos: 20.1
+    Cell: 5
+QD_005:
+  UUID: QD_005_03b6d72e666d4632b6e9a3c2b15ceca7
+  Lattice:
+    FamName: QD_005
+    Class: Quadrupole
+    Length: 0.4
+    Controllable: true
+  Nomenclature:
+    TANGO: AN05-AR/EM-QP/QD.01
+  Localisation:
+    S_pos: 21.6
+    Cell: 5
+SD_005:
+  UUID: SD_005_1e16f88b09834fd6bd6cf9ef7de62dbe
+  Lattice:
+    FamName: SD_005
+    Class: Sextupole
+    Length: 0.1
+    Controllable: true
+  Nomenclature:
+    TANGO: AN05-AR/EM-SX/SD.01
+  Localisation:
+    S_pos: 22.0
+    Cell: 5
+B_010:
+  UUID: B_010_184685f07007416aa94cc3b7797433af
+  Lattice:
+    FamName: B_010
+    Class: Bend
+    Length: 1.0
+    Controllable: true
+  Nomenclature:
+    TANGO: AN05-AR/EM-DIP/B.02
+  Localisation:
+    S_pos: 22.5
+    Cell: 5
+QF_006:
+  UUID: QF_006_d39cefd95c88492885796863d4df1b68
+  Lattice:
+    FamName: QF_006
+    Class: Quadrupole
+    Length: 0.4
+    Controllable: true
+  Nomenclature:
+    TANGO: AN06-AR/EM-QP/QF.01
+  Localisation:
+    S_pos: 24.0
+    Cell: 6
+SF_006:
+  UUID: SF_006_09d95d77b39a463283b0660c4478c409
+  Lattice:
+    FamName: SF_006
+    Class: Sextupole
+    Length: 0.1
+    Controllable: true
+  Nomenclature:
+    TANGO: AN06-AR/EM-SX/SF.01
+  Localisation:
+    S_pos: 24.4
+    Cell: 6
+B_011:
+  UUID: B_011_66708404736c4a74bbd88f2776ba6757
+  Lattice:
+    FamName: B_011
+    Class: Bend
+    Length: 1.0
+    Controllable: true
+  Nomenclature:
+    TANGO: AN06-AR/EM-DIP/B.01
+  Localisation:
+    S_pos: 24.9
+    Cell: 6
+QD_006:
+  UUID: QD_006_49e8c0b7e66348338865c77d9317c6bf
+  Lattice:
+    FamName: QD_006
+    Class: Quadrupole
+    Length: 0.4
+    Controllable: true
+  Nomenclature:
+    TANGO: AN06-AR/EM-QP/QD.01
+  Localisation:
+    S_pos: 26.4
+    Cell: 6
+SD_006:
+  UUID: SD_006_284911364f3c44b2abdc13acb2df46b3
+  Lattice:
+    FamName: SD_006
+    Class: Sextupole
+    Length: 0.1
+    Controllable: true
+  Nomenclature:
+    TANGO: AN06-AR/EM-SX/SD.01
+  Localisation:
+    S_pos: 26.8
+    Cell: 6
+B_012:
+  UUID: B_012_63cc84ca3a804b889757df9285fd44ac
+  Lattice:
+    FamName: B_012
+    Class: Bend
+    Length: 1.0
+    Controllable: true
+  Nomenclature:
+    TANGO: AN06-AR/EM-DIP/B.02
+  Localisation:
+    S_pos: 27.3
+    Cell: 6
+QF_007:
+  UUID: QF_007_7414601f613f4115b9fe0b78eceaa2ce
+  Lattice:
+    FamName: QF_007
+    Class: Quadrupole
+    Length: 0.4
+    Controllable: true
+  Nomenclature:
+    TANGO: AN07-AR/EM-QP/QF.01
+  Localisation:
+    S_pos: 28.8
+    Cell: 7
+SF_007:
+  UUID: SF_007_b3fa2def44a24425a5ad414abc5bbca1
+  Lattice:
+    FamName: SF_007
+    Class: Sextupole
+    Length: 0.1
+    Controllable: true
+  Nomenclature:
+    TANGO: AN07-AR/EM-SX/SF.01
+  Localisation:
+    S_pos: 29.2
+    Cell: 7
+B_013:
+  UUID: B_013_046c935da3f54e75beade9ed565219ad
+  Lattice:
+    FamName: B_013
+    Class: Bend
+    Length: 1.0
+    Controllable: true
+  Nomenclature:
+    TANGO: AN07-AR/EM-DIP/B.01
+  Localisation:
+    S_pos: 29.7
+    Cell: 7
+QD_007:
+  UUID: QD_007_79fa1ac91a7f43eda443200923990327
+  Lattice:
+    FamName: QD_007
+    Class: Quadrupole
+    Length: 0.4
+    Controllable: true
+  Nomenclature:
+    TANGO: AN07-AR/EM-QP/QD.01
+  Localisation:
+    S_pos: 31.2
+    Cell: 7
+SD_007:
+  UUID: SD_007_3b05e519bdcd4fc4b3b8dc42c2c1cb55
+  Lattice:
+    FamName: SD_007
+    Class: Sextupole
+    Length: 0.1
+    Controllable: true
+  Nomenclature:
+    TANGO: AN07-AR/EM-SX/SD.01
+  Localisation:
+    S_pos: 31.6
+    Cell: 7
+B_014:
+  UUID: B_014_2ead304932de4ce4b6382bbac997c85a
+  Lattice:
+    FamName: B_014
+    Class: Bend
+    Length: 1.0
+    Controllable: true
+  Nomenclature:
+    TANGO: AN07-AR/EM-DIP/B.02
+  Localisation:
+    S_pos: 32.1
+    Cell: 7
+QF_008:
+  UUID: QF_008_b3d3db8e1c9e4e8c9eb2846730bd81ea
+  Lattice:
+    FamName: QF_008
+    Class: Quadrupole
+    Length: 0.4
+    Controllable: true
+  Nomenclature:
+    TANGO: AN08-AR/EM-QP/QF.01
+  Localisation:
+    S_pos: 33.6
+    Cell: 8
+SF_008:
+  UUID: SF_008_00a14620b0a5428b821ddb84d2639e5c
+  Lattice:
+    FamName: SF_008
+    Class: Sextupole
+    Length: 0.1
+    Controllable: true
+  Nomenclature:
+    TANGO: AN08-AR/EM-SX/SF.01
+  Localisation:
+    S_pos: 34.0
+    Cell: 8
+B_015:
+  UUID: B_015_b7dd580aac5147a3af0bb2817408e27e
+  Lattice:
+    FamName: B_015
+    Class: Bend
+    Length: 1.0
+    Controllable: true
+  Nomenclature:
+    TANGO: AN08-AR/EM-DIP/B.01
+  Localisation:
+    S_pos: 34.5
+    Cell: 8
+QD_008:
+  UUID: QD_008_1cb9b3401b644658908260616570424d
+  Lattice:
+    FamName: QD_008
+    Class: Quadrupole
+    Length: 0.4
+    Controllable: true
+  Nomenclature:
+    TANGO: AN08-AR/EM-QP/QD.01
+  Localisation:
+    S_pos: 36.0
+    Cell: 8
+SD_008:
+  UUID: SD_008_3b849a66bca1453cac95fa0ccba58166
+  Lattice:
+    FamName: SD_008
+    Class: Sextupole
+    Length: 0.1
+    Controllable: true
+  Nomenclature:
+    TANGO: AN08-AR/EM-SX/SD.01
+  Localisation:
+    S_pos: 36.4
+    Cell: 8
+B_016:
+  UUID: B_016_b83b8bedbb624a8ebfa7f6166daf3613
+  Lattice:
+    FamName: B_016
+    Class: Bend
+    Length: 1.0
+    Controllable: true
+  Nomenclature:
+    TANGO: AN08-AR/EM-DIP/B.02
+  Localisation:
+    S_pos: 36.9
+    Cell: 8
+QF_009:
+  UUID: QF_009_441bf7bdfe9c443c8a55c1a58cb1caf5
+  Lattice:
+    FamName: QF_009
+    Class: Quadrupole
+    Length: 0.4
+    Controllable: true
+  Nomenclature:
+    TANGO: AN09-AR/EM-QP/QF.01
+  Localisation:
+    S_pos: 38.4
+    Cell: 9
+SF_009:
+  UUID: SF_009_6f725f3f495f428696a8419b73f22774
+  Lattice:
+    FamName: SF_009
+    Class: Sextupole
+    Length: 0.1
+    Controllable: true
+  Nomenclature:
+    TANGO: AN09-AR/EM-SX/SF.01
+  Localisation:
+    S_pos: 38.8
+    Cell: 9
+B_017:
+  UUID: B_017_04ad34df6c2e4dfca0d6fb797d68df69
+  Lattice:
+    FamName: B_017
+    Class: Bend
+    Length: 1.0
+    Controllable: true
+  Nomenclature:
+    TANGO: AN09-AR/EM-DIP/B.01
+  Localisation:
+    S_pos: 39.3
+    Cell: 9
+QD_009:
+  UUID: QD_009_232f21c02a03457698d31ec2d4265a02
+  Lattice:
+    FamName: QD_009
+    Class: Quadrupole
+    Length: 0.4
+    Controllable: true
+  Nomenclature:
+    TANGO: AN09-AR/EM-QP/QD.01
+  Localisation:
+    S_pos: 40.8
+    Cell: 9
+SD_009:
+  UUID: SD_009_cf86e64cfe764c12b94262c41ceabbfb
+  Lattice:
+    FamName: SD_009
+    Class: Sextupole
+    Length: 0.1
+    Controllable: true
+  Nomenclature:
+    TANGO: AN09-AR/EM-SX/SD.01
+  Localisation:
+    S_pos: 41.2
+    Cell: 9
+B_018:
+  UUID: B_018_0b98487fcf314e7e8452dc7399397835
+  Lattice:
+    FamName: B_018
+    Class: Bend
+    Length: 1.0
+    Controllable: true
+  Nomenclature:
+    TANGO: AN09-AR/EM-DIP/B.02
+  Localisation:
+    S_pos: 41.7
+    Cell: 9
+QF_010:
+  UUID: QF_010_94782da4ed5e4898b91d7e864140c277
+  Lattice:
+    FamName: QF_010
+    Class: Quadrupole
+    Length: 0.4
+    Controllable: true
+  Nomenclature:
+    TANGO: AN10-AR/EM-QP/QF.01
+  Localisation:
+    S_pos: 43.2
+    Cell: 10
+SF_010:
+  UUID: SF_010_f626388a02d64cfd83c9b1614982a5fb
+  Lattice:
+    FamName: SF_010
+    Class: Sextupole
+    Length: 0.1
+    Controllable: true
+  Nomenclature:
+    TANGO: AN10-AR/EM-SX/SF.01
+  Localisation:
+    S_pos: 43.6
+    Cell: 10
+B_019:
+  UUID: B_019_7d367c5a53bb4df4b7ecde53d5604f53
+  Lattice:
+    FamName: B_019
+    Class: Bend
+    Length: 1.0
+    Controllable: true
+  Nomenclature:
+    TANGO: AN10-AR/EM-DIP/B.01
+  Localisation:
+    S_pos: 44.1
+    Cell: 10
+QD_010:
+  UUID: QD_010_56f8b47113df4cec8b2fc3ab38c69869
+  Lattice:
+    FamName: QD_010
+    Class: Quadrupole
+    Length: 0.4
+    Controllable: true
+  Nomenclature:
+    TANGO: AN10-AR/EM-QP/QD.01
+  Localisation:
+    S_pos: 45.6
+    Cell: 10
+SD_010:
+  UUID: SD_010_eafccc3719664195b4107df7527a8a0a
+  Lattice:
+    FamName: SD_010
+    Class: Sextupole
+    Length: 0.1
+    Controllable: true
+  Nomenclature:
+    TANGO: AN10-AR/EM-SX/SD.01
+  Localisation:
+    S_pos: 46.0
+    Cell: 10
+B_020:
+  UUID: B_020_fa8a3d3ea2814c44b7815c8a5cd9d933
+  Lattice:
+    FamName: B_020
+    Class: Bend
+    Length: 1.0
+    Controllable: true
+  Nomenclature:
+    TANGO: AN10-AR/EM-DIP/B.02
+  Localisation:
+    S_pos: 46.5
+    Cell: 10
+QF_011:
+  UUID: QF_011_b575ed5454c54128b2ed3d6b7e64ddad
+  Lattice:
+    FamName: QF_011
+    Class: Quadrupole
+    Length: 0.4
+    Controllable: true
+  Nomenclature:
+    TANGO: AN11-AR/EM-QP/QF.01
+  Localisation:
+    S_pos: 48.0
+    Cell: 11
+SF_011:
+  UUID: SF_011_bd73fc4fbc0640efb117cac154b34c33
+  Lattice:
+    FamName: SF_011
+    Class: Sextupole
+    Length: 0.1
+    Controllable: true
+  Nomenclature:
+    TANGO: AN11-AR/EM-SX/SF.01
+  Localisation:
+    S_pos: 48.4
+    Cell: 11
+B_021:
+  UUID: B_021_0d732787af974b9eb0d4c1cc70db1a3d
+  Lattice:
+    FamName: B_021
+    Class: Bend
+    Length: 1.0
+    Controllable: true
+  Nomenclature:
+    TANGO: AN11-AR/EM-DIP/B.01
+  Localisation:
+    S_pos: 48.9
+    Cell: 11
+QD_011:
+  UUID: QD_011_ae7b2c76f21b429c962ff3c33a38cd70
+  Lattice:
+    FamName: QD_011
+    Class: Quadrupole
+    Length: 0.4
+    Controllable: true
+  Nomenclature:
+    TANGO: AN11-AR/EM-QP/QD.01
+  Localisation:
+    S_pos: 50.4
+    Cell: 11
+SD_011:
+  UUID: SD_011_773d914fde034e8697ac966f74ca0611
+  Lattice:
+    FamName: SD_011
+    Class: Sextupole
+    Length: 0.1
+    Controllable: true
+  Nomenclature:
+    TANGO: AN11-AR/EM-SX/SD.01
+  Localisation:
+    S_pos: 50.8
+    Cell: 11
+B_022:
+  UUID: B_022_96a000342e284ca68faaecbcd4b0904a
+  Lattice:
+    FamName: B_022
+    Class: Bend
+    Length: 1.0
+    Controllable: true
+  Nomenclature:
+    TANGO: AN11-AR/EM-DIP/B.02
+  Localisation:
+    S_pos: 51.3
+    Cell: 11
+QF_012:
+  UUID: QF_012_cb52fb6f374840b0a50180a089da49d1
+  Lattice:
+    FamName: QF_012
+    Class: Quadrupole
+    Length: 0.4
+    Controllable: true
+  Nomenclature:
+    TANGO: AN12-AR/EM-QP/QF.01
+  Localisation:
+    S_pos: 52.8
+    Cell: 12
+SF_012:
+  UUID: SF_012_02daf05ef4ab46ea86bdb3be90162251
+  Lattice:
+    FamName: SF_012
+    Class: Sextupole
+    Length: 0.1
+    Controllable: true
+  Nomenclature:
+    TANGO: AN12-AR/EM-SX/SF.01
+  Localisation:
+    S_pos: 53.2
+    Cell: 12
+B_023:
+  UUID: B_023_ffdf1ba0d350458fb3def9db81636f68
+  Lattice:
+    FamName: B_023
+    Class: Bend
+    Length: 1.0
+    Controllable: true
+  Nomenclature:
+    TANGO: AN12-AR/EM-DIP/B.01
+  Localisation:
+    S_pos: 53.7
+    Cell: 12
+QD_012:
+  UUID: QD_012_29f2185aa29a4c02be3bbfdd5bad13e3
+  Lattice:
+    FamName: QD_012
+    Class: Quadrupole
+    Length: 0.4
+    Controllable: true
+  Nomenclature:
+    TANGO: AN12-AR/EM-QP/QD.01
+  Localisation:
+    S_pos: 55.2
+    Cell: 12
+SD_012:
+  UUID: SD_012_ff9262ea95744358b360235d7a459cec
+  Lattice:
+    FamName: SD_012
+    Class: Sextupole
+    Length: 0.1
+    Controllable: true
+  Nomenclature:
+    TANGO: AN12-AR/EM-SX/SD.01
+  Localisation:
+    S_pos: 55.6
+    Cell: 12
+B_024:
+  UUID: B_024_e1fb35bf800a43448163b0cf01569c19
+  Lattice:
+    FamName: B_024
+    Class: Bend
+    Length: 1.0
+    Controllable: true
+  Nomenclature:
+    TANGO: AN12-AR/EM-DIP/B.02
+  Localisation:
+    S_pos: 56.1
+    Cell: 12
+QF_013:
+  UUID: QF_013_2793a62cd78744c9ab4ca5e2843a72a2
+  Lattice:
+    FamName: QF_013
+    Class: Quadrupole
+    Length: 0.4
+    Controllable: true
+  Nomenclature:
+    TANGO: AN13-AR/EM-QP/QF.01
+  Localisation:
+    S_pos: 57.6
+    Cell: 13
+SF_013:
+  UUID: SF_013_4532d63397d644d28e1af1a480a60c07
+  Lattice:
+    FamName: SF_013
+    Class: Sextupole
+    Length: 0.1
+    Controllable: true
+  Nomenclature:
+    TANGO: AN13-AR/EM-SX/SF.01
+  Localisation:
+    S_pos: 58.0
+    Cell: 13
+B_025:
+  UUID: B_025_2ce6a646af5642e0afc30d9f79863f48
+  Lattice:
+    FamName: B_025
+    Class: Bend
+    Length: 1.0
+    Controllable: true
+  Nomenclature:
+    TANGO: AN13-AR/EM-DIP/B.01
+  Localisation:
+    S_pos: 58.5
+    Cell: 13
+QD_013:
+  UUID: QD_013_03843b2e6ee24e16aa6572f5cb18f4a8
+  Lattice:
+    FamName: QD_013
+    Class: Quadrupole
+    Length: 0.4
+    Controllable: true
+  Nomenclature:
+    TANGO: AN13-AR/EM-QP/QD.01
+  Localisation:
+    S_pos: 60.0
+    Cell: 13
+SD_013:
+  UUID: SD_013_ef033612a3274ef3ab886afd81614dca
+  Lattice:
+    FamName: SD_013
+    Class: Sextupole
+    Length: 0.1
+    Controllable: true
+  Nomenclature:
+    TANGO: AN13-AR/EM-SX/SD.01
+  Localisation:
+    S_pos: 60.4
+    Cell: 13
+B_026:
+  UUID: B_026_8651fc68043842628e6ee1d25af0424c
+  Lattice:
+    FamName: B_026
+    Class: Bend
+    Length: 1.0
+    Controllable: true
+  Nomenclature:
+    TANGO: AN13-AR/EM-DIP/B.02
+  Localisation:
+    S_pos: 60.9
+    Cell: 13
+QF_014:
+  UUID: QF_014_c09c7e604b3a41fa818b44d04c844b25
+  Lattice:
+    FamName: QF_014
+    Class: Quadrupole
+    Length: 0.4
+    Controllable: true
+  Nomenclature:
+    TANGO: AN14-AR/EM-QP/QF.01
+  Localisation:
+    S_pos: 62.4
+    Cell: 14
+SF_014:
+  UUID: SF_014_bf4393ec53954372bd5e4f140491465b
+  Lattice:
+    FamName: SF_014
+    Class: Sextupole
+    Length: 0.1
+    Controllable: true
+  Nomenclature:
+    TANGO: AN14-AR/EM-SX/SF.01
+  Localisation:
+    S_pos: 62.8
+    Cell: 14
+B_027:
+  UUID: B_027_c832ae3f14b14804a63bce49c896f737
+  Lattice:
+    FamName: B_027
+    Class: Bend
+    Length: 1.0
+    Controllable: true
+  Nomenclature:
+    TANGO: AN14-AR/EM-DIP/B.01
+  Localisation:
+    S_pos: 63.3
+    Cell: 14
+QD_014:
+  UUID: QD_014_62633bc5afcd4fc9a19de70a983baa5c
+  Lattice:
+    FamName: QD_014
+    Class: Quadrupole
+    Length: 0.4
+    Controllable: true
+  Nomenclature:
+    TANGO: AN14-AR/EM-QP/QD.01
+  Localisation:
+    S_pos: 64.8
+    Cell: 14
+SD_014:
+  UUID: SD_014_78a18b94b6f1422fb69dbcbd2ae90d67
+  Lattice:
+    FamName: SD_014
+    Class: Sextupole
+    Length: 0.1
+    Controllable: true
+  Nomenclature:
+    TANGO: AN14-AR/EM-SX/SD.01
+  Localisation:
+    S_pos: 65.2
+    Cell: 14
+B_028:
+  UUID: B_028_25d59d6cbd90410c9ba5ed8424d442d1
+  Lattice:
+    FamName: B_028
+    Class: Bend
+    Length: 1.0
+    Controllable: true
+  Nomenclature:
+    TANGO: AN14-AR/EM-DIP/B.02
+  Localisation:
+    S_pos: 65.7
+    Cell: 14
+QF_015:
+  UUID: QF_015_63634bfdccc44de586db6ee28071ccb4
+  Lattice:
+    FamName: QF_015
+    Class: Quadrupole
+    Length: 0.4
+    Controllable: true
+  Nomenclature:
+    TANGO: AN15-AR/EM-QP/QF.01
+  Localisation:
+    S_pos: 67.2
+    Cell: 15
+SF_015:
+  UUID: SF_015_a988680835664d109306ad1694a48382
+  Lattice:
+    FamName: SF_015
+    Class: Sextupole
+    Length: 0.1
+    Controllable: true
+  Nomenclature:
+    TANGO: AN15-AR/EM-SX/SF.01
+  Localisation:
+    S_pos: 67.6
+    Cell: 15
+B_029:
+  UUID: B_029_dc2c0a36c7d64072b3e597a3b40f4b3e
+  Lattice:
+    FamName: B_029
+    Class: Bend
+    Length: 1.0
+    Controllable: true
+  Nomenclature:
+    TANGO: AN15-AR/EM-DIP/B.01
+  Localisation:
+    S_pos: 68.1
+    Cell: 15
+QD_015:
+  UUID: QD_015_b2cc0d3ab8f741729a7abf3d9426a958
+  Lattice:
+    FamName: QD_015
+    Class: Quadrupole
+    Length: 0.4
+    Controllable: true
+  Nomenclature:
+    TANGO: AN15-AR/EM-QP/QD.01
+  Localisation:
+    S_pos: 69.6
+    Cell: 15
+SD_015:
+  UUID: SD_015_8b7f143df262464e9f5c1eae4b83ce14
+  Lattice:
+    FamName: SD_015
+    Class: Sextupole
+    Length: 0.1
+    Controllable: true
+  Nomenclature:
+    TANGO: AN15-AR/EM-SX/SD.01
+  Localisation:
+    S_pos: 70.0
+    Cell: 15
+B_030:
+  UUID: B_030_225d0545f13b49b58c1ab5222727ae20
+  Lattice:
+    FamName: B_030
+    Class: Bend
+    Length: 1.0
+    Controllable: true
+  Nomenclature:
+    TANGO: AN15-AR/EM-DIP/B.02
+  Localisation:
+    S_pos: 70.5
+    Cell: 15
+QF_016:
+  UUID: QF_016_965422d59ef3488f84c68f5ecaee6c6b
+  Lattice:
+    FamName: QF_016
+    Class: Quadrupole
+    Length: 0.4
+    Controllable: true
+  Nomenclature:
+    TANGO: AN16-AR/EM-QP/QF.01
+  Localisation:
+    S_pos: 72.0
+    Cell: 16
+SF_016:
+  UUID: SF_016_e67c83cfbce2433f9152de49f928d25d
+  Lattice:
+    FamName: SF_016
+    Class: Sextupole
+    Length: 0.1
+    Controllable: true
+  Nomenclature:
+    TANGO: AN16-AR/EM-SX/SF.01
+  Localisation:
+    S_pos: 72.4
+    Cell: 16
+B_031:
+  UUID: B_031_8e33e0d3bfdf491da8ca3d8dd66e1b81
+  Lattice:
+    FamName: B_031
+    Class: Bend
+    Length: 1.0
+    Controllable: true
+  Nomenclature:
+    TANGO: AN16-AR/EM-DIP/B.01
+  Localisation:
+    S_pos: 72.9
+    Cell: 16
+QD_016:
+  UUID: QD_016_63fce39354a946818c2bfd76adb61760
+  Lattice:
+    FamName: QD_016
+    Class: Quadrupole
+    Length: 0.4
+    Controllable: true
+  Nomenclature:
+    TANGO: AN16-AR/EM-QP/QD.01
+  Localisation:
+    S_pos: 74.4
+    Cell: 16
+SD_016:
+  UUID: SD_016_626878061df544a08c4c061e57a4e3a1
+  Lattice:
+    FamName: SD_016
+    Class: Sextupole
+    Length: 0.1
+    Controllable: true
+  Nomenclature:
+    TANGO: AN16-AR/EM-SX/SD.01
+  Localisation:
+    S_pos: 74.8
+    Cell: 16
+B_032:
+  UUID: B_032_2d3c2be8fe5f41abb120ab3438a4ef66
+  Lattice:
+    FamName: B_032
+    Class: Bend
+    Length: 1.0
+    Controllable: true
+  Nomenclature:
+    TANGO: AN16-AR/EM-DIP/B.02
+  Localisation:
+    S_pos: 75.3
+    Cell: 16
