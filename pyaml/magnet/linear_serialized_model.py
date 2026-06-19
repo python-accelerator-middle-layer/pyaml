@@ -38,7 +38,7 @@ class ConfigModel(BaseModel):
     unit : str
         Strength unit: rad, m-1, m-2
     hardware_unit : str
-        Hardware units (i.e. 'A' , 'V')
+        Hardware unit (i.e. 'A' , 'V')
     """
 
     model_config = ConfigDict(arbitrary_types_allowed=True, extra="forbid")
@@ -139,6 +139,7 @@ class LinearSerializedMagnetModel(MagnetModel):
                 crosstalk=self.__crosstalk[magnet_idx],
                 powerconverter=self._cfg.powerconverter,
                 unit=self._cfg.unit,
+                hardware_unit=self._cfg.hardware_unit,
             )
             self.__sub_models.append(LinearMagnetModel(sub_model))
 
