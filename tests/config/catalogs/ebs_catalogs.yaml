@@ -3,3 +3,4 @@ entries:
   - catalogs/ebs_bpm_catalogs.yaml
   - catalogs/ebs_rf_catalogs.yaml
   - catalogs/ebs_diag_catalogs.yaml
+  - catalogs/ebs_qf1_qd2_catalogs.yaml
