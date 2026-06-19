@@ -92,6 +92,7 @@ devices:
     calibration_factor: -0.0158575
     unit: 1/m
     powerconverter: (Q3PD1R:rdbk, Q3PD1R:set)[A]
+    hardware_unit: A
 - type: pyaml.magnet.quadrupole
   name: Q3M2D1R
   lattice_names: Q3M2D1R
@@ -100,6 +101,7 @@ devices:
     calibration_factor: -0.0158575
     unit: 1/m
     powerconverter: (Q3PD1R:rdbk, Q3PD1R:set)[A]
+    hardware_unit: A
 - type: pyaml.magnet.quadrupole
   name: Q3M1T1R
   lattice_names: Q3M1T1R
@@ -108,6 +110,7 @@ devices:
     calibration_factor: -0.015735
     unit: 1/m
     powerconverter: (Q3P1T1R:rdbk, Q3P1T1R:set)[A]
+    hardware_unit: A
 - type: pyaml.magnet.quadrupole
   name: Q3M2T1R
   lattice_names: Q3M2T1R
@@ -116,6 +119,7 @@ devices:
     calibration_factor: -0.015735
     unit: 1/m
     powerconverter: (Q3P2T1R:rdbk, Q3P2T1R:set)[A]
+    hardware_unit: A
 - type: pyaml.magnet.quadrupole
   name: Q3M1D2R
   lattice_names: Q3M1D2R
@@ -124,6 +128,7 @@ devices:
     calibration_factor: -0.0158575
     unit: 1/m
     powerconverter: (Q3PD2R:rdbk, Q3PD2R:set)[A]
+    hardware_unit: A
 - type: pyaml.magnet.quadrupole
   name: Q3M2D2R
   lattice_names: Q3M2D2R
@@ -132,6 +137,7 @@ devices:
     calibration_factor: -0.0158575
     unit: 1/m
     powerconverter: (Q3PD2R:rdbk, Q3PD2R:set)[A]
+    hardware_unit: A
 - type: pyaml.magnet.quadrupole
   name: Q3M1T2R
   lattice_names: Q3M1T2R
@@ -140,6 +146,7 @@ devices:
     calibration_factor: -0.015735
     unit: 1/m
     powerconverter: (Q3PT2R:rdbk, Q3PT2R:set)[A]
+    hardware_unit: A
 - type: pyaml.magnet.quadrupole
   name: Q3M2T2R
   lattice_names: Q3M2T2R
@@ -148,6 +155,7 @@ devices:
     calibration_factor: -0.015735
     unit: 1/m
     powerconverter: (Q3PT2R:rdbk, Q3PT2R:set)[A]
+    hardware_unit: A
 - type: pyaml.magnet.quadrupole
   name: Q3M1D3R
   lattice_names: Q3M1D3R
@@ -156,6 +164,7 @@ devices:
     calibration_factor: -0.0158575
     unit: 1/m
     powerconverter: (Q3PD3R:rdbk, Q3PD3R:set)[A]
+    hardware_unit: A
 - type: pyaml.magnet.quadrupole
   name: Q3M2D3R
   lattice_names: Q3M2D3R
@@ -164,6 +173,7 @@ devices:
     calibration_factor: -0.0158575
     unit: 1/m
     powerconverter: (Q3PD3R:rdbk, Q3PD3R:set)[A]
+    hardware_unit: A
 - type: pyaml.magnet.quadrupole
   name: Q3M1T3R
   lattice_names: Q3M1T3R
@@ -172,6 +182,7 @@ devices:
     calibration_factor: -0.015735
     unit: 1/m
     powerconverter: (Q3PT3R:rdbk, Q3PT3R:set)[A]
+    hardware_unit: A
 - type: pyaml.magnet.quadrupole
   name: Q3M2T3R
   lattice_names: Q3M2T3R
@@ -180,6 +191,7 @@ devices:
     calibration_factor: -0.015735
     unit: 1/m
     powerconverter: (Q3PT3R:rdbk, Q3PT3R:set)[A]
+    hardware_unit: A
 - type: pyaml.magnet.quadrupole
   name: Q3M1D4R
   lattice_names: Q3M1D4R
@@ -188,6 +200,7 @@ devices:
     calibration_factor: -0.0158575
     unit: 1/m
     powerconverter: (Q3PD4R:rdbk, Q3PD4R:set)[A]
+    hardware_unit: A
 - type: pyaml.magnet.quadrupole
   name: Q3M2D4R
   lattice_names: Q3M2D4R
@@ -196,6 +209,7 @@ devices:
     calibration_factor: -0.0158575
     unit: 1/m
     powerconverter: (Q3PD4R:rdbk, Q3PD4R:set)[A]
+    hardware_unit: A
 - type: pyaml.magnet.quadrupole
   name: Q3M1T4R
   lattice_names: Q3M1T4R
@@ -204,6 +218,7 @@ devices:
     calibration_factor: -0.015735
     unit: 1/m
     powerconverter: (Q3PT4R:rdbk, Q3PT4R:set)[A]
+    hardware_unit: A
 - type: pyaml.magnet.quadrupole
   name: Q3M2T4R
   lattice_names: Q3M2T4R
@@ -212,6 +227,7 @@ devices:
     calibration_factor: -0.015735
     unit: 1/m
     powerconverter: (Q3PT4R:rdbk, Q3PT4R:set)[A]
+    hardware_unit: A
 - type: pyaml.magnet.quadrupole
   name: Q3M1D5R
   lattice_names: Q3M1D5R
@@ -220,6 +236,7 @@ devices:
     calibration_factor: -0.0158575
     unit: 1/m
     powerconverter: (Q3PD5R:rdbk, Q3PD5R:set)[A]
+    hardware_unit: A
 - type: pyaml.magnet.quadrupole
   name: Q3M2D5R
   lattice_names: Q3M2D5R
@@ -228,6 +245,7 @@ devices:
     calibration_factor: -0.0158575
     unit: 1/m
     powerconverter: (Q3PD5R:rdbk, Q3PD5R:set)[A]
+    hardware_unit: A
 - type: pyaml.magnet.quadrupole
   name: Q3M1T5R
   lattice_names: Q3M1T5R
@@ -236,6 +254,7 @@ devices:
     calibration_factor: -0.015735
     unit: 1/m
     powerconverter: (Q3PT5R:rdbk, Q3PT5R:set)[A]
+    hardware_unit: A
 - type: pyaml.magnet.quadrupole
   name: Q3M2T5R
   lattice_names: Q3M2T5R
@@ -244,6 +263,7 @@ devices:
     calibration_factor: -0.015735
     unit: 1/m
     powerconverter: (Q3PT5R:rdbk, Q3PT5R:set)[A]
+    hardware_unit: A
 - type: pyaml.magnet.quadrupole
   name: Q3M1D6R
   lattice_names: Q3M1D6R
@@ -252,6 +272,7 @@ devices:
     calibration_factor: -0.0158575
     unit: 1/m
     powerconverter: (Q3PD6R:rdbk, Q3PD6R:set)[A]
+    hardware_unit: A
 - type: pyaml.magnet.quadrupole
   name: Q3M2D6R
   lattice_names: Q3M2D6R
@@ -260,6 +281,7 @@ devices:
     calibration_factor: -0.0158575
     unit: 1/m
     powerconverter: (Q3PD6R:rdbk, Q3PD6R:set)[A]
+    hardware_unit: A
 - type: pyaml.magnet.quadrupole
   name: Q3M1T6R
   lattice_names: Q3M1T6R
@@ -268,6 +290,7 @@ devices:
     calibration_factor: -0.015735
     unit: 1/m
     powerconverter: (Q3P1T6R:rdbk, Q3P1T6R:set)[A]
+    hardware_unit: A
 - type: pyaml.magnet.quadrupole
   name: Q3M2T6R
   lattice_names: Q3M2T6R
@@ -276,6 +299,7 @@ devices:
     calibration_factor: -0.015735
     unit: 1/m
     powerconverter: (Q3P2T6R:rdbk, Q3P2T6R:set)[A]
+    hardware_unit: A
 - type: pyaml.magnet.quadrupole
   name: Q3M1D7R
   lattice_names: Q3M1D7R
@@ -284,6 +308,7 @@ devices:
     calibration_factor: -0.0158575
     unit: 1/m
     powerconverter: (Q3PD7R:rdbk, Q3PD7R:set)[A]
+    hardware_unit: A
 - type: pyaml.magnet.quadrupole
   name: Q3M2D7R
   lattice_names: Q3M2D7R
@@ -292,6 +317,7 @@ devices:
     calibration_factor: -0.0158575
     unit: 1/m
     powerconverter: (Q3PD7R:rdbk, Q3PD7R:set)[A]
+    hardware_unit: A
 - type: pyaml.magnet.quadrupole
   name: Q3M1T7R
   lattice_names: Q3M1T7R
@@ -300,6 +326,7 @@ devices:
     calibration_factor: -0.015735
     unit: 1/m
     powerconverter: (Q3PT7R:rdbk, Q3PT7R:set)[A]
+    hardware_unit: A
 - type: pyaml.magnet.quadrupole
   name: Q3M2T7R
   lattice_names: Q3M2T7R
@@ -308,6 +335,7 @@ devices:
     calibration_factor: -0.015735
     unit: 1/m
     powerconverter: (Q3PT7R:rdbk, Q3PT7R:set)[A]
+    hardware_unit: A
 - type: pyaml.magnet.quadrupole
   name: Q3M1D8R
   lattice_names: Q3M1D8R
@@ -316,6 +344,7 @@ devices:
     calibration_factor: -0.0158575
     unit: 1/m
     powerconverter: (Q3PD8R:rdbk, Q3PD8R:set)[A]
+    hardware_unit: A
 - type: pyaml.magnet.quadrupole
   name: Q3M2D8R
   lattice_names: Q3M2D8R
@@ -324,6 +353,7 @@ devices:
     calibration_factor: -0.0158575
     unit: 1/m
     powerconverter: (Q3PD8R:rdbk, Q3PD8R:set)[A]
+    hardware_unit: A
 - type: pyaml.magnet.quadrupole
   name: Q3M1T8R
   lattice_names: Q3M1T8R
@@ -332,6 +362,7 @@ devices:
     calibration_factor: -0.015735
     unit: 1/m
     powerconverter: (Q3P1T8R:rdbk, Q3P1T8R:set)[A]
+    hardware_unit: A
 - type: pyaml.magnet.quadrupole
   name: Q3M2T8R
   lattice_names: Q3M2T8R
@@ -340,6 +371,7 @@ devices:
     calibration_factor: -0.015735
     unit: 1/m
     powerconverter: (Q3P2T8R:rdbk, Q3P2T8R:set)[A]
+    hardware_unit: A
 - type: pyaml.magnet.quadrupole
   name: Q4M1D1R
   lattice_names: Q4M1D1R
@@ -348,6 +380,7 @@ devices:
     calibration_factor: 0.0303165
     unit: 1/m
     powerconverter: (Q4PD1R:rdbk, Q4PD1R:set)[A]
+    hardware_unit: A
 - type: pyaml.magnet.quadrupole
   name: Q4M2D1R
   lattice_names: Q4M2D1R
@@ -356,6 +389,7 @@ devices:
     calibration_factor: 0.0303165
     unit: 1/m
     powerconverter: (Q4PD1R:rdbk, Q4PD1R:set)[A]
+    hardware_unit: A
 - type: pyaml.magnet.quadrupole
   name: Q4M1T1R
   lattice_names: Q4M1T1R
@@ -364,6 +398,7 @@ devices:
     calibration_factor: 0.0296695
     unit: 1/m
     powerconverter: (Q4P1T1R:rdbk, Q4P1T1R:set)[A]
+    hardware_unit: A
 - type: pyaml.magnet.quadrupole
   name: Q4M2T1R
   lattice_names: Q4M2T1R
@@ -372,6 +407,7 @@ devices:
     calibration_factor: 0.0296695
     unit: 1/m
     powerconverter: (Q4P2T1R:rdbk, Q4P2T1R:set)[A]
+    hardware_unit: A
 - type: pyaml.magnet.quadrupole
   name: Q4M1D2R
   lattice_names: Q4M1D2R
@@ -380,6 +416,7 @@ devices:
     calibration_factor: 0.0303165
     unit: 1/m
     powerconverter: (Q4PD2R:rdbk, Q4PD2R:set)[A]
+    hardware_unit: A
 - type: pyaml.magnet.quadrupole
   name: Q4M2D2R
   lattice_names: Q4M2D2R
@@ -388,6 +425,7 @@ devices:
     calibration_factor: 0.0303165
     unit: 1/m
     powerconverter: (Q4PD2R:rdbk, Q4PD2R:set)[A]
+    hardware_unit: A
 - type: pyaml.magnet.quadrupole
   name: Q4M1T2R
   lattice_names: Q4M1T2R
@@ -396,6 +434,7 @@ devices:
     calibration_factor: 0.0296695
     unit: 1/m
     powerconverter: (Q4PT2R:rdbk, Q4PT2R:set)[A]
+    hardware_unit: A
 - type: pyaml.magnet.quadrupole
   name: Q4M2T2R
   lattice_names: Q4M2T2R
@@ -404,6 +443,7 @@ devices:
     calibration_factor: 0.0296695
     unit: 1/m
     powerconverter: (Q4PT2R:rdbk, Q4PT2R:set)[A]
+    hardware_unit: A
 - type: pyaml.magnet.quadrupole
   name: Q4M1D3R
   lattice_names: Q4M1D3R
@@ -412,6 +452,7 @@ devices:
     calibration_factor: 0.0303165
     unit: 1/m
     powerconverter: (Q4PD3R:rdbk, Q4PD3R:set)[A]
+    hardware_unit: A
 - type: pyaml.magnet.quadrupole
   name: Q4M2D3R
   lattice_names: Q4M2D3R
@@ -420,6 +461,7 @@ devices:
     calibration_factor: 0.0303165
     unit: 1/m
     powerconverter: (Q4PD3R:rdbk, Q4PD3R:set)[A]
+    hardware_unit: A
 - type: pyaml.magnet.quadrupole
   name: Q4M1T3R
   lattice_names: Q4M1T3R
@@ -428,6 +470,7 @@ devices:
     calibration_factor: 0.0296695
     unit: 1/m
     powerconverter: (Q4PT3R:rdbk, Q4PT3R:set)[A]
+    hardware_unit: A
 - type: pyaml.magnet.quadrupole
   name: Q4M2T3R
   lattice_names: Q4M2T3R
@@ -436,6 +479,7 @@ devices:
     calibration_factor: 0.0296695
     unit: 1/m
     powerconverter: (Q4PT3R:rdbk, Q4PT3R:set)[A]
+    hardware_unit: A
 - type: pyaml.magnet.quadrupole
   name: Q4M1D4R
   lattice_names: Q4M1D4R
@@ -444,6 +488,7 @@ devices:
     calibration_factor: 0.0303165
     unit: 1/m
     powerconverter: (Q4PD4R:rdbk, Q4PD4R:set)[A]
+    hardware_unit: A
 - type: pyaml.magnet.quadrupole
   name: Q4M2D4R
   lattice_names: Q4M2D4R
@@ -452,6 +497,7 @@ devices:
     calibration_factor: 0.0303165
     unit: 1/m
     powerconverter: (Q4PD4R:rdbk, Q4PD4R:set)[A]
+    hardware_unit: A
 - type: pyaml.magnet.quadrupole
   name: Q4M1T4R
   lattice_names: Q4M1T4R
@@ -460,6 +506,7 @@ devices:
     calibration_factor: 0.0296695
     unit: 1/m
     powerconverter: (Q4PT4R:rdbk, Q4PT4R:set)[A]
+    hardware_unit: A
 - type: pyaml.magnet.quadrupole
   name: Q4M2T4R
   lattice_names: Q4M2T4R
@@ -468,6 +515,7 @@ devices:
     calibration_factor: 0.0296695
     unit: 1/m
     powerconverter: (Q4PT4R:rdbk, Q4PT4R:set)[A]
+    hardware_unit: A
 - type: pyaml.magnet.quadrupole
   name: Q4M1D5R
   lattice_names: Q4M1D5R
@@ -476,6 +524,7 @@ devices:
     calibration_factor: 0.0303165
     unit: 1/m
     powerconverter: (Q4PD5R:rdbk, Q4PD5R:set)[A]
+    hardware_unit: A
 - type: pyaml.magnet.quadrupole
   name: Q4M2D5R
   lattice_names: Q4M2D5R
@@ -484,6 +533,7 @@ devices:
     calibration_factor: 0.0303165
     unit: 1/m
     powerconverter: (Q4PD5R:rdbk, Q4PD5R:set)[A]
+    hardware_unit: A
 - type: pyaml.magnet.quadrupole
   name: Q4M1T5R
   lattice_names: Q4M1T5R
@@ -492,6 +542,7 @@ devices:
     calibration_factor: 0.0296695
     unit: 1/m
     powerconverter: (Q4PT5R:rdbk, Q4PT5R:set)[A]
+    hardware_unit: A
 - type: pyaml.magnet.quadrupole
   name: Q4M2T5R
   lattice_names: Q4M2T5R
@@ -500,6 +551,7 @@ devices:
     calibration_factor: 0.0296695
     unit: 1/m
     powerconverter: (Q4PT5R:rdbk, Q4PT5R:set)[A]
+    hardware_unit: A
 - type: pyaml.magnet.quadrupole
   name: Q4M1D6R
   lattice_names: Q4M1D6R
@@ -508,6 +560,7 @@ devices:
     calibration_factor: 0.0303165
     unit: 1/m
     powerconverter: (Q4PD6R:rdbk, Q4PD6R:set)[A]
+    hardware_unit: A
 - type: pyaml.magnet.quadrupole
   name: Q4M2D6R
   lattice_names: Q4M2D6R
@@ -516,6 +569,7 @@ devices:
     calibration_factor: 0.0303165
     unit: 1/m
     powerconverter: (Q4PD6R:rdbk, Q4PD6R:set)[A]
+    hardware_unit: A
 - type: pyaml.magnet.quadrupole
   name: Q4M1T6R
   lattice_names: Q4M1T6R
@@ -524,6 +578,7 @@ devices:
     calibration_factor: 0.0296695
     unit: 1/m
     powerconverter: (Q4P1T6R:rdbk, Q4P1T6R:set)[A]
+    hardware_unit: A
 - type: pyaml.magnet.quadrupole
   name: Q4M2T6R
   lattice_names: Q4M2T6R
@@ -532,6 +587,7 @@ devices:
     calibration_factor: 0.0296695
     unit: 1/m
     powerconverter: (Q4P2T6R:rdbk, Q4P2T6R:set)[A]
+    hardware_unit: A
 - type: pyaml.magnet.quadrupole
   name: Q4M1D7R
   lattice_names: Q4M1D7R
@@ -540,6 +596,7 @@ devices:
     calibration_factor: 0.0303165
     unit: 1/m
     powerconverter: (Q4PD7R:rdbk, Q4PD7R:set)[A]
+    hardware_unit: A
 - type: pyaml.magnet.quadrupole
   name: Q4M2D7R
   lattice_names: Q4M2D7R
@@ -548,6 +605,7 @@ devices:
     calibration_factor: 0.0303165
     unit: 1/m
     powerconverter: (Q4PD7R:rdbk, Q4PD7R:set)[A]
+    hardware_unit: A
 - type: pyaml.magnet.quadrupole
   name: Q4M1T7R
   lattice_names: Q4M1T7R
@@ -556,6 +614,7 @@ devices:
     calibration_factor: 0.0296695
     unit: 1/m
     powerconverter: (Q4PT7R:rdbk, Q4PT7R:set)[A]
+    hardware_unit: A
 - type: pyaml.magnet.quadrupole
   name: Q4M2T7R
   lattice_names: Q4M2T7R
@@ -564,6 +623,7 @@ devices:
     calibration_factor: 0.0296695
     unit: 1/m
     powerconverter: (Q4PT7R:rdbk, Q4PT7R:set)[A]
+    hardware_unit: A
 - type: pyaml.magnet.quadrupole
   name: Q4M1D8R
   lattice_names: Q4M1D8R
@@ -572,6 +632,7 @@ devices:
     calibration_factor: 0.0303165
     unit: 1/m
     powerconverter: (Q4PD8R:rdbk, Q4PD8R:set)[A]
+    hardware_unit: A
 - type: pyaml.magnet.quadrupole
   name: Q4M2D8R
   lattice_names: Q4M2D8R
@@ -580,6 +641,7 @@ devices:
     calibration_factor: 0.0303165
     unit: 1/m
     powerconverter: (Q4PD8R:rdbk, Q4PD8R:set)[A]
+    hardware_unit: A
 - type: pyaml.magnet.quadrupole
   name: Q4M1T8R
   lattice_names: Q4M1T8R
@@ -588,6 +650,7 @@ devices:
     calibration_factor: 0.0296695
     unit: 1/m
     powerconverter: (Q4P1T8R:rdbk, Q4P1T8R:set)[A]
+    hardware_unit: A
 - type: pyaml.magnet.quadrupole
   name: Q4M2T8R
   lattice_names: Q4M2T8R
@@ -596,6 +659,7 @@ devices:
     calibration_factor: 0.0296695
     unit: 1/m
     powerconverter: (Q4P2T8R:rdbk, Q4P2T8R:set)[A]
+    hardware_unit: A
 - type: pyaml.diagnostics.tune_monitor
   name: BETATRON_TUNE
   tune_h: beam:twiss:x:tune
