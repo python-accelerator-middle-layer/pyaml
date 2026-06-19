@@ -4,3 +4,5 @@ entries:
   - catalogs/ebs_rf_catalogs.yaml
   - catalogs/ebs_diag_catalogs.yaml
   - catalogs/ebs_qf1_qd2_catalogs.yaml
+  - catalogs/ebs_sh_catalogs.yaml
+  - catalogs/ebs_sext_catalogs.yaml
