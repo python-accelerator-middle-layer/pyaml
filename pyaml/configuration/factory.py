@@ -380,6 +380,10 @@ class PyAMLFactory:
         """
 
         build_info = resolve_build_info(data, ignore_external)
+
+        if build_info is None:
+            return None
+
         config_cls = build_info.config_cls
 
         result = dict(data)
@@ -487,6 +491,9 @@ class PyAMLFactory:
 
         # Get the build information
         build_info = resolve_build_info(data, ignore_external)
+        if build_info is None:
+            return None
+
         module = build_info.module
         config_cls = build_info.config_cls
         class_str = build_info.class_str
@@ -548,6 +555,8 @@ class PyAMLFactory:
 
         elif isinstance(data, dict):
             data = self._build_dict(data, ignore_external)
+            if data is None:
+                return None
             return self.build_object(data, ignore_external)
 
     def clear(self):

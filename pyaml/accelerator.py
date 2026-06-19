@@ -70,8 +70,8 @@ class Accelerator(object):
 
     def __init__(self, cfg: ConfigModel):
         self._cfg = cfg
-        __design = None
-        __live = None
+        self.__design = None
+        self.__live = None
         self._controls: dict[str, ElementHolder] = {}
         self._simulators: dict[str, ElementHolder] = {}
 
