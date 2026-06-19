@@ -29,7 +29,8 @@ class ConfigModel(BaseModel):
         Crosstalk factor. Default: 1.0
     unit : str
         Unit of the strength (i.e. 1/m or m-1)
-
+    hardware_unit : str
+        Hardware units (i.e. 'A' , 'V')
     """
 
     model_config = ConfigDict(arbitrary_types_allowed=True, extra="forbid")
@@ -40,6 +41,7 @@ class ConfigModel(BaseModel):
     calibration_offset: float = 0.0
     crosstalk: float = 1.0
     unit: str
+    hardware_unit: str
 
 
 class LinearMagnetModel(MagnetModel):
@@ -60,7 +62,7 @@ class LinearMagnetModel(MagnetModel):
             self.__g = cfg.calibration_factor * cfg.crosstalk
             self.__o = cfg.calibration_offset
         self.__strength_unit = cfg.unit
-        self.__hardware_unit = None  # cfg.powerconverter.unit()
+        self.__hardware_unit = cfg.hardware_unit
         self.__brho = np.nan
         self.__ps = cfg.powerconverter
 

@@ -29,6 +29,8 @@ class ConfigModel(BaseModel):
         Crosstalk factor. Default: 1.0
     unit : str
         Unit of the strength (i.e. 1/m or m-1)
+    hardware_unit : str
+        Hardware units (i.e. 'A' , 'V')
     alpha : float, optional
         Regularization parameter (alpha >= 0). alpha = 0 means the interpolation
         passes through all the points of the curve. Default: 0.0
@@ -42,6 +44,7 @@ class ConfigModel(BaseModel):
     calibration_offset: float = 0.0
     crosstalk: float = 1.0
     unit: str
+    hardware_unit: str
     alpha: float = 0.0
 
 
@@ -57,7 +60,7 @@ class SplineMagnetModel(MagnetModel):
         self.__curve[:, 1] = self.__curve[:, 1] * cfg.calibration_factor * cfg.crosstalk + cfg.calibration_offset
         rcurve = Curve.inverse(self.__curve)
         self.__strength_unit = cfg.unit
-        self.__hardware_unit = None  # cfg.powerconverter.unit()
+        self.__hardware_unit = cfg.hardware_unit
         self.__brho = np.nan
         self.__ps = cfg.powerconverter
         self.__spl = make_smoothing_spline(self.__curve[:, 0], self.__curve[:, 1], lam=cfg.alpha)

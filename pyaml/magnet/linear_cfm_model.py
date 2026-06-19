@@ -42,6 +42,8 @@ class ConfigModel(BaseModel):
         to handle multipoles separation. Default: Identity
     units : list[str]
         List of strength units (i.e. ['rad', 'm-1', 'm-2'])
+    hardware_units : list[str]
+        List of hardware units (i.e. 'A' , 'V')
     """
 
     model_config = ConfigDict(arbitrary_types_allowed=True, extra="forbid")
@@ -55,6 +57,7 @@ class ConfigModel(BaseModel):
     powerconverters: list[str | None]
     matrix: Matrix = None
     units: list[str]
+    hardware_units: list[str]
 
 
 class LinearCFMagnetModel(MagnetModel):
@@ -97,6 +100,7 @@ class LinearCFMagnetModel(MagnetModel):
         self.__check_len(self.__pf, "pseudo_factors", self.__nbFunction)
         self.__check_len(self.__po, "pseudo_offsets", self.__nbFunction)
         self.__check_len(cfg.units, "units", self.__nbFunction)
+        self.__check_len(cfg.hardware_units, "hardware_units", self.__nbPS)
         self.__check_len(cfg.curves, "curves", self.__nbFunction)
 
         if cfg.matrix is None:
@@ -149,7 +153,7 @@ class LinearCFMagnetModel(MagnetModel):
         return self._cfg.units
 
     def get_hardware_units(self) -> list[str]:
-        return np.array([p.unit() for p in self._cfg.powerconverters])
+        return self._cfg.hardware_units
 
     def get_device_names(self) -> list[str | None]:
         return self._cfg.powerconverters
