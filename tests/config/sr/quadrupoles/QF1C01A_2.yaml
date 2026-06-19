@@ -6,7 +6,5 @@ model:
   calibration_offset: 0.0034
   curve: sr/magnet_models/quadcurve.yaml
   unit: 1/m
-  powerconverter:
-    type: tango.pyaml.attribute
-    attribute: sr/ps-qf1/c01-a/current
-    unit: A
+  hardware_unit: A
+  powerconverter: sr/ps-qf1/c01-a/current
