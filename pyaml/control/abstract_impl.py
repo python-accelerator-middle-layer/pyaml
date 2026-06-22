@@ -238,7 +238,7 @@ class CSStrengthScalarAggregator(CSScalarAggregator):
         newHardwareValues = np.zeros(self.nb_device())
         hardwareIndex = 0
         for modelIndex, model in enumerate(self.__models):
-            nbDev = len(model.get_devices())
+            nbDev = len(model.get_device_names())
             mStrengths = model.compute_strengths(allHardwareValues[hardwareIndex : hardwareIndex + nbDev])
             for valueIdx, strengthIdx in self.__modelToMagnet[modelIndex]:
                 mStrengths[strengthIdx] = value[valueIdx]
@@ -257,7 +257,7 @@ class CSStrengthScalarAggregator(CSScalarAggregator):
         allStrength = np.zeros(self.__nbMagnet)
         hardwareIndex = 0
         for modelIndex, model in enumerate(self.__models):
-            nbDev = len(model.get_devices())
+            nbDev = len(model.get_device_names())
             mStrengths = model.compute_strengths(allHardwareValues[hardwareIndex : hardwareIndex + nbDev])
             for valueIdx, strengthIdx in self.__modelToMagnet[modelIndex]:
                 allStrength[valueIdx] = mStrengths[strengthIdx]
@@ -269,7 +269,7 @@ class CSStrengthScalarAggregator(CSScalarAggregator):
         allStrength = np.zeros(self.__nbMagnet)
         hardwareIndex = 0
         for modelIndex, model in enumerate(self.__models):
-            nbDev = len(model.get_devices())
+            nbDev = len(model.get_device_names())
             mStrengths = model.compute_strengths(allHardwareValues[hardwareIndex : hardwareIndex + nbDev])
             for valueIdx, strengthIdx in self.__modelToMagnet[modelIndex]:
                 allStrength[valueIdx] = mStrengths[strengthIdx]

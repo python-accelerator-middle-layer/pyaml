@@ -74,7 +74,7 @@ def test_inline_catalog_is_supported(install_test_package):
 def test_unresolved_catalog_key_raises_runtime_error(install_test_package):
     with pytest.raises(
         PyAMLConfigException,
-        match="Control system 'live' catalog cannot resolve key 'BPM_C03-01/y'",
+        match="Catalog cannot resolve key 'BPM_C03-01/y'",
     ):
         Accelerator.from_dict(
             {

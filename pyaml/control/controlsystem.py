@@ -101,7 +101,7 @@ class ControlSystem(ElementHolder, metaclass=ABCMeta):
             return None
         magg = CSStrengthScalarAggregator(agg)
         for m in magnets:
-            devs = self.attach(m.model.get_devices())
+            devs = self.get_devices_access(m.model.get_device_names())
             magg.add_magnet(m, devs)
         return magg
 
@@ -116,7 +116,7 @@ class ControlSystem(ElementHolder, metaclass=ABCMeta):
             if not m.model.has_hardware():
                 return None
             psIndex = m.hardware.index() if isinstance(m.hardware, RWMapper) else 0
-            agg.add_devices(self.attach([m.model.get_devices()[psIndex]])[0])
+            agg.add_devices(self.get_devices_access([m.model.get_device_names()[psIndex]])[0])
         return agg
 
     def create_bpm_aggregators(self, bpms: list[BPM]) -> list[ScalarAggregator | None]:
@@ -145,7 +145,7 @@ class ControlSystem(ElementHolder, metaclass=ABCMeta):
         """
         for e in elements:
             if isinstance(e, Magnet):
-                dev = self.attach(e.model.get_devices())[0]
+                dev = self.get_device_access(e.model.get_device_names()[0])
                 current = RWHardwareScalar(e.model, dev) if e.model.has_hardware() else None
                 strength = RWStrengthScalar(e.model, dev) if e.model.has_physics() else None
                 # Create a unique ref for this control system
@@ -153,7 +153,7 @@ class ControlSystem(ElementHolder, metaclass=ABCMeta):
                 self.add_magnet(m)
 
             elif isinstance(e, CombinedFunctionMagnet):
-                devs = self.attach(e.model.get_devices())
+                devs = self.get_devices_access(e.model.get_device_names())
                 currents = RWHardwareArray(e.model, devs)
                 strengths = RWStrengthArray(e.model, devs)
                 # Create unique refs the cfm and
@@ -164,7 +164,7 @@ class ControlSystem(ElementHolder, metaclass=ABCMeta):
                     self.add_magnet(m)
 
             elif isinstance(e, SerializedMagnets):
-                devs = self.attach(e.model.get_devices())
+                devs = self.get_devices_access(e.model.get_device_names())
                 currents = []
                 strengths = []
                 # Create unique refs the series and each of its function for this
