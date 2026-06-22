@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>model &#8212; Python Accelerator Middle Layer 0.1.dev1+ga24402e35 documentation</title>
+    <title>model &#8212; Python Accelerator Middle Layer 0.1.dev1+g7bd2413f3 documentation</title>
   
   
   
@@ -42,7 +42,7 @@
   <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=a95f357e85573c9b56d5" />
 <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=a95f357e85573c9b56d5" />
 
-    <script src="../_static/documentation_options.js?v=8da34048"></script>
+    <script src="../_static/documentation_options.js?v=e255448a"></script>
     <script src="../_static/doctools.js?v=9bcbadda"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -128,8 +128,8 @@
       
     
     
-    <img src="../_static/logo.png" class="logo__image only-light" alt="Python Accelerator Middle Layer 0.1.dev1+ga24402e35 documentation - Home"/>
-    <img src="../_static/dark.png" class="logo__image only-dark pst-js-only" alt="Python Accelerator Middle Layer 0.1.dev1+ga24402e35 documentation - Home"/>
+    <img src="../_static/logo.png" class="logo__image only-light" alt="Python Accelerator Middle Layer 0.1.dev1+g7bd2413f3 documentation - Home"/>
+    <img src="../_static/dark.png" class="logo__image only-dark pst-js-only" alt="Python Accelerator Middle Layer 0.1.dev1+g7bd2413f3 documentation - Home"/>
   
   
 </a></div>
@@ -564,24 +564,12 @@ returns an array of 1 item</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="pyaml.magnet.model.MagnetModel.get_devices">
-<em class="property"><span class="k"><span class="pre">abstractmethod</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_devices</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/magnet/model.html#MagnetModel.get_devices"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.magnet.model.MagnetModel.get_devices" title="Link to this definition">#</a></dt>
-<dd><p>Get device handles</p>
+<dt class="sig sig-object py" id="pyaml.magnet.model.MagnetModel.get_device_names">
+<em class="property"><span class="k"><span class="pre">abstractmethod</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_device_names</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/magnet/model.html#MagnetModel.get_device_names"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.magnet.model.MagnetModel.get_device_names" title="Link to this definition">#</a></dt>
+<dd><p>Get device names</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>list[DeviceAccess]</strong> – Array of DeviceAcess</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pyaml.magnet.model.MagnetModel.get_hardware_units">
-<em class="property"><span class="k"><span class="pre">abstractmethod</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_hardware_units</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/magnet/model.html#MagnetModel.get_hardware_units"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.magnet.model.MagnetModel.get_hardware_units" title="Link to this definition">#</a></dt>
-<dd><p>Get hardware units</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>list[str]</strong> – Array of hardware units. For a single multipole,
-returns a list of 1 item</p>
+<dd class="field-odd"><p><strong>list[DevstriceAccess]</strong> – Array of device name</p>
 </dd>
 </dl>
 </dd></dl>
@@ -685,8 +673,7 @@ returns a list of 1 item</p>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.magnet.model.MagnetModel"><code class="docutils literal notranslate"><span class="pre">MagnetModel</span></code></a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.magnet.model.MagnetModel.compute_hardware_values"><code class="docutils literal notranslate"><span class="pre">MagnetModel.compute_hardware_values()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.magnet.model.MagnetModel.compute_strengths"><code class="docutils literal notranslate"><span class="pre">MagnetModel.compute_strengths()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.magnet.model.MagnetModel.get_devices"><code class="docutils literal notranslate"><span class="pre">MagnetModel.get_devices()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.magnet.model.MagnetModel.get_hardware_units"><code class="docutils literal notranslate"><span class="pre">MagnetModel.get_hardware_units()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.magnet.model.MagnetModel.get_device_names"><code class="docutils literal notranslate"><span class="pre">MagnetModel.get_device_names()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.magnet.model.MagnetModel.get_strength_units"><code class="docutils literal notranslate"><span class="pre">MagnetModel.get_strength_units()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.magnet.model.MagnetModel.has_hardware"><code class="docutils literal notranslate"><span class="pre">MagnetModel.has_hardware()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.magnet.model.MagnetModel.has_physics"><code class="docutils literal notranslate"><span class="pre">MagnetModel.has_physics()</span></code></a></li>

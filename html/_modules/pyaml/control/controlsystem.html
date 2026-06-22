@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>pyaml.control.controlsystem &#8212; Python Accelerator Middle Layer 0.1.dev1+ga24402e35 documentation</title>
+    <title>pyaml.control.controlsystem &#8212; Python Accelerator Middle Layer 0.1.dev1+g7bd2413f3 documentation</title>
   
   
   
@@ -41,7 +41,7 @@
   <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=a95f357e85573c9b56d5" />
 <link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=a95f357e85573c9b56d5" />
 
-    <script src="../../../_static/documentation_options.js?v=8da34048"></script>
+    <script src="../../../_static/documentation_options.js?v=e255448a"></script>
     <script src="../../../_static/doctools.js?v=9bcbadda"></script>
     <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -125,8 +125,8 @@
       
     
     
-    <img src="../../../_static/logo.png" class="logo__image only-light" alt="Python Accelerator Middle Layer 0.1.dev1+ga24402e35 documentation - Home"/>
-    <img src="../../../_static/dark.png" class="logo__image only-dark pst-js-only" alt="Python Accelerator Middle Layer 0.1.dev1+ga24402e35 documentation - Home"/>
+    <img src="../../../_static/logo.png" class="logo__image only-light" alt="Python Accelerator Middle Layer 0.1.dev1+g7bd2413f3 documentation - Home"/>
+    <img src="../../../_static/dark.png" class="logo__image only-dark pst-js-only" alt="Python Accelerator Middle Layer 0.1.dev1+g7bd2413f3 documentation - Home"/>
   
   
 </a></div>
@@ -513,7 +513,7 @@
             <span class="k">return</span> <span class="kc">None</span>
         <span class="n">magg</span> <span class="o">=</span> <span class="n">CSStrengthScalarAggregator</span><span class="p">(</span><span class="n">agg</span><span class="p">)</span>
         <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="n">magnets</span><span class="p">:</span>
-            <span class="n">devs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">attach</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">get_devices</span><span class="p">())</span>
+            <span class="n">devs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_devices_access</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">get_device_names</span><span class="p">())</span>
             <span class="n">magg</span><span class="o">.</span><span class="n">add_magnet</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">devs</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">magg</span></div>
 
@@ -531,7 +531,7 @@
             <span class="k">if</span> <span class="ow">not</span> <span class="n">m</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">has_hardware</span><span class="p">():</span>
                 <span class="k">return</span> <span class="kc">None</span>
             <span class="n">psIndex</span> <span class="o">=</span> <span class="n">m</span><span class="o">.</span><span class="n">hardware</span><span class="o">.</span><span class="n">index</span><span class="p">()</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">hardware</span><span class="p">,</span> <span class="n">RWMapper</span><span class="p">)</span> <span class="k">else</span> <span class="mi">0</span>
-            <span class="n">agg</span><span class="o">.</span><span class="n">add_devices</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">attach</span><span class="p">([</span><span class="n">m</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">get_devices</span><span class="p">()[</span><span class="n">psIndex</span><span class="p">]])[</span><span class="mi">0</span><span class="p">])</span>
+            <span class="n">agg</span><span class="o">.</span><span class="n">add_devices</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_devices_access</span><span class="p">([</span><span class="n">m</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">get_device_names</span><span class="p">()[</span><span class="n">psIndex</span><span class="p">]])[</span><span class="mi">0</span><span class="p">])</span>
         <span class="k">return</span> <span class="n">agg</span></div>
 
 
@@ -566,7 +566,7 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">elements</span><span class="p">:</span>
             <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="n">Magnet</span><span class="p">):</span>
-                <span class="n">dev</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">attach</span><span class="p">(</span><span class="n">e</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">get_devices</span><span class="p">())[</span><span class="mi">0</span><span class="p">]</span>
+                <span class="n">dev</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_device_access</span><span class="p">(</span><span class="n">e</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">get_device_names</span><span class="p">()[</span><span class="mi">0</span><span class="p">])</span>
                 <span class="n">current</span> <span class="o">=</span> <span class="n">RWHardwareScalar</span><span class="p">(</span><span class="n">e</span><span class="o">.</span><span class="n">model</span><span class="p">,</span> <span class="n">dev</span><span class="p">)</span> <span class="k">if</span> <span class="n">e</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">has_hardware</span><span class="p">()</span> <span class="k">else</span> <span class="kc">None</span>
                 <span class="n">strength</span> <span class="o">=</span> <span class="n">RWStrengthScalar</span><span class="p">(</span><span class="n">e</span><span class="o">.</span><span class="n">model</span><span class="p">,</span> <span class="n">dev</span><span class="p">)</span> <span class="k">if</span> <span class="n">e</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">has_physics</span><span class="p">()</span> <span class="k">else</span> <span class="kc">None</span>
                 <span class="c1"># Create a unique ref for this control system</span>
@@ -574,7 +574,7 @@
                 <span class="bp">self</span><span class="o">.</span><span class="n">add_magnet</span><span class="p">(</span><span class="n">m</span><span class="p">)</span>
 
             <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="n">CombinedFunctionMagnet</span><span class="p">):</span>
-                <span class="n">devs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">attach</span><span class="p">(</span><span class="n">e</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">get_devices</span><span class="p">())</span>
+                <span class="n">devs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_devices_access</span><span class="p">(</span><span class="n">e</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">get_device_names</span><span class="p">())</span>
                 <span class="n">currents</span> <span class="o">=</span> <span class="n">RWHardwareArray</span><span class="p">(</span><span class="n">e</span><span class="o">.</span><span class="n">model</span><span class="p">,</span> <span class="n">devs</span><span class="p">)</span>
                 <span class="n">strengths</span> <span class="o">=</span> <span class="n">RWStrengthArray</span><span class="p">(</span><span class="n">e</span><span class="o">.</span><span class="n">model</span><span class="p">,</span> <span class="n">devs</span><span class="p">)</span>
                 <span class="c1"># Create unique refs the cfm and</span>
@@ -585,7 +585,7 @@
                     <span class="bp">self</span><span class="o">.</span><span class="n">add_magnet</span><span class="p">(</span><span class="n">m</span><span class="p">)</span>
 
             <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="n">SerializedMagnets</span><span class="p">):</span>
-                <span class="n">devs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">attach</span><span class="p">(</span><span class="n">e</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">get_devices</span><span class="p">())</span>
+                <span class="n">devs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_devices_access</span><span class="p">(</span><span class="n">e</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">get_device_names</span><span class="p">())</span>
                 <span class="n">currents</span> <span class="o">=</span> <span class="p">[]</span>
                 <span class="n">strengths</span> <span class="o">=</span> <span class="p">[]</span>
                 <span class="c1"># Create unique refs the series and each of its function for this</span>

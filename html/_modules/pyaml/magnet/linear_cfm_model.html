@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>pyaml.magnet.linear_cfm_model &#8212; Python Accelerator Middle Layer 0.1.dev1+ga24402e35 documentation</title>
+    <title>pyaml.magnet.linear_cfm_model &#8212; Python Accelerator Middle Layer 0.1.dev1+g7bd2413f3 documentation</title>
   
   
   
@@ -41,7 +41,7 @@
   <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=a95f357e85573c9b56d5" />
 <link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=a95f357e85573c9b56d5" />
 
-    <script src="../../../_static/documentation_options.js?v=8da34048"></script>
+    <script src="../../../_static/documentation_options.js?v=e255448a"></script>
     <script src="../../../_static/doctools.js?v=9bcbadda"></script>
     <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -125,8 +125,8 @@
       
     
     
-    <img src="../../../_static/logo.png" class="logo__image only-light" alt="Python Accelerator Middle Layer 0.1.dev1+ga24402e35 documentation - Home"/>
-    <img src="../../../_static/dark.png" class="logo__image only-dark pst-js-only" alt="Python Accelerator Middle Layer 0.1.dev1+ga24402e35 documentation - Home"/>
+    <img src="../../../_static/logo.png" class="logo__image only-light" alt="Python Accelerator Middle Layer 0.1.dev1+g7bd2413f3 documentation - Home"/>
+    <img src="../../../_static/dark.png" class="logo__image only-dark pst-js-only" alt="Python Accelerator Middle Layer 0.1.dev1+g7bd2413f3 documentation - Home"/>
   
   
 </a></div>
@@ -426,7 +426,7 @@
 <span class="sd">    pseudo_offsets : list[float], optional</span>
 <span class="sd">        Offsets applied to &#39;pseudo currents&#39;, 1 offset per function.</span>
 <span class="sd">        Default: zeros</span>
-<span class="sd">    powerconverters : list[DeviceAccess]</span>
+<span class="sd">    powerconverters : list[str]</span>
 <span class="sd">        List of power converter devices to apply currents (can be different</span>
 <span class="sd">        from number of functions)</span>
 <span class="sd">    matrix : Matrix, optional</span>
@@ -434,6 +434,8 @@
 <span class="sd">        to handle multipoles separation. Default: Identity</span>
 <span class="sd">    units : list[str]</span>
 <span class="sd">        List of strength units (i.e. [&#39;rad&#39;, &#39;m-1&#39;, &#39;m-2&#39;])</span>
+<span class="sd">    hardware_units : list[str]</span>
+<span class="sd">        List of hardware units (i.e. &#39;A&#39; , &#39;V&#39;)</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">model_config</span> <span class="o">=</span> <span class="n">ConfigDict</span><span class="p">(</span><span class="n">arbitrary_types_allowed</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">extra</span><span class="o">=</span><span class="s2">&quot;forbid&quot;</span><span class="p">)</span>
@@ -444,9 +446,10 @@
     <span class="n">calibration_offsets</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="n">pseudo_factors</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="n">pseudo_offsets</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
-    <span class="n">powerconverters</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">DeviceAccess</span> <span class="o">|</span> <span class="kc">None</span><span class="p">]</span>
+    <span class="n">powerconverters</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">]</span>
     <span class="n">matrix</span><span class="p">:</span> <span class="n">Matrix</span> <span class="o">=</span> <span class="kc">None</span>
-    <span class="n">units</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span></div>
+    <span class="n">units</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span>
+    <span class="n">hardware_units</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span></div>
 
 
 
@@ -492,6 +495,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">__check_len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__pf</span><span class="p">,</span> <span class="s2">&quot;pseudo_factors&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__nbFunction</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__check_len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__po</span><span class="p">,</span> <span class="s2">&quot;pseudo_offsets&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__nbFunction</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__check_len</span><span class="p">(</span><span class="n">cfg</span><span class="o">.</span><span class="n">units</span><span class="p">,</span> <span class="s2">&quot;units&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__nbFunction</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__check_len</span><span class="p">(</span><span class="n">cfg</span><span class="o">.</span><span class="n">hardware_units</span><span class="p">,</span> <span class="s2">&quot;hardware_units&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__nbPS</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__check_len</span><span class="p">(</span><span class="n">cfg</span><span class="o">.</span><span class="n">curves</span><span class="p">,</span> <span class="s2">&quot;curves&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__nbFunction</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="n">cfg</span><span class="o">.</span><span class="n">matrix</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
@@ -555,12 +559,12 @@
 <div class="viewcode-block" id="LinearCFMagnetModel.get_hardware_units">
 <a class="viewcode-back" href="../../../api/pyaml.magnet.linear_cfm_model.html#pyaml.magnet.linear_cfm_model.LinearCFMagnetModel.get_hardware_units">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">get_hardware_units</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
-        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">p</span><span class="o">.</span><span class="n">unit</span><span class="p">()</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cfg</span><span class="o">.</span><span class="n">powerconverters</span><span class="p">])</span></div>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cfg</span><span class="o">.</span><span class="n">hardware_units</span></div>
 
 
-<div class="viewcode-block" id="LinearCFMagnetModel.get_devices">
-<a class="viewcode-back" href="../../../api/pyaml.magnet.linear_cfm_model.html#pyaml.magnet.linear_cfm_model.LinearCFMagnetModel.get_devices">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">get_devices</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">DeviceAccess</span><span class="p">]:</span>
+<div class="viewcode-block" id="LinearCFMagnetModel.get_device_names">
+<a class="viewcode-back" href="../../../api/pyaml.magnet.linear_cfm_model.html#pyaml.magnet.linear_cfm_model.LinearCFMagnetModel.get_device_names">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_device_names</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">]:</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cfg</span><span class="o">.</span><span class="n">powerconverters</span></div>
 
 

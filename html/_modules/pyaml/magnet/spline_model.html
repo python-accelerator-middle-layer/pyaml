@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>pyaml.magnet.spline_model &#8212; Python Accelerator Middle Layer 0.1.dev1+ga24402e35 documentation</title>
+    <title>pyaml.magnet.spline_model &#8212; Python Accelerator Middle Layer 0.1.dev1+g7bd2413f3 documentation</title>
   
   
   
@@ -41,7 +41,7 @@
   <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=a95f357e85573c9b56d5" />
 <link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=a95f357e85573c9b56d5" />
 
-    <script src="../../../_static/documentation_options.js?v=8da34048"></script>
+    <script src="../../../_static/documentation_options.js?v=e255448a"></script>
     <script src="../../../_static/doctools.js?v=9bcbadda"></script>
     <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -125,8 +125,8 @@
       
     
     
-    <img src="../../../_static/logo.png" class="logo__image only-light" alt="Python Accelerator Middle Layer 0.1.dev1+ga24402e35 documentation - Home"/>
-    <img src="../../../_static/dark.png" class="logo__image only-dark pst-js-only" alt="Python Accelerator Middle Layer 0.1.dev1+ga24402e35 documentation - Home"/>
+    <img src="../../../_static/logo.png" class="logo__image only-light" alt="Python Accelerator Middle Layer 0.1.dev1+g7bd2413f3 documentation - Home"/>
+    <img src="../../../_static/dark.png" class="logo__image only-dark pst-js-only" alt="Python Accelerator Middle Layer 0.1.dev1+g7bd2413f3 documentation - Home"/>
   
   
 </a></div>
@@ -421,6 +421,8 @@
 <span class="sd">        Crosstalk factor. Default: 1.0</span>
 <span class="sd">    unit : str</span>
 <span class="sd">        Unit of the strength (i.e. 1/m or m-1)</span>
+<span class="sd">    hardware_unit : str</span>
+<span class="sd">        Hardware units (i.e. &#39;A&#39; , &#39;V&#39;)</span>
 <span class="sd">    alpha : float, optional</span>
 <span class="sd">        Regularization parameter (alpha &gt;= 0). alpha = 0 means the interpolation</span>
 <span class="sd">        passes through all the points of the curve. Default: 0.0</span>
@@ -429,11 +431,12 @@
     <span class="n">model_config</span> <span class="o">=</span> <span class="n">ConfigDict</span><span class="p">(</span><span class="n">arbitrary_types_allowed</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">extra</span><span class="o">=</span><span class="s2">&quot;forbid&quot;</span><span class="p">)</span>
 
     <span class="n">curve</span><span class="p">:</span> <span class="n">Curve</span>
-    <span class="n">powerconverter</span><span class="p">:</span> <span class="n">DeviceAccess</span> <span class="o">|</span> <span class="kc">None</span>
+    <span class="n">powerconverter</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span>
     <span class="n">calibration_factor</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1.0</span>
     <span class="n">calibration_offset</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.0</span>
     <span class="n">crosstalk</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1.0</span>
     <span class="n">unit</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">hardware_unit</span><span class="p">:</span> <span class="nb">str</span>
     <span class="n">alpha</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.0</span></div>
 
 
@@ -452,7 +455,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">__curve</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__curve</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">cfg</span><span class="o">.</span><span class="n">calibration_factor</span> <span class="o">*</span> <span class="n">cfg</span><span class="o">.</span><span class="n">crosstalk</span> <span class="o">+</span> <span class="n">cfg</span><span class="o">.</span><span class="n">calibration_offset</span>
         <span class="n">rcurve</span> <span class="o">=</span> <span class="n">Curve</span><span class="o">.</span><span class="n">inverse</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__curve</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__strength_unit</span> <span class="o">=</span> <span class="n">cfg</span><span class="o">.</span><span class="n">unit</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">__hardware_unit</span> <span class="o">=</span> <span class="n">cfg</span><span class="o">.</span><span class="n">powerconverter</span><span class="o">.</span><span class="n">unit</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__hardware_unit</span> <span class="o">=</span> <span class="n">cfg</span><span class="o">.</span><span class="n">hardware_unit</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__brho</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__ps</span> <span class="o">=</span> <span class="n">cfg</span><span class="o">.</span><span class="n">powerconverter</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__spl</span> <span class="o">=</span> <span class="n">make_smoothing_spline</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__curve</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">__curve</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">lam</span><span class="o">=</span><span class="n">cfg</span><span class="o">.</span><span class="n">alpha</span><span class="p">)</span>
@@ -484,9 +487,9 @@
         <span class="k">return</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">__hardware_unit</span><span class="p">]</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__hardware_unit</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="p">[</span><span class="s2">&quot;&quot;</span><span class="p">]</span></div>
 
 
-<div class="viewcode-block" id="SplineMagnetModel.get_devices">
-<a class="viewcode-back" href="../../../api/pyaml.magnet.spline_model.html#pyaml.magnet.spline_model.SplineMagnetModel.get_devices">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">get_devices</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">DeviceAccess</span><span class="p">]:</span>
+<div class="viewcode-block" id="SplineMagnetModel.get_device_names">
+<a class="viewcode-back" href="../../../api/pyaml.magnet.spline_model.html#pyaml.magnet.spline_model.SplineMagnetModel.get_device_names">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_device_names</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">]:</span>
         <span class="k">return</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">__ps</span><span class="p">]</span></div>
 
 
