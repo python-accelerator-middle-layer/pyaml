@@ -160,14 +160,14 @@ def test_tune(sr_file):
         "tests/config/sr_serialized_magnets.yaml",
     ],
 )
-def test_get_devices(sr_file):
+def test_get_device_names(sr_file):
     sr: Accelerator = Accelerator.load(sr_file, use_fast_loader=True, ignore_external=True)
     sm: SerializedMagnets = sr.design.get_serialized_magnet("QF1A")
 
-    devices = sm.get_devices()
+    device_names = sm.get_device_names()
 
     # Serialized magnets share a single power converter: exactly 1 device
-    assert len(devices) == 1
+    assert len(device_names) == 1
     # Strength and hardware computation must remain consistent after the fix
     initial_strength = sm.strength.get()
     sm.strength.set(initial_strength * 1.01)

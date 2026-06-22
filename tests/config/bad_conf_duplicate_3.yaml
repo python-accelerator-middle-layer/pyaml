@@ -12,7 +12,7 @@ controls:
     name: live
     catalog: bpm-catalog
 catalogs:
-  - catalogs/shared_c04_bpm_catalogs.yaml
+  - catalogs/sr_catalogs.yaml
 data_folder: /data/store
 arrays:
   - type: pyaml.arrays.bpm

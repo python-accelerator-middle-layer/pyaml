@@ -26,8 +26,8 @@ class ConfigModel(BaseModel):
 
     model_config = ConfigDict(arbitrary_types_allowed=True, extra="forbid")
 
-    powerconverter: DeviceAccess | None = None
-    physics: DeviceAccess | None = None
+    powerconverter: str | None = None
+    physics: str | None = None
     unit: str
 
 
@@ -62,7 +62,7 @@ class IdentityMagnetModel(MagnetModel):
     def get_hardware_units(self) -> list[str]:
         return [self.__unit]
 
-    def get_devices(self) -> list[DeviceAccess]:
+    def get_device_names(self) -> list[str | None]:
         return [self.__device]
 
     def set_magnet_rigidity(self, brho: np.double):

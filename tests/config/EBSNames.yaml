@@ -10,6 +10,7 @@ controls:
   - type: tango.pyaml.controlsystem
     tango_host: ebs-simu-3:10000
     name: live
+    catalog: catalogs/ebs_catalogs.yaml
 data_folder: /data/store
 devices:
 - type: pyaml.magnet.quadrupole
@@ -22,10 +23,8 @@ devices:
       type: pyaml.magnet.csvcurve
       file: sr/magnet_models/QF1_strength.csv
     unit: 1/m
-    powerconverter:
-      type: tango.pyaml.attribute
-      attribute: srmag/vps-qf1/c04-e/current
-      unit: A
+    hardware_unit: A
+    powerconverter: srmag/vps-qf1/c04-e/current
 - type: pyaml.magnet.quadrupole
   name: QF1E-ALL
   lattice_names: list(QF1E,QF1I)
@@ -37,10 +36,8 @@ devices:
       type: pyaml.magnet.csvcurve
       file: sr/magnet_models/QF1_strength.csv
     unit: 1/m
-    powerconverter:
-      type: tango.pyaml.attribute
-      attribute: srmag/vps-qf1/c04-e/current
-      unit: A
+    hardware_unit: A
+    powerconverter: srmag/vps-qf1/c04-e/current
 - type: pyaml.magnet.quadrupole
   name: QF1E-C05
   lattice_names: QF1E@1
@@ -52,10 +49,8 @@ devices:
       type: pyaml.magnet.csvcurve
       file: sr/magnet_models/QF1_strength.csv
     unit: 1/m
-    powerconverter:
-      type: tango.pyaml.attribute
-      attribute: srmag/vps-qf1/c05-a/current
-      unit: A
+    hardware_unit: A
+    powerconverter: srmag/vps-qf1/c05-a/current
 - type: pyaml.magnet.quadrupole
   name: QF1E-C04-C05-C06
   lattice_names: QF1E@0,1,2
@@ -67,10 +62,8 @@ devices:
       type: pyaml.magnet.csvcurve
       file: sr/magnet_models/QF1_strength.csv
     unit: 1/m
-    powerconverter:
-      type: tango.pyaml.attribute
-      attribute: srmag/vps-qf1/c05-e/current
-      unit: A
+    hardware_unit: A
+    powerconverter: srmag/vps-qf1/c05-e/current
 - type: pyaml.magnet.quadrupole
   name: QF1E-C04-C05-C06-2
   lattice_names: "@140,290,424"
@@ -82,10 +75,8 @@ devices:
       type: pyaml.magnet.csvcurve
       file: sr/magnet_models/QF1_strength.csv
     unit: 1/m
-    powerconverter:
-      type: tango.pyaml.attribute
-      attribute: srmag/vps-qf1/c05-e/current
-      unit: A
+    hardware_unit: A
+    powerconverter: srmag/vps-qf1/c05-e/current
 - type: pyaml.magnet.quadrupole
   name: QF1E-C04-C05-C06-3
   lattice_names: QF1E#0..3
@@ -97,7 +88,5 @@ devices:
       type: pyaml.magnet.csvcurve
       file: sr/magnet_models/QF1_strength.csv
     unit: 1/m
-    powerconverter:
-      type: tango.pyaml.attribute
-      attribute: srmag/vps-qf1/c05-e/current
-      unit: A
+    hardware_unit: A
+    powerconverter: srmag/vps-qf1/c05-e/current

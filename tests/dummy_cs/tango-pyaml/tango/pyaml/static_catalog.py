@@ -31,4 +31,4 @@ class StaticCatalog(Catalog):
         try:
             return self._refs[key]
         except KeyError as exc:
-            raise PyAMLException(f"Catalog '{self.get_name()}' cannot resolve key '{key}'") from exc
+            raise PyAMLException(f"Catalog cannot resolve key '{key}'") from exc

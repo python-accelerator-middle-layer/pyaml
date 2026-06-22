@@ -1,0 +1,1752 @@
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/ps-corr-sh1/c04-a-ch1/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/ps-corr-sh1/c04-a-ch1/current
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/ps-corr-sh1/c04-a-ch2/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/ps-corr-sh1/c04-a-ch2/current
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/ps-corr-sh1/c04-a-ch3/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/ps-corr-sh1/c04-a-ch3/current
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/ps-corr-sh1/c04-a-ch5/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/ps-corr-sh1/c04-a-ch5/current
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/ps-corr-sh1/c04-a-ch6/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/ps-corr-sh1/c04-a-ch6/current
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/ps-corr-sh2/c04-b-ch1/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/ps-corr-sh2/c04-b-ch1/current
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/ps-corr-sh2/c04-b-ch2/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/ps-corr-sh2/c04-b-ch2/current
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/ps-corr-sh2/c04-b-ch3/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/ps-corr-sh2/c04-b-ch3/current
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/ps-corr-sh3/c04-e-ch1/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/ps-corr-sh3/c04-e-ch1/current
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/ps-corr-sh3/c04-e-ch2/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/ps-corr-sh3/c04-e-ch2/current
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/ps-corr-sh3/c04-e-ch3/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/ps-corr-sh3/c04-e-ch3/current
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/ps-corr-sh1/c05-a-ch1/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/ps-corr-sh1/c05-a-ch1/current
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/ps-corr-sh1/c05-a-ch2/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/ps-corr-sh1/c05-a-ch2/current
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/ps-corr-sh1/c05-a-ch3/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/ps-corr-sh1/c05-a-ch3/current
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/ps-corr-sh2/c05-b-ch1/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/ps-corr-sh2/c05-b-ch1/current
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/ps-corr-sh2/c05-b-ch2/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/ps-corr-sh2/c05-b-ch2/current
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/ps-corr-sh2/c05-b-ch3/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/ps-corr-sh2/c05-b-ch3/current
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/ps-corr-sh3/c05-e-ch1/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/ps-corr-sh3/c05-e-ch1/current
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/ps-corr-sh3/c05-e-ch2/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/ps-corr-sh3/c05-e-ch2/current
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/ps-corr-sh3/c05-e-ch3/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/ps-corr-sh3/c05-e-ch3/current
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/ps-corr-sh1/c06-a-ch1/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/ps-corr-sh1/c06-a-ch1/current
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/ps-corr-sh1/c06-a-ch2/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/ps-corr-sh1/c06-a-ch2/current
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/ps-corr-sh1/c06-a-ch3/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/ps-corr-sh1/c06-a-ch3/current
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/ps-corr-sh2/c06-b-ch1/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/ps-corr-sh2/c06-b-ch1/current
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/ps-corr-sh2/c06-b-ch2/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/ps-corr-sh2/c06-b-ch2/current
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/ps-corr-sh2/c06-b-ch3/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/ps-corr-sh2/c06-b-ch3/current
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/ps-corr-sh3/c06-e-ch1/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/ps-corr-sh3/c06-e-ch1/current
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/ps-corr-sh3/c06-e-ch2/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/ps-corr-sh3/c06-e-ch2/current
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/ps-corr-sh3/c06-e-ch3/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/ps-corr-sh3/c06-e-ch3/current
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/ps-corr-sh1/c07-a-ch1/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/ps-corr-sh1/c07-a-ch1/current
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/ps-corr-sh1/c07-a-ch2/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/ps-corr-sh1/c07-a-ch2/current
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/ps-corr-sh1/c07-a-ch3/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/ps-corr-sh1/c07-a-ch3/current
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/ps-corr-sh2/c07-b-ch1/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/ps-corr-sh2/c07-b-ch1/current
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/ps-corr-sh2/c07-b-ch2/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/ps-corr-sh2/c07-b-ch2/current
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/ps-corr-sh2/c07-b-ch3/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/ps-corr-sh2/c07-b-ch3/current
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/ps-corr-sh3/c07-e-ch1/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/ps-corr-sh3/c07-e-ch1/current
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/ps-corr-sh3/c07-e-ch2/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/ps-corr-sh3/c07-e-ch2/current
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/ps-corr-sh3/c07-e-ch3/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/ps-corr-sh3/c07-e-ch3/current
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/ps-corr-sh1/c08-a-ch1/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/ps-corr-sh1/c08-a-ch1/current
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/ps-corr-sh1/c08-a-ch2/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/ps-corr-sh1/c08-a-ch2/current
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/ps-corr-sh1/c08-a-ch3/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/ps-corr-sh1/c08-a-ch3/current
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/ps-corr-sh2/c08-b-ch1/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/ps-corr-sh2/c08-b-ch1/current
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/ps-corr-sh2/c08-b-ch2/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/ps-corr-sh2/c08-b-ch2/current
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/ps-corr-sh2/c08-b-ch3/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/ps-corr-sh2/c08-b-ch3/current
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/ps-corr-sh3/c08-e-ch1/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/ps-corr-sh3/c08-e-ch1/current
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/ps-corr-sh3/c08-e-ch2/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/ps-corr-sh3/c08-e-ch2/current
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/ps-corr-sh3/c08-e-ch3/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/ps-corr-sh3/c08-e-ch3/current
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/ps-corr-sh1/c09-a-ch1/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/ps-corr-sh1/c09-a-ch1/current
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/ps-corr-sh1/c09-a-ch2/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/ps-corr-sh1/c09-a-ch2/current
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/ps-corr-sh1/c09-a-ch3/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/ps-corr-sh1/c09-a-ch3/current
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/ps-corr-sh2/c09-b-ch1/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/ps-corr-sh2/c09-b-ch1/current
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/ps-corr-sh2/c09-b-ch2/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/ps-corr-sh2/c09-b-ch2/current
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/ps-corr-sh2/c09-b-ch3/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/ps-corr-sh2/c09-b-ch3/current
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/ps-corr-sh3/c09-e-ch1/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/ps-corr-sh3/c09-e-ch1/current
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/ps-corr-sh3/c09-e-ch2/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/ps-corr-sh3/c09-e-ch2/current
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/ps-corr-sh3/c09-e-ch3/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/ps-corr-sh3/c09-e-ch3/current
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/ps-corr-sh1/c10-a-ch1/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/ps-corr-sh1/c10-a-ch1/current
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/ps-corr-sh1/c10-a-ch2/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/ps-corr-sh1/c10-a-ch2/current
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/ps-corr-sh1/c10-a-ch3/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/ps-corr-sh1/c10-a-ch3/current
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/ps-corr-sh2/c10-b-ch1/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/ps-corr-sh2/c10-b-ch1/current
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/ps-corr-sh2/c10-b-ch2/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/ps-corr-sh2/c10-b-ch2/current
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/ps-corr-sh2/c10-b-ch3/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/ps-corr-sh2/c10-b-ch3/current
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/ps-corr-sh3/c10-e-ch1/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/ps-corr-sh3/c10-e-ch1/current
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/ps-corr-sh3/c10-e-ch2/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/ps-corr-sh3/c10-e-ch2/current
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/ps-corr-sh3/c10-e-ch3/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/ps-corr-sh3/c10-e-ch3/current
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/ps-corr-sh1/c11-a-ch1/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/ps-corr-sh1/c11-a-ch1/current
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/ps-corr-sh1/c11-a-ch2/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/ps-corr-sh1/c11-a-ch2/current
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/ps-corr-sh1/c11-a-ch3/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/ps-corr-sh1/c11-a-ch3/current
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/ps-corr-sh2/c11-b-ch1/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/ps-corr-sh2/c11-b-ch1/current
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/ps-corr-sh2/c11-b-ch2/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/ps-corr-sh2/c11-b-ch2/current
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/ps-corr-sh2/c11-b-ch3/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/ps-corr-sh2/c11-b-ch3/current
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/ps-corr-sh3/c11-e-ch1/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/ps-corr-sh3/c11-e-ch1/current
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/ps-corr-sh3/c11-e-ch2/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/ps-corr-sh3/c11-e-ch2/current
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/ps-corr-sh3/c11-e-ch3/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/ps-corr-sh3/c11-e-ch3/current
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/ps-corr-sh1/c12-a-ch1/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/ps-corr-sh1/c12-a-ch1/current
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/ps-corr-sh1/c12-a-ch2/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/ps-corr-sh1/c12-a-ch2/current
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/ps-corr-sh1/c12-a-ch3/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/ps-corr-sh1/c12-a-ch3/current
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/ps-corr-sh2/c12-b-ch1/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/ps-corr-sh2/c12-b-ch1/current
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/ps-corr-sh2/c12-b-ch2/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/ps-corr-sh2/c12-b-ch2/current
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/ps-corr-sh2/c12-b-ch3/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/ps-corr-sh2/c12-b-ch3/current
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/ps-corr-sh3/c12-e-ch1/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/ps-corr-sh3/c12-e-ch1/current
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/ps-corr-sh3/c12-e-ch2/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/ps-corr-sh3/c12-e-ch2/current
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/ps-corr-sh3/c12-e-ch3/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/ps-corr-sh3/c12-e-ch3/current
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/ps-corr-sh1/c13-a-ch1/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/ps-corr-sh1/c13-a-ch1/current
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/ps-corr-sh1/c13-a-ch2/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/ps-corr-sh1/c13-a-ch2/current
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/ps-corr-sh1/c13-a-ch3/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/ps-corr-sh1/c13-a-ch3/current
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/ps-corr-sh2/c13-b-ch1/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/ps-corr-sh2/c13-b-ch1/current
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/ps-corr-sh2/c13-b-ch2/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/ps-corr-sh2/c13-b-ch2/current
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/ps-corr-sh2/c13-b-ch3/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/ps-corr-sh2/c13-b-ch3/current
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/ps-corr-sh3/c13-e-ch1/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/ps-corr-sh3/c13-e-ch1/current
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/ps-corr-sh3/c13-e-ch2/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/ps-corr-sh3/c13-e-ch2/current
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/ps-corr-sh3/c13-e-ch3/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/ps-corr-sh3/c13-e-ch3/current
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/ps-corr-sh1/c14-a-ch1/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/ps-corr-sh1/c14-a-ch1/current
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/ps-corr-sh1/c14-a-ch2/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/ps-corr-sh1/c14-a-ch2/current
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/ps-corr-sh1/c14-a-ch3/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/ps-corr-sh1/c14-a-ch3/current
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/ps-corr-sh2/c14-b-ch1/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/ps-corr-sh2/c14-b-ch1/current
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/ps-corr-sh2/c14-b-ch2/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/ps-corr-sh2/c14-b-ch2/current
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/ps-corr-sh2/c14-b-ch3/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/ps-corr-sh2/c14-b-ch3/current
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/ps-corr-sh3/c14-e-ch1/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/ps-corr-sh3/c14-e-ch1/current
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/ps-corr-sh3/c14-e-ch2/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/ps-corr-sh3/c14-e-ch2/current
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/ps-corr-sh3/c14-e-ch3/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/ps-corr-sh3/c14-e-ch3/current
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/ps-corr-sh1/c15-a-ch1/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/ps-corr-sh1/c15-a-ch1/current
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/ps-corr-sh1/c15-a-ch2/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/ps-corr-sh1/c15-a-ch2/current
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/ps-corr-sh1/c15-a-ch3/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/ps-corr-sh1/c15-a-ch3/current
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/ps-corr-sh2/c15-b-ch1/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/ps-corr-sh2/c15-b-ch1/current
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/ps-corr-sh2/c15-b-ch2/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/ps-corr-sh2/c15-b-ch2/current
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/ps-corr-sh2/c15-b-ch3/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/ps-corr-sh2/c15-b-ch3/current
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/ps-corr-sh3/c15-e-ch1/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/ps-corr-sh3/c15-e-ch1/current
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/ps-corr-sh3/c15-e-ch2/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/ps-corr-sh3/c15-e-ch2/current
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/ps-corr-sh3/c15-e-ch3/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/ps-corr-sh3/c15-e-ch3/current
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/ps-corr-sh1/c16-a-ch1/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/ps-corr-sh1/c16-a-ch1/current
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/ps-corr-sh1/c16-a-ch2/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/ps-corr-sh1/c16-a-ch2/current
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/ps-corr-sh1/c16-a-ch3/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/ps-corr-sh1/c16-a-ch3/current
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/ps-corr-sh2/c16-b-ch1/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/ps-corr-sh2/c16-b-ch1/current
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/ps-corr-sh2/c16-b-ch2/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/ps-corr-sh2/c16-b-ch2/current
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/ps-corr-sh2/c16-b-ch3/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/ps-corr-sh2/c16-b-ch3/current
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/ps-corr-sh3/c16-e-ch1/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/ps-corr-sh3/c16-e-ch1/current
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/ps-corr-sh3/c16-e-ch2/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/ps-corr-sh3/c16-e-ch2/current
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/ps-corr-sh3/c16-e-ch3/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/ps-corr-sh3/c16-e-ch3/current
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/ps-corr-sh1/c17-a-ch1/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/ps-corr-sh1/c17-a-ch1/current
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/ps-corr-sh1/c17-a-ch2/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/ps-corr-sh1/c17-a-ch2/current
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/ps-corr-sh1/c17-a-ch3/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/ps-corr-sh1/c17-a-ch3/current
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/ps-corr-sh2/c17-b-ch1/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/ps-corr-sh2/c17-b-ch1/current
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/ps-corr-sh2/c17-b-ch2/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/ps-corr-sh2/c17-b-ch2/current
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/ps-corr-sh2/c17-b-ch3/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/ps-corr-sh2/c17-b-ch3/current
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/ps-corr-sh3/c17-e-ch1/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/ps-corr-sh3/c17-e-ch1/current
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/ps-corr-sh3/c17-e-ch2/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/ps-corr-sh3/c17-e-ch2/current
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/ps-corr-sh3/c17-e-ch3/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/ps-corr-sh3/c17-e-ch3/current
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/ps-corr-sh1/c18-a-ch1/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/ps-corr-sh1/c18-a-ch1/current
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/ps-corr-sh1/c18-a-ch2/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/ps-corr-sh1/c18-a-ch2/current
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/ps-corr-sh1/c18-a-ch3/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/ps-corr-sh1/c18-a-ch3/current
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/ps-corr-sh2/c18-b-ch1/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/ps-corr-sh2/c18-b-ch1/current
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/ps-corr-sh2/c18-b-ch2/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/ps-corr-sh2/c18-b-ch2/current
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/ps-corr-sh2/c18-b-ch3/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/ps-corr-sh2/c18-b-ch3/current
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/ps-corr-sh3/c18-e-ch1/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/ps-corr-sh3/c18-e-ch1/current
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/ps-corr-sh3/c18-e-ch2/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/ps-corr-sh3/c18-e-ch2/current
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/ps-corr-sh3/c18-e-ch3/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/ps-corr-sh3/c18-e-ch3/current
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/ps-corr-sh1/c19-a-ch1/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/ps-corr-sh1/c19-a-ch1/current
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/ps-corr-sh1/c19-a-ch2/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/ps-corr-sh1/c19-a-ch2/current
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/ps-corr-sh1/c19-a-ch3/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/ps-corr-sh1/c19-a-ch3/current
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/ps-corr-sh2/c19-b-ch1/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/ps-corr-sh2/c19-b-ch1/current
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/ps-corr-sh2/c19-b-ch2/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/ps-corr-sh2/c19-b-ch2/current
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/ps-corr-sh2/c19-b-ch3/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/ps-corr-sh2/c19-b-ch3/current
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/ps-corr-sh3/c19-e-ch1/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/ps-corr-sh3/c19-e-ch1/current
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/ps-corr-sh3/c19-e-ch2/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/ps-corr-sh3/c19-e-ch2/current
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/ps-corr-sh3/c19-e-ch3/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/ps-corr-sh3/c19-e-ch3/current
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/ps-corr-sh1/c20-a-ch1/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/ps-corr-sh1/c20-a-ch1/current
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/ps-corr-sh1/c20-a-ch2/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/ps-corr-sh1/c20-a-ch2/current
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/ps-corr-sh1/c20-a-ch3/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/ps-corr-sh1/c20-a-ch3/current
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/ps-corr-sh2/c20-b-ch1/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/ps-corr-sh2/c20-b-ch1/current
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/ps-corr-sh2/c20-b-ch2/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/ps-corr-sh2/c20-b-ch2/current
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/ps-corr-sh2/c20-b-ch3/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/ps-corr-sh2/c20-b-ch3/current
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/ps-corr-sh3/c20-e-ch1/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/ps-corr-sh3/c20-e-ch1/current
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/ps-corr-sh3/c20-e-ch2/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/ps-corr-sh3/c20-e-ch2/current
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/ps-corr-sh3/c20-e-ch3/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/ps-corr-sh3/c20-e-ch3/current
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/ps-corr-sh1/c21-a-ch1/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/ps-corr-sh1/c21-a-ch1/current
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/ps-corr-sh1/c21-a-ch2/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/ps-corr-sh1/c21-a-ch2/current
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/ps-corr-sh1/c21-a-ch3/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/ps-corr-sh1/c21-a-ch3/current
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/ps-corr-sh2/c21-b-ch1/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/ps-corr-sh2/c21-b-ch1/current
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/ps-corr-sh2/c21-b-ch2/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/ps-corr-sh2/c21-b-ch2/current
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/ps-corr-sh2/c21-b-ch3/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/ps-corr-sh2/c21-b-ch3/current
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/ps-corr-sh3/c21-e-ch1/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/ps-corr-sh3/c21-e-ch1/current
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/ps-corr-sh3/c21-e-ch2/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/ps-corr-sh3/c21-e-ch2/current
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/ps-corr-sh3/c21-e-ch3/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/ps-corr-sh3/c21-e-ch3/current
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/ps-corr-sh1/c22-a-ch1/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/ps-corr-sh1/c22-a-ch1/current
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/ps-corr-sh1/c22-a-ch2/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/ps-corr-sh1/c22-a-ch2/current
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/ps-corr-sh1/c22-a-ch3/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/ps-corr-sh1/c22-a-ch3/current
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/ps-corr-sh2/c22-b-ch1/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/ps-corr-sh2/c22-b-ch1/current
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/ps-corr-sh2/c22-b-ch2/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/ps-corr-sh2/c22-b-ch2/current
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/ps-corr-sh2/c22-b-ch3/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/ps-corr-sh2/c22-b-ch3/current
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/ps-corr-sh3/c22-e-ch1/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/ps-corr-sh3/c22-e-ch1/current
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/ps-corr-sh3/c22-e-ch2/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/ps-corr-sh3/c22-e-ch2/current
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/ps-corr-sh3/c22-e-ch3/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/ps-corr-sh3/c22-e-ch3/current
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/ps-corr-sh1/c23-a-ch1/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/ps-corr-sh1/c23-a-ch1/current
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/ps-corr-sh1/c23-a-ch2/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/ps-corr-sh1/c23-a-ch2/current
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/ps-corr-sh1/c23-a-ch3/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/ps-corr-sh1/c23-a-ch3/current
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/ps-corr-sh2/c23-b-ch1/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/ps-corr-sh2/c23-b-ch1/current
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/ps-corr-sh2/c23-b-ch2/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/ps-corr-sh2/c23-b-ch2/current
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/ps-corr-sh2/c23-b-ch3/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/ps-corr-sh2/c23-b-ch3/current
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/ps-corr-sh3/c23-e-ch1/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/ps-corr-sh3/c23-e-ch1/current
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/ps-corr-sh3/c23-e-ch2/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/ps-corr-sh3/c23-e-ch2/current
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/ps-corr-sh3/c23-e-ch3/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/ps-corr-sh3/c23-e-ch3/current
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/ps-corr-sh1/c24-a-ch1/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/ps-corr-sh1/c24-a-ch1/current
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/ps-corr-sh1/c24-a-ch2/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/ps-corr-sh1/c24-a-ch2/current
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/ps-corr-sh1/c24-a-ch3/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/ps-corr-sh1/c24-a-ch3/current
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/ps-corr-sh2/c24-b-ch1/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/ps-corr-sh2/c24-b-ch1/current
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/ps-corr-sh2/c24-b-ch2/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/ps-corr-sh2/c24-b-ch2/current
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/ps-corr-sh2/c24-b-ch3/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/ps-corr-sh2/c24-b-ch3/current
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/ps-corr-sh3/c24-e-ch1/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/ps-corr-sh3/c24-e-ch1/current
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/ps-corr-sh3/c24-e-ch2/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/ps-corr-sh3/c24-e-ch2/current
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/ps-corr-sh3/c24-e-ch3/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/ps-corr-sh3/c24-e-ch3/current
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/ps-corr-sh1/c25-a-ch1/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/ps-corr-sh1/c25-a-ch1/current
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/ps-corr-sh1/c25-a-ch2/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/ps-corr-sh1/c25-a-ch2/current
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/ps-corr-sh1/c25-a-ch3/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/ps-corr-sh1/c25-a-ch3/current
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/ps-corr-sh2/c25-b-ch1/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/ps-corr-sh2/c25-b-ch1/current
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/ps-corr-sh2/c25-b-ch2/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/ps-corr-sh2/c25-b-ch2/current
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/ps-corr-sh2/c25-b-ch3/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/ps-corr-sh2/c25-b-ch3/current
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/ps-corr-sh3/c25-e-ch1/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/ps-corr-sh3/c25-e-ch1/current
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/ps-corr-sh3/c25-e-ch2/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/ps-corr-sh3/c25-e-ch2/current
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/ps-corr-sh3/c25-e-ch3/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/ps-corr-sh3/c25-e-ch3/current
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/ps-corr-sh1/c26-a-ch1/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/ps-corr-sh1/c26-a-ch1/current
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/ps-corr-sh1/c26-a-ch2/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/ps-corr-sh1/c26-a-ch2/current
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/ps-corr-sh1/c26-a-ch3/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/ps-corr-sh1/c26-a-ch3/current
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/ps-corr-sh2/c26-b-ch1/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/ps-corr-sh2/c26-b-ch1/current
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/ps-corr-sh2/c26-b-ch2/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/ps-corr-sh2/c26-b-ch2/current
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/ps-corr-sh2/c26-b-ch3/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/ps-corr-sh2/c26-b-ch3/current
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/ps-corr-sh3/c26-e-ch1/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/ps-corr-sh3/c26-e-ch1/current
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/ps-corr-sh3/c26-e-ch2/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/ps-corr-sh3/c26-e-ch2/current
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/ps-corr-sh3/c26-e-ch3/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/ps-corr-sh3/c26-e-ch3/current
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/ps-corr-sh1/c27-a-ch1/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/ps-corr-sh1/c27-a-ch1/current
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/ps-corr-sh1/c27-a-ch2/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/ps-corr-sh1/c27-a-ch2/current
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/ps-corr-sh1/c27-a-ch3/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/ps-corr-sh1/c27-a-ch3/current
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/ps-corr-sh2/c27-b-ch1/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/ps-corr-sh2/c27-b-ch1/current
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/ps-corr-sh2/c27-b-ch2/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/ps-corr-sh2/c27-b-ch2/current
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/ps-corr-sh2/c27-b-ch3/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/ps-corr-sh2/c27-b-ch3/current
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/ps-corr-sh3/c27-e-ch1/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/ps-corr-sh3/c27-e-ch1/current
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/ps-corr-sh3/c27-e-ch2/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/ps-corr-sh3/c27-e-ch2/current
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/ps-corr-sh3/c27-e-ch3/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/ps-corr-sh3/c27-e-ch3/current
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/ps-corr-sh1/c28-a-ch1/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/ps-corr-sh1/c28-a-ch1/current
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/ps-corr-sh1/c28-a-ch2/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/ps-corr-sh1/c28-a-ch2/current
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/ps-corr-sh1/c28-a-ch3/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/ps-corr-sh1/c28-a-ch3/current
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/ps-corr-sh2/c28-b-ch1/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/ps-corr-sh2/c28-b-ch1/current
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/ps-corr-sh2/c28-b-ch2/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/ps-corr-sh2/c28-b-ch2/current
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/ps-corr-sh2/c28-b-ch3/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/ps-corr-sh2/c28-b-ch3/current
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/ps-corr-sh3/c28-e-ch1/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/ps-corr-sh3/c28-e-ch1/current
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/ps-corr-sh3/c28-e-ch2/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/ps-corr-sh3/c28-e-ch2/current
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/ps-corr-sh3/c28-e-ch3/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/ps-corr-sh3/c28-e-ch3/current
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/ps-corr-sh1/c29-a-ch1/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/ps-corr-sh1/c29-a-ch1/current
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/ps-corr-sh1/c29-a-ch2/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/ps-corr-sh1/c29-a-ch2/current
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/ps-corr-sh1/c29-a-ch3/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/ps-corr-sh1/c29-a-ch3/current
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/ps-corr-sh2/c29-b-ch1/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/ps-corr-sh2/c29-b-ch1/current
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/ps-corr-sh2/c29-b-ch2/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/ps-corr-sh2/c29-b-ch2/current
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/ps-corr-sh2/c29-b-ch3/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/ps-corr-sh2/c29-b-ch3/current
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/ps-corr-sh3/c29-e-ch1/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/ps-corr-sh3/c29-e-ch1/current
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/ps-corr-sh3/c29-e-ch2/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/ps-corr-sh3/c29-e-ch2/current
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/ps-corr-sh3/c29-e-ch3/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/ps-corr-sh3/c29-e-ch3/current
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/ps-corr-sh1/c30-a-ch1/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/ps-corr-sh1/c30-a-ch1/current
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/ps-corr-sh1/c30-a-ch2/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/ps-corr-sh1/c30-a-ch2/current
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/ps-corr-sh1/c30-a-ch3/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/ps-corr-sh1/c30-a-ch3/current
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/ps-corr-sh2/c30-b-ch1/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/ps-corr-sh2/c30-b-ch1/current
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/ps-corr-sh2/c30-b-ch2/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/ps-corr-sh2/c30-b-ch2/current
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/ps-corr-sh2/c30-b-ch3/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/ps-corr-sh2/c30-b-ch3/current
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/ps-corr-sh3/c30-e-ch1/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/ps-corr-sh3/c30-e-ch1/current
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/ps-corr-sh3/c30-e-ch2/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/ps-corr-sh3/c30-e-ch2/current
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/ps-corr-sh3/c30-e-ch3/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/ps-corr-sh3/c30-e-ch3/current
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/ps-corr-sh1/c31-a-ch1/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/ps-corr-sh1/c31-a-ch1/current
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/ps-corr-sh1/c31-a-ch2/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/ps-corr-sh1/c31-a-ch2/current
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/ps-corr-sh1/c31-a-ch3/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/ps-corr-sh1/c31-a-ch3/current
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/ps-corr-sh2/c31-b-ch1/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/ps-corr-sh2/c31-b-ch1/current
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/ps-corr-sh2/c31-b-ch2/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/ps-corr-sh2/c31-b-ch2/current
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/ps-corr-sh2/c31-b-ch3/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/ps-corr-sh2/c31-b-ch3/current
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/ps-corr-sh3/c31-e-ch1/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/ps-corr-sh3/c31-e-ch1/current
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/ps-corr-sh3/c31-e-ch2/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/ps-corr-sh3/c31-e-ch2/current
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/ps-corr-sh3/c31-e-ch3/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/ps-corr-sh3/c31-e-ch3/current
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/ps-corr-sh1/c32-a-ch1/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/ps-corr-sh1/c32-a-ch1/current
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/ps-corr-sh1/c32-a-ch2/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/ps-corr-sh1/c32-a-ch2/current
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/ps-corr-sh1/c32-a-ch3/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/ps-corr-sh1/c32-a-ch3/current
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/ps-corr-sh2/c32-b-ch1/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/ps-corr-sh2/c32-b-ch1/current
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/ps-corr-sh2/c32-b-ch2/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/ps-corr-sh2/c32-b-ch2/current
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/ps-corr-sh2/c32-b-ch3/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/ps-corr-sh2/c32-b-ch3/current
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/ps-corr-sh3/c32-e-ch1/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/ps-corr-sh3/c32-e-ch1/current
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/ps-corr-sh3/c32-e-ch2/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/ps-corr-sh3/c32-e-ch2/current
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/ps-corr-sh3/c32-e-ch3/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/ps-corr-sh3/c32-e-ch3/current
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/ps-corr-sh1/c01-a-ch1/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/ps-corr-sh1/c01-a-ch1/current
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/ps-corr-sh1/c01-a-ch2/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/ps-corr-sh1/c01-a-ch2/current
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/ps-corr-sh1/c01-a-ch3/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/ps-corr-sh1/c01-a-ch3/current
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/ps-corr-sh2/c01-b-ch1/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/ps-corr-sh2/c01-b-ch1/current
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/ps-corr-sh2/c01-b-ch2/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/ps-corr-sh2/c01-b-ch2/current
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/ps-corr-sh2/c01-b-ch3/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/ps-corr-sh2/c01-b-ch3/current
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/ps-corr-sh3/c01-e-ch1/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/ps-corr-sh3/c01-e-ch1/current
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/ps-corr-sh3/c01-e-ch2/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/ps-corr-sh3/c01-e-ch2/current
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/ps-corr-sh3/c01-e-ch3/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/ps-corr-sh3/c01-e-ch3/current
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/ps-corr-sh1/c02-a-ch1/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/ps-corr-sh1/c02-a-ch1/current
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/ps-corr-sh1/c02-a-ch2/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/ps-corr-sh1/c02-a-ch2/current
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/ps-corr-sh1/c02-a-ch3/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/ps-corr-sh1/c02-a-ch3/current
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/ps-corr-sh2/c02-b-ch1/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/ps-corr-sh2/c02-b-ch1/current
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/ps-corr-sh2/c02-b-ch2/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/ps-corr-sh2/c02-b-ch2/current
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/ps-corr-sh2/c02-b-ch3/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/ps-corr-sh2/c02-b-ch3/current
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/ps-corr-sh3/c02-e-ch1/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/ps-corr-sh3/c02-e-ch1/current
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/ps-corr-sh3/c02-e-ch2/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/ps-corr-sh3/c02-e-ch2/current
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/ps-corr-sh3/c02-e-ch3/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/ps-corr-sh3/c02-e-ch3/current
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/ps-corr-sh1/c03-a-ch1/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/ps-corr-sh1/c03-a-ch1/current
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/ps-corr-sh1/c03-a-ch2/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/ps-corr-sh1/c03-a-ch2/current
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/ps-corr-sh1/c03-a-ch3/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/ps-corr-sh1/c03-a-ch3/current
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/ps-corr-sh2/c03-b-ch1/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/ps-corr-sh2/c03-b-ch1/current
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/ps-corr-sh2/c03-b-ch2/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/ps-corr-sh2/c03-b-ch2/current
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/ps-corr-sh2/c03-b-ch3/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/ps-corr-sh2/c03-b-ch3/current
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/ps-corr-sh3/c03-e-ch1/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/ps-corr-sh3/c03-e-ch1/current
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/ps-corr-sh3/c03-e-ch2/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/ps-corr-sh3/c03-e-ch2/current
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/ps-corr-sh3/c03-e-ch3/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/ps-corr-sh3/c03-e-ch3/current
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/ps-corr-sh3/c03-e-ch5/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/ps-corr-sh3/c03-e-ch5/current
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/ps-corr-sh3/c03-e-ch6/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/ps-corr-sh3/c03-e-ch6/current
+    unit: A

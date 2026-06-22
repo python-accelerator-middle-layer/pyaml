@@ -1,0 +1,868 @@
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/vps-qf1/c04-e/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/vps-qf1/c04-e/current
+    range: [10,109]
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/vps-qf1/c05-a/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/vps-qf1/c05-a/current
+    range: [10,109]
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/vps-qf1/c05-e/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/vps-qf1/c05-e/current
+    range: [10,109]
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/vps-qf1/c06-a/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/vps-qf1/c06-a/current
+    range: [10,109]
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/vps-qf1/c06-e/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/vps-qf1/c06-e/current
+    range: [10,109]
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/vps-qf1/c07-a/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/vps-qf1/c07-a/current
+    range: [10,109]
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/vps-qf1/c07-e/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/vps-qf1/c07-e/current
+    range: [10,109]
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/vps-qf1/c08-a/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/vps-qf1/c08-a/current
+    range: [10,109]
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/vps-qf1/c08-e/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/vps-qf1/c08-e/current
+    range: [10,109]
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/vps-qf1/c09-a/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/vps-qf1/c09-a/current
+    range: [10,109]
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/vps-qf1/c09-e/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/vps-qf1/c09-e/current
+    range: [10,109]
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/vps-qf1/c10-a/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/vps-qf1/c10-a/current
+    range: [10,109]
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/vps-qf1/c10-e/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/vps-qf1/c10-e/current
+    range: [10,109]
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/vps-qf1/c11-a/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/vps-qf1/c11-a/current
+    range: [10,109]
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/vps-qf1/c11-e/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/vps-qf1/c11-e/current
+    range: [10,109]
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/vps-qf1/c12-a/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/vps-qf1/c12-a/current
+    range: [10,109]
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/vps-qf1/c12-e/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/vps-qf1/c12-e/current
+    range: [10,109]
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/vps-qf1/c13-a/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/vps-qf1/c13-a/current
+    range: [10,109]
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/vps-qf1/c13-e/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/vps-qf1/c13-e/current
+    range: [10,109]
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/vps-qf1/c14-a/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/vps-qf1/c14-a/current
+    range: [10,109]
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/vps-qf1/c14-e/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/vps-qf1/c14-e/current
+    range: [10,109]
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/vps-qf1/c15-a/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/vps-qf1/c15-a/current
+    range: [10,109]
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/vps-qf1/c15-e/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/vps-qf1/c15-e/current
+    range: [10,109]
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/vps-qf1/c16-a/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/vps-qf1/c16-a/current
+    range: [10,109]
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/vps-qf1/c16-e/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/vps-qf1/c16-e/current
+    range: [10,109]
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/vps-qf1/c17-a/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/vps-qf1/c17-a/current
+    range: [10,109]
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/vps-qf1/c17-e/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/vps-qf1/c17-e/current
+    range: [10,109]
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/vps-qf1/c18-a/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/vps-qf1/c18-a/current
+    range: [10,109]
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/vps-qf1/c18-e/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/vps-qf1/c18-e/current
+    range: [10,109]
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/vps-qf1/c19-a/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/vps-qf1/c19-a/current
+    range: [10,109]
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/vps-qf1/c19-e/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/vps-qf1/c19-e/current
+    range: [10,109]
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/vps-qf1/c20-a/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/vps-qf1/c20-a/current
+    range: [10,109]
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/vps-qf1/c20-e/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/vps-qf1/c20-e/current
+    range: [10,109]
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/vps-qf1/c21-a/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/vps-qf1/c21-a/current
+    range: [10,109]
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/vps-qf1/c21-e/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/vps-qf1/c21-e/current
+    range: [10,109]
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/vps-qf1/c22-a/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/vps-qf1/c22-a/current
+    range: [10,109]
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/vps-qf1/c22-e/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/vps-qf1/c22-e/current
+    range: [10,109]
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/vps-qf1/c23-a/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/vps-qf1/c23-a/current
+    range: [10,109]
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/vps-qf1/c23-e/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/vps-qf1/c23-e/current
+    range: [10,109]
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/vps-qf1/c24-a/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/vps-qf1/c24-a/current
+    range: [10,109]
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/vps-qf1/c24-e/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/vps-qf1/c24-e/current
+    range: [10,109]
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/vps-qf1/c25-a/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/vps-qf1/c25-a/current
+    range: [10,109]
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/vps-qf1/c25-e/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/vps-qf1/c25-e/current
+    range: [10,109]
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/vps-qf1/c26-a/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/vps-qf1/c26-a/current
+    range: [10,109]
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/vps-qf1/c26-e/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/vps-qf1/c26-e/current
+    range: [10,109]
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/vps-qf1/c27-a/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/vps-qf1/c27-a/current
+    range: [10,109]
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/vps-qf1/c27-e/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/vps-qf1/c27-e/current
+    range: [10,109]
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/vps-qf1/c28-a/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/vps-qf1/c28-a/current
+    range: [10,109]
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/vps-qf1/c28-e/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/vps-qf1/c28-e/current
+    range: [10,109]
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/vps-qf1/c29-a/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/vps-qf1/c29-a/current
+    range: [10,109]
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/vps-qf1/c29-e/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/vps-qf1/c29-e/current
+    range: [10,109]
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/vps-qf1/c30-a/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/vps-qf1/c30-a/current
+    range: [10,109]
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/vps-qf1/c30-e/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/vps-qf1/c30-e/current
+    range: [10,109]
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/vps-qf1/c31-a/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/vps-qf1/c31-a/current
+    range: [10,109]
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/vps-qf1/c31-e/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/vps-qf1/c31-e/current
+    range: [10,109]
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/vps-qf1/c32-a/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/vps-qf1/c32-a/current
+    range: [10,109]
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/vps-qf1/c32-e/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/vps-qf1/c32-e/current
+    range: [10,109]
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/vps-qf1/c01-a/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/vps-qf1/c01-a/current
+    range: [10,109]
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/vps-qf1/c01-e/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/vps-qf1/c01-e/current
+    range: [10,109]
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/vps-qf1/c02-a/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/vps-qf1/c02-a/current
+    range: [10,109]
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/vps-qf1/c02-e/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/vps-qf1/c02-e/current
+    range: [10,109]
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/vps-qf1/c03-a/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/vps-qf1/c03-a/current
+    range: [10,109]
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/vps-qd2/c04-e/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/vps-qd2/c04-e/current
+    range: [10,109]
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/vps-qd2/c05-a/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/vps-qd2/c05-a/current
+    range: [10,109]
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/vps-qd2/c05-e/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/vps-qd2/c05-e/current
+    range: [10,109]
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/vps-qd2/c06-a/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/vps-qd2/c06-a/current
+    range: [10,109]
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/vps-qd2/c06-e/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/vps-qd2/c06-e/current
+    range: [10,109]
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/vps-qd2/c07-a/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/vps-qd2/c07-a/current
+    range: [10,109]
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/vps-qd2/c07-e/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/vps-qd2/c07-e/current
+    range: [10,109]
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/vps-qd2/c08-a/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/vps-qd2/c08-a/current
+    range: [10,109]
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/vps-qd2/c08-e/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/vps-qd2/c08-e/current
+    range: [10,109]
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/vps-qd2/c09-a/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/vps-qd2/c09-a/current
+    range: [10,109]
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/vps-qd2/c09-e/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/vps-qd2/c09-e/current
+    range: [10,109]
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/vps-qd2/c10-a/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/vps-qd2/c10-a/current
+    range: [10,109]
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/vps-qd2/c10-e/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/vps-qd2/c10-e/current
+    range: [10,109]
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/vps-qd2/c11-a/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/vps-qd2/c11-a/current
+    range: [10,109]
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/vps-qd2/c11-e/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/vps-qd2/c11-e/current
+    range: [10,109]
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/vps-qd2/c12-a/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/vps-qd2/c12-a/current
+    range: [10,109]
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/vps-qd2/c12-e/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/vps-qd2/c12-e/current
+    range: [10,109]
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/vps-qd2/c13-a/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/vps-qd2/c13-a/current
+    range: [10,109]
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/vps-qd2/c13-e/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/vps-qd2/c13-e/current
+    range: [10,109]
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/vps-qd2/c14-a/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/vps-qd2/c14-a/current
+    range: [10,109]
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/vps-qd2/c14-e/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/vps-qd2/c14-e/current
+    range: [10,109]
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/vps-qd2/c15-a/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/vps-qd2/c15-a/current
+    range: [10,109]
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/vps-qd2/c15-e/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/vps-qd2/c15-e/current
+    range: [10,109]
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/vps-qd2/c16-a/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/vps-qd2/c16-a/current
+    range: [10,109]
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/vps-qd2/c16-e/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/vps-qd2/c16-e/current
+    range: [10,109]
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/vps-qd2/c17-a/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/vps-qd2/c17-a/current
+    range: [10,109]
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/vps-qd2/c17-e/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/vps-qd2/c17-e/current
+    range: [10,109]
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/vps-qd2/c18-a/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/vps-qd2/c18-a/current
+    range: [10,109]
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/vps-qd2/c18-e/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/vps-qd2/c18-e/current
+    range: [10,109]
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/vps-qd2/c19-a/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/vps-qd2/c19-a/current
+    range: [10,109]
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/vps-qd2/c19-e/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/vps-qd2/c19-e/current
+    range: [10,109]
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/vps-qd2/c20-a/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/vps-qd2/c20-a/current
+    range: [10,109]
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/vps-qd2/c20-e/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/vps-qd2/c20-e/current
+    range: [10,109]
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/vps-qd2/c21-a/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/vps-qd2/c21-a/current
+    range: [10,109]
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/vps-qd2/c21-e/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/vps-qd2/c21-e/current
+    range: [10,109]
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/vps-qd2/c22-a/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/vps-qd2/c22-a/current
+    range: [10,109]
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/vps-qd2/c22-e/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/vps-qd2/c22-e/current
+    range: [10,109]
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/vps-qd2/c23-a/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/vps-qd2/c23-a/current
+    range: [10,109]
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/vps-qd2/c23-e/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/vps-qd2/c23-e/current
+    range: [10,109]
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/vps-qd2/c24-a/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/vps-qd2/c24-a/current
+    range: [10,109]
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/vps-qd2/c24-e/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/vps-qd2/c24-e/current
+    range: [10,109]
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/vps-qd2/c25-a/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/vps-qd2/c25-a/current
+    range: [10,109]
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/vps-qd2/c25-e/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/vps-qd2/c25-e/current
+    range: [10,109]
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/vps-qd2/c26-a/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/vps-qd2/c26-a/current
+    range: [10,109]
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/vps-qd2/c26-e/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/vps-qd2/c26-e/current
+    range: [10,109]
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/vps-qd2/c27-a/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/vps-qd2/c27-a/current
+    range: [10,109]
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/vps-qd2/c27-e/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/vps-qd2/c27-e/current
+    range: [10,109]
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/vps-qd2/c28-a/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/vps-qd2/c28-a/current
+    range: [10,109]
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/vps-qd2/c28-e/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/vps-qd2/c28-e/current
+    range: [10,109]
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/vps-qd2/c29-a/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/vps-qd2/c29-a/current
+    range: [10,109]
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/vps-qd2/c29-e/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/vps-qd2/c29-e/current
+    range: [10,109]
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/vps-qd2/c30-a/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/vps-qd2/c30-a/current
+    range: [10,109]
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/vps-qd2/c30-e/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/vps-qd2/c30-e/current
+    range: [10,109]
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/vps-qd2/c31-a/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/vps-qd2/c31-a/current
+    range: [10,109]
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/vps-qd2/c31-e/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/vps-qd2/c31-e/current
+    range: [10,109]
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/vps-qd2/c32-a/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/vps-qd2/c32-a/current
+    range: [10,109]
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/vps-qd2/c32-e/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/vps-qd2/c32-e/current
+    range: [10,109]
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/vps-qd2/c01-a/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/vps-qd2/c01-a/current
+    range: [10,109]
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/vps-qd2/c01-e/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/vps-qd2/c01-e/current
+    range: [10,109]
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/vps-qd2/c02-a/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/vps-qd2/c02-a/current
+    range: [10,109]
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/vps-qd2/c02-e/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/vps-qd2/c02-e/current
+    range: [10,109]
+    unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/vps-qd2/c03-a/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/vps-qd2/c03-a/current
+    range: [10,109]
+    unit: A

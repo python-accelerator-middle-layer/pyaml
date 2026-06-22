@@ -32,11 +32,13 @@ class ConfigModel(BaseModel):
         Default: zeros
     crosstalk : float or list[float], optional
         Crosstalk factors. Default: 1.0
-    powerconverter : DeviceAccess
+    powerconverter : str
         The hardware can be a single power supply or a list of power supplies.
         If a list is provided, the same value will be affected to all of them
     unit : str
         Strength unit: rad, m-1, m-2
+    hardware_unit : str
+        Hardware unit (i.e. 'A' , 'V')
     """
 
     model_config = ConfigDict(arbitrary_types_allowed=True, extra="forbid")
@@ -45,8 +47,9 @@ class ConfigModel(BaseModel):
     calibration_factors: float | list[float] = None
     calibration_offsets: float | list[float] = None
     crosstalk: float | list[float] = 1.0
-    powerconverter: DeviceAccess
+    powerconverter: str | None
     unit: str
+    hardware_unit: str
 
 
 def _get_length(elem) -> int:
@@ -136,6 +139,7 @@ class LinearSerializedMagnetModel(MagnetModel):
                 crosstalk=self.__crosstalk[magnet_idx],
                 powerconverter=self._cfg.powerconverter,
                 unit=self._cfg.unit,
+                hardware_unit=self._cfg.hardware_unit,
             )
             self.__sub_models.append(LinearMagnetModel(sub_model))
 
@@ -158,9 +162,9 @@ class LinearSerializedMagnetModel(MagnetModel):
         return [self._cfg.unit] * self.__nbMagnets
 
     def get_hardware_units(self) -> list[str]:
-        return [self.__sub_models[0].get_hardware_units()[0]]
+        return [self._cfg.hardware_unit]
 
-    def get_devices(self) -> list[DeviceAccess]:
+    def get_device_names(self) -> list[str | None]:
         return [self._cfg.powerconverter]
 
     def set_magnet_rigidity(self, brho: np.double):

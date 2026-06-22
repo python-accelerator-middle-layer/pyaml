@@ -62,27 +62,14 @@ class MagnetModel(metaclass=ABCMeta):
         pass
 
     @abstractmethod
-    def get_hardware_units(self) -> list[str]:
+    def get_device_names(self) -> list[str | None]:
         """
-        Get hardware units
+        Get device names
 
         Returns
         -------
-        list[str]
-            Array of hardware units. For a single multipole,
-            returns a list of 1 item
-        """
-        pass
-
-    @abstractmethod
-    def get_devices(self) -> list[DeviceAccess | None]:
-        """
-        Get device handles
-
-        Returns
-        -------
-        list[DeviceAccess]
-            Array of DeviceAcess
+        list[DevstriceAccess]
+            Array of device name
         """
         pass
 

@@ -4,8 +4,6 @@ import numpy as np
 import pytest
 from scipy.constants import speed_of_light
 
-from pyaml import PyAMLException
-from pyaml.accelerator import Accelerator
 from pyaml.configuration import Factory, get_root_folder, set_root_folder
 from pyaml.configuration.fileloader import load
 from pyaml.control.abstract_impl import (
@@ -39,10 +37,11 @@ def test_quad_external_model(install_test_package, config_root_dir):
             "type": "tango.pyaml.controlsystem",
             "name": "live",
             "tango_host": "ebs-simu-3:10000",
+            "catalog": Factory.build(load("catalogs/sr_catalogs.yaml"), False),
         }
     )
     hcorr_with_external_model: HCorrector = Factory.build(cfg_hcorr_yaml, False)
-    dev = cs.attach(hcorr_with_external_model.model.get_devices())[0]
+    dev = cs.get_device_access(hcorr_with_external_model.model.get_device_names()[0])
     strength = RWStrengthScalar(hcorr_with_external_model.model, dev)
     hardware = RWHardwareScalar(hcorr_with_external_model.model, dev)
     ref_corr = hcorr_with_external_model.attach(cs, strength, hardware)
@@ -80,10 +79,11 @@ def test_quad_linear(magnet_file, install_test_package, config_root_dir):
             "type": "tango.pyaml.controlsystem",
             "name": "live",
             "tango_host": "ebs-simu-3:10000",
+            "catalog": Factory.build(load("catalogs/sr_catalogs.yaml"), False),
         }
     )
     quad: Quadrupole = Factory.build(cfg_quad, False)
-    dev = cs.attach(quad.model.get_devices())[0]
+    dev = cs.get_device_access(quad.model.get_device_names()[0])
     hardware = RWHardwareScalar(quad.model, dev) if quad.model.has_hardware() else None
     strength = RWStrengthScalar(quad.model, dev) if quad.model.has_physics() else None
     ref_quad = quad.attach(cs, strength, hardware)
@@ -128,11 +128,12 @@ def test_combined_function_magnets(magnet_file, config_root_dir):
             "type": "tango.pyaml.controlsystem",
             "name": "live",
             "tango_host": "ebs-simu-3:10000",
+            "catalog": Factory.build(load("catalogs/sr_catalogs.yaml"), False),
         }
     )
     sh: CombinedFunctionMagnet = Factory.build(cfg_sh, False)
     sh.model.set_magnet_rigidity(6e9 / speed_of_light)
-    devs = cs.attach(sh.model.get_devices())
+    devs = cs.get_devices_access(sh.model.get_device_names())
     currents = RWHardwareArray(sh.model, devs)
     strengths = RWStrengthArray(sh.model, devs)
     sUnits = sh.model.get_strength_units()
