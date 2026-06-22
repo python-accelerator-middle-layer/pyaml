@@ -5,7 +5,7 @@ data_folder: /data/store
 energy: 1000000000.0
 simulators:
 - type: pyaml.lattice.simulator
-  lattice: fodo_1gev_6d.m
+  lattice: D:\PROJETS\PyAML\Fodo\fodo_1gev_6d.m
   name: design
   linker:
     type: pyaml.lattice.attribute_linker
@@ -14,6 +14,31 @@ controls:
 - type: tango.pyaml.controlsystem
   name: live
   tango_host: 127.0.0.1:10000
+  catalog:
+    type: tango.pyaml.static_catalog
+    entries:
+    - type: tango.pyaml.static_catalog_entry
+      key: simulator/ringsimulator/ringsimulator/reference_frequency
+      device:
+        type: tango.pyaml.attribute
+        attribute: simulator/ringsimulator/ringsimulator/reference_frequency
+        unit: kHz
+    - type: tango.pyaml.static_catalog_entry
+      key: simulator/ringsimulator/ringsimulator/voltage
+      device:
+        type: tango.pyaml.attribute
+        attribute: simulator/ringsimulator/ringsimulator/voltage
+        unit: V
+    - type: tango.pyaml.static_catalog_entry
+      key: simulator/ringsimulator/ringsimulator/hor
+      device:
+        type: tango.pyaml.attribute
+        attribute: simulator/ringsimulator/ringsimulator/hor
+    - type: tango.pyaml.static_catalog_entry
+      key: simulator/ringsimulator/ringsimulator/vert
+      device:
+        type: tango.pyaml.attribute
+        attribute: simulator/ringsimulator/ringsimulator/vert
 arrays:
 - type: pyaml.arrays.magnet
   name: QF_001
@@ -962,25 +987,15 @@ devices:
       unit: 1/m**2
 - type: pyaml.rf.rf_plant
   name: RF
-  masterclock:
-    type: tango.pyaml.attribute
-    attribute: simulator/ringsimulator/ringsimulator/reference_frequency
-    unit: kHz
+  masterclock: simulator/ringsimulator/ringsimulator/reference_frequency
   transmitters:
   - type: pyaml.rf.rf_transmitter
     name: RFTRA
     cavities: [RF_001]
     harmonic: 1
     distribution: 1
-    voltage:
-      type: tango.pyaml.attribute
-      attribute: simulator/ringsimulator/ringsimulator/voltage
-      unit: V
+    voltage: simulator/ringsimulator/ringsimulator/voltage
 - type: pyaml.diagnostics.tune_monitor
   name: BETATRON_TUNE
-  tune_h:
-    type: tango.pyaml.attribute
-    attribute: simulator/ringsimulator/ringsimulator/hor
-  tune_v:
-    type: tango.pyaml.attribute
-    attribute: simulator/ringsimulator/ringsimulator/vert
+  tune_h: simulator/ringsimulator/ringsimulator/hor
+  tune_v: simulator/ringsimulator/ringsimulator/vert
