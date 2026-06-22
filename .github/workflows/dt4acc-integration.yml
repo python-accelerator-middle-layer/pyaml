@@ -51,13 +51,15 @@ jobs:
             pytango
           cache-environment: true
 
-      - name: Install pyAML and Tango backend
+      - name: Install pyAML and control-system backends
         run: |
           python -m pip install --upgrade pip
           python -m pip install -e ".[test]"
+          python -m pip install "ophyd-async[tango]"
           python -m pip install --no-deps \
-            "tango-pyaml @ git+https://github.com/python-accelerator-middle-layer/tango-pyaml.git"
-          python -c "import tango; import tango.pyaml"
+            "tango-pyaml @ git+https://github.com/python-accelerator-middle-layer/tango-pyaml.git" \
+            "pyaml-cs-oa @ git+https://github.com/python-accelerator-middle-layer/pyaml-cs-oa.git"
+          python -c "import tango; import tango.pyaml; import pyaml_cs_oa"
 
       - name: Log in to GitLab registry
         if: ${{ env.DT4ACC_REGISTRY_USER != '' && env.DT4ACC_REGISTRY_PASSWORD != '' }}
