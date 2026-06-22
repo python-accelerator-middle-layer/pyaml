@@ -5,7 +5,7 @@ data_folder: /data/store
 energy: 1000000000.0
 simulators:
 - type: pyaml.lattice.simulator
-  lattice: D:\PROJETS\PyAML\Fodo\fodo_1gev_6d.m
+  lattice: fodo_1gev_6d.m
   name: design
   linker:
     type: pyaml.lattice.attribute_linker
