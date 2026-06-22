@@ -93,7 +93,7 @@ jobs:
           export TWIN_PID="$(cat "${PID_FILE}")"
           export LOG_FILE
 
-          timeout 420 bash -c '
+          timeout 900 bash -c '
             until grep -q "Calculation heartbeat: simulator/ringsimulator/ringsimulator reachable" "${LOG_FILE}"; do
               if ! kill -0 "${TWIN_PID}" 2>/dev/null; then
                 cat "${LOG_FILE}"
