@@ -47,18 +47,6 @@ class ControlSystem(ElementHolder, metaclass=ABCMeta):
         ElementHolder.__init__(self)
 
     @abstractmethod
-    def attach(self, dev: list[DeviceAccess | None]) -> list[DeviceAccess | None]:
-        """Return new instances of DeviceAccess objects
-        coming from configuration attached to this CS"""
-        pass
-
-    @abstractmethod
-    def attach_array(self, dev: list[DeviceAccess | None]) -> list[DeviceAccess | None]:
-        """Return new instances of DeviceAccess objects
-        coming from configuration attached to this CS"""
-        pass
-
-    @abstractmethod
     def name(self) -> str:
         """Return control system name (i.e. live)"""
         pass
@@ -235,12 +223,6 @@ class ControlSystemAdapter(ControlSystem):
 
     def __init__(self):
         ControlSystem.__init__(self)
-
-    def attach(self, dev: list[DeviceAccess | None]) -> list[DeviceAccess | None]:
-        pass
-
-    def attach_array(self, dev: list[DeviceAccess | None]) -> list[DeviceAccess | None]:
-        pass
 
     def name(self) -> str:
         pass
