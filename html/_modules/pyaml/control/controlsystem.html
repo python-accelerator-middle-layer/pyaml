@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>pyaml.control.controlsystem &#8212; Python Accelerator Middle Layer 0.1.dev1+g7bd2413f3 documentation</title>
+    <title>pyaml.control.controlsystem &#8212; Python Accelerator Middle Layer 0.1.dev1+gd7d7d8901 documentation</title>
   
   
   
@@ -41,7 +41,7 @@
   <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=a95f357e85573c9b56d5" />
 <link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=a95f357e85573c9b56d5" />
 
-    <script src="../../../_static/documentation_options.js?v=e255448a"></script>
+    <script src="../../../_static/documentation_options.js?v=d4aa6ba4"></script>
     <script src="../../../_static/doctools.js?v=9bcbadda"></script>
     <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -125,8 +125,8 @@
       
     
     
-    <img src="../../../_static/logo.png" class="logo__image only-light" alt="Python Accelerator Middle Layer 0.1.dev1+g7bd2413f3 documentation - Home"/>
-    <img src="../../../_static/dark.png" class="logo__image only-dark pst-js-only" alt="Python Accelerator Middle Layer 0.1.dev1+g7bd2413f3 documentation - Home"/>
+    <img src="../../../_static/logo.png" class="logo__image only-light" alt="Python Accelerator Middle Layer 0.1.dev1+gd7d7d8901 documentation - Home"/>
+    <img src="../../../_static/dark.png" class="logo__image only-dark pst-js-only" alt="Python Accelerator Middle Layer 0.1.dev1+gd7d7d8901 documentation - Home"/>
   
   
 </a></div>
@@ -438,24 +438,6 @@
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">ElementHolder</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
 
-<div class="viewcode-block" id="ControlSystem.attach">
-<a class="viewcode-back" href="../../../api/pyaml.control.controlsystem.html#pyaml.control.controlsystem.ControlSystem.attach">[docs]</a>
-    <span class="nd">@abstractmethod</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">attach</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dev</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">DeviceAccess</span> <span class="o">|</span> <span class="kc">None</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">DeviceAccess</span> <span class="o">|</span> <span class="kc">None</span><span class="p">]:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return new instances of DeviceAccess objects</span>
-<span class="sd">        coming from configuration attached to this CS&quot;&quot;&quot;</span>
-        <span class="k">pass</span></div>
-
-
-<div class="viewcode-block" id="ControlSystem.attach_array">
-<a class="viewcode-back" href="../../../api/pyaml.control.controlsystem.html#pyaml.control.controlsystem.ControlSystem.attach_array">[docs]</a>
-    <span class="nd">@abstractmethod</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">attach_array</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dev</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">DeviceAccess</span> <span class="o">|</span> <span class="kc">None</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">DeviceAccess</span> <span class="o">|</span> <span class="kc">None</span><span class="p">]:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return new instances of DeviceAccess objects</span>
-<span class="sd">        coming from configuration attached to this CS&quot;&quot;&quot;</span>
-        <span class="k">pass</span></div>
-
-
 <div class="viewcode-block" id="ControlSystem.name">
 <a class="viewcode-back" href="../../../api/pyaml.control.controlsystem.html#pyaml.control.controlsystem.ControlSystem.name">[docs]</a>
     <span class="nd">@abstractmethod</span>
@@ -660,18 +642,6 @@
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">ControlSystem</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
-
-<div class="viewcode-block" id="ControlSystemAdapter.attach">
-<a class="viewcode-back" href="../../../api/pyaml.control.controlsystem.html#pyaml.control.controlsystem.ControlSystemAdapter.attach">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">attach</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dev</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">DeviceAccess</span> <span class="o">|</span> <span class="kc">None</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">DeviceAccess</span> <span class="o">|</span> <span class="kc">None</span><span class="p">]:</span>
-        <span class="k">pass</span></div>
-
-
-<div class="viewcode-block" id="ControlSystemAdapter.attach_array">
-<a class="viewcode-back" href="../../../api/pyaml.control.controlsystem.html#pyaml.control.controlsystem.ControlSystemAdapter.attach_array">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">attach_array</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dev</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">DeviceAccess</span> <span class="o">|</span> <span class="kc">None</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">DeviceAccess</span> <span class="o">|</span> <span class="kc">None</span><span class="p">]:</span>
-        <span class="k">pass</span></div>
-
 
 <div class="viewcode-block" id="ControlSystemAdapter.name">
 <a class="viewcode-back" href="../../../api/pyaml.control.controlsystem.html#pyaml.control.controlsystem.ControlSystemAdapter.name">[docs]</a>
