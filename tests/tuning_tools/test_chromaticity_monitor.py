@@ -10,7 +10,7 @@ def callback(action: int, data: dict):
 
 
 def test_simulator_chromaticity_monitor():
-    sr: Accelerator = Accelerator.load("tests/config/EBS_chromaticity.yaml", ignore_external=True)
+    sr: Accelerator = Accelerator.load("tests/config/EBSOrbit.yaml", ignore_external=True)
     sr.design.get_lattice().enable_6d()
     chromaAT = sr.design.get_lattice().get_chrom()[:-1]
     chromaticity_monitor = sr.design.get_chromaticity_monitor("CHROMATICITY_MONITOR")
@@ -40,7 +40,7 @@ def test_simulator_chromaticity_monitor():
     indirect=True,
 )
 def test_controlsystem_chromaticity_monitor(install_test_package):
-    sr: Accelerator = Accelerator.load("tests/config/EBS_chromaticity.yaml")
+    sr: Accelerator = Accelerator.load("tests/config/EBSOrbit.yaml")
     chromaticity_monitor = sr.live.get_chromaticity_monitor("CHROMATICITY_MONITOR")
     assert chromaticity_monitor.chromaticity.get() is None
     chromaticity_monitor.measure(

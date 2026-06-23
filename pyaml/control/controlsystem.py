@@ -114,7 +114,7 @@ class ControlSystem(ElementHolder, metaclass=ABCMeta):
         if agg is None or aggh is None or aggv is None:
             return [None, None, None]
         for b in bpms:
-            devs = self.get_devices_access(b.model.get_pos_devices())
+            devs = self.get_devices_access(b.get_pos_devices())
             agg.add_devices(devs)
             aggh.add_devices(devs[0])
             aggv.add_devices(devs[1])
@@ -168,9 +168,9 @@ class ControlSystem(ElementHolder, metaclass=ABCMeta):
                     self.add_magnet(m)
 
             elif isinstance(e, BPM):
-                pos_devs = self.get_devices_access(e.model.get_pos_devices())
-                tilt_devs = self.get_devices_access([e.model.get_tilt_device()])
-                offset_devs = self.get_devices_access(e.model.get_offset_devices())
+                pos_devs = self.get_devices_access(e.get_pos_devices())
+                tilt_devs = self.get_devices_access([e.get_tilt_device()])
+                offset_devs = self.get_devices_access(e.get_offset_devices())
                 positions = RBpmArray(pos_devs[0], pos_devs[1])
                 tilt = RWBpmTiltScalar(tilt_devs[0])
                 offsets = RWBpmOffsetArray(offset_devs[0], offset_devs[1])

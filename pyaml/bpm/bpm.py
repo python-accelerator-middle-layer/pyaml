@@ -1,4 +1,3 @@
-from ..bpm.bpm_model import BPMModel
 from ..common.abstract import ReadFloatArray, ReadWriteFloatArray, ReadWriteFloatScalar
 from ..common.element import Element, ElementConfigModel
 from ..common.exception import PyAMLException
@@ -15,13 +14,25 @@ class ConfigModel(ElementConfigModel):
     """
     Configuration model for BPM element.
 
-    Attributes
+    Parameters
     ----------
-    model : BPMModel or None, optional
-        Object in charge of BPM modeling
+    x_pos : str
+        Horizontal position device catalog key
+    y_pos : str
+        Vertical position device catalog key
+    x_offset : str
+        Horizontal BPM offset device catalog key
+    y_offset : str
+        Vertical BPM offset device catalog key
+    tilt : str
+        BPM tilt device catalog key
     """
 
-    model: BPMModel | None = None
+    x_pos: str | None = None
+    y_pos: str | None = None
+    x_offset: str | None = None
+    y_offset: str | None = None
+    tilt: str | None = None
 
 
 class BPM(Element):
@@ -45,21 +56,9 @@ class BPM(Element):
 
         self.__model = cfg.model if hasattr(cfg, "model") else None
         self._cfg = cfg
-        self.__positions = None
-        self.__offset = None
-        self.__tilt = None
-
-    @property
-    def model(self) -> BPMModel:
-        """
-        Get the BPM model.
-
-        Returns
-        -------
-        BPMModel
-            The BPM model instance
-        """
-        return self.__model
+        self._positions = None
+        self._offset = None
+        self._tilt = None
 
     @property
     def positions(self) -> ReadFloatArray:
@@ -76,9 +75,9 @@ class BPM(Element):
         PyAMLException
             If positions have not been attached
         """
-        if self.__positions is None:
+        if self._positions is None:
             raise PyAMLException(f"{str(self)} has no attached positions")
-        return self.__positions
+        return self._positions
 
     @property
     def offset(self) -> ReadWriteFloatArray:
@@ -95,9 +94,9 @@ class BPM(Element):
         PyAMLException
             If offset has not been attached
         """
-        if self.__offset is None:
+        if self._offset is None:
             raise PyAMLException(f"{str(self)} has no attached offset")
-        return self.__offset
+        return self._offset
 
     @property
     def tilt(self) -> ReadWriteFloatScalar:
@@ -114,9 +113,9 @@ class BPM(Element):
         PyAMLException
             If tilt has not been attached
         """
-        if self.__tilt is None:
+        if self._tilt is None:
             raise PyAMLException(f"{str(self)} has no attached tilt")
-        return self.__tilt
+        return self._tilt
 
     def attach(
         self,
@@ -148,8 +147,41 @@ class BPM(Element):
         # reference
         obj = self.__class__(self._cfg)
         obj.__model = self.__model
-        obj.__positions = positions
-        obj.__offset = offset
-        obj.__tilt = tilt
+        obj._positions = positions
+        obj._offset = offset
+        obj._tilt = tilt
         obj._peer = peer
         return obj
+
+    def get_pos_devices(self) -> list[str]:
+        """
+        Get device handles used for position reading
+
+        Returns
+        -------
+        list[DeviceAccess]
+            Array of DeviceAcess
+        """
+        return [self._cfg.x_pos, self._cfg.y_pos]
+
+    def get_tilt_device(self) -> str | None:
+        """
+        Get device handle used for tilt access
+
+        Returns
+        -------
+        DeviceAccess
+            DeviceAcess
+        """
+        return self._cfg.tilt
+
+    def get_offset_devices(self) -> list[str | None]:
+        """
+        Get device handles used for offset access
+
+        Returns
+        -------
+        list[DeviceAccess]
+            Array of DeviceAcess
+        """
+        return [self._cfg.x_offset, self._cfg.y_offset]
