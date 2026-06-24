@@ -1,0 +1,122 @@
+name: dt4acc integration
+
+on:
+  workflow_dispatch:
+    inputs:
+      dt4acc_image_uri:
+        description: "Apptainer ORAS image URI for the dt4acc twin"
+        required: false
+        default: "oras://gitlab-registry.synchrotron-soleil.fr/software-control-system/digitaltwin/dt4acc/dt4acc-soleil-twin/dt4acc-soleil-twin:latest"
+  pull_request:
+    branches: ["main"]
+    paths:
+      - ".github/workflows/dt4acc-integration.yml"
+      - "pyaml/**"
+      - "tests/integration/**"
+      - "pyproject.toml"
+
+permissions:
+  contents: read
+
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    defaults:
+      run:
+        shell: bash -el {0}
+
+    env:
+      TANGO_HOST: 127.0.0.1:10000
+      DT4ACC_IMAGE_URI: ${{ inputs.dt4acc_image_uri || 'oras://gitlab-registry.synchrotron-soleil.fr/software-control-system/digitaltwin/dt4acc/dt4acc-soleil-twin/dt4acc-soleil-twin:latest' }}
+      DT4ACC_REGISTRY_USER: ${{ secrets.DT4ACC_REGISTRY_USER }}
+      DT4ACC_REGISTRY_PASSWORD: ${{ secrets.DT4ACC_REGISTRY_PASSWORD }}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Apptainer
+        uses: eWaterCycle/setup-apptainer@v2
+
+      - name: Set up Python environment
+        uses: mamba-org/setup-micromamba@v2
+        with:
+          environment-name: pyaml-dt4acc-integration
+          create-args: >-
+            -c conda-forge
+            python=3.12
+            pip
+            pytest
+            pytango
+          cache-environment: true
+
+      - name: Install pyAML and control-system backends
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -e ".[test]"
+          python -m pip install "ophyd-async[tango]"
+          python -m pip install --no-deps \
+            "tango-pyaml @ git+https://github.com/python-accelerator-middle-layer/tango-pyaml.git" \
+            "pyaml-cs-oa @ git+https://github.com/python-accelerator-middle-layer/pyaml-cs-oa.git"
+          python -c "import tango; import tango.pyaml; import pyaml_cs_oa"
+
+      - name: Log in to GitLab registry
+        if: ${{ env.DT4ACC_REGISTRY_USER != '' && env.DT4ACC_REGISTRY_PASSWORD != '' }}
+        run: |
+          printf '%s' "${DT4ACC_REGISTRY_PASSWORD}" |
+            apptainer registry login \
+              --username "${DT4ACC_REGISTRY_USER}" \
+              --password-stdin \
+              oras://gitlab-registry.synchrotron-soleil.fr
+
+      - name: Pull dt4acc twin image
+        run: |
+          mkdir -p "${RUNNER_TEMP}/apptainer"
+          apptainer pull --force --disable-cache \
+            "${RUNNER_TEMP}/apptainer/dt4acc-soleil-twin.sif" \
+            "${DT4ACC_IMAGE_URI}"
+
+      - name: Start dt4acc twin
+        run: |
+          LOG_FILE="${RUNNER_TEMP}/dt4acc-twin.log"
+          PID_FILE="${RUNNER_TEMP}/dt4acc-twin.pid"
+
+          bash tests/integration/start_dt4acc_twin.sh \
+            --accelerator-setup-file "${GITHUB_WORKSPACE}/tests/integration/data/fodo_1gev_6d_pyaml.json" \
+            --lattice-file "${GITHUB_WORKSPACE}/tests/integration/data/fodo_1gev_6d.m" \
+            --tango-host "${TANGO_HOST%:*}" \
+            --tango-port "${TANGO_HOST##*:}" \
+            --sif "${RUNNER_TEMP}/apptainer/dt4acc-soleil-twin.sif" \
+            --log-file "${LOG_FILE}" \
+            --pid-file "${PID_FILE}" \
+            --timeout 900 \
+            --detach
+
+      - name: Run pyAML dt4acc smoke test
+        env:
+          PYAML_DT4ACC_INTEGRATION: "1"
+          TANGO_HOST: "127.0.0.1:10000"
+        run: |
+          python -m pytest -v tests/integration/test_dt4acc_twin_smoke.py
+
+      - name: Stop dt4acc twin
+        if: always()
+        run: |
+          PID_FILE="${RUNNER_TEMP}/dt4acc-twin.pid"
+          if [ -f "${PID_FILE}" ]; then
+            TWIN_PID="$(cat "${PID_FILE}")"
+            kill -- "-${TWIN_PID}" 2>/dev/null || kill "${TWIN_PID}" 2>/dev/null || true
+            sleep 5
+            kill -KILL -- "-${TWIN_PID}" 2>/dev/null || kill -KILL "${TWIN_PID}" 2>/dev/null || true
+          fi
+          if [ -f "${RUNNER_TEMP}/dt4acc-twin.log" ]; then
+            tail -n 200 "${RUNNER_TEMP}/dt4acc-twin.log" || true
+          fi
+
+      - name: Upload dt4acc logs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: dt4acc-twin-log
+          path: ${{ runner.temp }}/dt4acc-twin.log
