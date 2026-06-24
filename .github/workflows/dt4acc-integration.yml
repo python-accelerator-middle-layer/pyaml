@@ -108,6 +108,7 @@ jobs:
       - name: Run pyAML dt4acc smoke test
         env:
           PYAML_DT4ACC_INTEGRATION: "1"
+          TANGO_HOST: "127.0.0.1:10000"
         run: |
           python -m pytest -v tests/integration/test_dt4acc_twin_smoke.py
 
