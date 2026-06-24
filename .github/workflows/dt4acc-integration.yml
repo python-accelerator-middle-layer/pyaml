@@ -82,7 +82,7 @@ jobs:
           LOG_FILE="${RUNNER_TEMP}/dt4acc-twin.log"
           PID_FILE="${RUNNER_TEMP}/dt4acc-twin.pid"
 
-          tests/integration/start_dt4acc_twin.sh \
+          bash tests/integration/start_dt4acc_twin.sh \
             --accelerator-setup-file "${GITHUB_WORKSPACE}/tests/integration/data/fodo_1gev_6d_pyaml.json" \
             --lattice-file "${GITHUB_WORKSPACE}/tests/integration/data/fodo_1gev_6d.m" \
             --tango-host "${TANGO_HOST%:*}" \
