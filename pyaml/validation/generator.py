@@ -9,7 +9,7 @@ from typing import Any
 from pydantic.json_schema import GenerateJsonSchema, JsonSchemaValue
 from pydantic_core import core_schema
 
-from .models import ConfigurationSchema
+from .configuration_models import ConfigurationSchema
 from .registry import SchemaRegistry
 
 logger = logging.getLogger(__name__)
