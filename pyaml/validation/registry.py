@@ -4,9 +4,9 @@ import importlib
 import logging
 import pkgutil
 from collections.abc import ItemsView, Iterator, KeysView, ValuesView
-from typing import Callable, Type, TypeVar
+from typing import Callable, Type, TypeVar, overload
 
-from .models import ConfigurationSchema
+from .configuration_models import ConfigurationSchema
 
 logger = logging.getLogger(__name__)
 
@@ -301,50 +301,71 @@ class SchemaRegistry:
 # Decorator to register schemas
 # ==========================================================
 
-ModelT = TypeVar("ModelT", bound=ConfigurationSchema)
 ClassT = TypeVar("ClassT")
 
 
-def register_schema(
-    schema: Type[ModelT],
-) -> Callable[[Type[ClassT]], Type[ClassT]]:
-    """Register a runtime class with a Pydantic schema.
+@overload
+def register_schema(cls: type[ClassT]) -> type[ClassT]: ...
 
-    Parameters
-    ----------
-    schema : Type[ModelT]
-        Schema class to register. Must inherit from
-        :class:`ConfigurationSchema`.
 
-    Returns
-    -------
-    Callable[[Type[ClassT]], Type[ClassT]]
-        Decorator that registers the decorated class with ``schema``.
+@overload
+def register_schema(schema: type[ConfigurationSchema]) -> Callable[[type[ClassT]], type[ClassT]]: ...
 
-    Examples
-    --------
-    >>> @register_schema(MySchema)
-    ... class MyClass:
-    ...     pass
+
+@overload
+def register_schema() -> Callable[[type[ClassT]], type[ClassT]]: ...
+
+
+def register_schema(arg: type | None = None):
+    """
+    Register a configuration schema for a class.
+
+    This decorator supports three forms:
+
+    - ``@register_schema``: generate and register a configuration schema
+      from the decorated class.
+    - ``@register_schema()``: equivalent to ``@register_schema``.
+    - ``@register_schema(MyConfigurationSchema)``: register an explicit
+      :class:`ConfigurationSchema` subclass for the decorated class.
+
+    Automatically generated schemas are created using
+    :func:`generate_configuration_schema` and registered in the
+    :class:`SchemaRegistry`.
     """
 
-    if not (isinstance(schema, type) and issubclass(schema, ConfigurationSchema)):
-        raise TypeError("register_schema must be called with a schema class, e.g. @register_schema(MySchema)")
+    from .schema_builder import generate_configuration_schema
 
     registry = SchemaRegistry()
 
-    def decorator(
-        cls: Type[ClassT],
-    ) -> Type[ClassT]:
-        class_path = f"{cls.__module__}.{cls.__name__}"
-
-        logger.debug("Register schema for %s.", class_path)
-
-        registry.register(
-            class_path=class_path,
-            schema=schema,
-        )
-
+    def _generate_and_register_schema(cls: type[ClassT]) -> type[ClassT]:
+        generate_configuration_schema(cls)
         return cls
 
-    return decorator
+    # Used as: @register_schema(schema)
+    # Explicit registration of schema
+    if isinstance(arg, type) and issubclass(arg, ConfigurationSchema):
+        schema = arg
+
+        def decorator(cls: type[ClassT]) -> type[ClassT]:
+            class_path = f"{cls.__module__}.{cls.__name__}"
+            logger.debug("Register schema for %s.", class_path)
+            registry.register(class_path=class_path, schema=schema)
+            return cls
+
+        return decorator
+
+    # Used as: @register_schema()
+    # Registration is done when generating the schema
+    if arg is None:
+
+        def decorator(cls: type[ClassT]) -> type[ClassT]:
+            return _generate_and_register_schema(cls)
+
+        return decorator
+
+    # Used as: @register_schema
+    # Registration is done when generating the schema
+    if isinstance(arg, type):
+        return _generate_and_register_schema(arg)
+
+    raise TypeError("register_schema must be used as a decorator or decorator factory.")

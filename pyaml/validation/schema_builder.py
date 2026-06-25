@@ -1,6 +1,7 @@
 """Functionality for dynamically generating configuration schemas."""
 
 import inspect
+import logging
 import types
 from datetime import date, datetime, time, timedelta
 from decimal import Decimal
@@ -16,6 +17,8 @@ from pydantic_core import PydanticUndefined
 
 from .configuration_models import ConfigurationSchema
 from .registry import SchemaRegistry
+
+logger = logging.getLogger(__name__)
 
 RESERVED_CONFIGURATION_FIELDS = {"class_path"}
 
@@ -76,6 +79,7 @@ def generate_configuration_schema(source: type) -> type[ConfigurationSchema]:
     else:
         schema = _configuration_schema_from_constructor(source)
 
+    logger.debug("Register schema for %s.", class_path)
     registry.register(class_path, schema)
 
     return schema
