@@ -2,9 +2,10 @@
 PyAML validation subpackage.
 """
 
+from .configuration_models import ConfigurationSchema
 from .generator import SchemaGenerator
-from .models import ConfigurationSchema, DynamicValidation, StaticValidation
 from .registry import SchemaRegistry, register_schema
+from .validation_models import DynamicValidation, StaticValidation
 from .validator import SchemaValidator
 
 __all__ = [
