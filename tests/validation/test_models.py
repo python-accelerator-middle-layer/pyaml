@@ -7,7 +7,8 @@ from pydantic import BaseModel, ValidationError
 from pydantic.errors import PydanticSchemaGenerationError
 
 from pyaml.validation import ConfigurationSchema, DynamicValidation, StaticValidation
-from pyaml.validation.models import PyAMLBaseModel, ValidationSchema
+from pyaml.validation.configuration_models import PyAMLBaseModel
+from pyaml.validation.validation_models import ValidationModel
 
 # ==========================================================
 # PyAMLBaseModel
@@ -97,7 +98,7 @@ def test_configuration_schema_dump_uses_alias_when_requested():
 
 
 # ==========================================================
-# ValidationSchema
+# ValidationModel
 # ==========================================================
 
 
@@ -105,21 +106,21 @@ class DummyDevice:
     pass
 
 
-class DummySchema(ValidationSchema):
+class DummyModel(ValidationModel):
     device: DummyDevice
 
 
-def test_validation_schema_allows_arbitrary_types():
+def test_validation_model_allows_arbitrary_types():
     device = DummyDevice()
 
-    schema = DummySchema.model_validate({"device": device})
+    schema = DummyModel.model_validate({"device": device})
 
     assert schema.device is device
 
 
-def test_validation_schema_forbids_extra_fields():
+def test_validation_model_forbids_extra_fields():
     with pytest.raises(ValidationError):
-        DummySchema.model_validate({"device": DummyDevice(), "extra_field": 123})
+        DummyModel.model_validate({"device": DummyDevice(), "extra_field": 123})
 
 
 # ==========================================================
@@ -127,13 +128,13 @@ def test_validation_schema_forbids_extra_fields():
 # ==========================================================
 
 
-def test_dynamic_validation_builds_schema_from_init_signature():
+def test_dynamic_validation_builds_model_from_init_signature():
     class MyClass(DynamicValidation):
         def __init__(self, name: str, count: int = 0):
             self.name = name
             self.count = count
 
-    assert issubclass(MyClass.validation_model, ValidationSchema)
+    assert issubclass(MyClass.validation_model, ValidationModel)
     assert list(MyClass.validation_model.model_fields) == ["name", "count"]
 
     name_field = MyClass.validation_model.model_fields["name"]
@@ -198,12 +199,12 @@ def test_dynamic_validation_rejects_manual_validation_model():
 
 
 def test_static_validation_accepts_explicit_basemodel():
-    class ExampleSchema(BaseModel):
+    class ExampleModel(BaseModel):
         name: str
         count: int = 0
 
     class Example(StaticValidation):
-        validation_model = ExampleSchema
+        validation_model = ExampleModel
 
         def __init__(self, name: str, count: int = 0):
             self.name = name
@@ -224,12 +225,12 @@ def test_static_validation_accepts_explicit_basemodel():
 
 
 def test_static_validation_validates_and_coerces_input():
-    class ExampleSchema(BaseModel):
+    class ExampleModel(BaseModel):
         name: str
         count: int
 
     class Example(StaticValidation):
-        validation_model = ExampleSchema
+        validation_model = ExampleModel
 
         def __init__(self, name: str, count: int):
             self.name = name
@@ -243,11 +244,11 @@ def test_static_validation_validates_and_coerces_input():
 
 
 def test_static_validation_inherits_validation_model():
-    class ParentSchema(BaseModel):
+    class ParentModel(BaseModel):
         name: str
 
     class Parent(StaticValidation):
-        validation_model = ParentSchema
+        validation_model = ParentModel
 
         def __init__(self, name: str):
             self.name = name
@@ -258,7 +259,7 @@ def test_static_validation_inherits_validation_model():
 
     obj = Child("test")
     assert obj.name == "test"
-    assert Child.validation_model is ParentSchema
+    assert Child.validation_model is ParentModel
 
 
 def test_static_validation_requires_a_validation_model():
