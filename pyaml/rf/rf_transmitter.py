@@ -4,12 +4,13 @@ from typing import Self
 from .. import PyAMLException
 from ..common import abstract
 from ..common.element import Element
-from ..validation import DynamicValidation
+from ..validation import DynamicValidation, register_schema
 
 # Define the main class name for this module
 PYAMLCLASS = "RFTransmitter"
 
 
+@register_schema
 class RFTransmitter(Element, DynamicValidation):
     """
     Class that handle a RF transmitter
