@@ -345,3 +345,34 @@ def test_register_schema_can_register_multiple_classes_with_same_schema(
     assert registry[first_path] is DummySchema
     assert registry[second_path] is DummySchema
     assert len(registry) == 2
+
+
+def test_register_schema_generates_and_registers_schema_for_class(registry: SchemaRegistry):
+    @register_schema
+    class DecoratedClass:
+        def __init__(self, value: int):
+            pass
+
+    class_path = f"{DecoratedClass.__module__}.{DecoratedClass.__name__}"
+
+    schema = registry[class_path]
+    assert schema.__name__ == "DecoratedClassConfigurationSchema"
+    assert "value" in schema.model_fields
+
+
+def test_register_schema_with_empty_call_generates_and_registers_schema(
+    registry: SchemaRegistry,
+):
+    @register_schema()
+    class DecoratedClass:
+        def __init__(self, value: int):
+            pass
+
+    class_path = f"{DecoratedClass.__module__}.{DecoratedClass.__name__}"
+
+    assert class_path in registry
+
+
+def test_register_schema_rejects_non_schema_explicit_argument():
+    with pytest.raises(TypeError):
+        register_schema(123)
