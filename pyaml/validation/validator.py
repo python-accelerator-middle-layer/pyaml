@@ -6,7 +6,8 @@ from typing import Any
 
 from pydantic import ValidationError
 
-from .models import ConfigurationSchema
+from .configuration_models import ConfigurationSchema, ModuleConfigurationSchema
+from .errors import extract_location_metadata, raise_validation_error
 from .registry import SchemaRegistry
 
 logger = logging.getLogger(__name__)
@@ -63,6 +64,18 @@ class SchemaValidator:
         return validated
 
     @classmethod
+    def validate_to_dict(
+        cls,
+        data: dict[str, Any],
+    ) -> dict:
+        """
+        Validate configuration data recursively and return it as a dictionary.
+        """
+
+        validated = cls.validate(data)
+        return validated.model_dump()
+
+    @classmethod
     def _recursive_validate(cls, obj: Any) -> Any:
         """Recursively validate nested configuration objects.
 
@@ -95,15 +108,23 @@ class SchemaValidator:
         if not isinstance(obj, dict):
             return obj
 
+        # Remove loader metadata and keep it for error reporting.
+        cleaned_dict, location_metadata = extract_location_metadata(obj)
+
         logger.debug("Validating dict with keys: %s", list(obj))
-        validated_dict = {key: cls._recursive_validate(value) for key, value in obj.items()}
+        validated_dict = {key: cls._recursive_validate(value) for key, value in cleaned_dict.items()}
 
         # Check if the dict is a configuration object
-        config = cls._parse_configuration(validated_dict)
-        if config is None:
-            return validated_dict
+        # If it follows the old convention for configuration
+        # translate the data to the new one
+        parsed = cls._parse_configuration(validated_dict)
 
-        class_path = config.class_path
+        if parsed is None:
+            return validated_dict
+        else:
+            validated_dict = parsed
+
+        class_path = validated_dict["class_path"]
         schema = cls._registry.get(class_path)
 
         if schema is None:
@@ -113,32 +134,51 @@ class SchemaValidator:
             )
             return validated_dict
 
-        return schema.model_validate(validated_dict)
+        try:
+            return schema.model_validate(validated_dict)
+        except ValidationError as exc:
+            raise_validation_error(
+                exc,
+                class_path=class_path,
+                location_metadata=location_metadata,
+            )
 
     @classmethod
     def _parse_configuration(
         cls,
         validated_dict: dict[str, Any],
-    ) -> ConfigurationSchema | None:
-        """Parse a dictionary as configuration metadata.
-
-        Parameters
-        ----------
-        validated_dict : dict[str, Any]
-            Dictionary to interpret as configuration metadata.
-
-        Returns
-        -------
-        ConfigurationSchema | None
-            Parsed configuration model if validation succeeds,
-            otherwise ``None``.
+    ) -> dict[str, Any] | None:
         """
+        Interpret a dictionary as configuration metadata.
+
+        Returns the dictionary unchanged if it already matches
+        :class:`ConfigurationSchema`. If it matches
+        :class:`ModuleConfigurationSchema`, the legacy module-based format is
+        rewritten into the modern ``class_path`` form. Otherwise returns
+        ``None``.
+        """
+
         try:
-            return ConfigurationSchema.model_validate(
+            ConfigurationSchema.model_validate(validated_dict, extra="allow")
+            return validated_dict
+        except ValidationError:
+            logger.debug("Could not validate against ConfigurationSchema.")
+
+        try:
+            module_config = ModuleConfigurationSchema.model_validate(
                 validated_dict,
                 extra="allow",
             )
         except ValidationError:
-            logger.debug("Could not validate against ConfigurationSchema.")
+            logger.debug("Could not validate against ModuleConfigurationSchema; returning raw dict.")
+            return None
 
-        return None
+        class_config = module_config.to_configuration()
+
+        rewritten = dict(validated_dict)
+        rewritten["class_path"] = class_config.class_path
+        rewritten.pop("type", None)
+        rewritten.pop("module", None)
+
+        logger.debug("Configuration transformed from legacy configuration format.")
+        return rewritten
