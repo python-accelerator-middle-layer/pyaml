@@ -1,0 +1,5 @@
+type: pyaml.accelerator
+facility: Synchrotron SOLEIL
+machine: sr
+data_folder: /data/store
+energy: 1000000000.0

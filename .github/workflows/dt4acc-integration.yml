@@ -83,8 +83,8 @@ jobs:
           PID_FILE="${RUNNER_TEMP}/dt4acc-twin.pid"
 
           bash tests/integration/start_dt4acc_twin.sh \
-            --accelerator-setup-file "${GITHUB_WORKSPACE}/tests/integration/data/fodo_1gev_6d_pyaml.json" \
-            --lattice-file "${GITHUB_WORKSPACE}/tests/integration/data/fodo_1gev_6d.m" \
+            --accelerator-setup-file "${GITHUB_WORKSPACE}/tests/integration/data/fodo_1gev_6d/fodo_1gev_6d_dt4acc.json" \
+            --lattice-file "${GITHUB_WORKSPACE}/tests/integration/data/fodo_1gev_6d/fodo_1gev_6d.json" \
             --tango-host "${TANGO_HOST%:*}" \
             --tango-port "${TANGO_HOST##*:}" \
             --sif "${RUNNER_TEMP}/apptainer/dt4acc-soleil-twin.sif" \
