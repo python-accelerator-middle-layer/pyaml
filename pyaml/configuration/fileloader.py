@@ -110,7 +110,7 @@ class LoadContext:
             self.include_stack.pop()
 
 
-def load(filename: str, include_locations: bool = True) -> Union[dict, list]:
+def load(filename: str, include_locations: bool = False) -> Union[dict, list]:
     """Load a configuration file.
 
     When include_locations is False, uses the faster C-based YAML loader
