@@ -72,46 +72,8 @@ class PyAMLConfigCyclingException(PyAMLException):
     pass
 
 
-@dataclass(frozen=True)
-class Location:
-    """
-    Source location within a configuration file.
-    """
-
-    file: str
-    line: int
-    column: int
-
-    def __str__(self) -> str:
-        return f"{self.file} at line {self.line}, column {self.column}."
-
-
-@dataclass(frozen=True)
-class LocationMetadata:
-    """
-    Location metadata extracted from configuration data.
-    """
-
-    location: Location | None
-    field_locations: dict[str, Location] | None = None
-
-
-@dataclass(frozen=True)
-class LoadedConfig:
-    """
-    Loaded configuration plus separate metadata.
-
-    metadata maps id(obj) -> LocationMetadata for every dict/list node
-    produced by the loader.
-    """
-
-    data: dict | list
-    metadata: dict[int, LocationMetadata]
-
-
 def load(filename: str, paths_stack: list = None, use_fast_loader: bool = False) -> Union[dict, list]:
     """Load recursively a configuration setup"""
-
     if filename.endswith(".yaml") or filename.endswith(".yml"):
         l = YAMLLoader(filename, paths_stack, use_fast_loader)
     elif filename.endswith(".json"):
