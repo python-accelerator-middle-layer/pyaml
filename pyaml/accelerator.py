@@ -275,7 +275,7 @@ class Accelerator(object):
         return Factory.build(config_dict, ignore_external)
 
     @staticmethod
-    def load(filename: str, include_locations: bool = True, ignore_external=False) -> "Accelerator":
+    def load(filename: str, include_locations: bool = False, ignore_external=False) -> "Accelerator":
         """
         Load an accelerator from a config file.
 
