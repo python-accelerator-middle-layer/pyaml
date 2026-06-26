@@ -21,7 +21,7 @@ from pathlib import Path
 from typing import Any
 
 from ..common.exception import PyAMLConfigException
-from .fileloader import get_root_folder, load, set_root_folder
+from .fileloader import ROOT, load
 from .restfetcher import REMOTE_BASE_URL_KEY, SourceRoot, fetch_remote_config, is_remote_url, resolve_reference
 
 _INTERNAL_METADATA_KEYS = {"__location__", "__fieldlocations__", REMOTE_BASE_URL_KEY}
@@ -109,7 +109,7 @@ class ConfigurationManager:
         self._items_by_category: dict[str, dict[str, dict[str, Any]]] = {category: {} for category in self.NAMED_CATEGORIES}
         self._sources_by_category: dict[str, dict[str, str]] = {category: {} for category in self.NAMED_CATEGORIES}
         self._field_sources: dict[str, str] = {}
-        self._build_root: SourceRoot = get_root_folder()
+        self._build_root: SourceRoot = ROOT.get()
         self._build_root_locked = False
 
     def add(self, payload, **kwargs) -> None:
@@ -258,7 +258,7 @@ class ConfigurationManager:
             for name in self.NAMED_CATEGORIES:
                 self._items_by_category[name].clear()
                 self._sources_by_category[name].clear()
-            self._build_root = get_root_folder()
+            self._build_root = ROOT.get()
             self._build_root_locked = False
             return
 
@@ -491,7 +491,7 @@ class ConfigurationManager:
         from ..accelerator import Accelerator
 
         if isinstance(self._build_root, Path):
-            set_root_folder(self._build_root)
+            ROOT.set(self._build_root)
         snapshot = ConfigurationManager.strip_runtime_internal_metadata(self._snapshot(include_internal_metadata=True))
         return Accelerator.from_dict(snapshot, ignore_external=ignore_external)
 
@@ -624,13 +624,13 @@ class ConfigurationManager:
             raise PyAMLConfigException(f"{payload_path} file not found")
 
         resolved_path = path.resolve()
-        previous_root = get_root_folder()
+        previous_root = ROOT.get()
         source_root = resolved_path.parent
         try:
-            set_root_folder(source_root)
+            ROOT.set(source_root)
             fragment = load(resolved_path.name, None, use_fast_loader)
         finally:
-            set_root_folder(previous_root)
+            ROOT.set(previous_root)
 
         if not self._build_root_locked:
             self._build_root = source_root

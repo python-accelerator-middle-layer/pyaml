@@ -1,11 +1,13 @@
-# PyAML config file loader
+""" "PyAML configuration file loader."""
+
 import collections.abc
 import io
 import json
 import logging
 import os
+from dataclasses import dataclass
 from pathlib import Path
-from typing import TYPE_CHECKING, Union
+from typing import TYPE_CHECKING, Any, Union
 
 import yaml
 from yaml import CLoader
@@ -16,42 +18,49 @@ from pyaml.configuration.factory import Factory
 
 from .. import PyAMLException
 
-if TYPE_CHECKING:
-    from pyaml.accelerator import Accelerator
-
-
 logger = logging.getLogger(__name__)
 
 accepted_suffixes = [".yaml", ".yml", ".json"]
 FILE_PREFIX = "file:"
 
-ROOT = {"path": Path.cwd().resolve()}
+
+class RootFolder:
+    """
+    Manage the root directory used to resolve relative configuration paths.
+    """
+
+    def __init__(self, path: str | Path | None = None):
+        # Resolve the path is given otherwise set to the current working directory
+        if path is None:
+            self._path = Path.cwd().resolve()
+        else:
+            self._path = Path(path).resolve()
+
+    def set(self, path: str | Path) -> None:
+        """
+        Set the root path for configuration files.
+        """
+        self._path = Path(path).resolve()
+
+    def get(self) -> Path:
+        """
+        Get the root path for configuration files.
+        """
+        return self._path
+
+    def expand_path(self, path: str | Path) -> Path:
+        """
+        Return an absolute configuration path.
+
+        Relative paths are interpreted relative to the configured root
+        folder. Absolute paths are returned unchanged.
+        """
+
+        path = Path(path)
+        return path if path.is_absolute() else self._path / path
 
 
-def set_root_folder(path: Union[str, Path]):
-    """
-    Set the root path for configuration files.
-    """
-    ROOT["path"] = Path(path)
-
-
-def get_root_folder() -> Path:
-    """
-    Get the root path for configuration files.
-    """
-    return ROOT["path"]
-
-
-def get_path(p: Path) -> Path:
-    """
-    Return unchanged input path if it is an absolute path,
-    path relative to root folder otherwise.
-    """
-    if os.path.isabs(p):
-        return p
-    else:
-        root = get_root_folder()
-        return root / p
+ROOT = RootFolder()
 
 
 class PyAMLConfigCyclingException(PyAMLException):
@@ -63,8 +72,46 @@ class PyAMLConfigCyclingException(PyAMLException):
     pass
 
 
+@dataclass(frozen=True)
+class Location:
+    """
+    Source location within a configuration file.
+    """
+
+    file: str
+    line: int
+    column: int
+
+    def __str__(self) -> str:
+        return f"{self.file} at line {self.line}, column {self.column}."
+
+
+@dataclass(frozen=True)
+class LocationMetadata:
+    """
+    Location metadata extracted from configuration data.
+    """
+
+    location: Location | None
+    field_locations: dict[str, Location] | None = None
+
+
+@dataclass(frozen=True)
+class LoadedConfig:
+    """
+    Loaded configuration plus separate metadata.
+
+    metadata maps id(obj) -> LocationMetadata for every dict/list node
+    produced by the loader.
+    """
+
+    data: dict | list
+    metadata: dict[int, LocationMetadata]
+
+
 def load(filename: str, paths_stack: list = None, use_fast_loader: bool = False) -> Union[dict, list]:
     """Load recursively a configuration setup"""
+
     if filename.endswith(".yaml") or filename.endswith(".yml"):
         l = YAMLLoader(filename, paths_stack, use_fast_loader)
     elif filename.endswith(".json"):
@@ -82,7 +129,7 @@ def hasToLoad(value):
 # Loader base class (nested files expansion)
 class Loader:
     def __init__(self, filename: str, parent_path_stack: list[Path]):
-        self.path: Path = get_path(filename)
+        self.path: Path = ROOT.expand_path(filename)
         self.files_stack: list[Path] = []
         if parent_path_stack:
             if any(self.path.samefile(parent_path) for parent_path in parent_path_stack):
@@ -98,7 +145,7 @@ class Loader:
                     if value.startswith(FILE_PREFIX):
                         # remove prefix
                         stripped_value = value[len(FILE_PREFIX) :]
-                        d[key] = str(get_root_folder() / Path(stripped_value))
+                        d[key] = str(ROOT.get() / Path(stripped_value))
                     else:
                         d[key] = load(value, self.files_stack, self.use_fast_loader)
                 else:

@@ -2,7 +2,7 @@ import pytest
 
 from pyaml import PyAMLConfigException, PyAMLException
 from pyaml.accelerator import Accelerator
-from pyaml.configuration import get_root_folder, set_root_folder
+from pyaml.configuration import ROOT
 from pyaml.configuration.factory import Factory
 from pyaml.configuration.fileloader import load
 from tests.conftest import MockElement
@@ -23,14 +23,14 @@ def test_factory_build_default():
     ],
 )
 def test_error_location(test_file):
-    previous_root = get_root_folder()
+    previous_root = ROOT.get()
     try:
         with pytest.raises(PyAMLConfigException) as exc:
-            set_root_folder("tests/config")
+            ROOT.set("tests/config")
             cfg = load("bad_conf.yml")
             Factory.build(cfg, False)
     finally:
-        set_root_folder(previous_root)
+        ROOT.set(previous_root)
     print(str(exc.value))
     test_file_names = test_file.split("/")
     test_file_name = test_file_names[len(test_file_names) - 1]
