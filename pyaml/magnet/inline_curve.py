@@ -4,7 +4,6 @@ import numpy as np
 from pydantic import BaseModel, ConfigDict
 
 from ..common.exception import PyAMLException
-from ..configuration import get_root_folder
 from .curve import Curve
 
 # Define the main class name for this module

@@ -8,7 +8,7 @@ from ..common.abstract_aggregator import ScalarAggregator
 from ..common.element import Element
 from ..common.element_holder import ElementHolder
 from ..common.exception import PyAMLException
-from ..configuration import get_root_folder
+from ..configuration import ROOT
 from ..diagnostics.tune_monitor import BetatronTuneMonitor
 from ..lattice.abstract_impl import (
     BPMHScalarAggregator,
@@ -84,7 +84,7 @@ class Simulator(ElementHolder):
     def __init__(self, cfg: ConfigModel):
         super().__init__()
         self._cfg = cfg
-        path: Path = get_root_folder() / cfg.lattice
+        path: Path = ROOT.get() / cfg.lattice
 
         if self._cfg.mat_key is None:
             self.ring = at.load_lattice(path)

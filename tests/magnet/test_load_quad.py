@@ -4,7 +4,7 @@ import numpy as np
 import pytest
 from scipy.constants import speed_of_light
 
-from pyaml.configuration import Factory, get_root_folder, set_root_folder
+from pyaml.configuration import ROOT, Factory
 from pyaml.configuration.fileloader import load
 from pyaml.control.abstract_impl import (
     RWHardwareArray,
@@ -30,7 +30,7 @@ from pyaml.magnet.quadrupole import Quadrupole
     indirect=True,
 )
 def test_quad_external_model(install_test_package, config_root_dir):
-    set_root_folder(config_root_dir)
+    ROOT.set(config_root_dir)
     cfg_hcorr_yaml = load("sr/custom_magnets/hidcorr.yaml")
     cs = Factory.build_object(
         {
@@ -71,7 +71,7 @@ def test_quad_external_model(install_test_package, config_root_dir):
     indirect=["install_test_package"],
 )
 def test_quad_linear(magnet_file, install_test_package, config_root_dir):
-    set_root_folder(config_root_dir)
+    ROOT.set(config_root_dir)
     cfg_quad = load(magnet_file)
     print(f"Current file: {config_root_dir}/{magnet_file}")
     cs = Factory.build_object(
@@ -121,7 +121,7 @@ def test_quad_linear(magnet_file, install_test_package, config_root_dir):
     ],
 )
 def test_combined_function_magnets(magnet_file, config_root_dir):
-    set_root_folder(config_root_dir)
+    ROOT.set(config_root_dir)
     cfg_sh = load(magnet_file)
     cs = Factory.build_object(
         {

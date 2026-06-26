@@ -1,6 +1,6 @@
 import numpy as np
 
-from pyaml.configuration import set_root_folder
+from pyaml.configuration import ROOT
 from pyaml.magnet.csvcurve import ConfigModel, CSVCurve
 from pyaml.magnet.curve import Curve
 
@@ -17,6 +17,6 @@ def curve_test(file: str, current: float, strength: float):
 
 
 def test_curve(config_root_dir):
-    set_root_folder(config_root_dir)
+    ROOT.set(config_root_dir)
     curve_test("sr/magnet_models/QF1_strength.csv", 85, 16.618788)
     curve_test("sr/magnet_models/QD2_strength.csv", 87, -12.319894)
