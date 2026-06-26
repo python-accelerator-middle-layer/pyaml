@@ -628,7 +628,7 @@ class ConfigurationManager:
         source_root = resolved_path.parent
         try:
             ROOT.set(source_root)
-            fragment = load(resolved_path.name, None, use_fast_loader)
+            fragment = load(resolved_path.name, use_fast_loader)
         finally:
             ROOT.set(previous_root)
 

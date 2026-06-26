@@ -15,7 +15,7 @@ import yaml
 from yaml import CLoader
 
 from ..common.exception import PyAMLConfigException
-from .fileloader import FILE_PREFIX, SafeLineLoader, accepted_suffixes
+from .fileloader import ACCEPTED_SUFFIXES, FILE_PREFIX, SafeLineLoader
 
 REMOTE_BASE_URL_KEY = "__baseurl__"
 SourceRoot = Path | str | None
@@ -181,7 +181,7 @@ def _is_config_reference(value: Any) -> bool:
 
     parsed = urlparse(value)
     path = parsed.path if parsed.scheme in _REMOTE_SCHEMES else value
-    return any(path.endswith(suffix) for suffix in accepted_suffixes)
+    return any(path.endswith(suffix) for suffix in ACCEPTED_SUFFIXES)
 
 
 def _resolve_remote_config_reference(reference: str, base_url: str) -> str:
