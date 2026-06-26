@@ -83,7 +83,7 @@ class PyAMLConfigCyclingException(PyAMLException):
 class LoadContext:
     """Track state for one recursive configuration-loading session."""
 
-    include_locations: bool = True
+    include_locations: bool = False
     include_stack: list[Path] = field(default_factory=list)
 
     @contextmanager

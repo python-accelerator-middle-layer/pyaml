@@ -27,7 +27,7 @@ def test_error_location(test_file):
     try:
         with pytest.raises(PyAMLConfigException) as exc:
             ROOT.set("tests/config")
-            cfg = load("bad_conf.yml")
+            cfg = load("bad_conf.yml", include_locations=True)
             Factory.build(cfg, False)
     finally:
         ROOT.set(previous_root)
