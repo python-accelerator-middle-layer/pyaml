@@ -32,16 +32,26 @@ class ValidationMeta(type):
     Whenever an instance is created, the supplied constructor arguments
     are validated against the model before the class constructor is
     invoked.
+
+    Pass `validate=False` to skip validation for a single construction.
     """
 
     def __call__(cls, *args: Any, **kwargs: Any):
         """
-        Create an instance after validating constructor arguments.
+        Create an instance after optionally validating constructor arguments.
 
         The supplied arguments are bound to the class ``__init__`` signature,
         default values are applied, and the resulting argument mapping is
-        validated using ``validation_model``. The validated values are then
-        passed to the constructor.
+        validated using ``validation_model`` unless ``validate=False`` is
+        passed to the constructor. The validated values are then passed to the
+        constructor.
+
+        Parameters
+        ----------
+        validate
+            If ``True`` (default), validate constructor arguments before
+            instantiation. If ``False``, skip validation and pass the supplied
+            arguments directly to the constructor.
 
         Raises
         ------
@@ -52,6 +62,10 @@ class ValidationMeta(type):
             If the supplied arguments do not conform to the validation
             model.
         """
+        validate = kwargs.pop("validate", True)
+
+        if not validate:
+            return super().__call__(*args, **kwargs)
 
         validation_model = getattr(cls, "validation_model", None)
 

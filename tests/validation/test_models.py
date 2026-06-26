@@ -193,6 +193,18 @@ def test_dynamic_validation_rejects_manual_validation_model():
                 self.name = name
 
 
+def test_dynamic_validation_can_be_disabled_per_instance():
+    class MyClass(DynamicValidation):
+        def __init__(self, name: str, count: int):
+            self.name = name
+            self.count = count
+
+    obj = MyClass(name="test", count="12", validate=False)
+
+    assert obj.name == "test"
+    assert obj.count == "12"
+
+
 # ==========================================================
 # StaticValidation
 # ==========================================================
