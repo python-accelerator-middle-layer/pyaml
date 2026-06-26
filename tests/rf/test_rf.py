@@ -107,7 +107,7 @@ def test_rf_multi_notrans(install_test_package):
     RF.frequency.set(3.523e8)
     with pytest.raises(PyAMLException) as exc:
         RF.voltage.set(10e6)
-    assert "has no trasmitter device defined" in str(exc)
+    assert "has no transmitter device defined" in str(exc)
 
     # Check that frequency and voltage has been applied on the masterclock device
     assert np.isclose(RF.frequency.get(), 3.523e8)

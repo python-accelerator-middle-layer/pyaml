@@ -1,56 +1,39 @@
-import numpy as np
-from pydantic import BaseModel, ConfigDict
-
-try:
-    from typing import Self  # Python 3.11+
-except ImportError:
-    from typing_extensions import Self  # Python 3.10 and earlier
+import copy
+from typing import Self
 
 from .. import PyAMLException
 from ..common import abstract
-from ..common.element import Element, ElementConfigModel
-from ..control.deviceaccess import DeviceAccess
+from ..common.element import Element
+from ..validation import DynamicValidation, register_schema
 
 # Define the main class name for this module
 PYAMLCLASS = "RFTransmitter"
 
 
-class ConfigModel(ElementConfigModel):
-    """
-    Configuration model for RF Transmitter.
-
-    Attributes
-    ----------
-    voltage : str or None, optional
-        Device to apply cavity voltage
-    phase : str or None, optional
-        Device to apply cavity phase
-    cavities : list[str]
-        List of cavity names connected to this transmitter
-    harmonic : float, optional
-        Harmonic frequency ratio, 1.0 for main frequency, by default 1.0
-    distribution : float, optional
-        RF distribution (Part of the total RF voltage powered by this transmitter),
-        by default 1.0
-    """
-
-    model_config = ConfigDict(arbitrary_types_allowed=True, extra="forbid")
-
-    voltage: str | None = None
-    phase: str | None = None
-    cavities: list[str]
-    harmonic: float = 1.0
-    distribution: float = 1.0
-
-
-class RFTransmitter(Element):
+@register_schema
+class RFTransmitter(Element, DynamicValidation):
     """
     Class that handle a RF transmitter
     """
 
-    def __init__(self, cfg: ConfigModel):
-        super().__init__(cfg.name)
-        self._cfg = cfg
+    def __init__(
+        self,
+        name: str,
+        cavities: list[str],
+        voltage: str | None = None,
+        phase: str | None = None,
+        harmonic: float = 1.0,
+        distribution: float = 1.0,
+        lattice_names: str | None = None,
+        description: str | None = None,
+    ):
+        super().__init__(name, lattice_names, description)
+        self.voltage_name = voltage
+        self.phase_name = phase
+        self.cavities = cavities
+        self.harmonic = harmonic
+        self.distribution = distribution
+
         self.__voltage = None
         self.__phase = None
 
@@ -70,7 +53,7 @@ class RFTransmitter(Element):
             If transmitter is unattached or has no voltage device defined
         """
         if self.__voltage is None:
-            raise PyAMLException(f"{str(self)} is unattached or has no voltage device defined")
+            raise PyAMLException(f"{str(self.name)} is unattached or has no voltage device defined")
         return self.__voltage
 
     @property
@@ -89,7 +72,7 @@ class RFTransmitter(Element):
             If transmitter is unattached or has no phase device defined
         """
         if self.__phase is None:
-            raise PyAMLException(f"{str(self)} is unattached or has no phase device defined")
+            raise PyAMLException(f"{str(self.name)} is unattached or has no phase device defined")
         return self.__phase
 
     def attach(
@@ -116,7 +99,7 @@ class RFTransmitter(Element):
             A new attached instance of RFTransmitter
         """
         # Attach voltage and phase attribute and returns a new reference
-        obj = self.__class__(self._cfg)
+        obj = copy.copy(self)
         obj.__voltage = voltage
         obj.__phase = phase
         obj._peer = peer
