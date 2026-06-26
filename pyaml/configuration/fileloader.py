@@ -4,17 +4,13 @@ import collections.abc
 import io
 import json
 import logging
-import os
-from dataclasses import dataclass
 from pathlib import Path
-from typing import TYPE_CHECKING, Any, Union
+from typing import Union
 
 import yaml
 from yaml import CLoader
 from yaml.constructor import ConstructorError
 from yaml.loader import SafeLoader
-
-from pyaml.configuration.factory import Factory
 
 from .. import PyAMLException
 
