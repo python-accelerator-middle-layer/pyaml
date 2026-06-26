@@ -46,7 +46,7 @@ def test_error_location(test_file):
 )
 def test_error_cycles(test_file):
     with pytest.raises(PyAMLException) as exc:
-        ml: Accelerator = Accelerator.load(test_file)
+        ml: Accelerator = Accelerator.load(test_file, include_locations=True)
 
     assert "Circular file inclusion of " in str(exc.value)
     if not test_file.endswith(".json"):
