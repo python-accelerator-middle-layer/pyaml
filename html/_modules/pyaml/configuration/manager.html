@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>pyaml.configuration.manager &#8212; Python Accelerator Middle Layer 0.1.dev1+g32ba5697a documentation</title>
+    <title>pyaml.configuration.manager &#8212; Python Accelerator Middle Layer 0.1.dev1+gfbafe7b96 documentation</title>
   
   
   
@@ -41,7 +41,7 @@
   <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=a95f357e85573c9b56d5" />
 <link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=a95f357e85573c9b56d5" />
 
-    <script src="../../../_static/documentation_options.js?v=aa822b28"></script>
+    <script src="../../../_static/documentation_options.js?v=312cc4bb"></script>
     <script src="../../../_static/doctools.js?v=9bcbadda"></script>
     <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -125,8 +125,8 @@
       
     
     
-    <img src="../../../_static/logo.png" class="logo__image only-light" alt="Python Accelerator Middle Layer 0.1.dev1+g32ba5697a documentation - Home"/>
-    <img src="../../../_static/dark.png" class="logo__image only-dark pst-js-only" alt="Python Accelerator Middle Layer 0.1.dev1+g32ba5697a documentation - Home"/>
+    <img src="../../../_static/logo.png" class="logo__image only-light" alt="Python Accelerator Middle Layer 0.1.dev1+gfbafe7b96 documentation - Home"/>
+    <img src="../../../_static/dark.png" class="logo__image only-dark pst-js-only" alt="Python Accelerator Middle Layer 0.1.dev1+gfbafe7b96 documentation - Home"/>
   
   
 </a></div>
@@ -411,7 +411,7 @@
 <span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Any</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">..common.exception</span><span class="w"> </span><span class="kn">import</span> <span class="n">PyAMLConfigException</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">.fileloader</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_root_folder</span><span class="p">,</span> <span class="n">load</span><span class="p">,</span> <span class="n">set_root_folder</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.fileloader</span><span class="w"> </span><span class="kn">import</span> <span class="n">ROOT</span><span class="p">,</span> <span class="n">load</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">.restfetcher</span><span class="w"> </span><span class="kn">import</span> <span class="n">REMOTE_BASE_URL_KEY</span><span class="p">,</span> <span class="n">SourceRoot</span><span class="p">,</span> <span class="n">fetch_remote_config</span><span class="p">,</span> <span class="n">is_remote_url</span><span class="p">,</span> <span class="n">resolve_reference</span>
 
 <span class="n">_INTERNAL_METADATA_KEYS</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;__location__&quot;</span><span class="p">,</span> <span class="s2">&quot;__fieldlocations__&quot;</span><span class="p">,</span> <span class="n">REMOTE_BASE_URL_KEY</span><span class="p">}</span>
@@ -507,7 +507,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_items_by_category</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]]</span> <span class="o">=</span> <span class="p">{</span><span class="n">category</span><span class="p">:</span> <span class="p">{}</span> <span class="k">for</span> <span class="n">category</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">NAMED_CATEGORIES</span><span class="p">}</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_sources_by_category</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="p">{</span><span class="n">category</span><span class="p">:</span> <span class="p">{}</span> <span class="k">for</span> <span class="n">category</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">NAMED_CATEGORIES</span><span class="p">}</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_field_sources</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_build_root</span><span class="p">:</span> <span class="n">SourceRoot</span> <span class="o">=</span> <span class="n">get_root_folder</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_build_root</span><span class="p">:</span> <span class="n">SourceRoot</span> <span class="o">=</span> <span class="n">ROOT</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_build_root_locked</span> <span class="o">=</span> <span class="kc">False</span>
 
 <div class="viewcode-block" id="ConfigurationManager.add">
@@ -667,7 +667,7 @@
             <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">NAMED_CATEGORIES</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_items_by_category</span><span class="p">[</span><span class="n">name</span><span class="p">]</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_sources_by_category</span><span class="p">[</span><span class="n">name</span><span class="p">]</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_build_root</span> <span class="o">=</span> <span class="n">get_root_folder</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_build_root</span> <span class="o">=</span> <span class="n">ROOT</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_build_root_locked</span> <span class="o">=</span> <span class="kc">False</span>
             <span class="k">return</span>
 
@@ -924,7 +924,7 @@
         <span class="kn">from</span><span class="w"> </span><span class="nn">..accelerator</span><span class="w"> </span><span class="kn">import</span> <span class="n">Accelerator</span>
 
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_build_root</span><span class="p">,</span> <span class="n">Path</span><span class="p">):</span>
-            <span class="n">set_root_folder</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_build_root</span><span class="p">)</span>
+            <span class="n">ROOT</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_build_root</span><span class="p">)</span>
         <span class="n">snapshot</span> <span class="o">=</span> <span class="n">ConfigurationManager</span><span class="o">.</span><span class="n">strip_runtime_internal_metadata</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_snapshot</span><span class="p">(</span><span class="n">include_internal_metadata</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
         <span class="k">return</span> <span class="n">Accelerator</span><span class="o">.</span><span class="n">from_dict</span><span class="p">(</span><span class="n">snapshot</span><span class="p">,</span> <span class="n">ignore_external</span><span class="o">=</span><span class="n">ignore_external</span><span class="p">)</span></div>
 
@@ -1058,13 +1058,13 @@
             <span class="k">raise</span> <span class="n">PyAMLConfigException</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">payload_path</span><span class="si">}</span><span class="s2"> file not found&quot;</span><span class="p">)</span>
 
         <span class="n">resolved_path</span> <span class="o">=</span> <span class="n">path</span><span class="o">.</span><span class="n">resolve</span><span class="p">()</span>
-        <span class="n">previous_root</span> <span class="o">=</span> <span class="n">get_root_folder</span><span class="p">()</span>
+        <span class="n">previous_root</span> <span class="o">=</span> <span class="n">ROOT</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
         <span class="n">source_root</span> <span class="o">=</span> <span class="n">resolved_path</span><span class="o">.</span><span class="n">parent</span>
         <span class="k">try</span><span class="p">:</span>
-            <span class="n">set_root_folder</span><span class="p">(</span><span class="n">source_root</span><span class="p">)</span>
+            <span class="n">ROOT</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">source_root</span><span class="p">)</span>
             <span class="n">fragment</span> <span class="o">=</span> <span class="n">load</span><span class="p">(</span><span class="n">resolved_path</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="n">use_fast_loader</span><span class="p">)</span>
         <span class="k">finally</span><span class="p">:</span>
-            <span class="n">set_root_folder</span><span class="p">(</span><span class="n">previous_root</span><span class="p">)</span>
+            <span class="n">ROOT</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">previous_root</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_build_root_locked</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_build_root</span> <span class="o">=</span> <span class="n">source_root</span>

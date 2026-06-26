@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>fileloader &#8212; Python Accelerator Middle Layer 0.1.dev1+g32ba5697a documentation</title>
+    <title>fileloader &#8212; Python Accelerator Middle Layer 0.1.dev1+gfbafe7b96 documentation</title>
   
   
   
@@ -42,7 +42,7 @@
   <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=a95f357e85573c9b56d5" />
 <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=a95f357e85573c9b56d5" />
 
-    <script src="../_static/documentation_options.js?v=aa822b28"></script>
+    <script src="../_static/documentation_options.js?v=312cc4bb"></script>
     <script src="../_static/doctools.js?v=9bcbadda"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -128,8 +128,8 @@
       
     
     
-    <img src="../_static/logo.png" class="logo__image only-light" alt="Python Accelerator Middle Layer 0.1.dev1+g32ba5697a documentation - Home"/>
-    <img src="../_static/dark.png" class="logo__image only-dark pst-js-only" alt="Python Accelerator Middle Layer 0.1.dev1+g32ba5697a documentation - Home"/>
+    <img src="../_static/logo.png" class="logo__image only-light" alt="Python Accelerator Middle Layer 0.1.dev1+gfbafe7b96 documentation - Home"/>
+    <img src="../_static/dark.png" class="logo__image only-dark pst-js-only" alt="Python Accelerator Middle Layer 0.1.dev1+gfbafe7b96 documentation - Home"/>
   
   
 </a></div>
@@ -524,6 +524,7 @@
                   
   <section id="module-pyaml.configuration.fileloader">
 <span id="fileloader"></span><h1>fileloader<a class="headerlink" href="#module-pyaml.configuration.fileloader" title="Link to this heading">#</a></h1>
+<p>“PyAML configuration file loader.</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="pyaml.configuration.fileloader.JSONLoader">
 <em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">JSONLoader</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parent_paths_stack</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_fast_loader</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/configuration/fileloader.html#JSONLoader"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.configuration.fileloader.JSONLoader" title="Link to this definition">#</a></dt>
@@ -584,6 +585,41 @@
 </dd></dl>
 
 <dl class="py class">
+<dt class="sig sig-object py" id="pyaml.configuration.fileloader.RootFolder">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">RootFolder</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/configuration/fileloader.html#RootFolder"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.configuration.fileloader.RootFolder" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<p>Manage the root directory used to resolve relative configuration paths.</p>
+<dl class="field-list simple">
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaml.configuration.fileloader.RootFolder.expand_path">
+<span class="sig-name descname"><span class="pre">expand_path</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/configuration/fileloader.html#RootFolder.expand_path"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.configuration.fileloader.RootFolder.expand_path" title="Link to this definition">#</a></dt>
+<dd><p>Return an absolute configuration path.</p>
+<p>Relative paths are interpreted relative to the configured root
+folder. Absolute paths are returned unchanged.</p>
+<dl class="field-list simple">
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaml.configuration.fileloader.RootFolder.get">
+<span class="sig-name descname"><span class="pre">get</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/configuration/fileloader.html#RootFolder.get"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.configuration.fileloader.RootFolder.get" title="Link to this definition">#</a></dt>
+<dd><p>Get the root path for configuration files.</p>
+<dl class="field-list simple">
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaml.configuration.fileloader.RootFolder.set">
+<span class="sig-name descname"><span class="pre">set</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/configuration/fileloader.html#RootFolder.set"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.configuration.fileloader.RootFolder.set" title="Link to this definition">#</a></dt>
+<dd><p>Set the root path for configuration files.</p>
+<dl class="field-list simple">
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
 <dt class="sig sig-object py" id="pyaml.configuration.fileloader.SafeLineLoader">
 <em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">SafeLineLoader</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">stream</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/configuration/fileloader.html#SafeLineLoader"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.configuration.fileloader.SafeLineLoader" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">SafeLoader</span></code></p>
@@ -611,23 +647,6 @@
 </dd></dl>
 
 <dl class="py function">
-<dt class="sig sig-object py" id="pyaml.configuration.fileloader.get_path">
-<span class="sig-name descname"><span class="pre">get_path</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">p</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/configuration/fileloader.html#get_path"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.configuration.fileloader.get_path" title="Link to this definition">#</a></dt>
-<dd><p>Return unchanged input path if it is an absolute path,
-path relative to root folder otherwise.</p>
-<dl class="field-list simple">
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="pyaml.configuration.fileloader.get_root_folder">
-<span class="sig-name descname"><span class="pre">get_root_folder</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/configuration/fileloader.html#get_root_folder"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.configuration.fileloader.get_root_folder" title="Link to this definition">#</a></dt>
-<dd><p>Get the root path for configuration files.</p>
-<dl class="field-list simple">
-</dl>
-</dd></dl>
-
-<dl class="py function">
 <dt class="sig sig-object py" id="pyaml.configuration.fileloader.hasToLoad">
 <span class="sig-name descname"><span class="pre">hasToLoad</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/configuration/fileloader.html#hasToLoad"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.configuration.fileloader.hasToLoad" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
@@ -636,14 +655,6 @@ path relative to root folder otherwise.</p>
 <dt class="sig sig-object py" id="pyaml.configuration.fileloader.load">
 <span class="sig-name descname"><span class="pre">load</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">paths_stack</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_fast_loader</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/configuration/fileloader.html#load"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.configuration.fileloader.load" title="Link to this definition">#</a></dt>
 <dd><p>Load recursively a configuration setup</p>
-<dl class="field-list simple">
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="pyaml.configuration.fileloader.set_root_folder">
-<span class="sig-name descname"><span class="pre">set_root_folder</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/configuration/fileloader.html#set_root_folder"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.configuration.fileloader.set_root_folder" title="Link to this definition">#</a></dt>
-<dd><p>Set the root path for configuration files.</p>
 <dl class="field-list simple">
 </dl>
 </dd></dl>
@@ -709,6 +720,12 @@ path relative to root folder otherwise.</p>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.configuration.fileloader.PyAMLConfigCyclingException"><code class="docutils literal notranslate"><span class="pre">PyAMLConfigCyclingException</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.configuration.fileloader.RootFolder"><code class="docutils literal notranslate"><span class="pre">RootFolder</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.configuration.fileloader.RootFolder.expand_path"><code class="docutils literal notranslate"><span class="pre">RootFolder.expand_path()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.configuration.fileloader.RootFolder.get"><code class="docutils literal notranslate"><span class="pre">RootFolder.get()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.configuration.fileloader.RootFolder.set"><code class="docutils literal notranslate"><span class="pre">RootFolder.set()</span></code></a></li>
+</ul>
+</li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.configuration.fileloader.SafeLineLoader"><code class="docutils literal notranslate"><span class="pre">SafeLineLoader</span></code></a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.configuration.fileloader.SafeLineLoader.construct_mapping"><code class="docutils literal notranslate"><span class="pre">SafeLineLoader.construct_mapping()</span></code></a></li>
 </ul>
@@ -717,11 +734,8 @@ path relative to root folder otherwise.</p>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.configuration.fileloader.YAMLLoader.load"><code class="docutils literal notranslate"><span class="pre">YAMLLoader.load()</span></code></a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.configuration.fileloader.get_path"><code class="docutils literal notranslate"><span class="pre">get_path()</span></code></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.configuration.fileloader.get_root_folder"><code class="docutils literal notranslate"><span class="pre">get_root_folder()</span></code></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.configuration.fileloader.hasToLoad"><code class="docutils literal notranslate"><span class="pre">hasToLoad()</span></code></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.configuration.fileloader.load"><code class="docutils literal notranslate"><span class="pre">load()</span></code></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.configuration.fileloader.set_root_folder"><code class="docutils literal notranslate"><span class="pre">set_root_folder()</span></code></a></li>
 </ul>
   </nav></div>
 

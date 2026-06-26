@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>pyaml.lattice.simulator &#8212; Python Accelerator Middle Layer 0.1.dev1+g32ba5697a documentation</title>
+    <title>pyaml.lattice.simulator &#8212; Python Accelerator Middle Layer 0.1.dev1+gfbafe7b96 documentation</title>
   
   
   
@@ -41,7 +41,7 @@
   <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=a95f357e85573c9b56d5" />
 <link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=a95f357e85573c9b56d5" />
 
-    <script src="../../../_static/documentation_options.js?v=aa822b28"></script>
+    <script src="../../../_static/documentation_options.js?v=312cc4bb"></script>
     <script src="../../../_static/doctools.js?v=9bcbadda"></script>
     <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -125,8 +125,8 @@
       
     
     
-    <img src="../../../_static/logo.png" class="logo__image only-light" alt="Python Accelerator Middle Layer 0.1.dev1+g32ba5697a documentation - Home"/>
-    <img src="../../../_static/dark.png" class="logo__image only-dark pst-js-only" alt="Python Accelerator Middle Layer 0.1.dev1+g32ba5697a documentation - Home"/>
+    <img src="../../../_static/logo.png" class="logo__image only-light" alt="Python Accelerator Middle Layer 0.1.dev1+gfbafe7b96 documentation - Home"/>
+    <img src="../../../_static/dark.png" class="logo__image only-dark pst-js-only" alt="Python Accelerator Middle Layer 0.1.dev1+gfbafe7b96 documentation - Home"/>
   
   
 </a></div>
@@ -398,7 +398,7 @@
 <span class="kn">from</span><span class="w"> </span><span class="nn">..common.element</span><span class="w"> </span><span class="kn">import</span> <span class="n">Element</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">..common.element_holder</span><span class="w"> </span><span class="kn">import</span> <span class="n">ElementHolder</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">..common.exception</span><span class="w"> </span><span class="kn">import</span> <span class="n">PyAMLException</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">..configuration</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_root_folder</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">..configuration</span><span class="w"> </span><span class="kn">import</span> <span class="n">ROOT</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">..diagnostics.tune_monitor</span><span class="w"> </span><span class="kn">import</span> <span class="n">BetatronTuneMonitor</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">..lattice.abstract_impl</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
     <span class="n">BPMHScalarAggregator</span><span class="p">,</span>
@@ -479,7 +479,7 @@
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cfg</span><span class="p">:</span> <span class="n">ConfigModel</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_cfg</span> <span class="o">=</span> <span class="n">cfg</span>
-        <span class="n">path</span><span class="p">:</span> <span class="n">Path</span> <span class="o">=</span> <span class="n">get_root_folder</span><span class="p">()</span> <span class="o">/</span> <span class="n">cfg</span><span class="o">.</span><span class="n">lattice</span>
+        <span class="n">path</span><span class="p">:</span> <span class="n">Path</span> <span class="o">=</span> <span class="n">ROOT</span><span class="o">.</span><span class="n">get</span><span class="p">()</span> <span class="o">/</span> <span class="n">cfg</span><span class="o">.</span><span class="n">lattice</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cfg</span><span class="o">.</span><span class="n">mat_key</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">ring</span> <span class="o">=</span> <span class="n">at</span><span class="o">.</span><span class="n">load_lattice</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>

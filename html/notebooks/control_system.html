@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Control System set up &#8212; Python Accelerator Middle Layer 0.1.dev1+g32ba5697a documentation</title>
+    <title>Control System set up &#8212; Python Accelerator Middle Layer 0.1.dev1+gfbafe7b96 documentation</title>
   
   
   
@@ -42,7 +42,7 @@
   <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=a95f357e85573c9b56d5" />
 <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=a95f357e85573c9b56d5" />
 
-    <script src="../_static/documentation_options.js?v=aa822b28"></script>
+    <script src="../_static/documentation_options.js?v=312cc4bb"></script>
     <script src="../_static/doctools.js?v=9bcbadda"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -128,8 +128,8 @@
       
     
     
-    <img src="../_static/logo.png" class="logo__image only-light" alt="Python Accelerator Middle Layer 0.1.dev1+g32ba5697a documentation - Home"/>
-    <img src="../_static/dark.png" class="logo__image only-dark pst-js-only" alt="Python Accelerator Middle Layer 0.1.dev1+g32ba5697a documentation - Home"/>
+    <img src="../_static/logo.png" class="logo__image only-light" alt="Python Accelerator Middle Layer 0.1.dev1+gfbafe7b96 documentation - Home"/>
+    <img src="../_static/dark.png" class="logo__image only-dark pst-js-only" alt="Python Accelerator Middle Layer 0.1.dev1+gfbafe7b96 documentation - Home"/>
   
   
 </a></div>
@@ -470,7 +470,7 @@ pip install pyaml-oa-cs</p>
 <span class="ne">--&gt; </span><span class="mi">304</span> <span class="k">return</span> <span class="n">manager</span><span class="o">.</span><span class="n">build</span><span class="p">(</span><span class="n">ignore_external</span><span class="o">=</span><span class="n">ignore_external</span><span class="p">)</span>
 
 <span class="nn">File /opt/hostedtoolcache/Python/3.14.6/x64/lib/python3.14/site-packages/pyaml/configuration/manager.py:496,</span> in <span class="ni">ConfigurationManager.build</span><span class="nt">(self, ignore_external)</span>
-<span class="g g-Whitespace">    </span><span class="mi">494</span>     <span class="n">set_root_folder</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_build_root</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">494</span>     <span class="n">ROOT</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_build_root</span><span class="p">)</span>
 <span class="g g-Whitespace">    </span><span class="mi">495</span> <span class="n">snapshot</span> <span class="o">=</span> <span class="n">ConfigurationManager</span><span class="o">.</span><span class="n">strip_runtime_internal_metadata</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_snapshot</span><span class="p">(</span><span class="n">include_internal_metadata</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
 <span class="ne">--&gt; </span><span class="mi">496</span> <span class="k">return</span> <span class="n">Accelerator</span><span class="o">.</span><span class="n">from_dict</span><span class="p">(</span><span class="n">snapshot</span><span class="p">,</span> <span class="n">ignore_external</span><span class="o">=</span><span class="n">ignore_external</span><span class="p">)</span>
 

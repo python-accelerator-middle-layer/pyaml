@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Index &#8212; Python Accelerator Middle Layer 0.1.dev1+g32ba5697a documentation</title>
+    <title>Index &#8212; Python Accelerator Middle Layer 0.1.dev1+gfbafe7b96 documentation</title>
   
   
   
@@ -41,7 +41,7 @@
   <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=a95f357e85573c9b56d5" />
 <link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=a95f357e85573c9b56d5" />
 
-    <script src="_static/documentation_options.js?v=aa822b28"></script>
+    <script src="_static/documentation_options.js?v=312cc4bb"></script>
     <script src="_static/doctools.js?v=9bcbadda"></script>
     <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/clipboard.min.js?v=a7894cd8"></script>
@@ -125,8 +125,8 @@
       
     
     
-    <img src="_static/logo.png" class="logo__image only-light" alt="Python Accelerator Middle Layer 0.1.dev1+g32ba5697a documentation - Home"/>
-    <img src="_static/dark.png" class="logo__image only-dark pst-js-only" alt="Python Accelerator Middle Layer 0.1.dev1+g32ba5697a documentation - Home"/>
+    <img src="_static/logo.png" class="logo__image only-light" alt="Python Accelerator Middle Layer 0.1.dev1+gfbafe7b96 documentation - Home"/>
+    <img src="_static/dark.png" class="logo__image only-dark pst-js-only" alt="Python Accelerator Middle Layer 0.1.dev1+gfbafe7b96 documentation - Home"/>
   
   
 </a></div>
@@ -889,6 +889,8 @@
 </li>
       <li><a href="api/pyaml.configuration.fileloader.html#pyaml.configuration.fileloader.Loader.expand_list">expand_list() (Loader method)</a>
 </li>
+      <li><a href="api/pyaml.configuration.fileloader.html#pyaml.configuration.fileloader.RootFolder.expand_path">expand_path() (RootFolder method)</a>
+</li>
   </ul></td>
 </tr></table>
 
@@ -1008,6 +1010,8 @@
 </li>
         <li><a href="api/pyaml.magnet.serialized_magnet.html#pyaml.magnet.serialized_magnet.ReadWriteSerializedStrengths.get">(ReadWriteSerializedStrengths method)</a>
 </li>
+        <li><a href="api/pyaml.configuration.fileloader.html#pyaml.configuration.fileloader.RootFolder.get">(RootFolder method)</a>
+</li>
         <li><a href="api/pyaml.control.abstract_impl.html#pyaml.control.abstract_impl.RWBpmOffsetArray.get">(RWBpmOffsetArray method)</a>, <a href="api/pyaml.lattice.abstract_impl.html#pyaml.lattice.abstract_impl.RWBpmOffsetArray.get">[1]</a>
 </li>
         <li><a href="api/pyaml.arrays.bpm_array.html#pyaml.arrays.bpm_array.RWBPMPosition.get">(RWBPMPosition method)</a>
@@ -1125,6 +1129,8 @@
       </ul></li>
       <li><a href="api/pyaml.control.deviceaccesslist.html#pyaml.control.deviceaccesslist.DeviceAccessList.get_device_at">get_device_at() (DeviceAccessList method)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/pyaml.magnet.identity_cfm_model.html#pyaml.magnet.identity_cfm_model.IdentityCFMagnetModel.get_device_names">get_device_names() (IdentityCFMagnetModel method)</a>
 
       <ul>
@@ -1143,8 +1149,6 @@
         <li><a href="api/pyaml.magnet.spline_model.html#pyaml.magnet.spline_model.SplineMagnetModel.get_device_names">(SplineMagnetModel method)</a>
 </li>
       </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/pyaml.control.controlsystem.html#pyaml.control.controlsystem.ControlSystem.get_devices_access">get_devices_access() (ControlSystem method)</a>
 </li>
       <li><a href="api/pyaml.common.element_holder.html#pyaml.common.element_holder.ElementHolder.get_dispersion_tuning">get_dispersion_tuning() (ElementHolder method)</a>
@@ -1245,8 +1249,6 @@
 </li>
       <li><a href="api/pyaml.common.element_holder.html#pyaml.common.element_holder.ElementHolder.get_orm_tuning">get_orm_tuning() (ElementHolder method)</a>
 </li>
-      <li><a href="api/pyaml.configuration.fileloader.html#pyaml.configuration.fileloader.get_path">get_path() (in module pyaml.configuration.fileloader)</a>
-</li>
       <li><a href="api/pyaml.arrays.element_array.html#pyaml.arrays.element_array.ElementArray.get_peer">get_peer() (ElementArray method)</a>
 </li>
       <li><a href="api/pyaml.bpm.bpm.html#pyaml.bpm.bpm.BPM.get_pos_devices">get_pos_devices() (BPM method)</a>
@@ -1264,8 +1266,6 @@
       <li><a href="api/pyaml.common.element_holder.html#pyaml.common.element_holder.ElementHolder.get_rf_trasnmitter">get_rf_trasnmitter() (ElementHolder method)</a>
 </li>
       <li><a href="api/pyaml.tuning_tools.orbit.html#pyaml.tuning_tools.orbit.Orbit.get_rf_weight">get_rf_weight() (Orbit method)</a>
-</li>
-      <li><a href="api/pyaml.configuration.fileloader.html#pyaml.configuration.fileloader.get_root_folder">get_root_folder() (in module pyaml.configuration.fileloader)</a>
 </li>
       <li><a href="api/pyaml.common.element_holder.html#pyaml.common.element_holder.ElementHolder.get_serialized_magnet">get_serialized_magnet() (ElementHolder method)</a>
 </li>
@@ -2481,9 +2481,11 @@
 </li>
       <li><a href="api/pyaml.rf.rf_transmitter.html#pyaml.rf.rf_transmitter.RFTransmitter">RFTransmitter (class in pyaml.rf.rf_transmitter)</a>
 </li>
+      <li><a href="api/pyaml.configuration.manager.html#pyaml.configuration.manager.ConfigurationManager.root_fields">root_fields() (ConfigurationManager class method)</a>
+</li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="api/pyaml.configuration.manager.html#pyaml.configuration.manager.ConfigurationManager.root_fields">root_fields() (ConfigurationManager class method)</a>
+      <li><a href="api/pyaml.configuration.fileloader.html#pyaml.configuration.fileloader.RootFolder">RootFolder (class in pyaml.configuration.fileloader)</a>
 </li>
       <li><a href="api/pyaml.control.abstract_impl.html#pyaml.control.abstract_impl.RWBpmOffsetArray">RWBpmOffsetArray (class in pyaml.control.abstract_impl)</a>
 
@@ -2615,6 +2617,8 @@
         <li><a href="api/pyaml.common.abstract.html#pyaml.common.abstract.ReadWriteFloatScalar.set">(ReadWriteFloatScalar method)</a>
 </li>
         <li><a href="api/pyaml.magnet.serialized_magnet.html#pyaml.magnet.serialized_magnet.ReadWriteSerializedStrengths.set">(ReadWriteSerializedStrengths method)</a>
+</li>
+        <li><a href="api/pyaml.configuration.fileloader.html#pyaml.configuration.fileloader.RootFolder.set">(RootFolder method)</a>
 </li>
         <li><a href="api/pyaml.control.abstract_impl.html#pyaml.control.abstract_impl.RWBpmOffsetArray.set">(RWBpmOffsetArray method)</a>, <a href="api/pyaml.lattice.abstract_impl.html#pyaml.lattice.abstract_impl.RWBpmOffsetArray.set">[1]</a>
 </li>
@@ -2798,8 +2802,6 @@
       <li><a href="api/pyaml.external.pySC_interface.html#pyaml.external.pySC_interface.pySCInterface.set_rf_main_frequency">set_rf_main_frequency() (pySCInterface method)</a>
 </li>
       <li><a href="api/pyaml.tuning_tools.orbit.html#pyaml.tuning_tools.orbit.Orbit.set_rf_weight">set_rf_weight() (Orbit method)</a>
-</li>
-      <li><a href="api/pyaml.configuration.fileloader.html#pyaml.configuration.fileloader.set_root_folder">set_root_folder() (in module pyaml.configuration.fileloader)</a>
 </li>
       <li><a href="api/pyaml.tuning_tools.orbit.html#pyaml.tuning_tools.orbit.Orbit.set_virtual_weight">set_virtual_weight() (Orbit method)</a>
 </li>

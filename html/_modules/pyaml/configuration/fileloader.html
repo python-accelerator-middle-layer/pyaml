@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>pyaml.configuration.fileloader &#8212; Python Accelerator Middle Layer 0.1.dev1+g32ba5697a documentation</title>
+    <title>pyaml.configuration.fileloader &#8212; Python Accelerator Middle Layer 0.1.dev1+gfbafe7b96 documentation</title>
   
   
   
@@ -41,7 +41,7 @@
   <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=a95f357e85573c9b56d5" />
 <link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=a95f357e85573c9b56d5" />
 
-    <script src="../../../_static/documentation_options.js?v=aa822b28"></script>
+    <script src="../../../_static/documentation_options.js?v=312cc4bb"></script>
     <script src="../../../_static/doctools.js?v=9bcbadda"></script>
     <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -125,8 +125,8 @@
       
     
     
-    <img src="../../../_static/logo.png" class="logo__image only-light" alt="Python Accelerator Middle Layer 0.1.dev1+g32ba5697a documentation - Home"/>
-    <img src="../../../_static/dark.png" class="logo__image only-dark pst-js-only" alt="Python Accelerator Middle Layer 0.1.dev1+g32ba5697a documentation - Home"/>
+    <img src="../../../_static/logo.png" class="logo__image only-light" alt="Python Accelerator Middle Layer 0.1.dev1+gfbafe7b96 documentation - Home"/>
+    <img src="../../../_static/dark.png" class="logo__image only-dark pst-js-only" alt="Python Accelerator Middle Layer 0.1.dev1+gfbafe7b96 documentation - Home"/>
   
   
 </a></div>
@@ -388,69 +388,77 @@
                 <article class="bd-article">
                   
   <h1>Source code for pyaml.configuration.fileloader</h1><div class="highlight"><pre>
-<span></span><span class="c1"># PyAML config file loader</span>
+<span></span><span class="sd">&quot;&quot;&quot; &quot;PyAML configuration file loader.&quot;&quot;&quot;</span>
+
 <span class="kn">import</span><span class="w"> </span><span class="nn">collections.abc</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">io</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">logging</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">TYPE_CHECKING</span><span class="p">,</span> <span class="n">Union</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Union</span>
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">yaml</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">yaml</span><span class="w"> </span><span class="kn">import</span> <span class="n">CLoader</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">yaml.constructor</span><span class="w"> </span><span class="kn">import</span> <span class="n">ConstructorError</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">yaml.loader</span><span class="w"> </span><span class="kn">import</span> <span class="n">SafeLoader</span>
 
-<span class="kn">from</span><span class="w"> </span><span class="nn">pyaml.configuration.factory</span><span class="w"> </span><span class="kn">import</span> <span class="n">Factory</span>
-
 <span class="kn">from</span><span class="w"> </span><span class="nn">..</span><span class="w"> </span><span class="kn">import</span> <span class="n">PyAMLException</span>
-
-<span class="k">if</span> <span class="n">TYPE_CHECKING</span><span class="p">:</span>
-    <span class="kn">from</span><span class="w"> </span><span class="nn">pyaml.accelerator</span><span class="w"> </span><span class="kn">import</span> <span class="n">Accelerator</span>
-
 
 <span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
 
 <span class="n">accepted_suffixes</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;.yaml&quot;</span><span class="p">,</span> <span class="s2">&quot;.yml&quot;</span><span class="p">,</span> <span class="s2">&quot;.json&quot;</span><span class="p">]</span>
 <span class="n">FILE_PREFIX</span> <span class="o">=</span> <span class="s2">&quot;file:&quot;</span>
 
-<span class="n">ROOT</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;path&quot;</span><span class="p">:</span> <span class="n">Path</span><span class="o">.</span><span class="n">cwd</span><span class="p">()</span><span class="o">.</span><span class="n">resolve</span><span class="p">()}</span>
 
-
-<div class="viewcode-block" id="set_root_folder">
-<a class="viewcode-back" href="../../../api/pyaml.configuration.fileloader.html#pyaml.configuration.fileloader.set_root_folder">[docs]</a>
-<span class="k">def</span><span class="w"> </span><span class="nf">set_root_folder</span><span class="p">(</span><span class="n">path</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Path</span><span class="p">]):</span>
+<div class="viewcode-block" id="RootFolder">
+<a class="viewcode-back" href="../../../api/pyaml.configuration.fileloader.html#pyaml.configuration.fileloader.RootFolder">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">RootFolder</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Set the root path for configuration files.</span>
+<span class="sd">    Manage the root directory used to resolve relative configuration paths.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">ROOT</span><span class="p">[</span><span class="s2">&quot;path&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">path</span><span class="p">)</span></div>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">Path</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+        <span class="c1"># Resolve the path is given otherwise set to the current working directory</span>
+        <span class="k">if</span> <span class="n">path</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_path</span> <span class="o">=</span> <span class="n">Path</span><span class="o">.</span><span class="n">cwd</span><span class="p">()</span><span class="o">.</span><span class="n">resolve</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">path</span><span class="p">)</span><span class="o">.</span><span class="n">resolve</span><span class="p">()</span>
+
+<div class="viewcode-block" id="RootFolder.set">
+<a class="viewcode-back" href="../../../api/pyaml.configuration.fileloader.html#pyaml.configuration.fileloader.RootFolder.set">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">set</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">Path</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Set the root path for configuration files.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">path</span><span class="p">)</span><span class="o">.</span><span class="n">resolve</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="RootFolder.get">
+<a class="viewcode-back" href="../../../api/pyaml.configuration.fileloader.html#pyaml.configuration.fileloader.RootFolder.get">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Path</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get the root path for configuration files.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_path</span></div>
+
+
+<div class="viewcode-block" id="RootFolder.expand_path">
+<a class="viewcode-back" href="../../../api/pyaml.configuration.fileloader.html#pyaml.configuration.fileloader.RootFolder.expand_path">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">expand_path</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">Path</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Path</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Return an absolute configuration path.</span>
+
+<span class="sd">        Relative paths are interpreted relative to the configured root</span>
+<span class="sd">        folder. Absolute paths are returned unchanged.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">path</span> <span class="k">if</span> <span class="n">path</span><span class="o">.</span><span class="n">is_absolute</span><span class="p">()</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">_path</span> <span class="o">/</span> <span class="n">path</span></div>
+</div>
 
 
 
-<div class="viewcode-block" id="get_root_folder">
-<a class="viewcode-back" href="../../../api/pyaml.configuration.fileloader.html#pyaml.configuration.fileloader.get_root_folder">[docs]</a>
-<span class="k">def</span><span class="w"> </span><span class="nf">get_root_folder</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">Path</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Get the root path for configuration files.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">return</span> <span class="n">ROOT</span><span class="p">[</span><span class="s2">&quot;path&quot;</span><span class="p">]</span></div>
-
-
-
-<div class="viewcode-block" id="get_path">
-<a class="viewcode-back" href="../../../api/pyaml.configuration.fileloader.html#pyaml.configuration.fileloader.get_path">[docs]</a>
-<span class="k">def</span><span class="w"> </span><span class="nf">get_path</span><span class="p">(</span><span class="n">p</span><span class="p">:</span> <span class="n">Path</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Path</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Return unchanged input path if it is an absolute path,</span>
-<span class="sd">    path relative to root folder otherwise.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isabs</span><span class="p">(</span><span class="n">p</span><span class="p">):</span>
-        <span class="k">return</span> <span class="n">p</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="n">root</span> <span class="o">=</span> <span class="n">get_root_folder</span><span class="p">()</span>
-        <span class="k">return</span> <span class="n">root</span> <span class="o">/</span> <span class="n">p</span></div>
-
+<span class="n">ROOT</span> <span class="o">=</span> <span class="n">RootFolder</span><span class="p">()</span>
 
 
 <div class="viewcode-block" id="PyAMLConfigCyclingException">
@@ -492,7 +500,7 @@
 <a class="viewcode-back" href="../../../api/pyaml.configuration.fileloader.html#pyaml.configuration.fileloader.Loader">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">Loader</span><span class="p">:</span>
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">parent_path_stack</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Path</span><span class="p">]):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">:</span> <span class="n">Path</span> <span class="o">=</span> <span class="n">get_path</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">:</span> <span class="n">Path</span> <span class="o">=</span> <span class="n">ROOT</span><span class="o">.</span><span class="n">expand_path</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">files_stack</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Path</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">if</span> <span class="n">parent_path_stack</span><span class="p">:</span>
             <span class="k">if</span> <span class="nb">any</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">samefile</span><span class="p">(</span><span class="n">parent_path</span><span class="p">)</span> <span class="k">for</span> <span class="n">parent_path</span> <span class="ow">in</span> <span class="n">parent_path_stack</span><span class="p">):</span>
@@ -510,7 +518,7 @@
                     <span class="k">if</span> <span class="n">value</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="n">FILE_PREFIX</span><span class="p">):</span>
                         <span class="c1"># remove prefix</span>
                         <span class="n">stripped_value</span> <span class="o">=</span> <span class="n">value</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">FILE_PREFIX</span><span class="p">)</span> <span class="p">:]</span>
-                        <span class="n">d</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">get_root_folder</span><span class="p">()</span> <span class="o">/</span> <span class="n">Path</span><span class="p">(</span><span class="n">stripped_value</span><span class="p">))</span>
+                        <span class="n">d</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">ROOT</span><span class="o">.</span><span class="n">get</span><span class="p">()</span> <span class="o">/</span> <span class="n">Path</span><span class="p">(</span><span class="n">stripped_value</span><span class="p">))</span>
                     <span class="k">else</span><span class="p">:</span>
                         <span class="n">d</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">load</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">files_stack</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">use_fast_loader</span><span class="p">)</span>
                 <span class="k">else</span><span class="p">:</span>
