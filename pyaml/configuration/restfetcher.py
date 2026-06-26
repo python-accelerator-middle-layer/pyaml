@@ -32,9 +32,9 @@ def is_remote_url(value: str) -> bool:
     return urlparse(value).scheme in _REMOTE_SCHEMES
 
 
-def fetch_remote_config(url: str, *, use_fast_loader: bool = False) -> tuple[dict[str, Any] | list[Any], str]:
+def fetch_remote_config(url: str, *, include_locations: bool = True) -> tuple[dict[str, Any] | list[Any], str]:
     normalized_url = _normalize_remote_url(url)
-    expanded = _load_remote_document(normalized_url, use_fast_loader=use_fast_loader, stack=[])
+    expanded = _load_remote_document(normalized_url, include_locations=include_locations, stack=[])
     return expanded, _remote_base_url(normalized_url)
 
 
@@ -61,15 +61,15 @@ def _normalize_remote_url(url: str) -> str:
 def _load_remote_document(
     url: str,
     *,
-    use_fast_loader: bool,
+    include_locations: bool,
     stack: list[str],
 ) -> dict[str, Any] | list[Any]:
     if url in stack:
         raise PyAMLConfigException(f"Circular remote configuration inclusion detected for '{url}'.")
 
     payload, content_type = _download_text(url)
-    document = _parse_remote_document(url, payload, content_type, use_fast_loader=use_fast_loader)
-    return _expand_remote_value(document, _remote_base_url(url), stack + [url], use_fast_loader=use_fast_loader)
+    document = _parse_remote_document(url, payload, content_type, include_locations=include_locations)
+    return _expand_remote_value(document, _remote_base_url(url), stack + [url], include_locations=include_locations)
 
 
 def _download_text(url: str) -> tuple[str, str]:
@@ -93,7 +93,7 @@ def _parse_remote_document(
     payload: str,
     content_type: str,
     *,
-    use_fast_loader: bool,
+    include_locations: bool,
 ) -> dict[str, Any] | list[Any]:
     suffix = Path(urlparse(url).path).suffix.lower()
 
@@ -103,7 +103,7 @@ def _parse_remote_document(
         except json.JSONDecodeError as ex:
             raise PyAMLConfigException(f"{url}: {ex}") from ex
 
-    loader = CLoader if use_fast_loader else SafeLineLoader
+    loader = CLoader if include_locations else SafeLineLoader
     try:
         stream = _NamedStringIO(payload, url)
         return yaml.load(stream, Loader=loader)
@@ -111,11 +111,11 @@ def _parse_remote_document(
         raise PyAMLConfigException(f"{url}: {ex}") from ex
 
 
-def _expand_remote_value(value, base_url: str, stack: list[str], *, use_fast_loader: bool):
+def _expand_remote_value(value, base_url: str, stack: list[str], *, include_locations: bool):
     if isinstance(value, dict):
-        return _expand_remote_dict(value, base_url, stack, use_fast_loader=use_fast_loader)
+        return _expand_remote_dict(value, base_url, stack, include_locations=include_locations)
     if isinstance(value, list):
-        return _expand_remote_list(value, base_url, stack, use_fast_loader=use_fast_loader)
+        return _expand_remote_list(value, base_url, stack, include_locations=include_locations)
     return value
 
 
@@ -124,14 +124,14 @@ def _expand_remote_dict(
     base_url: str,
     stack: list[str],
     *,
-    use_fast_loader: bool,
+    include_locations: bool,
 ) -> dict[str, Any]:
     values.setdefault(REMOTE_BASE_URL_KEY, base_url)
     for key, value in list(values.items()):
         if _is_config_reference(value):
             values[key] = _load_remote_document(
                 _resolve_remote_config_reference(value, base_url),
-                use_fast_loader=use_fast_loader,
+                include_locations=include_locations,
                 stack=stack,
             )
             continue
@@ -140,18 +140,18 @@ def _expand_remote_dict(
             values[key] = resolve_reference(value[len(FILE_PREFIX) :], base_url)
             continue
 
-        values[key] = _expand_remote_value(value, base_url, stack, use_fast_loader=use_fast_loader)
+        values[key] = _expand_remote_value(value, base_url, stack, include_locations=include_locations)
     return values
 
 
-def _expand_remote_list(values: list[Any], base_url: str, stack: list[str], *, use_fast_loader: bool) -> list[Any]:
+def _expand_remote_list(values: list[Any], base_url: str, stack: list[str], *, include_locations: bool) -> list[Any]:
     index = 0
     while index < len(values):
         value = values[index]
         if _is_config_reference(value):
             expanded = _load_remote_document(
                 _resolve_remote_config_reference(value, base_url),
-                use_fast_loader=use_fast_loader,
+                include_locations=include_locations,
                 stack=stack,
             )
             if isinstance(expanded, list):
@@ -167,7 +167,7 @@ def _expand_remote_list(values: list[Any], base_url: str, stack: list[str], *, u
             index += 1
             continue
 
-        values[index] = _expand_remote_value(value, base_url, stack, use_fast_loader=use_fast_loader)
+        values[index] = _expand_remote_value(value, base_url, stack, include_locations=include_locations)
         index += 1
     return values
 

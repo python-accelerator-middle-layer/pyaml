@@ -83,7 +83,7 @@ class PyAMLConfigCyclingException(PyAMLException):
 class LoadContext:
     """Track state for one recursive configuration-loading session."""
 
-    use_fast_loader: bool = False
+    include_locations: bool = True
     include_stack: list[Path] = field(default_factory=list)
 
     @contextmanager
@@ -110,11 +110,15 @@ class LoadContext:
             self.include_stack.pop()
 
 
-def load(filename: str, use_fast_loader: bool = False) -> Union[dict, list]:
-    """Load a configuration file and recursively expand nested file references."""
+def load(filename: str, include_locations: bool = True) -> Union[dict, list]:
+    """Load a configuration file.
+
+    When include_locations is False, uses the faster C-based YAML loader
+    and skips including source location metadata.
+    """
 
     # Create a new context
-    context = LoadContext(use_fast_loader=use_fast_loader)
+    context = LoadContext(include_locations=include_locations)
 
     return _load(filename, context)
 
@@ -228,7 +232,7 @@ class YAMLLoader(ConfigLoader):
         """Create a YAML loader for the given file."""
 
         super().__init__(path, context)
-        self._loader = CLoader if context.use_fast_loader else SafeLineLoader
+        self._loader = SafeLineLoader if context.include_locations else CLoader
 
     def load(self) -> Union[dict, list]:
         """Parse the YAML file and expand nested configuration references."""
@@ -258,6 +262,22 @@ class JSONLoader(ConfigLoader):
                 return self.expand(json.load(file))
             except json.JSONDecodeError as exc:
                 raise PyAMLException(f"{self.path}: {exc}") from exc
+
+
+@dataclass(frozen=True)
+class Location:
+    file: str
+    line: int
+    column: int
+
+
+@dataclass
+class LoadedConfig:
+    data: dict | list
+    locations: dict[tuple[Any, ...], Location]
+
+    def location_for(self, path: tuple[Any, ...]) -> Location | None:
+        return self.locations.get(path)
 
 
 class SafeLineLoader(SafeLoader):
