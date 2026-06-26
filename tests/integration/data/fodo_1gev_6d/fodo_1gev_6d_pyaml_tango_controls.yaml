@@ -1,0 +1,5 @@
+controls:
+- type: tango.pyaml.controlsystem
+  name: live
+  tango_host: 127.0.0.1:10000
+  catalog: fodo_1gev_6d_pyaml_tango_catalog.yaml

@@ -4,9 +4,11 @@ from pathlib import Path
 import numpy as np
 import pytest
 
-QF_001 = "QF_001_f2013521b99e4a76bed1db7ec67464b0"
-QF_001_STRENGTH = "AN01-AR/EM-QP/QF.01/magnetic_strength"
-RF_REFERENCE_FREQUENCY = "simulator/ringsimulator/ringsimulator/reference_frequency"
+from pyaml.configuration import ConfigurationManager
+
+QF_001 = "QF_001_314d440dcc3348c687785c80e67fce27"
+QF_001_STRENGTH = "AN01-AR/EM-QP/QF.01/strength"
+RF_REFERENCE_FREQUENCY = "simulator/ringsimulator/ringsimulator/RfFrequency"
 
 pytestmark = [
     pytest.mark.integration,
@@ -22,17 +24,51 @@ def _readback_value(device_access):
 
 
 @pytest.mark.parametrize(
-    "config_file",
+    ("root_folder", "config_files"),
     [
-        Path(__file__).parent / "data" / "fodo_1gev_6d_pyaml.yaml",
-        Path(__file__).parent / "data" / "fodo_1gev_6d_pyaml-oa.yaml",
+        (
+            Path(__file__).parent / "data" / "fodo_1gev_6d",
+            {
+                "accelerator": "fodo_1gev_6d_pyaml_accelerator.yaml",
+                "simulator": "fodo_1gev_6d_pyaml_simulators.yaml",
+                "control_system": "fodo_1gev_6d_pyaml_tango_controls.yaml",  # tango-pyaml
+                "arrays": "fodo_1gev_6d_pyaml_arrays.yaml",
+                "bpm_devices": "fodo_1gev_6d_pyaml_devices_bpms.yaml",
+                "bends_devices": "fodo_1gev_6d_pyaml_devices_bends.yaml",
+                "correctors_devices": "fodo_1gev_6d_pyaml_devices_correctors.yaml",
+                "quadrupoles_devices": "fodo_1gev_6d_pyaml_devices_quadrupoles.yaml",
+                "sextupoles_devices": "fodo_1gev_6d_pyaml_devices_sextupoles.yaml",
+                "diagnostic_devices": "fodo_1gev_6d_pyaml_devices_diagnostics.yaml",
+                "rf_devices": "fodo_1gev_6d_pyaml_devices_rf.yaml",
+            },
+        ),
+        (
+            Path(__file__).parent / "data" / "fodo_1gev_6d",
+            {
+                "accelerator": "fodo_1gev_6d_pyaml_accelerator.yaml",
+                "simulator": "fodo_1gev_6d_pyaml_simulators.yaml",
+                "control_system": "fodo_1gev_6d_pyaml_cs_oa_controls.yaml",  # pyaml-cs-oa
+                "arrays": "fodo_1gev_6d_pyaml_arrays.yaml",
+                "bpm_devices": "fodo_1gev_6d_pyaml_devices_bpms.yaml",
+                "bends_devices": "fodo_1gev_6d_pyaml_devices_bends.yaml",
+                "correctors_devices": "fodo_1gev_6d_pyaml_devices_correctors.yaml",
+                "quadrupoles_devices": "fodo_1gev_6d_pyaml_devices_quadrupoles.yaml",
+                "sextupoles_devices": "fodo_1gev_6d_pyaml_devices_sextupoles.yaml",
+                "diagnostic_devices": "fodo_1gev_6d_pyaml_devices_diagnostics.yaml",
+                "rf_devices": "fodo_1gev_6d_pyaml_devices_rf.yaml",
+            },
+        ),
     ],
     ids=["tango-pyaml", "pyaml-cs-oa"],
 )
-def test_dt4acc_twin_accelerator_instantiates_and_reads_live_values(config_file: Path):
+def test_dt4acc_twin_accelerator_instantiates_and_reads_live_values(root_folder: Path, config_files: dict[str, str]):
     from pyaml.accelerator import Accelerator
 
-    accelerator = Accelerator.load(str(config_file))
+    configuration_manager: ConfigurationManager = ConfigurationManager()
+    for config_file in config_files.values():
+        configuration_manager.add(str(root_folder / config_file))
+
+    accelerator = Accelerator.from_dict(configuration_manager.to_dict())
 
     assert accelerator.live is not None
     assert "live" in accelerator.controls()
