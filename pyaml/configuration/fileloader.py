@@ -264,22 +264,6 @@ class JSONLoader(ConfigLoader):
                 raise PyAMLException(f"{self.path}: {exc}") from exc
 
 
-@dataclass(frozen=True)
-class Location:
-    file: str
-    line: int
-    column: int
-
-
-@dataclass
-class LoadedConfig:
-    data: dict | list
-    locations: dict[tuple[Any, ...], Location]
-
-    def location_for(self, path: tuple[Any, ...]) -> Location | None:
-        return self.locations.get(path)
-
-
 class SafeLineLoader(SafeLoader):
     """YAML loader that preserves line and column information for mappings."""
 
