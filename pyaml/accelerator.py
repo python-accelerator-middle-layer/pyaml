@@ -275,7 +275,7 @@ class Accelerator(object):
         return Factory.build(config_dict, ignore_external)
 
     @staticmethod
-    def load(filename: str, use_fast_loader: bool = False, ignore_external=False) -> "Accelerator":
+    def load(filename: str, include_locations: bool = False, ignore_external=False) -> "Accelerator":
         """
         Load an accelerator from a config file.
 
@@ -283,11 +283,11 @@ class Accelerator(object):
         ----------
         filename : str
             Configuration file name, yaml or json.
-        use_fast_loader : bool
-            Use fast yaml loader. When specified,
-            no line number are reported in case of error,
+        include_locations : bool
+            When False, use faster loader but no line number
+            are reported in case of error,
             only the element name that triggered the error
-            will be reported in the exception)
+            will be reported in the exception
         ignore_external : bool
             Ignore external modules and return None for object that
             cannot be created. pydantic schema that support that an
@@ -295,7 +295,7 @@ class Accelerator(object):
         """
         manager = ConfigurationManager()
         try:
-            manager.add(filename, use_fast_loader=use_fast_loader)
+            manager.add(filename, include_locations=include_locations)
         except UnsupportedConfigurationRootError as ex:
             raise PyAMLConfigException(
                 "Accelerator.load() expects a 'pyaml.accelerator' root configuration. "

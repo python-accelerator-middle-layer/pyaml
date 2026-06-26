@@ -10,7 +10,7 @@ def callback(action: Action, data: dict):
 
 
 def test_tune_tool():
-    sr = Accelerator.load("tests/config/EBSTune.yaml", use_fast_loader=True)
+    sr = Accelerator.load("tests/config/EBSTune.yaml", include_locations=False)
     sr.design.get_lattice().disable_6d()
     sr.design.trm.measure(callback=callback)
     sr.design.trm.save("tunemat.json")
@@ -22,7 +22,7 @@ def test_tune_tool():
 
 
 def test_tune_add():
-    sr = Accelerator.load("tests/config/EBSTune.yaml", use_fast_loader=True)
+    sr = Accelerator.load("tests/config/EBSTune.yaml", include_locations=False)
     sr.design.get_lattice().disable_6d()
     sr.design.tune.load("tunemat.json")
     tune_initial = sr.design.tune.readback()
@@ -33,7 +33,7 @@ def test_tune_add():
 
 
 def test_chroma_tool():
-    sr: Accelerator = Accelerator.load("tests/config/EBSOrbit.yaml", use_fast_loader=True)
+    sr: Accelerator = Accelerator.load("tests/config/EBSOrbit.yaml", include_locations=False)
     sr.design.get_lattice().enable_6d()
     sr.design.chromaticity.set([8.0, 5.0], iter=2)
     QpAT = sr.design.get_lattice().get_chrom()[:-1]
@@ -45,7 +45,7 @@ def test_chroma_tool():
 
 
 def test_chroma_add():
-    sr: Accelerator = Accelerator.load("tests/config/EBSOrbit.yaml", use_fast_loader=True)
+    sr: Accelerator = Accelerator.load("tests/config/EBSOrbit.yaml", include_locations=False)
     sr.design.get_lattice().enable_6d()
     chromaAT = sr.design.get_lattice().get_chrom()[:-1]
     sr.design.chromaticity.add([0.5, 0.4])
