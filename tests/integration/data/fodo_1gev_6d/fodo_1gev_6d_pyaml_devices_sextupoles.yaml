@@ -4,190 +4,190 @@ devices:
   model:
     type: pyaml.magnet.identity_model
     unit: 1/m**2
-    physics: AN01-AR/EM-SX/SF.01/strength
+    physics: AN01-AR/EM-SX/SF.01/magnetic_strength
 - type: pyaml.magnet.sextupole
   name: SD_001_0f91beb1c65a4c0c9662555dd6a83244
   model:
     type: pyaml.magnet.identity_model
     unit: 1/m**2
-    physics: AN01-AR/EM-SX/SD.01/strength
+    physics: AN01-AR/EM-SX/SD.01/magnetic_strength
 - type: pyaml.magnet.sextupole
   name: SF_002_adf891f146274708a9610ae81766d5ac
   model:
     type: pyaml.magnet.identity_model
     unit: 1/m**2
-    physics: AN02-AR/EM-SX/SF.01/strength
+    physics: AN02-AR/EM-SX/SF.01/magnetic_strength
 - type: pyaml.magnet.sextupole
   name: SD_002_69ddf4e0a6cb4c10ab214b53ed521ff3
   model:
     type: pyaml.magnet.identity_model
     unit: 1/m**2
-    physics: AN02-AR/EM-SX/SD.01/strength
+    physics: AN02-AR/EM-SX/SD.01/magnetic_strength
 - type: pyaml.magnet.sextupole
   name: SF_003_675b74daa1d947668de7bac4e7a2d389
   model:
     type: pyaml.magnet.identity_model
     unit: 1/m**2
-    physics: AN03-AR/EM-SX/SF.01/strength
+    physics: AN03-AR/EM-SX/SF.01/magnetic_strength
 - type: pyaml.magnet.sextupole
   name: SD_003_8847f52a1ab2413987b864de9b877ed2
   model:
     type: pyaml.magnet.identity_model
     unit: 1/m**2
-    physics: AN03-AR/EM-SX/SD.01/strength
+    physics: AN03-AR/EM-SX/SD.01/magnetic_strength
 - type: pyaml.magnet.sextupole
   name: SF_004_994280b85ca5424c97b5a922b7865406
   model:
     type: pyaml.magnet.identity_model
     unit: 1/m**2
-    physics: AN04-AR/EM-SX/SF.01/strength
+    physics: AN04-AR/EM-SX/SF.01/magnetic_strength
 - type: pyaml.magnet.sextupole
   name: SD_004_9dd9281637544366981ea51cd482bd24
   model:
     type: pyaml.magnet.identity_model
     unit: 1/m**2
-    physics: AN04-AR/EM-SX/SD.01/strength
+    physics: AN04-AR/EM-SX/SD.01/magnetic_strength
 - type: pyaml.magnet.sextupole
   name: SF_005_d03c9d8336ea467a86e8e734b58230a7
   model:
     type: pyaml.magnet.identity_model
     unit: 1/m**2
-    physics: AN05-AR/EM-SX/SF.01/strength
+    physics: AN05-AR/EM-SX/SF.01/magnetic_strength
 - type: pyaml.magnet.sextupole
   name: SD_005_8f33822faf52429f9fa9375100b90fb7
   model:
     type: pyaml.magnet.identity_model
     unit: 1/m**2
-    physics: AN05-AR/EM-SX/SD.01/strength
+    physics: AN05-AR/EM-SX/SD.01/magnetic_strength
 - type: pyaml.magnet.sextupole
   name: SF_006_5fdcf7038343474f9569065f5df17370
   model:
     type: pyaml.magnet.identity_model
     unit: 1/m**2
-    physics: AN06-AR/EM-SX/SF.01/strength
+    physics: AN06-AR/EM-SX/SF.01/magnetic_strength
 - type: pyaml.magnet.sextupole
   name: SD_006_9a910185762c46698c0dc7f85c81843b
   model:
     type: pyaml.magnet.identity_model
     unit: 1/m**2
-    physics: AN06-AR/EM-SX/SD.01/strength
+    physics: AN06-AR/EM-SX/SD.01/magnetic_strength
 - type: pyaml.magnet.sextupole
   name: SF_007_4ac2e46aa5bb4c38a31b271aca565134
   model:
     type: pyaml.magnet.identity_model
     unit: 1/m**2
-    physics: AN07-AR/EM-SX/SF.01/strength
+    physics: AN07-AR/EM-SX/SF.01/magnetic_strength
 - type: pyaml.magnet.sextupole
   name: SD_007_8073281429e249bf8d476386a06e71d6
   model:
     type: pyaml.magnet.identity_model
     unit: 1/m**2
-    physics: AN07-AR/EM-SX/SD.01/strength
+    physics: AN07-AR/EM-SX/SD.01/magnetic_strength
 - type: pyaml.magnet.sextupole
   name: SF_008_3242d83833824998b6f5ce551917a149
   model:
     type: pyaml.magnet.identity_model
     unit: 1/m**2
-    physics: AN08-AR/EM-SX/SF.01/strength
+    physics: AN08-AR/EM-SX/SF.01/magnetic_strength
 - type: pyaml.magnet.sextupole
   name: SD_008_78e4371b8fd54fd09898b0f1a0d6811f
   model:
     type: pyaml.magnet.identity_model
     unit: 1/m**2
-    physics: AN08-AR/EM-SX/SD.01/strength
+    physics: AN08-AR/EM-SX/SD.01/magnetic_strength
 - type: pyaml.magnet.sextupole
   name: SF_009_b8699ab8bc87481a9e399fe32c086ce3
   model:
     type: pyaml.magnet.identity_model
     unit: 1/m**2
-    physics: AN09-AR/EM-SX/SF.01/strength
+    physics: AN09-AR/EM-SX/SF.01/magnetic_strength
 - type: pyaml.magnet.sextupole
   name: SD_009_6fc6326d3a3e4d53b5fafa0cb8e51259
   model:
     type: pyaml.magnet.identity_model
     unit: 1/m**2
-    physics: AN09-AR/EM-SX/SD.01/strength
+    physics: AN09-AR/EM-SX/SD.01/magnetic_strength
 - type: pyaml.magnet.sextupole
   name: SF_010_b463a021c7bb4d5b87981e9bb0a65b39
   model:
     type: pyaml.magnet.identity_model
     unit: 1/m**2
-    physics: AN10-AR/EM-SX/SF.01/strength
+    physics: AN10-AR/EM-SX/SF.01/magnetic_strength
 - type: pyaml.magnet.sextupole
   name: SD_010_af2dbed722e74675973ab7fd2312ccf8
   model:
     type: pyaml.magnet.identity_model
     unit: 1/m**2
-    physics: AN10-AR/EM-SX/SD.01/strength
+    physics: AN10-AR/EM-SX/SD.01/magnetic_strength
 - type: pyaml.magnet.sextupole
   name: SF_011_4ab4d5bb6e65417c84fe213fedd60f2d
   model:
     type: pyaml.magnet.identity_model
     unit: 1/m**2
-    physics: AN11-AR/EM-SX/SF.01/strength
+    physics: AN11-AR/EM-SX/SF.01/magnetic_strength
 - type: pyaml.magnet.sextupole
   name: SD_011_ba88cba809374b3bbfde041ac36c8952
   model:
     type: pyaml.magnet.identity_model
     unit: 1/m**2
-    physics: AN11-AR/EM-SX/SD.01/strength
+    physics: AN11-AR/EM-SX/SD.01/magnetic_strength
 - type: pyaml.magnet.sextupole
   name: SF_012_cfb308c45f9b465f8c15b8c69ad42d91
   model:
     type: pyaml.magnet.identity_model
     unit: 1/m**2
-    physics: AN12-AR/EM-SX/SF.01/strength
+    physics: AN12-AR/EM-SX/SF.01/magnetic_strength
 - type: pyaml.magnet.sextupole
   name: SD_012_a30bcdb9f573401d92b319f3b654ff93
   model:
     type: pyaml.magnet.identity_model
     unit: 1/m**2
-    physics: AN12-AR/EM-SX/SD.01/strength
+    physics: AN12-AR/EM-SX/SD.01/magnetic_strength
 - type: pyaml.magnet.sextupole
   name: SF_013_06d473a9d99945aea183710119b271b8
   model:
     type: pyaml.magnet.identity_model
     unit: 1/m**2
-    physics: AN13-AR/EM-SX/SF.01/strength
+    physics: AN13-AR/EM-SX/SF.01/magnetic_strength
 - type: pyaml.magnet.sextupole
   name: SD_013_70f532ea96d04d35ab6f1f290b9a53af
   model:
     type: pyaml.magnet.identity_model
     unit: 1/m**2
-    physics: AN13-AR/EM-SX/SD.01/strength
+    physics: AN13-AR/EM-SX/SD.01/magnetic_strength
 - type: pyaml.magnet.sextupole
   name: SF_014_476143f7c68e48b381c83cc6721c1b01
   model:
     type: pyaml.magnet.identity_model
     unit: 1/m**2
-    physics: AN14-AR/EM-SX/SF.01/strength
+    physics: AN14-AR/EM-SX/SF.01/magnetic_strength
 - type: pyaml.magnet.sextupole
   name: SD_014_2d9751d7e0a54092b924c403f690d79c
   model:
     type: pyaml.magnet.identity_model
     unit: 1/m**2
-    physics: AN14-AR/EM-SX/SD.01/strength
+    physics: AN14-AR/EM-SX/SD.01/magnetic_strength
 - type: pyaml.magnet.sextupole
   name: SF_015_eb58dc186ce343ebb3af6db93ac09d58
   model:
     type: pyaml.magnet.identity_model
     unit: 1/m**2
-    physics: AN15-AR/EM-SX/SF.01/strength
+    physics: AN15-AR/EM-SX/SF.01/magnetic_strength
 - type: pyaml.magnet.sextupole
   name: SD_015_3c0aee9958974c00b81461bc1e7133ce
   model:
     type: pyaml.magnet.identity_model
     unit: 1/m**2
-    physics: AN15-AR/EM-SX/SD.01/strength
+    physics: AN15-AR/EM-SX/SD.01/magnetic_strength
 - type: pyaml.magnet.sextupole
   name: SF_016_fadc3f0ba9e74039becfa929d7ebe8dc
   model:
     type: pyaml.magnet.identity_model
     unit: 1/m**2
-    physics: AN16-AR/EM-SX/SF.01/strength
+    physics: AN16-AR/EM-SX/SF.01/magnetic_strength
 - type: pyaml.magnet.sextupole
   name: SD_016_f9ef0fa336aa48a0a777a71123b1ade6
   model:
     type: pyaml.magnet.identity_model
     unit: 1/m**2
-    physics: AN16-AR/EM-SX/SD.01/strength
+    physics: AN16-AR/EM-SX/SD.01/magnetic_strength

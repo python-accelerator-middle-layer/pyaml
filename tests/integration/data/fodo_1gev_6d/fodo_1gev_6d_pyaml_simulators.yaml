@@ -1,6 +1,6 @@
 simulators:
 - type: pyaml.lattice.simulator
-  lattice: fodo_1gev_6d.m
+  lattice: file:fodo_1gev_6d.json
   name: design
   linker:
     type: pyaml.lattice.attribute_linker
