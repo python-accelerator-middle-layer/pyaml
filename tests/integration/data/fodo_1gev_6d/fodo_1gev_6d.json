@@ -61,7 +61,7 @@
     {
       "FamName": "COR_001",
       "Length": 0.0,
-      "PassMethod": "StrMPoleSymplectic4Pass",
+      "PassMethod": "ThinMPolePass",
       "UUID": "COR_001_40245a63817f45fdbaf0588fc373304c",
       "Class": "Multipole",
       "MaxOrder": 0,
@@ -223,7 +223,7 @@
     {
       "FamName": "COR_002",
       "Length": 0.0,
-      "PassMethod": "StrMPoleSymplectic4Pass",
+      "PassMethod": "ThinMPolePass",
       "UUID": "COR_002_da1aed18178646bfa755086e61402f11",
       "Class": "Multipole",
       "MaxOrder": 0,
@@ -385,7 +385,7 @@
     {
       "FamName": "COR_003",
       "Length": 0.0,
-      "PassMethod": "StrMPoleSymplectic4Pass",
+      "PassMethod": "ThinMPolePass",
       "UUID": "COR_003_a47e4afce05e42c7b3bbda1b0f49b62a",
       "Class": "Multipole",
       "MaxOrder": 0,
@@ -547,7 +547,7 @@
     {
       "FamName": "COR_004",
       "Length": 0.0,
-      "PassMethod": "StrMPoleSymplectic4Pass",
+      "PassMethod": "ThinMPolePass",
       "UUID": "COR_004_df8065c70f8343b39be055d3baa89b6f",
       "Class": "Multipole",
       "MaxOrder": 0,
@@ -709,7 +709,7 @@
     {
       "FamName": "COR_005",
       "Length": 0.0,
-      "PassMethod": "StrMPoleSymplectic4Pass",
+      "PassMethod": "ThinMPolePass",
       "UUID": "COR_005_9215a7c55cca49a7ab589783360624ce",
       "Class": "Multipole",
       "MaxOrder": 0,
@@ -871,7 +871,7 @@
     {
       "FamName": "COR_006",
       "Length": 0.0,
-      "PassMethod": "StrMPoleSymplectic4Pass",
+      "PassMethod": "ThinMPolePass",
       "UUID": "COR_006_dd5a91ce11124e60bbb9df93a10d6b11",
       "Class": "Multipole",
       "MaxOrder": 0,
@@ -1033,7 +1033,7 @@
     {
       "FamName": "COR_007",
       "Length": 0.0,
-      "PassMethod": "StrMPoleSymplectic4Pass",
+      "PassMethod": "ThinMPolePass",
       "UUID": "COR_007_3cd2e2d7f28d442abcd1b8039f78efa5",
       "Class": "Multipole",
       "MaxOrder": 0,
@@ -1195,7 +1195,7 @@
     {
       "FamName": "COR_008",
       "Length": 0.0,
-      "PassMethod": "StrMPoleSymplectic4Pass",
+      "PassMethod": "ThinMPolePass",
       "UUID": "COR_008_7a8f6a10d6c147b0affe509482741943",
       "Class": "Multipole",
       "MaxOrder": 0,
@@ -1357,7 +1357,7 @@
     {
       "FamName": "COR_009",
       "Length": 0.0,
-      "PassMethod": "StrMPoleSymplectic4Pass",
+      "PassMethod": "ThinMPolePass",
       "UUID": "COR_009_72d51334bf7847e18181f4704188dd84",
       "Class": "Multipole",
       "MaxOrder": 0,
@@ -1519,7 +1519,7 @@
     {
       "FamName": "COR_010",
       "Length": 0.0,
-      "PassMethod": "StrMPoleSymplectic4Pass",
+      "PassMethod": "ThinMPolePass",
       "UUID": "COR_010_a68a73b307f1433aa420a1c7da0f829e",
       "Class": "Multipole",
       "MaxOrder": 0,
@@ -1681,7 +1681,7 @@
     {
       "FamName": "COR_011",
       "Length": 0.0,
-      "PassMethod": "StrMPoleSymplectic4Pass",
+      "PassMethod": "ThinMPolePass",
       "UUID": "COR_011_9c43dd897fac431f81f41127763bc3f8",
       "Class": "Multipole",
       "MaxOrder": 0,
@@ -1843,7 +1843,7 @@
     {
       "FamName": "COR_012",
       "Length": 0.0,
-      "PassMethod": "StrMPoleSymplectic4Pass",
+      "PassMethod": "ThinMPolePass",
       "UUID": "COR_012_0fcbaaf1028c452eaab07ac2e47473b9",
       "Class": "Multipole",
       "MaxOrder": 0,
@@ -2005,7 +2005,7 @@
     {
       "FamName": "COR_013",
       "Length": 0.0,
-      "PassMethod": "StrMPoleSymplectic4Pass",
+      "PassMethod": "ThinMPolePass",
       "UUID": "COR_013_75ec65eca2b74a9881b3f24929cce95d",
       "Class": "Multipole",
       "MaxOrder": 0,
@@ -2167,7 +2167,7 @@
     {
       "FamName": "COR_014",
       "Length": 0.0,
-      "PassMethod": "StrMPoleSymplectic4Pass",
+      "PassMethod": "ThinMPolePass",
       "UUID": "COR_014_1041dd109c4c4b1e943b93fcbd9b8c0f",
       "Class": "Multipole",
       "MaxOrder": 0,
@@ -2329,7 +2329,7 @@
     {
       "FamName": "COR_015",
       "Length": 0.0,
-      "PassMethod": "StrMPoleSymplectic4Pass",
+      "PassMethod": "ThinMPolePass",
       "UUID": "COR_015_f386ead7438a4d248f5850364f7a215b",
       "Class": "Multipole",
       "MaxOrder": 0,
@@ -2491,7 +2491,7 @@
     {
       "FamName": "COR_016",
       "Length": 0.0,
-      "PassMethod": "StrMPoleSymplectic4Pass",
+      "PassMethod": "ThinMPolePass",
       "UUID": "COR_016_5dea0eada2984432aeb6637ed6f7afe9",
       "Class": "Multipole",
       "MaxOrder": 0,
