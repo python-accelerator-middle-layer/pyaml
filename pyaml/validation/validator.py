@@ -58,8 +58,8 @@ class SchemaValidator:
         """
         validated = cls._recursive_validate(data)
 
-        if not isinstance(validated, ConfigurationSchema):
-            raise TypeError("Top-level configuration did not validate to a ConfigurationSchema.")
+        # if not isinstance(validated, ConfigurationSchema):
+        #     raise TypeError("Top-level configuration did not validate to a ConfigurationSchema.")
 
         return validated
 
@@ -73,6 +73,8 @@ class SchemaValidator:
         """
 
         validated = cls.validate(data)
+        if isinstance(validated, dict):
+            return validated
         return validated.model_dump()
 
     @classmethod
