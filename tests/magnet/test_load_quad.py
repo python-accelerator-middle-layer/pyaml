@@ -32,7 +32,7 @@ from pyaml.magnet.quadrupole import Quadrupole
 def test_quad_external_model(install_test_package, config_root_dir):
     ROOT.set(config_root_dir)
     cfg_hcorr_yaml = load("sr/custom_magnets/hidcorr.yaml")
-    cs = Factory.build_object(
+    cs = Factory.build(
         {
             "type": "tango.pyaml.controlsystem",
             "name": "live",
@@ -74,7 +74,7 @@ def test_quad_linear(magnet_file, install_test_package, config_root_dir):
     ROOT.set(config_root_dir)
     cfg_quad = load(magnet_file)
     print(f"Current file: {config_root_dir}/{magnet_file}")
-    cs = Factory.build_object(
+    cs = Factory.build(
         {
             "type": "tango.pyaml.controlsystem",
             "name": "live",
@@ -123,7 +123,7 @@ def test_quad_linear(magnet_file, install_test_package, config_root_dir):
 def test_combined_function_magnets(magnet_file, config_root_dir):
     ROOT.set(config_root_dir)
     cfg_sh = load(magnet_file)
-    cs = Factory.build_object(
+    cs = Factory.build(
         {
             "type": "tango.pyaml.controlsystem",
             "name": "live",
