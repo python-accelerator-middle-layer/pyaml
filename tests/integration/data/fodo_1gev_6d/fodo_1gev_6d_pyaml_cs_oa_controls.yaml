@@ -1,5 +1,4 @@
 controls:
 - type: pyaml_cs_oa.controlsystem
   name: live
-  prefix: //127.0.0.1:10000/
   catalog: fodo_1gev_6d_pyaml_cs_oa_catalog.yaml
