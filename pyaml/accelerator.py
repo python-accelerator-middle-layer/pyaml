@@ -2,6 +2,8 @@
 Accelerator class
 """
 
+import warnings
+
 from pydantic import BaseModel, ConfigDict, Field
 
 from .arrays.array import ArrayConfig
@@ -12,6 +14,7 @@ from .configuration import ConfigurationManager, UnsupportedConfigurationRootErr
 from .configuration.factory import Factory
 from .control.controlsystem import ControlSystem
 from .lattice.simulator import Simulator
+from .validation import SchemaValidator
 from .yellow_pages import YellowPages
 
 # Define the main class name for this module
@@ -253,7 +256,7 @@ class Accelerator(object):
         return repr(self._cfg).replace("ConfigModel", self.__class__.__name__)
 
     @staticmethod
-    def from_dict(config_dict: dict, ignore_external=False) -> "Accelerator":
+    def from_dict(config_dict: dict, ignore_external: bool = False, validate: bool = False) -> "Accelerator":
         """
         Construct an accelerator from a dictionary.
 
@@ -270,12 +273,16 @@ class Accelerator(object):
         if ignore_external:
             # control systems are external, so remove controls field
             config_dict.pop("controls", None)
+
+        if validate:
+            config_dict = SchemaValidator.validate_to_dict(config_dict)
+
         # Ensure factory is clean before building a new accelerator
         Factory.clear()
         return Factory.build(config_dict, ignore_external)
 
     @staticmethod
-    def load(filename: str, use_fast_loader: bool = False, ignore_external=False) -> "Accelerator":
+    def load(filename: str, use_fast_loader: bool = True, ignore_external=False, validate: bool = False) -> "Accelerator":
         """
         Load an accelerator from a config file.
 
@@ -292,8 +299,22 @@ class Accelerator(object):
             Ignore external modules and return None for object that
             cannot be created. pydantic schema that support that an
             object is not created should handle None fields.
+        validate : bool
+            Validate the loaded data
         """
+
         manager = ConfigurationManager()
+
+        if not validate and not use_fast_loader:
+            warnings.warn(
+                "'use_fast_loader=False' is ignored when 'validate=False'. "
+                "The fast loader is used because source-location metadata is only "
+                "needed for validation.",
+                UserWarning,
+                stacklevel=2,
+            )
+            use_fast_loader = True
+
         try:
             manager.add(filename, use_fast_loader=use_fast_loader)
         except UnsupportedConfigurationRootError as ex:
@@ -301,4 +322,4 @@ class Accelerator(object):
                 "Accelerator.load() expects a 'pyaml.accelerator' root configuration. "
                 "Use the factory APIs to build sub-elements directly."
             ) from ex
-        return manager.build(ignore_external=ignore_external)
+        return manager.build(ignore_external=ignore_external, validate=validate)

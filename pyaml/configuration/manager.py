@@ -145,7 +145,7 @@ class ConfigurationManager:
             ... )
         """
         source_name = kwargs.pop("source_name", None)
-        use_fast_loader = kwargs.pop("use_fast_loader", False)
+        use_fast_loader = kwargs.pop("use_fast_loader", True)
         if kwargs:
             unknown = ", ".join(sorted(kwargs))
             raise PyAMLConfigException(f"Unsupported ConfigurationManager.add() arguments: {unknown}")
@@ -468,7 +468,7 @@ class ConfigurationManager:
         snapshot = self._snapshot(include_internal_metadata=False)
         return snapshot
 
-    def build(self, ignore_external: bool = False):
+    def build(self, ignore_external: bool = False, validate: bool = False):
         r"""
         Build an Accelerator from the aggregated configuration snapshot.
 
@@ -493,7 +493,7 @@ class ConfigurationManager:
         if isinstance(self._build_root, Path):
             ROOT.set(self._build_root)
         snapshot = ConfigurationManager.strip_runtime_internal_metadata(self._snapshot(include_internal_metadata=True))
-        return Accelerator.from_dict(snapshot, ignore_external=ignore_external)
+        return Accelerator.from_dict(snapshot, ignore_external=ignore_external, validate=validate)
 
     def __dir__(self):
         """
