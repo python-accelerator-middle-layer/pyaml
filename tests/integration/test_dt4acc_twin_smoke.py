@@ -4,11 +4,13 @@ from pathlib import Path
 import numpy as np
 import pytest
 
+from pyaml.accelerator import Accelerator
 from pyaml.configuration import ConfigurationManager
 
 QF_001 = "QF_001_314d440dcc3348c687785c80e67fce27"
 QF_001_STRENGTH = "AN01-AR/EM-QP/QF.01/magnetic_strength"
 RF_REFERENCE_FREQUENCY = "simulator/ringsimulator/ringsimulator/reference_frequency"
+EXAMPLES_ROOT = Path(__file__).parent.parent / "examples"
 FODO_1GEV_6D_ROOT = Path(__file__).parent / "data" / "fodo_1gev_6d"
 FODO_1GEV_6D_CONFIGS = [
     (
@@ -58,8 +60,6 @@ def _readback_value(device_access):
 
 
 def _build_accelerator(root_folder: Path, config_files: dict[str, str]):
-    from pyaml.accelerator import Accelerator
-
     configuration_manager: ConfigurationManager = ConfigurationManager()
     for config_file in config_files.values():
         configuration_manager.add(str(root_folder / config_file))
@@ -126,3 +126,17 @@ def test_dt4acc_twin_reads_all_declared_magnetic_strengths(root_folder: Path, co
             failures.append(f"{magnet.get_name()}: non-finite values {values!r}")
 
     assert not failures, "Magnetic strength readback failures:\n" + "\n".join(failures)
+
+
+@pytest.mark.parametrize(
+    ("root_folder", "config_file"),
+    [
+        (EXAMPLES_ROOT / "BESSY2_example", "BESSY2Tune.yaml"),
+        (EXAMPLES_ROOT / "BESSY2_example", "BESSY2Orbit.yaml"),
+        (EXAMPLES_ROOT / "SOLEIL_examples", "p.yaml"),
+    ],
+    ids=["bessy_ii_tune", "bessy_ii_orbit", "soleil_ii"],
+)
+def test_examples_can_be_loaded(root_folder: Path, config_file: str):
+    accelerator: Accelerator = Accelerator.load(str(root_folder / config_file))
+    assert accelerator.yellow_pages is not None
