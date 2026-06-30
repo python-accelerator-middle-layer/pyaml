@@ -272,7 +272,7 @@ class ElementHolder(metaclass=ABCMeta):
     def add_rf_plant(self, rf: RFPlant):
         self.__add(self.__RFPLANT, rf)
 
-    def add_rf_transnmitter(self, rf: RFTransmitter):
+    def add_rf_transmitter(self, rf: RFTransmitter):
         self.__add(self.__RFTRANSMITTER, rf)
 
     def get_rf_trasnmitter(self, name: str) -> RFTransmitter:

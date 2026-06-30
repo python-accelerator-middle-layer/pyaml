@@ -68,7 +68,7 @@ class PyAMLConfigCyclingException(PyAMLException):
     pass
 
 
-def load(filename: str, paths_stack: list = None, use_fast_loader: bool = False) -> Union[dict, list]:
+def load(filename: str, paths_stack: list = None, use_fast_loader: bool = True) -> Union[dict, list]:
     """Load recursively a configuration setup"""
     if filename.endswith(".yaml") or filename.endswith(".yml"):
         l = YAMLLoader(filename, paths_stack, use_fast_loader)
@@ -126,7 +126,7 @@ class Loader:
         while idx < len(l):
             value = l[idx]
             if hasToLoad(value):
-                obj = load(value, self.files_stack)
+                obj = load(value, self.files_stack, self.use_fast_loader)
                 if isinstance(obj, list):
                     l[idx : idx + 1] = obj
                     idx += len(obj)

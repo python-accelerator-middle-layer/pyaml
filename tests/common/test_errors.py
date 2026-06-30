@@ -13,24 +13,24 @@ from pyaml.configuration import ConfigurationManager
 )
 def test_tune(install_test_package):
     with pytest.raises(PyAMLConfigException) as exc:
-        ml: Accelerator = Accelerator.load("tests/config/bad_conf_duplicate_1.yaml")
+        ml: Accelerator = Accelerator.load("tests/config/bad_conf_duplicate_1.yaml", use_fast_loader=False, validate=True)
     assert "MagnetArray HCORR : duplicate name SH1A-C02-H @index 2" in str(exc)
 
     with pytest.raises(PyAMLConfigException) as exc:
-        ml: Accelerator = Accelerator.load("tests/config/bad_conf_duplicate_2.yaml")
+        ml: Accelerator = Accelerator.load("tests/config/bad_conf_duplicate_2.yaml", use_fast_loader=False, validate=True)
     assert "BPMArray BPM : duplicate name BPM_C04-06 @index 3" in str(exc)
 
     with pytest.raises(PyAMLConfigException) as exc:
-        ml: Accelerator = Accelerator.load("tests/config/bad_conf_duplicate_3.yaml")
+        ml: Accelerator = Accelerator.load("tests/config/bad_conf_duplicate_3.yaml", use_fast_loader=False, validate=True)
     assert "Configuration entry 'BPM_C04-06' is duplicated inside category 'devices'" in str(exc)
     assert "bad_conf_duplicate_3.yaml" in str(exc)
     assert "line 43, column 3" in str(exc)
 
     with pytest.raises(PyAMLConfigException) as exc:
-        ml: Accelerator = Accelerator.load("tests/config/bad_conf_duplicate_4.yaml")
+        ml: Accelerator = Accelerator.load("tests/config/bad_conf_duplicate_4.yaml", use_fast_loader=False, validate=True)
     assert "MagnetArray HCORR : duplicate name SH1A-C02-H @index 2" in str(exc)
 
-    sr: Accelerator = Accelerator.load("tests/config/EBSTune.yaml")
+    sr: Accelerator = Accelerator.load("tests/config/EBSTune.yaml", use_fast_loader=False, validate=True)
     m1 = sr.live.get_magnet("QF1E-C04")
     m2 = sr.design.get_magnet("QF1A-C05")
     with pytest.raises(PyAMLException) as exc:
@@ -64,7 +64,7 @@ def test_duplicate_error_reports_source_line_and_column_across_files(tmp_path):
     )
 
     with pytest.raises(PyAMLConfigException) as exc:
-        Accelerator.load(str(root))
+        Accelerator.load(str(root), use_fast_loader=False, validate=True)
 
     message = str(exc.value)
     assert "Configuration entry 'BPM_DUPLICATE' is duplicated inside category 'devices'" in message
@@ -90,7 +90,7 @@ def test_malformed_local_included_yaml_reports_source_line_and_column(tmp_path):
     )
 
     with pytest.raises(PyAMLException) as exc:
-        Accelerator.load(str(root))
+        Accelerator.load(str(root), use_fast_loader=False, validate=True)
 
     message = str(exc.value)
     assert str(broken_devices) in message
@@ -115,7 +115,7 @@ def test_truncated_local_included_json_reports_source_and_position(tmp_path):
     )
 
     with pytest.raises(PyAMLException) as exc:
-        Accelerator.load(str(root))
+        Accelerator.load(str(root), use_fast_loader=False, validate=True)
 
     message = str(exc.value)
     assert str(broken_devices) in message
