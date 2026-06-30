@@ -1,0 +1,193 @@
+devices:
+- type: pyaml.magnet.hcorrector
+  name: B_001_5f1afe65b5f740b29a48bf437414f672
+  model:
+    type: pyaml.magnet.identity_model
+    unit: 1/m
+    physics: AN01-AR/EM-DIP/B.01/magnetic_strength
+- type: pyaml.magnet.hcorrector
+  name: B_002_a736eb95b9f641fa95b16a7bc843d278
+  model:
+    type: pyaml.magnet.identity_model
+    unit: 1/m
+    physics: AN01-AR/EM-DIP/B.02/magnetic_strength
+- type: pyaml.magnet.hcorrector
+  name: B_003_13470d5d861841a684577a3208b8cae2
+  model:
+    type: pyaml.magnet.identity_model
+    unit: 1/m
+    physics: AN02-AR/EM-DIP/B.01/magnetic_strength
+- type: pyaml.magnet.hcorrector
+  name: B_004_626a5b828edc4ed8b341d754174a5b2d
+  model:
+    type: pyaml.magnet.identity_model
+    unit: 1/m
+    physics: AN02-AR/EM-DIP/B.02/magnetic_strength
+- type: pyaml.magnet.hcorrector
+  name: B_005_51e275d1f4c04653a62f83a03e837afa
+  model:
+    type: pyaml.magnet.identity_model
+    unit: 1/m
+    physics: AN03-AR/EM-DIP/B.01/magnetic_strength
+- type: pyaml.magnet.hcorrector
+  name: B_006_efa60311fb494a26b65a95d174d1ab88
+  model:
+    type: pyaml.magnet.identity_model
+    unit: 1/m
+    physics: AN03-AR/EM-DIP/B.02/magnetic_strength
+- type: pyaml.magnet.hcorrector
+  name: B_007_e171d6d45d0a40b0a331ab89d7f64deb
+  model:
+    type: pyaml.magnet.identity_model
+    unit: 1/m
+    physics: AN04-AR/EM-DIP/B.01/magnetic_strength
+- type: pyaml.magnet.hcorrector
+  name: B_008_2ab18de726d24f378c236ce5b424e0ce
+  model:
+    type: pyaml.magnet.identity_model
+    unit: 1/m
+    physics: AN04-AR/EM-DIP/B.02/magnetic_strength
+- type: pyaml.magnet.hcorrector
+  name: B_009_55172c2c1e354e249c22fec20ed1a342
+  model:
+    type: pyaml.magnet.identity_model
+    unit: 1/m
+    physics: AN05-AR/EM-DIP/B.01/magnetic_strength
+- type: pyaml.magnet.hcorrector
+  name: B_010_a9b4e9f8ae2a4e919ff30659c4e30171
+  model:
+    type: pyaml.magnet.identity_model
+    unit: 1/m
+    physics: AN05-AR/EM-DIP/B.02/magnetic_strength
+- type: pyaml.magnet.hcorrector
+  name: B_011_3d8537487c4a475b8ef9d85a64525cfb
+  model:
+    type: pyaml.magnet.identity_model
+    unit: 1/m
+    physics: AN06-AR/EM-DIP/B.01/magnetic_strength
+- type: pyaml.magnet.hcorrector
+  name: B_012_0b859d92d0d24ae9ac80daa9f7be887b
+  model:
+    type: pyaml.magnet.identity_model
+    unit: 1/m
+    physics: AN06-AR/EM-DIP/B.02/magnetic_strength
+- type: pyaml.magnet.hcorrector
+  name: B_013_fa5b9deca6c0447f98ffc22b894d4b2d
+  model:
+    type: pyaml.magnet.identity_model
+    unit: 1/m
+    physics: AN07-AR/EM-DIP/B.01/magnetic_strength
+- type: pyaml.magnet.hcorrector
+  name: B_014_e3b3cd7118734d9a8f772cd2e59329b0
+  model:
+    type: pyaml.magnet.identity_model
+    unit: 1/m
+    physics: AN07-AR/EM-DIP/B.02/magnetic_strength
+- type: pyaml.magnet.hcorrector
+  name: B_015_debe465500ea450caec6c20c033a61f5
+  model:
+    type: pyaml.magnet.identity_model
+    unit: 1/m
+    physics: AN08-AR/EM-DIP/B.01/magnetic_strength
+- type: pyaml.magnet.hcorrector
+  name: B_016_cb7ff66004864777ab2d1cb51a320cd0
+  model:
+    type: pyaml.magnet.identity_model
+    unit: 1/m
+    physics: AN08-AR/EM-DIP/B.02/magnetic_strength
+- type: pyaml.magnet.hcorrector
+  name: B_017_84e24e15c84d41b4ac56d69800f0f01a
+  model:
+    type: pyaml.magnet.identity_model
+    unit: 1/m
+    physics: AN09-AR/EM-DIP/B.01/magnetic_strength
+- type: pyaml.magnet.hcorrector
+  name: B_018_af1cdae072a34116bb7a0d5bbe897094
+  model:
+    type: pyaml.magnet.identity_model
+    unit: 1/m
+    physics: AN09-AR/EM-DIP/B.02/magnetic_strength
+- type: pyaml.magnet.hcorrector
+  name: B_019_1191ed5588124131b728c6a8ccd81af3
+  model:
+    type: pyaml.magnet.identity_model
+    unit: 1/m
+    physics: AN10-AR/EM-DIP/B.01/magnetic_strength
+- type: pyaml.magnet.hcorrector
+  name: B_020_f8ca0a3e66104b929426cb117c5a33d6
+  model:
+    type: pyaml.magnet.identity_model
+    unit: 1/m
+    physics: AN10-AR/EM-DIP/B.02/magnetic_strength
+- type: pyaml.magnet.hcorrector
+  name: B_021_a325cec6f15d4836a36365ae54c2a62c
+  model:
+    type: pyaml.magnet.identity_model
+    unit: 1/m
+    physics: AN11-AR/EM-DIP/B.01/magnetic_strength
+- type: pyaml.magnet.hcorrector
+  name: B_022_82734024efc24119879fbd61d72dfc6f
+  model:
+    type: pyaml.magnet.identity_model
+    unit: 1/m
+    physics: AN11-AR/EM-DIP/B.02/magnetic_strength
+- type: pyaml.magnet.hcorrector
+  name: B_023_49a142437ee648569965391e4d0aac65
+  model:
+    type: pyaml.magnet.identity_model
+    unit: 1/m
+    physics: AN12-AR/EM-DIP/B.01/magnetic_strength
+- type: pyaml.magnet.hcorrector
+  name: B_024_5d7fc585011e44c6989eb496839c79c5
+  model:
+    type: pyaml.magnet.identity_model
+    unit: 1/m
+    physics: AN12-AR/EM-DIP/B.02/magnetic_strength
+- type: pyaml.magnet.hcorrector
+  name: B_025_76439f542aaa4a4da1d06a8f6d20d000
+  model:
+    type: pyaml.magnet.identity_model
+    unit: 1/m
+    physics: AN13-AR/EM-DIP/B.01/magnetic_strength
+- type: pyaml.magnet.hcorrector
+  name: B_026_0fc7dbf92c3a4793afc210f5b8591da9
+  model:
+    type: pyaml.magnet.identity_model
+    unit: 1/m
+    physics: AN13-AR/EM-DIP/B.02/magnetic_strength
+- type: pyaml.magnet.hcorrector
+  name: B_027_6d150ae5dc37451b98be1f3607bf77b4
+  model:
+    type: pyaml.magnet.identity_model
+    unit: 1/m
+    physics: AN14-AR/EM-DIP/B.01/magnetic_strength
+- type: pyaml.magnet.hcorrector
+  name: B_028_a9303ce9a1a740b9960a54d1944ff5a4
+  model:
+    type: pyaml.magnet.identity_model
+    unit: 1/m
+    physics: AN14-AR/EM-DIP/B.02/magnetic_strength
+- type: pyaml.magnet.hcorrector
+  name: B_029_9908d63194b54e1d88a7138080fadf14
+  model:
+    type: pyaml.magnet.identity_model
+    unit: 1/m
+    physics: AN15-AR/EM-DIP/B.01/magnetic_strength
+- type: pyaml.magnet.hcorrector
+  name: B_030_a89961119fbd47e1973f045b2ff01ae4
+  model:
+    type: pyaml.magnet.identity_model
+    unit: 1/m
+    physics: AN15-AR/EM-DIP/B.02/magnetic_strength
+- type: pyaml.magnet.hcorrector
+  name: B_031_f2431d5924d34407be7eea25773ebe61
+  model:
+    type: pyaml.magnet.identity_model
+    unit: 1/m
+    physics: AN16-AR/EM-DIP/B.01/magnetic_strength
+- type: pyaml.magnet.hcorrector
+  name: B_032_f3576e7be1b74b39bb0cdb62b065de99
+  model:
+    type: pyaml.magnet.identity_model
+    unit: 1/m
+    physics: AN16-AR/EM-DIP/B.02/magnetic_strength

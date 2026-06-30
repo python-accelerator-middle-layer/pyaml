@@ -259,7 +259,7 @@ class Accelerator(object):
 
         Parameters
         ----------
-        config_dict : str
+        config_dict : dict
             Dictionary containing accelerator config
         ignore_external: bool
             Ignore external modules and return None for object that

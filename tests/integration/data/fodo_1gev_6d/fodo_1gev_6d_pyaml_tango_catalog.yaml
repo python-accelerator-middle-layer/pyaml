@@ -1,0 +1,984 @@
+type: tango.pyaml.static_catalog
+entries:
+- type: tango.pyaml.static_catalog_entry
+  key: AN01-AR/EM-QP/QF.01/magnetic_strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: AN01-AR/EM-QP/QF.01/magnetic_strength
+    unit: 1/m
+- type: tango.pyaml.static_catalog_entry
+  key: AN01-AR/EM-SX/SF.01/magnetic_strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: AN01-AR/EM-SX/SF.01/magnetic_strength
+    unit: 1/m**2
+- type: tango.pyaml.static_catalog_entry
+  key: AN01-AR/DG-EPOS/BPM.01/x
+  device:
+    type: tango.pyaml.attribute_read_only
+    attribute: AN01-AR/DG-EPOS/BPM.01/x
+    unit: mm
+- type: tango.pyaml.static_catalog_entry
+  key: AN01-AR/DG-EPOS/BPM.01/y
+  device:
+    type: tango.pyaml.attribute_read_only
+    attribute: AN01-AR/DG-EPOS/BPM.01/y
+    unit: mm
+- type: tango.pyaml.static_catalog_entry
+  key: AN01-AR/EM-COR/CH.01/magnetic_strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: AN01-AR/EM-COR/CH.01/magnetic_strength
+    unit: 1/m
+- type: tango.pyaml.static_catalog_entry
+  key: AN01-AR/EM-COR/CV.01/magnetic_strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: AN01-AR/EM-COR/CV.01/magnetic_strength
+    unit: '1'
+- type: tango.pyaml.static_catalog_entry
+  key: AN01-AR/EM-DIP/B.01/magnetic_strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: AN01-AR/EM-DIP/B.01/magnetic_strength
+    unit: 1/m
+- type: tango.pyaml.static_catalog_entry
+  key: AN01-AR/EM-QP/QD.01/magnetic_strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: AN01-AR/EM-QP/QD.01/magnetic_strength
+    unit: 1/m
+- type: tango.pyaml.static_catalog_entry
+  key: AN01-AR/EM-SX/SD.01/magnetic_strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: AN01-AR/EM-SX/SD.01/magnetic_strength
+    unit: 1/m**2
+- type: tango.pyaml.static_catalog_entry
+  key: AN01-AR/EM-DIP/B.02/magnetic_strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: AN01-AR/EM-DIP/B.02/magnetic_strength
+    unit: 1/m
+- type: tango.pyaml.static_catalog_entry
+  key: AN02-AR/EM-QP/QF.01/magnetic_strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: AN02-AR/EM-QP/QF.01/magnetic_strength
+    unit: 1/m
+- type: tango.pyaml.static_catalog_entry
+  key: AN02-AR/EM-SX/SF.01/magnetic_strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: AN02-AR/EM-SX/SF.01/magnetic_strength
+    unit: 1/m**2
+- type: tango.pyaml.static_catalog_entry
+  key: AN02-AR/DG-EPOS/BPM.01/x
+  device:
+    type: tango.pyaml.attribute_read_only
+    attribute: AN02-AR/DG-EPOS/BPM.01/x
+    unit: mm
+- type: tango.pyaml.static_catalog_entry
+  key: AN02-AR/DG-EPOS/BPM.01/y
+  device:
+    type: tango.pyaml.attribute_read_only
+    attribute: AN02-AR/DG-EPOS/BPM.01/y
+    unit: mm
+- type: tango.pyaml.static_catalog_entry
+  key: AN02-AR/EM-COR/CH.01/magnetic_strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: AN02-AR/EM-COR/CH.01/magnetic_strength
+    unit: 1/m
+- type: tango.pyaml.static_catalog_entry
+  key: AN02-AR/EM-COR/CV.01/magnetic_strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: AN02-AR/EM-COR/CV.01/magnetic_strength
+    unit: '1'
+- type: tango.pyaml.static_catalog_entry
+  key: AN02-AR/EM-DIP/B.01/magnetic_strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: AN02-AR/EM-DIP/B.01/magnetic_strength
+    unit: 1/m
+- type: tango.pyaml.static_catalog_entry
+  key: AN02-AR/EM-QP/QD.01/magnetic_strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: AN02-AR/EM-QP/QD.01/magnetic_strength
+    unit: 1/m
+- type: tango.pyaml.static_catalog_entry
+  key: AN02-AR/EM-SX/SD.01/magnetic_strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: AN02-AR/EM-SX/SD.01/magnetic_strength
+    unit: 1/m**2
+- type: tango.pyaml.static_catalog_entry
+  key: AN02-AR/EM-DIP/B.02/magnetic_strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: AN02-AR/EM-DIP/B.02/magnetic_strength
+    unit: 1/m
+- type: tango.pyaml.static_catalog_entry
+  key: AN03-AR/EM-QP/QF.01/magnetic_strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: AN03-AR/EM-QP/QF.01/magnetic_strength
+    unit: 1/m
+- type: tango.pyaml.static_catalog_entry
+  key: AN03-AR/EM-SX/SF.01/magnetic_strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: AN03-AR/EM-SX/SF.01/magnetic_strength
+    unit: 1/m**2
+- type: tango.pyaml.static_catalog_entry
+  key: AN03-AR/DG-EPOS/BPM.01/x
+  device:
+    type: tango.pyaml.attribute_read_only
+    attribute: AN03-AR/DG-EPOS/BPM.01/x
+    unit: mm
+- type: tango.pyaml.static_catalog_entry
+  key: AN03-AR/DG-EPOS/BPM.01/y
+  device:
+    type: tango.pyaml.attribute_read_only
+    attribute: AN03-AR/DG-EPOS/BPM.01/y
+    unit: mm
+- type: tango.pyaml.static_catalog_entry
+  key: AN03-AR/EM-COR/CH.01/magnetic_strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: AN03-AR/EM-COR/CH.01/magnetic_strength
+    unit: 1/m
+- type: tango.pyaml.static_catalog_entry
+  key: AN03-AR/EM-COR/CV.01/magnetic_strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: AN03-AR/EM-COR/CV.01/magnetic_strength
+    unit: '1'
+- type: tango.pyaml.static_catalog_entry
+  key: AN03-AR/EM-DIP/B.01/magnetic_strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: AN03-AR/EM-DIP/B.01/magnetic_strength
+    unit: 1/m
+- type: tango.pyaml.static_catalog_entry
+  key: AN03-AR/EM-QP/QD.01/magnetic_strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: AN03-AR/EM-QP/QD.01/magnetic_strength
+    unit: 1/m
+- type: tango.pyaml.static_catalog_entry
+  key: AN03-AR/EM-SX/SD.01/magnetic_strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: AN03-AR/EM-SX/SD.01/magnetic_strength
+    unit: 1/m**2
+- type: tango.pyaml.static_catalog_entry
+  key: AN03-AR/EM-DIP/B.02/magnetic_strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: AN03-AR/EM-DIP/B.02/magnetic_strength
+    unit: 1/m
+- type: tango.pyaml.static_catalog_entry
+  key: AN04-AR/EM-QP/QF.01/magnetic_strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: AN04-AR/EM-QP/QF.01/magnetic_strength
+    unit: 1/m
+- type: tango.pyaml.static_catalog_entry
+  key: AN04-AR/EM-SX/SF.01/magnetic_strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: AN04-AR/EM-SX/SF.01/magnetic_strength
+    unit: 1/m**2
+- type: tango.pyaml.static_catalog_entry
+  key: AN04-AR/DG-EPOS/BPM.01/x
+  device:
+    type: tango.pyaml.attribute_read_only
+    attribute: AN04-AR/DG-EPOS/BPM.01/x
+    unit: mm
+- type: tango.pyaml.static_catalog_entry
+  key: AN04-AR/DG-EPOS/BPM.01/y
+  device:
+    type: tango.pyaml.attribute_read_only
+    attribute: AN04-AR/DG-EPOS/BPM.01/y
+    unit: mm
+- type: tango.pyaml.static_catalog_entry
+  key: AN04-AR/EM-COR/CH.01/magnetic_strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: AN04-AR/EM-COR/CH.01/magnetic_strength
+    unit: 1/m
+- type: tango.pyaml.static_catalog_entry
+  key: AN04-AR/EM-COR/CV.01/magnetic_strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: AN04-AR/EM-COR/CV.01/magnetic_strength
+    unit: '1'
+- type: tango.pyaml.static_catalog_entry
+  key: AN04-AR/EM-DIP/B.01/magnetic_strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: AN04-AR/EM-DIP/B.01/magnetic_strength
+    unit: 1/m
+- type: tango.pyaml.static_catalog_entry
+  key: AN04-AR/EM-QP/QD.01/magnetic_strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: AN04-AR/EM-QP/QD.01/magnetic_strength
+    unit: 1/m
+- type: tango.pyaml.static_catalog_entry
+  key: AN04-AR/EM-SX/SD.01/magnetic_strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: AN04-AR/EM-SX/SD.01/magnetic_strength
+    unit: 1/m**2
+- type: tango.pyaml.static_catalog_entry
+  key: AN04-AR/EM-DIP/B.02/magnetic_strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: AN04-AR/EM-DIP/B.02/magnetic_strength
+    unit: 1/m
+- type: tango.pyaml.static_catalog_entry
+  key: AN05-AR/EM-QP/QF.01/magnetic_strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: AN05-AR/EM-QP/QF.01/magnetic_strength
+    unit: 1/m
+- type: tango.pyaml.static_catalog_entry
+  key: AN05-AR/EM-SX/SF.01/magnetic_strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: AN05-AR/EM-SX/SF.01/magnetic_strength
+    unit: 1/m**2
+- type: tango.pyaml.static_catalog_entry
+  key: AN05-AR/DG-EPOS/BPM.01/x
+  device:
+    type: tango.pyaml.attribute_read_only
+    attribute: AN05-AR/DG-EPOS/BPM.01/x
+    unit: mm
+- type: tango.pyaml.static_catalog_entry
+  key: AN05-AR/DG-EPOS/BPM.01/y
+  device:
+    type: tango.pyaml.attribute_read_only
+    attribute: AN05-AR/DG-EPOS/BPM.01/y
+    unit: mm
+- type: tango.pyaml.static_catalog_entry
+  key: AN05-AR/EM-COR/CH.01/magnetic_strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: AN05-AR/EM-COR/CH.01/magnetic_strength
+    unit: 1/m
+- type: tango.pyaml.static_catalog_entry
+  key: AN05-AR/EM-COR/CV.01/magnetic_strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: AN05-AR/EM-COR/CV.01/magnetic_strength
+    unit: '1'
+- type: tango.pyaml.static_catalog_entry
+  key: AN05-AR/EM-DIP/B.01/magnetic_strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: AN05-AR/EM-DIP/B.01/magnetic_strength
+    unit: 1/m
+- type: tango.pyaml.static_catalog_entry
+  key: AN05-AR/EM-QP/QD.01/magnetic_strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: AN05-AR/EM-QP/QD.01/magnetic_strength
+    unit: 1/m
+- type: tango.pyaml.static_catalog_entry
+  key: AN05-AR/EM-SX/SD.01/magnetic_strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: AN05-AR/EM-SX/SD.01/magnetic_strength
+    unit: 1/m**2
+- type: tango.pyaml.static_catalog_entry
+  key: AN05-AR/EM-DIP/B.02/magnetic_strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: AN05-AR/EM-DIP/B.02/magnetic_strength
+    unit: 1/m
+- type: tango.pyaml.static_catalog_entry
+  key: AN06-AR/EM-QP/QF.01/magnetic_strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: AN06-AR/EM-QP/QF.01/magnetic_strength
+    unit: 1/m
+- type: tango.pyaml.static_catalog_entry
+  key: AN06-AR/EM-SX/SF.01/magnetic_strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: AN06-AR/EM-SX/SF.01/magnetic_strength
+    unit: 1/m**2
+- type: tango.pyaml.static_catalog_entry
+  key: AN06-AR/DG-EPOS/BPM.01/x
+  device:
+    type: tango.pyaml.attribute_read_only
+    attribute: AN06-AR/DG-EPOS/BPM.01/x
+    unit: mm
+- type: tango.pyaml.static_catalog_entry
+  key: AN06-AR/DG-EPOS/BPM.01/y
+  device:
+    type: tango.pyaml.attribute_read_only
+    attribute: AN06-AR/DG-EPOS/BPM.01/y
+    unit: mm
+- type: tango.pyaml.static_catalog_entry
+  key: AN06-AR/EM-COR/CH.01/magnetic_strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: AN06-AR/EM-COR/CH.01/magnetic_strength
+    unit: 1/m
+- type: tango.pyaml.static_catalog_entry
+  key: AN06-AR/EM-COR/CV.01/magnetic_strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: AN06-AR/EM-COR/CV.01/magnetic_strength
+    unit: '1'
+- type: tango.pyaml.static_catalog_entry
+  key: AN06-AR/EM-DIP/B.01/magnetic_strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: AN06-AR/EM-DIP/B.01/magnetic_strength
+    unit: 1/m
+- type: tango.pyaml.static_catalog_entry
+  key: AN06-AR/EM-QP/QD.01/magnetic_strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: AN06-AR/EM-QP/QD.01/magnetic_strength
+    unit: 1/m
+- type: tango.pyaml.static_catalog_entry
+  key: AN06-AR/EM-SX/SD.01/magnetic_strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: AN06-AR/EM-SX/SD.01/magnetic_strength
+    unit: 1/m**2
+- type: tango.pyaml.static_catalog_entry
+  key: AN06-AR/EM-DIP/B.02/magnetic_strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: AN06-AR/EM-DIP/B.02/magnetic_strength
+    unit: 1/m
+- type: tango.pyaml.static_catalog_entry
+  key: AN07-AR/EM-QP/QF.01/magnetic_strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: AN07-AR/EM-QP/QF.01/magnetic_strength
+    unit: 1/m
+- type: tango.pyaml.static_catalog_entry
+  key: AN07-AR/EM-SX/SF.01/magnetic_strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: AN07-AR/EM-SX/SF.01/magnetic_strength
+    unit: 1/m**2
+- type: tango.pyaml.static_catalog_entry
+  key: AN07-AR/DG-EPOS/BPM.01/x
+  device:
+    type: tango.pyaml.attribute_read_only
+    attribute: AN07-AR/DG-EPOS/BPM.01/x
+    unit: mm
+- type: tango.pyaml.static_catalog_entry
+  key: AN07-AR/DG-EPOS/BPM.01/y
+  device:
+    type: tango.pyaml.attribute_read_only
+    attribute: AN07-AR/DG-EPOS/BPM.01/y
+    unit: mm
+- type: tango.pyaml.static_catalog_entry
+  key: AN07-AR/EM-COR/CH.01/magnetic_strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: AN07-AR/EM-COR/CH.01/magnetic_strength
+    unit: 1/m
+- type: tango.pyaml.static_catalog_entry
+  key: AN07-AR/EM-COR/CV.01/magnetic_strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: AN07-AR/EM-COR/CV.01/magnetic_strength
+    unit: '1'
+- type: tango.pyaml.static_catalog_entry
+  key: AN07-AR/EM-DIP/B.01/magnetic_strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: AN07-AR/EM-DIP/B.01/magnetic_strength
+    unit: 1/m
+- type: tango.pyaml.static_catalog_entry
+  key: AN07-AR/EM-QP/QD.01/magnetic_strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: AN07-AR/EM-QP/QD.01/magnetic_strength
+    unit: 1/m
+- type: tango.pyaml.static_catalog_entry
+  key: AN07-AR/EM-SX/SD.01/magnetic_strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: AN07-AR/EM-SX/SD.01/magnetic_strength
+    unit: 1/m**2
+- type: tango.pyaml.static_catalog_entry
+  key: AN07-AR/EM-DIP/B.02/magnetic_strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: AN07-AR/EM-DIP/B.02/magnetic_strength
+    unit: 1/m
+- type: tango.pyaml.static_catalog_entry
+  key: AN08-AR/EM-QP/QF.01/magnetic_strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: AN08-AR/EM-QP/QF.01/magnetic_strength
+    unit: 1/m
+- type: tango.pyaml.static_catalog_entry
+  key: AN08-AR/EM-SX/SF.01/magnetic_strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: AN08-AR/EM-SX/SF.01/magnetic_strength
+    unit: 1/m**2
+- type: tango.pyaml.static_catalog_entry
+  key: AN08-AR/DG-EPOS/BPM.01/x
+  device:
+    type: tango.pyaml.attribute_read_only
+    attribute: AN08-AR/DG-EPOS/BPM.01/x
+    unit: mm
+- type: tango.pyaml.static_catalog_entry
+  key: AN08-AR/DG-EPOS/BPM.01/y
+  device:
+    type: tango.pyaml.attribute_read_only
+    attribute: AN08-AR/DG-EPOS/BPM.01/y
+    unit: mm
+- type: tango.pyaml.static_catalog_entry
+  key: AN08-AR/EM-COR/CH.01/magnetic_strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: AN08-AR/EM-COR/CH.01/magnetic_strength
+    unit: 1/m
+- type: tango.pyaml.static_catalog_entry
+  key: AN08-AR/EM-COR/CV.01/magnetic_strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: AN08-AR/EM-COR/CV.01/magnetic_strength
+    unit: '1'
+- type: tango.pyaml.static_catalog_entry
+  key: AN08-AR/EM-DIP/B.01/magnetic_strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: AN08-AR/EM-DIP/B.01/magnetic_strength
+    unit: 1/m
+- type: tango.pyaml.static_catalog_entry
+  key: AN08-AR/EM-QP/QD.01/magnetic_strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: AN08-AR/EM-QP/QD.01/magnetic_strength
+    unit: 1/m
+- type: tango.pyaml.static_catalog_entry
+  key: AN08-AR/EM-SX/SD.01/magnetic_strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: AN08-AR/EM-SX/SD.01/magnetic_strength
+    unit: 1/m**2
+- type: tango.pyaml.static_catalog_entry
+  key: AN08-AR/EM-DIP/B.02/magnetic_strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: AN08-AR/EM-DIP/B.02/magnetic_strength
+    unit: 1/m
+- type: tango.pyaml.static_catalog_entry
+  key: AN09-AR/EM-QP/QF.01/magnetic_strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: AN09-AR/EM-QP/QF.01/magnetic_strength
+    unit: 1/m
+- type: tango.pyaml.static_catalog_entry
+  key: AN09-AR/EM-SX/SF.01/magnetic_strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: AN09-AR/EM-SX/SF.01/magnetic_strength
+    unit: 1/m**2
+- type: tango.pyaml.static_catalog_entry
+  key: AN09-AR/DG-EPOS/BPM.01/x
+  device:
+    type: tango.pyaml.attribute_read_only
+    attribute: AN09-AR/DG-EPOS/BPM.01/x
+    unit: mm
+- type: tango.pyaml.static_catalog_entry
+  key: AN09-AR/DG-EPOS/BPM.01/y
+  device:
+    type: tango.pyaml.attribute_read_only
+    attribute: AN09-AR/DG-EPOS/BPM.01/y
+    unit: mm
+- type: tango.pyaml.static_catalog_entry
+  key: AN09-AR/EM-COR/CH.01/magnetic_strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: AN09-AR/EM-COR/CH.01/magnetic_strength
+    unit: 1/m
+- type: tango.pyaml.static_catalog_entry
+  key: AN09-AR/EM-COR/CV.01/magnetic_strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: AN09-AR/EM-COR/CV.01/magnetic_strength
+    unit: '1'
+- type: tango.pyaml.static_catalog_entry
+  key: AN09-AR/EM-DIP/B.01/magnetic_strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: AN09-AR/EM-DIP/B.01/magnetic_strength
+    unit: 1/m
+- type: tango.pyaml.static_catalog_entry
+  key: AN09-AR/EM-QP/QD.01/magnetic_strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: AN09-AR/EM-QP/QD.01/magnetic_strength
+    unit: 1/m
+- type: tango.pyaml.static_catalog_entry
+  key: AN09-AR/EM-SX/SD.01/magnetic_strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: AN09-AR/EM-SX/SD.01/magnetic_strength
+    unit: 1/m**2
+- type: tango.pyaml.static_catalog_entry
+  key: AN09-AR/EM-DIP/B.02/magnetic_strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: AN09-AR/EM-DIP/B.02/magnetic_strength
+    unit: 1/m
+- type: tango.pyaml.static_catalog_entry
+  key: AN10-AR/EM-QP/QF.01/magnetic_strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: AN10-AR/EM-QP/QF.01/magnetic_strength
+    unit: 1/m
+- type: tango.pyaml.static_catalog_entry
+  key: AN10-AR/EM-SX/SF.01/magnetic_strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: AN10-AR/EM-SX/SF.01/magnetic_strength
+    unit: 1/m**2
+- type: tango.pyaml.static_catalog_entry
+  key: AN10-AR/DG-EPOS/BPM.01/x
+  device:
+    type: tango.pyaml.attribute_read_only
+    attribute: AN10-AR/DG-EPOS/BPM.01/x
+    unit: mm
+- type: tango.pyaml.static_catalog_entry
+  key: AN10-AR/DG-EPOS/BPM.01/y
+  device:
+    type: tango.pyaml.attribute_read_only
+    attribute: AN10-AR/DG-EPOS/BPM.01/y
+    unit: mm
+- type: tango.pyaml.static_catalog_entry
+  key: AN10-AR/EM-COR/CH.01/magnetic_strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: AN10-AR/EM-COR/CH.01/magnetic_strength
+    unit: 1/m
+- type: tango.pyaml.static_catalog_entry
+  key: AN10-AR/EM-COR/CV.01/magnetic_strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: AN10-AR/EM-COR/CV.01/magnetic_strength
+    unit: '1'
+- type: tango.pyaml.static_catalog_entry
+  key: AN10-AR/EM-DIP/B.01/magnetic_strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: AN10-AR/EM-DIP/B.01/magnetic_strength
+    unit: 1/m
+- type: tango.pyaml.static_catalog_entry
+  key: AN10-AR/EM-QP/QD.01/magnetic_strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: AN10-AR/EM-QP/QD.01/magnetic_strength
+    unit: 1/m
+- type: tango.pyaml.static_catalog_entry
+  key: AN10-AR/EM-SX/SD.01/magnetic_strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: AN10-AR/EM-SX/SD.01/magnetic_strength
+    unit: 1/m**2
+- type: tango.pyaml.static_catalog_entry
+  key: AN10-AR/EM-DIP/B.02/magnetic_strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: AN10-AR/EM-DIP/B.02/magnetic_strength
+    unit: 1/m
+- type: tango.pyaml.static_catalog_entry
+  key: AN11-AR/EM-QP/QF.01/magnetic_strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: AN11-AR/EM-QP/QF.01/magnetic_strength
+    unit: 1/m
+- type: tango.pyaml.static_catalog_entry
+  key: AN11-AR/EM-SX/SF.01/magnetic_strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: AN11-AR/EM-SX/SF.01/magnetic_strength
+    unit: 1/m**2
+- type: tango.pyaml.static_catalog_entry
+  key: AN11-AR/DG-EPOS/BPM.01/x
+  device:
+    type: tango.pyaml.attribute_read_only
+    attribute: AN11-AR/DG-EPOS/BPM.01/x
+    unit: mm
+- type: tango.pyaml.static_catalog_entry
+  key: AN11-AR/DG-EPOS/BPM.01/y
+  device:
+    type: tango.pyaml.attribute_read_only
+    attribute: AN11-AR/DG-EPOS/BPM.01/y
+    unit: mm
+- type: tango.pyaml.static_catalog_entry
+  key: AN11-AR/EM-COR/CH.01/magnetic_strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: AN11-AR/EM-COR/CH.01/magnetic_strength
+    unit: 1/m
+- type: tango.pyaml.static_catalog_entry
+  key: AN11-AR/EM-COR/CV.01/magnetic_strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: AN11-AR/EM-COR/CV.01/magnetic_strength
+    unit: '1'
+- type: tango.pyaml.static_catalog_entry
+  key: AN11-AR/EM-DIP/B.01/magnetic_strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: AN11-AR/EM-DIP/B.01/magnetic_strength
+    unit: 1/m
+- type: tango.pyaml.static_catalog_entry
+  key: AN11-AR/EM-QP/QD.01/magnetic_strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: AN11-AR/EM-QP/QD.01/magnetic_strength
+    unit: 1/m
+- type: tango.pyaml.static_catalog_entry
+  key: AN11-AR/EM-SX/SD.01/magnetic_strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: AN11-AR/EM-SX/SD.01/magnetic_strength
+    unit: 1/m**2
+- type: tango.pyaml.static_catalog_entry
+  key: AN11-AR/EM-DIP/B.02/magnetic_strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: AN11-AR/EM-DIP/B.02/magnetic_strength
+    unit: 1/m
+- type: tango.pyaml.static_catalog_entry
+  key: AN12-AR/EM-QP/QF.01/magnetic_strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: AN12-AR/EM-QP/QF.01/magnetic_strength
+    unit: 1/m
+- type: tango.pyaml.static_catalog_entry
+  key: AN12-AR/EM-SX/SF.01/magnetic_strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: AN12-AR/EM-SX/SF.01/magnetic_strength
+    unit: 1/m**2
+- type: tango.pyaml.static_catalog_entry
+  key: AN12-AR/DG-EPOS/BPM.01/x
+  device:
+    type: tango.pyaml.attribute_read_only
+    attribute: AN12-AR/DG-EPOS/BPM.01/x
+    unit: mm
+- type: tango.pyaml.static_catalog_entry
+  key: AN12-AR/DG-EPOS/BPM.01/y
+  device:
+    type: tango.pyaml.attribute_read_only
+    attribute: AN12-AR/DG-EPOS/BPM.01/y
+    unit: mm
+- type: tango.pyaml.static_catalog_entry
+  key: AN12-AR/EM-COR/CH.01/magnetic_strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: AN12-AR/EM-COR/CH.01/magnetic_strength
+    unit: 1/m
+- type: tango.pyaml.static_catalog_entry
+  key: AN12-AR/EM-COR/CV.01/magnetic_strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: AN12-AR/EM-COR/CV.01/magnetic_strength
+    unit: '1'
+- type: tango.pyaml.static_catalog_entry
+  key: AN12-AR/EM-DIP/B.01/magnetic_strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: AN12-AR/EM-DIP/B.01/magnetic_strength
+    unit: 1/m
+- type: tango.pyaml.static_catalog_entry
+  key: AN12-AR/EM-QP/QD.01/magnetic_strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: AN12-AR/EM-QP/QD.01/magnetic_strength
+    unit: 1/m
+- type: tango.pyaml.static_catalog_entry
+  key: AN12-AR/EM-SX/SD.01/magnetic_strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: AN12-AR/EM-SX/SD.01/magnetic_strength
+    unit: 1/m**2
+- type: tango.pyaml.static_catalog_entry
+  key: AN12-AR/EM-DIP/B.02/magnetic_strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: AN12-AR/EM-DIP/B.02/magnetic_strength
+    unit: 1/m
+- type: tango.pyaml.static_catalog_entry
+  key: AN13-AR/EM-QP/QF.01/magnetic_strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: AN13-AR/EM-QP/QF.01/magnetic_strength
+    unit: 1/m
+- type: tango.pyaml.static_catalog_entry
+  key: AN13-AR/EM-SX/SF.01/magnetic_strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: AN13-AR/EM-SX/SF.01/magnetic_strength
+    unit: 1/m**2
+- type: tango.pyaml.static_catalog_entry
+  key: AN13-AR/DG-EPOS/BPM.01/x
+  device:
+    type: tango.pyaml.attribute_read_only
+    attribute: AN13-AR/DG-EPOS/BPM.01/x
+    unit: mm
+- type: tango.pyaml.static_catalog_entry
+  key: AN13-AR/DG-EPOS/BPM.01/y
+  device:
+    type: tango.pyaml.attribute_read_only
+    attribute: AN13-AR/DG-EPOS/BPM.01/y
+    unit: mm
+- type: tango.pyaml.static_catalog_entry
+  key: AN13-AR/EM-COR/CH.01/magnetic_strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: AN13-AR/EM-COR/CH.01/magnetic_strength
+    unit: 1/m
+- type: tango.pyaml.static_catalog_entry
+  key: AN13-AR/EM-COR/CV.01/magnetic_strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: AN13-AR/EM-COR/CV.01/magnetic_strength
+    unit: '1'
+- type: tango.pyaml.static_catalog_entry
+  key: AN13-AR/EM-DIP/B.01/magnetic_strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: AN13-AR/EM-DIP/B.01/magnetic_strength
+    unit: 1/m
+- type: tango.pyaml.static_catalog_entry
+  key: AN13-AR/EM-QP/QD.01/magnetic_strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: AN13-AR/EM-QP/QD.01/magnetic_strength
+    unit: 1/m
+- type: tango.pyaml.static_catalog_entry
+  key: AN13-AR/EM-SX/SD.01/magnetic_strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: AN13-AR/EM-SX/SD.01/magnetic_strength
+    unit: 1/m**2
+- type: tango.pyaml.static_catalog_entry
+  key: AN13-AR/EM-DIP/B.02/magnetic_strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: AN13-AR/EM-DIP/B.02/magnetic_strength
+    unit: 1/m
+- type: tango.pyaml.static_catalog_entry
+  key: AN14-AR/EM-QP/QF.01/magnetic_strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: AN14-AR/EM-QP/QF.01/magnetic_strength
+    unit: 1/m
+- type: tango.pyaml.static_catalog_entry
+  key: AN14-AR/EM-SX/SF.01/magnetic_strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: AN14-AR/EM-SX/SF.01/magnetic_strength
+    unit: 1/m**2
+- type: tango.pyaml.static_catalog_entry
+  key: AN14-AR/DG-EPOS/BPM.01/x
+  device:
+    type: tango.pyaml.attribute_read_only
+    attribute: AN14-AR/DG-EPOS/BPM.01/x
+    unit: mm
+- type: tango.pyaml.static_catalog_entry
+  key: AN14-AR/DG-EPOS/BPM.01/y
+  device:
+    type: tango.pyaml.attribute_read_only
+    attribute: AN14-AR/DG-EPOS/BPM.01/y
+    unit: mm
+- type: tango.pyaml.static_catalog_entry
+  key: AN14-AR/EM-COR/CH.01/magnetic_strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: AN14-AR/EM-COR/CH.01/magnetic_strength
+    unit: 1/m
+- type: tango.pyaml.static_catalog_entry
+  key: AN14-AR/EM-COR/CV.01/magnetic_strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: AN14-AR/EM-COR/CV.01/magnetic_strength
+    unit: '1'
+- type: tango.pyaml.static_catalog_entry
+  key: AN14-AR/EM-DIP/B.01/magnetic_strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: AN14-AR/EM-DIP/B.01/magnetic_strength
+    unit: 1/m
+- type: tango.pyaml.static_catalog_entry
+  key: AN14-AR/EM-QP/QD.01/magnetic_strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: AN14-AR/EM-QP/QD.01/magnetic_strength
+    unit: 1/m
+- type: tango.pyaml.static_catalog_entry
+  key: AN14-AR/EM-SX/SD.01/magnetic_strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: AN14-AR/EM-SX/SD.01/magnetic_strength
+    unit: 1/m**2
+- type: tango.pyaml.static_catalog_entry
+  key: AN14-AR/EM-DIP/B.02/magnetic_strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: AN14-AR/EM-DIP/B.02/magnetic_strength
+    unit: 1/m
+- type: tango.pyaml.static_catalog_entry
+  key: AN15-AR/EM-QP/QF.01/magnetic_strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: AN15-AR/EM-QP/QF.01/magnetic_strength
+    unit: 1/m
+- type: tango.pyaml.static_catalog_entry
+  key: AN15-AR/EM-SX/SF.01/magnetic_strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: AN15-AR/EM-SX/SF.01/magnetic_strength
+    unit: 1/m**2
+- type: tango.pyaml.static_catalog_entry
+  key: AN15-AR/DG-EPOS/BPM.01/x
+  device:
+    type: tango.pyaml.attribute_read_only
+    attribute: AN15-AR/DG-EPOS/BPM.01/x
+    unit: mm
+- type: tango.pyaml.static_catalog_entry
+  key: AN15-AR/DG-EPOS/BPM.01/y
+  device:
+    type: tango.pyaml.attribute_read_only
+    attribute: AN15-AR/DG-EPOS/BPM.01/y
+    unit: mm
+- type: tango.pyaml.static_catalog_entry
+  key: AN15-AR/EM-COR/CH.01/magnetic_strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: AN15-AR/EM-COR/CH.01/magnetic_strength
+    unit: 1/m
+- type: tango.pyaml.static_catalog_entry
+  key: AN15-AR/EM-COR/CV.01/magnetic_strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: AN15-AR/EM-COR/CV.01/magnetic_strength
+    unit: '1'
+- type: tango.pyaml.static_catalog_entry
+  key: AN15-AR/EM-DIP/B.01/magnetic_strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: AN15-AR/EM-DIP/B.01/magnetic_strength
+    unit: 1/m
+- type: tango.pyaml.static_catalog_entry
+  key: AN15-AR/EM-QP/QD.01/magnetic_strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: AN15-AR/EM-QP/QD.01/magnetic_strength
+    unit: 1/m
+- type: tango.pyaml.static_catalog_entry
+  key: AN15-AR/EM-SX/SD.01/magnetic_strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: AN15-AR/EM-SX/SD.01/magnetic_strength
+    unit: 1/m**2
+- type: tango.pyaml.static_catalog_entry
+  key: AN15-AR/EM-DIP/B.02/magnetic_strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: AN15-AR/EM-DIP/B.02/magnetic_strength
+    unit: 1/m
+- type: tango.pyaml.static_catalog_entry
+  key: AN16-AR/EM-QP/QF.01/magnetic_strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: AN16-AR/EM-QP/QF.01/magnetic_strength
+    unit: 1/m
+- type: tango.pyaml.static_catalog_entry
+  key: AN16-AR/EM-SX/SF.01/magnetic_strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: AN16-AR/EM-SX/SF.01/magnetic_strength
+    unit: 1/m**2
+- type: tango.pyaml.static_catalog_entry
+  key: AN16-AR/DG-EPOS/BPM.01/x
+  device:
+    type: tango.pyaml.attribute_read_only
+    attribute: AN16-AR/DG-EPOS/BPM.01/x
+    unit: mm
+- type: tango.pyaml.static_catalog_entry
+  key: AN16-AR/DG-EPOS/BPM.01/y
+  device:
+    type: tango.pyaml.attribute_read_only
+    attribute: AN16-AR/DG-EPOS/BPM.01/y
+    unit: mm
+- type: tango.pyaml.static_catalog_entry
+  key: AN16-AR/EM-COR/CH.01/magnetic_strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: AN16-AR/EM-COR/CH.01/magnetic_strength
+    unit: 1/m
+- type: tango.pyaml.static_catalog_entry
+  key: AN16-AR/EM-COR/CV.01/magnetic_strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: AN16-AR/EM-COR/CV.01/magnetic_strength
+    unit: '1'
+- type: tango.pyaml.static_catalog_entry
+  key: AN16-AR/EM-DIP/B.01/magnetic_strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: AN16-AR/EM-DIP/B.01/magnetic_strength
+    unit: 1/m
+- type: tango.pyaml.static_catalog_entry
+  key: AN16-AR/EM-QP/QD.01/magnetic_strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: AN16-AR/EM-QP/QD.01/magnetic_strength
+    unit: 1/m
+- type: tango.pyaml.static_catalog_entry
+  key: AN16-AR/EM-SX/SD.01/magnetic_strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: AN16-AR/EM-SX/SD.01/magnetic_strength
+    unit: 1/m**2
+- type: tango.pyaml.static_catalog_entry
+  key: AN16-AR/EM-DIP/B.02/magnetic_strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: AN16-AR/EM-DIP/B.02/magnetic_strength
+    unit: 1/m
+- type: tango.pyaml.static_catalog_entry
+  key: simulator/ringsimulator/ringsimulator/reference_frequency
+  device:
+    type: tango.pyaml.attribute
+    attribute: simulator/ringsimulator/ringsimulator/reference_frequency
+    unit: kHz
+- type: tango.pyaml.static_catalog_entry
+  key: simulator/ringsimulator/ringsimulator/voltage
+  device:
+    type: tango.pyaml.attribute
+    attribute: simulator/ringsimulator/ringsimulator/voltage
+    unit: V
+- type: tango.pyaml.static_catalog_entry
+  key: simulator/ringsimulator/ringsimulator/hor
+  device:
+    type: tango.pyaml.attribute
+    attribute: simulator/ringsimulator/ringsimulator/hor
+- type: tango.pyaml.static_catalog_entry
+  key: simulator/ringsimulator/ringsimulator/vert
+  device:
+    type: tango.pyaml.attribute
+    attribute: simulator/ringsimulator/ringsimulator/vert
