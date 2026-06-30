@@ -10,7 +10,7 @@ from pyaml.configuration import ConfigurationManager
 QF_001 = "QF_001_314d440dcc3348c687785c80e67fce27"
 QF_001_STRENGTH = "AN01-AR/EM-QP/QF.01/magnetic_strength"
 RF_REFERENCE_FREQUENCY = "simulator/ringsimulator/ringsimulator/reference_frequency"
-EXAMPLES_ROOT = Path(__file__).parent.parent / "examples"
+EXAMPLES_ROOT = Path(__file__).parent.parent.parent / "examples"
 FODO_1GEV_6D_ROOT = Path(__file__).parent / "data" / "fodo_1gev_6d"
 FODO_1GEV_6D_CONFIGS = [
     (
