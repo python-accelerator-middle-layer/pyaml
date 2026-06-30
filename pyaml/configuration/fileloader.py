@@ -1,11 +1,14 @@
-""" "PyAML configuration file loader."""
+"""PyAML configuration file loader."""
 
 import collections.abc
 import io
 import json
 import logging
+from abc import ABC, abstractmethod
+from contextlib import contextmanager
+from dataclasses import dataclass, field
 from pathlib import Path
-from typing import Union
+from typing import Any, Union
 
 import yaml
 from yaml import CLoader
@@ -16,146 +19,263 @@ from .. import PyAMLException
 
 logger = logging.getLogger(__name__)
 
-accepted_suffixes = [".yaml", ".yml", ".json"]
+ACCEPTED_SUFFIXES = (".yaml", ".yml", ".json")
 FILE_PREFIX = "file:"
+
+LOCATION_KEY = "__location__"
+FIELD_LOCATIONS_KEY = "__fieldlocations__"
 
 
 class RootFolder:
-    """
-    Manage the root directory used to resolve relative configuration paths.
-    """
+    """Manage the root directory used to resolve configuration paths."""
 
     def __init__(self, path: str | Path | None = None):
-        # Resolve the path is given otherwise set to the current working directory
+        """Create a root folder.
+
+        If no path is provided, the current working directory is used.
+        """
         if path is None:
             self._path = Path.cwd().resolve()
         else:
             self._path = Path(path).resolve()
 
     def set(self, path: str | Path) -> None:
-        """
-        Set the root path for configuration files.
-        """
+        """Set the root path used for resolving relative configuration files."""
         self._path = Path(path).resolve()
 
     def get(self) -> Path:
-        """
-        Get the root path for configuration files.
-        """
+        """Return the current root path."""
         return self._path
 
     def expand_path(self, path: str | Path) -> Path:
-        """
-        Return an absolute configuration path.
+        """Return an absolute, normalized configuration path.
 
-        Relative paths are interpreted relative to the configured root
-        folder. Absolute paths are returned unchanged.
+        Relative paths are interpreted relative to the configured root folder.
         """
 
         path = Path(path)
-        return path if path.is_absolute() else self._path / path
+        if not path.is_absolute():
+            path = self._path / path
+        return path.resolve()
 
 
 ROOT = RootFolder()
 
 
 class PyAMLConfigCyclingException(PyAMLException):
+    """Raised when a configuration file includes itself through a cycle."""
+
     def __init__(self, error_filename: str, path_stack: list[Path]):
+        """Create a circular-include error.
+
+        Args:
+            error_filename: The file that triggered the cycle.
+            path_stack: The include chain leading to the cycle.
+        """
+
         self.error_filename = error_filename
+
         parent_file_stack = [parent_path.name for parent_path in path_stack]
         super().__init__(f"Circular file inclusion of {error_filename}. File list before reaching it: {parent_file_stack}")
 
-    pass
+
+@dataclass
+class LoadContext:
+    """Track state for one recursive configuration-loading session."""
+
+    include_locations: bool = False
+    include_stack: list[Path] = field(default_factory=list)
+
+    @contextmanager
+    def loading(self, path: Path):
+        """Register a file as currently being loaded and remove it afterward.
+
+        Raises:
+            PyAMLConfigCyclingException: If the file is already on the active
+                include stack.
+        """
+
+        # Check if the file is currently in the chain
+        # Raise a cycling error if that is the case
+        if path in self.include_stack:
+            raise PyAMLConfigCyclingException(path.name, self.include_stack)
+
+        # Add the file to the stack to record that it is now being loaded
+        self.include_stack.append(path)
+        try:
+            # Run the code in the with block
+            yield
+        finally:
+            # Remove the file to stack to record that it has finished loading
+            self.include_stack.pop()
 
 
-def load(filename: str, paths_stack: list = None, use_fast_loader: bool = False) -> Union[dict, list]:
-    """Load recursively a configuration setup"""
-    if filename.endswith(".yaml") or filename.endswith(".yml"):
-        l = YAMLLoader(filename, paths_stack, use_fast_loader)
-    elif filename.endswith(".json"):
-        l = JSONLoader(filename, paths_stack, use_fast_loader)
-    else:
-        raise PyAMLException(f"{filename} File format not supported (only .yaml .yml or .json)")
-    return l.load()
+def load(filename: str, include_locations: bool = False) -> Union[dict, list]:
+    """Load a configuration file.
+
+    When include_locations is False, uses the faster C-based YAML loader
+    and skips including source location metadata.
+    """
+
+    # Create a new context
+    context = LoadContext(include_locations=include_locations)
+
+    return _load(filename, context)
 
 
-# Expand condition
-def hasToLoad(value):
-    return isinstance(value, str) and any(value.endswith(suffix) for suffix in accepted_suffixes)
+def _load(filename: str, context: LoadContext) -> Union[dict, list]:
+    """Load a single configuration file using the appropriate parser."""
+
+    path = ROOT.expand_path(filename)
+
+    with context.loading(path):
+        if filename.endswith((".yaml", ".yml")):
+            loader = YAMLLoader(path, context)
+        elif filename.endswith(".json"):
+            loader = JSONLoader(path, context)
+        else:
+            raise PyAMLException(f"{filename} File format not supported (only .yaml .yml or .json)")
+
+        return loader.load()
 
 
-# Loader base class (nested files expansion)
-class Loader:
-    def __init__(self, filename: str, parent_path_stack: list[Path]):
-        self.path: Path = ROOT.expand_path(filename)
-        self.files_stack: list[Path] = []
-        if parent_path_stack:
-            if any(self.path.samefile(parent_path) for parent_path in parent_path_stack):
-                raise PyAMLConfigCyclingException(filename, parent_path_stack)
-            self.files_stack.extend(parent_path_stack)
-        self.files_stack.append(self.path)
+def _is_supported_file(value: Any) -> bool:
+    """Return True if the value looks like a supported configuration file name."""
+    return isinstance(value, str) and value.endswith(ACCEPTED_SUFFIXES)
 
-    # Recursively expand a dict
-    def expand_dict(self, d: dict):
-        for key, value in d.items():
-            try:
-                if hasToLoad(value):
-                    if value.startswith(FILE_PREFIX):
-                        # remove prefix
-                        stripped_value = value[len(FILE_PREFIX) :]
-                        d[key] = str(ROOT.get() / Path(stripped_value))
-                    else:
-                        d[key] = load(value, self.files_stack, self.use_fast_loader)
-                else:
-                    self.expand(value)
-            except PyAMLConfigCyclingException as pyaml_ex:
-                location = d.pop("__location__", None)
-                field_locations = d.pop("__fieldlocations__", None)
-                location_str = ""
-                if location:
-                    file, line, col = location
-                    if field_locations and key in field_locations:
-                        location = field_locations[key]
-                        file, line, col = location
-                    location_str = f" in {file} at line {line}, column {col}"
-                raise PyAMLException(f"Circular file inclusion of {pyaml_ex.error_filename}{location_str}") from pyaml_ex
 
-    # Recursively expand a list
-    def expand_list(self, l: list):
-        idx = 0
-        while idx < len(l):
-            value = l[idx]
-            if hasToLoad(value):
-                obj = load(value, self.files_stack)
-                if isinstance(obj, list):
-                    l[idx : idx + 1] = obj
-                    idx += len(obj)
-                else:
-                    l[idx] = obj
-                    idx += 1
-            else:
-                self.expand(value)
-                idx += 1
+class ConfigLoader(ABC):
+    """Base class for loaders that expand nested configuration references."""
 
-    # Recursively expand an object
-    def expand(self, obj: Union[dict, list]):
+    def __init__(self, path: Path, context: LoadContext):
+        """Store the file path and shared loading context."""
+
+        self.path = path
+        self.context = context
+
+    def expand(self, obj: Union[dict, list, Any]) -> Union[dict, list, Any]:
+        """Recursively expand nested dictionaries and lists."""
+
         if isinstance(obj, dict):
-            self.expand_dict(obj)
-        elif isinstance(obj, list):
-            self.expand_list(obj)
+            return self._expand_dict(obj)
+        if isinstance(obj, list):
+            return self._expand_list(obj)
         return obj
 
-    # Load a file
+    def _expand_dict(self, d: dict) -> dict:
+        """Expand any supported file references found inside a dictionary."""
+
+        for key, value in list(d.items()):
+            try:
+                if _is_supported_file(value):
+                    # If it is a reference to another file
+                    resolved = self._resolve_file_reference(value)
+                    if resolved is not None:
+                        d[key] = resolved
+                    else:
+                        d[key] = _load(value, self.context)
+                else:
+                    d[key] = self.expand(value)
+            except PyAMLConfigCyclingException as exc:
+                self._raise_cycle_error(exc, d, key)
+
+        return d
+
+    def _resolve_file_reference(self, value: str) -> str | None:
+        """Return an absolute path for FILE_PREFIX references, otherwise None."""
+
+        if value.startswith(FILE_PREFIX):
+            stripped_value = value[len(FILE_PREFIX) :]
+            return str(ROOT.get() / Path(stripped_value))
+        return None
+
+    def _raise_cycle_error(self, exc: PyAMLConfigCyclingException, obj: dict, key: Any) -> None:
+        """Re-raise a cycle error with file location information, if available."""
+
+        location = obj.get(LOCATION_KEY)
+        field_locations = obj.get(FIELD_LOCATIONS_KEY)
+
+        location_str = ""
+        if location:
+            file, line, col = location
+            if field_locations and key in field_locations:
+                file, line, col = field_locations[key]
+            location_str = f" in {file} at line {line}, column {col}"
+
+        raise PyAMLException(f"Circular file inclusion of {exc.error_filename}{location_str}") from exc
+
+    def _expand_list(self, items: list) -> list:
+        """Expand supported file references inside a list."""
+
+        expanded = []
+        for value in items:
+            if _is_supported_file(value):
+                loaded = _load(value, self.context)
+                if isinstance(loaded, list):
+                    expanded.extend(loaded)
+                else:
+                    expanded.append(loaded)
+            else:
+                expanded.append(self.expand(value))
+        return expanded
+
+    @abstractmethod
     def load(self) -> Union[dict, list]:
-        raise PyAMLException(str(self.path) + ": load() method not implemented")
+        """Load and parse the current configuration file."""
+        ...
+
+
+class YAMLLoader(ConfigLoader):
+    """Load and expand YAML configuration files."""
+
+    def __init__(self, path: Path, context: LoadContext):
+        """Create a YAML loader for the given file."""
+
+        super().__init__(path, context)
+        self._loader = SafeLineLoader if context.include_locations else CLoader
+
+    def load(self) -> Union[dict, list]:
+        """Parse the YAML file and expand nested configuration references."""
+
+        logger.log(logging.DEBUG, f"Loading YAML file '{self.path}'")
+        with open(self.path) as file:
+            try:
+                return self.expand(yaml.load(file, Loader=self._loader))
+            except yaml.YAMLError as exc:
+                raise PyAMLException(f"{self.path}: {exc}") from exc
+
+
+class JSONLoader(ConfigLoader):
+    """Load and expand JSON configuration files."""
+
+    def __init__(self, path: Path, context: LoadContext):
+        """Create a JSON loader for the given file."""
+
+        super().__init__(path, context)
+
+    def load(self) -> Union[dict, list]:
+        """Parse the JSON file and expand nested configuration references."""
+
+        logger.log(logging.DEBUG, f"Loading JSON file '{self.path}'")
+        with open(self.path) as file:
+            try:
+                return self.expand(json.load(file))
+            except json.JSONDecodeError as exc:
+                raise PyAMLException(f"{self.path}: {exc}") from exc
 
 
 class SafeLineLoader(SafeLoader):
+    """YAML loader that preserves line and column information for mappings."""
+
     def __init__(self, stream):
+        """Create the YAML loader and record the source filename."""
+
         super().__init__(stream)
         self.filename = stream.name if isinstance(stream, io.TextIOWrapper) else ""
 
     def construct_mapping(self, node, deep=False):
+        """Build a mapping and attach location metadata to it."""
+
         mapping = {}
         field_mapping = {}
 
@@ -168,6 +288,7 @@ class SafeLineLoader(SafeLoader):
                     "found unhashable key",
                     key_node.start_mark,
                 )
+
             value = self.construct_object(value_node, deep=deep)
             mapping[key] = value
             field_mapping[key] = (
@@ -177,41 +298,10 @@ class SafeLineLoader(SafeLoader):
             )
 
         # Add location information inside the dict
-        mapping["__location__"] = (
+        mapping[LOCATION_KEY] = (
             self.filename,
             node.start_mark.line + 1,
             node.start_mark.column + 1,
         )
-        mapping["__fieldlocations__"] = field_mapping
+        mapping[FIELD_LOCATIONS_KEY] = field_mapping
         return mapping
-
-
-# YAML loader
-class YAMLLoader(Loader):
-    def __init__(self, filename: str, parent_paths_stack: list, use_fast_loader: bool):
-        super().__init__(filename, parent_paths_stack)
-        self._loader = SafeLineLoader if not use_fast_loader else CLoader
-        self.use_fast_loader = use_fast_loader
-
-    def load(self) -> Union[dict, list]:
-        logger.log(logging.DEBUG, f"Loading YAML file '{self.path}'")
-        with open(self.path) as file:
-            try:
-                return self.expand(yaml.load(file, Loader=self._loader))
-            except yaml.YAMLError as e:
-                raise PyAMLException(str(self.path) + ": " + str(e)) from e
-
-
-# JSON loader
-class JSONLoader(Loader):
-    def __init__(self, filename: str, parent_paths_stack: list, use_fast_loader: bool):
-        super().__init__(filename, parent_paths_stack)
-        self.use_fast_loader = False
-
-    def load(self) -> Union[dict, list]:
-        logger.log(logging.DEBUG, f"Loading JSON file '{self.path}'")
-        with open(self.path) as file:
-            try:
-                return self.expand(json.load(file))
-            except json.JSONDecodeError as e:
-                raise PyAMLException(str(self.path) + ": " + str(e)) from e

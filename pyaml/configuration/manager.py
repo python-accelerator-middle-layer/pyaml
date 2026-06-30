@@ -122,7 +122,7 @@ class ConfigurationManager:
             Fragment to merge into the current aggregated state.
         source_name : str, optional
             Explicit source label to associate with the fragment.
-        use_fast_loader : bool, optional
+        include_locations : bool, optional
             Forwarded to the configuration loader.
 
         Examples
@@ -145,7 +145,7 @@ class ConfigurationManager:
             ... )
         """
         source_name = kwargs.pop("source_name", None)
-        use_fast_loader = kwargs.pop("use_fast_loader", False)
+        include_locations = kwargs.pop("include_locations", False)
         if kwargs:
             unknown = ", ".join(sorted(kwargs))
             raise PyAMLConfigException(f"Unsupported ConfigurationManager.add() arguments: {unknown}")
@@ -153,7 +153,7 @@ class ConfigurationManager:
         fragment, inferred_source_name, source_root = self._load_payload(
             payload,
             source_name=source_name,
-            use_fast_loader=use_fast_loader,
+            include_locations=include_locations,
         )
         prepared = self._prepare_fragment(fragment, source_root, inferred_source_name)
         self._merge_fragment(prepared, inferred_source_name)
@@ -599,14 +599,14 @@ class ConfigurationManager:
         payload,
         *,
         source_name: str | None,
-        use_fast_loader: bool,
+        include_locations: bool,
     ) -> tuple[dict[str, Any], str, SourceRoot]:
         if isinstance(payload, dict):
             return copy.deepcopy(payload), source_name or "<dict>", None
 
         payload_path = self._coerce_path(payload)
         if is_remote_url(payload_path):
-            fragment, source_root = fetch_remote_config(payload_path, use_fast_loader=use_fast_loader)
+            fragment, source_root = fetch_remote_config(payload_path, include_locations=include_locations)
             if not self._build_root_locked:
                 self._build_root = source_root
                 self._build_root_locked = True
@@ -628,7 +628,7 @@ class ConfigurationManager:
         source_root = resolved_path.parent
         try:
             ROOT.set(source_root)
-            fragment = load(resolved_path.name, None, use_fast_loader)
+            fragment = load(resolved_path.name, include_locations)
         finally:
             ROOT.set(previous_root)
 
