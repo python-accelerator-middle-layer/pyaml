@@ -55,7 +55,7 @@ devices:
   name: DEFAULT_CHROMATICITY_CORRECTION
   chromaticty_monitor_name: CHROMATICITY_MONITOR
   sextu_array_name: Sext
-  response_matrix: file:ideal_chroma_resp.json
+  response_matrix: ${file:ideal_chroma_resp.json}
 - type: pyaml.tuning_tools.orbit
   bpm_array_name: BPM
   hcorr_array_name: HCorr
@@ -63,7 +63,7 @@ devices:
   rf_plant_name: RF
   name: DEFAULT_ORBIT_CORRECTION
   singular_values: 162
-  response_matrix: file:ideal_orm_disp.json
+  response_matrix: ${file:ideal_orm_disp.json}
 - type: pyaml.tuning_tools.orbit_response_matrix
   bpm_array_name: BPM
   hcorr_array_name: HCorr
