@@ -1,10 +1,12 @@
 """PyAML configuration file loader."""
 
-import collections.abc
 import io
 import json
 import logging
+import os
+import re
 from abc import ABC, abstractmethod
+from collections.abc import Callable, Hashable
 from contextlib import contextmanager
 from dataclasses import dataclass, field
 from pathlib import Path
@@ -19,11 +21,13 @@ from .. import PyAMLException
 
 logger = logging.getLogger(__name__)
 
-ACCEPTED_SUFFIXES = (".yaml", ".yml", ".json")
-FILE_PREFIX = "file:"
 
 LOCATION_KEY = "__location__"
 FIELD_LOCATIONS_KEY = "__fieldlocations__"
+ACCEPTED_SUFFIXES = (".yaml", ".yml", ".json")
+RESOLVER_PATTERN = re.compile(r"\$\{([^{}]+)\}")
+
+FILE_PREFIX = "file:"  # Kept for compatibility reasons with other modules
 
 
 class RootFolder:
@@ -110,6 +114,64 @@ class LoadContext:
             self.include_stack.pop()
 
 
+Resolver = Callable[[str, LoadContext | None], Any]
+RESOLVERS: dict[str, Resolver] = {}
+
+
+def resolver(name: str):
+    """Register a function as a configuration value resolver.
+
+    Args:
+        name: Prefix used to invoke the resolver (for example ``"env"``
+            or ``"file"``).
+
+    Returns:
+        A decorator that registers the decorated function in the global
+        resolver registry.
+    """
+
+    def decorate(func: Resolver) -> Resolver:
+        RESOLVERS[name] = func
+        return func
+
+    return decorate
+
+
+@resolver("env")
+def resolve_env(value: str, _context: LoadContext | None = None) -> str:
+    """Resolve an environment variable.
+
+    Args:
+        value: Name of the environment variable.
+        context: Unused loading context. Present to match the resolver
+            interface.
+
+    Raises:
+        PyAMLException: If the environment variable is not set.
+    """
+    try:
+        return os.environ[value]
+    except KeyError as exc:
+        raise PyAMLException(f"Environment variable '{value}' is not set") from exc
+
+
+@resolver("file")
+def resolve_file(value: str, context: LoadContext) -> Any:
+    """Load and return the contents of a configuration file.
+
+    Args:
+        value: Path to the configuration file.
+        context: Shared loading context used to track recursive includes
+            and detect inclusion cycles.
+
+    Raises:
+        RuntimeError: If no loading context is provided.
+    """
+    if context is None:
+        raise RuntimeError("File resolver requires LoadContext")
+    return _load(value, context)
+
+
 def load(filename: str, include_locations: bool = False) -> Union[dict, list]:
     """Load a configuration file.
 
@@ -154,40 +216,103 @@ class ConfigLoader(ABC):
         self.context = context
 
     def expand(self, obj: Union[dict, list, Any]) -> Union[dict, list, Any]:
-        """Recursively expand nested dictionaries and lists."""
+        """Recursively expand configuration values.
+
+        Dictionaries and lists are traversed recursively, while string values
+        are resolved using the registered resolvers. All other values are
+        returned unchanged.
+        """
 
         if isinstance(obj, dict):
             return self._expand_dict(obj)
         if isinstance(obj, list):
             return self._expand_list(obj)
+        if isinstance(obj, str):
+            return self._expand_string(obj)
         return obj
 
-    def _expand_dict(self, d: dict) -> dict:
-        """Expand any supported file references found inside a dictionary."""
+    def _expand_string(self, value: str) -> Any:
+        """Expand resolver expressions and file references in a string.
 
-        for key, value in list(d.items()):
+        If the entire string is a resolver expression (for example
+        ``"${env:HOME}"`` or ``"${file:config.yaml}"``), the resolved value is
+        returned directly and may be of any type.
+
+        Resolver expressions embedded inside a larger string are interpolated
+        into the surrounding text. Only scalar values may be interpolated;
+        attempting to embed a dictionary or list raises a ``PyAMLException``.
+
+        After resolver expansion, plain strings that refer to supported
+        configuration files are loaded automatically.
+
+        Args:
+            value: The string value to expand.
+
+        Returns:
+            The expanded value, which may be a string or another object if the
+            input consists solely of a resolver expression.
+        """
+
+        full_match = RESOLVER_PATTERN.fullmatch(value)
+        if full_match:
+            return self._resolve_resolver_expression(full_match.group(1).strip())
+
+        # Handle embedded case
+        def replace(match: re.Match[str]) -> str:
+            resolved = self._resolve_resolver_expression(match.group(1).strip())
+
+            if isinstance(resolved, (dict, list)):
+                raise PyAMLException(
+                    f"Resolver '{match.group(1)}' returned a {type(resolved).__name__}, "
+                    "which cannot be interpolated into a string."
+                )
+
+            return str(resolved)
+
+        value = RESOLVER_PATTERN.sub(replace, value)
+
+        if _is_supported_file(value):
+            return RESOLVERS["file"](value, self.context)
+
+        return value
+
+    def _resolve_resolver_expression(self, expr: str) -> Any:
+        """Resolve a single resolver expression.
+
+        The expression must have the form ``"<resolver>:<payload>"``, for
+        example ``"env:HOME"`` or ``"file:config.yaml"``. The resolver is
+        looked up in the global resolver registry and invoked with the
+        supplied payload.
+
+        Args:
+            expr: Resolver expression without the surrounding ``"${...}"``.
+
+        Returns:
+            The value returned by the matching resolver.
+
+        Raises:
+            PyAMLException: If the expression is malformed or references an
+                unknown resolver.
+        """
+        if ":" not in expr:
+            raise PyAMLException(f"Invalid resolver expression '{expr}'")
+
+        prefix, payload = expr.split(":", 1)
+        resolver = RESOLVERS.get(prefix.strip())
+        if resolver is None:
+            raise PyAMLException(f"Unknown resolver '{prefix.strip()}'")
+
+        return resolver(payload.strip(), self.context)
+
+    def _expand_dict(self, data: dict) -> dict:
+        """Recursively expand dictionary values and enrich cycle errors with location information."""
+
+        for key, value in list(data.items()):
             try:
-                if _is_supported_file(value):
-                    # If it is a reference to another file
-                    resolved = self._resolve_file_reference(value)
-                    if resolved is not None:
-                        d[key] = resolved
-                    else:
-                        d[key] = _load(value, self.context)
-                else:
-                    d[key] = self.expand(value)
+                data[key] = self.expand(value)
             except PyAMLConfigCyclingException as exc:
-                self._raise_cycle_error(exc, d, key)
-
-        return d
-
-    def _resolve_file_reference(self, value: str) -> str | None:
-        """Return an absolute path for FILE_PREFIX references, otherwise None."""
-
-        if value.startswith(FILE_PREFIX):
-            stripped_value = value[len(FILE_PREFIX) :]
-            return str(ROOT.get() / Path(stripped_value))
-        return None
+                self._raise_cycle_error(exc, data, key)
+        return data
 
     def _raise_cycle_error(self, exc: PyAMLConfigCyclingException, obj: dict, key: Any) -> None:
         """Re-raise a cycle error with file location information, if available."""
@@ -205,18 +330,34 @@ class ConfigLoader(ABC):
         raise PyAMLException(f"Circular file inclusion of {exc.error_filename}{location_str}") from exc
 
     def _expand_list(self, items: list) -> list:
-        """Expand supported file references inside a list."""
+        """Recursively expand the elements of a list.
 
-        expanded = []
-        for value in items:
-            if _is_supported_file(value):
-                loaded = _load(value, self.context)
+        Plain string values that refer to supported configuration files are
+        treated as list includes. If the referenced file loads to a list, its
+        elements are spliced into the current list. Otherwise, the loaded
+        object is appended as a single element.
+
+        All other items are expanded recursively using :meth:`expand`.
+
+        Args:
+            items: The list to expand.
+
+        Returns:
+            The expanded list.
+        """
+        expanded: list[Any] = []
+
+        for item in items:
+            if isinstance(item, str) and _is_supported_file(item):
+                loaded = RESOLVERS["file"](item, self.context)
                 if isinstance(loaded, list):
                     expanded.extend(loaded)
                 else:
                     expanded.append(loaded)
-            else:
-                expanded.append(self.expand(value))
+                continue
+
+            expanded.append(self.expand(item))
+
         return expanded
 
     @abstractmethod
@@ -281,7 +422,7 @@ class SafeLineLoader(SafeLoader):
 
         for key_node, value_node in node.value:
             key = self.construct_object(key_node, deep=deep)
-            if not isinstance(key, collections.abc.Hashable):
+            if not isinstance(key, Hashable):
                 raise ConstructorError(
                     "while constructing a mapping",
                     node.start_mark,
