@@ -15,11 +15,13 @@ import yaml
 from yaml import CLoader
 
 from ..common.exception import PyAMLConfigException
-from .fileloader import ACCEPTED_SUFFIXES, FILE_PREFIX, SafeLineLoader
+from .fileloader import ACCEPTED_SUFFIXES, SafeLineLoader
 
 REMOTE_BASE_URL_KEY = "__baseurl__"
 SourceRoot = Path | str | None
 _REMOTE_SCHEMES = {"http", "https"}
+
+FILE_PREFIX = "${path:"
 
 
 class _NamedStringIO(io.StringIO):

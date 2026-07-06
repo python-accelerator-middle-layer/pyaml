@@ -277,7 +277,7 @@ devices:
   vcorr_array_name: VCorr
   name: DEFAULT_ORBIT_CORRECTION
   singular_values: 16
-  response_matrix: file:orm.json
+  response_matrix: ${path:orm.json}
 - type: pyaml.rf.rf_plant
   name: RF
   masterclock: (MCLKHX251C:freq)[KHz]
