@@ -24,7 +24,7 @@ def check_no_diff(array: list[np.float64]) -> bool:
     ],
 )
 def test_config_load(sr_file):
-    sr: Accelerator = Accelerator.load(sr_file, use_fast_loader=True, ignore_external=True)
+    sr: Accelerator = Accelerator.load(sr_file, include_locations=False, ignore_external=True)
     assert sr is not None
     magnets = [
         sr.design.get_element("QF8B-C04"),
@@ -55,7 +55,7 @@ def test_config_load(sr_file):
     ],
 )
 def test_magnet_modification(sr_file):
-    sr = Accelerator.load(sr_file, use_fast_loader=True, ignore_external=True)
+    sr = Accelerator.load(sr_file, include_locations=False, ignore_external=True)
 
     print(sr.yellow_pages)
 
@@ -107,7 +107,7 @@ def test_magnet_modification(sr_file):
     ],
 )
 def test_tune(sr_file):
-    sr = Accelerator.load(sr_file, use_fast_loader=True, ignore_external=True)
+    sr = Accelerator.load(sr_file, include_locations=False, ignore_external=True)
     sr.design.get_lattice().disable_6d()
 
     m = sr.design.get_serialized_magnet("QF1A")
@@ -161,7 +161,7 @@ def test_tune(sr_file):
     ],
 )
 def test_get_device_names(sr_file):
-    sr: Accelerator = Accelerator.load(sr_file, use_fast_loader=True, ignore_external=True)
+    sr: Accelerator = Accelerator.load(sr_file, include_locations=False, ignore_external=True)
     sm: SerializedMagnets = sr.design.get_serialized_magnet("QF1A")
 
     device_names = sm.get_device_names()
@@ -191,7 +191,7 @@ def get_strengths_from_lattice(sr: Accelerator, sm: SerializedMagnets) -> list:
     ],
 )
 def test_strength_computation(sr_file):
-    sr: Accelerator = Accelerator.load(sr_file, use_fast_loader=True, ignore_external=True)
+    sr: Accelerator = Accelerator.load(sr_file, include_locations=False, ignore_external=True)
     sm: SerializedMagnets = sr.design.get_serialized_magnet("QF1A")
     assert sm.get_nb_magnets() == 31
     sm.strength.set(24.0)

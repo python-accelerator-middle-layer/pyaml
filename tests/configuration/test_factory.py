@@ -27,7 +27,7 @@ def test_error_location(test_file):
     try:
         with pytest.raises(PyAMLConfigException) as exc:
             ROOT.set("tests/config")
-            cfg = load("bad_conf.yml")
+            cfg = load("bad_conf.yml", include_locations=True)
             Factory.build(cfg, False)
     finally:
         ROOT.set(previous_root)
@@ -46,7 +46,7 @@ def test_error_location(test_file):
 )
 def test_error_cycles(test_file):
     with pytest.raises(PyAMLException) as exc:
-        ml: Accelerator = Accelerator.load(test_file)
+        ml: Accelerator = Accelerator.load(test_file, include_locations=True)
 
     assert "Circular file inclusion of " in str(exc.value)
     if not test_file.endswith(".json"):

@@ -201,7 +201,7 @@ def test_arrays(install_test_package):
 
     # Test dynamic arrays
 
-    sr: Accelerator = Accelerator.load("tests/config/EBSOrbit.yaml", use_fast_loader=True)
+    sr: Accelerator = Accelerator.load("tests/config/EBSOrbit.yaml", include_locations=False)
     ae = ElementArray("All", sr.design.get_all_elements())
     acfm = ElementArray("AllCFM", sr.design.get_all_cfm_magnets(), use_aggregator=False)
 
@@ -240,7 +240,7 @@ def test_arrays(install_test_package):
     ],
 )
 def test_serialized_magnets_arrays(sr_file):
-    sr: Accelerator = Accelerator.load(sr_file, use_fast_loader=True, ignore_external=True)
+    sr: Accelerator = Accelerator.load(sr_file, include_locations=False, ignore_external=True)
     the_serie = sr.design.get_serialized_magnets("series")
     strength = the_serie.strengths.get()
     assert len(strength) == 1
