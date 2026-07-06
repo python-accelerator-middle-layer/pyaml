@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Live/Design: control modes &#8212; Python Accelerator Middle Layer 0.1.dev1+g701e1558d documentation</title>
+    <title>Live/Design: control modes &#8212; Python Accelerator Middle Layer 0.1.dev1+gddfb5d455 documentation</title>
   
   
   
@@ -42,7 +42,7 @@
   <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=a95f357e85573c9b56d5" />
 <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=a95f357e85573c9b56d5" />
 
-    <script src="../_static/documentation_options.js?v=12a01862"></script>
+    <script src="../_static/documentation_options.js?v=ce84c588"></script>
     <script src="../_static/doctools.js?v=9bcbadda"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -128,8 +128,8 @@
       
     
     
-    <img src="../_static/logo.png" class="logo__image only-light" alt="Python Accelerator Middle Layer 0.1.dev1+g701e1558d documentation - Home"/>
-    <img src="../_static/dark.png" class="logo__image only-dark pst-js-only" alt="Python Accelerator Middle Layer 0.1.dev1+g701e1558d documentation - Home"/>
+    <img src="../_static/logo.png" class="logo__image only-light" alt="Python Accelerator Middle Layer 0.1.dev1+gddfb5d455 documentation - Home"/>
+    <img src="../_static/dark.png" class="logo__image only-dark pst-js-only" alt="Python Accelerator Middle Layer 0.1.dev1+gddfb5d455 documentation - Home"/>
   
   
 </a></div>
@@ -452,7 +452,7 @@
 <span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">line</span> <span class="mi">1</span>
 <span class="ne">----&gt; </span><span class="mi">1</span> <span class="n">SR</span><span class="p">:</span> <span class="n">Accelerator</span> <span class="o">=</span> <span class="n">Accelerator</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s2">&quot;../../tests/config/EBSTune.yaml&quot;</span><span class="p">)</span>
 
-<span class="nn">File /opt/hostedtoolcache/Python/3.14.6/x64/lib/python3.14/site-packages/pyaml/accelerator.py:304,</span> in <span class="ni">Accelerator.load</span><span class="nt">(filename, use_fast_loader, ignore_external)</span>
+<span class="nn">File /opt/hostedtoolcache/Python/3.14.6/x64/lib/python3.14/site-packages/pyaml/accelerator.py:304,</span> in <span class="ni">Accelerator.load</span><span class="nt">(filename, include_locations, ignore_external)</span>
 <span class="g g-Whitespace">    </span><span class="mi">299</span> <span class="k">except</span> <span class="n">UnsupportedConfigurationRootError</span> <span class="k">as</span> <span class="n">ex</span><span class="p">:</span>
 <span class="g g-Whitespace">    </span><span class="mi">300</span>     <span class="k">raise</span> <span class="n">PyAMLConfigException</span><span class="p">(</span>
 <span class="g g-Whitespace">    </span><span class="mi">301</span>         <span class="s2">&quot;Accelerator.load() expects a &#39;pyaml.accelerator&#39; root configuration. &quot;</span>
@@ -525,7 +525,7 @@
 <span class="g g-Whitespace">    </span><span class="mi">242</span> <span class="c1"># Get the object class name</span>
 <span class="g g-Whitespace">    </span><span class="mi">243</span> <span class="k">if</span> <span class="n">class_str</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
 
-<span class="ne">PyAMLConfigException</span>: Module referenced in tango.pyaml.controlsystem cannot be found: No module named &#39;tango&#39; /home/runner/work/pyaml/pyaml/tests/config/EBSTune.yaml at line 12, column 5. while
+<span class="ne">PyAMLConfigException</span>: Module referenced in tango.pyaml.controlsystem cannot be found: No module named &#39;tango&#39;  while
 </pre></div>
 </div>
 </div>

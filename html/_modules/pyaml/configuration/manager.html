@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>pyaml.configuration.manager &#8212; Python Accelerator Middle Layer 0.1.dev1+g701e1558d documentation</title>
+    <title>pyaml.configuration.manager &#8212; Python Accelerator Middle Layer 0.1.dev1+gddfb5d455 documentation</title>
   
   
   
@@ -41,7 +41,7 @@
   <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=a95f357e85573c9b56d5" />
 <link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=a95f357e85573c9b56d5" />
 
-    <script src="../../../_static/documentation_options.js?v=12a01862"></script>
+    <script src="../../../_static/documentation_options.js?v=ce84c588"></script>
     <script src="../../../_static/doctools.js?v=9bcbadda"></script>
     <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -125,8 +125,8 @@
       
     
     
-    <img src="../../../_static/logo.png" class="logo__image only-light" alt="Python Accelerator Middle Layer 0.1.dev1+g701e1558d documentation - Home"/>
-    <img src="../../../_static/dark.png" class="logo__image only-dark pst-js-only" alt="Python Accelerator Middle Layer 0.1.dev1+g701e1558d documentation - Home"/>
+    <img src="../../../_static/logo.png" class="logo__image only-light" alt="Python Accelerator Middle Layer 0.1.dev1+gddfb5d455 documentation - Home"/>
+    <img src="../../../_static/dark.png" class="logo__image only-dark pst-js-only" alt="Python Accelerator Middle Layer 0.1.dev1+gddfb5d455 documentation - Home"/>
   
   
 </a></div>
@@ -522,7 +522,7 @@
 <span class="sd">            Fragment to merge into the current aggregated state.</span>
 <span class="sd">        source_name : str, optional</span>
 <span class="sd">            Explicit source label to associate with the fragment.</span>
-<span class="sd">        use_fast_loader : bool, optional</span>
+<span class="sd">        include_locations : bool, optional</span>
 <span class="sd">            Forwarded to the configuration loader.</span>
 
 <span class="sd">        Examples</span>
@@ -545,7 +545,7 @@
 <span class="sd">            ... )</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">source_name</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;source_name&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
-        <span class="n">use_fast_loader</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;use_fast_loader&quot;</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
+        <span class="n">include_locations</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;include_locations&quot;</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">kwargs</span><span class="p">:</span>
             <span class="n">unknown</span> <span class="o">=</span> <span class="s2">&quot;, &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">sorted</span><span class="p">(</span><span class="n">kwargs</span><span class="p">))</span>
             <span class="k">raise</span> <span class="n">PyAMLConfigException</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unsupported ConfigurationManager.add() arguments: </span><span class="si">{</span><span class="n">unknown</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
@@ -553,7 +553,7 @@
         <span class="n">fragment</span><span class="p">,</span> <span class="n">inferred_source_name</span><span class="p">,</span> <span class="n">source_root</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_load_payload</span><span class="p">(</span>
             <span class="n">payload</span><span class="p">,</span>
             <span class="n">source_name</span><span class="o">=</span><span class="n">source_name</span><span class="p">,</span>
-            <span class="n">use_fast_loader</span><span class="o">=</span><span class="n">use_fast_loader</span><span class="p">,</span>
+            <span class="n">include_locations</span><span class="o">=</span><span class="n">include_locations</span><span class="p">,</span>
         <span class="p">)</span>
         <span class="n">prepared</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_prepare_fragment</span><span class="p">(</span><span class="n">fragment</span><span class="p">,</span> <span class="n">source_root</span><span class="p">,</span> <span class="n">inferred_source_name</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_merge_fragment</span><span class="p">(</span><span class="n">prepared</span><span class="p">,</span> <span class="n">inferred_source_name</span><span class="p">)</span></div>
@@ -1033,14 +1033,14 @@
         <span class="n">payload</span><span class="p">,</span>
         <span class="o">*</span><span class="p">,</span>
         <span class="n">source_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span>
-        <span class="n">use_fast_loader</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span>
+        <span class="n">include_locations</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span> <span class="nb">str</span><span class="p">,</span> <span class="n">SourceRoot</span><span class="p">]:</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">payload</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
             <span class="k">return</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">payload</span><span class="p">),</span> <span class="n">source_name</span> <span class="ow">or</span> <span class="s2">&quot;&lt;dict&gt;&quot;</span><span class="p">,</span> <span class="kc">None</span>
 
         <span class="n">payload_path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_coerce_path</span><span class="p">(</span><span class="n">payload</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">is_remote_url</span><span class="p">(</span><span class="n">payload_path</span><span class="p">):</span>
-            <span class="n">fragment</span><span class="p">,</span> <span class="n">source_root</span> <span class="o">=</span> <span class="n">fetch_remote_config</span><span class="p">(</span><span class="n">payload_path</span><span class="p">,</span> <span class="n">use_fast_loader</span><span class="o">=</span><span class="n">use_fast_loader</span><span class="p">)</span>
+            <span class="n">fragment</span><span class="p">,</span> <span class="n">source_root</span> <span class="o">=</span> <span class="n">fetch_remote_config</span><span class="p">(</span><span class="n">payload_path</span><span class="p">,</span> <span class="n">include_locations</span><span class="o">=</span><span class="n">include_locations</span><span class="p">)</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_build_root_locked</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_build_root</span> <span class="o">=</span> <span class="n">source_root</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_build_root_locked</span> <span class="o">=</span> <span class="kc">True</span>
@@ -1062,7 +1062,7 @@
         <span class="n">source_root</span> <span class="o">=</span> <span class="n">resolved_path</span><span class="o">.</span><span class="n">parent</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="n">ROOT</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">source_root</span><span class="p">)</span>
-            <span class="n">fragment</span> <span class="o">=</span> <span class="n">load</span><span class="p">(</span><span class="n">resolved_path</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="n">use_fast_loader</span><span class="p">)</span>
+            <span class="n">fragment</span> <span class="o">=</span> <span class="n">load</span><span class="p">(</span><span class="n">resolved_path</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">include_locations</span><span class="p">)</span>
         <span class="k">finally</span><span class="p">:</span>
             <span class="n">ROOT</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">previous_root</span><span class="p">)</span>
 

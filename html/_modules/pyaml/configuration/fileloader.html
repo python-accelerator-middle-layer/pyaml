@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>pyaml.configuration.fileloader &#8212; Python Accelerator Middle Layer 0.1.dev1+g701e1558d documentation</title>
+    <title>pyaml.configuration.fileloader &#8212; Python Accelerator Middle Layer 0.1.dev1+gddfb5d455 documentation</title>
   
   
   
@@ -41,7 +41,7 @@
   <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=a95f357e85573c9b56d5" />
 <link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=a95f357e85573c9b56d5" />
 
-    <script src="../../../_static/documentation_options.js?v=12a01862"></script>
+    <script src="../../../_static/documentation_options.js?v=ce84c588"></script>
     <script src="../../../_static/doctools.js?v=9bcbadda"></script>
     <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -125,8 +125,8 @@
       
     
     
-    <img src="../../../_static/logo.png" class="logo__image only-light" alt="Python Accelerator Middle Layer 0.1.dev1+g701e1558d documentation - Home"/>
-    <img src="../../../_static/dark.png" class="logo__image only-dark pst-js-only" alt="Python Accelerator Middle Layer 0.1.dev1+g701e1558d documentation - Home"/>
+    <img src="../../../_static/logo.png" class="logo__image only-light" alt="Python Accelerator Middle Layer 0.1.dev1+gddfb5d455 documentation - Home"/>
+    <img src="../../../_static/dark.png" class="logo__image only-dark pst-js-only" alt="Python Accelerator Middle Layer 0.1.dev1+gddfb5d455 documentation - Home"/>
   
   
 </a></div>
@@ -388,14 +388,19 @@
                 <article class="bd-article">
                   
   <h1>Source code for pyaml.configuration.fileloader</h1><div class="highlight"><pre>
-<span></span><span class="sd">&quot;&quot;&quot; &quot;PyAML configuration file loader.&quot;&quot;&quot;</span>
+<span></span><span class="sd">&quot;&quot;&quot;PyAML configuration file loader.&quot;&quot;&quot;</span>
 
-<span class="kn">import</span><span class="w"> </span><span class="nn">collections.abc</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">io</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">logging</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">re</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">abc</span><span class="w"> </span><span class="kn">import</span> <span class="n">ABC</span><span class="p">,</span> <span class="n">abstractmethod</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">collections.abc</span><span class="w"> </span><span class="kn">import</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">Hashable</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">contextlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">contextmanager</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">dataclasses</span><span class="w"> </span><span class="kn">import</span> <span class="n">dataclass</span><span class="p">,</span> <span class="n">field</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Union</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Union</span>
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">yaml</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">yaml</span><span class="w"> </span><span class="kn">import</span> <span class="n">CLoader</span>
@@ -406,19 +411,23 @@
 
 <span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
 
-<span class="n">accepted_suffixes</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;.yaml&quot;</span><span class="p">,</span> <span class="s2">&quot;.yml&quot;</span><span class="p">,</span> <span class="s2">&quot;.json&quot;</span><span class="p">]</span>
-<span class="n">FILE_PREFIX</span> <span class="o">=</span> <span class="s2">&quot;file:&quot;</span>
+
+<span class="n">LOCATION_KEY</span> <span class="o">=</span> <span class="s2">&quot;__location__&quot;</span>
+<span class="n">FIELD_LOCATIONS_KEY</span> <span class="o">=</span> <span class="s2">&quot;__fieldlocations__&quot;</span>
+<span class="n">ACCEPTED_SUFFIXES</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;.yaml&quot;</span><span class="p">,</span> <span class="s2">&quot;.yml&quot;</span><span class="p">,</span> <span class="s2">&quot;.json&quot;</span><span class="p">)</span>
+<span class="n">RESOLVER_PATTERN</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;\$\{([^</span><span class="si">{}</span><span class="s2">]+)\}&quot;</span><span class="p">)</span>
 
 
 <div class="viewcode-block" id="RootFolder">
 <a class="viewcode-back" href="../../../api/pyaml.configuration.fileloader.html#pyaml.configuration.fileloader.RootFolder">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">RootFolder</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Manage the root directory used to resolve relative configuration paths.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Manage the root directory used to resolve configuration paths.&quot;&quot;&quot;</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">Path</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
-        <span class="c1"># Resolve the path is given otherwise set to the current working directory</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Create a root folder.</span>
+
+<span class="sd">        If no path is provided, the current working directory is used.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">path</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_path</span> <span class="o">=</span> <span class="n">Path</span><span class="o">.</span><span class="n">cwd</span><span class="p">()</span><span class="o">.</span><span class="n">resolve</span><span class="p">()</span>
         <span class="k">else</span><span class="p">:</span>
@@ -427,33 +436,29 @@
 <div class="viewcode-block" id="RootFolder.set">
 <a class="viewcode-back" href="../../../api/pyaml.configuration.fileloader.html#pyaml.configuration.fileloader.RootFolder.set">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">set</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">Path</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Set the root path for configuration files.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Set the root path used for resolving relative configuration files.&quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">path</span><span class="p">)</span><span class="o">.</span><span class="n">resolve</span><span class="p">()</span></div>
 
 
 <div class="viewcode-block" id="RootFolder.get">
 <a class="viewcode-back" href="../../../api/pyaml.configuration.fileloader.html#pyaml.configuration.fileloader.RootFolder.get">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Path</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Get the root path for configuration files.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return the current root path.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_path</span></div>
 
 
 <div class="viewcode-block" id="RootFolder.expand_path">
 <a class="viewcode-back" href="../../../api/pyaml.configuration.fileloader.html#pyaml.configuration.fileloader.RootFolder.expand_path">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">expand_path</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">Path</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Path</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Return an absolute configuration path.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return an absolute, normalized configuration path.</span>
 
-<span class="sd">        Relative paths are interpreted relative to the configured root</span>
-<span class="sd">        folder. Absolute paths are returned unchanged.</span>
+<span class="sd">        Relative paths are interpreted relative to the configured root folder.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="n">path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">path</span> <span class="k">if</span> <span class="n">path</span><span class="o">.</span><span class="n">is_absolute</span><span class="p">()</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">_path</span> <span class="o">/</span> <span class="n">path</span></div>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">path</span><span class="o">.</span><span class="n">is_absolute</span><span class="p">():</span>
+            <span class="n">path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_path</span> <span class="o">/</span> <span class="n">path</span>
+        <span class="k">return</span> <span class="n">path</span><span class="o">.</span><span class="n">resolve</span><span class="p">()</span></div>
 </div>
 
 
@@ -464,114 +469,400 @@
 <div class="viewcode-block" id="PyAMLConfigCyclingException">
 <a class="viewcode-back" href="../../../api/pyaml.configuration.fileloader.html#pyaml.configuration.fileloader.PyAMLConfigCyclingException">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">PyAMLConfigCyclingException</span><span class="p">(</span><span class="n">PyAMLException</span><span class="p">):</span>
-    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">error_filename</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">path_stack</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Path</span><span class="p">]):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">error_filename</span> <span class="o">=</span> <span class="n">error_filename</span>
-        <span class="n">parent_file_stack</span> <span class="o">=</span> <span class="p">[</span><span class="n">parent_path</span><span class="o">.</span><span class="n">name</span> <span class="k">for</span> <span class="n">parent_path</span> <span class="ow">in</span> <span class="n">path_stack</span><span class="p">]</span>
-        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Circular file inclusion of </span><span class="si">{</span><span class="n">error_filename</span><span class="si">}</span><span class="s2">. File list before reaching it: </span><span class="si">{</span><span class="n">parent_file_stack</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Raised when a configuration file includes itself through a cycle.&quot;&quot;&quot;</span>
 
-    <span class="k">pass</span></div>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">error_filename</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">path_stack</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Path</span><span class="p">]):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Create a circular-include error.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            error_filename: The file that triggered the cycle.</span>
+<span class="sd">            path_stack: The include chain leading to the cycle.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">error_filename</span> <span class="o">=</span> <span class="n">error_filename</span>
+
+        <span class="n">parent_file_stack</span> <span class="o">=</span> <span class="p">[</span><span class="n">parent_path</span><span class="o">.</span><span class="n">name</span> <span class="k">for</span> <span class="n">parent_path</span> <span class="ow">in</span> <span class="n">path_stack</span><span class="p">]</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Circular file inclusion of </span><span class="si">{</span><span class="n">error_filename</span><span class="si">}</span><span class="s2">. File list before reaching it: </span><span class="si">{</span><span class="n">parent_file_stack</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="LoadContext">
+<a class="viewcode-back" href="../../../api/pyaml.configuration.fileloader.html#pyaml.configuration.fileloader.LoadContext">[docs]</a>
+<span class="nd">@dataclass</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">LoadContext</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Track state for one recursive configuration-loading session.&quot;&quot;&quot;</span>
+
+    <span class="n">include_locations</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="n">include_stack</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Path</span><span class="p">]</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="n">default_factory</span><span class="o">=</span><span class="nb">list</span><span class="p">)</span>
+
+<div class="viewcode-block" id="LoadContext.loading">
+<a class="viewcode-back" href="../../../api/pyaml.configuration.fileloader.html#pyaml.configuration.fileloader.LoadContext.loading">[docs]</a>
+    <span class="nd">@contextmanager</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">loading</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">:</span> <span class="n">Path</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Register a file as currently being loaded and remove it afterward.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            PyAMLConfigCyclingException: If the file is already on the active</span>
+<span class="sd">                include stack.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="c1"># Check if the file is currently in the chain</span>
+        <span class="c1"># Raise a cycling error if that is the case</span>
+        <span class="k">if</span> <span class="n">path</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">include_stack</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">PyAMLConfigCyclingException</span><span class="p">(</span><span class="n">path</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">include_stack</span><span class="p">)</span>
+
+        <span class="c1"># Add the file to the stack to record that it is now being loaded</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">include_stack</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="c1"># Run the code in the with block</span>
+            <span class="k">yield</span>
+        <span class="k">finally</span><span class="p">:</span>
+            <span class="c1"># Remove the file to stack to record that it has finished loading</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">include_stack</span><span class="o">.</span><span class="n">pop</span><span class="p">()</span></div>
+</div>
+
+
+
+<span class="n">Resolver</span> <span class="o">=</span> <span class="n">Callable</span><span class="p">[[</span><span class="nb">str</span><span class="p">,</span> <span class="n">LoadContext</span> <span class="o">|</span> <span class="kc">None</span><span class="p">],</span> <span class="n">Any</span><span class="p">]</span>
+<span class="n">RESOLVERS</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Resolver</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+
+
+<div class="viewcode-block" id="resolver">
+<a class="viewcode-back" href="../../../api/pyaml.configuration.fileloader.html#pyaml.configuration.fileloader.resolver">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">resolver</span><span class="p">(</span><span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Register a function as a configuration value resolver.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        name: Prefix used to invoke the resolver (for example ``&quot;env&quot;``</span>
+<span class="sd">            or ``&quot;file&quot;``).</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        A decorator that registers the decorated function in the global</span>
+<span class="sd">        resolver registry.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">decorate</span><span class="p">(</span><span class="n">func</span><span class="p">:</span> <span class="n">Resolver</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Resolver</span><span class="p">:</span>
+        <span class="n">RESOLVERS</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">func</span>
+        <span class="k">return</span> <span class="n">func</span>
+
+    <span class="k">return</span> <span class="n">decorate</span></div>
+
+
+
+<div class="viewcode-block" id="resolve_env">
+<a class="viewcode-back" href="../../../api/pyaml.configuration.fileloader.html#pyaml.configuration.fileloader.resolve_env">[docs]</a>
+<span class="nd">@resolver</span><span class="p">(</span><span class="s2">&quot;env&quot;</span><span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">resolve_env</span><span class="p">(</span><span class="n">value</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">_context</span><span class="p">:</span> <span class="n">LoadContext</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Resolve an environment variable.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        value: Name of the environment variable.</span>
+<span class="sd">        context: Unused loading context. Present to match the resolver</span>
+<span class="sd">            interface.</span>
+
+<span class="sd">    Raises:</span>
+<span class="sd">        PyAMLException: If the environment variable is not set.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="n">value</span><span class="p">]</span>
+    <span class="k">except</span> <span class="ne">KeyError</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="n">PyAMLException</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Environment variable &#39;</span><span class="si">{</span><span class="n">value</span><span class="si">}</span><span class="s2">&#39; is not set&quot;</span><span class="p">)</span> <span class="kn">from</span><span class="w"> </span><span class="nn">exc</span></div>
+
+
+
+<div class="viewcode-block" id="resolve_path">
+<a class="viewcode-back" href="../../../api/pyaml.configuration.fileloader.html#pyaml.configuration.fileloader.resolve_path">[docs]</a>
+<span class="nd">@resolver</span><span class="p">(</span><span class="s2">&quot;path&quot;</span><span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">resolve_path</span><span class="p">(</span><span class="n">value</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">_context</span><span class="p">:</span> <span class="n">LoadContext</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Resolve a configuration path without loading the file.</span>
+
+<span class="sd">    Relative paths are expanded using the configured root folder.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        value: Path to resolve.</span>
+<span class="sd">        context: Unused loading context. Present to match the resolver</span>
+<span class="sd">            interface.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        The absolute, normalized path as a string.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="n">ROOT</span><span class="o">.</span><span class="n">expand_path</span><span class="p">(</span><span class="n">value</span><span class="p">))</span></div>
+
+
+
+<div class="viewcode-block" id="resolve_file">
+<a class="viewcode-back" href="../../../api/pyaml.configuration.fileloader.html#pyaml.configuration.fileloader.resolve_file">[docs]</a>
+<span class="nd">@resolver</span><span class="p">(</span><span class="s2">&quot;file&quot;</span><span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">resolve_file</span><span class="p">(</span><span class="n">value</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">context</span><span class="p">:</span> <span class="n">LoadContext</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Load and return the contents of a configuration file.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        value: Path to the configuration file.</span>
+<span class="sd">        context: Shared loading context used to track recursive includes</span>
+<span class="sd">            and detect inclusion cycles.</span>
+
+<span class="sd">    Raises:</span>
+<span class="sd">        RuntimeError: If no loading context is provided.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">context</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s2">&quot;File resolver requires LoadContext&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">_load</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">context</span><span class="p">)</span></div>
 
 
 
 <div class="viewcode-block" id="load">
 <a class="viewcode-back" href="../../../api/pyaml.configuration.fileloader.html#pyaml.configuration.fileloader.load">[docs]</a>
-<span class="k">def</span><span class="w"> </span><span class="nf">load</span><span class="p">(</span><span class="n">filename</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">paths_stack</span><span class="p">:</span> <span class="nb">list</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">use_fast_loader</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="nb">dict</span><span class="p">,</span> <span class="nb">list</span><span class="p">]:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Load recursively a configuration setup&quot;&quot;&quot;</span>
-    <span class="k">if</span> <span class="n">filename</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;.yaml&quot;</span><span class="p">)</span> <span class="ow">or</span> <span class="n">filename</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;.yml&quot;</span><span class="p">):</span>
-        <span class="n">l</span> <span class="o">=</span> <span class="n">YAMLLoader</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">paths_stack</span><span class="p">,</span> <span class="n">use_fast_loader</span><span class="p">)</span>
-    <span class="k">elif</span> <span class="n">filename</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;.json&quot;</span><span class="p">):</span>
-        <span class="n">l</span> <span class="o">=</span> <span class="n">JSONLoader</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">paths_stack</span><span class="p">,</span> <span class="n">use_fast_loader</span><span class="p">)</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="n">PyAMLException</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">filename</span><span class="si">}</span><span class="s2"> File format not supported (only .yaml .yml or .json)&quot;</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">l</span><span class="o">.</span><span class="n">load</span><span class="p">()</span></div>
+<span class="k">def</span><span class="w"> </span><span class="nf">load</span><span class="p">(</span><span class="n">filename</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">include_locations</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="nb">dict</span><span class="p">,</span> <span class="nb">list</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Load a configuration file.</span>
+
+<span class="sd">    When include_locations is False, uses the faster C-based YAML loader</span>
+<span class="sd">    and skips including source location metadata.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># Create a new context</span>
+    <span class="n">context</span> <span class="o">=</span> <span class="n">LoadContext</span><span class="p">(</span><span class="n">include_locations</span><span class="o">=</span><span class="n">include_locations</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">_load</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">context</span><span class="p">)</span></div>
 
 
 
-<span class="c1"># Expand condition</span>
-<div class="viewcode-block" id="hasToLoad">
-<a class="viewcode-back" href="../../../api/pyaml.configuration.fileloader.html#pyaml.configuration.fileloader.hasToLoad">[docs]</a>
-<span class="k">def</span><span class="w"> </span><span class="nf">hasToLoad</span><span class="p">(</span><span class="n">value</span><span class="p">):</span>
-    <span class="k">return</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">any</span><span class="p">(</span><span class="n">value</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="n">suffix</span><span class="p">)</span> <span class="k">for</span> <span class="n">suffix</span> <span class="ow">in</span> <span class="n">accepted_suffixes</span><span class="p">)</span></div>
+<span class="k">def</span><span class="w"> </span><span class="nf">_load</span><span class="p">(</span><span class="n">filename</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">context</span><span class="p">:</span> <span class="n">LoadContext</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="nb">dict</span><span class="p">,</span> <span class="nb">list</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Load a single configuration file using the appropriate parser.&quot;&quot;&quot;</span>
+
+    <span class="n">path</span> <span class="o">=</span> <span class="n">ROOT</span><span class="o">.</span><span class="n">expand_path</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+
+    <span class="k">with</span> <span class="n">context</span><span class="o">.</span><span class="n">loading</span><span class="p">(</span><span class="n">path</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">filename</span><span class="o">.</span><span class="n">endswith</span><span class="p">((</span><span class="s2">&quot;.yaml&quot;</span><span class="p">,</span> <span class="s2">&quot;.yml&quot;</span><span class="p">)):</span>
+            <span class="n">loader</span> <span class="o">=</span> <span class="n">YAMLLoader</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">context</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">filename</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;.json&quot;</span><span class="p">):</span>
+            <span class="n">loader</span> <span class="o">=</span> <span class="n">JSONLoader</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">context</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">PyAMLException</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">filename</span><span class="si">}</span><span class="s2"> File format not supported (only .yaml .yml or .json)&quot;</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">loader</span><span class="o">.</span><span class="n">load</span><span class="p">()</span>
 
 
-
-<span class="c1"># Loader base class (nested files expansion)</span>
-<div class="viewcode-block" id="Loader">
-<a class="viewcode-back" href="../../../api/pyaml.configuration.fileloader.html#pyaml.configuration.fileloader.Loader">[docs]</a>
-<span class="k">class</span><span class="w"> </span><span class="nc">Loader</span><span class="p">:</span>
-    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">parent_path_stack</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Path</span><span class="p">]):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">:</span> <span class="n">Path</span> <span class="o">=</span> <span class="n">ROOT</span><span class="o">.</span><span class="n">expand_path</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">files_stack</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Path</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="k">if</span> <span class="n">parent_path_stack</span><span class="p">:</span>
-            <span class="k">if</span> <span class="nb">any</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">samefile</span><span class="p">(</span><span class="n">parent_path</span><span class="p">)</span> <span class="k">for</span> <span class="n">parent_path</span> <span class="ow">in</span> <span class="n">parent_path_stack</span><span class="p">):</span>
-                <span class="k">raise</span> <span class="n">PyAMLConfigCyclingException</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">parent_path_stack</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">files_stack</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">parent_path_stack</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">files_stack</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">)</span>
-
-    <span class="c1"># Recursively expand a dict</span>
-<div class="viewcode-block" id="Loader.expand_dict">
-<a class="viewcode-back" href="../../../api/pyaml.configuration.fileloader.html#pyaml.configuration.fileloader.Loader.expand_dict">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">expand_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">d</span><span class="p">:</span> <span class="nb">dict</span><span class="p">):</span>
-        <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">d</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-            <span class="k">try</span><span class="p">:</span>
-                <span class="k">if</span> <span class="n">hasToLoad</span><span class="p">(</span><span class="n">value</span><span class="p">):</span>
-                    <span class="k">if</span> <span class="n">value</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="n">FILE_PREFIX</span><span class="p">):</span>
-                        <span class="c1"># remove prefix</span>
-                        <span class="n">stripped_value</span> <span class="o">=</span> <span class="n">value</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">FILE_PREFIX</span><span class="p">)</span> <span class="p">:]</span>
-                        <span class="n">d</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">ROOT</span><span class="o">.</span><span class="n">get</span><span class="p">()</span> <span class="o">/</span> <span class="n">Path</span><span class="p">(</span><span class="n">stripped_value</span><span class="p">))</span>
-                    <span class="k">else</span><span class="p">:</span>
-                        <span class="n">d</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">load</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">files_stack</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">use_fast_loader</span><span class="p">)</span>
-                <span class="k">else</span><span class="p">:</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">expand</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
-            <span class="k">except</span> <span class="n">PyAMLConfigCyclingException</span> <span class="k">as</span> <span class="n">pyaml_ex</span><span class="p">:</span>
-                <span class="n">location</span> <span class="o">=</span> <span class="n">d</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;__location__&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
-                <span class="n">field_locations</span> <span class="o">=</span> <span class="n">d</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;__fieldlocations__&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
-                <span class="n">location_str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
-                <span class="k">if</span> <span class="n">location</span><span class="p">:</span>
-                    <span class="n">file</span><span class="p">,</span> <span class="n">line</span><span class="p">,</span> <span class="n">col</span> <span class="o">=</span> <span class="n">location</span>
-                    <span class="k">if</span> <span class="n">field_locations</span> <span class="ow">and</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">field_locations</span><span class="p">:</span>
-                        <span class="n">location</span> <span class="o">=</span> <span class="n">field_locations</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
-                        <span class="n">file</span><span class="p">,</span> <span class="n">line</span><span class="p">,</span> <span class="n">col</span> <span class="o">=</span> <span class="n">location</span>
-                    <span class="n">location_str</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot; in </span><span class="si">{</span><span class="n">file</span><span class="si">}</span><span class="s2"> at line </span><span class="si">{</span><span class="n">line</span><span class="si">}</span><span class="s2">, column </span><span class="si">{</span><span class="n">col</span><span class="si">}</span><span class="s2">&quot;</span>
-                <span class="k">raise</span> <span class="n">PyAMLException</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Circular file inclusion of </span><span class="si">{</span><span class="n">pyaml_ex</span><span class="o">.</span><span class="n">error_filename</span><span class="si">}{</span><span class="n">location_str</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span> <span class="kn">from</span><span class="w"> </span><span class="nn">pyaml_ex</span></div>
+<span class="k">def</span><span class="w"> </span><span class="nf">_is_supported_file</span><span class="p">(</span><span class="n">value</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return True if the value looks like a supported configuration file name.&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="ow">and</span> <span class="n">value</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="n">ACCEPTED_SUFFIXES</span><span class="p">)</span>
 
 
-    <span class="c1"># Recursively expand a list</span>
-<div class="viewcode-block" id="Loader.expand_list">
-<a class="viewcode-back" href="../../../api/pyaml.configuration.fileloader.html#pyaml.configuration.fileloader.Loader.expand_list">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">expand_list</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">l</span><span class="p">:</span> <span class="nb">list</span><span class="p">):</span>
-        <span class="n">idx</span> <span class="o">=</span> <span class="mi">0</span>
-        <span class="k">while</span> <span class="n">idx</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">l</span><span class="p">):</span>
-            <span class="n">value</span> <span class="o">=</span> <span class="n">l</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span>
-            <span class="k">if</span> <span class="n">hasToLoad</span><span class="p">(</span><span class="n">value</span><span class="p">):</span>
-                <span class="n">obj</span> <span class="o">=</span> <span class="n">load</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">files_stack</span><span class="p">)</span>
-                <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
-                    <span class="n">l</span><span class="p">[</span><span class="n">idx</span> <span class="p">:</span> <span class="n">idx</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">obj</span>
-                    <span class="n">idx</span> <span class="o">+=</span> <span class="nb">len</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>
-                <span class="k">else</span><span class="p">:</span>
-                    <span class="n">l</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span> <span class="o">=</span> <span class="n">obj</span>
-                    <span class="n">idx</span> <span class="o">+=</span> <span class="mi">1</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">expand</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
-                <span class="n">idx</span> <span class="o">+=</span> <span class="mi">1</span></div>
+<div class="viewcode-block" id="ConfigLoader">
+<a class="viewcode-back" href="../../../api/pyaml.configuration.fileloader.html#pyaml.configuration.fileloader.ConfigLoader">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">ConfigLoader</span><span class="p">(</span><span class="n">ABC</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Base class for loaders that expand nested configuration references.&quot;&quot;&quot;</span>
 
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">:</span> <span class="n">Path</span><span class="p">,</span> <span class="n">context</span><span class="p">:</span> <span class="n">LoadContext</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Store the file path and shared loading context.&quot;&quot;&quot;</span>
 
-    <span class="c1"># Recursively expand an object</span>
-<div class="viewcode-block" id="Loader.expand">
-<a class="viewcode-back" href="../../../api/pyaml.configuration.fileloader.html#pyaml.configuration.fileloader.Loader.expand">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">expand</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">dict</span><span class="p">,</span> <span class="nb">list</span><span class="p">]):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">path</span> <span class="o">=</span> <span class="n">path</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">context</span> <span class="o">=</span> <span class="n">context</span>
+
+<div class="viewcode-block" id="ConfigLoader.expand">
+<a class="viewcode-back" href="../../../api/pyaml.configuration.fileloader.html#pyaml.configuration.fileloader.ConfigLoader.expand">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">expand</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">dict</span><span class="p">,</span> <span class="nb">list</span><span class="p">,</span> <span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="nb">dict</span><span class="p">,</span> <span class="nb">list</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Recursively expand configuration values.</span>
+
+<span class="sd">        Dictionaries and lists are traversed recursively, while string values</span>
+<span class="sd">        are resolved using the registered resolvers. All other values are</span>
+<span class="sd">        returned unchanged.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">expand_dict</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>
-        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">expand_list</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_expand_dict</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_expand_list</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_expand_string</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">obj</span></div>
 
 
-    <span class="c1"># Load a file</span>
-<div class="viewcode-block" id="Loader.load">
-<a class="viewcode-back" href="../../../api/pyaml.configuration.fileloader.html#pyaml.configuration.fileloader.Loader.load">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_expand_string</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Expand resolver expressions and file references in a string.</span>
+
+<span class="sd">        If the entire string is a resolver expression (for example</span>
+<span class="sd">        ``&quot;${env:HOME}&quot;`` or ``&quot;${file:config.yaml}&quot;``), the resolved value is</span>
+<span class="sd">        returned directly and may be of any type.</span>
+
+<span class="sd">        Resolver expressions embedded inside a larger string are interpolated</span>
+<span class="sd">        into the surrounding text. Only scalar values may be interpolated;</span>
+<span class="sd">        attempting to embed a dictionary or list raises a ``PyAMLException``.</span>
+
+<span class="sd">        After resolver expansion, plain strings that refer to supported</span>
+<span class="sd">        configuration files are loaded automatically.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            value: The string value to expand.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            The expanded value, which may be a string or another object if the</span>
+<span class="sd">            input consists solely of a resolver expression.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">full_match</span> <span class="o">=</span> <span class="n">RESOLVER_PATTERN</span><span class="o">.</span><span class="n">fullmatch</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">full_match</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_resolve_resolver_expression</span><span class="p">(</span><span class="n">full_match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span>
+
+        <span class="c1"># Handle embedded case</span>
+        <span class="k">def</span><span class="w"> </span><span class="nf">replace</span><span class="p">(</span><span class="n">match</span><span class="p">:</span> <span class="n">re</span><span class="o">.</span><span class="n">Match</span><span class="p">[</span><span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+            <span class="n">resolved</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_resolve_resolver_expression</span><span class="p">(</span><span class="n">match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span>
+
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">resolved</span><span class="p">,</span> <span class="p">(</span><span class="nb">dict</span><span class="p">,</span> <span class="nb">list</span><span class="p">)):</span>
+                <span class="k">raise</span> <span class="n">PyAMLException</span><span class="p">(</span>
+                    <span class="sa">f</span><span class="s2">&quot;Resolver &#39;</span><span class="si">{</span><span class="n">match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="si">}</span><span class="s2">&#39; returned a </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">resolved</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">, &quot;</span>
+                    <span class="s2">&quot;which cannot be interpolated into a string.&quot;</span>
+                <span class="p">)</span>
+
+            <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="n">resolved</span><span class="p">)</span>
+
+        <span class="n">value</span> <span class="o">=</span> <span class="n">RESOLVER_PATTERN</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="n">replace</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">_is_supported_file</span><span class="p">(</span><span class="n">value</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">RESOLVERS</span><span class="p">[</span><span class="s2">&quot;file&quot;</span><span class="p">](</span><span class="n">value</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">context</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">value</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_resolve_resolver_expression</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">expr</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Resolve a single resolver expression.</span>
+
+<span class="sd">        The expression must have the form ``&quot;&lt;resolver&gt;:&lt;payload&gt;&quot;``, for</span>
+<span class="sd">        example ``&quot;env:HOME&quot;`` or ``&quot;file:config.yaml&quot;``. The resolver is</span>
+<span class="sd">        looked up in the global resolver registry and invoked with the</span>
+<span class="sd">        supplied payload.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            expr: Resolver expression without the surrounding ``&quot;${...}&quot;``.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            The value returned by the matching resolver.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            PyAMLException: If the expression is malformed or references an</span>
+<span class="sd">                unknown resolver.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="s2">&quot;:&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">expr</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">PyAMLException</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Invalid resolver expression &#39;</span><span class="si">{</span><span class="n">expr</span><span class="si">}</span><span class="s2">&#39;&quot;</span><span class="p">)</span>
+
+        <span class="n">prefix</span><span class="p">,</span> <span class="n">payload</span> <span class="o">=</span> <span class="n">expr</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;:&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="n">resolver</span> <span class="o">=</span> <span class="n">RESOLVERS</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">prefix</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span>
+        <span class="k">if</span> <span class="n">resolver</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">PyAMLException</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unknown resolver &#39;</span><span class="si">{</span><span class="n">prefix</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="si">}</span><span class="s2">&#39;&quot;</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">resolver</span><span class="p">(</span><span class="n">payload</span><span class="o">.</span><span class="n">strip</span><span class="p">(),</span> <span class="bp">self</span><span class="o">.</span><span class="n">context</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_expand_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="nb">dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Recursively expand dictionary values and enrich cycle errors with location information.&quot;&quot;&quot;</span>
+
+        <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">items</span><span class="p">()):</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">data</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">expand</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+            <span class="k">except</span> <span class="n">PyAMLConfigCyclingException</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_raise_cycle_error</span><span class="p">(</span><span class="n">exc</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">key</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">data</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_raise_cycle_error</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">exc</span><span class="p">:</span> <span class="n">PyAMLConfigCyclingException</span><span class="p">,</span> <span class="n">obj</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">key</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Re-raise a cycle error with file location information, if available.&quot;&quot;&quot;</span>
+
+        <span class="n">location</span> <span class="o">=</span> <span class="n">obj</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">LOCATION_KEY</span><span class="p">)</span>
+        <span class="n">field_locations</span> <span class="o">=</span> <span class="n">obj</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">FIELD_LOCATIONS_KEY</span><span class="p">)</span>
+
+        <span class="n">location_str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">location</span><span class="p">:</span>
+            <span class="n">file</span><span class="p">,</span> <span class="n">line</span><span class="p">,</span> <span class="n">col</span> <span class="o">=</span> <span class="n">location</span>
+            <span class="k">if</span> <span class="n">field_locations</span> <span class="ow">and</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">field_locations</span><span class="p">:</span>
+                <span class="n">file</span><span class="p">,</span> <span class="n">line</span><span class="p">,</span> <span class="n">col</span> <span class="o">=</span> <span class="n">field_locations</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
+            <span class="n">location_str</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot; in </span><span class="si">{</span><span class="n">file</span><span class="si">}</span><span class="s2"> at line </span><span class="si">{</span><span class="n">line</span><span class="si">}</span><span class="s2">, column </span><span class="si">{</span><span class="n">col</span><span class="si">}</span><span class="s2">&quot;</span>
+
+        <span class="k">raise</span> <span class="n">PyAMLException</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Circular file inclusion of </span><span class="si">{</span><span class="n">exc</span><span class="o">.</span><span class="n">error_filename</span><span class="si">}{</span><span class="n">location_str</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span> <span class="kn">from</span><span class="w"> </span><span class="nn">exc</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_expand_list</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">items</span><span class="p">:</span> <span class="nb">list</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Recursively expand the elements of a list.</span>
+
+<span class="sd">        Plain string values that refer to supported configuration files are</span>
+<span class="sd">        treated as list includes. If the referenced file loads to a list, its</span>
+<span class="sd">        elements are spliced into the current list. Otherwise, the loaded</span>
+<span class="sd">        object is appended as a single element.</span>
+
+<span class="sd">        All other items are expanded recursively using :meth:`expand`.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            items: The list to expand.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            The expanded list.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">expanded</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">items</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="ow">and</span> <span class="n">_is_supported_file</span><span class="p">(</span><span class="n">item</span><span class="p">):</span>
+                <span class="n">loaded</span> <span class="o">=</span> <span class="n">RESOLVERS</span><span class="p">[</span><span class="s2">&quot;file&quot;</span><span class="p">](</span><span class="n">item</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">context</span><span class="p">)</span>
+                <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">loaded</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+                    <span class="n">expanded</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">loaded</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">expanded</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">loaded</span><span class="p">)</span>
+                <span class="k">continue</span>
+
+            <span class="n">expanded</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">expand</span><span class="p">(</span><span class="n">item</span><span class="p">))</span>
+
+        <span class="k">return</span> <span class="n">expanded</span>
+
+<div class="viewcode-block" id="ConfigLoader.load">
+<a class="viewcode-back" href="../../../api/pyaml.configuration.fileloader.html#pyaml.configuration.fileloader.ConfigLoader.load">[docs]</a>
+    <span class="nd">@abstractmethod</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">load</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="nb">dict</span><span class="p">,</span> <span class="nb">list</span><span class="p">]:</span>
-        <span class="k">raise</span> <span class="n">PyAMLException</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;: load() method not implemented&quot;</span><span class="p">)</span></div>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Load and parse the current configuration file.&quot;&quot;&quot;</span>
+        <span class="o">...</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="YAMLLoader">
+<a class="viewcode-back" href="../../../api/pyaml.configuration.fileloader.html#pyaml.configuration.fileloader.YAMLLoader">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">YAMLLoader</span><span class="p">(</span><span class="n">ConfigLoader</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Load and expand YAML configuration files.&quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">:</span> <span class="n">Path</span><span class="p">,</span> <span class="n">context</span><span class="p">:</span> <span class="n">LoadContext</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Create a YAML loader for the given file.&quot;&quot;&quot;</span>
+
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">context</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_loader</span> <span class="o">=</span> <span class="n">SafeLineLoader</span> <span class="k">if</span> <span class="n">context</span><span class="o">.</span><span class="n">include_locations</span> <span class="k">else</span> <span class="n">CLoader</span>
+
+<div class="viewcode-block" id="YAMLLoader.load">
+<a class="viewcode-back" href="../../../api/pyaml.configuration.fileloader.html#pyaml.configuration.fileloader.YAMLLoader.load">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">load</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="nb">dict</span><span class="p">,</span> <span class="nb">list</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Parse the YAML file and expand nested configuration references.&quot;&quot;&quot;</span>
+
+        <span class="n">logger</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">logging</span><span class="o">.</span><span class="n">DEBUG</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;Loading YAML file &#39;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="si">}</span><span class="s2">&#39;&quot;</span><span class="p">)</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">)</span> <span class="k">as</span> <span class="n">file</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">expand</span><span class="p">(</span><span class="n">yaml</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">file</span><span class="p">,</span> <span class="n">Loader</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_loader</span><span class="p">))</span>
+            <span class="k">except</span> <span class="n">yaml</span><span class="o">.</span><span class="n">YAMLError</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">PyAMLException</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">exc</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span> <span class="kn">from</span><span class="w"> </span><span class="nn">exc</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="JSONLoader">
+<a class="viewcode-back" href="../../../api/pyaml.configuration.fileloader.html#pyaml.configuration.fileloader.JSONLoader">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">JSONLoader</span><span class="p">(</span><span class="n">ConfigLoader</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Load and expand JSON configuration files.&quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">:</span> <span class="n">Path</span><span class="p">,</span> <span class="n">context</span><span class="p">:</span> <span class="n">LoadContext</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Create a JSON loader for the given file.&quot;&quot;&quot;</span>
+
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">context</span><span class="p">)</span>
+
+<div class="viewcode-block" id="JSONLoader.load">
+<a class="viewcode-back" href="../../../api/pyaml.configuration.fileloader.html#pyaml.configuration.fileloader.JSONLoader.load">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">load</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="nb">dict</span><span class="p">,</span> <span class="nb">list</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Parse the JSON file and expand nested configuration references.&quot;&quot;&quot;</span>
+
+        <span class="n">logger</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">logging</span><span class="o">.</span><span class="n">DEBUG</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;Loading JSON file &#39;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="si">}</span><span class="s2">&#39;&quot;</span><span class="p">)</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">)</span> <span class="k">as</span> <span class="n">file</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">expand</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">file</span><span class="p">))</span>
+            <span class="k">except</span> <span class="n">json</span><span class="o">.</span><span class="n">JSONDecodeError</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">PyAMLException</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">exc</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span> <span class="kn">from</span><span class="w"> </span><span class="nn">exc</span></div>
 </div>
 
 
@@ -579,25 +870,32 @@
 <div class="viewcode-block" id="SafeLineLoader">
 <a class="viewcode-back" href="../../../api/pyaml.configuration.fileloader.html#pyaml.configuration.fileloader.SafeLineLoader">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">SafeLineLoader</span><span class="p">(</span><span class="n">SafeLoader</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;YAML loader that preserves line and column information for mappings.&quot;&quot;&quot;</span>
+
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">stream</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Create the YAML loader and record the source filename.&quot;&quot;&quot;</span>
+
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">stream</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">filename</span> <span class="o">=</span> <span class="n">stream</span><span class="o">.</span><span class="n">name</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">stream</span><span class="p">,</span> <span class="n">io</span><span class="o">.</span><span class="n">TextIOWrapper</span><span class="p">)</span> <span class="k">else</span> <span class="s2">&quot;&quot;</span>
 
 <div class="viewcode-block" id="SafeLineLoader.construct_mapping">
 <a class="viewcode-back" href="../../../api/pyaml.configuration.fileloader.html#pyaml.configuration.fileloader.SafeLineLoader.construct_mapping">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">construct_mapping</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">,</span> <span class="n">deep</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Build a mapping and attach location metadata to it.&quot;&quot;&quot;</span>
+
         <span class="n">mapping</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="n">field_mapping</span> <span class="o">=</span> <span class="p">{}</span>
 
         <span class="k">for</span> <span class="n">key_node</span><span class="p">,</span> <span class="n">value_node</span> <span class="ow">in</span> <span class="n">node</span><span class="o">.</span><span class="n">value</span><span class="p">:</span>
             <span class="n">key</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">construct_object</span><span class="p">(</span><span class="n">key_node</span><span class="p">,</span> <span class="n">deep</span><span class="o">=</span><span class="n">deep</span><span class="p">)</span>
-            <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">collections</span><span class="o">.</span><span class="n">abc</span><span class="o">.</span><span class="n">Hashable</span><span class="p">):</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">Hashable</span><span class="p">):</span>
                 <span class="k">raise</span> <span class="n">ConstructorError</span><span class="p">(</span>
                     <span class="s2">&quot;while constructing a mapping&quot;</span><span class="p">,</span>
                     <span class="n">node</span><span class="o">.</span><span class="n">start_mark</span><span class="p">,</span>
                     <span class="s2">&quot;found unhashable key&quot;</span><span class="p">,</span>
                     <span class="n">key_node</span><span class="o">.</span><span class="n">start_mark</span><span class="p">,</span>
                 <span class="p">)</span>
+
             <span class="n">value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">construct_object</span><span class="p">(</span><span class="n">value_node</span><span class="p">,</span> <span class="n">deep</span><span class="o">=</span><span class="n">deep</span><span class="p">)</span>
             <span class="n">mapping</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
             <span class="n">field_mapping</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
@@ -607,56 +905,13 @@
             <span class="p">)</span>
 
         <span class="c1"># Add location information inside the dict</span>
-        <span class="n">mapping</span><span class="p">[</span><span class="s2">&quot;__location__&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="n">mapping</span><span class="p">[</span><span class="n">LOCATION_KEY</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">filename</span><span class="p">,</span>
             <span class="n">node</span><span class="o">.</span><span class="n">start_mark</span><span class="o">.</span><span class="n">line</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span>
             <span class="n">node</span><span class="o">.</span><span class="n">start_mark</span><span class="o">.</span><span class="n">column</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span>
         <span class="p">)</span>
-        <span class="n">mapping</span><span class="p">[</span><span class="s2">&quot;__fieldlocations__&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">field_mapping</span>
+        <span class="n">mapping</span><span class="p">[</span><span class="n">FIELD_LOCATIONS_KEY</span><span class="p">]</span> <span class="o">=</span> <span class="n">field_mapping</span>
         <span class="k">return</span> <span class="n">mapping</span></div>
-</div>
-
-
-
-<span class="c1"># YAML loader</span>
-<div class="viewcode-block" id="YAMLLoader">
-<a class="viewcode-back" href="../../../api/pyaml.configuration.fileloader.html#pyaml.configuration.fileloader.YAMLLoader">[docs]</a>
-<span class="k">class</span><span class="w"> </span><span class="nc">YAMLLoader</span><span class="p">(</span><span class="n">Loader</span><span class="p">):</span>
-    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">parent_paths_stack</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span> <span class="n">use_fast_loader</span><span class="p">:</span> <span class="nb">bool</span><span class="p">):</span>
-        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">parent_paths_stack</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_loader</span> <span class="o">=</span> <span class="n">SafeLineLoader</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">use_fast_loader</span> <span class="k">else</span> <span class="n">CLoader</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">use_fast_loader</span> <span class="o">=</span> <span class="n">use_fast_loader</span>
-
-<div class="viewcode-block" id="YAMLLoader.load">
-<a class="viewcode-back" href="../../../api/pyaml.configuration.fileloader.html#pyaml.configuration.fileloader.YAMLLoader.load">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">load</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="nb">dict</span><span class="p">,</span> <span class="nb">list</span><span class="p">]:</span>
-        <span class="n">logger</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">logging</span><span class="o">.</span><span class="n">DEBUG</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;Loading YAML file &#39;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="si">}</span><span class="s2">&#39;&quot;</span><span class="p">)</span>
-        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">)</span> <span class="k">as</span> <span class="n">file</span><span class="p">:</span>
-            <span class="k">try</span><span class="p">:</span>
-                <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">expand</span><span class="p">(</span><span class="n">yaml</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">file</span><span class="p">,</span> <span class="n">Loader</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_loader</span><span class="p">))</span>
-            <span class="k">except</span> <span class="n">yaml</span><span class="o">.</span><span class="n">YAMLError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="n">PyAMLException</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;: &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">))</span> <span class="kn">from</span><span class="w"> </span><span class="nn">e</span></div>
-</div>
-
-
-
-<span class="c1"># JSON loader</span>
-<div class="viewcode-block" id="JSONLoader">
-<a class="viewcode-back" href="../../../api/pyaml.configuration.fileloader.html#pyaml.configuration.fileloader.JSONLoader">[docs]</a>
-<span class="k">class</span><span class="w"> </span><span class="nc">JSONLoader</span><span class="p">(</span><span class="n">Loader</span><span class="p">):</span>
-    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">parent_paths_stack</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span> <span class="n">use_fast_loader</span><span class="p">:</span> <span class="nb">bool</span><span class="p">):</span>
-        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">parent_paths_stack</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">use_fast_loader</span> <span class="o">=</span> <span class="kc">False</span>
-
-<div class="viewcode-block" id="JSONLoader.load">
-<a class="viewcode-back" href="../../../api/pyaml.configuration.fileloader.html#pyaml.configuration.fileloader.JSONLoader.load">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">load</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="nb">dict</span><span class="p">,</span> <span class="nb">list</span><span class="p">]:</span>
-        <span class="n">logger</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">logging</span><span class="o">.</span><span class="n">DEBUG</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;Loading JSON file &#39;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="si">}</span><span class="s2">&#39;&quot;</span><span class="p">)</span>
-        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">)</span> <span class="k">as</span> <span class="n">file</span><span class="p">:</span>
-            <span class="k">try</span><span class="p">:</span>
-                <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">expand</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">file</span><span class="p">))</span>
-            <span class="k">except</span> <span class="n">json</span><span class="o">.</span><span class="n">JSONDecodeError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="n">PyAMLException</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;: &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">))</span> <span class="kn">from</span><span class="w"> </span><span class="nn">e</span></div>
 </div>
 
 </pre></div>

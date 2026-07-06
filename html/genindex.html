@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Index &#8212; Python Accelerator Middle Layer 0.1.dev1+g701e1558d documentation</title>
+    <title>Index &#8212; Python Accelerator Middle Layer 0.1.dev1+gddfb5d455 documentation</title>
   
   
   
@@ -41,7 +41,7 @@
   <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=a95f357e85573c9b56d5" />
 <link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=a95f357e85573c9b56d5" />
 
-    <script src="_static/documentation_options.js?v=12a01862"></script>
+    <script src="_static/documentation_options.js?v=ce84c588"></script>
     <script src="_static/doctools.js?v=9bcbadda"></script>
     <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/clipboard.min.js?v=a7894cd8"></script>
@@ -125,8 +125,8 @@
       
     
     
-    <img src="_static/logo.png" class="logo__image only-light" alt="Python Accelerator Middle Layer 0.1.dev1+g701e1558d documentation - Home"/>
-    <img src="_static/dark.png" class="logo__image only-dark pst-js-only" alt="Python Accelerator Middle Layer 0.1.dev1+g701e1558d documentation - Home"/>
+    <img src="_static/logo.png" class="logo__image only-light" alt="Python Accelerator Middle Layer 0.1.dev1+gddfb5d455 documentation - Home"/>
+    <img src="_static/dark.png" class="logo__image only-dark pst-js-only" alt="Python Accelerator Middle Layer 0.1.dev1+gddfb5d455 documentation - Home"/>
   
   
 </a></div>
@@ -661,6 +661,8 @@
       </ul></li>
       <li><a href="api/pyaml.configuration.factory.html#id1">config_cls (BuildInfo attribute)</a>, <a href="api/pyaml.configuration.factory.html#pyaml.configuration.factory.BuildInfo.config_cls">[1]</a>
 </li>
+      <li><a href="api/pyaml.configuration.fileloader.html#pyaml.configuration.fileloader.ConfigLoader">ConfigLoader (class in pyaml.configuration.fileloader)</a>
+</li>
       <li><a href="api/pyaml.accelerator.html#pyaml.accelerator.ConfigModel">ConfigModel (class in pyaml.accelerator)</a>
 
       <ul>
@@ -869,10 +871,10 @@
 </li>
       <li><a href="api/pyaml.common.element_holder.html#pyaml.common.element_holder.ElementHolder">ElementHolder (class in pyaml.common.element_holder)</a>
 </li>
-      <li><a href="api/pyaml.configuration.factory.html#pyaml.configuration.factory.ElementRegistry">ElementRegistry (class in pyaml.configuration.factory)</a>
-</li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/pyaml.configuration.factory.html#pyaml.configuration.factory.ElementRegistry">ElementRegistry (class in pyaml.configuration.factory)</a>
+</li>
       <li><a href="api/pyaml.arrays.array.html#pyaml.arrays.array.ArrayConfigModel.elements">elements (ArrayConfigModel attribute)</a>
 
       <ul>
@@ -883,11 +885,7 @@
 </li>
       <li><a href="api/pyaml.arrays.element_array.html#pyaml.arrays.element_array.ElementArray.exclude_type">exclude_type() (ElementArray method)</a>
 </li>
-      <li><a href="api/pyaml.configuration.fileloader.html#pyaml.configuration.fileloader.Loader.expand">expand() (Loader method)</a>
-</li>
-      <li><a href="api/pyaml.configuration.fileloader.html#pyaml.configuration.fileloader.Loader.expand_dict">expand_dict() (Loader method)</a>
-</li>
-      <li><a href="api/pyaml.configuration.fileloader.html#pyaml.configuration.fileloader.Loader.expand_list">expand_list() (Loader method)</a>
+      <li><a href="api/pyaml.configuration.fileloader.html#pyaml.configuration.fileloader.ConfigLoader.expand">expand() (ConfigLoader method)</a>
 </li>
       <li><a href="api/pyaml.configuration.fileloader.html#pyaml.configuration.fileloader.RootFolder.expand_path">expand_path() (RootFolder method)</a>
 </li>
@@ -1365,8 +1363,6 @@
         <li><a href="api/pyaml.magnet.model.html#pyaml.magnet.model.MagnetModel.has_physics">(MagnetModel method)</a>
 </li>
       </ul></li>
-      <li><a href="api/pyaml.configuration.fileloader.html#pyaml.configuration.fileloader.hasToLoad">hasToLoad() (in module pyaml.configuration.fileloader)</a>
-</li>
       <li><a href="api/pyaml.tuning_tools.orbit.html#pyaml.tuning_tools.orbit.ConfigModel.hcorr_array_name">hcorr_array_name (ConfigModel attribute)</a>, <a href="api/pyaml.tuning_tools.orbit_response_matrix.html#pyaml.tuning_tools.orbit_response_matrix.ConfigModel.hcorr_array_name">[1]</a>
 </li>
       <li><a href="api/pyaml.magnet.hcorrector.html#pyaml.magnet.hcorrector.HCorrector">HCorrector (class in pyaml.magnet.hcorrector)</a>
@@ -1383,12 +1379,16 @@
 </li>
       <li><a href="api/pyaml.magnet.identity_model.html#pyaml.magnet.identity_model.IdentityMagnetModel">IdentityMagnetModel (class in pyaml.magnet.identity_model)</a>
 </li>
-      <li><a href="api/pyaml.common.abstract.html#pyaml.common.abstract.RWMapper.index">index() (RWMapper method)</a>
+      <li><a href="api/pyaml.configuration.fileloader.html#pyaml.configuration.fileloader.LoadContext.include_locations">include_locations (LoadContext attribute)</a>
 </li>
-      <li><a href="api/pyaml.magnet.inline_curve.html#pyaml.magnet.inline_curve.InlineCurve">InlineCurve (class in pyaml.magnet.inline_curve)</a>
+      <li><a href="api/pyaml.configuration.fileloader.html#pyaml.configuration.fileloader.LoadContext.include_stack">include_stack (LoadContext attribute)</a>
+</li>
+      <li><a href="api/pyaml.common.abstract.html#pyaml.common.abstract.RWMapper.index">index() (RWMapper method)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/pyaml.magnet.inline_curve.html#pyaml.magnet.inline_curve.InlineCurve">InlineCurve (class in pyaml.magnet.inline_curve)</a>
+</li>
       <li><a href="api/pyaml.magnet.inline_matrix.html#pyaml.magnet.inline_matrix.InlineMatrix">InlineMatrix (class in pyaml.magnet.inline_matrix)</a>
 </li>
       <li><a href="api/pyaml.control.readback_value.html#id2">INVALID (Quality attribute)</a>, <a href="api/pyaml.control.readback_value.html#pyaml.control.readback_value.Quality.INVALID">[1]</a>
@@ -1458,11 +1458,11 @@
       <ul>
         <li><a href="api/pyaml.tuning_tools.chromaticity.html#pyaml.tuning_tools.chromaticity.Chromaticity.load">(Chromaticity method)</a>
 </li>
+        <li><a href="api/pyaml.configuration.fileloader.html#pyaml.configuration.fileloader.ConfigLoader.load">(ConfigLoader method)</a>
+</li>
         <li><a href="api/pyaml.configuration.fileloader.html#pyaml.configuration.fileloader.load">(in module pyaml.configuration.fileloader)</a>
 </li>
         <li><a href="api/pyaml.configuration.fileloader.html#pyaml.configuration.fileloader.JSONLoader.load">(JSONLoader method)</a>
-</li>
-        <li><a href="api/pyaml.configuration.fileloader.html#pyaml.configuration.fileloader.Loader.load">(Loader method)</a>
 </li>
         <li><a href="api/pyaml.tuning_tools.orbit.html#pyaml.tuning_tools.orbit.Orbit.load">(Orbit method)</a>
 </li>
@@ -1473,7 +1473,9 @@
         <li><a href="api/pyaml.configuration.fileloader.html#pyaml.configuration.fileloader.YAMLLoader.load">(YAMLLoader method)</a>
 </li>
       </ul></li>
-      <li><a href="api/pyaml.configuration.fileloader.html#pyaml.configuration.fileloader.Loader">Loader (class in pyaml.configuration.fileloader)</a>
+      <li><a href="api/pyaml.configuration.fileloader.html#pyaml.configuration.fileloader.LoadContext">LoadContext (class in pyaml.configuration.fileloader)</a>
+</li>
+      <li><a href="api/pyaml.configuration.fileloader.html#pyaml.configuration.fileloader.LoadContext.loading">loading() (LoadContext method)</a>
 </li>
       <li><a href="api/pyaml.configuration.factory.html#id3">location_str (BuildInfo attribute)</a>, <a href="api/pyaml.configuration.factory.html#pyaml.configuration.factory.BuildInfo.location_str">[1]</a>
 </li>
@@ -2459,6 +2461,14 @@
 </li>
       <li><a href="api/pyaml.configuration.factory.html#pyaml.configuration.factory.resolve_build_info">resolve_build_info() (in module pyaml.configuration.factory)</a>
 </li>
+      <li><a href="api/pyaml.configuration.fileloader.html#pyaml.configuration.fileloader.resolve_env">resolve_env() (in module pyaml.configuration.fileloader)</a>
+</li>
+      <li><a href="api/pyaml.configuration.fileloader.html#pyaml.configuration.fileloader.resolve_file">resolve_file() (in module pyaml.configuration.fileloader)</a>
+</li>
+      <li><a href="api/pyaml.configuration.fileloader.html#pyaml.configuration.fileloader.resolve_path">resolve_path() (in module pyaml.configuration.fileloader)</a>
+</li>
+      <li><a href="api/pyaml.configuration.fileloader.html#pyaml.configuration.fileloader.resolver">resolver() (in module pyaml.configuration.fileloader)</a>
+</li>
       <li><a href="api/pyaml.tuning_tools.chromaticity.html#pyaml.tuning_tools.chromaticity.Chromaticity.response_matrix">response_matrix (Chromaticity property)</a>
 
       <ul>
@@ -2479,12 +2489,12 @@
 </li>
       <li><a href="api/pyaml.rf.rf_plant.html#pyaml.rf.rf_plant.RFPlant">RFPlant (class in pyaml.rf.rf_plant)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/pyaml.rf.rf_transmitter.html#pyaml.rf.rf_transmitter.RFTransmitter">RFTransmitter (class in pyaml.rf.rf_transmitter)</a>
 </li>
       <li><a href="api/pyaml.configuration.manager.html#pyaml.configuration.manager.ConfigurationManager.root_fields">root_fields() (ConfigurationManager class method)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/pyaml.configuration.fileloader.html#pyaml.configuration.fileloader.RootFolder">RootFolder (class in pyaml.configuration.fileloader)</a>
 </li>
       <li><a href="api/pyaml.control.abstract_impl.html#pyaml.control.abstract_impl.RWBpmOffsetArray">RWBpmOffsetArray (class in pyaml.control.abstract_impl)</a>

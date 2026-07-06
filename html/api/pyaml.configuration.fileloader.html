@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>fileloader &#8212; Python Accelerator Middle Layer 0.1.dev1+g701e1558d documentation</title>
+    <title>fileloader &#8212; Python Accelerator Middle Layer 0.1.dev1+gddfb5d455 documentation</title>
   
   
   
@@ -42,7 +42,7 @@
   <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=a95f357e85573c9b56d5" />
 <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=a95f357e85573c9b56d5" />
 
-    <script src="../_static/documentation_options.js?v=12a01862"></script>
+    <script src="../_static/documentation_options.js?v=ce84c588"></script>
     <script src="../_static/doctools.js?v=9bcbadda"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -128,8 +128,8 @@
       
     
     
-    <img src="../_static/logo.png" class="logo__image only-light" alt="Python Accelerator Middle Layer 0.1.dev1+g701e1558d documentation - Home"/>
-    <img src="../_static/dark.png" class="logo__image only-dark pst-js-only" alt="Python Accelerator Middle Layer 0.1.dev1+g701e1558d documentation - Home"/>
+    <img src="../_static/logo.png" class="logo__image only-light" alt="Python Accelerator Middle Layer 0.1.dev1+gddfb5d455 documentation - Home"/>
+    <img src="../_static/dark.png" class="logo__image only-dark pst-js-only" alt="Python Accelerator Middle Layer 0.1.dev1+gddfb5d455 documentation - Home"/>
   
   
 </a></div>
@@ -524,55 +524,82 @@
                   
   <section id="module-pyaml.configuration.fileloader">
 <span id="fileloader"></span><h1>fileloader<a class="headerlink" href="#module-pyaml.configuration.fileloader" title="Link to this heading">#</a></h1>
-<p>“PyAML configuration file loader.</p>
+<p>PyAML configuration file loader.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="pyaml.configuration.fileloader.ConfigLoader">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ConfigLoader</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">context</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/configuration/fileloader.html#ConfigLoader"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.configuration.fileloader.ConfigLoader" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/abc.html#abc.ABC" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ABC</span></code></a></p>
+<p>Base class for loaders that expand nested configuration references.</p>
+<p>Store the file path and shared loading context.</p>
+<dl class="field-list simple">
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaml.configuration.fileloader.ConfigLoader.expand">
+<span class="sig-name descname"><span class="pre">expand</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">obj</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/configuration/fileloader.html#ConfigLoader.expand"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.configuration.fileloader.ConfigLoader.expand" title="Link to this definition">#</a></dt>
+<dd><p>Recursively expand configuration values.</p>
+<p>Dictionaries and lists are traversed recursively, while string values
+are resolved using the registered resolvers. All other values are
+returned unchanged.</p>
+<dl class="field-list simple">
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaml.configuration.fileloader.ConfigLoader.load">
+<em class="property"><span class="k"><span class="pre">abstractmethod</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">load</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/configuration/fileloader.html#ConfigLoader.load"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.configuration.fileloader.ConfigLoader.load" title="Link to this definition">#</a></dt>
+<dd><p>Load and parse the current configuration file.</p>
+<dl class="field-list simple">
+</dl>
+</dd></dl>
+
+</dd></dl>
+
 <dl class="py class">
 <dt class="sig sig-object py" id="pyaml.configuration.fileloader.JSONLoader">
-<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">JSONLoader</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parent_paths_stack</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_fast_loader</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/configuration/fileloader.html#JSONLoader"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.configuration.fileloader.JSONLoader" title="Link to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#pyaml.configuration.fileloader.Loader" title="pyaml.configuration.fileloader.Loader"><code class="xref py py-class docutils literal notranslate"><span class="pre">Loader</span></code></a></p>
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">JSONLoader</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">context</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/configuration/fileloader.html#JSONLoader"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.configuration.fileloader.JSONLoader" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pyaml.configuration.fileloader.ConfigLoader" title="pyaml.configuration.fileloader.ConfigLoader"><code class="xref py py-class docutils literal notranslate"><span class="pre">ConfigLoader</span></code></a></p>
+<p>Load and expand JSON configuration files.</p>
+<p>Create a JSON loader for the given file.</p>
 <dl class="field-list simple">
 </dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="pyaml.configuration.fileloader.JSONLoader.load">
 <span class="sig-name descname"><span class="pre">load</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/configuration/fileloader.html#JSONLoader.load"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.configuration.fileloader.JSONLoader.load" title="Link to this definition">#</a></dt>
-<dd><dl class="field-list simple">
+<dd><p>Parse the JSON file and expand nested configuration references.</p>
+<dl class="field-list simple">
 </dl>
 </dd></dl>
 
 </dd></dl>
 
 <dl class="py class">
-<dt class="sig sig-object py" id="pyaml.configuration.fileloader.Loader">
-<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Loader</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parent_path_stack</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/configuration/fileloader.html#Loader"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.configuration.fileloader.Loader" title="Link to this definition">#</a></dt>
+<dt class="sig sig-object py" id="pyaml.configuration.fileloader.LoadContext">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">LoadContext</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">include_locations=False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">include_stack=&lt;factory&gt;</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/configuration/fileloader.html#LoadContext"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.configuration.fileloader.LoadContext" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<p>Track state for one recursive configuration-loading session.</p>
 <dl class="field-list simple">
 </dl>
 <dl class="py method">
-<dt class="sig sig-object py" id="pyaml.configuration.fileloader.Loader.expand">
-<span class="sig-name descname"><span class="pre">expand</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">obj</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/configuration/fileloader.html#Loader.expand"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.configuration.fileloader.Loader.expand" title="Link to this definition">#</a></dt>
-<dd><dl class="field-list simple">
+<dt class="sig sig-object py" id="pyaml.configuration.fileloader.LoadContext.loading">
+<span class="sig-name descname"><span class="pre">loading</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/configuration/fileloader.html#LoadContext.loading"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.configuration.fileloader.LoadContext.loading" title="Link to this definition">#</a></dt>
+<dd><p>Register a file as currently being loaded and remove it afterward.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#pyaml.configuration.fileloader.PyAMLConfigCyclingException" title="pyaml.configuration.fileloader.PyAMLConfigCyclingException"><strong>PyAMLConfigCyclingException</strong></a> – If the file is already on the active
+    include stack.</p>
+</dd>
 </dl>
 </dd></dl>
 
-<dl class="py method">
-<dt class="sig sig-object py" id="pyaml.configuration.fileloader.Loader.expand_dict">
-<span class="sig-name descname"><span class="pre">expand_dict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">d</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/configuration/fileloader.html#Loader.expand_dict"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.configuration.fileloader.Loader.expand_dict" title="Link to this definition">#</a></dt>
-<dd><dl class="field-list simple">
-</dl>
-</dd></dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyaml.configuration.fileloader.LoadContext.include_locations">
+<span class="sig-name descname"><span class="pre">include_locations</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><span class="pre">bool</span></a></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">False</span></em><a class="headerlink" href="#pyaml.configuration.fileloader.LoadContext.include_locations" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
 
-<dl class="py method">
-<dt class="sig sig-object py" id="pyaml.configuration.fileloader.Loader.expand_list">
-<span class="sig-name descname"><span class="pre">expand_list</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">l</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/configuration/fileloader.html#Loader.expand_list"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.configuration.fileloader.Loader.expand_list" title="Link to this definition">#</a></dt>
-<dd><dl class="field-list simple">
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pyaml.configuration.fileloader.Loader.load">
-<span class="sig-name descname"><span class="pre">load</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/configuration/fileloader.html#Loader.load"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.configuration.fileloader.Loader.load" title="Link to this definition">#</a></dt>
-<dd><dl class="field-list simple">
-</dl>
-</dd></dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyaml.configuration.fileloader.LoadContext.include_stack">
+<span class="sig-name descname"><span class="pre">include_stack</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.14)"><span class="pre">list</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/pathlib.html#pathlib.Path" title="(in Python v3.14)"><span class="pre">Path</span></a><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#pyaml.configuration.fileloader.LoadContext.include_stack" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
 
 </dd></dl>
 
@@ -580,7 +607,15 @@
 <dt class="sig sig-object py" id="pyaml.configuration.fileloader.PyAMLConfigCyclingException">
 <em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">PyAMLConfigCyclingException</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">error_filename</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path_stack</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/configuration/fileloader.html#PyAMLConfigCyclingException"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.configuration.fileloader.PyAMLConfigCyclingException" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference internal" href="pyaml.common.exception.html#pyaml.common.exception.PyAMLException" title="pyaml.common.exception.PyAMLException"><code class="xref py py-class docutils literal notranslate"><span class="pre">PyAMLException</span></code></a></p>
+<p>Raised when a configuration file includes itself through a cycle.</p>
+<p>Create a circular-include error.</p>
 <dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>error_filename</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>) – The file that triggered the cycle.</p></li>
+<li><p><strong>path_stack</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.14)"><em>list</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/pathlib.html#pathlib.Path" title="(in Python v3.14)"><em>Path</em></a><em>]</em>) – The include chain leading to the cycle.</p></li>
+</ul>
+</dd>
 </dl>
 </dd></dl>
 
@@ -588,15 +623,16 @@
 <dt class="sig sig-object py" id="pyaml.configuration.fileloader.RootFolder">
 <em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">RootFolder</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/configuration/fileloader.html#RootFolder"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.configuration.fileloader.RootFolder" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
-<p>Manage the root directory used to resolve relative configuration paths.</p>
+<p>Manage the root directory used to resolve configuration paths.</p>
+<p>Create a root folder.</p>
+<p>If no path is provided, the current working directory is used.</p>
 <dl class="field-list simple">
 </dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="pyaml.configuration.fileloader.RootFolder.expand_path">
 <span class="sig-name descname"><span class="pre">expand_path</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/configuration/fileloader.html#RootFolder.expand_path"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.configuration.fileloader.RootFolder.expand_path" title="Link to this definition">#</a></dt>
-<dd><p>Return an absolute configuration path.</p>
-<p>Relative paths are interpreted relative to the configured root
-folder. Absolute paths are returned unchanged.</p>
+<dd><p>Return an absolute, normalized configuration path.</p>
+<p>Relative paths are interpreted relative to the configured root folder.</p>
 <dl class="field-list simple">
 </dl>
 </dd></dl>
@@ -604,7 +640,7 @@ folder. Absolute paths are returned unchanged.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="pyaml.configuration.fileloader.RootFolder.get">
 <span class="sig-name descname"><span class="pre">get</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/configuration/fileloader.html#RootFolder.get"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.configuration.fileloader.RootFolder.get" title="Link to this definition">#</a></dt>
-<dd><p>Get the root path for configuration files.</p>
+<dd><p>Return the current root path.</p>
 <dl class="field-list simple">
 </dl>
 </dd></dl>
@@ -612,7 +648,7 @@ folder. Absolute paths are returned unchanged.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="pyaml.configuration.fileloader.RootFolder.set">
 <span class="sig-name descname"><span class="pre">set</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/configuration/fileloader.html#RootFolder.set"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.configuration.fileloader.RootFolder.set" title="Link to this definition">#</a></dt>
-<dd><p>Set the root path for configuration files.</p>
+<dd><p>Set the root path used for resolving relative configuration files.</p>
 <dl class="field-list simple">
 </dl>
 </dd></dl>
@@ -623,39 +659,114 @@ folder. Absolute paths are returned unchanged.</p>
 <dt class="sig sig-object py" id="pyaml.configuration.fileloader.SafeLineLoader">
 <em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">SafeLineLoader</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">stream</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/configuration/fileloader.html#SafeLineLoader"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.configuration.fileloader.SafeLineLoader" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">SafeLoader</span></code></p>
-<p>Initialize the scanner.</p>
+<p>YAML loader that preserves line and column information for mappings.</p>
+<p>Create the YAML loader and record the source filename.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="pyaml.configuration.fileloader.SafeLineLoader.construct_mapping">
 <span class="sig-name descname"><span class="pre">construct_mapping</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">node</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">deep</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/configuration/fileloader.html#SafeLineLoader.construct_mapping"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.configuration.fileloader.SafeLineLoader.construct_mapping" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Build a mapping and attach location metadata to it.</p>
+</dd></dl>
 
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="pyaml.configuration.fileloader.YAMLLoader">
-<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">YAMLLoader</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parent_paths_stack</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_fast_loader</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/configuration/fileloader.html#YAMLLoader"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.configuration.fileloader.YAMLLoader" title="Link to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#pyaml.configuration.fileloader.Loader" title="pyaml.configuration.fileloader.Loader"><code class="xref py py-class docutils literal notranslate"><span class="pre">Loader</span></code></a></p>
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">YAMLLoader</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">context</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/configuration/fileloader.html#YAMLLoader"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.configuration.fileloader.YAMLLoader" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pyaml.configuration.fileloader.ConfigLoader" title="pyaml.configuration.fileloader.ConfigLoader"><code class="xref py py-class docutils literal notranslate"><span class="pre">ConfigLoader</span></code></a></p>
+<p>Load and expand YAML configuration files.</p>
+<p>Create a YAML loader for the given file.</p>
 <dl class="field-list simple">
 </dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="pyaml.configuration.fileloader.YAMLLoader.load">
 <span class="sig-name descname"><span class="pre">load</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/configuration/fileloader.html#YAMLLoader.load"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.configuration.fileloader.YAMLLoader.load" title="Link to this definition">#</a></dt>
-<dd><dl class="field-list simple">
+<dd><p>Parse the YAML file and expand nested configuration references.</p>
+<dl class="field-list simple">
 </dl>
 </dd></dl>
 
 </dd></dl>
 
 <dl class="py function">
-<dt class="sig sig-object py" id="pyaml.configuration.fileloader.hasToLoad">
-<span class="sig-name descname"><span class="pre">hasToLoad</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/configuration/fileloader.html#hasToLoad"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.configuration.fileloader.hasToLoad" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dt class="sig sig-object py" id="pyaml.configuration.fileloader.load">
+<span class="sig-name descname"><span class="pre">load</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">include_locations</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/configuration/fileloader.html#load"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.configuration.fileloader.load" title="Link to this definition">#</a></dt>
+<dd><p>Load a configuration file.</p>
+<p>When include_locations is False, uses the faster C-based YAML loader
+and skips including source location metadata.</p>
+<dl class="field-list simple">
+</dl>
+</dd></dl>
 
 <dl class="py function">
-<dt class="sig sig-object py" id="pyaml.configuration.fileloader.load">
-<span class="sig-name descname"><span class="pre">load</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">paths_stack</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_fast_loader</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/configuration/fileloader.html#load"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.configuration.fileloader.load" title="Link to this definition">#</a></dt>
-<dd><p>Load recursively a configuration setup</p>
+<dt class="sig sig-object py" id="pyaml.configuration.fileloader.resolve_env">
+<span class="sig-name descname"><span class="pre">resolve_env</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">_context</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/configuration/fileloader.html#resolve_env"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.configuration.fileloader.resolve_env" title="Link to this definition">#</a></dt>
+<dd><p>Resolve an environment variable.</p>
 <dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>value</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>) – Name of the environment variable.</p></li>
+<li><p><strong>context</strong> – Unused loading context. Present to match the resolver
+interface.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="pyaml.common.exception.html#pyaml.common.exception.PyAMLException" title="pyaml.common.exception.PyAMLException"><strong>PyAMLException</strong></a> – If the environment variable is not set.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyaml.configuration.fileloader.resolve_file">
+<span class="sig-name descname"><span class="pre">resolve_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">context</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/configuration/fileloader.html#resolve_file"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.configuration.fileloader.resolve_file" title="Link to this definition">#</a></dt>
+<dd><p>Load and return the contents of a configuration file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>value</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>) – Path to the configuration file.</p></li>
+<li><p><strong>context</strong> (<a class="reference internal" href="#pyaml.configuration.fileloader.LoadContext" title="pyaml.configuration.fileloader.LoadContext"><em>LoadContext</em></a>) – Shared loading context used to track recursive includes
+and detect inclusion cycles.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#RuntimeError" title="(in Python v3.14)"><strong>RuntimeError</strong></a> – If no loading context is provided.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyaml.configuration.fileloader.resolve_path">
+<span class="sig-name descname"><span class="pre">resolve_path</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">_context</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/configuration/fileloader.html#resolve_path"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.configuration.fileloader.resolve_path" title="Link to this definition">#</a></dt>
+<dd><p>Resolve a configuration path without loading the file.</p>
+<p>Relative paths are expanded using the configured root folder.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>value</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>) – Path to resolve.</p></li>
+<li><p><strong>context</strong> – Unused loading context. Present to match the resolver
+interface.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>The absolute, normalized path as a string.</strong></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyaml.configuration.fileloader.resolver">
+<span class="sig-name descname"><span class="pre">resolver</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/configuration/fileloader.html#resolver"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.configuration.fileloader.resolver" title="Link to this definition">#</a></dt>
+<dd><p>Register a function as a configuration value resolver.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>) – Prefix used to invoke the resolver (for example <code class="docutils literal notranslate"><span class="pre">&quot;env&quot;</span></code>
+or <code class="docutils literal notranslate"><span class="pre">&quot;file&quot;</span></code>).</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>A decorator that registers the decorated function in the global</strong></p></li>
+<li><p><strong>resolver registry.</strong></p></li>
+</ul>
+</dd>
 </dl>
 </dd></dl>
 
@@ -708,15 +819,19 @@ folder. Absolute paths are returned unchanged.</p>
   </div>
   <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.configuration.fileloader.ConfigLoader"><code class="docutils literal notranslate"><span class="pre">ConfigLoader</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.configuration.fileloader.ConfigLoader.expand"><code class="docutils literal notranslate"><span class="pre">ConfigLoader.expand()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.configuration.fileloader.ConfigLoader.load"><code class="docutils literal notranslate"><span class="pre">ConfigLoader.load()</span></code></a></li>
+</ul>
+</li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.configuration.fileloader.JSONLoader"><code class="docutils literal notranslate"><span class="pre">JSONLoader</span></code></a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.configuration.fileloader.JSONLoader.load"><code class="docutils literal notranslate"><span class="pre">JSONLoader.load()</span></code></a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.configuration.fileloader.Loader"><code class="docutils literal notranslate"><span class="pre">Loader</span></code></a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.configuration.fileloader.Loader.expand"><code class="docutils literal notranslate"><span class="pre">Loader.expand()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.configuration.fileloader.Loader.expand_dict"><code class="docutils literal notranslate"><span class="pre">Loader.expand_dict()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.configuration.fileloader.Loader.expand_list"><code class="docutils literal notranslate"><span class="pre">Loader.expand_list()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.configuration.fileloader.Loader.load"><code class="docutils literal notranslate"><span class="pre">Loader.load()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.configuration.fileloader.LoadContext"><code class="docutils literal notranslate"><span class="pre">LoadContext</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.configuration.fileloader.LoadContext.loading"><code class="docutils literal notranslate"><span class="pre">LoadContext.loading()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.configuration.fileloader.LoadContext.include_locations"><code class="docutils literal notranslate"><span class="pre">LoadContext.include_locations</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.configuration.fileloader.LoadContext.include_stack"><code class="docutils literal notranslate"><span class="pre">LoadContext.include_stack</span></code></a></li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.configuration.fileloader.PyAMLConfigCyclingException"><code class="docutils literal notranslate"><span class="pre">PyAMLConfigCyclingException</span></code></a></li>
@@ -734,8 +849,11 @@ folder. Absolute paths are returned unchanged.</p>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.configuration.fileloader.YAMLLoader.load"><code class="docutils literal notranslate"><span class="pre">YAMLLoader.load()</span></code></a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.configuration.fileloader.hasToLoad"><code class="docutils literal notranslate"><span class="pre">hasToLoad()</span></code></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.configuration.fileloader.load"><code class="docutils literal notranslate"><span class="pre">load()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.configuration.fileloader.resolve_env"><code class="docutils literal notranslate"><span class="pre">resolve_env()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.configuration.fileloader.resolve_file"><code class="docutils literal notranslate"><span class="pre">resolve_file()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.configuration.fileloader.resolve_path"><code class="docutils literal notranslate"><span class="pre">resolve_path()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.configuration.fileloader.resolver"><code class="docutils literal notranslate"><span class="pre">resolver()</span></code></a></li>
 </ul>
   </nav></div>
 
