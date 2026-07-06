@@ -3,7 +3,7 @@ from typing import Self
 
 from .. import PyAMLException
 from ..common import abstract
-from ..common.element import Element
+from ..common.element import Element, __pyaml_repr__
 from ..validation import DynamicValidation, register_schema
 from .rf_transmitter import RFTransmitter
 
@@ -90,3 +90,6 @@ class RWTotalVoltage(abstract.ReadWriteFloatScalar):
 
     def unit(self) -> str:
         return self.__trans[0].phase_device_access.unit()
+
+    def __repr__(self):
+        return __pyaml_repr__(self, exclude=["frequency", "voltage"])

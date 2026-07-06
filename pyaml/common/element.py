@@ -8,10 +8,18 @@ if TYPE_CHECKING:
     from ..common.element_holder import ElementHolder
 
 
-def __pyaml_repr__(obj):
+def __pyaml_repr__(obj, exclude: list[str] | None = None):
     """
-    Returns a string representation of a pyaml object
+    Returns a string representation of a pyaml object.
+
+    Parameters
+    ----------
+    exclude : list[str] | None
+        Attribute/property names to exclude from the output.
     """
+
+    if exclude is None:
+        exclude = []
 
     cls_name = obj.__class__.__name__
 
@@ -31,19 +39,19 @@ def __pyaml_repr__(obj):
 
     # Instance attributes
     for k, v in obj.__dict__.items():
-        # Exclude private attributes
-        if not k.startswith("_"):
+        # Exclude private attributes and excluded
+        if not k.startswith("_") and k not in exclude:
             attrs[k] = v
 
     # Properties
     for name, attr in vars(type(obj)).items():
-        if isinstance(attr, property):
+        if isinstance(attr, property) and name not in exclude:
             try:
                 attrs[name] = getattr(obj, name)
             except Exception as e:
                 attrs[name] = f"<error: {e}>"
 
-    if isinstance(obj, Element) and "name" not in attrs:
+    if isinstance(obj, Element) and "name" not in attrs and "name" not in exclude:
         try:
             attrs["name"] = obj.get_name()
         except Exception as e:
