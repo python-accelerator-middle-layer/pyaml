@@ -189,6 +189,16 @@ def test_load_interpolates_env_multiple_times_in_one_string(tmp_path, monkeypatc
     assert result["message"] == "hello alice, alice!"
 
 
+def test_load_path_resolver_resolves_without_loading_file(tmp_path):
+    ROOT.set(tmp_path)
+
+    (tmp_path / "config.yaml").write_text("target: ${path:subdir/missing.json}\n")
+
+    result = load("config.yaml")
+
+    assert result["target"] == str((tmp_path / "subdir" / "missing.json").resolve())
+
+
 def test_load_interpolated_file_resolver_inside_string_raises(tmp_path):
     ROOT.set(tmp_path)
 

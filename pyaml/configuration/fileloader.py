@@ -155,6 +155,23 @@ def resolve_env(value: str, _context: LoadContext | None = None) -> str:
         raise PyAMLException(f"Environment variable '{value}' is not set") from exc
 
 
+@resolver("path")
+def resolve_path(value: str, _context: LoadContext | None = None) -> str:
+    """Resolve a configuration path without loading the file.
+
+    Relative paths are expanded using the configured root folder.
+
+    Args:
+        value: Path to resolve.
+        context: Unused loading context. Present to match the resolver
+            interface.
+
+    Returns:
+        The absolute, normalized path as a string.
+    """
+    return str(ROOT.expand_path(value))
+
+
 @resolver("file")
 def resolve_file(value: str, context: LoadContext) -> Any:
     """Load and return the contents of a configuration file.
