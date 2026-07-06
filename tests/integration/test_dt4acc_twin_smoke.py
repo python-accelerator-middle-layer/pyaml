@@ -3,6 +3,7 @@ from pathlib import Path
 
 import numpy as np
 import pytest
+from tango._tango import DevFailed
 
 from pyaml.accelerator import Accelerator
 from pyaml.configuration import ConfigurationManager
@@ -12,22 +13,23 @@ QF_001_STRENGTH = "AN01-AR/EM-QP/QF.01/magnetic_strength"
 RF_REFERENCE_FREQUENCY = "simulator/ringsimulator/ringsimulator/reference_frequency"
 EXAMPLES_ROOT = Path(__file__).parent.parent.parent / "examples"
 FODO_1GEV_6D_ROOT = Path(__file__).parent / "data" / "fodo_1gev_6d"
+FODO_1GEV_6D_TANGO_PYAML_CONFIG = {
+    "accelerator": "fodo_1gev_6d_pyaml_accelerator.yaml",
+    "simulator": "fodo_1gev_6d_pyaml_simulators.yaml",
+    "control_system": "fodo_1gev_6d_pyaml_tango_controls.yaml",  # tango-pyaml
+    "arrays": "fodo_1gev_6d_pyaml_arrays.yaml",
+    "bpm_devices": "fodo_1gev_6d_pyaml_devices_bpms.yaml",
+    "bends_devices": "fodo_1gev_6d_pyaml_devices_bends.yaml",
+    "correctors_devices": "fodo_1gev_6d_pyaml_devices_correctors.yaml",
+    "quadrupoles_devices": "fodo_1gev_6d_pyaml_devices_quadrupoles.yaml",
+    "sextupoles_devices": "fodo_1gev_6d_pyaml_devices_sextupoles.yaml",
+    "diagnostic_devices": "fodo_1gev_6d_pyaml_devices_diagnostics.yaml",
+    "rf_devices": "fodo_1gev_6d_pyaml_devices_rf.yaml",
+}
 FODO_1GEV_6D_CONFIGS = [
     (
         FODO_1GEV_6D_ROOT,
-        {
-            "accelerator": "fodo_1gev_6d_pyaml_accelerator.yaml",
-            "simulator": "fodo_1gev_6d_pyaml_simulators.yaml",
-            "control_system": "fodo_1gev_6d_pyaml_tango_controls.yaml",  # tango-pyaml
-            "arrays": "fodo_1gev_6d_pyaml_arrays.yaml",
-            "bpm_devices": "fodo_1gev_6d_pyaml_devices_bpms.yaml",
-            "bends_devices": "fodo_1gev_6d_pyaml_devices_bends.yaml",
-            "correctors_devices": "fodo_1gev_6d_pyaml_devices_correctors.yaml",
-            "quadrupoles_devices": "fodo_1gev_6d_pyaml_devices_quadrupoles.yaml",
-            "sextupoles_devices": "fodo_1gev_6d_pyaml_devices_sextupoles.yaml",
-            "diagnostic_devices": "fodo_1gev_6d_pyaml_devices_diagnostics.yaml",
-            "rf_devices": "fodo_1gev_6d_pyaml_devices_rf.yaml",
-        },
+        FODO_1GEV_6D_TANGO_PYAML_CONFIG,
     ),
     (
         FODO_1GEV_6D_ROOT,
@@ -140,3 +142,99 @@ def test_dt4acc_twin_reads_all_declared_magnetic_strengths(root_folder: Path, co
 def test_examples_can_be_loaded(root_folder: Path, config_file: str):
     accelerator: Accelerator = Accelerator.load(str(root_folder / config_file))
     assert accelerator.yellow_pages is not None
+
+
+@pytest.mark.parametrize(
+    ("root_folder", "config_files"),
+    [
+        (
+            FODO_1GEV_6D_ROOT,
+            FODO_1GEV_6D_TANGO_PYAML_CONFIG,
+        ),
+    ],
+)
+def deactivated_test_orbit_correction(root_folder: Path, config_files: dict[str, str]):
+    try:
+        accelerator = _build_accelerator(root_folder, config_files)
+        control_mode = accelerator.live
+        bpms = control_mode.get_bpms("bpms")
+        orbit_response_matrix = control_mode.get_orm_tuning("DEFAULT_ORBIT_RESPONSE_MATRIX")
+        orbit_correction = control_mode.get_orbit_tuning("DEFAULT_ORBIT_CORRECTION")
+        orbit_response_matrix.measure()
+        ormdata = orbit_response_matrix.get()
+        orbit_response_matrix.save("orm.json")
+        orbit_correction.load("orm.json")
+        std_kick = 1e-6
+        hcorr = control_mode.get_magnets("hcorrectors")
+        vcorr = control_mode.get_magnets("vcorrectors")
+        print(f"HCORR={hcorr.strengths.get()}")
+        print(f"VCORR={vcorr.strengths.get()}")
+        ref_h, ref_v = bpms.positions.get().T
+        reference = np.concat((ref_h, ref_v))
+        # mangle orbit
+        hcorr.strengths.set(hcorr.strengths.get() + std_kick * np.random.normal(size=len(hcorr)))
+        vcorr.strengths.set(vcorr.strengths.get() + std_kick * np.random.normal(size=len(vcorr)))
+        positions_bc = bpms.positions.get()
+        std_bc = np.std(positions_bc, axis=0)
+        print(f"R.m.s. orbit before correction H: {1e6 * std_bc[0]: .1f} µm, V: {1e6 * std_bc[1]: .1f} µm.")
+        orbit_correction.correct(reference=reference)
+    finally:
+        import time
+
+        from tango import DeviceProxy
+
+        simulator = DeviceProxy("simulator/ringsimulator/ringsimulator")
+        try:
+            print("Reset the simulator")
+            simulator.Reset()
+            print("Reset done")
+        except DevFailed:
+            time.sleep(3)
+
+
+@pytest.mark.parametrize(
+    ("root_folder", "config_files"),
+    [
+        (
+            FODO_1GEV_6D_ROOT,
+            FODO_1GEV_6D_TANGO_PYAML_CONFIG,
+        ),
+    ],
+)
+def test_chromaticity_measurement(root_folder: Path, config_files: dict[str, str]):
+    try:
+        from pyaml.common.constants import Action
+
+        accelerator = _build_accelerator(root_folder, config_files)
+        control_mode = accelerator.live
+        chromaticity_measurement = control_mode.get_chromaticity_monitor("DEFAULT_CHROMATICITY_MEASUREMENT")
+
+        def chroma_callback(action: int, cb_data: dict):
+            if action == Action.MEASURE:
+                print(f"Chromaticy measurement: #{cb_data['step']} RF={cb_data['rf']} Tune={cb_data['tune']}")
+            return True
+
+        accelerator.design.get_lattice().disable_6d()
+        alphac = accelerator.design.get_lattice().get_mcf()
+        accelerator.design.get_lattice().enable_6d()
+        chromaticity_measurement.measure(
+            callback=chroma_callback,
+            do_plot=True,
+            alphac=alphac,
+            fit_order=2,
+            n_step=5,
+            sleep_between_meas=2.0,
+            sleep_between_step=2.0,
+        )
+    finally:
+        import time
+
+        from tango import DeviceProxy
+
+        simulator = DeviceProxy("simulator/ringsimulator/ringsimulator")
+        try:
+            print("Reset the simulator")
+            simulator.Reset()
+            print("Reset done")
+        except DevFailed:
+            time.sleep(3)

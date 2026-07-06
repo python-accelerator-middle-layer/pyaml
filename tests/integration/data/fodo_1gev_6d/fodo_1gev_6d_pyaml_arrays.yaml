@@ -140,6 +140,10 @@ arrays:
   - COR_015_f386ead7438a4d248f5850364f7a215b.hcorrector
   - COR_016_5dea0eada2984432aeb6637ed6f7afe9.hcorrector
 - type: pyaml.arrays.magnet
+  name: qcorrectors
+  elements:
+  - COR_*.?corrector
+- type: pyaml.arrays.magnet
   name: vcorrectors
   elements:
   - COR_001_40245a63817f45fdbaf0588fc373304c.vcorrector
