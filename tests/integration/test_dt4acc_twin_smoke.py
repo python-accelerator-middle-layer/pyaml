@@ -3,7 +3,7 @@ from pathlib import Path
 
 import numpy as np
 import pytest
-from tango._tango import DevFailed
+from tango import DevFailed
 
 from pyaml.accelerator import Accelerator
 from pyaml.configuration import ConfigurationManager
