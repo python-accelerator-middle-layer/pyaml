@@ -27,8 +27,6 @@ FIELD_LOCATIONS_KEY = "__fieldlocations__"
 ACCEPTED_SUFFIXES = (".yaml", ".yml", ".json")
 RESOLVER_PATTERN = re.compile(r"\$\{([^{}]+)\}")
 
-FILE_PREFIX = "file:"  # Kept for compatibility reasons with other modules
-
 
 class RootFolder:
     """Manage the root directory used to resolve configuration paths."""
