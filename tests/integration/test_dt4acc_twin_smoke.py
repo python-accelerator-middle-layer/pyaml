@@ -3,7 +3,6 @@ from pathlib import Path
 
 import numpy as np
 import pytest
-from tango import DevFailed
 
 from pyaml.accelerator import Accelerator
 from pyaml.configuration import ConfigurationManager
@@ -181,7 +180,7 @@ def deactivated_test_orbit_correction(root_folder: Path, config_files: dict[str,
     finally:
         import time
 
-        from tango import DeviceProxy
+        from tango import DevFailed, DeviceProxy
 
         simulator = DeviceProxy("simulator/ringsimulator/ringsimulator")
         try:
@@ -229,7 +228,7 @@ def test_chromaticity_measurement(root_folder: Path, config_files: dict[str, str
     finally:
         import time
 
-        from tango import DeviceProxy
+        from tango import DevFailed, DeviceProxy
 
         simulator = DeviceProxy("simulator/ringsimulator/ringsimulator")
         try:
