@@ -285,11 +285,13 @@ class BPMScalarAggregator(ScalarAggregator):
     """
 
     def __init__(self, ring: at.Lattice):
-        self.lattice = ring
-        self.refpts = []
+        self._lattice = ring
+        self._refpts = []
+        self._matrices = []
 
     def add_elem(self, elem: at.Element):
-        self.refpts.append(self.lattice.index(elem))
+        self._refpts.append(self._lattice.index(elem))
+        self._matrices.append(elem._transform)
 
     def set(self, value: NDArray[np.float64]):
         pass
@@ -298,8 +300,7 @@ class BPMScalarAggregator(ScalarAggregator):
         pass
 
     def get(self) -> np.array:
-        _, orbit = at.find_orbit(self.lattice, refpts=self.refpts)
-        return orbit[:, [0, 2]].flatten()
+        return self._transform().flatten()
 
     def readback(self) -> np.array:
         return self.get()
@@ -307,18 +308,24 @@ class BPMScalarAggregator(ScalarAggregator):
     def unit(self) -> str:
         return "m"
 
+    def _transform(self) -> np.array:
+        _, orbit = at.find_orbit(self._lattice, refpts=self._refpts)
+        ones = np.ones(len(self._refpts))
+        pts = orbit[:, [0, 2]]  # Extract x,y
+        # Batch matrices multiplication (homogeneous coordinates)
+        return np.matmul(self._matrices, np.column_stack([pts, ones])[:, :, None]).squeeze(-1)
+
 
 # ------------------------------------------------------------------------------
 
 
 class BPMHScalarAggregator(BPMScalarAggregator):
     """
-    Vertical BPM simulator aggregator
+    Horizontal BPM simulator aggregator
     """
 
     def get(self) -> np.array:
-        _, orbit = at.find_orbit(self.lattice, refpts=self.refpts)
-        return orbit[:, 0]
+        return self._transform()[:, 0]
 
 
 # ------------------------------------------------------------------------------
@@ -326,15 +333,25 @@ class BPMHScalarAggregator(BPMScalarAggregator):
 
 class BPMVScalarAggregator(BPMScalarAggregator):
     """
-    Horizontal BPM simulator aggregator
+    Vertical BPM simulator aggregator
     """
 
     def get(self) -> np.array:
-        _, orbit = at.find_orbit(self.lattice, refpts=self.refpts)
-        return orbit[:, 2]
+        return self._transform()[:, 1]
 
 
 # ------------------------------------------------------------------------------
+
+
+def update_bpm_transform_matrix(element: at.Element):
+    # BPM transformation matrix (homogeneous coordinates)
+    tx = element.Offset[0]
+    ty = element.Offset[1]
+    cos_theta = np.cos(element.Tilt)
+    sin_theta = np.sin(element.Tilt)
+    if not hasattr(element, "_transform"):
+        element._transform = np.empty((2, 3))
+    element._transform[:, :] = [[cos_theta, -sin_theta, tx], [sin_theta, cos_theta, ty]]
 
 
 class RBpmArray(abstract.ReadFloatArray):
@@ -346,14 +363,15 @@ class RBpmArray(abstract.ReadFloatArray):
     """
 
     def __init__(self, element: at.Element, lattice: at.Lattice):
-        self.__element = element
-        self.__lattice = lattice
+        self._element = element
+        self._lattice = lattice
 
     # Gets the value
     def get(self) -> np.array:
-        index = self.__lattice.index(self.__element)
-        _, orbit = at.find_orbit(self.__lattice, refpts=index)
-        return orbit[0, [0, 2]]
+        index = self._lattice.index(self._element)
+        _, orbit = at.find_orbit(self._lattice, refpts=index)
+        pts = orbit[0, [0, 2]]
+        return np.dot(self._element._transform, np.hstack([pts, 1]))  # Use homogeneous coordinates
 
     # Gets the unit of the value
     def unit(self) -> str:
@@ -370,25 +388,16 @@ class RWBpmOffsetArray(abstract.ReadWriteFloatArray):
     """
 
     def __init__(self, element: at.Element):
-        self.__element = element
-        try:
-            self.__offset = element.__getattribute__("Offset")
-        except AttributeError:
-            self.__offset = None
+        self._element = element
 
     # Gets the value
     def get(self) -> np.array:
-        if self.__offset is None:
-            raise PyAMLException("Element does not have an Offset attribute.")
-        return self.__offset
+        return self._element.Offset
 
     # Sets the value
     def set(self, value: np.array):
-        if self.__offset is None:
-            raise PyAMLException("Element does not have an Offset attribute.")
-        if len(value) != 2:
-            raise PyAMLException("BPM offset must be a 2-element array.")
-        self.__offset = value
+        self._element.Offset = value
+        update_bpm_transform_matrix(self._element)
 
     # Sets the value and wait that the read value reach the setpoint
     def set_and_wait(self, value: np.array):
@@ -409,25 +418,19 @@ class RWBpmTiltScalar(abstract.ReadWriteFloatScalar):
     """
 
     def __init__(self, element: at.Element):
-        self.__element = element
-        try:
-            self.__tilt = element.__getattribute__("Rotation")[0]
-        except AttributeError:
-            self.__tilt = None
+        self._element = element
 
     # Gets the value
     def get(self) -> float:
-        if self.__tilt is None:
-            raise ValueError("Element does not have a Tilt attribute.")
-        return self.__tilt
+        return self._element.Tilt
 
     # Sets the value
     def set(
         self,
         value: float,
     ):
-        self.__tilt = value
-        self.__element.__setattr__("Rotation", [value, None, None])
+        self._element.Tilt = value
+        update_bpm_transform_matrix(self._element)
 
     # Sets the value and wait that the read value reach the setpoint
     def set_and_wait(self, value: float):

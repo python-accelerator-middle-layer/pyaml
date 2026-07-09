@@ -29,6 +29,7 @@ from ..lattice.abstract_impl import (
     RWSerializedStrength,
     RWStrengthArray,
     RWStrengthScalar,
+    update_bpm_transform_matrix,
 )
 from ..magnet.cfm_magnet import CombinedFunctionMagnet
 from ..magnet.magnet import Magnet
@@ -193,9 +194,20 @@ class Simulator(ElementHolder):
 
             elif isinstance(e, BPM):
                 # This assumes unique BPM names in the pyAT lattice
-                tilt = RWBpmTiltScalar(self.get_at_elems(e)[0])
-                offsets = RWBpmOffsetArray(self.get_at_elems(e)[0])
-                positions = RBpmArray(self.get_at_elems(e)[0], self.ring)
+
+                # Add Tilt and Offset fields if not present
+                bpm_elt = self.get_at_elems(e)[0]
+                if not hasattr(bpm_elt, "Tilt"):
+                    bpm_elt.Tilt = 0.0  # No tilt
+                if not hasattr(bpm_elt, "Offset"):
+                    bpm_elt.Offset = [0.0, 0.0]  # No offset
+                if len(bpm_elt.Offset) != 2:
+                    raise PyAMLException(f"BPM {e.get_name()} offset must be a 2-element array.")
+                update_bpm_transform_matrix(bpm_elt)
+
+                tilt = RWBpmTiltScalar(bpm_elt)
+                offsets = RWBpmOffsetArray(bpm_elt)
+                positions = RBpmArray(bpm_elt, self.ring)
                 e = e.attach(self, positions, offsets, tilt)
                 self.add_bpm(e)
 

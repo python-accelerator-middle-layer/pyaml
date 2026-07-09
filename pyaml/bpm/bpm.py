@@ -54,7 +54,6 @@ class BPM(Element):
 
         super().__init__(cfg.name)
 
-        self.__model = cfg.model if hasattr(cfg, "model") else None
         self._cfg = cfg
         self._positions = None
         self._offset = None
@@ -146,7 +145,6 @@ class BPM(Element):
         # Attach positions, offset and tilt attributes and returns a new
         # reference
         obj = self.__class__(self._cfg)
-        obj.__model = self.__model
         obj._positions = positions
         obj._offset = offset
         obj._tilt = tilt
