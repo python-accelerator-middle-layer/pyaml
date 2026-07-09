@@ -300,7 +300,7 @@ class BPMScalarAggregator(ScalarAggregator):
         pass
 
     def get(self) -> np.array:
-        return self._tranform().flatten()
+        return self._transform().flatten()
 
     def readback(self) -> np.array:
         return self.get()
@@ -308,7 +308,7 @@ class BPMScalarAggregator(ScalarAggregator):
     def unit(self) -> str:
         return "m"
 
-    def _tranform(self) -> np.array:
+    def _transform(self) -> np.array:
         _, orbit = at.find_orbit(self._lattice, refpts=self._refpts)
         ones = np.ones(len(self._refpts))
         pts = orbit[:, [0, 2]]  # Extract x,y
@@ -325,7 +325,7 @@ class BPMHScalarAggregator(BPMScalarAggregator):
     """
 
     def get(self) -> np.array:
-        return self._tranform()[:, 0]
+        return self._transform()[:, 0]
 
 
 # ------------------------------------------------------------------------------
@@ -337,7 +337,7 @@ class BPMVScalarAggregator(BPMScalarAggregator):
     """
 
     def get(self) -> np.array:
-        return self._tranform()[:, 1]
+        return self._transform()[:, 1]
 
 
 # ------------------------------------------------------------------------------
