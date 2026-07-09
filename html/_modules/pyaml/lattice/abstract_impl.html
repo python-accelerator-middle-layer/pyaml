@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>pyaml.lattice.abstract_impl &#8212; Python Accelerator Middle Layer 0.1.dev1+gddfb5d455 documentation</title>
+    <title>pyaml.lattice.abstract_impl &#8212; Python Accelerator Middle Layer 0.1.dev1+gb90d66f3c documentation</title>
   
   
   
@@ -26,8 +26,8 @@
   </noscript>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="../../../_static/styles/theme.css?digest=a95f357e85573c9b56d5" rel="stylesheet" />
-<link href="../../../_static/styles/pydata-sphinx-theme.css?digest=a95f357e85573c9b56d5" rel="stylesheet" />
+  <link href="../../../_static/styles/theme.css?digest=90905a2f556bf617f1a9" rel="stylesheet" />
+<link href="../../../_static/styles/pydata-sphinx-theme.css?digest=90905a2f556bf617f1a9" rel="stylesheet" />
 
     <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=8f2a1f02" />
     <link rel="stylesheet" type="text/css" href="../../../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css" />
@@ -36,12 +36,12 @@
     <link rel="stylesheet" type="text/css" href="../../../_static/css/custom.css" />
   
   <!-- So that users can add custom icons -->
-  <script defer src="../../../_static/scripts/fontawesome.js?digest=a95f357e85573c9b56d5"></script>
+  <script defer src="../../../_static/scripts/fontawesome.js?digest=90905a2f556bf617f1a9"></script>
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=a95f357e85573c9b56d5" />
-<link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=a95f357e85573c9b56d5" />
+  <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=90905a2f556bf617f1a9" />
+<link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=90905a2f556bf617f1a9" />
 
-    <script src="../../../_static/documentation_options.js?v=ce84c588"></script>
+    <script src="../../../_static/documentation_options.js?v=8a19a546"></script>
     <script src="../../../_static/doctools.js?v=9bcbadda"></script>
     <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -125,8 +125,8 @@
       
     
     
-    <img src="../../../_static/logo.png" class="logo__image only-light" alt="Python Accelerator Middle Layer 0.1.dev1+gddfb5d455 documentation - Home"/>
-    <img src="../../../_static/dark.png" class="logo__image only-dark pst-js-only" alt="Python Accelerator Middle Layer 0.1.dev1+gddfb5d455 documentation - Home"/>
+    <img src="../../../_static/logo.png" class="logo__image only-light" alt="Python Accelerator Middle Layer 0.1.dev1+gb90d66f3c documentation - Home"/>
+    <img src="../../../_static/dark.png" class="logo__image only-dark pst-js-only" alt="Python Accelerator Middle Layer 0.1.dev1+gb90d66f3c documentation - Home"/>
   
   
 </a></div>
@@ -797,13 +797,15 @@
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ring</span><span class="p">:</span> <span class="n">at</span><span class="o">.</span><span class="n">Lattice</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">lattice</span> <span class="o">=</span> <span class="n">ring</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">refpts</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_lattice</span> <span class="o">=</span> <span class="n">ring</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_refpts</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_matrices</span> <span class="o">=</span> <span class="p">[]</span>
 
 <div class="viewcode-block" id="BPMScalarAggregator.add_elem">
 <a class="viewcode-back" href="../../../api/pyaml.lattice.abstract_impl.html#pyaml.lattice.abstract_impl.BPMScalarAggregator.add_elem">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">add_elem</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">elem</span><span class="p">:</span> <span class="n">at</span><span class="o">.</span><span class="n">Element</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">refpts</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">lattice</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">elem</span><span class="p">))</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_refpts</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_lattice</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">elem</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_matrices</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">elem</span><span class="o">.</span><span class="n">_transform</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="BPMScalarAggregator.set">
@@ -821,8 +823,7 @@
 <div class="viewcode-block" id="BPMScalarAggregator.get">
 <a class="viewcode-back" href="../../../api/pyaml.lattice.abstract_impl.html#pyaml.lattice.abstract_impl.BPMScalarAggregator.get">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">:</span>
-        <span class="n">_</span><span class="p">,</span> <span class="n">orbit</span> <span class="o">=</span> <span class="n">at</span><span class="o">.</span><span class="n">find_orbit</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">lattice</span><span class="p">,</span> <span class="n">refpts</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">refpts</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">orbit</span><span class="p">[:,</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">]]</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span></div>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_transform</span><span class="p">()</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span></div>
 
 
 <div class="viewcode-block" id="BPMScalarAggregator.readback">
@@ -835,7 +836,14 @@
 <a class="viewcode-back" href="../../../api/pyaml.lattice.abstract_impl.html#pyaml.lattice.abstract_impl.BPMScalarAggregator.unit">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">unit</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
         <span class="k">return</span> <span class="s2">&quot;m&quot;</span></div>
-</div>
+
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_transform</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">:</span>
+        <span class="n">_</span><span class="p">,</span> <span class="n">orbit</span> <span class="o">=</span> <span class="n">at</span><span class="o">.</span><span class="n">find_orbit</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_lattice</span><span class="p">,</span> <span class="n">refpts</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_refpts</span><span class="p">)</span>
+        <span class="n">ones</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_refpts</span><span class="p">))</span>
+        <span class="n">pts</span> <span class="o">=</span> <span class="n">orbit</span><span class="p">[:,</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">]]</span>  <span class="c1"># Extract x,y</span>
+        <span class="c1"># Batch matrices multiplication (homogeneous coordinates)</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">matmul</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_matrices</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">column_stack</span><span class="p">([</span><span class="n">pts</span><span class="p">,</span> <span class="n">ones</span><span class="p">])[:,</span> <span class="p">:,</span> <span class="kc">None</span><span class="p">])</span><span class="o">.</span><span class="n">squeeze</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span></div>
 
 
 
@@ -846,14 +854,13 @@
 <a class="viewcode-back" href="../../../api/pyaml.lattice.abstract_impl.html#pyaml.lattice.abstract_impl.BPMHScalarAggregator">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">BPMHScalarAggregator</span><span class="p">(</span><span class="n">BPMScalarAggregator</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Vertical BPM simulator aggregator</span>
+<span class="sd">    Horizontal BPM simulator aggregator</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
 <div class="viewcode-block" id="BPMHScalarAggregator.get">
 <a class="viewcode-back" href="../../../api/pyaml.lattice.abstract_impl.html#pyaml.lattice.abstract_impl.BPMHScalarAggregator.get">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">:</span>
-        <span class="n">_</span><span class="p">,</span> <span class="n">orbit</span> <span class="o">=</span> <span class="n">at</span><span class="o">.</span><span class="n">find_orbit</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">lattice</span><span class="p">,</span> <span class="n">refpts</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">refpts</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">orbit</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span></div>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_transform</span><span class="p">()[:,</span> <span class="mi">0</span><span class="p">]</span></div>
 </div>
 
 
@@ -865,19 +872,32 @@
 <a class="viewcode-back" href="../../../api/pyaml.lattice.abstract_impl.html#pyaml.lattice.abstract_impl.BPMVScalarAggregator">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">BPMVScalarAggregator</span><span class="p">(</span><span class="n">BPMScalarAggregator</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Horizontal BPM simulator aggregator</span>
+<span class="sd">    Vertical BPM simulator aggregator</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
 <div class="viewcode-block" id="BPMVScalarAggregator.get">
 <a class="viewcode-back" href="../../../api/pyaml.lattice.abstract_impl.html#pyaml.lattice.abstract_impl.BPMVScalarAggregator.get">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">:</span>
-        <span class="n">_</span><span class="p">,</span> <span class="n">orbit</span> <span class="o">=</span> <span class="n">at</span><span class="o">.</span><span class="n">find_orbit</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">lattice</span><span class="p">,</span> <span class="n">refpts</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">refpts</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">orbit</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">]</span></div>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_transform</span><span class="p">()[:,</span> <span class="mi">1</span><span class="p">]</span></div>
 </div>
 
 
 
 <span class="c1"># ------------------------------------------------------------------------------</span>
+
+
+<div class="viewcode-block" id="update_bpm_transform_matrix">
+<a class="viewcode-back" href="../../../api/pyaml.lattice.abstract_impl.html#pyaml.lattice.abstract_impl.update_bpm_transform_matrix">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">update_bpm_transform_matrix</span><span class="p">(</span><span class="n">element</span><span class="p">:</span> <span class="n">at</span><span class="o">.</span><span class="n">Element</span><span class="p">):</span>
+    <span class="c1"># BPM transformation matrix (homogeneous coordinates)</span>
+    <span class="n">tx</span> <span class="o">=</span> <span class="n">element</span><span class="o">.</span><span class="n">Offset</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">ty</span> <span class="o">=</span> <span class="n">element</span><span class="o">.</span><span class="n">Offset</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">cos_theta</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">element</span><span class="o">.</span><span class="n">Tilt</span><span class="p">)</span>
+    <span class="n">sin_theta</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">element</span><span class="o">.</span><span class="n">Tilt</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">element</span><span class="p">,</span> <span class="s2">&quot;_transform&quot;</span><span class="p">):</span>
+        <span class="n">element</span><span class="o">.</span><span class="n">_transform</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">((</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
+    <span class="n">element</span><span class="o">.</span><span class="n">_transform</span><span class="p">[:,</span> <span class="p">:]</span> <span class="o">=</span> <span class="p">[[</span><span class="n">cos_theta</span><span class="p">,</span> <span class="o">-</span><span class="n">sin_theta</span><span class="p">,</span> <span class="n">tx</span><span class="p">],</span> <span class="p">[</span><span class="n">sin_theta</span><span class="p">,</span> <span class="n">cos_theta</span><span class="p">,</span> <span class="n">ty</span><span class="p">]]</span></div>
+
 
 
 <div class="viewcode-block" id="RBpmArray">
@@ -891,16 +911,17 @@
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">element</span><span class="p">:</span> <span class="n">at</span><span class="o">.</span><span class="n">Element</span><span class="p">,</span> <span class="n">lattice</span><span class="p">:</span> <span class="n">at</span><span class="o">.</span><span class="n">Lattice</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">__element</span> <span class="o">=</span> <span class="n">element</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">__lattice</span> <span class="o">=</span> <span class="n">lattice</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_element</span> <span class="o">=</span> <span class="n">element</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_lattice</span> <span class="o">=</span> <span class="n">lattice</span>
 
     <span class="c1"># Gets the value</span>
 <div class="viewcode-block" id="RBpmArray.get">
 <a class="viewcode-back" href="../../../api/pyaml.lattice.abstract_impl.html#pyaml.lattice.abstract_impl.RBpmArray.get">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">:</span>
-        <span class="n">index</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__lattice</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__element</span><span class="p">)</span>
-        <span class="n">_</span><span class="p">,</span> <span class="n">orbit</span> <span class="o">=</span> <span class="n">at</span><span class="o">.</span><span class="n">find_orbit</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__lattice</span><span class="p">,</span> <span class="n">refpts</span><span class="o">=</span><span class="n">index</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">orbit</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">]]</span></div>
+        <span class="n">index</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_lattice</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_element</span><span class="p">)</span>
+        <span class="n">_</span><span class="p">,</span> <span class="n">orbit</span> <span class="o">=</span> <span class="n">at</span><span class="o">.</span><span class="n">find_orbit</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_lattice</span><span class="p">,</span> <span class="n">refpts</span><span class="o">=</span><span class="n">index</span><span class="p">)</span>
+        <span class="n">pts</span> <span class="o">=</span> <span class="n">orbit</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">]]</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_element</span><span class="o">.</span><span class="n">_transform</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">hstack</span><span class="p">([</span><span class="n">pts</span><span class="p">,</span> <span class="mi">1</span><span class="p">]))</span>  <span class="c1"># Use homogeneous coordinates</span></div>
 
 
     <span class="c1"># Gets the unit of the value</span>
@@ -924,30 +945,21 @@
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">element</span><span class="p">:</span> <span class="n">at</span><span class="o">.</span><span class="n">Element</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">__element</span> <span class="o">=</span> <span class="n">element</span>
-        <span class="k">try</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">__offset</span> <span class="o">=</span> <span class="n">element</span><span class="o">.</span><span class="fm">__getattribute__</span><span class="p">(</span><span class="s2">&quot;Offset&quot;</span><span class="p">)</span>
-        <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">__offset</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_element</span> <span class="o">=</span> <span class="n">element</span>
 
     <span class="c1"># Gets the value</span>
 <div class="viewcode-block" id="RWBpmOffsetArray.get">
 <a class="viewcode-back" href="../../../api/pyaml.lattice.abstract_impl.html#pyaml.lattice.abstract_impl.RWBpmOffsetArray.get">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">:</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__offset</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="n">PyAMLException</span><span class="p">(</span><span class="s2">&quot;Element does not have an Offset attribute.&quot;</span><span class="p">)</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__offset</span></div>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_element</span><span class="o">.</span><span class="n">Offset</span></div>
 
 
     <span class="c1"># Sets the value</span>
 <div class="viewcode-block" id="RWBpmOffsetArray.set">
 <a class="viewcode-back" href="../../../api/pyaml.lattice.abstract_impl.html#pyaml.lattice.abstract_impl.RWBpmOffsetArray.set">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">set</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">):</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__offset</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="n">PyAMLException</span><span class="p">(</span><span class="s2">&quot;Element does not have an Offset attribute.&quot;</span><span class="p">)</span>
-        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">value</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">2</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="n">PyAMLException</span><span class="p">(</span><span class="s2">&quot;BPM offset must be a 2-element array.&quot;</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">__offset</span> <span class="o">=</span> <span class="n">value</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_element</span><span class="o">.</span><span class="n">Offset</span> <span class="o">=</span> <span class="n">value</span>
+        <span class="n">update_bpm_transform_matrix</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_element</span><span class="p">)</span></div>
 
 
     <span class="c1"># Sets the value and wait that the read value reach the setpoint</span>
@@ -978,19 +990,13 @@
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">element</span><span class="p">:</span> <span class="n">at</span><span class="o">.</span><span class="n">Element</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">__element</span> <span class="o">=</span> <span class="n">element</span>
-        <span class="k">try</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">__tilt</span> <span class="o">=</span> <span class="n">element</span><span class="o">.</span><span class="fm">__getattribute__</span><span class="p">(</span><span class="s2">&quot;Rotation&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
-        <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">__tilt</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_element</span> <span class="o">=</span> <span class="n">element</span>
 
     <span class="c1"># Gets the value</span>
 <div class="viewcode-block" id="RWBpmTiltScalar.get">
 <a class="viewcode-back" href="../../../api/pyaml.lattice.abstract_impl.html#pyaml.lattice.abstract_impl.RWBpmTiltScalar.get">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__tilt</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Element does not have a Tilt attribute.&quot;</span><span class="p">)</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__tilt</span></div>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_element</span><span class="o">.</span><span class="n">Tilt</span></div>
 
 
     <span class="c1"># Sets the value</span>
@@ -1000,8 +1006,8 @@
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">value</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
     <span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">__tilt</span> <span class="o">=</span> <span class="n">value</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">__element</span><span class="o">.</span><span class="fm">__setattr__</span><span class="p">(</span><span class="s2">&quot;Rotation&quot;</span><span class="p">,</span> <span class="p">[</span><span class="n">value</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">])</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_element</span><span class="o">.</span><span class="n">Tilt</span> <span class="o">=</span> <span class="n">value</span>
+        <span class="n">update_bpm_transform_matrix</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_element</span><span class="p">)</span></div>
 
 
     <span class="c1"># Sets the value and wait that the read value reach the setpoint</span>
@@ -1288,8 +1294,8 @@
   </div>
   
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script defer src="../../../_static/scripts/bootstrap.js?digest=a95f357e85573c9b56d5"></script>
-<script defer src="../../../_static/scripts/pydata-sphinx-theme.js?digest=a95f357e85573c9b56d5"></script>
+  <script defer src="../../../_static/scripts/bootstrap.js?digest=90905a2f556bf617f1a9"></script>
+<script defer src="../../../_static/scripts/pydata-sphinx-theme.js?digest=90905a2f556bf617f1a9"></script>
 
   <footer class="bd-footer">
 <div class="bd-footer__inner bd-page-width">
@@ -1323,7 +1329,7 @@
         <div class="footer-item">
 <p class="theme-version">
   <!-- # L10n: Setting the PST URL as an argument as this does not need to be localized -->
-  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.19.0.
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.20.0.
 </p></div>
       
     </div>
