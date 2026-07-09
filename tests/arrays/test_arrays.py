@@ -143,6 +143,17 @@ def test_arrays(install_test_package):
     assert np.all(np.isclose(pos[:, 0], pos_h, rtol=1e-15, atol=1e-15))
     assert np.all(np.isclose(pos[:, 1], pos_v, rtol=1e-15, atol=1e-15))
 
+    # Test BPM transformation matrices
+    sr.design.get_bpm("BPM_C04-01").offset.set([0.1, 0.2])
+    sr.design.get_bpm("BPM_C04-02").offset.set([0.3, 0.4])
+    pos = sr.design.get_bpms("BPMS").positions.get()
+    assert np.abs(pos[0][0] - 7.22262850488348e-05 - 0.1) < 1e-10
+    assert np.abs(pos[0][1] - 3.4291613955705856e-05 - 0.2) < 1e-10
+    assert np.abs(pos[1][0] + 1.1696152238807462e-04 - 0.3) < 1e-10
+    assert np.abs(pos[1][1] - 7.4265634524358045e-06 - 0.4) < 1e-10
+    sr.design.get_bpm("BPM_C04-01").offset.set([0.0, 0.0])
+    sr.design.get_bpm("BPM_C04-02").offset.set([0.0, 0.0])
+
     # No aggregator
     bpms = []
     for b in sr.design.get_bpms("BPMS"):
