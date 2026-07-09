@@ -975,10 +975,10 @@ entries:
 - type: tango.pyaml.static_catalog_entry
   key: simulator/ringsimulator/ringsimulator/hor
   device:
-    type: tango.pyaml.attribute
+    type: tango.pyaml.attribute_read_only
     attribute: simulator/ringsimulator/ringsimulator/hor
 - type: tango.pyaml.static_catalog_entry
   key: simulator/ringsimulator/ringsimulator/vert
   device:
-    type: tango.pyaml.attribute
+    type: tango.pyaml.attribute_read_only
     attribute: simulator/ringsimulator/ringsimulator/vert
