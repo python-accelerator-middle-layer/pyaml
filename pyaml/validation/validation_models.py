@@ -2,6 +2,7 @@
 
 import inspect
 import logging
+from abc import ABCMeta
 from typing import Any
 
 from pydantic import BaseModel, ConfigDict, create_model
@@ -23,7 +24,7 @@ class ValidationModel(PyAMLBaseModel):
     model_config = ConfigDict(arbitrary_types_allowed=True, extra="forbid")
 
 
-class ValidationMeta(type):
+class ValidationMeta(ABCMeta):
     """
     Metaclass that validates constructor arguments before object creation.
 
