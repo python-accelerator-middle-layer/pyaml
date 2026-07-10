@@ -172,7 +172,7 @@ class Element:
         to a simulator or to a control system
         """
         if self._peer is None:
-            raise PyAMLException(f"{str(self)} is not attachedto a control system or the a simulator")
+            raise PyAMLException(f"{str(self.name)} is not attachedto a control system or the a simulator")
 
     @property
     def peer(self) -> "ElementHolder":
