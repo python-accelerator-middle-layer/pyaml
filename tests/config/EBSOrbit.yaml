@@ -37,17 +37,17 @@ arrays:
       - BPM*
 devices:
 - type: pyaml.tuning_tools.bba
-  name: BBA-BPM_C04-03
+  name: BBA-BPM_C04-04
   bpm_array_name: BPM
-  bpm_name : BPM_C04-03
+  bpm_name : BPM_C04-04
   hcorr_name : SF2E-C02-H
   vcorr_name : SD1A-C26-V
   quad_name : QF6B-C04
   n_step: 7
-  hcorr_delta : 3.829380038425445e-05
-  vcorr_delta : 4.198292876029707e-05
-  hquad_delta : 0.005762885683993067
-  vquad_delta : 0.009329539724510462
+  hcorr_delta : 1e-05
+  vcorr_delta : 1e-05
+  hquad_delta : 0.005
+  vquad_delta : 0.005
 - type: pyaml.diagnostics.tune_monitor
   name: BETATRON_TUNE
   tune_h: srdiag/beam-tune/main/Qh
