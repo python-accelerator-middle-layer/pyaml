@@ -36,6 +36,18 @@ arrays:
     elements:
       - BPM*
 devices:
+- type: pyaml.tuning_tools.bba
+  name: BBA-BPM_C04-03
+  bpm_array_name: BPM
+  bpm_name : BPM_C04-03
+  hcorr_name : SF2E-C02-H
+  vcorr_name : SD1A-C26-V
+  quad_name : QF6B-C04
+  n_step: 7
+  hcorr_delta : 3.829380038425445e-05
+  vcorr_delta : 4.198292876029707e-05
+  hquad_delta : 0.005762885683993067
+  vquad_delta : 0.009329539724510462
 - type: pyaml.diagnostics.tune_monitor
   name: BETATRON_TUNE
   tune_h: srdiag/beam-tune/main/Qh
@@ -85,6 +97,18 @@ devices:
       harmonic: 1
       distribution: 1
       voltage: sys/ringsimulator/ebs/RfVoltage
+- type: pyaml.magnet.quadrupole
+  name: QF6B-C04
+  model:
+    type: pyaml.magnet.linear_model
+    calibration_factor: 0.998960997
+    crosstalk: 0.99918
+    curve:
+      type: pyaml.magnet.csvcurve
+      file: sr/magnet_models/QF6_strength.csv
+    unit: 1/m
+    hardware_unit: A
+    powerconverter: srmag/vps-qf6/c04-b
 - type: pyaml.magnet.cfm_magnet
   name: SH1A-C04
   mapping:
