@@ -9,7 +9,7 @@ def callback(action: int, data: dict):
     return True
 
 
-def test_simulator_chromaticity_monitor():
+def test_bba():
     sr = Accelerator.load("tests/config/EBSOrbit.yaml")
     SR = sr.design
     bba = SR.get_bba("BBA-BPM_C04-03")
