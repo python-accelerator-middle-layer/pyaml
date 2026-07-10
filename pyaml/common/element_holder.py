@@ -26,6 +26,7 @@ from .element import Element
 
 if TYPE_CHECKING:
     from ..accelerator import Accelerator
+    from ..tuning_tools.bba import BBA
     from ..tuning_tools.chromaticity import Chromaticity
     from ..tuning_tools.chromaticity_response_matrix import ChromaticityResponseMatrix
     from ..tuning_tools.dispersion import Dispersion
@@ -342,6 +343,11 @@ class ElementHolder(metaclass=ABCMeta):
     @property
     def orm(self) -> "OrbitResponseMatrix":
         return self.get_orm_tuning("DEFAULT_ORBIT_RESPONSE_MATRIX")
+
+    # ---- BBA --------------------------------------------------------
+
+    def get_bba(self, name: str) -> "BBA":
+        return self.__get("BBA tool", name, self.__TUNING_TOOLS)
 
     # ---- Dispersive orbit --------------------------------------------
 
