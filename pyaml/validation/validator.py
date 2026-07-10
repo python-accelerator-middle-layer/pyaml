@@ -1,16 +1,15 @@
 """Module for schema validation."""
 
-from collections.abc import Mapping
 import logging
 import warnings
+from collections.abc import Mapping
 from typing import Any
 
-from pydantic import ValidationError, BaseModel
+from pydantic import BaseModel, ValidationError
 
 from .configuration_models import ConfigurationSchema, ModuleConfigurationSchema
 from .errors import extract_location_metadata, raise_validation_error
 from .registry import SchemaRegistry
-
 
 logger = logging.getLogger(__name__)
 
@@ -34,7 +33,7 @@ def dump_nested(value: Any) -> Any:
         The converted object with all nested Pydantic models represented as
         dictionaries.
     """
-    
+
     if isinstance(value, BaseModel):
         return value.model_dump()
     if isinstance(value, Mapping):
@@ -42,8 +41,8 @@ def dump_nested(value: Any) -> Any:
     if isinstance(value, list):
         return [dump_nested(v) for v in value]
     if isinstance(value, tuple):
-            return tuple(dump_nested(v) for v in value)
-    return value   
+        return tuple(dump_nested(v) for v in value)
+    return value
 
 
 class SchemaValidator:
@@ -95,7 +94,6 @@ class SchemaValidator:
         #     raise TypeError("Top-level configuration did not validate to a ConfigurationSchema.")
 
         return validated
-    
 
     @classmethod
     def validate_to_dict(
@@ -108,8 +106,6 @@ class SchemaValidator:
 
         validated = cls.validate(data)
         return dump_nested(validated)
-    
-  
 
     @classmethod
     def _recursive_validate(cls, obj: Any) -> Any:
