@@ -1,16 +1,49 @@
 """Module for schema validation."""
 
+from collections.abc import Mapping
 import logging
 import warnings
 from typing import Any
 
-from pydantic import ValidationError
+from pydantic import ValidationError, BaseModel
 
 from .configuration_models import ConfigurationSchema, ModuleConfigurationSchema
 from .errors import extract_location_metadata, raise_validation_error
 from .registry import SchemaRegistry
 
+
 logger = logging.getLogger(__name__)
+
+
+def dump_nested(value: Any) -> Any:
+    """
+    Recursively convert nested Pydantic models to plain Python objects.
+
+    Traverses mappings, lists, and tuples, replacing any
+    :class:`pydantic.BaseModel` instances with the result of
+    :meth:`BaseModel.model_dump`. All other values are returned unchanged.
+
+    Parameters
+    ----------
+    value : Any
+        The object to convert.
+
+    Returns
+    -------
+    Any
+        The converted object with all nested Pydantic models represented as
+        dictionaries.
+    """
+    
+    if isinstance(value, BaseModel):
+        return value.model_dump()
+    if isinstance(value, Mapping):
+        return {k: dump_nested(v) for k, v in value.items()}
+    if isinstance(value, list):
+        return [dump_nested(v) for v in value]
+    if isinstance(value, tuple):
+            return tuple(dump_nested(v) for v in value)
+    return value   
 
 
 class SchemaValidator:
@@ -62,6 +95,7 @@ class SchemaValidator:
         #     raise TypeError("Top-level configuration did not validate to a ConfigurationSchema.")
 
         return validated
+    
 
     @classmethod
     def validate_to_dict(
@@ -73,9 +107,9 @@ class SchemaValidator:
         """
 
         validated = cls.validate(data)
-        if isinstance(validated, dict):
-            return validated
-        return validated.model_dump()
+        return dump_nested(validated)
+    
+  
 
     @classmethod
     def _recursive_validate(cls, obj: Any) -> Any:
