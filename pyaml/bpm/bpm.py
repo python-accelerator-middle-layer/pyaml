@@ -2,7 +2,7 @@ import copy
 from typing import Self
 
 from ..common.abstract import ReadFloatArray, ReadWriteFloatArray, ReadWriteFloatScalar
-from ..common.element import Element
+from ..common.element import Element, __pyaml_repr__
 from ..common.exception import PyAMLException
 from ..validation import DynamicValidation, register_schema
 
@@ -183,3 +183,6 @@ class BPM(Element, DynamicValidation):
             Array of DeviceAcess
         """
         return [self._x_offset, self._y_offset]
+
+    def __repr__(self):
+        return __pyaml_repr__(self, exclude=["positions", "offset", "tilt"])
