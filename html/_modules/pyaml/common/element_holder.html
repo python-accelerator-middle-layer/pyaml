@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>pyaml.common.element_holder &#8212; Python Accelerator Middle Layer 0.1.dev1+gb90d66f3c documentation</title>
+    <title>pyaml.common.element_holder &#8212; Python Accelerator Middle Layer 0.1.dev1+gd11fbbb12 documentation</title>
   
   
   
@@ -41,7 +41,7 @@
   <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=90905a2f556bf617f1a9" />
 <link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=90905a2f556bf617f1a9" />
 
-    <script src="../../../_static/documentation_options.js?v=8a19a546"></script>
+    <script src="../../../_static/documentation_options.js?v=95e80567"></script>
     <script src="../../../_static/doctools.js?v=9bcbadda"></script>
     <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -125,8 +125,8 @@
       
     
     
-    <img src="../../../_static/logo.png" class="logo__image only-light" alt="Python Accelerator Middle Layer 0.1.dev1+gb90d66f3c documentation - Home"/>
-    <img src="../../../_static/dark.png" class="logo__image only-dark pst-js-only" alt="Python Accelerator Middle Layer 0.1.dev1+gb90d66f3c documentation - Home"/>
+    <img src="../../../_static/logo.png" class="logo__image only-light" alt="Python Accelerator Middle Layer 0.1.dev1+gd11fbbb12 documentation - Home"/>
+    <img src="../../../_static/dark.png" class="logo__image only-dark pst-js-only" alt="Python Accelerator Middle Layer 0.1.dev1+gd11fbbb12 documentation - Home"/>
   
   
 </a></div>
@@ -416,6 +416,7 @@
 
 <span class="k">if</span> <span class="n">TYPE_CHECKING</span><span class="p">:</span>
     <span class="kn">from</span><span class="w"> </span><span class="nn">..accelerator</span><span class="w"> </span><span class="kn">import</span> <span class="n">Accelerator</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">..tuning_tools.bba</span><span class="w"> </span><span class="kn">import</span> <span class="n">BBA</span>
     <span class="kn">from</span><span class="w"> </span><span class="nn">..tuning_tools.chromaticity</span><span class="w"> </span><span class="kn">import</span> <span class="n">Chromaticity</span>
     <span class="kn">from</span><span class="w"> </span><span class="nn">..tuning_tools.chromaticity_response_matrix</span><span class="w"> </span><span class="kn">import</span> <span class="n">ChromaticityResponseMatrix</span>
     <span class="kn">from</span><span class="w"> </span><span class="nn">..tuning_tools.dispersion</span><span class="w"> </span><span class="kn">import</span> <span class="n">Dispersion</span>
@@ -872,6 +873,14 @@
     <span class="nd">@property</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">orm</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;OrbitResponseMatrix&quot;</span><span class="p">:</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_orm_tuning</span><span class="p">(</span><span class="s2">&quot;DEFAULT_ORBIT_RESPONSE_MATRIX&quot;</span><span class="p">)</span>
+
+    <span class="c1"># ---- BBA --------------------------------------------------------</span>
+
+<div class="viewcode-block" id="ElementHolder.get_bba">
+<a class="viewcode-back" href="../../../api/pyaml.common.element_holder.html#pyaml.common.element_holder.ElementHolder.get_bba">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_bba</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;BBA&quot;</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__get</span><span class="p">(</span><span class="s2">&quot;BBA tool&quot;</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__TUNING_TOOLS</span><span class="p">)</span></div>
+
 
     <span class="c1"># ---- Dispersive orbit --------------------------------------------</span>
 
