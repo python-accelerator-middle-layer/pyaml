@@ -4,7 +4,7 @@ from typing import Self
 from numpy.typing import NDArray
 
 from ..common.abstract import ReadFloatArray
-from ..common.element import Element
+from ..common.element import Element, __pyaml_repr__
 from ..validation import DynamicValidation, register_schema
 from .atune_monitor import ABetatronTuneMonitor
 
@@ -124,3 +124,6 @@ class BetatronTuneMonitor(Element, DynamicValidation, ABetatronTuneMonitor):
         obj.__tune = betatron_tune
         obj._peer = peer
         return obj
+
+    def __repr__(self):
+        return __pyaml_repr__(self, exclude=["tune", "frequency"])
