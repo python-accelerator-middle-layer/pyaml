@@ -1,60 +1,60 @@
-from ..common.abstract import ReadFloatArray, ReadWriteFloatArray, ReadWriteFloatScalar
-from ..common.element import Element, ElementConfigModel
-from ..common.exception import PyAMLException
+import copy
+from typing import Self
 
-try:
-    from typing import Self  # Python 3.11+
-except ImportError:
-    from typing_extensions import Self  # Python 3.10 and earlier
+from ..common.abstract import ReadFloatArray, ReadWriteFloatArray, ReadWriteFloatScalar
+from ..common.element import Element
+from ..common.exception import PyAMLException
+from ..validation import DynamicValidation, register_schema
 
 PYAMLCLASS = "BPM"
 
 
-class ConfigModel(ElementConfigModel):
+@register_schema
+class BPM(Element, DynamicValidation):
     """
-    Configuration model for BPM element.
+    Beam position monitor (BPM) element.
+
+    Represents a BPM in the accelerator lattice and provides access to its
+    associated readback signals, including horizontal and vertical beam
+    positions, calibration offsets, and mechanical tilt.
 
     Parameters
     ----------
-    x_pos : str
-        Horizontal position device catalog key
-    y_pos : str
-        Vertical position device catalog key
-    x_offset : str
-        Horizontal BPM offset device catalog key
-    y_offset : str
-        Vertical BPM offset device catalog key
-    tilt : str
-        BPM tilt device catalog key
+    name : str
+        Name of the BPM.
+    lattice_names : str | None, optional
+        Lattice-specific name or names identifying the BPM.
+    description : str | None, optional
+        Description of the BPM.
+    x_pos : str | None, optional
+        Device catalog key for the horizontal beam position.
+    y_pos : str | None, optional
+        Device catalog key for the vertical beam position.
+    x_offset : str | None, optional
+        Device catalog key for the horizontal BPM offset.
+    y_offset : str | None, optional
+        Device catalog key for the vertical BPM offset.
+    tilt : str | None, optional
+        Device catalog key for the BPM tilt.
     """
 
-    x_pos: str | None = None
-    y_pos: str | None = None
-    x_offset: str | None = None
-    y_offset: str | None = None
-    tilt: str | None = None
-
-
-class BPM(Element):
-    """
-    Class providing access to one BPM of a physical or simulated lattice
-    """
-
-    def __init__(self, cfg: ConfigModel):
-        """
-        Construct a BPM
-
-        Parameters
-        ----------
-        name : str
-            Element name
-        model : BPMModel
-            BPM model in charge of computing beam position
-        """
-
-        super().__init__(cfg.name)
-
-        self._cfg = cfg
+    def __init__(
+        self,
+        name: str,
+        lattice_names: str | None = None,
+        description: str | None = None,
+        x_pos: str | None = None,
+        y_pos: str | None = None,
+        x_offset: str | None = None,
+        y_offset: str | None = None,
+        tilt: str | None = None,
+    ):
+        super().__init__(name, lattice_names, description)
+        self._x_pos = x_pos
+        self._y_pos = y_pos
+        self._x_offset = x_offset
+        self._y_offset = y_offset
+        self._tilt_name = tilt
         self._positions = None
         self._offset = None
         self._tilt = None
@@ -144,14 +144,14 @@ class BPM(Element):
         """
         # Attach positions, offset and tilt attributes and returns a new
         # reference
-        obj = self.__class__(self._cfg)
+        obj = copy.copy(self)
         obj._positions = positions
         obj._offset = offset
         obj._tilt = tilt
         obj._peer = peer
         return obj
 
-    def get_pos_devices(self) -> list[str]:
+    def get_pos_devices(self) -> list[str | None]:
         """
         Get device handles used for position reading
 
@@ -160,7 +160,7 @@ class BPM(Element):
         list[DeviceAccess]
             Array of DeviceAcess
         """
-        return [self._cfg.x_pos, self._cfg.y_pos]
+        return [self._x_pos, self._y_pos]
 
     def get_tilt_device(self) -> str | None:
         """
@@ -171,7 +171,7 @@ class BPM(Element):
         DeviceAccess
             DeviceAcess
         """
-        return self._cfg.tilt
+        return self._tilt_name
 
     def get_offset_devices(self) -> list[str | None]:
         """
@@ -182,4 +182,4 @@ class BPM(Element):
         list[DeviceAccess]
             Array of DeviceAcess
         """
-        return [self._cfg.x_offset, self._cfg.y_offset]
+        return [self._x_offset, self._y_offset]
