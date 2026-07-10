@@ -1,64 +1,65 @@
-from ..common.abstract import ReadFloatArray
-from ..common.element import Element, ElementConfigModel
-from ..control.deviceaccess import DeviceAccess
-from .atune_monitor import ABetatronTuneMonitor
+import copy
+from typing import Self
 
-try:
-    from typing import Self  # Python 3.11+
-except ImportError:
-    from typing_extensions import Self  # Python 3.10 and earlier
-import numpy as np
-from pydantic import ConfigDict
+from numpy.typing import NDArray
+
+from ..common.abstract import ReadFloatArray
+from ..common.element import Element
+from ..validation import DynamicValidation, register_schema
+from .atune_monitor import ABetatronTuneMonitor
 
 PYAMLCLASS = "BetatronTuneMonitor"
 
 
-class ConfigModel(ElementConfigModel):
+@register_schema
+class BetatronTuneMonitor(Element, DynamicValidation, ABetatronTuneMonitor):
     """
-    Configuration model for BetatronTuneMonitor
+    Betatron tune monitor.
+
+    Represents a betatron tune monitor in the accelerator lattice and
+    provides access to the measured horizontal and vertical betatron
+    tunes. Optionally, the monitor can be associated with an RF plant
+    used to convert tune measurements to frequency values.
 
     Parameters
     ----------
-    tune_h : str, optional
-        Horizontal betatron tune device
-    tune_v : str, optional
-        Vertical betatron tune device
-    rf_plant_name : str, optional
-        PyAML element name of the RF plant
+    name : str
+        Name of the betatron tune monitor.
+    description : str | None, optional
+        Description of the monitor.
+    tune_h : str | None, optional
+        Device catalog key for the horizontal betatron tune measurement.
+    tune_v : str | None, optional
+        Device catalog key for the vertical betatron tune measurement.
+    rf_plant_name : str | None, optional
+        Name of the associated RF plant element used by the monitor.
     """
 
-    model_config = ConfigDict(arbitrary_types_allowed=True, extra="forbid")
-
-    tune_h: str | None
-    tune_v: str | None
-    rf_plant_name: str | None = None
-
-
-class BetatronTuneMonitor(Element, ABetatronTuneMonitor):
-    """
-    Class providing access to a betatron tune monitor
-    of a physical or simulated lattice.
-    The monitor provides horizontal and vertical betatron tune measurements.
-    """
-
-    def __init__(self, cfg: ConfigModel):
-        """
-        Construct a BetatronTuneMonitor
-
-        Parameters
-        ----------
-        cfg : ConfigModel
-            Configuration for the BetatronTuneMonitor, including
-            device access for horizontal and vertical tunes.
-        """
-
-        super().__init__(cfg.name)
-        self._cfg = cfg
+    def __init__(
+        self,
+        name: str,
+        description: str | None = None,
+        tune_h: str | None = None,
+        tune_v: str | None = None,
+        rf_plant_name: str | None = None,
+    ):
+        super().__init__(name, None, description)
+        self._tune_h = tune_h
+        self._tune_v = tune_v
+        self._rf_plant_name = rf_plant_name
         self.__tune = None
         self._h = None
 
     def set_harmonic(self, h: int):
         self._h = float(h)
+
+    @property
+    def tune_h(self) -> str | None:
+        return self._tune_h
+
+    @property
+    def tune_v(self) -> str | None:
+        return self._tune_v
 
     @property
     def tune(self) -> ReadFloatArray:
@@ -88,9 +89,9 @@ class BetatronTuneMonitor(Element, ABetatronTuneMonitor):
             def __init__(self, parent: BetatronTuneMonitor):
                 self.parent = parent
 
-            def get(self) -> np.array:
+            def get(self) -> NDArray:
                 h = self.parent._h
-                rf_name = self.parent._cfg.rf_plant_name
+                rf_name = self.parent._rf_plant_name
                 if h is not None and rf_name is not None:
                     tune = self.parent.tune.get()
                     rf = self.parent.peer.get_rf_plant(rf_name)
@@ -119,7 +120,7 @@ class BetatronTuneMonitor(Element, ABetatronTuneMonitor):
         Self
             A new attached instance of TuneMonitor
         """
-        obj = self.__class__(self._cfg)
+        obj = copy.copy(self)
         obj.__tune = betatron_tune
         obj._peer = peer
         return obj
