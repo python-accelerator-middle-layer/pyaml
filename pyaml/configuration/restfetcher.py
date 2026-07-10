@@ -105,7 +105,7 @@ def _parse_remote_document(
         except json.JSONDecodeError as ex:
             raise PyAMLConfigException(f"{url}: {ex}") from ex
 
-    loader = CLoader if include_locations else SafeLineLoader
+    loader = CLoader if not include_locations else SafeLineLoader
     try:
         stream = _NamedStringIO(payload, url)
         return yaml.load(stream, Loader=loader)
