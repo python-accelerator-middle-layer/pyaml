@@ -37,14 +37,15 @@ from ..rf.rf_plant import RFPlant, RWTotalVoltage
 from ..rf.rf_transmitter import RFTransmitter
 from ..tuning_tools.measurement_tool import MeasurementTool
 from ..tuning_tools.tuning_tool import TuningTool
-from .attribute_linker import PyAtAttributeConfigModel, PyAtAttributeElementsLinker
+from ..validation import DynamicValidation, register_schema
 from .lattice_elements_linker import LatticeElementsLinker
 
 # Define the main class name for this module
 PYAMLCLASS = "Simulator"
 
 
-class Simulator(ElementHolder):
+@register_schema
+class Simulator(ElementHolder, DynamicValidation):
     """Simulator interface backed by a PyAT lattice.
 
     The simulator loads a PyAT lattice from disk and attaches PyAML

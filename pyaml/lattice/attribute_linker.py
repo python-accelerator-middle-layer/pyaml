@@ -9,6 +9,8 @@ from pyaml.lattice.lattice_elements_linker import (
     LinkerIdentifier,
 )
 
+from ..validation import DynamicValidation, register_schema
+
 PYAMLCLASS = "PyAtAttributeElementsLinker"
 
 
@@ -45,7 +47,8 @@ class PyAtAttributeIdentifier(LinkerIdentifier):
         return f"{self.attribute_name}={self.identifier}"
 
 
-class PyAtAttributeElementsLinker(LatticeElementsLinker):
+@register_schema
+class PyAtAttributeElementsLinker(LatticeElementsLinker, DynamicValidation):
     """Link lattice elements using a specified PyAT element attribute.
 
     This linker associates PyAML elements with PyAT elements by comparing
