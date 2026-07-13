@@ -1,11 +1,10 @@
 from pathlib import Path
 
 import at
-from pydantic import BaseModel, ConfigDict
 
 from ..bpm.bpm import BPM
 from ..common.abstract_aggregator import ScalarAggregator
-from ..common.element import Element
+from ..common.element import Element, __pyaml_repr__
 from ..common.exception import PyAMLException
 from ..common.holders.element_holder import ElementHolder
 from ..configuration import ROOT
@@ -38,61 +37,66 @@ from ..rf.rf_plant import RFPlant, RWTotalVoltage
 from ..rf.rf_transmitter import RFTransmitter
 from ..tuning_tools.measurement_tool import MeasurementTool
 from ..tuning_tools.tuning_tool import TuningTool
-from .attribute_linker import (
-    ConfigModel as PyAtAttrLinkerConfigModel,
-)
-from .attribute_linker import (
-    PyAtAttributeElementsLinker,
-)
+from .attribute_linker import PyAtAttributeConfigModel, PyAtAttributeElementsLinker
 from .lattice_elements_linker import LatticeElementsLinker
 
 # Define the main class name for this module
 PYAMLCLASS = "Simulator"
 
 
-class ConfigModel(BaseModel):
-    """
-    Configuration model for Simulator
-
-    Parameters
-    ----------
-    name : str
-        Simulator name
-    lattice : str
-        AT lattice file
-    mat_key : str, optional
-        AT lattice ring name
-    linker : LatticeElementsLinker, optional
-        The linker configuration model
-    description : str , optional
-        Simulator description
-    """
-
-    model_config = ConfigDict(arbitrary_types_allowed=True, extra="forbid")
-
-    name: str
-    lattice: str
-    mat_key: str = None
-    linker: LatticeElementsLinker = None
-    description: str | None = None
-
-
 class Simulator(ElementHolder):
-    """
-    Class that implements access to AT simulator
+    """Simulator interface backed by a PyAT lattice.
+
+    The simulator loads a PyAT lattice from disk and attaches PyAML
+    elements to their corresponding PyAT elements. Once attached, the
+    resulting device objects expose read/write interfaces operating
+    directly on the simulation model.
+
+    Elements may be matched either using the default name-based lookup
+    or a custom :class:`LatticeElementsLinker`.
     """
 
-    def __init__(self, cfg: ConfigModel):
+    def __init__(
+        self,
+        name: str,
+        lattice: str,
+        mat_key: str | None = None,
+        linker: LatticeElementsLinker | None = None,
+        description: str | None = None,
+    ):
+        """Create a simulator from a PyAT lattice.
+
+        Parameters
+        ----------
+        name : str
+            Name of the simulator.
+        lattice : str
+            Path to the PyAT lattice file, relative to the configured
+            PyAML root directory.
+        mat_key : str, optional
+            Variable name of the lattice when loading a MATLAB ``.mat``
+            lattice file.
+        linker : LatticeElementsLinker, optional
+            Custom linker used to associate PyAML elements with PyAT
+            lattice elements. If omitted, elements are matched by name.
+        description : str, optional
+            Human-readable description of the simulator.
+        """
+
         super().__init__()
-        self._cfg = cfg
-        path: Path = ROOT.get() / cfg.lattice
+        self._name = name
+        self._lattice = lattice
+        self._mat_key = mat_key
+        self.description = description
 
-        if self._cfg.mat_key is None:
+        path: Path = ROOT.get() / self._lattice
+
+        if self._mat_key is None:
             self.ring = at.load_lattice(path)
         else:
-            self.ring = at.load_lattice(path, mat_key=f"{self._cfg.mat_key}")
+            self.ring = at.load_lattice(path, mat_key=f"{self._mat_key}")
 
-        self._linker = cfg.linker
+        self._linker = linker
         if self._linker:
             self._linker.set_lattice(self.ring)
         else:
@@ -104,16 +108,24 @@ class Simulator(ElementHolder):
                     self._elements_indexing[e.FamName] = [e]
 
     def name(self) -> str:
-        return self._cfg.name
+        return self._name
+
+    @property
+    def lattice(self) -> str:
+        return self._lattice
 
     def get_lattice(self) -> at.Lattice:
         return self.ring
 
-    def get_description(self) -> str:
+    @property
+    def mat_key(self) -> str | None:
+        return self._mat_key
+
+    def get_description(self) -> str | None:
         """
         Returns the description of the accelerator
         """
-        return self._cfg.description
+        return self.description
 
     def create_magnet_strength_aggregator(self, magnets: list[Magnet]) -> ScalarAggregator:
         # No magnet aggregator for simulator
@@ -345,4 +357,4 @@ class Simulator(ElementHolder):
                     return [elts[idx] for idx in indices]
 
     def __repr__(self):
-        return repr(self._cfg).replace("ConfigModel", self.__class__.__name__)
+        return __pyaml_repr__(self)

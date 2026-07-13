@@ -1,5 +1,6 @@
+from dataclasses import dataclass
+
 import at
-from pydantic import ConfigDict
 
 from pyaml.common.element import Element
 from pyaml.lattice.lattice_elements_linker import (
@@ -11,34 +12,29 @@ from pyaml.lattice.lattice_elements_linker import (
 PYAMLCLASS = "PyAtAttributeElementsLinker"
 
 
-class ConfigModel(LinkerConfigModel):
-    """Base configuration model for linker definitions.
+@dataclass
+class PyAtAttributeConfigModel(LinkerConfigModel):
+    """Configuration model for ``PyAtAttributeElementsLinker``.
 
-    This class defines the configuration structure used to instantiate
-    a specific linking strategy. Each concrete implementation of a
-    `LatticeElementsLinker` may define its own subclass extending this model
-    to include additional configuration parameters.
-
-    Attributes
+    Parameters
     ----------
-    model_config : ConfigDict
-        Pydantic configuration allowing arbitrary field types and forbidding
-        unexpected extra keys.
+    attribute_name : str
+        Name of the PyAT element attribute used to identify matching
+        lattice elements.
     """
 
-    model_config = ConfigDict(arbitrary_types_allowed=True, extra="forbid")
     attribute_name: str
 
 
 class PyAtAttributeIdentifier(LinkerIdentifier):
-    """Abstract base class for identifiers used to match PyAML and PyAT elements.
+    """Identifier based on a PyAT element attribute.
 
-    The identifier acts as an intermediate representation between the PyAML
-    configuration and the PyAT lattice. Its exact structure depends on the
-    linking strategy (e.g., family name, element index, or user-defined tag).
-
-    Subclasses should define the fields and logic necessary to represent
-    a unique reference to one or more PyAT elements.
+    Parameters
+    ----------
+    attribute_name : str
+        Name of the PyAT attribute used for matching.
+    identifier
+        Expected value of the attribute.
     """
 
     def __init__(self, attribute_name: str, identifier):
@@ -50,19 +46,15 @@ class PyAtAttributeIdentifier(LinkerIdentifier):
 
 
 class PyAtAttributeElementsLinker(LatticeElementsLinker):
-    """Abstract base class defining the interface for PyAT–PyAML element linking.
+    """Link lattice elements using a specified PyAT element attribute.
 
-    Implementations of this class define how PyAML elements are matched
-    to PyAT elements based on a given linking strategy (e.g., by family name,
-    by index, or by a custom attribute).
-
-    Parameters
-    ----------
-    config_model : ConfigModel
-        The configuration model for the linking strategy.
+    This linker associates PyAML elements with PyAT elements by comparing
+    the value of a configurable PyAT attribute against the identifier
+    extracted from the PyAML element.
     """
 
-    def __init__(self, config_model: ConfigModel):
+    def __init__(self, attribute_name: str):
+        config_model = PyAtAttributeConfigModel(attribute_name)
         super().__init__(config_model)
 
     def get_element_identifier(self, element: Element) -> LinkerIdentifier:

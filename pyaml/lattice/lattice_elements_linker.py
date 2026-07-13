@@ -1,33 +1,27 @@
-from abc import ABCMeta, abstractmethod
+from abc import ABC, abstractmethod
+from dataclasses import dataclass
 from typing import Iterable
 
 import at
 from at import Lattice
-from pydantic import BaseModel, ConfigDict
 
 from pyaml import PyAMLException
 from pyaml.common.element import Element
 
 
-class LinkerConfigModel(BaseModel):
+class LinkerConfigModel(ABC):
     """Base configuration model for linker definitions.
 
     This class defines the configuration structure used to instantiate
     a specific linking strategy. Each concrete implementation of a
     `LatticeElementsLinker` may define its own subclass extending this model
     to include additional configuration parameters.
-
-    Attributes
-    ----------
-    model_config : ConfigDict
-        Pydantic configuration allowing arbitrary field types and forbidding
-        unexpected extra keys.
     """
 
-    model_config = ConfigDict(arbitrary_types_allowed=True, extra="forbid")
+    pass
 
 
-class LinkerIdentifier(metaclass=ABCMeta):
+class LinkerIdentifier(ABC):
     """Abstract base class for identifiers used to match PyAML and PyAT elements.
 
     The identifier acts as an intermediate representation between the PyAML
@@ -41,7 +35,7 @@ class LinkerIdentifier(metaclass=ABCMeta):
     pass
 
 
-class LatticeElementsLinker(metaclass=ABCMeta):
+class LatticeElementsLinker(ABC):
     """Abstract base class defining the interface for PyAT–PyAML element linking.
 
     Implementations of this class define how PyAML elements are matched
@@ -50,6 +44,8 @@ class LatticeElementsLinker(metaclass=ABCMeta):
 
     Parameters
     ----------
+    attribute_name: str
+
     linker_config_model : LinkerConfigModel
         The configuration model for the linking strategy.
 
@@ -61,7 +57,7 @@ class LatticeElementsLinker(metaclass=ABCMeta):
 
     def __init__(self, linker_config_model: LinkerConfigModel):
         self.linker_config_model = linker_config_model
-        self.lattice: Lattice = None
+        self.lattice: Lattice | None = None
 
     def set_lattice(self, lattice: Lattice):
         """
@@ -97,9 +93,10 @@ class LatticeElementsLinker(metaclass=ABCMeta):
 
     def _iter_matches(self, identifier: LinkerIdentifier) -> Iterable[at.Element]:
         """Yield all elements in the lattice whose matches the identifier."""
-        for elem in self.lattice:
-            if self._test_at_element(identifier, elem):
-                yield elem
+        if self.lattice:
+            for elem in self.lattice:
+                if self._test_at_element(identifier, elem):
+                    yield elem
 
     def get_at_elements(self, element_id: LinkerIdentifier | list[LinkerIdentifier]) -> list[at.Element]:
         """Return a list of PyAT elements matching the given identifiers.
