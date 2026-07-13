@@ -1,6 +1,5 @@
 """Module for schema validation."""
 
-from collections.abc import Mapping
 import logging
 import warnings
 from collections.abc import Mapping
@@ -11,7 +10,6 @@ from pydantic import BaseModel, ValidationError
 from .configuration_models import ConfigurationSchema, ModuleConfigurationSchema
 from .errors import extract_location_metadata, raise_validation_error
 from .registry import SchemaRegistry
-
 
 logger = logging.getLogger(__name__)
 
@@ -96,7 +94,6 @@ class SchemaValidator:
         #     raise TypeError("Top-level configuration did not validate to a ConfigurationSchema.")
 
         return validated
-    
 
     @classmethod
     def validate_to_dict(
