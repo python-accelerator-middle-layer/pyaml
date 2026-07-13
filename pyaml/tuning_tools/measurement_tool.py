@@ -1,3 +1,4 @@
+import copy
 import logging
 from abc import ABCMeta, abstractmethod
 from pathlib import Path
@@ -166,10 +167,14 @@ class MeasurementTool(Element, metaclass=ABCMeta):
         self._callback = callback
 
     def attach(self, peer: "ElementHolder") -> Self:
-        """
-        Create a new reference to attach this measurement tool object to a simulator
-        or a control system.
-        """
-        obj = self.__class__(self._cfg)
+        if hasattr(self, "_cfg"):
+            obj = self.__class__(self._cfg)
+        else:
+            obj = copy.copy(self)
+            obj._after_attach()
         obj._peer = peer
         return obj
+
+    def _after_attach(self) -> None:
+        """Hook for subclasses to rebind internal references after attach."""
+        pass

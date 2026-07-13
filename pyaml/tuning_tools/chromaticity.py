@@ -2,7 +2,7 @@ from pathlib import Path
 from typing import TYPE_CHECKING
 
 from .. import PyAMLException
-from ..common.element import ElementConfigModel
+from ..validation import DynamicValidation, register_schema
 from .chromaticity_monitor import ChomaticityMonitor
 from .response_matrix_data import ResponseMatrixData
 from .tuning_tool import TuningTool
@@ -10,10 +10,6 @@ from .tuning_tool import TuningTool
 if TYPE_CHECKING:
     from ..arrays.magnet_array import MagnetArray
 
-try:
-    from typing import Self  # Python 3.11+
-except ImportError:
-    from typing_extensions import Self  # Python 3.10 and earlier
 import logging
 import time
 
@@ -25,55 +21,47 @@ logger = logging.getLogger(__name__)
 PYAMLCLASS = "Chromaticity"
 
 
-class ConfigModel(ElementConfigModel):
-    """
-    Configuration model for Tune
-
-    Parameters
-    ----------
-    sextu_array_name : str
-        Array name of sextu used to adjust the chromaticity
-    chromaticty_monitor_name : str
-        Name of the diagnostic pyaml device for measuring the chromaticity
-    response_matrix : str | ResponseMatrixData
-        filename or data of the chromaticity response matrix
-    """
-
-    sextu_array_name: str
-    chromaticty_monitor_name: str
-    response_matrix: str | ResponseMatrixData
-
-
-class Chromaticity(TuningTool):
+@register_schema
+class Chromaticity(TuningTool, DynamicValidation):
     """
     Class providing chromaticity adjustment tool
     """
 
-    def __init__(self, cfg: ConfigModel):
+    def __init__(
+        self, name: str, sextu_array_name: str, chromaticity_monitor_name: str, response_matrix: str | ResponseMatrixData
+    ):
         """
-        Construct a chromaticity adjustment object.
+        Initialize a chromaticity adjustment tool.
 
         Parameters
         ----------
-        cfg : ConfigModel
-            Configuration for the tune adjustment.
+        name : str
+            Name of the tuning tool.
+        sextu_array_name : str
+            Name of the sextupole array used to adjust the chromaticity.
+        chromaticity_monitor_name : str
+            Name of the chromaticity monitor used for readback.
+        response_matrix : str | ResponseMatrixData
+            Chromaticity response matrix or path to a saved response matrix file.
         """
-        super().__init__(cfg.name)
-        self._cfg = cfg
+        super().__init__(name)
+        self.sextu_array_name = sextu_array_name
+        self._chromaticity_monitor_name = chromaticity_monitor_name
+        self.response_matrix_file = response_matrix
         self._response_matrix = None
         self._correctionmat = None
 
         # If the configuration response matrix is a filename, load it
-        if type(cfg.response_matrix) is str:
+        if type(self.response_matrix_file) is str:
             try:
-                cfg.response_matrix = ResponseMatrixData.load(cfg.response_matrix)
+                self._response_matrix = ResponseMatrixData.load(self.response_matrix_file)
             except Exception as e:
                 logger.warning(f"{str(e)}")
-                cfg.response_matrix = None
+                self._response_matrix = None
 
         # Invert matrix
-        if cfg.response_matrix:
-            self._response_matrix = np.array(cfg.response_matrix._cfg.matrix)
+        if self._response_matrix:
+            self._response_matrix = np.array(self._response_matrix._cfg.matrix)
             self._correctionmat = np.linalg.pinv(self._response_matrix)
 
         # TODO: Initialise first setpoint
@@ -84,7 +72,7 @@ class Chromaticity(TuningTool):
         """
         Return the response matrix if it has been loaded None otherwise
         """
-        return self._cfg.response_matrix
+        return self._response_matrix
 
     def load(self, load_path: Path):
         """
@@ -95,19 +83,19 @@ class Chromaticity(TuningTool):
         load_path : Path
             Filename of the :class:`~.ResponseMatrixData` to load
         """
-        self._cfg.response_matrix = ResponseMatrixData.load(load_path)
-        self._response_matrix = np.array(self._cfg.response_matrix._cfg.matrix)
+        self._response_matrix = ResponseMatrixData.load(load_path)
+        self._response_matrix = np.array(self._response_matrix._cfg.matrix)
         self._correctionmat = np.linalg.pinv(self._response_matrix)
 
     @property
     def _cm(self) -> "ChomaticityMonitor":
         self.check_peer()
-        return self.peer.get_chromaticity_monitor(self._cfg.chromaticty_monitor_name)
+        return self.peer.get_chromaticity_monitor(self._chromaticity_monitor_name)
 
     @property
     def _sextu(self) -> "MagnetArray":
         self.check_peer()
-        return self.peer.get_magnets(self._cfg.sextu_array_name)
+        return self.peer.get_magnets(self.sextu_array_name)
 
     def get(self):
         """
@@ -117,7 +105,7 @@ class Chromaticity(TuningTool):
 
     def readback(self):
         """
-        Launch a chromaticty scan and returns the measured chromaticity.
+        Launch a chromaticity scan and returns the measured chromaticity.
         """
         self._cm.measure()
         return self._cm.chromaticity.get()
