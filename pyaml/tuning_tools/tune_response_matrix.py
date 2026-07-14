@@ -7,7 +7,8 @@ import numpy as np
 from pydantic import ConfigDict
 
 from ..common.constants import Action
-from .measurement_tool import MeasurementTool, MeasurementToolConfigModel
+from ..validation import DynamicValidation, register_schema
+from .measurement_tool import MeasurementTool
 from .response_matrix_data import ResponseMatrixData
 
 logger = logging.getLogger(__name__)
@@ -15,31 +16,95 @@ logger = logging.getLogger(__name__)
 PYAMLCLASS = "TuneResponseMatrix"
 
 
-class ConfigModel(MeasurementToolConfigModel):
-    """
-    Configuration model for Tune response matrix
+@register_schema
+class TuneResponseMatrix(MeasurementTool, DynamicValidation):
+    """Measure the response of the betatron tune to quadrupole-strength changes.
+
+    The tune response matrix describes the change in horizontal and vertical
+    betatron tune produced by changes in quadrupole strength. Each quadrupole
+    in the configured magnet array is varied over a range of strengths, and
+    the resulting tune values are measured and averaged.
+
+    For measurements using more than one strength step, a linear fit is used
+    to determine the tune response to each quadrupole. The resulting matrix
+    has one row for each tune plane and one column for each quadrupole.
+
+    After a successful measurement, the result is stored in
+    :attr:`MeasurementTool.latest_measurement` as a
+    :class:`ResponseMatrixData` representation.
 
     Parameters
     ----------
+    name : str
+        Name of the measurement tool.
     quad_array_name : str
-        Array name of quad used to adjust the tune
+        Name of the quadrupole array used for the measurement.
     betatron_tune_name : str
-        Name of the diagnostic pyaml device for measuring the tune
+        Name of the betatron tune monitor used to measure the horizontal and
+        vertical tunes.
     quad_delta : float
-        Delta strength used to get the response matrix
+        Maximum positive and negative quadrupole-strength change applied during
+        the measurement.
+    n_step : int, optional
+        Number of quadrupole-strength settings used for each quadrupole. The
+        settings are distributed linearly from ``-quad_delta`` to
+        ``quad_delta``. The default is 1.
+    sleep_between_step : float, optional
+        Time in seconds to wait after changing a quadrupole strength and before
+        measuring the tune. The default is 0.
+    n_avg_meas : int, optional
+        Number of tune measurements averaged at each strength setting. The
+        default is 1.
+    sleep_between_meas : float, optional
+        Time in seconds to wait between tune measurements used for averaging.
+        The default is 0.
+
+    Attributes
+    ----------
+    quad_array_name : str
+        Name of the configured quadrupole array.
+    betatron_tune_name : str
+        Name of the configured betatron tune monitor.
+    quad_delta : float
+        Configured quadrupole-strength change.
+    n_step : int
+        Configured number of strength settings.
+    sleep_between_step : float
+        Configured delay after each strength change.
+    n_avg_meas : int
+        Configured number of tune measurements to average.
+    sleep_between_meas : float
+        Configured delay between averaged tune measurements.
+
+    Notes
+    -----
+    The generated response matrix has shape ``(2, n_quadrupoles)``. The first
+    row contains the horizontal tune response and the second row contains the
+    vertical tune response.
+
+    Quadrupole strengths are restored after each individual scan and again when
+    the measurement exits because of an error or interruption.
     """
 
-    model_config = ConfigDict(arbitrary_types_allowed=True, extra="forbid")
-
-    quad_array_name: str
-    betatron_tune_name: str
-    quad_delta: float
-
-
-class TuneResponseMatrix(MeasurementTool):
-    def __init__(self, cfg: ConfigModel):
-        super().__init__(cfg.name)
-        self._cfg = cfg
+    def __init__(
+        self,
+        name: str,
+        quad_array_name: str,
+        betatron_tune_name: str,
+        quad_delta: float,
+        n_step: Optional[int] = 1,
+        sleep_between_step: Optional[float] = 0,
+        n_avg_meas: Optional[int] = 1,
+        sleep_between_meas: Optional[float] = 0,
+    ):
+        super().__init__(name)
+        self.quad_array_name = quad_array_name
+        self.betatron_tune_name = betatron_tune_name
+        self.quad_delta = quad_delta
+        self.n_step = n_step
+        self.sleep_between_step = sleep_between_step
+        self.n_avg_meas = n_avg_meas
+        self.sleep_between_meas = sleep_between_meas
 
     def measure(
         self,
@@ -115,16 +180,16 @@ class TuneResponseMatrix(MeasurementTool):
         """
         # Get devices
         self.check_peer()
-        quads = self._peer.magnets.get(self._cfg.quad_array_name)
-        tm = self._peer.get_betatron_tune_monitor(self._cfg.betatron_tune_name)
+        quads = self._peer.magnets.get(self.quad_array_name)
+        tm = self._peer.get_betatron_tune_monitor(self.betatron_tune_name)
 
         tunemat = np.zeros((len(quads), 2))
         initial_tune = tm.tune.get()
-        delta = quad_delta if quad_delta is not None else self._cfg.quad_delta
-        nb_step = n_step if n_step is not None else self._cfg.n_step
-        nb_meas = n_avg_meas if n_avg_meas is not None else self._cfg.n_avg_meas
-        sleep_step = sleep_between_step if sleep_between_step is not None else self._cfg.sleep_between_step
-        sleep_meas = sleep_between_meas if sleep_between_meas is not None else self._cfg.sleep_between_meas
+        delta = quad_delta if quad_delta is not None else self.quad_delta
+        nb_step = n_step if n_step is not None else self.n_step
+        nb_meas = n_avg_meas if n_avg_meas is not None else self.n_avg_meas
+        sleep_step = sleep_between_step if sleep_between_step is not None else self.sleep_between_step
+        sleep_meas = sleep_between_meas if sleep_between_meas is not None else self.sleep_between_meas
 
         self._register_callback(callback)
         self._init_measure("pyaml.tuning_tools.response_matrix_data")
