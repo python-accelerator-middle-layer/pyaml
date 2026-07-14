@@ -1,4 +1,5 @@
 import logging
+from dataclasses import asdict
 from time import sleep
 from typing import Callable, Optional
 
@@ -7,7 +8,7 @@ from pydantic import ConfigDict
 
 from ..common.constants import Action
 from .measurement_tool import MeasurementTool, MeasurementToolConfigModel
-from .response_matrix_data import ConfigModel as ResponseMatrixDataConfigModel
+from .response_matrix_data import ResponseMatrixData
 
 logger = logging.getLogger(__name__)
 
@@ -193,12 +194,12 @@ class TuneResponseMatrix(MeasurementTool):
             logger.warning(f"{self.get_name()} : measurement aborted")
             return False
 
-        mat = ResponseMatrixDataConfigModel(
+        mat = ResponseMatrixData(
             matrix=tunemat.T.tolist(),
             variable_names=quads.names(),
             observable_names=[tm.get_name() + ".x", tm.get_name() + ".y"],
         )
-        self.latest_measurement.update(mat.model_dump())
+        self.latest_measurement.update(asdict(mat))
         self.latest_measurement["type"] = "pyaml.tuning_tools.response_matrix_data"
 
         return True

@@ -1,5 +1,6 @@
 import logging
 import time
+from dataclasses import asdict
 from typing import Callable, Optional
 
 import numpy as np
@@ -7,7 +8,7 @@ import numpy as np
 from ..common.constants import Action
 from ..validation import DynamicValidation, register_schema
 from .measurement_tool import MeasurementTool
-from .response_matrix_data import ConfigModel as ResponseMatrixDataConfigModel
+from .response_matrix_data import ResponseMatrixData
 
 logger = logging.getLogger(__name__)
 
@@ -252,12 +253,12 @@ class ChromaticityResponseMatrix(MeasurementTool, DynamicValidation):
             logger.warning(f"{self.get_name()} : measurement aborted")
             return False
 
-        mat = ResponseMatrixDataConfigModel(
+        mat = ResponseMatrixData(
             matrix=chromamat.T.tolist(),
             variable_names=sextus.names(),
             observable_names=[cm.get_name() + ".x", cm.get_name() + ".y"],
         )
-        self.latest_measurement.update(mat.model_dump())
+        self.latest_measurement.update(asdict(mat))
         self.latest_measurement["type"] = "pyaml.tuning_tools.response_matrix_data"
 
         return True

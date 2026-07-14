@@ -1,22 +1,15 @@
 import logging
+from dataclasses import asdict
 from pathlib import Path
-from typing import TYPE_CHECKING, Literal, Optional, Union
-
-try:
-    from typing import Self  # Python 3.11+
-except ImportError:
-    from typing_extensions import Self  # Python 3.10 and earlier
+from typing import Literal, Optional, Union
 
 import numpy as np
 from pydantic import ConfigDict
-
-if TYPE_CHECKING:
-    from ..common.holders.element_holder import ElementHolder
 from pySC import ResponseMatrix as pySC_ResponseMatrix
 from pySC.apps import orbit_correction
 
 from ..arrays.magnet_array import MagnetArray
-from ..common.element import Element, ElementConfigModel
+from ..common.element import ElementConfigModel
 from ..common.exception import PyAMLException
 from ..external.pySC_interface import pySCInterface
 from ..rf.rf_plant import RFPlant
@@ -99,7 +92,7 @@ class Orbit(TuningTool):
         self._set_response_matrix(self._cfg.response_matrix)
 
     def _set_response_matrix(self, mat):
-        m = mat._cfg.model_dump()
+        m = asdict(mat)
         m["input_names"] = m.pop("variable_names")
         m["output_names"] = m.pop("observable_names")
         m["input_planes"] = m.pop("variable_planes")

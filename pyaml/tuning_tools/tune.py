@@ -91,7 +91,7 @@ class Tune(TuningTool):
 
         """
         self._cfg.response_matrix = ResponseMatrixData.load(load_path)
-        self._response_matrix = np.array(self._cfg.response_matrix._cfg.matrix)
+        self._response_matrix = np.array(self._cfg.response_matrix.matrix)
         self._correctionmat = np.linalg.pinv(self._response_matrix)
 
     @property

@@ -1,4 +1,5 @@
 import logging
+from dataclasses import asdict
 from pathlib import Path
 from typing import Callable, List, Optional, Self
 
@@ -10,7 +11,7 @@ from pySC.apps.codes import ResponseCode
 from ..common.constants import Action
 from ..external.pySC_interface import pySCInterface
 from .measurement_tool import MeasurementTool, MeasurementToolConfigModel
-from .orbit_response_matrix_data import ConfigModel as OrbitResponseMatrixDataConfigModel
+from .orbit_response_matrix_data import OrbitResponseMatrixData
 
 logger = logging.getLogger(__name__)
 
@@ -155,11 +156,11 @@ class OrbitResponseMatrix(MeasurementTool):
             return False
 
         orm_data = self._pySC_response_data_to_ORMData(measurement.response_data.model_dump())
-        self.latest_measurement.update(orm_data.model_dump())
+        self.latest_measurement.update(asdict(orm_data))
 
         return True
 
-    def _pySC_response_data_to_ORMData(self, data: dict) -> OrbitResponseMatrixDataConfigModel:
+    def _pySC_response_data_to_ORMData(self, data: dict) -> OrbitResponseMatrixData:
         # all metadata is discarded here. Should we keep something?
 
         element_holder = self._peer
@@ -187,5 +188,5 @@ class OrbitResponseMatrix(MeasurementTool):
             "observable_planes": observable_planes,
         }
 
-        orm_data = OrbitResponseMatrixDataConfigModel(**orm_data_model)
+        orm_data = OrbitResponseMatrixData(**orm_data_model)
         return orm_data
