@@ -3,13 +3,12 @@
 import inspect
 import logging
 from abc import ABCMeta
-from typing import Any, cast
-
+from typing import Any, ClassVar
 from pydantic import BaseModel, ConfigDict, ValidationError, create_model
 
 from .configuration_models import PyAMLBaseModel
 from .errors import raise_validation_error
-from .schema_builder import generate_class_path,_fields_from_class_definition
+from .schema_builder import generate_class_path,_fields_from_constructor_signature
 
 logger = logging.getLogger(__name__)
 
@@ -104,6 +103,23 @@ class ValidationMeta(ABCMeta):
         return super().__call__(**validated.model_dump())
 
 
+class ValidationModelDescriptor:
+    """Provide a lazily generated validation model on the class."""
+
+    def __get__(
+        self,
+        instance: object | None,
+        owner: type["DynamicValidation"],
+    ) -> type[ValidationModel]:
+        model = owner.__dict__.get("_validation_model")
+
+        if model is None:
+            model = owner._build_validation_model()
+            owner._validation_model = model
+
+        return model
+
+
 class DynamicValidation(metaclass=ValidationMeta):
     """Base class for automatic constructor argument validation.
 
@@ -118,7 +134,10 @@ class DynamicValidation(metaclass=ValidationMeta):
     Subclasses must not define ``validation_model`` manually.
     """
 
-    validation_model: type[ValidationModel] | None = None
+    _validation_model: ClassVar[type[ValidationModel] | None] = None
+
+    # Lazy construction of the validation class
+    validation_model: ClassVar[ValidationModelDescriptor] = ValidationModelDescriptor()
 
     def __init_subclass__(cls, **kwargs):
         """
@@ -137,10 +156,13 @@ class DynamicValidation(metaclass=ValidationMeta):
 
         super().__init_subclass__(**kwargs)
 
+        # Check if validation model already exists
+        # This only checks for the current class and not parent classes
         if "validation_model" in cls.__dict__:
             raise TypeError(f"{cls.__name__} may not define validation_model manually.")
 
-        cls.validation_model = cls._build_validation_model()
+        # Set the _validation_model to None since should be built using lazy construction
+        cls._validation_model = None
 
     @classmethod
     def _build_validation_model(cls) -> type[ValidationModel]:
@@ -160,7 +182,7 @@ class DynamicValidation(metaclass=ValidationMeta):
 
         logger.debug("Building validation model for %s.", f"{cls.__module__}.{cls.__name__}")
 
-        fields: dict[str, Any] = _fields_from_class_definition(cls, expand_arbitrary_types=False)
+        fields: dict[str, Any] = _fields_from_constructor_signature(cls, expand_arbitrary_types=False)
 
         model = create_model(f"{cls.__name__}ValidationModel", **cast(Any, fields), __base__=ValidationModel)
 

@@ -3,8 +3,6 @@
 import inspect
 import logging
 import types
-from dataclasses import MISSING
-from dataclasses import Field as DataclassField
 from datetime import date, datetime, time, timedelta
 from decimal import Decimal
 from enum import Enum
@@ -122,7 +120,7 @@ def generate_configuration_schema(source: type) -> type[ConfigurationSchema]:
             source.__module__,
         )
     else:
-        schema = _configuration_schema_from_class(source)
+        schema = _configuration_schema_from_constructor(source)
 
     logger.debug("Register schema for %s.", class_path)
     registry.register(class_path, schema)
@@ -319,18 +317,21 @@ def _field_kwargs(field_name: str, field_info: Any) -> dict[str, Any]:
     return kwargs
 
 
-def _configuration_schema_from_class(cls: type) -> type[ConfigurationSchema]:
-    """Generate a configuration schema from a class definition.
-
-    Fields are extracted from an explicitly declared constructor when one
-    exists. Otherwise, fields are extracted from annotations declared directly
-    on the class, which supports dataclasses before their generated
-    constructors are available.
+def _configuration_schema_from_constructor(cls: type) -> type[ConfigurationSchema]:
     """
+    Generate a configuration schema from a class constructor signature.
+
+    The resulting schema contains one field for each constructor parameter,
+    with annotations and default values preserved.
+    """
+
     if not isinstance(cls, type):
         raise TypeError("cls must be a class.")
 
-    fields: dict[str, Any] = _fields_from_class_definition(cls, expand_arbitrary_types=True)
+    fields: dict[str, Any] = _fields_from_constructor_signature(
+        cls,
+        expand_arbitrary_types=True,
+    )
 
     return create_model(
         _generate_schema_name(cls),
@@ -383,88 +384,3 @@ def _fields_from_constructor_signature(cls: type, expand_arbitrary_types: bool =
         fields[name] = (annotation, default)
 
     return fields
-
-
-def _fields_from_class_annotations(cls: type, expand_arbitrary_types: bool = False) -> dict[str, tuple[Any, Any]]:
-    """Extract field definitions from annotations declared on a class.
-
-    This is primarily used for classes that will be transformed by
-    ``@dataclass``. During ``__init_subclass__``, the dataclass constructor
-    has not yet been generated, but the class annotations and defaults are
-    already available.
-
-    Parameters
-    ----------
-    cls
-        Class whose directly declared annotations should be inspected.
-    expand_arbitrary_types
-        If true, unsupported annotations are expanded recursively into
-        schema-friendly types.
-
-    Returns
-    -------
-    dict[str, tuple[Any, Any]]
-        Field definitions suitable for ``pydantic.create_model``.
-    """
-    declared_annotations = cls.__dict__.get("__annotations__", {})
-    type_hints = get_type_hints(cls, include_extras=True)
-
-    fields: dict[str, tuple[Any, Any]] = {}
-
-    for name in declared_annotations:
-        if name in RESERVED_CONFIGURATION_FIELDS:
-            raise ValueError(f"{cls.__name__} defines reserved field {name!r}, which is owned by ConfigurationSchema.")
-
-        annotation = type_hints.get(name, Any)
-
-        if expand_arbitrary_types:
-            annotation = _resolve_annotation(annotation)
-
-        default = cls.__dict__.get(name, ...)
-
-        # Support dataclasses.field(...), although @dataclass has not yet
-        # processed it when this function is called from __init_subclass__.
-        if isinstance(default, DataclassField):
-            if default.default is not MISSING:
-                default = default.default
-            elif default.default_factory is not MISSING:
-                default = Field(default_factory=default.default_factory)
-            else:
-                default = ...
-
-        fields[name] = (annotation, default)
-
-    return fields
-
-
-def _fields_from_class_definition(
-    cls: type,
-    expand_arbitrary_types: bool = False,
-) -> dict[str, tuple[Any, Any]]:
-    """Extract validation fields from a class definition.
-
-    Fields are read from an explicitly defined constructor when one exists.
-    Otherwise, fields are read from annotations declared directly on the
-    class. The annotation fallback supports classes that are about to be
-    transformed by ``@dataclass``.
-    """
-    if "__init__" in cls.__dict__:
-        return _fields_from_constructor_signature(
-            cls,
-            expand_arbitrary_types=expand_arbitrary_types,
-        )
-
-    declared_annotations = cls.__dict__.get("__annotations__", {})
-
-    if declared_annotations:
-        return _fields_from_class_annotations(
-            cls,
-            expand_arbitrary_types=expand_arbitrary_types,
-        )
-
-    # No constructor or locally declared annotations. Fall back to the
-    # effective inherited constructor.
-    return _fields_from_constructor_signature(
-        cls,
-        expand_arbitrary_types=expand_arbitrary_types,
-    )
