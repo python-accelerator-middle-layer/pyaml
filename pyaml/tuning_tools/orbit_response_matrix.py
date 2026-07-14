@@ -1,16 +1,15 @@
 import logging
 from dataclasses import asdict
-from pathlib import Path
-from typing import Callable, List, Optional, Self
+from typing import Callable, List, Optional
 
 import pySC
-from pydantic import ConfigDict
 from pySC.apps import measure_ORM
 from pySC.apps.codes import ResponseCode
 
 from ..common.constants import Action
 from ..external.pySC_interface import pySCInterface
-from .measurement_tool import MeasurementTool, MeasurementToolConfigModel
+from ..validation import DynamicValidation, register_schema
+from .measurement_tool import MeasurementTool
 from .orbit_response_matrix_data import OrbitResponseMatrixData
 
 logger = logging.getLogger(__name__)
@@ -18,39 +17,86 @@ logger = logging.getLogger(__name__)
 PYAMLCLASS = "OrbitResponseMatrix"
 
 
-class ConfigModel(MeasurementToolConfigModel):
-    """
-    Configuration model for orbit response matrix measurement
+@register_schema
+class OrbitResponseMatrix(MeasurementTool, DynamicValidation):
+    """Measure an orbit response matrix using BPMs and orbit correctors.
+
+    The orbit response matrix describes the change in measured beam position
+    produced by a change in corrector strength. This measurement tool uses
+    horizontal and vertical corrector arrays together with a BPM array to
+    perform the measurement through the pySC interface.
+
+    After a successful measurement, the result is converted to
+    :class:`OrbitResponseMatrixData` and stored in ``latest_measurement``.
+    The stored data includes the response matrix, corrector and BPM names,
+    and the plane associated with each variable and observable.
 
     Parameters
     ----------
+    name : str
+        Name of the measurement tool.
     bpm_array_name : str
-        BPM array name
+        Name of the BPM array used to measure the orbit.
     hcorr_array_name : str
-        Horizontal corrector array name
+        Name of the horizontal corrector array.
     vcorr_array_name : str
-        Vertical corrector array name
+        Name of the vertical corrector array.
     corrector_delta : float
-        Corrector delta for measurement
+        Change in corrector strength applied during the measurement.
+    n_step : int, optional
+        Number of strength steps used for each corrector. The default is 1.
+    sleep_between_step : float, optional
+        Time in seconds to wait after changing a corrector strength. The
+        default is 0.
+    n_avg_meas : int, optional
+        Number of orbit measurements averaged at each corrector setting. The
+        default is 1.
+    sleep_between_meas : float, optional
+        Time in seconds to wait between orbit measurements used for averaging.
+        The default is 0.
+
+    Attributes
+    ----------
+    bpm_array_name : str
+        Name of the configured BPM array.
+    hcorr_array_name : str
+        Name of the configured horizontal corrector array.
+    vcorr_array_name : str
+        Name of the configured vertical corrector array.
+    corrector_delta : float
+        Corrector-strength change used for the measurement.
+    n_step : int
+        Configured number of corrector-strength steps.
+    sleep_between_step : float
+        Configured delay between corrector-strength changes.
+    n_avg_meas : int
+        Configured number of orbit measurements to average.
+    sleep_between_meas : float
+        Configured delay between averaged orbit measurements.
     """
 
-    model_config = ConfigDict(arbitrary_types_allowed=True, extra="forbid")
+    def __init__(
+        self,
+        name: str,
+        bpm_array_name: str,
+        hcorr_array_name: str,
+        vcorr_array_name: str,
+        corrector_delta: float,
+        n_step: Optional[int] = 1,
+        sleep_between_step: Optional[float] = 0,
+        n_avg_meas: Optional[int] = 1,
+        sleep_between_meas: Optional[float] = 0,
+    ):
+        super().__init__(name)
 
-    bpm_array_name: str
-    hcorr_array_name: str
-    vcorr_array_name: str
-    corrector_delta: float
-
-
-class OrbitResponseMatrix(MeasurementTool):
-    def __init__(self, cfg: ConfigModel):
-        super().__init__(cfg.name)
-        self._cfg = cfg
-
-        self.bpm_array_name = cfg.bpm_array_name
-        self.hcorr_array_name = cfg.hcorr_array_name
-        self.vcorr_array_name = cfg.vcorr_array_name
-        self.corrector_delta = cfg.corrector_delta
+        self.bpm_array_name = bpm_array_name
+        self.hcorr_array_name = hcorr_array_name
+        self.vcorr_array_name = vcorr_array_name
+        self.corrector_delta = corrector_delta
+        self.n_step = n_step
+        self.sleep_between_step = sleep_between_step
+        self.n_avg_meas = n_avg_meas
+        self.sleep_between_meas = sleep_between_meas
 
     def measure(
         self,
@@ -92,9 +138,9 @@ class OrbitResponseMatrix(MeasurementTool):
             reading.
             If the callback returns false, then the process is aborted.
         """
-        nb_meas = n_avg_meas if n_avg_meas is not None else self._cfg.n_avg_meas
-        sleep_step = sleep_between_step if sleep_between_step is not None else self._cfg.sleep_between_step
-        sleep_meas = sleep_between_meas if sleep_between_meas is not None else self._cfg.sleep_between_meas
+        nb_meas = n_avg_meas if n_avg_meas is not None else self.n_avg_meas
+        sleep_step = sleep_between_step if sleep_between_step is not None else self.sleep_between_step
+        sleep_meas = sleep_between_meas if sleep_between_meas is not None else self.sleep_between_meas
 
         element_holder = self._peer
         interface = pySCInterface(
