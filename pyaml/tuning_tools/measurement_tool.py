@@ -16,34 +16,6 @@ if TYPE_CHECKING:
 logger = logging.getLogger(__name__)
 
 
-class MeasurementToolConfigModel(ElementConfigModel):
-    """
-    Measurement tool configuration model
-
-    Parameters
-    ----------
-    n_step: int, optional
-        Number of measurement step [-delta/n_step..delta/n_step]
-        Default 1
-    sleep_between_step: float, optional
-        Default sleep time after an actuator excitation
-        Default: 0
-    n_avg_meas : int, optional
-        Default number of measurement per step used for averaging
-        Default 1
-    sleep_between_meas: float, optional
-        Default sleep time between two measurments
-        Default: 0
-    """
-
-    model_config = ConfigDict(arbitrary_types_allowed=True, extra="forbid")
-
-    n_step: Optional[int] = 1
-    sleep_between_step: Optional[float] = 0
-    n_avg_meas: Optional[int] = 1
-    sleep_between_meas: Optional[float] = 0
-
-
 class MeasurementTool(Element, metaclass=ABCMeta):
     """
     Base class for measurement tool such as reponse matrix measurement or other scans.
