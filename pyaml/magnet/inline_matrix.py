@@ -1,38 +1,39 @@
 import numpy as np
-from pydantic import BaseModel, ConfigDict
+from numpy.typing import NDArray
 
+from ..common.element import __pyaml_repr__
+from ..validation import DynamicValidation, register_schema
 from .matrix import Matrix
 
 # Define the main class name for this module
 PYAMLCLASS = "InlineMatrix"
 
 
-class ConfigModel(BaseModel):
+@register_schema
+class InlineMatrix(Matrix, DynamicValidation):
     """
-    Configuration model for inline matrix
+    Matrix defined directly from in-memory data.
 
     Parameters
     ----------
     mat : list[list[float]]
-        The matrix
+        Matrix data given as a nested list of numbers.
+
+    Attributes
+    ----------
+    _mat : np.ndarray
+        Internal NumPy representation of the matrix.
     """
 
-    model_config = ConfigDict(arbitrary_types_allowed=True, extra="forbid")
-
-    mat: list[list[float]]
-
-
-class InlineMatrix(Matrix):
-    """
-    Class for loading CSV matrix
-    """
-
-    def __init__(self, cfg: ConfigModel):
-        self._cfg = cfg
+    def __init__(self, mat: list[list[float]]):
         # Load the matrix
-        self._mat = np.array(self._cfg.mat)
+        self._mat = np.array(mat)
 
-    def get_matrix(self) -> np.array:
+    @property
+    def mat(self):
+        return self._mat
+
+    def get_matrix(self) -> NDArray[np.float64]:
         """
         Get the matrix data.
 
@@ -44,4 +45,4 @@ class InlineMatrix(Matrix):
         return self._mat
 
     def __repr__(self):
-        return repr(self._cfg).replace("ConfigModel", self.__class__.__name__)
+        return __pyaml_repr__(self)
