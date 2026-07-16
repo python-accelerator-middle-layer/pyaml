@@ -1,46 +1,51 @@
-from pathlib import Path
-
 import numpy as np
-from pydantic import BaseModel, ConfigDict
+from numpy.typing import NDArray
 
+from ..common.element import __pyaml_repr__
 from ..common.exception import PyAMLException
 from ..configuration.fileloader import ROOT
+from ..validation import DynamicValidation, register_schema
 from .matrix import Matrix
 
 # Define the main class name for this module
 PYAMLCLASS = "CSVMatrix"
 
 
-class ConfigModel(BaseModel):
+@register_schema
+class CSVMatrix(Matrix, DynamicValidation):
     """
-    Configuration model for CSV matrix
+    Matrix loaded from a CSV file.
+
+    This class reads a CSV file containing numeric values and stores the
+    resulting matrix as a NumPy array.
 
     Parameters
     ----------
     file : str
-        CSV file that contains the matrix
+        Path to the CSV file. Relative paths are resolved using the
+        project's configured root directory.
+
+    Raises
+    ------
+    PyAMLException
+        If the CSV file cannot be parsed as a numeric array.
     """
 
-    model_config = ConfigDict(arbitrary_types_allowed=True, extra="forbid")
+    def __init__(self, file: str):
+        self._file = file
 
-    file: str
-
-
-class CSVMatrix(Matrix):
-    """
-    Class for loading CSV matrix
-    """
-
-    def __init__(self, cfg: ConfigModel):
-        self._cfg = cfg
         # Load CSV matrix
-        path = ROOT.expand_path(cfg.file)
+        path = ROOT.expand_path(self._file)
         try:
             self._mat = np.genfromtxt(path, delimiter=",", dtype=float, loose=False)
         except ValueError as e:
-            raise PyAMLException(f"CSVMatrix(file='{cfg.file}',dtype=float): {str(e)}") from None
+            raise PyAMLException(f"CSVMatrix(file='{self._file}',dtype=float): {str(e)}") from None
 
-    def get_matrix(self) -> np.array:
+    @property
+    def file(self):
+        return self._file
+
+    def get_matrix(self) -> NDArray[np.float64]:
         """
         Get the matrix data.
 
@@ -52,4 +57,4 @@ class CSVMatrix(Matrix):
         return self._mat
 
     def __repr__(self):
-        return repr(self._cfg).replace("ConfigModel", self.__class__.__name__)
+        return __pyaml_repr__(self)
