@@ -5,7 +5,6 @@ from ..common.element import __pyaml_repr__
 from ..common.exception import PyAMLException
 from ..control.deviceaccess import DeviceAccess
 from .curve import Curve
-from .inline_curve import ConfigModel as InlineCurveModel
 from .inline_curve import InlineCurve
 from .linear_model import ConfigModel as LinearConfigModel
 from .linear_model import LinearMagnetModel
@@ -122,7 +121,7 @@ class LinearSerializedMagnetModel(MagnetModel):
         else:
             self.__curves: list[Curve] = []
             for _ in range(self.__nbMagnets):
-                curve = InlineCurve(InlineCurveModel(mat=self._cfg.curves.get_curve()))
+                curve = InlineCurve(mat=self._cfg.curves.get_curve())
                 self.__curves.append(curve)
 
         _check_len(self.__calibration_factors, "calibration_factors", self.__nbMagnets)
