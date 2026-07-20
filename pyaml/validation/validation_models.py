@@ -3,7 +3,7 @@
 import inspect
 import logging
 from abc import ABCMeta
-from typing import Any
+from typing import Any, cast
 
 from pydantic import BaseModel, ConfigDict, ValidationError, create_model
 
@@ -161,7 +161,7 @@ class DynamicValidation(metaclass=ValidationMeta):
 
         fields: dict[str, tuple[Any, Any]] = _fields_from_constructor_signature(cls, expand_arbitrary_types=False)
 
-        model = create_model(f"{cls.__name__}ValidationModel", **fields, __base__=ValidationModel)
+        model = create_model(f"{cls.__name__}ValidationModel", **cast(Any, fields), __base__=ValidationModel)
 
         logger.debug("Created model: %s", model.model_fields)
 
