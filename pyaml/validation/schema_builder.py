@@ -44,6 +44,23 @@ SUPPORTED_TYPES = (
 )
 
 
+def generate_class_path(source: type) -> str:
+    """
+    Generate the fully qualified class path for a type.
+
+    Parameters
+    ----------
+    source : type
+        Class or type object to convert into a fully qualified path.
+
+    Returns
+    -------
+    str
+        Fully qualified class path in the form ``module.name``.
+    """
+    return f"{source.__module__}.{source.__name__}"
+
+
 def generate_configuration_schema(source: type) -> type[ConfigurationSchema]:
     """
     Generate a configuration schema for a class or Pydantic model.
