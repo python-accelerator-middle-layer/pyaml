@@ -1,17 +1,13 @@
 from ..common.element_holder import ElementHolder
-from .array import ArrayConfig, ArrayConfigModel
+from ..validation import DynamicValidation, register_schema
+from .array import ArrayConfig
 
 # Define the main class name for this module
 PYAMLCLASS = "CombinedFunctionMagnet"
 
 
-class ConfigModel(ArrayConfigModel):
-    """Configuration model for Combined Function Magnet array."""
-
-    ...
-
-
-class CombinedFunctionMagnet(ArrayConfig):
+@register_schema
+class CombinedFunctionMagnet(ArrayConfig, DynamicValidation):
     """
     Combined function magnet array confirguration
 
@@ -28,8 +24,8 @@ class CombinedFunctionMagnet(ArrayConfig):
                    )
     """
 
-    def __init__(self, cfg: ArrayConfigModel):
-        super().__init__(cfg)
+    def __init__(self, name: str, elements: list[str]):
+        super().__init__(name, elements)
 
     def fill_array(self, holder: ElementHolder):
         """
@@ -40,4 +36,4 @@ class CombinedFunctionMagnet(ArrayConfig):
         holder : ElementHolder
             The element holder to populate with combined function magnet array
         """
-        holder.fill_cfm_magnet_array(self._cfg.name, self._cfg.elements)
+        holder.fill_cfm_magnet_array(self._name, self._elements)

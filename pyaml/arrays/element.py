@@ -1,15 +1,13 @@
 from ..common.element_holder import ElementHolder
-from .array import ArrayConfig, ArrayConfigModel
+from ..validation import DynamicValidation, register_schema
+from .array import ArrayConfig
 
 # Define the main class name for this module
 PYAMLCLASS = "Element"
 
 
-class ConfigModel(ArrayConfigModel):
-    """Configuration model for :py:class:`.ElementArray`."""
-
-
-class Element(ArrayConfig):
+@register_schema
+class Element(ArrayConfig, DynamicValidation):
     """
     :py:class:`.ElementArray` configuration.
 
@@ -29,8 +27,8 @@ class Element(ArrayConfig):
 
     """
 
-    def __init__(self, cfg: ArrayConfigModel):
-        super().__init__(cfg)
+    def __init__(self, name: str, elements: list[str]):
+        super().__init__(name, elements)
 
     def fill_array(self, holder: ElementHolder):
         """
@@ -54,4 +52,4 @@ class Element(ArrayConfig):
         holder : ElementHolder
             The element holder to populate with element array
         """
-        holder.fill_element_array(self._cfg.name, self._cfg.elements)
+        holder.fill_element_array(self._name, self._elements)
