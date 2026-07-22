@@ -20,6 +20,7 @@ Arrays:
     .
 
 Tools:
+    BBA-BPM_C04-04 (pyaml.tuning_tools.bba)
     CHROMATICITY_MONITOR (pyaml.tuning_tools.chromaticity_monitor)
     DEFAULT_CHROMATICITY_RESPONSE_MATRIX (pyaml.tuning_tools.chromaticity_response_matrix)
     DEFAULT_CHROMATICITY_CORRECTION (pyaml.tuning_tools.chromaticity)

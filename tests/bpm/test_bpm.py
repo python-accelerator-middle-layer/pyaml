@@ -7,10 +7,24 @@ from pyaml.accelerator import Accelerator
 def test_simulator_bpm_tilt():
     sr: Accelerator = Accelerator.load("tests/config/bpms.yaml", ignore_external=True)
     sr.design.get_lattice().disable_6d()
+    sr.design.get_magnet("SH1A-C01-H").strength.set(10e-6)  # Add orbit
+    sr.design.get_magnet("SH1A-C01-V").strength.set(10e-6)  # Add orbit
     bpm = sr.design.get_bpm("BPM_C01-01")
+    assert np.allclose(bpm.positions.get(), np.array([5.90809968e-05, 2.24832853e-05]))
     assert bpm.tilt.get() == 0
-    bpm.tilt.set(0.01)
-    assert bpm.tilt.get() == 0.01
+    alpha = np.pi / 3
+    bpm.tilt.set(alpha)
+    assert bpm.tilt.get() == alpha
+
+    new_x = 5.908792e-05 * np.cos(alpha) - 2.24832853e-05 * np.sin(alpha)
+    new_y = 5.908792e-05 * np.sin(alpha) + 2.24832853e-05 * np.cos(alpha)
+    assert np.allclose(bpm.positions.get(), np.array([new_x, new_y]))
+
+    alpha = np.pi / 2
+    bpm.tilt.set(alpha)
+    new_x = 5.908792e-05 * np.cos(alpha) - 2.24832853e-05 * np.sin(alpha)
+    new_y = 5.908792e-05 * np.sin(alpha) + 2.24832853e-05 * np.cos(alpha)
+    assert np.allclose(bpm.positions.get(), np.array([new_x, new_y]))
 
 
 def test_simulator_bpm_offset():
@@ -23,7 +37,7 @@ def test_simulator_bpm_offset():
     bpm.offset.set(np.array([0.1, 0.2]))
     assert bpm.offset.get()[0] == 0.1
     assert bpm.offset.get()[1] == 0.2
-    assert np.allclose(bpm.positions.get(), np.array([0.0, 0.0]))
+    assert np.allclose(bpm.positions.get(), np.array([0.1, 0.2]))
 
 
 @pytest.mark.parametrize(

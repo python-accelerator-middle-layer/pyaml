@@ -36,6 +36,18 @@ arrays:
     elements:
       - BPM*
 devices:
+- type: pyaml.tuning_tools.bba
+  name: BBA-BPM_C04-04
+  bpm_array_name: BPM
+  bpm_name : BPM_C04-04
+  hcorr_name : SF2E-C02-H
+  vcorr_name : SD1A-C26-V
+  quad_name : QF6B-C04
+  n_step: 7
+  hcorr_delta : 1e-05
+  vcorr_delta : 1e-05
+  hquad_delta : 0.005
+  vquad_delta : 0.005
 - type: pyaml.diagnostics.tune_monitor
   name: BETATRON_TUNE
   tune_h: srdiag/beam-tune/main/Qh
@@ -55,7 +67,7 @@ devices:
   name: DEFAULT_CHROMATICITY_CORRECTION
   chromaticty_monitor_name: CHROMATICITY_MONITOR
   sextu_array_name: Sext
-  response_matrix: file:ideal_chroma_resp.json
+  response_matrix: ${path:ideal_chroma_resp.json}
 - type: pyaml.tuning_tools.orbit
   bpm_array_name: BPM
   hcorr_array_name: HCorr
@@ -63,7 +75,7 @@ devices:
   rf_plant_name: RF
   name: DEFAULT_ORBIT_CORRECTION
   singular_values: 162
-  response_matrix: file:ideal_orm_disp.json
+  response_matrix: ${path:ideal_orm_disp.json}
 - type: pyaml.tuning_tools.orbit_response_matrix
   bpm_array_name: BPM
   hcorr_array_name: HCorr
@@ -85,6 +97,18 @@ devices:
       harmonic: 1
       distribution: 1
       voltage: sys/ringsimulator/ebs/RfVoltage
+- type: pyaml.magnet.quadrupole
+  name: QF6B-C04
+  model:
+    type: pyaml.magnet.linear_model
+    calibration_factor: 0.998960997
+    crosstalk: 0.99918
+    curve:
+      type: pyaml.magnet.csvcurve
+      file: sr/magnet_models/QF6_strength.csv
+    unit: 1/m
+    hardware_unit: A
+    powerconverter: srmag/vps-qf6/c04-b
 - type: pyaml.magnet.cfm_magnet
   name: SH1A-C04
   mapping:
