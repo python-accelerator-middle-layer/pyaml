@@ -7,7 +7,7 @@ devices:
   name: DEFAULT_TUNE_CORRECTION
   quad_array_name: qcorrectors
   betatron_tune_name: BETATRON_TUNE
-  response_matrix: file:trm.json
+  response_matrix: ${path:trm.json}
 - type: pyaml.tuning_tools.tune_response_matrix
   name: DEFAULT_TUNE_RESPONSE_MATRIX
   quad_array_name: qcorrectors
@@ -41,4 +41,4 @@ devices:
   vcorr_array_name: vcorrectors
   name: DEFAULT_ORBIT_CORRECTION
   singular_values: 16
-  response_matrix: file:orm.json
+  response_matrix: ${path:orm.json}
