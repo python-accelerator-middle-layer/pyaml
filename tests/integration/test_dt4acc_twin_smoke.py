@@ -185,7 +185,7 @@ def deactivated_test_orbit_correction(root_folder: Path, config_files: dict[str,
         simulator = DeviceProxy("simulator/ringsimulator/ringsimulator")
         try:
             print("Reset the simulator")
-            simulator.Reset()
+            simulator.Reinit()
             print("Reset done")
         except DevFailed:
             time.sleep(3)

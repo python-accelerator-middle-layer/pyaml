@@ -6,7 +6,7 @@ on:
       dt4acc_image_uri:
         description: "Apptainer ORAS image URI for the dt4acc twin"
         required: false
-        default: "oras://gitlab-registry.synchrotron-soleil.fr/software-control-system/digitaltwin/dt4acc/dt4acc-soleil-twin/dt4acc-soleil-twin:latest"
+        default: "oras://registry.synchrotron-soleil.fr/software_control_system_public/dt4acc-soleil-twin:latest"
   pull_request:
     branches: ["main"]
     paths:
@@ -29,7 +29,7 @@ jobs:
 
     env:
       TANGO_HOST: 127.0.0.1:10000
-      DT4ACC_IMAGE_URI: ${{ inputs.dt4acc_image_uri || 'oras://gitlab-registry.synchrotron-soleil.fr/software-control-system/digitaltwin/dt4acc/dt4acc-soleil-twin/dt4acc-soleil-twin:latest' }}
+      DT4ACC_IMAGE_URI: ${{ inputs.dt4acc_image_uri || 'oras://registry.synchrotron-soleil.fr/software_control_system_public/dt4acc-soleil-twin:latest' }}
       DT4ACC_REGISTRY_USER: ${{ secrets.DT4ACC_REGISTRY_USER }}
       DT4ACC_REGISTRY_PASSWORD: ${{ secrets.DT4ACC_REGISTRY_PASSWORD }}
 

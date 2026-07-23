@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -Eeuo pipefail
 
-DEFAULT_IMAGE_URI="oras://gitlab-registry.synchrotron-soleil.fr/software-control-system/digitaltwin/dt4acc/dt4acc-soleil-twin/dt4acc-soleil-twin:latest"
+DEFAULT_IMAGE_URI="oras://registry.synchrotron-soleil.fr/software_control_system_public/dt4acc-soleil-twin:latest"
 READY_PATTERN="Calculation heartbeat: simulator/ringsimulator/ringsimulator reachable"
 
 usage() {
@@ -269,6 +269,7 @@ trap cleanup INT TERM EXIT
 setsid env TANGO_HOST="${requested_tango_host}" apptainer run \
   "${bind_args[@]}" \
   "${image_ref}" \
+  tango-db-embedded \
   --force-kill-db \
   --tango-host "${requested_tango_host}" \
   --accelerator-setup-file "${accelerator_setup_container}" \
