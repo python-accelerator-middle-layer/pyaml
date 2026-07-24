@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>rf_plant &#8212; Python Accelerator Middle Layer 0.1.dev1+ged3f6b520 documentation</title>
+    <title>rf_plant &#8212; Python Accelerator Middle Layer 0.1.dev1+gac22eaf8a documentation</title>
   
   
   
@@ -42,7 +42,7 @@
   <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=90905a2f556bf617f1a9" />
 <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=90905a2f556bf617f1a9" />
 
-    <script src="../_static/documentation_options.js?v=b1b98662"></script>
+    <script src="../_static/documentation_options.js?v=f34bf896"></script>
     <script src="../_static/doctools.js?v=9bcbadda"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -128,8 +128,8 @@
       
     
     
-    <img src="../_static/logo.png" class="logo__image only-light" alt="Python Accelerator Middle Layer 0.1.dev1+ged3f6b520 documentation - Home"/>
-    <img src="../_static/dark.png" class="logo__image only-dark pst-js-only" alt="Python Accelerator Middle Layer 0.1.dev1+ged3f6b520 documentation - Home"/>
+    <img src="../_static/logo.png" class="logo__image only-light" alt="Python Accelerator Middle Layer 0.1.dev1+gac22eaf8a documentation - Home"/>
+    <img src="../_static/dark.png" class="logo__image only-dark pst-js-only" alt="Python Accelerator Middle Layer 0.1.dev1+gac22eaf8a documentation - Home"/>
   
   
 </a></div>
@@ -526,36 +526,18 @@
   <section id="module-pyaml.rf.rf_plant">
 <span id="rf-plant"></span><h1>rf_plant<a class="headerlink" href="#module-pyaml.rf.rf_plant" title="Link to this heading">#</a></h1>
 <dl class="py class">
-<dt class="sig sig-object py" id="pyaml.rf.rf_plant.ConfigModel">
-<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ConfigModel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">description</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lattice_names</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">masterclock</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">transmitters</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/rf/rf_plant.html#ConfigModel"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.rf.rf_plant.ConfigModel" title="Link to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference internal" href="pyaml.common.element.html#pyaml.common.element.ElementConfigModel" title="pyaml.common.element.ElementConfigModel"><code class="xref py py-class docutils literal notranslate"><span class="pre">ElementConfigModel</span></code></a></p>
-<p>Create a new model by parsing and validating input data from keyword arguments.</p>
-<p>Raises [<cite>ValidationError</cite>][pydantic_core.ValidationError] if the input data cannot be
-validated to form a valid model.</p>
-<p><cite>self</cite> is explicitly positional-only to allow <cite>self</cite> as a field name.</p>
-<dl class="field-list simple">
-</dl>
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pyaml.rf.rf_plant.ConfigModel.masterclock">
-<span class="sig-name descname"><span class="pre">masterclock</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></em><a class="headerlink" href="#pyaml.rf.rf_plant.ConfigModel.masterclock" title="Link to this definition">#</a></dt>
-<dd><p>Device to apply main RF frequency</p>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pyaml.rf.rf_plant.ConfigModel.transmitters">
-<span class="sig-name descname"><span class="pre">transmitters</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.14)"><span class="pre">list</span></a><span class="p"><span class="pre">[</span></span><a class="reference internal" href="pyaml.rf.rf_transmitter.html#pyaml.rf.rf_transmitter.RFTransmitter" title="pyaml.rf.rf_transmitter.RFTransmitter"><span class="pre">RFTransmitter</span></a><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></em><a class="headerlink" href="#pyaml.rf.rf_plant.ConfigModel.transmitters" title="Link to this definition">#</a></dt>
-<dd><p>List of RF trasnmitters</p>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="py class">
 <dt class="sig sig-object py" id="pyaml.rf.rf_plant.RFPlant">
-<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">RFPlant</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cfg</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/rf/rf_plant.html#RFPlant"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.rf.rf_plant.RFPlant" title="Link to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference internal" href="pyaml.common.element.html#pyaml.common.element.Element" title="pyaml.common.element.Element"><code class="xref py py-class docutils literal notranslate"><span class="pre">Element</span></code></a></p>
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">RFPlant</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/rf/rf_plant.html#RFPlant"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.rf.rf_plant.RFPlant" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="pyaml.common.element.html#pyaml.common.element.Element" title="pyaml.common.element.Element"><code class="xref py py-class docutils literal notranslate"><span class="pre">Element</span></code></a>, <code class="xref py py-class docutils literal notranslate"><span class="pre">DynamicValidation</span></code></p>
 <p>Main RF object</p>
 <dl class="field-list simple">
 </dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyaml.rf.rf_plant.RFPlant.validation_model">
+<span class="sig-name descname"><span class="pre">validation_model</span></span><a class="headerlink" href="#pyaml.rf.rf_plant.RFPlant.validation_model" title="Link to this definition">#</a></dt>
+<dd><p>alias of <code class="xref py py-class docutils literal notranslate"><span class="pre">RFPlantValidationModel</span></code></p>
+</dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="pyaml.rf.rf_plant.RFPlant.attach">
 <span class="sig-name descname"><span class="pre">attach</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">peer</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">frequency</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">voltage</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/rf/rf_plant.html#RFPlant.attach"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.rf.rf_plant.RFPlant.attach" title="Link to this definition">#</a></dt>
@@ -668,12 +650,8 @@ validated to form a valid model.</p>
   </div>
   <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="pst-show_toc_level nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.rf.rf_plant.ConfigModel"><code class="docutils literal notranslate"><span class="pre">ConfigModel</span></code></a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.rf.rf_plant.ConfigModel.masterclock"><code class="docutils literal notranslate"><span class="pre">ConfigModel.masterclock</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.rf.rf_plant.ConfigModel.transmitters"><code class="docutils literal notranslate"><span class="pre">ConfigModel.transmitters</span></code></a></li>
-</ul>
-</li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.rf.rf_plant.RFPlant"><code class="docutils literal notranslate"><span class="pre">RFPlant</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.rf.rf_plant.RFPlant.validation_model"><code class="docutils literal notranslate"><span class="pre">RFPlant.validation_model</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.rf.rf_plant.RFPlant.attach"><code class="docutils literal notranslate"><span class="pre">RFPlant.attach()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.rf.rf_plant.RFPlant.frequency"><code class="docutils literal notranslate"><span class="pre">RFPlant.frequency</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.rf.rf_plant.RFPlant.voltage"><code class="docutils literal notranslate"><span class="pre">RFPlant.voltage</span></code></a></li>
