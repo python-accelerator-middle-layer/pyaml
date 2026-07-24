@@ -171,7 +171,7 @@ def resolve_path(value: str, _context: LoadContext | None = None) -> str:
 
 
 @resolver("file")
-def resolve_file(value: str, context: LoadContext) -> Any:
+def resolve_file(value: str, context: LoadContext | None = None) -> Any:
     """Load and return the contents of a configuration file.
 
     Args:
