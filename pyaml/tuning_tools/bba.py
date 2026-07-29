@@ -148,6 +148,7 @@ class BBA(MeasurementTool):
             bipolar=False,
             skip_save=True,
             plane=plane,
+            live_ios=True,
         )
 
         pySC.disable_pySC_rich()
@@ -162,13 +163,30 @@ class BBA(MeasurementTool):
             self.latest_measurement["HData"] = None
             self.latest_measurement["VData"] = None
             for code, measurement_object in generator:
-                if code == BBACode.HORIZONTAL:
-                    self.send_callback(Action.MEASURE, {"step": hstep, "plane": "H", "bba_data": measurement_object.H_data})
+                if code == BBACode.HORIZONTAL_IOS_READY:
+                    self.send_callback(
+                        Action.MEASURE,
+                        {
+                            "step": hstep,
+                            "plane": "H",
+                            "bpm_pos": measurement_object.last_bpm_pos,
+                            "ios": measurement_object.last_ios,
+                            "bba_data": measurement_object.H_data,
+                        },
+                    )
                     hstep += 1
-                if code == BBACode.VERTICAL:
-                    self.send_callback(Action.MEASURE, {"step": vstep, "plane": "V", "bba_data": measurement_object.V_data})
+                if code == BBACode.VERTICAL_IOS_READY:
+                    self.send_callback(
+                        Action.MEASURE,
+                        {
+                            "step": vstep,
+                            "plane": "V",
+                            "bpm_pos": measurement_object.last_bpm_pos,
+                            "ios": measurement_object.last_ios,
+                            "bba_data": measurement_object.V_data,
+                        },
+                    )
                     vstep += 1
-
                 if code == BBACode.HORIZONTAL_DONE:
                     result = BBAAnalysis.analyze(measurement_object.H_data)
                     self.latest_measurement["HData"] = result
