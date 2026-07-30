@@ -138,6 +138,7 @@ class BBA(MeasurementTool):
         }
 
         # logging.getLogger("pySC.apps.measurements").setLevel(logging.DEBUG)
+        # logging.getLogger("pySC.apps.bba").setLevel(logging.DEBUG)
 
         generator = measure_bba(
             interface=interface,
