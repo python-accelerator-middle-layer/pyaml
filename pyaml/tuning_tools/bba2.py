@@ -244,9 +244,9 @@ class BBA2(MeasurementTool):
         aborted = False
         err = None
 
-        print(f"Initial H corrector value: {self._initial_k0[0]} rad")
-        print(f"Initial V corrector value: {self._initial_k0[1]} rad")
-        print(f"Initial quad value: {self._initial_k1} m-1")
+        logger.debug(f"Initial H corrector value: {self._initial_k0[0]} rad")
+        logger.debug(f"Initial V corrector value: {self._initial_k0[1]} rad")
+        logger.debug(f"Initial quad value: {self._initial_k1} m-1")
 
         try:
             self._register_callback(callback)
@@ -276,13 +276,13 @@ class BBA2(MeasurementTool):
                     stx -= dk0h
                     sty -= dk0v
                     _to = f"{stx},{sty}"
-                    print(f"Moving in the negative direction: {_from} -> {_to}")
+                    logger.debug(f"Moving in the negative direction: {_from} -> {_to}")
 
                 if ist == 1:
                     stx += 2 * dk0h
                     sty += 2 * dk0v
                     _to = f"{stx},{sty}"
-                    print(f"Moving in the positive direction: {_from} -> {_to}")
+                    logger.debug(f"Moving in the positive direction: {_from} -> {_to}")
 
                 if ist == 2:
                     xx = np.linalg.solve(np.array([[stepsx[-2], 1], [stepsx[-1], 1]]), np.array(kx[-2:]))
@@ -294,7 +294,7 @@ class BBA2(MeasurementTool):
                     if stepsx[-2] <= stx <= stepsx[-1] and stepsy[-2] <= sty <= stepsy[-1]:
                         opt_found = True
                     _to = f"{stx},{sty}"
-                    print(f"Moving to the best guess: {_from} -> {_to}")
+                    logger.debug(f"Moving to the best guess: {_from} -> {_to}")
 
                 step = [stx, sty]
                 x, dkx, y, dky, sx2, sy2, dataxbpm, dataybpm = self._one_step_dk(step, dk1)
