@@ -31,6 +31,8 @@ class ConfigModel(MeasurementToolConfigModel):
         Vertical corrector used to make a deviation in the quad
     quad_name : str
         Quadrupole used to find the center
+    tune_correction_name: str
+        Tune tuning tool
     hcorr_delta : float
         Horizontal corrector delta strength
     vcorr_delta : float
@@ -46,9 +48,45 @@ class ConfigModel(MeasurementToolConfigModel):
     hcorr_name: str
     vcorr_name: str
     quad_name: str
+    tune_correction_name: str
     hcorr_delta: float
     vcorr_delta: float
     quad_delta: float
+
+
+class BBAData:
+    def __init__(self):
+        self.k = []  # Quadrupole kick
+        self.bpm_pos = []  # BPM#i position
+        self.allbpm_pos = []  # IOS (Induced Orbit Shift)
+        self.rms = []  # RMS
+        self.steps = []  # steerer step
+
+        self.offset = np.nan
+        self.error = np.nan
+
+    def append(self, st, dk, bpm, allbpm, rms):
+        # Append new dataset
+        self.steps.append(st)
+        self.k.append(dk)
+        self.bpm_pos.append(bpm)
+        self.allbpm_pos.append(allbpm)
+        self.rms.append(rms)
+
+    def sort(self):
+        # Sort data according to step
+        indices = range(len(self.steps))
+        sindices = [a for _, a in sorted(zip(self.steps, indices, strict=True))]
+        self.steps = [self.steps[i] for i in sindices]
+        self.k = [self.k[i] for i in sindices]
+        self.bpm_pos = [self.bpm_pos[i] for i in sindices]
+        self.allbpm_pos = [self.allbpm_pos[i] for i in sindices]
+        self.rms = [self.rms[i] for i in sindices]
+
+    def update_offset(self):
+        # Update offset value
+        self.offset = self.bpm_pos[-1]
+        self.error = np.sqrt(self.rms[-1])
 
 
 class BBA2(MeasurementTool):
@@ -56,14 +94,14 @@ class BBA2(MeasurementTool):
         super().__init__(cfg.name)
         self._cfg = cfg
 
-    def _sort_x_vs_y(self, x1, x2, x3, x4, y):
-        x1s = [a for _, a in sorted(zip(y, x1, strict=True))]
-        x2s = [a for _, a in sorted(zip(y, x2, strict=True))]
-        x3s = [a for _, a in sorted(zip(y, x3, strict=True))]
-        x4s = [a for _, a in sorted(zip(y, x4, strict=True))]
-        return x1s, x2s, x3s, x4s
+    @staticmethod
+    def _intersect_yzero(x, k, n):
+        # Linear fit on last n points
+        xx = np.polynomial.polynomial.polyfit(x[-n:], k[-n:], 1)
+        # y=0 intesection
+        return -xx[0] / xx[1]
 
-    def _quad_response(self, bpmname: str, quadname: str, dk0=1e-5):
+    def _quad_response(self, tunename: str, bpmname: str, quadname: str, dk0=1e-5):
         # Return normalized response of a dipolar kick in a quad from the model
 
         # Retrieve model handle
@@ -72,6 +110,16 @@ class BBA2(MeasurementTool):
         # handles
         quad = design.get_magnet(quadname)
         orbit = design.get_bpms(bpmname).positions
+        tune_design = design.get_tune_tuning(tunename)
+        tune_live = self._peer.get_tune_tuning(tunename)
+
+        # Get tune from live and adjust the model to improve quad response phase
+        tune0 = tune_design.readback()
+        tune = tune_live.readback()
+        logger.debug(f"Live tune: {tune}")
+        logger.debug(f"Model tune: {tune0}")
+        tune_design.set(tune)
+
         a0 = quad.strength.get("PolynomA", 0)
         b0 = quad.strength.get("PolynomB", 0)
         step = [-dk0, 0, dk0]
@@ -97,11 +145,16 @@ class BBA2(MeasurementTool):
         fit = np.polynomial.polynomial.polyfit(step, orby, 1)
         ref_ios_y = fit[1]
 
+        # Restore tune
+        tune_design.set(tune0)
+
         ref = np.array([ref_ios_x, ref_ios_y]).T
 
         return ref
 
     def _fit_kick(self, meas, ref, mask):
+        # Correlate measured ios and theoretical one
+
         xy = np.multiply(meas[mask], ref[mask])
         xx = np.multiply(ref[mask], ref[mask])
         if sum(xx) == 0:
@@ -110,6 +163,8 @@ class BBA2(MeasurementTool):
             return sum(xy) / sum(xx)
 
     def _get_averaged_orbit(self):
+        # Get averaged orbit
+
         avgorb = np.zeros((len(self._bpms), 2))
         for avg in range(self._nb_meas):
             o = self._bpms.positions.get()
@@ -121,6 +176,8 @@ class BBA2(MeasurementTool):
         return avgorb
 
     def _one_step_dk(self, dk0, dk1):
+        # Measrue IOS
+
         if any(abs(dk) > 200e-6 for dk in dk0):
             raise PyAMLException("Requested dk too high (>200urad), consider using bump")
 
@@ -155,7 +212,7 @@ class BBA2(MeasurementTool):
             time.sleep(self._sleep_step)
             orbm = self._get_averaged_orbit()
             # take slopes and compute corresponding delta orbit
-            stepx = [-self._dk1 * self._quad_polarity, 0, self._dk1 * self._quad_polarity]
+            stepx = [-dk1 * self._quad_polarity, 0, dk1 * self._quad_polarity]
             orbx = [orbm[:, 0], orb0[:, 0], orbp[:, 0]]
             fit = np.polynomial.polynomial.polyfit(stepx, orbx, 1)
             ios_x = fit[1] * dk1
@@ -236,11 +293,13 @@ class BBA2(MeasurementTool):
         self._initial_k1 = self._quad.strength.get()
         self._quad_polarity = np.sign(self._initial_k1)
 
-        self._ref_ios = self._quad_response(self._cfg.bpm_array_name, self._cfg.quad_name)
+        self._ref_ios = self._quad_response(self._cfg.tune_correction_name, self._cfg.bpm_array_name, self._cfg.quad_name)
 
         dk0h = self._cfg.hcorr_delta if plane is None or plane == "H" else 0
         dk0v = self._cfg.vcorr_delta if plane is None or plane == "V" else 0
         dk1 = self._cfg.quad_delta
+        doH = dk0h != 0
+        doV = dk0v != 0
         aborted = False
         err = None
 
@@ -253,17 +312,9 @@ class BBA2(MeasurementTool):
             self._init_measure()
             self.latest_measurement["HData"] = None
             self.latest_measurement["VData"] = None
+            X = BBAData()
+            Y = BBAData()
 
-            kx = []
-            bpm_posx = []
-            allbpm_posx = []
-            stdx = []
-            ky = []
-            bpm_posy = []
-            allbpm_posy = []
-            stdy = []
-            stepsx = []
-            stepsy = []
             opt_found = False
             self._step = 0
             stx = 0
@@ -285,91 +336,59 @@ class BBA2(MeasurementTool):
                     logger.debug(f"Moving in the positive direction: {_from} -> {_to}")
 
                 if ist == 2:
-                    xx = np.linalg.solve(np.array([[stepsx[-2], 1], [stepsx[-1], 1]]), np.array(kx[-2:]))
-                    guessx = -xx[1] / xx[0]
-                    yy = np.linalg.solve(np.array([[stepsy[-2], 1], [stepsy[-1], 1]]), np.array(ky[-2:]))
-                    guessy = -yy[1] / yy[0]
-                    stx = guessx
-                    sty = guessy
-                    if stepsx[-2] <= stx <= stepsx[-1] and stepsy[-2] <= sty <= stepsy[-1]:
-                        opt_found = True
+                    H_found = False
+                    V_found = False
+
+                    if doH:
+                        stx = BBA2._intersect_yzero(X.steps, X.k, 2)
+                        H_found = X.steps[-2] <= stx <= X.steps[-1]  # don't rely on extrapolation
+                    if doV:
+                        sty = BBA2._intersect_yzero(Y.steps, Y.k, 2)
+                        V_found = Y.steps[-2] <= sty <= Y.steps[-1]  # don't rely on extrapolation
+
+                    opt_found = (
+                        doH and not doV and H_found or not doH and doV and V_found or doH and doV and H_found and V_found
+                    )
+
                     _to = f"{stx},{sty}"
                     logger.debug(f"Moving to the best guess: {_from} -> {_to}")
 
-                step = [stx, sty]
-                x, dkx, y, dky, sx2, sy2, dataxbpm, dataybpm = self._one_step_dk(step, dk1)
-                stepsx.append(stx)
-                kx.append(dkx)
-                bpm_posx.append(x)
-                allbpm_posx.append(dataxbpm)
-                stdx.append(sx2)
+                x, dkx, y, dky, sx2, sy2, dataxbpm, dataybpm = self._one_step_dk([stx, sty], dk1)
+                X.append(stx, dkx, x, dataxbpm, sx2)
+                Y.append(sty, dky, y, dataybpm, sy2)
 
-                stepsy.append(sty)
-                ky.append(dky)
-                bpm_posy.append(y)
-                allbpm_posy.append(dataybpm)
-                stdy.append(sy2)
-
-                if np.fabs(dk0h) > 0:
+                if doH:
                     self.send_callback(Action.MEASURE, {"step": self._step, "plane": "H", "bpm_pos": x, "ios": dataxbpm})
 
-                if np.fabs(dk0v) > 0:
+                if doV:
                     self.send_callback(Action.MEASURE, {"step": self._step, "plane": "V", "bpm_pos": y, "ios": dataybpm})
 
                 self._step += 1
 
             # Final step
 
-            sx = [x for _, x in sorted(zip(kx, stepsx, strict=True))][:3]
-            sy = [x for _, x in sorted(zip(ky, stepsy, strict=True))][:3]
-            kxs = np.sort(kx)[:3]
-            kys = np.sort(ky)[:3]
-            yy = np.polyfit(sy, kys, 1)
-            xx = np.polyfit(sx, kxs, 1)
-            optx = -xx[1] / xx[0]
-            opty = -yy[1] / yy[0]
-            stx = optx
-            sty = opty
+            if doH:
+                stx = BBA2._intersect_yzero(X.steps, X.k, 3)
+
+            if doV:
+                sty = BBA2._intersect_yzero(Y.steps, Y.k, 3)
+
             _to = f"{stx},{sty}"
-            print(f"Moving to the optimum: {_to}")
+            logger.debug(f"Moving to the optimum: {_to}")
 
-            step = [stx, sty]
-            x, dkx, y, dky, sx2, sy2, dataxbpm, dataybpm = self._one_step_dk(step, dk1)
-            stepsx.append(stx)
-            kx.append(dkx)
-            bpm_posx.append(x)
-            allbpm_posx.append(dataxbpm)
-            stdx.append(sx2)
+            x, dkx, y, dky, sx2, sy2, dataxbpm, dataybpm = self._one_step_dk([stx, sty], dk1)
+            X.append(stx, dkx, x, dataxbpm, sx2)
+            Y.append(sty, dky, y, dataybpm, sy2)
 
-            stepsy.append(sty)
-            ky.append(dky)
-            bpm_posy.append(y)
-            allbpm_posy.append(dataybpm)
-            stdy.append(sy2)
+            if doH:
+                X.update_offset()
+                X.sort()
+                self.latest_measurement["HData"] = X
 
-            kx, bpm_posx, stdx, allbpm_posx = self._sort_x_vs_y(kx, bpm_posx, stdx, allbpm_posx, stepsx)
-            ky, bpm_posy, stdy, allbpm_posy = self._sort_x_vs_y(ky, bpm_posy, stdy, allbpm_posy, stepsy)
-            stepsx = list(np.sort(stepsx))
-            stepsy = list(np.sort(stepsy))
-
-            self.latest_measurement["HData"] = {
-                "steps": stepsx,
-                "bpm_pos": bpm_posx,
-                "allbpm_pos": allbpm_posx,
-                "k": kx,
-                "std": stdx,
-                "offset": x,
-                "offset_error": np.sqrt(sx2),
-            }
-            self.latest_measurement["VData"] = {
-                "steps": stepsy,
-                "bpm_pos": bpm_posy,
-                "allbpm_pos": allbpm_posy,
-                "k": ky,
-                "std": stdy,
-                "offset": y,
-                "offset_error": np.sqrt(sy2),
-            }
+            if doV:
+                Y.update_offset()
+                Y.sort()
+                self.latest_measurement["VData"] = Y
 
         except Exception as ex:
             err = ex
@@ -377,9 +396,9 @@ class BBA2(MeasurementTool):
             aborted = True
         finally:
             # Restore steerer/quad strength
-            if dk0h > 0:
+            if doH:
                 self._h_steer.strength.set(self._initial_k0[0])
-            if dk0v > 0:
+            if doV:
                 self._v_steer.strength.set(self._initial_k0[1])
             self._quad.strength.set(self._initial_k1)
             self.send_callback(
@@ -398,13 +417,13 @@ class BBA2(MeasurementTool):
         return True
 
     def h_offset(self) -> float:
-        return self.latest_measurement["HData"]["offset"] if self.latest_measurement["HData"] is not None else np.nan
+        return self.latest_measurement["HData"].offset if self.latest_measurement["HData"] is not None else np.nan
 
     def h_offset_error(self) -> float:
-        return self.latest_measurement["HData"]["offset_error"] if self.latest_measurement["HData"] is not None else np.nan
+        return self.latest_measurement["HData"].error if self.latest_measurement["HData"] is not None else np.nan
 
     def v_offset(self) -> float:
-        return self.latest_measurement["VData"]["offset"] if self.latest_measurement["VData"] is not None else np.nan
+        return self.latest_measurement["VData"].offset if self.latest_measurement["VData"] is not None else np.nan
 
     def v_offset_error(self) -> float:
-        return self.latest_measurement["VData"]["offset_error"] if self.latest_measurement["VData"] is not None else np.nan
+        return self.latest_measurement["VData"].error if self.latest_measurement["VData"] is not None else np.nan
