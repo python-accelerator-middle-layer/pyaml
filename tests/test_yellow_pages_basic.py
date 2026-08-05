@@ -17,6 +17,7 @@ Arrays:
     VCorr                 (pyaml.arrays.magnet_array)             size=288
     Skews                 (pyaml.arrays.magnet_array)             size=288
     Sext                  (pyaml.arrays.magnet_array)             size=180
+    QForTune              (pyaml.arrays.magnet_array)             size=124
     .
 
 Tools:
