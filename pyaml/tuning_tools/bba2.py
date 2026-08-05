@@ -60,24 +60,25 @@ class BBAData:
         self.k = []  # Fitted kick
         self.bpm_pos = []  # BPM#i position
         self.allbpm_pos = []  # IOS (Induced Orbit Shift)
-        self.rms = []  # RMS
+        self.s2 = []  # sum of square
         self.steps = []  # steerer step
+        self.lastfit = []  # Last linear fit
 
         self.offset = np.nan
         self.error = np.nan
 
-    def append(self, st, dk, bpm, allbpm, rms):
+    def append(self, st, dk, bpm, allbpm):
         # Append new dataset
         self.steps.append(st)
         self.k.append(dk)
         self.bpm_pos.append(bpm)
         self.allbpm_pos.append(allbpm)
-        self.rms.append(rms)
 
-    def update_offset(self):
+    def update_offset(self, x, error, fit):
         # Update offset value
-        self.offset = self.bpm_pos[-1]
-        self.error = np.sqrt(self.rms[-1])
+        self.offset = x
+        self.error = error
+        self.lastfit = fit
 
 
 class BBA2(MeasurementTool):
@@ -90,17 +91,34 @@ class BBA2(MeasurementTool):
         # Linear fit on last n points
         # x is not necessary ordered
         xx = np.polynomial.polynomial.polyfit(x[-n:], k[-n:], 1)
-        # return x @y=0
-        return (-xx[0] / xx[1], xx)
+        err = 0
+        if n > 2:
+            # Compute error on the ratio -xx[0] / xx[1]
+            X = np.polynomial.polynomial.polyvander(x[-n:], 1)
+            R = k[-n:] - X @ xx
+            S2 = np.sum(R**2) / float(n - 2)
+            COV = S2 * np.linalg.inv(X.T @ X)
+            J = [1 / xx[1], -xx[0] / xx[1] ** 2]
+            err = np.sqrt(J @ COV @ J)
 
-    def _quad_response(self, tunename: str, bpmname: str, quadname: str, dk0=1e-5):
-        # Return normalized response of a dipolar kick in a quad from the model
+        # return x @y=0
+        return (-xx[0] / xx[1], xx, err)
+
+    def _init_responses(
+        self, tunename: str, bpmname: str, quadname: str, steererhname: str, steerervname: str, bpmi: int, dk0=1e-5
+    ):
+        # Return:
+        #   normalized response of a dipolar kick in a quad from the model (all bpms)
+        #   normalized response of horizontal steerer from the model at bpm #i
+        #   normalized response of vertical steerer from the model at bpm #i
 
         # Retrieve model handle
         design = self.peer.peer.design
 
         # handles
         quad = design.get_magnet(quadname)
+        sth = design.get_magnet(steererhname)
+        stv = design.get_magnet(steerervname)
         orbit = design.get_bpms(bpmname).positions
         tune_design = design.get_tune_tuning(tunename)
         tune_live = self._peer.get_tune_tuning(tunename)
@@ -113,6 +131,7 @@ class BBA2(MeasurementTool):
         tune_design.set(tune)
         logger.debug(f"Model tune: {tune_design.readback()}")
 
+        # quadrupole
         a0 = quad.strength.get("PolynomA", 0)
         b0 = quad.strength.get("PolynomB", 0)
         step = [-dk0, 0, dk0]
@@ -138,12 +157,37 @@ class BBA2(MeasurementTool):
         fit = np.polynomial.polynomial.polyfit(step, orby, 1)
         ref_ios_y = fit[1]
 
+        # steerers
+        a0 = sth.strength.get()
+        b0 = stv.strength.get()
+        step = [-dk0, 0, dk0]
+
+        orb0 = orbit.get()
+        sth.strength.set(b0 - dk0)
+        orbm = orbit.get()
+        sth.strength.set(b0 + dk0)
+        orbp = orbit.get()
+        sth.strength.set(b0)
+
+        orbx = [orbm[bpmi, 0], orb0[bpmi, 0], orbp[bpmi, 0]]
+        fit = np.polynomial.polynomial.polyfit(step, orbx, 1)
+        bpm_fact_x = fit[1]
+
+        stv.strength.set(a0 - dk0)
+        orbm = orbit.get()
+        stv.strength.set(a0 + dk0)
+        orbp = orbit.get()
+        stv.strength.set(a0)
+
+        orby = [orbm[bpmi, 1], orb0[bpmi, 1], orbp[bpmi, 1]]
+        fit = np.polynomial.polynomial.polyfit(step, orby, 1)
+        bpm_fact_y = fit[1]
+
         # Restore tune
         tune_design.set(tune0)
 
         ref = np.array([ref_ios_x, ref_ios_y]).T
-
-        return ref
+        return ref, bpm_fact_x, bpm_fact_y
 
     def _fit_kick(self, meas, ref, mask):
         # Correlate measured ios and theoretical one
@@ -224,15 +268,13 @@ class BBA2(MeasurementTool):
 
         nanx = ~np.isnan(ios_x)
         x = orb0[self._bpmi, 0]
-        sx2 = np.sum(np.square(ios_x[nanx]))
         dkx = self._fit_kick(ios_x, self._ref_ios[:, 0], nanx)
 
         nany = ~np.isnan(ios_y)
         y = orb0[self._bpmi, 1]
-        sy2 = np.sum(np.square(ios_y[nany]))
         dky = self._fit_kick(ios_y, self._ref_ios[:, 1], nany)
 
-        return x, dkx, y, dky, sx2, sy2, ios_x, ios_y
+        return x, dkx, y, dky, ios_x, ios_y
 
     def measure(
         self,
@@ -300,7 +342,14 @@ class BBA2(MeasurementTool):
         self._initial_k1 = self._quad.strength.get()
         self._quad_polarity = np.sign(self._initial_k1)
 
-        self._ref_ios = self._quad_response(self._cfg.tune_correction_name, self._cfg.bpm_array_name, self._cfg.quad_name)
+        self._ref_ios, fx, fy = self._init_responses(
+            self._cfg.tune_correction_name,
+            self._cfg.bpm_array_name,
+            self._cfg.quad_name,
+            self._cfg.hcorr_name,
+            self._cfg.vcorr_name,
+            self._bpmi,
+        )
 
         dk0h = self._cfg.hcorr_delta if plane is None or plane == "H" else 0
         dk0v = self._cfg.vcorr_delta if plane is None or plane == "V" else 0
@@ -347,10 +396,10 @@ class BBA2(MeasurementTool):
                     V_found = False
 
                     if doH:
-                        stx, _ = BBA2._x_intercept(X.steps, X.k, 2)
+                        stx, _, _ = BBA2._x_intercept(X.steps, X.k, 2)
                         H_found = X.steps[-2] <= stx <= X.steps[-1]  # don't rely on extrapolation
                     if doV:
-                        sty, _ = BBA2._x_intercept(Y.steps, Y.k, 2)
+                        sty, _, _ = BBA2._x_intercept(Y.steps, Y.k, 2)
                         V_found = Y.steps[-2] <= sty <= Y.steps[-1]  # don't rely on extrapolation
 
                     opt_found = (
@@ -360,9 +409,9 @@ class BBA2(MeasurementTool):
                     _to = f"{stx},{sty}"
                     logger.debug(f"Moving to the best guess: {_from} -> {_to}")
 
-                x, dkx, y, dky, sx2, sy2, dataxbpm, dataybpm = self._one_step_dk([stx, sty], dk1)
-                X.append(stx, dkx, x, dataxbpm, sx2)
-                Y.append(sty, dky, y, dataybpm, sy2)
+                x, dkx, y, dky, dataxbpm, dataybpm = self._one_step_dk([stx, sty], dk1)
+                X.append(stx, dkx, x, dataxbpm)
+                Y.append(sty, dky, y, dataybpm)
 
                 if doH:
                     self.send_callback(Action.MEASURE, {"step": self._step, "plane": "H", "bpm_pos": x, "ios": dataxbpm})
@@ -375,26 +424,24 @@ class BBA2(MeasurementTool):
             # Final step
 
             if doH:
-                stx, lxfit = BBA2._x_intercept(X.steps, X.k, 3)
+                stx, lxfit, errx = BBA2._x_intercept(X.steps, X.k, 3)
 
             if doV:
-                sty, lyfit = BBA2._x_intercept(Y.steps, Y.k, 3)
+                sty, lyfit, erry = BBA2._x_intercept(Y.steps, Y.k, 3)
 
             _to = f"{stx},{sty}"
             logger.debug(f"Moving to the optimum: {_to}")
 
-            x, dkx, y, dky, sx2, sy2, dataxbpm, dataybpm = self._one_step_dk([stx, sty], dk1)
-            X.append(stx, dkx, x, dataxbpm, sx2)
-            Y.append(sty, dky, y, dataybpm, sy2)
+            x, dkx, y, dky, dataxbpm, dataybpm = self._one_step_dk([stx, sty], dk1)
+            X.append(stx, dkx, x, dataxbpm)
+            Y.append(sty, dky, y, dataybpm)
 
             if doH:
-                X.update_offset()
-                X.lastfit = lxfit
+                X.update_offset(x, errx * np.fabs(fx), lxfit)
                 self.latest_measurement["HData"] = X
 
             if doV:
-                Y.update_offset()
-                Y.lastfit = lyfit
+                Y.update_offset(y, erry * np.fabs(fy), lyfit)
                 self.latest_measurement["VData"] = Y
 
         except Exception as ex:
