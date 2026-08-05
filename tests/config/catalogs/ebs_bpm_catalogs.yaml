@@ -47,6 +47,18 @@
     attribute: srdiag/bpm/c04-04/SA_VPosition
     unit: m
 - type: tango.pyaml.static_catalog_entry
+  key: srdiag/bpm/c04-04/HOffset
+  device:
+    type: tango.pyaml.attribute
+    attribute: srdiag/bpm/c04-04/HOffset
+    unit: m
+- type: tango.pyaml.static_catalog_entry
+  key: srdiag/bpm/c04-04/VOffset
+  device:
+    type: tango.pyaml.attribute
+    attribute: srdiag/bpm/c04-04/VOffset
+    unit: m
+- type: tango.pyaml.static_catalog_entry
   key: srdiag/bpm/c04-05/SA_HPosition
   device:
     type: tango.pyaml.attribute_read_only

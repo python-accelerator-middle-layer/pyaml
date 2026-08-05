@@ -23,37 +23,37 @@ class RWHardwareScalar(abstract.ReadWriteFloatScalar):
     """
 
     def __init__(self, elements: list[at.Element], poly: PolynomInfo, model: MagnetModel):
-        self.__model = model
-        self.__elements = elements
-        self.__poly = [e.__getattribute__(poly.attName) for e in elements]
-        self.__sign = poly.sign
-        self.__polyIdx = poly.index
-        self.__length: float = 0.0
+        self._model = model
+        self._elements = elements
+        self._poly = [e.__getattribute__(poly.attName) for e in elements]
+        self._sign = poly.sign
+        self._polyIdx = poly.index
+        self._length: float = 0.0
         for e in elements:
-            self.__length += e.Length
+            self._length += e.Length
 
     def get_length(self) -> float:
-        return self.__length
+        return self._length
 
     def get(self) -> float:
         s = 0
-        for idx, e in enumerate(self.__elements):
-            s += self.__poly[idx][self.__polyIdx] * self.__sign * e.Length
-        return self.__model.compute_hardware_values([s])[0]
+        for idx, e in enumerate(self._elements):
+            s += self._poly[idx][self._polyIdx] * self._sign * e.Length
+        return self._model.compute_hardware_values([s])[0]
 
     def set(self, value: float):
-        s = self.__model.compute_strengths([value])[0]
-        for idx, _ in enumerate(self.__elements):
-            self.__poly[idx][self.__polyIdx] = s / (self.__length * self.__sign)
+        s = self._model.compute_strengths([value])[0]
+        for idx, _ in enumerate(self._elements):
+            self._poly[idx][self._polyIdx] = s / (self._length * self._sign)
 
     def set_and_wait(self, value: float):
         raise NotImplementedError("Not implemented yet.")
 
     def unit(self) -> str:
-        return self.__model.get_hardware_units()[0]
+        return self._model.get_hardware_units()[0]
 
     def get_model(self) -> MagnetModel:
-        return self.__model
+        return self._model
 
 
 # ------------------------------------------------------------------------------
@@ -65,29 +65,45 @@ class RWStrengthScalar(abstract.ReadWriteFloatScalar):
     """
 
     def __init__(self, elements: list[at.Element], poly: PolynomInfo, model: MagnetModel):
-        self.__model = model
-        self.__elements = elements
-        self.__poly = [e.__getattribute__(poly.attName) for e in elements]
-        self.__sign = poly.sign
-        self.__polyIdx = poly.index
-        self.__length = 0
+        self._model = model
+        self._elements = elements
+        self._poly = [e.__getattribute__(poly.attName) for e in elements]
+        self._sign = poly.sign
+        self._polyIdx = poly.index
+        self._length = 0
         for e in elements:
-            self.__length += e.Length
+            self._length += e.Length
 
     def get_element_length(self) -> float:
-        return self.__length
+        return self._length
 
     # Gets the value
-    def get(self) -> float:
+    def get(self, polynom: str = None, polyidx: int = None) -> float:
+        if polynom is None:
+            pIdx = self._polyIdx
+            poly = self._poly
+        else:
+            # Override strength access
+            pIdx = polyidx
+            poly = [e.__getattribute__(polynom) for e in self._elements]
+
         s = 0
-        for idx, e in enumerate(self.__elements):
-            s += self.__poly[idx][self.__polyIdx] * self.__sign * e.Length
+        for idx, e in enumerate(self._elements):
+            s += poly[idx][pIdx] * self._sign * e.Length
         return s
 
     # Sets the value
-    def set(self, value: float):
-        for idx, _ in enumerate(self.__elements):
-            self.__poly[idx][self.__polyIdx] = value / (self.__length * self.__sign)
+    def set(self, value: float, polynom: str = None, polyidx: int = None):
+        if polynom is None:
+            pIdx = self._polyIdx
+            poly = self._poly
+        else:
+            # Override strength access
+            pIdx = polyidx
+            poly = [e.__getattribute__(polynom) for e in self._elements]
+
+        for idx, _ in enumerate(self._elements):
+            poly[idx][pIdx] = value / (self._length * self._sign)
 
     # Sets the value and wait that the read value reach the setpoint
     def set_and_wait(self, value: float):
@@ -95,11 +111,11 @@ class RWStrengthScalar(abstract.ReadWriteFloatScalar):
 
     # Gets the unit of the value
     def unit(self) -> str:
-        return self.__model.get_strength_units()[0]
+        return self._model.get_strength_units()[0]
 
     # ------------------------------------------------------------------------------
     def get_model(self) -> MagnetModel:
-        return self.__model
+        return self._model
 
 
 # ------------------------------------------------------------------------------

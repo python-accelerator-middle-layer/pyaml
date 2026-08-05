@@ -17,11 +17,15 @@ Arrays:
     VCorr                 (pyaml.arrays.magnet_array)             size=288
     Skews                 (pyaml.arrays.magnet_array)             size=288
     Sext                  (pyaml.arrays.magnet_array)             size=180
+    QForTune              (pyaml.arrays.magnet_array)             size=124
     .
 
 Tools:
     BBA-BPM_C04-04 (pyaml.tuning_tools.bba)
+    BBA2-BPM_C04-04 (pyaml.tuning_tools.bba2)
     CHROMATICITY_MONITOR (pyaml.tuning_tools.chromaticity_monitor)
+    DEFAULT_TUNE_CORRECTION (pyaml.tuning_tools.tune)
+    DEFAULT_TUNE_RESPONSE_MATRIX (pyaml.tuning_tools.tune_response_matrix)
     DEFAULT_CHROMATICITY_RESPONSE_MATRIX (pyaml.tuning_tools.chromaticity_response_matrix)
     DEFAULT_CHROMATICITY_CORRECTION (pyaml.tuning_tools.chromaticity)
     DEFAULT_ORBIT_CORRECTION (pyaml.tuning_tools.orbit)
