@@ -40,6 +40,10 @@ class ConfigModel(MeasurementToolConfigModel):
         Vertical corrector delta strength
     quad_delta : float
         Quadrupole delta strength
+    bipolar_delta : bool
+        Perform scan at initial_quad_strength +/- quad delta
+    minicyle_sleep_time : float
+        Time to wait for quad mini cycle
     """
 
     model_config = ConfigDict(arbitrary_types_allowed=True, extra="forbid")
@@ -53,6 +57,8 @@ class ConfigModel(MeasurementToolConfigModel):
     hcorr_delta: float
     vcorr_delta: float
     quad_delta: float
+    bipolar_delta: bool = False
+    minicyle_sleep_time: float = 5
 
 
 class BBAData:
@@ -212,7 +218,7 @@ class BBA2(MeasurementTool):
         avgorb /= float(self._nb_meas)
         return avgorb
 
-    def _one_step_dk(self, dk0, dk1):
+    def _one_step_dk(self, dk0: list[float], dk1: float, bipolar_delta: bool):
         # Measrue IOS
 
         if any(abs(dk) > 200e-6 for dk in dk0):
@@ -241,7 +247,7 @@ class BBA2(MeasurementTool):
         ios_x = []
         ios_y = []
 
-        if False:
+        if bipolar_delta:
             # one more point at k1 - dk1
             _str = self._initial_k1 - dk1 * self._quad_polarity
             self._quad.strength.set(_str)
@@ -354,6 +360,7 @@ class BBA2(MeasurementTool):
         dk0h = self._cfg.hcorr_delta if plane is None or plane == "H" else 0
         dk0v = self._cfg.vcorr_delta if plane is None or plane == "V" else 0
         dk1 = self._cfg.quad_delta
+        bidelta = self._cfg.bipolar_delta
         doH = dk0h != 0
         doV = dk0v != 0
         aborted = False
@@ -370,6 +377,18 @@ class BBA2(MeasurementTool):
             self.latest_measurement["VData"] = None
             X = BBAData()
             Y = BBAData()
+
+            # Mini cycle
+            if self._cfg.minicyle_sleep_time > 0:
+                logger.debug(f"Quad mini cycling {self._cfg.quad_name}")
+                _str = self._initial_k1 + dk1 * self._quad_polarity
+                self._quad.strength.set(_str)
+                self.send_callback(Action.APPLY, {"step": -1, "magnet": self._quad.name, "strength": _str})
+                time.sleep(self._cfg.minicyle_sleep_time)
+                _str = self._initial_k1
+                self._quad.strength.set(_str)
+                self.send_callback(Action.APPLY, {"step": -1, "magnet": self._quad.name, "strength": _str})
+                time.sleep(self._cfg.minicyle_sleep_time)
 
             opt_found = False
             self._step = 0
@@ -409,7 +428,7 @@ class BBA2(MeasurementTool):
                     _to = f"{stx},{sty}"
                     logger.debug(f"Moving to the best guess: {_from} -> {_to}")
 
-                x, dkx, y, dky, dataxbpm, dataybpm = self._one_step_dk([stx, sty], dk1)
+                x, dkx, y, dky, dataxbpm, dataybpm = self._one_step_dk([stx, sty], dk1, bidelta)
                 X.append(stx, dkx, x, dataxbpm)
                 Y.append(sty, dky, y, dataybpm)
 
@@ -432,7 +451,7 @@ class BBA2(MeasurementTool):
             _to = f"{stx},{sty}"
             logger.debug(f"Moving to the optimum: {_to}")
 
-            x, dkx, y, dky, dataxbpm, dataybpm = self._one_step_dk([stx, sty], dk1)
+            x, dkx, y, dky, dataxbpm, dataybpm = self._one_step_dk([stx, sty], dk1, bidelta)
             X.append(stx, dkx, x, dataxbpm)
             Y.append(sty, dky, y, dataybpm)
 
