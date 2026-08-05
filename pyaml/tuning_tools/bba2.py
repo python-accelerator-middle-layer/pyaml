@@ -2,6 +2,7 @@ import logging
 import time
 from typing import Callable, Optional
 
+import matplotlib.pyplot as plt
 import numpy as np
 from pydantic import ConfigDict
 
@@ -56,7 +57,7 @@ class ConfigModel(MeasurementToolConfigModel):
 
 class BBAData:
     def __init__(self):
-        self.k = []  # Quadrupole kick
+        self.k = []  # Fitted kick
         self.bpm_pos = []  # BPM#i position
         self.allbpm_pos = []  # IOS (Induced Orbit Shift)
         self.rms = []  # RMS
@@ -73,16 +74,6 @@ class BBAData:
         self.allbpm_pos.append(allbpm)
         self.rms.append(rms)
 
-    def sort(self):
-        # Sort data according to step
-        indices = range(len(self.steps))
-        sindices = [a for _, a in sorted(zip(self.steps, indices, strict=True))]
-        self.steps = [self.steps[i] for i in sindices]
-        self.k = [self.k[i] for i in sindices]
-        self.bpm_pos = [self.bpm_pos[i] for i in sindices]
-        self.allbpm_pos = [self.allbpm_pos[i] for i in sindices]
-        self.rms = [self.rms[i] for i in sindices]
-
     def update_offset(self):
         # Update offset value
         self.offset = self.bpm_pos[-1]
@@ -95,11 +86,12 @@ class BBA2(MeasurementTool):
         self._cfg = cfg
 
     @staticmethod
-    def _intersect_yzero(x, k, n):
+    def _x_intercept(x, k, n):
         # Linear fit on last n points
+        # x is not necessary ordered
         xx = np.polynomial.polynomial.polyfit(x[-n:], k[-n:], 1)
-        # y=0 intesection
-        return -xx[0] / xx[1]
+        # return x @y=0
+        return (-xx[0] / xx[1], xx)
 
     def _quad_response(self, tunename: str, bpmname: str, quadname: str, dk0=1e-5):
         # Return normalized response of a dipolar kick in a quad from the model
@@ -119,6 +111,7 @@ class BBA2(MeasurementTool):
         logger.debug(f"Live tune: {tune}")
         logger.debug(f"Model tune: {tune0}")
         tune_design.set(tune)
+        logger.debug(f"Model tune: {tune_design.readback()}")
 
         a0 = quad.strength.get("PolynomA", 0)
         b0 = quad.strength.get("PolynomB", 0)
@@ -238,6 +231,7 @@ class BBA2(MeasurementTool):
         y = orb0[self._bpmi, 1]
         sy2 = np.sum(np.square(ios_y[nany]))
         dky = self._fit_kick(ios_y, self._ref_ios[:, 1], nany)
+
         return x, dkx, y, dky, sx2, sy2, ios_x, ios_y
 
     def measure(
@@ -255,7 +249,20 @@ class BBA2(MeasurementTool):
 
         .. code-block:: python
 
-            TODO
+            sr = Accelerator.load("tests/config/EBSOrbit.yaml")
+            SR = sr.live
+            bba = SR.get_bba("BBA2-BPM_C04-04")
+
+            # Add a misalignement
+            SR.get_bpm("BPM_C04-04").offset.set([200e-6,-150e-6])
+
+            bba.measure(sleep_between_step=6,plane='V',callback=bba_callback)
+
+            print(f"HOffset: {bba.h_offset()*1e6:.3f} um {bba.h_offset_error()}")
+            print(f"VOffset: {bba.v_offset()*1e6:.3f} um {bba.v_offset_error()}")
+
+            bba.plot_data()
+
 
         Parameters
         ----------
@@ -303,9 +310,9 @@ class BBA2(MeasurementTool):
         aborted = False
         err = None
 
-        logger.debug(f"Initial H corrector value: {self._initial_k0[0]} rad")
-        logger.debug(f"Initial V corrector value: {self._initial_k0[1]} rad")
-        logger.debug(f"Initial quad value: {self._initial_k1} m-1")
+        logger.debug(f"Initial H corrector {self._cfg.hcorr_name} value: {self._initial_k0[0]} rad")
+        logger.debug(f"Initial V corrector {self._cfg.vcorr_name} value: {self._initial_k0[1]} rad")
+        logger.debug(f"Initial quad {self._cfg.quad_name} value: {self._initial_k1} m-1")
 
         try:
             self._register_callback(callback)
@@ -340,10 +347,10 @@ class BBA2(MeasurementTool):
                     V_found = False
 
                     if doH:
-                        stx = BBA2._intersect_yzero(X.steps, X.k, 2)
+                        stx, _ = BBA2._x_intercept(X.steps, X.k, 2)
                         H_found = X.steps[-2] <= stx <= X.steps[-1]  # don't rely on extrapolation
                     if doV:
-                        sty = BBA2._intersect_yzero(Y.steps, Y.k, 2)
+                        sty, _ = BBA2._x_intercept(Y.steps, Y.k, 2)
                         V_found = Y.steps[-2] <= sty <= Y.steps[-1]  # don't rely on extrapolation
 
                     opt_found = (
@@ -368,10 +375,10 @@ class BBA2(MeasurementTool):
             # Final step
 
             if doH:
-                stx = BBA2._intersect_yzero(X.steps, X.k, 3)
+                stx, lxfit = BBA2._x_intercept(X.steps, X.k, 3)
 
             if doV:
-                sty = BBA2._intersect_yzero(Y.steps, Y.k, 3)
+                sty, lyfit = BBA2._x_intercept(Y.steps, Y.k, 3)
 
             _to = f"{stx},{sty}"
             logger.debug(f"Moving to the optimum: {_to}")
@@ -382,12 +389,12 @@ class BBA2(MeasurementTool):
 
             if doH:
                 X.update_offset()
-                X.sort()
+                X.lastfit = lxfit
                 self.latest_measurement["HData"] = X
 
             if doV:
                 Y.update_offset()
-                Y.sort()
+                Y.lastfit = lyfit
                 self.latest_measurement["VData"] = Y
 
         except Exception as ex:
@@ -427,3 +434,47 @@ class BBA2(MeasurementTool):
 
     def v_offset_error(self) -> float:
         return self.latest_measurement["VData"].error if self.latest_measurement["VData"] is not None else np.nan
+
+    def plot_plane_data(self, ax, plane: str):
+        yp = self.latest_measurement[plane].k
+        xp = self.latest_measurement[plane].steps
+
+        b = self.latest_measurement[plane].lastfit[0]
+        a = self.latest_measurement[plane].lastfit[1]
+
+        ax.plot(xp, yp, marker="o", linewidth=0)
+        ax.axline((0, b), slope=a, linestyle="--", color="lightblue", label="last fit")
+        ax.plot(xp[-4:-1], yp[-4:-1], color="salmon", marker="o", linewidth=0, label="last fit")
+        ax.plot(xp[-1:], yp[-1:], color="green", marker="o", linewidth=0, label="optimum")
+        ax.set_xlabel(f"Steerer (rad)\nOptimun kick @ bpm={self.latest_measurement[plane].offset * 1e6:.3f} um")
+        ax.set_ylabel("Fitted kick")
+        ax.grid()
+        ax.legend()
+
+    def plot_data(self):
+        """
+        Plot BBA data.
+        """
+
+        noH = "HData" not in self.latest_measurement or self.latest_measurement["HData"] is None
+        noV = "VData" not in self.latest_measurement or self.latest_measurement["VData"] is None
+        nrow = 0 if noH else 1
+        nrow += 0 if noV else 1
+
+        if nrow == 0:
+            raise PyAMLException("No BBA data to plot, please call measure() first")
+
+        fig = plt.figure()
+        irow = 1
+        if not noH:
+            ax = fig.add_subplot(nrow, 1, irow)
+            self.plot_plane_data(ax, "HData")
+            irow += 1
+        if not noV:
+            ax = fig.add_subplot(nrow, 1, irow)
+            self.plot_plane_data(ax, "VData")
+
+        fig.tight_layout()
+        fig.canvas.manager.set_window_title(f"BBA {self._cfg.bpm_name}")
+
+        plt.show()
