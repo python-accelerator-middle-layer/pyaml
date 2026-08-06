@@ -99,12 +99,12 @@ class BBA2(MeasurementTool):
         xx = np.polynomial.polynomial.polyfit(x[-n:], k[-n:], 1)
         err = 0
         if n > 2:
-            # Compute error on the ratio -xx[0] / xx[1]
+            # Compute error of the ratio r = -xx[0] / xx[1]
             X = np.polynomial.polynomial.polyvander(x[-n:], 1)
             R = k[-n:] - X @ xx
             S2 = np.sum(R**2) / float(n - 2)
             COV = S2 * np.linalg.inv(X.T @ X)
-            J = [1 / xx[1], -xx[0] / xx[1] ** 2]
+            J = [-1 / xx[1], xx[0] / xx[1] ** 2]  # Jacobian [dr/d(xx[0]) , dr/d(xx[1])]
             err = np.sqrt(J @ COV @ J)
 
         # return x @y=0
