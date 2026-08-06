@@ -346,7 +346,7 @@ class BBA2(MeasurementTool):
         # Initial values
         self._initial_k0 = [self._h_steer.strength.get(), self._v_steer.strength.get()]
         self._initial_k1 = self._quad.strength.get()
-        self._quad_polarity = np.sign(self._initial_k1)
+        self._quad_polarity = np.sign(self._initial_k1) if self._initial_k1 != 0 else 1
 
         self._ref_ios, fx, fy = self._init_responses(
             self._cfg.tune_correction_name,
