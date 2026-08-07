@@ -1,62 +1,20 @@
-from ..common.abstract import ReadFloatArray
-from ..common.constants import Action
-from ..common.element import ElementConfigModel
-from ..common.exception import PyAMLException
-from ..tuning_tools.measurement_tool import MeasurementTool, MeasurementToolConfigModel
-
-try:
-    from typing import Self  # Python 3.11+
-except ImportError:
-    from typing_extensions import Self  # Python 3.10 and earlier
 import logging
+from collections.abc import Callable
 from time import sleep
 
 import matplotlib.pyplot as plt
 import numpy as np
-from pydantic import ConfigDict
+
+from ..common.abstract import ReadFloatArray
+from ..common.constants import Action
+from ..common.element import __pyaml_repr__
+from ..common.exception import PyAMLException
+from ..tuning_tools.measurement_tool import MeasurementTool
+from ..validation import DynamicValidation, register_schema
 
 logger = logging.getLogger(__name__)
 
 PYAMLCLASS = "ChomaticityMonitor"
-
-
-class ConfigModel(MeasurementToolConfigModel):
-    """
-    Configuration model for Chromaticity Monitor.
-
-    Parameters
-    ----------
-    betatron_tune_name : str
-        Name of the diagnostic pyaml device for measuring the tune
-    rf_plant_name : str
-        Name of main RF frequency plant
-    bpm_array_name : str,optional
-        Name of main BPM array used for dispersion fit
-    e_delta : float, optional
-        Default variation of relative energy during chromaticity measurement:
-        f0 - f0 * E_delta * alphac  < f_RF < f0 + f0 * E_delta * alphac,
-        by default 0.001
-    max_e_delta : float, optional
-        Maximum authorized variation of relative energy during chromaticity
-        measurement, by default 0.004
-    fit_order : int, optional
-        Chomaticity fitting order, by default 1
-    fit_disp_order : int, optional
-        Dispersion fitting order, by default 1
-    fit_dispersion : bool, optional
-        Dispersion fitting, by default False
-    """
-
-    model_config = ConfigDict(arbitrary_types_allowed=True, extra="forbid")
-
-    betatron_tune_name: str
-    rf_plant_name: str
-    bpm_array_name: str | None = None
-    e_delta: float = 0.001
-    max_e_delta: float = 0.004
-    fit_order: int = 1
-    fit_disp_order: int = 1
-    fit_dispersion: bool = False
 
 
 class RChromaDispArray(ReadFloatArray):
@@ -81,27 +39,89 @@ class RChromaDispArray(ReadFloatArray):
         return self.unit
 
 
-class ChomaticityMonitor(MeasurementTool):
+@register_schema
+class ChomaticityMonitor(MeasurementTool, DynamicValidation):
     """
     Class providing access to a chromaticity monitor
     of a physical or simulated lattice. The monitor provides
     horizontal and vertical chromaticity measurements.
     """
 
-    def __init__(self, cfg: ConfigModel):
+    def __init__(
+        self,
+        name: str,
+        betatron_tune_name: str,
+        rf_plant_name: str,
+        bpm_array_name: str | None = None,
+        e_delta: float = 0.001,
+        max_e_delta: float = 0.004,
+        fit_order: int = 1,
+        fit_disp_order: int = 1,
+        fit_dispersion: bool = False,
+        n_step: int = 1,
+        sleep_between_step: float = 0,
+        n_avg_meas: int = 1,
+        sleep_between_meas: float = 0,
+    ):
         """
-        Construct a ChomaticityMonitor.
+        Initialize a chromaticity monitor.
+
+        The monitor performs chromaticity measurements by varying the RF
+        frequency, acquiring tune measurements from a betatron tune monitor,
+        and optionally fitting the machine dispersion using BPM orbit data.
 
         Parameters
         ----------
-        cfg : ConfigModel
-            Configuration for the ChromaticityMonitor, including betatron
-            tune monitor, RF plant, and defaults parameters.
+        name : str
+            Name of the chromaticity monitor.
+        betatron_tune_name : str
+            Name of the betatron tune monitor used to measure the horizontal
+            and vertical tunes.
+        rf_plant_name : str
+            Name of the RF plant used to vary the RF frequency.
+        bpm_array_name : str, optional
+            Name of the BPM array used for dispersion measurements. Required
+            only when dispersion fitting is enabled.
+        e_delta : float, optional
+            Default relative momentum deviation used during the measurement.
+        max_e_delta : float, optional
+            Maximum permitted relative momentum deviation.
+        fit_order : int, optional
+            Polynomial order used to fit the chromaticity.
+        fit_disp_order : int, optional
+            Polynomial order used to fit the dispersion.
+        fit_dispersion : bool, optional
+            Whether to fit the machine dispersion in addition to the
+            chromaticity.
+        n_step : int, optional
+            Number of RF frequency steps.
+        sleep_between_step : float, optional
+            Delay in seconds after changing the RF frequency.
+        n_avg_meas : int, optional
+            Number of tune (and orbit) measurements to average at each RF
+            frequency.
+        sleep_between_meas : float, optional
+            Delay in seconds between consecutive measurements during
+            averaging.
         """
-        super().__init__(cfg.name)
-        self._cfg = cfg
+
+        super().__init__(name)
+
+        self.betatron_tune_name = betatron_tune_name
+        self.rf_plant_name = rf_plant_name
+        self.bpm_array_name = bpm_array_name
+        self.e_delta = e_delta
+        self.max_e_delta = max_e_delta
+        self.fit_order = fit_order
+        self.fit_disp_order = fit_disp_order
+        self.fit_dispersion = fit_dispersion
+        self.n_step = n_step
+        self.sleep_between_step = sleep_between_step
+        self.n_avg_meas = n_avg_meas
+        self.sleep_between_meas = sleep_between_meas
+
         self._chromaticity = RChromaDispArray(self, "chromaticity", "1")
-        self._dipsersion = RChromaDispArray(self, "dispersion", "m")
+        self._dispersion = RChromaDispArray(self, "dispersion", "m")
         self._alphac = None
 
     @property
@@ -129,22 +149,22 @@ class ChomaticityMonitor(MeasurementTool):
         ReadFloatArray
             Array of dispersion values [[dx, dy],[d'x, d'y],...]
         """
-        return self._dipsersion
+        return self._dispersion
 
     def measure(
         self,
-        n_step: int = None,
-        alphac: float = None,
-        e_delta: float = None,
-        max_e_delta: float = None,
-        n_avg_meas: int = None,
-        sleep_between_meas: float = None,
-        sleep_between_step: float = None,
-        fit_order: int = None,
-        fit_disp_order: int = None,
+        n_step: int | None = None,
+        alphac: float | None = None,
+        e_delta: float | None = None,
+        max_e_delta: float | None = None,
+        n_avg_meas: int | None = None,
+        sleep_between_meas: float | None = None,
+        sleep_between_step: float | None = None,
+        fit_order: int | None = None,
+        fit_disp_order: int | None = None,
         fit_dispersion: bool | None = None,
-        do_plot: bool = None,
-        callback: callable = None,
+        do_plot: bool | None = None,
+        callback: Callable | None = None,
     ):
         """
         Main function for chromaticity measurment.
@@ -202,16 +222,16 @@ class ChomaticityMonitor(MeasurementTool):
               dtune:np.array # The tune variation (on Action.RESTORE)
 
         """
-        n_step = n_step if n_step is not None else self._cfg.n_step
+        n_step = n_step if n_step is not None else self.n_step
         alphac = alphac if alphac is not None else self._alphac
-        e_delta = e_delta if e_delta is not None else self._cfg.e_delta
-        max_e_delta = max_e_delta if max_e_delta is not None else self._cfg.max_e_delta
-        n_avg_meas = n_avg_meas if n_avg_meas is not None else self._cfg.n_avg_meas
-        sleep_between_meas = sleep_between_meas if sleep_between_meas is not None else self._cfg.sleep_between_meas
-        sleep_between_step = sleep_between_step if sleep_between_step is not None else self._cfg.sleep_between_step
-        fit_order = fit_order if fit_order is not None else self._cfg.fit_order
-        fit_disp_order = fit_disp_order if fit_disp_order is not None else self._cfg.fit_disp_order
-        fit_dispersion = fit_dispersion if fit_dispersion is not None else self._cfg.fit_dispersion
+        e_delta = e_delta if e_delta is not None else self.e_delta
+        max_e_delta = max_e_delta if max_e_delta is not None else self.max_e_delta
+        n_avg_meas = n_avg_meas if n_avg_meas is not None else self.n_avg_meas
+        sleep_between_meas = sleep_between_meas if sleep_between_meas is not None else self.sleep_between_meas
+        sleep_between_step = sleep_between_step if sleep_between_step is not None else self.sleep_between_step
+        fit_order = fit_order if fit_order is not None else self.fit_order
+        fit_disp_order = fit_disp_order if fit_disp_order is not None else self.fit_disp_order
+        fit_dispersion = fit_dispersion if fit_dispersion is not None else self.fit_dispersion
 
         if abs(e_delta) > abs(max_e_delta):
             logger.warning(f"e_delta={e_delta} is greater than max_e_delta={max_e_delta}")
@@ -224,14 +244,14 @@ class ChomaticityMonitor(MeasurementTool):
 
         # Get devices
         self.check_peer()
-        tm = self.peer.get_betatron_tune_monitor(self._cfg.betatron_tune_name)
-        rf = self.peer.get_rf_plant(self._cfg.rf_plant_name)
+        tm = self.peer.get_betatron_tune_monitor(self.betatron_tune_name)
+        rf = self.peer.get_rf_plant(self.rf_plant_name)
         bpms = None
         n_bpm = 0
         orbit = None
-        if fit_dispersion and fit_disp_order is not None and self._cfg.bpm_array_name is not None:
+        if fit_dispersion and fit_disp_order is not None and self.bpm_array_name is not None:
             # For dispersion fit
-            bpms = self.peer.get_bpms(self._cfg.bpm_array_name)
+            bpms = self.peer.get_bpms(self.bpm_array_name)
             n_bpm = len(bpms)
 
         f0 = rf.frequency.get()
@@ -365,3 +385,10 @@ class ChomaticityMonitor(MeasurementTool):
 
             fig.tight_layout()
             plt.show()
+
+    def _after_attach(self):
+        self._chromaticity = RChromaDispArray(self, "chromaticity", "1")
+        self._dispersion = RChromaDispArray(self, "dispersion", "m")
+
+    def __repr__(self):
+        return __pyaml_repr__(self, exclude=["chromaticity", "dispersion"])

@@ -91,7 +91,7 @@ devices:
   sextu_delta: 1e-6
 - type: pyaml.tuning_tools.chromaticity
   name: DEFAULT_CHROMATICITY_CORRECTION
-  chromaticty_monitor_name: CHROMATICITY_MONITOR
+  chromaticity_monitor_name: CHROMATICITY_MONITOR
   sextu_array_name: Sext
   response_matrix: ${path:ideal_chroma_resp.json}
 - type: pyaml.tuning_tools.orbit

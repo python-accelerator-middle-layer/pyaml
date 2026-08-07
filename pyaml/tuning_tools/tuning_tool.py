@@ -1,3 +1,4 @@
+import copy
 from typing import Self
 
 from ..common.element import Element
@@ -17,6 +18,14 @@ class TuningTool(Element):
         Create a new reference to attach this tuning tool object to a simulator
         or a control system.
         """
-        obj = self.__class__(self._cfg)
+        if hasattr(self, "_cfg"):
+            obj = self.__class__(self._cfg)
+        else:
+            obj = copy.copy(self)
+            obj._after_attach()
         obj._peer = peer
         return obj
+
+    def _after_attach(self) -> None:
+        """Hook for subclasses to rebind internal references after attach."""
+        pass
