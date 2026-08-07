@@ -1,0 +1,193 @@
+devices:
+- type: pyaml.magnet.cfm_magnet
+  name: COR_001_40245a63817f45fdbaf0588fc373304c
+  mapping:
+  - [B0, COR_001_40245a63817f45fdbaf0588fc373304c.hcorrector]
+  - [A0, COR_001_40245a63817f45fdbaf0588fc373304c.vcorrector]
+  model:
+    type: pyaml.magnet.identity_cfm_model
+    multipoles: [B0, A0]
+    units: [1/m, '1']
+    physics:
+    - AN01-AR/EM-COR/CH.01/magnetic_strength
+    - AN01-AR/EM-COR/CV.01/magnetic_strength
+- type: pyaml.magnet.cfm_magnet
+  name: COR_002_da1aed18178646bfa755086e61402f11
+  mapping:
+  - [B0, COR_002_da1aed18178646bfa755086e61402f11.hcorrector]
+  - [A0, COR_002_da1aed18178646bfa755086e61402f11.vcorrector]
+  model:
+    type: pyaml.magnet.identity_cfm_model
+    multipoles: [B0, A0]
+    units: [1/m, '1']
+    physics:
+    - AN02-AR/EM-COR/CH.01/magnetic_strength
+    - AN02-AR/EM-COR/CV.01/magnetic_strength
+- type: pyaml.magnet.cfm_magnet
+  name: COR_003_a47e4afce05e42c7b3bbda1b0f49b62a
+  mapping:
+  - [B0, COR_003_a47e4afce05e42c7b3bbda1b0f49b62a.hcorrector]
+  - [A0, COR_003_a47e4afce05e42c7b3bbda1b0f49b62a.vcorrector]
+  model:
+    type: pyaml.magnet.identity_cfm_model
+    multipoles: [B0, A0]
+    units: [1/m, '1']
+    physics:
+    - AN03-AR/EM-COR/CH.01/magnetic_strength
+    - AN03-AR/EM-COR/CV.01/magnetic_strength
+- type: pyaml.magnet.cfm_magnet
+  name: COR_004_df8065c70f8343b39be055d3baa89b6f
+  mapping:
+  - [B0, COR_004_df8065c70f8343b39be055d3baa89b6f.hcorrector]
+  - [A0, COR_004_df8065c70f8343b39be055d3baa89b6f.vcorrector]
+  model:
+    type: pyaml.magnet.identity_cfm_model
+    multipoles: [B0, A0]
+    units: [1/m, '1']
+    physics:
+    - AN04-AR/EM-COR/CH.01/magnetic_strength
+    - AN04-AR/EM-COR/CV.01/magnetic_strength
+- type: pyaml.magnet.cfm_magnet
+  name: COR_005_9215a7c55cca49a7ab589783360624ce
+  mapping:
+  - [B0, COR_005_9215a7c55cca49a7ab589783360624ce.hcorrector]
+  - [A0, COR_005_9215a7c55cca49a7ab589783360624ce.vcorrector]
+  model:
+    type: pyaml.magnet.identity_cfm_model
+    multipoles: [B0, A0]
+    units: [1/m, '1']
+    physics:
+    - AN05-AR/EM-COR/CH.01/magnetic_strength
+    - AN05-AR/EM-COR/CV.01/magnetic_strength
+- type: pyaml.magnet.cfm_magnet
+  name: COR_006_dd5a91ce11124e60bbb9df93a10d6b11
+  mapping:
+  - [B0, COR_006_dd5a91ce11124e60bbb9df93a10d6b11.hcorrector]
+  - [A0, COR_006_dd5a91ce11124e60bbb9df93a10d6b11.vcorrector]
+  model:
+    type: pyaml.magnet.identity_cfm_model
+    multipoles: [B0, A0]
+    units: [1/m, '1']
+    physics:
+    - AN06-AR/EM-COR/CH.01/magnetic_strength
+    - AN06-AR/EM-COR/CV.01/magnetic_strength
+- type: pyaml.magnet.cfm_magnet
+  name: COR_007_3cd2e2d7f28d442abcd1b8039f78efa5
+  mapping:
+  - [B0, COR_007_3cd2e2d7f28d442abcd1b8039f78efa5.hcorrector]
+  - [A0, COR_007_3cd2e2d7f28d442abcd1b8039f78efa5.vcorrector]
+  model:
+    type: pyaml.magnet.identity_cfm_model
+    multipoles: [B0, A0]
+    units: [1/m, '1']
+    physics:
+    - AN07-AR/EM-COR/CH.01/magnetic_strength
+    - AN07-AR/EM-COR/CV.01/magnetic_strength
+- type: pyaml.magnet.cfm_magnet
+  name: COR_008_7a8f6a10d6c147b0affe509482741943
+  mapping:
+  - [B0, COR_008_7a8f6a10d6c147b0affe509482741943.hcorrector]
+  - [A0, COR_008_7a8f6a10d6c147b0affe509482741943.vcorrector]
+  model:
+    type: pyaml.magnet.identity_cfm_model
+    multipoles: [B0, A0]
+    units: [1/m, '1']
+    physics:
+    - AN08-AR/EM-COR/CH.01/magnetic_strength
+    - AN08-AR/EM-COR/CV.01/magnetic_strength
+- type: pyaml.magnet.cfm_magnet
+  name: COR_009_72d51334bf7847e18181f4704188dd84
+  mapping:
+  - [B0, COR_009_72d51334bf7847e18181f4704188dd84.hcorrector]
+  - [A0, COR_009_72d51334bf7847e18181f4704188dd84.vcorrector]
+  model:
+    type: pyaml.magnet.identity_cfm_model
+    multipoles: [B0, A0]
+    units: [1/m, '1']
+    physics:
+    - AN09-AR/EM-COR/CH.01/magnetic_strength
+    - AN09-AR/EM-COR/CV.01/magnetic_strength
+- type: pyaml.magnet.cfm_magnet
+  name: COR_010_a68a73b307f1433aa420a1c7da0f829e
+  mapping:
+  - [B0, COR_010_a68a73b307f1433aa420a1c7da0f829e.hcorrector]
+  - [A0, COR_010_a68a73b307f1433aa420a1c7da0f829e.vcorrector]
+  model:
+    type: pyaml.magnet.identity_cfm_model
+    multipoles: [B0, A0]
+    units: [1/m, '1']
+    physics:
+    - AN10-AR/EM-COR/CH.01/magnetic_strength
+    - AN10-AR/EM-COR/CV.01/magnetic_strength
+- type: pyaml.magnet.cfm_magnet
+  name: COR_011_9c43dd897fac431f81f41127763bc3f8
+  mapping:
+  - [B0, COR_011_9c43dd897fac431f81f41127763bc3f8.hcorrector]
+  - [A0, COR_011_9c43dd897fac431f81f41127763bc3f8.vcorrector]
+  model:
+    type: pyaml.magnet.identity_cfm_model
+    multipoles: [B0, A0]
+    units: [1/m, '1']
+    physics:
+    - AN11-AR/EM-COR/CH.01/magnetic_strength
+    - AN11-AR/EM-COR/CV.01/magnetic_strength
+- type: pyaml.magnet.cfm_magnet
+  name: COR_012_0fcbaaf1028c452eaab07ac2e47473b9
+  mapping:
+  - [B0, COR_012_0fcbaaf1028c452eaab07ac2e47473b9.hcorrector]
+  - [A0, COR_012_0fcbaaf1028c452eaab07ac2e47473b9.vcorrector]
+  model:
+    type: pyaml.magnet.identity_cfm_model
+    multipoles: [B0, A0]
+    units: [1/m, '1']
+    physics:
+    - AN12-AR/EM-COR/CH.01/magnetic_strength
+    - AN12-AR/EM-COR/CV.01/magnetic_strength
+- type: pyaml.magnet.cfm_magnet
+  name: COR_013_75ec65eca2b74a9881b3f24929cce95d
+  mapping:
+  - [B0, COR_013_75ec65eca2b74a9881b3f24929cce95d.hcorrector]
+  - [A0, COR_013_75ec65eca2b74a9881b3f24929cce95d.vcorrector]
+  model:
+    type: pyaml.magnet.identity_cfm_model
+    multipoles: [B0, A0]
+    units: [1/m, '1']
+    physics:
+    - AN13-AR/EM-COR/CH.01/magnetic_strength
+    - AN13-AR/EM-COR/CV.01/magnetic_strength
+- type: pyaml.magnet.cfm_magnet
+  name: COR_014_1041dd109c4c4b1e943b93fcbd9b8c0f
+  mapping:
+  - [B0, COR_014_1041dd109c4c4b1e943b93fcbd9b8c0f.hcorrector]
+  - [A0, COR_014_1041dd109c4c4b1e943b93fcbd9b8c0f.vcorrector]
+  model:
+    type: pyaml.magnet.identity_cfm_model
+    multipoles: [B0, A0]
+    units: [1/m, '1']
+    physics:
+    - AN14-AR/EM-COR/CH.01/magnetic_strength
+    - AN14-AR/EM-COR/CV.01/magnetic_strength
+- type: pyaml.magnet.cfm_magnet
+  name: COR_015_f386ead7438a4d248f5850364f7a215b
+  mapping:
+  - [B0, COR_015_f386ead7438a4d248f5850364f7a215b.hcorrector]
+  - [A0, COR_015_f386ead7438a4d248f5850364f7a215b.vcorrector]
+  model:
+    type: pyaml.magnet.identity_cfm_model
+    multipoles: [B0, A0]
+    units: [1/m, '1']
+    physics:
+    - AN15-AR/EM-COR/CH.01/magnetic_strength
+    - AN15-AR/EM-COR/CV.01/magnetic_strength
+- type: pyaml.magnet.cfm_magnet
+  name: COR_016_5dea0eada2984432aeb6637ed6f7afe9
+  mapping:
+  - [B0, COR_016_5dea0eada2984432aeb6637ed6f7afe9.hcorrector]
+  - [A0, COR_016_5dea0eada2984432aeb6637ed6f7afe9.vcorrector]
+  model:
+    type: pyaml.magnet.identity_cfm_model
+    multipoles: [B0, A0]
+    units: [1/m, '1']
+    physics:
+    - AN16-AR/EM-COR/CH.01/magnetic_strength
+    - AN16-AR/EM-COR/CV.01/magnetic_strength

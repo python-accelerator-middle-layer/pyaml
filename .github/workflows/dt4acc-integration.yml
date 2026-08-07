@@ -6,7 +6,7 @@ on:
       dt4acc_image_uri:
         description: "Apptainer ORAS image URI for the dt4acc twin"
         required: false
-        default: "oras://gitlab-registry.synchrotron-soleil.fr/software-control-system/digitaltwin/dt4acc/dt4acc-soleil-twin/dt4acc-soleil-twin:latest"
+        default: "oras://registry.synchrotron-soleil.fr/software_control_system_public/dt4acc-soleil-twin:latest"
   pull_request:
     branches: ["main"]
     paths:
@@ -29,12 +29,15 @@ jobs:
 
     env:
       TANGO_HOST: 127.0.0.1:10000
-      DT4ACC_IMAGE_URI: ${{ inputs.dt4acc_image_uri || 'oras://gitlab-registry.synchrotron-soleil.fr/software-control-system/digitaltwin/dt4acc/dt4acc-soleil-twin/dt4acc-soleil-twin:latest' }}
+      DT4ACC_IMAGE_URI: ${{ inputs.dt4acc_image_uri || 'oras://registry.synchrotron-soleil.fr/software_control_system_public/dt4acc-soleil-twin:latest' }}
       DT4ACC_REGISTRY_USER: ${{ secrets.DT4ACC_REGISTRY_USER }}
       DT4ACC_REGISTRY_PASSWORD: ${{ secrets.DT4ACC_REGISTRY_PASSWORD }}
 
     steps:
       - uses: actions/checkout@v4
+        with:
+          repository: ${{ github.event.pull_request.head.repo.full_name || github.repository }}
+          ref: ${{ github.event.pull_request.head.ref || github.ref_name }}
 
       - name: Set up Apptainer
         uses: eWaterCycle/setup-apptainer@v2
@@ -55,7 +58,7 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           python -m pip install -e ".[test]"
-          python -m pip install "ophyd-async[tango]"
+          python -m pip install "ophyd-async[tango, ca, pva]"
           python -m pip install --no-deps \
             "tango-pyaml @ git+https://github.com/python-accelerator-middle-layer/tango-pyaml.git" \
             "pyaml-cs-oa @ git+https://github.com/python-accelerator-middle-layer/pyaml-cs-oa.git"
@@ -83,8 +86,8 @@ jobs:
           PID_FILE="${RUNNER_TEMP}/dt4acc-twin.pid"
 
           bash tests/integration/start_dt4acc_twin.sh \
-            --accelerator-setup-file "${GITHUB_WORKSPACE}/tests/integration/data/fodo_1gev_6d_pyaml.json" \
-            --lattice-file "${GITHUB_WORKSPACE}/tests/integration/data/fodo_1gev_6d.m" \
+            --accelerator-setup-file "${GITHUB_WORKSPACE}/tests/integration/data/fodo_1gev_6d/fodo_1gev_6d_dt4acc.json" \
+            --lattice-file "${GITHUB_WORKSPACE}/tests/integration/data/fodo_1gev_6d/fodo_1gev_6d.json" \
             --tango-host "${TANGO_HOST%:*}" \
             --tango-port "${TANGO_HOST##*:}" \
             --sif "${RUNNER_TEMP}/apptainer/dt4acc-soleil-twin.sif" \
