@@ -284,7 +284,9 @@ class PyAMLFactory:
             try:
                 cfg = build_info.config_cls.model_validate(config)
             except ValidationError as exc:
-                raise PyAMLConfigException(str(exc)) from exc
+                raise PyAMLConfigException(
+                    f"Validation failed for {build_info.config_cls.__module__}.{build_info.config_cls.__name__}:\n{exc}"
+                ) from exc
         else:
             cfg = config
 
