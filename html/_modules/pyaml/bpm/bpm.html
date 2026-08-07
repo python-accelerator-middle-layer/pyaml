@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>pyaml.bpm.bpm &#8212; Python Accelerator Middle Layer 0.1.dev1+g2edf9e917 documentation</title>
+    <title>pyaml.bpm.bpm &#8212; Python Accelerator Middle Layer 0.1.dev1+g8cb2c3102 documentation</title>
   
   
   
@@ -41,7 +41,7 @@
   <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=90905a2f556bf617f1a9" />
 <link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=90905a2f556bf617f1a9" />
 
-    <script src="../../../_static/documentation_options.js?v=1fc0e79c"></script>
+    <script src="../../../_static/documentation_options.js?v=c9ef508a"></script>
     <script src="../../../_static/doctools.js?v=9bcbadda"></script>
     <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -125,8 +125,8 @@
       
     
     
-    <img src="../../../_static/logo.png" class="logo__image only-light" alt="Python Accelerator Middle Layer 0.1.dev1+g2edf9e917 documentation - Home"/>
-    <img src="../../../_static/dark.png" class="logo__image only-dark pst-js-only" alt="Python Accelerator Middle Layer 0.1.dev1+g2edf9e917 documentation - Home"/>
+    <img src="../../../_static/logo.png" class="logo__image only-light" alt="Python Accelerator Middle Layer 0.1.dev1+g8cb2c3102 documentation - Home"/>
+    <img src="../../../_static/dark.png" class="logo__image only-dark pst-js-only" alt="Python Accelerator Middle Layer 0.1.dev1+g8cb2c3102 documentation - Home"/>
   
   
 </a></div>
@@ -388,68 +388,65 @@
                 <article class="bd-article">
                   
   <h1>Source code for pyaml.bpm.bpm</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span><span class="w"> </span><span class="nn">..common.abstract</span><span class="w"> </span><span class="kn">import</span> <span class="n">ReadFloatArray</span><span class="p">,</span> <span class="n">ReadWriteFloatArray</span><span class="p">,</span> <span class="n">ReadWriteFloatScalar</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">..common.element</span><span class="w"> </span><span class="kn">import</span> <span class="n">Element</span><span class="p">,</span> <span class="n">ElementConfigModel</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">..common.exception</span><span class="w"> </span><span class="kn">import</span> <span class="n">PyAMLException</span>
+<span></span><span class="kn">import</span><span class="w"> </span><span class="nn">copy</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Self</span>
 
-<span class="k">try</span><span class="p">:</span>
-    <span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Self</span>  <span class="c1"># Python 3.11+</span>
-<span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
-    <span class="kn">from</span><span class="w"> </span><span class="nn">typing_extensions</span><span class="w"> </span><span class="kn">import</span> <span class="n">Self</span>  <span class="c1"># Python 3.10 and earlier</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">..common.abstract</span><span class="w"> </span><span class="kn">import</span> <span class="n">ReadFloatArray</span><span class="p">,</span> <span class="n">ReadWriteFloatArray</span><span class="p">,</span> <span class="n">ReadWriteFloatScalar</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">..common.element</span><span class="w"> </span><span class="kn">import</span> <span class="n">Element</span><span class="p">,</span> <span class="n">__pyaml_repr__</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">..common.exception</span><span class="w"> </span><span class="kn">import</span> <span class="n">PyAMLException</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">..validation</span><span class="w"> </span><span class="kn">import</span> <span class="n">DynamicValidation</span><span class="p">,</span> <span class="n">register_schema</span>
 
 <span class="n">PYAMLCLASS</span> <span class="o">=</span> <span class="s2">&quot;BPM&quot;</span>
 
 
-<div class="viewcode-block" id="ConfigModel">
-<a class="viewcode-back" href="../../../api/pyaml.bpm.bpm.html#pyaml.bpm.bpm.ConfigModel">[docs]</a>
-<span class="k">class</span><span class="w"> </span><span class="nc">ConfigModel</span><span class="p">(</span><span class="n">ElementConfigModel</span><span class="p">):</span>
+<div class="viewcode-block" id="BPM">
+<a class="viewcode-back" href="../../../api/pyaml.bpm.bpm.html#pyaml.bpm.bpm.BPM">[docs]</a>
+<span class="nd">@register_schema</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">BPM</span><span class="p">(</span><span class="n">Element</span><span class="p">,</span> <span class="n">DynamicValidation</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Configuration model for BPM element.</span>
+<span class="sd">    Beam position monitor (BPM) element.</span>
+
+<span class="sd">    Represents a BPM in the accelerator lattice and provides access to its</span>
+<span class="sd">    associated readback signals, including horizontal and vertical beam</span>
+<span class="sd">    positions, calibration offsets, and mechanical tilt.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">    x_pos : str</span>
-<span class="sd">        Horizontal position device catalog key</span>
-<span class="sd">    y_pos : str</span>
-<span class="sd">        Vertical position device catalog key</span>
-<span class="sd">    x_offset : str</span>
-<span class="sd">        Horizontal BPM offset device catalog key</span>
-<span class="sd">    y_offset : str</span>
-<span class="sd">        Vertical BPM offset device catalog key</span>
-<span class="sd">    tilt : str</span>
-<span class="sd">        BPM tilt device catalog key</span>
+<span class="sd">    name : str</span>
+<span class="sd">        Name of the BPM.</span>
+<span class="sd">    lattice_names : str | None, optional</span>
+<span class="sd">        Lattice-specific name or names identifying the BPM.</span>
+<span class="sd">    description : str | None, optional</span>
+<span class="sd">        Description of the BPM.</span>
+<span class="sd">    x_pos : str | None, optional</span>
+<span class="sd">        Device catalog key for the horizontal beam position.</span>
+<span class="sd">    y_pos : str | None, optional</span>
+<span class="sd">        Device catalog key for the vertical beam position.</span>
+<span class="sd">    x_offset : str | None, optional</span>
+<span class="sd">        Device catalog key for the horizontal BPM offset.</span>
+<span class="sd">    y_offset : str | None, optional</span>
+<span class="sd">        Device catalog key for the vertical BPM offset.</span>
+<span class="sd">    tilt : str | None, optional</span>
+<span class="sd">        Device catalog key for the BPM tilt.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="n">x_pos</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
-    <span class="n">y_pos</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
-    <span class="n">x_offset</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
-    <span class="n">y_offset</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
-    <span class="n">tilt</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span></div>
-
-
-
-<div class="viewcode-block" id="BPM">
-<a class="viewcode-back" href="../../../api/pyaml.bpm.bpm.html#pyaml.bpm.bpm.BPM">[docs]</a>
-<span class="k">class</span><span class="w"> </span><span class="nc">BPM</span><span class="p">(</span><span class="n">Element</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Class providing access to one BPM of a physical or simulated lattice</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-
-    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cfg</span><span class="p">:</span> <span class="n">ConfigModel</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Construct a BPM</span>
-
-<span class="sd">        Parameters</span>
-<span class="sd">        ----------</span>
-<span class="sd">        name : str</span>
-<span class="sd">            Element name</span>
-<span class="sd">        model : BPMModel</span>
-<span class="sd">            BPM model in charge of computing beam position</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-
-        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">cfg</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
-
-        <span class="bp">self</span><span class="o">.</span><span class="n">_cfg</span> <span class="o">=</span> <span class="n">cfg</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">lattice_names</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">description</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">x_pos</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">y_pos</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">x_offset</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">y_offset</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">tilt</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">lattice_names</span><span class="p">,</span> <span class="n">description</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_x_pos</span> <span class="o">=</span> <span class="n">x_pos</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_y_pos</span> <span class="o">=</span> <span class="n">y_pos</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_x_offset</span> <span class="o">=</span> <span class="n">x_offset</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_y_offset</span> <span class="o">=</span> <span class="n">y_offset</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_tilt_name</span> <span class="o">=</span> <span class="n">tilt</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_positions</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_offset</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_tilt</span> <span class="o">=</span> <span class="kc">None</span>
@@ -541,7 +538,7 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># Attach positions, offset and tilt attributes and returns a new</span>
         <span class="c1"># reference</span>
-        <span class="n">obj</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_cfg</span><span class="p">)</span>
+        <span class="n">obj</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
         <span class="n">obj</span><span class="o">.</span><span class="n">_positions</span> <span class="o">=</span> <span class="n">positions</span>
         <span class="n">obj</span><span class="o">.</span><span class="n">_offset</span> <span class="o">=</span> <span class="n">offset</span>
         <span class="n">obj</span><span class="o">.</span><span class="n">_tilt</span> <span class="o">=</span> <span class="n">tilt</span>
@@ -551,7 +548,7 @@
 
 <div class="viewcode-block" id="BPM.get_pos_devices">
 <a class="viewcode-back" href="../../../api/pyaml.bpm.bpm.html#pyaml.bpm.bpm.BPM.get_pos_devices">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">get_pos_devices</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_pos_devices</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Get device handles used for position reading</span>
 
@@ -560,7 +557,7 @@
 <span class="sd">        list[DeviceAccess]</span>
 <span class="sd">            Array of DeviceAcess</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_cfg</span><span class="o">.</span><span class="n">x_pos</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cfg</span><span class="o">.</span><span class="n">y_pos</span><span class="p">]</span></div>
+        <span class="k">return</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_x_pos</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_y_pos</span><span class="p">]</span></div>
 
 
 <div class="viewcode-block" id="BPM.get_tilt_device">
@@ -574,7 +571,7 @@
 <span class="sd">        DeviceAccess</span>
 <span class="sd">            DeviceAcess</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cfg</span><span class="o">.</span><span class="n">tilt</span></div>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_tilt_name</span></div>
 
 
 <div class="viewcode-block" id="BPM.get_offset_devices">
@@ -588,8 +585,11 @@
 <span class="sd">        list[DeviceAccess]</span>
 <span class="sd">            Array of DeviceAcess</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_cfg</span><span class="o">.</span><span class="n">x_offset</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cfg</span><span class="o">.</span><span class="n">y_offset</span><span class="p">]</span></div>
-</div>
+        <span class="k">return</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_x_offset</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_y_offset</span><span class="p">]</span></div>
+
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">__pyaml_repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">exclude</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;positions&quot;</span><span class="p">,</span> <span class="s2">&quot;offset&quot;</span><span class="p">,</span> <span class="s2">&quot;tilt&quot;</span><span class="p">])</span></div>
 
 </pre></div>
 
