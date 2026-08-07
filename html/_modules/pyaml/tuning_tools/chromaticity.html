@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>pyaml.tuning_tools.chromaticity &#8212; Python Accelerator Middle Layer 0.1.dev1+g084e73cac documentation</title>
+    <title>pyaml.tuning_tools.chromaticity &#8212; Python Accelerator Middle Layer 0.1.dev1+g1b476cf96 documentation</title>
   
   
   
@@ -41,7 +41,7 @@
   <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=90905a2f556bf617f1a9" />
 <link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=90905a2f556bf617f1a9" />
 
-    <script src="../../../_static/documentation_options.js?v=ba6f5a4b"></script>
+    <script src="../../../_static/documentation_options.js?v=bcd0b3ab"></script>
     <script src="../../../_static/doctools.js?v=9bcbadda"></script>
     <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -125,8 +125,8 @@
       
     
     
-    <img src="../../../_static/logo.png" class="logo__image only-light" alt="Python Accelerator Middle Layer 0.1.dev1+g084e73cac documentation - Home"/>
-    <img src="../../../_static/dark.png" class="logo__image only-dark pst-js-only" alt="Python Accelerator Middle Layer 0.1.dev1+g084e73cac documentation - Home"/>
+    <img src="../../../_static/logo.png" class="logo__image only-light" alt="Python Accelerator Middle Layer 0.1.dev1+g1b476cf96 documentation - Home"/>
+    <img src="../../../_static/dark.png" class="logo__image only-dark pst-js-only" alt="Python Accelerator Middle Layer 0.1.dev1+g1b476cf96 documentation - Home"/>
   
   
 </a></div>
@@ -392,7 +392,7 @@
 <span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">TYPE_CHECKING</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">..</span><span class="w"> </span><span class="kn">import</span> <span class="n">PyAMLException</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">..common.element</span><span class="w"> </span><span class="kn">import</span> <span class="n">ElementConfigModel</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">..validation</span><span class="w"> </span><span class="kn">import</span> <span class="n">DynamicValidation</span><span class="p">,</span> <span class="n">register_schema</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">.chromaticity_monitor</span><span class="w"> </span><span class="kn">import</span> <span class="n">ChomaticityMonitor</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">.response_matrix_data</span><span class="w"> </span><span class="kn">import</span> <span class="n">ResponseMatrixData</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">.tuning_tool</span><span class="w"> </span><span class="kn">import</span> <span class="n">TuningTool</span>
@@ -400,10 +400,6 @@
 <span class="k">if</span> <span class="n">TYPE_CHECKING</span><span class="p">:</span>
     <span class="kn">from</span><span class="w"> </span><span class="nn">..arrays.magnet_array</span><span class="w"> </span><span class="kn">import</span> <span class="n">MagnetArray</span>
 
-<span class="k">try</span><span class="p">:</span>
-    <span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Self</span>  <span class="c1"># Python 3.11+</span>
-<span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
-    <span class="kn">from</span><span class="w"> </span><span class="nn">typing_extensions</span><span class="w"> </span><span class="kn">import</span> <span class="n">Self</span>  <span class="c1"># Python 3.10 and earlier</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">logging</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">time</span>
 
@@ -415,60 +411,49 @@
 <span class="n">PYAMLCLASS</span> <span class="o">=</span> <span class="s2">&quot;Chromaticity&quot;</span>
 
 
-<div class="viewcode-block" id="ConfigModel">
-<a class="viewcode-back" href="../../../api/pyaml.tuning_tools.chromaticity.html#pyaml.tuning_tools.chromaticity.ConfigModel">[docs]</a>
-<span class="k">class</span><span class="w"> </span><span class="nc">ConfigModel</span><span class="p">(</span><span class="n">ElementConfigModel</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Configuration model for Tune</span>
-
-<span class="sd">    Parameters</span>
-<span class="sd">    ----------</span>
-<span class="sd">    sextu_array_name : str</span>
-<span class="sd">        Array name of sextu used to adjust the chromaticity</span>
-<span class="sd">    chromaticty_monitor_name : str</span>
-<span class="sd">        Name of the diagnostic pyaml device for measuring the chromaticity</span>
-<span class="sd">    response_matrix : str | ResponseMatrixData</span>
-<span class="sd">        filename or data of the chromaticity response matrix</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-
-    <span class="n">sextu_array_name</span><span class="p">:</span> <span class="nb">str</span>
-    <span class="n">chromaticty_monitor_name</span><span class="p">:</span> <span class="nb">str</span>
-    <span class="n">response_matrix</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">ResponseMatrixData</span></div>
-
-
-
 <div class="viewcode-block" id="Chromaticity">
 <a class="viewcode-back" href="../../../api/pyaml.tuning_tools.chromaticity.html#pyaml.tuning_tools.chromaticity.Chromaticity">[docs]</a>
-<span class="k">class</span><span class="w"> </span><span class="nc">Chromaticity</span><span class="p">(</span><span class="n">TuningTool</span><span class="p">):</span>
+<span class="nd">@register_schema</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">Chromaticity</span><span class="p">(</span><span class="n">TuningTool</span><span class="p">,</span> <span class="n">DynamicValidation</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Class providing chromaticity adjustment tool</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cfg</span><span class="p">:</span> <span class="n">ConfigModel</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">sextu_array_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">chromaticity_monitor_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">response_matrix</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">ResponseMatrixData</span>
+    <span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Construct a chromaticity adjustment object.</span>
+<span class="sd">        Initialize a chromaticity adjustment tool.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        cfg : ConfigModel</span>
-<span class="sd">            Configuration for the tune adjustment.</span>
+<span class="sd">        name : str</span>
+<span class="sd">            Name of the tuning tool.</span>
+<span class="sd">        sextu_array_name : str</span>
+<span class="sd">            Name of the sextupole array used to adjust the chromaticity.</span>
+<span class="sd">        chromaticity_monitor_name : str</span>
+<span class="sd">            Name of the chromaticity monitor used for readback.</span>
+<span class="sd">        response_matrix : str | ResponseMatrixData</span>
+<span class="sd">            Chromaticity response matrix or path to a saved response matrix file.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">cfg</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_cfg</span> <span class="o">=</span> <span class="n">cfg</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sextu_array_name</span> <span class="o">=</span> <span class="n">sextu_array_name</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_chromaticity_monitor_name</span> <span class="o">=</span> <span class="n">chromaticity_monitor_name</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">response_matrix_file</span> <span class="o">=</span> <span class="n">response_matrix</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_response_matrix</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_correctionmat</span> <span class="o">=</span> <span class="kc">None</span>
 
         <span class="c1"># If the configuration response matrix is a filename, load it</span>
-        <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">cfg</span><span class="o">.</span><span class="n">response_matrix</span><span class="p">)</span> <span class="ow">is</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">response_matrix_file</span><span class="p">)</span> <span class="ow">is</span> <span class="nb">str</span><span class="p">:</span>
             <span class="k">try</span><span class="p">:</span>
-                <span class="n">cfg</span><span class="o">.</span><span class="n">response_matrix</span> <span class="o">=</span> <span class="n">ResponseMatrixData</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">cfg</span><span class="o">.</span><span class="n">response_matrix</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_response_matrix</span> <span class="o">=</span> <span class="n">ResponseMatrixData</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">response_matrix_file</span><span class="p">)</span>
             <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
                 <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-                <span class="n">cfg</span><span class="o">.</span><span class="n">response_matrix</span> <span class="o">=</span> <span class="kc">None</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_response_matrix</span> <span class="o">=</span> <span class="kc">None</span>
 
         <span class="c1"># Invert matrix</span>
-        <span class="k">if</span> <span class="n">cfg</span><span class="o">.</span><span class="n">response_matrix</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_response_matrix</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">cfg</span><span class="o">.</span><span class="n">response_matrix</span><span class="o">.</span><span class="n">_cfg</span><span class="o">.</span><span class="n">matrix</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_response_matrix</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_response_matrix</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_response_matrix</span><span class="o">.</span><span class="n">_cfg</span><span class="o">.</span><span class="n">matrix</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_correctionmat</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">pinv</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_response_matrix</span><span class="p">)</span>
 
         <span class="c1"># TODO: Initialise first setpoint</span>
@@ -479,7 +464,7 @@
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Return the response matrix if it has been loaded None otherwise</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cfg</span><span class="o">.</span><span class="n">response_matrix</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_response_matrix</span>
 
 <div class="viewcode-block" id="Chromaticity.load">
 <a class="viewcode-back" href="../../../api/pyaml.tuning_tools.chromaticity.html#pyaml.tuning_tools.chromaticity.Chromaticity.load">[docs]</a>
@@ -492,20 +477,20 @@
 <span class="sd">        load_path : Path</span>
 <span class="sd">            Filename of the :class:`~.ResponseMatrixData` to load</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_cfg</span><span class="o">.</span><span class="n">response_matrix</span> <span class="o">=</span> <span class="n">ResponseMatrixData</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">load_path</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_response_matrix</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_cfg</span><span class="o">.</span><span class="n">response_matrix</span><span class="o">.</span><span class="n">_cfg</span><span class="o">.</span><span class="n">matrix</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_response_matrix</span> <span class="o">=</span> <span class="n">ResponseMatrixData</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">load_path</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_response_matrix</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_response_matrix</span><span class="o">.</span><span class="n">_cfg</span><span class="o">.</span><span class="n">matrix</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_correctionmat</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">pinv</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_response_matrix</span><span class="p">)</span></div>
 
 
     <span class="nd">@property</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">_cm</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;ChomaticityMonitor&quot;</span><span class="p">:</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">check_peer</span><span class="p">()</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">peer</span><span class="o">.</span><span class="n">get_chromaticity_monitor</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_cfg</span><span class="o">.</span><span class="n">chromaticty_monitor_name</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">peer</span><span class="o">.</span><span class="n">get_chromaticity_monitor</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_chromaticity_monitor_name</span><span class="p">)</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">_sextu</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;MagnetArray&quot;</span><span class="p">:</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">check_peer</span><span class="p">()</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">peer</span><span class="o">.</span><span class="n">get_magnets</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_cfg</span><span class="o">.</span><span class="n">sextu_array_name</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">peer</span><span class="o">.</span><span class="n">get_magnets</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sextu_array_name</span><span class="p">)</span>
 
 <div class="viewcode-block" id="Chromaticity.get">
 <a class="viewcode-back" href="../../../api/pyaml.tuning_tools.chromaticity.html#pyaml.tuning_tools.chromaticity.Chromaticity.get">[docs]</a>
@@ -520,7 +505,7 @@
 <a class="viewcode-back" href="../../../api/pyaml.tuning_tools.chromaticity.html#pyaml.tuning_tools.chromaticity.Chromaticity.readback">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">readback</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Launch a chromaticty scan and returns the measured chromaticity.</span>
+<span class="sd">        Launch a chromaticity scan and returns the measured chromaticity.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_cm</span><span class="o">.</span><span class="n">measure</span><span class="p">()</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cm</span><span class="o">.</span><span class="n">chromaticity</span><span class="o">.</span><span class="n">get</span><span class="p">()</span></div>

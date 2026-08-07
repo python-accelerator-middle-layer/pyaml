@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>chromaticity &#8212; Python Accelerator Middle Layer 0.1.dev1+g084e73cac documentation</title>
+    <title>chromaticity &#8212; Python Accelerator Middle Layer 0.1.dev1+g1b476cf96 documentation</title>
   
   
   
@@ -42,7 +42,7 @@
   <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=90905a2f556bf617f1a9" />
 <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=90905a2f556bf617f1a9" />
 
-    <script src="../_static/documentation_options.js?v=ba6f5a4b"></script>
+    <script src="../_static/documentation_options.js?v=bcd0b3ab"></script>
     <script src="../_static/doctools.js?v=9bcbadda"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -128,8 +128,8 @@
       
     
     
-    <img src="../_static/logo.png" class="logo__image only-light" alt="Python Accelerator Middle Layer 0.1.dev1+g084e73cac documentation - Home"/>
-    <img src="../_static/dark.png" class="logo__image only-dark pst-js-only" alt="Python Accelerator Middle Layer 0.1.dev1+g084e73cac documentation - Home"/>
+    <img src="../_static/logo.png" class="logo__image only-light" alt="Python Accelerator Middle Layer 0.1.dev1+g1b476cf96 documentation - Home"/>
+    <img src="../_static/dark.png" class="logo__image only-dark pst-js-only" alt="Python Accelerator Middle Layer 0.1.dev1+g1b476cf96 documentation - Home"/>
   
   
 </a></div>
@@ -526,51 +526,27 @@
   <section id="module-pyaml.tuning_tools.chromaticity">
 <span id="chromaticity"></span><h1>chromaticity<a class="headerlink" href="#module-pyaml.tuning_tools.chromaticity" title="Link to this heading">#</a></h1>
 <dl class="py class">
-<dt class="sig sig-object py" id="pyaml.tuning_tools.chromaticity.ConfigModel">
-<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ConfigModel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">description</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lattice_names</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sextu_array_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">chromaticty_monitor_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">response_matrix</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/tuning_tools/chromaticity.html#ConfigModel"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.tuning_tools.chromaticity.ConfigModel" title="Link to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference internal" href="pyaml.common.element.html#pyaml.common.element.ElementConfigModel" title="pyaml.common.element.ElementConfigModel"><code class="xref py py-class docutils literal notranslate"><span class="pre">ElementConfigModel</span></code></a></p>
-<p>Configuration model for Tune</p>
+<dt class="sig sig-object py" id="pyaml.tuning_tools.chromaticity.Chromaticity">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Chromaticity</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/tuning_tools/chromaticity.html#Chromaticity"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.tuning_tools.chromaticity.Chromaticity" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="pyaml.tuning_tools.tuning_tool.html#pyaml.tuning_tools.tuning_tool.TuningTool" title="pyaml.tuning_tools.tuning_tool.TuningTool"><code class="xref py py-class docutils literal notranslate"><span class="pre">TuningTool</span></code></a>, <code class="xref py py-class docutils literal notranslate"><span class="pre">DynamicValidation</span></code></p>
+<p>Class providing chromaticity adjustment tool</p>
+<p>Initialize a chromaticity adjustment tool.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>sextu_array_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>) – Array name of sextu used to adjust the chromaticity</p></li>
-<li><p><strong>chromaticty_monitor_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>) – Name of the diagnostic pyaml device for measuring the chromaticity</p></li>
-<li><p><strong>response_matrix</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em> | </em><a class="reference internal" href="pyaml.tuning_tools.response_matrix_data.html#pyaml.tuning_tools.response_matrix_data.ResponseMatrixData" title="pyaml.tuning_tools.response_matrix_data.ResponseMatrixData"><em>ResponseMatrixData</em></a>) – filename or data of the chromaticity response matrix</p></li>
+<li><p><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>) – Name of the tuning tool.</p></li>
+<li><p><strong>sextu_array_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>) – Name of the sextupole array used to adjust the chromaticity.</p></li>
+<li><p><strong>chromaticity_monitor_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>) – Name of the chromaticity monitor used for readback.</p></li>
+<li><p><strong>response_matrix</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em> | </em><a class="reference internal" href="pyaml.tuning_tools.response_matrix_data.html#pyaml.tuning_tools.response_matrix_data.ResponseMatrixData" title="pyaml.tuning_tools.response_matrix_data.ResponseMatrixData"><em>ResponseMatrixData</em></a>) – Chromaticity response matrix or path to a saved response matrix file.</p></li>
 </ul>
 </dd>
 </dl>
-<p>Create a new model by parsing and validating input data from keyword arguments.</p>
-<p>Raises [<cite>ValidationError</cite>][pydantic_core.ValidationError] if the input data cannot be
-validated to form a valid model.</p>
-<p><cite>self</cite> is explicitly positional-only to allow <cite>self</cite> as a field name.</p>
 <dl class="py attribute">
-<dt class="sig sig-object py" id="pyaml.tuning_tools.chromaticity.ConfigModel.chromaticty_monitor_name">
-<span class="sig-name descname"><span class="pre">chromaticty_monitor_name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></em><a class="headerlink" href="#pyaml.tuning_tools.chromaticity.ConfigModel.chromaticty_monitor_name" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pyaml.tuning_tools.chromaticity.ConfigModel.response_matrix">
-<span class="sig-name descname"><span class="pre">response_matrix</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference internal" href="pyaml.tuning_tools.response_matrix_data.html#pyaml.tuning_tools.response_matrix_data.ResponseMatrixData" title="pyaml.tuning_tools.response_matrix_data.ResponseMatrixData"><span class="pre">ResponseMatrixData</span></a></em><a class="headerlink" href="#pyaml.tuning_tools.chromaticity.ConfigModel.response_matrix" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pyaml.tuning_tools.chromaticity.ConfigModel.sextu_array_name">
-<span class="sig-name descname"><span class="pre">sextu_array_name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></em><a class="headerlink" href="#pyaml.tuning_tools.chromaticity.ConfigModel.sextu_array_name" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
-
+<dt class="sig sig-object py" id="pyaml.tuning_tools.chromaticity.Chromaticity.validation_model">
+<span class="sig-name descname"><span class="pre">validation_model</span></span><a class="headerlink" href="#pyaml.tuning_tools.chromaticity.Chromaticity.validation_model" title="Link to this definition">#</a></dt>
+<dd><p>alias of <code class="xref py py-class docutils literal notranslate"><span class="pre">ChromaticityValidationModel</span></code></p>
 </dd></dl>
 
-<dl class="py class">
-<dt class="sig sig-object py" id="pyaml.tuning_tools.chromaticity.Chromaticity">
-<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Chromaticity</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cfg</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/tuning_tools/chromaticity.html#Chromaticity"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.tuning_tools.chromaticity.Chromaticity" title="Link to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference internal" href="pyaml.tuning_tools.tuning_tool.html#pyaml.tuning_tools.tuning_tool.TuningTool" title="pyaml.tuning_tools.tuning_tool.TuningTool"><code class="xref py py-class docutils literal notranslate"><span class="pre">TuningTool</span></code></a></p>
-<p>Class providing chromaticity adjustment tool</p>
-<p>Construct a chromaticity adjustment object.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>cfg</strong> (<a class="reference internal" href="#pyaml.tuning_tools.chromaticity.ConfigModel" title="pyaml.tuning_tools.chromaticity.ConfigModel"><em>ConfigModel</em></a>) – Configuration for the tune adjustment.</p>
-</dd>
-</dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="pyaml.tuning_tools.chromaticity.Chromaticity.add">
 <span class="sig-name descname"><span class="pre">add</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dchroma</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">wait_time</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/tuning_tools/chromaticity.html#Chromaticity.add"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.tuning_tools.chromaticity.Chromaticity.add" title="Link to this definition">#</a></dt>
@@ -617,7 +593,7 @@ validated to form a valid model.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="pyaml.tuning_tools.chromaticity.Chromaticity.readback">
 <span class="sig-name descname"><span class="pre">readback</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/tuning_tools/chromaticity.html#Chromaticity.readback"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.tuning_tools.chromaticity.Chromaticity.readback" title="Link to this definition">#</a></dt>
-<dd><p>Launch a chromaticty scan and returns the measured chromaticity.</p>
+<dd><p>Launch a chromaticity scan and returns the measured chromaticity.</p>
 </dd></dl>
 
 <dl class="py method">
@@ -692,13 +668,8 @@ validated to form a valid model.</p>
   </div>
   <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="pst-show_toc_level nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.tuning_tools.chromaticity.ConfigModel"><code class="docutils literal notranslate"><span class="pre">ConfigModel</span></code></a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.tuning_tools.chromaticity.ConfigModel.chromaticty_monitor_name"><code class="docutils literal notranslate"><span class="pre">ConfigModel.chromaticty_monitor_name</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.tuning_tools.chromaticity.ConfigModel.response_matrix"><code class="docutils literal notranslate"><span class="pre">ConfigModel.response_matrix</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.tuning_tools.chromaticity.ConfigModel.sextu_array_name"><code class="docutils literal notranslate"><span class="pre">ConfigModel.sextu_array_name</span></code></a></li>
-</ul>
-</li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.tuning_tools.chromaticity.Chromaticity"><code class="docutils literal notranslate"><span class="pre">Chromaticity</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.tuning_tools.chromaticity.Chromaticity.validation_model"><code class="docutils literal notranslate"><span class="pre">Chromaticity.validation_model</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.tuning_tools.chromaticity.Chromaticity.add"><code class="docutils literal notranslate"><span class="pre">Chromaticity.add()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.tuning_tools.chromaticity.Chromaticity.correct"><code class="docutils literal notranslate"><span class="pre">Chromaticity.correct()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.tuning_tools.chromaticity.Chromaticity.get"><code class="docutils literal notranslate"><span class="pre">Chromaticity.get()</span></code></a></li>

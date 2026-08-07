@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>pyaml.tuning_tools.chromaticity_response_matrix &#8212; Python Accelerator Middle Layer 0.1.dev1+g084e73cac documentation</title>
+    <title>pyaml.tuning_tools.chromaticity_response_matrix &#8212; Python Accelerator Middle Layer 0.1.dev1+g1b476cf96 documentation</title>
   
   
   
@@ -41,7 +41,7 @@
   <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=90905a2f556bf617f1a9" />
 <link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=90905a2f556bf617f1a9" />
 
-    <script src="../../../_static/documentation_options.js?v=ba6f5a4b"></script>
+    <script src="../../../_static/documentation_options.js?v=bcd0b3ab"></script>
     <script src="../../../_static/doctools.js?v=9bcbadda"></script>
     <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -125,8 +125,8 @@
       
     
     
-    <img src="../../../_static/logo.png" class="logo__image only-light" alt="Python Accelerator Middle Layer 0.1.dev1+g084e73cac documentation - Home"/>
-    <img src="../../../_static/dark.png" class="logo__image only-dark pst-js-only" alt="Python Accelerator Middle Layer 0.1.dev1+g084e73cac documentation - Home"/>
+    <img src="../../../_static/logo.png" class="logo__image only-light" alt="Python Accelerator Middle Layer 0.1.dev1+g1b476cf96 documentation - Home"/>
+    <img src="../../../_static/dark.png" class="logo__image only-dark pst-js-only" alt="Python Accelerator Middle Layer 0.1.dev1+g1b476cf96 documentation - Home"/>
   
   
 </a></div>
@@ -393,11 +393,10 @@
 <span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">Optional</span>
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">pydantic</span><span class="w"> </span><span class="kn">import</span> <span class="n">ConfigDict</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">..common.constants</span><span class="w"> </span><span class="kn">import</span> <span class="n">Action</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">..common.element</span><span class="w"> </span><span class="kn">import</span> <span class="n">ElementConfigModel</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">.measurement_tool</span><span class="w"> </span><span class="kn">import</span> <span class="n">MeasurementTool</span><span class="p">,</span> <span class="n">MeasurementToolConfigModel</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">..validation</span><span class="w"> </span><span class="kn">import</span> <span class="n">DynamicValidation</span><span class="p">,</span> <span class="n">register_schema</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.measurement_tool</span><span class="w"> </span><span class="kn">import</span> <span class="n">MeasurementTool</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">.response_matrix_data</span><span class="w"> </span><span class="kn">import</span> <span class="n">ConfigModel</span> <span class="k">as</span> <span class="n">ResponseMatrixDataConfigModel</span>
 
 <span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
@@ -405,36 +404,80 @@
 <span class="n">PYAMLCLASS</span> <span class="o">=</span> <span class="s2">&quot;ChromaticityResponseMatrix&quot;</span>
 
 
-<div class="viewcode-block" id="ConfigModel">
-<a class="viewcode-back" href="../../../api/pyaml.tuning_tools.chromaticity_response_matrix.html#pyaml.tuning_tools.chromaticity_response_matrix.ConfigModel">[docs]</a>
-<span class="k">class</span><span class="w"> </span><span class="nc">ConfigModel</span><span class="p">(</span><span class="n">MeasurementToolConfigModel</span><span class="p">):</span>
+<div class="viewcode-block" id="ChromaticityResponseMatrix">
+<a class="viewcode-back" href="../../../api/pyaml.tuning_tools.chromaticity_response_matrix.html#pyaml.tuning_tools.chromaticity_response_matrix.ChromaticityResponseMatrix">[docs]</a>
+<span class="nd">@register_schema</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">ChromaticityResponseMatrix</span><span class="p">(</span><span class="n">MeasurementTool</span><span class="p">,</span> <span class="n">DynamicValidation</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Configuration model for Tune response matrix</span>
+<span class="sd">    Measure the chromaticity response matrix of a lattice.</span>
+
+<span class="sd">    This tool perturbs each sextupole in a sextupole array and measures the</span>
+<span class="sd">    resulting chromaticity variation using a chromaticity monitor. The measured</span>
+<span class="sd">    slopes are assembled into a response matrix with chromaticity components as</span>
+<span class="sd">    the observables and sextupoles as the variables.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
+<span class="sd">    name : str</span>
+<span class="sd">        Name of the response matrix measurement tool.</span>
 <span class="sd">    sextu_array_name : str</span>
-<span class="sd">        Array name of sextupole used to adjust the chromaticity</span>
+<span class="sd">        Name of the sextupole array to excite.</span>
 <span class="sd">    chromaticity_name : str</span>
-<span class="sd">        Name of the diagnostic chromaticy monitor</span>
+<span class="sd">        Name of the chromaticity monitor used to measure the response.</span>
 <span class="sd">    sextu_delta : float</span>
-<span class="sd">        Delta strength used to get the response matrix</span>
+<span class="sd">        Default sextupole excitation applied during the measurement.</span>
+<span class="sd">    n_step : int, optional</span>
+<span class="sd">        Default number of excitation steps used to fit the response.</span>
+<span class="sd">    sleep_between_step : float, optional</span>
+<span class="sd">        Default delay in seconds after changing the sextupole strength.</span>
+<span class="sd">    n_avg_meas : int, optional</span>
+<span class="sd">        Default number of chromaticity measurements to average at each step.</span>
+<span class="sd">    sleep_between_meas : float, optional</span>
+<span class="sd">        Default delay in seconds between averaged measurements.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="n">model_config</span> <span class="o">=</span> <span class="n">ConfigDict</span><span class="p">(</span><span class="n">arbitrary_types_allowed</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">extra</span><span class="o">=</span><span class="s2">&quot;forbid&quot;</span><span class="p">)</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">sextu_array_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">chromaticity_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">sextu_delta</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+        <span class="n">n_step</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
+        <span class="n">sleep_between_step</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+        <span class="n">n_avg_meas</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
+        <span class="n">sleep_between_meas</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+    <span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initialize the chromaticity response matrix measurement tool.</span>
 
-    <span class="n">sextu_array_name</span><span class="p">:</span> <span class="nb">str</span>
-    <span class="n">chromaticity_name</span><span class="p">:</span> <span class="nb">str</span>
-    <span class="n">sextu_delta</span><span class="p">:</span> <span class="nb">float</span></div>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        name : str</span>
+<span class="sd">            Name of the response matrix measurement tool.</span>
+<span class="sd">        sextu_array_name : str</span>
+<span class="sd">            Name of the sextupole array to excite.</span>
+<span class="sd">        chromaticity_name : str</span>
+<span class="sd">            Name of the chromaticity monitor used to measure the response.</span>
+<span class="sd">        sextu_delta : float</span>
+<span class="sd">            Default sextupole excitation applied during the measurement.</span>
+<span class="sd">        n_step : int, optional</span>
+<span class="sd">            Default number of excitation steps used to fit the response.</span>
+<span class="sd">        sleep_between_step : float, optional</span>
+<span class="sd">            Default delay in seconds after changing the sextupole strength.</span>
+<span class="sd">        n_avg_meas : int, optional</span>
+<span class="sd">            Default number of chromaticity measurements to average at each step.</span>
+<span class="sd">        sleep_between_meas : float, optional</span>
+<span class="sd">            Default delay in seconds between averaged measurements.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
 
-
-
-<div class="viewcode-block" id="ChromaticityResponseMatrix">
-<a class="viewcode-back" href="../../../api/pyaml.tuning_tools.chromaticity_response_matrix.html#pyaml.tuning_tools.chromaticity_response_matrix.ChromaticityResponseMatrix">[docs]</a>
-<span class="k">class</span><span class="w"> </span><span class="nc">ChromaticityResponseMatrix</span><span class="p">(</span><span class="n">MeasurementTool</span><span class="p">):</span>
-    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cfg</span><span class="p">:</span> <span class="n">ConfigModel</span><span class="p">):</span>
-        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">cfg</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_cfg</span> <span class="o">=</span> <span class="n">cfg</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sextu_array_name</span> <span class="o">=</span> <span class="n">sextu_array_name</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">chromaticity_name</span> <span class="o">=</span> <span class="n">chromaticity_name</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sextu_delta</span> <span class="o">=</span> <span class="n">sextu_delta</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">n_step</span> <span class="o">=</span> <span class="n">n_step</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sleep_between_step</span> <span class="o">=</span> <span class="n">sleep_between_step</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">n_avg_meas</span> <span class="o">=</span> <span class="n">n_avg_meas</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sleep_between_meas</span> <span class="o">=</span> <span class="n">sleep_between_meas</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">aborted</span> <span class="o">=</span> <span class="kc">False</span>
 
 <div class="viewcode-block" id="ChromaticityResponseMatrix.measure">
@@ -514,8 +557,8 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># Get devices</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">check_peer</span><span class="p">()</span>
-        <span class="n">sextus</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_peer</span><span class="o">.</span><span class="n">get_magnets</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_cfg</span><span class="o">.</span><span class="n">sextu_array_name</span><span class="p">)</span>
-        <span class="n">cm</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_peer</span><span class="o">.</span><span class="n">get_chromaticity_monitor</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_cfg</span><span class="o">.</span><span class="n">chromaticity_name</span><span class="p">)</span>
+        <span class="n">sextus</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_peer</span><span class="o">.</span><span class="n">get_magnets</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sextu_array_name</span><span class="p">)</span>
+        <span class="n">cm</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_peer</span><span class="o">.</span><span class="n">get_chromaticity_monitor</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">chromaticity_name</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_register_callback</span><span class="p">(</span><span class="n">callback</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_init_measure</span><span class="p">(</span><span class="s2">&quot;pyaml.tuning_tools.response_matrix_data&quot;</span><span class="p">)</span>
@@ -528,11 +571,11 @@
             <span class="k">return</span> <span class="kc">False</span>
         <span class="n">initial_chroma</span> <span class="o">=</span> <span class="n">cm</span><span class="o">.</span><span class="n">chromaticity</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
 
-        <span class="n">delta</span> <span class="o">=</span> <span class="n">sextu_delta</span> <span class="k">if</span> <span class="n">sextu_delta</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cfg</span><span class="o">.</span><span class="n">sextu_delta</span>
-        <span class="n">nb_step</span> <span class="o">=</span> <span class="n">n_step</span> <span class="k">if</span> <span class="n">n_step</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cfg</span><span class="o">.</span><span class="n">n_step</span>
-        <span class="n">nb_meas</span> <span class="o">=</span> <span class="n">n_avg_meas</span> <span class="k">if</span> <span class="n">n_avg_meas</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cfg</span><span class="o">.</span><span class="n">n_avg_meas</span>
-        <span class="n">sleep_step</span> <span class="o">=</span> <span class="n">sleep_between_step</span> <span class="k">if</span> <span class="n">sleep_between_step</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cfg</span><span class="o">.</span><span class="n">sleep_between_step</span>
-        <span class="n">sleep_meas</span> <span class="o">=</span> <span class="n">sleep_between_meas</span> <span class="k">if</span> <span class="n">sleep_between_meas</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cfg</span><span class="o">.</span><span class="n">sleep_between_meas</span>
+        <span class="n">delta</span> <span class="o">=</span> <span class="n">sextu_delta</span> <span class="k">if</span> <span class="n">sextu_delta</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">sextu_delta</span>
+        <span class="n">nb_step</span> <span class="o">=</span> <span class="n">n_step</span> <span class="k">if</span> <span class="n">n_step</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_step</span>
+        <span class="n">nb_meas</span> <span class="o">=</span> <span class="n">n_avg_meas</span> <span class="k">if</span> <span class="n">n_avg_meas</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_avg_meas</span>
+        <span class="n">sleep_step</span> <span class="o">=</span> <span class="n">sleep_between_step</span> <span class="k">if</span> <span class="n">sleep_between_step</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">sleep_between_step</span>
+        <span class="n">sleep_meas</span> <span class="o">=</span> <span class="n">sleep_between_meas</span> <span class="k">if</span> <span class="n">sleep_between_meas</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">sleep_between_meas</span>
 
         <span class="n">err</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="n">aborted</span> <span class="o">=</span> <span class="kc">False</span>
