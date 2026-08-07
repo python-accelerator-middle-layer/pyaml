@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>manager &#8212; Python Accelerator Middle Layer 0.1.dev1+g8cb2c3102 documentation</title>
+    <title>manager &#8212; Python Accelerator Middle Layer 0.1.dev1+gc23cf8b8e documentation</title>
   
   
   
@@ -42,7 +42,7 @@
   <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=90905a2f556bf617f1a9" />
 <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=90905a2f556bf617f1a9" />
 
-    <script src="../_static/documentation_options.js?v=c9ef508a"></script>
+    <script src="../_static/documentation_options.js?v=3ab33b5a"></script>
     <script src="../_static/doctools.js?v=9bcbadda"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -128,8 +128,8 @@
       
     
     
-    <img src="../_static/logo.png" class="logo__image only-light" alt="Python Accelerator Middle Layer 0.1.dev1+g8cb2c3102 documentation - Home"/>
-    <img src="../_static/dark.png" class="logo__image only-dark pst-js-only" alt="Python Accelerator Middle Layer 0.1.dev1+g8cb2c3102 documentation - Home"/>
+    <img src="../_static/logo.png" class="logo__image only-light" alt="Python Accelerator Middle Layer 0.1.dev1+gc23cf8b8e documentation - Home"/>
+    <img src="../_static/dark.png" class="logo__image only-dark pst-js-only" alt="Python Accelerator Middle Layer 0.1.dev1+gc23cf8b8e documentation - Home"/>
   
   
 </a></div>
@@ -565,18 +565,21 @@ categories such as <code class="docutils literal notranslate"><span class="pre">
 <dl class="py method">
 <dt class="sig sig-object py" id="pyaml.configuration.manager.ConfigurationManager.root_fields">
 <em class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">root_fields</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/configuration/manager.html#ConfigurationManager.root_fields"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.configuration.manager.ConfigurationManager.root_fields" title="Link to this definition">#</a></dt>
-<dd><p>Return the ordered root fields supported by the accelerator model.</p>
-<p>The field order is derived from
-<a class="reference internal" href="pyaml.accelerator.html#pyaml.accelerator.ConfigModel" title="pyaml.accelerator.ConfigModel"><code class="xref py py-class docutils literal notranslate"><span class="pre">ConfigModel</span></code></a>.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>tuple[str, …]</strong></p>
-</dd>
-</dl>
-<p class="rubric">Examples</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">ConfigurationManager</span><span class="o">.</span><span class="n">root_fields</span><span class="p">()</span>
+<dd><p>Return the ordered root fields supported by the accelerator configuration.</p>
+<p>The field order is derived from :meth:Accelerator.__init__, excluding
+internal or categorized fields such as control and simulator collections.</p>
+<p>Returns</p>
+<p>tuple[str, …]
+The root field names in configuration order, prefixed with “type”.</p>
+<p>Examples</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>
 </pre></div>
 </div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">ConfigurationManager</span><span class="o">.</span><span class="n">root_fields</span><span class="p">()</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+</dl>
 </dd></dl>
 
 <dl class="py method">

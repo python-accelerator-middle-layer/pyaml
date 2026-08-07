@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>pyaml.configuration.manager &#8212; Python Accelerator Middle Layer 0.1.dev1+g8cb2c3102 documentation</title>
+    <title>pyaml.configuration.manager &#8212; Python Accelerator Middle Layer 0.1.dev1+gc23cf8b8e documentation</title>
   
   
   
@@ -41,7 +41,7 @@
   <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=90905a2f556bf617f1a9" />
 <link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=90905a2f556bf617f1a9" />
 
-    <script src="../../../_static/documentation_options.js?v=c9ef508a"></script>
+    <script src="../../../_static/documentation_options.js?v=3ab33b5a"></script>
     <script src="../../../_static/doctools.js?v=9bcbadda"></script>
     <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -125,8 +125,8 @@
       
     
     
-    <img src="../../../_static/logo.png" class="logo__image only-light" alt="Python Accelerator Middle Layer 0.1.dev1+g8cb2c3102 documentation - Home"/>
-    <img src="../../../_static/dark.png" class="logo__image only-dark pst-js-only" alt="Python Accelerator Middle Layer 0.1.dev1+g8cb2c3102 documentation - Home"/>
+    <img src="../../../_static/logo.png" class="logo__image only-light" alt="Python Accelerator Middle Layer 0.1.dev1+gc23cf8b8e documentation - Home"/>
+    <img src="../../../_static/dark.png" class="logo__image only-dark pst-js-only" alt="Python Accelerator Middle Layer 0.1.dev1+gc23cf8b8e documentation - Home"/>
   
   
 </a></div>
@@ -405,6 +405,7 @@
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">copy</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">fnmatch</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">inspect</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">re</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
@@ -478,28 +479,37 @@
     <span class="nd">@classmethod</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">root_fields</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="o">...</span><span class="p">]:</span>
 <span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Return the ordered root fields supported by the accelerator model.</span>
+<span class="sd">        Return the ordered root fields supported by the accelerator configuration.</span>
 
-<span class="sd">        The field order is derived from</span>
-<span class="sd">        :class:`~pyaml.accelerator.ConfigModel`.</span>
+<span class="sd">        The field order is derived from :meth:Accelerator.__init__, excluding</span>
+<span class="sd">        internal or categorized fields such as control and simulator collections.</span>
 
 <span class="sd">        Returns</span>
-<span class="sd">        -------</span>
+
 <span class="sd">        tuple[str, ...]</span>
+<span class="sd">        The root field names in configuration order, prefixed with &quot;type&quot;.</span>
 
 <span class="sd">        Examples</span>
-<span class="sd">        --------</span>
 
 <span class="sd">        .. code-block:: python</span>
 
-<span class="sd">            &gt;&gt;&gt; ConfigurationManager.root_fields()</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="kn">from</span><span class="w"> </span><span class="nn">..accelerator</span><span class="w"> </span><span class="kn">import</span> <span class="n">ConfigModel</span> <span class="k">as</span> <span class="n">AcceleratorConfigModel</span>
+<span class="sd">        &gt;&gt;&gt; ConfigurationManager.root_fields()</span>
 
-        <span class="n">config_fields</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span>
-            <span class="n">field_name</span> <span class="k">for</span> <span class="n">field_name</span> <span class="ow">in</span> <span class="n">AcceleratorConfigModel</span><span class="o">.</span><span class="n">model_fields</span> <span class="k">if</span> <span class="n">field_name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">cls</span><span class="o">.</span><span class="n">NAMED_CATEGORIES</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">params</span> <span class="o">=</span> <span class="n">inspect</span><span class="o">.</span><span class="n">signature</span><span class="p">(</span><span class="bp">cls</span><span class="o">.</span><span class="fm">__init__</span><span class="p">)</span><span class="o">.</span><span class="n">parameters</span>
+
+        <span class="n">fields</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span>
+            <span class="n">name</span>
+            <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">param</span> <span class="ow">in</span> <span class="n">params</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">name</span> <span class="o">!=</span> <span class="s2">&quot;self&quot;</span>
+            <span class="ow">and</span> <span class="n">name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">cls</span><span class="o">.</span><span class="n">NAMED_CATEGORIES</span>
+            <span class="ow">and</span> <span class="n">param</span><span class="o">.</span><span class="n">kind</span>
+            <span class="ow">in</span> <span class="p">(</span>
+                <span class="n">inspect</span><span class="o">.</span><span class="n">Parameter</span><span class="o">.</span><span class="n">POSITIONAL_OR_KEYWORD</span><span class="p">,</span>
+                <span class="n">inspect</span><span class="o">.</span><span class="n">Parameter</span><span class="o">.</span><span class="n">KEYWORD_ONLY</span><span class="p">,</span>
+            <span class="p">)</span>
         <span class="p">)</span>
-        <span class="k">return</span> <span class="p">(</span><span class="s2">&quot;type&quot;</span><span class="p">,</span> <span class="o">*</span><span class="n">config_fields</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="p">(</span><span class="s2">&quot;type&quot;</span><span class="p">,</span> <span class="o">*</span><span class="n">fields</span><span class="p">)</span></div>
 
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>

@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Live/Design: control modes &#8212; Python Accelerator Middle Layer 0.1.dev1+g8cb2c3102 documentation</title>
+    <title>Live/Design: control modes &#8212; Python Accelerator Middle Layer 0.1.dev1+gc23cf8b8e documentation</title>
   
   
   
@@ -42,7 +42,7 @@
   <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=90905a2f556bf617f1a9" />
 <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=90905a2f556bf617f1a9" />
 
-    <script src="../_static/documentation_options.js?v=c9ef508a"></script>
+    <script src="../_static/documentation_options.js?v=3ab33b5a"></script>
     <script src="../_static/doctools.js?v=9bcbadda"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -128,8 +128,8 @@
       
     
     
-    <img src="../_static/logo.png" class="logo__image only-light" alt="Python Accelerator Middle Layer 0.1.dev1+g8cb2c3102 documentation - Home"/>
-    <img src="../_static/dark.png" class="logo__image only-dark pst-js-only" alt="Python Accelerator Middle Layer 0.1.dev1+g8cb2c3102 documentation - Home"/>
+    <img src="../_static/logo.png" class="logo__image only-light" alt="Python Accelerator Middle Layer 0.1.dev1+gc23cf8b8e documentation - Home"/>
+    <img src="../_static/dark.png" class="logo__image only-dark pst-js-only" alt="Python Accelerator Middle Layer 0.1.dev1+gc23cf8b8e documentation - Home"/>
   
   
 </a></div>
@@ -453,23 +453,23 @@
 <span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">line</span> <span class="mi">1</span>
 <span class="ne">----&gt; </span><span class="mi">1</span> <span class="n">SR</span><span class="p">:</span> <span class="n">Accelerator</span> <span class="o">=</span> <span class="n">Accelerator</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s2">&quot;../../tests/config/EBSTune.yaml&quot;</span><span class="p">)</span>
 
-<span class="nn">File /opt/hostedtoolcache/Python/3.14.6/x64/lib/python3.14/site-packages/pyaml/accelerator.py:324,</span> in <span class="ni">Accelerator.load</span><span class="nt">(filename, include_locations, ignore_external, validate)</span>
-<span class="g g-Whitespace">    </span><span class="mi">319</span> <span class="k">except</span> <span class="n">UnsupportedConfigurationRootError</span> <span class="k">as</span> <span class="n">ex</span><span class="p">:</span>
-<span class="g g-Whitespace">    </span><span class="mi">320</span>     <span class="k">raise</span> <span class="n">PyAMLConfigException</span><span class="p">(</span>
-<span class="g g-Whitespace">    </span><span class="mi">321</span>         <span class="s2">&quot;Accelerator.load() expects a &#39;pyaml.accelerator&#39; root configuration. &quot;</span>
-<span class="g g-Whitespace">    </span><span class="mi">322</span>         <span class="s2">&quot;Use the factory APIs to build sub-elements directly.&quot;</span>
-<span class="g g-Whitespace">    </span><span class="mi">323</span>     <span class="p">)</span> <span class="kn">from</span><span class="w"> </span><span class="nn">ex</span>
-<span class="ne">--&gt; </span><span class="mi">324</span> <span class="k">return</span> <span class="n">manager</span><span class="o">.</span><span class="n">build</span><span class="p">(</span><span class="n">ignore_external</span><span class="o">=</span><span class="n">ignore_external</span><span class="p">,</span> <span class="n">validate</span><span class="o">=</span><span class="n">validate</span><span class="p">)</span>
+<span class="nn">File /opt/hostedtoolcache/Python/3.14.6/x64/lib/python3.14/site-packages/pyaml/accelerator.py:339,</span> in <span class="ni">Accelerator.load</span><span class="nt">(filename, include_locations, ignore_external, validate)</span>
+<span class="g g-Whitespace">    </span><span class="mi">334</span> <span class="k">except</span> <span class="n">UnsupportedConfigurationRootError</span> <span class="k">as</span> <span class="n">ex</span><span class="p">:</span>
+<span class="g g-Whitespace">    </span><span class="mi">335</span>     <span class="k">raise</span> <span class="n">PyAMLConfigException</span><span class="p">(</span>
+<span class="g g-Whitespace">    </span><span class="mi">336</span>         <span class="s2">&quot;Accelerator.load() expects a &#39;pyaml.accelerator&#39; root configuration. &quot;</span>
+<span class="g g-Whitespace">    </span><span class="mi">337</span>         <span class="s2">&quot;Use the factory APIs to build sub-elements directly.&quot;</span>
+<span class="g g-Whitespace">    </span><span class="mi">338</span>     <span class="p">)</span> <span class="kn">from</span><span class="w"> </span><span class="nn">ex</span>
+<span class="ne">--&gt; </span><span class="mi">339</span> <span class="k">return</span> <span class="n">manager</span><span class="o">.</span><span class="n">build</span><span class="p">(</span><span class="n">ignore_external</span><span class="o">=</span><span class="n">ignore_external</span><span class="p">,</span> <span class="n">validate</span><span class="o">=</span><span class="n">validate</span><span class="p">)</span>
 
-<span class="nn">File /opt/hostedtoolcache/Python/3.14.6/x64/lib/python3.14/site-packages/pyaml/configuration/manager.py:496,</span> in <span class="ni">ConfigurationManager.build</span><span class="nt">(self, ignore_external, validate)</span>
-<span class="g g-Whitespace">    </span><span class="mi">494</span>     <span class="n">ROOT</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_build_root</span><span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">495</span> <span class="n">snapshot</span> <span class="o">=</span> <span class="n">ConfigurationManager</span><span class="o">.</span><span class="n">strip_runtime_internal_metadata</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_snapshot</span><span class="p">(</span><span class="n">include_internal_metadata</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
-<span class="ne">--&gt; </span><span class="mi">496</span> <span class="k">return</span> <span class="n">Accelerator</span><span class="o">.</span><span class="n">from_dict</span><span class="p">(</span><span class="n">snapshot</span><span class="p">,</span> <span class="n">ignore_external</span><span class="o">=</span><span class="n">ignore_external</span><span class="p">,</span> <span class="n">validate</span><span class="o">=</span><span class="n">validate</span><span class="p">)</span>
+<span class="nn">File /opt/hostedtoolcache/Python/3.14.6/x64/lib/python3.14/site-packages/pyaml/configuration/manager.py:506,</span> in <span class="ni">ConfigurationManager.build</span><span class="nt">(self, ignore_external, validate)</span>
+<span class="g g-Whitespace">    </span><span class="mi">504</span>     <span class="n">ROOT</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_build_root</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">505</span> <span class="n">snapshot</span> <span class="o">=</span> <span class="n">ConfigurationManager</span><span class="o">.</span><span class="n">strip_runtime_internal_metadata</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_snapshot</span><span class="p">(</span><span class="n">include_internal_metadata</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
+<span class="ne">--&gt; </span><span class="mi">506</span> <span class="k">return</span> <span class="n">Accelerator</span><span class="o">.</span><span class="n">from_dict</span><span class="p">(</span><span class="n">snapshot</span><span class="p">,</span> <span class="n">ignore_external</span><span class="o">=</span><span class="n">ignore_external</span><span class="p">,</span> <span class="n">validate</span><span class="o">=</span><span class="n">validate</span><span class="p">)</span>
 
-<span class="nn">File /opt/hostedtoolcache/Python/3.14.6/x64/lib/python3.14/site-packages/pyaml/accelerator.py:282,</span> in <span class="ni">Accelerator.from_dict</span><span class="nt">(config_dict, ignore_external, validate)</span>
-<span class="g g-Whitespace">    </span><span class="mi">280</span> <span class="c1"># Ensure factory is clean before building a new accelerator</span>
-<span class="g g-Whitespace">    </span><span class="mi">281</span> <span class="n">Factory</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
-<span class="ne">--&gt; </span><span class="mi">282</span> <span class="k">return</span> <span class="n">Factory</span><span class="o">.</span><span class="n">build</span><span class="p">(</span><span class="n">config_dict</span><span class="p">,</span> <span class="n">ignore_external</span><span class="p">)</span>
+<span class="nn">File /opt/hostedtoolcache/Python/3.14.6/x64/lib/python3.14/site-packages/pyaml/accelerator.py:297,</span> in <span class="ni">Accelerator.from_dict</span><span class="nt">(config_dict, ignore_external, validate)</span>
+<span class="g g-Whitespace">    </span><span class="mi">295</span> <span class="c1"># Ensure factory is clean before building a new accelerator</span>
+<span class="g g-Whitespace">    </span><span class="mi">296</span> <span class="n">Factory</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+<span class="ne">--&gt; </span><span class="mi">297</span> <span class="k">return</span> <span class="n">Factory</span><span class="o">.</span><span class="n">build</span><span class="p">(</span><span class="n">config_dict</span><span class="p">,</span> <span class="n">ignore_external</span><span class="p">)</span>
 
 <span class="nn">File /opt/hostedtoolcache/Python/3.14.6/x64/lib/python3.14/site-packages/pyaml/configuration/factory.py:256,</span> in <span class="ni">PyAMLFactory.build</span><span class="nt">(self, data, ignore_external)</span>
 <span class="g g-Whitespace">    </span><span class="mi">253</span> <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="p">(</span><span class="nb">dict</span><span class="p">,</span> <span class="nb">list</span><span class="p">)):</span>
