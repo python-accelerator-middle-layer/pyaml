@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>linear_model &#8212; Python Accelerator Middle Layer 0.1.dev1+g1b476cf96 documentation</title>
+    <title>linear_model &#8212; Python Accelerator Middle Layer 0.1.dev1+g5da061b9f documentation</title>
   
   
   
@@ -42,7 +42,7 @@
   <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=90905a2f556bf617f1a9" />
 <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=90905a2f556bf617f1a9" />
 
-    <script src="../_static/documentation_options.js?v=bcd0b3ab"></script>
+    <script src="../_static/documentation_options.js?v=b14876cd"></script>
     <script src="../_static/doctools.js?v=9bcbadda"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -128,8 +128,8 @@
       
     
     
-    <img src="../_static/logo.png" class="logo__image only-light" alt="Python Accelerator Middle Layer 0.1.dev1+g1b476cf96 documentation - Home"/>
-    <img src="../_static/dark.png" class="logo__image only-dark pst-js-only" alt="Python Accelerator Middle Layer 0.1.dev1+g1b476cf96 documentation - Home"/>
+    <img src="../_static/logo.png" class="logo__image only-light" alt="Python Accelerator Middle Layer 0.1.dev1+g5da061b9f documentation - Home"/>
+    <img src="../_static/dark.png" class="logo__image only-dark pst-js-only" alt="Python Accelerator Middle Layer 0.1.dev1+g5da061b9f documentation - Home"/>
   
   
 </a></div>
@@ -526,73 +526,41 @@
   <section id="module-pyaml.magnet.linear_model">
 <span id="linear-model"></span><h1>linear_model<a class="headerlink" href="#module-pyaml.magnet.linear_model" title="Link to this heading">#</a></h1>
 <dl class="py class">
-<dt class="sig sig-object py" id="pyaml.magnet.linear_model.ConfigModel">
-<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ConfigModel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">curve</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">powerconverter</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">calibration_factor</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">calibration_offset</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">crosstalk</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">unit</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hardware_unit</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/magnet/linear_model.html#ConfigModel"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.magnet.linear_model.ConfigModel" title="Link to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">BaseModel</span></code></p>
-<p>Linear magnet model.</p>
+<dt class="sig sig-object py" id="pyaml.magnet.linear_model.LinearMagnetModel">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">LinearMagnetModel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/magnet/linear_model.html#LinearMagnetModel"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.magnet.linear_model.LinearMagnetModel" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="pyaml.magnet.model.html#pyaml.magnet.model.MagnetModel" title="pyaml.magnet.model.MagnetModel"><code class="xref py py-class docutils literal notranslate"><span class="pre">MagnetModel</span></code></a>, <code class="xref py py-class docutils literal notranslate"><span class="pre">DynamicValidation</span></code></p>
+<p>Linear magnet model for a single magnet function.</p>
+<p>This model converts between magnet strengths and hardware currents using a
+single excitation curve or, if no curve is provided, a linear scaling with an
+optional offset. It is intended for single-function magnets such as correctors
+or other elements that use one current channel.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>curve</strong> (<a class="reference internal" href="pyaml.magnet.curve.html#pyaml.magnet.curve.Curve" title="pyaml.magnet.curve.Curve"><em>Curve</em></a><em> or </em><em>None</em><em>, </em><em>optional</em>) – Curve object used for interpolation. By default,
-identity curve is used.</p></li>
-<li><p><strong>powerconverter</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em> or </em><em>None</em><em>, </em><em>optional</em>) – Power converter device to apply currrent</p></li>
-<li><p><strong>calibration_factor</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><em>float</em></a><em>, </em><em>optional</em>) – Correction factor applied to the curve. Default: 1.0</p></li>
-<li><p><strong>calibration_offset</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><em>float</em></a><em>, </em><em>optional</em>) – Correction offset applied to the curve. Default: 0.0</p></li>
-<li><p><strong>crosstalk</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><em>float</em></a><em>, </em><em>optional</em>) – Crosstalk factor. Default: 1.0</p></li>
-<li><p><strong>unit</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>) – Unit of the strength (i.e. 1/m or m-1)</p></li>
-<li><p><strong>hardware_unit</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>) – Hardware units (i.e. ‘A’ , ‘V’)</p></li>
+<li><p><strong>unit</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>) – Unit of the magnet strength, for example <code class="docutils literal notranslate"><span class="pre">&quot;1/m&quot;</span></code> or <code class="docutils literal notranslate"><span class="pre">&quot;m-1&quot;</span></code>.</p></li>
+<li><p><strong>hardware_unit</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>) – Unit of the hardware value, for example <code class="docutils literal notranslate"><span class="pre">&quot;A&quot;</span></code> or <code class="docutils literal notranslate"><span class="pre">&quot;V&quot;</span></code>.</p></li>
+<li><p><strong>curve</strong> (<a class="reference internal" href="pyaml.magnet.curve.html#pyaml.magnet.curve.Curve" title="pyaml.magnet.curve.Curve"><em>Curve</em></a><em> | </em><em>None</em><em>, </em><em>optional</em>) – Excitation curve used for interpolation. If omitted, a linear conversion
+is used instead.</p></li>
+<li><p><strong>powerconverter</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em> | </em><em>None</em><em>, </em><em>optional</em>) – Name of the power converter device used to apply current.</p></li>
+<li><p><strong>calibration_factor</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><em>float</em></a><em>, </em><em>optional</em>) – Multiplicative correction applied to the curve or linear scaling.
+Default is <code class="docutils literal notranslate"><span class="pre">1.0</span></code>.</p></li>
+<li><p><strong>calibration_offset</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><em>float</em></a><em>, </em><em>optional</em>) – Additive correction applied to the curve or linear scaling.
+Default is <code class="docutils literal notranslate"><span class="pre">0.0</span></code>.</p></li>
+<li><p><strong>crosstalk</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><em>float</em></a><em>, </em><em>optional</em>) – Crosstalk factor applied together with the calibration factor.
+Default is <code class="docutils literal notranslate"><span class="pre">1.0</span></code>.</p></li>
 </ul>
 </dd>
 </dl>
-<p>Create a new model by parsing and validating input data from keyword arguments.</p>
-<p>Raises [<cite>ValidationError</cite>][pydantic_core.ValidationError] if the input data cannot be
-validated to form a valid model.</p>
-<p><cite>self</cite> is explicitly positional-only to allow <cite>self</cite> as a field name.</p>
+<p class="rubric">Notes</p>
+<p>If a curve is provided, the model interpolates between strength and current
+values using the curve and its inverse. If no curve is provided, the model
+uses a simple linear relation with the stored scaling factor and offset.</p>
 <dl class="py attribute">
-<dt class="sig sig-object py" id="pyaml.magnet.linear_model.ConfigModel.calibration_factor">
-<span class="sig-name descname"><span class="pre">calibration_factor</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><span class="pre">float</span></a></em><a class="headerlink" href="#pyaml.magnet.linear_model.ConfigModel.calibration_factor" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pyaml.magnet.linear_model.ConfigModel.calibration_offset">
-<span class="sig-name descname"><span class="pre">calibration_offset</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><span class="pre">float</span></a></em><a class="headerlink" href="#pyaml.magnet.linear_model.ConfigModel.calibration_offset" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pyaml.magnet.linear_model.ConfigModel.crosstalk">
-<span class="sig-name descname"><span class="pre">crosstalk</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><span class="pre">float</span></a></em><a class="headerlink" href="#pyaml.magnet.linear_model.ConfigModel.crosstalk" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pyaml.magnet.linear_model.ConfigModel.curve">
-<span class="sig-name descname"><span class="pre">curve</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="pyaml.magnet.curve.html#pyaml.magnet.curve.Curve" title="pyaml.magnet.curve.Curve"><span class="pre">Curve</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></em><a class="headerlink" href="#pyaml.magnet.linear_model.ConfigModel.curve" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pyaml.magnet.linear_model.ConfigModel.hardware_unit">
-<span class="sig-name descname"><span class="pre">hardware_unit</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></em><a class="headerlink" href="#pyaml.magnet.linear_model.ConfigModel.hardware_unit" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pyaml.magnet.linear_model.ConfigModel.powerconverter">
-<span class="sig-name descname"><span class="pre">powerconverter</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></em><a class="headerlink" href="#pyaml.magnet.linear_model.ConfigModel.powerconverter" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pyaml.magnet.linear_model.ConfigModel.unit">
-<span class="sig-name descname"><span class="pre">unit</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></em><a class="headerlink" href="#pyaml.magnet.linear_model.ConfigModel.unit" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
-
+<dt class="sig sig-object py" id="pyaml.magnet.linear_model.LinearMagnetModel.validation_model">
+<span class="sig-name descname"><span class="pre">validation_model</span></span><a class="headerlink" href="#pyaml.magnet.linear_model.LinearMagnetModel.validation_model" title="Link to this definition">#</a></dt>
+<dd><p>alias of <code class="xref py py-class docutils literal notranslate"><span class="pre">LinearMagnetModelValidationModel</span></code></p>
 </dd></dl>
 
-<dl class="py class">
-<dt class="sig sig-object py" id="pyaml.magnet.linear_model.LinearMagnetModel">
-<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">LinearMagnetModel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cfg</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/magnet/linear_model.html#LinearMagnetModel"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.magnet.linear_model.LinearMagnetModel" title="Link to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference internal" href="pyaml.magnet.model.html#pyaml.magnet.model.MagnetModel" title="pyaml.magnet.model.MagnetModel"><code class="xref py py-class docutils literal notranslate"><span class="pre">MagnetModel</span></code></a></p>
-<p>Class that handle manget current/strength conversion using
-linear interpolation for a single function magnet</p>
-<dl class="field-list simple">
-</dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="pyaml.magnet.linear_model.LinearMagnetModel.compute_hardware_values">
 <span class="sig-name descname"><span class="pre">compute_hardware_values</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">strengths</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/magnet/linear_model.html#LinearMagnetModel.compute_hardware_values"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.magnet.linear_model.LinearMagnetModel.compute_hardware_values" title="Link to this definition">#</a></dt>
@@ -715,17 +683,8 @@ returns a list of 1 item</p>
   </div>
   <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="pst-show_toc_level nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.magnet.linear_model.ConfigModel"><code class="docutils literal notranslate"><span class="pre">ConfigModel</span></code></a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.magnet.linear_model.ConfigModel.calibration_factor"><code class="docutils literal notranslate"><span class="pre">ConfigModel.calibration_factor</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.magnet.linear_model.ConfigModel.calibration_offset"><code class="docutils literal notranslate"><span class="pre">ConfigModel.calibration_offset</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.magnet.linear_model.ConfigModel.crosstalk"><code class="docutils literal notranslate"><span class="pre">ConfigModel.crosstalk</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.magnet.linear_model.ConfigModel.curve"><code class="docutils literal notranslate"><span class="pre">ConfigModel.curve</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.magnet.linear_model.ConfigModel.hardware_unit"><code class="docutils literal notranslate"><span class="pre">ConfigModel.hardware_unit</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.magnet.linear_model.ConfigModel.powerconverter"><code class="docutils literal notranslate"><span class="pre">ConfigModel.powerconverter</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.magnet.linear_model.ConfigModel.unit"><code class="docutils literal notranslate"><span class="pre">ConfigModel.unit</span></code></a></li>
-</ul>
-</li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.magnet.linear_model.LinearMagnetModel"><code class="docutils literal notranslate"><span class="pre">LinearMagnetModel</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.magnet.linear_model.LinearMagnetModel.validation_model"><code class="docutils literal notranslate"><span class="pre">LinearMagnetModel.validation_model</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.magnet.linear_model.LinearMagnetModel.compute_hardware_values"><code class="docutils literal notranslate"><span class="pre">LinearMagnetModel.compute_hardware_values()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.magnet.linear_model.LinearMagnetModel.compute_strengths"><code class="docutils literal notranslate"><span class="pre">LinearMagnetModel.compute_strengths()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.magnet.linear_model.LinearMagnetModel.get_device_names"><code class="docutils literal notranslate"><span class="pre">LinearMagnetModel.get_device_names()</span></code></a></li>

@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>csvcurve &#8212; Python Accelerator Middle Layer 0.1.dev1+g1b476cf96 documentation</title>
+    <title>csvcurve &#8212; Python Accelerator Middle Layer 0.1.dev1+g5da061b9f documentation</title>
   
   
   
@@ -42,7 +42,7 @@
   <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=90905a2f556bf617f1a9" />
 <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=90905a2f556bf617f1a9" />
 
-    <script src="../_static/documentation_options.js?v=bcd0b3ab"></script>
+    <script src="../_static/documentation_options.js?v=b14876cd"></script>
     <script src="../_static/doctools.js?v=9bcbadda"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -128,8 +128,8 @@
       
     
     
-    <img src="../_static/logo.png" class="logo__image only-light" alt="Python Accelerator Middle Layer 0.1.dev1+g1b476cf96 documentation - Home"/>
-    <img src="../_static/dark.png" class="logo__image only-dark pst-js-only" alt="Python Accelerator Middle Layer 0.1.dev1+g1b476cf96 documentation - Home"/>
+    <img src="../_static/logo.png" class="logo__image only-light" alt="Python Accelerator Middle Layer 0.1.dev1+g5da061b9f documentation - Home"/>
+    <img src="../_static/dark.png" class="logo__image only-dark pst-js-only" alt="Python Accelerator Middle Layer 0.1.dev1+g5da061b9f documentation - Home"/>
   
   
 </a></div>
@@ -526,33 +526,53 @@
   <section id="module-pyaml.magnet.csvcurve">
 <span id="csvcurve"></span><h1>csvcurve<a class="headerlink" href="#module-pyaml.magnet.csvcurve" title="Link to this heading">#</a></h1>
 <dl class="py class">
-<dt class="sig sig-object py" id="pyaml.magnet.csvcurve.ConfigModel">
-<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ConfigModel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">file</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/magnet/csvcurve.html#ConfigModel"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.magnet.csvcurve.ConfigModel" title="Link to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">BaseModel</span></code></p>
-<p>Configuration model for CSV curve</p>
+<dt class="sig sig-object py" id="pyaml.magnet.csvcurve.CSVCurve">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">CSVCurve</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/magnet/csvcurve.html#CSVCurve"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.magnet.csvcurve.CSVCurve" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="pyaml.magnet.curve.html#pyaml.magnet.curve.Curve" title="pyaml.magnet.curve.Curve"><code class="xref py py-class docutils literal notranslate"><span class="pre">Curve</span></code></a>, <code class="xref py py-class docutils literal notranslate"><span class="pre">DynamicValidation</span></code></p>
+<p>Curve loaded from a CSV file.</p>
+<p>This class reads a CSV file containing a two-column numeric dataset
+representing <code class="docutils literal notranslate"><span class="pre">(x,</span> <span class="pre">y)</span></code> coordinate pairs. The file is loaded during
+initialization and stored internally as a NumPy array.</p>
+<p>The CSV file must:</p>
+<ul class="simple">
+<li><p>contain exactly two columns,</p></li>
+<li><p>use commas as the delimiter,</p></li>
+<li><p>contain values that can be converted to <code class="docutils literal notranslate"><span class="pre">float</span></code>.</p></li>
+</ul>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>file</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>) – CSV file that contains the curve (n rows, 2 columns)</p>
+<dd class="field-odd"><p><strong>file</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>) – Path to the CSV file. Relative paths are resolved using the
+project’s configured root directory.</p>
 </dd>
 </dl>
-<p>Create a new model by parsing and validating input data from keyword arguments.</p>
-<p>Raises [<cite>ValidationError</cite>][pydantic_core.ValidationError] if the input data cannot be
-validated to form a valid model.</p>
-<p><cite>self</cite> is explicitly positional-only to allow <cite>self</cite> as a field name.</p>
 <dl class="py attribute">
-<dt class="sig sig-object py" id="pyaml.magnet.csvcurve.ConfigModel.file">
-<span class="sig-name descname"><span class="pre">file</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></em><a class="headerlink" href="#pyaml.magnet.csvcurve.ConfigModel.file" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
-
+<dt class="sig sig-object py" id="pyaml.magnet.csvcurve.CSVCurve.file">
+<span class="sig-name descname"><span class="pre">file</span></span><a class="headerlink" href="#pyaml.magnet.csvcurve.CSVCurve.file" title="Link to this definition">#</a></dt>
+<dd><p>Path to the CSV file provided during initialization.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)">str</a></p>
+</dd>
+</dl>
 </dd></dl>
 
-<dl class="py class">
-<dt class="sig sig-object py" id="pyaml.magnet.csvcurve.CSVCurve">
-<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">CSVCurve</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cfg</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/magnet/csvcurve.html#CSVCurve"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.magnet.csvcurve.CSVCurve" title="Link to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference internal" href="pyaml.magnet.curve.html#pyaml.magnet.curve.Curve" title="pyaml.magnet.curve.Curve"><code class="xref py py-class docutils literal notranslate"><span class="pre">Curve</span></code></a></p>
-<p>Class for load CSV (x,y) curve</p>
 <dl class="field-list simple">
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="pyaml.common.exception.html#pyaml.common.exception.PyAMLException" title="pyaml.common.exception.PyAMLException"><strong>PyAMLException</strong></a> – If the file cannot be parsed as a numeric CSV or if the loaded
+    data does not have shape <code class="docutils literal notranslate"><span class="pre">(n,</span> <span class="pre">2)</span></code>.</p>
+</dd>
 </dl>
+<p class="rubric">Notes</p>
+<p>The loaded curve is stored internally as a NumPy array with shape
+<code class="docutils literal notranslate"><span class="pre">(n,</span> <span class="pre">2)</span></code>, where the first column contains x-values and the second
+column contains y-values. The data can be accessed using
+<a class="reference internal" href="#pyaml.magnet.csvcurve.CSVCurve.get_curve" title="pyaml.magnet.csvcurve.CSVCurve.get_curve"><code class="xref py py-meth docutils literal notranslate"><span class="pre">get_curve()</span></code></a>.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyaml.magnet.csvcurve.CSVCurve.validation_model">
+<span class="sig-name descname"><span class="pre">validation_model</span></span><a class="headerlink" href="#pyaml.magnet.csvcurve.CSVCurve.validation_model" title="Link to this definition">#</a></dt>
+<dd><p>alias of <code class="xref py py-class docutils literal notranslate"><span class="pre">CSVCurveValidationModel</span></code></p>
+</dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="pyaml.magnet.csvcurve.CSVCurve.get_curve">
 <span class="sig-name descname"><span class="pre">get_curve</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/magnet/csvcurve.html#CSVCurve.get_curve"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.magnet.csvcurve.CSVCurve.get_curve" title="Link to this definition">#</a></dt>
@@ -563,6 +583,11 @@ validated to form a valid model.</p>
 </dd>
 </dl>
 </dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="id0">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">file</span></span><a class="headerlink" href="#id0" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
 
 </dd></dl>
 
@@ -615,12 +640,11 @@ validated to form a valid model.</p>
   </div>
   <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="pst-show_toc_level nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.magnet.csvcurve.ConfigModel"><code class="docutils literal notranslate"><span class="pre">ConfigModel</span></code></a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.magnet.csvcurve.ConfigModel.file"><code class="docutils literal notranslate"><span class="pre">ConfigModel.file</span></code></a></li>
-</ul>
-</li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.magnet.csvcurve.CSVCurve"><code class="docutils literal notranslate"><span class="pre">CSVCurve</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.magnet.csvcurve.CSVCurve.file"><code class="docutils literal notranslate"><span class="pre">CSVCurve.file</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.magnet.csvcurve.CSVCurve.validation_model"><code class="docutils literal notranslate"><span class="pre">CSVCurve.validation_model</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.magnet.csvcurve.CSVCurve.get_curve"><code class="docutils literal notranslate"><span class="pre">CSVCurve.get_curve()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id0"><code class="docutils literal notranslate"><span class="pre">CSVCurve.file</span></code></a></li>
 </ul>
 </li>
 </ul>

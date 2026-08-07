@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>pyaml.magnet.linear_cfm_model &#8212; Python Accelerator Middle Layer 0.1.dev1+g1b476cf96 documentation</title>
+    <title>pyaml.magnet.linear_cfm_model &#8212; Python Accelerator Middle Layer 0.1.dev1+g5da061b9f documentation</title>
   
   
   
@@ -41,7 +41,7 @@
   <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=90905a2f556bf617f1a9" />
 <link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=90905a2f556bf617f1a9" />
 
-    <script src="../../../_static/documentation_options.js?v=bcd0b3ab"></script>
+    <script src="../../../_static/documentation_options.js?v=b14876cd"></script>
     <script src="../../../_static/doctools.js?v=9bcbadda"></script>
     <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -125,8 +125,8 @@
       
     
     
-    <img src="../../../_static/logo.png" class="logo__image only-light" alt="Python Accelerator Middle Layer 0.1.dev1+g1b476cf96 documentation - Home"/>
-    <img src="../../../_static/dark.png" class="logo__image only-dark pst-js-only" alt="Python Accelerator Middle Layer 0.1.dev1+g1b476cf96 documentation - Home"/>
+    <img src="../../../_static/logo.png" class="logo__image only-light" alt="Python Accelerator Middle Layer 0.1.dev1+g5da061b9f documentation - Home"/>
+    <img src="../../../_static/dark.png" class="logo__image only-dark pst-js-only" alt="Python Accelerator Middle Layer 0.1.dev1+g5da061b9f documentation - Home"/>
   
   
 </a></div>
@@ -389,11 +389,10 @@
                   
   <h1>Source code for pyaml.magnet.linear_cfm_model</h1><div class="highlight"><pre>
 <span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">pydantic</span><span class="w"> </span><span class="kn">import</span> <span class="n">BaseModel</span><span class="p">,</span> <span class="n">ConfigDict</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">..common.element</span><span class="w"> </span><span class="kn">import</span> <span class="n">__pyaml_repr__</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">..common.exception</span><span class="w"> </span><span class="kn">import</span> <span class="n">PyAMLException</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">..control.deviceaccess</span><span class="w"> </span><span class="kn">import</span> <span class="n">DeviceAccess</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">..validation</span><span class="w"> </span><span class="kn">import</span> <span class="n">DynamicValidation</span><span class="p">,</span> <span class="n">register_schema</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">.curve</span><span class="w"> </span><span class="kn">import</span> <span class="n">Curve</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">.matrix</span><span class="w"> </span><span class="kn">import</span> <span class="n">Matrix</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">.model</span><span class="w"> </span><span class="kn">import</span> <span class="n">MagnetModel</span>
@@ -402,106 +401,115 @@
 <span class="n">PYAMLCLASS</span> <span class="o">=</span> <span class="s2">&quot;LinearCFMagnetModel&quot;</span>
 
 
-<div class="viewcode-block" id="ConfigModel">
-<a class="viewcode-back" href="../../../api/pyaml.magnet.linear_cfm_model.html#pyaml.magnet.linear_cfm_model.ConfigModel">[docs]</a>
-<span class="k">class</span><span class="w"> </span><span class="nc">ConfigModel</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Configuration model for linear combined function magnet model</span>
-
-<span class="sd">    Parameters</span>
-<span class="sd">    ----------</span>
-<span class="sd">    multipoles : list[str]</span>
-<span class="sd">        List of supported functions: A0, B0, A1, B1, etc (i.e. [B0, A1, B2])</span>
-<span class="sd">    curves : list[Curve]</span>
-<span class="sd">        Excitation curves, 1 curve per function</span>
-<span class="sd">    calibration_factors : list[float], optional</span>
-<span class="sd">        Correction factor applied to curves, 1 factor per function.</span>
-<span class="sd">        Default: ones</span>
-<span class="sd">    calibration_offsets : list[float], optional</span>
-<span class="sd">        Correction offset applied to curves, 1 offset per function.</span>
-<span class="sd">        Default: zeros</span>
-<span class="sd">    pseudo_factors : list[float], optional</span>
-<span class="sd">        Factors applied to &#39;pseudo currents&#39;, 1 factor per function.</span>
-<span class="sd">        Default: ones</span>
-<span class="sd">    pseudo_offsets : list[float], optional</span>
-<span class="sd">        Offsets applied to &#39;pseudo currents&#39;, 1 offset per function.</span>
-<span class="sd">        Default: zeros</span>
-<span class="sd">    powerconverters : list[str]</span>
-<span class="sd">        List of power converter devices to apply currents (can be different</span>
-<span class="sd">        from number of functions)</span>
-<span class="sd">    matrix : Matrix, optional</span>
-<span class="sd">        n x m matrix (n rows for n functions, m columns for m currents)</span>
-<span class="sd">        to handle multipoles separation. Default: Identity</span>
-<span class="sd">    units : list[str]</span>
-<span class="sd">        List of strength units (i.e. [&#39;rad&#39;, &#39;m-1&#39;, &#39;m-2&#39;])</span>
-<span class="sd">    hardware_units : list[str]</span>
-<span class="sd">        List of hardware units (i.e. &#39;A&#39; , &#39;V&#39;)</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-
-    <span class="n">model_config</span> <span class="o">=</span> <span class="n">ConfigDict</span><span class="p">(</span><span class="n">arbitrary_types_allowed</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">extra</span><span class="o">=</span><span class="s2">&quot;forbid&quot;</span><span class="p">)</span>
-
-    <span class="n">multipoles</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span>
-    <span class="n">curves</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Curve</span><span class="p">]</span>
-    <span class="n">calibration_factors</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
-    <span class="n">calibration_offsets</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
-    <span class="n">pseudo_factors</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
-    <span class="n">pseudo_offsets</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
-    <span class="n">powerconverters</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">]</span>
-    <span class="n">matrix</span><span class="p">:</span> <span class="n">Matrix</span> <span class="o">=</span> <span class="kc">None</span>
-    <span class="n">units</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span>
-    <span class="n">hardware_units</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span></div>
-
-
-
 <div class="viewcode-block" id="LinearCFMagnetModel">
 <a class="viewcode-back" href="../../../api/pyaml.magnet.linear_cfm_model.html#pyaml.magnet.linear_cfm_model.LinearCFMagnetModel">[docs]</a>
-<span class="k">class</span><span class="w"> </span><span class="nc">LinearCFMagnetModel</span><span class="p">(</span><span class="n">MagnetModel</span><span class="p">):</span>
+<span class="nd">@register_schema</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">LinearCFMagnetModel</span><span class="p">(</span><span class="n">MagnetModel</span><span class="p">,</span> <span class="n">DynamicValidation</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Class providing a simple linear model for combined function magnets. A matrix</span>
-<span class="sd">    can handle separation of multipoles. A pseudo current is a linear combination</span>
-<span class="sd">    of power supply currents associated to a single function.</span>
+<span class="sd">    Linear combined-function magnet model.</span>
+
+<span class="sd">    This model converts between magnet strengths and hardware currents using</span>
+<span class="sd">    precomputed excitation curves, optional calibration and pseudo-current</span>
+<span class="sd">    corrections, and an optional coupling matrix to separate or combine multipole</span>
+<span class="sd">    responses. It is intended for combined-function magnets where several</span>
+<span class="sd">    multipoles share a common hardware representation.</span>
+
+<span class="sd">    Parameters</span>
+
+<span class="sd">    multipoles : list[str]</span>
+<span class="sd">    Names of the supported multipoles, for example [&quot;B0&quot;, &quot;A1&quot;, &quot;B2&quot;].</span>
+<span class="sd">    curves : list[Curve]</span>
+<span class="sd">    Excitation curves, one per multipole.</span>
+<span class="sd">    powerconverters : list[str | None]</span>
+<span class="sd">    Names of the power converter devices associated with the hardware currents.</span>
+<span class="sd">    hardware_units : list[str]</span>
+<span class="sd">    Units of the hardware variables, one per power converter.</span>
+<span class="sd">    calibration_factors : list[float] | None, optional</span>
+<span class="sd">    Multiplicative correction factors applied to the excitation curves.</span>
+<span class="sd">    Defaults to ones.</span>
+<span class="sd">    calibration_offsets : list[float] | None, optional</span>
+<span class="sd">    Additive correction offsets applied to the excitation curves.</span>
+<span class="sd">    Defaults to zeros.</span>
+<span class="sd">    pseudo_factors : list[float] | None, optional</span>
+<span class="sd">    Multiplicative factors applied to pseudo currents.</span>
+<span class="sd">    Defaults to ones.</span>
+<span class="sd">    pseudo_offsets : list[float] | None, optional</span>
+<span class="sd">    Additive offsets applied to pseudo currents.</span>
+<span class="sd">    Defaults to zeros.</span>
+<span class="sd">    matrix : Matrix | None, optional</span>
+<span class="sd">    Coupling matrix mapping power-supply currents to pseudo currents.</span>
+<span class="sd">    Defaults to the identity matrix.</span>
+<span class="sd">    units : list[str] | None, optional</span>
+<span class="sd">    Strength units, one per multipole.</span>
+
+<span class="sd">    Raises</span>
+
+<span class="sd">    PyAMLException</span>
+<span class="sd">    If the list lengths do not match, if the matrix has the wrong shape, or</span>
+<span class="sd">    if the configuration is otherwise inconsistent.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cfg</span><span class="p">:</span> <span class="n">ConfigModel</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_cfg</span> <span class="o">=</span> <span class="n">cfg</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">multipoles</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
+        <span class="n">curves</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Curve</span><span class="p">],</span>
+        <span class="n">powerconverters</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">],</span>
+        <span class="n">hardware_units</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
+        <span class="n">calibration_factors</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">calibration_offsets</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">pseudo_factors</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">pseudo_offsets</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">matrix</span><span class="p">:</span> <span class="n">Matrix</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">units</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">multipoles</span> <span class="o">=</span> <span class="n">multipoles</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_curves</span> <span class="o">=</span> <span class="n">curves</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_powerconverters</span> <span class="o">=</span> <span class="n">powerconverters</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">hardware_units</span> <span class="o">=</span> <span class="n">hardware_units</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_calibration_factors</span> <span class="o">=</span> <span class="n">calibration_factors</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_calibration_offsets</span> <span class="o">=</span> <span class="n">calibration_offsets</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_pseudo_factors</span> <span class="o">=</span> <span class="n">pseudo_factors</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_pseudo_offsets</span> <span class="o">=</span> <span class="n">pseudo_offsets</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_matrix</span> <span class="o">=</span> <span class="n">matrix</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">units</span> <span class="o">=</span> <span class="n">units</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_brho</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
 
         <span class="c1"># Check config</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">__nbFunction</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">cfg</span><span class="o">.</span><span class="n">multipoles</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">__nbPS</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">cfg</span><span class="o">.</span><span class="n">powerconverters</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__nbFunction</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">multipoles</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__nbPS</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_powerconverters</span><span class="p">)</span>
 
-        <span class="k">if</span> <span class="n">cfg</span><span class="o">.</span><span class="n">calibration_factors</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_calibration_factors</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">__calibration_factors</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__nbFunction</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">__calibration_factors</span> <span class="o">=</span> <span class="n">cfg</span><span class="o">.</span><span class="n">calibration_factors</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">__calibration_factors</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_calibration_factors</span>
 
-        <span class="k">if</span> <span class="n">cfg</span><span class="o">.</span><span class="n">calibration_offsets</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_calibration_offsets</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">__calibration_offsets</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__nbFunction</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">__calibration_offsets</span> <span class="o">=</span> <span class="n">cfg</span><span class="o">.</span><span class="n">calibration_offsets</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">__calibration_offsets</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_calibration_offsets</span>
 
-        <span class="k">if</span> <span class="n">cfg</span><span class="o">.</span><span class="n">pseudo_factors</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_pseudo_factors</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">__pf</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__nbFunction</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">__pf</span> <span class="o">=</span> <span class="n">cfg</span><span class="o">.</span><span class="n">pseudo_factors</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">__pf</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_pseudo_factors</span>
 
-        <span class="k">if</span> <span class="n">cfg</span><span class="o">.</span><span class="n">pseudo_offsets</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_pseudo_offsets</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">__po</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__nbFunction</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">__po</span> <span class="o">=</span> <span class="n">cfg</span><span class="o">.</span><span class="n">pseudo_factors</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">__po</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_pseudo_factors</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">__check_len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__calibration_factors</span><span class="p">,</span> <span class="s2">&quot;calibration_factors&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__nbFunction</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__check_len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__calibration_offsets</span><span class="p">,</span> <span class="s2">&quot;calibration_offsets&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__nbFunction</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__check_len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__pf</span><span class="p">,</span> <span class="s2">&quot;pseudo_factors&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__nbFunction</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__check_len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__po</span><span class="p">,</span> <span class="s2">&quot;pseudo_offsets&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__nbFunction</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">__check_len</span><span class="p">(</span><span class="n">cfg</span><span class="o">.</span><span class="n">units</span><span class="p">,</span> <span class="s2">&quot;units&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__nbFunction</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">__check_len</span><span class="p">(</span><span class="n">cfg</span><span class="o">.</span><span class="n">hardware_units</span><span class="p">,</span> <span class="s2">&quot;hardware_units&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__nbPS</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">__check_len</span><span class="p">(</span><span class="n">cfg</span><span class="o">.</span><span class="n">curves</span><span class="p">,</span> <span class="s2">&quot;curves&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__nbFunction</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__check_len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">units</span><span class="p">,</span> <span class="s2">&quot;units&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__nbFunction</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__check_len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">hardware_units</span><span class="p">,</span> <span class="s2">&quot;hardware_units&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__nbPS</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__check_len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_curves</span><span class="p">,</span> <span class="s2">&quot;curves&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__nbFunction</span><span class="p">)</span>
 
-        <span class="k">if</span> <span class="n">cfg</span><span class="o">.</span><span class="n">matrix</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_matrix</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">__matrix</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">identity</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__nbFunction</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">__matrix</span> <span class="o">=</span> <span class="n">cfg</span><span class="o">.</span><span class="n">matrix</span><span class="o">.</span><span class="n">get_matrix</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">__matrix</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_matrix</span><span class="o">.</span><span class="n">get_matrix</span><span class="p">()</span>
 
         <span class="n">_s</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__matrix</span><span class="p">)</span>
 
@@ -514,7 +522,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">__rcurves</span> <span class="o">=</span> <span class="p">[]</span>
 
         <span class="c1"># Apply factor and offset</span>
-        <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">c</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">cfg</span><span class="o">.</span><span class="n">curves</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">c</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_curves</span><span class="p">):</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">__curves</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">c</span><span class="o">.</span><span class="n">get_curve</span><span class="p">())</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">__curves</span><span class="p">[</span><span class="n">idx</span><span class="p">][:,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">*=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__calibration_factors</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">__curves</span><span class="p">[</span><span class="n">idx</span><span class="p">][:,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__calibration_offsets</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span>
@@ -553,19 +561,19 @@
 <div class="viewcode-block" id="LinearCFMagnetModel.get_strength_units">
 <a class="viewcode-back" href="../../../api/pyaml.magnet.linear_cfm_model.html#pyaml.magnet.linear_cfm_model.LinearCFMagnetModel.get_strength_units">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">get_strength_units</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cfg</span><span class="o">.</span><span class="n">units</span></div>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">units</span></div>
 
 
 <div class="viewcode-block" id="LinearCFMagnetModel.get_hardware_units">
 <a class="viewcode-back" href="../../../api/pyaml.magnet.linear_cfm_model.html#pyaml.magnet.linear_cfm_model.LinearCFMagnetModel.get_hardware_units">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">get_hardware_units</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cfg</span><span class="o">.</span><span class="n">hardware_units</span></div>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">hardware_units</span></div>
 
 
 <div class="viewcode-block" id="LinearCFMagnetModel.get_device_names">
 <a class="viewcode-back" href="../../../api/pyaml.magnet.linear_cfm_model.html#pyaml.magnet.linear_cfm_model.LinearCFMagnetModel.get_device_names">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">get_device_names</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">]:</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cfg</span><span class="o">.</span><span class="n">powerconverters</span></div>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_powerconverters</span></div>
 
 
 <div class="viewcode-block" id="LinearCFMagnetModel.set_magnet_rigidity">

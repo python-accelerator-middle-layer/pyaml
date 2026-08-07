@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>pyaml.magnet.spline_model &#8212; Python Accelerator Middle Layer 0.1.dev1+g1b476cf96 documentation</title>
+    <title>pyaml.magnet.spline_model &#8212; Python Accelerator Middle Layer 0.1.dev1+g5da061b9f documentation</title>
   
   
   
@@ -41,7 +41,7 @@
   <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=90905a2f556bf617f1a9" />
 <link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=90905a2f556bf617f1a9" />
 
-    <script src="../../../_static/documentation_options.js?v=bcd0b3ab"></script>
+    <script src="../../../_static/documentation_options.js?v=b14876cd"></script>
     <script src="../../../_static/doctools.js?v=9bcbadda"></script>
     <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -125,8 +125,8 @@
       
     
     
-    <img src="../../../_static/logo.png" class="logo__image only-light" alt="Python Accelerator Middle Layer 0.1.dev1+g1b476cf96 documentation - Home"/>
-    <img src="../../../_static/dark.png" class="logo__image only-dark pst-js-only" alt="Python Accelerator Middle Layer 0.1.dev1+g1b476cf96 documentation - Home"/>
+    <img src="../../../_static/logo.png" class="logo__image only-light" alt="Python Accelerator Middle Layer 0.1.dev1+g5da061b9f documentation - Home"/>
+    <img src="../../../_static/dark.png" class="logo__image only-dark pst-js-only" alt="Python Accelerator Middle Layer 0.1.dev1+g5da061b9f documentation - Home"/>
   
   
 </a></div>
@@ -393,7 +393,7 @@
 <span class="kn">from</span><span class="w"> </span><span class="nn">scipy.interpolate</span><span class="w"> </span><span class="kn">import</span> <span class="n">make_smoothing_spline</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">..common.element</span><span class="w"> </span><span class="kn">import</span> <span class="n">__pyaml_repr__</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">..control.deviceaccess</span><span class="w"> </span><span class="kn">import</span> <span class="n">DeviceAccess</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">..validation</span><span class="w"> </span><span class="kn">import</span> <span class="n">DynamicValidation</span><span class="p">,</span> <span class="n">register_schema</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">.curve</span><span class="w"> </span><span class="kn">import</span> <span class="n">Curve</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">.model</span><span class="w"> </span><span class="kn">import</span> <span class="n">MagnetModel</span>
 
@@ -401,65 +401,69 @@
 <span class="n">PYAMLCLASS</span> <span class="o">=</span> <span class="s2">&quot;SplineMagnetModel&quot;</span>
 
 
-<div class="viewcode-block" id="ConfigModel">
-<a class="viewcode-back" href="../../../api/pyaml.magnet.spline_model.html#pyaml.magnet.spline_model.ConfigModel">[docs]</a>
-<span class="k">class</span><span class="w"> </span><span class="nc">ConfigModel</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+<div class="viewcode-block" id="SplineMagnetModel">
+<a class="viewcode-back" href="../../../api/pyaml.magnet.spline_model.html#pyaml.magnet.spline_model.SplineMagnetModel">[docs]</a>
+<span class="nd">@register_schema</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">SplineMagnetModel</span><span class="p">(</span><span class="n">MagnetModel</span><span class="p">,</span> <span class="n">DynamicValidation</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Configuration model for spline magnet model</span>
+<span class="sd">    Magnet model that converts between strength and hardware current using</span>
+<span class="sd">    spline interpolation.</span>
+
+<span class="sd">    The model represents a single-function magnet and builds two smoothing</span>
+<span class="sd">    splines from the supplied excitation curve:</span>
+
+<span class="sd">    - a forward spline for converting hardware current to magnet strength</span>
+<span class="sd">    - an inverse spline for converting magnet strength to hardware current</span>
+
+<span class="sd">    The input curve is first scaled by ``calibration_factor`` and ``crosstalk``</span>
+<span class="sd">    and shifted by ``calibration_offset`` before the splines are created.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    curve : Curve</span>
-<span class="sd">        Curve object used for interpolation</span>
-<span class="sd">    powerconverter : DeviceAccess, optional</span>
-<span class="sd">        Power converter device to apply current</span>
+<span class="sd">        Excitation curve used for interpolation.</span>
+<span class="sd">    powerconverter : str | None, optional</span>
+<span class="sd">        Name of the associated power converter device.</span>
 <span class="sd">    calibration_factor : float, optional</span>
-<span class="sd">        Correction factor applied to the curve. Default: 1.0</span>
+<span class="sd">        Multiplicative correction applied to the curve. Default is ``1.0``.</span>
 <span class="sd">    calibration_offset : float, optional</span>
-<span class="sd">        Correction offset applied to the curve. Default: 0.0</span>
+<span class="sd">        Additive correction applied to the curve. Default is ``0.0``.</span>
 <span class="sd">    crosstalk : float, optional</span>
-<span class="sd">        Crosstalk factor. Default: 1.0</span>
-<span class="sd">    unit : str</span>
-<span class="sd">        Unit of the strength (i.e. 1/m or m-1)</span>
-<span class="sd">    hardware_unit : str</span>
-<span class="sd">        Hardware units (i.e. &#39;A&#39; , &#39;V&#39;)</span>
+<span class="sd">        Crosstalk factor applied to the curve. Default is ``1.0``.</span>
+<span class="sd">    unit : str | None, optional</span>
+<span class="sd">        Strength unit, such as ``m-1`` or ``m-2``.</span>
+<span class="sd">    hardware_unit : str | None, optional</span>
+<span class="sd">        Hardware unit, such as ``A`` or ``V``.</span>
 <span class="sd">    alpha : float, optional</span>
-<span class="sd">        Regularization parameter (alpha &gt;= 0). alpha = 0 means the interpolation</span>
-<span class="sd">        passes through all the points of the curve. Default: 0.0</span>
+<span class="sd">        Smoothing parameter passed to :func:`scipy.interpolate.make_smoothing_spline`.</span>
+<span class="sd">        ``alpha = 0`` gives exact interpolation through the data points.</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    The magnet rigidity ``brho`` must be set with :meth:`set_magnet_rigidity`</span>
+<span class="sd">    before using the conversion methods.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="n">model_config</span> <span class="o">=</span> <span class="n">ConfigDict</span><span class="p">(</span><span class="n">arbitrary_types_allowed</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">extra</span><span class="o">=</span><span class="s2">&quot;forbid&quot;</span><span class="p">)</span>
-
-    <span class="n">curve</span><span class="p">:</span> <span class="n">Curve</span>
-    <span class="n">powerconverter</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span>
-    <span class="n">calibration_factor</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1.0</span>
-    <span class="n">calibration_offset</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.0</span>
-    <span class="n">crosstalk</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1.0</span>
-    <span class="n">unit</span><span class="p">:</span> <span class="nb">str</span>
-    <span class="n">hardware_unit</span><span class="p">:</span> <span class="nb">str</span>
-    <span class="n">alpha</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.0</span></div>
-
-
-
-<div class="viewcode-block" id="SplineMagnetModel">
-<a class="viewcode-back" href="../../../api/pyaml.magnet.spline_model.html#pyaml.magnet.spline_model.SplineMagnetModel">[docs]</a>
-<span class="k">class</span><span class="w"> </span><span class="nc">SplineMagnetModel</span><span class="p">(</span><span class="n">MagnetModel</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Class that handle manget current/strength conversion using</span>
-<span class="sd">    spline interpolation for a single function magnet</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-
-    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cfg</span><span class="p">:</span> <span class="n">ConfigModel</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_cfg</span> <span class="o">=</span> <span class="n">cfg</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">__curve</span> <span class="o">=</span> <span class="n">cfg</span><span class="o">.</span><span class="n">curve</span><span class="o">.</span><span class="n">get_curve</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">__curve</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__curve</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">cfg</span><span class="o">.</span><span class="n">calibration_factor</span> <span class="o">*</span> <span class="n">cfg</span><span class="o">.</span><span class="n">crosstalk</span> <span class="o">+</span> <span class="n">cfg</span><span class="o">.</span><span class="n">calibration_offset</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">curve</span><span class="p">:</span> <span class="n">Curve</span><span class="p">,</span>
+        <span class="n">powerconverter</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">calibration_factor</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">,</span>
+        <span class="n">calibration_offset</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">,</span>
+        <span class="n">crosstalk</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">,</span>
+        <span class="n">unit</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">hardware_unit</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">alpha</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__curve</span> <span class="o">=</span> <span class="n">curve</span><span class="o">.</span><span class="n">get_curve</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__curve</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__curve</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">calibration_factor</span> <span class="o">*</span> <span class="n">crosstalk</span> <span class="o">+</span> <span class="n">calibration_offset</span>
         <span class="n">rcurve</span> <span class="o">=</span> <span class="n">Curve</span><span class="o">.</span><span class="n">inverse</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__curve</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">__strength_unit</span> <span class="o">=</span> <span class="n">cfg</span><span class="o">.</span><span class="n">unit</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">__hardware_unit</span> <span class="o">=</span> <span class="n">cfg</span><span class="o">.</span><span class="n">hardware_unit</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__strength_unit</span> <span class="o">=</span> <span class="n">unit</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__hardware_unit</span> <span class="o">=</span> <span class="n">hardware_unit</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__brho</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">__ps</span> <span class="o">=</span> <span class="n">cfg</span><span class="o">.</span><span class="n">powerconverter</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">__spl</span> <span class="o">=</span> <span class="n">make_smoothing_spline</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__curve</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">__curve</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">lam</span><span class="o">=</span><span class="n">cfg</span><span class="o">.</span><span class="n">alpha</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">__rspl</span> <span class="o">=</span> <span class="n">make_smoothing_spline</span><span class="p">(</span><span class="n">rcurve</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">rcurve</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">lam</span><span class="o">=</span><span class="n">cfg</span><span class="o">.</span><span class="n">alpha</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__ps</span> <span class="o">=</span> <span class="n">powerconverter</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__spl</span> <span class="o">=</span> <span class="n">make_smoothing_spline</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__curve</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">__curve</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">lam</span><span class="o">=</span><span class="n">alpha</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__rspl</span> <span class="o">=</span> <span class="n">make_smoothing_spline</span><span class="p">(</span><span class="n">rcurve</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">rcurve</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">lam</span><span class="o">=</span><span class="n">alpha</span><span class="p">)</span>
 
 <div class="viewcode-block" id="SplineMagnetModel.compute_hardware_values">
 <a class="viewcode-back" href="../../../api/pyaml.magnet.spline_model.html#pyaml.magnet.spline_model.SplineMagnetModel.compute_hardware_values">[docs]</a>

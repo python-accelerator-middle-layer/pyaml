@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>identity_cfm_model &#8212; Python Accelerator Middle Layer 0.1.dev1+g1b476cf96 documentation</title>
+    <title>identity_cfm_model &#8212; Python Accelerator Middle Layer 0.1.dev1+g5da061b9f documentation</title>
   
   
   
@@ -42,7 +42,7 @@
   <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=90905a2f556bf617f1a9" />
 <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=90905a2f556bf617f1a9" />
 
-    <script src="../_static/documentation_options.js?v=bcd0b3ab"></script>
+    <script src="../_static/documentation_options.js?v=b14876cd"></script>
     <script src="../_static/doctools.js?v=9bcbadda"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -128,8 +128,8 @@
       
     
     
-    <img src="../_static/logo.png" class="logo__image only-light" alt="Python Accelerator Middle Layer 0.1.dev1+g1b476cf96 documentation - Home"/>
-    <img src="../_static/dark.png" class="logo__image only-dark pst-js-only" alt="Python Accelerator Middle Layer 0.1.dev1+g1b476cf96 documentation - Home"/>
+    <img src="../_static/logo.png" class="logo__image only-light" alt="Python Accelerator Middle Layer 0.1.dev1+g5da061b9f documentation - Home"/>
+    <img src="../_static/dark.png" class="logo__image only-dark pst-js-only" alt="Python Accelerator Middle Layer 0.1.dev1+g5da061b9f documentation - Home"/>
   
   
 </a></div>
@@ -526,53 +526,35 @@
   <section id="module-pyaml.magnet.identity_cfm_model">
 <span id="identity-cfm-model"></span><h1>identity_cfm_model<a class="headerlink" href="#module-pyaml.magnet.identity_cfm_model" title="Link to this heading">#</a></h1>
 <dl class="py class">
-<dt class="sig sig-object py" id="pyaml.magnet.identity_cfm_model.ConfigModel">
-<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ConfigModel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">multipoles</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">powerconverters</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">physics</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">units</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/magnet/identity_cfm_model.html#ConfigModel"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.magnet.identity_cfm_model.ConfigModel" title="Link to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">BaseModel</span></code></p>
-<p>Configuration model for identity combined function magnet model</p>
+<dt class="sig sig-object py" id="pyaml.magnet.identity_cfm_model.IdentityCFMagnetModel">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">IdentityCFMagnetModel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/magnet/identity_cfm_model.html#IdentityCFMagnetModel"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.magnet.identity_cfm_model.IdentityCFMagnetModel" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="pyaml.magnet.model.html#pyaml.magnet.model.MagnetModel" title="pyaml.magnet.model.MagnetModel"><code class="xref py py-class docutils literal notranslate"><span class="pre">MagnetModel</span></code></a>, <code class="xref py py-class docutils literal notranslate"><span class="pre">DynamicValidation</span></code></p>
+<p>Identity combined-function magnet model.</p>
+<p>This magnet model maps strengths and hardware values directly to the
+underlying devices without applying any conversion. It is intended for cases
+where the physics values and hardware values are identical, so the model acts
+as an identity transform for all supported multipoles.</p>
+<p>Parameters</p>
+<p>multipoles : list[str]
+List of supported multipoles, for example [“B0”, “A1”, “B2”].
+powerconverters : list[str | None] | None, optional
+Names of the power converter devices used for hardware access.
+physics : list[str | None] | None, optional
+Names of the physics devices used for strength access.
+units : list[str] | None, optional
+List of units for the supported multipoles.</p>
+<p>Raises</p>
+<p>PyAMLException
+If both physics and powerconverters are missing, if both are
+provided at the same time, or if the configuration lengths do not match.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>multipoles</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.14)"><em>list</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em>]</em>) – List of supported functions: A0, B0, A1, B1, etc (i.e. [B0, A1, B2])</p></li>
-<li><p><strong>powerconverters</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.14)"><em>list</em></a><em>[</em><a class="reference internal" href="pyaml.control.deviceaccess.html#pyaml.control.deviceaccess.DeviceAccess" title="pyaml.control.deviceaccess.DeviceAccess"><em>DeviceAccess</em></a><em>]</em><em>, </em><em>optional</em>) – Power converter devices to apply current</p></li>
-<li><p><strong>physics</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.14)"><em>list</em></a><em>[</em><a class="reference internal" href="pyaml.control.deviceaccess.html#pyaml.control.deviceaccess.DeviceAccess" title="pyaml.control.deviceaccess.DeviceAccess"><em>DeviceAccess</em></a><em>]</em><em>, </em><em>optional</em>) – Magnet devices to apply strength</p></li>
-<li><p><strong>units</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.14)"><em>list</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em>]</em>) – List of strength units (i.e. [‘rad’, ‘m-1’, ‘m-2’])</p></li>
-</ul>
-</dd>
 </dl>
-<p>Create a new model by parsing and validating input data from keyword arguments.</p>
-<p>Raises [<cite>ValidationError</cite>][pydantic_core.ValidationError] if the input data cannot be
-validated to form a valid model.</p>
-<p><cite>self</cite> is explicitly positional-only to allow <cite>self</cite> as a field name.</p>
 <dl class="py attribute">
-<dt class="sig sig-object py" id="pyaml.magnet.identity_cfm_model.ConfigModel.multipoles">
-<span class="sig-name descname"><span class="pre">multipoles</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.14)"><span class="pre">list</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#pyaml.magnet.identity_cfm_model.ConfigModel.multipoles" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pyaml.magnet.identity_cfm_model.ConfigModel.physics">
-<span class="sig-name descname"><span class="pre">physics</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.14)"><span class="pre">list</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></em><a class="headerlink" href="#pyaml.magnet.identity_cfm_model.ConfigModel.physics" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pyaml.magnet.identity_cfm_model.ConfigModel.powerconverters">
-<span class="sig-name descname"><span class="pre">powerconverters</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.14)"><span class="pre">list</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></em><a class="headerlink" href="#pyaml.magnet.identity_cfm_model.ConfigModel.powerconverters" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pyaml.magnet.identity_cfm_model.ConfigModel.units">
-<span class="sig-name descname"><span class="pre">units</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.14)"><span class="pre">list</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#pyaml.magnet.identity_cfm_model.ConfigModel.units" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
-
+<dt class="sig sig-object py" id="pyaml.magnet.identity_cfm_model.IdentityCFMagnetModel.validation_model">
+<span class="sig-name descname"><span class="pre">validation_model</span></span><a class="headerlink" href="#pyaml.magnet.identity_cfm_model.IdentityCFMagnetModel.validation_model" title="Link to this definition">#</a></dt>
+<dd><p>alias of <code class="xref py py-class docutils literal notranslate"><span class="pre">IdentityCFMagnetModelValidationModel</span></code></p>
 </dd></dl>
 
-<dl class="py class">
-<dt class="sig sig-object py" id="pyaml.magnet.identity_cfm_model.IdentityCFMagnetModel">
-<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">IdentityCFMagnetModel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cfg</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/magnet/identity_cfm_model.html#IdentityCFMagnetModel"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.magnet.identity_cfm_model.IdentityCFMagnetModel" title="Link to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference internal" href="pyaml.magnet.model.html#pyaml.magnet.model.MagnetModel" title="pyaml.magnet.model.MagnetModel"><code class="xref py py-class docutils literal notranslate"><span class="pre">MagnetModel</span></code></a></p>
-<p>Class that map values to underlying devices without conversion</p>
-<dl class="field-list simple">
-</dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="pyaml.magnet.identity_cfm_model.IdentityCFMagnetModel.compute_hardware_values">
 <span class="sig-name descname"><span class="pre">compute_hardware_values</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">strengths</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/magnet/identity_cfm_model.html#IdentityCFMagnetModel.compute_hardware_values"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.magnet.identity_cfm_model.IdentityCFMagnetModel.compute_hardware_values" title="Link to this definition">#</a></dt>
@@ -717,14 +699,8 @@ returns a list of 1 item</p>
   </div>
   <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="pst-show_toc_level nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.magnet.identity_cfm_model.ConfigModel"><code class="docutils literal notranslate"><span class="pre">ConfigModel</span></code></a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.magnet.identity_cfm_model.ConfigModel.multipoles"><code class="docutils literal notranslate"><span class="pre">ConfigModel.multipoles</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.magnet.identity_cfm_model.ConfigModel.physics"><code class="docutils literal notranslate"><span class="pre">ConfigModel.physics</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.magnet.identity_cfm_model.ConfigModel.powerconverters"><code class="docutils literal notranslate"><span class="pre">ConfigModel.powerconverters</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.magnet.identity_cfm_model.ConfigModel.units"><code class="docutils literal notranslate"><span class="pre">ConfigModel.units</span></code></a></li>
-</ul>
-</li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.magnet.identity_cfm_model.IdentityCFMagnetModel"><code class="docutils literal notranslate"><span class="pre">IdentityCFMagnetModel</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.magnet.identity_cfm_model.IdentityCFMagnetModel.validation_model"><code class="docutils literal notranslate"><span class="pre">IdentityCFMagnetModel.validation_model</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.magnet.identity_cfm_model.IdentityCFMagnetModel.compute_hardware_values"><code class="docutils literal notranslate"><span class="pre">IdentityCFMagnetModel.compute_hardware_values()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.magnet.identity_cfm_model.IdentityCFMagnetModel.compute_strengths"><code class="docutils literal notranslate"><span class="pre">IdentityCFMagnetModel.compute_strengths()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.magnet.identity_cfm_model.IdentityCFMagnetModel.get_device_names"><code class="docutils literal notranslate"><span class="pre">IdentityCFMagnetModel.get_device_names()</span></code></a></li>
