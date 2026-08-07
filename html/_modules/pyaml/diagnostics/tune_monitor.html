@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>pyaml.diagnostics.tune_monitor &#8212; Python Accelerator Middle Layer 0.1.dev1+gc23cf8b8e documentation</title>
+    <title>pyaml.diagnostics.tune_monitor &#8212; Python Accelerator Middle Layer 0.1.dev1+g084e73cac documentation</title>
   
   
   
@@ -41,7 +41,7 @@
   <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=90905a2f556bf617f1a9" />
 <link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=90905a2f556bf617f1a9" />
 
-    <script src="../../../_static/documentation_options.js?v=3ab33b5a"></script>
+    <script src="../../../_static/documentation_options.js?v=ba6f5a4b"></script>
     <script src="../../../_static/doctools.js?v=9bcbadda"></script>
     <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -125,8 +125,8 @@
       
     
     
-    <img src="../../../_static/logo.png" class="logo__image only-light" alt="Python Accelerator Middle Layer 0.1.dev1+gc23cf8b8e documentation - Home"/>
-    <img src="../../../_static/dark.png" class="logo__image only-dark pst-js-only" alt="Python Accelerator Middle Layer 0.1.dev1+gc23cf8b8e documentation - Home"/>
+    <img src="../../../_static/logo.png" class="logo__image only-light" alt="Python Accelerator Middle Layer 0.1.dev1+g084e73cac documentation - Home"/>
+    <img src="../../../_static/dark.png" class="logo__image only-dark pst-js-only" alt="Python Accelerator Middle Layer 0.1.dev1+g084e73cac documentation - Home"/>
   
   
 </a></div>
@@ -388,67 +388,57 @@
                 <article class="bd-article">
                   
   <h1>Source code for pyaml.diagnostics.tune_monitor</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span><span class="w"> </span><span class="nn">..common.abstract</span><span class="w"> </span><span class="kn">import</span> <span class="n">ReadFloatArray</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">..common.element</span><span class="w"> </span><span class="kn">import</span> <span class="n">Element</span><span class="p">,</span> <span class="n">ElementConfigModel</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">..control.deviceaccess</span><span class="w"> </span><span class="kn">import</span> <span class="n">DeviceAccess</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">.atune_monitor</span><span class="w"> </span><span class="kn">import</span> <span class="n">ABetatronTuneMonitor</span>
+<span></span><span class="kn">import</span><span class="w"> </span><span class="nn">copy</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Self</span>
 
-<span class="k">try</span><span class="p">:</span>
-    <span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Self</span>  <span class="c1"># Python 3.11+</span>
-<span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
-    <span class="kn">from</span><span class="w"> </span><span class="nn">typing_extensions</span><span class="w"> </span><span class="kn">import</span> <span class="n">Self</span>  <span class="c1"># Python 3.10 and earlier</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">pydantic</span><span class="w"> </span><span class="kn">import</span> <span class="n">ConfigDict</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">numpy.typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">NDArray</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">..common.abstract</span><span class="w"> </span><span class="kn">import</span> <span class="n">ReadFloatArray</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">..common.element</span><span class="w"> </span><span class="kn">import</span> <span class="n">Element</span><span class="p">,</span> <span class="n">__pyaml_repr__</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">..validation</span><span class="w"> </span><span class="kn">import</span> <span class="n">DynamicValidation</span><span class="p">,</span> <span class="n">register_schema</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.atune_monitor</span><span class="w"> </span><span class="kn">import</span> <span class="n">ABetatronTuneMonitor</span>
 
 <span class="n">PYAMLCLASS</span> <span class="o">=</span> <span class="s2">&quot;BetatronTuneMonitor&quot;</span>
 
 
-<div class="viewcode-block" id="ConfigModel">
-<a class="viewcode-back" href="../../../api/pyaml.diagnostics.tune_monitor.html#pyaml.diagnostics.tune_monitor.ConfigModel">[docs]</a>
-<span class="k">class</span><span class="w"> </span><span class="nc">ConfigModel</span><span class="p">(</span><span class="n">ElementConfigModel</span><span class="p">):</span>
+<div class="viewcode-block" id="BetatronTuneMonitor">
+<a class="viewcode-back" href="../../../api/pyaml.diagnostics.tune_monitor.html#pyaml.diagnostics.tune_monitor.BetatronTuneMonitor">[docs]</a>
+<span class="nd">@register_schema</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">BetatronTuneMonitor</span><span class="p">(</span><span class="n">Element</span><span class="p">,</span> <span class="n">DynamicValidation</span><span class="p">,</span> <span class="n">ABetatronTuneMonitor</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Configuration model for BetatronTuneMonitor</span>
+<span class="sd">    Betatron tune monitor.</span>
+
+<span class="sd">    Represents a betatron tune monitor in the accelerator lattice and</span>
+<span class="sd">    provides access to the measured horizontal and vertical betatron</span>
+<span class="sd">    tunes. Optionally, the monitor can be associated with an RF plant</span>
+<span class="sd">    used to convert tune measurements to frequency values.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">    tune_h : str, optional</span>
-<span class="sd">        Horizontal betatron tune device</span>
-<span class="sd">    tune_v : str, optional</span>
-<span class="sd">        Vertical betatron tune device</span>
-<span class="sd">    rf_plant_name : str, optional</span>
-<span class="sd">        PyAML element name of the RF plant</span>
+<span class="sd">    name : str</span>
+<span class="sd">        Name of the betatron tune monitor.</span>
+<span class="sd">    description : str | None, optional</span>
+<span class="sd">        Description of the monitor.</span>
+<span class="sd">    tune_h : str | None, optional</span>
+<span class="sd">        Device catalog key for the horizontal betatron tune measurement.</span>
+<span class="sd">    tune_v : str | None, optional</span>
+<span class="sd">        Device catalog key for the vertical betatron tune measurement.</span>
+<span class="sd">    rf_plant_name : str | None, optional</span>
+<span class="sd">        Name of the associated RF plant element used by the monitor.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="n">model_config</span> <span class="o">=</span> <span class="n">ConfigDict</span><span class="p">(</span><span class="n">arbitrary_types_allowed</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">extra</span><span class="o">=</span><span class="s2">&quot;forbid&quot;</span><span class="p">)</span>
-
-    <span class="n">tune_h</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span>
-    <span class="n">tune_v</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span>
-    <span class="n">rf_plant_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span></div>
-
-
-
-<div class="viewcode-block" id="BetatronTuneMonitor">
-<a class="viewcode-back" href="../../../api/pyaml.diagnostics.tune_monitor.html#pyaml.diagnostics.tune_monitor.BetatronTuneMonitor">[docs]</a>
-<span class="k">class</span><span class="w"> </span><span class="nc">BetatronTuneMonitor</span><span class="p">(</span><span class="n">Element</span><span class="p">,</span> <span class="n">ABetatronTuneMonitor</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Class providing access to a betatron tune monitor</span>
-<span class="sd">    of a physical or simulated lattice.</span>
-<span class="sd">    The monitor provides horizontal and vertical betatron tune measurements.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-
-    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cfg</span><span class="p">:</span> <span class="n">ConfigModel</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Construct a BetatronTuneMonitor</span>
-
-<span class="sd">        Parameters</span>
-<span class="sd">        ----------</span>
-<span class="sd">        cfg : ConfigModel</span>
-<span class="sd">            Configuration for the BetatronTuneMonitor, including</span>
-<span class="sd">            device access for horizontal and vertical tunes.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-
-        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">cfg</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_cfg</span> <span class="o">=</span> <span class="n">cfg</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">description</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">tune_h</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">tune_v</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">rf_plant_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="n">description</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_tune_h</span> <span class="o">=</span> <span class="n">tune_h</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_tune_v</span> <span class="o">=</span> <span class="n">tune_v</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_rf_plant_name</span> <span class="o">=</span> <span class="n">rf_plant_name</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__tune</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_h</span> <span class="o">=</span> <span class="kc">None</span>
 
@@ -457,6 +447,14 @@
     <span class="k">def</span><span class="w"> </span><span class="nf">set_harmonic</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">h</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_h</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">h</span><span class="p">)</span></div>
 
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">tune_h</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_tune_h</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">tune_v</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_tune_v</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">tune</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ReadFloatArray</span><span class="p">:</span>
@@ -486,9 +484,9 @@
             <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="p">:</span> <span class="n">BetatronTuneMonitor</span><span class="p">):</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">parent</span> <span class="o">=</span> <span class="n">parent</span>
 
-            <span class="k">def</span><span class="w"> </span><span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">:</span>
+            <span class="k">def</span><span class="w"> </span><span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">NDArray</span><span class="p">:</span>
                 <span class="n">h</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">_h</span>
-                <span class="n">rf_name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">_cfg</span><span class="o">.</span><span class="n">rf_plant_name</span>
+                <span class="n">rf_name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">_rf_plant_name</span>
                 <span class="k">if</span> <span class="n">h</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">rf_name</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
                     <span class="n">tune</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">tune</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
                     <span class="n">rf</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">peer</span><span class="o">.</span><span class="n">get_rf_plant</span><span class="p">(</span><span class="n">rf_name</span><span class="p">)</span>
@@ -519,11 +517,14 @@
 <span class="sd">        Self</span>
 <span class="sd">            A new attached instance of TuneMonitor</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">obj</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_cfg</span><span class="p">)</span>
+        <span class="n">obj</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
         <span class="n">obj</span><span class="o">.</span><span class="n">__tune</span> <span class="o">=</span> <span class="n">betatron_tune</span>
         <span class="n">obj</span><span class="o">.</span><span class="n">_peer</span> <span class="o">=</span> <span class="n">peer</span>
         <span class="k">return</span> <span class="n">obj</span></div>
-</div>
+
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">__pyaml_repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">exclude</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;tune&quot;</span><span class="p">,</span> <span class="s2">&quot;frequency&quot;</span><span class="p">])</span></div>
 
 </pre></div>
 
