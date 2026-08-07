@@ -15,6 +15,7 @@ Typical usage is:
 
 import copy
 import fnmatch
+import inspect
 import os
 import re
 from pathlib import Path
@@ -81,28 +82,37 @@ class ConfigurationManager:
     @classmethod
     def root_fields(cls) -> tuple[str, ...]:
         r"""
-        Return the ordered root fields supported by the accelerator model.
+        Return the ordered root fields supported by the accelerator configuration.
 
-        The field order is derived from
-        :class:`~pyaml.accelerator.ConfigModel`.
+        The field order is derived from :meth:Accelerator.__init__, excluding
+        internal or categorized fields such as control and simulator collections.
 
         Returns
-        -------
+
         tuple[str, ...]
+        The root field names in configuration order, prefixed with "type".
 
         Examples
-        --------
 
         .. code-block:: python
 
-            >>> ConfigurationManager.root_fields()
-        """
-        from ..accelerator import ConfigModel as AcceleratorConfigModel
+        >>> ConfigurationManager.root_fields()
 
-        config_fields = tuple(
-            field_name for field_name in AcceleratorConfigModel.model_fields if field_name not in cls.NAMED_CATEGORIES
+        """
+        params = inspect.signature(cls.__init__).parameters
+
+        fields = tuple(
+            name
+            for name, param in params.items()
+            if name != "self"
+            and name not in cls.NAMED_CATEGORIES
+            and param.kind
+            in (
+                inspect.Parameter.POSITIONAL_OR_KEYWORD,
+                inspect.Parameter.KEYWORD_ONLY,
+            )
         )
-        return ("type", *config_fields)
+        return ("type", *fields)
 
     def __init__(self):
         self._state: dict[str, Any] = {"type": self.DEFAULT_TYPE}
