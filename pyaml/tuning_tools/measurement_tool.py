@@ -16,6 +16,15 @@ if TYPE_CHECKING:
 logger = logging.getLogger(__name__)
 
 
+class MeasurementToolConfigModel(ElementConfigModel):
+    model_config = ConfigDict(arbitrary_types_allowed=True, extra="forbid")
+
+    n_step: int = 10
+    sleep_between_step: float = 0
+    n_avg_meas: int = 1
+    sleep_between_meas: float = 0
+
+
 class MeasurementTool(Element, metaclass=ABCMeta):
     """
     Base class for measurement tool such as reponse matrix measurement or other scans.
