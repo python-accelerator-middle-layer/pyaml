@@ -8,7 +8,7 @@ class RWCorrectorAngle(abstract.ReadWriteFloatScalar):
     """
     Set the angle of a horizontal or vertical corrector.
     KickAngle sign convention is defined the a global PyAML constant
-    (see pyaml.common.constant.HORIZONATL_KICK_SIGN).
+    (see pyaml.common.constant.HORIZONTAL_KICK_SIGN).
     To change the convention, you have execute the code below prior to everything:
     import pyaml.common.constants
     pyaml.common.constants.HORIZONTAL_KICK_SIGN = -1.0

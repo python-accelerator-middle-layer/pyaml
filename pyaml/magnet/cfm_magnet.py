@@ -2,11 +2,12 @@ from scipy.constants import speed_of_light
 
 from ..common import abstract
 from ..common.abstract import RWMapper
-from ..common.element import Element, ElementConfigModel, __pyaml_repr__
+from ..common.element import Element, __pyaml_repr__
 from ..common.exception import PyAMLException
 from ..configuration.factory import ELEMENT_REGISTRY
+from ..validation import DynamicValidation, register_schema
 from .hcorrector import HCorrector
-from .magnet import Magnet, MagnetConfigModel
+from .magnet import Magnet
 from .model import MagnetModel
 from .octupole import Octupole
 from .quadrupole import Quadrupole
@@ -31,39 +32,64 @@ _fmap: dict = {
 PYAMLCLASS = "CombinedFunctionMagnet"
 
 
-class ConfigModel(ElementConfigModel):
-    mapping: list[list[str]]
-    """Name mapping for multipoles
-    (i.e. [[B0,C01A-H],[A0,C01A-H],[B2,C01A-S]])"""
-    model: MagnetModel | None = None
-    """Object in charge of converting magnet strenghts to currents"""
+@register_schema
+class CombinedFunctionMagnet(Element, DynamicValidation):
+    """
+    Combined function magnet made up of several virtual single-function magnets.
 
+    This class represents a magnet whose effect is described by multiple multipole
+    components, such as a corrector, quadrupole, sextupole, or octupole family.
+    Each entry in ``mapping`` creates a virtual magnet backed by the same
+    underlying magnet model, and the virtual magnets are exposed as individual
+    elements while still belonging to the same combined-function object.
 
-class CombinedFunctionMagnet(Element):
-    """CombinedFunctionMagnet class"""
+    Parameters
+    ----------
+    name : str
+        Name of the combined-function magnet.
+    mapping : list[list[str]]
+        List of ``[multipole, magnet_name]`` pairs. The first entry selects the
+        virtual magnet type, and the second entry gives the name of the virtual
+        magnet.
+    model : MagnetModel | None, optional
+        Magnet model used to convert strengths to hardware values and vice versa.
+    description : str | None, optional
+        Human-readable description of the magnet.
+    peer : object, optional
+        Control-system or simulator peer used when attaching the magnet.
 
-    def __init__(self, cfg: ConfigModel, peer=None):
-        super().__init__(cfg.name)
-        self._cfg = cfg
-        self.model = cfg.model
+    Raises
+    ------
+    PyAMLException
+        If the mapping is invalid, if an unsupported multipole is requested, or
+        if the model does not provide the required multipole information.
+    """
+
+    def __init__(
+        self, name: str, mapping: list[list[str]], model: MagnetModel | None = None, description: str | None = None, peer=None
+    ):
+        super().__init__(name, None, description)
+
+        self._mapping = mapping
+        self.model = model
         self.__virtuals: list[Magnet] = []
-        self.__strengths: abstract.ReadWriteFloatArray = None
-        self.__hardwares: abstract.ReadWriteFloatArray = None
+        self.__strengths: abstract.ReadWriteFloatArray | None = None
+        self.__hardwares: abstract.ReadWriteFloatArray | None = None
 
         if peer is None:
             # Configuration part
-            if self.model is not None and not hasattr(self.model._cfg, "multipoles"):
-                raise PyAMLException(f"{cfg.name} model: mutipolesfield required for combined function magnet")
+            if self.model is not None and not hasattr(self.model, "multipoles"):
+                raise PyAMLException(f"{name} model: mutipoles field required for combined function magnet")
 
             idx = 0
             self.polynoms = []
-            for _idx, m in enumerate(cfg.mapping):
+            for _idx, m in enumerate(self._mapping):
                 # Check mapping validity
                 if len(m) != 2:
                     raise PyAMLException("Invalid CombinedFunctionMagnet mapping for {m}")
                 if m[0] not in _fmap:
                     raise PyAMLException(m[0] + " not implemented for combined function magnet")
-                if m[0] not in self.model._cfg.multipoles:
+                if m[0] not in self.model.multipoles:
                     raise PyAMLException(m[0] + " not found in underlying magnet model")
                 self.polynoms.append(_fmap[m[0]].polynom)
                 # Create the virtual magnet for the correspoding multipole
@@ -81,16 +107,16 @@ class CombinedFunctionMagnet(Element):
         """
         Returns the model name of this magnet
         """
-        return self._cfg.name
+        return self._name
 
     def __create_virutal_manget(self, name: str, idx: int) -> Magnet:
         args = {"name": name, "model": self.model}
-        mVirtual: Magnet = _fmap[idx](MagnetConfigModel(**args))
+        mVirtual: Magnet = _fmap[idx](**args)
         mVirtual.set_model_name(self.get_name())
         return mVirtual
 
     def nb_multipole(self) -> int:
-        return len(self._cfg.mapping)
+        return len(self._mapping)
 
     def attach(
         self,
@@ -100,13 +126,13 @@ class CombinedFunctionMagnet(Element):
     ) -> list[Magnet]:
         l = []
         # Attached the CombinedFunctionMagnet itself
-        nCFM = CombinedFunctionMagnet(self._cfg, peer)
+        nCFM = CombinedFunctionMagnet(self._name, self._mapping, self.model, self._description, peer)
         nCFM.__strengths = strengths
         nCFM.__hardwares = hardwares
         l.append(nCFM)
         # Construct a single function magnet for each multipole
         # of this combined function magnet
-        for idx, _m in enumerate(self._cfg.mapping):
+        for idx, _m in enumerate(self._mapping):
             strength = RWMapper(strengths, idx)
             hardware = RWMapper(hardwares, idx) if self.model.has_hardware() else None
             l.append(self.__virtuals[idx].attach(peer, strength, hardware))

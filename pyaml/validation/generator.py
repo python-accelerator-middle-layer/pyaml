@@ -175,6 +175,7 @@ class RegistryJsonSchema(GenerateJsonSchema):
         """
 
         base_schema = super().model_schema(schema)
+
         model_cls = schema.get("cls")
         logging.debug(f"Base schema is extracted from {model_cls}.")
 
@@ -198,7 +199,12 @@ class RegistryJsonSchema(GenerateJsonSchema):
             {
                 schema_cls
                 for _, schema_cls in self._registry.items()
-                if isinstance(schema_cls, type) and issubclass(schema_cls, model_cls) and schema_cls is not model_cls
+                if (
+                    isinstance(schema_cls, type)
+                    and issubclass(schema_cls, ConfigurationSchema)
+                    and schema_cls is not model_cls
+                    and (issubclass(schema_cls, model_cls) or schema_cls.is_virtual_subclass_of(model_cls))
+                )
             },
             key=lambda cls: f"{cls.__module__}.{cls.__name__}",
         )

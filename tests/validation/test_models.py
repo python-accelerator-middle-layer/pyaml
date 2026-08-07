@@ -97,6 +97,89 @@ def test_configuration_schema_dump_uses_alias_when_requested():
     assert dumped == {"class": "pkg.module.Class"}
 
 
+def test_configuration_schema_registers_virtual_subclass():
+    class Curve(ConfigurationSchema):
+        pass
+
+    class Curve1(ConfigurationSchema):
+        pass
+
+    Curve.register_virtual_subclass(Curve1)
+
+    assert Curve1 in Curve.virtual_subclasses()
+    assert Curve1.is_virtual_subclass_of(Curve)
+
+
+def test_configuration_schema_is_virtual_subclass_of_is_transitive():
+    class Curve(ConfigurationSchema):
+        pass
+
+    class Curve1(ConfigurationSchema):
+        pass
+
+    class Curve2(ConfigurationSchema):
+        pass
+
+    Curve.register_virtual_subclass(Curve1)
+    Curve1.register_virtual_subclass(Curve2)
+
+    assert Curve1.is_virtual_subclass_of(Curve)
+    assert Curve2.is_virtual_subclass_of(Curve)
+    assert Curve2.is_virtual_subclass_of(Curve1)
+    assert Curve.is_virtual_subclass_of(Curve)
+    assert not Curve.is_virtual_subclass_of(Curve1)
+    assert not Curve1.is_virtual_subclass_of(Curve2)
+
+
+def test_configuration_schema_virtual_subclasses_are_per_class():
+    class Curve(ConfigurationSchema):
+        pass
+
+    class Curve1(ConfigurationSchema):
+        pass
+
+    class Curve2(ConfigurationSchema):
+        pass
+
+    Curve.register_virtual_subclass(Curve1)
+    Curve1.register_virtual_subclass(Curve2)
+
+    assert Curve.virtual_subclasses() == {Curve1}
+    assert Curve1.virtual_subclasses() == {Curve2}
+    assert Curve2.virtual_subclasses() == set()
+
+
+def test_configuration_schema_virtual_subclasses_returns_copy():
+    class Curve(ConfigurationSchema):
+        pass
+
+    class Curve1(ConfigurationSchema):
+        pass
+
+    Curve.register_virtual_subclass(Curve1)
+
+    subclasses = Curve.virtual_subclasses()
+    subclasses.clear()
+
+    assert Curve.virtual_subclasses() == {Curve1}
+
+
+def test_configuration_schema_register_virtual_subclass_rejects_non_schema():
+    class Curve(ConfigurationSchema):
+        pass
+
+    with pytest.raises(TypeError, match="is not a ConfigurationSchema subclass"):
+        Curve.register_virtual_subclass(int)  # type: ignore[arg-type]
+
+
+def test_configuration_schema_is_virtual_subclass_of_rejects_non_schema():
+    class Curve(ConfigurationSchema):
+        pass
+
+    with pytest.raises(TypeError, match="is not a ConfigurationSchema"):
+        Curve.is_virtual_subclass_of(int)  # type: ignore[arg-type]
+
+
 # ==========================================================
 # ValidationModel
 # ==========================================================
