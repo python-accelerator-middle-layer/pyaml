@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>pyaml.arrays.array &#8212; Python Accelerator Middle Layer 0.1.dev1+g5da061b9f documentation</title>
+    <title>pyaml.arrays.array &#8212; Python Accelerator Middle Layer 0.1.dev1+g6914a798e documentation</title>
   
   
   
@@ -41,7 +41,7 @@
   <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=90905a2f556bf617f1a9" />
 <link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=90905a2f556bf617f1a9" />
 
-    <script src="../../../_static/documentation_options.js?v=b14876cd"></script>
+    <script src="../../../_static/documentation_options.js?v=b502a698"></script>
     <script src="../../../_static/doctools.js?v=9bcbadda"></script>
     <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -125,8 +125,8 @@
       
     
     
-    <img src="../../../_static/logo.png" class="logo__image only-light" alt="Python Accelerator Middle Layer 0.1.dev1+g5da061b9f documentation - Home"/>
-    <img src="../../../_static/dark.png" class="logo__image only-dark pst-js-only" alt="Python Accelerator Middle Layer 0.1.dev1+g5da061b9f documentation - Home"/>
+    <img src="../../../_static/logo.png" class="logo__image only-light" alt="Python Accelerator Middle Layer 0.1.dev1+g6914a798e documentation - Home"/>
+    <img src="../../../_static/dark.png" class="logo__image only-dark pst-js-only" alt="Python Accelerator Middle Layer 0.1.dev1+g6914a798e documentation - Home"/>
   
   
 </a></div>
@@ -392,20 +392,19 @@
 <span class="sd">Array configuration</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
-<span class="kn">from</span><span class="w"> </span><span class="nn">pydantic</span><span class="w"> </span><span class="kn">import</span> <span class="n">BaseModel</span><span class="p">,</span> <span class="n">ConfigDict</span>
-
 <span class="kn">from</span><span class="w"> </span><span class="nn">pyaml.common.exception</span><span class="w"> </span><span class="kn">import</span> <span class="n">PyAMLException</span>
 
+<span class="kn">from</span><span class="w"> </span><span class="nn">..common.element</span><span class="w"> </span><span class="kn">import</span> <span class="n">__pyaml_repr__</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">..common.element_holder</span><span class="w"> </span><span class="kn">import</span> <span class="n">ElementHolder</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">..validation</span><span class="w"> </span><span class="kn">import</span> <span class="n">DynamicValidation</span><span class="p">,</span> <span class="n">register_schema</span>
 
 
-<div class="viewcode-block" id="ArrayConfigModel">
-<a class="viewcode-back" href="../../../api/pyaml.arrays.array.html#pyaml.arrays.array.ArrayConfigModel">[docs]</a>
-<span class="k">class</span><span class="w"> </span><span class="nc">ArrayConfigModel</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+<div class="viewcode-block" id="ArrayConfig">
+<a class="viewcode-back" href="../../../api/pyaml.arrays.array.html#pyaml.arrays.array.ArrayConfig">[docs]</a>
+<span class="nd">@register_schema</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">ArrayConfig</span><span class="p">(</span><span class="n">DynamicValidation</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Base class for configuration of array of :py:class:`~pyaml.arrays.element.Element`,</span>
-<span class="sd">    :py:class:`~pyaml.arrays.bpm.BPM`, :py:class:`~pyaml.arrays.magnet.Magnet` or</span>
-<span class="sd">    :py:class:`~pyaml.arrays.cfm_magnet.CombinedFunctionMagnet`.</span>
+<span class="sd">    Base class for configuration of arrays (families).</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -415,22 +414,17 @@
 <span class="sd">        List of pyaml element names</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="n">model_config</span> <span class="o">=</span> <span class="n">ConfigDict</span><span class="p">(</span><span class="n">arbitrary_types_allowed</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">extra</span><span class="o">=</span><span class="s2">&quot;forbid&quot;</span><span class="p">)</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">elements</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_name</span> <span class="o">=</span> <span class="n">name</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_elements</span> <span class="o">=</span> <span class="n">elements</span>
 
-    <span class="n">name</span><span class="p">:</span> <span class="nb">str</span>
-    <span class="n">elements</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span></div>
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">name</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_name</span>
 
-
-
-<div class="viewcode-block" id="ArrayConfig">
-<a class="viewcode-back" href="../../../api/pyaml.arrays.array.html#pyaml.arrays.array.ArrayConfig">[docs]</a>
-<span class="k">class</span><span class="w"> </span><span class="nc">ArrayConfig</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Base class that implements configuration for access to arrays (families)</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-
-    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cfg</span><span class="p">:</span> <span class="n">ArrayConfigModel</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_cfg</span> <span class="o">=</span> <span class="n">cfg</span>
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">elements</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_elements</span>
 
 <div class="viewcode-block" id="ArrayConfig.fill_array">
 <a class="viewcode-back" href="../../../api/pyaml.arrays.array.html#pyaml.arrays.array.ArrayConfig.fill_array">[docs]</a>
@@ -455,9 +449,7 @@
 
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="c1"># ArrayConfigModel is a super class</span>
-        <span class="c1"># ConfigModel is expected from sub classes</span>
-        <span class="k">return</span> <span class="nb">repr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_cfg</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;ConfigModel&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="n">__pyaml_repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div>
 
 </pre></div>
 

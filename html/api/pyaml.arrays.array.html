@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>array &#8212; Python Accelerator Middle Layer 0.1.dev1+g5da061b9f documentation</title>
+    <title>array &#8212; Python Accelerator Middle Layer 0.1.dev1+g6914a798e documentation</title>
   
   
   
@@ -42,7 +42,7 @@
   <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=90905a2f556bf617f1a9" />
 <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=90905a2f556bf617f1a9" />
 
-    <script src="../_static/documentation_options.js?v=b14876cd"></script>
+    <script src="../_static/documentation_options.js?v=b502a698"></script>
     <script src="../_static/doctools.js?v=9bcbadda"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -128,8 +128,8 @@
       
     
     
-    <img src="../_static/logo.png" class="logo__image only-light" alt="Python Accelerator Middle Layer 0.1.dev1+g5da061b9f documentation - Home"/>
-    <img src="../_static/dark.png" class="logo__image only-dark pst-js-only" alt="Python Accelerator Middle Layer 0.1.dev1+g5da061b9f documentation - Home"/>
+    <img src="../_static/logo.png" class="logo__image only-light" alt="Python Accelerator Middle Layer 0.1.dev1+g6914a798e documentation - Home"/>
+    <img src="../_static/dark.png" class="logo__image only-dark pst-js-only" alt="Python Accelerator Middle Layer 0.1.dev1+g6914a798e documentation - Home"/>
   
   
 </a></div>
@@ -527,12 +527,10 @@
 <span id="array"></span><h1>array<a class="headerlink" href="#module-pyaml.arrays.array" title="Link to this heading">#</a></h1>
 <p>Array configuration</p>
 <dl class="py class">
-<dt class="sig sig-object py" id="pyaml.arrays.array.ArrayConfigModel">
-<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ArrayConfigModel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">elements</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/arrays/array.html#ArrayConfigModel"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.arrays.array.ArrayConfigModel" title="Link to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">BaseModel</span></code></p>
-<p>Base class for configuration of array of <a class="reference internal" href="pyaml.arrays.element.html#pyaml.arrays.element.Element" title="pyaml.arrays.element.Element"><code class="xref py py-class docutils literal notranslate"><span class="pre">Element</span></code></a>,
-<a class="reference internal" href="pyaml.arrays.bpm.html#pyaml.arrays.bpm.BPM" title="pyaml.arrays.bpm.BPM"><code class="xref py py-class docutils literal notranslate"><span class="pre">BPM</span></code></a>, <a class="reference internal" href="pyaml.arrays.magnet.html#pyaml.arrays.magnet.Magnet" title="pyaml.arrays.magnet.Magnet"><code class="xref py py-class docutils literal notranslate"><span class="pre">Magnet</span></code></a> or
-<a class="reference internal" href="pyaml.arrays.cfm_magnet.html#pyaml.arrays.cfm_magnet.CombinedFunctionMagnet" title="pyaml.arrays.cfm_magnet.CombinedFunctionMagnet"><code class="xref py py-class docutils literal notranslate"><span class="pre">CombinedFunctionMagnet</span></code></a>.</p>
+<dt class="sig sig-object py" id="pyaml.arrays.array.ArrayConfig">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ArrayConfig</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/arrays/array.html#ArrayConfig"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.arrays.array.ArrayConfig" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">DynamicValidation</span></code></p>
+<p>Base class for configuration of arrays (families).</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
@@ -541,29 +539,12 @@
 </ul>
 </dd>
 </dl>
-<p>Create a new model by parsing and validating input data from keyword arguments.</p>
-<p>Raises [<cite>ValidationError</cite>][pydantic_core.ValidationError] if the input data cannot be
-validated to form a valid model.</p>
-<p><cite>self</cite> is explicitly positional-only to allow <cite>self</cite> as a field name.</p>
 <dl class="py attribute">
-<dt class="sig sig-object py" id="pyaml.arrays.array.ArrayConfigModel.elements">
-<span class="sig-name descname"><span class="pre">elements</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.14)"><span class="pre">list</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#pyaml.arrays.array.ArrayConfigModel.elements" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pyaml.arrays.array.ArrayConfigModel.name">
-<span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></em><a class="headerlink" href="#pyaml.arrays.array.ArrayConfigModel.name" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
-
+<dt class="sig sig-object py" id="pyaml.arrays.array.ArrayConfig.validation_model">
+<span class="sig-name descname"><span class="pre">validation_model</span></span><a class="headerlink" href="#pyaml.arrays.array.ArrayConfig.validation_model" title="Link to this definition">#</a></dt>
+<dd><p>alias of <code class="xref py py-class docutils literal notranslate"><span class="pre">ArrayConfigValidationModel</span></code></p>
 </dd></dl>
 
-<dl class="py class">
-<dt class="sig sig-object py" id="pyaml.arrays.array.ArrayConfig">
-<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ArrayConfig</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cfg</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/arrays/array.html#ArrayConfig"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.arrays.array.ArrayConfig" title="Link to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
-<p>Base class that implements configuration for access to arrays (families)</p>
-<dl class="field-list simple">
-</dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="pyaml.arrays.array.ArrayConfig.fill_array">
 <span class="sig-name descname"><span class="pre">fill_array</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">holder</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/arrays/array.html#ArrayConfig.fill_array"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.arrays.array.ArrayConfig.fill_array" title="Link to this definition">#</a></dt>
@@ -580,6 +561,16 @@ populate with the array.</p>
 </dd>
 </dl>
 </dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="pyaml.arrays.array.ArrayConfig.elements">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">elements</span></span><a class="headerlink" href="#pyaml.arrays.array.ArrayConfig.elements" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="pyaml.arrays.array.ArrayConfig.name">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">name</span></span><a class="headerlink" href="#pyaml.arrays.array.ArrayConfig.name" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
 
 </dd></dl>
 
@@ -632,13 +623,11 @@ populate with the array.</p>
   </div>
   <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="pst-show_toc_level nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.arrays.array.ArrayConfigModel"><code class="docutils literal notranslate"><span class="pre">ArrayConfigModel</span></code></a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.arrays.array.ArrayConfigModel.elements"><code class="docutils literal notranslate"><span class="pre">ArrayConfigModel.elements</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.arrays.array.ArrayConfigModel.name"><code class="docutils literal notranslate"><span class="pre">ArrayConfigModel.name</span></code></a></li>
-</ul>
-</li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.arrays.array.ArrayConfig"><code class="docutils literal notranslate"><span class="pre">ArrayConfig</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.arrays.array.ArrayConfig.validation_model"><code class="docutils literal notranslate"><span class="pre">ArrayConfig.validation_model</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.arrays.array.ArrayConfig.fill_array"><code class="docutils literal notranslate"><span class="pre">ArrayConfig.fill_array()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.arrays.array.ArrayConfig.elements"><code class="docutils literal notranslate"><span class="pre">ArrayConfig.elements</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.arrays.array.ArrayConfig.name"><code class="docutils literal notranslate"><span class="pre">ArrayConfig.name</span></code></a></li>
 </ul>
 </li>
 </ul>
