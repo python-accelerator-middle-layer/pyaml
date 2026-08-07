@@ -197,7 +197,7 @@ class ControlSystem(ElementHolder, metaclass=ABCMeta):
 
             elif isinstance(e, BetatronTuneMonitor):
                 # Built in tune monitor
-                tuneDevs = self.get_devices_access([e._cfg.tune_h, e._cfg.tune_v])
+                tuneDevs = self.get_devices_access([e.tune_h, e.tune_v])
                 betatron_tune = RBetatronTuneArray(e, tuneDevs)
                 e = e.attach(self, betatron_tune)
                 self.add_betatron_tune_monitor(e)
