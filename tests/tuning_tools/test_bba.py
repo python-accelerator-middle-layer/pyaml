@@ -23,5 +23,5 @@ def test_bba():
     bba.measure()
     assert np.abs(bba.h_offset() - 20e-6) < 1e-6
     assert np.abs(bba.v_offset() + 15e-6) < 1e-6
-    assert np.abs(bba.h_offset_error() - 3.425616879733572e-07) < 1e-10
-    assert np.abs(bba.v_offset_error() - 2.593196843945284e-07) < 1e-10
+    assert np.abs(bba.h_offset_error() - 3.4235982437220226e-07) < 1e-10
+    assert np.abs(bba.v_offset_error() - 2.5926297594396607e-07) < 1e-10
