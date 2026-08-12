@@ -112,7 +112,6 @@ class BBA2(MeasurementTool):
 
     @staticmethod
     def _x_intercept(x, k):
-        # Linear fit on last n points
         # x is not necessary ordered
         xx = np.polynomial.polynomial.polyfit(x, k, 1)
         err = 0
