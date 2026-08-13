@@ -76,7 +76,6 @@ class BBAData:
         self.bpm_pos = []  # BPM#i position
         self.allbpm_pos = []  # IOS (Induced Orbit Shift)
         self.steps = []  # steerer step
-        self.fit = []  # linear fit
 
         self.opt_type = BBAData.OPT_TYPE.NONE
 
@@ -103,6 +102,23 @@ class BBAData:
         self.opt_offset = x
         self.opt_error = error
         self.opt_fit = fit
+
+    def to_dict(self) -> dict:
+        def _arr(v):
+            return v.tolist() if isinstance(v, np.ndarray) else v
+
+        return {
+            "k": _arr(self.k),
+            "bpm_pos": _arr(self.bpm_pos),
+            "allbpm_pos": [_arr(a) for a in self.allbpm_pos],
+            "steps": _arr(self.steps),
+            "opt_type": self.opt_type.name,
+            "opt_step": getattr(self, "opt_step", np.nan),
+            "opt_k": getattr(self, "opt_k", np.nan),
+            "opt_offset": getattr(self, "opt_offset", np.nan),
+            "opt_error": getattr(self, "opt_error", np.nan),
+            "opt_fit": _arr(getattr(self, "opt_fit", None)),
+        }
 
 
 class BBA2(MeasurementTool):
@@ -371,8 +387,6 @@ class BBA2(MeasurementTool):
         self._init_measure()
         X = BBAData()
         Y = BBAData()
-        self.latest_measurement["HData"] = X
-        self.latest_measurement["VData"] = Y
 
         self._ref_ios, fx, fy = self._init_responses(
             self._cfg.tune_correction_name,
@@ -459,6 +473,9 @@ class BBA2(MeasurementTool):
             if doV:
                 Y.set_optimum(opt_type, sty, y, dky, erry * np.fabs(fy), lyfit)
 
+            self.latest_measurement["HData"] = X.to_dict()
+            self.latest_measurement["VData"] = Y.to_dict()
+
         except Exception as ex:
             err = ex
         except KeyboardInterrupt as ex:
@@ -488,39 +505,39 @@ class BBA2(MeasurementTool):
     def _check_opt(self, plane):
         if self.latest_measurement is None:
             raise PyAMLException("No BBA data, please call measure() first")
-        if self.latest_measurement[plane].opt_type == BBAData.OPT_TYPE.NONE:
+        if self.latest_measurement[plane]["opt_type"] == BBAData.OPT_TYPE.NONE.name:
             raise PyAMLException(f"No BBA data found for {plane}")
 
     def h_offset(self) -> float:
         self._check_opt("HData")
-        return self.latest_measurement["HData"].opt_offset
+        return self.latest_measurement["HData"]["opt_offset"]
 
     def h_offset_error(self) -> float:
         self._check_opt("HData")
-        return self.latest_measurement["HData"].opt_error
+        return self.latest_measurement["HData"]["opt_error"]
 
     def v_offset(self) -> float:
         self._check_opt("VData")
-        return self.latest_measurement["VData"].opt_offset
+        return self.latest_measurement["VData"]["opt_offset"]
 
     def v_offset_error(self) -> float:
         self._check_opt("VData")
-        return self.latest_measurement["VData"].opt_error
+        return self.latest_measurement["VData"]["opt_error"]
 
     def plot_plane_data(self, ax, plane: str):
-        yp = self.latest_measurement[plane].k
-        xp = self.latest_measurement[plane].steps
+        yp = self.latest_measurement[plane]["k"]
+        xp = self.latest_measurement[plane]["steps"]
         ax.plot(xp, yp, marker="o", linewidth=0)
 
-        b = self.latest_measurement[plane].opt_fit[0]
-        a = self.latest_measurement[plane].opt_fit[1]
+        b = self.latest_measurement[plane]["opt_fit"][0]
+        a = self.latest_measurement[plane]["opt_fit"][1]
         ax.axline((0, b), slope=a, linestyle="--", color="lightblue", label="last fit")
 
-        optx = self.latest_measurement[plane].opt_step
-        opty = self.latest_measurement[plane].opt_k
+        optx = self.latest_measurement[plane]["opt_step"]
+        opty = self.latest_measurement[plane]["opt_k"]
         ax.plot([optx], [opty], color="green", marker="o", linewidth=0, label="optimum")
 
-        ax.set_xlabel(f"Steerer (rad)\nOptimun kick @ bpm={self.latest_measurement[plane].opt_offset * 1e6:.3f} um")
+        ax.set_xlabel(f"Steerer (rad)\nOptimun kick @ bpm={self.latest_measurement[plane]['opt_offset'] * 1e6:.3f} um")
         ax.set_ylabel("Fitted kick")
         ax.grid()
         ax.legend()
@@ -532,8 +549,8 @@ class BBA2(MeasurementTool):
         if self.latest_measurement is None:
             raise PyAMLException("No BBA data, please call measure() first")
 
-        noH = self.latest_measurement["HData"].opt_type == BBAData.OPT_TYPE.NONE
-        noV = self.latest_measurement["VData"].opt_type == BBAData.OPT_TYPE.NONE
+        noH = self.latest_measurement["HData"]["opt_type"] == BBAData.OPT_TYPE.NONE.name
+        noV = self.latest_measurement["VData"]["opt_type"] == BBAData.OPT_TYPE.NONE.name
         nrow = 0 if noH else 1
         nrow += 0 if noV else 1
 
