@@ -236,7 +236,7 @@ class BBA2(MeasurementTool):
         return avgorb
 
     def _one_step_dk(self, dk0: list[float], dk1: float, doH: bool, doV: bool, bipolar_delta: bool):
-        # Measrue IOS
+        # Measure IOS
 
         if any(abs(dk) > 200e-6 for dk in dk0):
             raise PyAMLException("Requested dk too high (>200urad), consider using bump")
