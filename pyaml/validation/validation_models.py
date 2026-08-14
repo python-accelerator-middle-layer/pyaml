@@ -3,7 +3,8 @@
 import inspect
 import logging
 from abc import ABCMeta
-from typing import Any, ClassVar
+from typing import Any, ClassVar, cast
+
 from pydantic import BaseModel, ConfigDict, ValidationError, create_model
 
 from .configuration_models import PyAMLBaseModel
