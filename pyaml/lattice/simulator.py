@@ -188,7 +188,7 @@ class Simulator(ElementHolder):
                     linked_currents.append(current)
                     linked_strengths.append(strength)
                 ms = e.attach(self, linked_strengths, linked_currents)
-                self.add_serialized_magnet(ms[0])
+                self.serialized_magnet.add(ms[0])
                 for m in ms[1:]:
                     self.magnet.add(m)
 

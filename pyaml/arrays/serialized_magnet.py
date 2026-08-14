@@ -36,4 +36,4 @@ class SerializedMagnets(ArrayConfig, DynamicValidation):
         holder : ElementHolder
             The element holder to populate with serialized magnet array
         """
-        holder.fill_serialized_magnet_array(self._name, self._elements)
+        holder.serialized_magnets.add(self._name, self._elements)

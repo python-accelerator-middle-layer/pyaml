@@ -25,6 +25,8 @@ from ..tuning_tools.chromaticity_monitor import ChomaticityMonitor
 from .element import Element
 from .magnet_holder import MagnetHolder
 from .magnets_holder import MagnetsHolder
+from .serialized_magnet_holder import SerializedMagnetHolder
+from .serialized_magnets_holder import SerializedMagnetsHolder
 
 if TYPE_CHECKING:
     from ..accelerator import Accelerator
@@ -75,6 +77,8 @@ class ElementHolder(metaclass=ABCMeta):
         # Sub holders
         self._magnet_holder = MagnetHolder(self)
         self._magnets_holder = MagnetsHolder(self)
+        self._serialized_magnet_holder = SerializedMagnetHolder(self)
+        self._serialized_magnets_holder = SerializedMagnetsHolder(self)
 
     @property
     def peer(self) -> "Accelerator":
@@ -90,6 +94,14 @@ class ElementHolder(metaclass=ABCMeta):
     @property
     def magnets(self) -> MagnetsHolder:
         return self._magnets_holder
+
+    @property
+    def serialized_magnet(self) -> SerializedMagnetHolder:
+        return self._serialized_magnet_holder
+
+    @property
+    def serialized_magnets(self) -> SerializedMagnetsHolder:
+        return self._serialized_magnets_holder
 
     def post_init(self):
         """
@@ -215,29 +227,6 @@ class ElementHolder(metaclass=ABCMeta):
 
     def get_all_cfm_magnets(self) -> list[CombinedFunctionMagnet]:
         return [value for key, value in self._CFM_MAGNETS.items()]
-
-    # Serialized magnets
-
-    def fill_serialized_magnet_array(self, arrayName: str, elementNames: list[str]):
-        self._fill_array(
-            arrayName,
-            elementNames,
-            self.get_serialized_magnet,
-            SerializedMagnetsArray,
-            self._SERIALIZED_MAGNETS_ARRAYS,
-        )
-
-    def get_serialized_magnet(self, name: str) -> Magnet:
-        return self._get("SerializedMagnets", name, self._SERIALIZED_MAGNETS)
-
-    def add_serialized_magnet(self, m: Magnet):
-        self._add(self._SERIALIZED_MAGNETS, m)
-
-    def get_serialized_magnets(self, name: str) -> SerializedMagnetsArray:
-        return self._get("SerializedMagnets array", name, self._SERIALIZED_MAGNETS_ARRAYS)
-
-    def get_all_serialized_magnets(self) -> list[SerializedMagnets]:
-        return [value for key, value in self._SERIALIZED_MAGNETS.items()]
 
     # BPMs
 
