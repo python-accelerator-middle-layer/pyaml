@@ -164,8 +164,8 @@ def deactivated_test_orbit_correction(root_folder: Path, config_files: dict[str,
         orbit_response_matrix.save("orm.json")
         orbit_correction.load("orm.json")
         std_kick = 1e-6
-        hcorr = control_mode.get_magnets("hcorrectors")
-        vcorr = control_mode.get_magnets("vcorrectors")
+        hcorr = control_mode.magnets.get("hcorrectors")
+        vcorr = control_mode.magnets.get("vcorrectors")
         print(f"HCORR={hcorr.strengths.get()}")
         print(f"VCORR={vcorr.strengths.get()}")
         ref_h, ref_v = bpms.positions.get().T

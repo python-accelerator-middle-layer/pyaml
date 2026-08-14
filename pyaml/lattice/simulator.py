@@ -142,7 +142,7 @@ class Simulator(ElementHolder):
                 strength = RWStrengthScalar(self.get_at_elems(e), e.polynom, e.model) if e.model.has_physics() else None
                 # Create a unique ref for this simulator
                 m = e.attach(self, strength, current)
-                self.add_magnet(m)
+                self.magnet.add(m)
 
             elif isinstance(e, CombinedFunctionMagnet):
                 currents = RWHardwareArray(self.get_at_elems(e), e.polynoms, e.model) if e.model.has_physics() else None
@@ -151,7 +151,7 @@ class Simulator(ElementHolder):
                 ms = e.attach(self, strengths, currents)
                 self.add_cfm_magnet(ms[0])
                 for m in ms[1:]:
-                    self.add_magnet(m)
+                    self.magnet.add(m)
 
             elif isinstance(e, SerializedMagnets):
                 currents = []
@@ -190,7 +190,7 @@ class Simulator(ElementHolder):
                 ms = e.attach(self, linked_strengths, linked_currents)
                 self.add_serialized_magnet(ms[0])
                 for m in ms[1:]:
-                    self.add_magnet(m)
+                    self.magnet.add(m)
 
             elif isinstance(e, BPM):
                 # This assumes unique BPM names in the pyAT lattice

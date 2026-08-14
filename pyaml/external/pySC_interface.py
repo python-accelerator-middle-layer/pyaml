@@ -34,11 +34,11 @@ class pySCInterface:
         return positions[:, 0], positions[:, 1]
 
     def get(self, name: str) -> float:
-        magnet = self.element_holder.get_magnet(name=name)
+        magnet = self.element_holder.magnet.get(name=name)
         return magnet.strength.get()
 
     def set(self, name: str, value: float) -> None:
-        magnet = self.element_holder.get_magnet(name=name)
+        magnet = self.element_holder.magnet.get(name=name)
         magnet.strength.set(value=value)  # ideally set_and_wait but not implemented
         time.sleep(self.set_wait_time)
         return

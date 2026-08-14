@@ -109,7 +109,7 @@ class Tune(TuningTool):
     @property
     def _quads(self) -> "MagnetArray":
         self.check_peer()
-        return self.peer.get_magnets(self._cfg.quad_array_name)
+        return self.peer.magnets.get(self._cfg.quad_array_name)
 
     def get(self):
         """

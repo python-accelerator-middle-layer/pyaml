@@ -18,8 +18,8 @@ def test_element_array_and_array_intersection_is_autotyped(
     sr = accelerator_from_fragments(*sr_configuration_fragments)
     sr.design.get_lattice().disable_6d()
 
-    hcorr = sr.live.get_magnets("HCORR")
-    hvcorr = sr.live.get_magnets("HVCORR")
+    hcorr = sr.live.magnets.get("HCORR")
+    hvcorr = sr.live.magnets.get("HVCORR")
 
     inter = hvcorr & hcorr
 
@@ -203,8 +203,8 @@ def test_element_array_or_union_is_unique_stable_and_autotyped(
     sr = accelerator_from_fragments(*sr_configuration_fragments)
     sr.design.get_lattice().disable_6d()
 
-    hcorr = sr.live.get_magnets("HCORR")
-    vcorr = sr.live.get_magnets("VCORR")
+    hcorr = sr.live.magnets.get("HCORR")
+    vcorr = sr.live.magnets.get("VCORR")
 
     u = hcorr | vcorr
 
@@ -230,8 +230,8 @@ def test_element_array_add_is_alias_of_union(install_test_package, accelerator_f
     sr = accelerator_from_fragments(*sr_configuration_fragments)
     sr.design.get_lattice().disable_6d()
 
-    hcorr = sr.live.get_magnets("HCORR")
-    vcorr = sr.live.get_magnets("VCORR")
+    hcorr = sr.live.magnets.get("HCORR")
+    vcorr = sr.live.magnets.get("VCORR")
 
     u1 = hcorr | vcorr
     u2 = hcorr + vcorr
