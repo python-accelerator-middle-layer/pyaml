@@ -249,7 +249,7 @@ def test_arrays(install_test_package):
 )
 def test_serialized_magnets_arrays(sr_file):
     sr: Accelerator = Accelerator.load(sr_file, include_locations=False, ignore_external=True)
-    the_serie = sr.design.get_serialized_magnets("series")
+    the_serie = sr.design.serialized_magnets.get("series")
     strength = the_serie.strengths.get()
     assert len(strength) == 1
     print(strength)

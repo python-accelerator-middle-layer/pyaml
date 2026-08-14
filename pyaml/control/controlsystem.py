@@ -163,7 +163,7 @@ class ControlSystem(ElementHolder, metaclass=ABCMeta):
                     currents.append(current)
                     strengths.append(strength)
                 ms = e.attach(self, strengths, currents)
-                self.add_serialized_magnet(ms[0])
+                self.serialized_magnet.add(ms[0])
                 for m in ms[1:]:
                     self.magnet.add(m)
 

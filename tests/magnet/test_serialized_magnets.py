@@ -59,7 +59,7 @@ def test_magnet_modification(sr_file):
 
     print(sr.yellow_pages)
 
-    sm: SerializedMagnets = sr.design.get_serialized_magnet("mySeriesOfMagnets")
+    sm: SerializedMagnets = sr.design.serialized_magnet.get("mySeriesOfMagnets")
     element_names = sm._SerializedMagnets__elements
 
     lattice = sr.design.get_lattice()
@@ -110,11 +110,11 @@ def test_tune(sr_file):
     sr = Accelerator.load(sr_file, include_locations=False, ignore_external=True)
     sr.design.get_lattice().disable_6d()
 
-    m = sr.design.get_serialized_magnet("QF1A")
+    m = sr.design.serialized_magnet.get("QF1A")
     print(f"m.strength.get()={m.strength.get()}")
     assert len(m.get_magnets()) == m.get_nb_magnets()
 
-    quadForTuneDesign = sr.design.get_serialized_magnets("QForTune")
+    quadForTuneDesign = sr.design.serialized_magnets.get("QForTune")
     tune_monitor = sr.design.get_betatron_tune_monitor("BETATRON_TUNE")
     # Build tune response matrix
     tunemat = np.zeros((len(quadForTuneDesign), 2))
@@ -162,7 +162,7 @@ def test_tune(sr_file):
 )
 def test_get_device_names(sr_file):
     sr: Accelerator = Accelerator.load(sr_file, include_locations=False, ignore_external=True)
-    sm: SerializedMagnets = sr.design.get_serialized_magnet("QF1A")
+    sm: SerializedMagnets = sr.design.serialized_magnet.get("QF1A")
 
     device_names = sm.get_device_names()
 
@@ -192,7 +192,7 @@ def get_strengths_from_lattice(sr: Accelerator, sm: SerializedMagnets) -> list:
 )
 def test_strength_computation(sr_file):
     sr: Accelerator = Accelerator.load(sr_file, include_locations=False, ignore_external=True)
-    sm: SerializedMagnets = sr.design.get_serialized_magnet("QF1A")
+    sm: SerializedMagnets = sr.design.serialized_magnet.get("QF1A")
     assert sm.get_nb_magnets() == 31
     sm.strength.set(24.0)
     assert abs(sm.strength.get() - 24.0) < 1e-3
