@@ -31,14 +31,14 @@ def test_tune(install_test_package):
     assert "MagnetArray HCORR : duplicate name SH1A-C02-H @index 2" in str(exc.value)
 
     sr: Accelerator = Accelerator.load("tests/config/EBSTune.yaml", include_locations=True, validate=True)
-    m1 = sr.live.get_magnet("QF1E-C04")
-    m2 = sr.design.get_magnet("QF1A-C05")
+    m1 = sr.live.magnet.get("QF1E-C04")
+    m2 = sr.design.magnet.get("QF1A-C05")
     with pytest.raises(PyAMLException) as exc:
         ma = MagnetArray("Test", [m1, m2])
     assert "MagnetArray Test: All elements must be attached to the same instance" in str(exc.value)
 
     with pytest.raises(PyAMLException) as exc:
-        m2 = sr.design.get_magnet("QF1A-C05XX")
+        m2 = sr.design.magnet.get("QF1A-C05XX")
     assert "Magnet QF1A-C05XX not defined" in str(exc.value)
 
     with pytest.raises(PyAMLException) as exc:

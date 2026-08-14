@@ -114,7 +114,7 @@ class TuneResponseMatrix(MeasurementTool):
         """
         # Get devices
         self.check_peer()
-        quads = self._peer.get_magnets(self._cfg.quad_array_name)
+        quads = self._peer.magnets.get(self._cfg.quad_array_name)
         tm = self._peer.get_betatron_tune_monitor(self._cfg.betatron_tune_name)
 
         tunemat = np.zeros((len(quads), 2))

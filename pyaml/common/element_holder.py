@@ -23,6 +23,8 @@ from ..rf.rf_plant import RFPlant
 from ..rf.rf_transmitter import RFTransmitter
 from ..tuning_tools.chromaticity_monitor import ChomaticityMonitor
 from .element import Element
+from .magnet_holder import MagnetHolder
+from .magnets_holder import MagnetsHolder
 
 if TYPE_CHECKING:
     from ..accelerator import Accelerator
@@ -44,31 +46,35 @@ class ElementHolder(metaclass=ABCMeta):
 
     def __init__(self):
         # Device handle
-        self.__MAGNETS: dict[str, Magnet] = {}
-        self.__CFM_MAGNETS: dict[str, CombinedFunctionMagnet] = {}
-        self.__SERIALIZED_MAGNETS: dict[str, SerializedMagnets] = {}
-        self.__BPMS: dict[str, BPM] = {}
-        self.__RFPLANT: dict[str, RFPlant] = {}
-        self.__RFTRANSMITTER: dict[str, RFTransmitter] = {}
-        self.__DIAG: dict[str, Element] = {}
-        self.__TUNING_TOOLS: dict[str, Element] = {}
-        self.__ALL: dict[str, Element] = {}
+        self._MAGNETS: dict[str, Magnet] = {}
+        self._CFM_MAGNETS: dict[str, CombinedFunctionMagnet] = {}
+        self._SERIALIZED_MAGNETS: dict[str, SerializedMagnets] = {}
+        self._BPMS: dict[str, BPM] = {}
+        self._RFPLANT: dict[str, RFPlant] = {}
+        self._RFTRANSMITTER: dict[str, RFTransmitter] = {}
+        self._DIAG: dict[str, Element] = {}
+        self._TOOLS: dict[str, Element] = {}
+        self._ALL: dict[str, Element] = {}
 
         self.__by_class_elements: dict[type, dict] = {
-            Magnet: self.__MAGNETS,
-            CombinedFunctionMagnet: self.__CFM_MAGNETS,
-            SerializedMagnets: self.__SERIALIZED_MAGNETS,
-            BPM: self.__BPMS,
-            RFPlant: self.__RFPLANT,
-            RFTransmitter: self.__RFTRANSMITTER,
+            Magnet: self._MAGNETS,
+            CombinedFunctionMagnet: self._CFM_MAGNETS,
+            SerializedMagnets: self._SERIALIZED_MAGNETS,
+            BPM: self._BPMS,
+            RFPlant: self._RFPLANT,
+            RFTransmitter: self._RFTRANSMITTER,
         }
 
         # Array handle
-        self.__MAGNET_ARRAYS: dict = {}
-        self.__CFM_MAGNET_ARRAYS: dict = {}
-        self.__SERIALIZED_MAGNETS_ARRAYS: dict = {}
-        self.__BPM_ARRAYS: dict = {}
-        self.__ELEMENT_ARRAYS: dict = {}
+        self._MAGNET_ARRAYS: dict = {}
+        self._CFM_MAGNET_ARRAYS: dict = {}
+        self._SERIALIZED_MAGNETS_ARRAYS: dict = {}
+        self._BPM_ARRAYS: dict = {}
+        self._ELEMENT_ARRAYS: dict = {}
+
+        # Sub holders
+        self._magnet_holder = MagnetHolder(self)
+        self._magnets_holder = MagnetsHolder(self)
 
     @property
     def peer(self) -> "Accelerator":
@@ -76,6 +82,14 @@ class ElementHolder(metaclass=ABCMeta):
         Returns the peer accelerator of this holder
         """
         return self._peer
+
+    @property
+    def magnet(self) -> MagnetHolder:
+        return self._magnet_holder
+
+    @property
+    def magnets(self) -> MagnetsHolder:
+        return self._magnets_holder
 
     def post_init(self):
         """
@@ -106,15 +120,15 @@ class ElementHolder(metaclass=ABCMeta):
     def find_elements(self, filter: str) -> list[str]:
         if filter.startswith("re:"):
             pattern = re.compile(rf"{filter[3:]}")
-            elements = [k for k in self.__ALL.keys() if pattern.fullmatch(k)]
+            elements = [k for k in self._ALL.keys() if pattern.fullmatch(k)]
         elif "*" in filter or "?" in filter:
-            elements = [k for k in self.__ALL.keys() if fnmatch.fnmatch(k, filter)]
+            elements = [k for k in self._ALL.keys() if fnmatch.fnmatch(k, filter)]
         else:
             elements = [filter]
 
         return elements
 
-    def fill_array(
+    def _fill_array(
         self,
         array_name: str,
         element_names: list[str],
@@ -146,163 +160,146 @@ class ElementHolder(metaclass=ABCMeta):
             a.append(m)
         ARR[array_name] = constructor(array_name, a)
 
-    def __add(self, array, element: Element):
-        if element.get_name() in self.__ALL:  # Ensure name unicity
+    def _add(self, array, element: Element):
+        if element.get_name() in self._ALL:  # Ensure name unicity
             raise PyAMLException(f"Duplicate element {element.__class__.__name__} name {{element.get_name()}}") from None
         array[element.get_name()] = element
-        self.__ALL[element.get_name()] = element
+        self._ALL[element.get_name()] = element
 
-    def __get(self, what, name, array) -> Element:
+    def _get(self, what, name, array) -> Element:
         if name not in array:
             raise PyAMLException(f"{what} {name} not defined")
         return array[name]
 
     # Generic elements
     def fill_element_array(self, arrayName: str, elementNames: list[str]):
-        self.fill_array(
+        self._fill_array(
             arrayName,
             elementNames,
             self.get_element,
             ElementArray,
-            self.__ELEMENT_ARRAYS,
+            self._ELEMENT_ARRAYS,
         )
 
     def add_element(self, element: Element):
-        self.__ALL[element.get_name()] = element
+        self._ALL[element.get_name()] = element
 
     def get_element(self, name: str) -> Element:
-        return self.__get("Element", name, self.__ALL)
+        return self._get("Element", name, self._ALL)
 
     def get_elements(self, name: str) -> ElementArray:
-        return self.__get("Element array", name, self.__ELEMENT_ARRAYS)
+        return self._get("Element array", name, self._ELEMENT_ARRAYS)
 
     def get_all_elements(self) -> list[Element]:
-        return [value for key, value in self.__ALL.items()]
-
-    # Magnets
-
-    def fill_magnet_array(self, arrayName: str, elementNames: list[str]):
-        self.fill_array(arrayName, elementNames, self.get_magnet, MagnetArray, self.__MAGNET_ARRAYS)
-
-    def get_magnet(self, name: str) -> Magnet:
-        return self.__get("Magnet", name, self.__MAGNETS)
-
-    def add_magnet(self, m: Magnet):
-        self.__add(self.__MAGNETS, m)
-
-    def get_magnets(self, name: str) -> MagnetArray:
-        return self.__get("Magnet array", name, self.__MAGNET_ARRAYS)
-
-    def get_all_magnets(self) -> list[Magnet]:
-        return [value for key, value in self.__MAGNETS.items()]
+        return [value for key, value in self._ALL.items()]
 
     # Combined Function Magnets
 
     def fill_cfm_magnet_array(self, arrayName: str, elementNames: list[str]):
-        self.fill_array(
+        self._fill_array(
             arrayName,
             elementNames,
             self.get_cfm_magnet,
             CombinedFunctionMagnetArray,
-            self.__CFM_MAGNET_ARRAYS,
+            self._CFM_MAGNET_ARRAYS,
         )
 
     def get_cfm_magnet(self, name: str) -> Magnet:
-        return self.__get("CombinedFunctionMagnet", name, self.__CFM_MAGNETS)
+        return self._get("CombinedFunctionMagnet", name, self._CFM_MAGNETS)
 
     def add_cfm_magnet(self, m: Magnet):
-        self.__add(self.__CFM_MAGNETS, m)
+        self._add(self._CFM_MAGNETS, m)
 
     def get_cfm_magnets(self, name: str) -> CombinedFunctionMagnetArray:
-        return self.__get("CombinedFunctionMagnet array", name, self.__CFM_MAGNET_ARRAYS)
+        return self._get("CombinedFunctionMagnet array", name, self._CFM_MAGNET_ARRAYS)
 
     def get_all_cfm_magnets(self) -> list[CombinedFunctionMagnet]:
-        return [value for key, value in self.__CFM_MAGNETS.items()]
+        return [value for key, value in self._CFM_MAGNETS.items()]
 
     # Serialized magnets
 
     def fill_serialized_magnet_array(self, arrayName: str, elementNames: list[str]):
-        self.fill_array(
+        self._fill_array(
             arrayName,
             elementNames,
             self.get_serialized_magnet,
             SerializedMagnetsArray,
-            self.__SERIALIZED_MAGNETS_ARRAYS,
+            self._SERIALIZED_MAGNETS_ARRAYS,
         )
 
     def get_serialized_magnet(self, name: str) -> Magnet:
-        return self.__get("SerializedMagnets", name, self.__SERIALIZED_MAGNETS)
+        return self._get("SerializedMagnets", name, self._SERIALIZED_MAGNETS)
 
     def add_serialized_magnet(self, m: Magnet):
-        self.__add(self.__SERIALIZED_MAGNETS, m)
+        self._add(self._SERIALIZED_MAGNETS, m)
 
     def get_serialized_magnets(self, name: str) -> SerializedMagnetsArray:
-        return self.__get("SerializedMagnets array", name, self.__SERIALIZED_MAGNETS_ARRAYS)
+        return self._get("SerializedMagnets array", name, self._SERIALIZED_MAGNETS_ARRAYS)
 
     def get_all_serialized_magnets(self) -> list[SerializedMagnets]:
-        return [value for key, value in self.__SERIALIZED_MAGNETS.items()]
+        return [value for key, value in self._SERIALIZED_MAGNETS.items()]
 
     # BPMs
 
     def fill_bpm_array(self, arrayName: str, elementNames: list[str]):
-        self.fill_array(
+        self._fill_array(
             arrayName,
             elementNames,
             self.get_bpm,
             BPMArray,
-            self.__BPM_ARRAYS,
+            self._BPM_ARRAYS,
         )
 
     def get_bpm(self, name: str) -> BPM:
-        return self.__get("BPM", name, self.__BPMS)
+        return self._get("BPM", name, self._BPMS)
 
     def add_bpm(self, bpm: BPM):
-        self.__add(self.__BPMS, bpm)
+        self._add(self._BPMS, bpm)
 
     def get_bpms(self, name: str) -> BPMArray:
-        return self.__get("BPM array", name, self.__BPM_ARRAYS)
+        return self._get("BPM array", name, self._BPM_ARRAYS)
 
     def get_all_bpms(self) -> list[BPM]:
-        return [value for key, value in self.__BPMS.items()]
+        return [value for key, value in self._BPMS.items()]
 
     # RF
 
     def get_rf_plant(self, name: str) -> RFPlant:
-        return self.__get("RFPlant", name, self.__RFPLANT)
+        return self._get("RFPlant", name, self._RFPLANT)
 
     def add_rf_plant(self, rf: RFPlant):
-        self.__add(self.__RFPLANT, rf)
+        self._add(self._RFPLANT, rf)
 
     def add_rf_transmitter(self, rf: RFTransmitter):
-        self.__add(self.__RFTRANSMITTER, rf)
+        self._add(self._RFTRANSMITTER, rf)
 
     def get_rf_trasnmitter(self, name: str) -> RFTransmitter:
-        return self.__get("RFTransmitter", name, self.__RFTRANSMITTER)
+        return self._get("RFTransmitter", name, self._RFTRANSMITTER)
 
     # Tune monitor
 
     def get_betatron_tune_monitor(self, name: str) -> BetatronTuneMonitor:
-        return self.__get("Diagnostic", name, self.__DIAG)
+        return self._get("Diagnostic", name, self._DIAG)
 
     def add_betatron_tune_monitor(self, tune_monitor: Element):
-        self.__add(self.__DIAG, tune_monitor)
+        self._add(self._DIAG, tune_monitor)
 
     # Tuning/Measurement tools
 
     def add_tool(self, tool: Element):
-        self.__add(self.__TUNING_TOOLS, tool)
+        self._add(self._TOOLS, tool)
 
     # ---- Chromaticity -------------------------------------------------
 
     def get_chromaticity_monitor(self, name: str) -> ChomaticityMonitor:
-        obj = self.__get("Chomaticity monitor", name, self.__TUNING_TOOLS)
+        obj = self._get("Chomaticity monitor", name, self._TOOLS)
         return obj
 
     def get_chromaticity_tuning(self, name: str) -> "Chromaticity":
-        return self.__get("Chromaticity tool", name, self.__TUNING_TOOLS)
+        return self._get("Chromaticity tool", name, self._TOOLS)
 
     def get_crm_tuning(self, name: str) -> "ChromaticityResponseMatrix":
-        return self.__get("ChromaticityResponseMatrix tool", name, self.__TUNING_TOOLS)
+        return self._get("ChromaticityResponseMatrix tool", name, self._TOOLS)
 
     @property
     def chromaticity(self) -> "Chromaticity":
@@ -315,14 +312,14 @@ class ElementHolder(metaclass=ABCMeta):
     # ---- Tune ---------------------------------------------------------
 
     def get_tune_tuning(self, name: str) -> "Tune":
-        return self.__get("Tune tuning tool", name, self.__TUNING_TOOLS)
+        return self._get("Tune tuning tool", name, self._TOOLS)
 
     @property
     def tune(self) -> "Tune":
         return self.get_tune_tuning("DEFAULT_TUNE_CORRECTION")
 
     def get_trm_tuning(self, name: str) -> "TuneResponseMatrix":
-        return self.__get("TuneResponseMatrix tool", name, self.__TUNING_TOOLS)
+        return self._get("TuneResponseMatrix tool", name, self._TOOLS)
 
     @property
     def trm(self) -> "TuneResponseMatrix":
@@ -331,14 +328,14 @@ class ElementHolder(metaclass=ABCMeta):
     # ---- Orbit --------------------------------------------------------
 
     def get_orbit_tuning(self, name: str) -> "Orbit":
-        return self.__get("Orbit tuning tool", name, self.__TUNING_TOOLS)
+        return self._get("Orbit tuning tool", name, self._TOOLS)
 
     @property
     def orbit(self) -> "Orbit":
         return self.get_orbit_tuning("DEFAULT_ORBIT_CORRECTION")
 
     def get_orm_tuning(self, name: str) -> "OrbitResponseMatrix":
-        return self.__get("OrbitResponseMatrix tool", name, self.__TUNING_TOOLS)
+        return self._get("OrbitResponseMatrix tool", name, self._TOOLS)
 
     @property
     def orm(self) -> "OrbitResponseMatrix":
@@ -347,12 +344,12 @@ class ElementHolder(metaclass=ABCMeta):
     # ---- BBA --------------------------------------------------------
 
     def get_bba(self, name: str) -> "BBA":
-        return self.__get("BBA tool", name, self.__TUNING_TOOLS)
+        return self._get("BBA tool", name, self._TOOLS)
 
     # ---- Dispersive orbit --------------------------------------------
 
     def get_dispersion_tuning(self, name: str) -> "Dispersion":
-        return self.__get("Dispersion tool", name, self.__TUNING_TOOLS)
+        return self._get("Dispersion tool", name, self._TOOLS)
 
     @property
     def dispersion(self) -> "Dispersion":
@@ -365,16 +362,16 @@ class ElementHolder(metaclass=ABCMeta):
         The method returns the array object referenced by 'name', regardless of its
         concrete type.
         """
-        if name in self.__BPM_ARRAYS:
-            return self.__BPM_ARRAYS[name]
-        if name in self.__MAGNET_ARRAYS:
-            return self.__MAGNET_ARRAYS[name]
-        if name in self.__CFM_MAGNET_ARRAYS:
-            return self.__CFM_MAGNET_ARRAYS[name]
-        if name in self.__SERIALIZED_MAGNETS_ARRAYS:
-            return self.__SERIALIZED_MAGNETS_ARRAYS[name]
-        if name in self.__ELEMENT_ARRAYS:
-            return self.__ELEMENT_ARRAYS[name]
+        if name in self._BPM_ARRAYS:
+            return self._BPM_ARRAYS[name]
+        if name in self._MAGNET_ARRAYS:
+            return self._MAGNET_ARRAYS[name]
+        if name in self._CFM_MAGNET_ARRAYS:
+            return self._CFM_MAGNET_ARRAYS[name]
+        if name in self._SERIALIZED_MAGNETS_ARRAYS:
+            return self._SERIALIZED_MAGNETS_ARRAYS[name]
+        if name in self._ELEMENT_ARRAYS:
+            return self._ELEMENT_ARRAYS[name]
 
         raise PyAMLException(f"Array {name} not defined")
 
@@ -382,41 +379,41 @@ class ElementHolder(metaclass=ABCMeta):
         """
         Generic tuning tool resolver used by YellowPages.
         """
-        if name not in self.__TUNING_TOOLS:
+        if name not in self._TOOLS:
             raise PyAMLException(f"Tool {name} not defined")
-        return self.__TUNING_TOOLS[name]
+        return self._TOOLS[name]
 
     def _get_diagnostic(self, name: str):
         """
         Generic diagnostic resolver used by YellowPages.
         """
-        if name not in self.__DIAG:
+        if name not in self._DIAG:
             raise PyAMLException(f"Diagnostic {name} not defined")
-        return self.__DIAG[name]
+        return self._DIAG[name]
 
     def _list_arrays(self) -> list[str]:
         """
         Return all array identifiers available in this holder.
         """
         arrays: list[str] = []
-        arrays.extend(self.__BPM_ARRAYS.keys())
-        arrays.extend(self.__MAGNET_ARRAYS.keys())
-        arrays.extend(self.__CFM_MAGNET_ARRAYS.keys())
-        arrays.extend(self.__SERIALIZED_MAGNETS_ARRAYS.keys())
-        arrays.extend(self.__ELEMENT_ARRAYS.keys())
+        arrays.extend(self._BPM_ARRAYS.keys())
+        arrays.extend(self._MAGNET_ARRAYS.keys())
+        arrays.extend(self._CFM_MAGNET_ARRAYS.keys())
+        arrays.extend(self._SERIALIZED_MAGNETS_ARRAYS.keys())
+        arrays.extend(self._ELEMENT_ARRAYS.keys())
         return arrays
 
     def _list_tools(self) -> list[str]:
         """
         Return all tuning tool identifiers available in this holder.
         """
-        return list(self.__TUNING_TOOLS.keys())
+        return list(self._TOOLS.keys())
 
     def _list_diagnostics(self) -> list[str]:
         """
         Return all diagnostic identifiers available in this holder.
         """
-        return list(self.__DIAG.keys())
+        return list(self._DIAG.keys())
 
     def _set_energy(self, E: float):
         """

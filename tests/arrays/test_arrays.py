@@ -23,8 +23,8 @@ def test_arrays(install_test_package):
 
     # Test on model
 
-    sr.design.get_magnet("SH1A-C01-H").strength.set(0.000010)
-    sr.design.get_magnet("SH1A-C01-V").strength.set(0.000015)
+    sr.design.magnet.get("SH1A-C01-H").strength.set(0.000010)
+    sr.design.magnet.get("SH1A-C01-V").strength.set(0.000015)
 
     o, _ = sr.design.get_lattice().find_orbit()
     assert np.abs(o[0] - 9.90267693e-05) < 1e-10
@@ -32,8 +32,8 @@ def test_arrays(install_test_package):
     assert np.abs(o[2] + 1.59928207e-06) < 1e-10
     assert np.abs(o[3] + 1.74771216e-05) < 1e-10
 
-    sr.design.get_magnet("SH1A-C02-H").strength.set(-0.000008)
-    sr.design.get_magnet("SH1A-C02-V").strength.set(-0.000017)
+    sr.design.magnet.get("SH1A-C02-H").strength.set(-0.000008)
+    sr.design.magnet.get("SH1A-C02-V").strength.set(-0.000017)
 
     o, _ = sr.design.get_lattice().find_orbit()
     assert np.abs(o[0] - 1.60555804e-04) < 1e-10
@@ -41,8 +41,8 @@ def test_arrays(install_test_package):
     assert np.abs(o[2] - 3.62695844e-05) < 1e-10
     assert np.abs(o[3] + 5.97692290e-06) < 1e-10
 
-    sr.design.get_magnets("HCORR").strengths.set([0.000010, -0.000008])
-    sr.design.get_magnets("VCORR").strengths.set([0.000015, -0.000017])
+    sr.design.magnets.get("HCORR").strengths.set([0.000010, -0.000008])
+    sr.design.magnets.get("VCORR").strengths.set([0.000015, -0.000017])
 
     o, _ = sr.design.get_lattice().find_orbit()
     assert np.abs(o[0] - 1.60555804e-04) < 1e-10
@@ -53,7 +53,7 @@ def test_arrays(install_test_package):
     p0 = o[0]
 
     # Test kick angle (small angle, no change from above)
-    sr.design.get_magnet("SH1A-C02-H").angle.set(-0.000008)
+    sr.design.magnet.get("SH1A-C02-H").angle.set(-0.000008)
     o, _ = sr.design.get_lattice().find_orbit()
     assert np.abs(o[0] - 1.60555804e-04) < 1e-10
     assert np.abs(o[1] + 2.37234366e-06) < 1e-10
@@ -67,11 +67,11 @@ def test_arrays(install_test_package):
     # Test on control system
 
     # Assert that the virtual magnet share the same model
-    assert sr.live.get_magnet("SH1A-C01-H").model == sr.live.get_magnet("SH1A-C01-V").model
-    assert sr.live.get_magnet("SH1A-C02-H").model == sr.live.get_magnet("SH1A-C02-V").model
+    assert sr.live.magnet.get("SH1A-C01-H").model == sr.live.magnet.get("SH1A-C01-V").model
+    assert sr.live.magnet.get("SH1A-C02-H").model == sr.live.magnet.get("SH1A-C02-V").model
 
     # Using aggregators
-    sr.live.get_magnets("HCORR").strengths.set([0.000010, -0.000008])
+    sr.live.magnets.get("HCORR").strengths.set([0.000010, -0.000008])
     ps1 = sr.live.get_cfm_magnet("SH1A-C01").hardwares.get()
     ps2 = sr.live.get_cfm_magnet("SH1A-C02").hardwares.get()
     assert np.abs(ps1[0] - 0.02956737880874648) < 1e-10
@@ -80,7 +80,7 @@ def test_arrays(install_test_package):
     assert np.abs(ps2[0] + 0.02365390304699716) < 1e-10
     assert np.abs(ps2[1] - 0) < 1e-10
     assert np.abs(ps2[2] - 0) < 1e-10
-    sr.live.get_magnets("VCORR").strengths.set([0.000015, -0.000017])
+    sr.live.magnets.get("VCORR").strengths.set([0.000015, -0.000017])
     ps1 = sr.live.get_cfm_magnet("SH1A-C01").hardwares.get()
     ps2 = sr.live.get_cfm_magnet("SH1A-C02").hardwares.get()
     assert np.abs(ps1[0] - 0.02956737880874648) < 1e-10
@@ -90,7 +90,7 @@ def test_arrays(install_test_package):
     assert np.abs(ps2[1] - 0.06600571179092833) < 1e-10
     assert np.abs(ps2[2] + 0.0634854407797858) < 1e-10
 
-    strHV = sr.live.get_magnets("HVCORR").strengths.get()
+    strHV = sr.live.magnets.get("HVCORR").strengths.get()
     assert np.abs(strHV[0] - 0.000010) < 1e-10
     assert np.abs(strHV[1] + 0.000008) < 1e-10
     assert np.abs(strHV[2] - 0.000015) < 1e-10
@@ -99,7 +99,7 @@ def test_arrays(install_test_package):
     # Reset to 0
     ma = importlib.import_module("tango.pyaml.multi_attribute")
     ma.LAST_NB_WRITTEN = 0  # Total number of setpoints done by multi_attribute
-    sr.live.get_magnets("HVCORR").strengths.set(0.0)
+    sr.live.magnets.get("HVCORR").strengths.set(0.0)
     assert ma.LAST_NB_WRITTEN == 6  # 6 power supply setpoints are needed
     ps1 = sr.live.get_cfm_magnet("SH1A-C01").hardwares.get()
     ps2 = sr.live.get_cfm_magnet("SH1A-C02").hardwares.get()
@@ -112,7 +112,7 @@ def test_arrays(install_test_package):
 
     # Check that the behavior is the same without aggregator
     mags = []
-    for m in sr.live.get_magnets("HVCORR"):
+    for m in sr.live.magnets.get("HVCORR"):
         mags.append(m)
     array = MagnetArray("HVCOOR_noagg", mags, use_aggregator=False)
     array.strengths.set([0.000010, -0.000008, 0.000015, -0.000017])
@@ -171,7 +171,7 @@ def test_arrays(install_test_package):
     assert len(allElts) == 11
 
     # Create an array that contains all elements
-    allMags = MagnetArray("AllMagnets", sr.design.get_all_magnets())
+    allMags = MagnetArray("AllMagnets", sr.design.magnets.get())
     assert len(allMags) == 7
 
     # Create an array that contains all BPM
@@ -227,7 +227,7 @@ def test_arrays(install_test_package):
     # Empty arrays
     emptyMag = Magnet(name="EmptyMag", elements=[])
     emptyMag.fill_array(sr.design)  # Attach the array
-    v = sr.design.get_magnets("EmptyMag").strengths.get()  # Ensure good attach
+    v = sr.design.magnets.get("EmptyMag").strengths.get()  # Ensure good attach
     assert np.shape(v) == (0,)
 
     emptyBPM = BPM(name="emptyBPM", elements=[])

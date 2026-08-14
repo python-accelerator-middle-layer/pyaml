@@ -122,9 +122,9 @@ class BBA2(MeasurementTool):
         design = self.peer.peer.design
 
         # handles
-        quad = design.get_magnet(quadname)
-        sth = design.get_magnet(steererhname)
-        stv = design.get_magnet(steerervname)
+        quad = design.magnet.get(quadname)
+        sth = design.magnet.get(steererhname)
+        stv = design.magnet.get(steerervname)
         orbit = design.get_bpms(bpmname).positions
         tune_design = design.get_tune_tuning(tunename)
         tune_live = self._peer.get_tune_tuning(tunename)
@@ -337,9 +337,9 @@ class BBA2(MeasurementTool):
 
         # Device handles
         self.check_peer()
-        self._h_steer = self.peer.get_magnet(self._cfg.hcorr_name)
-        self._v_steer = self.peer.get_magnet(self._cfg.vcorr_name)
-        self._quad = self.peer.get_magnet(self._cfg.quad_name)
+        self._h_steer = self.peer.magnet.get(self._cfg.hcorr_name)
+        self._v_steer = self.peer.magnet.get(self._cfg.vcorr_name)
+        self._quad = self.peer.magnet.get(self._cfg.quad_name)
         self._bpms = self.peer.get_bpms(self._cfg.bpm_array_name)
         self._bpmi = self._bpms.names().index(self._cfg.bpm_name)
 

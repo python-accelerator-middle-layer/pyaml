@@ -35,4 +35,4 @@ class Magnet(ArrayConfig, DynamicValidation):
         holder : ElementHolder
             The element holder to populate with magnet array
         """
-        holder.fill_magnet_array(self._name, self._elements)
+        holder.magnets.add(self._name, self._elements)

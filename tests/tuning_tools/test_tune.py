@@ -8,12 +8,12 @@ def test_tune():
     sr: Accelerator = Accelerator.load("tests/config/EBSTune.yaml", ignore_external=False)
 
     assert sr.get_description() == "Accelerator configuration for EBS storage ring"
-    assert sr.design.get_magnet("QF1E-C04").get_description() == "QF1E-C04 quadrupole"
+    assert sr.design.magnet.get("QF1E-C04").get_description() == "QF1E-C04 quadrupole"
     assert sr.design.get_description() == "EBS lattice"
 
     sr.design.get_lattice().disable_6d()
 
-    quadForTuneDesign = sr.design.get_magnets("QForTune")
+    quadForTuneDesign = sr.design.magnets.get("QForTune")
     tune_monitor = sr.design.get_betatron_tune_monitor("BETATRON_TUNE")
     # Build tune response matrix
     tune = tune_monitor.tune.get()
@@ -47,7 +47,7 @@ def test_tune():
 
     if False:
         # Correct the tune on live (need a Virutal Accelerator)
-        quadForTuneLive = sr.live.get_magnets("QForTune")
+        quadForTuneLive = sr.live.magnets.get("QForTune")
         strs = quadForTuneLive.strengths.get()
         strs += np.matmul(correctionmat, [0.1, 0.05])  # Ask for correction [dqx,dqy]
         quadForTuneLive.strengths.set(strs)
