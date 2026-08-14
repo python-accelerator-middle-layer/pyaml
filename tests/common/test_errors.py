@@ -14,6 +14,7 @@ from pyaml.configuration import ConfigurationManager
 def test_tune(install_test_package):
     with pytest.raises(PyAMLConfigException) as exc:
         ml: Accelerator = Accelerator.load("tests/config/bad_conf_duplicate_1.yaml", include_locations=True, validate=True)
+    print(exc.value)
     assert "MagnetArray HCORR : duplicate name SH1A-C02-H @index 2" in str(exc.value)
 
     with pytest.raises(PyAMLConfigException) as exc:
