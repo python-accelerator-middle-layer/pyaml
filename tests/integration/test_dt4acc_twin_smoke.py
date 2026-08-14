@@ -86,7 +86,7 @@ def test_dt4acc_twin_accelerator_instantiates_and_reads_live_values(root_folder:
     assert np.isfinite(reference_frequency), f"RF reference frequency is not finite: {reference_frequency!r}"
     assert reference_frequency > 0.0, f"RF reference frequency should be positive, got {reference_frequency!r}"
 
-    accelerator.live.get_magnet(QF_001)
+    accelerator.live.magnet.get(QF_001)
     magnetic_strength = _readback_value(accelerator.live.get_device_access(QF_001_STRENGTH))
 
     assert np.isfinite(magnetic_strength), f"{QF_001} magnetic strength is not finite: {magnetic_strength!r}"
@@ -100,7 +100,7 @@ def test_dt4acc_twin_accelerator_instantiates_and_reads_live_values(root_folder:
 )
 def test_dt4acc_twin_reads_all_declared_magnetic_strengths(root_folder: Path, config_files: dict[str, str]):
     accelerator = _build_accelerator(root_folder, config_files)
-    magnets = [magnet for magnet in accelerator.live.get_all_magnets() if magnet.get_model_name() == magnet.get_name()]
+    magnets = [magnet for magnet in accelerator.live.magnets.get() if magnet.get_model_name() == magnet.get_name()]
     combined_function_magnets = accelerator.live.get_all_cfm_magnets()
 
     assert magnets or combined_function_magnets
