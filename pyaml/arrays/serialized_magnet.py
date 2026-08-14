@@ -1,17 +1,13 @@
 from ..common.element_holder import ElementHolder
-from .array import ArrayConfig, ArrayConfigModel
+from ..validation import DynamicValidation, register_schema
+from .array import ArrayConfig
 
 # Define the main class name for this module
 PYAMLCLASS = "SerializedMagnets"
 
 
-class ConfigModel(ArrayConfigModel):
-    """Configuration model for Serialized Magnets array."""
-
-    ...
-
-
-class SerializedMagnets(ArrayConfig):
+@register_schema
+class SerializedMagnets(ArrayConfig, DynamicValidation):
     """
     Serialized magnets array configuration
 
@@ -28,8 +24,8 @@ class SerializedMagnets(ArrayConfig):
                    )
     """
 
-    def __init__(self, cfg: ArrayConfigModel):
-        super().__init__(cfg)
+    def __init__(self, name: str, elements: list[str]):
+        super().__init__(name, elements)
 
     def fill_array(self, holder: ElementHolder):
         """
@@ -40,4 +36,4 @@ class SerializedMagnets(ArrayConfig):
         holder : ElementHolder
             The element holder to populate with serialized magnet array
         """
-        holder.fill_serialized_magnet_array(self._cfg.name, self._cfg.elements)
+        holder.serialized_magnets.add(self._name, self._elements)

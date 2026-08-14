@@ -3,7 +3,7 @@ from pydantic import BaseModel, ConfigDict
 from scipy.interpolate import make_smoothing_spline
 
 from ..common.element import __pyaml_repr__
-from ..control.deviceaccess import DeviceAccess
+from ..validation import DynamicValidation, register_schema
 from .curve import Curve
 from .model import MagnetModel
 
@@ -11,60 +11,67 @@ from .model import MagnetModel
 PYAMLCLASS = "SplineMagnetModel"
 
 
-class ConfigModel(BaseModel):
+@register_schema
+class SplineMagnetModel(MagnetModel, DynamicValidation):
     """
-    Configuration model for spline magnet model
+    Magnet model that converts between strength and hardware current using
+    spline interpolation.
+
+    The model represents a single-function magnet and builds two smoothing
+    splines from the supplied excitation curve:
+
+    - a forward spline for converting hardware current to magnet strength
+    - an inverse spline for converting magnet strength to hardware current
+
+    The input curve is first scaled by ``calibration_factor`` and ``crosstalk``
+    and shifted by ``calibration_offset`` before the splines are created.
 
     Parameters
     ----------
     curve : Curve
-        Curve object used for interpolation
-    powerconverter : DeviceAccess, optional
-        Power converter device to apply current
+        Excitation curve used for interpolation.
+    powerconverter : str | None, optional
+        Name of the associated power converter device.
     calibration_factor : float, optional
-        Correction factor applied to the curve. Default: 1.0
+        Multiplicative correction applied to the curve. Default is ``1.0``.
     calibration_offset : float, optional
-        Correction offset applied to the curve. Default: 0.0
+        Additive correction applied to the curve. Default is ``0.0``.
     crosstalk : float, optional
-        Crosstalk factor. Default: 1.0
-    unit : str
-        Unit of the strength (i.e. 1/m or m-1)
-    hardware_unit : str
-        Hardware units (i.e. 'A' , 'V')
+        Crosstalk factor applied to the curve. Default is ``1.0``.
+    unit : str | None, optional
+        Strength unit, such as ``m-1`` or ``m-2``.
+    hardware_unit : str | None, optional
+        Hardware unit, such as ``A`` or ``V``.
     alpha : float, optional
-        Regularization parameter (alpha >= 0). alpha = 0 means the interpolation
-        passes through all the points of the curve. Default: 0.0
+        Smoothing parameter passed to :func:`scipy.interpolate.make_smoothing_spline`.
+        ``alpha = 0`` gives exact interpolation through the data points.
+
+    Notes
+    -----
+    The magnet rigidity ``brho`` must be set with :meth:`set_magnet_rigidity`
+    before using the conversion methods.
     """
 
-    model_config = ConfigDict(arbitrary_types_allowed=True, extra="forbid")
-
-    curve: Curve
-    powerconverter: str | None
-    calibration_factor: float = 1.0
-    calibration_offset: float = 0.0
-    crosstalk: float = 1.0
-    unit: str
-    hardware_unit: str
-    alpha: float = 0.0
-
-
-class SplineMagnetModel(MagnetModel):
-    """
-    Class that handle manget current/strength conversion using
-    spline interpolation for a single function magnet
-    """
-
-    def __init__(self, cfg: ConfigModel):
-        self._cfg = cfg
-        self.__curve = cfg.curve.get_curve()
-        self.__curve[:, 1] = self.__curve[:, 1] * cfg.calibration_factor * cfg.crosstalk + cfg.calibration_offset
+    def __init__(
+        self,
+        curve: Curve,
+        powerconverter: str | None = None,
+        calibration_factor: float = 1.0,
+        calibration_offset: float = 0.0,
+        crosstalk: float = 1.0,
+        unit: str | None = None,
+        hardware_unit: str | None = None,
+        alpha: float = 0.0,
+    ):
+        self.__curve = curve.get_curve()
+        self.__curve[:, 1] = self.__curve[:, 1] * calibration_factor * crosstalk + calibration_offset
         rcurve = Curve.inverse(self.__curve)
-        self.__strength_unit = cfg.unit
-        self.__hardware_unit = cfg.hardware_unit
+        self.__strength_unit = unit
+        self.__hardware_unit = hardware_unit
         self.__brho = np.nan
-        self.__ps = cfg.powerconverter
-        self.__spl = make_smoothing_spline(self.__curve[:, 0], self.__curve[:, 1], lam=cfg.alpha)
-        self.__rspl = make_smoothing_spline(rcurve[:, 0], rcurve[:, 1], lam=cfg.alpha)
+        self.__ps = powerconverter
+        self.__spl = make_smoothing_spline(self.__curve[:, 0], self.__curve[:, 1], lam=alpha)
+        self.__rspl = make_smoothing_spline(rcurve[:, 0], rcurve[:, 1], lam=alpha)
 
     def compute_hardware_values(self, strengths: np.array) -> np.array:
         _current = self.__rspl(strengths[0] * self.__brho)

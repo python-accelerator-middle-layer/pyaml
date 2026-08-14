@@ -61,6 +61,32 @@ def generate_class_path(source: type) -> str:
     return f"{source.__module__}.{source.__name__}"
 
 
+def _extract_source_bases(source: type) -> list[type]:
+    """
+    Extract relevant base classes from a type's method resolution order.
+
+    Parameters
+    ----------
+    source : type
+        Class whose non-framework base classes should be collected.
+
+    Returns
+    -------
+    list[type]
+        List of base classes from the class hierarchy, excluding
+        ``object``, :class:`pydantic.BaseModel`, and
+        :class:`ConfigurationSchema`.
+    """
+    bases: list[type] = []
+
+    for base in source.__mro__[1:]:
+        if base in (object, BaseModel, ConfigurationSchema):
+            continue
+        bases.append(base)
+
+    return bases
+
+
 def generate_configuration_schema(source: type) -> type[ConfigurationSchema]:
     """
     Generate a configuration schema for a class or Pydantic model.
@@ -78,7 +104,7 @@ def generate_configuration_schema(source: type) -> type[ConfigurationSchema]:
         raise TypeError("Source must be a class.")
 
     registry = SchemaRegistry()
-    class_path = f"{source.__module__}.{source.__name__}"
+    class_path = generate_class_path(source)
 
     existing = registry.get(class_path)
     if existing is not None:
@@ -98,6 +124,25 @@ def generate_configuration_schema(source: type) -> type[ConfigurationSchema]:
 
     logger.debug("Register schema for %s.", class_path)
     registry.register(class_path, schema)
+
+    # Keep information about the inheritance relations
+    bases = _extract_source_bases(source)
+    base_schemas: list[type[ConfigurationSchema]] = []
+
+    for base in bases:
+        base_class_path = generate_class_path(base)
+        base_schema = registry.get(base_class_path)
+
+        if base_schema is None:
+            base_schema = generate_configuration_schema(base)
+            logger.debug("Generate and register schema for base class %s.", base)
+
+        base_schemas.append(base_schema)
+
+    # Register virtual subclass links
+    for base_schema in base_schemas:
+        logger.debug("Register virtual subclass %s under %s.", schema, base_schema)
+        base_schema.register_virtual_subclass(schema)
 
     return schema
 

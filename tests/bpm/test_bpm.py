@@ -7,8 +7,8 @@ from pyaml.accelerator import Accelerator
 def test_simulator_bpm_tilt():
     sr: Accelerator = Accelerator.load("tests/config/bpms.yaml", ignore_external=True)
     sr.design.get_lattice().disable_6d()
-    sr.design.get_magnet("SH1A-C01-H").strength.set(10e-6)  # Add orbit
-    sr.design.get_magnet("SH1A-C01-V").strength.set(10e-6)  # Add orbit
+    sr.design.magnet.get("SH1A-C01-H").strength.set(10e-6)  # Add orbit
+    sr.design.magnet.get("SH1A-C01-V").strength.set(10e-6)  # Add orbit
     bpm = sr.design.get_bpm("BPM_C01-01")
     assert np.allclose(bpm.positions.get(), np.array([5.90809968e-05, 2.24832853e-05]))
     assert bpm.tilt.get() == 0
@@ -62,8 +62,8 @@ def test_simulator_bpm_position_with_bad_corrector_strength():
     bpm_simple = sr.design.get_bpm("BPM_C01-02")
     bpm3 = sr.design.get_bpm("BPM_C01-03")
 
-    sr.design.get_magnet("SH1A-C01-H").strength.set(-1e-6)
-    sr.design.get_magnet("SH1A-C01-V").strength.set(-1e-6)
+    sr.design.magnet.get("SH1A-C01-H").strength.set(-1e-6)
+    sr.design.magnet.get("SH1A-C01-V").strength.set(-1e-6)
     for bpm in [bpm1, bpm_simple, bpm3]:
         assert bpm.positions.get()[0] != 0.0
         assert bpm.positions.get()[1] != 0.0

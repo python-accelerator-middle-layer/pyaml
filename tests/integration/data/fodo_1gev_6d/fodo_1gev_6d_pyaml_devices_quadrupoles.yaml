@@ -1,0 +1,193 @@
+devices:
+- type: pyaml.magnet.quadrupole
+  name: QF_001_314d440dcc3348c687785c80e67fce27
+  model:
+    type: pyaml.magnet.identity_model
+    unit: 1/m
+    physics: AN01-AR/EM-QP/QF.01/magnetic_strength
+- type: pyaml.magnet.quadrupole
+  name: QD_001_b9826a8c73d642d6889df2a7537cb24c
+  model:
+    type: pyaml.magnet.identity_model
+    unit: 1/m
+    physics: AN01-AR/EM-QP/QD.01/magnetic_strength
+- type: pyaml.magnet.quadrupole
+  name: QF_002_77738075da634369ad1751e6263f2a65
+  model:
+    type: pyaml.magnet.identity_model
+    unit: 1/m
+    physics: AN02-AR/EM-QP/QF.01/magnetic_strength
+- type: pyaml.magnet.quadrupole
+  name: QD_002_9ddbc1b0ac004bb88a7806a2f45d34dd
+  model:
+    type: pyaml.magnet.identity_model
+    unit: 1/m
+    physics: AN02-AR/EM-QP/QD.01/magnetic_strength
+- type: pyaml.magnet.quadrupole
+  name: QF_003_fdc3743f439640b8b6b8edeeaee4b3b6
+  model:
+    type: pyaml.magnet.identity_model
+    unit: 1/m
+    physics: AN03-AR/EM-QP/QF.01/magnetic_strength
+- type: pyaml.magnet.quadrupole
+  name: QD_003_f3adbe2c1b3b4e96b98e8487963b2ab7
+  model:
+    type: pyaml.magnet.identity_model
+    unit: 1/m
+    physics: AN03-AR/EM-QP/QD.01/magnetic_strength
+- type: pyaml.magnet.quadrupole
+  name: QF_004_3d6633b2daab4497946456e04a20ff53
+  model:
+    type: pyaml.magnet.identity_model
+    unit: 1/m
+    physics: AN04-AR/EM-QP/QF.01/magnetic_strength
+- type: pyaml.magnet.quadrupole
+  name: QD_004_0d27ccc7536744e5bfa666ace4b7bbce
+  model:
+    type: pyaml.magnet.identity_model
+    unit: 1/m
+    physics: AN04-AR/EM-QP/QD.01/magnetic_strength
+- type: pyaml.magnet.quadrupole
+  name: QF_005_eedbaf0b897245a7ae902a3737c9448a
+  model:
+    type: pyaml.magnet.identity_model
+    unit: 1/m
+    physics: AN05-AR/EM-QP/QF.01/magnetic_strength
+- type: pyaml.magnet.quadrupole
+  name: QD_005_86031f371c6e4a03ad193b5fc776a4c2
+  model:
+    type: pyaml.magnet.identity_model
+    unit: 1/m
+    physics: AN05-AR/EM-QP/QD.01/magnetic_strength
+- type: pyaml.magnet.quadrupole
+  name: QF_006_ac8563ac0cf549d4a3a931704888d081
+  model:
+    type: pyaml.magnet.identity_model
+    unit: 1/m
+    physics: AN06-AR/EM-QP/QF.01/magnetic_strength
+- type: pyaml.magnet.quadrupole
+  name: QD_006_baaa109b7de4464e92dbc31cc1aa6f73
+  model:
+    type: pyaml.magnet.identity_model
+    unit: 1/m
+    physics: AN06-AR/EM-QP/QD.01/magnetic_strength
+- type: pyaml.magnet.quadrupole
+  name: QF_007_85bc483c3eaa4e0ba633f65a5c8340a7
+  model:
+    type: pyaml.magnet.identity_model
+    unit: 1/m
+    physics: AN07-AR/EM-QP/QF.01/magnetic_strength
+- type: pyaml.magnet.quadrupole
+  name: QD_007_423c1d2bd5704dc09df2459a5e88c6e1
+  model:
+    type: pyaml.magnet.identity_model
+    unit: 1/m
+    physics: AN07-AR/EM-QP/QD.01/magnetic_strength
+- type: pyaml.magnet.quadrupole
+  name: QF_008_9d30486816f14f42b71899a138737b22
+  model:
+    type: pyaml.magnet.identity_model
+    unit: 1/m
+    physics: AN08-AR/EM-QP/QF.01/magnetic_strength
+- type: pyaml.magnet.quadrupole
+  name: QD_008_39a76afbc5c0448fbdfb80941bd62551
+  model:
+    type: pyaml.magnet.identity_model
+    unit: 1/m
+    physics: AN08-AR/EM-QP/QD.01/magnetic_strength
+- type: pyaml.magnet.quadrupole
+  name: QF_009_a82e998e865c43c382ee98fa60aa2200
+  model:
+    type: pyaml.magnet.identity_model
+    unit: 1/m
+    physics: AN09-AR/EM-QP/QF.01/magnetic_strength
+- type: pyaml.magnet.quadrupole
+  name: QD_009_0954ff1f957d4496b5155f1798ae4509
+  model:
+    type: pyaml.magnet.identity_model
+    unit: 1/m
+    physics: AN09-AR/EM-QP/QD.01/magnetic_strength
+- type: pyaml.magnet.quadrupole
+  name: QF_010_64354ff742804522aa304c228f7cc64f
+  model:
+    type: pyaml.magnet.identity_model
+    unit: 1/m
+    physics: AN10-AR/EM-QP/QF.01/magnetic_strength
+- type: pyaml.magnet.quadrupole
+  name: QD_010_d28b40ccd1d647709cea35bad805fbda
+  model:
+    type: pyaml.magnet.identity_model
+    unit: 1/m
+    physics: AN10-AR/EM-QP/QD.01/magnetic_strength
+- type: pyaml.magnet.quadrupole
+  name: QF_011_24042a2d336945b2b6fdc06376b57e0e
+  model:
+    type: pyaml.magnet.identity_model
+    unit: 1/m
+    physics: AN11-AR/EM-QP/QF.01/magnetic_strength
+- type: pyaml.magnet.quadrupole
+  name: QD_011_a43c3d78c9c44a3caae4c56150e32eeb
+  model:
+    type: pyaml.magnet.identity_model
+    unit: 1/m
+    physics: AN11-AR/EM-QP/QD.01/magnetic_strength
+- type: pyaml.magnet.quadrupole
+  name: QF_012_bf99c63cf126498e9a7a58f1f5ac8443
+  model:
+    type: pyaml.magnet.identity_model
+    unit: 1/m
+    physics: AN12-AR/EM-QP/QF.01/magnetic_strength
+- type: pyaml.magnet.quadrupole
+  name: QD_012_e6ec59256b73497481a12b472924f6c5
+  model:
+    type: pyaml.magnet.identity_model
+    unit: 1/m
+    physics: AN12-AR/EM-QP/QD.01/magnetic_strength
+- type: pyaml.magnet.quadrupole
+  name: QF_013_8d185c5d960945f9b787d068a311466a
+  model:
+    type: pyaml.magnet.identity_model
+    unit: 1/m
+    physics: AN13-AR/EM-QP/QF.01/magnetic_strength
+- type: pyaml.magnet.quadrupole
+  name: QD_013_a60f228881294148ab165f1a1751166d
+  model:
+    type: pyaml.magnet.identity_model
+    unit: 1/m
+    physics: AN13-AR/EM-QP/QD.01/magnetic_strength
+- type: pyaml.magnet.quadrupole
+  name: QF_014_6b3c29fcf77a48b68e034b836362b5f2
+  model:
+    type: pyaml.magnet.identity_model
+    unit: 1/m
+    physics: AN14-AR/EM-QP/QF.01/magnetic_strength
+- type: pyaml.magnet.quadrupole
+  name: QD_014_5c97788060d141faab00ab952934e405
+  model:
+    type: pyaml.magnet.identity_model
+    unit: 1/m
+    physics: AN14-AR/EM-QP/QD.01/magnetic_strength
+- type: pyaml.magnet.quadrupole
+  name: QF_015_1471d44e166146e1b1baeaa51fc9af02
+  model:
+    type: pyaml.magnet.identity_model
+    unit: 1/m
+    physics: AN15-AR/EM-QP/QF.01/magnetic_strength
+- type: pyaml.magnet.quadrupole
+  name: QD_015_374a315b60854bb6b61faa29e28bb806
+  model:
+    type: pyaml.magnet.identity_model
+    unit: 1/m
+    physics: AN15-AR/EM-QP/QD.01/magnetic_strength
+- type: pyaml.magnet.quadrupole
+  name: QF_016_728ed73c842141f788fac58d20695da0
+  model:
+    type: pyaml.magnet.identity_model
+    unit: 1/m
+    physics: AN16-AR/EM-QP/QF.01/magnetic_strength
+- type: pyaml.magnet.quadrupole
+  name: QD_016_5728a761514042e2bfdb92a6ca93a393
+  model:
+    type: pyaml.magnet.identity_model
+    unit: 1/m
+    physics: AN16-AR/EM-QP/QD.01/magnetic_strength

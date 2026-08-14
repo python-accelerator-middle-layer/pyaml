@@ -109,7 +109,7 @@ class Tune(TuningTool):
     @property
     def _quads(self) -> "MagnetArray":
         self.check_peer()
-        return self.peer.get_magnets(self._cfg.quad_array_name)
+        return self.peer.magnets.get(self._cfg.quad_array_name)
 
     def get(self):
         """
@@ -137,6 +137,8 @@ class Tune(TuningTool):
         wait_time : float
             Time to wait in second between 2 iterations
         """
+        if np.shape(tune) != (2,):
+            raise PyAMLException("Tune.add(): invalid input tune dimension, (2,) expected")
         for i in range(iter):
             diff_tune = tune - self.readback()
             if i == iter:
@@ -168,6 +170,8 @@ class Tune(TuningTool):
         iter_nb: int
         wait_time: float
         """
+        if np.shape(dtune) != (2,):
+            raise PyAMLException("Tune.add(): invalid input dtune dimension, (2,) expected")
         strengths = self._quads.strengths.get()
         strengths += self.correct(dtune)
         self._quads.strengths.set(strengths)

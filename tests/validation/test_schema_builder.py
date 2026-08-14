@@ -103,6 +103,69 @@ def test_configuration_schema_from_basemodel_rejects_reserved_field():
         )
 
 
+def test_generate_configuration_schema_registers_parent_chain():
+    class Curve:
+        pass
+
+    class Curve1(Curve):
+        pass
+
+    class Curve2(Curve1):
+        pass
+
+    curve2_schema = generate_configuration_schema(Curve2)
+
+    registry = SchemaRegistry()
+    curve_path = f"{Curve.__module__}.{Curve.__name__}"
+    curve1_path = f"{Curve1.__module__}.{Curve1.__name__}"
+    curve2_path = f"{Curve2.__module__}.{Curve2.__name__}"
+
+    curve_schema = registry.get(curve_path)
+    curve1_schema = registry.get(curve1_path)
+    curve2_schema_from_registry = registry.get(curve2_path)
+
+    assert curve_schema is not None
+    assert curve1_schema is not None
+    assert curve2_schema_from_registry is curve2_schema
+
+    assert curve1_schema.is_virtual_subclass_of(curve_schema)
+    assert curve2_schema.is_virtual_subclass_of(curve1_schema)
+    assert curve2_schema.is_virtual_subclass_of(curve_schema)
+    assert not curve_schema.is_virtual_subclass_of(curve1_schema)
+
+
+def test_generate_configuration_schema_registers_multiple_inheritance():
+    class Curve:
+        pass
+
+    class Monitor:
+        pass
+
+    class Curve1(Curve):
+        pass
+
+    class Curve2(Curve1, Monitor):
+        pass
+
+    curve2_schema = generate_configuration_schema(Curve2)
+
+    registry = SchemaRegistry()
+    curve_schema = registry.get(f"{Curve.__module__}.{Curve.__name__}")
+    monitor_schema = registry.get(f"{Monitor.__module__}.{Monitor.__name__}")
+    curve1_schema = registry.get(f"{Curve1.__module__}.{Curve1.__name__}")
+    curve2_schema_from_registry = registry.get(f"{Curve2.__module__}.{Curve2.__name__}")
+
+    assert curve_schema is not None
+    assert monitor_schema is not None
+    assert curve1_schema is not None
+    assert curve2_schema_from_registry is curve2_schema
+
+    assert curve1_schema.is_virtual_subclass_of(curve_schema)
+    assert curve2_schema.is_virtual_subclass_of(curve1_schema)
+    assert curve2_schema.is_virtual_subclass_of(curve_schema)
+    assert curve2_schema.is_virtual_subclass_of(monitor_schema)
+
+
 def test_fields_from_constructor_signature():
     class Example:
         def __init__(self, x: int, y: str = "a", *args, **kwargs):

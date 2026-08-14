@@ -1,0 +1,4 @@
+controls:
+- type: tango.pyaml.controlsystem
+  name: live
+  catalog: fodo_1gev_6d_pyaml_tango_catalog.yaml

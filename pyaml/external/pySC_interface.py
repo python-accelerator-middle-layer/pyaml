@@ -10,6 +10,7 @@ from ..common.exception import PyAMLException
 
 class pySCInterface:
     set_wait_time: float = 0
+    read_wait_time: float = 0
 
     def __init__(
         self,
@@ -28,16 +29,16 @@ class pySCInterface:
             self.rf_plant = None
 
     def get_orbit(self) -> Tuple[np.array, np.array]:
-        # we should wait here somehow according to polling rate
+        time.sleep(self.read_wait_time)
         positions = self.bpm_array.positions.get()
         return positions[:, 0], positions[:, 1]
 
     def get(self, name: str) -> float:
-        magnet = self.element_holder.get_magnet(name=name)
+        magnet = self.element_holder.magnet.get(name=name)
         return magnet.strength.get()
 
     def set(self, name: str, value: float) -> None:
-        magnet = self.element_holder.get_magnet(name=name)
+        magnet = self.element_holder.magnet.get(name=name)
         magnet.strength.set(value=value)  # ideally set_and_wait but not implemented
         time.sleep(self.set_wait_time)
         return

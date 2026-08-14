@@ -28,7 +28,7 @@ class DummyPyAMLElement:
 def test_conf_with_linker():
     sr: Accelerator = Accelerator.load("tests/config/sr-attribute-linker.yaml")
     assert sr is not None
-    magnet = sr.design.get_magnet("SH1A-C01-H")
+    magnet = sr.design.magnet.get("SH1A-C01-H")
     assert magnet is not None
 
 
@@ -101,7 +101,7 @@ def test_various_naming_addressing():
     sr = Accelerator.load("tests/config/EBSNames.yaml", ignore_external=True)
     ring = sr.design.get_lattice()
 
-    elts = sr.design.get_magnet("QF1E").strength._RWStrengthScalar__elements
+    elts = sr.design.magnet.get("QF1E").strength._elements
     assert len(elts) == 31
     check_index(
         ring,
@@ -141,7 +141,7 @@ def test_various_naming_addressing():
         ],
     )
 
-    elts = sr.design.get_magnet("QF1E-ALL").strength._RWStrengthScalar__elements
+    elts = sr.design.magnet.get("QF1E-ALL").strength._elements
     assert len(elts) == 32
     check_index(
         ring,
@@ -182,18 +182,18 @@ def test_various_naming_addressing():
         ],
     )
 
-    elts = sr.design.get_magnet("QF1E-C05").strength._RWStrengthScalar__elements
+    elts = sr.design.magnet.get("QF1E-C05").strength._elements
     assert len(elts) == 1
     check_index(ring, elts, [290])
 
-    elts = sr.design.get_magnet("QF1E-C04-C05-C06").strength._RWStrengthScalar__elements
+    elts = sr.design.magnet.get("QF1E-C04-C05-C06").strength._elements
     assert len(elts) == 3
     check_index(ring, elts, [140, 290, 424])
 
-    elts = sr.design.get_magnet("QF1E-C04-C05-C06-2").strength._RWStrengthScalar__elements
+    elts = sr.design.magnet.get("QF1E-C04-C05-C06-2").strength._elements
     assert len(elts) == 3
     check_index(ring, elts, [140, 290, 424])
 
-    elts = sr.design.get_magnet("QF1E-C04-C05-C06-3").strength._RWStrengthScalar__elements
+    elts = sr.design.magnet.get("QF1E-C04-C05-C06-3").strength._elements
     assert len(elts) == 3
     check_index(ring, elts, [140, 290, 424])

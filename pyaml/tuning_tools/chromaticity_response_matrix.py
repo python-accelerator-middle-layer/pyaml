@@ -3,11 +3,10 @@ import time
 from typing import Callable, Optional
 
 import numpy as np
-from pydantic import ConfigDict
 
 from ..common.constants import Action
-from ..common.element import ElementConfigModel
-from .measurement_tool import MeasurementTool, MeasurementToolConfigModel
+from ..validation import DynamicValidation, register_schema
+from .measurement_tool import MeasurementTool
 from .response_matrix_data import ConfigModel as ResponseMatrixDataConfigModel
 
 logger = logging.getLogger(__name__)
@@ -15,31 +14,78 @@ logger = logging.getLogger(__name__)
 PYAMLCLASS = "ChromaticityResponseMatrix"
 
 
-class ConfigModel(MeasurementToolConfigModel):
+@register_schema
+class ChromaticityResponseMatrix(MeasurementTool, DynamicValidation):
     """
-    Configuration model for Tune response matrix
+    Measure the chromaticity response matrix of a lattice.
+
+    This tool perturbs each sextupole in a sextupole array and measures the
+    resulting chromaticity variation using a chromaticity monitor. The measured
+    slopes are assembled into a response matrix with chromaticity components as
+    the observables and sextupoles as the variables.
 
     Parameters
     ----------
+    name : str
+        Name of the response matrix measurement tool.
     sextu_array_name : str
-        Array name of sextupole used to adjust the chromaticity
+        Name of the sextupole array to excite.
     chromaticity_name : str
-        Name of the diagnostic chromaticy monitor
+        Name of the chromaticity monitor used to measure the response.
     sextu_delta : float
-        Delta strength used to get the response matrix
+        Default sextupole excitation applied during the measurement.
+    n_step : int, optional
+        Default number of excitation steps used to fit the response.
+    sleep_between_step : float, optional
+        Default delay in seconds after changing the sextupole strength.
+    n_avg_meas : int, optional
+        Default number of chromaticity measurements to average at each step.
+    sleep_between_meas : float, optional
+        Default delay in seconds between averaged measurements.
     """
 
-    model_config = ConfigDict(arbitrary_types_allowed=True, extra="forbid")
+    def __init__(
+        self,
+        name: str,
+        sextu_array_name: str,
+        chromaticity_name: str,
+        sextu_delta: float,
+        n_step: int = 1,
+        sleep_between_step: float = 0,
+        n_avg_meas: int = 1,
+        sleep_between_meas: float = 0,
+    ):
+        """
+        Initialize the chromaticity response matrix measurement tool.
 
-    sextu_array_name: str
-    chromaticity_name: str
-    sextu_delta: float
+        Parameters
+        ----------
+        name : str
+            Name of the response matrix measurement tool.
+        sextu_array_name : str
+            Name of the sextupole array to excite.
+        chromaticity_name : str
+            Name of the chromaticity monitor used to measure the response.
+        sextu_delta : float
+            Default sextupole excitation applied during the measurement.
+        n_step : int, optional
+            Default number of excitation steps used to fit the response.
+        sleep_between_step : float, optional
+            Default delay in seconds after changing the sextupole strength.
+        n_avg_meas : int, optional
+            Default number of chromaticity measurements to average at each step.
+        sleep_between_meas : float, optional
+            Default delay in seconds between averaged measurements.
+        """
 
-
-class ChromaticityResponseMatrix(MeasurementTool):
-    def __init__(self, cfg: ConfigModel):
-        super().__init__(cfg.name)
-        self._cfg = cfg
+        super().__init__(name)
+        self.sextu_array_name = sextu_array_name
+        self.chromaticity_name = chromaticity_name
+        self.sextu_delta = sextu_delta
+        self.n_step = n_step
+        self.sleep_between_step = sleep_between_step
+        self.n_avg_meas = n_avg_meas
+        self.sleep_between_meas = sleep_between_meas
         self.aborted = False
 
     def measure(
@@ -117,8 +163,8 @@ class ChromaticityResponseMatrix(MeasurementTool):
         """
         # Get devices
         self.check_peer()
-        sextus = self._peer.get_magnets(self._cfg.sextu_array_name)
-        cm = self._peer.get_chromaticity_monitor(self._cfg.chromaticity_name)
+        sextus = self._peer.magnets.get(self.sextu_array_name)
+        cm = self._peer.get_chromaticity_monitor(self.chromaticity_name)
 
         self._register_callback(callback)
         self._init_measure("pyaml.tuning_tools.response_matrix_data")
@@ -131,11 +177,11 @@ class ChromaticityResponseMatrix(MeasurementTool):
             return False
         initial_chroma = cm.chromaticity.get()
 
-        delta = sextu_delta if sextu_delta is not None else self._cfg.sextu_delta
-        nb_step = n_step if n_step is not None else self._cfg.n_step
-        nb_meas = n_avg_meas if n_avg_meas is not None else self._cfg.n_avg_meas
-        sleep_step = sleep_between_step if sleep_between_step is not None else self._cfg.sleep_between_step
-        sleep_meas = sleep_between_meas if sleep_between_meas is not None else self._cfg.sleep_between_meas
+        delta = sextu_delta if sextu_delta is not None else self.sextu_delta
+        nb_step = n_step if n_step is not None else self.n_step
+        nb_meas = n_avg_meas if n_avg_meas is not None else self.n_avg_meas
+        sleep_step = sleep_between_step if sleep_between_step is not None else self.sleep_between_step
+        sleep_meas = sleep_between_meas if sleep_between_meas is not None else self.sleep_between_meas
 
         err = None
         aborted = False

@@ -138,7 +138,7 @@ class ControlSystem(ElementHolder, metaclass=ABCMeta):
                 strength = RWStrengthScalar(e.model, dev) if e.model.has_physics() else None
                 # Create a unique ref for this control system
                 m = e.attach(self, strength, current)
-                self.add_magnet(m)
+                self.magnet.add(m)
 
             elif isinstance(e, CombinedFunctionMagnet):
                 devs = self.get_devices_access(e.model.get_device_names())
@@ -149,7 +149,7 @@ class ControlSystem(ElementHolder, metaclass=ABCMeta):
                 ms = e.attach(self, strengths, currents)
                 self.add_cfm_magnet(ms[0])
                 for m in ms[1:]:
-                    self.add_magnet(m)
+                    self.magnet.add(m)
 
             elif isinstance(e, SerializedMagnets):
                 devs = self.get_devices_access(e.model.get_device_names())
@@ -163,9 +163,9 @@ class ControlSystem(ElementHolder, metaclass=ABCMeta):
                     currents.append(current)
                     strengths.append(strength)
                 ms = e.attach(self, strengths, currents)
-                self.add_serialized_magnet(ms[0])
+                self.serialized_magnet.add(ms[0])
                 for m in ms[1:]:
-                    self.add_magnet(m)
+                    self.magnet.add(m)
 
             elif isinstance(e, BPM):
                 pos_devs = self.get_devices_access(e.get_pos_devices())
@@ -197,7 +197,7 @@ class ControlSystem(ElementHolder, metaclass=ABCMeta):
 
             elif isinstance(e, BetatronTuneMonitor):
                 # Built in tune monitor
-                tuneDevs = self.get_devices_access([e._cfg.tune_h, e._cfg.tune_v])
+                tuneDevs = self.get_devices_access([e.tune_h, e.tune_v])
                 betatron_tune = RBetatronTuneArray(e, tuneDevs)
                 e = e.attach(self, betatron_tune)
                 self.add_betatron_tune_monitor(e)

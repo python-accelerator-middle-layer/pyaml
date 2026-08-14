@@ -866,3 +866,10 @@
     attribute: srmag/vps-qd2/c03-a/current
     range: [10,109]
     unit: A
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/vps-qf6/c04-b/current
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/vps-qf6/c04-b/current
+    range: [10,109]
+    unit: A

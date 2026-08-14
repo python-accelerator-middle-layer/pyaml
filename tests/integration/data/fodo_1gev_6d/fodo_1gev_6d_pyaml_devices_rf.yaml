@@ -1,0 +1,11 @@
+devices:
+- type: pyaml.rf.rf_plant
+  name: RF
+  masterclock: simulator/ringsimulator/ringsimulator/reference_frequency
+  transmitters:
+  - type: pyaml.rf.rf_transmitter
+    name: RFTRA
+    cavities: [RF_001_6363b723d15843ab9974ebb67784d638]
+    harmonic: 1
+    distribution: 1
+    voltage: simulator/ringsimulator/ringsimulator/voltage

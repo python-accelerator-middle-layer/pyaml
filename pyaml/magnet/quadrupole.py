@@ -1,24 +1,19 @@
 from ..lattice.polynom_info import PolynomInfo
-from .magnet import Magnet, MagnetConfigModel
+from ..validation import DynamicValidation, register_schema
+from .magnet import Magnet
+from .model import MagnetModel
 
 # Define the main class name for this module
 PYAMLCLASS = "Quadrupole"
 
 
-class ConfigModel(MagnetConfigModel):
-    """Configuration model for Quadrupole magnet."""
-
-    ...
-
-
-class Quadrupole(Magnet):
+@register_schema
+class Quadrupole(Magnet, DynamicValidation):
     """Quadrupole class"""
 
     polynom = PolynomInfo("PolynomB", 1)
 
-    def __init__(self, cfg: ConfigModel):
-        super().__init__(
-            cfg.name,
-            cfg.model if hasattr(cfg, "model") else None,
-        )
-        self._cfg = cfg
+    def __init__(
+        self, name: str, model: MagnetModel | None = None, lattice_names: str | None = None, description: str | None = None
+    ):
+        super().__init__(name, model, lattice_names, description)

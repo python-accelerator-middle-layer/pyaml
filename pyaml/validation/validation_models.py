@@ -135,7 +135,7 @@ class DynamicValidation(metaclass=ValidationMeta):
 
         super().__init_subclass__(**kwargs)
 
-        if getattr(cls, "validation_model", None) is not None:
+        if "validation_model" in cls.__dict__:
             raise TypeError(f"{cls.__name__} may not define validation_model manually.")
 
         cls.validation_model = cls._build_validation_model()

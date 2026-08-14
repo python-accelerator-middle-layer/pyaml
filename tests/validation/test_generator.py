@@ -42,6 +42,10 @@ class ChildSchemaB(ParentSchema):
     b: str = "x"
 
 
+class VirtualChildSchema(ConfigurationSchema):
+    b: str = "x"
+
+
 class ContainerSchema(ConfigurationSchema):
     model: ChildSchemaA | None = Field(
         default=None,
@@ -125,10 +129,37 @@ def test_generate_replaces_parent_schema_with_registered_subclasses(
 
     schema = SchemaGenerator.generate("pkg.module.Parent")
 
-    child_refs = {item["$ref"] for item in schema.get("anyOf", [])}
+    anyof = schema.get("anyOf", [])
+    refs = {item["$ref"] for item in anyof if "$ref" in item}
+    if refs:
+        assert "#/$defs/ChildSchemaA" in refs
+        assert "#/$defs/ChildSchemaB" in refs
+    else:
+        class_paths = {item["properties"]["class"]["const"] for item in anyof if "properties" in item}
+        assert "pkg.module.ChildA" in class_paths
+        assert "pkg.module.ChildB" in class_paths
 
-    assert "#/$defs/ChildSchemaA" in child_refs
-    assert "#/$defs/ChildSchemaB" in child_refs
+
+def test_generate_includes_real_and_virtual_subclasses(
+    registry: SchemaRegistry,
+):
+    registry.register("pkg.module.Parent", ParentSchema)
+    registry.register("pkg.module.ChildA", ChildSchemaA)
+    registry.register("pkg.module.VirtualChild", VirtualChildSchema)
+
+    ParentSchema.register_virtual_subclass(VirtualChildSchema)
+
+    schema = SchemaGenerator.generate("pkg.module.Parent")
+
+    anyof = schema.get("anyOf", [])
+    refs = {item["$ref"] for item in anyof if "$ref" in item}
+    if refs:
+        assert "#/$defs/ChildSchemaA" in refs
+        assert "#/$defs/VirtualChildSchema" in refs
+    else:
+        class_paths = {item["properties"]["class"]["const"] for item in anyof if "properties" in item}
+        assert "pkg.module.ChildA" in class_paths
+        assert "pkg.module.VirtualChild" in class_paths
 
 
 def test_model_schema_preserves_metadata_from_parent_schema(
@@ -138,12 +169,10 @@ def test_model_schema_preserves_metadata_from_parent_schema(
     registry.register("pkg.module.ChildA", ChildSchemaA)
     registry.register("pkg.module.ChildB", ChildSchemaB)
 
-    generator = RegistryJsonSchema()
-    base_schema = ParentSchema.__pydantic_core_schema__
-
-    schema = generator.model_schema(base_schema)
+    schema = ParentSchema.model_json_schema(schema_generator=RegistryJsonSchema)
 
     assert schema["title"] == "ParentSchema"
+    assert schema["description"] == "Parent schema used to test inheritance."
 
 
 # ==========================================================
