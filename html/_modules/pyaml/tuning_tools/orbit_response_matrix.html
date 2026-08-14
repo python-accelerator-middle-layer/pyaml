@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>pyaml.tuning_tools.orbit_response_matrix &#8212; Python Accelerator Middle Layer 0.1.dev1+g6914a798e documentation</title>
+    <title>pyaml.tuning_tools.orbit_response_matrix &#8212; Python Accelerator Middle Layer 0.1.dev1+gc5673dda5 documentation</title>
   
   
   
@@ -41,7 +41,7 @@
   <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=90905a2f556bf617f1a9" />
 <link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=90905a2f556bf617f1a9" />
 
-    <script src="../../../_static/documentation_options.js?v=b502a698"></script>
+    <script src="../../../_static/documentation_options.js?v=9c9d99a3"></script>
     <script src="../../../_static/doctools.js?v=9bcbadda"></script>
     <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -125,8 +125,8 @@
       
     
     
-    <img src="../../../_static/logo.png" class="logo__image only-light" alt="Python Accelerator Middle Layer 0.1.dev1+g6914a798e documentation - Home"/>
-    <img src="../../../_static/dark.png" class="logo__image only-dark pst-js-only" alt="Python Accelerator Middle Layer 0.1.dev1+g6914a798e documentation - Home"/>
+    <img src="../../../_static/logo.png" class="logo__image only-light" alt="Python Accelerator Middle Layer 0.1.dev1+gc5673dda5 documentation - Home"/>
+    <img src="../../../_static/dark.png" class="logo__image only-dark pst-js-only" alt="Python Accelerator Middle Layer 0.1.dev1+gc5673dda5 documentation - Home"/>
   
   
 </a></div>
@@ -502,8 +502,8 @@
 
         <span class="k">if</span> <span class="n">corrector_names</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Measuring correctors from the default arrays: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">hcorr_array_name</span><span class="si">}</span><span class="s2"> and </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">vcorr_array_name</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">)</span>
-            <span class="n">hcorrector_names</span> <span class="o">=</span> <span class="n">element_holder</span><span class="o">.</span><span class="n">get_magnets</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">hcorr_array_name</span><span class="p">)</span><span class="o">.</span><span class="n">names</span><span class="p">()</span>
-            <span class="n">vcorrector_names</span> <span class="o">=</span> <span class="n">element_holder</span><span class="o">.</span><span class="n">get_magnets</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">vcorr_array_name</span><span class="p">)</span><span class="o">.</span><span class="n">names</span><span class="p">()</span>
+            <span class="n">hcorrector_names</span> <span class="o">=</span> <span class="n">element_holder</span><span class="o">.</span><span class="n">magnets</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">hcorr_array_name</span><span class="p">)</span><span class="o">.</span><span class="n">names</span><span class="p">()</span>
+            <span class="n">vcorrector_names</span> <span class="o">=</span> <span class="n">element_holder</span><span class="o">.</span><span class="n">magnets</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">vcorr_array_name</span><span class="p">)</span><span class="o">.</span><span class="n">names</span><span class="p">()</span>
             <span class="n">corrector_names</span> <span class="o">=</span> <span class="n">hcorrector_names</span> <span class="o">+</span> <span class="n">vcorrector_names</span>
 
         <span class="n">generator</span> <span class="o">=</span> <span class="n">measure_ORM</span><span class="p">(</span>
@@ -561,8 +561,8 @@
         <span class="c1"># all metadata is discarded here. Should we keep something?</span>
 
         <span class="n">element_holder</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_peer</span>
-        <span class="n">all_hcorrector_names</span> <span class="o">=</span> <span class="n">element_holder</span><span class="o">.</span><span class="n">get_magnets</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">hcorr_array_name</span><span class="p">)</span><span class="o">.</span><span class="n">names</span><span class="p">()</span>
-        <span class="n">all_vcorrector_names</span> <span class="o">=</span> <span class="n">element_holder</span><span class="o">.</span><span class="n">get_magnets</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">vcorr_array_name</span><span class="p">)</span><span class="o">.</span><span class="n">names</span><span class="p">()</span>
+        <span class="n">all_hcorrector_names</span> <span class="o">=</span> <span class="n">element_holder</span><span class="o">.</span><span class="n">magnets</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">hcorr_array_name</span><span class="p">)</span><span class="o">.</span><span class="n">names</span><span class="p">()</span>
+        <span class="n">all_vcorrector_names</span> <span class="o">=</span> <span class="n">element_holder</span><span class="o">.</span><span class="n">magnets</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">vcorr_array_name</span><span class="p">)</span><span class="o">.</span><span class="n">names</span><span class="p">()</span>
         <span class="n">variable_planes</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">corr</span> <span class="ow">in</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;input_names&quot;</span><span class="p">]:</span>
             <span class="k">if</span> <span class="n">corr</span> <span class="ow">in</span> <span class="n">all_hcorrector_names</span><span class="p">:</span>
