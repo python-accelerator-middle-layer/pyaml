@@ -10,6 +10,12 @@ class MagnetHolder:
     def __init__(self, peer: "ElementHolder"):
         self._peer = peer
 
+    def all(self) -> list[Magnet]:
+        """
+        Returns all magnets as a list
+        """
+        return [value for key, value in self._peer._MAGNETS.items()]
+
     def get(self, name: str) -> Magnet:
         """
         Returns the specified magnet
