@@ -95,6 +95,7 @@ class Orbit(TuningTool, DynamicValidation):
         m["output_names"] = m.pop("observable_names")
         m["input_planes"] = m.pop("variable_planes")
         m["output_planes"] = m.pop("observable_planes")
+        m.pop("type", None)
         self._response_matrix = mat
         self._pySC_response_matrix = pySC_ResponseMatrix.model_validate(m)
 
