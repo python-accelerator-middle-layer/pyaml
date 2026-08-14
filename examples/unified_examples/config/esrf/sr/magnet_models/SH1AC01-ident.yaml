@@ -1,7 +1,0 @@
-  type: pyaml.magnet.identity_cfm_model
-  multipoles: [B0,A0,A1]
-  units: [rad,rad,m-1]
-  physics:
-    - srmag/hst-sh1/c01-a/strength
-    - srmag/vst-sh1/c01-a/strength
-    - srmag/sqp-sh1/c01-a/strength
