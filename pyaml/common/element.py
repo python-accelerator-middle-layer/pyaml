@@ -10,14 +10,9 @@ if TYPE_CHECKING:
 
 def __pyaml_repr__(obj, exclude: list[str] | None = None):
     """
-    Returns a string representation of a pyaml object.
-
-    Parameters
-    ----------
-    exclude : list[str] | None
-        Attribute/property names to exclude from the output.
+    Returns a string representation of a pyaml object,
+    including inherited properties and one level of nested objects.
     """
-
     if exclude is None:
         exclude = []
 
@@ -34,31 +29,39 @@ def __pyaml_repr__(obj, exclude: list[str] | None = None):
             )
         return repr(cfg).replace("ConfigModel", cls_name, 1)
 
-    # Generic fallback when there is no _cfg
     attrs = {}
 
-    # Instance attributes
-    for k, v in obj.__dict__.items():
-        # Exclude private attributes and excluded
-        if not k.startswith("_") and k not in exclude:
-            attrs[k] = v
+    for name in dir(obj):
+        # Skip private attributes and user-excluded names
+        if name.startswith("_") or name in exclude:
+            continue
 
-    # Properties
-    for name, attr in vars(type(obj)).items():
-        if isinstance(attr, property) and name not in exclude:
-            try:
-                attrs[name] = getattr(obj, name)
-            except Exception as e:
-                attrs[name] = f"<error: {e}>"
+        try:
+            value = getattr(obj, name)
 
+            # Skip methods/functions (we only want data)
+            # This prevents: BPM(get_name=<bound method...>)
+            if callable(value):
+                continue
+
+            attrs[name] = value
+        except Exception as e:
+            attrs[name] = f"<error: {e}>"
+
+    # Special handling for 'name' if it's an Element but not in attrs
     if isinstance(obj, Element) and "name" not in attrs and "name" not in exclude:
         try:
             attrs["name"] = obj.get_name()
-        except Exception as e:
-            attrs["name"] = f"<error: {e}>"
+        except Exception:
+            pass
 
-    parts = ", ".join(f"{k}={v!r}" for k, v in attrs.items())
-    return f"{cls_name}({parts})" if parts else cls_name
+    # The !r flag ensures that if 'v' is another pyaml object,
+    # its own __repr__ is called (providing the "one level below" effect).
+    if not attrs:
+        return cls_name
+
+    parts = ", ".join(f"{k}={v!r}" for k, v in sorted(attrs.items()))
+    return f"{cls_name}({parts})"
 
 
 class ElementConfigModel(BaseModel):
