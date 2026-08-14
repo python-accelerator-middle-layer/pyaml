@@ -1,0 +1,4608 @@
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c04-a/Strength_H
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c04-a/Strength_H
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c04-a/Strength_V
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c04-a/Strength_V
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c04-a/Strength_SQ
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c04-a/Strength_SQ
+    unit: m-1
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c04-a/Strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c04-a/Strength
+    unit: m-2
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sf2/c04-a/Strength_H
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sf2/c04-a/Strength_H
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sf2/c04-a/Strength_V
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sf2/c04-a/Strength_V
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sf2/c04-a/Strength_SQ
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sf2/c04-a/Strength_SQ
+    unit: m-1
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sf2/c04-a/Strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sf2/c04-a/Strength
+    unit: m-2
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c04-b/Strength_H
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c04-b/Strength_H
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c04-b/Strength_V
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c04-b/Strength_V
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c04-b/Strength_SQ
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c04-b/Strength_SQ
+    unit: m-1
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c04-b/Strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c04-b/Strength
+    unit: m-2
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c04-d/Strength_H
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c04-d/Strength_H
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c04-d/Strength_V
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c04-d/Strength_V
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c04-d/Strength_SQ
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c04-d/Strength_SQ
+    unit: m-1
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c04-d/Strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c04-d/Strength
+    unit: m-2
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sf2/c04-e/Strength_H
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sf2/c04-e/Strength_H
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sf2/c04-e/Strength_V
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sf2/c04-e/Strength_V
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sf2/c04-e/Strength_SQ
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sf2/c04-e/Strength_SQ
+    unit: m-1
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sf2/c04-e/Strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sf2/c04-e/Strength
+    unit: m-2
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c04-e/Strength_H
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c04-e/Strength_H
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c04-e/Strength_V
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c04-e/Strength_V
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c04-e/Strength_SQ
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c04-e/Strength_SQ
+    unit: m-1
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c04-e/Strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c04-e/Strength
+    unit: m-2
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c05-a/Strength_H
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c05-a/Strength_H
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c05-a/Strength_V
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c05-a/Strength_V
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c05-a/Strength_SQ
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c05-a/Strength_SQ
+    unit: m-1
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c05-a/Strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c05-a/Strength
+    unit: m-2
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sf2/c05-a/Strength_H
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sf2/c05-a/Strength_H
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sf2/c05-a/Strength_V
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sf2/c05-a/Strength_V
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sf2/c05-a/Strength_SQ
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sf2/c05-a/Strength_SQ
+    unit: m-1
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sf2/c05-a/Strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sf2/c05-a/Strength
+    unit: m-2
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c05-b/Strength_H
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c05-b/Strength_H
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c05-b/Strength_V
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c05-b/Strength_V
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c05-b/Strength_SQ
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c05-b/Strength_SQ
+    unit: m-1
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c05-b/Strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c05-b/Strength
+    unit: m-2
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c05-d/Strength_H
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c05-d/Strength_H
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c05-d/Strength_V
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c05-d/Strength_V
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c05-d/Strength_SQ
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c05-d/Strength_SQ
+    unit: m-1
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c05-d/Strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c05-d/Strength
+    unit: m-2
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sf2/c05-e/Strength_H
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sf2/c05-e/Strength_H
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sf2/c05-e/Strength_V
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sf2/c05-e/Strength_V
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sf2/c05-e/Strength_SQ
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sf2/c05-e/Strength_SQ
+    unit: m-1
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sf2/c05-e/Strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sf2/c05-e/Strength
+    unit: m-2
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c05-e/Strength_H
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c05-e/Strength_H
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c05-e/Strength_V
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c05-e/Strength_V
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c05-e/Strength_SQ
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c05-e/Strength_SQ
+    unit: m-1
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c05-e/Strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c05-e/Strength
+    unit: m-2
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c06-a/Strength_H
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c06-a/Strength_H
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c06-a/Strength_V
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c06-a/Strength_V
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c06-a/Strength_SQ
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c06-a/Strength_SQ
+    unit: m-1
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c06-a/Strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c06-a/Strength
+    unit: m-2
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sf2/c06-a/Strength_H
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sf2/c06-a/Strength_H
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sf2/c06-a/Strength_V
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sf2/c06-a/Strength_V
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sf2/c06-a/Strength_SQ
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sf2/c06-a/Strength_SQ
+    unit: m-1
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sf2/c06-a/Strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sf2/c06-a/Strength
+    unit: m-2
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c06-b/Strength_H
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c06-b/Strength_H
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c06-b/Strength_V
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c06-b/Strength_V
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c06-b/Strength_SQ
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c06-b/Strength_SQ
+    unit: m-1
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c06-b/Strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c06-b/Strength
+    unit: m-2
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c06-d/Strength_H
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c06-d/Strength_H
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c06-d/Strength_V
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c06-d/Strength_V
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c06-d/Strength_SQ
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c06-d/Strength_SQ
+    unit: m-1
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c06-d/Strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c06-d/Strength
+    unit: m-2
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sf2/c06-e/Strength_H
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sf2/c06-e/Strength_H
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sf2/c06-e/Strength_V
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sf2/c06-e/Strength_V
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sf2/c06-e/Strength_SQ
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sf2/c06-e/Strength_SQ
+    unit: m-1
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sf2/c06-e/Strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sf2/c06-e/Strength
+    unit: m-2
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c06-e/Strength_H
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c06-e/Strength_H
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c06-e/Strength_V
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c06-e/Strength_V
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c06-e/Strength_SQ
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c06-e/Strength_SQ
+    unit: m-1
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c06-e/Strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c06-e/Strength
+    unit: m-2
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c07-a/Strength_H
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c07-a/Strength_H
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c07-a/Strength_V
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c07-a/Strength_V
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c07-a/Strength_SQ
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c07-a/Strength_SQ
+    unit: m-1
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c07-a/Strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c07-a/Strength
+    unit: m-2
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sf2/c07-a/Strength_H
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sf2/c07-a/Strength_H
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sf2/c07-a/Strength_V
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sf2/c07-a/Strength_V
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sf2/c07-a/Strength_SQ
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sf2/c07-a/Strength_SQ
+    unit: m-1
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sf2/c07-a/Strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sf2/c07-a/Strength
+    unit: m-2
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c07-b/Strength_H
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c07-b/Strength_H
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c07-b/Strength_V
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c07-b/Strength_V
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c07-b/Strength_SQ
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c07-b/Strength_SQ
+    unit: m-1
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c07-b/Strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c07-b/Strength
+    unit: m-2
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c07-d/Strength_H
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c07-d/Strength_H
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c07-d/Strength_V
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c07-d/Strength_V
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c07-d/Strength_SQ
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c07-d/Strength_SQ
+    unit: m-1
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c07-d/Strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c07-d/Strength
+    unit: m-2
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sf2/c07-e/Strength_H
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sf2/c07-e/Strength_H
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sf2/c07-e/Strength_V
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sf2/c07-e/Strength_V
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sf2/c07-e/Strength_SQ
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sf2/c07-e/Strength_SQ
+    unit: m-1
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sf2/c07-e/Strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sf2/c07-e/Strength
+    unit: m-2
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c07-e/Strength_H
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c07-e/Strength_H
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c07-e/Strength_V
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c07-e/Strength_V
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c07-e/Strength_SQ
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c07-e/Strength_SQ
+    unit: m-1
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c07-e/Strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c07-e/Strength
+    unit: m-2
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c08-a/Strength_H
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c08-a/Strength_H
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c08-a/Strength_V
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c08-a/Strength_V
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c08-a/Strength_SQ
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c08-a/Strength_SQ
+    unit: m-1
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c08-a/Strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c08-a/Strength
+    unit: m-2
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sf2/c08-a/Strength_H
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sf2/c08-a/Strength_H
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sf2/c08-a/Strength_V
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sf2/c08-a/Strength_V
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sf2/c08-a/Strength_SQ
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sf2/c08-a/Strength_SQ
+    unit: m-1
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sf2/c08-a/Strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sf2/c08-a/Strength
+    unit: m-2
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c08-b/Strength_H
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c08-b/Strength_H
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c08-b/Strength_V
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c08-b/Strength_V
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c08-b/Strength_SQ
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c08-b/Strength_SQ
+    unit: m-1
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c08-b/Strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c08-b/Strength
+    unit: m-2
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c08-d/Strength_H
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c08-d/Strength_H
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c08-d/Strength_V
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c08-d/Strength_V
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c08-d/Strength_SQ
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c08-d/Strength_SQ
+    unit: m-1
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c08-d/Strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c08-d/Strength
+    unit: m-2
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sf2/c08-e/Strength_H
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sf2/c08-e/Strength_H
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sf2/c08-e/Strength_V
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sf2/c08-e/Strength_V
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sf2/c08-e/Strength_SQ
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sf2/c08-e/Strength_SQ
+    unit: m-1
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sf2/c08-e/Strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sf2/c08-e/Strength
+    unit: m-2
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c08-e/Strength_H
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c08-e/Strength_H
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c08-e/Strength_V
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c08-e/Strength_V
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c08-e/Strength_SQ
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c08-e/Strength_SQ
+    unit: m-1
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c08-e/Strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c08-e/Strength
+    unit: m-2
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c09-a/Strength_H
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c09-a/Strength_H
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c09-a/Strength_V
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c09-a/Strength_V
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c09-a/Strength_SQ
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c09-a/Strength_SQ
+    unit: m-1
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c09-a/Strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c09-a/Strength
+    unit: m-2
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sf2/c09-a/Strength_H
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sf2/c09-a/Strength_H
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sf2/c09-a/Strength_V
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sf2/c09-a/Strength_V
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sf2/c09-a/Strength_SQ
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sf2/c09-a/Strength_SQ
+    unit: m-1
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sf2/c09-a/Strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sf2/c09-a/Strength
+    unit: m-2
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c09-b/Strength_H
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c09-b/Strength_H
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c09-b/Strength_V
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c09-b/Strength_V
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c09-b/Strength_SQ
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c09-b/Strength_SQ
+    unit: m-1
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c09-b/Strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c09-b/Strength
+    unit: m-2
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c09-d/Strength_H
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c09-d/Strength_H
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c09-d/Strength_V
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c09-d/Strength_V
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c09-d/Strength_SQ
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c09-d/Strength_SQ
+    unit: m-1
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c09-d/Strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c09-d/Strength
+    unit: m-2
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sf2/c09-e/Strength_H
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sf2/c09-e/Strength_H
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sf2/c09-e/Strength_V
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sf2/c09-e/Strength_V
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sf2/c09-e/Strength_SQ
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sf2/c09-e/Strength_SQ
+    unit: m-1
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sf2/c09-e/Strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sf2/c09-e/Strength
+    unit: m-2
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c09-e/Strength_H
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c09-e/Strength_H
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c09-e/Strength_V
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c09-e/Strength_V
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c09-e/Strength_SQ
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c09-e/Strength_SQ
+    unit: m-1
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c09-e/Strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c09-e/Strength
+    unit: m-2
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c10-a/Strength_H
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c10-a/Strength_H
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c10-a/Strength_V
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c10-a/Strength_V
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c10-a/Strength_SQ
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c10-a/Strength_SQ
+    unit: m-1
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c10-a/Strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c10-a/Strength
+    unit: m-2
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sf2/c10-a/Strength_H
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sf2/c10-a/Strength_H
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sf2/c10-a/Strength_V
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sf2/c10-a/Strength_V
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sf2/c10-a/Strength_SQ
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sf2/c10-a/Strength_SQ
+    unit: m-1
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sf2/c10-a/Strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sf2/c10-a/Strength
+    unit: m-2
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c10-b/Strength_H
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c10-b/Strength_H
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c10-b/Strength_V
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c10-b/Strength_V
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c10-b/Strength_SQ
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c10-b/Strength_SQ
+    unit: m-1
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c10-b/Strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c10-b/Strength
+    unit: m-2
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c10-d/Strength_H
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c10-d/Strength_H
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c10-d/Strength_V
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c10-d/Strength_V
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c10-d/Strength_SQ
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c10-d/Strength_SQ
+    unit: m-1
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c10-d/Strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c10-d/Strength
+    unit: m-2
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sf2/c10-e/Strength_H
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sf2/c10-e/Strength_H
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sf2/c10-e/Strength_V
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sf2/c10-e/Strength_V
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sf2/c10-e/Strength_SQ
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sf2/c10-e/Strength_SQ
+    unit: m-1
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sf2/c10-e/Strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sf2/c10-e/Strength
+    unit: m-2
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c10-e/Strength_H
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c10-e/Strength_H
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c10-e/Strength_V
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c10-e/Strength_V
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c10-e/Strength_SQ
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c10-e/Strength_SQ
+    unit: m-1
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c10-e/Strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c10-e/Strength
+    unit: m-2
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c11-a/Strength_H
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c11-a/Strength_H
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c11-a/Strength_V
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c11-a/Strength_V
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c11-a/Strength_SQ
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c11-a/Strength_SQ
+    unit: m-1
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c11-a/Strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c11-a/Strength
+    unit: m-2
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sf2/c11-a/Strength_H
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sf2/c11-a/Strength_H
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sf2/c11-a/Strength_V
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sf2/c11-a/Strength_V
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sf2/c11-a/Strength_SQ
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sf2/c11-a/Strength_SQ
+    unit: m-1
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sf2/c11-a/Strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sf2/c11-a/Strength
+    unit: m-2
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c11-b/Strength_H
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c11-b/Strength_H
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c11-b/Strength_V
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c11-b/Strength_V
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c11-b/Strength_SQ
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c11-b/Strength_SQ
+    unit: m-1
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c11-b/Strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c11-b/Strength
+    unit: m-2
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c11-d/Strength_H
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c11-d/Strength_H
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c11-d/Strength_V
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c11-d/Strength_V
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c11-d/Strength_SQ
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c11-d/Strength_SQ
+    unit: m-1
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c11-d/Strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c11-d/Strength
+    unit: m-2
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sf2/c11-e/Strength_H
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sf2/c11-e/Strength_H
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sf2/c11-e/Strength_V
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sf2/c11-e/Strength_V
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sf2/c11-e/Strength_SQ
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sf2/c11-e/Strength_SQ
+    unit: m-1
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sf2/c11-e/Strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sf2/c11-e/Strength
+    unit: m-2
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c11-e/Strength_H
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c11-e/Strength_H
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c11-e/Strength_V
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c11-e/Strength_V
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c11-e/Strength_SQ
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c11-e/Strength_SQ
+    unit: m-1
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c11-e/Strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c11-e/Strength
+    unit: m-2
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c12-a/Strength_H
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c12-a/Strength_H
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c12-a/Strength_V
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c12-a/Strength_V
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c12-a/Strength_SQ
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c12-a/Strength_SQ
+    unit: m-1
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c12-a/Strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c12-a/Strength
+    unit: m-2
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sf2/c12-a/Strength_H
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sf2/c12-a/Strength_H
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sf2/c12-a/Strength_V
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sf2/c12-a/Strength_V
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sf2/c12-a/Strength_SQ
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sf2/c12-a/Strength_SQ
+    unit: m-1
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sf2/c12-a/Strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sf2/c12-a/Strength
+    unit: m-2
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c12-b/Strength_H
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c12-b/Strength_H
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c12-b/Strength_V
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c12-b/Strength_V
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c12-b/Strength_SQ
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c12-b/Strength_SQ
+    unit: m-1
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c12-b/Strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c12-b/Strength
+    unit: m-2
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c12-d/Strength_H
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c12-d/Strength_H
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c12-d/Strength_V
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c12-d/Strength_V
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c12-d/Strength_SQ
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c12-d/Strength_SQ
+    unit: m-1
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c12-d/Strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c12-d/Strength
+    unit: m-2
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sf2/c12-e/Strength_H
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sf2/c12-e/Strength_H
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sf2/c12-e/Strength_V
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sf2/c12-e/Strength_V
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sf2/c12-e/Strength_SQ
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sf2/c12-e/Strength_SQ
+    unit: m-1
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sf2/c12-e/Strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sf2/c12-e/Strength
+    unit: m-2
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c12-e/Strength_H
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c12-e/Strength_H
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c12-e/Strength_V
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c12-e/Strength_V
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c12-e/Strength_SQ
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c12-e/Strength_SQ
+    unit: m-1
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c12-e/Strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c12-e/Strength
+    unit: m-2
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c13-a/Strength_H
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c13-a/Strength_H
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c13-a/Strength_V
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c13-a/Strength_V
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c13-a/Strength_SQ
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c13-a/Strength_SQ
+    unit: m-1
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c13-a/Strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c13-a/Strength
+    unit: m-2
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sf2/c13-a/Strength_H
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sf2/c13-a/Strength_H
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sf2/c13-a/Strength_V
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sf2/c13-a/Strength_V
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sf2/c13-a/Strength_SQ
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sf2/c13-a/Strength_SQ
+    unit: m-1
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sf2/c13-a/Strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sf2/c13-a/Strength
+    unit: m-2
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c13-b/Strength_H
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c13-b/Strength_H
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c13-b/Strength_V
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c13-b/Strength_V
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c13-b/Strength_SQ
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c13-b/Strength_SQ
+    unit: m-1
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c13-b/Strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c13-b/Strength
+    unit: m-2
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c13-d/Strength_H
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c13-d/Strength_H
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c13-d/Strength_V
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c13-d/Strength_V
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c13-d/Strength_SQ
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c13-d/Strength_SQ
+    unit: m-1
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c13-d/Strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c13-d/Strength
+    unit: m-2
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sf2/c13-e/Strength_H
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sf2/c13-e/Strength_H
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sf2/c13-e/Strength_V
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sf2/c13-e/Strength_V
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sf2/c13-e/Strength_SQ
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sf2/c13-e/Strength_SQ
+    unit: m-1
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sf2/c13-e/Strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sf2/c13-e/Strength
+    unit: m-2
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c13-e/Strength_H
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c13-e/Strength_H
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c13-e/Strength_V
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c13-e/Strength_V
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c13-e/Strength_SQ
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c13-e/Strength_SQ
+    unit: m-1
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c13-e/Strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c13-e/Strength
+    unit: m-2
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c14-a/Strength_H
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c14-a/Strength_H
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c14-a/Strength_V
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c14-a/Strength_V
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c14-a/Strength_SQ
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c14-a/Strength_SQ
+    unit: m-1
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c14-a/Strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c14-a/Strength
+    unit: m-2
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sf2/c14-a/Strength_H
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sf2/c14-a/Strength_H
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sf2/c14-a/Strength_V
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sf2/c14-a/Strength_V
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sf2/c14-a/Strength_SQ
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sf2/c14-a/Strength_SQ
+    unit: m-1
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sf2/c14-a/Strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sf2/c14-a/Strength
+    unit: m-2
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c14-b/Strength_H
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c14-b/Strength_H
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c14-b/Strength_V
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c14-b/Strength_V
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c14-b/Strength_SQ
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c14-b/Strength_SQ
+    unit: m-1
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c14-b/Strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c14-b/Strength
+    unit: m-2
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c14-d/Strength_H
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c14-d/Strength_H
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c14-d/Strength_V
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c14-d/Strength_V
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c14-d/Strength_SQ
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c14-d/Strength_SQ
+    unit: m-1
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c14-d/Strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c14-d/Strength
+    unit: m-2
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sf2/c14-e/Strength_H
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sf2/c14-e/Strength_H
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sf2/c14-e/Strength_V
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sf2/c14-e/Strength_V
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sf2/c14-e/Strength_SQ
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sf2/c14-e/Strength_SQ
+    unit: m-1
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sf2/c14-e/Strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sf2/c14-e/Strength
+    unit: m-2
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c14-e/Strength_H
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c14-e/Strength_H
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c14-e/Strength_V
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c14-e/Strength_V
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c14-e/Strength_SQ
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c14-e/Strength_SQ
+    unit: m-1
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c14-e/Strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c14-e/Strength
+    unit: m-2
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c15-a/Strength_H
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c15-a/Strength_H
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c15-a/Strength_V
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c15-a/Strength_V
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c15-a/Strength_SQ
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c15-a/Strength_SQ
+    unit: m-1
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c15-a/Strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c15-a/Strength
+    unit: m-2
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sf2/c15-a/Strength_H
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sf2/c15-a/Strength_H
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sf2/c15-a/Strength_V
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sf2/c15-a/Strength_V
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sf2/c15-a/Strength_SQ
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sf2/c15-a/Strength_SQ
+    unit: m-1
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sf2/c15-a/Strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sf2/c15-a/Strength
+    unit: m-2
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c15-b/Strength_H
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c15-b/Strength_H
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c15-b/Strength_V
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c15-b/Strength_V
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c15-b/Strength_SQ
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c15-b/Strength_SQ
+    unit: m-1
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c15-b/Strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c15-b/Strength
+    unit: m-2
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c15-d/Strength_H
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c15-d/Strength_H
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c15-d/Strength_V
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c15-d/Strength_V
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c15-d/Strength_SQ
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c15-d/Strength_SQ
+    unit: m-1
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c15-d/Strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c15-d/Strength
+    unit: m-2
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sf2/c15-e/Strength_H
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sf2/c15-e/Strength_H
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sf2/c15-e/Strength_V
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sf2/c15-e/Strength_V
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sf2/c15-e/Strength_SQ
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sf2/c15-e/Strength_SQ
+    unit: m-1
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sf2/c15-e/Strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sf2/c15-e/Strength
+    unit: m-2
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c15-e/Strength_H
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c15-e/Strength_H
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c15-e/Strength_V
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c15-e/Strength_V
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c15-e/Strength_SQ
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c15-e/Strength_SQ
+    unit: m-1
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c15-e/Strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c15-e/Strength
+    unit: m-2
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c16-a/Strength_H
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c16-a/Strength_H
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c16-a/Strength_V
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c16-a/Strength_V
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c16-a/Strength_SQ
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c16-a/Strength_SQ
+    unit: m-1
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c16-a/Strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c16-a/Strength
+    unit: m-2
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sf2/c16-a/Strength_H
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sf2/c16-a/Strength_H
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sf2/c16-a/Strength_V
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sf2/c16-a/Strength_V
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sf2/c16-a/Strength_SQ
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sf2/c16-a/Strength_SQ
+    unit: m-1
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sf2/c16-a/Strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sf2/c16-a/Strength
+    unit: m-2
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c16-b/Strength_H
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c16-b/Strength_H
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c16-b/Strength_V
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c16-b/Strength_V
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c16-b/Strength_SQ
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c16-b/Strength_SQ
+    unit: m-1
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c16-b/Strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c16-b/Strength
+    unit: m-2
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c16-d/Strength_H
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c16-d/Strength_H
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c16-d/Strength_V
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c16-d/Strength_V
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c16-d/Strength_SQ
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c16-d/Strength_SQ
+    unit: m-1
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c16-d/Strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c16-d/Strength
+    unit: m-2
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sf2/c16-e/Strength_H
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sf2/c16-e/Strength_H
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sf2/c16-e/Strength_V
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sf2/c16-e/Strength_V
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sf2/c16-e/Strength_SQ
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sf2/c16-e/Strength_SQ
+    unit: m-1
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sf2/c16-e/Strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sf2/c16-e/Strength
+    unit: m-2
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c16-e/Strength_H
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c16-e/Strength_H
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c16-e/Strength_V
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c16-e/Strength_V
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c16-e/Strength_SQ
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c16-e/Strength_SQ
+    unit: m-1
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c16-e/Strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c16-e/Strength
+    unit: m-2
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c17-a/Strength_H
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c17-a/Strength_H
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c17-a/Strength_V
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c17-a/Strength_V
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c17-a/Strength_SQ
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c17-a/Strength_SQ
+    unit: m-1
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c17-a/Strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c17-a/Strength
+    unit: m-2
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sf2/c17-a/Strength_H
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sf2/c17-a/Strength_H
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sf2/c17-a/Strength_V
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sf2/c17-a/Strength_V
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sf2/c17-a/Strength_SQ
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sf2/c17-a/Strength_SQ
+    unit: m-1
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sf2/c17-a/Strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sf2/c17-a/Strength
+    unit: m-2
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c17-b/Strength_H
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c17-b/Strength_H
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c17-b/Strength_V
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c17-b/Strength_V
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c17-b/Strength_SQ
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c17-b/Strength_SQ
+    unit: m-1
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c17-b/Strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c17-b/Strength
+    unit: m-2
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c17-d/Strength_H
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c17-d/Strength_H
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c17-d/Strength_V
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c17-d/Strength_V
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c17-d/Strength_SQ
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c17-d/Strength_SQ
+    unit: m-1
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c17-d/Strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c17-d/Strength
+    unit: m-2
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sf2/c17-e/Strength_H
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sf2/c17-e/Strength_H
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sf2/c17-e/Strength_V
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sf2/c17-e/Strength_V
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sf2/c17-e/Strength_SQ
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sf2/c17-e/Strength_SQ
+    unit: m-1
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sf2/c17-e/Strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sf2/c17-e/Strength
+    unit: m-2
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c17-e/Strength_H
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c17-e/Strength_H
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c17-e/Strength_V
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c17-e/Strength_V
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c17-e/Strength_SQ
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c17-e/Strength_SQ
+    unit: m-1
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c17-e/Strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c17-e/Strength
+    unit: m-2
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c18-a/Strength_H
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c18-a/Strength_H
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c18-a/Strength_V
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c18-a/Strength_V
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c18-a/Strength_SQ
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c18-a/Strength_SQ
+    unit: m-1
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c18-a/Strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c18-a/Strength
+    unit: m-2
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sf2/c18-a/Strength_H
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sf2/c18-a/Strength_H
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sf2/c18-a/Strength_V
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sf2/c18-a/Strength_V
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sf2/c18-a/Strength_SQ
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sf2/c18-a/Strength_SQ
+    unit: m-1
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sf2/c18-a/Strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sf2/c18-a/Strength
+    unit: m-2
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c18-b/Strength_H
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c18-b/Strength_H
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c18-b/Strength_V
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c18-b/Strength_V
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c18-b/Strength_SQ
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c18-b/Strength_SQ
+    unit: m-1
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c18-b/Strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c18-b/Strength
+    unit: m-2
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c18-d/Strength_H
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c18-d/Strength_H
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c18-d/Strength_V
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c18-d/Strength_V
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c18-d/Strength_SQ
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c18-d/Strength_SQ
+    unit: m-1
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c18-d/Strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c18-d/Strength
+    unit: m-2
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sf2/c18-e/Strength_H
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sf2/c18-e/Strength_H
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sf2/c18-e/Strength_V
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sf2/c18-e/Strength_V
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sf2/c18-e/Strength_SQ
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sf2/c18-e/Strength_SQ
+    unit: m-1
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sf2/c18-e/Strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sf2/c18-e/Strength
+    unit: m-2
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c18-e/Strength_H
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c18-e/Strength_H
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c18-e/Strength_V
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c18-e/Strength_V
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c18-e/Strength_SQ
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c18-e/Strength_SQ
+    unit: m-1
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c18-e/Strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c18-e/Strength
+    unit: m-2
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c19-a/Strength_H
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c19-a/Strength_H
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c19-a/Strength_V
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c19-a/Strength_V
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c19-a/Strength_SQ
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c19-a/Strength_SQ
+    unit: m-1
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c19-a/Strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c19-a/Strength
+    unit: m-2
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sf2/c19-a/Strength_H
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sf2/c19-a/Strength_H
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sf2/c19-a/Strength_V
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sf2/c19-a/Strength_V
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sf2/c19-a/Strength_SQ
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sf2/c19-a/Strength_SQ
+    unit: m-1
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sf2/c19-a/Strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sf2/c19-a/Strength
+    unit: m-2
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c19-b/Strength_H
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c19-b/Strength_H
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c19-b/Strength_V
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c19-b/Strength_V
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c19-b/Strength_SQ
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c19-b/Strength_SQ
+    unit: m-1
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c19-b/Strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c19-b/Strength
+    unit: m-2
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c19-d/Strength_H
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c19-d/Strength_H
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c19-d/Strength_V
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c19-d/Strength_V
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c19-d/Strength_SQ
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c19-d/Strength_SQ
+    unit: m-1
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c19-d/Strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c19-d/Strength
+    unit: m-2
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sf2/c19-e/Strength_H
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sf2/c19-e/Strength_H
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sf2/c19-e/Strength_V
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sf2/c19-e/Strength_V
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sf2/c19-e/Strength_SQ
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sf2/c19-e/Strength_SQ
+    unit: m-1
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sf2/c19-e/Strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sf2/c19-e/Strength
+    unit: m-2
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c19-e/Strength_H
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c19-e/Strength_H
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c19-e/Strength_V
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c19-e/Strength_V
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c19-e/Strength_SQ
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c19-e/Strength_SQ
+    unit: m-1
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c19-e/Strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c19-e/Strength
+    unit: m-2
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c20-a/Strength_H
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c20-a/Strength_H
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c20-a/Strength_V
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c20-a/Strength_V
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c20-a/Strength_SQ
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c20-a/Strength_SQ
+    unit: m-1
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c20-a/Strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c20-a/Strength
+    unit: m-2
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sf2/c20-a/Strength_H
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sf2/c20-a/Strength_H
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sf2/c20-a/Strength_V
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sf2/c20-a/Strength_V
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sf2/c20-a/Strength_SQ
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sf2/c20-a/Strength_SQ
+    unit: m-1
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sf2/c20-a/Strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sf2/c20-a/Strength
+    unit: m-2
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c20-b/Strength_H
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c20-b/Strength_H
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c20-b/Strength_V
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c20-b/Strength_V
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c20-b/Strength_SQ
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c20-b/Strength_SQ
+    unit: m-1
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c20-b/Strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c20-b/Strength
+    unit: m-2
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c20-d/Strength_H
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c20-d/Strength_H
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c20-d/Strength_V
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c20-d/Strength_V
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c20-d/Strength_SQ
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c20-d/Strength_SQ
+    unit: m-1
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c20-d/Strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c20-d/Strength
+    unit: m-2
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sf2/c20-e/Strength_H
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sf2/c20-e/Strength_H
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sf2/c20-e/Strength_V
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sf2/c20-e/Strength_V
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sf2/c20-e/Strength_SQ
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sf2/c20-e/Strength_SQ
+    unit: m-1
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sf2/c20-e/Strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sf2/c20-e/Strength
+    unit: m-2
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c20-e/Strength_H
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c20-e/Strength_H
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c20-e/Strength_V
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c20-e/Strength_V
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c20-e/Strength_SQ
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c20-e/Strength_SQ
+    unit: m-1
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c20-e/Strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c20-e/Strength
+    unit: m-2
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c21-a/Strength_H
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c21-a/Strength_H
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c21-a/Strength_V
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c21-a/Strength_V
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c21-a/Strength_SQ
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c21-a/Strength_SQ
+    unit: m-1
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c21-a/Strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c21-a/Strength
+    unit: m-2
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sf2/c21-a/Strength_H
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sf2/c21-a/Strength_H
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sf2/c21-a/Strength_V
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sf2/c21-a/Strength_V
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sf2/c21-a/Strength_SQ
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sf2/c21-a/Strength_SQ
+    unit: m-1
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sf2/c21-a/Strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sf2/c21-a/Strength
+    unit: m-2
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c21-b/Strength_H
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c21-b/Strength_H
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c21-b/Strength_V
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c21-b/Strength_V
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c21-b/Strength_SQ
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c21-b/Strength_SQ
+    unit: m-1
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c21-b/Strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c21-b/Strength
+    unit: m-2
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c21-d/Strength_H
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c21-d/Strength_H
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c21-d/Strength_V
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c21-d/Strength_V
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c21-d/Strength_SQ
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c21-d/Strength_SQ
+    unit: m-1
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c21-d/Strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c21-d/Strength
+    unit: m-2
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sf2/c21-e/Strength_H
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sf2/c21-e/Strength_H
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sf2/c21-e/Strength_V
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sf2/c21-e/Strength_V
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sf2/c21-e/Strength_SQ
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sf2/c21-e/Strength_SQ
+    unit: m-1
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sf2/c21-e/Strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sf2/c21-e/Strength
+    unit: m-2
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c21-e/Strength_H
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c21-e/Strength_H
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c21-e/Strength_V
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c21-e/Strength_V
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c21-e/Strength_SQ
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c21-e/Strength_SQ
+    unit: m-1
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c21-e/Strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c21-e/Strength
+    unit: m-2
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c22-a/Strength_H
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c22-a/Strength_H
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c22-a/Strength_V
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c22-a/Strength_V
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c22-a/Strength_SQ
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c22-a/Strength_SQ
+    unit: m-1
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c22-a/Strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c22-a/Strength
+    unit: m-2
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sf2/c22-a/Strength_H
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sf2/c22-a/Strength_H
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sf2/c22-a/Strength_V
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sf2/c22-a/Strength_V
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sf2/c22-a/Strength_SQ
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sf2/c22-a/Strength_SQ
+    unit: m-1
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sf2/c22-a/Strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sf2/c22-a/Strength
+    unit: m-2
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c22-b/Strength_H
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c22-b/Strength_H
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c22-b/Strength_V
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c22-b/Strength_V
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c22-b/Strength_SQ
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c22-b/Strength_SQ
+    unit: m-1
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c22-b/Strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c22-b/Strength
+    unit: m-2
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c22-d/Strength_H
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c22-d/Strength_H
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c22-d/Strength_V
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c22-d/Strength_V
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c22-d/Strength_SQ
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c22-d/Strength_SQ
+    unit: m-1
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c22-d/Strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c22-d/Strength
+    unit: m-2
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sf2/c22-e/Strength_H
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sf2/c22-e/Strength_H
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sf2/c22-e/Strength_V
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sf2/c22-e/Strength_V
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sf2/c22-e/Strength_SQ
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sf2/c22-e/Strength_SQ
+    unit: m-1
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sf2/c22-e/Strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sf2/c22-e/Strength
+    unit: m-2
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c22-e/Strength_H
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c22-e/Strength_H
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c22-e/Strength_V
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c22-e/Strength_V
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c22-e/Strength_SQ
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c22-e/Strength_SQ
+    unit: m-1
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c22-e/Strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c22-e/Strength
+    unit: m-2
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c23-a/Strength_H
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c23-a/Strength_H
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c23-a/Strength_V
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c23-a/Strength_V
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c23-a/Strength_SQ
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c23-a/Strength_SQ
+    unit: m-1
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c23-a/Strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c23-a/Strength
+    unit: m-2
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sf2/c23-a/Strength_H
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sf2/c23-a/Strength_H
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sf2/c23-a/Strength_V
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sf2/c23-a/Strength_V
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sf2/c23-a/Strength_SQ
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sf2/c23-a/Strength_SQ
+    unit: m-1
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sf2/c23-a/Strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sf2/c23-a/Strength
+    unit: m-2
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c23-b/Strength_H
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c23-b/Strength_H
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c23-b/Strength_V
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c23-b/Strength_V
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c23-b/Strength_SQ
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c23-b/Strength_SQ
+    unit: m-1
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c23-b/Strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c23-b/Strength
+    unit: m-2
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c23-d/Strength_H
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c23-d/Strength_H
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c23-d/Strength_V
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c23-d/Strength_V
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c23-d/Strength_SQ
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c23-d/Strength_SQ
+    unit: m-1
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c23-d/Strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c23-d/Strength
+    unit: m-2
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sf2/c23-e/Strength_H
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sf2/c23-e/Strength_H
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sf2/c23-e/Strength_V
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sf2/c23-e/Strength_V
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sf2/c23-e/Strength_SQ
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sf2/c23-e/Strength_SQ
+    unit: m-1
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sf2/c23-e/Strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sf2/c23-e/Strength
+    unit: m-2
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c23-e/Strength_H
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c23-e/Strength_H
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c23-e/Strength_V
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c23-e/Strength_V
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c23-e/Strength_SQ
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c23-e/Strength_SQ
+    unit: m-1
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c23-e/Strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c23-e/Strength
+    unit: m-2
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c24-a/Strength_H
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c24-a/Strength_H
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c24-a/Strength_V
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c24-a/Strength_V
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c24-a/Strength_SQ
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c24-a/Strength_SQ
+    unit: m-1
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c24-a/Strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c24-a/Strength
+    unit: m-2
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sf2/c24-a/Strength_H
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sf2/c24-a/Strength_H
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sf2/c24-a/Strength_V
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sf2/c24-a/Strength_V
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sf2/c24-a/Strength_SQ
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sf2/c24-a/Strength_SQ
+    unit: m-1
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sf2/c24-a/Strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sf2/c24-a/Strength
+    unit: m-2
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c24-b/Strength_H
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c24-b/Strength_H
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c24-b/Strength_V
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c24-b/Strength_V
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c24-b/Strength_SQ
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c24-b/Strength_SQ
+    unit: m-1
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c24-b/Strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c24-b/Strength
+    unit: m-2
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c24-d/Strength_H
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c24-d/Strength_H
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c24-d/Strength_V
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c24-d/Strength_V
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c24-d/Strength_SQ
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c24-d/Strength_SQ
+    unit: m-1
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c24-d/Strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c24-d/Strength
+    unit: m-2
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sf2/c24-e/Strength_H
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sf2/c24-e/Strength_H
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sf2/c24-e/Strength_V
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sf2/c24-e/Strength_V
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sf2/c24-e/Strength_SQ
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sf2/c24-e/Strength_SQ
+    unit: m-1
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sf2/c24-e/Strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sf2/c24-e/Strength
+    unit: m-2
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c24-e/Strength_H
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c24-e/Strength_H
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c24-e/Strength_V
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c24-e/Strength_V
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c24-e/Strength_SQ
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c24-e/Strength_SQ
+    unit: m-1
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c24-e/Strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c24-e/Strength
+    unit: m-2
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c25-a/Strength_H
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c25-a/Strength_H
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c25-a/Strength_V
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c25-a/Strength_V
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c25-a/Strength_SQ
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c25-a/Strength_SQ
+    unit: m-1
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c25-a/Strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c25-a/Strength
+    unit: m-2
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sf2/c25-a/Strength_H
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sf2/c25-a/Strength_H
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sf2/c25-a/Strength_V
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sf2/c25-a/Strength_V
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sf2/c25-a/Strength_SQ
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sf2/c25-a/Strength_SQ
+    unit: m-1
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sf2/c25-a/Strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sf2/c25-a/Strength
+    unit: m-2
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c25-b/Strength_H
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c25-b/Strength_H
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c25-b/Strength_V
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c25-b/Strength_V
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c25-b/Strength_SQ
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c25-b/Strength_SQ
+    unit: m-1
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c25-b/Strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c25-b/Strength
+    unit: m-2
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c25-d/Strength_H
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c25-d/Strength_H
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c25-d/Strength_V
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c25-d/Strength_V
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c25-d/Strength_SQ
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c25-d/Strength_SQ
+    unit: m-1
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c25-d/Strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c25-d/Strength
+    unit: m-2
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sf2/c25-e/Strength_H
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sf2/c25-e/Strength_H
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sf2/c25-e/Strength_V
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sf2/c25-e/Strength_V
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sf2/c25-e/Strength_SQ
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sf2/c25-e/Strength_SQ
+    unit: m-1
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sf2/c25-e/Strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sf2/c25-e/Strength
+    unit: m-2
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c25-e/Strength_H
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c25-e/Strength_H
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c25-e/Strength_V
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c25-e/Strength_V
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c25-e/Strength_SQ
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c25-e/Strength_SQ
+    unit: m-1
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c25-e/Strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c25-e/Strength
+    unit: m-2
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c26-a/Strength_H
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c26-a/Strength_H
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c26-a/Strength_V
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c26-a/Strength_V
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c26-a/Strength_SQ
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c26-a/Strength_SQ
+    unit: m-1
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c26-a/Strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c26-a/Strength
+    unit: m-2
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sf2/c26-a/Strength_H
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sf2/c26-a/Strength_H
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sf2/c26-a/Strength_V
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sf2/c26-a/Strength_V
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sf2/c26-a/Strength_SQ
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sf2/c26-a/Strength_SQ
+    unit: m-1
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sf2/c26-a/Strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sf2/c26-a/Strength
+    unit: m-2
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c26-b/Strength_H
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c26-b/Strength_H
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c26-b/Strength_V
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c26-b/Strength_V
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c26-b/Strength_SQ
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c26-b/Strength_SQ
+    unit: m-1
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c26-b/Strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c26-b/Strength
+    unit: m-2
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c26-d/Strength_H
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c26-d/Strength_H
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c26-d/Strength_V
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c26-d/Strength_V
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c26-d/Strength_SQ
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c26-d/Strength_SQ
+    unit: m-1
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c26-d/Strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c26-d/Strength
+    unit: m-2
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sf2/c26-e/Strength_H
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sf2/c26-e/Strength_H
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sf2/c26-e/Strength_V
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sf2/c26-e/Strength_V
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sf2/c26-e/Strength_SQ
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sf2/c26-e/Strength_SQ
+    unit: m-1
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sf2/c26-e/Strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sf2/c26-e/Strength
+    unit: m-2
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c26-e/Strength_H
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c26-e/Strength_H
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c26-e/Strength_V
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c26-e/Strength_V
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c26-e/Strength_SQ
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c26-e/Strength_SQ
+    unit: m-1
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c26-e/Strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c26-e/Strength
+    unit: m-2
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c27-a/Strength_H
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c27-a/Strength_H
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c27-a/Strength_V
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c27-a/Strength_V
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c27-a/Strength_SQ
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c27-a/Strength_SQ
+    unit: m-1
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c27-a/Strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c27-a/Strength
+    unit: m-2
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sf2/c27-a/Strength_H
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sf2/c27-a/Strength_H
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sf2/c27-a/Strength_V
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sf2/c27-a/Strength_V
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sf2/c27-a/Strength_SQ
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sf2/c27-a/Strength_SQ
+    unit: m-1
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sf2/c27-a/Strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sf2/c27-a/Strength
+    unit: m-2
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c27-b/Strength_H
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c27-b/Strength_H
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c27-b/Strength_V
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c27-b/Strength_V
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c27-b/Strength_SQ
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c27-b/Strength_SQ
+    unit: m-1
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c27-b/Strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c27-b/Strength
+    unit: m-2
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c27-d/Strength_H
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c27-d/Strength_H
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c27-d/Strength_V
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c27-d/Strength_V
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c27-d/Strength_SQ
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c27-d/Strength_SQ
+    unit: m-1
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c27-d/Strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c27-d/Strength
+    unit: m-2
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sf2/c27-e/Strength_H
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sf2/c27-e/Strength_H
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sf2/c27-e/Strength_V
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sf2/c27-e/Strength_V
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sf2/c27-e/Strength_SQ
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sf2/c27-e/Strength_SQ
+    unit: m-1
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sf2/c27-e/Strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sf2/c27-e/Strength
+    unit: m-2
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c27-e/Strength_H
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c27-e/Strength_H
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c27-e/Strength_V
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c27-e/Strength_V
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c27-e/Strength_SQ
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c27-e/Strength_SQ
+    unit: m-1
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c27-e/Strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c27-e/Strength
+    unit: m-2
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c28-a/Strength_H
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c28-a/Strength_H
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c28-a/Strength_V
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c28-a/Strength_V
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c28-a/Strength_SQ
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c28-a/Strength_SQ
+    unit: m-1
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c28-a/Strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c28-a/Strength
+    unit: m-2
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sf2/c28-a/Strength_H
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sf2/c28-a/Strength_H
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sf2/c28-a/Strength_V
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sf2/c28-a/Strength_V
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sf2/c28-a/Strength_SQ
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sf2/c28-a/Strength_SQ
+    unit: m-1
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sf2/c28-a/Strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sf2/c28-a/Strength
+    unit: m-2
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c28-b/Strength_H
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c28-b/Strength_H
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c28-b/Strength_V
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c28-b/Strength_V
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c28-b/Strength_SQ
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c28-b/Strength_SQ
+    unit: m-1
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c28-b/Strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c28-b/Strength
+    unit: m-2
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c28-d/Strength_H
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c28-d/Strength_H
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c28-d/Strength_V
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c28-d/Strength_V
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c28-d/Strength_SQ
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c28-d/Strength_SQ
+    unit: m-1
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c28-d/Strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c28-d/Strength
+    unit: m-2
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sf2/c28-e/Strength_H
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sf2/c28-e/Strength_H
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sf2/c28-e/Strength_V
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sf2/c28-e/Strength_V
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sf2/c28-e/Strength_SQ
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sf2/c28-e/Strength_SQ
+    unit: m-1
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sf2/c28-e/Strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sf2/c28-e/Strength
+    unit: m-2
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c28-e/Strength_H
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c28-e/Strength_H
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c28-e/Strength_V
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c28-e/Strength_V
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c28-e/Strength_SQ
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c28-e/Strength_SQ
+    unit: m-1
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c28-e/Strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c28-e/Strength
+    unit: m-2
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c29-a/Strength_H
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c29-a/Strength_H
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c29-a/Strength_V
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c29-a/Strength_V
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c29-a/Strength_SQ
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c29-a/Strength_SQ
+    unit: m-1
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c29-a/Strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c29-a/Strength
+    unit: m-2
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sf2/c29-a/Strength_H
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sf2/c29-a/Strength_H
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sf2/c29-a/Strength_V
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sf2/c29-a/Strength_V
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sf2/c29-a/Strength_SQ
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sf2/c29-a/Strength_SQ
+    unit: m-1
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sf2/c29-a/Strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sf2/c29-a/Strength
+    unit: m-2
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c29-b/Strength_H
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c29-b/Strength_H
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c29-b/Strength_V
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c29-b/Strength_V
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c29-b/Strength_SQ
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c29-b/Strength_SQ
+    unit: m-1
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c29-b/Strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c29-b/Strength
+    unit: m-2
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c29-d/Strength_H
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c29-d/Strength_H
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c29-d/Strength_V
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c29-d/Strength_V
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c29-d/Strength_SQ
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c29-d/Strength_SQ
+    unit: m-1
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c29-d/Strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c29-d/Strength
+    unit: m-2
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sf2/c29-e/Strength_H
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sf2/c29-e/Strength_H
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sf2/c29-e/Strength_V
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sf2/c29-e/Strength_V
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sf2/c29-e/Strength_SQ
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sf2/c29-e/Strength_SQ
+    unit: m-1
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sf2/c29-e/Strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sf2/c29-e/Strength
+    unit: m-2
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c29-e/Strength_H
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c29-e/Strength_H
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c29-e/Strength_V
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c29-e/Strength_V
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c29-e/Strength_SQ
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c29-e/Strength_SQ
+    unit: m-1
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c29-e/Strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c29-e/Strength
+    unit: m-2
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c30-a/Strength_H
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c30-a/Strength_H
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c30-a/Strength_V
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c30-a/Strength_V
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c30-a/Strength_SQ
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c30-a/Strength_SQ
+    unit: m-1
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c30-a/Strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c30-a/Strength
+    unit: m-2
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sf2/c30-a/Strength_H
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sf2/c30-a/Strength_H
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sf2/c30-a/Strength_V
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sf2/c30-a/Strength_V
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sf2/c30-a/Strength_SQ
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sf2/c30-a/Strength_SQ
+    unit: m-1
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sf2/c30-a/Strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sf2/c30-a/Strength
+    unit: m-2
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c30-b/Strength_H
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c30-b/Strength_H
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c30-b/Strength_V
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c30-b/Strength_V
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c30-b/Strength_SQ
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c30-b/Strength_SQ
+    unit: m-1
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c30-b/Strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c30-b/Strength
+    unit: m-2
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c30-d/Strength_H
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c30-d/Strength_H
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c30-d/Strength_V
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c30-d/Strength_V
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c30-d/Strength_SQ
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c30-d/Strength_SQ
+    unit: m-1
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c30-d/Strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c30-d/Strength
+    unit: m-2
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sf2/c30-e/Strength_H
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sf2/c30-e/Strength_H
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sf2/c30-e/Strength_V
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sf2/c30-e/Strength_V
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sf2/c30-e/Strength_SQ
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sf2/c30-e/Strength_SQ
+    unit: m-1
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sf2/c30-e/Strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sf2/c30-e/Strength
+    unit: m-2
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c30-e/Strength_H
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c30-e/Strength_H
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c30-e/Strength_V
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c30-e/Strength_V
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c30-e/Strength_SQ
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c30-e/Strength_SQ
+    unit: m-1
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c30-e/Strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c30-e/Strength
+    unit: m-2
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c31-a/Strength_H
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c31-a/Strength_H
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c31-a/Strength_V
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c31-a/Strength_V
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c31-a/Strength_SQ
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c31-a/Strength_SQ
+    unit: m-1
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c31-a/Strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c31-a/Strength
+    unit: m-2
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sf2/c31-a/Strength_H
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sf2/c31-a/Strength_H
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sf2/c31-a/Strength_V
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sf2/c31-a/Strength_V
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sf2/c31-a/Strength_SQ
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sf2/c31-a/Strength_SQ
+    unit: m-1
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sf2/c31-a/Strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sf2/c31-a/Strength
+    unit: m-2
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c31-b/Strength_H
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c31-b/Strength_H
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c31-b/Strength_V
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c31-b/Strength_V
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c31-b/Strength_SQ
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c31-b/Strength_SQ
+    unit: m-1
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c31-b/Strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c31-b/Strength
+    unit: m-2
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c31-d/Strength_H
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c31-d/Strength_H
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c31-d/Strength_V
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c31-d/Strength_V
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c31-d/Strength_SQ
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c31-d/Strength_SQ
+    unit: m-1
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c31-d/Strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c31-d/Strength
+    unit: m-2
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sf2/c31-e/Strength_H
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sf2/c31-e/Strength_H
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sf2/c31-e/Strength_V
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sf2/c31-e/Strength_V
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sf2/c31-e/Strength_SQ
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sf2/c31-e/Strength_SQ
+    unit: m-1
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sf2/c31-e/Strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sf2/c31-e/Strength
+    unit: m-2
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c31-e/Strength_H
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c31-e/Strength_H
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c31-e/Strength_V
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c31-e/Strength_V
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c31-e/Strength_SQ
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c31-e/Strength_SQ
+    unit: m-1
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c31-e/Strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c31-e/Strength
+    unit: m-2
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c32-a/Strength_H
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c32-a/Strength_H
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c32-a/Strength_V
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c32-a/Strength_V
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c32-a/Strength_SQ
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c32-a/Strength_SQ
+    unit: m-1
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c32-a/Strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c32-a/Strength
+    unit: m-2
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sf2/c32-a/Strength_H
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sf2/c32-a/Strength_H
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sf2/c32-a/Strength_V
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sf2/c32-a/Strength_V
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sf2/c32-a/Strength_SQ
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sf2/c32-a/Strength_SQ
+    unit: m-1
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sf2/c32-a/Strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sf2/c32-a/Strength
+    unit: m-2
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c32-b/Strength_H
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c32-b/Strength_H
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c32-b/Strength_V
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c32-b/Strength_V
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c32-b/Strength_SQ
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c32-b/Strength_SQ
+    unit: m-1
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c32-b/Strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c32-b/Strength
+    unit: m-2
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c32-d/Strength_H
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c32-d/Strength_H
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c32-d/Strength_V
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c32-d/Strength_V
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c32-d/Strength_SQ
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c32-d/Strength_SQ
+    unit: m-1
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c32-d/Strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c32-d/Strength
+    unit: m-2
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sf2/c32-e/Strength_H
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sf2/c32-e/Strength_H
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sf2/c32-e/Strength_V
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sf2/c32-e/Strength_V
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sf2/c32-e/Strength_SQ
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sf2/c32-e/Strength_SQ
+    unit: m-1
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sf2/c32-e/Strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sf2/c32-e/Strength
+    unit: m-2
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c32-e/Strength_H
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c32-e/Strength_H
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c32-e/Strength_V
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c32-e/Strength_V
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c32-e/Strength_SQ
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c32-e/Strength_SQ
+    unit: m-1
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c32-e/Strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c32-e/Strength
+    unit: m-2
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c01-a/Strength_H
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c01-a/Strength_H
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c01-a/Strength_V
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c01-a/Strength_V
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c01-a/Strength_SQ
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c01-a/Strength_SQ
+    unit: m-1
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c01-a/Strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c01-a/Strength
+    unit: m-2
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sf2/c01-a/Strength_H
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sf2/c01-a/Strength_H
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sf2/c01-a/Strength_V
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sf2/c01-a/Strength_V
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sf2/c01-a/Strength_SQ
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sf2/c01-a/Strength_SQ
+    unit: m-1
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sf2/c01-a/Strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sf2/c01-a/Strength
+    unit: m-2
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c01-b/Strength_H
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c01-b/Strength_H
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c01-b/Strength_V
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c01-b/Strength_V
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c01-b/Strength_SQ
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c01-b/Strength_SQ
+    unit: m-1
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c01-b/Strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c01-b/Strength
+    unit: m-2
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c01-d/Strength_H
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c01-d/Strength_H
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c01-d/Strength_V
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c01-d/Strength_V
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c01-d/Strength_SQ
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c01-d/Strength_SQ
+    unit: m-1
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c01-d/Strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c01-d/Strength
+    unit: m-2
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sf2/c01-e/Strength_H
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sf2/c01-e/Strength_H
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sf2/c01-e/Strength_V
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sf2/c01-e/Strength_V
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sf2/c01-e/Strength_SQ
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sf2/c01-e/Strength_SQ
+    unit: m-1
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sf2/c01-e/Strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sf2/c01-e/Strength
+    unit: m-2
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c01-e/Strength_H
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c01-e/Strength_H
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c01-e/Strength_V
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c01-e/Strength_V
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c01-e/Strength_SQ
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c01-e/Strength_SQ
+    unit: m-1
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c01-e/Strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c01-e/Strength
+    unit: m-2
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c02-a/Strength_H
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c02-a/Strength_H
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c02-a/Strength_V
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c02-a/Strength_V
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c02-a/Strength_SQ
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c02-a/Strength_SQ
+    unit: m-1
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c02-a/Strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c02-a/Strength
+    unit: m-2
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sf2/c02-a/Strength_H
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sf2/c02-a/Strength_H
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sf2/c02-a/Strength_V
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sf2/c02-a/Strength_V
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sf2/c02-a/Strength_SQ
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sf2/c02-a/Strength_SQ
+    unit: m-1
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sf2/c02-a/Strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sf2/c02-a/Strength
+    unit: m-2
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c02-b/Strength_H
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c02-b/Strength_H
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c02-b/Strength_V
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c02-b/Strength_V
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c02-b/Strength_SQ
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c02-b/Strength_SQ
+    unit: m-1
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c02-b/Strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c02-b/Strength
+    unit: m-2
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c02-d/Strength_H
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c02-d/Strength_H
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c02-d/Strength_V
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c02-d/Strength_V
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c02-d/Strength_SQ
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c02-d/Strength_SQ
+    unit: m-1
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c02-d/Strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c02-d/Strength
+    unit: m-2
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sf2/c02-e/Strength_H
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sf2/c02-e/Strength_H
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sf2/c02-e/Strength_V
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sf2/c02-e/Strength_V
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sf2/c02-e/Strength_SQ
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sf2/c02-e/Strength_SQ
+    unit: m-1
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sf2/c02-e/Strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sf2/c02-e/Strength
+    unit: m-2
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c02-e/Strength_H
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c02-e/Strength_H
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c02-e/Strength_V
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c02-e/Strength_V
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c02-e/Strength_SQ
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c02-e/Strength_SQ
+    unit: m-1
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c02-e/Strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c02-e/Strength
+    unit: m-2
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c03-a/Strength_H
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c03-a/Strength_H
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c03-a/Strength_V
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c03-a/Strength_V
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c03-a/Strength_SQ
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c03-a/Strength_SQ
+    unit: m-1
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c03-a/Strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c03-a/Strength
+    unit: m-2
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sf2/c03-a/Strength_H
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sf2/c03-a/Strength_H
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sf2/c03-a/Strength_V
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sf2/c03-a/Strength_V
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sf2/c03-a/Strength_SQ
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sf2/c03-a/Strength_SQ
+    unit: m-1
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sf2/c03-a/Strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sf2/c03-a/Strength
+    unit: m-2
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c03-b/Strength_H
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c03-b/Strength_H
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c03-b/Strength_V
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c03-b/Strength_V
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c03-b/Strength_SQ
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c03-b/Strength_SQ
+    unit: m-1
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c03-b/Strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c03-b/Strength
+    unit: m-2
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c03-d/Strength_H
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c03-d/Strength_H
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c03-d/Strength_V
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c03-d/Strength_V
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c03-d/Strength_SQ
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c03-d/Strength_SQ
+    unit: m-1
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c03-d/Strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c03-d/Strength
+    unit: m-2
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sf2/c03-e/Strength_H
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sf2/c03-e/Strength_H
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sf2/c03-e/Strength_V
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sf2/c03-e/Strength_V
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sf2/c03-e/Strength_SQ
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sf2/c03-e/Strength_SQ
+    unit: m-1
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sf2/c03-e/Strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sf2/c03-e/Strength
+    unit: m-2
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c03-e/Strength_H
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c03-e/Strength_H
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c03-e/Strength_V
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c03-e/Strength_V
+    unit: rad
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c03-e/Strength_SQ
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c03-e/Strength_SQ
+    unit: m-1
+- type: tango.pyaml.static_catalog_entry
+  key: srmag/m-sd1/c03-e/Strength
+  device:
+    type: tango.pyaml.attribute
+    attribute: srmag/m-sd1/c03-e/Strength
+    unit: m-2

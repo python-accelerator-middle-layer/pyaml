@@ -1,0 +1,6 @@
+type: pyaml.magnet.hcorrector
+name: IDCORR
+model:
+  type: pyaml_external.external_magnet_model
+  param: my random param
+  powersupply: sr/ps-qf1/c01-a/current
