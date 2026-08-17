@@ -7,37 +7,39 @@ import re
 from abc import ABCMeta, abstractmethod
 from typing import TYPE_CHECKING
 
-from ..arrays.bpm_array import BPMArray
-from ..arrays.cfm_magnet_array import CombinedFunctionMagnetArray
-from ..arrays.element_array import ElementArray
-from ..arrays.magnet_array import MagnetArray
-from ..arrays.serialized_magnet_array import SerializedMagnetsArray
-from ..bpm.bpm import BPM
-from ..common.abstract_aggregator import ScalarAggregator
-from ..common.exception import PyAMLException
-from ..diagnostics.tune_monitor import BetatronTuneMonitor
-from ..magnet.cfm_magnet import CombinedFunctionMagnet
-from ..magnet.magnet import Magnet
-from ..magnet.serialized_magnet import SerializedMagnets
-from ..rf.rf_plant import RFPlant
-from ..rf.rf_transmitter import RFTransmitter
-from ..tuning_tools.chromaticity_monitor import ChomaticityMonitor
-from .element import Element
+from ...arrays.bpm_array import BPMArray
+from ...arrays.cfm_magnet_array import CombinedFunctionMagnetArray
+from ...arrays.element_array import ElementArray
+from ...arrays.magnet_array import MagnetArray
+from ...arrays.serialized_magnet_array import SerializedMagnetsArray
+from ...bpm.bpm import BPM
+from ...diagnostics.tune_monitor import BetatronTuneMonitor
+from ...magnet.cfm_magnet import CombinedFunctionMagnet
+from ...magnet.magnet import Magnet
+from ...magnet.serialized_magnet import SerializedMagnets
+from ...rf.rf_plant import RFPlant
+from ...rf.rf_transmitter import RFTransmitter
+from ...tuning_tools.chromaticity_monitor import ChomaticityMonitor
+from ..abstract_aggregator import ScalarAggregator
+from ..element import Element
+from ..exception import PyAMLException
+from .combinded_function_magnet_holder import CombinedFunctionMagnetHolder
+from .combinded_function_magnets_holder import CombinedFunctionMagnetsHolder
 from .magnet_holder import MagnetHolder
 from .magnets_holder import MagnetsHolder
 from .serialized_magnet_holder import SerializedMagnetHolder
 from .serialized_magnets_holder import SerializedMagnetsHolder
 
 if TYPE_CHECKING:
-    from ..accelerator import Accelerator
-    from ..tuning_tools.bba import BBA
-    from ..tuning_tools.chromaticity import Chromaticity
-    from ..tuning_tools.chromaticity_response_matrix import ChromaticityResponseMatrix
-    from ..tuning_tools.dispersion import Dispersion
-    from ..tuning_tools.orbit import Orbit
-    from ..tuning_tools.orbit_response_matrix import OrbitResponseMatrix
-    from ..tuning_tools.tune import Tune
-    from ..tuning_tools.tune_response_matrix import TuneResponseMatrix
+    from ...accelerator import Accelerator
+    from ...tuning_tools.bba import BBA
+    from ...tuning_tools.chromaticity import Chromaticity
+    from ...tuning_tools.chromaticity_response_matrix import ChromaticityResponseMatrix
+    from ...tuning_tools.dispersion import Dispersion
+    from ...tuning_tools.orbit import Orbit
+    from ...tuning_tools.orbit_response_matrix import OrbitResponseMatrix
+    from ...tuning_tools.tune import Tune
+    from ...tuning_tools.tune_response_matrix import TuneResponseMatrix
 
 
 class ElementHolder(metaclass=ABCMeta):
@@ -79,6 +81,8 @@ class ElementHolder(metaclass=ABCMeta):
         self._magnets_holder = MagnetsHolder(self)
         self._serialized_magnet_holder = SerializedMagnetHolder(self)
         self._serialized_magnets_holder = SerializedMagnetsHolder(self)
+        self._combined_function_magnet_holder = CombinedFunctionMagnetHolder(self)
+        self._combined_function_magnets_holder = CombinedFunctionMagnetsHolder(self)
 
     @property
     def peer(self) -> "Accelerator":
@@ -86,6 +90,8 @@ class ElementHolder(metaclass=ABCMeta):
         Returns the peer accelerator of this holder
         """
         return self._peer
+
+    # Sub holders ----------------------------------------------------------------
 
     @property
     def magnet(self) -> MagnetHolder:
@@ -102,6 +108,14 @@ class ElementHolder(metaclass=ABCMeta):
     @property
     def serialized_magnets(self) -> SerializedMagnetsHolder:
         return self._serialized_magnets_holder
+
+    @property
+    def combined_function_magnet(self) -> CombinedFunctionMagnetHolder:
+        return self._combined_function_magnet_holder
+
+    @property
+    def combined_function_magnets(self) -> CombinedFunctionMagnetsHolder:
+        return self._combined_function_magnets_holder
 
     def post_init(self):
         """
@@ -204,29 +218,6 @@ class ElementHolder(metaclass=ABCMeta):
 
     def get_all_elements(self) -> list[Element]:
         return [value for key, value in self._ALL.items()]
-
-    # Combined Function Magnets
-
-    def fill_cfm_magnet_array(self, arrayName: str, elementNames: list[str]):
-        self._fill_array(
-            arrayName,
-            elementNames,
-            self.get_cfm_magnet,
-            CombinedFunctionMagnetArray,
-            self._CFM_MAGNET_ARRAYS,
-        )
-
-    def get_cfm_magnet(self, name: str) -> Magnet:
-        return self._get("CombinedFunctionMagnet", name, self._CFM_MAGNETS)
-
-    def add_cfm_magnet(self, m: Magnet):
-        self._add(self._CFM_MAGNETS, m)
-
-    def get_cfm_magnets(self, name: str) -> CombinedFunctionMagnetArray:
-        return self._get("CombinedFunctionMagnet array", name, self._CFM_MAGNET_ARRAYS)
-
-    def get_all_cfm_magnets(self) -> list[CombinedFunctionMagnet]:
-        return [value for key, value in self._CFM_MAGNETS.items()]
 
     # BPMs
 

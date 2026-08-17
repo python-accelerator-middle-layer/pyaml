@@ -1,6 +1,6 @@
 from typing import TYPE_CHECKING
 
-from ..arrays.magnet_array import MagnetArray
+from ...arrays.magnet_array import MagnetArray
 
 if TYPE_CHECKING:
     from .element_holder import ElementHolder

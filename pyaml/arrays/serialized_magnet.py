@@ -1,4 +1,4 @@
-from ..common.element_holder import ElementHolder
+from ..common.holders.element_holder import ElementHolder
 from ..validation import DynamicValidation, register_schema
 from .array import ArrayConfig
 

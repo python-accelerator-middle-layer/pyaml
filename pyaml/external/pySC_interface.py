@@ -4,7 +4,7 @@ from typing import TYPE_CHECKING, Optional, Tuple
 import numpy as np
 
 if TYPE_CHECKING:
-    from ..common.element_holder import ElementHolder
+    from ..common.holders.element_holder import ElementHolder
 from ..common.exception import PyAMLException
 
 

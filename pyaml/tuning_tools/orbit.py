@@ -11,7 +11,7 @@ import numpy as np
 from pydantic import ConfigDict
 
 if TYPE_CHECKING:
-    from ..common.element_holder import ElementHolder
+    from ..common.holders.element_holder import ElementHolder
 from pySC import ResponseMatrix as pySC_ResponseMatrix
 from pySC.apps import orbit_correction
 
