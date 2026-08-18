@@ -209,7 +209,7 @@ class Simulator(ElementHolder):
                 offsets = RWBpmOffsetArray(bpm_elt)
                 positions = RBpmArray(bpm_elt, self.ring)
                 e = e.attach(self, positions, offsets, tilt)
-                self.add_bpm(e)
+                self.bpm.add(e)
 
             elif isinstance(e, RFPlant):
                 if e.transmitters:

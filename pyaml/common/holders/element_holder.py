@@ -23,12 +23,16 @@ from ...tuning_tools.chromaticity_monitor import ChomaticityMonitor
 from ..abstract_aggregator import ScalarAggregator
 from ..element import Element
 from ..exception import PyAMLException
-from .combinded_function_magnet_holder import CombinedFunctionMagnetHolder
-from .combinded_function_magnets_holder import CombinedFunctionMagnetsHolder
-from .magnet_holder import MagnetHolder
-from .magnets_holder import MagnetsHolder
-from .serialized_magnet_holder import SerializedMagnetHolder
-from .serialized_magnets_holder import SerializedMagnetsHolder
+from .sub_holders import (
+    BPMHolder,
+    BPMsHolder,
+    CombinedFunctionMagnetHolder,
+    CombinedFunctionMagnetsHolder,
+    MagnetHolder,
+    MagnetsHolder,
+    SerializedMagnetHolder,
+    SerializedMagnetsHolder,
+)
 
 if TYPE_CHECKING:
     from ...accelerator import Accelerator
@@ -83,6 +87,8 @@ class ElementHolder(metaclass=ABCMeta):
         self._serialized_magnets_holder = SerializedMagnetsHolder(self)
         self._combined_function_magnet_holder = CombinedFunctionMagnetHolder(self)
         self._combined_function_magnets_holder = CombinedFunctionMagnetsHolder(self)
+        self._bpm_holder = BPMHolder(self)
+        self._bpms_holder = BPMsHolder(self)
 
     @property
     def peer(self) -> "Accelerator":
@@ -116,6 +122,14 @@ class ElementHolder(metaclass=ABCMeta):
     @property
     def combined_function_magnets(self) -> CombinedFunctionMagnetsHolder:
         return self._combined_function_magnets_holder
+
+    @property
+    def bpm(self) -> BPMHolder:
+        return self._bpm_holder
+
+    @property
+    def bpms(self) -> BPMsHolder:
+        return self._bpms_holder
 
     def post_init(self):
         """
@@ -218,29 +232,6 @@ class ElementHolder(metaclass=ABCMeta):
 
     def get_all_elements(self) -> list[Element]:
         return [value for key, value in self._ALL.items()]
-
-    # BPMs
-
-    def fill_bpm_array(self, arrayName: str, elementNames: list[str]):
-        self._fill_array(
-            arrayName,
-            elementNames,
-            self.get_bpm,
-            BPMArray,
-            self._BPM_ARRAYS,
-        )
-
-    def get_bpm(self, name: str) -> BPM:
-        return self._get("BPM", name, self._BPMS)
-
-    def add_bpm(self, bpm: BPM):
-        self._add(self._BPMS, bpm)
-
-    def get_bpms(self, name: str) -> BPMArray:
-        return self._get("BPM array", name, self._BPM_ARRAYS)
-
-    def get_all_bpms(self) -> list[BPM]:
-        return [value for key, value in self._BPMS.items()]
 
     # RF
 

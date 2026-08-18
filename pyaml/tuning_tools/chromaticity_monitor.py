@@ -251,7 +251,7 @@ class ChomaticityMonitor(MeasurementTool, DynamicValidation):
         orbit = None
         if fit_dispersion and fit_disp_order is not None and self.bpm_array_name is not None:
             # For dispersion fit
-            bpms = self.peer.get_bpms(self.bpm_array_name)
+            bpms = self.peer.bpms.get(self.bpm_array_name)
             n_bpm = len(bpms)
 
         f0 = rf.frequency.get()

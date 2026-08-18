@@ -21,7 +21,7 @@ def test_tuning_orbit_correction():
     std_kick = 1e-6
     hcorr = element_holder.magnets.get("HCorr")
     vcorr = element_holder.magnets.get("VCorr")
-    bpms = element_holder.get_bpms("BPM")
+    bpms = element_holder.bpms.get("BPM")
 
     x, y = bpms.positions.get().T  # get reference orbit
     reference = np.concat((x, y))

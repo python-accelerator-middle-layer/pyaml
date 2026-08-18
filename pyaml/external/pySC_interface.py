@@ -20,7 +20,7 @@ class pySCInterface:
     ):
         self.element_holder = element_holder
 
-        self.bpm_array = element_holder.get_bpms(bpm_array_name)
+        self.bpm_array = element_holder.bpms.get(bpm_array_name)
 
         self.rf_plant_name = rf_plant_name
         if rf_plant_name is not None:

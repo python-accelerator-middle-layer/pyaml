@@ -43,7 +43,7 @@ def test_tune(install_test_package):
     assert "Magnet QF1A-C05XX not defined" in str(exc.value)
 
     with pytest.raises(PyAMLException) as exc:
-        m2 = sr.design.get_bpm("QF1A-C05XX")
+        m2 = sr.design.bpm.get("QF1A-C05XX")
     assert "BPM QF1A-C05XX not defined" in str(exc.value)
 
 
