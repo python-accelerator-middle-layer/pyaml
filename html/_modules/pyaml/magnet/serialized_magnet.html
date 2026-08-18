@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>pyaml.magnet.serialized_magnet &#8212; Python Accelerator Middle Layer 0.1.dev1+g72d2992bf documentation</title>
+    <title>pyaml.magnet.serialized_magnet &#8212; Python Accelerator Middle Layer 0.1.dev1+g947cfb0ef documentation</title>
   
   
   
@@ -41,7 +41,7 @@
   <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=90905a2f556bf617f1a9" />
 <link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=90905a2f556bf617f1a9" />
 
-    <script src="../../../_static/documentation_options.js?v=7336f5c7"></script>
+    <script src="../../../_static/documentation_options.js?v=7aef76b6"></script>
     <script src="../../../_static/doctools.js?v=9bcbadda"></script>
     <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -125,8 +125,8 @@
       
     
     
-    <img src="../../../_static/logo.png" class="logo__image only-light" alt="Python Accelerator Middle Layer 0.1.dev1+g72d2992bf documentation - Home"/>
-    <img src="../../../_static/dark.png" class="logo__image only-dark pst-js-only" alt="Python Accelerator Middle Layer 0.1.dev1+g72d2992bf documentation - Home"/>
+    <img src="../../../_static/logo.png" class="logo__image only-light" alt="Python Accelerator Middle Layer 0.1.dev1+g947cfb0ef documentation - Home"/>
+    <img src="../../../_static/dark.png" class="logo__image only-dark pst-js-only" alt="Python Accelerator Middle Layer 0.1.dev1+g947cfb0ef documentation - Home"/>
   
   
 </a></div>
@@ -401,7 +401,7 @@
 <span class="kn">from</span><span class="w"> </span><span class="nn">.model</span><span class="w"> </span><span class="kn">import</span> <span class="n">MagnetModel</span>
 
 <span class="c1"># Define the main class name for this module</span>
-<span class="n">PYAMLCLASS</span> <span class="o">=</span> <span class="s2">&quot;SerializedMagnets&quot;</span>
+<span class="n">PYAMLCLASS</span> <span class="o">=</span> <span class="s2">"SerializedMagnets"</span>
 
 
 <div class="viewcode-block" id="ReadWriteSerializedStrengths">
@@ -430,7 +430,7 @@
 <div class="viewcode-block" id="ReadWriteSerializedStrengths.set_and_wait">
 <a class="viewcode-back" href="../../../api/pyaml.magnet.serialized_magnet.html#pyaml.magnet.serialized_magnet.ReadWriteSerializedStrengths.set_and_wait">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">set_and_wait</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="nb">float</span><span class="p">):</span>
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;Not implemented yet.&quot;</span><span class="p">)</span></div>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">"Not implemented yet."</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="ReadWriteSerializedStrengths.unit">
@@ -487,7 +487,7 @@
 <a class="viewcode-back" href="../../../api/pyaml.magnet.serialized_magnet.html#pyaml.magnet.serialized_magnet.SerializedMagnets">[docs]</a>
 <span class="nd">@register_schema</span>
 <span class="k">class</span><span class="w"> </span><span class="nc">SerializedMagnets</span><span class="p">(</span><span class="n">Element</span><span class="p">,</span> <span class="n">DynamicValidation</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    Serialized group of magnets that share the same set point.</span>
 
 <span class="sd">    This class represents a set of magnets that are controlled together as a</span>
@@ -521,7 +521,7 @@
 <span class="sd">    The serialized group stores a virtual magnet for each underlying element. When</span>
 <span class="sd">    attached, each virtual magnet is bound to the same peer and the group exposes</span>
 <span class="sd">    aggregate strength and hardware accessors.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
@@ -547,7 +547,7 @@
             <span class="c1"># Configuration part</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">polynom</span> <span class="o">=</span> <span class="n">function_map</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">function</span><span class="p">]</span><span class="o">.</span><span class="n">polynom</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">function</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">function_map</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="n">PyAMLException</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">function</span> <span class="o">+</span> <span class="s2">&quot; not implemented for serialized magnet&quot;</span><span class="p">)</span>
+                <span class="k">raise</span> <span class="n">PyAMLException</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">function</span> <span class="o">+</span> <span class="s2">" not implemented for serialized magnet"</span><span class="p">)</span>
             <span class="k">for</span> <span class="n">element</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">__elements</span><span class="p">:</span>
                 <span class="c1"># Check mapping validity</span>
                 <span class="c1"># Create the virtual magnet for the corresponding magnet</span>
@@ -560,7 +560,7 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">_peer</span> <span class="o">=</span> <span class="n">peer</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">__create_virtual_magnet</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Magnet</span><span class="p">:</span>
-        <span class="n">args</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="n">name</span><span class="p">,</span> <span class="s2">&quot;model&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="p">}</span>
+        <span class="n">args</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"name"</span><span class="p">:</span> <span class="n">name</span><span class="p">,</span> <span class="s2">"model"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="p">}</span>
         <span class="n">virtual</span><span class="p">:</span> <span class="n">Magnet</span> <span class="o">=</span> <span class="n">function_map</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">function</span><span class="p">](</span><span class="o">**</span><span class="n">args</span><span class="p">)</span>
         <span class="n">virtual</span><span class="o">.</span><span class="n">set_model_name</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_name</span><span class="p">())</span>
         <span class="k">return</span> <span class="n">virtual</span>
@@ -603,22 +603,22 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">strength</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">abstract</span><span class="o">.</span><span class="n">ReadWriteFloatScalar</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""</span>
 <span class="sd">        Gives access to the strengths of those magnets in physics unit</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">check_peer</span><span class="p">()</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__strengths</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="n">PyAMLException</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="si">}</span><span class="s2"> has no model that supports physics units&quot;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="n">PyAMLException</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="si">}</span><span class="s2"> has no model that supports physics units"</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__strengths</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">hardware</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">abstract</span><span class="o">.</span><span class="n">ReadWriteFloatScalar</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""</span>
 <span class="sd">        Gives access to the strengths of this those magnets in hardware unit when possible</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">check_peer</span><span class="p">()</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__hardwares</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="n">PyAMLException</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="si">}</span><span class="s2"> has no model that supports hardware units&quot;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="n">PyAMLException</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="si">}</span><span class="s2"> has no model that supports hardware units"</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__hardwares</span>
 
 <div class="viewcode-block" id="SerializedMagnets.set_energy">

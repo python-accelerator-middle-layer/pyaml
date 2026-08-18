@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>pyaml.magnet.identity_model &#8212; Python Accelerator Middle Layer 0.1.dev1+g72d2992bf documentation</title>
+    <title>pyaml.magnet.identity_model &#8212; Python Accelerator Middle Layer 0.1.dev1+g947cfb0ef documentation</title>
   
   
   
@@ -41,7 +41,7 @@
   <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=90905a2f556bf617f1a9" />
 <link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=90905a2f556bf617f1a9" />
 
-    <script src="../../../_static/documentation_options.js?v=7336f5c7"></script>
+    <script src="../../../_static/documentation_options.js?v=7aef76b6"></script>
     <script src="../../../_static/doctools.js?v=9bcbadda"></script>
     <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -125,8 +125,8 @@
       
     
     
-    <img src="../../../_static/logo.png" class="logo__image only-light" alt="Python Accelerator Middle Layer 0.1.dev1+g72d2992bf documentation - Home"/>
-    <img src="../../../_static/dark.png" class="logo__image only-dark pst-js-only" alt="Python Accelerator Middle Layer 0.1.dev1+g72d2992bf documentation - Home"/>
+    <img src="../../../_static/logo.png" class="logo__image only-light" alt="Python Accelerator Middle Layer 0.1.dev1+g947cfb0ef documentation - Home"/>
+    <img src="../../../_static/dark.png" class="logo__image only-dark pst-js-only" alt="Python Accelerator Middle Layer 0.1.dev1+g947cfb0ef documentation - Home"/>
   
   
 </a></div>
@@ -395,13 +395,13 @@
 <span class="kn">from</span><span class="w"> </span><span class="nn">.model</span><span class="w"> </span><span class="kn">import</span> <span class="n">MagnetModel</span>
 
 <span class="c1"># Define the main class name for this module</span>
-<span class="n">PYAMLCLASS</span> <span class="o">=</span> <span class="s2">&quot;IdentityMagnetModel&quot;</span>
+<span class="n">PYAMLCLASS</span> <span class="o">=</span> <span class="s2">"IdentityMagnetModel"</span>
 
 
 <div class="viewcode-block" id="IdentityMagnetModel">
 <a class="viewcode-back" href="../../../api/pyaml.magnet.identity_model.html#pyaml.magnet.identity_model.IdentityMagnetModel">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">IdentityMagnetModel</span><span class="p">(</span><span class="n">MagnetModel</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    Identity magnet model.</span>
 
 <span class="sd">    This model maps magnet strengths directly to hardware values without applying</span>
@@ -415,8 +415,8 @@
 <span class="sd">    physics : str | None, optional</span>
 <span class="sd">        Name of the physics device used to apply strength.</span>
 <span class="sd">    unit : str | None, optional</span>
-<span class="sd">        Unit of the magnet strength and hardware value, for example ``&quot;1/m&quot;`` or</span>
-<span class="sd">        ``&quot;m-1&quot;``.</span>
+<span class="sd">        Unit of the magnet strength and hardware value, for example ``"1/m"`` or</span>
+<span class="sd">        ``"m-1"``.</span>
 
 <span class="sd">    Raises</span>
 <span class="sd">    ------</span>
@@ -428,7 +428,7 @@
 <span class="sd">    -----</span>
 <span class="sd">    The model does not perform any numerical conversion: strengths are returned</span>
 <span class="sd">    as hardware values and hardware values are returned as strengths.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
@@ -441,10 +441,10 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_unit</span> <span class="o">=</span> <span class="n">unit</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_physics</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">_powerconverter</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="n">PyAMLException</span><span class="p">(</span><span class="s2">&quot;Invalid IdentityMagnetModel configuration,physics or powerconverter device required&quot;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="n">PyAMLException</span><span class="p">(</span><span class="s2">"Invalid IdentityMagnetModel configuration,physics or powerconverter device required"</span><span class="p">)</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_physics</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">_powerconverter</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">raise</span> <span class="n">PyAMLException</span><span class="p">(</span>
-                <span class="s2">&quot;Invalid IdentityMagnetModel configuration,physics or powerconverter device required but not both&quot;</span>
+                <span class="s2">"Invalid IdentityMagnetModel configuration,physics or powerconverter device required but not both"</span>
             <span class="p">)</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_physics</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">__device</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_physics</span>

@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>pyaml.arrays.magnet &#8212; Python Accelerator Middle Layer 0.1.dev1+g72d2992bf documentation</title>
+    <title>pyaml.arrays.magnet &#8212; Python Accelerator Middle Layer 0.1.dev1+g947cfb0ef documentation</title>
   
   
   
@@ -41,7 +41,7 @@
   <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=90905a2f556bf617f1a9" />
 <link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=90905a2f556bf617f1a9" />
 
-    <script src="../../../_static/documentation_options.js?v=7336f5c7"></script>
+    <script src="../../../_static/documentation_options.js?v=7aef76b6"></script>
     <script src="../../../_static/doctools.js?v=9bcbadda"></script>
     <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -125,8 +125,8 @@
       
     
     
-    <img src="../../../_static/logo.png" class="logo__image only-light" alt="Python Accelerator Middle Layer 0.1.dev1+g72d2992bf documentation - Home"/>
-    <img src="../../../_static/dark.png" class="logo__image only-dark pst-js-only" alt="Python Accelerator Middle Layer 0.1.dev1+g72d2992bf documentation - Home"/>
+    <img src="../../../_static/logo.png" class="logo__image only-light" alt="Python Accelerator Middle Layer 0.1.dev1+g947cfb0ef documentation - Home"/>
+    <img src="../../../_static/dark.png" class="logo__image only-dark pst-js-only" alt="Python Accelerator Middle Layer 0.1.dev1+g947cfb0ef documentation - Home"/>
   
   
 </a></div>
@@ -388,19 +388,19 @@
                 <article class="bd-article">
                   
   <h1>Source code for pyaml.arrays.magnet</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span><span class="w"> </span><span class="nn">..common.element_holder</span><span class="w"> </span><span class="kn">import</span> <span class="n">ElementHolder</span>
+<span></span><span class="kn">from</span><span class="w"> </span><span class="nn">..common.holders.element_holder</span><span class="w"> </span><span class="kn">import</span> <span class="n">ElementHolder</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">..validation</span><span class="w"> </span><span class="kn">import</span> <span class="n">DynamicValidation</span><span class="p">,</span> <span class="n">register_schema</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">.array</span><span class="w"> </span><span class="kn">import</span> <span class="n">ArrayConfig</span>
 
 <span class="c1"># Define the main class name for this module</span>
-<span class="n">PYAMLCLASS</span> <span class="o">=</span> <span class="s2">&quot;Magnet&quot;</span>
+<span class="n">PYAMLCLASS</span> <span class="o">=</span> <span class="s2">"Magnet"</span>
 
 
 <div class="viewcode-block" id="Magnet">
 <a class="viewcode-back" href="../../../api/pyaml.arrays.magnet.html#pyaml.arrays.magnet.Magnet">[docs]</a>
 <span class="nd">@register_schema</span>
 <span class="k">class</span><span class="w"> </span><span class="nc">Magnet</span><span class="p">(</span><span class="n">ArrayConfig</span><span class="p">,</span> <span class="n">DynamicValidation</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    Magnet array confirguration</span>
 
 <span class="sd">    Example</span>
@@ -411,9 +411,9 @@
 
 <span class="sd">        from pyaml.arrays.magnet import Magnet,ConfigModel as MagnetArrayConfigModel</span>
 <span class="sd">        magArray = Magnet(</span>
-<span class="sd">                     MagnetArrayConfigModel(name=&quot;MyMags&quot;, elements=[&quot;mag1&quot;,&quot;mag2&quot;])</span>
+<span class="sd">                     MagnetArrayConfigModel(name="MyMags", elements=["mag1","mag2"])</span>
 <span class="sd">                   )</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">elements</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">elements</span><span class="p">)</span>
@@ -421,14 +421,14 @@
 <div class="viewcode-block" id="Magnet.fill_array">
 <a class="viewcode-back" href="../../../api/pyaml.arrays.magnet.html#pyaml.arrays.magnet.Magnet.fill_array">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">fill_array</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">holder</span><span class="p">:</span> <span class="n">ElementHolder</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""</span>
 <span class="sd">        Fill the magnet array in the element holder.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        holder : ElementHolder</span>
 <span class="sd">            The element holder to populate with magnet array</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="n">holder</span><span class="o">.</span><span class="n">magnets</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_elements</span><span class="p">)</span></div>
 </div>
 

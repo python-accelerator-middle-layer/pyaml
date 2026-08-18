@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>pyaml.magnet.identity_cfm_model &#8212; Python Accelerator Middle Layer 0.1.dev1+g72d2992bf documentation</title>
+    <title>pyaml.magnet.identity_cfm_model &#8212; Python Accelerator Middle Layer 0.1.dev1+g947cfb0ef documentation</title>
   
   
   
@@ -41,7 +41,7 @@
   <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=90905a2f556bf617f1a9" />
 <link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=90905a2f556bf617f1a9" />
 
-    <script src="../../../_static/documentation_options.js?v=7336f5c7"></script>
+    <script src="../../../_static/documentation_options.js?v=7aef76b6"></script>
     <script src="../../../_static/doctools.js?v=9bcbadda"></script>
     <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -125,8 +125,8 @@
       
     
     
-    <img src="../../../_static/logo.png" class="logo__image only-light" alt="Python Accelerator Middle Layer 0.1.dev1+g72d2992bf documentation - Home"/>
-    <img src="../../../_static/dark.png" class="logo__image only-dark pst-js-only" alt="Python Accelerator Middle Layer 0.1.dev1+g72d2992bf documentation - Home"/>
+    <img src="../../../_static/logo.png" class="logo__image only-light" alt="Python Accelerator Middle Layer 0.1.dev1+g947cfb0ef documentation - Home"/>
+    <img src="../../../_static/dark.png" class="logo__image only-dark pst-js-only" alt="Python Accelerator Middle Layer 0.1.dev1+g947cfb0ef documentation - Home"/>
   
   
 </a></div>
@@ -396,14 +396,14 @@
 <span class="kn">from</span><span class="w"> </span><span class="nn">.model</span><span class="w"> </span><span class="kn">import</span> <span class="n">MagnetModel</span>
 
 <span class="c1"># Define the main class name for this module</span>
-<span class="n">PYAMLCLASS</span> <span class="o">=</span> <span class="s2">&quot;IdentityCFMagnetModel&quot;</span>
+<span class="n">PYAMLCLASS</span> <span class="o">=</span> <span class="s2">"IdentityCFMagnetModel"</span>
 
 
 <div class="viewcode-block" id="IdentityCFMagnetModel">
 <a class="viewcode-back" href="../../../api/pyaml.magnet.identity_cfm_model.html#pyaml.magnet.identity_cfm_model.IdentityCFMagnetModel">[docs]</a>
 <span class="nd">@register_schema</span>
 <span class="k">class</span><span class="w"> </span><span class="nc">IdentityCFMagnetModel</span><span class="p">(</span><span class="n">MagnetModel</span><span class="p">,</span> <span class="n">DynamicValidation</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    Identity combined-function magnet model.</span>
 
 <span class="sd">    This magnet model maps strengths and hardware values directly to the</span>
@@ -414,7 +414,7 @@
 <span class="sd">    Parameters</span>
 
 <span class="sd">    multipoles : list[str]</span>
-<span class="sd">    List of supported multipoles, for example [&quot;B0&quot;, &quot;A1&quot;, &quot;B2&quot;].</span>
+<span class="sd">    List of supported multipoles, for example ["B0", "A1", "B2"].</span>
 <span class="sd">    powerconverters : list[str | None] | None, optional</span>
 <span class="sd">    Names of the power converter devices used for hardware access.</span>
 <span class="sd">    physics : list[str | None] | None, optional</span>
@@ -427,7 +427,7 @@
 <span class="sd">    PyAMLException</span>
 <span class="sd">    If both physics and powerconverters are missing, if both are</span>
 <span class="sd">    provided at the same time, or if the configuration lengths do not match.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
@@ -445,10 +445,10 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">__nbFunction</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">multipoles</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_physics</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">_powerconverters</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="n">PyAMLException</span><span class="p">(</span><span class="s2">&quot;Invalid IdentityCFMagnetModel configuration,physics or powerconverters device required&quot;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="n">PyAMLException</span><span class="p">(</span><span class="s2">"Invalid IdentityCFMagnetModel configuration,physics or powerconverters device required"</span><span class="p">)</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_physics</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">_powerconverters</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">raise</span> <span class="n">PyAMLException</span><span class="p">(</span>
-                <span class="s2">&quot;Invalid IdentityCFMagnetModel configuration,physics or powerconverters device required but not both&quot;</span>
+                <span class="s2">"Invalid IdentityCFMagnetModel configuration,physics or powerconverters device required but not both"</span>
             <span class="p">)</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_physics</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">__devices</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_physics</span>
@@ -457,13 +457,13 @@
 
         <span class="bp">self</span><span class="o">.</span><span class="n">__nbDev</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__devices</span><span class="p">)</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">__check_len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">units</span><span class="p">,</span> <span class="s2">&quot;units&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__nbFunction</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__check_len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">units</span><span class="p">,</span> <span class="s2">"units"</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__nbFunction</span><span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">__check_len</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">expected_len</span><span class="p">):</span>
         <span class="n">lgth</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">lgth</span> <span class="o">!=</span> <span class="n">expected_len</span><span class="p">:</span>
             <span class="k">raise</span> <span class="n">PyAMLException</span><span class="p">(</span>
-                <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2"> does not have the expected number of items (</span><span class="si">{</span><span class="n">expected_len</span><span class="si">}</span><span class="s2"> items expected but got </span><span class="si">{</span><span class="n">lgth</span><span class="si">}</span><span class="s2">)&quot;</span>
+                <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2"> does not have the expected number of items (</span><span class="si">{</span><span class="n">expected_len</span><span class="si">}</span><span class="s2"> items expected but got </span><span class="si">{</span><span class="n">lgth</span><span class="si">}</span><span class="s2">)"</span>
             <span class="p">)</span>
 
 <div class="viewcode-block" id="IdentityCFMagnetModel.compute_hardware_values">

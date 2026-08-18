@@ -1,0 +1,1046 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>pyaml.tuning_tools.bba2 &#8212; Python Accelerator Middle Layer 0.1.dev1+g947cfb0ef documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../../_static/styles/theme.css?digest=90905a2f556bf617f1a9" rel="stylesheet" />
+<link href="../../../_static/styles/pydata-sphinx-theme.css?digest=90905a2f556bf617f1a9" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/css/custom.css" />
+  
+  <!-- So that users can add custom icons -->
+  <script defer src="../../../_static/scripts/fontawesome.js?digest=90905a2f556bf617f1a9"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=90905a2f556bf617f1a9" />
+<link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=90905a2f556bf617f1a9" />
+
+    <script src="../../../_static/documentation_options.js?v=7aef76b6"></script>
+    <script src="../../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../../_static/copybutton.js?v=fd10adb8"></script>
+    <script src="../../../_static/design-tabs.js?v=f930bc37"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '_modules/pyaml/tuning_tools/bba2';</script>
+    <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="0.1" />
+  
+    
+    <script src="../../../_static/searchtools.js"></script>
+    <script src="../../../_static/language_data.js"></script>
+    <script src="../../../searchindex.js"></script>
+  
+  </head>
+  <body data-default-mode="">
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+  
+  
+  
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../../_static/logo.png" class="logo__image only-light" alt="Python Accelerator Middle Layer 0.1.dev1+g947cfb0ef documentation - Home"/>
+    <img src="../../../_static/dark.png" class="logo__image only-dark pst-js-only" alt="Python Accelerator Middle Layer 0.1.dev1+g947cfb0ef documentation - Home"/>
+  
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../getting-started/index.html">
+    Getting Started
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../how-to/index.html">
+    How to Guides
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../tutorial/index.html">
+    Tutorials
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../api.html">
+    API Reference
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+        <div class="navbar-item">
+
+<div class="theme-switch-container dropdown pst-js-only" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Color mode">
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button dropdown-toggle" aria-label="Color mode" data-bs-toggle="dropdown">
+    <i class="theme-switch fa-solid fa-sun fa-lg fa-fw" data-mode="light" title="Light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg fa-fw" data-mode="dark" title="Dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg fa-fw" data-mode="auto" title="System Settings"></i>
+  </button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg fa-fw me-1"></i>System Settings</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg fa-fw me-1"></i>Light</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg fa-fw me-1"></i>Dark</button></li>
+  </ul>
+</div></div>
+      
+        <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/python-accelerator-middle-layer/pyaml" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i><span class="visually-hidden">GitHub</span></a>
+        </li>
+</ul></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar hide-on-wide">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../getting-started/index.html">
+    Getting Started
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../how-to/index.html">
+    How to Guides
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../tutorial/index.html">
+    Tutorials
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../api.html">
+    API Reference
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<div class="theme-switch-container dropdown pst-js-only" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Color mode">
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button dropdown-toggle" aria-label="Color mode" data-bs-toggle="dropdown">
+    <i class="theme-switch fa-solid fa-sun fa-lg fa-fw" data-mode="light" title="Light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg fa-fw" data-mode="dark" title="Dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg fa-fw" data-mode="auto" title="System Settings"></i>
+  </button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg fa-fw me-1"></i>System Settings</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg fa-fw me-1"></i>Light</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg fa-fw me-1"></i>Dark</button></li>
+  </ul>
+</div></div>
+        
+          <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/python-accelerator-middle-layer/pyaml" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i><span class="visually-hidden">GitHub</span></a>
+        </li>
+</ul></div>
+        
+      </div>
+    
+  </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../../../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="../../index.html" class="nav-link">Module code</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">pyaml.tuning_tools.bba2</span></li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <h1>Source code for pyaml.tuning_tools.bba2</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span><span class="w"> </span><span class="nn">logging</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">time</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">Optional</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pydantic</span><span class="w"> </span><span class="kn">import</span> <span class="n">ConfigDict</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">..common.constants</span><span class="w"> </span><span class="kn">import</span> <span class="n">Action</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">..common.exception</span><span class="w"> </span><span class="kn">import</span> <span class="n">PyAMLException</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.measurement_tool</span><span class="w"> </span><span class="kn">import</span> <span class="n">MeasurementTool</span><span class="p">,</span> <span class="n">MeasurementToolConfigModel</span>
+
+<span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+
+<span class="n">PYAMLCLASS</span> <span class="o">=</span> <span class="s2">"BBA2"</span>
+
+
+<div class="viewcode-block" id="ConfigModel">
+<a class="viewcode-back" href="../../../api/pyaml.tuning_tools.bba2.html#pyaml.tuning_tools.bba2.ConfigModel">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">ConfigModel</span><span class="p">(</span><span class="n">MeasurementToolConfigModel</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""</span>
+<span class="sd">    Configuration model for Beam Based Alignment.</span>
+<span class="sd">    BBA finds the magnetic center of a quad (zero crossing).</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    bpm_array_name : str</span>
+<span class="sd">        BPM array name (orbit)</span>
+<span class="sd">    bpm_name : str</span>
+<span class="sd">        BPM to be corrected (close to the quad)</span>
+<span class="sd">    hcorr_name : str</span>
+<span class="sd">        Horizontal corrector used to make a deviation in the quad</span>
+<span class="sd">    vcorr_name : str</span>
+<span class="sd">        Vertical corrector used to make a deviation in the quad</span>
+<span class="sd">    quad_name : str</span>
+<span class="sd">        Quadrupole used to find the center</span>
+<span class="sd">    tune_correction_name: str</span>
+<span class="sd">        Tune tuning tool</span>
+<span class="sd">    hcorr_delta : float</span>
+<span class="sd">        Horizontal corrector delta strength</span>
+<span class="sd">    vcorr_delta : float</span>
+<span class="sd">        Vertical corrector delta strength</span>
+<span class="sd">    quad_delta : float</span>
+<span class="sd">        Quadrupole delta strength</span>
+<span class="sd">    bipolar_delta : bool</span>
+<span class="sd">        Perform scan at initial_quad_strength +/- quad delta</span>
+<span class="sd">    minicyle_sleep_time : float</span>
+<span class="sd">        Time to wait for quad mini cycle</span>
+<span class="sd">    """</span>
+
+    <span class="n">model_config</span> <span class="o">=</span> <span class="n">ConfigDict</span><span class="p">(</span><span class="n">arbitrary_types_allowed</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">extra</span><span class="o">=</span><span class="s2">"forbid"</span><span class="p">)</span>
+
+    <span class="n">bpm_array_name</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">bpm_name</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">hcorr_name</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">vcorr_name</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">quad_name</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">tune_correction_name</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">hcorr_delta</span><span class="p">:</span> <span class="nb">float</span>
+    <span class="n">vcorr_delta</span><span class="p">:</span> <span class="nb">float</span>
+    <span class="n">quad_delta</span><span class="p">:</span> <span class="nb">float</span>
+    <span class="n">bipolar_delta</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="n">minicyle_sleep_time</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">5</span></div>
+
+
+
+<div class="viewcode-block" id="BBAData">
+<a class="viewcode-back" href="../../../api/pyaml.tuning_tools.bba2.html#pyaml.tuning_tools.bba2.BBAData">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">BBAData</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">k</span> <span class="o">=</span> <span class="p">[]</span>  <span class="c1"># Fitted kick</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">bpm_pos</span> <span class="o">=</span> <span class="p">[]</span>  <span class="c1"># BPM#i position</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">allbpm_pos</span> <span class="o">=</span> <span class="p">[]</span>  <span class="c1"># IOS (Induced Orbit Shift)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">s2</span> <span class="o">=</span> <span class="p">[]</span>  <span class="c1"># sum of square</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">steps</span> <span class="o">=</span> <span class="p">[]</span>  <span class="c1"># steerer step</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lastfit</span> <span class="o">=</span> <span class="p">[]</span>  <span class="c1"># Last linear fit</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">offset</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">error</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+
+<div class="viewcode-block" id="BBAData.append">
+<a class="viewcode-back" href="../../../api/pyaml.tuning_tools.bba2.html#pyaml.tuning_tools.bba2.BBAData.append">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">append</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">st</span><span class="p">,</span> <span class="n">dk</span><span class="p">,</span> <span class="n">bpm</span><span class="p">,</span> <span class="n">allbpm</span><span class="p">):</span>
+        <span class="c1"># Append new dataset</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">steps</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">st</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">k</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">dk</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">bpm_pos</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">bpm</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">allbpm_pos</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">allbpm</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="BBAData.update_offset">
+<a class="viewcode-back" href="../../../api/pyaml.tuning_tools.bba2.html#pyaml.tuning_tools.bba2.BBAData.update_offset">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">update_offset</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">error</span><span class="p">,</span> <span class="n">fit</span><span class="p">):</span>
+        <span class="c1"># Update offset value</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">offset</span> <span class="o">=</span> <span class="n">x</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">error</span> <span class="o">=</span> <span class="n">error</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lastfit</span> <span class="o">=</span> <span class="n">fit</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="BBA2">
+<a class="viewcode-back" href="../../../api/pyaml.tuning_tools.bba2.html#pyaml.tuning_tools.bba2.BBA2">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">BBA2</span><span class="p">(</span><span class="n">MeasurementTool</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cfg</span><span class="p">:</span> <span class="n">ConfigModel</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">cfg</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_cfg</span> <span class="o">=</span> <span class="n">cfg</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_x_intercept</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
+        <span class="c1"># Linear fit on last n points</span>
+        <span class="c1"># x is not necessary ordered</span>
+        <span class="n">xx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">polynomial</span><span class="o">.</span><span class="n">polynomial</span><span class="o">.</span><span class="n">polyfit</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="o">-</span><span class="n">n</span><span class="p">:],</span> <span class="n">k</span><span class="p">[</span><span class="o">-</span><span class="n">n</span><span class="p">:],</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="n">err</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">if</span> <span class="n">n</span> <span class="o">&gt;</span> <span class="mi">2</span><span class="p">:</span>
+            <span class="c1"># Compute error of the ratio r = -xx[0] / xx[1]</span>
+            <span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">polynomial</span><span class="o">.</span><span class="n">polynomial</span><span class="o">.</span><span class="n">polyvander</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="o">-</span><span class="n">n</span><span class="p">:],</span> <span class="mi">1</span><span class="p">)</span>
+            <span class="n">R</span> <span class="o">=</span> <span class="n">k</span><span class="p">[</span><span class="o">-</span><span class="n">n</span><span class="p">:]</span> <span class="o">-</span> <span class="n">X</span> <span class="o">@</span> <span class="n">xx</span>
+            <span class="n">S2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">R</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span> <span class="o">/</span> <span class="nb">float</span><span class="p">(</span><span class="n">n</span> <span class="o">-</span> <span class="mi">2</span><span class="p">)</span>
+            <span class="n">COV</span> <span class="o">=</span> <span class="n">S2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">inv</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">T</span> <span class="o">@</span> <span class="n">X</span><span class="p">)</span>
+            <span class="n">J</span> <span class="o">=</span> <span class="p">[</span><span class="o">-</span><span class="mi">1</span> <span class="o">/</span> <span class="n">xx</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">xx</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">/</span> <span class="n">xx</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">**</span> <span class="mi">2</span><span class="p">]</span>  <span class="c1"># Jacobian [dr/d(xx[0]) , dr/d(xx[1])]</span>
+            <span class="n">err</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">J</span> <span class="o">@</span> <span class="n">COV</span> <span class="o">@</span> <span class="n">J</span><span class="p">)</span>
+
+        <span class="c1"># return x @y=0</span>
+        <span class="k">return</span> <span class="p">(</span><span class="o">-</span><span class="n">xx</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">/</span> <span class="n">xx</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">xx</span><span class="p">,</span> <span class="n">err</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_init_responses</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">tunename</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">bpmname</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">quadname</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">steererhname</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">steerervname</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">bpmi</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">dk0</span><span class="o">=</span><span class="mf">1e-5</span>
+    <span class="p">):</span>
+        <span class="c1"># Return:</span>
+        <span class="c1">#   normalized response of a dipolar kick in a quad from the model (all bpms)</span>
+        <span class="c1">#   normalized response of horizontal steerer from the model at bpm #i</span>
+        <span class="c1">#   normalized response of vertical steerer from the model at bpm #i</span>
+
+        <span class="c1"># Retrieve model handle</span>
+        <span class="n">design</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">peer</span><span class="o">.</span><span class="n">peer</span><span class="o">.</span><span class="n">design</span>
+
+        <span class="c1"># handles</span>
+        <span class="n">quad</span> <span class="o">=</span> <span class="n">design</span><span class="o">.</span><span class="n">magnet</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">quadname</span><span class="p">)</span>
+        <span class="n">sth</span> <span class="o">=</span> <span class="n">design</span><span class="o">.</span><span class="n">magnet</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">steererhname</span><span class="p">)</span>
+        <span class="n">stv</span> <span class="o">=</span> <span class="n">design</span><span class="o">.</span><span class="n">magnet</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">steerervname</span><span class="p">)</span>
+        <span class="n">orbit</span> <span class="o">=</span> <span class="n">design</span><span class="o">.</span><span class="n">get_bpms</span><span class="p">(</span><span class="n">bpmname</span><span class="p">)</span><span class="o">.</span><span class="n">positions</span>
+        <span class="n">tune_design</span> <span class="o">=</span> <span class="n">design</span><span class="o">.</span><span class="n">get_tune_tuning</span><span class="p">(</span><span class="n">tunename</span><span class="p">)</span>
+        <span class="n">tune_live</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_peer</span><span class="o">.</span><span class="n">get_tune_tuning</span><span class="p">(</span><span class="n">tunename</span><span class="p">)</span>
+
+        <span class="c1"># Get tune from live and adjust the model to improve quad response phase</span>
+        <span class="n">tune0</span> <span class="o">=</span> <span class="n">tune_design</span><span class="o">.</span><span class="n">readback</span><span class="p">()</span>
+        <span class="n">tune</span> <span class="o">=</span> <span class="n">tune_live</span><span class="o">.</span><span class="n">readback</span><span class="p">()</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Live tune: </span><span class="si">{</span><span class="n">tune</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Model tune: </span><span class="si">{</span><span class="n">tune0</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+        <span class="n">tune_design</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">tune</span><span class="p">)</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Model tune: </span><span class="si">{</span><span class="n">tune_design</span><span class="o">.</span><span class="n">readback</span><span class="p">()</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+
+        <span class="c1"># quadrupole</span>
+        <span class="n">a0</span> <span class="o">=</span> <span class="n">quad</span><span class="o">.</span><span class="n">strength</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"PolynomA"</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="n">b0</span> <span class="o">=</span> <span class="n">quad</span><span class="o">.</span><span class="n">strength</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"PolynomB"</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="n">step</span> <span class="o">=</span> <span class="p">[</span><span class="o">-</span><span class="n">dk0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">dk0</span><span class="p">]</span>
+
+        <span class="n">orb0</span> <span class="o">=</span> <span class="n">orbit</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+        <span class="n">quad</span><span class="o">.</span><span class="n">strength</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">b0</span> <span class="o">-</span> <span class="n">dk0</span><span class="p">,</span> <span class="s2">"PolynomB"</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="n">orbm</span> <span class="o">=</span> <span class="n">orbit</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+        <span class="n">quad</span><span class="o">.</span><span class="n">strength</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">b0</span> <span class="o">+</span> <span class="n">dk0</span><span class="p">,</span> <span class="s2">"PolynomB"</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="n">orbp</span> <span class="o">=</span> <span class="n">orbit</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+        <span class="n">quad</span><span class="o">.</span><span class="n">strength</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">b0</span><span class="p">,</span> <span class="s2">"PolynomB"</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+
+        <span class="n">orbx</span> <span class="o">=</span> <span class="p">[</span><span class="n">orbm</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">orb0</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">orbp</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]]</span>
+        <span class="n">fit</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">polynomial</span><span class="o">.</span><span class="n">polynomial</span><span class="o">.</span><span class="n">polyfit</span><span class="p">(</span><span class="n">step</span><span class="p">,</span> <span class="n">orbx</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="n">ref_ios_x</span> <span class="o">=</span> <span class="n">fit</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+
+        <span class="n">quad</span><span class="o">.</span><span class="n">strength</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">a0</span> <span class="o">-</span> <span class="n">dk0</span><span class="p">,</span> <span class="s2">"PolynomA"</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="n">orbm</span> <span class="o">=</span> <span class="n">orbit</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+        <span class="n">quad</span><span class="o">.</span><span class="n">strength</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">a0</span> <span class="o">+</span> <span class="n">dk0</span><span class="p">,</span> <span class="s2">"PolynomA"</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="n">orbp</span> <span class="o">=</span> <span class="n">orbit</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+        <span class="n">quad</span><span class="o">.</span><span class="n">strength</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">a0</span><span class="p">,</span> <span class="s2">"PolynomA"</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+
+        <span class="n">orby</span> <span class="o">=</span> <span class="p">[</span><span class="n">orbm</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">orb0</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">orbp</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]]</span>
+        <span class="n">fit</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">polynomial</span><span class="o">.</span><span class="n">polynomial</span><span class="o">.</span><span class="n">polyfit</span><span class="p">(</span><span class="n">step</span><span class="p">,</span> <span class="n">orby</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="n">ref_ios_y</span> <span class="o">=</span> <span class="n">fit</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+
+        <span class="c1"># steerers</span>
+        <span class="n">a0</span> <span class="o">=</span> <span class="n">sth</span><span class="o">.</span><span class="n">strength</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+        <span class="n">b0</span> <span class="o">=</span> <span class="n">stv</span><span class="o">.</span><span class="n">strength</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+        <span class="n">step</span> <span class="o">=</span> <span class="p">[</span><span class="o">-</span><span class="n">dk0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">dk0</span><span class="p">]</span>
+
+        <span class="n">orb0</span> <span class="o">=</span> <span class="n">orbit</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+        <span class="n">sth</span><span class="o">.</span><span class="n">strength</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">b0</span> <span class="o">-</span> <span class="n">dk0</span><span class="p">)</span>
+        <span class="n">orbm</span> <span class="o">=</span> <span class="n">orbit</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+        <span class="n">sth</span><span class="o">.</span><span class="n">strength</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">b0</span> <span class="o">+</span> <span class="n">dk0</span><span class="p">)</span>
+        <span class="n">orbp</span> <span class="o">=</span> <span class="n">orbit</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+        <span class="n">sth</span><span class="o">.</span><span class="n">strength</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">b0</span><span class="p">)</span>
+
+        <span class="n">orbx</span> <span class="o">=</span> <span class="p">[</span><span class="n">orbm</span><span class="p">[</span><span class="n">bpmi</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">orb0</span><span class="p">[</span><span class="n">bpmi</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">orbp</span><span class="p">[</span><span class="n">bpmi</span><span class="p">,</span> <span class="mi">0</span><span class="p">]]</span>
+        <span class="n">fit</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">polynomial</span><span class="o">.</span><span class="n">polynomial</span><span class="o">.</span><span class="n">polyfit</span><span class="p">(</span><span class="n">step</span><span class="p">,</span> <span class="n">orbx</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="n">bpm_fact_x</span> <span class="o">=</span> <span class="n">fit</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+
+        <span class="n">stv</span><span class="o">.</span><span class="n">strength</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">a0</span> <span class="o">-</span> <span class="n">dk0</span><span class="p">)</span>
+        <span class="n">orbm</span> <span class="o">=</span> <span class="n">orbit</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+        <span class="n">stv</span><span class="o">.</span><span class="n">strength</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">a0</span> <span class="o">+</span> <span class="n">dk0</span><span class="p">)</span>
+        <span class="n">orbp</span> <span class="o">=</span> <span class="n">orbit</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+        <span class="n">stv</span><span class="o">.</span><span class="n">strength</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">a0</span><span class="p">)</span>
+
+        <span class="n">orby</span> <span class="o">=</span> <span class="p">[</span><span class="n">orbm</span><span class="p">[</span><span class="n">bpmi</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">orb0</span><span class="p">[</span><span class="n">bpmi</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">orbp</span><span class="p">[</span><span class="n">bpmi</span><span class="p">,</span> <span class="mi">1</span><span class="p">]]</span>
+        <span class="n">fit</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">polynomial</span><span class="o">.</span><span class="n">polynomial</span><span class="o">.</span><span class="n">polyfit</span><span class="p">(</span><span class="n">step</span><span class="p">,</span> <span class="n">orby</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="n">bpm_fact_y</span> <span class="o">=</span> <span class="n">fit</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+
+        <span class="c1"># Restore tune</span>
+        <span class="n">tune_design</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">tune0</span><span class="p">)</span>
+
+        <span class="n">ref</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">ref_ios_x</span><span class="p">,</span> <span class="n">ref_ios_y</span><span class="p">])</span><span class="o">.</span><span class="n">T</span>
+        <span class="k">return</span> <span class="n">ref</span><span class="p">,</span> <span class="n">bpm_fact_x</span><span class="p">,</span> <span class="n">bpm_fact_y</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_fit_kick</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">meas</span><span class="p">,</span> <span class="n">ref</span><span class="p">,</span> <span class="n">mask</span><span class="p">):</span>
+        <span class="c1"># Correlate measured ios and theoretical one</span>
+
+        <span class="n">xy</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">multiply</span><span class="p">(</span><span class="n">meas</span><span class="p">[</span><span class="n">mask</span><span class="p">],</span> <span class="n">ref</span><span class="p">[</span><span class="n">mask</span><span class="p">])</span>
+        <span class="n">xx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">multiply</span><span class="p">(</span><span class="n">ref</span><span class="p">[</span><span class="n">mask</span><span class="p">],</span> <span class="n">ref</span><span class="p">[</span><span class="n">mask</span><span class="p">])</span>
+        <span class="k">if</span> <span class="nb">sum</span><span class="p">(</span><span class="n">xx</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">return</span> <span class="mi">0</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="nb">sum</span><span class="p">(</span><span class="n">xy</span><span class="p">)</span> <span class="o">/</span> <span class="nb">sum</span><span class="p">(</span><span class="n">xx</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_get_averaged_orbit</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># Get averaged orbit</span>
+
+        <span class="n">avgorb</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_bpms</span><span class="p">),</span> <span class="mi">2</span><span class="p">))</span>
+        <span class="k">for</span> <span class="n">avg</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_nb_meas</span><span class="p">):</span>
+            <span class="n">o</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_bpms</span><span class="o">.</span><span class="n">positions</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+            <span class="n">avgorb</span> <span class="o">+=</span> <span class="n">o</span>
+            <span class="k">if</span> <span class="n">avg</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">_nb_meas</span> <span class="o">-</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_sleep_meas</span><span class="p">)</span>
+
+        <span class="n">avgorb</span> <span class="o">/=</span> <span class="nb">float</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_nb_meas</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">avgorb</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_one_step_dk</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dk0</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">float</span><span class="p">],</span> <span class="n">dk1</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">bipolar_delta</span><span class="p">:</span> <span class="nb">bool</span><span class="p">):</span>
+        <span class="c1"># Measrue IOS</span>
+
+        <span class="k">if</span> <span class="nb">any</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">dk</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mf">200e-6</span> <span class="k">for</span> <span class="n">dk</span> <span class="ow">in</span> <span class="n">dk0</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="n">PyAMLException</span><span class="p">(</span><span class="s2">"Requested dk too high (&gt;200urad), consider using bump"</span><span class="p">)</span>
+
+        <span class="c1"># Set steerer</span>
+        <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">fabs</span><span class="p">(</span><span class="n">dk0</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">_str</span> <span class="o">=</span> <span class="n">dk0</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">_initial_k0</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_h_steer</span><span class="o">.</span><span class="n">strength</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">_str</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">send_callback</span><span class="p">(</span><span class="n">Action</span><span class="o">.</span><span class="n">APPLY</span><span class="p">,</span> <span class="p">{</span><span class="s2">"step"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_step</span><span class="p">,</span> <span class="s2">"magnet"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_h_steer</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="s2">"strength"</span><span class="p">:</span> <span class="n">_str</span><span class="p">})</span>
+        <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">fabs</span><span class="p">(</span><span class="n">dk0</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">_str</span> <span class="o">=</span> <span class="n">dk0</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">_initial_k0</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_v_steer</span><span class="o">.</span><span class="n">strength</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">_str</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">send_callback</span><span class="p">(</span><span class="n">Action</span><span class="o">.</span><span class="n">APPLY</span><span class="p">,</span> <span class="p">{</span><span class="s2">"step"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_step</span><span class="p">,</span> <span class="s2">"magnet"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_v_steer</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="s2">"strength"</span><span class="p">:</span> <span class="n">_str</span><span class="p">})</span>
+
+        <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_sleep_step</span><span class="p">)</span>
+        <span class="n">orb0</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_averaged_orbit</span><span class="p">()</span>
+
+        <span class="c1"># Set quad</span>
+        <span class="n">_str</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_initial_k1</span> <span class="o">+</span> <span class="n">dk1</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">_quad_polarity</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_quad</span><span class="o">.</span><span class="n">strength</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">_str</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">send_callback</span><span class="p">(</span><span class="n">Action</span><span class="o">.</span><span class="n">APPLY</span><span class="p">,</span> <span class="p">{</span><span class="s2">"step"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_step</span><span class="p">,</span> <span class="s2">"magnet"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_quad</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="s2">"strength"</span><span class="p">:</span> <span class="n">_str</span><span class="p">})</span>
+        <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_sleep_step</span><span class="p">)</span>
+        <span class="n">orbp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_averaged_orbit</span><span class="p">()</span>
+
+        <span class="n">ios_x</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">ios_y</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="k">if</span> <span class="n">bipolar_delta</span><span class="p">:</span>
+            <span class="c1"># one more point at k1 - dk1</span>
+            <span class="n">_str</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_initial_k1</span> <span class="o">-</span> <span class="n">dk1</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">_quad_polarity</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_quad</span><span class="o">.</span><span class="n">strength</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">_str</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">send_callback</span><span class="p">(</span><span class="n">Action</span><span class="o">.</span><span class="n">APPLY</span><span class="p">,</span> <span class="p">{</span><span class="s2">"step"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_step</span><span class="p">,</span> <span class="s2">"magnet"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_quad</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="s2">"strength"</span><span class="p">:</span> <span class="n">_str</span><span class="p">})</span>
+            <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_sleep_step</span><span class="p">)</span>
+            <span class="n">orbm</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_averaged_orbit</span><span class="p">()</span>
+            <span class="c1"># take slopes and compute corresponding delta orbit</span>
+            <span class="n">stepx</span> <span class="o">=</span> <span class="p">[</span><span class="o">-</span><span class="n">dk1</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">_quad_polarity</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">dk1</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">_quad_polarity</span><span class="p">]</span>
+            <span class="n">orbx</span> <span class="o">=</span> <span class="p">[</span><span class="n">orbm</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">orb0</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">orbp</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]]</span>
+            <span class="n">fit</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">polynomial</span><span class="o">.</span><span class="n">polynomial</span><span class="o">.</span><span class="n">polyfit</span><span class="p">(</span><span class="n">stepx</span><span class="p">,</span> <span class="n">orbx</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+            <span class="n">ios_x</span> <span class="o">=</span> <span class="n">fit</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">dk1</span>
+
+            <span class="n">orby</span> <span class="o">=</span> <span class="p">[</span><span class="n">orbm</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">orb0</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">orbp</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]]</span>
+            <span class="n">fit</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">polynomial</span><span class="o">.</span><span class="n">polynomial</span><span class="o">.</span><span class="n">polyfit</span><span class="p">(</span><span class="n">stepx</span><span class="p">,</span> <span class="n">orby</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+            <span class="n">ios_y</span> <span class="o">=</span> <span class="n">fit</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">dk1</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">ios_x</span> <span class="o">=</span> <span class="n">orbp</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">orb0</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span>
+            <span class="n">ios_y</span> <span class="o">=</span> <span class="n">orbp</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">orb0</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span>
+
+        <span class="c1"># resotre quad</span>
+        <span class="n">_str</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_initial_k1</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_quad</span><span class="o">.</span><span class="n">strength</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">_str</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">send_callback</span><span class="p">(</span><span class="n">Action</span><span class="o">.</span><span class="n">APPLY</span><span class="p">,</span> <span class="p">{</span><span class="s2">"step"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_step</span><span class="p">,</span> <span class="s2">"magnet"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_quad</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="s2">"strength"</span><span class="p">:</span> <span class="n">_str</span><span class="p">})</span>
+
+        <span class="n">nanx</span> <span class="o">=</span> <span class="o">~</span><span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">ios_x</span><span class="p">)</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">orb0</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_bpmi</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
+        <span class="n">dkx</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_fit_kick</span><span class="p">(</span><span class="n">ios_x</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_ref_ios</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">nanx</span><span class="p">)</span>
+
+        <span class="n">nany</span> <span class="o">=</span> <span class="o">~</span><span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">ios_y</span><span class="p">)</span>
+        <span class="n">y</span> <span class="o">=</span> <span class="n">orb0</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_bpmi</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
+        <span class="n">dky</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_fit_kick</span><span class="p">(</span><span class="n">ios_y</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_ref_ios</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">nany</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">x</span><span class="p">,</span> <span class="n">dkx</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">dky</span><span class="p">,</span> <span class="n">ios_x</span><span class="p">,</span> <span class="n">ios_y</span>
+
+<div class="viewcode-block" id="BBA2.measure">
+<a class="viewcode-back" href="../../../api/pyaml.tuning_tools.bba2.html#pyaml.tuning_tools.bba2.BBA2.measure">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">measure</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">sleep_between_step</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">n_avg_meas</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">sleep_between_meas</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">callback</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Callable</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">plane</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">):</span>
+<span class="w">        </span><span class="sd">"""</span>
+<span class="sd">        Measure BBA.</span>
+
+<span class="sd">        **Example**</span>
+
+<span class="sd">        .. code-block:: python</span>
+
+<span class="sd">            sr = Accelerator.load("tests/config/EBSOrbit.yaml")</span>
+<span class="sd">            SR = sr.live</span>
+<span class="sd">            bba = SR.get_bba("BBA2-BPM_C04-04")</span>
+
+<span class="sd">            # Add a misalignement</span>
+<span class="sd">            SR.get_bpm("BPM_C04-04").offset.set([200e-6,-150e-6])</span>
+
+<span class="sd">            bba.measure(sleep_between_step=6,plane='V',callback=bba_callback)</span>
+
+<span class="sd">            print(f"HOffset: {bba.h_offset()*1e6:.3f} um {bba.h_offset_error()}")</span>
+<span class="sd">            print(f"VOffset: {bba.v_offset()*1e6:.3f} um {bba.v_offset_error()}")</span>
+
+<span class="sd">            bba.plot_data()</span>
+
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        sleep_between_step: float</span>
+<span class="sd">            Default time sleep after steerer or quad exitation</span>
+<span class="sd">            Default: from config</span>
+<span class="sd">        n_avg_meas : int, optional</span>
+<span class="sd">            Default number of orbit measurement per step used for averaging</span>
+<span class="sd">            Default from config</span>
+<span class="sd">        sleep_between_meas: float</span>
+<span class="sd">            Default time sleep between two orbit measurment</span>
+<span class="sd">            Default: from config</span>
+<span class="sd">        callback : Callable, optional</span>
+<span class="sd">            example: callback(action:int, callback_data: 'Complicated struct')</span>
+<span class="sd">            callback is executed after each strength setting and after each orbit</span>
+<span class="sd">            reading.</span>
+<span class="sd">            If the callback returns false, then the process is aborted.</span>
+<span class="sd">        plane: str, optional</span>
+<span class="sd">            Plane to perform ("H" or "V", None =&gt; both plane)</span>
+<span class="sd">        """</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_nb_meas</span> <span class="o">=</span> <span class="n">n_avg_meas</span> <span class="k">if</span> <span class="n">n_avg_meas</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cfg</span><span class="o">.</span><span class="n">n_avg_meas</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_sleep_step</span> <span class="o">=</span> <span class="n">sleep_between_step</span> <span class="k">if</span> <span class="n">sleep_between_step</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cfg</span><span class="o">.</span><span class="n">sleep_between_step</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_sleep_meas</span> <span class="o">=</span> <span class="n">sleep_between_meas</span> <span class="k">if</span> <span class="n">sleep_between_meas</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cfg</span><span class="o">.</span><span class="n">sleep_between_meas</span>
+
+        <span class="c1"># Device handles</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">check_peer</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_h_steer</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">peer</span><span class="o">.</span><span class="n">magnet</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_cfg</span><span class="o">.</span><span class="n">hcorr_name</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_v_steer</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">peer</span><span class="o">.</span><span class="n">magnet</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_cfg</span><span class="o">.</span><span class="n">vcorr_name</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_quad</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">peer</span><span class="o">.</span><span class="n">magnet</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_cfg</span><span class="o">.</span><span class="n">quad_name</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_bpms</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">peer</span><span class="o">.</span><span class="n">get_bpms</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_cfg</span><span class="o">.</span><span class="n">bpm_array_name</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_bpmi</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_bpms</span><span class="o">.</span><span class="n">names</span><span class="p">()</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_cfg</span><span class="o">.</span><span class="n">bpm_name</span><span class="p">)</span>
+
+        <span class="c1"># Initial values</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_initial_k0</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_h_steer</span><span class="o">.</span><span class="n">strength</span><span class="o">.</span><span class="n">get</span><span class="p">(),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_v_steer</span><span class="o">.</span><span class="n">strength</span><span class="o">.</span><span class="n">get</span><span class="p">()]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_initial_k1</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_quad</span><span class="o">.</span><span class="n">strength</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_quad_polarity</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sign</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_initial_k1</span><span class="p">)</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_initial_k1</span> <span class="o">!=</span> <span class="mi">0</span> <span class="k">else</span> <span class="mi">1</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_ref_ios</span><span class="p">,</span> <span class="n">fx</span><span class="p">,</span> <span class="n">fy</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_init_responses</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_cfg</span><span class="o">.</span><span class="n">tune_correction_name</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_cfg</span><span class="o">.</span><span class="n">bpm_array_name</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_cfg</span><span class="o">.</span><span class="n">quad_name</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_cfg</span><span class="o">.</span><span class="n">hcorr_name</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_cfg</span><span class="o">.</span><span class="n">vcorr_name</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_bpmi</span><span class="p">,</span>
+        <span class="p">)</span>
+
+        <span class="n">dk0h</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cfg</span><span class="o">.</span><span class="n">hcorr_delta</span> <span class="k">if</span> <span class="n">plane</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">plane</span> <span class="o">==</span> <span class="s2">"H"</span> <span class="k">else</span> <span class="mi">0</span>
+        <span class="n">dk0v</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cfg</span><span class="o">.</span><span class="n">vcorr_delta</span> <span class="k">if</span> <span class="n">plane</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">plane</span> <span class="o">==</span> <span class="s2">"V"</span> <span class="k">else</span> <span class="mi">0</span>
+        <span class="n">dk1</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cfg</span><span class="o">.</span><span class="n">quad_delta</span>
+        <span class="n">bidelta</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cfg</span><span class="o">.</span><span class="n">bipolar_delta</span>
+        <span class="n">doH</span> <span class="o">=</span> <span class="n">dk0h</span> <span class="o">!=</span> <span class="mi">0</span>
+        <span class="n">doV</span> <span class="o">=</span> <span class="n">dk0v</span> <span class="o">!=</span> <span class="mi">0</span>
+        <span class="n">aborted</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="n">err</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Initial H corrector </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_cfg</span><span class="o">.</span><span class="n">hcorr_name</span><span class="si">}</span><span class="s2"> value: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_initial_k0</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2"> rad"</span><span class="p">)</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Initial V corrector </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_cfg</span><span class="o">.</span><span class="n">vcorr_name</span><span class="si">}</span><span class="s2"> value: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_initial_k0</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s2"> rad"</span><span class="p">)</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Initial quad </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_cfg</span><span class="o">.</span><span class="n">quad_name</span><span class="si">}</span><span class="s2"> value: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_initial_k1</span><span class="si">}</span><span class="s2"> m-1"</span><span class="p">)</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_register_callback</span><span class="p">(</span><span class="n">callback</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_init_measure</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">latest_measurement</span><span class="p">[</span><span class="s2">"HData"</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">latest_measurement</span><span class="p">[</span><span class="s2">"VData"</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="n">X</span> <span class="o">=</span> <span class="n">BBAData</span><span class="p">()</span>
+            <span class="n">Y</span> <span class="o">=</span> <span class="n">BBAData</span><span class="p">()</span>
+
+            <span class="c1"># Mini cycle</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cfg</span><span class="o">.</span><span class="n">minicyle_sleep_time</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Quad mini cycling </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_cfg</span><span class="o">.</span><span class="n">quad_name</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+                <span class="n">_str</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_initial_k1</span> <span class="o">+</span> <span class="n">dk1</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">_quad_polarity</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_quad</span><span class="o">.</span><span class="n">strength</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">_str</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">send_callback</span><span class="p">(</span><span class="n">Action</span><span class="o">.</span><span class="n">APPLY</span><span class="p">,</span> <span class="p">{</span><span class="s2">"step"</span><span class="p">:</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="s2">"magnet"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_quad</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="s2">"strength"</span><span class="p">:</span> <span class="n">_str</span><span class="p">})</span>
+                <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_cfg</span><span class="o">.</span><span class="n">minicyle_sleep_time</span><span class="p">)</span>
+                <span class="n">_str</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_initial_k1</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_quad</span><span class="o">.</span><span class="n">strength</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">_str</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">send_callback</span><span class="p">(</span><span class="n">Action</span><span class="o">.</span><span class="n">APPLY</span><span class="p">,</span> <span class="p">{</span><span class="s2">"step"</span><span class="p">:</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="s2">"magnet"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_quad</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="s2">"strength"</span><span class="p">:</span> <span class="n">_str</span><span class="p">})</span>
+                <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_cfg</span><span class="o">.</span><span class="n">minicyle_sleep_time</span><span class="p">)</span>
+
+            <span class="n">opt_found</span> <span class="o">=</span> <span class="kc">False</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_step</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="n">stx</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="n">sty</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="k">while</span> <span class="ow">not</span> <span class="n">opt_found</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">_step</span> <span class="o">&lt;</span> <span class="mi">9</span><span class="p">:</span>
+                <span class="n">ist</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_step</span> <span class="o">%</span> <span class="mi">3</span>
+                <span class="n">_from</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">stx</span><span class="si">}</span><span class="s2">,</span><span class="si">{</span><span class="n">sty</span><span class="si">}</span><span class="s2">"</span>
+
+                <span class="k">if</span> <span class="n">ist</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                    <span class="n">stx</span> <span class="o">-=</span> <span class="n">dk0h</span>
+                    <span class="n">sty</span> <span class="o">-=</span> <span class="n">dk0v</span>
+                    <span class="n">_to</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">stx</span><span class="si">}</span><span class="s2">,</span><span class="si">{</span><span class="n">sty</span><span class="si">}</span><span class="s2">"</span>
+                    <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Moving in the negative direction: </span><span class="si">{</span><span class="n">_from</span><span class="si">}</span><span class="s2"> -&gt; </span><span class="si">{</span><span class="n">_to</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+
+                <span class="k">if</span> <span class="n">ist</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+                    <span class="n">stx</span> <span class="o">+=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">dk0h</span>
+                    <span class="n">sty</span> <span class="o">+=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">dk0v</span>
+                    <span class="n">_to</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">stx</span><span class="si">}</span><span class="s2">,</span><span class="si">{</span><span class="n">sty</span><span class="si">}</span><span class="s2">"</span>
+                    <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Moving in the positive direction: </span><span class="si">{</span><span class="n">_from</span><span class="si">}</span><span class="s2"> -&gt; </span><span class="si">{</span><span class="n">_to</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+
+                <span class="k">if</span> <span class="n">ist</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+                    <span class="n">H_found</span> <span class="o">=</span> <span class="kc">False</span>
+                    <span class="n">V_found</span> <span class="o">=</span> <span class="kc">False</span>
+
+                    <span class="k">if</span> <span class="n">doH</span><span class="p">:</span>
+                        <span class="n">stx</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">BBA2</span><span class="o">.</span><span class="n">_x_intercept</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">steps</span><span class="p">,</span> <span class="n">X</span><span class="o">.</span><span class="n">k</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+                        <span class="n">H_found</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">steps</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="n">stx</span> <span class="o">&lt;=</span> <span class="n">X</span><span class="o">.</span><span class="n">steps</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>  <span class="c1"># don't rely on extrapolation</span>
+                    <span class="k">if</span> <span class="n">doV</span><span class="p">:</span>
+                        <span class="n">sty</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">BBA2</span><span class="o">.</span><span class="n">_x_intercept</span><span class="p">(</span><span class="n">Y</span><span class="o">.</span><span class="n">steps</span><span class="p">,</span> <span class="n">Y</span><span class="o">.</span><span class="n">k</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+                        <span class="n">V_found</span> <span class="o">=</span> <span class="n">Y</span><span class="o">.</span><span class="n">steps</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="n">sty</span> <span class="o">&lt;=</span> <span class="n">Y</span><span class="o">.</span><span class="n">steps</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>  <span class="c1"># don't rely on extrapolation</span>
+
+                    <span class="n">opt_found</span> <span class="o">=</span> <span class="p">(</span>
+                        <span class="n">doH</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">doV</span> <span class="ow">and</span> <span class="n">H_found</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">doH</span> <span class="ow">and</span> <span class="n">doV</span> <span class="ow">and</span> <span class="n">V_found</span> <span class="ow">or</span> <span class="n">doH</span> <span class="ow">and</span> <span class="n">doV</span> <span class="ow">and</span> <span class="n">H_found</span> <span class="ow">and</span> <span class="n">V_found</span>
+                    <span class="p">)</span>
+
+                    <span class="n">_to</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">stx</span><span class="si">}</span><span class="s2">,</span><span class="si">{</span><span class="n">sty</span><span class="si">}</span><span class="s2">"</span>
+                    <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Moving to the best guess: </span><span class="si">{</span><span class="n">_from</span><span class="si">}</span><span class="s2"> -&gt; </span><span class="si">{</span><span class="n">_to</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+
+                <span class="n">x</span><span class="p">,</span> <span class="n">dkx</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">dky</span><span class="p">,</span> <span class="n">dataxbpm</span><span class="p">,</span> <span class="n">dataybpm</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_one_step_dk</span><span class="p">([</span><span class="n">stx</span><span class="p">,</span> <span class="n">sty</span><span class="p">],</span> <span class="n">dk1</span><span class="p">,</span> <span class="n">bidelta</span><span class="p">)</span>
+                <span class="n">X</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">stx</span><span class="p">,</span> <span class="n">dkx</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">dataxbpm</span><span class="p">)</span>
+                <span class="n">Y</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">sty</span><span class="p">,</span> <span class="n">dky</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">dataybpm</span><span class="p">)</span>
+
+                <span class="k">if</span> <span class="n">doH</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">send_callback</span><span class="p">(</span><span class="n">Action</span><span class="o">.</span><span class="n">MEASURE</span><span class="p">,</span> <span class="p">{</span><span class="s2">"step"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_step</span><span class="p">,</span> <span class="s2">"plane"</span><span class="p">:</span> <span class="s2">"H"</span><span class="p">,</span> <span class="s2">"bpm_pos"</span><span class="p">:</span> <span class="n">x</span><span class="p">,</span> <span class="s2">"ios"</span><span class="p">:</span> <span class="n">dataxbpm</span><span class="p">})</span>
+
+                <span class="k">if</span> <span class="n">doV</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">send_callback</span><span class="p">(</span><span class="n">Action</span><span class="o">.</span><span class="n">MEASURE</span><span class="p">,</span> <span class="p">{</span><span class="s2">"step"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_step</span><span class="p">,</span> <span class="s2">"plane"</span><span class="p">:</span> <span class="s2">"V"</span><span class="p">,</span> <span class="s2">"bpm_pos"</span><span class="p">:</span> <span class="n">y</span><span class="p">,</span> <span class="s2">"ios"</span><span class="p">:</span> <span class="n">dataybpm</span><span class="p">})</span>
+
+                <span class="bp">self</span><span class="o">.</span><span class="n">_step</span> <span class="o">+=</span> <span class="mi">1</span>
+
+            <span class="c1"># Final step</span>
+
+            <span class="k">if</span> <span class="n">doH</span><span class="p">:</span>
+                <span class="n">stx</span><span class="p">,</span> <span class="n">lxfit</span><span class="p">,</span> <span class="n">errx</span> <span class="o">=</span> <span class="n">BBA2</span><span class="o">.</span><span class="n">_x_intercept</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">steps</span><span class="p">,</span> <span class="n">X</span><span class="o">.</span><span class="n">k</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="n">doV</span><span class="p">:</span>
+                <span class="n">sty</span><span class="p">,</span> <span class="n">lyfit</span><span class="p">,</span> <span class="n">erry</span> <span class="o">=</span> <span class="n">BBA2</span><span class="o">.</span><span class="n">_x_intercept</span><span class="p">(</span><span class="n">Y</span><span class="o">.</span><span class="n">steps</span><span class="p">,</span> <span class="n">Y</span><span class="o">.</span><span class="n">k</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+
+            <span class="n">_to</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">stx</span><span class="si">}</span><span class="s2">,</span><span class="si">{</span><span class="n">sty</span><span class="si">}</span><span class="s2">"</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Moving to the optimum: </span><span class="si">{</span><span class="n">_to</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+
+            <span class="n">x</span><span class="p">,</span> <span class="n">dkx</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">dky</span><span class="p">,</span> <span class="n">dataxbpm</span><span class="p">,</span> <span class="n">dataybpm</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_one_step_dk</span><span class="p">([</span><span class="n">stx</span><span class="p">,</span> <span class="n">sty</span><span class="p">],</span> <span class="n">dk1</span><span class="p">,</span> <span class="n">bidelta</span><span class="p">)</span>
+            <span class="n">X</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">stx</span><span class="p">,</span> <span class="n">dkx</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">dataxbpm</span><span class="p">)</span>
+            <span class="n">Y</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">sty</span><span class="p">,</span> <span class="n">dky</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">dataybpm</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="n">doH</span><span class="p">:</span>
+                <span class="n">X</span><span class="o">.</span><span class="n">update_offset</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">errx</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">fabs</span><span class="p">(</span><span class="n">fx</span><span class="p">),</span> <span class="n">lxfit</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">latest_measurement</span><span class="p">[</span><span class="s2">"HData"</span><span class="p">]</span> <span class="o">=</span> <span class="n">X</span>
+
+            <span class="k">if</span> <span class="n">doV</span><span class="p">:</span>
+                <span class="n">Y</span><span class="o">.</span><span class="n">update_offset</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">erry</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">fabs</span><span class="p">(</span><span class="n">fy</span><span class="p">),</span> <span class="n">lyfit</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">latest_measurement</span><span class="p">[</span><span class="s2">"VData"</span><span class="p">]</span> <span class="o">=</span> <span class="n">Y</span>
+
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">ex</span><span class="p">:</span>
+            <span class="n">err</span> <span class="o">=</span> <span class="n">ex</span>
+        <span class="k">except</span> <span class="ne">KeyboardInterrupt</span> <span class="k">as</span> <span class="n">ex</span><span class="p">:</span>
+            <span class="n">aborted</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="k">finally</span><span class="p">:</span>
+            <span class="c1"># Restore steerer/quad strength</span>
+            <span class="k">if</span> <span class="n">doH</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_h_steer</span><span class="o">.</span><span class="n">strength</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_initial_k0</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+            <span class="k">if</span> <span class="n">doV</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_v_steer</span><span class="o">.</span><span class="n">strength</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_initial_k0</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_quad</span><span class="o">.</span><span class="n">strength</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_initial_k1</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">send_callback</span><span class="p">(</span>
+                <span class="n">Action</span><span class="o">.</span><span class="n">RESTORE</span><span class="p">,</span>
+                <span class="p">{},</span>
+                <span class="n">raiseException</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">err</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="p">(</span><span class="n">err</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">aborted</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">get_name</span><span class="p">()</span><span class="si">}</span><span class="s2"> : measurement aborted (settings not restored)"</span><span class="p">)</span>
+            <span class="k">return</span> <span class="kc">False</span>
+
+        <span class="k">return</span> <span class="kc">True</span></div>
+
+
+<div class="viewcode-block" id="BBA2.h_offset">
+<a class="viewcode-back" href="../../../api/pyaml.tuning_tools.bba2.html#pyaml.tuning_tools.bba2.BBA2.h_offset">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">h_offset</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">latest_measurement</span><span class="p">[</span><span class="s2">"HData"</span><span class="p">]</span><span class="o">.</span><span class="n">offset</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">latest_measurement</span><span class="p">[</span><span class="s2">"HData"</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span></div>
+
+
+<div class="viewcode-block" id="BBA2.h_offset_error">
+<a class="viewcode-back" href="../../../api/pyaml.tuning_tools.bba2.html#pyaml.tuning_tools.bba2.BBA2.h_offset_error">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">h_offset_error</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">latest_measurement</span><span class="p">[</span><span class="s2">"HData"</span><span class="p">]</span><span class="o">.</span><span class="n">error</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">latest_measurement</span><span class="p">[</span><span class="s2">"HData"</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span></div>
+
+
+<div class="viewcode-block" id="BBA2.v_offset">
+<a class="viewcode-back" href="../../../api/pyaml.tuning_tools.bba2.html#pyaml.tuning_tools.bba2.BBA2.v_offset">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">v_offset</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">latest_measurement</span><span class="p">[</span><span class="s2">"VData"</span><span class="p">]</span><span class="o">.</span><span class="n">offset</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">latest_measurement</span><span class="p">[</span><span class="s2">"VData"</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span></div>
+
+
+<div class="viewcode-block" id="BBA2.v_offset_error">
+<a class="viewcode-back" href="../../../api/pyaml.tuning_tools.bba2.html#pyaml.tuning_tools.bba2.BBA2.v_offset_error">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">v_offset_error</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">latest_measurement</span><span class="p">[</span><span class="s2">"VData"</span><span class="p">]</span><span class="o">.</span><span class="n">error</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">latest_measurement</span><span class="p">[</span><span class="s2">"VData"</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span></div>
+
+
+<div class="viewcode-block" id="BBA2.plot_plane_data">
+<a class="viewcode-back" href="../../../api/pyaml.tuning_tools.bba2.html#pyaml.tuning_tools.bba2.BBA2.plot_plane_data">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">plot_plane_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ax</span><span class="p">,</span> <span class="n">plane</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="n">yp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">latest_measurement</span><span class="p">[</span><span class="n">plane</span><span class="p">]</span><span class="o">.</span><span class="n">k</span>
+        <span class="n">xp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">latest_measurement</span><span class="p">[</span><span class="n">plane</span><span class="p">]</span><span class="o">.</span><span class="n">steps</span>
+
+        <span class="n">b</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">latest_measurement</span><span class="p">[</span><span class="n">plane</span><span class="p">]</span><span class="o">.</span><span class="n">lastfit</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">a</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">latest_measurement</span><span class="p">[</span><span class="n">plane</span><span class="p">]</span><span class="o">.</span><span class="n">lastfit</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+
+        <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">xp</span><span class="p">,</span> <span class="n">yp</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s2">"o"</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">axline</span><span class="p">((</span><span class="mi">0</span><span class="p">,</span> <span class="n">b</span><span class="p">),</span> <span class="n">slope</span><span class="o">=</span><span class="n">a</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s2">"--"</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">"lightblue"</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">"last fit"</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">xp</span><span class="p">[</span><span class="o">-</span><span class="mi">4</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">yp</span><span class="p">[</span><span class="o">-</span><span class="mi">4</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s2">"salmon"</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s2">"o"</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">"last fit"</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">xp</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">:],</span> <span class="n">yp</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">:],</span> <span class="n">color</span><span class="o">=</span><span class="s2">"green"</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s2">"o"</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">"optimum"</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Steerer (rad)</span><span class="se">\n</span><span class="s2">Optimun kick @ bpm=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">latest_measurement</span><span class="p">[</span><span class="n">plane</span><span class="p">]</span><span class="o">.</span><span class="n">offset</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mf">1e6</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2"> um"</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">"Fitted kick"</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">grid</span><span class="p">()</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="BBA2.plot_data">
+<a class="viewcode-back" href="../../../api/pyaml.tuning_tools.bba2.html#pyaml.tuning_tools.bba2.BBA2.plot_data">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">plot_data</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">"""</span>
+<span class="sd">        Plot BBA data.</span>
+<span class="sd">        """</span>
+
+        <span class="n">noH</span> <span class="o">=</span> <span class="s2">"HData"</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">latest_measurement</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">latest_measurement</span><span class="p">[</span><span class="s2">"HData"</span><span class="p">]</span> <span class="ow">is</span> <span class="kc">None</span>
+        <span class="n">noV</span> <span class="o">=</span> <span class="s2">"VData"</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">latest_measurement</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">latest_measurement</span><span class="p">[</span><span class="s2">"VData"</span><span class="p">]</span> <span class="ow">is</span> <span class="kc">None</span>
+        <span class="n">nrow</span> <span class="o">=</span> <span class="mi">0</span> <span class="k">if</span> <span class="n">noH</span> <span class="k">else</span> <span class="mi">1</span>
+        <span class="n">nrow</span> <span class="o">+=</span> <span class="mi">0</span> <span class="k">if</span> <span class="n">noV</span> <span class="k">else</span> <span class="mi">1</span>
+
+        <span class="k">if</span> <span class="n">nrow</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">PyAMLException</span><span class="p">(</span><span class="s2">"No BBA data to plot, please call measure() first"</span><span class="p">)</span>
+
+        <span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
+        <span class="n">irow</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">noH</span><span class="p">:</span>
+            <span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="n">nrow</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">irow</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">plot_plane_data</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="s2">"HData"</span><span class="p">)</span>
+            <span class="n">irow</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">noV</span><span class="p">:</span>
+            <span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="n">nrow</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">irow</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">plot_plane_data</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="s2">"VData"</span><span class="p">)</span>
+
+        <span class="n">fig</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+        <span class="n">fig</span><span class="o">.</span><span class="n">canvas</span><span class="o">.</span><span class="n">manager</span><span class="o">.</span><span class="n">set_window_title</span><span class="p">(</span><span class="sa">f</span><span class="s2">"BBA </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_cfg</span><span class="o">.</span><span class="n">bpm_name</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+
+        <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span></div>
+</div>
+
+</pre></div>
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../../../_static/scripts/bootstrap.js?digest=90905a2f556bf617f1a9"></script>
+<script defer src="../../../_static/scripts/pydata-sphinx-theme.js?digest=90905a2f556bf617f1a9"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="copyright">
+    
+      © Copyright 2024, pyAML Collaboration.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.2.3.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+<p class="theme-version">
+  <!-- # L10n: Setting the PST URL as an argument as this does not need to be localized -->
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.20.0.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>pyaml.arrays.element_array &#8212; Python Accelerator Middle Layer 0.1.dev1+g72d2992bf documentation</title>
+    <title>pyaml.arrays.element_array &#8212; Python Accelerator Middle Layer 0.1.dev1+g947cfb0ef documentation</title>
   
   
   
@@ -41,7 +41,7 @@
   <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=90905a2f556bf617f1a9" />
 <link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=90905a2f556bf617f1a9" />
 
-    <script src="../../../_static/documentation_options.js?v=7336f5c7"></script>
+    <script src="../../../_static/documentation_options.js?v=7aef76b6"></script>
     <script src="../../../_static/doctools.js?v=9bcbadda"></script>
     <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -125,8 +125,8 @@
       
     
     
-    <img src="../../../_static/logo.png" class="logo__image only-light" alt="Python Accelerator Middle Layer 0.1.dev1+g72d2992bf documentation - Home"/>
-    <img src="../../../_static/dark.png" class="logo__image only-dark pst-js-only" alt="Python Accelerator Middle Layer 0.1.dev1+g72d2992bf documentation - Home"/>
+    <img src="../../../_static/logo.png" class="logo__image only-light" alt="Python Accelerator Middle Layer 0.1.dev1+g947cfb0ef documentation - Home"/>
+    <img src="../../../_static/dark.png" class="logo__image only-dark pst-js-only" alt="Python Accelerator Middle Layer 0.1.dev1+g947cfb0ef documentation - Home"/>
   
   
 </a></div>
@@ -402,13 +402,13 @@
 <span class="kn">from</span><span class="w"> </span><span class="nn">..magnet.serialized_magnet</span><span class="w"> </span><span class="kn">import</span> <span class="n">SerializedMagnets</span>
 
 <span class="k">if</span> <span class="n">TYPE_CHECKING</span><span class="p">:</span>
-    <span class="kn">from</span><span class="w"> </span><span class="nn">..common.element_holder</span><span class="w"> </span><span class="kn">import</span> <span class="n">ElementHolder</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">..common.holders.element_holder</span><span class="w"> </span><span class="kn">import</span> <span class="n">ElementHolder</span>
 
 
 <div class="viewcode-block" id="ElementArray">
 <a class="viewcode-back" href="../../../api/pyaml.arrays.element_array.html#pyaml.arrays.element_array.ElementArray">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">ElementArray</span><span class="p">(</span><span class="nb">list</span><span class="p">[</span><span class="n">Element</span><span class="p">]):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    Class that implements access to an element array</span>
 
 <span class="sd">    Parameters</span>
@@ -429,10 +429,10 @@
 
 <span class="sd">    .. code-block:: python</span>
 
-<span class="sd">        &gt;&gt;&gt; sr = Accelerator.load(&quot;acc.yaml&quot;)</span>
-<span class="sd">        &gt;&gt;&gt; elements = sr.design.get_elements(&quot;QuadForTune&quot;)</span>
+<span class="sd">        &gt;&gt;&gt; sr = Accelerator.load("acc.yaml")</span>
+<span class="sd">        &gt;&gt;&gt; elements = sr.design.get_elements("QuadForTune")</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">array_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">elements</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Element</span><span class="p">],</span> <span class="n">use_aggregator</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">elements</span><span class="p">)</span>
@@ -443,37 +443,37 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">__peer</span> <span class="o">=</span> <span class="bp">self</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">_peer</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="k">else</span> <span class="kc">None</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__peer</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="nb">any</span><span class="p">([</span><span class="n">m</span><span class="o">.</span><span class="n">_peer</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__peer</span> <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="bp">self</span><span class="p">]):</span>
                 <span class="k">raise</span> <span class="n">PyAMLException</span><span class="p">(</span>
-                    <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">get_name</span><span class="p">()</span><span class="si">}</span><span class="s2">: &quot;</span>
-                    <span class="s2">&quot;All elements must be attached to the same instance &quot;</span>
-                    <span class="s2">&quot;of either a Simulator or a ControlSystem&quot;</span>
+                    <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">get_name</span><span class="p">()</span><span class="si">}</span><span class="s2">: "</span>
+                    <span class="s2">"All elements must be attached to the same instance "</span>
+                    <span class="s2">"of either a Simulator or a ControlSystem"</span>
                 <span class="p">)</span>
 
 <div class="viewcode-block" id="ElementArray.get_peer">
 <a class="viewcode-back" href="../../../api/pyaml.arrays.element_array.html#pyaml.arrays.element_array.ElementArray.get_peer">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">get_peer</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;ElementHolder&quot;</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_peer</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">"ElementHolder"</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""</span>
 <span class="sd">        Returns the peer (:py:class:`~pyaml.lattice.simulator.Simulator`</span>
 <span class="sd">        or :py:class:`~pyaml.control.controlsystem.ControlSystem`) of</span>
 <span class="sd">        an element list</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__peer</span></div>
 
 
 <div class="viewcode-block" id="ElementArray.get_name">
 <a class="viewcode-back" href="../../../api/pyaml.arrays.element_array.html#pyaml.arrays.element_array.ElementArray.get_name">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">get_name</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""</span>
 <span class="sd">        Returns the array name</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__name</span></div>
 
 
 <div class="viewcode-block" id="ElementArray.names">
 <a class="viewcode-back" href="../../../api/pyaml.arrays.element_array.html#pyaml.arrays.element_array.ElementArray.names">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">names</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""</span>
 <span class="sd">        Returns the element names</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">return</span> <span class="p">[</span><span class="n">e</span><span class="o">.</span><span class="n">get_name</span><span class="p">()</span> <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="bp">self</span><span class="p">]</span></div>
 
 
@@ -482,52 +482,52 @@
             <span class="n">element_type</span> <span class="o">=</span> <span class="n">Element</span>
 
         <span class="k">if</span> <span class="nb">issubclass</span><span class="p">(</span><span class="n">element_type</span><span class="p">,</span> <span class="n">Magnet</span><span class="p">):</span>
-            <span class="n">m</span> <span class="o">=</span> <span class="n">importlib</span><span class="o">.</span><span class="n">import_module</span><span class="p">(</span><span class="s2">&quot;pyaml.arrays.magnet_array&quot;</span><span class="p">)</span>
-            <span class="n">array_class</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="s2">&quot;MagnetArray&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+            <span class="n">m</span> <span class="o">=</span> <span class="n">importlib</span><span class="o">.</span><span class="n">import_module</span><span class="p">(</span><span class="s2">"pyaml.arrays.magnet_array"</span><span class="p">)</span>
+            <span class="n">array_class</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="s2">"MagnetArray"</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
             <span class="k">return</span> <span class="n">array_class</span><span class="p">(</span><span class="n">array_name</span><span class="p">,</span> <span class="n">elements</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__use_aggregator</span><span class="p">)</span>
         <span class="k">elif</span> <span class="nb">issubclass</span><span class="p">(</span><span class="n">element_type</span><span class="p">,</span> <span class="n">BPM</span><span class="p">):</span>
-            <span class="n">m</span> <span class="o">=</span> <span class="n">importlib</span><span class="o">.</span><span class="n">import_module</span><span class="p">(</span><span class="s2">&quot;pyaml.arrays.bpm_array&quot;</span><span class="p">)</span>
-            <span class="n">array_class</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="s2">&quot;BPMArray&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+            <span class="n">m</span> <span class="o">=</span> <span class="n">importlib</span><span class="o">.</span><span class="n">import_module</span><span class="p">(</span><span class="s2">"pyaml.arrays.bpm_array"</span><span class="p">)</span>
+            <span class="n">array_class</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="s2">"BPMArray"</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
             <span class="k">return</span> <span class="n">array_class</span><span class="p">(</span><span class="n">array_name</span><span class="p">,</span> <span class="n">elements</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__use_aggregator</span><span class="p">)</span>
         <span class="k">elif</span> <span class="nb">issubclass</span><span class="p">(</span><span class="n">element_type</span><span class="p">,</span> <span class="n">CombinedFunctionMagnet</span><span class="p">):</span>
-            <span class="n">m</span> <span class="o">=</span> <span class="n">importlib</span><span class="o">.</span><span class="n">import_module</span><span class="p">(</span><span class="s2">&quot;pyaml.arrays.cfm_magnet_array&quot;</span><span class="p">)</span>
-            <span class="n">array_class</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="s2">&quot;CombinedFunctionMagnetArray&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+            <span class="n">m</span> <span class="o">=</span> <span class="n">importlib</span><span class="o">.</span><span class="n">import_module</span><span class="p">(</span><span class="s2">"pyaml.arrays.cfm_magnet_array"</span><span class="p">)</span>
+            <span class="n">array_class</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="s2">"CombinedFunctionMagnetArray"</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
             <span class="k">return</span> <span class="n">array_class</span><span class="p">(</span><span class="n">array_name</span><span class="p">,</span> <span class="n">elements</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__use_aggregator</span><span class="p">)</span>
         <span class="k">elif</span> <span class="nb">issubclass</span><span class="p">(</span><span class="n">element_type</span><span class="p">,</span> <span class="n">SerializedMagnets</span><span class="p">):</span>
-            <span class="n">m</span> <span class="o">=</span> <span class="n">importlib</span><span class="o">.</span><span class="n">import_module</span><span class="p">(</span><span class="s2">&quot;pyaml.arrays.serialized_magnet_array&quot;</span><span class="p">)</span>
-            <span class="n">array_class</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="s2">&quot;SerializedMagnetsArray&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+            <span class="n">m</span> <span class="o">=</span> <span class="n">importlib</span><span class="o">.</span><span class="n">import_module</span><span class="p">(</span><span class="s2">"pyaml.arrays.serialized_magnet_array"</span><span class="p">)</span>
+            <span class="n">array_class</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="s2">"SerializedMagnetsArray"</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
             <span class="k">return</span> <span class="n">array_class</span><span class="p">(</span><span class="n">array_name</span><span class="p">,</span> <span class="n">elements</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__use_aggregator</span><span class="p">)</span>
         <span class="k">elif</span> <span class="nb">issubclass</span><span class="p">(</span><span class="n">element_type</span><span class="p">,</span> <span class="n">Element</span><span class="p">):</span>
             <span class="k">return</span> <span class="n">ElementArray</span><span class="p">(</span><span class="n">array_name</span><span class="p">,</span> <span class="n">elements</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__use_aggregator</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="n">PyAMLException</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unsupported sliced array for type </span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">element_type</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="n">PyAMLException</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Unsupported sliced array for type </span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">element_type</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">__eval_field</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">attribute_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">element</span><span class="p">:</span> <span class="n">Element</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-        <span class="n">function_name</span> <span class="o">=</span> <span class="s2">&quot;get_&quot;</span> <span class="o">+</span> <span class="n">attribute_name</span>
+        <span class="n">function_name</span> <span class="o">=</span> <span class="s2">"get_"</span> <span class="o">+</span> <span class="n">attribute_name</span>
         <span class="n">func</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">element</span><span class="p">,</span> <span class="n">function_name</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">func</span><span class="p">()</span> <span class="k">if</span> <span class="n">func</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="s2">&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">func</span><span class="p">()</span> <span class="k">if</span> <span class="n">func</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="s2">""</span>
 
-    <span class="k">def</span><span class="w"> </span><span class="nf">__ensure_compatible_operand</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">:</span> <span class="nb">object</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;ElementArray&quot;</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Validate the operand used for set-like operations between arrays.&quot;&quot;&quot;</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">__ensure_compatible_operand</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">:</span> <span class="nb">object</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">"ElementArray"</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""Validate the operand used for set-like operations between arrays."""</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="n">ElementArray</span><span class="p">):</span>
             <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span>
-                <span class="sa">f</span><span class="s2">&quot;Unsupported operand type(s) for set operation: &#39;</span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">&#39; and &#39;</span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">other</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">&#39;&quot;</span>
+                <span class="sa">f</span><span class="s2">"Unsupported operand type(s) for set operation: '</span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">' and '</span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">other</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">'"</span>
             <span class="p">)</span>
 
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">other</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_peer</span><span class="p">()</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">other</span><span class="o">.</span><span class="n">get_peer</span><span class="p">()</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_peer</span><span class="p">()</span> <span class="o">!=</span> <span class="n">other</span><span class="o">.</span><span class="n">get_peer</span><span class="p">():</span>
-                    <span class="k">raise</span> <span class="n">PyAMLException</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">: cannot operate on arrays attached to different peers&quot;</span><span class="p">)</span>
+                    <span class="k">raise</span> <span class="n">PyAMLException</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">: cannot operate on arrays attached to different peers"</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">other</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">__auto_array</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">elements</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Element</span><span class="p">]):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Create the most specific array type for the given element list.</span>
+<span class="w">        </span><span class="sd">"""Create the most specific array type for the given element list.</span>
 
 <span class="sd">        The target element type is the most specific common base class (nearest common</span>
 <span class="sd">        ancestor) of all elements. This supports heterogeneous subclasses (e.g.,</span>
 <span class="sd">        several Magnet subclasses) while still returning a MagnetArray when</span>
 <span class="sd">        appropriate.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">elements</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
             <span class="k">return</span> <span class="p">[]</span>
 
@@ -556,10 +556,10 @@
                 <span class="n">chosen</span> <span class="o">=</span> <span class="n">c</span>
                 <span class="k">break</span>
 
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__create_array</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">chosen</span><span class="p">,</span> <span class="n">elements</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__create_array</span><span class="p">(</span><span class="s2">""</span><span class="p">,</span> <span class="n">chosen</span><span class="p">,</span> <span class="n">elements</span><span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">__is_bool_mask</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">:</span> <span class="nb">object</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return True if &#39;other&#39; looks like a boolean mask (list or numpy array).&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""Return True if 'other' looks like a boolean mask (list or numpy array)."""</span>
         <span class="c1"># --- numpy boolean array ---</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="ow">and</span> <span class="n">other</span><span class="o">.</span><span class="n">dtype</span> <span class="o">==</span> <span class="nb">bool</span><span class="p">:</span>
@@ -583,7 +583,7 @@
 <div class="viewcode-block" id="ElementArray.__and__">
 <a class="viewcode-back" href="../../../api/pyaml.arrays.element_array.html#pyaml.arrays.element_array.ElementArray.__and__">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="fm">__and__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">:</span> <span class="nb">object</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""</span>
 <span class="sd">        Intersection or boolean mask filtering.</span>
 
 <span class="sd">        This operator has two distinct behaviors depending on the type of</span>
@@ -597,8 +597,8 @@
 
 <span class="sd">           .. code-block:: python</span>
 
-<span class="sd">               &gt;&gt;&gt; cell1 = sr.live.get_elements(&quot;C01&quot;)</span>
-<span class="sd">               &gt;&gt;&gt; sexts = sr.live.get_magnets(&quot;SEXT&quot;)</span>
+<span class="sd">               &gt;&gt;&gt; cell1 = sr.live.get_elements("C01")</span>
+<span class="sd">               &gt;&gt;&gt; sexts = sr.live.get_magnets("SEXT")</span>
 <span class="sd">               &gt;&gt;&gt; cell1_sext = cell1 &amp; sexts</span>
 
 <span class="sd">        2) Boolean mask filtering</span>
@@ -623,13 +623,13 @@
 <span class="sd">            :py:class:`.SerializedMagnetsArray` or</span>
 <span class="sd">            :py:class:`.ElementArray`.</span>
 
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="c1"># --- mask filtering ---</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__is_bool_mask</span><span class="p">(</span><span class="n">other</span><span class="p">):</span>
             <span class="n">mask</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">other</span><span class="p">)</span>  <span class="c1"># works for list/tuple and numpy arrays</span>
             <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">mask</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
                 <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-                    <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">: mask length (</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">mask</span><span class="p">)</span><span class="si">}</span><span class="s2">) does not match array length (</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="si">}</span><span class="s2">)&quot;</span>
+                    <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">: mask length (</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">mask</span><span class="p">)</span><span class="si">}</span><span class="s2">) does not match array length (</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="si">}</span><span class="s2">)"</span>
                 <span class="p">)</span>
             <span class="n">res</span> <span class="o">=</span> <span class="p">[</span><span class="n">e</span> <span class="k">for</span> <span class="n">e</span><span class="p">,</span> <span class="n">keep</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mask</span><span class="p">,</span> <span class="n">strict</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> <span class="k">if</span> <span class="nb">bool</span><span class="p">(</span><span class="n">keep</span><span class="p">)]</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__auto_array</span><span class="p">(</span><span class="n">res</span><span class="p">)</span>
@@ -642,7 +642,7 @@
 
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__rand__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">:</span> <span class="nb">object</span><span class="p">):</span>
-        <span class="c1"># Support &quot;array on the right&quot; for array operands; for masks, we don&#39;t enforce</span>
+        <span class="c1"># Support "array on the right" for array operands; for masks, we don't enforce</span>
         <span class="c1"># commutativity.</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="n">ElementArray</span><span class="p">):</span>
             <span class="k">return</span> <span class="n">other</span><span class="o">.</span><span class="fm">__and__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
@@ -651,7 +651,7 @@
 <div class="viewcode-block" id="ElementArray.__sub__">
 <a class="viewcode-back" href="../../../api/pyaml.arrays.element_array.html#pyaml.arrays.element_array.ElementArray.__sub__">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="fm">__sub__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">:</span> <span class="nb">object</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""</span>
 <span class="sd">        Difference or boolean mask removal.</span>
 
 <span class="sd">        This operator has two behaviors depending on the type of ``other``.</span>
@@ -664,8 +664,8 @@
 
 <span class="sd">           .. code-block:: python</span>
 
-<span class="sd">               &gt;&gt;&gt; hvcorr = sr.live.get_magnets(&quot;HVCORR&quot;)</span>
-<span class="sd">               &gt;&gt;&gt; hcorr = sr.live.get_magnets(&quot;HCORR&quot;)</span>
+<span class="sd">               &gt;&gt;&gt; hvcorr = sr.live.get_magnets("HVCORR")</span>
+<span class="sd">               &gt;&gt;&gt; hcorr = sr.live.get_magnets("HCORR")</span>
 <span class="sd">               &gt;&gt;&gt; vcorr_only = hvcorr - hcorr</span>
 
 <span class="sd">        2) Boolean mask removal</span>
@@ -691,13 +691,13 @@
 <span class="sd">            :py:class:`.SerializedMagnetsArray` or</span>
 <span class="sd">            :py:class:`.ElementArray`.</span>
 
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="c1"># --- mask removal ---</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__is_bool_mask</span><span class="p">(</span><span class="n">other</span><span class="p">):</span>
             <span class="n">mask</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">other</span><span class="p">)</span>
             <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">mask</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
                 <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-                    <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">: mask length (</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">mask</span><span class="p">)</span><span class="si">}</span><span class="s2">) does not match array length (</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="si">}</span><span class="s2">)&quot;</span>
+                    <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">: mask length (</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">mask</span><span class="p">)</span><span class="si">}</span><span class="s2">) does not match array length (</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="si">}</span><span class="s2">)"</span>
                 <span class="p">)</span>
             <span class="n">res</span> <span class="o">=</span> <span class="p">[</span><span class="n">e</span> <span class="k">for</span> <span class="n">e</span><span class="p">,</span> <span class="n">remove</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mask</span><span class="p">,</span> <span class="n">strict</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> <span class="k">if</span> <span class="ow">not</span> <span class="nb">bool</span><span class="p">(</span><span class="n">remove</span><span class="p">)]</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__auto_array</span><span class="p">(</span><span class="n">res</span><span class="p">)</span>
@@ -712,7 +712,7 @@
 <div class="viewcode-block" id="ElementArray.__or__">
 <a class="viewcode-back" href="../../../api/pyaml.arrays.element_array.html#pyaml.arrays.element_array.ElementArray.__or__">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="fm">__or__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">:</span> <span class="nb">object</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""</span>
 <span class="sd">        Union between two ElementArray instances.</span>
 
 <span class="sd">        Elements are combined using their names as identity.</span>
@@ -724,8 +724,8 @@
 
 <span class="sd">        .. code-block:: python</span>
 
-<span class="sd">            &gt;&gt;&gt; hcorr = sr.live.get_magnets(&quot;HCORR&quot;)</span>
-<span class="sd">            &gt;&gt;&gt; vcorr = sr.live.get_magnets(&quot;VCORR&quot;)</span>
+<span class="sd">            &gt;&gt;&gt; hcorr = sr.live.get_magnets("HCORR")</span>
+<span class="sd">            &gt;&gt;&gt; vcorr = sr.live.get_magnets("VCORR")</span>
 <span class="sd">            &gt;&gt;&gt; all_corr = hcorr | vcorr</span>
 
 <span class="sd">        Returns</span>
@@ -739,7 +739,7 @@
 <span class="sd">            :py:class:`.SerializedMagnetsArray` or</span>
 <span class="sd">            :py:class:`.ElementArray`.</span>
 
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="n">other_arr</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__ensure_compatible_operand</span><span class="p">(</span><span class="n">other</span><span class="p">)</span>
 
         <span class="n">seen</span><span class="p">:</span> <span class="nb">set</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
@@ -768,7 +768,7 @@
 <div class="viewcode-block" id="ElementArray.__add__">
 <a class="viewcode-back" href="../../../api/pyaml.arrays.element_array.html#pyaml.arrays.element_array.ElementArray.__add__">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="fm">__add__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">:</span> <span class="nb">object</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""</span>
 <span class="sd">        Alias for the union operator ``|``.</span>
 
 <span class="sd">        Example</span>
@@ -789,7 +789,7 @@
 <span class="sd">            :py:class:`.SerializedMagnetsArray` or</span>
 <span class="sd">            :py:class:`.ElementArray`.</span>
 
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="fm">__or__</span><span class="p">(</span><span class="n">other</span><span class="p">)</span></div>
 
 
@@ -801,7 +801,7 @@
 <div class="viewcode-block" id="ElementArray.mask_by_type">
 <a class="viewcode-back" href="../../../api/pyaml.arrays.element_array.html#pyaml.arrays.element_array.ElementArray.mask_by_type">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">mask_by_type</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">element_type</span><span class="p">:</span> <span class="nb">type</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">bool</span><span class="p">]:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return a boolean mask indicating which elements are instances of the given</span>
+<span class="w">        </span><span class="sd">"""Return a boolean mask indicating which elements are instances of the given</span>
 <span class="sd">        type.</span>
 
 <span class="sd">        Parameters</span>
@@ -814,9 +814,9 @@
 <span class="sd">        list[bool]</span>
 <span class="sd">            A list of booleans where True indicates the element is an instance</span>
 <span class="sd">            of the given type (including subclasses).</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">element_type</span><span class="p">,</span> <span class="nb">type</span><span class="p">):</span>
-            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">: element_type must be a type&quot;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">: element_type must be a type"</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="p">[</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="n">element_type</span><span class="p">)</span> <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="bp">self</span><span class="p">]</span></div>
 
@@ -824,7 +824,7 @@
 <div class="viewcode-block" id="ElementArray.of_type">
 <a class="viewcode-back" href="../../../api/pyaml.arrays.element_array.html#pyaml.arrays.element_array.ElementArray.of_type">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">of_type</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">element_type</span><span class="p">:</span> <span class="nb">type</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return a new array containing only elements of the given type.</span>
+<span class="w">        </span><span class="sd">"""Return a new array containing only elements of the given type.</span>
 
 <span class="sd">        The resulting array is automatically typed according to the most</span>
 <span class="sd">        specific common base class of the filtered elements.</span>
@@ -839,9 +839,9 @@
 <span class="sd">        ElementArray or specialized array</span>
 <span class="sd">            An auto-typed array containing only matching elements.</span>
 <span class="sd">            Returns [] if no elements match.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">element_type</span><span class="p">,</span> <span class="nb">type</span><span class="p">):</span>
-            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">: element_type must be a type&quot;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">: element_type must be a type"</span><span class="p">)</span>
 
         <span class="n">filtered</span> <span class="o">=</span> <span class="p">[</span><span class="n">e</span> <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="bp">self</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="n">element_type</span><span class="p">)]</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__auto_array</span><span class="p">(</span><span class="n">filtered</span><span class="p">)</span></div>
@@ -865,10 +865,10 @@
                 <span class="k">elif</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">element_type</span><span class="p">):</span>
                     <span class="n">element_type</span> <span class="o">=</span> <span class="n">Element</span>  <span class="c1"># Fall back to element</span>
                 <span class="n">r</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
-            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__create_array</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">element_type</span><span class="p">,</span> <span class="n">r</span><span class="p">)</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__create_array</span><span class="p">(</span><span class="s2">""</span><span class="p">,</span> <span class="n">element_type</span><span class="p">,</span> <span class="n">r</span><span class="p">)</span>
 
         <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
-            <span class="n">fields</span> <span class="o">=</span> <span class="n">key</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;:&quot;</span><span class="p">)</span>
+            <span class="n">fields</span> <span class="o">=</span> <span class="n">key</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">":"</span><span class="p">)</span>
 
             <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">fields</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="mi">1</span><span class="p">:</span>
                 <span class="c1"># Selection by name</span>
@@ -894,7 +894,7 @@
                             <span class="n">element_type</span> <span class="o">=</span> <span class="n">Element</span>  <span class="c1"># Fall back to element</span>
                         <span class="n">r</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
 
-            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__create_array</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">element_type</span><span class="p">,</span> <span class="n">r</span><span class="p">)</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__create_array</span><span class="p">(</span><span class="s2">""</span><span class="p">,</span> <span class="n">element_type</span><span class="p">,</span> <span class="n">r</span><span class="p">)</span>
 
         <span class="k">else</span><span class="p">:</span>
             <span class="c1"># Default to super selection</span>

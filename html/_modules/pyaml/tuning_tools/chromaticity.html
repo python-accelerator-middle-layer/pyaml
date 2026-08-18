@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>pyaml.tuning_tools.chromaticity &#8212; Python Accelerator Middle Layer 0.1.dev1+g72d2992bf documentation</title>
+    <title>pyaml.tuning_tools.chromaticity &#8212; Python Accelerator Middle Layer 0.1.dev1+g947cfb0ef documentation</title>
   
   
   
@@ -41,7 +41,7 @@
   <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=90905a2f556bf617f1a9" />
 <link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=90905a2f556bf617f1a9" />
 
-    <script src="../../../_static/documentation_options.js?v=7336f5c7"></script>
+    <script src="../../../_static/documentation_options.js?v=7aef76b6"></script>
     <script src="../../../_static/doctools.js?v=9bcbadda"></script>
     <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -125,8 +125,8 @@
       
     
     
-    <img src="../../../_static/logo.png" class="logo__image only-light" alt="Python Accelerator Middle Layer 0.1.dev1+g72d2992bf documentation - Home"/>
-    <img src="../../../_static/dark.png" class="logo__image only-dark pst-js-only" alt="Python Accelerator Middle Layer 0.1.dev1+g72d2992bf documentation - Home"/>
+    <img src="../../../_static/logo.png" class="logo__image only-light" alt="Python Accelerator Middle Layer 0.1.dev1+g947cfb0ef documentation - Home"/>
+    <img src="../../../_static/dark.png" class="logo__image only-dark pst-js-only" alt="Python Accelerator Middle Layer 0.1.dev1+g947cfb0ef documentation - Home"/>
   
   
 </a></div>
@@ -408,21 +408,21 @@
 <span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
 
 <span class="c1"># Define the main class name for this module</span>
-<span class="n">PYAMLCLASS</span> <span class="o">=</span> <span class="s2">&quot;Chromaticity&quot;</span>
+<span class="n">PYAMLCLASS</span> <span class="o">=</span> <span class="s2">"Chromaticity"</span>
 
 
 <div class="viewcode-block" id="Chromaticity">
 <a class="viewcode-back" href="../../../api/pyaml.tuning_tools.chromaticity.html#pyaml.tuning_tools.chromaticity.Chromaticity">[docs]</a>
 <span class="nd">@register_schema</span>
 <span class="k">class</span><span class="w"> </span><span class="nc">Chromaticity</span><span class="p">(</span><span class="n">TuningTool</span><span class="p">,</span> <span class="n">DynamicValidation</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    Class providing chromaticity adjustment tool</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">sextu_array_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">chromaticity_monitor_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">response_matrix</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">ResponseMatrixData</span>
     <span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""</span>
 <span class="sd">        Initialize a chromaticity adjustment tool.</span>
 
 <span class="sd">        Parameters</span>
@@ -435,7 +435,7 @@
 <span class="sd">            Name of the chromaticity monitor used for readback.</span>
 <span class="sd">        response_matrix : str | ResponseMatrixData</span>
 <span class="sd">            Chromaticity response matrix or path to a saved response matrix file.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">sextu_array_name</span> <span class="o">=</span> <span class="n">sextu_array_name</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_chromaticity_monitor_name</span> <span class="o">=</span> <span class="n">chromaticity_monitor_name</span>
@@ -448,7 +448,7 @@
             <span class="k">try</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_response_matrix</span> <span class="o">=</span> <span class="n">ResponseMatrixData</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">response_matrix_file</span><span class="p">)</span>
             <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-                <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_response_matrix</span> <span class="o">=</span> <span class="kc">None</span>
 
         <span class="c1"># Invert matrix</span>
@@ -461,52 +461,52 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">response_matrix</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ResponseMatrixData</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""</span>
 <span class="sd">        Return the response matrix if it has been loaded None otherwise</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_response_matrix</span>
 
 <div class="viewcode-block" id="Chromaticity.load">
 <a class="viewcode-back" href="../../../api/pyaml.tuning_tools.chromaticity.html#pyaml.tuning_tools.chromaticity.Chromaticity.load">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">load</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">load_path</span><span class="p">:</span> <span class="n">Path</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""</span>
 <span class="sd">        Dynamically loads a response matrix.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        load_path : Path</span>
 <span class="sd">            Filename of the :class:`~.ResponseMatrixData` to load</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_response_matrix</span> <span class="o">=</span> <span class="n">ResponseMatrixData</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">load_path</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_response_matrix</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_response_matrix</span><span class="o">.</span><span class="n">_cfg</span><span class="o">.</span><span class="n">matrix</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_correctionmat</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">pinv</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_response_matrix</span><span class="p">)</span></div>
 
 
     <span class="nd">@property</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">_cm</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;ChomaticityMonitor&quot;</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_cm</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">"ChomaticityMonitor"</span><span class="p">:</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">check_peer</span><span class="p">()</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">peer</span><span class="o">.</span><span class="n">get_chromaticity_monitor</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_chromaticity_monitor_name</span><span class="p">)</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">_sextu</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;MagnetArray&quot;</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_sextu</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">"MagnetArray"</span><span class="p">:</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">check_peer</span><span class="p">()</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">peer</span><span class="o">.</span><span class="n">magnets</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sextu_array_name</span><span class="p">)</span>
 
 <div class="viewcode-block" id="Chromaticity.get">
 <a class="viewcode-back" href="../../../api/pyaml.tuning_tools.chromaticity.html#pyaml.tuning_tools.chromaticity.Chromaticity.get">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""</span>
 <span class="sd">        Return the chromaticity setpoint</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_setpoint</span></div>
 
 
 <div class="viewcode-block" id="Chromaticity.readback">
 <a class="viewcode-back" href="../../../api/pyaml.tuning_tools.chromaticity.html#pyaml.tuning_tools.chromaticity.Chromaticity.readback">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">readback</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""</span>
 <span class="sd">        Launch a chromaticity scan and returns the measured chromaticity.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_cm</span><span class="o">.</span><span class="n">measure</span><span class="p">()</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cm</span><span class="o">.</span><span class="n">chromaticity</span><span class="o">.</span><span class="n">get</span><span class="p">()</span></div>
 
@@ -514,7 +514,7 @@
 <div class="viewcode-block" id="Chromaticity.set">
 <a class="viewcode-back" href="../../../api/pyaml.tuning_tools.chromaticity.html#pyaml.tuning_tools.chromaticity.Chromaticity.set">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">set</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">chroma</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">,</span> <span class="nb">iter</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">wait_time</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""</span>
 <span class="sd">        Sets the chromaticity</span>
 
 <span class="sd">        Parameters</span>
@@ -525,7 +525,7 @@
 <span class="sd">            Number of iteration</span>
 <span class="sd">        wait_time : float</span>
 <span class="sd">            Time to wait in second between 2 iterations</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">iter</span><span class="p">):</span>
             <span class="n">diff_chroma</span> <span class="o">=</span> <span class="n">chroma</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">readback</span><span class="p">()</span>
             <span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="nb">iter</span><span class="p">:</span>
@@ -537,23 +537,23 @@
 <div class="viewcode-block" id="Chromaticity.correct">
 <a class="viewcode-back" href="../../../api/pyaml.tuning_tools.chromaticity.html#pyaml.tuning_tools.chromaticity.Chromaticity.correct">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">correct</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dchroma</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""</span>
 <span class="sd">        Return delta strengths for chromaticity correction</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        dchroma : np.array</span>
 <span class="sd">            Delta chroma</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_correctionmat</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="n">PyAMLException</span><span class="p">(</span><span class="s2">&quot;Chromaticity.correct(): no matrix loaded or measured&quot;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="n">PyAMLException</span><span class="p">(</span><span class="s2">"Chromaticity.correct(): no matrix loaded or measured"</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">matmul</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_correctionmat</span><span class="p">,</span> <span class="n">dchroma</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="Chromaticity.add">
 <a class="viewcode-back" href="../../../api/pyaml.tuning_tools.chromaticity.html#pyaml.tuning_tools.chromaticity.Chromaticity.add">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">add</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dchroma</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">,</span> <span class="n">wait_time</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""</span>
 <span class="sd">        Add delta chromaticity to the actual chromaticity</span>
 
 <span class="sd">        Parameters</span>
@@ -562,7 +562,7 @@
 <span class="sd">            Delta tune</span>
 <span class="sd">        iter_nb: int</span>
 <span class="sd">        wait_time: float</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="n">strengths</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sextu</span><span class="o">.</span><span class="n">strengths</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
         <span class="n">strengths</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">correct</span><span class="p">(</span><span class="n">dchroma</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_sextu</span><span class="o">.</span><span class="n">strengths</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">strengths</span><span class="p">)</span>

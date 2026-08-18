@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>pyaml.yellow_pages &#8212; Python Accelerator Middle Layer 0.1.dev1+g72d2992bf documentation</title>
+    <title>pyaml.yellow_pages &#8212; Python Accelerator Middle Layer 0.1.dev1+g947cfb0ef documentation</title>
   
   
   
@@ -41,7 +41,7 @@
   <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=90905a2f556bf617f1a9" />
 <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=90905a2f556bf617f1a9" />
 
-    <script src="../../_static/documentation_options.js?v=7336f5c7"></script>
+    <script src="../../_static/documentation_options.js?v=7aef76b6"></script>
     <script src="../../_static/doctools.js?v=9bcbadda"></script>
     <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -125,8 +125,8 @@
       
     
     
-    <img src="../../_static/logo.png" class="logo__image only-light" alt="Python Accelerator Middle Layer 0.1.dev1+g72d2992bf documentation - Home"/>
-    <img src="../../_static/dark.png" class="logo__image only-dark pst-js-only" alt="Python Accelerator Middle Layer 0.1.dev1+g72d2992bf documentation - Home"/>
+    <img src="../../_static/logo.png" class="logo__image only-light" alt="Python Accelerator Middle Layer 0.1.dev1+g947cfb0ef documentation - Home"/>
+    <img src="../../_static/dark.png" class="logo__image only-dark pst-js-only" alt="Python Accelerator Middle Layer 0.1.dev1+g947cfb0ef documentation - Home"/>
   
   
 </a></div>
@@ -388,7 +388,7 @@
                 <article class="bd-article">
                   
   <h1>Source code for pyaml.yellow_pages</h1><div class="highlight"><pre>
-<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span></span><span class="sd">"""</span>
 <span class="sd">yellow_pages.py</span>
 
 <span class="sd">Fully dynamic YellowPages service attached to :class:`~pyaml.accelerator.Accelerator`.</span>
@@ -399,16 +399,16 @@
 <span class="sd">    - No caching: every call reflects current runtime state.</span>
 <span class="sd">    - Simple query syntax for identifiers:</span>
 <span class="sd">        - wildcard / fnmatch:</span>
-<span class="sd">            yp[&quot;OH4*&quot;]</span>
+<span class="sd">            yp["OH4*"]</span>
 <span class="sd">        - regular expression:</span>
-<span class="sd">            yp[&quot;re:^SH1A-C0[12]-H$&quot;]</span>
+<span class="sd">            yp["re:^SH1A-C0[12]-H$"]</span>
 
 <span class="sd">:class:`~pyaml.accelerator.Accelerator` interface</span>
 <span class="sd">------------------------------</span>
 <span class="sd">    - controls()   -&gt; dict[str, ElementHolder]</span>
 <span class="sd">    - simulators() -&gt; dict[str, ElementHolder]</span>
 <span class="sd">    - modes()      -&gt; dict[str, ElementHolder]</span>
-<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">"""</span>
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">fnmatch</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">re</span>
@@ -424,33 +424,33 @@
 <div class="viewcode-block" id="YellowPagesCategory">
 <a class="viewcode-back" href="../../api/pyaml.yellow_pages.html#pyaml.yellow_pages.YellowPagesCategory">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">YellowPagesCategory</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">Enum</span><span class="p">):</span>
-    <span class="n">ARRAYS</span> <span class="o">=</span> <span class="s2">&quot;Arrays&quot;</span>
-    <span class="n">TOOLS</span> <span class="o">=</span> <span class="s2">&quot;Tools&quot;</span>
-    <span class="n">DIAGNOSTICS</span> <span class="o">=</span> <span class="s2">&quot;Diagnostics&quot;</span></div>
+    <span class="n">ARRAYS</span> <span class="o">=</span> <span class="s2">"Arrays"</span>
+    <span class="n">TOOLS</span> <span class="o">=</span> <span class="s2">"Tools"</span>
+    <span class="n">DIAGNOSTICS</span> <span class="o">=</span> <span class="s2">"Diagnostics"</span></div>
 
 
 
 <div class="viewcode-block" id="YellowPagesError">
 <a class="viewcode-back" href="../../api/pyaml.yellow_pages.html#pyaml.yellow_pages.YellowPagesError">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">YellowPagesError</span><span class="p">(</span><span class="n">PyAMLException</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;YellowPages-specific error with clear user-facing messages.&quot;&quot;&quot;</span></div>
+<span class="w">    </span><span class="sd">"""YellowPages-specific error with clear user-facing messages."""</span></div>
 
 
 
 <div class="viewcode-block" id="YellowPagesQueryError">
 <a class="viewcode-back" href="../../api/pyaml.yellow_pages.html#pyaml.yellow_pages.YellowPagesQueryError">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">YellowPagesQueryError</span><span class="p">(</span><span class="n">YellowPagesError</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Raised when a YellowPages query string cannot be evaluated.&quot;&quot;&quot;</span></div>
+<span class="w">    </span><span class="sd">"""Raised when a YellowPages query string cannot be evaluated."""</span></div>
 
 
 
-<span class="n">_VALID_KEY_RE</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;^[A-Z0-9_]+$&quot;</span><span class="p">)</span>
+<span class="n">_VALID_KEY_RE</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">"^[A-Z0-9_]+$"</span><span class="p">)</span>
 
 
 <div class="viewcode-block" id="YellowPages">
 <a class="viewcode-back" href="../../api/pyaml.yellow_pages.html#pyaml.yellow_pages.YellowPages">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">YellowPages</span><span class="p">:</span>
-<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">"""</span>
 <span class="sd">    Dynamic discovery service for accelerator objects.</span>
 
 <span class="sd">    :class:`YellowPages` provides a unified access layer to arrays,</span>
@@ -482,34 +482,34 @@
 
 <span class="sd">    .. code-block:: python</span>
 
-<span class="sd">        &gt;&gt;&gt; sr.yellow_pages.get(&quot;BPM&quot;)</span>
+<span class="sd">        &gt;&gt;&gt; sr.yellow_pages.get("BPM")</span>
 
 <span class="sd">    Resolve in a specific mode:</span>
 
 <span class="sd">    .. code-block:: python</span>
 
-<span class="sd">        &gt;&gt;&gt; sr.yellow_pages.get(&quot;BPM&quot;, mode=&quot;live&quot;)</span>
+<span class="sd">        &gt;&gt;&gt; sr.yellow_pages.get("BPM", mode="live")</span>
 
 <span class="sd">    Search identifiers using wildcards:</span>
 
 <span class="sd">    .. code-block:: python</span>
 
-<span class="sd">        &gt;&gt;&gt; sr.yellow_pages[&quot;OH4*&quot;]</span>
+<span class="sd">        &gt;&gt;&gt; sr.yellow_pages["OH4*"]</span>
 
 <span class="sd">    Search identifiers using a regular expression:</span>
 
 <span class="sd">    .. code-block:: python</span>
 
-<span class="sd">        &gt;&gt;&gt; sr.yellow_pages[&quot;re:^SH1A-C0[12]-H$&quot;]</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">        &gt;&gt;&gt; sr.yellow_pages["re:^SH1A-C0[12]-H$"]</span>
+<span class="sd">    """</span>
 
-    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">accelerator</span><span class="p">:</span> <span class="s2">&quot;Accelerator&quot;</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">accelerator</span><span class="p">:</span> <span class="s2">"Accelerator"</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_acc</span> <span class="o">=</span> <span class="n">accelerator</span>
 
 <div class="viewcode-block" id="YellowPages.has">
 <a class="viewcode-back" href="../../api/pyaml.yellow_pages.html#pyaml.yellow_pages.YellowPages.has">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">has</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
-<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">"""</span>
 <span class="sd">        Check whether a YellowPages key exists.</span>
 
 <span class="sd">        Parameters</span>
@@ -527,22 +527,22 @@
 
 <span class="sd">        .. code-block:: python</span>
 
-<span class="sd">            &gt;&gt;&gt; sr.yellow_pages.has(&quot;BPM&quot;)</span>
+<span class="sd">            &gt;&gt;&gt; sr.yellow_pages.has("BPM")</span>
 <span class="sd">            True</span>
 
 <span class="sd">        .. code-block:: python</span>
 
-<span class="sd">            &gt;&gt;&gt; sr.yellow_pages.has(&quot;UNKNOWN&quot;)</span>
+<span class="sd">            &gt;&gt;&gt; sr.yellow_pages.has("UNKNOWN")</span>
 <span class="sd">            False</span>
 
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">return</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_all_keys</span><span class="p">()</span></div>
 
 
 <div class="viewcode-block" id="YellowPages.categories">
 <a class="viewcode-back" href="../../api/pyaml.yellow_pages.html#pyaml.yellow_pages.YellowPages.categories">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">categories</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
-<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">"""</span>
 <span class="sd">        Return the list of available categories.</span>
 
 <span class="sd">        Only categories that contain entries are returned.</span>
@@ -557,9 +557,9 @@
 <span class="sd">        .. code-block:: python</span>
 
 <span class="sd">            &gt;&gt;&gt; sr.yellow_pages.categories()</span>
-<span class="sd">            [&#39;Arrays&#39;, &#39;Tools&#39;, &#39;Diagnostics&#39;]</span>
+<span class="sd">            ['Arrays', 'Tools', 'Diagnostics']</span>
 
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="n">discovered</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_discover</span><span class="p">()</span>
         <span class="n">present</span> <span class="o">=</span> <span class="p">{</span><span class="n">cat</span> <span class="k">for</span> <span class="n">cat</span><span class="p">,</span> <span class="n">keys</span> <span class="ow">in</span> <span class="n">discovered</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">if</span> <span class="n">keys</span><span class="p">}</span>
         <span class="k">return</span> <span class="p">[</span><span class="n">c</span><span class="o">.</span><span class="n">value</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">YellowPagesCategory</span> <span class="k">if</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">present</span><span class="p">]</span></div>
@@ -568,7 +568,7 @@
 <div class="viewcode-block" id="YellowPages.keys">
 <a class="viewcode-back" href="../../api/pyaml.yellow_pages.html#pyaml.yellow_pages.YellowPages.keys">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">keys</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">category</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">YellowPagesCategory</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
-<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">"""</span>
 <span class="sd">        Return available YellowPages keys.</span>
 
 <span class="sd">        Parameters</span>
@@ -593,7 +593,7 @@
 
 <span class="sd">        .. code-block:: python</span>
 
-<span class="sd">            &gt;&gt;&gt; sr.yellow_pages.keys(&quot;Arrays&quot;)</span>
+<span class="sd">            &gt;&gt;&gt; sr.yellow_pages.keys("Arrays")</span>
 
 <span class="sd">        Using enum:</span>
 
@@ -601,7 +601,7 @@
 
 <span class="sd">            &gt;&gt;&gt; sr.yellow_pages.keys(YellowPagesCategory.ARRAYS)</span>
 
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="n">discovered</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_discover</span><span class="p">()</span>
 
         <span class="k">if</span> <span class="n">category</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
@@ -614,9 +614,9 @@
 <div class="viewcode-block" id="YellowPages.__dir__">
 <a class="viewcode-back" href="../../api/pyaml.yellow_pages.html#pyaml.yellow_pages.YellowPages.__dir__">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="fm">__dir__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""</span>
 <span class="sd">        Extend ``dir()`` with attribute-friendly discovered keys.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="n">default</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__dir__</span><span class="p">()</span>
         <span class="k">return</span> <span class="nb">sorted</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">default</span><span class="p">)</span> <span class="o">|</span> <span class="p">{</span><span class="n">k</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_all_keys</span><span class="p">()</span> <span class="k">if</span> <span class="n">_VALID_KEY_RE</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">k</span><span class="p">)})</span></div>
 
@@ -624,7 +624,7 @@
 <div class="viewcode-block" id="YellowPages.__getattr__">
 <a class="viewcode-back" href="../../api/pyaml.yellow_pages.html#pyaml.yellow_pages.YellowPages.__getattr__">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="fm">__getattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""</span>
 <span class="sd">        Allow attribute-style access for valid discovered keys.</span>
 
 <span class="sd">        Examples</span>
@@ -633,16 +633,16 @@
 <span class="sd">        .. code-block:: python</span>
 
 <span class="sd">            &gt;&gt;&gt; sr.yellow_pages.BPM</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">if</span> <span class="n">name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_all_keys</span><span class="p">():</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_object</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
-        <span class="k">raise</span> <span class="ne">AttributeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;&#39;YellowPages&#39; object has no attribute &#39;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">&#39;&quot;</span><span class="p">)</span></div>
+        <span class="k">raise</span> <span class="ne">AttributeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"'YellowPages' object has no attribute '</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">'"</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="YellowPages.availability">
 <a class="viewcode-back" href="../../api/pyaml.yellow_pages.html#pyaml.yellow_pages.YellowPages.availability">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">availability</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">set</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
-<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">"""</span>
 <span class="sd">        Return the set of modes where a key is available.</span>
 
 <span class="sd">        Parameters</span>
@@ -659,9 +659,9 @@
 
 <span class="sd">        .. code-block:: python</span>
 
-<span class="sd">            &gt;&gt;&gt; sr.yellow_pages.availability(&quot;BPM&quot;)</span>
-<span class="sd">            &gt;&gt;&gt; sr.yellow_pages.availability(&quot;DEFAULT_ORBIT_CORRECTION&quot;)</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">            &gt;&gt;&gt; sr.yellow_pages.availability("BPM")</span>
+<span class="sd">            &gt;&gt;&gt; sr.yellow_pages.availability("DEFAULT_ORBIT_CORRECTION")</span>
+<span class="sd">        """</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_require_key</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
         <span class="n">avail</span><span class="p">:</span> <span class="nb">set</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
         <span class="k">for</span> <span class="n">mode_name</span><span class="p">,</span> <span class="n">holder</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_acc</span><span class="o">.</span><span class="n">modes</span><span class="p">()</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
@@ -671,7 +671,7 @@
 
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_get_object</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">mode</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
-<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">"""</span>
 <span class="sd">        Resolve a YellowPages entry.</span>
 
 <span class="sd">        Parameters</span>
@@ -705,13 +705,13 @@
 
 <span class="sd">        .. code-block:: python</span>
 
-<span class="sd">            &gt;&gt;&gt; sr.yellow_pages.get(&quot;BPM&quot;)</span>
+<span class="sd">            &gt;&gt;&gt; sr.yellow_pages.get("BPM")</span>
 
 <span class="sd">        Resolve in a specific mode:</span>
 
 <span class="sd">        .. code-block:: python</span>
 
-<span class="sd">            &gt;&gt;&gt; sr.yellow_pages.get(&quot;BPM&quot;, mode=&quot;live&quot;)</span>
+<span class="sd">            &gt;&gt;&gt; sr.yellow_pages.get("BPM", mode="live")</span>
 
 <span class="sd">        Using attribute access:</span>
 
@@ -719,16 +719,16 @@
 
 <span class="sd">            &gt;&gt;&gt; sr.yellow_pages.BPM</span>
 
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_require_key</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="n">mode</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">holder</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_acc</span><span class="o">.</span><span class="n">modes</span><span class="p">()</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">mode</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">holder</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="n">YellowPagesError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unknown mode &#39;</span><span class="si">{</span><span class="n">mode</span><span class="si">}</span><span class="s2">&#39;.&quot;</span><span class="p">)</span>
+                <span class="k">raise</span> <span class="n">YellowPagesError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Unknown mode '</span><span class="si">{</span><span class="n">mode</span><span class="si">}</span><span class="s2">'."</span><span class="p">)</span>
             <span class="n">obj</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_try_resolve_in_holder</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">holder</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">obj</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="n">YellowPagesError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;YellowPages key &#39;</span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s2">&#39; not available in mode &#39;</span><span class="si">{</span><span class="n">mode</span><span class="si">}</span><span class="s2">&#39;.&quot;</span><span class="p">)</span>
+                <span class="k">raise</span> <span class="n">YellowPagesError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"YellowPages key '</span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s2">' not available in mode '</span><span class="si">{</span><span class="n">mode</span><span class="si">}</span><span class="s2">'."</span><span class="p">)</span>
             <span class="k">return</span> <span class="n">obj</span>
 
         <span class="n">out</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
@@ -741,16 +741,16 @@
 <div class="viewcode-block" id="YellowPages.__getitem__">
 <a class="viewcode-back" href="../../api/pyaml.yellow_pages.html#pyaml.yellow_pages.YellowPages.__getitem__">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="fm">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">query</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""</span>
 <span class="sd">        Alias for :meth:`get`.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">query</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="YellowPages.get">
 <a class="viewcode-back" href="../../api/pyaml.yellow_pages.html#pyaml.yellow_pages.YellowPages.get">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">query</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">mode</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""</span>
 <span class="sd">        Search identifiers using a wildcard or regular expression.</span>
 
 <span class="sd">        Parameters</span>
@@ -769,22 +769,22 @@
 
 <span class="sd">        .. code-block:: python</span>
 
-<span class="sd">            &gt;&gt;&gt; sr.yellow_pages.get(&quot;OH4*&quot;)</span>
+<span class="sd">            &gt;&gt;&gt; sr.yellow_pages.get("OH4*")</span>
 
-<span class="sd">            &gt;&gt;&gt; sr.yellow_pages.get(&quot;OH4*&quot;, mode=&quot;live&quot;)</span>
+<span class="sd">            &gt;&gt;&gt; sr.yellow_pages.get("OH4*", mode="live")</span>
 
-<span class="sd">            &gt;&gt;&gt; sr.yellow_pages.get(&quot;re:^SH1A-C0[12]-H$&quot;)</span>
+<span class="sd">            &gt;&gt;&gt; sr.yellow_pages.get("re:^SH1A-C0[12]-H$")</span>
 
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">query</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">query</span><span class="o">.</span><span class="n">strip</span><span class="p">():</span>
-            <span class="k">raise</span> <span class="n">YellowPagesQueryError</span><span class="p">(</span><span class="s2">&quot;Empty YellowPages query.&quot;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="n">YellowPagesQueryError</span><span class="p">(</span><span class="s2">"Empty YellowPages query."</span><span class="p">)</span>
 
         <span class="n">query</span> <span class="o">=</span> <span class="n">query</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
 
         <span class="k">if</span> <span class="n">mode</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">holder</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_acc</span><span class="o">.</span><span class="n">modes</span><span class="p">()</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">mode</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">holder</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="n">YellowPagesError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unknown mode &#39;</span><span class="si">{</span><span class="n">mode</span><span class="si">}</span><span class="s2">&#39;.&quot;</span><span class="p">)</span>
+                <span class="k">raise</span> <span class="n">YellowPagesError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Unknown mode '</span><span class="si">{</span><span class="n">mode</span><span class="si">}</span><span class="s2">'."</span><span class="p">)</span>
 
             <span class="k">if</span> <span class="n">query</span> <span class="ow">in</span> <span class="n">holder</span><span class="o">.</span><span class="n">_list_arrays</span><span class="p">():</span>
                 <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_object_to_ids</span><span class="p">(</span><span class="n">holder</span><span class="o">.</span><span class="n">_get_array</span><span class="p">(</span><span class="n">query</span><span class="p">))</span>
@@ -806,12 +806,12 @@
                 <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_object_to_ids</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_get_object</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="n">mode</span><span class="p">))</span>
             <span class="n">ids</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_all_known_ids</span><span class="p">()</span>
 
-        <span class="k">if</span> <span class="n">query</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;re:&quot;</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">query</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">"re:"</span><span class="p">):</span>
             <span class="n">pattern</span> <span class="o">=</span> <span class="n">query</span><span class="p">[</span><span class="mi">3</span><span class="p">:]</span>
             <span class="k">try</span><span class="p">:</span>
                 <span class="n">rx</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="n">pattern</span><span class="p">)</span>
             <span class="k">except</span> <span class="n">re</span><span class="o">.</span><span class="n">error</span> <span class="k">as</span> <span class="n">ex</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="n">YellowPagesQueryError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Invalid regex &#39;</span><span class="si">{</span><span class="n">pattern</span><span class="si">}</span><span class="s2">&#39;: </span><span class="si">{</span><span class="n">ex</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span> <span class="kn">from</span><span class="w"> </span><span class="nn">ex</span>
+                <span class="k">raise</span> <span class="n">YellowPagesQueryError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Invalid regex '</span><span class="si">{</span><span class="n">pattern</span><span class="si">}</span><span class="s2">': </span><span class="si">{</span><span class="n">ex</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span> <span class="kn">from</span><span class="w"> </span><span class="nn">ex</span>
 
             <span class="k">return</span> <span class="p">[</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">ids</span> <span class="k">if</span> <span class="n">rx</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">i</span><span class="p">)]</span>
 
@@ -821,7 +821,7 @@
 <div class="viewcode-block" id="YellowPages.__repr__">
 <a class="viewcode-back" href="../../api/pyaml.yellow_pages.html#pyaml.yellow_pages.YellowPages.__repr__">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">"""</span>
 <span class="sd">        Return a human-readable overview of the YellowPages content.</span>
 
 <span class="sd">        The representation lists:</span>
@@ -864,24 +864,24 @@
 <span class="sd">            Diagnostics:</span>
 <span class="sd">                BETATRON_TUNE (pyaml.diagnostics.tune_monitor)</span>
 <span class="sd">                .</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="n">lines</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
 
-        <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;Controls:&quot;</span><span class="p">)</span>
+        <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">"Controls:"</span><span class="p">)</span>
         <span class="n">controls</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_acc</span><span class="o">.</span><span class="n">controls</span><span class="p">()</span>
         <span class="k">if</span> <span class="n">controls</span><span class="p">:</span>
             <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">controls</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
-                <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;    </span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-        <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;    .&quot;</span><span class="p">)</span>
-        <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+                <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">"    </span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+        <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">"    ."</span><span class="p">)</span>
+        <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">""</span><span class="p">)</span>
 
-        <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;Simulators:&quot;</span><span class="p">)</span>
+        <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">"Simulators:"</span><span class="p">)</span>
         <span class="n">simulators</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_acc</span><span class="o">.</span><span class="n">simulators</span><span class="p">()</span>
         <span class="k">if</span> <span class="n">simulators</span><span class="p">:</span>
             <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">simulators</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
-                <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;    </span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-        <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;    .&quot;</span><span class="p">)</span>
-        <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+                <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">"    </span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+        <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">"    ."</span><span class="p">)</span>
+        <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">""</span><span class="p">)</span>
 
         <span class="n">discovered</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_discover</span><span class="p">()</span>
         <span class="k">for</span> <span class="n">cat</span> <span class="ow">in</span> <span class="n">YellowPagesCategory</span><span class="p">:</span>
@@ -889,13 +889,13 @@
             <span class="k">if</span> <span class="ow">not</span> <span class="n">keys</span><span class="p">:</span>
                 <span class="k">continue</span>
 
-            <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">cat</span><span class="o">.</span><span class="n">value</span><span class="si">}</span><span class="s2">:&quot;</span><span class="p">)</span>
+            <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">cat</span><span class="o">.</span><span class="n">value</span><span class="si">}</span><span class="s2">:"</span><span class="p">)</span>
             <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">keys</span><span class="p">:</span>
                 <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_format_key</span><span class="p">(</span><span class="n">cat</span><span class="p">,</span> <span class="n">key</span><span class="p">))</span>
-            <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;    .&quot;</span><span class="p">)</span>
-            <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+            <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">"    ."</span><span class="p">)</span>
+            <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">""</span><span class="p">)</span>
 
-        <span class="k">return</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">lines</span><span class="p">)</span><span class="o">.</span><span class="n">rstrip</span><span class="p">()</span></div>
+        <span class="k">return</span> <span class="s2">"</span><span class="se">\n</span><span class="s2">"</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">lines</span><span class="p">)</span><span class="o">.</span><span class="n">rstrip</span><span class="p">()</span></div>
 
 
 <div class="viewcode-block" id="YellowPages.__str__">
@@ -930,9 +930,9 @@
         <span class="p">}</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_extend_unique</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">target</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">values</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""</span>
 <span class="sd">        Append values to target while preserving insertion order and uniqueness.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">for</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">values</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">value</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">target</span><span class="p">:</span>
                 <span class="n">target</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
@@ -949,18 +949,18 @@
             <span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_unknown_key_message</span><span class="p">(</span><span class="n">key</span><span class="p">))</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_unknown_key_message</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-        <span class="n">available</span> <span class="o">=</span> <span class="s2">&quot;, &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_all_keys</span><span class="p">())</span>
-        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;Unknown YellowPages key &#39;</span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s2">&#39;. Available keys: </span><span class="si">{</span><span class="n">available</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="n">available</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="s1">&#39;&lt;none&gt;&#39;</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="n">available</span> <span class="o">=</span> <span class="s2">", "</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_all_keys</span><span class="p">())</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">"Unknown YellowPages key '</span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s2">'. Available keys: </span><span class="si">{</span><span class="n">available</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="n">available</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="s1">'&lt;none&gt;'</span><span class="si">}</span><span class="s2">"</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_try_resolve_in_holder</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">holder</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""</span>
 <span class="sd">        Resolve a discovered key in a holder.</span>
 
 <span class="sd">        Resolution order:</span>
 <span class="sd">        - arrays</span>
 <span class="sd">        - tools</span>
 <span class="sd">        - diagnostics</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">holder</span><span class="o">.</span><span class="n">_list_arrays</span><span class="p">():</span>
                 <span class="k">return</span> <span class="n">holder</span><span class="o">.</span><span class="n">_get_array</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
@@ -982,7 +982,7 @@
         <span class="k">return</span> <span class="kc">None</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_get_type_name_from_resolved</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">resolved</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""</span>
 <span class="sd">        Return the public type name used in ``__repr__``.</span>
 
 <span class="sd">        Only the module path is displayed, not the concrete class name.</span>
@@ -995,7 +995,7 @@
 <span class="sd">            pyaml.arrays.bpm_array</span>
 <span class="sd">            pyaml.tuning_tools.orbit</span>
 <span class="sd">            pyaml.diagnostics.tune_monitor</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">for</span> <span class="n">obj</span> <span class="ow">in</span> <span class="n">resolved</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
             <span class="k">if</span> <span class="n">obj</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="k">continue</span>
@@ -1003,20 +1003,20 @@
         <span class="k">return</span> <span class="kc">None</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_format_key</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">category</span><span class="p">:</span> <span class="n">YellowPagesCategory</span><span class="p">,</span> <span class="n">key</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""</span>
 <span class="sd">        Format one discovered key for ``__repr__``.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="n">resolved</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_object</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
         <span class="n">type_name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_type_name_from_resolved</span><span class="p">(</span><span class="n">resolved</span><span class="p">)</span>
-        <span class="n">type_part</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot; (</span><span class="si">{</span><span class="n">type_name</span><span class="si">}</span><span class="s2">)&quot;</span> <span class="k">if</span> <span class="n">type_name</span> <span class="k">else</span> <span class="s2">&quot;&quot;</span>
+        <span class="n">type_part</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">" (</span><span class="si">{</span><span class="n">type_name</span><span class="si">}</span><span class="s2">)"</span> <span class="k">if</span> <span class="n">type_name</span> <span class="k">else</span> <span class="s2">""</span>
 
         <span class="n">modes</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">resolved</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
         <span class="n">all_modes</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_acc</span><span class="o">.</span><span class="n">modes</span><span class="p">()</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
 
-        <span class="n">availability_part</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+        <span class="n">availability_part</span> <span class="o">=</span> <span class="s2">""</span>
         <span class="k">if</span> <span class="nb">set</span><span class="p">(</span><span class="n">modes</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">set</span><span class="p">(</span><span class="n">all_modes</span><span class="p">):</span>
             <span class="n">missing</span> <span class="o">=</span> <span class="p">[</span><span class="n">mode</span> <span class="k">for</span> <span class="n">mode</span> <span class="ow">in</span> <span class="n">all_modes</span> <span class="k">if</span> <span class="n">mode</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">modes</span><span class="p">]</span>
-            <span class="n">availability_part</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot; modes=</span><span class="si">{</span><span class="n">modes</span><span class="si">}</span><span class="s2"> missing=</span><span class="si">{</span><span class="n">missing</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="n">availability_part</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">" modes=</span><span class="si">{</span><span class="n">modes</span><span class="si">}</span><span class="s2"> missing=</span><span class="si">{</span><span class="n">missing</span><span class="si">}</span><span class="s2">"</span>
 
         <span class="k">if</span> <span class="n">category</span> <span class="o">==</span> <span class="n">YellowPagesCategory</span><span class="o">.</span><span class="n">ARRAYS</span><span class="p">:</span>
             <span class="n">sizes</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
@@ -1027,18 +1027,18 @@
                     <span class="n">sizes</span><span class="p">[</span><span class="n">mode_name</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
 
             <span class="k">if</span> <span class="n">modes</span> <span class="o">==</span> <span class="n">all_modes</span> <span class="ow">and</span> <span class="n">sizes</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">sizes</span><span class="o">.</span><span class="n">values</span><span class="p">()))</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
-                <span class="n">size_part</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot; size=</span><span class="si">{</span><span class="nb">next</span><span class="p">(</span><span class="nb">iter</span><span class="p">(</span><span class="n">sizes</span><span class="o">.</span><span class="n">values</span><span class="p">()))</span><span class="si">}</span><span class="s2">&quot;</span>
+                <span class="n">size_part</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">" size=</span><span class="si">{</span><span class="nb">next</span><span class="p">(</span><span class="nb">iter</span><span class="p">(</span><span class="n">sizes</span><span class="o">.</span><span class="n">values</span><span class="p">()))</span><span class="si">}</span><span class="s2">"</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="n">size_part</span> <span class="o">=</span> <span class="s2">&quot; size={&quot;</span> <span class="o">+</span> <span class="s2">&quot;, &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">m</span><span class="si">}</span><span class="s2">:</span><span class="si">{</span><span class="n">n</span><span class="si">}</span><span class="s2">&quot;</span> <span class="k">for</span> <span class="n">m</span><span class="p">,</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">sizes</span><span class="o">.</span><span class="n">items</span><span class="p">())</span> <span class="o">+</span> <span class="s2">&quot;}&quot;</span>
+                <span class="n">size_part</span> <span class="o">=</span> <span class="s2">" size={"</span> <span class="o">+</span> <span class="s2">", "</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">m</span><span class="si">}</span><span class="s2">:</span><span class="si">{</span><span class="n">n</span><span class="si">}</span><span class="s2">"</span> <span class="k">for</span> <span class="n">m</span><span class="p">,</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">sizes</span><span class="o">.</span><span class="n">items</span><span class="p">())</span> <span class="o">+</span> <span class="s2">"}"</span>
 
-            <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;    </span><span class="si">{</span><span class="n">key</span><span class="si">:</span><span class="s2">&lt;21</span><span class="si">}{</span><span class="n">type_part</span><span class="si">:</span><span class="s2">&lt;40</span><span class="si">}{</span><span class="n">size_part</span><span class="si">}{</span><span class="n">availability_part</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="k">return</span> <span class="sa">f</span><span class="s2">"    </span><span class="si">{</span><span class="n">key</span><span class="si">:</span><span class="s2">&lt;21</span><span class="si">}{</span><span class="n">type_part</span><span class="si">:</span><span class="s2">&lt;40</span><span class="si">}{</span><span class="n">size_part</span><span class="si">}{</span><span class="n">availability_part</span><span class="si">}</span><span class="s2">"</span>
 
-        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;    </span><span class="si">{</span><span class="n">key</span><span class="si">}{</span><span class="n">type_part</span><span class="si">}{</span><span class="n">availability_part</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">"    </span><span class="si">{</span><span class="n">key</span><span class="si">}{</span><span class="n">type_part</span><span class="si">}{</span><span class="n">availability_part</span><span class="si">}</span><span class="s2">"</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_object_to_ids</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""</span>
 <span class="sd">        Convert a resolved object into a set of identifiers.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">if</span> <span class="n">obj</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">return</span> <span class="p">[]</span>
 
@@ -1051,13 +1051,13 @@
                 <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
                     <span class="k">if</span> <span class="n">x</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">ids</span><span class="p">:</span>
                         <span class="n">ids</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
-                <span class="k">elif</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="s2">&quot;get_name&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">callable</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">get_name</span><span class="p">):</span>
+                <span class="k">elif</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="s2">"get_name"</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">callable</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">get_name</span><span class="p">):</span>
                     <span class="k">if</span> <span class="n">x</span><span class="o">.</span><span class="n">get_name</span><span class="p">()</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">ids</span><span class="p">:</span>
                         <span class="n">ids</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">get_name</span><span class="p">())</span>
-                <span class="k">elif</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="s2">&quot;name&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">callable</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">name</span><span class="p">):</span>
+                <span class="k">elif</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="s2">"name"</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">callable</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">name</span><span class="p">):</span>
                     <span class="k">if</span> <span class="n">x</span><span class="o">.</span><span class="n">name</span><span class="p">()</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">ids</span><span class="p">:</span>
                         <span class="n">ids</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">name</span><span class="p">())</span>
-                <span class="k">elif</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="s2">&quot;name&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+                <span class="k">elif</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="s2">"name"</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
                     <span class="k">if</span> <span class="n">x</span><span class="o">.</span><span class="n">name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">ids</span><span class="p">:</span>
                         <span class="n">ids</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
                 <span class="k">else</span><span class="p">:</span>
@@ -1067,7 +1067,7 @@
         <span class="k">except</span> <span class="ne">TypeError</span><span class="p">:</span>
             <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
                 <span class="k">return</span> <span class="p">[</span><span class="n">obj</span><span class="p">]</span>
-            <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="s2">&quot;get_name&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">callable</span><span class="p">(</span><span class="n">obj</span><span class="o">.</span><span class="n">get_name</span><span class="p">):</span>
+            <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="s2">"get_name"</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">callable</span><span class="p">(</span><span class="n">obj</span><span class="o">.</span><span class="n">get_name</span><span class="p">):</span>
                 <span class="k">return</span> <span class="p">[</span><span class="n">obj</span><span class="o">.</span><span class="n">get_name</span><span class="p">()]</span>
             <span class="k">return</span> <span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">obj</span><span class="p">)]</span>
 
@@ -1079,9 +1079,9 @@
         <span class="k">return</span> <span class="n">out</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_all_known_ids</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""</span>
 <span class="sd">        Collect all identifiers from all discovered arrays across all modes.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="n">all_ids</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">array_name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">keys</span><span class="p">(</span><span class="n">YellowPagesCategory</span><span class="o">.</span><span class="n">ARRAYS</span><span class="p">):</span>
             <span class="k">try</span><span class="p">:</span>

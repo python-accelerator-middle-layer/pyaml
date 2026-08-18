@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>pyaml.magnet.linear_serialized_model &#8212; Python Accelerator Middle Layer 0.1.dev1+g72d2992bf documentation</title>
+    <title>pyaml.magnet.linear_serialized_model &#8212; Python Accelerator Middle Layer 0.1.dev1+g947cfb0ef documentation</title>
   
   
   
@@ -41,7 +41,7 @@
   <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=90905a2f556bf617f1a9" />
 <link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=90905a2f556bf617f1a9" />
 
-    <script src="../../../_static/documentation_options.js?v=7336f5c7"></script>
+    <script src="../../../_static/documentation_options.js?v=7aef76b6"></script>
     <script src="../../../_static/doctools.js?v=9bcbadda"></script>
     <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -125,8 +125,8 @@
       
     
     
-    <img src="../../../_static/logo.png" class="logo__image only-light" alt="Python Accelerator Middle Layer 0.1.dev1+g72d2992bf documentation - Home"/>
-    <img src="../../../_static/dark.png" class="logo__image only-dark pst-js-only" alt="Python Accelerator Middle Layer 0.1.dev1+g72d2992bf documentation - Home"/>
+    <img src="../../../_static/logo.png" class="logo__image only-light" alt="Python Accelerator Middle Layer 0.1.dev1+g947cfb0ef documentation - Home"/>
+    <img src="../../../_static/dark.png" class="logo__image only-dark pst-js-only" alt="Python Accelerator Middle Layer 0.1.dev1+g947cfb0ef documentation - Home"/>
   
   
 </a></div>
@@ -399,7 +399,7 @@
 <span class="kn">from</span><span class="w"> </span><span class="nn">.model</span><span class="w"> </span><span class="kn">import</span> <span class="n">MagnetModel</span>
 
 <span class="c1"># Define the main class name for this module</span>
-<span class="n">PYAMLCLASS</span> <span class="o">=</span> <span class="s2">&quot;LinearSerializedMagnetModel&quot;</span>
+<span class="n">PYAMLCLASS</span> <span class="o">=</span> <span class="s2">"LinearSerializedMagnetModel"</span>
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">_get_length</span><span class="p">(</span><span class="n">elem</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
@@ -428,7 +428,7 @@
     <span class="n">length</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">length</span> <span class="o">!=</span> <span class="n">expected_length</span><span class="p">:</span>
         <span class="k">raise</span> <span class="n">PyAMLException</span><span class="p">(</span>
-            <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2"> does not have the expected number of items (</span><span class="si">{</span><span class="n">expected_length</span><span class="si">}</span><span class="s2"> items expected but got </span><span class="si">{</span><span class="n">length</span><span class="si">}</span><span class="s2">)&quot;</span>
+            <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2"> does not have the expected number of items (</span><span class="si">{</span><span class="n">expected_length</span><span class="si">}</span><span class="s2"> items expected but got </span><span class="si">{</span><span class="n">length</span><span class="si">}</span><span class="s2">)"</span>
         <span class="p">)</span>
 
 
@@ -436,7 +436,7 @@
 <a class="viewcode-back" href="../../../api/pyaml.magnet.linear_serialized_model.html#pyaml.magnet.linear_serialized_model.LinearSerializedMagnetModel">[docs]</a>
 <span class="nd">@register_schema</span>
 <span class="k">class</span><span class="w"> </span><span class="nc">LinearSerializedMagnetModel</span><span class="p">(</span><span class="n">MagnetModel</span><span class="p">,</span> <span class="n">DynamicValidation</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    Linear model for a serialized combined-function magnet.</span>
 
 <span class="sd">    This model wraps one or more :class:`LinearMagnetModel` instances and</span>
@@ -475,7 +475,7 @@
 <span class="sd">    -----</span>
 <span class="sd">    The number of magnets is inferred from the longest list among the supplied</span>
 <span class="sd">    configuration values. Scalars are expanded to match that length.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
@@ -528,10 +528,10 @@
                 <span class="n">curve</span> <span class="o">=</span> <span class="n">InlineCurve</span><span class="p">(</span><span class="n">mat</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_curves</span><span class="o">.</span><span class="n">get_curve</span><span class="p">())</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">__curves</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">curve</span><span class="p">)</span>
 
-        <span class="n">_check_len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__calibration_factors</span><span class="p">,</span> <span class="s2">&quot;calibration_factors&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__nbMagnets</span><span class="p">)</span>
-        <span class="n">_check_len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__calibration_offsets</span><span class="p">,</span> <span class="s2">&quot;calibration_offsets&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__nbMagnets</span><span class="p">)</span>
-        <span class="n">_check_len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__crosstalk</span><span class="p">,</span> <span class="s2">&quot;crosstalk&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__nbMagnets</span><span class="p">)</span>
-        <span class="n">_check_len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__curves</span><span class="p">,</span> <span class="s2">&quot;curves&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__nbMagnets</span><span class="p">)</span>
+        <span class="n">_check_len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__calibration_factors</span><span class="p">,</span> <span class="s2">"calibration_factors"</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__nbMagnets</span><span class="p">)</span>
+        <span class="n">_check_len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__calibration_offsets</span><span class="p">,</span> <span class="s2">"calibration_offsets"</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__nbMagnets</span><span class="p">)</span>
+        <span class="n">_check_len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__crosstalk</span><span class="p">,</span> <span class="s2">"crosstalk"</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__nbMagnets</span><span class="p">)</span>
+        <span class="n">_check_len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__curves</span><span class="p">,</span> <span class="s2">"curves"</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__nbMagnets</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">__sub_models</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">LinearMagnetModel</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">magnet_idx</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__nbMagnets</span><span class="p">):</span>

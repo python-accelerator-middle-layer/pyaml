@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>pyaml.arrays.bpm_array &#8212; Python Accelerator Middle Layer 0.1.dev1+g72d2992bf documentation</title>
+    <title>pyaml.arrays.bpm_array &#8212; Python Accelerator Middle Layer 0.1.dev1+g947cfb0ef documentation</title>
   
   
   
@@ -41,7 +41,7 @@
   <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=90905a2f556bf617f1a9" />
 <link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=90905a2f556bf617f1a9" />
 
-    <script src="../../../_static/documentation_options.js?v=7336f5c7"></script>
+    <script src="../../../_static/documentation_options.js?v=7aef76b6"></script>
     <script src="../../../_static/doctools.js?v=9bcbadda"></script>
     <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -125,8 +125,8 @@
       
     
     
-    <img src="../../../_static/logo.png" class="logo__image only-light" alt="Python Accelerator Middle Layer 0.1.dev1+g72d2992bf documentation - Home"/>
-    <img src="../../../_static/dark.png" class="logo__image only-dark pst-js-only" alt="Python Accelerator Middle Layer 0.1.dev1+g72d2992bf documentation - Home"/>
+    <img src="../../../_static/logo.png" class="logo__image only-light" alt="Python Accelerator Middle Layer 0.1.dev1+g947cfb0ef documentation - Home"/>
+    <img src="../../../_static/dark.png" class="logo__image only-dark pst-js-only" alt="Python Accelerator Middle Layer 0.1.dev1+g947cfb0ef documentation - Home"/>
   
   
 </a></div>
@@ -399,7 +399,7 @@
 <div class="viewcode-block" id="RWBPMPosition">
 <a class="viewcode-back" href="../../../api/pyaml.arrays.bpm_array.html#pyaml.arrays.bpm_array.RWBPMPosition">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">RWBPMPosition</span><span class="p">(</span><span class="n">ReadFloatArray</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    Read/write access to BPM positions (horizontal and vertical).</span>
 
 <span class="sd">    This class provides access to both horizontal and vertical positions</span>
@@ -412,7 +412,7 @@
 <span class="sd">        Name of the position accessor</span>
 <span class="sd">    bpms : list[pyaml.bpm.bpm.BPM]</span>
 <span class="sd">        List of BPM objects to access</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">bpms</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">BPM</span><span class="p">]):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__bpms</span> <span class="o">=</span> <span class="n">bpms</span>
@@ -423,7 +423,7 @@
 <div class="viewcode-block" id="RWBPMPosition.get">
 <a class="viewcode-back" href="../../../api/pyaml.arrays.bpm_array.html#pyaml.arrays.bpm_array.RWBPMPosition.get">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""</span>
 <span class="sd">        Get BPM positions.</span>
 
 <span class="sd">        Returns</span>
@@ -431,7 +431,7 @@
 <span class="sd">        np.array</span>
 <span class="sd">            Array of shape (n_bpms, 2) containing horizontal and vertical</span>
 <span class="sd">            positions for each BPM</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">__aggregator</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">b</span><span class="o">.</span><span class="n">positions</span><span class="o">.</span><span class="n">get</span><span class="p">()</span> <span class="k">for</span> <span class="n">b</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">__bpms</span><span class="p">])</span>
         <span class="k">else</span><span class="p">:</span>
@@ -442,14 +442,14 @@
 <div class="viewcode-block" id="RWBPMPosition.unit">
 <a class="viewcode-back" href="../../../api/pyaml.arrays.bpm_array.html#pyaml.arrays.bpm_array.RWBPMPosition.unit">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">unit</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""</span>
 <span class="sd">        Get the units for BPM positions.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        list[str]</span>
 <span class="sd">            List of unit strings for each BPM</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">return</span> <span class="p">[</span><span class="n">b</span><span class="o">.</span><span class="n">positions</span><span class="o">.</span><span class="n">unit</span><span class="p">()</span> <span class="k">for</span> <span class="n">b</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">__bpms</span><span class="p">]</span></div>
 
 
@@ -457,14 +457,14 @@
 <div class="viewcode-block" id="RWBPMPosition.set_aggregator">
 <a class="viewcode-back" href="../../../api/pyaml.arrays.bpm_array.html#pyaml.arrays.bpm_array.RWBPMPosition.set_aggregator">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">set_aggregator</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">agg</span><span class="p">:</span> <span class="n">DeviceAccessList</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""</span>
 <span class="sd">        Set the device access list aggregator for improved performance.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        agg : DeviceAccessList</span>
 <span class="sd">            Device access list for aggregated reads</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__aggregator</span> <span class="o">=</span> <span class="n">agg</span></div>
 </div>
 
@@ -473,7 +473,7 @@
 <div class="viewcode-block" id="RWBPMSinglePosition">
 <a class="viewcode-back" href="../../../api/pyaml.arrays.bpm_array.html#pyaml.arrays.bpm_array.RWBPMSinglePosition">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">RWBPMSinglePosition</span><span class="p">(</span><span class="n">ReadFloatArray</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    Read/write access to single axis BPM positions.</span>
 
 <span class="sd">    This class provides access to either horizontal or vertical positions</span>
@@ -488,7 +488,7 @@
 <span class="sd">        List of BPM objects to access</span>
 <span class="sd">    idx : int</span>
 <span class="sd">        Index for the position axis (0 for horizontal, 1 for vertical)</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">bpms</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">BPM</span><span class="p">],</span> <span class="n">idx</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__bpms</span> <span class="o">=</span> <span class="n">bpms</span>
@@ -500,14 +500,14 @@
 <div class="viewcode-block" id="RWBPMSinglePosition.get">
 <a class="viewcode-back" href="../../../api/pyaml.arrays.bpm_array.html#pyaml.arrays.bpm_array.RWBPMSinglePosition.get">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""</span>
 <span class="sd">        Get single axis BPM positions.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        np.array</span>
 <span class="sd">            Array of positions for the specified axis (horizontal or vertical)</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">__aggregator</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">b</span><span class="o">.</span><span class="n">positions</span><span class="o">.</span><span class="n">get</span><span class="p">()[</span><span class="bp">self</span><span class="o">.</span><span class="n">__idx</span><span class="p">]</span> <span class="k">for</span> <span class="n">b</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">__bpms</span><span class="p">])</span>
         <span class="k">else</span><span class="p">:</span>
@@ -518,14 +518,14 @@
 <div class="viewcode-block" id="RWBPMSinglePosition.unit">
 <a class="viewcode-back" href="../../../api/pyaml.arrays.bpm_array.html#pyaml.arrays.bpm_array.RWBPMSinglePosition.unit">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">unit</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""</span>
 <span class="sd">        Get the units for BPM positions.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        list[str]</span>
 <span class="sd">            List of unit strings for each BPM</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">return</span> <span class="p">[</span><span class="n">b</span><span class="o">.</span><span class="n">positions</span><span class="o">.</span><span class="n">unit</span><span class="p">()</span> <span class="k">for</span> <span class="n">b</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">__bpms</span><span class="p">]</span></div>
 
 
@@ -533,14 +533,14 @@
 <div class="viewcode-block" id="RWBPMSinglePosition.set_aggregator">
 <a class="viewcode-back" href="../../../api/pyaml.arrays.bpm_array.html#pyaml.arrays.bpm_array.RWBPMSinglePosition.set_aggregator">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">set_aggregator</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">agg</span><span class="p">:</span> <span class="n">DeviceAccessList</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""</span>
 <span class="sd">        Set the device access list aggregator for improved performance.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        agg : DeviceAccessList</span>
 <span class="sd">            Device access list for aggregated reads</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__aggregator</span> <span class="o">=</span> <span class="n">agg</span></div>
 </div>
 
@@ -549,7 +549,7 @@
 <div class="viewcode-block" id="BPMArray">
 <a class="viewcode-back" href="../../../api/pyaml.arrays.bpm_array.html#pyaml.arrays.bpm_array.BPMArray">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">BPMArray</span><span class="p">(</span><span class="n">ElementArray</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    Class that implements access to a BPM array.</span>
 
 <span class="sd">    Parameters</span>
@@ -572,13 +572,13 @@
 
 <span class="sd">    .. code-block:: python</span>
 
-<span class="sd">        &gt;&gt;&gt; sr = Accelerator.load(&quot;acc.yaml&quot;) # Load the accelerator</span>
-<span class="sd">        &gt;&gt;&gt; bpms = sr.design.get_bpms(&quot;BPM&quot;)  # Retrieve BPM array</span>
+<span class="sd">        &gt;&gt;&gt; sr = Accelerator.load("acc.yaml") # Load the accelerator</span>
+<span class="sd">        &gt;&gt;&gt; bpms = sr.design.get_bpms("BPM")  # Retrieve BPM array</span>
 <span class="sd">        &gt;&gt;&gt; orbit = bpms.positions.get()      # Get the orbit</span>
 
 <span class="sd">    or can be created by code using :py:class:`pyaml.arrays.bpm.BPM`.</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">arrayName</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">bpms</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">BPM</span><span class="p">],</span> <span class="n">use_aggregator</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">arrayName</span><span class="p">,</span> <span class="n">bpms</span><span class="p">,</span> <span class="n">use_aggregator</span><span class="p">)</span>
@@ -595,23 +595,23 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">positions</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">RWBPMPosition</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""</span>
 <span class="sd">        Returns position of each bpm of this array</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__hvpos</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">h</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">RWBPMSinglePosition</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""</span>
 <span class="sd">        Returns horizontal position of each bpm of this array</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__hpos</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">v</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">RWBPMSinglePosition</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""</span>
 <span class="sd">        Returns vertical position of each bpm of this array</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__vpos</span></div>
 
 </pre></div>

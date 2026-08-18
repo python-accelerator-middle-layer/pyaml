@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>pyaml.accelerator &#8212; Python Accelerator Middle Layer 0.1.dev1+g72d2992bf documentation</title>
+    <title>pyaml.accelerator &#8212; Python Accelerator Middle Layer 0.1.dev1+g947cfb0ef documentation</title>
   
   
   
@@ -41,7 +41,7 @@
   <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=90905a2f556bf617f1a9" />
 <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=90905a2f556bf617f1a9" />
 
-    <script src="../../_static/documentation_options.js?v=7336f5c7"></script>
+    <script src="../../_static/documentation_options.js?v=7aef76b6"></script>
     <script src="../../_static/doctools.js?v=9bcbadda"></script>
     <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -125,8 +125,8 @@
       
     
     
-    <img src="../../_static/logo.png" class="logo__image only-light" alt="Python Accelerator Middle Layer 0.1.dev1+g72d2992bf documentation - Home"/>
-    <img src="../../_static/dark.png" class="logo__image only-dark pst-js-only" alt="Python Accelerator Middle Layer 0.1.dev1+g72d2992bf documentation - Home"/>
+    <img src="../../_static/logo.png" class="logo__image only-light" alt="Python Accelerator Middle Layer 0.1.dev1+g947cfb0ef documentation - Home"/>
+    <img src="../../_static/dark.png" class="logo__image only-dark pst-js-only" alt="Python Accelerator Middle Layer 0.1.dev1+g947cfb0ef documentation - Home"/>
   
   
 </a></div>
@@ -388,16 +388,16 @@
                 <article class="bd-article">
                   
   <h1>Source code for pyaml.accelerator</h1><div class="highlight"><pre>
-<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span></span><span class="sd">"""</span>
 <span class="sd">Accelerator class</span>
-<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">"""</span>
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">warnings</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">.arrays.array</span><span class="w"> </span><span class="kn">import</span> <span class="n">ArrayConfig</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">.common.element</span><span class="w"> </span><span class="kn">import</span> <span class="n">Element</span><span class="p">,</span> <span class="n">__pyaml_repr__</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">.common.element_holder</span><span class="w"> </span><span class="kn">import</span> <span class="n">ElementHolder</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">.common.exception</span><span class="w"> </span><span class="kn">import</span> <span class="n">PyAMLConfigException</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.common.holders.element_holder</span><span class="w"> </span><span class="kn">import</span> <span class="n">ElementHolder</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">.configuration</span><span class="w"> </span><span class="kn">import</span> <span class="n">ConfigurationManager</span><span class="p">,</span> <span class="n">UnsupportedConfigurationRootError</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">.configuration.factory</span><span class="w"> </span><span class="kn">import</span> <span class="n">Factory</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">.control.controlsystem</span><span class="w"> </span><span class="kn">import</span> <span class="n">ControlSystem</span>
@@ -406,13 +406,13 @@
 <span class="kn">from</span><span class="w"> </span><span class="nn">.yellow_pages</span><span class="w"> </span><span class="kn">import</span> <span class="n">YellowPages</span>
 
 <span class="c1"># Define the main class name for this module</span>
-<span class="n">PYAMLCLASS</span> <span class="o">=</span> <span class="s2">&quot;Accelerator&quot;</span>
+<span class="n">PYAMLCLASS</span> <span class="o">=</span> <span class="s2">"Accelerator"</span>
 
 
 <div class="viewcode-block" id="Accelerator">
 <a class="viewcode-back" href="../../api/pyaml.accelerator.html#pyaml.accelerator.Accelerator">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">Accelerator</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    Top-level accelerator object.</span>
 
 <span class="sd">    An Accelerator represents a complete accelerator model, including its</span>
@@ -448,10 +448,10 @@
 <span class="sd">    Notes</span>
 <span class="sd">    -----</span>
 <span class="sd">    Control systems and simulators are registered by name and are exposed as</span>
-<span class="sd">    attributes of the accelerator instance. The control system named ``&quot;live&quot;``</span>
-<span class="sd">    and the simulator named ``&quot;design&quot;`` are additionally available through the</span>
+<span class="sd">    attributes of the accelerator instance. The control system named ``"live"``</span>
+<span class="sd">    and the simulator named ``"design"`` are additionally available through the</span>
 <span class="sd">    :attr:`live` and :attr:`design` properties.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
@@ -487,7 +487,7 @@
 
         <span class="k">if</span> <span class="n">controls</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">controls</span><span class="p">:</span>
-                <span class="k">if</span> <span class="n">c</span><span class="o">.</span><span class="n">name</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;live&quot;</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">c</span><span class="o">.</span><span class="n">name</span><span class="p">()</span> <span class="o">==</span> <span class="s2">"live"</span><span class="p">:</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">__live</span> <span class="o">=</span> <span class="n">c</span>
                 <span class="k">else</span><span class="p">:</span>
                     <span class="c1"># Add as dynamic attribute</span>
@@ -498,7 +498,7 @@
 
         <span class="k">if</span> <span class="n">simulators</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">simulators</span><span class="p">:</span>
-                <span class="k">if</span> <span class="n">s</span><span class="o">.</span><span class="n">name</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;design&quot;</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">s</span><span class="o">.</span><span class="n">name</span><span class="p">()</span> <span class="o">==</span> <span class="s2">"design"</span><span class="p">:</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">__design</span> <span class="o">=</span> <span class="n">s</span>
                 <span class="k">else</span><span class="p">:</span>
                     <span class="c1"># Add as dynamic attribute</span>
@@ -543,49 +543,49 @@
 <div class="viewcode-block" id="Accelerator.set_energy">
 <a class="viewcode-back" href="../../api/pyaml.accelerator.html#pyaml.accelerator.Accelerator.set_energy">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">set_energy</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">E</span><span class="p">:</span> <span class="nb">float</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""</span>
 <span class="sd">        Set the energy for all simulators and control systems.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        E : float</span>
 <span class="sd">            Energy value to set in eV</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_set_properties</span><span class="p">(</span><span class="s2">&quot;_set_energy&quot;</span><span class="p">,</span> <span class="n">E</span><span class="p">)</span></div>
+<span class="sd">        """</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_set_properties</span><span class="p">(</span><span class="s2">"_set_energy"</span><span class="p">,</span> <span class="n">E</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="Accelerator.set_mcf">
 <a class="viewcode-back" href="../../api/pyaml.accelerator.html#pyaml.accelerator.Accelerator.set_mcf">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">set_mcf</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">alphac</span><span class="p">:</span> <span class="nb">float</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""</span>
 <span class="sd">        Set the moment compaction factor for all simulators and control systems.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        alphac : float</span>
 <span class="sd">            Moment compaction factor</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_set_properties</span><span class="p">(</span><span class="s2">&quot;_set_mcf&quot;</span><span class="p">,</span> <span class="n">alphac</span><span class="p">)</span></div>
+<span class="sd">        """</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_set_properties</span><span class="p">(</span><span class="s2">"_set_mcf"</span><span class="p">,</span> <span class="n">alphac</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="Accelerator.set_harmonic_number">
 <a class="viewcode-back" href="../../api/pyaml.accelerator.html#pyaml.accelerator.Accelerator.set_harmonic_number">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">set_harmonic_number</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">h</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""</span>
 <span class="sd">        Set the number of bucket.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        h : int</span>
 <span class="sd">            Number of bucket</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_set_properties</span><span class="p">(</span><span class="s2">&quot;_set_harmonic&quot;</span><span class="p">,</span> <span class="n">h</span><span class="p">)</span></div>
+<span class="sd">        """</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_set_properties</span><span class="p">(</span><span class="s2">"_set_harmonic"</span><span class="p">,</span> <span class="n">h</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="Accelerator.add_device">
 <a class="viewcode-back" href="../../api/pyaml.accelerator.html#pyaml.accelerator.Accelerator.add_device">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">add_device</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">ignore_external</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""</span>
 <span class="sd">        Dynamically add a device to this accelerator</span>
 
 <span class="sd">        config_dict : str</span>
@@ -594,11 +594,11 @@
 <span class="sd">            Ignore external modules and return None for object that</span>
 <span class="sd">            cannot be created. pydantic schema that support that an</span>
 <span class="sd">            object is not created should handle None fields.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="n">dev</span> <span class="o">=</span> <span class="n">Factory</span><span class="o">.</span><span class="n">build</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="n">ignore_external</span><span class="p">)</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">dev</span><span class="p">,</span> <span class="n">Element</span><span class="p">):</span>
             <span class="k">raise</span> <span class="n">PyAMLConfigException</span><span class="p">(</span>
-                <span class="s2">&quot;Invalid device type, Element or sub classes of Element expected &quot;</span> <span class="o">+</span> <span class="sa">f</span><span class="s2">&quot;but got </span><span class="si">{</span><span class="n">dev</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">&quot;</span>
+                <span class="s2">"Invalid device type, Element or sub classes of Element expected "</span> <span class="o">+</span> <span class="sa">f</span><span class="s2">"but got </span><span class="si">{</span><span class="n">dev</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">"</span>
             <span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_devices</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">dev</span><span class="p">)</span>
@@ -614,9 +614,9 @@
 <div class="viewcode-block" id="Accelerator.post_init">
 <a class="viewcode-back" href="../../api/pyaml.accelerator.html#pyaml.accelerator.Accelerator.post_init">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">post_init</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""</span>
 <span class="sd">        Method triggered after all initialisations are done</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_simulators</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_simulators</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
                 <span class="n">s</span><span class="o">.</span><span class="n">post_init</span><span class="p">()</span>
@@ -628,34 +628,34 @@
 <div class="viewcode-block" id="Accelerator.get_description">
 <a class="viewcode-back" href="../../api/pyaml.accelerator.html#pyaml.accelerator.Accelerator.get_description">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">get_description</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""</span>
 <span class="sd">        Returns the description of the accelerator</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">description</span></div>
 
 
     <span class="nd">@property</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">live</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ControlSystem</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""</span>
 <span class="sd">        Get the live control system.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        ControlSystem</span>
 <span class="sd">            The live control system instance</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__live</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">design</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Simulator</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""</span>
 <span class="sd">        Get the design simulator.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        Simulator</span>
 <span class="sd">            The design simulator instance</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__design</span>
 
     <span class="nd">@property</span>
@@ -664,23 +664,23 @@
 
 <div class="viewcode-block" id="Accelerator.simulators">
 <a class="viewcode-back" href="../../api/pyaml.accelerator.html#pyaml.accelerator.Accelerator.simulators">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">simulators</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="s2">&quot;ElementHolder&quot;</span><span class="p">]:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return all registered simulator modes.&quot;&quot;&quot;</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">simulators</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="s2">"ElementHolder"</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">"""Return all registered simulator modes."""</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_simulators</span></div>
 
 
 <div class="viewcode-block" id="Accelerator.controls">
 <a class="viewcode-back" href="../../api/pyaml.accelerator.html#pyaml.accelerator.Accelerator.controls">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">controls</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="s2">&quot;ElementHolder&quot;</span><span class="p">]:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return all registered control modes.&quot;&quot;&quot;</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">controls</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="s2">"ElementHolder"</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">"""Return all registered control modes."""</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_controls</span></div>
 
 
 <div class="viewcode-block" id="Accelerator.modes">
 <a class="viewcode-back" href="../../api/pyaml.accelerator.html#pyaml.accelerator.Accelerator.modes">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">modes</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="s2">&quot;ElementHolder&quot;</span><span class="p">]:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return all registered control and simulator modes.&quot;&quot;&quot;</span>
-        <span class="n">modes</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="s2">&quot;ElementHolder&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">modes</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="s2">"ElementHolder"</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">"""Return all registered control and simulator modes."""</span>
+        <span class="n">modes</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="s2">"ElementHolder"</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="n">modes</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_simulators</span><span class="p">)</span>
         <span class="n">modes</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_controls</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">modes</span></div>
@@ -692,8 +692,8 @@
 <div class="viewcode-block" id="Accelerator.from_dict">
 <a class="viewcode-back" href="../../api/pyaml.accelerator.html#pyaml.accelerator.Accelerator.from_dict">[docs]</a>
     <span class="nd">@staticmethod</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">from_dict</span><span class="p">(</span><span class="n">config_dict</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">ignore_external</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">validate</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;Accelerator&quot;</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">from_dict</span><span class="p">(</span><span class="n">config_dict</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">ignore_external</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">validate</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">"Accelerator"</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""</span>
 <span class="sd">        Construct an accelerator from a dictionary.</span>
 
 <span class="sd">        Parameters</span>
@@ -704,11 +704,11 @@
 <span class="sd">            Ignore external modules and return None for object that</span>
 <span class="sd">            cannot be created. pydantic schema that support that an</span>
 <span class="sd">            object is not created should handle None fields.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
 
         <span class="k">if</span> <span class="n">ignore_external</span><span class="p">:</span>
             <span class="c1"># control systems are external, so remove controls field</span>
-            <span class="n">config_dict</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;controls&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+            <span class="n">config_dict</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">"controls"</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="n">validate</span><span class="p">:</span>
             <span class="n">config_dict</span> <span class="o">=</span> <span class="n">SchemaValidator</span><span class="o">.</span><span class="n">validate_to_dict</span><span class="p">(</span><span class="n">config_dict</span><span class="p">)</span>
@@ -721,8 +721,8 @@
 <div class="viewcode-block" id="Accelerator.load">
 <a class="viewcode-back" href="../../api/pyaml.accelerator.html#pyaml.accelerator.Accelerator.load">[docs]</a>
     <span class="nd">@staticmethod</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">load</span><span class="p">(</span><span class="n">filename</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">include_locations</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">ignore_external</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">validate</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;Accelerator&quot;</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">load</span><span class="p">(</span><span class="n">filename</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">include_locations</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">ignore_external</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">validate</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">"Accelerator"</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""</span>
 <span class="sd">        Load an accelerator from a config file.</span>
 
 <span class="sd">        Parameters</span>
@@ -740,14 +740,14 @@
 <span class="sd">            object is not created should handle None fields.</span>
 <span class="sd">        validate : bool</span>
 <span class="sd">            Validate the loaded data</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
 
         <span class="n">manager</span> <span class="o">=</span> <span class="n">ConfigurationManager</span><span class="p">()</span>
 
         <span class="k">if</span> <span class="ow">not</span> <span class="n">validate</span> <span class="ow">and</span> <span class="n">include_locations</span><span class="p">:</span>
             <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
-                <span class="s2">&quot;&#39;include_locations=True&#39; is ignored when &#39;validate=False&#39;. &quot;</span>
-                <span class="s2">&quot;Source-location metadata is only needed for validation.&quot;</span><span class="p">,</span>
+                <span class="s2">"'include_locations=True' is ignored when 'validate=False'. "</span>
+                <span class="s2">"Source-location metadata is only needed for validation."</span><span class="p">,</span>
                 <span class="ne">UserWarning</span><span class="p">,</span>
                 <span class="n">stacklevel</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
             <span class="p">)</span>
@@ -757,8 +757,8 @@
             <span class="n">manager</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">include_locations</span><span class="o">=</span><span class="n">include_locations</span><span class="p">)</span>
         <span class="k">except</span> <span class="n">UnsupportedConfigurationRootError</span> <span class="k">as</span> <span class="n">ex</span><span class="p">:</span>
             <span class="k">raise</span> <span class="n">PyAMLConfigException</span><span class="p">(</span>
-                <span class="s2">&quot;Accelerator.load() expects a &#39;pyaml.accelerator&#39; root configuration. &quot;</span>
-                <span class="s2">&quot;Use the factory APIs to build sub-elements directly.&quot;</span>
+                <span class="s2">"Accelerator.load() expects a 'pyaml.accelerator' root configuration. "</span>
+                <span class="s2">"Use the factory APIs to build sub-elements directly."</span>
             <span class="p">)</span> <span class="kn">from</span><span class="w"> </span><span class="nn">ex</span>
         <span class="k">return</span> <span class="n">manager</span><span class="o">.</span><span class="n">build</span><span class="p">(</span><span class="n">ignore_external</span><span class="o">=</span><span class="n">ignore_external</span><span class="p">,</span> <span class="n">validate</span><span class="o">=</span><span class="n">validate</span><span class="p">)</span></div>
 </div>

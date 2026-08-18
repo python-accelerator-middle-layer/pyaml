@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>pyaml.control.deviceaccesslist &#8212; Python Accelerator Middle Layer 0.1.dev1+g72d2992bf documentation</title>
+    <title>pyaml.control.deviceaccesslist &#8212; Python Accelerator Middle Layer 0.1.dev1+g947cfb0ef documentation</title>
   
   
   
@@ -41,7 +41,7 @@
   <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=90905a2f556bf617f1a9" />
 <link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=90905a2f556bf617f1a9" />
 
-    <script src="../../../_static/documentation_options.js?v=7336f5c7"></script>
+    <script src="../../../_static/documentation_options.js?v=7aef76b6"></script>
     <script src="../../../_static/doctools.js?v=9bcbadda"></script>
     <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -125,8 +125,8 @@
       
     
     
-    <img src="../../../_static/logo.png" class="logo__image only-light" alt="Python Accelerator Middle Layer 0.1.dev1+g72d2992bf documentation - Home"/>
-    <img src="../../../_static/dark.png" class="logo__image only-dark pst-js-only" alt="Python Accelerator Middle Layer 0.1.dev1+g72d2992bf documentation - Home"/>
+    <img src="../../../_static/logo.png" class="logo__image only-light" alt="Python Accelerator Middle Layer 0.1.dev1+g947cfb0ef documentation - Home"/>
+    <img src="../../../_static/dark.png" class="logo__image only-dark pst-js-only" alt="Python Accelerator Middle Layer 0.1.dev1+g947cfb0ef documentation - Home"/>
   
   
 </a></div>
@@ -399,16 +399,16 @@
 <div class="viewcode-block" id="DeviceAccessList">
 <a class="viewcode-back" href="../../../api/pyaml.control.deviceaccesslist.html#pyaml.control.deviceaccesslist.DeviceAccessList">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">DeviceAccessList</span><span class="p">(</span><span class="n">metaclass</span><span class="o">=</span><span class="n">ABCMeta</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    Abstract class providing access to a list of control system variales.</span>
 <span class="sd">    Internal structure depends on the backend and might not be trivially mutable.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
 <div class="viewcode-block" id="DeviceAccessList.add_devices">
 <a class="viewcode-back" href="../../../api/pyaml.control.deviceaccesslist.html#pyaml.control.deviceaccesslist.DeviceAccessList.add_devices">[docs]</a>
     <span class="nd">@abstractmethod</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">add_devices</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">devices</span><span class="p">:</span> <span class="n">DeviceAccess</span> <span class="o">|</span> <span class="nb">list</span><span class="p">[</span><span class="n">DeviceAccess</span><span class="p">]):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Add a DeviceAccess (or a list) to this list&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""Add a DeviceAccess (or a list) to this list"""</span>
         <span class="k">pass</span></div>
 
 
@@ -416,7 +416,7 @@
 <a class="viewcode-back" href="../../../api/pyaml.control.deviceaccesslist.html#pyaml.control.deviceaccesslist.DeviceAccessList.get_device_at">[docs]</a>
     <span class="nd">@abstractmethod</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">get_device_at</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">index</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">DeviceAccess</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns the device at the given index&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""Returns the device at the given index"""</span>
         <span class="k">pass</span></div>
 
 
@@ -424,7 +424,7 @@
 <a class="viewcode-back" href="../../../api/pyaml.control.deviceaccesslist.html#pyaml.control.deviceaccesslist.DeviceAccessList.len">[docs]</a>
     <span class="nd">@abstractmethod</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">len</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get the DeviceAccessList length&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""Get the DeviceAccessList length"""</span>
         <span class="k">pass</span></div>
 
 
@@ -432,8 +432,8 @@
 <a class="viewcode-back" href="../../../api/pyaml.control.deviceaccesslist.html#pyaml.control.deviceaccesslist.DeviceAccessList.set">[docs]</a>
     <span class="nd">@abstractmethod</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">set</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">npt</span><span class="o">.</span><span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">]):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Write a list of control system device variable</span>
-<span class="sd">        (i.e. a power supply currents)&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""Write a list of control system device variable</span>
+<span class="sd">        (i.e. a power supply currents)"""</span>
         <span class="k">pass</span></div>
 
 
@@ -441,7 +441,7 @@
 <a class="viewcode-back" href="../../../api/pyaml.control.deviceaccesslist.html#pyaml.control.deviceaccesslist.DeviceAccessList.set_and_wait">[docs]</a>
     <span class="nd">@abstractmethod</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">set_and_wait</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">npt</span><span class="o">.</span><span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">]):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Write a list control system device variable (i.e. a power supply currents)&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""Write a list control system device variable (i.e. a power supply currents)"""</span>
         <span class="k">pass</span></div>
 
 
@@ -449,7 +449,7 @@
 <a class="viewcode-back" href="../../../api/pyaml.control.deviceaccesslist.html#pyaml.control.deviceaccesslist.DeviceAccessList.get">[docs]</a>
     <span class="nd">@abstractmethod</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">npt</span><span class="o">.</span><span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">]:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return a list of setpoints of control system device variables&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""Return a list of setpoints of control system device variables"""</span>
         <span class="k">pass</span></div>
 
 
@@ -457,7 +457,7 @@
 <a class="viewcode-back" href="../../../api/pyaml.control.deviceaccesslist.html#pyaml.control.deviceaccesslist.DeviceAccessList.readback">[docs]</a>
     <span class="nd">@abstractmethod</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">readback</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return the measured variables&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""Return the measured variables"""</span>
         <span class="k">pass</span></div>
 
 
@@ -465,7 +465,7 @@
 <a class="viewcode-back" href="../../../api/pyaml.control.deviceaccesslist.html#pyaml.control.deviceaccesslist.DeviceAccessList.unit">[docs]</a>
     <span class="nd">@abstractmethod</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">unit</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return the variable unit&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""Return the variable unit"""</span>
         <span class="k">pass</span></div>
 
 
@@ -473,14 +473,14 @@
 <a class="viewcode-back" href="../../../api/pyaml.control.deviceaccesslist.html#pyaml.control.deviceaccesslist.DeviceAccessList.get_range">[docs]</a>
     <span class="nd">@abstractmethod</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">get_range</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">float</span><span class="p">]:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""</span>
 <span class="sd">        Get the valid range for the device variables.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        list[float]</span>
 <span class="sd">            List containing [min0, max0, min1, max1, ...] values</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">pass</span></div>
 
 
@@ -488,14 +488,14 @@
 <a class="viewcode-back" href="../../../api/pyaml.control.deviceaccesslist.html#pyaml.control.deviceaccesslist.DeviceAccessList.check_device_availability">[docs]</a>
     <span class="nd">@abstractmethod</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">check_device_availability</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""</span>
 <span class="sd">        Check if all devices in the list are available and accessible.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        bool</span>
 <span class="sd">            True if all devices are available, False otherwise</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">pass</span></div>
 
 

@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>pyaml.magnet.corrector &#8212; Python Accelerator Middle Layer 0.1.dev1+g72d2992bf documentation</title>
+    <title>pyaml.magnet.corrector &#8212; Python Accelerator Middle Layer 0.1.dev1+g947cfb0ef documentation</title>
   
   
   
@@ -41,7 +41,7 @@
   <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=90905a2f556bf617f1a9" />
 <link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=90905a2f556bf617f1a9" />
 
-    <script src="../../../_static/documentation_options.js?v=7336f5c7"></script>
+    <script src="../../../_static/documentation_options.js?v=7aef76b6"></script>
     <script src="../../../_static/doctools.js?v=9bcbadda"></script>
     <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -125,8 +125,8 @@
       
     
     
-    <img src="../../../_static/logo.png" class="logo__image only-light" alt="Python Accelerator Middle Layer 0.1.dev1+g72d2992bf documentation - Home"/>
-    <img src="../../../_static/dark.png" class="logo__image only-dark pst-js-only" alt="Python Accelerator Middle Layer 0.1.dev1+g72d2992bf documentation - Home"/>
+    <img src="../../../_static/logo.png" class="logo__image only-light" alt="Python Accelerator Middle Layer 0.1.dev1+g947cfb0ef documentation - Home"/>
+    <img src="../../../_static/dark.png" class="logo__image only-dark pst-js-only" alt="Python Accelerator Middle Layer 0.1.dev1+g947cfb0ef documentation - Home"/>
   
   
 </a></div>
@@ -397,14 +397,14 @@
 <div class="viewcode-block" id="RWCorrectorAngle">
 <a class="viewcode-back" href="../../../api/pyaml.magnet.corrector.html#pyaml.magnet.corrector.RWCorrectorAngle">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">RWCorrectorAngle</span><span class="p">(</span><span class="n">abstract</span><span class="o">.</span><span class="n">ReadWriteFloatScalar</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    Set the angle of a horizontal or vertical corrector.</span>
 <span class="sd">    KickAngle sign convention is defined the a global PyAML constant</span>
 <span class="sd">    (see pyaml.common.constant.HORIZONTAL_KICK_SIGN).</span>
 <span class="sd">    To change the convention, you have execute the code below prior to everything:</span>
 <span class="sd">    import pyaml.common.constants</span>
 <span class="sd">    pyaml.common.constants.HORIZONTAL_KICK_SIGN = -1.0</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">corr</span><span class="p">:</span> <span class="n">Magnet</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_mag</span> <span class="o">=</span> <span class="n">corr</span>
@@ -412,35 +412,35 @@
 <div class="viewcode-block" id="RWCorrectorAngle.get">
 <a class="viewcode-back" href="../../../api/pyaml.magnet.corrector.html#pyaml.magnet.corrector.RWCorrectorAngle.get">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""</span>
 <span class="sd">        Get the corrector kick angle.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        float</span>
 <span class="sd">            Kick angle in radians</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">arctan</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_mag</span><span class="o">.</span><span class="n">strength</span><span class="o">.</span><span class="n">get</span><span class="p">())</span></div>
 
 
 <div class="viewcode-block" id="RWCorrectorAngle.set">
 <a class="viewcode-back" href="../../../api/pyaml.magnet.corrector.html#pyaml.magnet.corrector.RWCorrectorAngle.set">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">set</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="nb">float</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""</span>
 <span class="sd">        Set the corrector kick angle.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        value : float</span>
 <span class="sd">            Kick angle to set in radians</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_mag</span><span class="o">.</span><span class="n">strength</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">tan</span><span class="p">(</span><span class="n">value</span><span class="p">))</span></div>
 
 
 <div class="viewcode-block" id="RWCorrectorAngle.set_and_wait">
 <a class="viewcode-back" href="../../../api/pyaml.magnet.corrector.html#pyaml.magnet.corrector.RWCorrectorAngle.set_and_wait">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">set_and_wait</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="nb">float</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""</span>
 <span class="sd">        Set the kick angle and wait for it to reach the setpoint.</span>
 
 <span class="sd">        Parameters</span>
@@ -452,22 +452,22 @@
 <span class="sd">        ------</span>
 <span class="sd">        NotImplementedError</span>
 <span class="sd">            This method is not yet implemented</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;Not implemented yet.&quot;</span><span class="p">)</span></div>
+<span class="sd">        """</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">"Not implemented yet."</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="RWCorrectorAngle.unit">
 <a class="viewcode-back" href="../../../api/pyaml.magnet.corrector.html#pyaml.magnet.corrector.RWCorrectorAngle.unit">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">unit</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""</span>
 <span class="sd">        Get the unit for the kick angle.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        str</span>
-<span class="sd">            Unit string, always &#39;rad&#39; for radians</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="s2">&quot;rad&quot;</span></div>
+<span class="sd">            Unit string, always 'rad' for radians</span>
+<span class="sd">        """</span>
+        <span class="k">return</span> <span class="s2">"rad"</span></div>
 </div>
 
 </pre></div>

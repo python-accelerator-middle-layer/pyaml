@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>pyaml.lattice.attribute_linker &#8212; Python Accelerator Middle Layer 0.1.dev1+g72d2992bf documentation</title>
+    <title>pyaml.lattice.attribute_linker &#8212; Python Accelerator Middle Layer 0.1.dev1+g947cfb0ef documentation</title>
   
   
   
@@ -41,7 +41,7 @@
   <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=90905a2f556bf617f1a9" />
 <link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=90905a2f556bf617f1a9" />
 
-    <script src="../../../_static/documentation_options.js?v=7336f5c7"></script>
+    <script src="../../../_static/documentation_options.js?v=7aef76b6"></script>
     <script src="../../../_static/doctools.js?v=9bcbadda"></script>
     <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -125,8 +125,8 @@
       
     
     
-    <img src="../../../_static/logo.png" class="logo__image only-light" alt="Python Accelerator Middle Layer 0.1.dev1+g72d2992bf documentation - Home"/>
-    <img src="../../../_static/dark.png" class="logo__image only-dark pst-js-only" alt="Python Accelerator Middle Layer 0.1.dev1+g72d2992bf documentation - Home"/>
+    <img src="../../../_static/logo.png" class="logo__image only-light" alt="Python Accelerator Middle Layer 0.1.dev1+g947cfb0ef documentation - Home"/>
+    <img src="../../../_static/dark.png" class="logo__image only-dark pst-js-only" alt="Python Accelerator Middle Layer 0.1.dev1+g947cfb0ef documentation - Home"/>
   
   
 </a></div>
@@ -398,13 +398,13 @@
     <span class="n">LinkerIdentifier</span><span class="p">,</span>
 <span class="p">)</span>
 
-<span class="n">PYAMLCLASS</span> <span class="o">=</span> <span class="s2">&quot;PyAtAttributeElementsLinker&quot;</span>
+<span class="n">PYAMLCLASS</span> <span class="o">=</span> <span class="s2">"PyAtAttributeElementsLinker"</span>
 
 
 <div class="viewcode-block" id="ConfigModel">
 <a class="viewcode-back" href="../../../api/pyaml.lattice.attribute_linker.html#pyaml.lattice.attribute_linker.ConfigModel">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">ConfigModel</span><span class="p">(</span><span class="n">LinkerConfigModel</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Base configuration model for linker definitions.</span>
+<span class="w">    </span><span class="sd">"""Base configuration model for linker definitions.</span>
 
 <span class="sd">    This class defines the configuration structure used to instantiate</span>
 <span class="sd">    a specific linking strategy. Each concrete implementation of a</span>
@@ -416,9 +416,9 @@
 <span class="sd">    model_config : ConfigDict</span>
 <span class="sd">        Pydantic configuration allowing arbitrary field types and forbidding</span>
 <span class="sd">        unexpected extra keys.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
-    <span class="n">model_config</span> <span class="o">=</span> <span class="n">ConfigDict</span><span class="p">(</span><span class="n">arbitrary_types_allowed</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">extra</span><span class="o">=</span><span class="s2">&quot;forbid&quot;</span><span class="p">)</span>
+    <span class="n">model_config</span> <span class="o">=</span> <span class="n">ConfigDict</span><span class="p">(</span><span class="n">arbitrary_types_allowed</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">extra</span><span class="o">=</span><span class="s2">"forbid"</span><span class="p">)</span>
     <span class="n">attribute_name</span><span class="p">:</span> <span class="nb">str</span></div>
 
 
@@ -426,7 +426,7 @@
 <div class="viewcode-block" id="PyAtAttributeIdentifier">
 <a class="viewcode-back" href="../../../api/pyaml.lattice.attribute_linker.html#pyaml.lattice.attribute_linker.PyAtAttributeIdentifier">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">PyAtAttributeIdentifier</span><span class="p">(</span><span class="n">LinkerIdentifier</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Abstract base class for identifiers used to match PyAML and PyAT elements.</span>
+<span class="w">    </span><span class="sd">"""Abstract base class for identifiers used to match PyAML and PyAT elements.</span>
 
 <span class="sd">    The identifier acts as an intermediate representation between the PyAML</span>
 <span class="sd">    configuration and the PyAT lattice. Its exact structure depends on the</span>
@@ -434,21 +434,21 @@
 
 <span class="sd">    Subclasses should define the fields and logic necessary to represent</span>
 <span class="sd">    a unique reference to one or more PyAT elements.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">attribute_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">identifier</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">attribute_name</span> <span class="o">=</span> <span class="n">attribute_name</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">identifier</span> <span class="o">=</span> <span class="n">identifier</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">attribute_name</span><span class="si">}</span><span class="s2">=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">identifier</span><span class="si">}</span><span class="s2">&quot;</span></div>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">attribute_name</span><span class="si">}</span><span class="s2">=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">identifier</span><span class="si">}</span><span class="s2">"</span></div>
 
 
 
 <div class="viewcode-block" id="PyAtAttributeElementsLinker">
 <a class="viewcode-back" href="../../../api/pyaml.lattice.attribute_linker.html#pyaml.lattice.attribute_linker.PyAtAttributeElementsLinker">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">PyAtAttributeElementsLinker</span><span class="p">(</span><span class="n">LatticeElementsLinker</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Abstract base class defining the interface for PyAT–PyAML element linking.</span>
+<span class="w">    </span><span class="sd">"""Abstract base class defining the interface for PyAT–PyAML element linking.</span>
 
 <span class="sd">    Implementations of this class define how PyAML elements are matched</span>
 <span class="sd">    to PyAT elements based on a given linking strategy (e.g., by family name,</span>
@@ -458,7 +458,7 @@
 <span class="sd">    ----------</span>
 <span class="sd">    config_model : ConfigModel</span>
 <span class="sd">        The configuration model for the linking strategy.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config_model</span><span class="p">:</span> <span class="n">ConfigModel</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">config_model</span><span class="p">)</span>
@@ -466,7 +466,7 @@
 <div class="viewcode-block" id="PyAtAttributeElementsLinker.get_element_identifier">
 <a class="viewcode-back" href="../../../api/pyaml.lattice.attribute_linker.html#pyaml.lattice.attribute_linker.PyAtAttributeElementsLinker.get_element_identifier">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">get_element_identifier</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">element</span><span class="p">:</span> <span class="n">Element</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">LinkerIdentifier</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""</span>
 <span class="sd">        Get the element identifier for the given element.</span>
 
 <span class="sd">        Parameters</span>
@@ -478,7 +478,7 @@
 <span class="sd">        -------</span>
 <span class="sd">        LinkerIdentifier</span>
 <span class="sd">            The identifier for linking the element</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">return</span> <span class="n">PyAtAttributeIdentifier</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">linker_config_model</span><span class="o">.</span><span class="n">attribute_name</span><span class="p">,</span> <span class="n">element</span><span class="o">.</span><span class="n">get_name</span><span class="p">())</span></div>
 
 

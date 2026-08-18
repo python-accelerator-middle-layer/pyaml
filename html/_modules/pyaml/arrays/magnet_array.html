@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>pyaml.arrays.magnet_array &#8212; Python Accelerator Middle Layer 0.1.dev1+g72d2992bf documentation</title>
+    <title>pyaml.arrays.magnet_array &#8212; Python Accelerator Middle Layer 0.1.dev1+g947cfb0ef documentation</title>
   
   
   
@@ -41,7 +41,7 @@
   <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=90905a2f556bf617f1a9" />
 <link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=90905a2f556bf617f1a9" />
 
-    <script src="../../../_static/documentation_options.js?v=7336f5c7"></script>
+    <script src="../../../_static/documentation_options.js?v=7aef76b6"></script>
     <script src="../../../_static/doctools.js?v=9bcbadda"></script>
     <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -125,8 +125,8 @@
       
     
     
-    <img src="../../../_static/logo.png" class="logo__image only-light" alt="Python Accelerator Middle Layer 0.1.dev1+g72d2992bf documentation - Home"/>
-    <img src="../../../_static/dark.png" class="logo__image only-dark pst-js-only" alt="Python Accelerator Middle Layer 0.1.dev1+g72d2992bf documentation - Home"/>
+    <img src="../../../_static/logo.png" class="logo__image only-light" alt="Python Accelerator Middle Layer 0.1.dev1+g947cfb0ef documentation - Home"/>
+    <img src="../../../_static/dark.png" class="logo__image only-dark pst-js-only" alt="Python Accelerator Middle Layer 0.1.dev1+g947cfb0ef documentation - Home"/>
   
   
 </a></div>
@@ -431,7 +431,7 @@
 <div class="viewcode-block" id="RWMagnetStrength.set_and_wait">
 <a class="viewcode-back" href="../../../api/pyaml.arrays.magnet_array.html#pyaml.arrays.magnet_array.RWMagnetStrength.set_and_wait">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">set_and_wait</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">):</span>
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;Not implemented yet.&quot;</span><span class="p">)</span></div>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">"Not implemented yet."</span><span class="p">)</span></div>
 
 
     <span class="c1"># Gets the unit of the values</span>
@@ -485,7 +485,7 @@
 <div class="viewcode-block" id="RWMagnetHardware.set_and_wait">
 <a class="viewcode-back" href="../../../api/pyaml.arrays.magnet_array.html#pyaml.arrays.magnet_array.RWMagnetHardware.set_and_wait">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">set_and_wait</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">):</span>
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;Not implemented yet.&quot;</span><span class="p">)</span></div>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">"Not implemented yet."</span><span class="p">)</span></div>
 
 
     <span class="c1"># Gets the unit of the values</span>
@@ -507,7 +507,7 @@
 <div class="viewcode-block" id="MagnetArray">
 <a class="viewcode-back" href="../../../api/pyaml.arrays.magnet_array.html#pyaml.arrays.magnet_array.MagnetArray">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">MagnetArray</span><span class="p">(</span><span class="n">ElementArray</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    Class that implements access to a magnet array</span>
 
 <span class="sd">    Parameters</span>
@@ -526,10 +526,10 @@
 
 <span class="sd">    An array can be retrieved from the configuration as in the following example::</span>
 
-<span class="sd">        sr = Accelerator.load(&quot;acc.yaml&quot;)</span>
-<span class="sd">        quads = sr.design.get_magnets(&quot;QuadForTune&quot;)</span>
+<span class="sd">        sr = Accelerator.load("acc.yaml")</span>
+<span class="sd">        quads = sr.design.get_magnets("QuadForTune")</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">arrayName</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">magnets</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Magnet</span><span class="p">],</span> <span class="n">use_aggregator</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">arrayName</span><span class="p">,</span> <span class="n">magnets</span><span class="p">,</span> <span class="n">use_aggregator</span><span class="p">)</span>
@@ -545,16 +545,16 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">strengths</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">RWMagnetStrength</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""</span>
 <span class="sd">        Give access to strength of each magnet of this array</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__rwstrengths</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">hardwares</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">RWMagnetHardware</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""</span>
 <span class="sd">        Give access to hardware value of each magnet of this array</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__rwhardwares</span></div>
 
 </pre></div>

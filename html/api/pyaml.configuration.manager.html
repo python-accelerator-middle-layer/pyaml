@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>manager &#8212; Python Accelerator Middle Layer 0.1.dev1+g72d2992bf documentation</title>
+    <title>manager &#8212; Python Accelerator Middle Layer 0.1.dev1+g947cfb0ef documentation</title>
   
   
   
@@ -42,7 +42,7 @@
   <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=90905a2f556bf617f1a9" />
 <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=90905a2f556bf617f1a9" />
 
-    <script src="../_static/documentation_options.js?v=7336f5c7"></script>
+    <script src="../_static/documentation_options.js?v=7aef76b6"></script>
     <script src="../_static/doctools.js?v=9bcbadda"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -52,7 +52,7 @@
     <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="control" href="pyaml.control.html" />
+    <link rel="next" title="restfetcher" href="pyaml.configuration.restfetcher.html" />
     <link rel="prev" title="fileloader" href="pyaml.configuration.fileloader.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
@@ -128,8 +128,8 @@
       
     
     
-    <img src="../_static/logo.png" class="logo__image only-light" alt="Python Accelerator Middle Layer 0.1.dev1+g72d2992bf documentation - Home"/>
-    <img src="../_static/dark.png" class="logo__image only-dark pst-js-only" alt="Python Accelerator Middle Layer 0.1.dev1+g72d2992bf documentation - Home"/>
+    <img src="../_static/logo.png" class="logo__image only-light" alt="Python Accelerator Middle Layer 0.1.dev1+g947cfb0ef documentation - Home"/>
+    <img src="../_static/dark.png" class="logo__image only-dark pst-js-only" alt="Python Accelerator Middle Layer 0.1.dev1+g947cfb0ef documentation - Home"/>
   
   
 </a></div>
@@ -352,6 +352,7 @@
   <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
   <div class="bd-toc-item navbar-nav"><p aria-level="2" class="caption" role="heading"><span class="caption-text">API Reference:</span></p>
 <ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="pyaml._version.html">_version</a></li>
 <li class="toctree-l1"><a class="reference internal" href="pyaml.accelerator.html">accelerator</a></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="pyaml.arrays.html">arrays</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="pyaml.arrays.array.html">array</a></li>
@@ -376,7 +377,6 @@
 <li class="toctree-l2"><a class="reference internal" href="pyaml.common.abstract_aggregator.html">abstract_aggregator</a></li>
 <li class="toctree-l2"><a class="reference internal" href="pyaml.common.constants.html">constants</a></li>
 <li class="toctree-l2"><a class="reference internal" href="pyaml.common.element.html">element</a></li>
-<li class="toctree-l2"><a class="reference internal" href="pyaml.common.element_holder.html">element_holder</a></li>
 <li class="toctree-l2"><a class="reference internal" href="pyaml.common.exception.html">exception</a></li>
 </ul>
 </details></li>
@@ -384,6 +384,8 @@
 <li class="toctree-l2"><a class="reference internal" href="pyaml.configuration.factory.html">factory</a></li>
 <li class="toctree-l2"><a class="reference internal" href="pyaml.configuration.fileloader.html">fileloader</a></li>
 <li class="toctree-l2 current active"><a class="current reference internal" href="#">manager</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyaml.configuration.restfetcher.html">restfetcher</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyaml.configuration.unbound_element.html">unbound_element</a></li>
 </ul>
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="pyaml.control.html">control</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
@@ -395,6 +397,7 @@
 </ul>
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="pyaml.diagnostics.html">diagnostics</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="pyaml.diagnostics.atune_monitor.html">atune_monitor</a></li>
 <li class="toctree-l2"><a class="reference internal" href="pyaml.diagnostics.tune_monitor.html">tune_monitor</a></li>
 </ul>
 </details></li>
@@ -445,6 +448,8 @@
 </ul>
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="pyaml.tuning_tools.html">tuning_tools</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="pyaml.tuning_tools.bba.html">bba</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyaml.tuning_tools.bba2.html">bba2</a></li>
 <li class="toctree-l2"><a class="reference internal" href="pyaml.tuning_tools.chromaticity.html">chromaticity</a></li>
 <li class="toctree-l2"><a class="reference internal" href="pyaml.tuning_tools.chromaticity_monitor.html">chromaticity_monitor</a></li>
 <li class="toctree-l2"><a class="reference internal" href="pyaml.tuning_tools.chromaticity_response_matrix.html">chromaticity_response_matrix</a></li>
@@ -457,6 +462,16 @@
 <li class="toctree-l2"><a class="reference internal" href="pyaml.tuning_tools.tune.html">tune</a></li>
 <li class="toctree-l2"><a class="reference internal" href="pyaml.tuning_tools.tune_response_matrix.html">tune_response_matrix</a></li>
 <li class="toctree-l2"><a class="reference internal" href="pyaml.tuning_tools.tuning_tool.html">tuning_tool</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="pyaml.validation.html">validation</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="pyaml.validation.configuration_models.html">configuration_models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyaml.validation.errors.html">errors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyaml.validation.generator.html">generator</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyaml.validation.registry.html">registry</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyaml.validation.schema_builder.html">schema_builder</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyaml.validation.validation_models.html">validation_models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyaml.validation.validator.html">validator</a></li>
 </ul>
 </details></li>
 <li class="toctree-l1"><a class="reference internal" href="pyaml.yellow_pages.html">yellow_pages</a></li>
@@ -551,15 +566,15 @@ categories such as <code class="docutils literal notranslate"><span class="pre">
 <p>Load a base configuration and inspect it:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">pyaml.configuration</span><span class="w"> </span><span class="kn">import</span> <span class="n">ConfigurationManager</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">manager</span> <span class="o">=</span> <span class="n">ConfigurationManager</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">manager</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="s2">&quot;tests/config/config_manager_base.yaml&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">manager</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="s2">"tests/config/config_manager_base.yaml"</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">manager</span><span class="o">.</span><span class="n">categories</span><span class="p">()</span>
-<span class="go">[&#39;simulators&#39;]</span>
+<span class="go">['simulators']</span>
 </pre></div>
 </div>
 <p>Build the final accelerator:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">sr</span> <span class="o">=</span> <span class="n">manager</span><span class="o">.</span><span class="n">build</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">sr</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">name</span><span class="p">()</span>
-<span class="go">&#39;design&#39;</span>
+<span class="go">'design'</span>
 </pre></div>
 </div>
 <dl class="py method">
@@ -608,16 +623,16 @@ The root field names in configuration order, prefixed with “type”.</p>
 </dd>
 </dl>
 <p class="rubric">Examples</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">manager</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="s2">&quot;tests/config/config_manager_base.yaml&quot;</span><span class="p">)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">manager</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="s2">"tests/config/config_manager_base.yaml"</span><span class="p">)</span>
 </pre></div>
 </div>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">manager</span><span class="o">.</span><span class="n">add</span><span class="p">(</span>
 <span class="gp">... </span>    <span class="p">{</span>
-<span class="gp">... </span>        <span class="s2">&quot;facility&quot;</span><span class="p">:</span> <span class="s2">&quot;ESRF&quot;</span><span class="p">,</span>
-<span class="gp">... </span>        <span class="s2">&quot;machine&quot;</span><span class="p">:</span> <span class="s2">&quot;sr&quot;</span><span class="p">,</span>
-<span class="gp">... </span>        <span class="s2">&quot;energy&quot;</span><span class="p">:</span> <span class="mf">6e9</span><span class="p">,</span>
-<span class="gp">... </span>        <span class="s2">&quot;data_folder&quot;</span><span class="p">:</span> <span class="s2">&quot;/data/store&quot;</span><span class="p">,</span>
-<span class="gp">... </span>        <span class="s2">&quot;devices&quot;</span><span class="p">:</span> <span class="p">[],</span>
+<span class="gp">... </span>        <span class="s2">"facility"</span><span class="p">:</span> <span class="s2">"ESRF"</span><span class="p">,</span>
+<span class="gp">... </span>        <span class="s2">"machine"</span><span class="p">:</span> <span class="s2">"sr"</span><span class="p">,</span>
+<span class="gp">... </span>        <span class="s2">"energy"</span><span class="p">:</span> <span class="mf">6e9</span><span class="p">,</span>
+<span class="gp">... </span>        <span class="s2">"data_folder"</span><span class="p">:</span> <span class="s2">"/data/store"</span><span class="p">,</span>
+<span class="gp">... </span>        <span class="s2">"devices"</span><span class="p">:</span> <span class="p">[],</span>
 <span class="gp">... </span>    <span class="p">}</span>
 <span class="gp">... </span><span class="p">)</span>
 </pre></div>
@@ -667,7 +682,7 @@ The root field names in configuration order, prefixed with “type”.</p>
 </dd>
 </dl>
 <p class="rubric">Examples</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">manager</span><span class="o">.</span><span class="n">clear</span><span class="p">(</span><span class="s2">&quot;simulators&quot;</span><span class="p">)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">manager</span><span class="o">.</span><span class="n">clear</span><span class="p">(</span><span class="s2">"simulators"</span><span class="p">)</span>
 </pre></div>
 </div>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">manager</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
@@ -691,10 +706,10 @@ The root field names in configuration order, prefixed with “type”.</p>
 </dd>
 </dl>
 <p class="rubric">Examples</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">manager</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;BPM_C04*&quot;</span><span class="p">)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">manager</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">"BPM_C04*"</span><span class="p">)</span>
 </pre></div>
 </div>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">manager</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;re:^QF1.*$&quot;</span><span class="p">)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">manager</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">"re:^QF1.*$"</span><span class="p">)</span>
 </pre></div>
 </div>
 </dd></dl>
@@ -715,7 +730,7 @@ The root field names in configuration order, prefixed with “type”.</p>
 </dd>
 </dl>
 <p class="rubric">Examples</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">manager</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;simulators&quot;</span><span class="p">,</span> <span class="s2">&quot;design&quot;</span><span class="p">)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">manager</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"simulators"</span><span class="p">,</span> <span class="s2">"design"</span><span class="p">)</span>
 </pre></div>
 </div>
 </dd></dl>
@@ -736,7 +751,7 @@ The root field names in configuration order, prefixed with “type”.</p>
 </dd>
 </dl>
 <p class="rubric">Examples</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">manager</span><span class="o">.</span><span class="n">has</span><span class="p">(</span><span class="s2">&quot;simulators&quot;</span><span class="p">,</span> <span class="s2">&quot;design&quot;</span><span class="p">)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">manager</span><span class="o">.</span><span class="n">has</span><span class="p">(</span><span class="s2">"simulators"</span><span class="p">,</span> <span class="s2">"design"</span><span class="p">)</span>
 <span class="go">True</span>
 </pre></div>
 </div>
@@ -758,7 +773,7 @@ The root field names in configuration order, prefixed with “type”.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">manager</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
 </pre></div>
 </div>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">manager</span><span class="o">.</span><span class="n">keys</span><span class="p">(</span><span class="s2">&quot;simulators&quot;</span><span class="p">)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">manager</span><span class="o">.</span><span class="n">keys</span><span class="p">(</span><span class="s2">"simulators"</span><span class="p">)</span>
 </pre></div>
 </div>
 </dd></dl>
@@ -776,7 +791,7 @@ The root field names in configuration order, prefixed with “type”.</p>
 </dd>
 </dl>
 <p class="rubric">Examples</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">manager</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="s2">&quot;simulators&quot;</span><span class="p">,</span> <span class="s2">&quot;tracking&quot;</span><span class="p">)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">manager</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="s2">"simulators"</span><span class="p">,</span> <span class="s2">"tracking"</span><span class="p">)</span>
 </pre></div>
 </div>
 </dd></dl>
@@ -795,11 +810,11 @@ The root field names in configuration order, prefixed with “type”.</p>
 </dl>
 <p class="rubric">Examples</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">manager</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span>
-<span class="gp">... </span>    <span class="s2">&quot;simulators&quot;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="s2">"simulators"</span><span class="p">,</span>
 <span class="gp">... </span>    <span class="p">{</span>
-<span class="gp">... </span>        <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;pyaml.lattice.simulator&quot;</span><span class="p">,</span>
-<span class="gp">... </span>        <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;design&quot;</span><span class="p">,</span>
-<span class="gp">... </span>        <span class="s2">&quot;lattice&quot;</span><span class="p">:</span> <span class="s2">&quot;tests/config/sr/lattices/ebs.mat&quot;</span><span class="p">,</span>
+<span class="gp">... </span>        <span class="s2">"type"</span><span class="p">:</span> <span class="s2">"pyaml.lattice.simulator"</span><span class="p">,</span>
+<span class="gp">... </span>        <span class="s2">"name"</span><span class="p">:</span> <span class="s2">"design"</span><span class="p">,</span>
+<span class="gp">... </span>        <span class="s2">"lattice"</span><span class="p">:</span> <span class="s2">"tests/config/sr/lattices/ebs.mat"</span><span class="p">,</span>
 <span class="gp">... </span>    <span class="p">},</span>
 <span class="gp">... </span><span class="p">)</span>
 </pre></div>
@@ -877,11 +892,11 @@ The root field names in configuration order, prefixed with “type”.</p>
       </div>
     </a>
     <a class="right-next"
-       href="pyaml.control.html"
+       href="pyaml.configuration.restfetcher.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">control</p>
+        <p class="prev-next-title">restfetcher</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>

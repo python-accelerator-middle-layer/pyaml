@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>orbit_response_matrix &#8212; Python Accelerator Middle Layer 0.1.dev1+g72d2992bf documentation</title>
+    <title>orbit_response_matrix &#8212; Python Accelerator Middle Layer 0.1.dev1+g947cfb0ef documentation</title>
   
   
   
@@ -42,7 +42,7 @@
   <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=90905a2f556bf617f1a9" />
 <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=90905a2f556bf617f1a9" />
 
-    <script src="../_static/documentation_options.js?v=7336f5c7"></script>
+    <script src="../_static/documentation_options.js?v=7aef76b6"></script>
     <script src="../_static/doctools.js?v=9bcbadda"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -128,8 +128,8 @@
       
     
     
-    <img src="../_static/logo.png" class="logo__image only-light" alt="Python Accelerator Middle Layer 0.1.dev1+g72d2992bf documentation - Home"/>
-    <img src="../_static/dark.png" class="logo__image only-dark pst-js-only" alt="Python Accelerator Middle Layer 0.1.dev1+g72d2992bf documentation - Home"/>
+    <img src="../_static/logo.png" class="logo__image only-light" alt="Python Accelerator Middle Layer 0.1.dev1+g947cfb0ef documentation - Home"/>
+    <img src="../_static/dark.png" class="logo__image only-dark pst-js-only" alt="Python Accelerator Middle Layer 0.1.dev1+g947cfb0ef documentation - Home"/>
   
   
 </a></div>
@@ -352,6 +352,7 @@
   <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
   <div class="bd-toc-item navbar-nav"><p aria-level="2" class="caption" role="heading"><span class="caption-text">API Reference:</span></p>
 <ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="pyaml._version.html">_version</a></li>
 <li class="toctree-l1"><a class="reference internal" href="pyaml.accelerator.html">accelerator</a></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="pyaml.arrays.html">arrays</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="pyaml.arrays.array.html">array</a></li>
@@ -376,7 +377,6 @@
 <li class="toctree-l2"><a class="reference internal" href="pyaml.common.abstract_aggregator.html">abstract_aggregator</a></li>
 <li class="toctree-l2"><a class="reference internal" href="pyaml.common.constants.html">constants</a></li>
 <li class="toctree-l2"><a class="reference internal" href="pyaml.common.element.html">element</a></li>
-<li class="toctree-l2"><a class="reference internal" href="pyaml.common.element_holder.html">element_holder</a></li>
 <li class="toctree-l2"><a class="reference internal" href="pyaml.common.exception.html">exception</a></li>
 </ul>
 </details></li>
@@ -384,6 +384,8 @@
 <li class="toctree-l2"><a class="reference internal" href="pyaml.configuration.factory.html">factory</a></li>
 <li class="toctree-l2"><a class="reference internal" href="pyaml.configuration.fileloader.html">fileloader</a></li>
 <li class="toctree-l2"><a class="reference internal" href="pyaml.configuration.manager.html">manager</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyaml.configuration.restfetcher.html">restfetcher</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyaml.configuration.unbound_element.html">unbound_element</a></li>
 </ul>
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="pyaml.control.html">control</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
@@ -395,6 +397,7 @@
 </ul>
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="pyaml.diagnostics.html">diagnostics</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="pyaml.diagnostics.atune_monitor.html">atune_monitor</a></li>
 <li class="toctree-l2"><a class="reference internal" href="pyaml.diagnostics.tune_monitor.html">tune_monitor</a></li>
 </ul>
 </details></li>
@@ -445,6 +448,8 @@
 </ul>
 </details></li>
 <li class="toctree-l1 current active has-children"><a class="reference internal" href="pyaml.tuning_tools.html">tuning_tools</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="pyaml.tuning_tools.bba.html">bba</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyaml.tuning_tools.bba2.html">bba2</a></li>
 <li class="toctree-l2"><a class="reference internal" href="pyaml.tuning_tools.chromaticity.html">chromaticity</a></li>
 <li class="toctree-l2"><a class="reference internal" href="pyaml.tuning_tools.chromaticity_monitor.html">chromaticity_monitor</a></li>
 <li class="toctree-l2"><a class="reference internal" href="pyaml.tuning_tools.chromaticity_response_matrix.html">chromaticity_response_matrix</a></li>
@@ -457,6 +462,16 @@
 <li class="toctree-l2"><a class="reference internal" href="pyaml.tuning_tools.tune.html">tune</a></li>
 <li class="toctree-l2"><a class="reference internal" href="pyaml.tuning_tools.tune_response_matrix.html">tune_response_matrix</a></li>
 <li class="toctree-l2"><a class="reference internal" href="pyaml.tuning_tools.tuning_tool.html">tuning_tool</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="pyaml.validation.html">validation</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="pyaml.validation.configuration_models.html">configuration_models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyaml.validation.errors.html">errors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyaml.validation.generator.html">generator</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyaml.validation.registry.html">registry</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyaml.validation.schema_builder.html">schema_builder</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyaml.validation.validation_models.html">validation_models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyaml.validation.validator.html">validator</a></li>
 </ul>
 </details></li>
 <li class="toctree-l1"><a class="reference internal" href="pyaml.yellow_pages.html">yellow_pages</a></li>
@@ -577,13 +592,13 @@ validated to form a valid model.</p>
 <span class="sig-name descname"><span class="pre">measure</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">corrector_names</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sleep_between_step</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_avg_meas</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sleep_between_meas</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">callback</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/tuning_tools/orbit_response_matrix.html#OrbitResponseMatrix.measure"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.tuning_tools.orbit_response_matrix.OrbitResponseMatrix.measure" title="Link to this definition">#</a></dt>
 <dd><p>Measure orbit response matrix.</p>
 <p><strong>Example</strong></p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">sr</span> <span class="o">=</span> <span class="n">Accelerator</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s2">&quot;MyAccelerator.yaml&quot;</span><span class="p">)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">sr</span> <span class="o">=</span> <span class="n">Accelerator</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s2">"MyAccelerator.yaml"</span><span class="p">)</span>
 <span class="n">acc</span> <span class="o">=</span> <span class="n">sr</span><span class="o">.</span><span class="n">design</span>
 
 <span class="k">if</span> <span class="n">acc</span><span class="o">.</span><span class="n">orm</span><span class="o">.</span><span class="n">measure</span><span class="p">():</span>
-    <span class="n">acc</span><span class="o">.</span><span class="n">orm</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="s2">&quot;ideal_orm.json&quot;</span><span class="p">)</span>
-    <span class="n">acc</span><span class="o">.</span><span class="n">orm</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="s2">&quot;ideal_orm.yaml&quot;</span><span class="p">,</span> <span class="n">with_type</span><span class="o">=</span><span class="s2">&quot;yaml&quot;</span><span class="p">)</span>
-    <span class="n">acc</span><span class="o">.</span><span class="n">orm</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="s2">&quot;ideal_orm.npz&quot;</span><span class="p">,</span> <span class="n">with_type</span><span class="o">=</span><span class="s2">&quot;npz&quot;</span><span class="p">)</span>
+    <span class="n">acc</span><span class="o">.</span><span class="n">orm</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="s2">"ideal_orm.json"</span><span class="p">)</span>
+    <span class="n">acc</span><span class="o">.</span><span class="n">orm</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="s2">"ideal_orm.yaml"</span><span class="p">,</span> <span class="n">with_type</span><span class="o">=</span><span class="s2">"yaml"</span><span class="p">)</span>
+    <span class="n">acc</span><span class="o">.</span><span class="n">orm</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="s2">"ideal_orm.npz"</span><span class="p">,</span> <span class="n">with_type</span><span class="o">=</span><span class="s2">"npz"</span><span class="p">)</span>
 </pre></div>
 </div>
 <dl class="field-list simple">

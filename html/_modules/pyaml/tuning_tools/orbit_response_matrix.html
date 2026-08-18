@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>pyaml.tuning_tools.orbit_response_matrix &#8212; Python Accelerator Middle Layer 0.1.dev1+g72d2992bf documentation</title>
+    <title>pyaml.tuning_tools.orbit_response_matrix &#8212; Python Accelerator Middle Layer 0.1.dev1+g947cfb0ef documentation</title>
   
   
   
@@ -41,7 +41,7 @@
   <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=90905a2f556bf617f1a9" />
 <link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=90905a2f556bf617f1a9" />
 
-    <script src="../../../_static/documentation_options.js?v=7336f5c7"></script>
+    <script src="../../../_static/documentation_options.js?v=7aef76b6"></script>
     <script src="../../../_static/doctools.js?v=9bcbadda"></script>
     <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -125,8 +125,8 @@
       
     
     
-    <img src="../../../_static/logo.png" class="logo__image only-light" alt="Python Accelerator Middle Layer 0.1.dev1+g72d2992bf documentation - Home"/>
-    <img src="../../../_static/dark.png" class="logo__image only-dark pst-js-only" alt="Python Accelerator Middle Layer 0.1.dev1+g72d2992bf documentation - Home"/>
+    <img src="../../../_static/logo.png" class="logo__image only-light" alt="Python Accelerator Middle Layer 0.1.dev1+g947cfb0ef documentation - Home"/>
+    <img src="../../../_static/dark.png" class="logo__image only-dark pst-js-only" alt="Python Accelerator Middle Layer 0.1.dev1+g947cfb0ef documentation - Home"/>
   
   
 </a></div>
@@ -404,13 +404,13 @@
 
 <span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
 
-<span class="n">PYAMLCLASS</span> <span class="o">=</span> <span class="s2">&quot;OrbitResponseMatrix&quot;</span>
+<span class="n">PYAMLCLASS</span> <span class="o">=</span> <span class="s2">"OrbitResponseMatrix"</span>
 
 
 <div class="viewcode-block" id="ConfigModel">
 <a class="viewcode-back" href="../../../api/pyaml.tuning_tools.orbit_response_matrix.html#pyaml.tuning_tools.orbit_response_matrix.ConfigModel">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">ConfigModel</span><span class="p">(</span><span class="n">MeasurementToolConfigModel</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    Configuration model for orbit response matrix measurement</span>
 
 <span class="sd">    Parameters</span>
@@ -423,9 +423,9 @@
 <span class="sd">        Vertical corrector array name</span>
 <span class="sd">    corrector_delta : float</span>
 <span class="sd">        Corrector delta for measurement</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
-    <span class="n">model_config</span> <span class="o">=</span> <span class="n">ConfigDict</span><span class="p">(</span><span class="n">arbitrary_types_allowed</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">extra</span><span class="o">=</span><span class="s2">&quot;forbid&quot;</span><span class="p">)</span>
+    <span class="n">model_config</span> <span class="o">=</span> <span class="n">ConfigDict</span><span class="p">(</span><span class="n">arbitrary_types_allowed</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">extra</span><span class="o">=</span><span class="s2">"forbid"</span><span class="p">)</span>
 
     <span class="n">bpm_array_name</span><span class="p">:</span> <span class="nb">str</span>
     <span class="n">hcorr_array_name</span><span class="p">:</span> <span class="nb">str</span>
@@ -456,20 +456,20 @@
         <span class="n">sleep_between_meas</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">callback</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Callable</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""</span>
 <span class="sd">        Measure orbit response matrix.</span>
 
 <span class="sd">        **Example**</span>
 
 <span class="sd">        .. code-block:: python</span>
 
-<span class="sd">            sr = Accelerator.load(&quot;MyAccelerator.yaml&quot;)</span>
+<span class="sd">            sr = Accelerator.load("MyAccelerator.yaml")</span>
 <span class="sd">            acc = sr.design</span>
 
 <span class="sd">            if acc.orm.measure():</span>
-<span class="sd">                acc.orm.save(&quot;ideal_orm.json&quot;)</span>
-<span class="sd">                acc.orm.save(&quot;ideal_orm.yaml&quot;, with_type=&quot;yaml&quot;)</span>
-<span class="sd">                acc.orm.save(&quot;ideal_orm.npz&quot;, with_type=&quot;npz&quot;)</span>
+<span class="sd">                acc.orm.save("ideal_orm.json")</span>
+<span class="sd">                acc.orm.save("ideal_orm.yaml", with_type="yaml")</span>
+<span class="sd">                acc.orm.save("ideal_orm.npz", with_type="npz")</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -483,11 +483,11 @@
 <span class="sd">            Default time sleep between two orbit measurment</span>
 <span class="sd">            Default: from config</span>
 <span class="sd">        callback : Callable, optional</span>
-<span class="sd">            example: callback(action:int, callback_data: &#39;Complicated struct&#39;)</span>
+<span class="sd">            example: callback(action:int, callback_data: 'Complicated struct')</span>
 <span class="sd">            callback is executed after each strength setting and after each orbit</span>
 <span class="sd">            reading.</span>
 <span class="sd">            If the callback returns false, then the process is aborted.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="n">nb_meas</span> <span class="o">=</span> <span class="n">n_avg_meas</span> <span class="k">if</span> <span class="n">n_avg_meas</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cfg</span><span class="o">.</span><span class="n">n_avg_meas</span>
         <span class="n">sleep_step</span> <span class="o">=</span> <span class="n">sleep_between_step</span> <span class="k">if</span> <span class="n">sleep_between_step</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cfg</span><span class="o">.</span><span class="n">sleep_between_step</span>
         <span class="n">sleep_meas</span> <span class="o">=</span> <span class="n">sleep_between_meas</span> <span class="k">if</span> <span class="n">sleep_between_meas</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cfg</span><span class="o">.</span><span class="n">sleep_between_meas</span>
@@ -501,7 +501,7 @@
         <span class="n">interface</span><span class="o">.</span><span class="n">set_wait_time</span> <span class="o">=</span> <span class="n">sleep_step</span>
 
         <span class="k">if</span> <span class="n">corrector_names</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Measuring correctors from the default arrays: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">hcorr_array_name</span><span class="si">}</span><span class="s2"> and </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">vcorr_array_name</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">)</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Measuring correctors from the default arrays: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">hcorr_array_name</span><span class="si">}</span><span class="s2"> and </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">vcorr_array_name</span><span class="si">}</span><span class="s2">."</span><span class="p">)</span>
             <span class="n">hcorrector_names</span> <span class="o">=</span> <span class="n">element_holder</span><span class="o">.</span><span class="n">magnets</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">hcorr_array_name</span><span class="p">)</span><span class="o">.</span><span class="n">names</span><span class="p">()</span>
             <span class="n">vcorrector_names</span> <span class="o">=</span> <span class="n">element_holder</span><span class="o">.</span><span class="n">magnets</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">vcorr_array_name</span><span class="p">)</span><span class="o">.</span><span class="n">names</span><span class="p">()</span>
             <span class="n">corrector_names</span> <span class="o">=</span> <span class="n">hcorrector_names</span> <span class="o">+</span> <span class="n">vcorrector_names</span>
@@ -520,15 +520,15 @@
         <span class="n">idx</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_register_callback</span><span class="p">(</span><span class="n">callback</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_init_measure</span><span class="p">(</span><span class="s2">&quot;pyaml.tuning_tools.orbit_response_matrix_data&quot;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_init_measure</span><span class="p">(</span><span class="s2">"pyaml.tuning_tools.orbit_response_matrix_data"</span><span class="p">)</span>
             <span class="k">for</span> <span class="n">code</span><span class="p">,</span> <span class="n">measurement</span> <span class="ow">in</span> <span class="n">generator</span><span class="p">:</span>
-                <span class="n">callback_data</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;idx&quot;</span><span class="p">:</span> <span class="n">idx</span><span class="p">,</span> <span class="s2">&quot;response_data&quot;</span><span class="p">:</span> <span class="n">measurement</span><span class="o">.</span><span class="n">response_data</span><span class="p">}</span>
+                <span class="n">callback_data</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"idx"</span><span class="p">:</span> <span class="n">idx</span><span class="p">,</span> <span class="s2">"response_data"</span><span class="p">:</span> <span class="n">measurement</span><span class="o">.</span><span class="n">response_data</span><span class="p">}</span>
                 <span class="k">if</span> <span class="n">code</span> <span class="ow">is</span> <span class="n">ResponseCode</span><span class="o">.</span><span class="n">AFTER_SET</span><span class="p">:</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">send_callback</span><span class="p">(</span><span class="n">Action</span><span class="o">.</span><span class="n">APPLY</span><span class="p">,</span> <span class="n">callback_data</span><span class="p">)</span>
                 <span class="k">elif</span> <span class="n">code</span> <span class="ow">is</span> <span class="n">ResponseCode</span><span class="o">.</span><span class="n">AFTER_GET</span><span class="p">:</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">send_callback</span><span class="p">(</span><span class="n">Action</span><span class="o">.</span><span class="n">MEASURE</span><span class="p">,</span> <span class="n">callback_data</span><span class="p">)</span>
                 <span class="k">elif</span> <span class="n">code</span> <span class="ow">is</span> <span class="n">ResponseCode</span><span class="o">.</span><span class="n">AFTER_RESTORE</span><span class="p">:</span>
-                    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Measured response of </span><span class="si">{</span><span class="n">measurement</span><span class="o">.</span><span class="n">last_input</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">)</span>
+                    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Measured response of </span><span class="si">{</span><span class="n">measurement</span><span class="o">.</span><span class="n">last_input</span><span class="si">}</span><span class="s2">."</span><span class="p">)</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">send_callback</span><span class="p">(</span><span class="n">Action</span><span class="o">.</span><span class="n">RESTORE</span><span class="p">,</span> <span class="n">callback_data</span><span class="p">)</span>
                 <span class="n">idx</span> <span class="o">+=</span> <span class="mi">1</span>
         <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">ex</span><span class="p">:</span>
@@ -540,7 +540,7 @@
             <span class="c1"># TODO</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">send_callback</span><span class="p">(</span>
                 <span class="n">Action</span><span class="o">.</span><span class="n">RESTORE</span><span class="p">,</span>
-                <span class="p">{</span><span class="s2">&quot;idx&quot;</span><span class="p">:</span> <span class="n">idx</span><span class="p">},</span>
+                <span class="p">{</span><span class="s2">"idx"</span><span class="p">:</span> <span class="n">idx</span><span class="p">},</span>
                 <span class="n">raiseException</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
             <span class="p">)</span>
 
@@ -548,7 +548,7 @@
             <span class="k">raise</span> <span class="p">(</span><span class="n">err</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="n">aborted</span><span class="p">:</span>
-            <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">get_name</span><span class="p">()</span><span class="si">}</span><span class="s2"> : measurement aborted (settings not restored)&quot;</span><span class="p">)</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">get_name</span><span class="p">()</span><span class="si">}</span><span class="s2"> : measurement aborted (settings not restored)"</span><span class="p">)</span>
             <span class="k">return</span> <span class="kc">False</span>
 
         <span class="n">orm_data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_pySC_response_data_to_ORMData</span><span class="p">(</span><span class="n">measurement</span><span class="o">.</span><span class="n">response_data</span><span class="o">.</span><span class="n">model_dump</span><span class="p">())</span>
@@ -564,25 +564,25 @@
         <span class="n">all_hcorrector_names</span> <span class="o">=</span> <span class="n">element_holder</span><span class="o">.</span><span class="n">magnets</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">hcorr_array_name</span><span class="p">)</span><span class="o">.</span><span class="n">names</span><span class="p">()</span>
         <span class="n">all_vcorrector_names</span> <span class="o">=</span> <span class="n">element_holder</span><span class="o">.</span><span class="n">magnets</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">vcorr_array_name</span><span class="p">)</span><span class="o">.</span><span class="n">names</span><span class="p">()</span>
         <span class="n">variable_planes</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="k">for</span> <span class="n">corr</span> <span class="ow">in</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;input_names&quot;</span><span class="p">]:</span>
+        <span class="k">for</span> <span class="n">corr</span> <span class="ow">in</span> <span class="n">data</span><span class="p">[</span><span class="s2">"input_names"</span><span class="p">]:</span>
             <span class="k">if</span> <span class="n">corr</span> <span class="ow">in</span> <span class="n">all_hcorrector_names</span><span class="p">:</span>
-                <span class="n">variable_planes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;H&quot;</span><span class="p">)</span>
+                <span class="n">variable_planes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">"H"</span><span class="p">)</span>
             <span class="k">elif</span> <span class="n">corr</span> <span class="ow">in</span> <span class="n">all_vcorrector_names</span><span class="p">:</span>
-                <span class="n">variable_planes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;V&quot;</span><span class="p">)</span>
+                <span class="n">variable_planes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">"V"</span><span class="p">)</span>
 
         <span class="n">bpm_names</span> <span class="o">=</span> <span class="n">element_holder</span><span class="o">.</span><span class="n">get_bpms</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">bpm_array_name</span><span class="p">)</span><span class="o">.</span><span class="n">names</span><span class="p">()</span>
         <span class="c1"># This is because we assume always dual-plane bpms now.</span>
         <span class="n">len_b</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">bpm_names</span><span class="p">)</span>
         <span class="n">observable_names</span> <span class="o">=</span> <span class="n">bpm_names</span> <span class="o">*</span> <span class="mi">2</span>
-        <span class="n">observable_planes</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;H&quot;</span><span class="p">]</span> <span class="o">*</span> <span class="n">len_b</span> <span class="o">+</span> <span class="p">[</span><span class="s2">&quot;V&quot;</span><span class="p">]</span> <span class="o">*</span> <span class="n">len_b</span>
+        <span class="n">observable_planes</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"H"</span><span class="p">]</span> <span class="o">*</span> <span class="n">len_b</span> <span class="o">+</span> <span class="p">[</span><span class="s2">"V"</span><span class="p">]</span> <span class="o">*</span> <span class="n">len_b</span>
 
         <span class="n">orm_data_model</span> <span class="o">=</span> <span class="p">{</span>
-            <span class="s2">&quot;matrix&quot;</span><span class="p">:</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;matrix&quot;</span><span class="p">],</span>
-            <span class="s2">&quot;variable_names&quot;</span><span class="p">:</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;input_names&quot;</span><span class="p">],</span>
-            <span class="s2">&quot;observable_names&quot;</span><span class="p">:</span> <span class="n">observable_names</span><span class="p">,</span>
-            <span class="s2">&quot;rf_response&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
-            <span class="s2">&quot;variable_planes&quot;</span><span class="p">:</span> <span class="n">variable_planes</span><span class="p">,</span>
-            <span class="s2">&quot;observable_planes&quot;</span><span class="p">:</span> <span class="n">observable_planes</span><span class="p">,</span>
+            <span class="s2">"matrix"</span><span class="p">:</span> <span class="n">data</span><span class="p">[</span><span class="s2">"matrix"</span><span class="p">],</span>
+            <span class="s2">"variable_names"</span><span class="p">:</span> <span class="n">data</span><span class="p">[</span><span class="s2">"input_names"</span><span class="p">],</span>
+            <span class="s2">"observable_names"</span><span class="p">:</span> <span class="n">observable_names</span><span class="p">,</span>
+            <span class="s2">"rf_response"</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="s2">"variable_planes"</span><span class="p">:</span> <span class="n">variable_planes</span><span class="p">,</span>
+            <span class="s2">"observable_planes"</span><span class="p">:</span> <span class="n">observable_planes</span><span class="p">,</span>
         <span class="p">}</span>
 
         <span class="n">orm_data</span> <span class="o">=</span> <span class="n">OrbitResponseMatrixDataConfigModel</span><span class="p">(</span><span class="o">**</span><span class="n">orm_data_model</span><span class="p">)</span>
