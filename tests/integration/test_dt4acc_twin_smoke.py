@@ -156,7 +156,7 @@ def deactivated_test_orbit_correction(root_folder: Path, config_files: dict[str,
     try:
         accelerator = _build_accelerator(root_folder, config_files)
         control_mode = accelerator.live
-        bpms = control_mode.get_bpms("bpms")
+        bpms = control_mode.bpms.get("bpms")
         orbit_response_matrix = control_mode.get_orm_tuning("DEFAULT_ORBIT_RESPONSE_MATRIX")
         orbit_correction = control_mode.get_orbit_tuning("DEFAULT_ORBIT_CORRECTION")
         orbit_response_matrix.measure()

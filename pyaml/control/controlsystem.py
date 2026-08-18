@@ -175,7 +175,7 @@ class ControlSystem(ElementHolder, metaclass=ABCMeta):
                 tilt = RWBpmTiltScalar(tilt_devs[0])
                 offsets = RWBpmOffsetArray(offset_devs[0], offset_devs[1])
                 e = e.attach(self, positions, offsets, tilt)
-                self.add_bpm(e)
+                self.bpm.add(e)
 
             elif isinstance(e, RFPlant):
                 attachedTrans: list[RFTransmitter] = []

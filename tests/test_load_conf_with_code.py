@@ -8,6 +8,6 @@ def test_load_conf_with_code():
     config_path = parent_folder.joinpath("config", "EBSOrbit.yaml").resolve()
 
     sr: Accelerator = Accelerator.load(config_path)
-    bpms = sr.live.get_bpms("BPM")
+    bpms = sr.live.bpms.get("BPM")
     assert bpms is not None
     assert len(bpms) == 320

@@ -172,7 +172,7 @@ class OrbitResponseMatrix(MeasurementTool):
             elif corr in all_vcorrector_names:
                 variable_planes.append("V")
 
-        bpm_names = element_holder.get_bpms(self.bpm_array_name).names()
+        bpm_names = element_holder.bpms.get(self.bpm_array_name).names()
         # This is because we assume always dual-plane bpms now.
         len_b = len(bpm_names)
         observable_names = bpm_names * 2
