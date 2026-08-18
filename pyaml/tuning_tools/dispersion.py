@@ -7,7 +7,7 @@ from pySC.apps.codes import DispersionCode
 
 from ..common.constants import Action
 from ..common.element import ElementConfigModel
-from ..common.element_holder import ElementHolder
+from ..common.holders.element_holder import ElementHolder
 from ..external.pySC_interface import pySCInterface
 from .measurement_tool import MeasurementTool
 

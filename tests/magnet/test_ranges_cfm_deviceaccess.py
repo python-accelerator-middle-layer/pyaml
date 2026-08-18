@@ -38,7 +38,7 @@ def test_cfm_ranges_from_yaml_are_propagated_and_enforced(magnet_file, install_t
     sr.design.get_lattice().disable_6d()
 
     # Parent CFM magnet (the one defined in SH1AC01-range.yaml)
-    m = sr.live.get_cfm_magnet("SH1A-C01")
+    m = sr.live.combined_function_magnet.get("SH1A-C01")
 
     dev_names = m.model.get_device_names()
     assert len(dev_names) == 3

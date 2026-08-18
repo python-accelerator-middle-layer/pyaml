@@ -6,8 +6,8 @@ from ..bpm.bpm import BPM
 from ..common.abstract import RWMapper
 from ..common.abstract_aggregator import ScalarAggregator
 from ..common.element import Element
-from ..common.element_holder import ElementHolder
 from ..common.exception import PyAMLException
+from ..common.holders.element_holder import ElementHolder
 from ..configuration.factory import Factory
 from ..configuration.unbound_element import UnboundElement
 from ..control.abstract_impl import (
@@ -147,7 +147,7 @@ class ControlSystem(ElementHolder, metaclass=ABCMeta):
                 # Create unique refs the cfm and
                 # each of its function for this control system
                 ms = e.attach(self, strengths, currents)
-                self.add_cfm_magnet(ms[0])
+                self.combined_function_magnet.add(ms[0])
                 for m in ms[1:]:
                     self.magnet.add(m)
 

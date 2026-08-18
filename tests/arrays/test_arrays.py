@@ -72,8 +72,8 @@ def test_arrays(install_test_package):
 
     # Using aggregators
     sr.live.magnets.get("HCORR").strengths.set([0.000010, -0.000008])
-    ps1 = sr.live.get_cfm_magnet("SH1A-C01").hardwares.get()
-    ps2 = sr.live.get_cfm_magnet("SH1A-C02").hardwares.get()
+    ps1 = sr.live.combined_function_magnet.get("SH1A-C01").hardwares.get()
+    ps2 = sr.live.combined_function_magnet.get("SH1A-C02").hardwares.get()
     assert np.abs(ps1[0] - 0.02956737880874648) < 1e-10
     assert np.abs(ps1[1] - 0) < 1e-10
     assert np.abs(ps1[2] - 0) < 1e-10
@@ -81,8 +81,8 @@ def test_arrays(install_test_package):
     assert np.abs(ps2[1] - 0) < 1e-10
     assert np.abs(ps2[2] - 0) < 1e-10
     sr.live.magnets.get("VCORR").strengths.set([0.000015, -0.000017])
-    ps1 = sr.live.get_cfm_magnet("SH1A-C01").hardwares.get()
-    ps2 = sr.live.get_cfm_magnet("SH1A-C02").hardwares.get()
+    ps1 = sr.live.combined_function_magnet.get("SH1A-C01").hardwares.get()
+    ps2 = sr.live.combined_function_magnet.get("SH1A-C02").hardwares.get()
     assert np.abs(ps1[0] - 0.02956737880874648) < 1e-10
     assert np.abs(ps1[1] + 0.058240333933172066) < 1e-10
     assert np.abs(ps1[2] - 0.05601656539392866) < 1e-10
@@ -101,8 +101,8 @@ def test_arrays(install_test_package):
     ma.LAST_NB_WRITTEN = 0  # Total number of setpoints done by multi_attribute
     sr.live.magnets.get("HVCORR").strengths.set(0.0)
     assert ma.LAST_NB_WRITTEN == 6  # 6 power supply setpoints are needed
-    ps1 = sr.live.get_cfm_magnet("SH1A-C01").hardwares.get()
-    ps2 = sr.live.get_cfm_magnet("SH1A-C02").hardwares.get()
+    ps1 = sr.live.combined_function_magnet.get("SH1A-C01").hardwares.get()
+    ps2 = sr.live.combined_function_magnet.get("SH1A-C02").hardwares.get()
     assert np.abs(ps1[0]) < 1e-10
     assert np.abs(ps1[1]) < 1e-10
     assert np.abs(ps1[2]) < 1e-10
@@ -116,8 +116,8 @@ def test_arrays(install_test_package):
         mags.append(m)
     array = MagnetArray("HVCOOR_noagg", mags, use_aggregator=False)
     array.strengths.set([0.000010, -0.000008, 0.000015, -0.000017])
-    ps1 = sr.live.get_cfm_magnet("SH1A-C01").hardwares.get()
-    ps2 = sr.live.get_cfm_magnet("SH1A-C02").hardwares.get()
+    ps1 = sr.live.combined_function_magnet.get("SH1A-C01").hardwares.get()
+    ps2 = sr.live.combined_function_magnet.get("SH1A-C02").hardwares.get()
     assert np.abs(ps1[0] - 0.02956737880874648) < 1e-10
     assert np.abs(ps1[1] + 0.058240333933172066) < 1e-10
     assert np.abs(ps1[2] - 0.05601656539392866) < 1e-10
@@ -178,7 +178,7 @@ def test_arrays(install_test_package):
     allBpms = BPMArray("AllBPMs", sr.design.get_all_bpms())
     assert len(allBpms) == 2
 
-    cfm = sr.design.get_cfm_magnets("CFM")
+    cfm = sr.design.combined_function_magnets.get("CFM")
     strHVSQ = cfm.strengths.get()
     assert np.abs(strHVSQ[0] - 0.000010) < 1e-10  # H
     assert np.abs(strHVSQ[1] - 0.000015) < 1e-10  # V
@@ -211,7 +211,7 @@ def test_arrays(install_test_package):
 
     sr: Accelerator = Accelerator.load("tests/config/EBSOrbit.yaml", include_locations=False)
     ae = ElementArray("All", sr.design.get_all_elements())
-    acfm = ElementArray("AllCFM", sr.design.get_all_cfm_magnets(), use_aggregator=False)
+    acfm = ElementArray("AllCFM", sr.design.combined_function_magnet.all(), use_aggregator=False)
 
     bpmC5 = ae["BPM*"][10:20]  # All BPM C5
     assert isinstance(bpmC5, BPMArray) and len(bpmC5) == 10
@@ -237,7 +237,7 @@ def test_arrays(install_test_package):
 
     emptyCFM = CombinedFunctionMagnet(name="emptyCFM", elements=[])
     emptyCFM.fill_array(sr.design)  # Attach the array
-    v = sr.design.get_cfm_magnets("emptyCFM").strengths.get()  # Ensure good attach
+    v = sr.design.combined_function_magnets.get("emptyCFM").strengths.get()  # Ensure good attach
     assert np.shape(v) == (0,)
 
 
