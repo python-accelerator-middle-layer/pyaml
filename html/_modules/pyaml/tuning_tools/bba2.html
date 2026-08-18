@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>pyaml.tuning_tools.bba2 &#8212; Python Accelerator Middle Layer 0.1.dev1+g947cfb0ef documentation</title>
+    <title>pyaml.tuning_tools.bba2 &#8212; Python Accelerator Middle Layer 0.1.dev1+gc47ff7222 documentation</title>
   
   
   
@@ -41,7 +41,7 @@
   <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=90905a2f556bf617f1a9" />
 <link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=90905a2f556bf617f1a9" />
 
-    <script src="../../../_static/documentation_options.js?v=7aef76b6"></script>
+    <script src="../../../_static/documentation_options.js?v=8880a1fe"></script>
     <script src="../../../_static/doctools.js?v=9bcbadda"></script>
     <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -125,8 +125,8 @@
       
     
     
-    <img src="../../../_static/logo.png" class="logo__image only-light" alt="Python Accelerator Middle Layer 0.1.dev1+g947cfb0ef documentation - Home"/>
-    <img src="../../../_static/dark.png" class="logo__image only-dark pst-js-only" alt="Python Accelerator Middle Layer 0.1.dev1+g947cfb0ef documentation - Home"/>
+    <img src="../../../_static/logo.png" class="logo__image only-light" alt="Python Accelerator Middle Layer 0.1.dev1+gc47ff7222 documentation - Home"/>
+    <img src="../../../_static/dark.png" class="logo__image only-dark pst-js-only" alt="Python Accelerator Middle Layer 0.1.dev1+gc47ff7222 documentation - Home"/>
   
   
 </a></div>
@@ -529,7 +529,7 @@
         <span class="n">quad</span> <span class="o">=</span> <span class="n">design</span><span class="o">.</span><span class="n">magnet</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">quadname</span><span class="p">)</span>
         <span class="n">sth</span> <span class="o">=</span> <span class="n">design</span><span class="o">.</span><span class="n">magnet</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">steererhname</span><span class="p">)</span>
         <span class="n">stv</span> <span class="o">=</span> <span class="n">design</span><span class="o">.</span><span class="n">magnet</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">steerervname</span><span class="p">)</span>
-        <span class="n">orbit</span> <span class="o">=</span> <span class="n">design</span><span class="o">.</span><span class="n">get_bpms</span><span class="p">(</span><span class="n">bpmname</span><span class="p">)</span><span class="o">.</span><span class="n">positions</span>
+        <span class="n">orbit</span> <span class="o">=</span> <span class="n">design</span><span class="o">.</span><span class="n">bpms</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">bpmname</span><span class="p">)</span><span class="o">.</span><span class="n">positions</span>
         <span class="n">tune_design</span> <span class="o">=</span> <span class="n">design</span><span class="o">.</span><span class="n">get_tune_tuning</span><span class="p">(</span><span class="n">tunename</span><span class="p">)</span>
         <span class="n">tune_live</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_peer</span><span class="o">.</span><span class="n">get_tune_tuning</span><span class="p">(</span><span class="n">tunename</span><span class="p">)</span>
 
@@ -746,7 +746,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_h_steer</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">peer</span><span class="o">.</span><span class="n">magnet</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_cfg</span><span class="o">.</span><span class="n">hcorr_name</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_v_steer</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">peer</span><span class="o">.</span><span class="n">magnet</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_cfg</span><span class="o">.</span><span class="n">vcorr_name</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_quad</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">peer</span><span class="o">.</span><span class="n">magnet</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_cfg</span><span class="o">.</span><span class="n">quad_name</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_bpms</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">peer</span><span class="o">.</span><span class="n">get_bpms</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_cfg</span><span class="o">.</span><span class="n">bpm_array_name</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_bpms</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">peer</span><span class="o">.</span><span class="n">bpms</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_cfg</span><span class="o">.</span><span class="n">bpm_array_name</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_bpmi</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_bpms</span><span class="o">.</span><span class="n">names</span><span class="p">()</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_cfg</span><span class="o">.</span><span class="n">bpm_name</span><span class="p">)</span>
 
         <span class="c1"># Initial values</span>
