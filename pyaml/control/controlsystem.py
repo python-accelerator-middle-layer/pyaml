@@ -6,8 +6,8 @@ from ..bpm.bpm import BPM
 from ..common.abstract import RWMapper
 from ..common.abstract_aggregator import ScalarAggregator
 from ..common.element import Element
-from ..common.element_holder import ElementHolder
 from ..common.exception import PyAMLException
+from ..common.holders.element_holder import ElementHolder
 from ..configuration.factory import Factory
 from ..configuration.unbound_element import UnboundElement
 from ..control.abstract_impl import (
@@ -138,7 +138,7 @@ class ControlSystem(ElementHolder, metaclass=ABCMeta):
                 strength = RWStrengthScalar(e.model, dev) if e.model.has_physics() else None
                 # Create a unique ref for this control system
                 m = e.attach(self, strength, current)
-                self.add_magnet(m)
+                self.magnet.add(m)
 
             elif isinstance(e, CombinedFunctionMagnet):
                 devs = self.get_devices_access(e.model.get_device_names())
@@ -147,9 +147,9 @@ class ControlSystem(ElementHolder, metaclass=ABCMeta):
                 # Create unique refs the cfm and
                 # each of its function for this control system
                 ms = e.attach(self, strengths, currents)
-                self.add_cfm_magnet(ms[0])
+                self.combined_function_magnet.add(ms[0])
                 for m in ms[1:]:
-                    self.add_magnet(m)
+                    self.magnet.add(m)
 
             elif isinstance(e, SerializedMagnets):
                 devs = self.get_devices_access(e.model.get_device_names())
@@ -163,9 +163,9 @@ class ControlSystem(ElementHolder, metaclass=ABCMeta):
                     currents.append(current)
                     strengths.append(strength)
                 ms = e.attach(self, strengths, currents)
-                self.add_serialized_magnet(ms[0])
+                self.serialized_magnet.add(ms[0])
                 for m in ms[1:]:
-                    self.add_magnet(m)
+                    self.magnet.add(m)
 
             elif isinstance(e, BPM):
                 pos_devs = self.get_devices_access(e.get_pos_devices())
@@ -175,7 +175,7 @@ class ControlSystem(ElementHolder, metaclass=ABCMeta):
                 tilt = RWBpmTiltScalar(tilt_devs[0])
                 offsets = RWBpmOffsetArray(offset_devs[0], offset_devs[1])
                 e = e.attach(self, positions, offsets, tilt)
-                self.add_bpm(e)
+                self.bpm.add(e)
 
             elif isinstance(e, RFPlant):
                 attachedTrans: list[RFTransmitter] = []
@@ -186,14 +186,14 @@ class ControlSystem(ElementHolder, metaclass=ABCMeta):
                         voltage = RWRFVoltageScalar(t, vDev)
                         phase = RWRFPhaseScalar(t, pDev)
                         nt = t.attach(self, voltage, phase)
-                        self.add_rf_transmitter(nt)
+                        self.rf.transmitter.add(nt)
                         attachedTrans.append(nt)
 
                 fDev = self.get_device_access(e.masterclock)
                 frequency = RWRFFrequencyScalar(e, fDev)
                 voltage = RWTotalVoltage(attachedTrans) if e.transmitters else None
                 ne = e.attach(self, frequency, voltage)
-                self.add_rf_plant(ne)
+                self.rf.add(ne)
 
             elif isinstance(e, BetatronTuneMonitor):
                 # Built in tune monitor

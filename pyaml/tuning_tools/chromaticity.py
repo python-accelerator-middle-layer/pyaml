@@ -95,7 +95,7 @@ class Chromaticity(TuningTool, DynamicValidation):
     @property
     def _sextu(self) -> "MagnetArray":
         self.check_peer()
-        return self.peer.get_magnets(self.sextu_array_name)
+        return self.peer.magnets.get(self.sextu_array_name)
 
     def get(self):
         """

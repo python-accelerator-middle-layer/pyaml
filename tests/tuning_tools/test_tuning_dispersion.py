@@ -17,7 +17,7 @@ def test_tuning_orm():
     dispersion.measure()
     dispersion_data = dispersion.get()
 
-    bpms = element_holder.get_bpms("BPM")
+    bpms = element_holder.bpms.get("BPM")
 
     assert len(dispersion_data["frequency_response_x"]) == len(bpms)
     assert len(dispersion_data["frequency_response_y"]) == len(bpms)

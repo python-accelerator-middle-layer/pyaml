@@ -8,6 +8,8 @@ from pydantic import BaseModel, ValidationError
 
 from ..common.element import Element
 from ..common.exception import PyAMLConfigException
+from ..validation.errors import raise_validation_error
+from ..validation.schema_builder import generate_class_path
 from .unbound_element import UnboundElement
 
 # ---------------------------------------------------------------------
@@ -284,9 +286,10 @@ class PyAMLFactory:
             try:
                 cfg = build_info.config_cls.model_validate(config)
             except ValidationError as exc:
-                raise PyAMLConfigException(
-                    f"Validation failed for {build_info.config_cls.__module__}.{build_info.config_cls.__name__}:\n{exc}"
-                ) from exc
+                raise_validation_error(
+                    exc,
+                    class_path=generate_class_path(build_info.config_cls),
+                )
         else:
             cfg = config
 

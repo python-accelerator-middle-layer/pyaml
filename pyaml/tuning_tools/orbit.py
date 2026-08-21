@@ -11,7 +11,7 @@ import numpy as np
 from pydantic import ConfigDict
 
 if TYPE_CHECKING:
-    from ..common.element_holder import ElementHolder
+    from ..common.holders.element_holder import ElementHolder
 from pySC import ResponseMatrix as pySC_ResponseMatrix
 from pySC.apps import orbit_correction
 
@@ -312,11 +312,11 @@ class Orbit(TuningTool):
         return self._pySC_response_matrix.rf_weight
 
     def post_init(self):
-        self._hcorr = self.peer.get_magnets(self._cfg.hcorr_array_name)
-        self._vcorr = self.peer.get_magnets(self._cfg.vcorr_array_name)
+        self._hcorr = self.peer.magnets.get(self._cfg.hcorr_array_name)
+        self._vcorr = self.peer.magnets.get(self._cfg.vcorr_array_name)
         hvElts = []
         hvElts.extend(self._hcorr)
         hvElts.extend(self._vcorr)
         self._hvcorr = MagnetArray("", hvElts)
         if self._cfg.rf_plant_name is not None:
-            self._rf_plant = self.peer.get_rf_plant(self._cfg.rf_plant_name)
+            self._rf_plant = self.peer.rf.get(self._cfg.rf_plant_name)

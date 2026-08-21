@@ -1,13 +1,12 @@
 import numpy as np
 
 from pyaml.configuration import ROOT
-from pyaml.magnet.csvcurve import ConfigModel, CSVCurve
+from pyaml.magnet.csvcurve import CSVCurve
 from pyaml.magnet.curve import Curve
 
 
 def curve_test(file: str, current: float, strength: float):
-    curveConfig = ConfigModel(file=file)
-    curve = CSVCurve(curveConfig)
+    curve = CSVCurve(file=file)
     curveData = curve.get_curve()
     icurveData = Curve.inverse(curveData)
     x1 = np.interp(current, curveData[:, 0], curveData[:, 1])

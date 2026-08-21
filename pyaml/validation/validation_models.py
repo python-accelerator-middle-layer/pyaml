@@ -3,12 +3,13 @@
 import inspect
 import logging
 from abc import ABCMeta
-from typing import Any
+from typing import Any, cast
 
-from pydantic import BaseModel, ConfigDict, create_model
+from pydantic import BaseModel, ConfigDict, ValidationError, create_model
 
 from .configuration_models import PyAMLBaseModel
-from .schema_builder import _fields_from_constructor_signature
+from .errors import raise_validation_error
+from .schema_builder import _fields_from_constructor_signature, generate_class_path
 
 logger = logging.getLogger(__name__)
 
@@ -41,25 +42,27 @@ class ValidationMeta(ABCMeta):
         """
         Create an instance after optionally validating constructor arguments.
 
-        The supplied arguments are bound to the class ``__init__`` signature,
-        default values are applied, and the resulting argument mapping is
-        validated using ``validation_model`` unless ``validate=False`` is
-        passed to the constructor. The validated values are then passed to the
-        constructor.
-
         Parameters
         ----------
-        validate
+        *args : Any
+            Positional constructor arguments.
+        **kwargs : Any
+            Keyword constructor arguments.
+        validate : bool, optional
             If ``True`` (default), validate constructor arguments before
-            instantiation. If ``False``, skip validation and pass the supplied
-            arguments directly to the constructor.
+            instantiation. If ``False``, skip validation and pass the
+            supplied arguments directly to the constructor.
+
+        Returns
+        -------
+        object
+            Instance of the class after validation and construction.
 
         Raises
         ------
         TypeError
             If the class does not define ``validation_model``.
-
-        ValidationError
+        PyAMLConfigException
             If the supplied arguments do not conform to the validation
             model.
         """
@@ -88,7 +91,14 @@ class ValidationMeta(ABCMeta):
 
         # Validate the model
         logger.debug("Validating input against schema: %s", validation_model.model_fields)
-        validated = validation_model.model_validate(arguments)
+
+        try:
+            validated = validation_model.model_validate(arguments)
+        except ValidationError as exc:
+            raise_validation_error(
+                exc,
+                class_path=generate_class_path(cls),
+            )
 
         # Return the object
         return super().__call__(**validated.model_dump())
@@ -112,15 +122,20 @@ class DynamicValidation(metaclass=ValidationMeta):
         """
         Generate and attach a validation model for the subclass.
 
-        A validation model is generated from the subclass's constructor
-        signature and assigned to ``validation_model``. Defining
-        ``validation_model`` explicitly is not permitted and results in a
-        :class:`TypeError`.
+        Parameters
+        ----------
+        **kwargs : Any
+            Additional keyword arguments passed to ``super().__init_subclass__``.
+
+        Raises
+        ------
+        TypeError
+            If ``validation_model`` is defined manually on the subclass.
         """
 
         super().__init_subclass__(**kwargs)
 
-        if getattr(cls, "validation_model", None) is not None:
+        if "validation_model" in cls.__dict__:
             raise TypeError(f"{cls.__name__} may not define validation_model manually.")
 
         cls.validation_model = cls._build_validation_model()
@@ -144,9 +159,9 @@ class DynamicValidation(metaclass=ValidationMeta):
 
         logger.debug("Building validation model for %s.", f"{cls.__module__}.{cls.__name__}")
 
-        fields = _fields_from_constructor_signature(cls, expand_arbitrary_types=False)
+        fields: dict[str, tuple[Any, Any]] = _fields_from_constructor_signature(cls, expand_arbitrary_types=False)
 
-        model = create_model(f"{cls.__name__}ValidationModel", **fields, __base__=ValidationModel)
+        model = create_model(f"{cls.__name__}ValidationModel", **cast(Any, fields), __base__=ValidationModel)
 
         logger.debug("Created model: %s", model.model_fields)
 
@@ -167,6 +182,11 @@ class StaticValidation(metaclass=ValidationMeta):
     def __init_subclass__(cls, **kwargs):
         """
         Verify that the subclass defines a validation model.
+
+        Parameters
+        ----------
+        **kwargs : Any
+            Additional keyword arguments passed to ``super().__init_subclass__``.
 
         Raises
         ------

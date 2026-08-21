@@ -1,28 +1,13 @@
+import copy
+from typing import Self
+
+import numpy as np
 from scipy.constants import speed_of_light
 
 from .. import PyAMLException
 from ..common import abstract
-from ..common.element import Element, ElementConfigModel
+from ..common.element import Element
 from .model import MagnetModel
-
-try:
-    from typing import Self  # Python 3.11+
-except ImportError:
-    from typing_extensions import Self  # Python 3.10 and earlier
-import numpy as np
-
-
-class MagnetConfigModel(ElementConfigModel):
-    """
-    Configuration model for magnet elements.
-
-    Attributes
-    ----------
-    model : MagnetModel or None, optional
-        Object in charge of converting magnet strengths to power supply values
-    """
-
-    model: MagnetModel | None = None
 
 
 class Magnet(Element):
@@ -30,7 +15,9 @@ class Magnet(Element):
     Class providing access to one magnet of a physical or simulated lattice
     """
 
-    def __init__(self, name: str, model: MagnetModel = None):
+    def __init__(
+        self, name: str, model: MagnetModel | None = None, lattice_names: str | None = None, description: str | None = None
+    ):
         """
         Construct a magnet
 
@@ -41,7 +28,7 @@ class Magnet(Element):
         model : MagnetModel
             Magnet model in charge of computing coil(s) current
         """
-        super().__init__(name)
+        super().__init__(name, lattice_names, description)
         self.__model = model
         self.__strength: abstract.ReadWriteFloatScalar = None
         self.__hardware: abstract.ReadWriteFloatScalar = None
@@ -85,7 +72,7 @@ class Magnet(Element):
         Create a new reference to attach this magnet to a simulator
         or a control systemand.
         """
-        obj = self.__class__(self._cfg)
+        obj = copy.copy(self)
         obj.__modelName = self.__modelName
         obj.__strength = strength
         obj.__hardware = hardware

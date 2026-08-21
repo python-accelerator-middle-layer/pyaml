@@ -4,7 +4,7 @@ from typing import TYPE_CHECKING, Optional, Tuple
 import numpy as np
 
 if TYPE_CHECKING:
-    from ..common.element_holder import ElementHolder
+    from ..common.holders.element_holder import ElementHolder
 from ..common.exception import PyAMLException
 
 
@@ -20,11 +20,11 @@ class pySCInterface:
     ):
         self.element_holder = element_holder
 
-        self.bpm_array = element_holder.get_bpms(bpm_array_name)
+        self.bpm_array = element_holder.bpms.get(bpm_array_name)
 
         self.rf_plant_name = rf_plant_name
         if rf_plant_name is not None:
-            self.rf_plant = element_holder.get_rf_plant(self.rf_plant_name)
+            self.rf_plant = element_holder.rf.get(self.rf_plant_name)
         else:
             self.rf_plant = None
 
@@ -34,11 +34,11 @@ class pySCInterface:
         return positions[:, 0], positions[:, 1]
 
     def get(self, name: str) -> float:
-        magnet = self.element_holder.get_magnet(name=name)
+        magnet = self.element_holder.magnet.get(name=name)
         return magnet.strength.get()
 
     def set(self, name: str, value: float) -> None:
-        magnet = self.element_holder.get_magnet(name=name)
+        magnet = self.element_holder.magnet.get(name=name)
         magnet.strength.set(value=value)  # ideally set_and_wait but not implemented
         time.sleep(self.set_wait_time)
         return

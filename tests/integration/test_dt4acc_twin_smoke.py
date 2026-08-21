@@ -79,14 +79,14 @@ def test_dt4acc_twin_accelerator_instantiates_and_reads_live_values(root_folder:
     assert accelerator.live is not None
     assert "live" in accelerator.controls()
 
-    accelerator.live.get_rf_plant("RF")
+    accelerator.live.rf.get("RF")
 
     reference_frequency = _readback_value(accelerator.live.get_device_access(RF_REFERENCE_FREQUENCY))
 
     assert np.isfinite(reference_frequency), f"RF reference frequency is not finite: {reference_frequency!r}"
     assert reference_frequency > 0.0, f"RF reference frequency should be positive, got {reference_frequency!r}"
 
-    accelerator.live.get_magnet(QF_001)
+    accelerator.live.magnet.get(QF_001)
     magnetic_strength = _readback_value(accelerator.live.get_device_access(QF_001_STRENGTH))
 
     assert np.isfinite(magnetic_strength), f"{QF_001} magnetic strength is not finite: {magnetic_strength!r}"
@@ -100,8 +100,8 @@ def test_dt4acc_twin_accelerator_instantiates_and_reads_live_values(root_folder:
 )
 def test_dt4acc_twin_reads_all_declared_magnetic_strengths(root_folder: Path, config_files: dict[str, str]):
     accelerator = _build_accelerator(root_folder, config_files)
-    magnets = [magnet for magnet in accelerator.live.get_all_magnets() if magnet.get_model_name() == magnet.get_name()]
-    combined_function_magnets = accelerator.live.get_all_cfm_magnets()
+    magnets = [magnet for magnet in accelerator.live.magnets.get() if magnet.get_model_name() == magnet.get_name()]
+    combined_function_magnets = accelerator.live.combined_function_magnet.all()
 
     assert magnets or combined_function_magnets
 
@@ -156,7 +156,7 @@ def deactivated_test_orbit_correction(root_folder: Path, config_files: dict[str,
     try:
         accelerator = _build_accelerator(root_folder, config_files)
         control_mode = accelerator.live
-        bpms = control_mode.get_bpms("bpms")
+        bpms = control_mode.bpms.get("bpms")
         orbit_response_matrix = control_mode.get_orm_tuning("DEFAULT_ORBIT_RESPONSE_MATRIX")
         orbit_correction = control_mode.get_orbit_tuning("DEFAULT_ORBIT_CORRECTION")
         orbit_response_matrix.measure()
@@ -164,8 +164,8 @@ def deactivated_test_orbit_correction(root_folder: Path, config_files: dict[str,
         orbit_response_matrix.save("orm.json")
         orbit_correction.load("orm.json")
         std_kick = 1e-6
-        hcorr = control_mode.get_magnets("hcorrectors")
-        vcorr = control_mode.get_magnets("vcorrectors")
+        hcorr = control_mode.magnets.get("hcorrectors")
+        vcorr = control_mode.magnets.get("vcorrectors")
         print(f"HCORR={hcorr.strengths.get()}")
         print(f"VCORR={vcorr.strengths.get()}")
         ref_h, ref_v = bpms.positions.get().T

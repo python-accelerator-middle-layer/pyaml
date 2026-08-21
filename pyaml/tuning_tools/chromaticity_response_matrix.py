@@ -163,7 +163,7 @@ class ChromaticityResponseMatrix(MeasurementTool, DynamicValidation):
         """
         # Get devices
         self.check_peer()
-        sextus = self._peer.get_magnets(self.sextu_array_name)
+        sextus = self._peer.magnets.get(self.sextu_array_name)
         cm = self._peer.get_chromaticity_monitor(self.chromaticity_name)
 
         self._register_callback(callback)

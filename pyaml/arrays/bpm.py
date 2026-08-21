@@ -1,15 +1,13 @@
-from ..common.element_holder import ElementHolder
-from .array import ArrayConfig, ArrayConfigModel
+from ..common.holders.element_holder import ElementHolder
+from ..validation import DynamicValidation, register_schema
+from .array import ArrayConfig
 
 # Define the main class name for this module
 PYAMLCLASS = "BPM"
 
 
-class ConfigModel(ArrayConfigModel):
-    """Configuration model for :py:class:`.BPMArray`."""
-
-
-class BPM(ArrayConfig):
+@register_schema
+class BPM(ArrayConfig, DynamicValidation):
     """
     :py:class:`.BPMArray` configuration.
 
@@ -40,8 +38,8 @@ class BPM(ArrayConfig):
 
     """
 
-    def __init__(self, cfg: ArrayConfigModel):
-        super().__init__(cfg)
+    def __init__(self, name: str, elements: list[str]):
+        super().__init__(name, elements)
 
     def fill_array(self, holder: ElementHolder):
         """
@@ -66,4 +64,4 @@ class BPM(ArrayConfig):
         holder : ElementHolder
             The element holder to populate the :py:class:`.BPMArray` with.
         """
-        holder.fill_bpm_array(self._cfg.name, self._cfg.elements)
+        holder.bpms.add(self._name, self._elements)

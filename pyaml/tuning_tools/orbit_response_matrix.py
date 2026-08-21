@@ -105,8 +105,8 @@ class OrbitResponseMatrix(MeasurementTool):
 
         if corrector_names is None:
             logger.info(f"Measuring correctors from the default arrays: {self.hcorr_array_name} and {self.vcorr_array_name}.")
-            hcorrector_names = element_holder.get_magnets(self.hcorr_array_name).names()
-            vcorrector_names = element_holder.get_magnets(self.vcorr_array_name).names()
+            hcorrector_names = element_holder.magnets.get(self.hcorr_array_name).names()
+            vcorrector_names = element_holder.magnets.get(self.vcorr_array_name).names()
             corrector_names = hcorrector_names + vcorrector_names
 
         generator = measure_ORM(
@@ -163,8 +163,8 @@ class OrbitResponseMatrix(MeasurementTool):
         # all metadata is discarded here. Should we keep something?
 
         element_holder = self._peer
-        all_hcorrector_names = element_holder.get_magnets(self.hcorr_array_name).names()
-        all_vcorrector_names = element_holder.get_magnets(self.vcorr_array_name).names()
+        all_hcorrector_names = element_holder.magnets.get(self.hcorr_array_name).names()
+        all_vcorrector_names = element_holder.magnets.get(self.vcorr_array_name).names()
         variable_planes = []
         for corr in data["input_names"]:
             if corr in all_hcorrector_names:
@@ -172,7 +172,7 @@ class OrbitResponseMatrix(MeasurementTool):
             elif corr in all_vcorrector_names:
                 variable_planes.append("V")
 
-        bpm_names = element_holder.get_bpms(self.bpm_array_name).names()
+        bpm_names = element_holder.bpms.get(self.bpm_array_name).names()
         # This is because we assume always dual-plane bpms now.
         len_b = len(bpm_names)
         observable_names = bpm_names * 2

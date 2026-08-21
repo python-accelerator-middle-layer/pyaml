@@ -5,7 +5,7 @@ from pydantic import BaseModel, ConfigDict
 from .exception import PyAMLException
 
 if TYPE_CHECKING:
-    from ..common.element_holder import ElementHolder
+    from .holders.element_holder import ElementHolder
 
 
 def __pyaml_repr__(obj, exclude: list[str] | None = None):

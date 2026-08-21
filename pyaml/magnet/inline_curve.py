@@ -1,45 +1,52 @@
-from pathlib import Path
-
 import numpy as np
-from pydantic import BaseModel, ConfigDict
+from numpy.typing import NDArray
 
+from ..common.element import __pyaml_repr__
 from ..common.exception import PyAMLException
+from ..validation import DynamicValidation, register_schema
 from .curve import Curve
 
 # Define the main class name for this module
 PYAMLCLASS = "InlineCurve"
 
 
-class ConfigModel(BaseModel):
+@register_schema
+class InlineCurve(Curve, DynamicValidation):
     """
-    Configuration model for inline curve
+    Curve defined directly from an in-memory matrix of (x, y) points.
+
+    This class stores curve data provided as a list of rows, where each row must
+    contain exactly two values: the x-coordinate and the y-coordinate. The data is
+    converted to a NumPy array and validated to ensure it has shape ``(n, 2)``.
 
     Parameters
     ----------
     mat : list[list[float]]
-        Curve data (n rows, 2 columns)
+        Curve data as a two-column matrix. Each row represents one point in the
+        curve, with ``mat[i][0]`` being the x-value and ``mat[i][1]`` being the
+        y-value.
+
+    Raises
+    ------
+    PyAMLException
+        If the provided matrix does not have two columns.
     """
 
-    model_config = ConfigDict(arbitrary_types_allowed=True, extra="forbid")
+    def __init__(self, mat: list[list[float]]):
+        self._mat = mat
 
-    mat: list[list[float]]
-
-
-class InlineCurve(Curve):
-    """
-    Class for load CSV (x,y) curve
-    """
-
-    def __init__(self, cfg: ConfigModel):
-        self._cfg = cfg
         # Load the curve
-        self._curve = np.array(self._cfg.mat)
+        self._curve = np.array(self._mat)
 
         _s = np.shape(self._curve)
         if len(_s) != 2 or _s[1] != 2:
-            raise PyAMLException(f"InlineCurve(mat='{cfg.mat}',dtype=float): wrong shape (2,2) expected but got {str(_s)}")
+            raise PyAMLException(f"InlineCurve(mat='{self._mat}',dtype=float): wrong shape (2,2) expected but got {str(_s)}")
 
-    def get_curve(self) -> np.array:
+    @property
+    def mat(self):
+        return self._mat
+
+    def get_curve(self) -> NDArray[np.float64]:
         """
         Get the curve data.
 
@@ -51,4 +58,4 @@ class InlineCurve(Curve):
         return self._curve
 
     def __repr__(self):
-        return repr(self._cfg).replace("ConfigModel", self.__class__.__name__)
+        return __pyaml_repr__(self)

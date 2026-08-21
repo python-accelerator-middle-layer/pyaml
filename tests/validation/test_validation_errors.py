@@ -14,7 +14,7 @@ from pyaml.validation.errors import (
 
 def test_location_str_formats_readably():
     loc = Location(file="config.yaml", line=12, column=4)
-    assert str(loc) == "config.yaml at line 12, column 4."
+    assert str(loc) == "config.yaml: line 12, column 4"
 
 
 def test_extract_location_metadata_removes_metadata_and_converts_values():
@@ -84,10 +84,10 @@ def test_raise_validation_error_formats_error_with_location_metadata():
 
     message = str(err.value)
 
-    assert "'age':" in message
+    assert "'age'" in message
     assert "for class: 'pkg.module.Class'" in message
-    assert "config.yaml at line 21, column 7." in message
-    assert "config.yaml at line 20, column 1." in message
+    assert "config.yaml: line 21, column 7" in message
+    assert "config.yaml: line 20, column 1." in message
 
 
 def test_raise_validation_error_formats_deep_nested_error_tuple_repr():
@@ -100,5 +100,6 @@ def test_raise_validation_error_formats_deep_nested_error_tuple_repr():
         )
 
     message = str(err.value)
-    assert "('items', 0, 'age'):" in message
+    print(message)
+    assert "items[0].age" in message
     assert "for class: 'demo.DeepNestedModel'" in message

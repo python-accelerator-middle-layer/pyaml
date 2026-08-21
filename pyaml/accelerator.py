@@ -6,8 +6,8 @@ import warnings
 
 from .arrays.array import ArrayConfig
 from .common.element import Element, __pyaml_repr__
-from .common.element_holder import ElementHolder
 from .common.exception import PyAMLConfigException
+from .common.holders.element_holder import ElementHolder
 from .configuration import ConfigurationManager, UnsupportedConfigurationRootError
 from .configuration.factory import Factory
 from .control.controlsystem import ControlSystem
