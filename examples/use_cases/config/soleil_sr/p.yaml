@@ -1,0 +1,20 @@
+type: pyaml.accelerator
+facility: Synchrotron SOLEIL
+machine: sr
+data_folder: /data/store
+energy: 2739100000.0
+simulators:
+- type: pyaml.lattice.simulator
+  lattice: lat_superbend_rock_run4_2021_modified.m
+  name: design
+# controls:
+# - type: tango.pyaml.controlsystem
+#   name: live
+#   tango_host: ans:20000
+#   catalog: catalogs.yaml
+# catalogs:
+# - catalogs.yaml
+arrays: arrays.yaml
+devices:
+- devices.yaml
+- tuning_tools.yaml

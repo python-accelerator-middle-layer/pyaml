@@ -1,0 +1,4382 @@
+# --- BPMs (122 devices) ---
+- type: pyaml.bpm.bpm
+  name: BPM_001
+  x_pos: ANS-C01/DG/BPM.2/XPosSA
+  y_pos: ANS-C01/DG/BPM.2/ZPosSA
+- type: pyaml.bpm.bpm
+  name: BPM_002
+  x_pos: ANS-C01/DG/BPM.3/XPosSA
+  y_pos: ANS-C01/DG/BPM.3/ZPosSA
+- type: pyaml.bpm.bpm
+  name: BPM_003
+  x_pos: ANS-C01/DG/BPM.4/XPosSA
+  y_pos: ANS-C01/DG/BPM.4/ZPosSA
+- type: pyaml.bpm.bpm
+  name: BPM_004
+  x_pos: ANS-C01/DG/BPM.5/XPosSA
+  y_pos: ANS-C01/DG/BPM.5/ZPosSA
+- type: pyaml.bpm.bpm
+  name: BPM_005
+  x_pos: ANS-C01/DG/BPM.6/XPosSA
+  y_pos: ANS-C01/DG/BPM.6/ZPosSA
+- type: pyaml.bpm.bpm
+  name: BPM_006
+  x_pos: ANS-C01/DG/BPM.7/XPosSA
+  y_pos: ANS-C01/DG/BPM.7/ZPosSA
+- type: pyaml.bpm.bpm
+  name: BPM_007
+  x_pos: ANS-C02/DG/BPM.1/XPosSA
+  y_pos: ANS-C02/DG/BPM.1/ZPosSA
+- type: pyaml.bpm.bpm
+  name: BPM_008
+  x_pos: ANS-C02/DG/BPM.2/XPosSA
+  y_pos: ANS-C02/DG/BPM.2/ZPosSA
+- type: pyaml.bpm.bpm
+  name: BPM_009
+  x_pos: ANS-C02/DG/BPM.3/XPosSA
+  y_pos: ANS-C02/DG/BPM.3/ZPosSA
+- type: pyaml.bpm.bpm
+  name: BPM_010
+  x_pos: ANS-C02/DG/BPM.4/XPosSA
+  y_pos: ANS-C02/DG/BPM.4/ZPosSA
+- type: pyaml.bpm.bpm
+  name: BPM_011
+  x_pos: ANS-C02/DG/BPM.5/XPosSA
+  y_pos: ANS-C02/DG/BPM.5/ZPosSA
+- type: pyaml.bpm.bpm
+  name: BPM_012
+  x_pos: ANS-C02/DG/BPM.6/XPosSA
+  y_pos: ANS-C02/DG/BPM.6/ZPosSA
+- type: pyaml.bpm.bpm
+  name: BPM_013
+  x_pos: ANS-C02/DG/BPM.7/XPosSA
+  y_pos: ANS-C02/DG/BPM.7/ZPosSA
+- type: pyaml.bpm.bpm
+  name: BPM_014
+  x_pos: ANS-C02/DG/BPM.8/XPosSA
+  y_pos: ANS-C02/DG/BPM.8/ZPosSA
+- type: pyaml.bpm.bpm
+  name: BPM_015
+  x_pos: ANS-C03/DG/BPM.1/XPosSA
+  y_pos: ANS-C03/DG/BPM.1/ZPosSA
+- type: pyaml.bpm.bpm
+  name: BPM_016
+  x_pos: ANS-C03/DG/BPM.2/XPosSA
+  y_pos: ANS-C03/DG/BPM.2/ZPosSA
+- type: pyaml.bpm.bpm
+  name: BPM_017
+  x_pos: ANS-C03/DG/BPM.3/XPosSA
+  y_pos: ANS-C03/DG/BPM.3/ZPosSA
+- type: pyaml.bpm.bpm
+  name: BPM_018
+  x_pos: ANS-C03/DG/BPM.4/XPosSA
+  y_pos: ANS-C03/DG/BPM.4/ZPosSA
+- type: pyaml.bpm.bpm
+  name: BPM_019
+  x_pos: ANS-C03/DG/BPM.5/XPosSA
+  y_pos: ANS-C03/DG/BPM.5/ZPosSA
+- type: pyaml.bpm.bpm
+  name: BPM_020
+  x_pos: ANS-C03/DG/BPM.6/XPosSA
+  y_pos: ANS-C03/DG/BPM.6/ZPosSA
+- type: pyaml.bpm.bpm
+  name: BPM_021
+  x_pos: ANS-C03/DG/BPM.7/XPosSA
+  y_pos: ANS-C03/DG/BPM.7/ZPosSA
+- type: pyaml.bpm.bpm
+  name: BPM_022
+  x_pos: ANS-C03/DG/BPM.8/XPosSA
+  y_pos: ANS-C03/DG/BPM.8/ZPosSA
+- type: pyaml.bpm.bpm
+  name: BPM_023
+  x_pos: ANS-C04/DG/BPM.1/XPosSA
+  y_pos: ANS-C04/DG/BPM.1/ZPosSA
+- type: pyaml.bpm.bpm
+  name: BPM_024
+  x_pos: ANS-C04/DG/BPM.2/XPosSA
+  y_pos: ANS-C04/DG/BPM.2/ZPosSA
+- type: pyaml.bpm.bpm
+  name: BPM_025
+  x_pos: ANS-C04/DG/BPM.3/XPosSA
+  y_pos: ANS-C04/DG/BPM.3/ZPosSA
+- type: pyaml.bpm.bpm
+  name: BPM_026
+  x_pos: ANS-C04/DG/BPM.4/XPosSA
+  y_pos: ANS-C04/DG/BPM.4/ZPosSA
+- type: pyaml.bpm.bpm
+  name: BPM_027
+  x_pos: ANS-C04/DG/BPM.5/XPosSA
+  y_pos: ANS-C04/DG/BPM.5/ZPosSA
+- type: pyaml.bpm.bpm
+  name: BPM_028
+  x_pos: ANS-C04/DG/BPM.6/XPosSA
+  y_pos: ANS-C04/DG/BPM.6/ZPosSA
+- type: pyaml.bpm.bpm
+  name: BPM_029
+  x_pos: ANS-C04/DG/BPM.7/XPosSA
+  y_pos: ANS-C04/DG/BPM.7/ZPosSA
+- type: pyaml.bpm.bpm
+  name: BPM_030
+  x_pos: ANS-C05/DG/BPM.1/XPosSA
+  y_pos: ANS-C05/DG/BPM.1/ZPosSA
+- type: pyaml.bpm.bpm
+  name: BPM_031
+  x_pos: ANS-C05/DG/BPM.2/XPosSA
+  y_pos: ANS-C05/DG/BPM.2/ZPosSA
+- type: pyaml.bpm.bpm
+  name: BPM_032
+  x_pos: ANS-C05/DG/BPM.3/XPosSA
+  y_pos: ANS-C05/DG/BPM.3/ZPosSA
+- type: pyaml.bpm.bpm
+  name: BPM_033
+  x_pos: ANS-C05/DG/BPM.4/XPosSA
+  y_pos: ANS-C05/DG/BPM.4/ZPosSA
+- type: pyaml.bpm.bpm
+  name: BPM_034
+  x_pos: ANS-C05/DG/BPM.5/XPosSA
+  y_pos: ANS-C05/DG/BPM.5/ZPosSA
+- type: pyaml.bpm.bpm
+  name: BPM_035
+  x_pos: ANS-C05/DG/BPM.6/XPosSA
+  y_pos: ANS-C05/DG/BPM.6/ZPosSA
+- type: pyaml.bpm.bpm
+  name: BPM_036
+  x_pos: ANS-C05/DG/BPM.7/XPosSA
+  y_pos: ANS-C05/DG/BPM.7/ZPosSA
+- type: pyaml.bpm.bpm
+  name: BPM_037
+  x_pos: ANS-C06/DG/BPM.1/XPosSA
+  y_pos: ANS-C06/DG/BPM.1/ZPosSA
+- type: pyaml.bpm.bpm
+  name: BPM_038
+  x_pos: ANS-C06/DG/BPM.2/XPosSA
+  y_pos: ANS-C06/DG/BPM.2/ZPosSA
+- type: pyaml.bpm.bpm
+  name: BPM_039
+  x_pos: ANS-C06/DG/BPM.3/XPosSA
+  y_pos: ANS-C06/DG/BPM.3/ZPosSA
+- type: pyaml.bpm.bpm
+  name: BPM_040
+  x_pos: ANS-C06/DG/BPM.4/XPosSA
+  y_pos: ANS-C06/DG/BPM.4/ZPosSA
+- type: pyaml.bpm.bpm
+  name: BPM_041
+  x_pos: ANS-C06/DG/BPM.5/XPosSA
+  y_pos: ANS-C06/DG/BPM.5/ZPosSA
+- type: pyaml.bpm.bpm
+  name: BPM_042
+  x_pos: ANS-C06/DG/BPM.6/XPosSA
+  y_pos: ANS-C06/DG/BPM.6/ZPosSA
+- type: pyaml.bpm.bpm
+  name: BPM_043
+  x_pos: ANS-C06/DG/BPM.7/XPosSA
+  y_pos: ANS-C06/DG/BPM.7/ZPosSA
+- type: pyaml.bpm.bpm
+  name: BPM_044
+  x_pos: ANS-C06/DG/BPM.8/XPosSA
+  y_pos: ANS-C06/DG/BPM.8/ZPosSA
+- type: pyaml.bpm.bpm
+  name: BPM_045
+  x_pos: ANS-C07/DG/BPM.1/XPosSA
+  y_pos: ANS-C07/DG/BPM.1/ZPosSA
+- type: pyaml.bpm.bpm
+  name: BPM_046
+  x_pos: ANS-C07/DG/BPM.2/XPosSA
+  y_pos: ANS-C07/DG/BPM.2/ZPosSA
+- type: pyaml.bpm.bpm
+  name: BPM_047
+  x_pos: ANS-C07/DG/BPM.3/XPosSA
+  y_pos: ANS-C07/DG/BPM.3/ZPosSA
+- type: pyaml.bpm.bpm
+  name: BPM_048
+  x_pos: ANS-C07/DG/BPM.4/XPosSA
+  y_pos: ANS-C07/DG/BPM.4/ZPosSA
+- type: pyaml.bpm.bpm
+  name: BPM_049
+  x_pos: ANS-C07/DG/BPM.5/XPosSA
+  y_pos: ANS-C07/DG/BPM.5/ZPosSA
+- type: pyaml.bpm.bpm
+  name: BPM_050
+  x_pos: ANS-C07/DG/BPM.6/XPosSA
+  y_pos: ANS-C07/DG/BPM.6/ZPosSA
+- type: pyaml.bpm.bpm
+  name: BPM_051
+  x_pos: ANS-C07/DG/BPM.7/XPosSA
+  y_pos: ANS-C07/DG/BPM.7/ZPosSA
+- type: pyaml.bpm.bpm
+  name: BPM_052
+  x_pos: ANS-C07/DG/BPM.8/XPosSA
+  y_pos: ANS-C07/DG/BPM.8/ZPosSA
+- type: pyaml.bpm.bpm
+  name: BPM_053
+  x_pos: ANS-C08/DG/BPM.1/XPosSA
+  y_pos: ANS-C08/DG/BPM.1/ZPosSA
+- type: pyaml.bpm.bpm
+  name: BPM_054
+  x_pos: ANS-C08/DG/BPM.2/XPosSA
+  y_pos: ANS-C08/DG/BPM.2/ZPosSA
+- type: pyaml.bpm.bpm
+  name: BPM_055
+  x_pos: ANS-C08/DG/BPM.3/XPosSA
+  y_pos: ANS-C08/DG/BPM.3/ZPosSA
+- type: pyaml.bpm.bpm
+  name: BPM_056
+  x_pos: ANS-C08/DG/BPM.4/XPosSA
+  y_pos: ANS-C08/DG/BPM.4/ZPosSA
+- type: pyaml.bpm.bpm
+  name: BPM_057
+  x_pos: ANS-C08/DG/BPM.5/XPosSA
+  y_pos: ANS-C08/DG/BPM.5/ZPosSA
+- type: pyaml.bpm.bpm
+  name: BPM_058
+  x_pos: ANS-C08/DG/BPM.6/XPosSA
+  y_pos: ANS-C08/DG/BPM.6/ZPosSA
+- type: pyaml.bpm.bpm
+  name: BPM_059
+  x_pos: ANS-C08/DG/BPM.7/XPosSA
+  y_pos: ANS-C08/DG/BPM.7/ZPosSA
+- type: pyaml.bpm.bpm
+  name: BPM_060
+  x_pos: ANS-C09/DG/BPM.1/XPosSA
+  y_pos: ANS-C09/DG/BPM.1/ZPosSA
+- type: pyaml.bpm.bpm
+  name: BPM_061
+  x_pos: ANS-C09/DG/BPM.2/XPosSA
+  y_pos: ANS-C09/DG/BPM.2/ZPosSA
+- type: pyaml.bpm.bpm
+  name: BPM_062
+  x_pos: ANS-C09/DG/BPM.3/XPosSA
+  y_pos: ANS-C09/DG/BPM.3/ZPosSA
+- type: pyaml.bpm.bpm
+  name: BPM_063
+  x_pos: ANS-C09/DG/BPM.4/XPosSA
+  y_pos: ANS-C09/DG/BPM.4/ZPosSA
+- type: pyaml.bpm.bpm
+  name: BPM_064
+  x_pos: ANS-C09/DG/BPM.5/XPosSA
+  y_pos: ANS-C09/DG/BPM.5/ZPosSA
+- type: pyaml.bpm.bpm
+  name: BPM_065
+  x_pos: ANS-C09/DG/BPM.6/XPosSA
+  y_pos: ANS-C09/DG/BPM.6/ZPosSA
+- type: pyaml.bpm.bpm
+  name: BPM_066
+  x_pos: ANS-C09/DG/BPM.7/XPosSA
+  y_pos: ANS-C09/DG/BPM.7/ZPosSA
+- type: pyaml.bpm.bpm
+  name: BPM_067
+  x_pos: ANS-C10/DG/BPM.1/XPosSA
+  y_pos: ANS-C10/DG/BPM.1/ZPosSA
+- type: pyaml.bpm.bpm
+  name: BPM_068
+  x_pos: ANS-C10/DG/BPM.2/XPosSA
+  y_pos: ANS-C10/DG/BPM.2/ZPosSA
+- type: pyaml.bpm.bpm
+  name: BPM_069
+  x_pos: ANS-C10/DG/BPM.3/XPosSA
+  y_pos: ANS-C10/DG/BPM.3/ZPosSA
+- type: pyaml.bpm.bpm
+  name: BPM_070
+  x_pos: ANS-C10/DG/BPM.4/XPosSA
+  y_pos: ANS-C10/DG/BPM.4/ZPosSA
+- type: pyaml.bpm.bpm
+  name: BPM_071
+  x_pos: ANS-C10/DG/BPM.5/XPosSA
+  y_pos: ANS-C10/DG/BPM.5/ZPosSA
+- type: pyaml.bpm.bpm
+  name: BPM_072
+  x_pos: ANS-C10/DG/BPM.6/XPosSA
+  y_pos: ANS-C10/DG/BPM.6/ZPosSA
+- type: pyaml.bpm.bpm
+  name: BPM_073
+  x_pos: ANS-C10/DG/BPM.7/XPosSA
+  y_pos: ANS-C10/DG/BPM.7/ZPosSA
+- type: pyaml.bpm.bpm
+  name: BPM_074
+  x_pos: ANS-C10/DG/BPM.8/XPosSA
+  y_pos: ANS-C10/DG/BPM.8/ZPosSA
+- type: pyaml.bpm.bpm
+  name: BPM_075
+  x_pos: ANS-C11/DG/BPM.1/XPosSA
+  y_pos: ANS-C11/DG/BPM.1/ZPosSA
+- type: pyaml.bpm.bpm
+  name: BPM_076
+  x_pos: ANS-C11/DG/BPM.2/XPosSA
+  y_pos: ANS-C11/DG/BPM.2/ZPosSA
+- type: pyaml.bpm.bpm
+  name: BPM_077
+  x_pos: ANS-C11/DG/BPM.3/XPosSA
+  y_pos: ANS-C11/DG/BPM.3/ZPosSA
+- type: pyaml.bpm.bpm
+  name: BPM_078
+  x_pos: ANS-C11/DG/BPM.4/XPosSA
+  y_pos: ANS-C11/DG/BPM.4/ZPosSA
+- type: pyaml.bpm.bpm
+  name: BPM_079
+  x_pos: ANS-C11/DG/BPM.5/XPosSA
+  y_pos: ANS-C11/DG/BPM.5/ZPosSA
+- type: pyaml.bpm.bpm
+  name: BPM_080
+  x_pos: ANS-C11/DG/BPM.6/XPosSA
+  y_pos: ANS-C11/DG/BPM.6/ZPosSA
+- type: pyaml.bpm.bpm
+  name: BPM_081
+  x_pos: ANS-C11/DG/BPM.7/XPosSA
+  y_pos: ANS-C11/DG/BPM.7/ZPosSA
+- type: pyaml.bpm.bpm
+  name: BPM_082
+  x_pos: ANS-C11/DG/BPM.8/XPosSA
+  y_pos: ANS-C11/DG/BPM.8/ZPosSA
+- type: pyaml.bpm.bpm
+  name: BPM_083
+  x_pos: ANS-C12/DG/BPM.1/XPosSA
+  y_pos: ANS-C12/DG/BPM.1/ZPosSA
+- type: pyaml.bpm.bpm
+  name: BPM_084
+  x_pos: ANS-C12/DG/BPM.2/XPosSA
+  y_pos: ANS-C12/DG/BPM.2/ZPosSA
+- type: pyaml.bpm.bpm
+  name: BPM_085
+  x_pos: ANS-C12/DG/BPM.3/XPosSA
+  y_pos: ANS-C12/DG/BPM.3/ZPosSA
+- type: pyaml.bpm.bpm
+  name: BPM_086
+  x_pos: ANS-C12/DG/BPM.4/XPosSA
+  y_pos: ANS-C12/DG/BPM.4/ZPosSA
+- type: pyaml.bpm.bpm
+  name: BPM_087
+  x_pos: ANS-C12/DG/BPM.5/XPosSA
+  y_pos: ANS-C12/DG/BPM.5/ZPosSA
+- type: pyaml.bpm.bpm
+  name: BPM_088
+  x_pos: ANS-C12/DG/BPM.6/XPosSA
+  y_pos: ANS-C12/DG/BPM.6/ZPosSA
+- type: pyaml.bpm.bpm
+  name: BPM_089
+  x_pos: ANS-C12/DG/BPM.7/XPosSA
+  y_pos: ANS-C12/DG/BPM.7/ZPosSA
+- type: pyaml.bpm.bpm
+  name: BPM_090
+  x_pos: ANS-C13/DG/BPM.1/XPosSA
+  y_pos: ANS-C13/DG/BPM.1/ZPosSA
+- type: pyaml.bpm.bpm
+  name: BPM_091
+  x_pos: ANS-C13/DG/BPM.8/XPosSA
+  y_pos: ANS-C13/DG/BPM.8/ZPosSA
+- type: pyaml.bpm.bpm
+  name: BPM_092
+  x_pos: ANS-C13/DG/BPM.9/XPosSA
+  y_pos: ANS-C13/DG/BPM.9/ZPosSA
+- type: pyaml.bpm.bpm
+  name: BPM_093
+  x_pos: ANS-C13/DG/BPM.2/XPosSA
+  y_pos: ANS-C13/DG/BPM.2/ZPosSA
+- type: pyaml.bpm.bpm
+  name: BPM_094
+  x_pos: ANS-C13/DG/BPM.3/XPosSA
+  y_pos: ANS-C13/DG/BPM.3/ZPosSA
+- type: pyaml.bpm.bpm
+  name: BPM_095
+  x_pos: ANS-C13/DG/BPM.4/XPosSA
+  y_pos: ANS-C13/DG/BPM.4/ZPosSA
+- type: pyaml.bpm.bpm
+  name: BPM_096
+  x_pos: ANS-C13/DG/BPM.5/XPosSA
+  y_pos: ANS-C13/DG/BPM.5/ZPosSA
+- type: pyaml.bpm.bpm
+  name: BPM_097
+  x_pos: ANS-C13/DG/BPM.6/XPosSA
+  y_pos: ANS-C13/DG/BPM.6/ZPosSA
+- type: pyaml.bpm.bpm
+  name: BPM_098
+  x_pos: ANS-C13/DG/BPM.7/XPosSA
+  y_pos: ANS-C13/DG/BPM.7/ZPosSA
+- type: pyaml.bpm.bpm
+  name: BPM_099
+  x_pos: ANS-C14/DG/BPM.1/XPosSA
+  y_pos: ANS-C14/DG/BPM.1/ZPosSA
+- type: pyaml.bpm.bpm
+  name: BPM_100
+  x_pos: ANS-C14/DG/BPM.2/XPosSA
+  y_pos: ANS-C14/DG/BPM.2/ZPosSA
+- type: pyaml.bpm.bpm
+  name: BPM_101
+  x_pos: ANS-C14/DG/BPM.3/XPosSA
+  y_pos: ANS-C14/DG/BPM.3/ZPosSA
+- type: pyaml.bpm.bpm
+  name: BPM_102
+  x_pos: ANS-C14/DG/BPM.4/XPosSA
+  y_pos: ANS-C14/DG/BPM.4/ZPosSA
+- type: pyaml.bpm.bpm
+  name: BPM_103
+  x_pos: ANS-C14/DG/BPM.5/XPosSA
+  y_pos: ANS-C14/DG/BPM.5/ZPosSA
+- type: pyaml.bpm.bpm
+  name: BPM_104
+  x_pos: ANS-C14/DG/BPM.6/XPosSA
+  y_pos: ANS-C14/DG/BPM.6/ZPosSA
+- type: pyaml.bpm.bpm
+  name: BPM_105
+  x_pos: ANS-C14/DG/BPM.7/XPosSA
+  y_pos: ANS-C14/DG/BPM.7/ZPosSA
+- type: pyaml.bpm.bpm
+  name: BPM_106
+  x_pos: ANS-C14/DG/BPM.8/XPosSA
+  y_pos: ANS-C14/DG/BPM.8/ZPosSA
+- type: pyaml.bpm.bpm
+  name: BPM_107
+  x_pos: ANS-C15/DG/BPM.1/XPosSA
+  y_pos: ANS-C15/DG/BPM.1/ZPosSA
+- type: pyaml.bpm.bpm
+  name: BPM_108
+  x_pos: ANS-C15/DG/BPM.2/XPosSA
+  y_pos: ANS-C15/DG/BPM.2/ZPosSA
+- type: pyaml.bpm.bpm
+  name: BPM_109
+  x_pos: ANS-C15/DG/BPM.3/XPosSA
+  y_pos: ANS-C15/DG/BPM.3/ZPosSA
+- type: pyaml.bpm.bpm
+  name: BPM_110
+  x_pos: ANS-C15/DG/BPM.4/XPosSA
+  y_pos: ANS-C15/DG/BPM.4/ZPosSA
+- type: pyaml.bpm.bpm
+  name: BPM_111
+  x_pos: ANS-C15/DG/BPM.5/XPosSA
+  y_pos: ANS-C15/DG/BPM.5/ZPosSA
+- type: pyaml.bpm.bpm
+  name: BPM_112
+  x_pos: ANS-C15/DG/BPM.6/XPosSA
+  y_pos: ANS-C15/DG/BPM.6/ZPosSA
+- type: pyaml.bpm.bpm
+  name: BPM_113
+  x_pos: ANS-C15/DG/BPM.7/XPosSA
+  y_pos: ANS-C15/DG/BPM.7/ZPosSA
+- type: pyaml.bpm.bpm
+  name: BPM_114
+  x_pos: ANS-C15/DG/BPM.8/XPosSA
+  y_pos: ANS-C15/DG/BPM.8/ZPosSA
+- type: pyaml.bpm.bpm
+  name: BPM_115
+  x_pos: ANS-C16/DG/BPM.1/XPosSA
+  y_pos: ANS-C16/DG/BPM.1/ZPosSA
+- type: pyaml.bpm.bpm
+  name: BPM_116
+  x_pos: ANS-C16/DG/BPM.2/XPosSA
+  y_pos: ANS-C16/DG/BPM.2/ZPosSA
+- type: pyaml.bpm.bpm
+  name: BPM_117
+  x_pos: ANS-C16/DG/BPM.3/XPosSA
+  y_pos: ANS-C16/DG/BPM.3/ZPosSA
+- type: pyaml.bpm.bpm
+  name: BPM_118
+  x_pos: ANS-C16/DG/BPM.4/XPosSA
+  y_pos: ANS-C16/DG/BPM.4/ZPosSA
+- type: pyaml.bpm.bpm
+  name: BPM_119
+  x_pos: ANS-C16/DG/BPM.5/XPosSA
+  y_pos: ANS-C16/DG/BPM.5/ZPosSA
+- type: pyaml.bpm.bpm
+  name: BPM_120
+  x_pos: ANS-C16/DG/BPM.6/XPosSA
+  y_pos: ANS-C16/DG/BPM.6/ZPosSA
+- type: pyaml.bpm.bpm
+  name: BPM_121
+  x_pos: ANS-C16/DG/BPM.7/XPosSA
+  y_pos: ANS-C16/DG/BPM.7/ZPosSA
+- type: pyaml.bpm.bpm
+  name: BPM_122
+  x_pos: ANS-C01/DG/BPM.1/XPosSA
+  y_pos: ANS-C01/DG/BPM.1/ZPosSA
+# --- Slow Horizontal Correctors (124 devices) ---
+- type: pyaml.magnet.hcorrector
+  name: HCOR_001
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C01/AE/S1-CH/currentPM
+- type: pyaml.magnet.hcorrector
+  name: HCOR_002
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C01/AE/S2-CH/currentPM
+- type: pyaml.magnet.hcorrector
+  name: HCOR_003
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C01/AE/S3.1-CH/currentPM
+- type: pyaml.magnet.hcorrector
+  name: HCOR_004
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C01/AE/S4-CH/currentPM
+- type: pyaml.magnet.hcorrector
+  name: HCOR_005
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C01/AE/S3.2-CH/currentPM
+- type: pyaml.magnet.hcorrector
+  name: HCOR_006
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C01/AE/S5-CH/currentPM
+- type: pyaml.magnet.hcorrector
+  name: HCOR_007
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C01/AE/S6-CH/currentPM
+- type: pyaml.magnet.hcorrector
+  name: HCOR_008
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C02/AE/S8.1-CH/currentPM
+- type: pyaml.magnet.hcorrector
+  name: HCOR_009
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C02/AE/S7.1-CH/currentPM
+- type: pyaml.magnet.hcorrector
+  name: HCOR_010
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C02/AE/S9.1-CH/currentPM
+- type: pyaml.magnet.hcorrector
+  name: HCOR_011
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C02/AE/S10.1-CH/currentPM
+- type: pyaml.magnet.hcorrector
+  name: HCOR_012
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C02/AE/S10.2-CH/currentPM
+- type: pyaml.magnet.hcorrector
+  name: HCOR_013
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C02/AE/S9.2-CH/currentPM
+- type: pyaml.magnet.hcorrector
+  name: HCOR_014
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C02/AE/S7.2-CH/currentPM
+- type: pyaml.magnet.hcorrector
+  name: HCOR_015
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C02/AE/S8.2-CH/currentPM
+- type: pyaml.magnet.hcorrector
+  name: HCOR_016
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C03/AE/S8.1-CH/currentPM
+- type: pyaml.magnet.hcorrector
+  name: HCOR_017
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C03/AE/S7.1-CH/currentPM
+- type: pyaml.magnet.hcorrector
+  name: HCOR_018
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C03/AE/S9.1-CH/currentPM
+- type: pyaml.magnet.hcorrector
+  name: HCOR_019
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C03/AE/S10.1-CH/currentPM
+- type: pyaml.magnet.hcorrector
+  name: HCOR_020
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C03/AE/S10.2-CH/currentPM
+- type: pyaml.magnet.hcorrector
+  name: HCOR_021
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C03/AE/S9.2-CH/currentPM
+- type: pyaml.magnet.hcorrector
+  name: HCOR_022
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C03/AE/S7.2-CH/currentPM
+- type: pyaml.magnet.hcorrector
+  name: HCOR_023
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C03/AE/S8.2-CH/currentPM
+- type: pyaml.magnet.hcorrector
+  name: HCOR_024
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C04/AE/S6-CH/currentPM
+- type: pyaml.magnet.hcorrector
+  name: HCOR_025
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C04/AE/S5-CH/currentPM
+- type: pyaml.magnet.hcorrector
+  name: HCOR_026
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C04/AE/S3.1-CH/currentPM
+- type: pyaml.magnet.hcorrector
+  name: HCOR_027
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C04/AE/S4-CH/currentPM
+- type: pyaml.magnet.hcorrector
+  name: HCOR_028
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C04/AE/S3.2-CH/currentPM
+- type: pyaml.magnet.hcorrector
+  name: HCOR_029
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C04/AE/S2-CH/currentPM
+- type: pyaml.magnet.hcorrector
+  name: HCOR_030
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C04/AE/S1-CH/currentPM
+- type: pyaml.magnet.hcorrector
+  name: HCOR_121
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C05/EI/L-HU640/currentCHE
+- type: pyaml.magnet.hcorrector
+  name: HCOR_122
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C05/EI/L-HU640/currentCHS
+- type: pyaml.magnet.hcorrector
+  name: HCOR_031
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C05/AE/S1-CH/currentPM
+- type: pyaml.magnet.hcorrector
+  name: HCOR_032
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C05/AE/S2-CH/currentPM
+- type: pyaml.magnet.hcorrector
+  name: HCOR_033
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C05/AE/S3.1-CH/currentPM
+- type: pyaml.magnet.hcorrector
+  name: HCOR_034
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C05/AE/S4-CH/currentPM
+- type: pyaml.magnet.hcorrector
+  name: HCOR_035
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C05/AE/S3.2-CH/currentPM
+- type: pyaml.magnet.hcorrector
+  name: HCOR_036
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C05/AE/S5-CH/currentPM
+- type: pyaml.magnet.hcorrector
+  name: HCOR_037
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C05/AE/S6-CH/currentPM
+- type: pyaml.magnet.hcorrector
+  name: HCOR_038
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C06/AE/S8.1-CH/currentPM
+- type: pyaml.magnet.hcorrector
+  name: HCOR_039
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C06/AE/S7.1-CH/currentPM
+- type: pyaml.magnet.hcorrector
+  name: HCOR_040
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C06/AE/S9.1-CH/currentPM
+- type: pyaml.magnet.hcorrector
+  name: HCOR_041
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C06/AE/S10.1-CH/currentPM
+- type: pyaml.magnet.hcorrector
+  name: HCOR_042
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C06/AE/S10.2-CH/currentPM
+- type: pyaml.magnet.hcorrector
+  name: HCOR_043
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C06/AE/S9.2-CH/currentPM
+- type: pyaml.magnet.hcorrector
+  name: HCOR_044
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C06/AE/S7.2-CH/currentPM
+- type: pyaml.magnet.hcorrector
+  name: HCOR_045
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C06/AE/S8.2-CH/currentPM
+- type: pyaml.magnet.hcorrector
+  name: HCOR_046
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C07/AE/S8.1-CH/currentPM
+- type: pyaml.magnet.hcorrector
+  name: HCOR_047
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C07/AE/S7.1-CH/currentPM
+- type: pyaml.magnet.hcorrector
+  name: HCOR_048
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C07/AE/S9.1-CH/currentPM
+- type: pyaml.magnet.hcorrector
+  name: HCOR_049
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C07/AE/S10.1-CH/currentPM
+- type: pyaml.magnet.hcorrector
+  name: HCOR_050
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C07/AE/S10.2-CH/currentPM
+- type: pyaml.magnet.hcorrector
+  name: HCOR_051
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C07/AE/S9.2-CH/currentPM
+- type: pyaml.magnet.hcorrector
+  name: HCOR_052
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C07/AE/S7.2-CH/currentPM
+- type: pyaml.magnet.hcorrector
+  name: HCOR_053
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C07/AE/S8.2-CH/currentPM
+- type: pyaml.magnet.hcorrector
+  name: HCOR_054
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C08/AE/S6-CH/currentPM
+- type: pyaml.magnet.hcorrector
+  name: HCOR_055
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C08/AE/S5-CH/currentPM
+- type: pyaml.magnet.hcorrector
+  name: HCOR_056
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C08/AE/S3.1-CH/currentPM
+- type: pyaml.magnet.hcorrector
+  name: HCOR_057
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C08/AE/S4-CH/currentPM
+- type: pyaml.magnet.hcorrector
+  name: HCOR_058
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C08/AE/S3.2-CH/currentPM
+- type: pyaml.magnet.hcorrector
+  name: HCOR_059
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C08/AE/S2-CH/currentPM
+- type: pyaml.magnet.hcorrector
+  name: HCOR_060
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C08/AE/S1-CH/currentPM
+- type: pyaml.magnet.hcorrector
+  name: HCOR_061
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C09/AE/S1-CH/currentPM
+- type: pyaml.magnet.hcorrector
+  name: HCOR_062
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C09/AE/S2-CH/currentPM
+- type: pyaml.magnet.hcorrector
+  name: HCOR_063
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C09/AE/S3.1-CH/currentPM
+- type: pyaml.magnet.hcorrector
+  name: HCOR_064
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C09/AE/S4-CH/currentPM
+- type: pyaml.magnet.hcorrector
+  name: HCOR_065
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C09/AE/S3.2-CH/currentPM
+- type: pyaml.magnet.hcorrector
+  name: HCOR_066
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C09/AE/S5-CH/currentPM
+- type: pyaml.magnet.hcorrector
+  name: HCOR_067
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C09/AE/S6-CH/currentPM
+- type: pyaml.magnet.hcorrector
+  name: HCOR_068
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C10/AE/S8.1-CH/currentPM
+- type: pyaml.magnet.hcorrector
+  name: HCOR_069
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C10/AE/S7.1-CH/currentPM
+- type: pyaml.magnet.hcorrector
+  name: HCOR_070
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C10/AE/S9.1-CH/currentPM
+- type: pyaml.magnet.hcorrector
+  name: HCOR_071
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C10/AE/S10.1-CH/currentPM
+- type: pyaml.magnet.hcorrector
+  name: HCOR_072
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C10/AE/S10.2-CH/currentPM
+- type: pyaml.magnet.hcorrector
+  name: HCOR_073
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C10/AE/S9.2-CH/currentPM
+- type: pyaml.magnet.hcorrector
+  name: HCOR_074
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C10/AE/S7.2-CH/currentPM
+- type: pyaml.magnet.hcorrector
+  name: HCOR_075
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C10/AE/S8.2-CH/currentPM
+- type: pyaml.magnet.hcorrector
+  name: HCOR_076
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C11/AE/S8.1-CH/currentPM
+- type: pyaml.magnet.hcorrector
+  name: HCOR_077
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C11/AE/S7.1-CH/currentPM
+- type: pyaml.magnet.hcorrector
+  name: HCOR_078
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C11/AE/S9.1-CH/currentPM
+- type: pyaml.magnet.hcorrector
+  name: HCOR_079
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C11/AE/S10.1-CH/currentPM
+- type: pyaml.magnet.hcorrector
+  name: HCOR_080
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C11/AE/S10.2-CH/currentPM
+- type: pyaml.magnet.hcorrector
+  name: HCOR_081
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C11/AE/S9.2-CH/currentPM
+- type: pyaml.magnet.hcorrector
+  name: HCOR_082
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C11/AE/S7.2-CH/currentPM
+- type: pyaml.magnet.hcorrector
+  name: HCOR_083
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C11/AE/S8.2-CH/currentPM
+- type: pyaml.magnet.hcorrector
+  name: HCOR_084
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C12/AE/S6-CH/currentPM
+- type: pyaml.magnet.hcorrector
+  name: HCOR_085
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C12/AE/S5-CH/currentPM
+- type: pyaml.magnet.hcorrector
+  name: HCOR_086
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C12/AE/S3.1-CH/currentPM
+- type: pyaml.magnet.hcorrector
+  name: HCOR_087
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C12/AE/S4-CH/currentPM
+- type: pyaml.magnet.hcorrector
+  name: HCOR_088
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C12/AE/S3.2-CH/currentPM
+- type: pyaml.magnet.hcorrector
+  name: HCOR_089
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C12/AE/S2-CH/currentPM
+- type: pyaml.magnet.hcorrector
+  name: HCOR_090
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C12/AE/S1-CH/currentPM
+- type: pyaml.magnet.hcorrector
+  name: HCOR_123
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C13/AE/S12.1-CH/currentPM
+- type: pyaml.magnet.hcorrector
+  name: HCOR_124
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C13/AE/S12.2-CH/currentPM
+- type: pyaml.magnet.hcorrector
+  name: HCOR_091
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C13/AE/S1-CH/currentPM
+- type: pyaml.magnet.hcorrector
+  name: HCOR_092
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C13/AE/S2-CH/currentPM
+- type: pyaml.magnet.hcorrector
+  name: HCOR_093
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C13/AE/S3.1-CH/currentPM
+- type: pyaml.magnet.hcorrector
+  name: HCOR_094
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C13/AE/S4-CH/currentPM
+- type: pyaml.magnet.hcorrector
+  name: HCOR_095
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C13/AE/S3.2-CH/currentPM
+- type: pyaml.magnet.hcorrector
+  name: HCOR_096
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C13/AE/S5-CH/currentPM
+- type: pyaml.magnet.hcorrector
+  name: HCOR_097
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C13/AE/S6-CH/currentPM
+- type: pyaml.magnet.hcorrector
+  name: HCOR_098
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C14/AE/S8.1-CH/currentPM
+- type: pyaml.magnet.hcorrector
+  name: HCOR_099
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C14/AE/S7.1-CH/currentPM
+- type: pyaml.magnet.hcorrector
+  name: HCOR_100
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C14/AE/S9.1-CH/currentPM
+- type: pyaml.magnet.hcorrector
+  name: HCOR_101
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C14/AE/S10.1-CH/currentPM
+- type: pyaml.magnet.hcorrector
+  name: HCOR_102
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C14/AE/S10.2-CH/currentPM
+- type: pyaml.magnet.hcorrector
+  name: HCOR_103
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C14/AE/S9.2-CH/currentPM
+- type: pyaml.magnet.hcorrector
+  name: HCOR_104
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C14/AE/S7.2-CH/currentPM
+- type: pyaml.magnet.hcorrector
+  name: HCOR_105
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C14/AE/S8.2-CH/currentPM
+- type: pyaml.magnet.hcorrector
+  name: HCOR_106
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C15/AE/S8.1-CH/currentPM
+- type: pyaml.magnet.hcorrector
+  name: HCOR_107
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C15/AE/S7.1-CH/currentPM
+- type: pyaml.magnet.hcorrector
+  name: HCOR_108
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C15/AE/S9.1-CH/currentPM
+- type: pyaml.magnet.hcorrector
+  name: HCOR_109
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C15/AE/S10.1-CH/currentPM
+- type: pyaml.magnet.hcorrector
+  name: HCOR_110
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C15/AE/S10.2-CH/currentPM
+- type: pyaml.magnet.hcorrector
+  name: HCOR_111
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C15/AE/S9.2-CH/currentPM
+- type: pyaml.magnet.hcorrector
+  name: HCOR_112
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C15/AE/S7.2-CH/currentPM
+- type: pyaml.magnet.hcorrector
+  name: HCOR_113
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C15/AE/S8.2-CH/currentPM
+- type: pyaml.magnet.hcorrector
+  name: HCOR_114
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C16/AE/S6-CH/currentPM
+- type: pyaml.magnet.hcorrector
+  name: HCOR_115
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C16/AE/S5-CH/currentPM
+- type: pyaml.magnet.hcorrector
+  name: HCOR_116
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C16/AE/S3.1-CH/currentPM
+- type: pyaml.magnet.hcorrector
+  name: HCOR_117
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C16/AE/S4-CH/currentPM
+- type: pyaml.magnet.hcorrector
+  name: HCOR_118
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C16/AE/S3.2-CH/currentPM
+- type: pyaml.magnet.hcorrector
+  name: HCOR_119
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C16/AE/S2-CH/currentPM
+- type: pyaml.magnet.hcorrector
+  name: HCOR_120
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C16/AE/S1-CH/currentPM
+# --- Slow Vertical Correctors (124 devices) ---
+- type: pyaml.magnet.vcorrector
+  name: VCOR_001
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C01/AE/S1-CV/currentPM
+- type: pyaml.magnet.vcorrector
+  name: VCOR_002
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C01/AE/S2-CV/currentPM
+- type: pyaml.magnet.vcorrector
+  name: VCOR_003
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C01/AE/S3.1-CV/currentPM
+- type: pyaml.magnet.vcorrector
+  name: VCOR_004
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C01/AE/S4-CV/currentPM
+- type: pyaml.magnet.vcorrector
+  name: VCOR_005
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C01/AE/S3.2-CV/currentPM
+- type: pyaml.magnet.vcorrector
+  name: VCOR_006
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C01/AE/S5-CV/currentPM
+- type: pyaml.magnet.vcorrector
+  name: VCOR_007
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C01/AE/S6-CV/currentPM
+- type: pyaml.magnet.vcorrector
+  name: VCOR_008
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C02/AE/S8.1-CV/currentPM
+- type: pyaml.magnet.vcorrector
+  name: VCOR_009
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C02/AE/S7.1-CV/currentPM
+- type: pyaml.magnet.vcorrector
+  name: VCOR_010
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C02/AE/S9.1-CV/currentPM
+- type: pyaml.magnet.vcorrector
+  name: VCOR_011
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C02/AE/S10.1-CV/currentPM
+- type: pyaml.magnet.vcorrector
+  name: VCOR_012
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C02/AE/S10.2-CV/currentPM
+- type: pyaml.magnet.vcorrector
+  name: VCOR_013
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C02/AE/S9.2-CV/currentPM
+- type: pyaml.magnet.vcorrector
+  name: VCOR_014
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C02/AE/S7.2-CV/currentPM
+- type: pyaml.magnet.vcorrector
+  name: VCOR_015
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C02/AE/S8.2-CV/currentPM
+- type: pyaml.magnet.vcorrector
+  name: VCOR_016
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C03/AE/S8.1-CV/currentPM
+- type: pyaml.magnet.vcorrector
+  name: VCOR_017
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C03/AE/S7.1-CV/currentPM
+- type: pyaml.magnet.vcorrector
+  name: VCOR_018
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C03/AE/S9.1-CV/currentPM
+- type: pyaml.magnet.vcorrector
+  name: VCOR_019
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C03/AE/S10.1-CV/currentPM
+- type: pyaml.magnet.vcorrector
+  name: VCOR_020
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C03/AE/S10.2-CV/currentPM
+- type: pyaml.magnet.vcorrector
+  name: VCOR_021
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C03/AE/S9.2-CV/currentPM
+- type: pyaml.magnet.vcorrector
+  name: VCOR_022
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C03/AE/S7.2-CV/currentPM
+- type: pyaml.magnet.vcorrector
+  name: VCOR_023
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C03/AE/S8.2-CV/currentPM
+- type: pyaml.magnet.vcorrector
+  name: VCOR_024
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C04/AE/S6-CV/currentPM
+- type: pyaml.magnet.vcorrector
+  name: VCOR_025
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C04/AE/S5-CV/currentPM
+- type: pyaml.magnet.vcorrector
+  name: VCOR_026
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C04/AE/S3.1-CV/currentPM
+- type: pyaml.magnet.vcorrector
+  name: VCOR_027
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C04/AE/S4-CV/currentPM
+- type: pyaml.magnet.vcorrector
+  name: VCOR_028
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C04/AE/S3.2-CV/currentPM
+- type: pyaml.magnet.vcorrector
+  name: VCOR_029
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C04/AE/S2-CV/currentPM
+- type: pyaml.magnet.vcorrector
+  name: VCOR_030
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C04/AE/S1-CV/currentPM
+- type: pyaml.magnet.vcorrector
+  name: VCOR_121
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C05/EI/L-HU640/currentCVE
+- type: pyaml.magnet.vcorrector
+  name: VCOR_122
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C05/EI/L-HU640/currentCVS
+- type: pyaml.magnet.vcorrector
+  name: VCOR_031
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C05/AE/S1-CV/currentPM
+- type: pyaml.magnet.vcorrector
+  name: VCOR_032
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C05/AE/S2-CV/currentPM
+- type: pyaml.magnet.vcorrector
+  name: VCOR_033
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C05/AE/S3.1-CV/currentPM
+- type: pyaml.magnet.vcorrector
+  name: VCOR_034
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C05/AE/S4-CV/currentPM
+- type: pyaml.magnet.vcorrector
+  name: VCOR_035
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C05/AE/S3.2-CV/currentPM
+- type: pyaml.magnet.vcorrector
+  name: VCOR_036
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C05/AE/S5-CV/currentPM
+- type: pyaml.magnet.vcorrector
+  name: VCOR_037
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C05/AE/S6-CV/currentPM
+- type: pyaml.magnet.vcorrector
+  name: VCOR_038
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C06/AE/S8.1-CV/currentPM
+- type: pyaml.magnet.vcorrector
+  name: VCOR_039
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C06/AE/S7.1-CV/currentPM
+- type: pyaml.magnet.vcorrector
+  name: VCOR_040
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C06/AE/S9.1-CV/currentPM
+- type: pyaml.magnet.vcorrector
+  name: VCOR_041
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C06/AE/S10.1-CV/currentPM
+- type: pyaml.magnet.vcorrector
+  name: VCOR_042
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C06/AE/S10.2-CV/currentPM
+- type: pyaml.magnet.vcorrector
+  name: VCOR_043
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C06/AE/S9.2-CV/currentPM
+- type: pyaml.magnet.vcorrector
+  name: VCOR_044
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C06/AE/S7.2-CV/currentPM
+- type: pyaml.magnet.vcorrector
+  name: VCOR_045
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C06/AE/S8.2-CV/currentPM
+- type: pyaml.magnet.vcorrector
+  name: VCOR_046
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C07/AE/S8.1-CV/currentPM
+- type: pyaml.magnet.vcorrector
+  name: VCOR_047
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C07/AE/S7.1-CV/currentPM
+- type: pyaml.magnet.vcorrector
+  name: VCOR_048
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C07/AE/S9.1-CV/currentPM
+- type: pyaml.magnet.vcorrector
+  name: VCOR_049
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C07/AE/S10.1-CV/currentPM
+- type: pyaml.magnet.vcorrector
+  name: VCOR_050
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C07/AE/S10.2-CV/currentPM
+- type: pyaml.magnet.vcorrector
+  name: VCOR_051
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C07/AE/S9.2-CV/currentPM
+- type: pyaml.magnet.vcorrector
+  name: VCOR_052
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C07/AE/S7.2-CV/currentPM
+- type: pyaml.magnet.vcorrector
+  name: VCOR_053
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C07/AE/S8.2-CV/currentPM
+- type: pyaml.magnet.vcorrector
+  name: VCOR_054
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C08/AE/S6-CV/currentPM
+- type: pyaml.magnet.vcorrector
+  name: VCOR_055
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C08/AE/S5-CV/currentPM
+- type: pyaml.magnet.vcorrector
+  name: VCOR_056
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C08/AE/S3.1-CV/currentPM
+- type: pyaml.magnet.vcorrector
+  name: VCOR_057
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C08/AE/S4-CV/currentPM
+- type: pyaml.magnet.vcorrector
+  name: VCOR_058
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C08/AE/S3.2-CV/currentPM
+- type: pyaml.magnet.vcorrector
+  name: VCOR_059
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C08/AE/S2-CV/currentPM
+- type: pyaml.magnet.vcorrector
+  name: VCOR_060
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C08/AE/S1-CV/currentPM
+- type: pyaml.magnet.vcorrector
+  name: VCOR_061
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C09/AE/S1-CV/currentPM
+- type: pyaml.magnet.vcorrector
+  name: VCOR_062
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C09/AE/S2-CV/currentPM
+- type: pyaml.magnet.vcorrector
+  name: VCOR_063
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C09/AE/S3.1-CV/currentPM
+- type: pyaml.magnet.vcorrector
+  name: VCOR_064
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C09/AE/S4-CV/currentPM
+- type: pyaml.magnet.vcorrector
+  name: VCOR_065
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C09/AE/S3.2-CV/currentPM
+- type: pyaml.magnet.vcorrector
+  name: VCOR_066
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C09/AE/S5-CV/currentPM
+- type: pyaml.magnet.vcorrector
+  name: VCOR_067
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C09/AE/S6-CV/currentPM
+- type: pyaml.magnet.vcorrector
+  name: VCOR_068
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C10/AE/S8.1-CV/currentPM
+- type: pyaml.magnet.vcorrector
+  name: VCOR_069
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C10/AE/S7.1-CV/currentPM
+- type: pyaml.magnet.vcorrector
+  name: VCOR_070
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C10/AE/S9.1-CV/currentPM
+- type: pyaml.magnet.vcorrector
+  name: VCOR_071
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C10/AE/S10.1-CV/currentPM
+- type: pyaml.magnet.vcorrector
+  name: VCOR_072
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C10/AE/S10.2-CV/currentPM
+- type: pyaml.magnet.vcorrector
+  name: VCOR_073
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C10/AE/S9.2-CV/currentPM
+- type: pyaml.magnet.vcorrector
+  name: VCOR_074
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C10/AE/S7.2-CV/currentPM
+- type: pyaml.magnet.vcorrector
+  name: VCOR_075
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C10/AE/S8.2-CV/currentPM
+- type: pyaml.magnet.vcorrector
+  name: VCOR_076
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C11/AE/S8.1-CV/currentPM
+- type: pyaml.magnet.vcorrector
+  name: VCOR_077
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C11/AE/S7.1-CV/currentPM
+- type: pyaml.magnet.vcorrector
+  name: VCOR_078
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C11/AE/S9.1-CV/currentPM
+- type: pyaml.magnet.vcorrector
+  name: VCOR_079
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C11/AE/S10.1-CV/currentPM
+- type: pyaml.magnet.vcorrector
+  name: VCOR_080
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C11/AE/S10.2-CV/currentPM
+- type: pyaml.magnet.vcorrector
+  name: VCOR_081
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C11/AE/S9.2-CV/currentPM
+- type: pyaml.magnet.vcorrector
+  name: VCOR_082
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C11/AE/S7.2-CV/currentPM
+- type: pyaml.magnet.vcorrector
+  name: VCOR_083
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C11/AE/S8.2-CV/currentPM
+- type: pyaml.magnet.vcorrector
+  name: VCOR_084
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C12/AE/S6-CV/currentPM
+- type: pyaml.magnet.vcorrector
+  name: VCOR_085
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C12/AE/S5-CV/currentPM
+- type: pyaml.magnet.vcorrector
+  name: VCOR_086
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C12/AE/S3.1-CV/currentPM
+- type: pyaml.magnet.vcorrector
+  name: VCOR_087
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C12/AE/S4-CV/currentPM
+- type: pyaml.magnet.vcorrector
+  name: VCOR_088
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C12/AE/S3.2-CV/currentPM
+- type: pyaml.magnet.vcorrector
+  name: VCOR_089
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C12/AE/S2-CV/currentPM
+- type: pyaml.magnet.vcorrector
+  name: VCOR_090
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C12/AE/S1-CV/currentPM
+- type: pyaml.magnet.vcorrector
+  name: VCOR_123
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C13/AE/S12.1-CV/currentPM
+- type: pyaml.magnet.vcorrector
+  name: VCOR_124
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C13/AE/S12.2-CV/currentPM
+- type: pyaml.magnet.vcorrector
+  name: VCOR_091
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C13/AE/S1-CV/currentPM
+- type: pyaml.magnet.vcorrector
+  name: VCOR_092
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C13/AE/S2-CV/currentPM
+- type: pyaml.magnet.vcorrector
+  name: VCOR_093
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C13/AE/S3.1-CV/currentPM
+- type: pyaml.magnet.vcorrector
+  name: VCOR_094
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C13/AE/S4-CV/currentPM
+- type: pyaml.magnet.vcorrector
+  name: VCOR_095
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C13/AE/S3.2-CV/currentPM
+- type: pyaml.magnet.vcorrector
+  name: VCOR_096
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C13/AE/S5-CV/currentPM
+- type: pyaml.magnet.vcorrector
+  name: VCOR_097
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C13/AE/S6-CV/currentPM
+- type: pyaml.magnet.vcorrector
+  name: VCOR_098
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C14/AE/S8.1-CV/currentPM
+- type: pyaml.magnet.vcorrector
+  name: VCOR_099
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C14/AE/S7.1-CV/currentPM
+- type: pyaml.magnet.vcorrector
+  name: VCOR_100
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C14/AE/S9.1-CV/currentPM
+- type: pyaml.magnet.vcorrector
+  name: VCOR_101
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C14/AE/S10.1-CV/currentPM
+- type: pyaml.magnet.vcorrector
+  name: VCOR_102
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C14/AE/S10.2-CV/currentPM
+- type: pyaml.magnet.vcorrector
+  name: VCOR_103
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C14/AE/S9.2-CV/currentPM
+- type: pyaml.magnet.vcorrector
+  name: VCOR_104
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C14/AE/S7.2-CV/currentPM
+- type: pyaml.magnet.vcorrector
+  name: VCOR_105
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C14/AE/S8.2-CV/currentPM
+- type: pyaml.magnet.vcorrector
+  name: VCOR_106
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C15/AE/S8.1-CV/currentPM
+- type: pyaml.magnet.vcorrector
+  name: VCOR_107
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C15/AE/S7.1-CV/currentPM
+- type: pyaml.magnet.vcorrector
+  name: VCOR_108
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C15/AE/S9.1-CV/currentPM
+- type: pyaml.magnet.vcorrector
+  name: VCOR_109
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C15/AE/S10.1-CV/currentPM
+- type: pyaml.magnet.vcorrector
+  name: VCOR_110
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C15/AE/S10.2-CV/currentPM
+- type: pyaml.magnet.vcorrector
+  name: VCOR_111
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C15/AE/S9.2-CV/currentPM
+- type: pyaml.magnet.vcorrector
+  name: VCOR_112
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C15/AE/S7.2-CV/currentPM
+- type: pyaml.magnet.vcorrector
+  name: VCOR_113
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C15/AE/S8.2-CV/currentPM
+- type: pyaml.magnet.vcorrector
+  name: VCOR_114
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C16/AE/S6-CV/currentPM
+- type: pyaml.magnet.vcorrector
+  name: VCOR_115
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C16/AE/S5-CV/currentPM
+- type: pyaml.magnet.vcorrector
+  name: VCOR_116
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C16/AE/S3.1-CV/currentPM
+- type: pyaml.magnet.vcorrector
+  name: VCOR_117
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C16/AE/S4-CV/currentPM
+- type: pyaml.magnet.vcorrector
+  name: VCOR_118
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C16/AE/S3.2-CV/currentPM
+- type: pyaml.magnet.vcorrector
+  name: VCOR_119
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C16/AE/S2-CV/currentPM
+- type: pyaml.magnet.vcorrector
+  name: VCOR_120
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C16/AE/S1-CV/currentPM
+# --- Fast Horizontal Correctors (50 devices) ---
+- type: pyaml.magnet.hcorrector
+  name: FHCOR_002
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C01/DG/CH.2/current
+- type: pyaml.magnet.hcorrector
+  name: FHCOR_003
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C02/DG/CH.1/current
+- type: pyaml.magnet.hcorrector
+  name: FHCOR_004
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C02/DG/CH.2/current
+- type: pyaml.magnet.hcorrector
+  name: FHCOR_005
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C02/DG/CH.3/current
+- type: pyaml.magnet.hcorrector
+  name: FHCOR_006
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C02/DG/CH.4/current
+- type: pyaml.magnet.hcorrector
+  name: FHCOR_007
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C03/DG/CH.1/current
+- type: pyaml.magnet.hcorrector
+  name: FHCOR_008
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C03/DG/CH.2/current
+- type: pyaml.magnet.hcorrector
+  name: FHCOR_009
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C03/DG/CH.3/current
+- type: pyaml.magnet.hcorrector
+  name: FHCOR_010
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C03/DG/CH.4/current
+- type: pyaml.magnet.hcorrector
+  name: FHCOR_011
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C04/DG/CH.1/current
+- type: pyaml.magnet.hcorrector
+  name: FHCOR_012
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C04/DG/CH.2/current
+- type: pyaml.magnet.hcorrector
+  name: FHCOR_013
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C05/DG/CH.1/current
+- type: pyaml.magnet.hcorrector
+  name: FHCOR_014
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C05/DG/CH.2/current
+- type: pyaml.magnet.hcorrector
+  name: FHCOR_015
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C06/DG/CH.1/current
+- type: pyaml.magnet.hcorrector
+  name: FHCOR_016
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C06/DG/CH.2/current
+- type: pyaml.magnet.hcorrector
+  name: FHCOR_017
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C06/DG/CH.3/current
+- type: pyaml.magnet.hcorrector
+  name: FHCOR_018
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C06/DG/CH.4/current
+- type: pyaml.magnet.hcorrector
+  name: FHCOR_019
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C07/DG/CH.1/current
+- type: pyaml.magnet.hcorrector
+  name: FHCOR_020
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C07/DG/CH.2/current
+- type: pyaml.magnet.hcorrector
+  name: FHCOR_021
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C07/DG/CH.3/current
+- type: pyaml.magnet.hcorrector
+  name: FHCOR_022
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C07/DG/CH.4/current
+- type: pyaml.magnet.hcorrector
+  name: FHCOR_023
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C08/DG/CH.1/current
+- type: pyaml.magnet.hcorrector
+  name: FHCOR_024
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C08/DG/CH.2/current
+- type: pyaml.magnet.hcorrector
+  name: FHCOR_025
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C09/DG/CH.1/current
+- type: pyaml.magnet.hcorrector
+  name: FHCOR_026
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C09/DG/CH.2/current
+- type: pyaml.magnet.hcorrector
+  name: FHCOR_027
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C10/DG/CH.1/current
+- type: pyaml.magnet.hcorrector
+  name: FHCOR_028
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C10/DG/CH.2/current
+- type: pyaml.magnet.hcorrector
+  name: FHCOR_029
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C10/DG/CH.3/current
+- type: pyaml.magnet.hcorrector
+  name: FHCOR_030
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C10/DG/CH.4/current
+- type: pyaml.magnet.hcorrector
+  name: FHCOR_031
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C11/DG/CH.1/current
+- type: pyaml.magnet.hcorrector
+  name: FHCOR_032
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C11/DG/CH.2/current
+- type: pyaml.magnet.hcorrector
+  name: FHCOR_033
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C11/DG/CH.3/current
+- type: pyaml.magnet.hcorrector
+  name: FHCOR_034
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C11/DG/CH.4/current
+- type: pyaml.magnet.hcorrector
+  name: FHCOR_035
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C12/DG/CH.1/current
+- type: pyaml.magnet.hcorrector
+  name: FHCOR_036
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C12/DG/CH.2/current
+- type: pyaml.magnet.hcorrector
+  name: FHCOR_037
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C13/DG/CH.1/current
+- type: pyaml.magnet.hcorrector
+  name: FHCOR_049
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C13/DG/CH.3/current
+- type: pyaml.magnet.hcorrector
+  name: FHCOR_050
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C13/DG/CH.4/current
+- type: pyaml.magnet.hcorrector
+  name: FHCOR_038
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C13/DG/CH.2/current
+- type: pyaml.magnet.hcorrector
+  name: FHCOR_039
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C14/DG/CH.1/current
+- type: pyaml.magnet.hcorrector
+  name: FHCOR_040
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C14/DG/CH.2/current
+- type: pyaml.magnet.hcorrector
+  name: FHCOR_041
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C14/DG/CH.3/current
+- type: pyaml.magnet.hcorrector
+  name: FHCOR_042
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C14/DG/CH.4/current
+- type: pyaml.magnet.hcorrector
+  name: FHCOR_043
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C15/DG/CH.1/current
+- type: pyaml.magnet.hcorrector
+  name: FHCOR_044
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C15/DG/CH.2/current
+- type: pyaml.magnet.hcorrector
+  name: FHCOR_045
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C15/DG/CH.3/current
+- type: pyaml.magnet.hcorrector
+  name: FHCOR_046
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C15/DG/CH.4/current
+- type: pyaml.magnet.hcorrector
+  name: FHCOR_047
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C16/DG/CH.1/current
+- type: pyaml.magnet.hcorrector
+  name: FHCOR_048
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C16/DG/CH.2/current
+- type: pyaml.magnet.hcorrector
+  name: FHCOR_001
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C01/DG/CH.1/current
+# --- Fast Vertical Correctors (50 devices) ---
+- type: pyaml.magnet.vcorrector
+  name: FVCOR_001
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C01/DG/CV.2/current
+- type: pyaml.magnet.vcorrector
+  name: FVCOR_002
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C02/DG/CV.1/current
+- type: pyaml.magnet.vcorrector
+  name: FVCOR_003
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C02/DG/CV.2/current
+- type: pyaml.magnet.vcorrector
+  name: FVCOR_004
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C02/DG/CV.3/current
+- type: pyaml.magnet.vcorrector
+  name: FVCOR_005
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C02/DG/CV.4/current
+- type: pyaml.magnet.vcorrector
+  name: FVCOR_006
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C03/DG/CV.1/current
+- type: pyaml.magnet.vcorrector
+  name: FVCOR_007
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C03/DG/CV.2/current
+- type: pyaml.magnet.vcorrector
+  name: FVCOR_008
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C03/DG/CV.3/current
+- type: pyaml.magnet.vcorrector
+  name: FVCOR_009
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C03/DG/CV.4/current
+- type: pyaml.magnet.vcorrector
+  name: FVCOR_010
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C04/DG/CV.1/current
+- type: pyaml.magnet.vcorrector
+  name: FVCOR_011
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C04/DG/CV.2/current
+- type: pyaml.magnet.vcorrector
+  name: FVCOR_012
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C05/DG/CV.1/current
+- type: pyaml.magnet.vcorrector
+  name: FVCOR_013
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C05/DG/CV.2/current
+- type: pyaml.magnet.vcorrector
+  name: FVCOR_014
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C06/DG/CV.1/current
+- type: pyaml.magnet.vcorrector
+  name: FVCOR_015
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C06/DG/CV.2/current
+- type: pyaml.magnet.vcorrector
+  name: FVCOR_016
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C06/DG/CV.3/current
+- type: pyaml.magnet.vcorrector
+  name: FVCOR_017
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C06/DG/CV.4/current
+- type: pyaml.magnet.vcorrector
+  name: FVCOR_018
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C07/DG/CV.1/current
+- type: pyaml.magnet.vcorrector
+  name: FVCOR_019
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C07/DG/CV.2/current
+- type: pyaml.magnet.vcorrector
+  name: FVCOR_020
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C07/DG/CV.3/current
+- type: pyaml.magnet.vcorrector
+  name: FVCOR_021
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C07/DG/CV.4/current
+- type: pyaml.magnet.vcorrector
+  name: FVCOR_022
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C08/DG/CV.1/current
+- type: pyaml.magnet.vcorrector
+  name: FVCOR_023
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C08/DG/CV.2/current
+- type: pyaml.magnet.vcorrector
+  name: FVCOR_024
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C09/DG/CV.1/current
+- type: pyaml.magnet.vcorrector
+  name: FVCOR_025
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C09/DG/CV.2/current
+- type: pyaml.magnet.vcorrector
+  name: FVCOR_026
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C10/DG/CV.1/current
+- type: pyaml.magnet.vcorrector
+  name: FVCOR_027
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C10/DG/CV.2/current
+- type: pyaml.magnet.vcorrector
+  name: FVCOR_028
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C10/DG/CV.3/current
+- type: pyaml.magnet.vcorrector
+  name: FVCOR_029
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C10/DG/CV.4/current
+- type: pyaml.magnet.vcorrector
+  name: FVCOR_030
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C11/DG/CV.1/current
+- type: pyaml.magnet.vcorrector
+  name: FVCOR_031
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C11/DG/CV.2/current
+- type: pyaml.magnet.vcorrector
+  name: FVCOR_032
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C11/DG/CV.3/current
+- type: pyaml.magnet.vcorrector
+  name: FVCOR_033
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C11/DG/CV.4/current
+- type: pyaml.magnet.vcorrector
+  name: FVCOR_034
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C12/DG/CV.1/current
+- type: pyaml.magnet.vcorrector
+  name: FVCOR_035
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C12/DG/CV.2/current
+- type: pyaml.magnet.vcorrector
+  name: FVCOR_036
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C13/DG/CV.1/current
+- type: pyaml.magnet.vcorrector
+  name: FVCOR_049
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C13/DG/CV.3/current
+- type: pyaml.magnet.vcorrector
+  name: FVCOR_050
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C13/DG/CV.4/current
+- type: pyaml.magnet.vcorrector
+  name: FVCOR_037
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C13/DG/CV.2/current
+- type: pyaml.magnet.vcorrector
+  name: FVCOR_038
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C14/DG/CV.1/current
+- type: pyaml.magnet.vcorrector
+  name: FVCOR_039
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C14/DG/CV.2/current
+- type: pyaml.magnet.vcorrector
+  name: FVCOR_040
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C14/DG/CV.3/current
+- type: pyaml.magnet.vcorrector
+  name: FVCOR_041
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C14/DG/CV.4/current
+- type: pyaml.magnet.vcorrector
+  name: FVCOR_042
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C15/DG/CV.1/current
+- type: pyaml.magnet.vcorrector
+  name: FVCOR_043
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C15/DG/CV.2/current
+- type: pyaml.magnet.vcorrector
+  name: FVCOR_044
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C15/DG/CV.3/current
+- type: pyaml.magnet.vcorrector
+  name: FVCOR_045
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C15/DG/CV.4/current
+- type: pyaml.magnet.vcorrector
+  name: FVCOR_046
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C16/DG/CV.1/current
+- type: pyaml.magnet.vcorrector
+  name: FVCOR_047
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C16/DG/CV.2/current
+- type: pyaml.magnet.vcorrector
+  name: FVCOR_048
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C01/DG/CV.1/current
+# --- Skew Quadrupoles (122 devices) ---
+- type: pyaml.magnet.skewquad
+  name: QT001
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C01/AE/S1-QT/currentPM
+- type: pyaml.magnet.skewquad
+  name: QT002
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C01/AE/S2-QT/currentPM
+- type: pyaml.magnet.skewquad
+  name: QT003
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C01/AE/S3.1-QT/currentPM
+- type: pyaml.magnet.skewquad
+  name: QT004
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C01/AE/S4-QT/currentPM
+- type: pyaml.magnet.skewquad
+  name: QT005
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C01/AE/S3.2-QT/currentPM
+- type: pyaml.magnet.skewquad
+  name: QT006
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C01/AE/S5-QT/currentPM
+- type: pyaml.magnet.skewquad
+  name: QT007
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C01/AE/S6-QT/currentPM
+- type: pyaml.magnet.skewquad
+  name: QT008
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C02/AE/S8.1-QT/currentPM
+- type: pyaml.magnet.skewquad
+  name: QT009
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C02/AE/S7.1-QT/currentPM
+- type: pyaml.magnet.skewquad
+  name: QT010
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C02/AE/S9.1-QT/currentPM
+- type: pyaml.magnet.skewquad
+  name: QT011
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C02/AE/S10.1-QT/currentPM
+- type: pyaml.magnet.skewquad
+  name: QT012
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C02/AE/S10.2-QT/currentPM
+- type: pyaml.magnet.skewquad
+  name: QT013
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C02/AE/S9.2-QT/currentPM
+- type: pyaml.magnet.skewquad
+  name: QT014
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C02/AE/S7.2-QT/currentPM
+- type: pyaml.magnet.skewquad
+  name: QT015
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C02/AE/S8.2-QT/currentPM
+- type: pyaml.magnet.skewquad
+  name: QT016
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C03/AE/S8.1-QT/currentPM
+- type: pyaml.magnet.skewquad
+  name: QT017
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C03/AE/S7.1-QT/currentPM
+- type: pyaml.magnet.skewquad
+  name: QT018
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C03/AE/S9.1-QT/currentPM
+- type: pyaml.magnet.skewquad
+  name: QT019
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C03/AE/S10.1-QT/currentPM
+- type: pyaml.magnet.skewquad
+  name: QT020
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C03/AE/S10.2-QT/currentPM
+- type: pyaml.magnet.skewquad
+  name: QT021
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C03/AE/S9.2-QT/currentPM
+- type: pyaml.magnet.skewquad
+  name: QT022
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C03/AE/S7.2-QT/currentPM
+- type: pyaml.magnet.skewquad
+  name: QT023
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C03/AE/S8.2-QT/currentPM
+- type: pyaml.magnet.skewquad
+  name: QT024
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C04/AE/S6-QT/currentPM
+- type: pyaml.magnet.skewquad
+  name: QT025
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C04/AE/S5-QT/currentPM
+- type: pyaml.magnet.skewquad
+  name: QT026
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C04/AE/S3.1-QT/currentPM
+- type: pyaml.magnet.skewquad
+  name: QT027
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C04/AE/S4-QT/currentPM
+- type: pyaml.magnet.skewquad
+  name: QT028
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C04/AE/S3.2-QT/currentPM
+- type: pyaml.magnet.skewquad
+  name: QT029
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C04/AE/S2-QT/currentPM
+- type: pyaml.magnet.skewquad
+  name: QT030
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C04/AE/S1-QT/currentPM
+- type: pyaml.magnet.skewquad
+  name: QT031
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C05/AE/S1-QT/currentPM
+- type: pyaml.magnet.skewquad
+  name: QT032
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C05/AE/S2-QT/currentPM
+- type: pyaml.magnet.skewquad
+  name: QT033
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C05/AE/S3.1-QT/currentPM
+- type: pyaml.magnet.skewquad
+  name: QT034
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C05/AE/S4-QT/currentPM
+- type: pyaml.magnet.skewquad
+  name: QT035
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C05/AE/S3.2-QT/currentPM
+- type: pyaml.magnet.skewquad
+  name: QT036
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C05/AE/S5-QT/currentPM
+- type: pyaml.magnet.skewquad
+  name: QT037
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C05/AE/S6-QT/currentPM
+- type: pyaml.magnet.skewquad
+  name: QT038
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C06/AE/S8.1-QT/currentPM
+- type: pyaml.magnet.skewquad
+  name: QT039
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C06/AE/S7.1-QT/currentPM
+- type: pyaml.magnet.skewquad
+  name: QT040
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C06/AE/S9.1-QT/currentPM
+- type: pyaml.magnet.skewquad
+  name: QT041
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C06/AE/S10.1-QT/currentPM
+- type: pyaml.magnet.skewquad
+  name: QT042
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C06/AE/S10.2-QT/currentPM
+- type: pyaml.magnet.skewquad
+  name: QT043
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C06/AE/S9.2-QT/currentPM
+- type: pyaml.magnet.skewquad
+  name: QT044
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C06/AE/S7.2-QT/currentPM
+- type: pyaml.magnet.skewquad
+  name: QT045
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C06/AE/S8.2-QT/currentPM
+- type: pyaml.magnet.skewquad
+  name: QT046
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C07/AE/S8.1-QT/currentPM
+- type: pyaml.magnet.skewquad
+  name: QT047
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C07/AE/S7.1-QT/currentPM
+- type: pyaml.magnet.skewquad
+  name: QT048
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C07/AE/S9.1-QT/currentPM
+- type: pyaml.magnet.skewquad
+  name: QT049
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C07/AE/S10.1-QT/currentPM
+- type: pyaml.magnet.skewquad
+  name: QT050
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C07/AE/S10.2-QT/currentPM
+- type: pyaml.magnet.skewquad
+  name: QT051
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C07/AE/S9.2-QT/currentPM
+- type: pyaml.magnet.skewquad
+  name: QT052
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C07/AE/S7.2-QT/currentPM
+- type: pyaml.magnet.skewquad
+  name: QT053
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C07/AE/S8.2-QT/currentPM
+- type: pyaml.magnet.skewquad
+  name: QT054
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C08/AE/S6-QT/currentPM
+- type: pyaml.magnet.skewquad
+  name: QT055
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C08/AE/S5-QT/currentPM
+- type: pyaml.magnet.skewquad
+  name: QT056
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C08/AE/S3.1-QT/currentPM
+- type: pyaml.magnet.skewquad
+  name: QT057
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C08/AE/S4-QT/currentPM
+- type: pyaml.magnet.skewquad
+  name: QT058
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C08/AE/S3.2-QT/currentPM
+- type: pyaml.magnet.skewquad
+  name: QT059
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C08/AE/S2-QT/currentPM
+- type: pyaml.magnet.skewquad
+  name: QT060
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C08/AE/S1-QT/currentPM
+- type: pyaml.magnet.skewquad
+  name: QT061
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C09/AE/S1-QT/currentPM
+- type: pyaml.magnet.skewquad
+  name: QT062
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C09/AE/S2-QT/currentPM
+- type: pyaml.magnet.skewquad
+  name: QT063
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C09/AE/S3.1-QT/currentPM
+- type: pyaml.magnet.skewquad
+  name: QT064
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C09/AE/S4-QT/currentPM
+- type: pyaml.magnet.skewquad
+  name: QT065
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C09/AE/S3.2-QT/currentPM
+- type: pyaml.magnet.skewquad
+  name: QT066
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C09/AE/S5-QT/currentPM
+- type: pyaml.magnet.skewquad
+  name: QT067
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C09/AE/S6-QT/currentPM
+- type: pyaml.magnet.skewquad
+  name: QT068
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C10/AE/S8.1-QT/currentPM
+- type: pyaml.magnet.skewquad
+  name: QT069
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C10/AE/S7.1-QT/currentPM
+- type: pyaml.magnet.skewquad
+  name: QT070
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C10/AE/S9.1-QT/currentPM
+- type: pyaml.magnet.skewquad
+  name: QT071
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C10/AE/S10.1-QT/currentPM
+- type: pyaml.magnet.skewquad
+  name: QT072
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C10/AE/S10.2-QT/currentPM
+- type: pyaml.magnet.skewquad
+  name: QT073
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C10/AE/S9.2-QT/currentPM
+- type: pyaml.magnet.skewquad
+  name: QT074
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C10/AE/S7.2-QT/currentPM
+- type: pyaml.magnet.skewquad
+  name: QT075
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C10/AE/S8.2-QT/currentPM
+- type: pyaml.magnet.skewquad
+  name: QT076
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C11/AE/S8.1-QT/currentPM
+- type: pyaml.magnet.skewquad
+  name: QT077
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C11/AE/S7.1-QT/currentPM
+- type: pyaml.magnet.skewquad
+  name: QT078
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C11/AE/S9.1-QT/currentPM
+- type: pyaml.magnet.skewquad
+  name: QT079
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C11/AE/S10.1-QT/currentPM
+- type: pyaml.magnet.skewquad
+  name: QT080
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C11/AE/S10.2-QT/currentPM
+- type: pyaml.magnet.skewquad
+  name: QT081
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C11/AE/S9.2-QT/currentPM
+- type: pyaml.magnet.skewquad
+  name: QT082
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C11/AE/S7.2-QT/currentPM
+- type: pyaml.magnet.skewquad
+  name: QT083
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C11/AE/S8.2-QT/currentPM
+- type: pyaml.magnet.skewquad
+  name: QT084
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C12/AE/S6-QT/currentPM
+- type: pyaml.magnet.skewquad
+  name: QT085
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C12/AE/S5-QT/currentPM
+- type: pyaml.magnet.skewquad
+  name: QT086
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C12/AE/S3.1-QT/currentPM
+- type: pyaml.magnet.skewquad
+  name: QT087
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C12/AE/S4-QT/currentPM
+- type: pyaml.magnet.skewquad
+  name: QT088
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C12/AE/S3.2-QT/currentPM
+- type: pyaml.magnet.skewquad
+  name: QT089
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C12/AE/S2-QT/currentPM
+- type: pyaml.magnet.skewquad
+  name: QT090
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C12/AE/S1-QT/currentPM
+- type: pyaml.magnet.skewquad
+  name: QT121
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C13/AE/S12.1-QT/currentPM
+- type: pyaml.magnet.skewquad
+  name: QT122
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C13/AE/S12.2-QT/currentPM
+- type: pyaml.magnet.skewquad
+  name: QT091
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C13/AE/S1-QT/currentPM
+- type: pyaml.magnet.skewquad
+  name: QT092
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C13/AE/S2-QT/currentPM
+- type: pyaml.magnet.skewquad
+  name: QT093
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C13/AE/S3.1-QT/currentPM
+- type: pyaml.magnet.skewquad
+  name: QT094
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C13/AE/S4-QT/currentPM
+- type: pyaml.magnet.skewquad
+  name: QT095
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C13/AE/S3.2-QT/currentPM
+- type: pyaml.magnet.skewquad
+  name: QT096
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C13/AE/S5-QT/currentPM
+- type: pyaml.magnet.skewquad
+  name: QT097
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C13/AE/S6-QT/currentPM
+- type: pyaml.magnet.skewquad
+  name: QT098
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C14/AE/S8.1-QT/currentPM
+- type: pyaml.magnet.skewquad
+  name: QT099
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C14/AE/S7.1-QT/currentPM
+- type: pyaml.magnet.skewquad
+  name: QT100
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C14/AE/S9.1-QT/currentPM
+- type: pyaml.magnet.skewquad
+  name: QT101
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C14/AE/S10.1-QT/currentPM
+- type: pyaml.magnet.skewquad
+  name: QT102
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C14/AE/S10.2-QT/currentPM
+- type: pyaml.magnet.skewquad
+  name: QT103
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C14/AE/S9.2-QT/currentPM
+- type: pyaml.magnet.skewquad
+  name: QT104
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C14/AE/S7.2-QT/currentPM
+- type: pyaml.magnet.skewquad
+  name: QT105
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C14/AE/S8.2-QT/currentPM
+- type: pyaml.magnet.skewquad
+  name: QT106
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C15/AE/S8.1-QT/currentPM
+- type: pyaml.magnet.skewquad
+  name: QT107
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C15/AE/S7.1-QT/currentPM
+- type: pyaml.magnet.skewquad
+  name: QT108
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C15/AE/S9.1-QT/currentPM
+- type: pyaml.magnet.skewquad
+  name: QT109
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C15/AE/S10.1-QT/currentPM
+- type: pyaml.magnet.skewquad
+  name: QT110
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C15/AE/S10.2-QT/currentPM
+- type: pyaml.magnet.skewquad
+  name: QT111
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C15/AE/S9.2-QT/currentPM
+- type: pyaml.magnet.skewquad
+  name: QT112
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C15/AE/S7.2-QT/currentPM
+- type: pyaml.magnet.skewquad
+  name: QT113
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C15/AE/S8.2-QT/currentPM
+- type: pyaml.magnet.skewquad
+  name: QT114
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C16/AE/S6-QT/currentPM
+- type: pyaml.magnet.skewquad
+  name: QT115
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C16/AE/S5-QT/currentPM
+- type: pyaml.magnet.skewquad
+  name: QT116
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C16/AE/S3.1-QT/currentPM
+- type: pyaml.magnet.skewquad
+  name: QT117
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C16/AE/S4-QT/currentPM
+- type: pyaml.magnet.skewquad
+  name: QT118
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C16/AE/S3.2-QT/currentPM
+- type: pyaml.magnet.skewquad
+  name: QT119
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C16/AE/S2-QT/currentPM
+- type: pyaml.magnet.skewquad
+  name: QT120
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C16/AE/S1-QT/currentPM
+# --- Quadrupoles (Q1..Q12) ---
+# Q1
+- type: pyaml.magnet.quadrupole
+  name: Q1_001
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C01/AE/Q1/currentPM
+- type: pyaml.magnet.quadrupole
+  name: Q1_002
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C04/AE/Q1/currentPM
+- type: pyaml.magnet.quadrupole
+  name: Q1_003
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C05/AE/Q1/currentPM
+- type: pyaml.magnet.quadrupole
+  name: Q1_004
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C08/AE/Q1/currentPM
+- type: pyaml.magnet.quadrupole
+  name: Q1_005
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C09/AE/Q1/currentPM
+- type: pyaml.magnet.quadrupole
+  name: Q1_006
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C12/AE/Q1/currentPM
+- type: pyaml.magnet.quadrupole
+  name: Q1_007
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C13/AE/Q1/currentPM
+- type: pyaml.magnet.quadrupole
+  name: Q1_008
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C16/AE/Q1/currentPM
+# Q2
+- type: pyaml.magnet.quadrupole
+  name: Q2_001
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C01/AE/Q2/currentPM
+- type: pyaml.magnet.quadrupole
+  name: Q2_002
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C04/AE/Q2/currentPM
+- type: pyaml.magnet.quadrupole
+  name: Q2_003
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C05/AE/Q2/currentPM
+- type: pyaml.magnet.quadrupole
+  name: Q2_004
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C08/AE/Q2/currentPM
+- type: pyaml.magnet.quadrupole
+  name: Q2_005
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C09/AE/Q2/currentPM
+- type: pyaml.magnet.quadrupole
+  name: Q2_006
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C12/AE/Q2/currentPM
+- type: pyaml.magnet.quadrupole
+  name: Q2_007
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C13/AE/Q2/currentPM
+- type: pyaml.magnet.quadrupole
+  name: Q2_008
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C16/AE/Q2/currentPM
+# Q3
+- type: pyaml.magnet.quadrupole
+  name: Q3_001
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C01/AE/Q3/currentPM
+- type: pyaml.magnet.quadrupole
+  name: Q3_002
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C04/AE/Q3/currentPM
+- type: pyaml.magnet.quadrupole
+  name: Q3_003
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C05/AE/Q3/currentPM
+- type: pyaml.magnet.quadrupole
+  name: Q3_004
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C08/AE/Q3/currentPM
+- type: pyaml.magnet.quadrupole
+  name: Q3_005
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C09/AE/Q3/currentPM
+- type: pyaml.magnet.quadrupole
+  name: Q3_006
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C12/AE/Q3/currentPM
+- type: pyaml.magnet.quadrupole
+  name: Q3_007
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C13/AE/Q3/currentPM
+- type: pyaml.magnet.quadrupole
+  name: Q3_008
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C16/AE/Q3/currentPM
+# Q4
+- type: pyaml.magnet.quadrupole
+  name: Q4_001
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C01/AE/Q4.1/currentPM
+- type: pyaml.magnet.quadrupole
+  name: Q4_002
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C01/AE/Q4.2/currentPM
+- type: pyaml.magnet.quadrupole
+  name: Q4_003
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C04/AE/Q4.1/currentPM
+- type: pyaml.magnet.quadrupole
+  name: Q4_004
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C04/AE/Q4.2/currentPM
+- type: pyaml.magnet.quadrupole
+  name: Q4_005
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C05/AE/Q4.1/currentPM
+- type: pyaml.magnet.quadrupole
+  name: Q4_006
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C05/AE/Q4.2/currentPM
+- type: pyaml.magnet.quadrupole
+  name: Q4_007
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C08/AE/Q4.1/currentPM
+- type: pyaml.magnet.quadrupole
+  name: Q4_008
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C08/AE/Q4.2/currentPM
+- type: pyaml.magnet.quadrupole
+  name: Q4_009
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C09/AE/Q4.1/currentPM
+- type: pyaml.magnet.quadrupole
+  name: Q4_010
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C09/AE/Q4.2/currentPM
+- type: pyaml.magnet.quadrupole
+  name: Q4_011
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C12/AE/Q4.1/currentPM
+- type: pyaml.magnet.quadrupole
+  name: Q4_012
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C12/AE/Q4.2/currentPM
+- type: pyaml.magnet.quadrupole
+  name: Q4_013
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C13/AE/Q4.1/currentPM
+- type: pyaml.magnet.quadrupole
+  name: Q4_014
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C13/AE/Q4.2/currentPM
+- type: pyaml.magnet.quadrupole
+  name: Q4_015
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C16/AE/Q4.1/currentPM
+- type: pyaml.magnet.quadrupole
+  name: Q4_016
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C16/AE/Q4.2/currentPM
+# Q5
+- type: pyaml.magnet.quadrupole
+  name: Q5_001
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C01/AE/Q5.1/currentPM
+- type: pyaml.magnet.quadrupole
+  name: Q5_002
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C01/AE/Q5.2/currentPM
+- type: pyaml.magnet.quadrupole
+  name: Q5_003
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C04/AE/Q5.1/currentPM
+- type: pyaml.magnet.quadrupole
+  name: Q5_004
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C04/AE/Q5.2/currentPM
+- type: pyaml.magnet.quadrupole
+  name: Q5_005
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C05/AE/Q5.1/currentPM
+- type: pyaml.magnet.quadrupole
+  name: Q5_006
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C05/AE/Q5.2/currentPM
+- type: pyaml.magnet.quadrupole
+  name: Q5_007
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C08/AE/Q5.1/currentPM
+- type: pyaml.magnet.quadrupole
+  name: Q5_008
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C08/AE/Q5.2/currentPM
+- type: pyaml.magnet.quadrupole
+  name: Q5_009
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C09/AE/Q5.1/currentPM
+- type: pyaml.magnet.quadrupole
+  name: Q5_010
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C09/AE/Q5.2/currentPM
+- type: pyaml.magnet.quadrupole
+  name: Q5_011
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C12/AE/Q5.1/currentPM
+- type: pyaml.magnet.quadrupole
+  name: Q5_012
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C12/AE/Q5.2/currentPM
+- type: pyaml.magnet.quadrupole
+  name: Q5_013
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C13/AE/Q5.1/currentPM
+- type: pyaml.magnet.quadrupole
+  name: Q5_014
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C13/AE/Q5.2/currentPM
+- type: pyaml.magnet.quadrupole
+  name: Q5_015
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C16/AE/Q5.1/currentPM
+- type: pyaml.magnet.quadrupole
+  name: Q5_016
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C16/AE/Q5.2/currentPM
+# Q6
+- type: pyaml.magnet.quadrupole
+  name: Q6_001
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C01/AE/Q6/currentPM
+- type: pyaml.magnet.quadrupole
+  name: Q6_002
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C02/AE/Q6.1/currentPM
+- type: pyaml.magnet.quadrupole
+  name: Q6_003
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C02/AE/Q6.2/currentPM
+- type: pyaml.magnet.quadrupole
+  name: Q6_004
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C03/AE/Q6.1/currentPM
+- type: pyaml.magnet.quadrupole
+  name: Q6_005
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C03/AE/Q6.2/currentPM
+- type: pyaml.magnet.quadrupole
+  name: Q6_006
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C04/AE/Q6/currentPM
+- type: pyaml.magnet.quadrupole
+  name: Q6_007
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C05/AE/Q6/currentPM
+- type: pyaml.magnet.quadrupole
+  name: Q6_008
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C06/AE/Q6.1/currentPM
+- type: pyaml.magnet.quadrupole
+  name: Q6_009
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C06/AE/Q6.2/currentPM
+- type: pyaml.magnet.quadrupole
+  name: Q6_010
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C07/AE/Q6.1/currentPM
+- type: pyaml.magnet.quadrupole
+  name: Q6_011
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C07/AE/Q6.2/currentPM
+- type: pyaml.magnet.quadrupole
+  name: Q6_012
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C08/AE/Q6/currentPM
+- type: pyaml.magnet.quadrupole
+  name: Q6_013
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C09/AE/Q6/currentPM
+- type: pyaml.magnet.quadrupole
+  name: Q6_014
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C10/AE/Q6.1/currentPM
+- type: pyaml.magnet.quadrupole
+  name: Q6_015
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C10/AE/Q6.2/currentPM
+- type: pyaml.magnet.quadrupole
+  name: Q6_016
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C11/AE/Q6.1/currentPM
+- type: pyaml.magnet.quadrupole
+  name: Q6_017
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C11/AE/Q6.2/currentPM
+- type: pyaml.magnet.quadrupole
+  name: Q6_018
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C12/AE/Q6/currentPM
+- type: pyaml.magnet.quadrupole
+  name: Q6_019
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C13/AE/Q6/currentPM
+- type: pyaml.magnet.quadrupole
+  name: Q6_020
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C14/AE/Q6.1/currentPM
+- type: pyaml.magnet.quadrupole
+  name: Q6_021
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C14/AE/Q6.2/currentPM
+- type: pyaml.magnet.quadrupole
+  name: Q6_022
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C15/AE/Q6.1/currentPM
+- type: pyaml.magnet.quadrupole
+  name: Q6_023
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C15/AE/Q6.2/currentPM
+- type: pyaml.magnet.quadrupole
+  name: Q6_024
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C16/AE/Q6/currentPM
+# Q7
+- type: pyaml.magnet.quadrupole
+  name: Q7_001
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C01/AE/Q7/currentPM
+- type: pyaml.magnet.quadrupole
+  name: Q7_002
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C02/AE/Q7.1/currentPM
+- type: pyaml.magnet.quadrupole
+  name: Q7_003
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C02/AE/Q7.2/currentPM
+- type: pyaml.magnet.quadrupole
+  name: Q7_004
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C03/AE/Q7.1/currentPM
+- type: pyaml.magnet.quadrupole
+  name: Q7_005
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C03/AE/Q7.2/currentPM
+- type: pyaml.magnet.quadrupole
+  name: Q7_006
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C04/AE/Q7/currentPM
+- type: pyaml.magnet.quadrupole
+  name: Q7_007
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C05/AE/Q7/currentPM
+- type: pyaml.magnet.quadrupole
+  name: Q7_008
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C06/AE/Q7.1/currentPM
+- type: pyaml.magnet.quadrupole
+  name: Q7_009
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C06/AE/Q7.2/currentPM
+- type: pyaml.magnet.quadrupole
+  name: Q7_010
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C07/AE/Q7.1/currentPM
+- type: pyaml.magnet.quadrupole
+  name: Q7_011
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C07/AE/Q7.2/currentPM
+- type: pyaml.magnet.quadrupole
+  name: Q7_012
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C08/AE/Q7/currentPM
+- type: pyaml.magnet.quadrupole
+  name: Q7_013
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C09/AE/Q7/currentPM
+- type: pyaml.magnet.quadrupole
+  name: Q7_014
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C10/AE/Q7.1/currentPM
+- type: pyaml.magnet.quadrupole
+  name: Q7_015
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C10/AE/Q7.2/currentPM
+- type: pyaml.magnet.quadrupole
+  name: Q7_016
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C11/AE/Q7.1/currentPM
+- type: pyaml.magnet.quadrupole
+  name: Q7_017
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C11/AE/Q7.2/currentPM
+- type: pyaml.magnet.quadrupole
+  name: Q7_018
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C12/AE/Q7/currentPM
+- type: pyaml.magnet.quadrupole
+  name: Q7_019
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C13/AE/Q7/currentPM
+- type: pyaml.magnet.quadrupole
+  name: Q7_020
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C14/AE/Q7.1/currentPM
+- type: pyaml.magnet.quadrupole
+  name: Q7_021
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C14/AE/Q7.2/currentPM
+- type: pyaml.magnet.quadrupole
+  name: Q7_022
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C15/AE/Q7.1/currentPM
+- type: pyaml.magnet.quadrupole
+  name: Q7_023
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C15/AE/Q7.2/currentPM
+- type: pyaml.magnet.quadrupole
+  name: Q7_024
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C16/AE/Q7/currentPM
+# Q8
+- type: pyaml.magnet.quadrupole
+  name: Q8_001
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C01/AE/Q8/currentPM
+- type: pyaml.magnet.quadrupole
+  name: Q8_002
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C02/AE/Q8.1/currentPM
+- type: pyaml.magnet.quadrupole
+  name: Q8_003
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C02/AE/Q8.2/currentPM
+- type: pyaml.magnet.quadrupole
+  name: Q8_004
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C03/AE/Q8.1/currentPM
+- type: pyaml.magnet.quadrupole
+  name: Q8_005
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C03/AE/Q8.2/currentPM
+- type: pyaml.magnet.quadrupole
+  name: Q8_006
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C04/AE/Q8/currentPM
+- type: pyaml.magnet.quadrupole
+  name: Q8_007
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C05/AE/Q8/currentPM
+- type: pyaml.magnet.quadrupole
+  name: Q8_008
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C06/AE/Q8.1/currentPM
+- type: pyaml.magnet.quadrupole
+  name: Q8_009
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C06/AE/Q8.2/currentPM
+- type: pyaml.magnet.quadrupole
+  name: Q8_010
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C07/AE/Q8.1/currentPM
+- type: pyaml.magnet.quadrupole
+  name: Q8_011
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C07/AE/Q8.2/currentPM
+- type: pyaml.magnet.quadrupole
+  name: Q8_012
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C08/AE/Q8/currentPM
+- type: pyaml.magnet.quadrupole
+  name: Q8_013
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C09/AE/Q8/currentPM
+- type: pyaml.magnet.quadrupole
+  name: Q8_014
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C10/AE/Q8.1/currentPM
+- type: pyaml.magnet.quadrupole
+  name: Q8_015
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C10/AE/Q8.2/currentPM
+- type: pyaml.magnet.quadrupole
+  name: Q8_016
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C11/AE/Q8.1/currentPM
+- type: pyaml.magnet.quadrupole
+  name: Q8_017
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C11/AE/Q8.2/currentPM
+- type: pyaml.magnet.quadrupole
+  name: Q8_018
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C12/AE/Q8/currentPM
+- type: pyaml.magnet.quadrupole
+  name: Q8_019
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C13/AE/Q8/currentPM
+- type: pyaml.magnet.quadrupole
+  name: Q8_020
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C14/AE/Q8.1/currentPM
+- type: pyaml.magnet.quadrupole
+  name: Q8_021
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C14/AE/Q8.2/currentPM
+- type: pyaml.magnet.quadrupole
+  name: Q8_022
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C15/AE/Q8.1/currentPM
+- type: pyaml.magnet.quadrupole
+  name: Q8_023
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C15/AE/Q8.2/currentPM
+- type: pyaml.magnet.quadrupole
+  name: Q8_024
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C16/AE/Q8/currentPM
+# Q9
+- type: pyaml.magnet.quadrupole
+  name: Q9_001
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C02/AE/Q9.1/currentPM
+- type: pyaml.magnet.quadrupole
+  name: Q9_002
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C02/AE/Q9.2/currentPM
+- type: pyaml.magnet.quadrupole
+  name: Q9_003
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C03/AE/Q9.1/currentPM
+- type: pyaml.magnet.quadrupole
+  name: Q9_004
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C03/AE/Q9.2/currentPM
+- type: pyaml.magnet.quadrupole
+  name: Q9_005
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C06/AE/Q9.1/currentPM
+- type: pyaml.magnet.quadrupole
+  name: Q9_006
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C06/AE/Q9.2/currentPM
+- type: pyaml.magnet.quadrupole
+  name: Q9_007
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C07/AE/Q9.1/currentPM
+- type: pyaml.magnet.quadrupole
+  name: Q9_008
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C07/AE/Q9.2/currentPM
+- type: pyaml.magnet.quadrupole
+  name: Q9_009
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C10/AE/Q9.1/currentPM
+- type: pyaml.magnet.quadrupole
+  name: Q9_010
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C10/AE/Q9.2/currentPM
+- type: pyaml.magnet.quadrupole
+  name: Q9_011
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C11/AE/Q9.1/currentPM
+- type: pyaml.magnet.quadrupole
+  name: Q9_012
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C11/AE/Q9.2/currentPM
+- type: pyaml.magnet.quadrupole
+  name: Q9_013
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C14/AE/Q9.1/currentPM
+- type: pyaml.magnet.quadrupole
+  name: Q9_014
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C14/AE/Q9.2/currentPM
+- type: pyaml.magnet.quadrupole
+  name: Q9_015
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C15/AE/Q9.1/currentPM
+- type: pyaml.magnet.quadrupole
+  name: Q9_016
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C15/AE/Q9.2/currentPM
+# Q10
+- type: pyaml.magnet.quadrupole
+  name: Q10_001
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C02/AE/Q10.1/currentPM
+- type: pyaml.magnet.quadrupole
+  name: Q10_002
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C02/AE/Q10.2/currentPM
+- type: pyaml.magnet.quadrupole
+  name: Q10_003
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C03/AE/Q10.1/currentPM
+- type: pyaml.magnet.quadrupole
+  name: Q10_004
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C03/AE/Q10.2/currentPM
+- type: pyaml.magnet.quadrupole
+  name: Q10_005
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C06/AE/Q10.1/currentPM
+- type: pyaml.magnet.quadrupole
+  name: Q10_006
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C06/AE/Q10.2/currentPM
+- type: pyaml.magnet.quadrupole
+  name: Q10_007
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C07/AE/Q10.1/currentPM
+- type: pyaml.magnet.quadrupole
+  name: Q10_008
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C07/AE/Q10.2/currentPM
+- type: pyaml.magnet.quadrupole
+  name: Q10_009
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C10/AE/Q10.1/currentPM
+- type: pyaml.magnet.quadrupole
+  name: Q10_010
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C10/AE/Q10.2/currentPM
+- type: pyaml.magnet.quadrupole
+  name: Q10_011
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C11/AE/Q10.1/currentPM
+- type: pyaml.magnet.quadrupole
+  name: Q10_012
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C11/AE/Q10.2/currentPM
+- type: pyaml.magnet.quadrupole
+  name: Q10_013
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C14/AE/Q10.1/currentPM
+- type: pyaml.magnet.quadrupole
+  name: Q10_014
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C14/AE/Q10.2/currentPM
+- type: pyaml.magnet.quadrupole
+  name: Q10_015
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C15/AE/Q10.1/currentPM
+- type: pyaml.magnet.quadrupole
+  name: Q10_016
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C15/AE/Q10.2/currentPM
+# Q11
+- type: pyaml.magnet.quadrupole
+  name: Q11_001
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C13/AE/Q11.1/currentPM
+- type: pyaml.magnet.quadrupole
+  name: Q11_002
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C13/AE/Q11.2/currentPM
+# Q12
+- type: pyaml.magnet.quadrupole
+  name: Q12_001
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C13/AE/Q12/currentPM
+# --- Sextupoles (S1..S12, one power supply each) ---
+- type: pyaml.magnet.sextupole
+  name: S1
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS/AE/S1/currentPM
+- type: pyaml.magnet.sextupole
+  name: S2
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS/AE/S2/currentPM
+- type: pyaml.magnet.sextupole
+  name: S3
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS/AE/S3/currentPM
+- type: pyaml.magnet.sextupole
+  name: S4
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS/AE/S4/currentPM
+- type: pyaml.magnet.sextupole
+  name: S5
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS/AE/S5/currentPM
+- type: pyaml.magnet.sextupole
+  name: S6
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS/AE/S6/currentPM
+- type: pyaml.magnet.sextupole
+  name: S7
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS/AE/S7/currentPM
+- type: pyaml.magnet.sextupole
+  name: S8
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS/AE/S8/currentPM
+- type: pyaml.magnet.sextupole
+  name: S9
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS/AE/S9/currentPM
+- type: pyaml.magnet.sextupole
+  name: S10
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS/AE/S10/currentPM
+- type: pyaml.magnet.sextupole
+  name: S11
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS/AE/S11/currentPM
+- type: pyaml.magnet.sextupole
+  name: S12
+  model:
+    type: pyaml.magnet.identity_model
+    unit: A
+    physics: ANS-C13/AE/S12/currentPM
+# --- RF ---
+- type: pyaml.rf.rf_plant
+  name: RF
+  masterclock: ANS/RF/MasterClock/frequency

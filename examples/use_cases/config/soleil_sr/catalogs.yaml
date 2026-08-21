@@ -1,0 +1,1467 @@
+- type: tango.pyaml.static_catalog
+  name: bpm-catalog
+  entries:
+  - type: tango.pyaml.static_catalog_entry
+    key: ANS-C01/DG/BPM.2/XPosSA
+    device:
+      type: tango.pyaml.attribute_read_only
+      attribute: ANS-C01/DG/BPM.2/XPosSA
+      unit: mm
+  - type: tango.pyaml.static_catalog_entry
+    key: ANS-C01/DG/BPM.2/ZPosSA
+    device:
+      type: tango.pyaml.attribute_read_only
+      attribute: ANS-C01/DG/BPM.2/ZPosSA
+      unit: mm
+  - type: tango.pyaml.static_catalog_entry
+    key: ANS-C01/DG/BPM.3/XPosSA
+    device:
+      type: tango.pyaml.attribute_read_only
+      attribute: ANS-C01/DG/BPM.3/XPosSA
+      unit: mm
+  - type: tango.pyaml.static_catalog_entry
+    key: ANS-C01/DG/BPM.3/ZPosSA
+    device:
+      type: tango.pyaml.attribute_read_only
+      attribute: ANS-C01/DG/BPM.3/ZPosSA
+      unit: mm
+  - type: tango.pyaml.static_catalog_entry
+    key: ANS-C01/DG/BPM.4/XPosSA
+    device:
+      type: tango.pyaml.attribute_read_only
+      attribute: ANS-C01/DG/BPM.4/XPosSA
+      unit: mm
+  - type: tango.pyaml.static_catalog_entry
+    key: ANS-C01/DG/BPM.4/ZPosSA
+    device:
+      type: tango.pyaml.attribute_read_only
+      attribute: ANS-C01/DG/BPM.4/ZPosSA
+      unit: mm
+  - type: tango.pyaml.static_catalog_entry
+    key: ANS-C01/DG/BPM.5/XPosSA
+    device:
+      type: tango.pyaml.attribute_read_only
+      attribute: ANS-C01/DG/BPM.5/XPosSA
+      unit: mm
+  - type: tango.pyaml.static_catalog_entry
+    key: ANS-C01/DG/BPM.5/ZPosSA
+    device:
+      type: tango.pyaml.attribute_read_only
+      attribute: ANS-C01/DG/BPM.5/ZPosSA
+      unit: mm
+  - type: tango.pyaml.static_catalog_entry
+    key: ANS-C01/DG/BPM.6/XPosSA
+    device:
+      type: tango.pyaml.attribute_read_only
+      attribute: ANS-C01/DG/BPM.6/XPosSA
+      unit: mm
+  - type: tango.pyaml.static_catalog_entry
+    key: ANS-C01/DG/BPM.6/ZPosSA
+    device:
+      type: tango.pyaml.attribute_read_only
+      attribute: ANS-C01/DG/BPM.6/ZPosSA
+      unit: mm
+  - type: tango.pyaml.static_catalog_entry
+    key: ANS-C01/DG/BPM.7/XPosSA
+    device:
+      type: tango.pyaml.attribute_read_only
+      attribute: ANS-C01/DG/BPM.7/XPosSA
+      unit: mm
+  - type: tango.pyaml.static_catalog_entry
+    key: ANS-C01/DG/BPM.7/ZPosSA
+    device:
+      type: tango.pyaml.attribute_read_only
+      attribute: ANS-C01/DG/BPM.7/ZPosSA
+      unit: mm
+  - type: tango.pyaml.static_catalog_entry
+    key: ANS-C02/DG/BPM.1/XPosSA
+    device:
+      type: tango.pyaml.attribute_read_only
+      attribute: ANS-C02/DG/BPM.1/XPosSA
+      unit: mm
+  - type: tango.pyaml.static_catalog_entry
+    key: ANS-C02/DG/BPM.1/ZPosSA
+    device:
+      type: tango.pyaml.attribute_read_only
+      attribute: ANS-C02/DG/BPM.1/ZPosSA
+      unit: mm
+  - type: tango.pyaml.static_catalog_entry
+    key: ANS-C02/DG/BPM.2/XPosSA
+    device:
+      type: tango.pyaml.attribute_read_only
+      attribute: ANS-C02/DG/BPM.2/XPosSA
+      unit: mm
+  - type: tango.pyaml.static_catalog_entry
+    key: ANS-C02/DG/BPM.2/ZPosSA
+    device:
+      type: tango.pyaml.attribute_read_only
+      attribute: ANS-C02/DG/BPM.2/ZPosSA
+      unit: mm
+  - type: tango.pyaml.static_catalog_entry
+    key: ANS-C02/DG/BPM.3/XPosSA
+    device:
+      type: tango.pyaml.attribute_read_only
+      attribute: ANS-C02/DG/BPM.3/XPosSA
+      unit: mm
+  - type: tango.pyaml.static_catalog_entry
+    key: ANS-C02/DG/BPM.3/ZPosSA
+    device:
+      type: tango.pyaml.attribute_read_only
+      attribute: ANS-C02/DG/BPM.3/ZPosSA
+      unit: mm
+  - type: tango.pyaml.static_catalog_entry
+    key: ANS-C02/DG/BPM.4/XPosSA
+    device:
+      type: tango.pyaml.attribute_read_only
+      attribute: ANS-C02/DG/BPM.4/XPosSA
+      unit: mm
+  - type: tango.pyaml.static_catalog_entry
+    key: ANS-C02/DG/BPM.4/ZPosSA
+    device:
+      type: tango.pyaml.attribute_read_only
+      attribute: ANS-C02/DG/BPM.4/ZPosSA
+      unit: mm
+  - type: tango.pyaml.static_catalog_entry
+    key: ANS-C02/DG/BPM.5/XPosSA
+    device:
+      type: tango.pyaml.attribute_read_only
+      attribute: ANS-C02/DG/BPM.5/XPosSA
+      unit: mm
+  - type: tango.pyaml.static_catalog_entry
+    key: ANS-C02/DG/BPM.5/ZPosSA
+    device:
+      type: tango.pyaml.attribute_read_only
+      attribute: ANS-C02/DG/BPM.5/ZPosSA
+      unit: mm
+  - type: tango.pyaml.static_catalog_entry
+    key: ANS-C02/DG/BPM.6/XPosSA
+    device:
+      type: tango.pyaml.attribute_read_only
+      attribute: ANS-C02/DG/BPM.6/XPosSA
+      unit: mm
+  - type: tango.pyaml.static_catalog_entry
+    key: ANS-C02/DG/BPM.6/ZPosSA
+    device:
+      type: tango.pyaml.attribute_read_only
+      attribute: ANS-C02/DG/BPM.6/ZPosSA
+      unit: mm
+  - type: tango.pyaml.static_catalog_entry
+    key: ANS-C02/DG/BPM.7/XPosSA
+    device:
+      type: tango.pyaml.attribute_read_only
+      attribute: ANS-C02/DG/BPM.7/XPosSA
+      unit: mm
+  - type: tango.pyaml.static_catalog_entry
+    key: ANS-C02/DG/BPM.7/ZPosSA
+    device:
+      type: tango.pyaml.attribute_read_only
+      attribute: ANS-C02/DG/BPM.7/ZPosSA
+      unit: mm
+  - type: tango.pyaml.static_catalog_entry
+    key: ANS-C02/DG/BPM.8/XPosSA
+    device:
+      type: tango.pyaml.attribute_read_only
+      attribute: ANS-C02/DG/BPM.8/XPosSA
+      unit: mm
+  - type: tango.pyaml.static_catalog_entry
+    key: ANS-C02/DG/BPM.8/ZPosSA
+    device:
+      type: tango.pyaml.attribute_read_only
+      attribute: ANS-C02/DG/BPM.8/ZPosSA
+      unit: mm
+  - type: tango.pyaml.static_catalog_entry
+    key: ANS-C03/DG/BPM.1/XPosSA
+    device:
+      type: tango.pyaml.attribute_read_only
+      attribute: ANS-C03/DG/BPM.1/XPosSA
+      unit: mm
+  - type: tango.pyaml.static_catalog_entry
+    key: ANS-C03/DG/BPM.1/ZPosSA
+    device:
+      type: tango.pyaml.attribute_read_only
+      attribute: ANS-C03/DG/BPM.1/ZPosSA
+      unit: mm
+  - type: tango.pyaml.static_catalog_entry
+    key: ANS-C03/DG/BPM.2/XPosSA
+    device:
+      type: tango.pyaml.attribute_read_only
+      attribute: ANS-C03/DG/BPM.2/XPosSA
+      unit: mm
+  - type: tango.pyaml.static_catalog_entry
+    key: ANS-C03/DG/BPM.2/ZPosSA
+    device:
+      type: tango.pyaml.attribute_read_only
+      attribute: ANS-C03/DG/BPM.2/ZPosSA
+      unit: mm
+  - type: tango.pyaml.static_catalog_entry
+    key: ANS-C03/DG/BPM.3/XPosSA
+    device:
+      type: tango.pyaml.attribute_read_only
+      attribute: ANS-C03/DG/BPM.3/XPosSA
+      unit: mm
+  - type: tango.pyaml.static_catalog_entry
+    key: ANS-C03/DG/BPM.3/ZPosSA
+    device:
+      type: tango.pyaml.attribute_read_only
+      attribute: ANS-C03/DG/BPM.3/ZPosSA
+      unit: mm
+  - type: tango.pyaml.static_catalog_entry
+    key: ANS-C03/DG/BPM.4/XPosSA
+    device:
+      type: tango.pyaml.attribute_read_only
+      attribute: ANS-C03/DG/BPM.4/XPosSA
+      unit: mm
+  - type: tango.pyaml.static_catalog_entry
+    key: ANS-C03/DG/BPM.4/ZPosSA
+    device:
+      type: tango.pyaml.attribute_read_only
+      attribute: ANS-C03/DG/BPM.4/ZPosSA
+      unit: mm
+  - type: tango.pyaml.static_catalog_entry
+    key: ANS-C03/DG/BPM.5/XPosSA
+    device:
+      type: tango.pyaml.attribute_read_only
+      attribute: ANS-C03/DG/BPM.5/XPosSA
+      unit: mm
+  - type: tango.pyaml.static_catalog_entry
+    key: ANS-C03/DG/BPM.5/ZPosSA
+    device:
+      type: tango.pyaml.attribute_read_only
+      attribute: ANS-C03/DG/BPM.5/ZPosSA
+      unit: mm
+  - type: tango.pyaml.static_catalog_entry
+    key: ANS-C03/DG/BPM.6/XPosSA
+    device:
+      type: tango.pyaml.attribute_read_only
+      attribute: ANS-C03/DG/BPM.6/XPosSA
+      unit: mm
+  - type: tango.pyaml.static_catalog_entry
+    key: ANS-C03/DG/BPM.6/ZPosSA
+    device:
+      type: tango.pyaml.attribute_read_only
+      attribute: ANS-C03/DG/BPM.6/ZPosSA
+      unit: mm
+  - type: tango.pyaml.static_catalog_entry
+    key: ANS-C03/DG/BPM.7/XPosSA
+    device:
+      type: tango.pyaml.attribute_read_only
+      attribute: ANS-C03/DG/BPM.7/XPosSA
+      unit: mm
+  - type: tango.pyaml.static_catalog_entry
+    key: ANS-C03/DG/BPM.7/ZPosSA
+    device:
+      type: tango.pyaml.attribute_read_only
+      attribute: ANS-C03/DG/BPM.7/ZPosSA
+      unit: mm
+  - type: tango.pyaml.static_catalog_entry
+    key: ANS-C03/DG/BPM.8/XPosSA
+    device:
+      type: tango.pyaml.attribute_read_only
+      attribute: ANS-C03/DG/BPM.8/XPosSA
+      unit: mm
+  - type: tango.pyaml.static_catalog_entry
+    key: ANS-C03/DG/BPM.8/ZPosSA
+    device:
+      type: tango.pyaml.attribute_read_only
+      attribute: ANS-C03/DG/BPM.8/ZPosSA
+      unit: mm
+  - type: tango.pyaml.static_catalog_entry
+    key: ANS-C04/DG/BPM.1/XPosSA
+    device:
+      type: tango.pyaml.attribute_read_only
+      attribute: ANS-C04/DG/BPM.1/XPosSA
+      unit: mm
+  - type: tango.pyaml.static_catalog_entry
+    key: ANS-C04/DG/BPM.1/ZPosSA
+    device:
+      type: tango.pyaml.attribute_read_only
+      attribute: ANS-C04/DG/BPM.1/ZPosSA
+      unit: mm
+  - type: tango.pyaml.static_catalog_entry
+    key: ANS-C04/DG/BPM.2/XPosSA
+    device:
+      type: tango.pyaml.attribute_read_only
+      attribute: ANS-C04/DG/BPM.2/XPosSA
+      unit: mm
+  - type: tango.pyaml.static_catalog_entry
+    key: ANS-C04/DG/BPM.2/ZPosSA
+    device:
+      type: tango.pyaml.attribute_read_only
+      attribute: ANS-C04/DG/BPM.2/ZPosSA
+      unit: mm
+  - type: tango.pyaml.static_catalog_entry
+    key: ANS-C04/DG/BPM.3/XPosSA
+    device:
+      type: tango.pyaml.attribute_read_only
+      attribute: ANS-C04/DG/BPM.3/XPosSA
+      unit: mm
+  - type: tango.pyaml.static_catalog_entry
+    key: ANS-C04/DG/BPM.3/ZPosSA
+    device:
+      type: tango.pyaml.attribute_read_only
+      attribute: ANS-C04/DG/BPM.3/ZPosSA
+      unit: mm
+  - type: tango.pyaml.static_catalog_entry
+    key: ANS-C04/DG/BPM.4/XPosSA
+    device:
+      type: tango.pyaml.attribute_read_only
+      attribute: ANS-C04/DG/BPM.4/XPosSA
+      unit: mm
+  - type: tango.pyaml.static_catalog_entry
+    key: ANS-C04/DG/BPM.4/ZPosSA
+    device:
+      type: tango.pyaml.attribute_read_only
+      attribute: ANS-C04/DG/BPM.4/ZPosSA
+      unit: mm
+  - type: tango.pyaml.static_catalog_entry
+    key: ANS-C04/DG/BPM.5/XPosSA
+    device:
+      type: tango.pyaml.attribute_read_only
+      attribute: ANS-C04/DG/BPM.5/XPosSA
+      unit: mm
+  - type: tango.pyaml.static_catalog_entry
+    key: ANS-C04/DG/BPM.5/ZPosSA
+    device:
+      type: tango.pyaml.attribute_read_only
+      attribute: ANS-C04/DG/BPM.5/ZPosSA
+      unit: mm
+  - type: tango.pyaml.static_catalog_entry
+    key: ANS-C04/DG/BPM.6/XPosSA
+    device:
+      type: tango.pyaml.attribute_read_only
+      attribute: ANS-C04/DG/BPM.6/XPosSA
+      unit: mm
+  - type: tango.pyaml.static_catalog_entry
+    key: ANS-C04/DG/BPM.6/ZPosSA
+    device:
+      type: tango.pyaml.attribute_read_only
+      attribute: ANS-C04/DG/BPM.6/ZPosSA
+      unit: mm
+  - type: tango.pyaml.static_catalog_entry
+    key: ANS-C04/DG/BPM.7/XPosSA
+    device:
+      type: tango.pyaml.attribute_read_only
+      attribute: ANS-C04/DG/BPM.7/XPosSA
+      unit: mm
+  - type: tango.pyaml.static_catalog_entry
+    key: ANS-C04/DG/BPM.7/ZPosSA
+    device:
+      type: tango.pyaml.attribute_read_only
+      attribute: ANS-C04/DG/BPM.7/ZPosSA
+      unit: mm
+  - type: tango.pyaml.static_catalog_entry
+    key: ANS-C05/DG/BPM.1/XPosSA
+    device:
+      type: tango.pyaml.attribute_read_only
+      attribute: ANS-C05/DG/BPM.1/XPosSA
+      unit: mm
+  - type: tango.pyaml.static_catalog_entry
+    key: ANS-C05/DG/BPM.1/ZPosSA
+    device:
+      type: tango.pyaml.attribute_read_only
+      attribute: ANS-C05/DG/BPM.1/ZPosSA
+      unit: mm
+  - type: tango.pyaml.static_catalog_entry
+    key: ANS-C05/DG/BPM.2/XPosSA
+    device:
+      type: tango.pyaml.attribute_read_only
+      attribute: ANS-C05/DG/BPM.2/XPosSA
+      unit: mm
+  - type: tango.pyaml.static_catalog_entry
+    key: ANS-C05/DG/BPM.2/ZPosSA
+    device:
+      type: tango.pyaml.attribute_read_only
+      attribute: ANS-C05/DG/BPM.2/ZPosSA
+      unit: mm
+  - type: tango.pyaml.static_catalog_entry
+    key: ANS-C05/DG/BPM.3/XPosSA
+    device:
+      type: tango.pyaml.attribute_read_only
+      attribute: ANS-C05/DG/BPM.3/XPosSA
+      unit: mm
+  - type: tango.pyaml.static_catalog_entry
+    key: ANS-C05/DG/BPM.3/ZPosSA
+    device:
+      type: tango.pyaml.attribute_read_only
+      attribute: ANS-C05/DG/BPM.3/ZPosSA
+      unit: mm
+  - type: tango.pyaml.static_catalog_entry
+    key: ANS-C05/DG/BPM.4/XPosSA
+    device:
+      type: tango.pyaml.attribute_read_only
+      attribute: ANS-C05/DG/BPM.4/XPosSA
+      unit: mm
+  - type: tango.pyaml.static_catalog_entry
+    key: ANS-C05/DG/BPM.4/ZPosSA
+    device:
+      type: tango.pyaml.attribute_read_only
+      attribute: ANS-C05/DG/BPM.4/ZPosSA
+      unit: mm
+  - type: tango.pyaml.static_catalog_entry
+    key: ANS-C05/DG/BPM.5/XPosSA
+    device:
+      type: tango.pyaml.attribute_read_only
+      attribute: ANS-C05/DG/BPM.5/XPosSA
+      unit: mm
+  - type: tango.pyaml.static_catalog_entry
+    key: ANS-C05/DG/BPM.5/ZPosSA
+    device:
+      type: tango.pyaml.attribute_read_only
+      attribute: ANS-C05/DG/BPM.5/ZPosSA
+      unit: mm
+  - type: tango.pyaml.static_catalog_entry
+    key: ANS-C05/DG/BPM.6/XPosSA
+    device:
+      type: tango.pyaml.attribute_read_only
+      attribute: ANS-C05/DG/BPM.6/XPosSA
+      unit: mm
+  - type: tango.pyaml.static_catalog_entry
+    key: ANS-C05/DG/BPM.6/ZPosSA
+    device:
+      type: tango.pyaml.attribute_read_only
+      attribute: ANS-C05/DG/BPM.6/ZPosSA
+      unit: mm
+  - type: tango.pyaml.static_catalog_entry
+    key: ANS-C05/DG/BPM.7/XPosSA
+    device:
+      type: tango.pyaml.attribute_read_only
+      attribute: ANS-C05/DG/BPM.7/XPosSA
+      unit: mm
+  - type: tango.pyaml.static_catalog_entry
+    key: ANS-C05/DG/BPM.7/ZPosSA
+    device:
+      type: tango.pyaml.attribute_read_only
+      attribute: ANS-C05/DG/BPM.7/ZPosSA
+      unit: mm
+  - type: tango.pyaml.static_catalog_entry
+    key: ANS-C06/DG/BPM.1/XPosSA
+    device:
+      type: tango.pyaml.attribute_read_only
+      attribute: ANS-C06/DG/BPM.1/XPosSA
+      unit: mm
+  - type: tango.pyaml.static_catalog_entry
+    key: ANS-C06/DG/BPM.1/ZPosSA
+    device:
+      type: tango.pyaml.attribute_read_only
+      attribute: ANS-C06/DG/BPM.1/ZPosSA
+      unit: mm
+  - type: tango.pyaml.static_catalog_entry
+    key: ANS-C06/DG/BPM.2/XPosSA
+    device:
+      type: tango.pyaml.attribute_read_only
+      attribute: ANS-C06/DG/BPM.2/XPosSA
+      unit: mm
+  - type: tango.pyaml.static_catalog_entry
+    key: ANS-C06/DG/BPM.2/ZPosSA
+    device:
+      type: tango.pyaml.attribute_read_only
+      attribute: ANS-C06/DG/BPM.2/ZPosSA
+      unit: mm
+  - type: tango.pyaml.static_catalog_entry
+    key: ANS-C06/DG/BPM.3/XPosSA
+    device:
+      type: tango.pyaml.attribute_read_only
+      attribute: ANS-C06/DG/BPM.3/XPosSA
+      unit: mm
+  - type: tango.pyaml.static_catalog_entry
+    key: ANS-C06/DG/BPM.3/ZPosSA
+    device:
+      type: tango.pyaml.attribute_read_only
+      attribute: ANS-C06/DG/BPM.3/ZPosSA
+      unit: mm
+  - type: tango.pyaml.static_catalog_entry
+    key: ANS-C06/DG/BPM.4/XPosSA
+    device:
+      type: tango.pyaml.attribute_read_only
+      attribute: ANS-C06/DG/BPM.4/XPosSA
+      unit: mm
+  - type: tango.pyaml.static_catalog_entry
+    key: ANS-C06/DG/BPM.4/ZPosSA
+    device:
+      type: tango.pyaml.attribute_read_only
+      attribute: ANS-C06/DG/BPM.4/ZPosSA
+      unit: mm
+  - type: tango.pyaml.static_catalog_entry
+    key: ANS-C06/DG/BPM.5/XPosSA
+    device:
+      type: tango.pyaml.attribute_read_only
+      attribute: ANS-C06/DG/BPM.5/XPosSA
+      unit: mm
+  - type: tango.pyaml.static_catalog_entry
+    key: ANS-C06/DG/BPM.5/ZPosSA
+    device:
+      type: tango.pyaml.attribute_read_only
+      attribute: ANS-C06/DG/BPM.5/ZPosSA
+      unit: mm
+  - type: tango.pyaml.static_catalog_entry
+    key: ANS-C06/DG/BPM.6/XPosSA
+    device:
+      type: tango.pyaml.attribute_read_only
+      attribute: ANS-C06/DG/BPM.6/XPosSA
+      unit: mm
+  - type: tango.pyaml.static_catalog_entry
+    key: ANS-C06/DG/BPM.6/ZPosSA
+    device:
+      type: tango.pyaml.attribute_read_only
+      attribute: ANS-C06/DG/BPM.6/ZPosSA
+      unit: mm
+  - type: tango.pyaml.static_catalog_entry
+    key: ANS-C06/DG/BPM.7/XPosSA
+    device:
+      type: tango.pyaml.attribute_read_only
+      attribute: ANS-C06/DG/BPM.7/XPosSA
+      unit: mm
+  - type: tango.pyaml.static_catalog_entry
+    key: ANS-C06/DG/BPM.7/ZPosSA
+    device:
+      type: tango.pyaml.attribute_read_only
+      attribute: ANS-C06/DG/BPM.7/ZPosSA
+      unit: mm
+  - type: tango.pyaml.static_catalog_entry
+    key: ANS-C06/DG/BPM.8/XPosSA
+    device:
+      type: tango.pyaml.attribute_read_only
+      attribute: ANS-C06/DG/BPM.8/XPosSA
+      unit: mm
+  - type: tango.pyaml.static_catalog_entry
+    key: ANS-C06/DG/BPM.8/ZPosSA
+    device:
+      type: tango.pyaml.attribute_read_only
+      attribute: ANS-C06/DG/BPM.8/ZPosSA
+      unit: mm
+  - type: tango.pyaml.static_catalog_entry
+    key: ANS-C07/DG/BPM.1/XPosSA
+    device:
+      type: tango.pyaml.attribute_read_only
+      attribute: ANS-C07/DG/BPM.1/XPosSA
+      unit: mm
+  - type: tango.pyaml.static_catalog_entry
+    key: ANS-C07/DG/BPM.1/ZPosSA
+    device:
+      type: tango.pyaml.attribute_read_only
+      attribute: ANS-C07/DG/BPM.1/ZPosSA
+      unit: mm
+  - type: tango.pyaml.static_catalog_entry
+    key: ANS-C07/DG/BPM.2/XPosSA
+    device:
+      type: tango.pyaml.attribute_read_only
+      attribute: ANS-C07/DG/BPM.2/XPosSA
+      unit: mm
+  - type: tango.pyaml.static_catalog_entry
+    key: ANS-C07/DG/BPM.2/ZPosSA
+    device:
+      type: tango.pyaml.attribute_read_only
+      attribute: ANS-C07/DG/BPM.2/ZPosSA
+      unit: mm
+  - type: tango.pyaml.static_catalog_entry
+    key: ANS-C07/DG/BPM.3/XPosSA
+    device:
+      type: tango.pyaml.attribute_read_only
+      attribute: ANS-C07/DG/BPM.3/XPosSA
+      unit: mm
+  - type: tango.pyaml.static_catalog_entry
+    key: ANS-C07/DG/BPM.3/ZPosSA
+    device:
+      type: tango.pyaml.attribute_read_only
+      attribute: ANS-C07/DG/BPM.3/ZPosSA
+      unit: mm
+  - type: tango.pyaml.static_catalog_entry
+    key: ANS-C07/DG/BPM.4/XPosSA
+    device:
+      type: tango.pyaml.attribute_read_only
+      attribute: ANS-C07/DG/BPM.4/XPosSA
+      unit: mm
+  - type: tango.pyaml.static_catalog_entry
+    key: ANS-C07/DG/BPM.4/ZPosSA
+    device:
+      type: tango.pyaml.attribute_read_only
+      attribute: ANS-C07/DG/BPM.4/ZPosSA
+      unit: mm
+  - type: tango.pyaml.static_catalog_entry
+    key: ANS-C07/DG/BPM.5/XPosSA
+    device:
+      type: tango.pyaml.attribute_read_only
+      attribute: ANS-C07/DG/BPM.5/XPosSA
+      unit: mm
+  - type: tango.pyaml.static_catalog_entry
+    key: ANS-C07/DG/BPM.5/ZPosSA
+    device:
+      type: tango.pyaml.attribute_read_only
+      attribute: ANS-C07/DG/BPM.5/ZPosSA
+      unit: mm
+  - type: tango.pyaml.static_catalog_entry
+    key: ANS-C07/DG/BPM.6/XPosSA
+    device:
+      type: tango.pyaml.attribute_read_only
+      attribute: ANS-C07/DG/BPM.6/XPosSA
+      unit: mm
+  - type: tango.pyaml.static_catalog_entry
+    key: ANS-C07/DG/BPM.6/ZPosSA
+    device:
+      type: tango.pyaml.attribute_read_only
+      attribute: ANS-C07/DG/BPM.6/ZPosSA
+      unit: mm
+  - type: tango.pyaml.static_catalog_entry
+    key: ANS-C07/DG/BPM.7/XPosSA
+    device:
+      type: tango.pyaml.attribute_read_only
+      attribute: ANS-C07/DG/BPM.7/XPosSA
+      unit: mm
+  - type: tango.pyaml.static_catalog_entry
+    key: ANS-C07/DG/BPM.7/ZPosSA
+    device:
+      type: tango.pyaml.attribute_read_only
+      attribute: ANS-C07/DG/BPM.7/ZPosSA
+      unit: mm
+  - type: tango.pyaml.static_catalog_entry
+    key: ANS-C07/DG/BPM.8/XPosSA
+    device:
+      type: tango.pyaml.attribute_read_only
+      attribute: ANS-C07/DG/BPM.8/XPosSA
+      unit: mm
+  - type: tango.pyaml.static_catalog_entry
+    key: ANS-C07/DG/BPM.8/ZPosSA
+    device:
+      type: tango.pyaml.attribute_read_only
+      attribute: ANS-C07/DG/BPM.8/ZPosSA
+      unit: mm
+  - type: tango.pyaml.static_catalog_entry
+    key: ANS-C08/DG/BPM.1/XPosSA
+    device:
+      type: tango.pyaml.attribute_read_only
+      attribute: ANS-C08/DG/BPM.1/XPosSA
+      unit: mm
+  - type: tango.pyaml.static_catalog_entry
+    key: ANS-C08/DG/BPM.1/ZPosSA
+    device:
+      type: tango.pyaml.attribute_read_only
+      attribute: ANS-C08/DG/BPM.1/ZPosSA
+      unit: mm
+  - type: tango.pyaml.static_catalog_entry
+    key: ANS-C08/DG/BPM.2/XPosSA
+    device:
+      type: tango.pyaml.attribute_read_only
+      attribute: ANS-C08/DG/BPM.2/XPosSA
+      unit: mm
+  - type: tango.pyaml.static_catalog_entry
+    key: ANS-C08/DG/BPM.2/ZPosSA
+    device:
+      type: tango.pyaml.attribute_read_only
+      attribute: ANS-C08/DG/BPM.2/ZPosSA
+      unit: mm
+  - type: tango.pyaml.static_catalog_entry
+    key: ANS-C08/DG/BPM.3/XPosSA
+    device:
+      type: tango.pyaml.attribute_read_only
+      attribute: ANS-C08/DG/BPM.3/XPosSA
+      unit: mm
+  - type: tango.pyaml.static_catalog_entry
+    key: ANS-C08/DG/BPM.3/ZPosSA
+    device:
+      type: tango.pyaml.attribute_read_only
+      attribute: ANS-C08/DG/BPM.3/ZPosSA
+      unit: mm
+  - type: tango.pyaml.static_catalog_entry
+    key: ANS-C08/DG/BPM.4/XPosSA
+    device:
+      type: tango.pyaml.attribute_read_only
+      attribute: ANS-C08/DG/BPM.4/XPosSA
+      unit: mm
+  - type: tango.pyaml.static_catalog_entry
+    key: ANS-C08/DG/BPM.4/ZPosSA
+    device:
+      type: tango.pyaml.attribute_read_only
+      attribute: ANS-C08/DG/BPM.4/ZPosSA
+      unit: mm
+  - type: tango.pyaml.static_catalog_entry
+    key: ANS-C08/DG/BPM.5/XPosSA
+    device:
+      type: tango.pyaml.attribute_read_only
+      attribute: ANS-C08/DG/BPM.5/XPosSA
+      unit: mm
+  - type: tango.pyaml.static_catalog_entry
+    key: ANS-C08/DG/BPM.5/ZPosSA
+    device:
+      type: tango.pyaml.attribute_read_only
+      attribute: ANS-C08/DG/BPM.5/ZPosSA
+      unit: mm
+  - type: tango.pyaml.static_catalog_entry
+    key: ANS-C08/DG/BPM.6/XPosSA
+    device:
+      type: tango.pyaml.attribute_read_only
+      attribute: ANS-C08/DG/BPM.6/XPosSA
+      unit: mm
+  - type: tango.pyaml.static_catalog_entry
+    key: ANS-C08/DG/BPM.6/ZPosSA
+    device:
+      type: tango.pyaml.attribute_read_only
+      attribute: ANS-C08/DG/BPM.6/ZPosSA
+      unit: mm
+  - type: tango.pyaml.static_catalog_entry
+    key: ANS-C08/DG/BPM.7/XPosSA
+    device:
+      type: tango.pyaml.attribute_read_only
+      attribute: ANS-C08/DG/BPM.7/XPosSA
+      unit: mm
+  - type: tango.pyaml.static_catalog_entry
+    key: ANS-C08/DG/BPM.7/ZPosSA
+    device:
+      type: tango.pyaml.attribute_read_only
+      attribute: ANS-C08/DG/BPM.7/ZPosSA
+      unit: mm
+  - type: tango.pyaml.static_catalog_entry
+    key: ANS-C09/DG/BPM.1/XPosSA
+    device:
+      type: tango.pyaml.attribute_read_only
+      attribute: ANS-C09/DG/BPM.1/XPosSA
+      unit: mm
+  - type: tango.pyaml.static_catalog_entry
+    key: ANS-C09/DG/BPM.1/ZPosSA
+    device:
+      type: tango.pyaml.attribute_read_only
+      attribute: ANS-C09/DG/BPM.1/ZPosSA
+      unit: mm
+  - type: tango.pyaml.static_catalog_entry
+    key: ANS-C09/DG/BPM.2/XPosSA
+    device:
+      type: tango.pyaml.attribute_read_only
+      attribute: ANS-C09/DG/BPM.2/XPosSA
+      unit: mm
+  - type: tango.pyaml.static_catalog_entry
+    key: ANS-C09/DG/BPM.2/ZPosSA
+    device:
+      type: tango.pyaml.attribute_read_only
+      attribute: ANS-C09/DG/BPM.2/ZPosSA
+      unit: mm
+  - type: tango.pyaml.static_catalog_entry
+    key: ANS-C09/DG/BPM.3/XPosSA
+    device:
+      type: tango.pyaml.attribute_read_only
+      attribute: ANS-C09/DG/BPM.3/XPosSA
+      unit: mm
+  - type: tango.pyaml.static_catalog_entry
+    key: ANS-C09/DG/BPM.3/ZPosSA
+    device:
+      type: tango.pyaml.attribute_read_only
+      attribute: ANS-C09/DG/BPM.3/ZPosSA
+      unit: mm
+  - type: tango.pyaml.static_catalog_entry
+    key: ANS-C09/DG/BPM.4/XPosSA
+    device:
+      type: tango.pyaml.attribute_read_only
+      attribute: ANS-C09/DG/BPM.4/XPosSA
+      unit: mm
+  - type: tango.pyaml.static_catalog_entry
+    key: ANS-C09/DG/BPM.4/ZPosSA
+    device:
+      type: tango.pyaml.attribute_read_only
+      attribute: ANS-C09/DG/BPM.4/ZPosSA
+      unit: mm
+  - type: tango.pyaml.static_catalog_entry
+    key: ANS-C09/DG/BPM.5/XPosSA
+    device:
+      type: tango.pyaml.attribute_read_only
+      attribute: ANS-C09/DG/BPM.5/XPosSA
+      unit: mm
+  - type: tango.pyaml.static_catalog_entry
+    key: ANS-C09/DG/BPM.5/ZPosSA
+    device:
+      type: tango.pyaml.attribute_read_only
+      attribute: ANS-C09/DG/BPM.5/ZPosSA
+      unit: mm
+  - type: tango.pyaml.static_catalog_entry
+    key: ANS-C09/DG/BPM.6/XPosSA
+    device:
+      type: tango.pyaml.attribute_read_only
+      attribute: ANS-C09/DG/BPM.6/XPosSA
+      unit: mm
+  - type: tango.pyaml.static_catalog_entry
+    key: ANS-C09/DG/BPM.6/ZPosSA
+    device:
+      type: tango.pyaml.attribute_read_only
+      attribute: ANS-C09/DG/BPM.6/ZPosSA
+      unit: mm
+  - type: tango.pyaml.static_catalog_entry
+    key: ANS-C09/DG/BPM.7/XPosSA
+    device:
+      type: tango.pyaml.attribute_read_only
+      attribute: ANS-C09/DG/BPM.7/XPosSA
+      unit: mm
+  - type: tango.pyaml.static_catalog_entry
+    key: ANS-C09/DG/BPM.7/ZPosSA
+    device:
+      type: tango.pyaml.attribute_read_only
+      attribute: ANS-C09/DG/BPM.7/ZPosSA
+      unit: mm
+  - type: tango.pyaml.static_catalog_entry
+    key: ANS-C10/DG/BPM.1/XPosSA
+    device:
+      type: tango.pyaml.attribute_read_only
+      attribute: ANS-C10/DG/BPM.1/XPosSA
+      unit: mm
+  - type: tango.pyaml.static_catalog_entry
+    key: ANS-C10/DG/BPM.1/ZPosSA
+    device:
+      type: tango.pyaml.attribute_read_only
+      attribute: ANS-C10/DG/BPM.1/ZPosSA
+      unit: mm
+  - type: tango.pyaml.static_catalog_entry
+    key: ANS-C10/DG/BPM.2/XPosSA
+    device:
+      type: tango.pyaml.attribute_read_only
+      attribute: ANS-C10/DG/BPM.2/XPosSA
+      unit: mm
+  - type: tango.pyaml.static_catalog_entry
+    key: ANS-C10/DG/BPM.2/ZPosSA
+    device:
+      type: tango.pyaml.attribute_read_only
+      attribute: ANS-C10/DG/BPM.2/ZPosSA
+      unit: mm
+  - type: tango.pyaml.static_catalog_entry
+    key: ANS-C10/DG/BPM.3/XPosSA
+    device:
+      type: tango.pyaml.attribute_read_only
+      attribute: ANS-C10/DG/BPM.3/XPosSA
+      unit: mm
+  - type: tango.pyaml.static_catalog_entry
+    key: ANS-C10/DG/BPM.3/ZPosSA
+    device:
+      type: tango.pyaml.attribute_read_only
+      attribute: ANS-C10/DG/BPM.3/ZPosSA
+      unit: mm
+  - type: tango.pyaml.static_catalog_entry
+    key: ANS-C10/DG/BPM.4/XPosSA
+    device:
+      type: tango.pyaml.attribute_read_only
+      attribute: ANS-C10/DG/BPM.4/XPosSA
+      unit: mm
+  - type: tango.pyaml.static_catalog_entry
+    key: ANS-C10/DG/BPM.4/ZPosSA
+    device:
+      type: tango.pyaml.attribute_read_only
+      attribute: ANS-C10/DG/BPM.4/ZPosSA
+      unit: mm
+  - type: tango.pyaml.static_catalog_entry
+    key: ANS-C10/DG/BPM.5/XPosSA
+    device:
+      type: tango.pyaml.attribute_read_only
+      attribute: ANS-C10/DG/BPM.5/XPosSA
+      unit: mm
+  - type: tango.pyaml.static_catalog_entry
+    key: ANS-C10/DG/BPM.5/ZPosSA
+    device:
+      type: tango.pyaml.attribute_read_only
+      attribute: ANS-C10/DG/BPM.5/ZPosSA
+      unit: mm
+  - type: tango.pyaml.static_catalog_entry
+    key: ANS-C10/DG/BPM.6/XPosSA
+    device:
+      type: tango.pyaml.attribute_read_only
+      attribute: ANS-C10/DG/BPM.6/XPosSA
+      unit: mm
+  - type: tango.pyaml.static_catalog_entry
+    key: ANS-C10/DG/BPM.6/ZPosSA
+    device:
+      type: tango.pyaml.attribute_read_only
+      attribute: ANS-C10/DG/BPM.6/ZPosSA
+      unit: mm
+  - type: tango.pyaml.static_catalog_entry
+    key: ANS-C10/DG/BPM.7/XPosSA
+    device:
+      type: tango.pyaml.attribute_read_only
+      attribute: ANS-C10/DG/BPM.7/XPosSA
+      unit: mm
+  - type: tango.pyaml.static_catalog_entry
+    key: ANS-C10/DG/BPM.7/ZPosSA
+    device:
+      type: tango.pyaml.attribute_read_only
+      attribute: ANS-C10/DG/BPM.7/ZPosSA
+      unit: mm
+  - type: tango.pyaml.static_catalog_entry
+    key: ANS-C10/DG/BPM.8/XPosSA
+    device:
+      type: tango.pyaml.attribute_read_only
+      attribute: ANS-C10/DG/BPM.8/XPosSA
+      unit: mm
+  - type: tango.pyaml.static_catalog_entry
+    key: ANS-C10/DG/BPM.8/ZPosSA
+    device:
+      type: tango.pyaml.attribute_read_only
+      attribute: ANS-C10/DG/BPM.8/ZPosSA
+      unit: mm
+  - type: tango.pyaml.static_catalog_entry
+    key: ANS-C11/DG/BPM.1/XPosSA
+    device:
+      type: tango.pyaml.attribute_read_only
+      attribute: ANS-C11/DG/BPM.1/XPosSA
+      unit: mm
+  - type: tango.pyaml.static_catalog_entry
+    key: ANS-C11/DG/BPM.1/ZPosSA
+    device:
+      type: tango.pyaml.attribute_read_only
+      attribute: ANS-C11/DG/BPM.1/ZPosSA
+      unit: mm
+  - type: tango.pyaml.static_catalog_entry
+    key: ANS-C11/DG/BPM.2/XPosSA
+    device:
+      type: tango.pyaml.attribute_read_only
+      attribute: ANS-C11/DG/BPM.2/XPosSA
+      unit: mm
+  - type: tango.pyaml.static_catalog_entry
+    key: ANS-C11/DG/BPM.2/ZPosSA
+    device:
+      type: tango.pyaml.attribute_read_only
+      attribute: ANS-C11/DG/BPM.2/ZPosSA
+      unit: mm
+  - type: tango.pyaml.static_catalog_entry
+    key: ANS-C11/DG/BPM.3/XPosSA
+    device:
+      type: tango.pyaml.attribute_read_only
+      attribute: ANS-C11/DG/BPM.3/XPosSA
+      unit: mm
+  - type: tango.pyaml.static_catalog_entry
+    key: ANS-C11/DG/BPM.3/ZPosSA
+    device:
+      type: tango.pyaml.attribute_read_only
+      attribute: ANS-C11/DG/BPM.3/ZPosSA
+      unit: mm
+  - type: tango.pyaml.static_catalog_entry
+    key: ANS-C11/DG/BPM.4/XPosSA
+    device:
+      type: tango.pyaml.attribute_read_only
+      attribute: ANS-C11/DG/BPM.4/XPosSA
+      unit: mm
+  - type: tango.pyaml.static_catalog_entry
+    key: ANS-C11/DG/BPM.4/ZPosSA
+    device:
+      type: tango.pyaml.attribute_read_only
+      attribute: ANS-C11/DG/BPM.4/ZPosSA
+      unit: mm
+  - type: tango.pyaml.static_catalog_entry
+    key: ANS-C11/DG/BPM.5/XPosSA
+    device:
+      type: tango.pyaml.attribute_read_only
+      attribute: ANS-C11/DG/BPM.5/XPosSA
+      unit: mm
+  - type: tango.pyaml.static_catalog_entry
+    key: ANS-C11/DG/BPM.5/ZPosSA
+    device:
+      type: tango.pyaml.attribute_read_only
+      attribute: ANS-C11/DG/BPM.5/ZPosSA
+      unit: mm
+  - type: tango.pyaml.static_catalog_entry
+    key: ANS-C11/DG/BPM.6/XPosSA
+    device:
+      type: tango.pyaml.attribute_read_only
+      attribute: ANS-C11/DG/BPM.6/XPosSA
+      unit: mm
+  - type: tango.pyaml.static_catalog_entry
+    key: ANS-C11/DG/BPM.6/ZPosSA
+    device:
+      type: tango.pyaml.attribute_read_only
+      attribute: ANS-C11/DG/BPM.6/ZPosSA
+      unit: mm
+  - type: tango.pyaml.static_catalog_entry
+    key: ANS-C11/DG/BPM.7/XPosSA
+    device:
+      type: tango.pyaml.attribute_read_only
+      attribute: ANS-C11/DG/BPM.7/XPosSA
+      unit: mm
+  - type: tango.pyaml.static_catalog_entry
+    key: ANS-C11/DG/BPM.7/ZPosSA
+    device:
+      type: tango.pyaml.attribute_read_only
+      attribute: ANS-C11/DG/BPM.7/ZPosSA
+      unit: mm
+  - type: tango.pyaml.static_catalog_entry
+    key: ANS-C11/DG/BPM.8/XPosSA
+    device:
+      type: tango.pyaml.attribute_read_only
+      attribute: ANS-C11/DG/BPM.8/XPosSA
+      unit: mm
+  - type: tango.pyaml.static_catalog_entry
+    key: ANS-C11/DG/BPM.8/ZPosSA
+    device:
+      type: tango.pyaml.attribute_read_only
+      attribute: ANS-C11/DG/BPM.8/ZPosSA
+      unit: mm
+  - type: tango.pyaml.static_catalog_entry
+    key: ANS-C12/DG/BPM.1/XPosSA
+    device:
+      type: tango.pyaml.attribute_read_only
+      attribute: ANS-C12/DG/BPM.1/XPosSA
+      unit: mm
+  - type: tango.pyaml.static_catalog_entry
+    key: ANS-C12/DG/BPM.1/ZPosSA
+    device:
+      type: tango.pyaml.attribute_read_only
+      attribute: ANS-C12/DG/BPM.1/ZPosSA
+      unit: mm
+  - type: tango.pyaml.static_catalog_entry
+    key: ANS-C12/DG/BPM.2/XPosSA
+    device:
+      type: tango.pyaml.attribute_read_only
+      attribute: ANS-C12/DG/BPM.2/XPosSA
+      unit: mm
+  - type: tango.pyaml.static_catalog_entry
+    key: ANS-C12/DG/BPM.2/ZPosSA
+    device:
+      type: tango.pyaml.attribute_read_only
+      attribute: ANS-C12/DG/BPM.2/ZPosSA
+      unit: mm
+  - type: tango.pyaml.static_catalog_entry
+    key: ANS-C12/DG/BPM.3/XPosSA
+    device:
+      type: tango.pyaml.attribute_read_only
+      attribute: ANS-C12/DG/BPM.3/XPosSA
+      unit: mm
+  - type: tango.pyaml.static_catalog_entry
+    key: ANS-C12/DG/BPM.3/ZPosSA
+    device:
+      type: tango.pyaml.attribute_read_only
+      attribute: ANS-C12/DG/BPM.3/ZPosSA
+      unit: mm
+  - type: tango.pyaml.static_catalog_entry
+    key: ANS-C12/DG/BPM.4/XPosSA
+    device:
+      type: tango.pyaml.attribute_read_only
+      attribute: ANS-C12/DG/BPM.4/XPosSA
+      unit: mm
+  - type: tango.pyaml.static_catalog_entry
+    key: ANS-C12/DG/BPM.4/ZPosSA
+    device:
+      type: tango.pyaml.attribute_read_only
+      attribute: ANS-C12/DG/BPM.4/ZPosSA
+      unit: mm
+  - type: tango.pyaml.static_catalog_entry
+    key: ANS-C12/DG/BPM.5/XPosSA
+    device:
+      type: tango.pyaml.attribute_read_only
+      attribute: ANS-C12/DG/BPM.5/XPosSA
+      unit: mm
+  - type: tango.pyaml.static_catalog_entry
+    key: ANS-C12/DG/BPM.5/ZPosSA
+    device:
+      type: tango.pyaml.attribute_read_only
+      attribute: ANS-C12/DG/BPM.5/ZPosSA
+      unit: mm
+  - type: tango.pyaml.static_catalog_entry
+    key: ANS-C12/DG/BPM.6/XPosSA
+    device:
+      type: tango.pyaml.attribute_read_only
+      attribute: ANS-C12/DG/BPM.6/XPosSA
+      unit: mm
+  - type: tango.pyaml.static_catalog_entry
+    key: ANS-C12/DG/BPM.6/ZPosSA
+    device:
+      type: tango.pyaml.attribute_read_only
+      attribute: ANS-C12/DG/BPM.6/ZPosSA
+      unit: mm
+  - type: tango.pyaml.static_catalog_entry
+    key: ANS-C12/DG/BPM.7/XPosSA
+    device:
+      type: tango.pyaml.attribute_read_only
+      attribute: ANS-C12/DG/BPM.7/XPosSA
+      unit: mm
+  - type: tango.pyaml.static_catalog_entry
+    key: ANS-C12/DG/BPM.7/ZPosSA
+    device:
+      type: tango.pyaml.attribute_read_only
+      attribute: ANS-C12/DG/BPM.7/ZPosSA
+      unit: mm
+  - type: tango.pyaml.static_catalog_entry
+    key: ANS-C13/DG/BPM.1/XPosSA
+    device:
+      type: tango.pyaml.attribute_read_only
+      attribute: ANS-C13/DG/BPM.1/XPosSA
+      unit: mm
+  - type: tango.pyaml.static_catalog_entry
+    key: ANS-C13/DG/BPM.1/ZPosSA
+    device:
+      type: tango.pyaml.attribute_read_only
+      attribute: ANS-C13/DG/BPM.1/ZPosSA
+      unit: mm
+  - type: tango.pyaml.static_catalog_entry
+    key: ANS-C13/DG/BPM.8/XPosSA
+    device:
+      type: tango.pyaml.attribute_read_only
+      attribute: ANS-C13/DG/BPM.8/XPosSA
+      unit: mm
+  - type: tango.pyaml.static_catalog_entry
+    key: ANS-C13/DG/BPM.8/ZPosSA
+    device:
+      type: tango.pyaml.attribute_read_only
+      attribute: ANS-C13/DG/BPM.8/ZPosSA
+      unit: mm
+  - type: tango.pyaml.static_catalog_entry
+    key: ANS-C13/DG/BPM.9/XPosSA
+    device:
+      type: tango.pyaml.attribute_read_only
+      attribute: ANS-C13/DG/BPM.9/XPosSA
+      unit: mm
+  - type: tango.pyaml.static_catalog_entry
+    key: ANS-C13/DG/BPM.9/ZPosSA
+    device:
+      type: tango.pyaml.attribute_read_only
+      attribute: ANS-C13/DG/BPM.9/ZPosSA
+      unit: mm
+  - type: tango.pyaml.static_catalog_entry
+    key: ANS-C13/DG/BPM.2/XPosSA
+    device:
+      type: tango.pyaml.attribute_read_only
+      attribute: ANS-C13/DG/BPM.2/XPosSA
+      unit: mm
+  - type: tango.pyaml.static_catalog_entry
+    key: ANS-C13/DG/BPM.2/ZPosSA
+    device:
+      type: tango.pyaml.attribute_read_only
+      attribute: ANS-C13/DG/BPM.2/ZPosSA
+      unit: mm
+  - type: tango.pyaml.static_catalog_entry
+    key: ANS-C13/DG/BPM.3/XPosSA
+    device:
+      type: tango.pyaml.attribute_read_only
+      attribute: ANS-C13/DG/BPM.3/XPosSA
+      unit: mm
+  - type: tango.pyaml.static_catalog_entry
+    key: ANS-C13/DG/BPM.3/ZPosSA
+    device:
+      type: tango.pyaml.attribute_read_only
+      attribute: ANS-C13/DG/BPM.3/ZPosSA
+      unit: mm
+  - type: tango.pyaml.static_catalog_entry
+    key: ANS-C13/DG/BPM.4/XPosSA
+    device:
+      type: tango.pyaml.attribute_read_only
+      attribute: ANS-C13/DG/BPM.4/XPosSA
+      unit: mm
+  - type: tango.pyaml.static_catalog_entry
+    key: ANS-C13/DG/BPM.4/ZPosSA
+    device:
+      type: tango.pyaml.attribute_read_only
+      attribute: ANS-C13/DG/BPM.4/ZPosSA
+      unit: mm
+  - type: tango.pyaml.static_catalog_entry
+    key: ANS-C13/DG/BPM.5/XPosSA
+    device:
+      type: tango.pyaml.attribute_read_only
+      attribute: ANS-C13/DG/BPM.5/XPosSA
+      unit: mm
+  - type: tango.pyaml.static_catalog_entry
+    key: ANS-C13/DG/BPM.5/ZPosSA
+    device:
+      type: tango.pyaml.attribute_read_only
+      attribute: ANS-C13/DG/BPM.5/ZPosSA
+      unit: mm
+  - type: tango.pyaml.static_catalog_entry
+    key: ANS-C13/DG/BPM.6/XPosSA
+    device:
+      type: tango.pyaml.attribute_read_only
+      attribute: ANS-C13/DG/BPM.6/XPosSA
+      unit: mm
+  - type: tango.pyaml.static_catalog_entry
+    key: ANS-C13/DG/BPM.6/ZPosSA
+    device:
+      type: tango.pyaml.attribute_read_only
+      attribute: ANS-C13/DG/BPM.6/ZPosSA
+      unit: mm
+  - type: tango.pyaml.static_catalog_entry
+    key: ANS-C13/DG/BPM.7/XPosSA
+    device:
+      type: tango.pyaml.attribute_read_only
+      attribute: ANS-C13/DG/BPM.7/XPosSA
+      unit: mm
+  - type: tango.pyaml.static_catalog_entry
+    key: ANS-C13/DG/BPM.7/ZPosSA
+    device:
+      type: tango.pyaml.attribute_read_only
+      attribute: ANS-C13/DG/BPM.7/ZPosSA
+      unit: mm
+  - type: tango.pyaml.static_catalog_entry
+    key: ANS-C14/DG/BPM.1/XPosSA
+    device:
+      type: tango.pyaml.attribute_read_only
+      attribute: ANS-C14/DG/BPM.1/XPosSA
+      unit: mm
+  - type: tango.pyaml.static_catalog_entry
+    key: ANS-C14/DG/BPM.1/ZPosSA
+    device:
+      type: tango.pyaml.attribute_read_only
+      attribute: ANS-C14/DG/BPM.1/ZPosSA
+      unit: mm
+  - type: tango.pyaml.static_catalog_entry
+    key: ANS-C14/DG/BPM.2/XPosSA
+    device:
+      type: tango.pyaml.attribute_read_only
+      attribute: ANS-C14/DG/BPM.2/XPosSA
+      unit: mm
+  - type: tango.pyaml.static_catalog_entry
+    key: ANS-C14/DG/BPM.2/ZPosSA
+    device:
+      type: tango.pyaml.attribute_read_only
+      attribute: ANS-C14/DG/BPM.2/ZPosSA
+      unit: mm
+  - type: tango.pyaml.static_catalog_entry
+    key: ANS-C14/DG/BPM.3/XPosSA
+    device:
+      type: tango.pyaml.attribute_read_only
+      attribute: ANS-C14/DG/BPM.3/XPosSA
+      unit: mm
+  - type: tango.pyaml.static_catalog_entry
+    key: ANS-C14/DG/BPM.3/ZPosSA
+    device:
+      type: tango.pyaml.attribute_read_only
+      attribute: ANS-C14/DG/BPM.3/ZPosSA
+      unit: mm
+  - type: tango.pyaml.static_catalog_entry
+    key: ANS-C14/DG/BPM.4/XPosSA
+    device:
+      type: tango.pyaml.attribute_read_only
+      attribute: ANS-C14/DG/BPM.4/XPosSA
+      unit: mm
+  - type: tango.pyaml.static_catalog_entry
+    key: ANS-C14/DG/BPM.4/ZPosSA
+    device:
+      type: tango.pyaml.attribute_read_only
+      attribute: ANS-C14/DG/BPM.4/ZPosSA
+      unit: mm
+  - type: tango.pyaml.static_catalog_entry
+    key: ANS-C14/DG/BPM.5/XPosSA
+    device:
+      type: tango.pyaml.attribute_read_only
+      attribute: ANS-C14/DG/BPM.5/XPosSA
+      unit: mm
+  - type: tango.pyaml.static_catalog_entry
+    key: ANS-C14/DG/BPM.5/ZPosSA
+    device:
+      type: tango.pyaml.attribute_read_only
+      attribute: ANS-C14/DG/BPM.5/ZPosSA
+      unit: mm
+  - type: tango.pyaml.static_catalog_entry
+    key: ANS-C14/DG/BPM.6/XPosSA
+    device:
+      type: tango.pyaml.attribute_read_only
+      attribute: ANS-C14/DG/BPM.6/XPosSA
+      unit: mm
+  - type: tango.pyaml.static_catalog_entry
+    key: ANS-C14/DG/BPM.6/ZPosSA
+    device:
+      type: tango.pyaml.attribute_read_only
+      attribute: ANS-C14/DG/BPM.6/ZPosSA
+      unit: mm
+  - type: tango.pyaml.static_catalog_entry
+    key: ANS-C14/DG/BPM.7/XPosSA
+    device:
+      type: tango.pyaml.attribute_read_only
+      attribute: ANS-C14/DG/BPM.7/XPosSA
+      unit: mm
+  - type: tango.pyaml.static_catalog_entry
+    key: ANS-C14/DG/BPM.7/ZPosSA
+    device:
+      type: tango.pyaml.attribute_read_only
+      attribute: ANS-C14/DG/BPM.7/ZPosSA
+      unit: mm
+  - type: tango.pyaml.static_catalog_entry
+    key: ANS-C14/DG/BPM.8/XPosSA
+    device:
+      type: tango.pyaml.attribute_read_only
+      attribute: ANS-C14/DG/BPM.8/XPosSA
+      unit: mm
+  - type: tango.pyaml.static_catalog_entry
+    key: ANS-C14/DG/BPM.8/ZPosSA
+    device:
+      type: tango.pyaml.attribute_read_only
+      attribute: ANS-C14/DG/BPM.8/ZPosSA
+      unit: mm
+  - type: tango.pyaml.static_catalog_entry
+    key: ANS-C15/DG/BPM.1/XPosSA
+    device:
+      type: tango.pyaml.attribute_read_only
+      attribute: ANS-C15/DG/BPM.1/XPosSA
+      unit: mm
+  - type: tango.pyaml.static_catalog_entry
+    key: ANS-C15/DG/BPM.1/ZPosSA
+    device:
+      type: tango.pyaml.attribute_read_only
+      attribute: ANS-C15/DG/BPM.1/ZPosSA
+      unit: mm
+  - type: tango.pyaml.static_catalog_entry
+    key: ANS-C15/DG/BPM.2/XPosSA
+    device:
+      type: tango.pyaml.attribute_read_only
+      attribute: ANS-C15/DG/BPM.2/XPosSA
+      unit: mm
+  - type: tango.pyaml.static_catalog_entry
+    key: ANS-C15/DG/BPM.2/ZPosSA
+    device:
+      type: tango.pyaml.attribute_read_only
+      attribute: ANS-C15/DG/BPM.2/ZPosSA
+      unit: mm
+  - type: tango.pyaml.static_catalog_entry
+    key: ANS-C15/DG/BPM.3/XPosSA
+    device:
+      type: tango.pyaml.attribute_read_only
+      attribute: ANS-C15/DG/BPM.3/XPosSA
+      unit: mm
+  - type: tango.pyaml.static_catalog_entry
+    key: ANS-C15/DG/BPM.3/ZPosSA
+    device:
+      type: tango.pyaml.attribute_read_only
+      attribute: ANS-C15/DG/BPM.3/ZPosSA
+      unit: mm
+  - type: tango.pyaml.static_catalog_entry
+    key: ANS-C15/DG/BPM.4/XPosSA
+    device:
+      type: tango.pyaml.attribute_read_only
+      attribute: ANS-C15/DG/BPM.4/XPosSA
+      unit: mm
+  - type: tango.pyaml.static_catalog_entry
+    key: ANS-C15/DG/BPM.4/ZPosSA
+    device:
+      type: tango.pyaml.attribute_read_only
+      attribute: ANS-C15/DG/BPM.4/ZPosSA
+      unit: mm
+  - type: tango.pyaml.static_catalog_entry
+    key: ANS-C15/DG/BPM.5/XPosSA
+    device:
+      type: tango.pyaml.attribute_read_only
+      attribute: ANS-C15/DG/BPM.5/XPosSA
+      unit: mm
+  - type: tango.pyaml.static_catalog_entry
+    key: ANS-C15/DG/BPM.5/ZPosSA
+    device:
+      type: tango.pyaml.attribute_read_only
+      attribute: ANS-C15/DG/BPM.5/ZPosSA
+      unit: mm
+  - type: tango.pyaml.static_catalog_entry
+    key: ANS-C15/DG/BPM.6/XPosSA
+    device:
+      type: tango.pyaml.attribute_read_only
+      attribute: ANS-C15/DG/BPM.6/XPosSA
+      unit: mm
+  - type: tango.pyaml.static_catalog_entry
+    key: ANS-C15/DG/BPM.6/ZPosSA
+    device:
+      type: tango.pyaml.attribute_read_only
+      attribute: ANS-C15/DG/BPM.6/ZPosSA
+      unit: mm
+  - type: tango.pyaml.static_catalog_entry
+    key: ANS-C15/DG/BPM.7/XPosSA
+    device:
+      type: tango.pyaml.attribute_read_only
+      attribute: ANS-C15/DG/BPM.7/XPosSA
+      unit: mm
+  - type: tango.pyaml.static_catalog_entry
+    key: ANS-C15/DG/BPM.7/ZPosSA
+    device:
+      type: tango.pyaml.attribute_read_only
+      attribute: ANS-C15/DG/BPM.7/ZPosSA
+      unit: mm
+  - type: tango.pyaml.static_catalog_entry
+    key: ANS-C15/DG/BPM.8/XPosSA
+    device:
+      type: tango.pyaml.attribute_read_only
+      attribute: ANS-C15/DG/BPM.8/XPosSA
+      unit: mm
+  - type: tango.pyaml.static_catalog_entry
+    key: ANS-C15/DG/BPM.8/ZPosSA
+    device:
+      type: tango.pyaml.attribute_read_only
+      attribute: ANS-C15/DG/BPM.8/ZPosSA
+      unit: mm
+  - type: tango.pyaml.static_catalog_entry
+    key: ANS-C16/DG/BPM.1/XPosSA
+    device:
+      type: tango.pyaml.attribute_read_only
+      attribute: ANS-C16/DG/BPM.1/XPosSA
+      unit: mm
+  - type: tango.pyaml.static_catalog_entry
+    key: ANS-C16/DG/BPM.1/ZPosSA
+    device:
+      type: tango.pyaml.attribute_read_only
+      attribute: ANS-C16/DG/BPM.1/ZPosSA
+      unit: mm
+  - type: tango.pyaml.static_catalog_entry
+    key: ANS-C16/DG/BPM.2/XPosSA
+    device:
+      type: tango.pyaml.attribute_read_only
+      attribute: ANS-C16/DG/BPM.2/XPosSA
+      unit: mm
+  - type: tango.pyaml.static_catalog_entry
+    key: ANS-C16/DG/BPM.2/ZPosSA
+    device:
+      type: tango.pyaml.attribute_read_only
+      attribute: ANS-C16/DG/BPM.2/ZPosSA
+      unit: mm
+  - type: tango.pyaml.static_catalog_entry
+    key: ANS-C16/DG/BPM.3/XPosSA
+    device:
+      type: tango.pyaml.attribute_read_only
+      attribute: ANS-C16/DG/BPM.3/XPosSA
+      unit: mm
+  - type: tango.pyaml.static_catalog_entry
+    key: ANS-C16/DG/BPM.3/ZPosSA
+    device:
+      type: tango.pyaml.attribute_read_only
+      attribute: ANS-C16/DG/BPM.3/ZPosSA
+      unit: mm
+  - type: tango.pyaml.static_catalog_entry
+    key: ANS-C16/DG/BPM.4/XPosSA
+    device:
+      type: tango.pyaml.attribute_read_only
+      attribute: ANS-C16/DG/BPM.4/XPosSA
+      unit: mm
+  - type: tango.pyaml.static_catalog_entry
+    key: ANS-C16/DG/BPM.4/ZPosSA
+    device:
+      type: tango.pyaml.attribute_read_only
+      attribute: ANS-C16/DG/BPM.4/ZPosSA
+      unit: mm
+  - type: tango.pyaml.static_catalog_entry
+    key: ANS-C16/DG/BPM.5/XPosSA
+    device:
+      type: tango.pyaml.attribute_read_only
+      attribute: ANS-C16/DG/BPM.5/XPosSA
+      unit: mm
+  - type: tango.pyaml.static_catalog_entry
+    key: ANS-C16/DG/BPM.5/ZPosSA
+    device:
+      type: tango.pyaml.attribute_read_only
+      attribute: ANS-C16/DG/BPM.5/ZPosSA
+      unit: mm
+  - type: tango.pyaml.static_catalog_entry
+    key: ANS-C16/DG/BPM.6/XPosSA
+    device:
+      type: tango.pyaml.attribute_read_only
+      attribute: ANS-C16/DG/BPM.6/XPosSA
+      unit: mm
+  - type: tango.pyaml.static_catalog_entry
+    key: ANS-C16/DG/BPM.6/ZPosSA
+    device:
+      type: tango.pyaml.attribute_read_only
+      attribute: ANS-C16/DG/BPM.6/ZPosSA
+      unit: mm
+  - type: tango.pyaml.static_catalog_entry
+    key: ANS-C16/DG/BPM.7/XPosSA
+    device:
+      type: tango.pyaml.attribute_read_only
+      attribute: ANS-C16/DG/BPM.7/XPosSA
+      unit: mm
+  - type: tango.pyaml.static_catalog_entry
+    key: ANS-C16/DG/BPM.7/ZPosSA
+    device:
+      type: tango.pyaml.attribute_read_only
+      attribute: ANS-C16/DG/BPM.7/ZPosSA
+      unit: mm
+  - type: tango.pyaml.static_catalog_entry
+    key: ANS-C01/DG/BPM.1/XPosSA
+    device:
+      type: tango.pyaml.attribute_read_only
+      attribute: ANS-C01/DG/BPM.1/XPosSA
+      unit: mm
+  - type: tango.pyaml.static_catalog_entry
+    key: ANS-C01/DG/BPM.1/ZPosSA
+    device:
+      type: tango.pyaml.attribute_read_only
+      attribute: ANS-C01/DG/BPM.1/ZPosSA
+      unit: mm
