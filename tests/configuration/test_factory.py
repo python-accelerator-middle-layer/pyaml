@@ -25,6 +25,6 @@ def test_factory_build_default():
 )
 def test_error_cycles(test_file):
     with pytest.raises(PyAMLException) as exc:
-        ml: Accelerator = Accelerator.load(test_file, include_locations=True)
+        ml: Accelerator = Accelerator.load(test_file)
 
     assert "Circular file inclusion of " in str(exc.value)

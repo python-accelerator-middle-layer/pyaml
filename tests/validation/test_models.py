@@ -6,6 +6,7 @@ import pytest
 from pydantic import BaseModel, ValidationError
 from pydantic.errors import PydanticSchemaGenerationError
 
+from pyaml.common.exception import PyAMLConfigException
 from pyaml.validation import ConfigurationSchema, DynamicValidation, StaticValidation
 from pyaml.validation.configuration_models import PyAMLBaseModel
 from pyaml.validation.validation_models import ValidationModel
@@ -259,7 +260,7 @@ def test_dynamic_validation_coerces_and_rejects_invalid_input():
     obj = MyClass(name="test", count="12")
     assert obj.count == 12
 
-    with pytest.raises(ValidationError):
+    with pytest.raises(PyAMLConfigException):
         MyClass(name="test", count="not-an-int")
 
 
@@ -334,7 +335,7 @@ def test_static_validation_validates_and_coerces_input():
     obj = Example(name="test", count="12")
     assert obj.count == 12
 
-    with pytest.raises(ValidationError):
+    with pytest.raises(PyAMLConfigException):
         Example(name="test", count="not-an-int")
 
 

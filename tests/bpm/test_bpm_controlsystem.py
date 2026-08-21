@@ -11,7 +11,7 @@ from pyaml.accelerator import Accelerator
 )
 def test_controlsystem_bpm_tilt(install_test_package):
     sr: Accelerator = Accelerator.load("tests/config/bpms.yaml")
-    bpm = sr.live.get_bpm("BPM_C01-01")
+    bpm = sr.live.bpm.get("BPM_C01-01")
     print(bpm.tilt.get())
 
     assert bpm.tilt.get() == 0
@@ -26,7 +26,7 @@ def test_controlsystem_bpm_tilt(install_test_package):
 )
 def test_controlsystem_bpm_offset(install_test_package):
     sr: Accelerator = Accelerator.load("tests/config/bpms.yaml")
-    bpm = sr.live.get_bpm("BPM_C01-01")
+    bpm = sr.live.bpm.get("BPM_C01-01")
 
     assert bpm.offset.get()[0] == 0
     assert bpm.offset.get()[1] == 0
@@ -43,8 +43,8 @@ def test_controlsystem_bpm_offset(install_test_package):
 )
 def test_controlsystem_bpm_position(install_test_package):
     sr: Accelerator = Accelerator.load("tests/config/bpms.yaml")
-    bpm = sr.live.get_bpm("BPM_C01-01")
-    bpm_simple = sr.live.get_bpm("BPM_C01-02")
+    bpm = sr.live.bpm.get("BPM_C01-01")
+    bpm_simple = sr.live.bpm.get("BPM_C01-02")
 
     assert np.allclose(bpm.positions.get(), np.array([0.0, 0.0]))
     assert np.allclose(bpm_simple.positions.get(), np.array([0.0, 0.0]))
@@ -91,6 +91,6 @@ def test_controlsystem_bpm_position_indexed(install_test_package):
     set_attribute("srdiag/bpm/c01-04/Position", [0.0, 1.0], unit="mm")
 
     sr: Accelerator = Accelerator.load("tests/config/bpms.yaml")
-    bpm = sr.live.get_bpm("BPM_C01-04")
+    bpm = sr.live.bpm.get("BPM_C01-04")
 
     assert np.allclose(bpm.positions.get(), np.array([0.0, 1.0]))

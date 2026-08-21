@@ -14,6 +14,7 @@ from pyaml.configuration import ConfigurationManager
 def test_tune(install_test_package):
     with pytest.raises(PyAMLConfigException) as exc:
         ml: Accelerator = Accelerator.load("tests/config/bad_conf_duplicate_1.yaml", include_locations=True, validate=True)
+    print(exc.value)
     assert "MagnetArray HCORR : duplicate name SH1A-C02-H @index 2" in str(exc.value)
 
     with pytest.raises(PyAMLConfigException) as exc:
@@ -42,7 +43,7 @@ def test_tune(install_test_package):
     assert "Magnet QF1A-C05XX not defined" in str(exc.value)
 
     with pytest.raises(PyAMLException) as exc:
-        m2 = sr.design.get_bpm("QF1A-C05XX")
+        m2 = sr.design.bpm.get("QF1A-C05XX")
     assert "BPM QF1A-C05XX not defined" in str(exc.value)
 
 

@@ -9,7 +9,7 @@ def test_bba():
     SR = sr.design
 
     # Add a misalignement
-    SR.get_bpm("BPM_C04-04").offset.set([20e-6, -15e-6])
+    SR.bpm.get("BPM_C04-04").offset.set([20e-6, -15e-6])
 
     # BBA (standard bow tie, model independant)
     bba = SR.get_bba("BBA-BPM_C04-04")

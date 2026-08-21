@@ -9,7 +9,7 @@ def test_simulator_bpm_tilt():
     sr.design.get_lattice().disable_6d()
     sr.design.magnet.get("SH1A-C01-H").strength.set(10e-6)  # Add orbit
     sr.design.magnet.get("SH1A-C01-V").strength.set(10e-6)  # Add orbit
-    bpm = sr.design.get_bpm("BPM_C01-01")
+    bpm = sr.design.bpm.get("BPM_C01-01")
     assert np.allclose(bpm.positions.get(), np.array([5.90809968e-05, 2.24832853e-05]))
     assert bpm.tilt.get() == 0
     alpha = np.pi / 3
@@ -30,7 +30,7 @@ def test_simulator_bpm_tilt():
 def test_simulator_bpm_offset():
     sr: Accelerator = Accelerator.load("tests/config/bpms.yaml", ignore_external=True)
     sr.design.get_lattice().disable_6d()
-    bpm = sr.design.get_bpm("BPM_C01-01")
+    bpm = sr.design.bpm.get("BPM_C01-01")
 
     assert bpm.offset.get()[0] == 0
     assert bpm.offset.get()[1] == 0
@@ -48,8 +48,8 @@ def test_simulator_bpm_offset():
 def test_simulator_bpm_position(install_test_package):
     sr: Accelerator = Accelerator.load("tests/config/bpms.yaml")
     sr.design.get_lattice().disable_6d()
-    bpm = sr.design.get_bpm("BPM_C01-01")
-    bpm_simple = sr.live.get_bpm("BPM_C01-02")
+    bpm = sr.design.bpm.get("BPM_C01-01")
+    bpm_simple = sr.live.bpm.get("BPM_C01-02")
 
     assert np.allclose(bpm.positions.get(), np.array([0.0, 0.0]))
     assert np.allclose(bpm_simple.positions.get(), np.array([0.0, 0.0]))
@@ -58,9 +58,9 @@ def test_simulator_bpm_position(install_test_package):
 def test_simulator_bpm_position_with_bad_corrector_strength():
     sr: Accelerator = Accelerator.load("tests/config/bpms.yaml", ignore_external=True)
     sr.design.get_lattice().disable_6d()
-    bpm1 = sr.design.get_bpm("BPM_C01-01")
-    bpm_simple = sr.design.get_bpm("BPM_C01-02")
-    bpm3 = sr.design.get_bpm("BPM_C01-03")
+    bpm1 = sr.design.bpm.get("BPM_C01-01")
+    bpm_simple = sr.design.bpm.get("BPM_C01-02")
+    bpm3 = sr.design.bpm.get("BPM_C01-03")
 
     sr.design.magnet.get("SH1A-C01-H").strength.set(-1e-6)
     sr.design.magnet.get("SH1A-C01-V").strength.set(-1e-6)

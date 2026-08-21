@@ -1,4 +1,4 @@
-from ..common.element_holder import ElementHolder
+from ..common.holders.element_holder import ElementHolder
 from ..validation import DynamicValidation, register_schema
 from .array import ArrayConfig
 
@@ -36,4 +36,4 @@ class CombinedFunctionMagnet(ArrayConfig, DynamicValidation):
         holder : ElementHolder
             The element holder to populate with combined function magnet array
         """
-        holder.fill_cfm_magnet_array(self._name, self._elements)
+        holder.combined_function_magnets.add(self._name, self._elements)

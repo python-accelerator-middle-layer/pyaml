@@ -14,5 +14,5 @@ controls:
 data_folder: /data/store
 devices:
   - type: pyaml.rf.rf_plant
-    name: RF
+    name: DEFAULT_RF_PLANT
     masterclock: sy/ms/1/Frequency

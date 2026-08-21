@@ -245,13 +245,13 @@ class ChomaticityMonitor(MeasurementTool, DynamicValidation):
         # Get devices
         self.check_peer()
         tm = self.peer.get_betatron_tune_monitor(self.betatron_tune_name)
-        rf = self.peer.get_rf_plant(self.rf_plant_name)
+        rf = self.peer.rf.get(self.rf_plant_name)
         bpms = None
         n_bpm = 0
         orbit = None
         if fit_dispersion and fit_disp_order is not None and self.bpm_array_name is not None:
             # For dispersion fit
-            bpms = self.peer.get_bpms(self.bpm_array_name)
+            bpms = self.peer.bpms.get(self.bpm_array_name)
             n_bpm = len(bpms)
 
         f0 = rf.frequency.get()

@@ -6,8 +6,8 @@ from pydantic import BaseModel, ConfigDict
 from ..bpm.bpm import BPM
 from ..common.abstract_aggregator import ScalarAggregator
 from ..common.element import Element
-from ..common.element_holder import ElementHolder
 from ..common.exception import PyAMLException
+from ..common.holders.element_holder import ElementHolder
 from ..configuration import ROOT
 from ..diagnostics.tune_monitor import BetatronTuneMonitor
 from ..lattice.abstract_impl import (
@@ -149,7 +149,7 @@ class Simulator(ElementHolder):
                 strengths = RWStrengthArray(self.get_at_elems(e), e.polynoms, e.model) if e.model.has_physics() else None
                 # Create unique refs of each function for this simulator
                 ms = e.attach(self, strengths, currents)
-                self.add_cfm_magnet(ms[0])
+                self.combined_function_magnet.add(ms[0])
                 for m in ms[1:]:
                     self.magnet.add(m)
 
@@ -209,7 +209,7 @@ class Simulator(ElementHolder):
                 offsets = RWBpmOffsetArray(bpm_elt)
                 positions = RBpmArray(bpm_elt, self.ring)
                 e = e.attach(self, positions, offsets, tilt)
-                self.add_bpm(e)
+                self.bpm.add(e)
 
             elif isinstance(e, RFPlant):
                 if e.transmitters:
@@ -230,20 +230,20 @@ class Simulator(ElementHolder):
                         voltage = RWRFVoltageScalar(cavsPerTrans)
                         phase = RWRFPhaseScalar(cavsPerTrans)
                         nt = t.attach(self, voltage, phase)
-                        self.add_rf_transmitter(nt)
+                        self.rf.transmitter.add(nt)
                         cavs.extend(cavsPerTrans)
                         attachedTrans.append(nt)
 
                     frequency = RWRFFrequencyScalar(cavs, harmonics)
                     voltage = RWTotalVoltage(attachedTrans)
                     ne = e.attach(self, frequency, voltage)
-                    self.add_rf_plant(ne)
+                    self.rf.add(ne)
                 else:
                     # No transmitter defined switch to AT methods
                     frequency = RWRFATFrequencyScalar(self.ring)
                     voltage = RWRFATotalVoltageScalar(self.ring)
                     ne = e.attach(self, frequency, voltage)
-                    self.add_rf_plant(ne)
+                    self.rf.add(ne)
 
             elif isinstance(e, BetatronTuneMonitor):
                 betatron_tune = RBetatronTuneArray(self.ring)

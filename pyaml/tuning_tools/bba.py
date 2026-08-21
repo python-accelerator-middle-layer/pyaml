@@ -123,7 +123,7 @@ class BBA(MeasurementTool):
         interface.set_wait_time = sleep_step
         interface.read_wait_time = sleep_meas
 
-        bpms_names = element_holder.get_bpms(self._cfg.bpm_array_name).names()
+        bpms_names = element_holder.bpms.get(self._cfg.bpm_array_name).names()
 
         bba_pySC_config = {
             "number": bpms_names.index(self._cfg.bpm_name),

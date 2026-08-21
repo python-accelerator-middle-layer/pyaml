@@ -79,7 +79,7 @@ def test_dt4acc_twin_accelerator_instantiates_and_reads_live_values(root_folder:
     assert accelerator.live is not None
     assert "live" in accelerator.controls()
 
-    accelerator.live.get_rf_plant("RF")
+    accelerator.live.rf.get("RF")
 
     reference_frequency = _readback_value(accelerator.live.get_device_access(RF_REFERENCE_FREQUENCY))
 
@@ -101,7 +101,7 @@ def test_dt4acc_twin_accelerator_instantiates_and_reads_live_values(root_folder:
 def test_dt4acc_twin_reads_all_declared_magnetic_strengths(root_folder: Path, config_files: dict[str, str]):
     accelerator = _build_accelerator(root_folder, config_files)
     magnets = [magnet for magnet in accelerator.live.magnets.get() if magnet.get_model_name() == magnet.get_name()]
-    combined_function_magnets = accelerator.live.get_all_cfm_magnets()
+    combined_function_magnets = accelerator.live.combined_function_magnet.all()
 
     assert magnets or combined_function_magnets
 
@@ -156,7 +156,7 @@ def deactivated_test_orbit_correction(root_folder: Path, config_files: dict[str,
     try:
         accelerator = _build_accelerator(root_folder, config_files)
         control_mode = accelerator.live
-        bpms = control_mode.get_bpms("bpms")
+        bpms = control_mode.bpms.get("bpms")
         orbit_response_matrix = control_mode.get_orm_tuning("DEFAULT_ORBIT_RESPONSE_MATRIX")
         orbit_correction = control_mode.get_orbit_tuning("DEFAULT_ORBIT_CORRECTION")
         orbit_response_matrix.measure()

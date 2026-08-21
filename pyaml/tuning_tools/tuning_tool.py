@@ -2,7 +2,7 @@ import copy
 from typing import Self
 
 from ..common.element import Element
-from ..common.element_holder import ElementHolder
+from ..common.holders.element_holder import ElementHolder
 
 
 class TuningTool(Element):

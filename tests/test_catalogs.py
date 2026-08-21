@@ -59,7 +59,7 @@ def test_inline_catalog_is_supported(install_test_package):
         }
     )
 
-    bpm = sr.live.get_bpm("BPM_C02-01")
+    bpm = sr.live.bpm.get("BPM_C02-01")
     assert np.allclose(bpm.positions.get(), np.array([0.0, 0.0]))
 
 
@@ -184,7 +184,7 @@ def test_indexed_catalog_entry_extracts_scalar_from_vector_attribute(install_tes
         }
     )
 
-    bpm = sr.live.get_bpm("BPM_TEST")
+    bpm = sr.live.bpm.get("BPM_TEST")
     positions = bpm.positions.get()
     assert np.isclose(positions[0], 1.5)
     assert np.isclose(positions[1], -0.3)

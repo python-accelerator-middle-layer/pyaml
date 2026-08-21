@@ -11,7 +11,7 @@ from ..common.element import Element, ElementConfigModel
 from ..common.exception import PyAMLException
 
 if TYPE_CHECKING:
-    from ..common.element_holder import ElementHolder
+    from ..common.holders.element_holder import ElementHolder
 
 logger = logging.getLogger(__name__)
 

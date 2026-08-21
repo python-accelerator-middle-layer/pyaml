@@ -12,7 +12,7 @@ from ..magnet.magnet import Magnet
 from ..magnet.serialized_magnet import SerializedMagnets
 
 if TYPE_CHECKING:
-    from ..common.element_holder import ElementHolder
+    from ..common.holders.element_holder import ElementHolder
 
 
 class ElementArray(list[Element]):

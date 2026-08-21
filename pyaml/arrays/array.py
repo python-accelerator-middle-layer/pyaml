@@ -5,7 +5,7 @@ Array configuration
 from pyaml.common.exception import PyAMLException
 
 from ..common.element import __pyaml_repr__
-from ..common.element_holder import ElementHolder
+from ..common.holders.element_holder import ElementHolder
 from ..validation import DynamicValidation, register_schema
 
 

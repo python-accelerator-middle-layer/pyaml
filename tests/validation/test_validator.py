@@ -258,6 +258,6 @@ def test_recursive_validate_includes_location_metadata_in_error(
     message = str(exc_info.value)
 
     assert "pkg.module.Class" in message
-    assert "config.yaml at line 10, column 4." in message
-    assert "config.yaml at line 11, column 8." in message
+    assert "config.yaml: line 10, column 4." in message
+    assert "config.yaml: line 11, column 8" in message
     assert "'value'" in message
