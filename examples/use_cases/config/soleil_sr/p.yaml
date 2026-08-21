@@ -5,7 +5,7 @@ data_folder: /data/store
 energy: 2739100000.0
 simulators:
 - type: pyaml.lattice.simulator
-  lattice: lat_superbend_rock_run4_2021_modified.m
+  lattice: lat_superbend_rock_run4_2021.mat
   name: design
 # controls:
 # - type: tango.pyaml.controlsystem

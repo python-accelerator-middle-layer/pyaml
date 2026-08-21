@@ -36,6 +36,22 @@ def _skewquad_name(name: str) -> str:
     return name.strip()
 
 
+def _cfm_magnet_block(name: str, device: str, attr: str, multipole: str, unit: str = "rad") -> list[str]:
+    """Emit a single-multipole cfm_magnet entry with an identity_cfm_model."""
+    return [
+        "- type: pyaml.magnet.cfm_magnet",
+        f"  name: {name}",
+        "  mapping:",
+        f"    - [{multipole}, {device}]",
+        "  model:",
+        "    type: pyaml.magnet.identity_cfm_model",
+        f"    multipoles: [{multipole}]",
+        f"    units: [{unit}]",
+        "    physics:",
+        f"      - {device}/{attr}",
+    ]
+
+
 def _magnet_block(pyaml_type: str, name: str, powerconverter: str, unit: str = "A") -> list[str]:
     """Emit a single-multipole magnet entry with an identity model."""
     return [
@@ -72,37 +88,41 @@ def generate_devices_yaml(data: dict) -> str:
     # Slow HCORs
     lines.append(f"# --- Slow Horizontal Correctors ({len(data['hcors'])} devices) ---")
     for hcor in data["hcors"]:
-        lines += _magnet_block(
-            "pyaml.magnet.hcorrector",
+        lines += _cfm_magnet_block(
             _cor_name(hcor["name"]),
-            f"{hcor['device']}/{hcor['attr_write']}",
+            hcor["device"],
+            hcor["attr_write"],
+            "B0",
         )
 
     # Slow VCORs
     lines.append(f"# --- Slow Vertical Correctors ({len(data['vcors'])} devices) ---")
     for vcor in data["vcors"]:
-        lines += _magnet_block(
-            "pyaml.magnet.vcorrector",
+        lines += _cfm_magnet_block(
             _cor_name(vcor["name"]),
-            f"{vcor['device']}/{vcor['attr_write']}",
+            vcor["device"],
+            vcor["attr_write"],
+            "A0",
         )
 
     # Fast HCORs
     lines.append(f"# --- Fast Horizontal Correctors ({len(data['fhcors'])} devices) ---")
     for fhcor in data["fhcors"]:
-        lines += _magnet_block(
-            "pyaml.magnet.hcorrector",
+        lines += _cfm_magnet_block(
             _cor_name(fhcor["name"]),
-            f"{fhcor['device']}/{fhcor['attr_write']}",
+            fhcor["device"],
+            fhcor["attr_write"],
+            "B0",
         )
 
     # Fast VCORs
     lines.append(f"# --- Fast Vertical Correctors ({len(data['fvcors'])} devices) ---")
     for fvcor in data["fvcors"]:
-        lines += _magnet_block(
-            "pyaml.magnet.vcorrector",
+        lines += _cfm_magnet_block(
             _cor_name(fvcor["name"]),
-            f"{fvcor['device']}/{fvcor['attr_write']}",
+            fvcor["device"],
+            fvcor["attr_write"],
+            "A0",
         )
 
     # Skew Quadrupoles (QT)
