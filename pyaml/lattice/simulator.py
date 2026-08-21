@@ -230,20 +230,20 @@ class Simulator(ElementHolder):
                         voltage = RWRFVoltageScalar(cavsPerTrans)
                         phase = RWRFPhaseScalar(cavsPerTrans)
                         nt = t.attach(self, voltage, phase)
-                        self.add_rf_transmitter(nt)
+                        self.rf.transmitter.add(nt)
                         cavs.extend(cavsPerTrans)
                         attachedTrans.append(nt)
 
                     frequency = RWRFFrequencyScalar(cavs, harmonics)
                     voltage = RWTotalVoltage(attachedTrans)
                     ne = e.attach(self, frequency, voltage)
-                    self.add_rf_plant(ne)
+                    self.rf.add(ne)
                 else:
                     # No transmitter defined switch to AT methods
                     frequency = RWRFATFrequencyScalar(self.ring)
                     voltage = RWRFATotalVoltageScalar(self.ring)
                     ne = e.attach(self, frequency, voltage)
-                    self.add_rf_plant(ne)
+                    self.rf.add(ne)
 
             elif isinstance(e, BetatronTuneMonitor):
                 betatron_tune = RBetatronTuneArray(self.ring)

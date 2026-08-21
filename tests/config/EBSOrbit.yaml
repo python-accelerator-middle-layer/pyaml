@@ -71,7 +71,7 @@ devices:
 - type: pyaml.tuning_tools.chromaticity_monitor
   name: CHROMATICITY_MONITOR
   betatron_tune_name: BETATRON_TUNE
-  rf_plant_name: RF
+  rf_plant_name: DEFAULT_RF_PLANT
   bpm_array_name: BPM
   n_step: 5
 - type: pyaml.tuning_tools.tune
@@ -98,7 +98,7 @@ devices:
   bpm_array_name: BPM
   hcorr_array_name: HCorr
   vcorr_array_name: VCorr
-  rf_plant_name: RF
+  rf_plant_name: DEFAULT_RF_PLANT
   name: DEFAULT_ORBIT_CORRECTION
   singular_values: 162
   response_matrix: ${path:ideal_orm_disp.json}
@@ -110,11 +110,11 @@ devices:
   name: DEFAULT_ORBIT_RESPONSE_MATRIX
 - type: pyaml.tuning_tools.dispersion
   bpm_array_name: BPM
-  rf_plant_name: RF
+  rf_plant_name: DEFAULT_RF_PLANT
   frequency_delta: 10
   name: DEFAULT_DISPERSION
 - type: pyaml.rf.rf_plant
-  name: RF
+  name: DEFAULT_RF_PLANT
   masterclock: sy/ms/1/Frequency
   transmitters:
     - type: pyaml.rf.rf_transmitter

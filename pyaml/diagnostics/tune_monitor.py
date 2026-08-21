@@ -94,7 +94,7 @@ class BetatronTuneMonitor(Element, DynamicValidation, ABetatronTuneMonitor):
                 rf_name = self.parent._rf_plant_name
                 if h is not None and rf_name is not None:
                     tune = self.parent.tune.get()
-                    rf = self.parent.peer.get_rf_plant(rf_name)
+                    rf = self.parent.peer.rf.get(rf_name)
                     freq = rf.frequency.get()
                     return tune * freq / h
 

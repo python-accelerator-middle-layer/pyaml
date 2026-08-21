@@ -245,7 +245,7 @@ class ChomaticityMonitor(MeasurementTool, DynamicValidation):
         # Get devices
         self.check_peer()
         tm = self.peer.get_betatron_tune_monitor(self.betatron_tune_name)
-        rf = self.peer.get_rf_plant(self.rf_plant_name)
+        rf = self.peer.rf.get(self.rf_plant_name)
         bpms = None
         n_bpm = 0
         orbit = None

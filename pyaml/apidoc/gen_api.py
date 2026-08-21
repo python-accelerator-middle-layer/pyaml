@@ -29,6 +29,7 @@ modules = [
     "pyaml.common.exception",
     "pyaml.common.holders.element_holder",
     "pyaml.common.holders.sub_holders",
+    "pyaml.common.holders.rf_holder",
     "pyaml.configuration.factory",
     "pyaml.configuration.fileloader",
     "pyaml.configuration.manager",
