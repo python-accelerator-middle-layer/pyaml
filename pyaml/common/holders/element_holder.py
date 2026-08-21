@@ -23,6 +23,7 @@ from ...tuning_tools.chromaticity_monitor import ChomaticityMonitor
 from ..abstract_aggregator import ScalarAggregator
 from ..element import Element
 from ..exception import PyAMLException
+from .rf_holder import RFHolder
 from .sub_holders import (
     BPMHolder,
     BPMsHolder,
@@ -89,6 +90,7 @@ class ElementHolder(metaclass=ABCMeta):
         self._combined_function_magnets_holder = CombinedFunctionMagnetsHolder(self)
         self._bpm_holder = BPMHolder(self)
         self._bpms_holder = BPMsHolder(self)
+        self._rf_holder = RFHolder(self)
 
     @property
     def peer(self) -> "Accelerator":
@@ -130,6 +132,10 @@ class ElementHolder(metaclass=ABCMeta):
     @property
     def bpms(self) -> BPMsHolder:
         return self._bpms_holder
+
+    @property
+    def rf(self) -> RFHolder:
+        return self._rf_holder
 
     def post_init(self):
         """
@@ -232,20 +238,6 @@ class ElementHolder(metaclass=ABCMeta):
 
     def get_all_elements(self) -> list[Element]:
         return [value for key, value in self._ALL.items()]
-
-    # RF
-
-    def get_rf_plant(self, name: str) -> RFPlant:
-        return self._get("RFPlant", name, self._RFPLANT)
-
-    def add_rf_plant(self, rf: RFPlant):
-        self._add(self._RFPLANT, rf)
-
-    def add_rf_transmitter(self, rf: RFTransmitter):
-        self._add(self._RFTRANSMITTER, rf)
-
-    def get_rf_trasnmitter(self, name: str) -> RFTransmitter:
-        return self._get("RFTransmitter", name, self._RFTRANSMITTER)
 
     # Tune monitor
 

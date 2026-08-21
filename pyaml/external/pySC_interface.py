@@ -24,7 +24,7 @@ class pySCInterface:
 
         self.rf_plant_name = rf_plant_name
         if rf_plant_name is not None:
-            self.rf_plant = element_holder.get_rf_plant(self.rf_plant_name)
+            self.rf_plant = element_holder.rf.get(self.rf_plant_name)
         else:
             self.rf_plant = None
 

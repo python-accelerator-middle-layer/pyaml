@@ -186,14 +186,14 @@ class ControlSystem(ElementHolder, metaclass=ABCMeta):
                         voltage = RWRFVoltageScalar(t, vDev)
                         phase = RWRFPhaseScalar(t, pDev)
                         nt = t.attach(self, voltage, phase)
-                        self.add_rf_transmitter(nt)
+                        self.rf.transmitter.add(nt)
                         attachedTrans.append(nt)
 
                 fDev = self.get_device_access(e.masterclock)
                 frequency = RWRFFrequencyScalar(e, fDev)
                 voltage = RWTotalVoltage(attachedTrans) if e.transmitters else None
                 ne = e.attach(self, frequency, voltage)
-                self.add_rf_plant(ne)
+                self.rf.add(ne)
 
             elif isinstance(e, BetatronTuneMonitor):
                 # Built in tune monitor

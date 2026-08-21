@@ -79,7 +79,7 @@ def test_dt4acc_twin_accelerator_instantiates_and_reads_live_values(root_folder:
     assert accelerator.live is not None
     assert "live" in accelerator.controls()
 
-    accelerator.live.get_rf_plant("RF")
+    accelerator.live.rf.get("RF")
 
     reference_frequency = _readback_value(accelerator.live.get_device_access(RF_REFERENCE_FREQUENCY))
 

@@ -183,9 +183,8 @@ def test_tuning_orbit_correction():
     x, y = bpms.positions.get().T  # get reference orbit
     reference_before_rf = np.concat((x, y))
 
-    plant = element_holder.get_rf_plant("RF")
-    frf = plant.frequency.get()
-    plant.frequency.set(frf + 100)
+    frf = element_holder.rf.frequency.get()
+    element_holder.rf.frequency.set(frf + 100)
     for _ in range(3):
         element_holder.orbit.correct(
             reference=reference_before_rf,
@@ -195,7 +194,7 @@ def test_tuning_orbit_correction():
             gain_H=0,
         )
 
-    frf_after = plant.frequency.get()
+    frf_after = element_holder.rf.frequency.get()
     assert np.isclose(frf, frf_after, rtol=0, atol=1e-16)
 
     # no need to mangle orbit again, test rf
@@ -204,9 +203,8 @@ def test_tuning_orbit_correction():
 
     rf_weight = element_holder.orbit.get_rf_weight()
     element_holder.orbit.set_rf_weight(1.1 * rf_weight)
-    plant = element_holder.get_rf_plant("RF")
-    frf = plant.frequency.get()
-    plant.frequency.set(frf + 100)
+    frf = element_holder.rf.frequency.get()
+    element_holder.rf.frequency.set(frf + 100)
     for _ in range(8):
         element_holder.orbit.correct(
             reference=reference_before_rf,
@@ -216,7 +214,7 @@ def test_tuning_orbit_correction():
             gain_H=0,
         )
 
-    frf_after = plant.frequency.get()
+    frf_after = element_holder.rf.frequency.get()
     assert np.isclose(frf, frf_after, rtol=0, atol=1e-16)
     element_holder.orbit.set_rf_weight(rf_weight)
 

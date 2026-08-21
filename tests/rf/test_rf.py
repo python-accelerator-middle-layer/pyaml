@@ -7,9 +7,8 @@ from pyaml.common.exception import PyAMLException
 
 def test_rf():
     sr: Accelerator = Accelerator.load("tests/config/EBS_rf.yaml", ignore_external=True)
-    RF = sr.design.get_rf_plant("RF")
 
-    RF.frequency.set(3.523e8)
+    sr.design.rf.frequency.set(3.523e8)
 
     # Check that frequency has been applied on all cavities
     ring = sr.design.get_lattice()
@@ -17,7 +16,7 @@ def test_rf():
         if e.FamName.startswith("CAV"):
             assert e.Frequency == 3.523e8
 
-    RF.voltage.set(10.0e6)
+    sr.design.rf.voltage.set(10.0e6)
 
     # Check that voltage has been applied on all cavities
     ring = sr.design.get_lattice()
@@ -26,11 +25,10 @@ def test_rf():
             assert np.isclose(e.Voltage, 10.0e6 / 13.0)
 
     if False:
-        RF = sr.live.get_rf_plant("RF")
-        RF.frequency.set(3.523721693993786e8)
-        RF.voltage.set(6.5e6)
-        assert np.isclose(RF.frequency.get(), 3.523721693993786e8)
-        assert np.isclose(RF.voltage.get(), 6.5e6)
+        sr.live.rf.frequency.set(3.523721693993786e8)
+        sr.live.rf.voltage.set(6.5e6)
+        assert np.isclose(sr.live.rf.frequency.get(), 3.523721693993786e8)
+        assert np.isclose(sr.live.rf.voltage.get(), 6.5e6)
 
 
 @pytest.mark.parametrize(
@@ -42,9 +40,8 @@ def test_rf_multi(install_test_package):
     sr: Accelerator = Accelerator.load("tests/config/EBS_rf_multi.yaml")
 
     # Simulator
-    RF = sr.design.get_rf_plant("RF")
 
-    RF.frequency.set(3.523e8)
+    sr.design.rf.frequency.set(3.523e8)
 
     # Check that frequency has been applied on all cavities
     ring = sr.design.get_lattice()
@@ -56,9 +53,9 @@ def test_rf_multi(install_test_package):
             else:
                 assert e.Frequency == 3.523e8
 
-    RFTRA_HARMONIC = sr.design.get_rf_trasnmitter("RFTRA_HARMONIC")
+    RFTRA_HARMONIC = sr.design.rf.transmitter.get("RFTRA_HARMONIC")
     RFTRA_HARMONIC.voltage.set(300e3)
-    RF.voltage.set(12e6)
+    sr.design.rf.voltage.set(12e6)
 
     for e in ring:
         if e.FamName.startswith("CAV"):
@@ -69,14 +66,13 @@ def test_rf_multi(install_test_package):
                 assert np.isclose(e.Voltage, 1e6)
 
     # Control system
-    RF = sr.live.get_rf_plant("RF")
-    RF1 = sr.live.get_rf_trasnmitter("RFTRA1")
-    RF2 = sr.live.get_rf_trasnmitter("RFTRA2")
-    RFTRA_HARMONIC = sr.live.get_rf_trasnmitter("RFTRA_HARMONIC")
+    RF1 = sr.live.rf.transmitter.get("RFTRA1")
+    RF2 = sr.live.rf.transmitter.get("RFTRA2")
+    RFTRA_HARMONIC = sr.live.rf.transmitter.get("RFTRA_HARMONIC")
 
-    RF.frequency.set(3.523e8)
+    sr.live.rf.frequency.set(3.523e8)
     RFTRA_HARMONIC.voltage.set(300e3)
-    RF.voltage.set(12e6)
+    sr.live.rf.voltage.set(12e6)
 
     assert np.isclose(RF1.voltage.get(), 10e6)
     assert np.isclose(RF2.voltage.get(), 2e6)
@@ -92,9 +88,8 @@ def test_rf_multi_notrans(install_test_package):
     sr: Accelerator = Accelerator.load("tests/config/EBS_rf_notrans.yaml")
 
     # Simulator
-    RF = sr.design.get_rf_plant("RF")
-    RF.frequency.set(3.523e8)
-    RF.voltage.set(10e6)
+    sr.design.rf.frequency.set(3.523e8)
+    sr.design.rf.voltage.set(10e6)
     # Check that frequency and voltage has been applied on all cavities
     ring = sr.design.get_lattice()
     for e in ring:
@@ -103,11 +98,10 @@ def test_rf_multi_notrans(install_test_package):
             assert np.isclose(e.Voltage, 10e6 / 13.0)
 
     # Control system
-    RF = sr.live.get_rf_plant("RF")
-    RF.frequency.set(3.523e8)
+    sr.live.rf.frequency.set(3.523e8)
     with pytest.raises(PyAMLException) as exc:
-        RF.voltage.set(10e6)
+        sr.live.rf.voltage.set(10e6)
     assert "has no transmitter device defined" in str(exc)
 
     # Check that frequency and voltage has been applied on the masterclock device
-    assert np.isclose(RF.frequency.get(), 3.523e8)
+    assert np.isclose(sr.live.rf.frequency.get(), 3.523e8)
