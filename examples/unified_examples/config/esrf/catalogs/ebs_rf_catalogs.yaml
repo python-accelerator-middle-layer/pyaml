@@ -1,0 +1,30 @@
+- type: tango.pyaml.static_catalog_entry
+  key: sys/ringsimulator/ebs/RfVoltage
+  device:
+    type: tango.pyaml.attribute
+    attribute: sys/ringsimulator/ebs/RfVoltage
+    unit: V
+- type: tango.pyaml.static_catalog_entry
+  key: sy/ms/1/Frequency
+  device:
+    type: tango.pyaml.attribute
+    attribute: sy/ms/1/Frequency
+    unit: Hz
+- type: tango.pyaml.static_catalog_entry
+  key: sr/tra/1/RfVoltage
+  device:
+    type: tango.pyaml.attribute
+    attribute: sr/tra/1/RfVoltage
+    unit: V
+- type: tango.pyaml.static_catalog_entry
+  key: sr/tra/2/RfVoltage
+  device:
+    type: tango.pyaml.attribute
+    attribute: sr/tra/2/RfVoltage
+    unit: V
+- type: tango.pyaml.static_catalog_entry
+  key: sr/tra/harm/RfVoltage
+  device:
+    type: tango.pyaml.attribute
+    attribute: sr/tra/harm/RfVoltage
+    unit: V
