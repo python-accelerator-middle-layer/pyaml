@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>pyaml.tuning_tools.dispersion &#8212; Python Accelerator Middle Layer 0.1.dev1+gd6055c190 documentation</title>
+    <title>pyaml.tuning_tools.dispersion &#8212; Python Accelerator Middle Layer 0.1.dev1+g6e28b7905 documentation</title>
   
   
   
@@ -41,7 +41,7 @@
   <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=90905a2f556bf617f1a9" />
 <link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=90905a2f556bf617f1a9" />
 
-    <script src="../../../_static/documentation_options.js?v=3948ae49"></script>
+    <script src="../../../_static/documentation_options.js?v=599ce0a7"></script>
     <script src="../../../_static/doctools.js?v=9bcbadda"></script>
     <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -125,8 +125,8 @@
       
     
     
-    <img src="../../../_static/logo.png" class="logo__image only-light" alt="Python Accelerator Middle Layer 0.1.dev1+gd6055c190 documentation - Home"/>
-    <img src="../../../_static/dark.png" class="logo__image only-dark pst-js-only" alt="Python Accelerator Middle Layer 0.1.dev1+gd6055c190 documentation - Home"/>
+    <img src="../../../_static/logo.png" class="logo__image only-light" alt="Python Accelerator Middle Layer 0.1.dev1+g6e28b7905 documentation - Home"/>
+    <img src="../../../_static/dark.png" class="logo__image only-dark pst-js-only" alt="Python Accelerator Middle Layer 0.1.dev1+g6e28b7905 documentation - Home"/>
   
   
 </a></div>
@@ -389,16 +389,14 @@
                   
   <h1>Source code for pyaml.tuning_tools.dispersion</h1><div class="highlight"><pre>
 <span></span><span class="kn">import</span><span class="w"> </span><span class="nn">logging</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Self</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">Optional</span>
 
-<span class="kn">from</span><span class="w"> </span><span class="nn">pydantic</span><span class="w"> </span><span class="kn">import</span> <span class="n">ConfigDict</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">pySC.apps</span><span class="w"> </span><span class="kn">import</span> <span class="n">measure_dispersion</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">pySC.apps.codes</span><span class="w"> </span><span class="kn">import</span> <span class="n">DispersionCode</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">..common.constants</span><span class="w"> </span><span class="kn">import</span> <span class="n">Action</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">..common.element</span><span class="w"> </span><span class="kn">import</span> <span class="n">ElementConfigModel</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">..common.holders.element_holder</span><span class="w"> </span><span class="kn">import</span> <span class="n">ElementHolder</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">..external.pySC_interface</span><span class="w"> </span><span class="kn">import</span> <span class="n">pySCInterface</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">..validation</span><span class="w"> </span><span class="kn">import</span> <span class="n">DynamicValidation</span><span class="p">,</span> <span class="n">register_schema</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">.measurement_tool</span><span class="w"> </span><span class="kn">import</span> <span class="n">MeasurementTool</span>
 
 <span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
@@ -406,40 +404,43 @@
 <span class="n">PYAMLCLASS</span> <span class="o">=</span> <span class="s2">"Dispersion"</span>
 
 
-<div class="viewcode-block" id="ConfigModel">
-<a class="viewcode-back" href="../../../api/pyaml.tuning_tools.dispersion.html#pyaml.tuning_tools.dispersion.ConfigModel">[docs]</a>
-<span class="k">class</span><span class="w"> </span><span class="nc">ConfigModel</span><span class="p">(</span><span class="n">ElementConfigModel</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">"""</span>
-<span class="sd">    Configuration model for dispersion measurement</span>
+<div class="viewcode-block" id="Dispersion">
+<a class="viewcode-back" href="../../../api/pyaml.tuning_tools.dispersion.html#pyaml.tuning_tools.dispersion.Dispersion">[docs]</a>
+<span class="nd">@register_schema</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">Dispersion</span><span class="p">(</span><span class="n">MeasurementTool</span><span class="p">,</span> <span class="n">DynamicValidation</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""Measure beam dispersion by changing the RF frequency.</span>
+
+<span class="sd">    The measurement uses a :class:`pySCInterface` to change the frequency of</span>
+<span class="sd">    an RF plant and acquire orbit data from a BPM array. Progress is reported</span>
+<span class="sd">    through the callback mechanism provided by :class:`MeasurementTool`.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
+<span class="sd">    name : str</span>
+<span class="sd">        Name of the dispersion measurement tool.</span>
 <span class="sd">    bpm_array_name : str</span>
-<span class="sd">        BPM array name</span>
+<span class="sd">        Name of the BPM array used to measure the orbit.</span>
 <span class="sd">    rf_plant_name : str</span>
-<span class="sd">        RF plant name</span>
+<span class="sd">        Name of the RF plant whose frequency is varied.</span>
 <span class="sd">    frequency_delta : float</span>
-<span class="sd">        Frequency delta for measurement</span>
+<span class="sd">        RF-frequency change applied during the measurement.</span>
+
+<span class="sd">    Attributes</span>
+<span class="sd">    ----------</span>
+<span class="sd">    bpm_array_name : str</span>
+<span class="sd">        Name of the BPM array used for the measurement.</span>
+<span class="sd">    rf_plant_name : str</span>
+<span class="sd">        Name of the RF plant used for the measurement.</span>
+<span class="sd">    frequency_delta : float</span>
+<span class="sd">        RF-frequency change applied during the measurement.</span>
 <span class="sd">    """</span>
 
-    <span class="n">model_config</span> <span class="o">=</span> <span class="n">ConfigDict</span><span class="p">(</span><span class="n">arbitrary_types_allowed</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">extra</span><span class="o">=</span><span class="s2">"forbid"</span><span class="p">)</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">bpm_array_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">rf_plant_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">frequency_delta</span><span class="p">:</span> <span class="nb">float</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
 
-    <span class="n">bpm_array_name</span><span class="p">:</span> <span class="nb">str</span>
-    <span class="n">rf_plant_name</span><span class="p">:</span> <span class="nb">str</span>
-    <span class="n">frequency_delta</span><span class="p">:</span> <span class="nb">float</span></div>
-
-
-
-<div class="viewcode-block" id="Dispersion">
-<a class="viewcode-back" href="../../../api/pyaml.tuning_tools.dispersion.html#pyaml.tuning_tools.dispersion.Dispersion">[docs]</a>
-<span class="k">class</span><span class="w"> </span><span class="nc">Dispersion</span><span class="p">(</span><span class="n">MeasurementTool</span><span class="p">):</span>
-    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cfg</span><span class="p">:</span> <span class="n">ConfigModel</span><span class="p">):</span>
-        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">cfg</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_cfg</span> <span class="o">=</span> <span class="n">cfg</span>
-
-        <span class="bp">self</span><span class="o">.</span><span class="n">bpm_array_name</span> <span class="o">=</span> <span class="n">cfg</span><span class="o">.</span><span class="n">bpm_array_name</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">rf_plant_name</span> <span class="o">=</span> <span class="n">cfg</span><span class="o">.</span><span class="n">rf_plant_name</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">frequency_delta</span> <span class="o">=</span> <span class="n">cfg</span><span class="o">.</span><span class="n">frequency_delta</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">bpm_array_name</span> <span class="o">=</span> <span class="n">bpm_array_name</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rf_plant_name</span> <span class="o">=</span> <span class="n">rf_plant_name</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">frequency_delta</span> <span class="o">=</span> <span class="n">frequency_delta</span>
 
 <div class="viewcode-block" id="Dispersion.measure">
 <a class="viewcode-back" href="../../../api/pyaml.tuning_tools.dispersion.html#pyaml.tuning_tools.dispersion.Dispersion.measure">[docs]</a>

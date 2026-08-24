@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>validation_models &#8212; Python Accelerator Middle Layer 0.1.dev1+gd6055c190 documentation</title>
+    <title>validation_models &#8212; Python Accelerator Middle Layer 0.1.dev1+g6e28b7905 documentation</title>
   
   
   
@@ -42,7 +42,7 @@
   <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=90905a2f556bf617f1a9" />
 <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=90905a2f556bf617f1a9" />
 
-    <script src="../_static/documentation_options.js?v=3948ae49"></script>
+    <script src="../_static/documentation_options.js?v=599ce0a7"></script>
     <script src="../_static/doctools.js?v=9bcbadda"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -128,8 +128,8 @@
       
     
     
-    <img src="../_static/logo.png" class="logo__image only-light" alt="Python Accelerator Middle Layer 0.1.dev1+gd6055c190 documentation - Home"/>
-    <img src="../_static/dark.png" class="logo__image only-dark pst-js-only" alt="Python Accelerator Middle Layer 0.1.dev1+gd6055c190 documentation - Home"/>
+    <img src="../_static/logo.png" class="logo__image only-light" alt="Python Accelerator Middle Layer 0.1.dev1+g6e28b7905 documentation - Home"/>
+    <img src="../_static/dark.png" class="logo__image only-dark pst-js-only" alt="Python Accelerator Middle Layer 0.1.dev1+g6e28b7905 documentation - Home"/>
   
   
 </a></div>
@@ -546,17 +546,20 @@
 <em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">DynamicValidation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/validation/validation_models.html#DynamicValidation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.validation.validation_models.DynamicValidation" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
 <p>Base class for automatic constructor argument validation.</p>
-<p>When a subclass is defined, a validation model is generated
-automatically from its constructor signature and assigned to
-<code class="docutils literal notranslate"><span class="pre">validation_model</span></code>. The generated model is then used to validate
-constructor arguments before object creation.</p>
+<p>When a subclass is defined, a validation model is generated from either
+its explicitly declared constructor or its directly declared class
+annotations.</p>
+<p>Class annotations are used when no constructor has yet been defined. This
+supports classes decorated with <code class="docutils literal notranslate"><span class="pre">&#64;dataclass</span></code>, because their generated
+constructor is not available while <code class="docutils literal notranslate"><span class="pre">__init_subclass__</span></code> is running.</p>
 <p>Subclasses must not define <code class="docutils literal notranslate"><span class="pre">validation_model</span></code> manually.</p>
 <dl class="field-list simple">
 </dl>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="pyaml.validation.validation_models.DynamicValidation.validation_model">
-<span class="sig-name descname"><span class="pre">validation_model</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#type" title="(in Python v3.14)"><span class="pre">type</span></a><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#pyaml.validation.validation_models.ValidationModel" title="pyaml.validation.validation_models.ValidationModel"><span class="pre">ValidationModel</span></a><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#pyaml.validation.validation_models.DynamicValidation.validation_model" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<span class="sig-name descname"><span class="pre">validation_model</span></span><a class="headerlink" href="#pyaml.validation.validation_models.DynamicValidation.validation_model" title="Link to this definition">#</a></dt>
+<dd><p>alias of <code class="xref py py-class docutils literal notranslate"><span class="pre">DynamicValidationValidationModel</span></code></p>
+</dd></dl>
 
 </dd></dl>
 
@@ -603,6 +606,13 @@ validated to form a valid model.</p>
 <p><cite>self</cite> is explicitly positional-only to allow <cite>self</cite> as a field name.</p>
 <dl class="field-list simple">
 </dl>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="pyaml.validation.validation_models.ValidationModelDescriptor">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ValidationModelDescriptor</span></span><a class="reference internal" href="../_modules/pyaml/validation/validation_models.html#ValidationModelDescriptor"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.validation.validation_models.ValidationModelDescriptor" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<p>Provide a lazily generated validation model on the class.</p>
 </dd></dl>
 
 </section>
@@ -664,6 +674,7 @@ validated to form a valid model.</p>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.validation.validation_models.ValidationMeta"><code class="docutils literal notranslate"><span class="pre">ValidationMeta</span></code></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.validation.validation_models.ValidationModel"><code class="docutils literal notranslate"><span class="pre">ValidationModel</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.validation.validation_models.ValidationModelDescriptor"><code class="docutils literal notranslate"><span class="pre">ValidationModelDescriptor</span></code></a></li>
 </ul>
   </nav></div>
 

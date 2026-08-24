@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>pyaml.tuning_tools.chromaticity_response_matrix &#8212; Python Accelerator Middle Layer 0.1.dev1+gd6055c190 documentation</title>
+    <title>pyaml.tuning_tools.chromaticity_response_matrix &#8212; Python Accelerator Middle Layer 0.1.dev1+g6e28b7905 documentation</title>
   
   
   
@@ -41,7 +41,7 @@
   <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=90905a2f556bf617f1a9" />
 <link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=90905a2f556bf617f1a9" />
 
-    <script src="../../../_static/documentation_options.js?v=3948ae49"></script>
+    <script src="../../../_static/documentation_options.js?v=599ce0a7"></script>
     <script src="../../../_static/doctools.js?v=9bcbadda"></script>
     <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -125,8 +125,8 @@
       
     
     
-    <img src="../../../_static/logo.png" class="logo__image only-light" alt="Python Accelerator Middle Layer 0.1.dev1+gd6055c190 documentation - Home"/>
-    <img src="../../../_static/dark.png" class="logo__image only-dark pst-js-only" alt="Python Accelerator Middle Layer 0.1.dev1+gd6055c190 documentation - Home"/>
+    <img src="../../../_static/logo.png" class="logo__image only-light" alt="Python Accelerator Middle Layer 0.1.dev1+g6e28b7905 documentation - Home"/>
+    <img src="../../../_static/dark.png" class="logo__image only-dark pst-js-only" alt="Python Accelerator Middle Layer 0.1.dev1+g6e28b7905 documentation - Home"/>
   
   
 </a></div>
@@ -390,6 +390,7 @@
   <h1>Source code for pyaml.tuning_tools.chromaticity_response_matrix</h1><div class="highlight"><pre>
 <span></span><span class="kn">import</span><span class="w"> </span><span class="nn">logging</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">time</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">dataclasses</span><span class="w"> </span><span class="kn">import</span> <span class="n">asdict</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">Optional</span>
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
@@ -397,7 +398,7 @@
 <span class="kn">from</span><span class="w"> </span><span class="nn">..common.constants</span><span class="w"> </span><span class="kn">import</span> <span class="n">Action</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">..validation</span><span class="w"> </span><span class="kn">import</span> <span class="n">DynamicValidation</span><span class="p">,</span> <span class="n">register_schema</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">.measurement_tool</span><span class="w"> </span><span class="kn">import</span> <span class="n">MeasurementTool</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">.response_matrix_data</span><span class="w"> </span><span class="kn">import</span> <span class="n">ConfigModel</span> <span class="k">as</span> <span class="n">ResponseMatrixDataConfigModel</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.response_matrix_data</span><span class="w"> </span><span class="kn">import</span> <span class="n">ResponseMatrixData</span>
 
 <span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
 
@@ -646,12 +647,12 @@
             <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">get_name</span><span class="p">()</span><span class="si">}</span><span class="s2"> : measurement aborted"</span><span class="p">)</span>
             <span class="k">return</span> <span class="kc">False</span>
 
-        <span class="n">mat</span> <span class="o">=</span> <span class="n">ResponseMatrixDataConfigModel</span><span class="p">(</span>
+        <span class="n">mat</span> <span class="o">=</span> <span class="n">ResponseMatrixData</span><span class="p">(</span>
             <span class="n">matrix</span><span class="o">=</span><span class="n">chromamat</span><span class="o">.</span><span class="n">T</span><span class="o">.</span><span class="n">tolist</span><span class="p">(),</span>
             <span class="n">variable_names</span><span class="o">=</span><span class="n">sextus</span><span class="o">.</span><span class="n">names</span><span class="p">(),</span>
             <span class="n">observable_names</span><span class="o">=</span><span class="p">[</span><span class="n">cm</span><span class="o">.</span><span class="n">get_name</span><span class="p">()</span> <span class="o">+</span> <span class="s2">".x"</span><span class="p">,</span> <span class="n">cm</span><span class="o">.</span><span class="n">get_name</span><span class="p">()</span> <span class="o">+</span> <span class="s2">".y"</span><span class="p">],</span>
         <span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">latest_measurement</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">mat</span><span class="o">.</span><span class="n">model_dump</span><span class="p">())</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">latest_measurement</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">asdict</span><span class="p">(</span><span class="n">mat</span><span class="p">))</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">latest_measurement</span><span class="p">[</span><span class="s2">"type"</span><span class="p">]</span> <span class="o">=</span> <span class="s2">"pyaml.tuning_tools.response_matrix_data"</span>
 
         <span class="k">return</span> <span class="kc">True</span></div>

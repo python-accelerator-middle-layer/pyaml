@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>pyaml.tuning_tools.orbit_response_matrix &#8212; Python Accelerator Middle Layer 0.1.dev1+gd6055c190 documentation</title>
+    <title>pyaml.tuning_tools.orbit_response_matrix &#8212; Python Accelerator Middle Layer 0.1.dev1+g6e28b7905 documentation</title>
   
   
   
@@ -41,7 +41,7 @@
   <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=90905a2f556bf617f1a9" />
 <link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=90905a2f556bf617f1a9" />
 
-    <script src="../../../_static/documentation_options.js?v=3948ae49"></script>
+    <script src="../../../_static/documentation_options.js?v=599ce0a7"></script>
     <script src="../../../_static/doctools.js?v=9bcbadda"></script>
     <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -125,8 +125,8 @@
       
     
     
-    <img src="../../../_static/logo.png" class="logo__image only-light" alt="Python Accelerator Middle Layer 0.1.dev1+gd6055c190 documentation - Home"/>
-    <img src="../../../_static/dark.png" class="logo__image only-dark pst-js-only" alt="Python Accelerator Middle Layer 0.1.dev1+gd6055c190 documentation - Home"/>
+    <img src="../../../_static/logo.png" class="logo__image only-light" alt="Python Accelerator Middle Layer 0.1.dev1+g6e28b7905 documentation - Home"/>
+    <img src="../../../_static/dark.png" class="logo__image only-dark pst-js-only" alt="Python Accelerator Middle Layer 0.1.dev1+g6e28b7905 documentation - Home"/>
   
   
 </a></div>
@@ -389,62 +389,106 @@
                   
   <h1>Source code for pyaml.tuning_tools.orbit_response_matrix</h1><div class="highlight"><pre>
 <span></span><span class="kn">import</span><span class="w"> </span><span class="nn">logging</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Self</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">dataclasses</span><span class="w"> </span><span class="kn">import</span> <span class="n">asdict</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span>
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">pySC</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">pydantic</span><span class="w"> </span><span class="kn">import</span> <span class="n">ConfigDict</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">pySC.apps</span><span class="w"> </span><span class="kn">import</span> <span class="n">measure_ORM</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">pySC.apps.codes</span><span class="w"> </span><span class="kn">import</span> <span class="n">ResponseCode</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">..common.constants</span><span class="w"> </span><span class="kn">import</span> <span class="n">Action</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">..external.pySC_interface</span><span class="w"> </span><span class="kn">import</span> <span class="n">pySCInterface</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">.measurement_tool</span><span class="w"> </span><span class="kn">import</span> <span class="n">MeasurementTool</span><span class="p">,</span> <span class="n">MeasurementToolConfigModel</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">.orbit_response_matrix_data</span><span class="w"> </span><span class="kn">import</span> <span class="n">ConfigModel</span> <span class="k">as</span> <span class="n">OrbitResponseMatrixDataConfigModel</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">..validation</span><span class="w"> </span><span class="kn">import</span> <span class="n">DynamicValidation</span><span class="p">,</span> <span class="n">register_schema</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.measurement_tool</span><span class="w"> </span><span class="kn">import</span> <span class="n">MeasurementTool</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.orbit_response_matrix_data</span><span class="w"> </span><span class="kn">import</span> <span class="n">OrbitResponseMatrixData</span>
 
 <span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
 
 <span class="n">PYAMLCLASS</span> <span class="o">=</span> <span class="s2">"OrbitResponseMatrix"</span>
 
 
-<div class="viewcode-block" id="ConfigModel">
-<a class="viewcode-back" href="../../../api/pyaml.tuning_tools.orbit_response_matrix.html#pyaml.tuning_tools.orbit_response_matrix.ConfigModel">[docs]</a>
-<span class="k">class</span><span class="w"> </span><span class="nc">ConfigModel</span><span class="p">(</span><span class="n">MeasurementToolConfigModel</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">"""</span>
-<span class="sd">    Configuration model for orbit response matrix measurement</span>
+<div class="viewcode-block" id="OrbitResponseMatrix">
+<a class="viewcode-back" href="../../../api/pyaml.tuning_tools.orbit_response_matrix.html#pyaml.tuning_tools.orbit_response_matrix.OrbitResponseMatrix">[docs]</a>
+<span class="nd">@register_schema</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">OrbitResponseMatrix</span><span class="p">(</span><span class="n">MeasurementTool</span><span class="p">,</span> <span class="n">DynamicValidation</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""Measure an orbit response matrix using BPMs and orbit correctors.</span>
+
+<span class="sd">    The orbit response matrix describes the change in measured beam position</span>
+<span class="sd">    produced by a change in corrector strength. This measurement tool uses</span>
+<span class="sd">    horizontal and vertical corrector arrays together with a BPM array to</span>
+<span class="sd">    perform the measurement through the pySC interface.</span>
+
+<span class="sd">    After a successful measurement, the result is converted to</span>
+<span class="sd">    :class:`OrbitResponseMatrixData` and stored in ``latest_measurement``.</span>
+<span class="sd">    The stored data includes the response matrix, corrector and BPM names,</span>
+<span class="sd">    and the plane associated with each variable and observable.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
+<span class="sd">    name : str</span>
+<span class="sd">        Name of the measurement tool.</span>
 <span class="sd">    bpm_array_name : str</span>
-<span class="sd">        BPM array name</span>
+<span class="sd">        Name of the BPM array used to measure the orbit.</span>
 <span class="sd">    hcorr_array_name : str</span>
-<span class="sd">        Horizontal corrector array name</span>
+<span class="sd">        Name of the horizontal corrector array.</span>
 <span class="sd">    vcorr_array_name : str</span>
-<span class="sd">        Vertical corrector array name</span>
+<span class="sd">        Name of the vertical corrector array.</span>
 <span class="sd">    corrector_delta : float</span>
-<span class="sd">        Corrector delta for measurement</span>
+<span class="sd">        Change in corrector strength applied during the measurement.</span>
+<span class="sd">    n_step : int, optional</span>
+<span class="sd">        Number of strength steps used for each corrector. The default is 1.</span>
+<span class="sd">    sleep_between_step : float, optional</span>
+<span class="sd">        Time in seconds to wait after changing a corrector strength. The</span>
+<span class="sd">        default is 0.</span>
+<span class="sd">    n_avg_meas : int, optional</span>
+<span class="sd">        Number of orbit measurements averaged at each corrector setting. The</span>
+<span class="sd">        default is 1.</span>
+<span class="sd">    sleep_between_meas : float, optional</span>
+<span class="sd">        Time in seconds to wait between orbit measurements used for averaging.</span>
+<span class="sd">        The default is 0.</span>
+
+<span class="sd">    Attributes</span>
+<span class="sd">    ----------</span>
+<span class="sd">    bpm_array_name : str</span>
+<span class="sd">        Name of the configured BPM array.</span>
+<span class="sd">    hcorr_array_name : str</span>
+<span class="sd">        Name of the configured horizontal corrector array.</span>
+<span class="sd">    vcorr_array_name : str</span>
+<span class="sd">        Name of the configured vertical corrector array.</span>
+<span class="sd">    corrector_delta : float</span>
+<span class="sd">        Corrector-strength change used for the measurement.</span>
+<span class="sd">    n_step : int</span>
+<span class="sd">        Configured number of corrector-strength steps.</span>
+<span class="sd">    sleep_between_step : float</span>
+<span class="sd">        Configured delay between corrector-strength changes.</span>
+<span class="sd">    n_avg_meas : int</span>
+<span class="sd">        Configured number of orbit measurements to average.</span>
+<span class="sd">    sleep_between_meas : float</span>
+<span class="sd">        Configured delay between averaged orbit measurements.</span>
 <span class="sd">    """</span>
 
-    <span class="n">model_config</span> <span class="o">=</span> <span class="n">ConfigDict</span><span class="p">(</span><span class="n">arbitrary_types_allowed</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">extra</span><span class="o">=</span><span class="s2">"forbid"</span><span class="p">)</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">bpm_array_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">hcorr_array_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">vcorr_array_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">corrector_delta</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+        <span class="n">n_step</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
+        <span class="n">sleep_between_step</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+        <span class="n">n_avg_meas</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
+        <span class="n">sleep_between_meas</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
 
-    <span class="n">bpm_array_name</span><span class="p">:</span> <span class="nb">str</span>
-    <span class="n">hcorr_array_name</span><span class="p">:</span> <span class="nb">str</span>
-    <span class="n">vcorr_array_name</span><span class="p">:</span> <span class="nb">str</span>
-    <span class="n">corrector_delta</span><span class="p">:</span> <span class="nb">float</span></div>
-
-
-
-<div class="viewcode-block" id="OrbitResponseMatrix">
-<a class="viewcode-back" href="../../../api/pyaml.tuning_tools.orbit_response_matrix.html#pyaml.tuning_tools.orbit_response_matrix.OrbitResponseMatrix">[docs]</a>
-<span class="k">class</span><span class="w"> </span><span class="nc">OrbitResponseMatrix</span><span class="p">(</span><span class="n">MeasurementTool</span><span class="p">):</span>
-    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cfg</span><span class="p">:</span> <span class="n">ConfigModel</span><span class="p">):</span>
-        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">cfg</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_cfg</span> <span class="o">=</span> <span class="n">cfg</span>
-
-        <span class="bp">self</span><span class="o">.</span><span class="n">bpm_array_name</span> <span class="o">=</span> <span class="n">cfg</span><span class="o">.</span><span class="n">bpm_array_name</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">hcorr_array_name</span> <span class="o">=</span> <span class="n">cfg</span><span class="o">.</span><span class="n">hcorr_array_name</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">vcorr_array_name</span> <span class="o">=</span> <span class="n">cfg</span><span class="o">.</span><span class="n">vcorr_array_name</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">corrector_delta</span> <span class="o">=</span> <span class="n">cfg</span><span class="o">.</span><span class="n">corrector_delta</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">bpm_array_name</span> <span class="o">=</span> <span class="n">bpm_array_name</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">hcorr_array_name</span> <span class="o">=</span> <span class="n">hcorr_array_name</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">vcorr_array_name</span> <span class="o">=</span> <span class="n">vcorr_array_name</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">corrector_delta</span> <span class="o">=</span> <span class="n">corrector_delta</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">n_step</span> <span class="o">=</span> <span class="n">n_step</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sleep_between_step</span> <span class="o">=</span> <span class="n">sleep_between_step</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">n_avg_meas</span> <span class="o">=</span> <span class="n">n_avg_meas</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sleep_between_meas</span> <span class="o">=</span> <span class="n">sleep_between_meas</span>
 
 <div class="viewcode-block" id="OrbitResponseMatrix.measure">
 <a class="viewcode-back" href="../../../api/pyaml.tuning_tools.orbit_response_matrix.html#pyaml.tuning_tools.orbit_response_matrix.OrbitResponseMatrix.measure">[docs]</a>
@@ -488,9 +532,9 @@
 <span class="sd">            reading.</span>
 <span class="sd">            If the callback returns false, then the process is aborted.</span>
 <span class="sd">        """</span>
-        <span class="n">nb_meas</span> <span class="o">=</span> <span class="n">n_avg_meas</span> <span class="k">if</span> <span class="n">n_avg_meas</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cfg</span><span class="o">.</span><span class="n">n_avg_meas</span>
-        <span class="n">sleep_step</span> <span class="o">=</span> <span class="n">sleep_between_step</span> <span class="k">if</span> <span class="n">sleep_between_step</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cfg</span><span class="o">.</span><span class="n">sleep_between_step</span>
-        <span class="n">sleep_meas</span> <span class="o">=</span> <span class="n">sleep_between_meas</span> <span class="k">if</span> <span class="n">sleep_between_meas</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cfg</span><span class="o">.</span><span class="n">sleep_between_meas</span>
+        <span class="n">nb_meas</span> <span class="o">=</span> <span class="n">n_avg_meas</span> <span class="k">if</span> <span class="n">n_avg_meas</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_avg_meas</span>
+        <span class="n">sleep_step</span> <span class="o">=</span> <span class="n">sleep_between_step</span> <span class="k">if</span> <span class="n">sleep_between_step</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">sleep_between_step</span>
+        <span class="n">sleep_meas</span> <span class="o">=</span> <span class="n">sleep_between_meas</span> <span class="k">if</span> <span class="n">sleep_between_meas</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">sleep_between_meas</span>
 
         <span class="n">element_holder</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_peer</span>
         <span class="n">interface</span> <span class="o">=</span> <span class="n">pySCInterface</span><span class="p">(</span>
@@ -552,12 +596,12 @@
             <span class="k">return</span> <span class="kc">False</span>
 
         <span class="n">orm_data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_pySC_response_data_to_ORMData</span><span class="p">(</span><span class="n">measurement</span><span class="o">.</span><span class="n">response_data</span><span class="o">.</span><span class="n">model_dump</span><span class="p">())</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">latest_measurement</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">orm_data</span><span class="o">.</span><span class="n">model_dump</span><span class="p">())</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">latest_measurement</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">asdict</span><span class="p">(</span><span class="n">orm_data</span><span class="p">))</span>
 
         <span class="k">return</span> <span class="kc">True</span></div>
 
 
-    <span class="k">def</span><span class="w"> </span><span class="nf">_pySC_response_data_to_ORMData</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="nb">dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">OrbitResponseMatrixDataConfigModel</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_pySC_response_data_to_ORMData</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="nb">dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">OrbitResponseMatrixData</span><span class="p">:</span>
         <span class="c1"># all metadata is discarded here. Should we keep something?</span>
 
         <span class="n">element_holder</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_peer</span>
@@ -585,7 +629,7 @@
             <span class="s2">"observable_planes"</span><span class="p">:</span> <span class="n">observable_planes</span><span class="p">,</span>
         <span class="p">}</span>
 
-        <span class="n">orm_data</span> <span class="o">=</span> <span class="n">OrbitResponseMatrixDataConfigModel</span><span class="p">(</span><span class="o">**</span><span class="n">orm_data_model</span><span class="p">)</span>
+        <span class="n">orm_data</span> <span class="o">=</span> <span class="n">OrbitResponseMatrixData</span><span class="p">(</span><span class="o">**</span><span class="n">orm_data_model</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">orm_data</span></div>
 
 </pre></div>

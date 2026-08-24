@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>pyaml.validation.validation_models &#8212; Python Accelerator Middle Layer 0.1.dev1+gd6055c190 documentation</title>
+    <title>pyaml.validation.validation_models &#8212; Python Accelerator Middle Layer 0.1.dev1+g6e28b7905 documentation</title>
   
   
   
@@ -41,7 +41,7 @@
   <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=90905a2f556bf617f1a9" />
 <link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=90905a2f556bf617f1a9" />
 
-    <script src="../../../_static/documentation_options.js?v=3948ae49"></script>
+    <script src="../../../_static/documentation_options.js?v=599ce0a7"></script>
     <script src="../../../_static/doctools.js?v=9bcbadda"></script>
     <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -125,8 +125,8 @@
       
     
     
-    <img src="../../../_static/logo.png" class="logo__image only-light" alt="Python Accelerator Middle Layer 0.1.dev1+gd6055c190 documentation - Home"/>
-    <img src="../../../_static/dark.png" class="logo__image only-dark pst-js-only" alt="Python Accelerator Middle Layer 0.1.dev1+gd6055c190 documentation - Home"/>
+    <img src="../../../_static/logo.png" class="logo__image only-light" alt="Python Accelerator Middle Layer 0.1.dev1+g6e28b7905 documentation - Home"/>
+    <img src="../../../_static/dark.png" class="logo__image only-dark pst-js-only" alt="Python Accelerator Middle Layer 0.1.dev1+g6e28b7905 documentation - Home"/>
   
   
 </a></div>
@@ -393,7 +393,7 @@
 <span class="kn">import</span><span class="w"> </span><span class="nn">inspect</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">logging</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">abc</span><span class="w"> </span><span class="kn">import</span> <span class="n">ABCMeta</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">cast</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">ClassVar</span><span class="p">,</span> <span class="n">cast</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">pydantic</span><span class="w"> </span><span class="kn">import</span> <span class="n">BaseModel</span><span class="p">,</span> <span class="n">ConfigDict</span><span class="p">,</span> <span class="n">ValidationError</span><span class="p">,</span> <span class="n">create_model</span>
 
@@ -500,21 +500,46 @@
 
 
 
+<div class="viewcode-block" id="ValidationModelDescriptor">
+<a class="viewcode-back" href="../../../api/pyaml.validation.validation_models.html#pyaml.validation.validation_models.ValidationModelDescriptor">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">ValidationModelDescriptor</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Provide a lazily generated validation model on the class."""</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__get__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">instance</span><span class="p">:</span> <span class="nb">object</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">owner</span><span class="p">:</span> <span class="nb">type</span><span class="p">[</span><span class="s2">"DynamicValidation"</span><span class="p">],</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">type</span><span class="p">[</span><span class="n">ValidationModel</span><span class="p">]:</span>
+        <span class="n">model</span> <span class="o">=</span> <span class="n">owner</span><span class="o">.</span><span class="vm">__dict__</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"_validation_model"</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">model</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">model</span> <span class="o">=</span> <span class="n">owner</span><span class="o">.</span><span class="n">_build_validation_model</span><span class="p">()</span>
+            <span class="n">owner</span><span class="o">.</span><span class="n">_validation_model</span> <span class="o">=</span> <span class="n">model</span>
+
+        <span class="k">return</span> <span class="n">model</span></div>
+
+
+
 <div class="viewcode-block" id="DynamicValidation">
 <a class="viewcode-back" href="../../../api/pyaml.validation.validation_models.html#pyaml.validation.validation_models.DynamicValidation">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">DynamicValidation</span><span class="p">(</span><span class="n">metaclass</span><span class="o">=</span><span class="n">ValidationMeta</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">"""</span>
-<span class="sd">    Base class for automatic constructor argument validation.</span>
+<span class="w">    </span><span class="sd">"""Base class for automatic constructor argument validation.</span>
 
-<span class="sd">    When a subclass is defined, a validation model is generated</span>
-<span class="sd">    automatically from its constructor signature and assigned to</span>
-<span class="sd">    ``validation_model``. The generated model is then used to validate</span>
-<span class="sd">    constructor arguments before object creation.</span>
+<span class="sd">    When a subclass is defined, a validation model is generated from either</span>
+<span class="sd">    its explicitly declared constructor or its directly declared class</span>
+<span class="sd">    annotations.</span>
+
+<span class="sd">    Class annotations are used when no constructor has yet been defined. This</span>
+<span class="sd">    supports classes decorated with ``@dataclass``, because their generated</span>
+<span class="sd">    constructor is not available while ``__init_subclass__`` is running.</span>
 
 <span class="sd">    Subclasses must not define ``validation_model`` manually.</span>
 <span class="sd">    """</span>
 
-    <span class="n">validation_model</span><span class="p">:</span> <span class="nb">type</span><span class="p">[</span><span class="n">ValidationModel</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">_validation_model</span><span class="p">:</span> <span class="n">ClassVar</span><span class="p">[</span><span class="nb">type</span><span class="p">[</span><span class="n">ValidationModel</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="c1"># Lazy construction of the validation class</span>
+    <span class="n">validation_model</span><span class="p">:</span> <span class="n">ClassVar</span><span class="p">[</span><span class="n">ValidationModelDescriptor</span><span class="p">]</span> <span class="o">=</span> <span class="n">ValidationModelDescriptor</span><span class="p">()</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">__init_subclass__</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">"""</span>
@@ -533,31 +558,33 @@
 
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">__init_subclass__</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
+        <span class="c1"># Check if validation model already exists</span>
+        <span class="c1"># This only checks for the current class and not parent classes</span>
         <span class="k">if</span> <span class="s2">"validation_model"</span> <span class="ow">in</span> <span class="bp">cls</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="bp">cls</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2"> may not define validation_model manually."</span><span class="p">)</span>
 
-        <span class="bp">cls</span><span class="o">.</span><span class="n">validation_model</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_build_validation_model</span><span class="p">()</span>
+        <span class="c1"># Set the _validation_model to None since should be built using lazy construction</span>
+        <span class="bp">cls</span><span class="o">.</span><span class="n">_validation_model</span> <span class="o">=</span> <span class="kc">None</span>
 
     <span class="nd">@classmethod</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">_build_validation_model</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">type</span><span class="p">[</span><span class="n">ValidationModel</span><span class="p">]:</span>
-<span class="w">        </span><span class="sd">"""</span>
-<span class="sd">        Generate a validation model from the constructor signature.</span>
+<span class="w">        </span><span class="sd">"""Generate a validation model from the class definition.</span>
 
-<span class="sd">        The generated model contains one field for each parameter in the</span>
-<span class="sd">        subclass's ``__init__`` method, excluding ``self``, ``*args``, and</span>
-<span class="sd">        ``**kwargs``. Field types are obtained from the constructor's type</span>
-<span class="sd">        annotations and default values are preserved.</span>
+<span class="sd">        For classes with an explicitly defined ``__init__``, fields are</span>
+<span class="sd">        extracted from the constructor signature. Otherwise, fields are</span>
+<span class="sd">        extracted from annotations declared directly on the class. The latter</span>
+<span class="sd">        supports dataclasses before their generated constructor is available.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        type[ValidationModel]</span>
-<span class="sd">            A dynamically generated subclass of :class:`ValidationModel`</span>
-<span class="sd">            representing the constructor arguments accepted by the subclass.</span>
+<span class="sd">            Dynamically generated validation model representing the arguments</span>
+<span class="sd">            accepted by the class.</span>
 <span class="sd">        """</span>
 
         <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">"Building validation model for </span><span class="si">%s</span><span class="s2">."</span><span class="p">,</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="bp">cls</span><span class="o">.</span><span class="vm">__module__</span><span class="si">}</span><span class="s2">.</span><span class="si">{</span><span class="bp">cls</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
 
-        <span class="n">fields</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">Any</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]</span> <span class="o">=</span> <span class="n">_fields_from_constructor_signature</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">expand_arbitrary_types</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="n">fields</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="n">_fields_from_constructor_signature</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">expand_arbitrary_types</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 
         <span class="n">model</span> <span class="o">=</span> <span class="n">create_model</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="bp">cls</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">ValidationModel"</span><span class="p">,</span> <span class="o">**</span><span class="n">cast</span><span class="p">(</span><span class="n">Any</span><span class="p">,</span> <span class="n">fields</span><span class="p">),</span> <span class="n">__base__</span><span class="o">=</span><span class="n">ValidationModel</span><span class="p">)</span>
 

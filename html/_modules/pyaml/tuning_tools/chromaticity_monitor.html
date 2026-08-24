@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>pyaml.tuning_tools.chromaticity_monitor &#8212; Python Accelerator Middle Layer 0.1.dev1+gd6055c190 documentation</title>
+    <title>pyaml.tuning_tools.chromaticity_monitor &#8212; Python Accelerator Middle Layer 0.1.dev1+g6e28b7905 documentation</title>
   
   
   
@@ -41,7 +41,7 @@
   <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=90905a2f556bf617f1a9" />
 <link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=90905a2f556bf617f1a9" />
 
-    <script src="../../../_static/documentation_options.js?v=3948ae49"></script>
+    <script src="../../../_static/documentation_options.js?v=599ce0a7"></script>
     <script src="../../../_static/doctools.js?v=9bcbadda"></script>
     <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -125,8 +125,8 @@
       
     
     
-    <img src="../../../_static/logo.png" class="logo__image only-light" alt="Python Accelerator Middle Layer 0.1.dev1+gd6055c190 documentation - Home"/>
-    <img src="../../../_static/dark.png" class="logo__image only-dark pst-js-only" alt="Python Accelerator Middle Layer 0.1.dev1+gd6055c190 documentation - Home"/>
+    <img src="../../../_static/logo.png" class="logo__image only-light" alt="Python Accelerator Middle Layer 0.1.dev1+g6e28b7905 documentation - Home"/>
+    <img src="../../../_static/dark.png" class="logo__image only-dark pst-js-only" alt="Python Accelerator Middle Layer 0.1.dev1+g6e28b7905 documentation - Home"/>
   
   
 </a></div>
@@ -404,7 +404,7 @@
 
 <span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
 
-<span class="n">PYAMLCLASS</span> <span class="o">=</span> <span class="s2">"ChomaticityMonitor"</span>
+<span class="n">PYAMLCLASS</span> <span class="o">=</span> <span class="s2">"ChromaticityMonitor"</span>
 
 
 <div class="viewcode-block" id="RChromaDispArray">
@@ -415,7 +415,7 @@
 <span class="sd">    Returns arrays of shape (fit_order,2) or None</span>
 <span class="sd">    """</span>
 
-    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="p">:</span> <span class="s2">"ChomaticityMonitor"</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">unit</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="p">:</span> <span class="s2">"ChromaticityMonitor"</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">unit</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_parent</span> <span class="o">=</span> <span class="n">parent</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_name</span> <span class="o">=</span> <span class="n">name</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_unit</span> <span class="o">=</span> <span class="n">unit</span>
@@ -438,10 +438,10 @@
 
 
 
-<div class="viewcode-block" id="ChomaticityMonitor">
-<a class="viewcode-back" href="../../../api/pyaml.tuning_tools.chromaticity_monitor.html#pyaml.tuning_tools.chromaticity_monitor.ChomaticityMonitor">[docs]</a>
+<div class="viewcode-block" id="ChromaticityMonitor">
+<a class="viewcode-back" href="../../../api/pyaml.tuning_tools.chromaticity_monitor.html#pyaml.tuning_tools.chromaticity_monitor.ChromaticityMonitor">[docs]</a>
 <span class="nd">@register_schema</span>
-<span class="k">class</span><span class="w"> </span><span class="nc">ChomaticityMonitor</span><span class="p">(</span><span class="n">MeasurementTool</span><span class="p">,</span> <span class="n">DynamicValidation</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">ChromaticityMonitor</span><span class="p">(</span><span class="n">MeasurementTool</span><span class="p">,</span> <span class="n">DynamicValidation</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    Class providing access to a chromaticity monitor</span>
 <span class="sd">    of a physical or simulated lattice. The monitor provides</span>
@@ -537,8 +537,8 @@
 <span class="sd">        """</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_chromaticity</span>
 
-<div class="viewcode-block" id="ChomaticityMonitor.set_mcf">
-<a class="viewcode-back" href="../../../api/pyaml.tuning_tools.chromaticity_monitor.html#pyaml.tuning_tools.chromaticity_monitor.ChomaticityMonitor.set_mcf">[docs]</a>
+<div class="viewcode-block" id="ChromaticityMonitor.set_mcf">
+<a class="viewcode-back" href="../../../api/pyaml.tuning_tools.chromaticity_monitor.html#pyaml.tuning_tools.chromaticity_monitor.ChromaticityMonitor.set_mcf">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">set_mcf</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">alphac</span><span class="p">:</span> <span class="nb">float</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_alphac</span> <span class="o">=</span> <span class="n">alphac</span></div>
 
@@ -555,8 +555,8 @@
 <span class="sd">        """</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dispersion</span>
 
-<div class="viewcode-block" id="ChomaticityMonitor.measure">
-<a class="viewcode-back" href="../../../api/pyaml.tuning_tools.chromaticity_monitor.html#pyaml.tuning_tools.chromaticity_monitor.ChomaticityMonitor.measure">[docs]</a>
+<div class="viewcode-block" id="ChromaticityMonitor.measure">
+<a class="viewcode-back" href="../../../api/pyaml.tuning_tools.chromaticity_monitor.html#pyaml.tuning_tools.chromaticity_monitor.ChromaticityMonitor.measure">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">measure</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">n_step</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
@@ -723,8 +723,8 @@
         <span class="k">return</span> <span class="kc">True</span></div>
 
 
-<div class="viewcode-block" id="ChomaticityMonitor.fit">
-<a class="viewcode-back" href="../../../api/pyaml.tuning_tools.chromaticity_monitor.html#pyaml.tuning_tools.chromaticity_monitor.ChomaticityMonitor.fit">[docs]</a>
+<div class="viewcode-block" id="ChromaticityMonitor.fit">
+<a class="viewcode-back" href="../../../api/pyaml.tuning_tools.chromaticity_monitor.html#pyaml.tuning_tools.chromaticity_monitor.ChromaticityMonitor.fit">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">deltas</span><span class="p">,</span> <span class="n">Q</span><span class="p">,</span> <span class="n">order</span><span class="p">,</span> <span class="n">orbit</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">fit_disp_order</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">do_plot</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">"""</span>
 <span class="sd">        Compute chromaticity (and dispersion) from input data and update</span>

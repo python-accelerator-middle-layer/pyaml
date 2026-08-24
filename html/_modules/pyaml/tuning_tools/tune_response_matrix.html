@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>pyaml.tuning_tools.tune_response_matrix &#8212; Python Accelerator Middle Layer 0.1.dev1+gd6055c190 documentation</title>
+    <title>pyaml.tuning_tools.tune_response_matrix &#8212; Python Accelerator Middle Layer 0.1.dev1+g6e28b7905 documentation</title>
   
   
   
@@ -41,7 +41,7 @@
   <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=90905a2f556bf617f1a9" />
 <link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=90905a2f556bf617f1a9" />
 
-    <script src="../../../_static/documentation_options.js?v=3948ae49"></script>
+    <script src="../../../_static/documentation_options.js?v=599ce0a7"></script>
     <script src="../../../_static/doctools.js?v=9bcbadda"></script>
     <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -125,8 +125,8 @@
       
     
     
-    <img src="../../../_static/logo.png" class="logo__image only-light" alt="Python Accelerator Middle Layer 0.1.dev1+gd6055c190 documentation - Home"/>
-    <img src="../../../_static/dark.png" class="logo__image only-dark pst-js-only" alt="Python Accelerator Middle Layer 0.1.dev1+gd6055c190 documentation - Home"/>
+    <img src="../../../_static/logo.png" class="logo__image only-light" alt="Python Accelerator Middle Layer 0.1.dev1+g6e28b7905 documentation - Home"/>
+    <img src="../../../_static/dark.png" class="logo__image only-dark pst-js-only" alt="Python Accelerator Middle Layer 0.1.dev1+g6e28b7905 documentation - Home"/>
   
   
 </a></div>
@@ -389,6 +389,7 @@
                   
   <h1>Source code for pyaml.tuning_tools.tune_response_matrix</h1><div class="highlight"><pre>
 <span></span><span class="kn">import</span><span class="w"> </span><span class="nn">logging</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">dataclasses</span><span class="w"> </span><span class="kn">import</span> <span class="n">asdict</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">time</span><span class="w"> </span><span class="kn">import</span> <span class="n">sleep</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">Optional</span>
 
@@ -396,44 +397,106 @@
 <span class="kn">from</span><span class="w"> </span><span class="nn">pydantic</span><span class="w"> </span><span class="kn">import</span> <span class="n">ConfigDict</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">..common.constants</span><span class="w"> </span><span class="kn">import</span> <span class="n">Action</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">.measurement_tool</span><span class="w"> </span><span class="kn">import</span> <span class="n">MeasurementTool</span><span class="p">,</span> <span class="n">MeasurementToolConfigModel</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">.response_matrix_data</span><span class="w"> </span><span class="kn">import</span> <span class="n">ConfigModel</span> <span class="k">as</span> <span class="n">ResponseMatrixDataConfigModel</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">..validation</span><span class="w"> </span><span class="kn">import</span> <span class="n">DynamicValidation</span><span class="p">,</span> <span class="n">register_schema</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.measurement_tool</span><span class="w"> </span><span class="kn">import</span> <span class="n">MeasurementTool</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.response_matrix_data</span><span class="w"> </span><span class="kn">import</span> <span class="n">ResponseMatrixData</span>
 
 <span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
 
 <span class="n">PYAMLCLASS</span> <span class="o">=</span> <span class="s2">"TuneResponseMatrix"</span>
 
 
-<div class="viewcode-block" id="ConfigModel">
-<a class="viewcode-back" href="../../../api/pyaml.tuning_tools.tune_response_matrix.html#pyaml.tuning_tools.tune_response_matrix.ConfigModel">[docs]</a>
-<span class="k">class</span><span class="w"> </span><span class="nc">ConfigModel</span><span class="p">(</span><span class="n">MeasurementToolConfigModel</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">"""</span>
-<span class="sd">    Configuration model for Tune response matrix</span>
+<div class="viewcode-block" id="TuneResponseMatrix">
+<a class="viewcode-back" href="../../../api/pyaml.tuning_tools.tune_response_matrix.html#pyaml.tuning_tools.tune_response_matrix.TuneResponseMatrix">[docs]</a>
+<span class="nd">@register_schema</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">TuneResponseMatrix</span><span class="p">(</span><span class="n">MeasurementTool</span><span class="p">,</span> <span class="n">DynamicValidation</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""Measure the response of the betatron tune to quadrupole-strength changes.</span>
+
+<span class="sd">    The tune response matrix describes the change in horizontal and vertical</span>
+<span class="sd">    betatron tune produced by changes in quadrupole strength. Each quadrupole</span>
+<span class="sd">    in the configured magnet array is varied over a range of strengths, and</span>
+<span class="sd">    the resulting tune values are measured and averaged.</span>
+
+<span class="sd">    For measurements using more than one strength step, a linear fit is used</span>
+<span class="sd">    to determine the tune response to each quadrupole. The resulting matrix</span>
+<span class="sd">    has one row for each tune plane and one column for each quadrupole.</span>
+
+<span class="sd">    After a successful measurement, the result is stored in</span>
+<span class="sd">    :attr:`MeasurementTool.latest_measurement` as a</span>
+<span class="sd">    :class:`ResponseMatrixData` representation.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
+<span class="sd">    name : str</span>
+<span class="sd">        Name of the measurement tool.</span>
 <span class="sd">    quad_array_name : str</span>
-<span class="sd">        Array name of quad used to adjust the tune</span>
+<span class="sd">        Name of the quadrupole array used for the measurement.</span>
 <span class="sd">    betatron_tune_name : str</span>
-<span class="sd">        Name of the diagnostic pyaml device for measuring the tune</span>
+<span class="sd">        Name of the betatron tune monitor used to measure the horizontal and</span>
+<span class="sd">        vertical tunes.</span>
 <span class="sd">    quad_delta : float</span>
-<span class="sd">        Delta strength used to get the response matrix</span>
+<span class="sd">        Maximum positive and negative quadrupole-strength change applied during</span>
+<span class="sd">        the measurement.</span>
+<span class="sd">    n_step : int, optional</span>
+<span class="sd">        Number of quadrupole-strength settings used for each quadrupole. The</span>
+<span class="sd">        settings are distributed linearly from ``-quad_delta`` to</span>
+<span class="sd">        ``quad_delta``. The default is 1.</span>
+<span class="sd">    sleep_between_step : float, optional</span>
+<span class="sd">        Time in seconds to wait after changing a quadrupole strength and before</span>
+<span class="sd">        measuring the tune. The default is 0.</span>
+<span class="sd">    n_avg_meas : int, optional</span>
+<span class="sd">        Number of tune measurements averaged at each strength setting. The</span>
+<span class="sd">        default is 1.</span>
+<span class="sd">    sleep_between_meas : float, optional</span>
+<span class="sd">        Time in seconds to wait between tune measurements used for averaging.</span>
+<span class="sd">        The default is 0.</span>
+
+<span class="sd">    Attributes</span>
+<span class="sd">    ----------</span>
+<span class="sd">    quad_array_name : str</span>
+<span class="sd">        Name of the configured quadrupole array.</span>
+<span class="sd">    betatron_tune_name : str</span>
+<span class="sd">        Name of the configured betatron tune monitor.</span>
+<span class="sd">    quad_delta : float</span>
+<span class="sd">        Configured quadrupole-strength change.</span>
+<span class="sd">    n_step : int</span>
+<span class="sd">        Configured number of strength settings.</span>
+<span class="sd">    sleep_between_step : float</span>
+<span class="sd">        Configured delay after each strength change.</span>
+<span class="sd">    n_avg_meas : int</span>
+<span class="sd">        Configured number of tune measurements to average.</span>
+<span class="sd">    sleep_between_meas : float</span>
+<span class="sd">        Configured delay between averaged tune measurements.</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    The generated response matrix has shape ``(2, n_quadrupoles)``. The first</span>
+<span class="sd">    row contains the horizontal tune response and the second row contains the</span>
+<span class="sd">    vertical tune response.</span>
+
+<span class="sd">    Quadrupole strengths are restored after each individual scan and again when</span>
+<span class="sd">    the measurement exits because of an error or interruption.</span>
 <span class="sd">    """</span>
 
-    <span class="n">model_config</span> <span class="o">=</span> <span class="n">ConfigDict</span><span class="p">(</span><span class="n">arbitrary_types_allowed</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">extra</span><span class="o">=</span><span class="s2">"forbid"</span><span class="p">)</span>
-
-    <span class="n">quad_array_name</span><span class="p">:</span> <span class="nb">str</span>
-    <span class="n">betatron_tune_name</span><span class="p">:</span> <span class="nb">str</span>
-    <span class="n">quad_delta</span><span class="p">:</span> <span class="nb">float</span></div>
-
-
-
-<div class="viewcode-block" id="TuneResponseMatrix">
-<a class="viewcode-back" href="../../../api/pyaml.tuning_tools.tune_response_matrix.html#pyaml.tuning_tools.tune_response_matrix.TuneResponseMatrix">[docs]</a>
-<span class="k">class</span><span class="w"> </span><span class="nc">TuneResponseMatrix</span><span class="p">(</span><span class="n">MeasurementTool</span><span class="p">):</span>
-    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cfg</span><span class="p">:</span> <span class="n">ConfigModel</span><span class="p">):</span>
-        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">cfg</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_cfg</span> <span class="o">=</span> <span class="n">cfg</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">quad_array_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">betatron_tune_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">quad_delta</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+        <span class="n">n_step</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
+        <span class="n">sleep_between_step</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+        <span class="n">n_avg_meas</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
+        <span class="n">sleep_between_meas</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">quad_array_name</span> <span class="o">=</span> <span class="n">quad_array_name</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">betatron_tune_name</span> <span class="o">=</span> <span class="n">betatron_tune_name</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">quad_delta</span> <span class="o">=</span> <span class="n">quad_delta</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">n_step</span> <span class="o">=</span> <span class="n">n_step</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sleep_between_step</span> <span class="o">=</span> <span class="n">sleep_between_step</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">n_avg_meas</span> <span class="o">=</span> <span class="n">n_avg_meas</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sleep_between_meas</span> <span class="o">=</span> <span class="n">sleep_between_meas</span>
 
 <div class="viewcode-block" id="TuneResponseMatrix.measure">
 <a class="viewcode-back" href="../../../api/pyaml.tuning_tools.tune_response_matrix.html#pyaml.tuning_tools.tune_response_matrix.TuneResponseMatrix.measure">[docs]</a>
@@ -511,16 +574,16 @@
 <span class="sd">        """</span>
         <span class="c1"># Get devices</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">check_peer</span><span class="p">()</span>
-        <span class="n">quads</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_peer</span><span class="o">.</span><span class="n">magnets</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_cfg</span><span class="o">.</span><span class="n">quad_array_name</span><span class="p">)</span>
-        <span class="n">tm</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_peer</span><span class="o">.</span><span class="n">get_betatron_tune_monitor</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_cfg</span><span class="o">.</span><span class="n">betatron_tune_name</span><span class="p">)</span>
+        <span class="n">quads</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_peer</span><span class="o">.</span><span class="n">magnets</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">quad_array_name</span><span class="p">)</span>
+        <span class="n">tm</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_peer</span><span class="o">.</span><span class="n">get_betatron_tune_monitor</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">betatron_tune_name</span><span class="p">)</span>
 
         <span class="n">tunemat</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="nb">len</span><span class="p">(</span><span class="n">quads</span><span class="p">),</span> <span class="mi">2</span><span class="p">))</span>
         <span class="n">initial_tune</span> <span class="o">=</span> <span class="n">tm</span><span class="o">.</span><span class="n">tune</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
-        <span class="n">delta</span> <span class="o">=</span> <span class="n">quad_delta</span> <span class="k">if</span> <span class="n">quad_delta</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cfg</span><span class="o">.</span><span class="n">quad_delta</span>
-        <span class="n">nb_step</span> <span class="o">=</span> <span class="n">n_step</span> <span class="k">if</span> <span class="n">n_step</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cfg</span><span class="o">.</span><span class="n">n_step</span>
-        <span class="n">nb_meas</span> <span class="o">=</span> <span class="n">n_avg_meas</span> <span class="k">if</span> <span class="n">n_avg_meas</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cfg</span><span class="o">.</span><span class="n">n_avg_meas</span>
-        <span class="n">sleep_step</span> <span class="o">=</span> <span class="n">sleep_between_step</span> <span class="k">if</span> <span class="n">sleep_between_step</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cfg</span><span class="o">.</span><span class="n">sleep_between_step</span>
-        <span class="n">sleep_meas</span> <span class="o">=</span> <span class="n">sleep_between_meas</span> <span class="k">if</span> <span class="n">sleep_between_meas</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cfg</span><span class="o">.</span><span class="n">sleep_between_meas</span>
+        <span class="n">delta</span> <span class="o">=</span> <span class="n">quad_delta</span> <span class="k">if</span> <span class="n">quad_delta</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">quad_delta</span>
+        <span class="n">nb_step</span> <span class="o">=</span> <span class="n">n_step</span> <span class="k">if</span> <span class="n">n_step</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_step</span>
+        <span class="n">nb_meas</span> <span class="o">=</span> <span class="n">n_avg_meas</span> <span class="k">if</span> <span class="n">n_avg_meas</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_avg_meas</span>
+        <span class="n">sleep_step</span> <span class="o">=</span> <span class="n">sleep_between_step</span> <span class="k">if</span> <span class="n">sleep_between_step</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">sleep_between_step</span>
+        <span class="n">sleep_meas</span> <span class="o">=</span> <span class="n">sleep_between_meas</span> <span class="k">if</span> <span class="n">sleep_between_meas</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">sleep_between_meas</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_register_callback</span><span class="p">(</span><span class="n">callback</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_init_measure</span><span class="p">(</span><span class="s2">"pyaml.tuning_tools.response_matrix_data"</span><span class="p">)</span>
@@ -590,12 +653,12 @@
             <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">get_name</span><span class="p">()</span><span class="si">}</span><span class="s2"> : measurement aborted"</span><span class="p">)</span>
             <span class="k">return</span> <span class="kc">False</span>
 
-        <span class="n">mat</span> <span class="o">=</span> <span class="n">ResponseMatrixDataConfigModel</span><span class="p">(</span>
+        <span class="n">mat</span> <span class="o">=</span> <span class="n">ResponseMatrixData</span><span class="p">(</span>
             <span class="n">matrix</span><span class="o">=</span><span class="n">tunemat</span><span class="o">.</span><span class="n">T</span><span class="o">.</span><span class="n">tolist</span><span class="p">(),</span>
             <span class="n">variable_names</span><span class="o">=</span><span class="n">quads</span><span class="o">.</span><span class="n">names</span><span class="p">(),</span>
             <span class="n">observable_names</span><span class="o">=</span><span class="p">[</span><span class="n">tm</span><span class="o">.</span><span class="n">get_name</span><span class="p">()</span> <span class="o">+</span> <span class="s2">".x"</span><span class="p">,</span> <span class="n">tm</span><span class="o">.</span><span class="n">get_name</span><span class="p">()</span> <span class="o">+</span> <span class="s2">".y"</span><span class="p">],</span>
         <span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">latest_measurement</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">mat</span><span class="o">.</span><span class="n">model_dump</span><span class="p">())</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">latest_measurement</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">asdict</span><span class="p">(</span><span class="n">mat</span><span class="p">))</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">latest_measurement</span><span class="p">[</span><span class="s2">"type"</span><span class="p">]</span> <span class="o">=</span> <span class="s2">"pyaml.tuning_tools.response_matrix_data"</span>
 
         <span class="k">return</span> <span class="kc">True</span></div>

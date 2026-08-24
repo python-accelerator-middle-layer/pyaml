@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>tune_response_matrix &#8212; Python Accelerator Middle Layer 0.1.dev1+gd6055c190 documentation</title>
+    <title>tune_response_matrix &#8212; Python Accelerator Middle Layer 0.1.dev1+g6e28b7905 documentation</title>
   
   
   
@@ -42,7 +42,7 @@
   <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=90905a2f556bf617f1a9" />
 <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=90905a2f556bf617f1a9" />
 
-    <script src="../_static/documentation_options.js?v=3948ae49"></script>
+    <script src="../_static/documentation_options.js?v=599ce0a7"></script>
     <script src="../_static/doctools.js?v=9bcbadda"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -128,8 +128,8 @@
       
     
     
-    <img src="../_static/logo.png" class="logo__image only-light" alt="Python Accelerator Middle Layer 0.1.dev1+gd6055c190 documentation - Home"/>
-    <img src="../_static/dark.png" class="logo__image only-dark pst-js-only" alt="Python Accelerator Middle Layer 0.1.dev1+gd6055c190 documentation - Home"/>
+    <img src="../_static/logo.png" class="logo__image only-light" alt="Python Accelerator Middle Layer 0.1.dev1+g6e28b7905 documentation - Home"/>
+    <img src="../_static/dark.png" class="logo__image only-dark pst-js-only" alt="Python Accelerator Middle Layer 0.1.dev1+g6e28b7905 documentation - Home"/>
   
   
 </a></div>
@@ -541,46 +541,124 @@
   <section id="module-pyaml.tuning_tools.tune_response_matrix">
 <span id="tune-response-matrix"></span><h1>tune_response_matrix<a class="headerlink" href="#module-pyaml.tuning_tools.tune_response_matrix" title="Link to this heading">#</a></h1>
 <dl class="py class">
-<dt class="sig sig-object py" id="pyaml.tuning_tools.tune_response_matrix.ConfigModel">
-<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ConfigModel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">description</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lattice_names</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_step</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sleep_between_step</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_avg_meas</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sleep_between_meas</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">quad_array_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">betatron_tune_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">quad_delta</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/tuning_tools/tune_response_matrix.html#ConfigModel"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.tuning_tools.tune_response_matrix.ConfigModel" title="Link to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference internal" href="pyaml.tuning_tools.measurement_tool.html#pyaml.tuning_tools.measurement_tool.MeasurementToolConfigModel" title="pyaml.tuning_tools.measurement_tool.MeasurementToolConfigModel"><code class="xref py py-class docutils literal notranslate"><span class="pre">MeasurementToolConfigModel</span></code></a></p>
-<p>Configuration model for Tune response matrix</p>
+<dt class="sig sig-object py" id="pyaml.tuning_tools.tune_response_matrix.TuneResponseMatrix">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">TuneResponseMatrix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/tuning_tools/tune_response_matrix.html#TuneResponseMatrix"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.tuning_tools.tune_response_matrix.TuneResponseMatrix" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="pyaml.tuning_tools.measurement_tool.html#pyaml.tuning_tools.measurement_tool.MeasurementTool" title="pyaml.tuning_tools.measurement_tool.MeasurementTool"><code class="xref py py-class docutils literal notranslate"><span class="pre">MeasurementTool</span></code></a>, <a class="reference internal" href="pyaml.validation.validation_models.html#pyaml.validation.validation_models.DynamicValidation" title="pyaml.validation.validation_models.DynamicValidation"><code class="xref py py-class docutils literal notranslate"><span class="pre">DynamicValidation</span></code></a></p>
+<p>Measure the response of the betatron tune to quadrupole-strength changes.</p>
+<p>The tune response matrix describes the change in horizontal and vertical
+betatron tune produced by changes in quadrupole strength. Each quadrupole
+in the configured magnet array is varied over a range of strengths, and
+the resulting tune values are measured and averaged.</p>
+<p>For measurements using more than one strength step, a linear fit is used
+to determine the tune response to each quadrupole. The resulting matrix
+has one row for each tune plane and one column for each quadrupole.</p>
+<p>After a successful measurement, the result is stored in
+<code class="xref py py-attr docutils literal notranslate"><span class="pre">MeasurementTool.latest_measurement</span></code> as a
+<code class="xref py py-class docutils literal notranslate"><span class="pre">ResponseMatrixData</span></code> representation.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>quad_array_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>) – Array name of quad used to adjust the tune</p></li>
-<li><p><strong>betatron_tune_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>) – Name of the diagnostic pyaml device for measuring the tune</p></li>
-<li><p><strong>quad_delta</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><em>float</em></a>) – Delta strength used to get the response matrix</p></li>
+<li><p><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>) – Name of the measurement tool.</p></li>
+<li><p><strong>quad_array_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>) – Name of the quadrupole array used for the measurement.</p></li>
+<li><p><strong>betatron_tune_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>) – Name of the betatron tune monitor used to measure the horizontal and
+vertical tunes.</p></li>
+<li><p><strong>quad_delta</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><em>float</em></a>) – Maximum positive and negative quadrupole-strength change applied during
+the measurement.</p></li>
+<li><p><strong>n_step</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><em>int</em></a><em>, </em><em>optional</em>) – Number of quadrupole-strength settings used for each quadrupole. The
+settings are distributed linearly from <code class="docutils literal notranslate"><span class="pre">-quad_delta</span></code> to
+<code class="docutils literal notranslate"><span class="pre">quad_delta</span></code>. The default is 1.</p></li>
+<li><p><strong>sleep_between_step</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><em>float</em></a><em>, </em><em>optional</em>) – Time in seconds to wait after changing a quadrupole strength and before
+measuring the tune. The default is 0.</p></li>
+<li><p><strong>n_avg_meas</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><em>int</em></a><em>, </em><em>optional</em>) – Number of tune measurements averaged at each strength setting. The
+default is 1.</p></li>
+<li><p><strong>sleep_between_meas</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><em>float</em></a><em>, </em><em>optional</em>) – Time in seconds to wait between tune measurements used for averaging.
+The default is 0.</p></li>
 </ul>
 </dd>
 </dl>
-<p>Create a new model by parsing and validating input data from keyword arguments.</p>
-<p>Raises [<cite>ValidationError</cite>][pydantic_core.ValidationError] if the input data cannot be
-validated to form a valid model.</p>
-<p><cite>self</cite> is explicitly positional-only to allow <cite>self</cite> as a field name.</p>
 <dl class="py attribute">
-<dt class="sig sig-object py" id="pyaml.tuning_tools.tune_response_matrix.ConfigModel.betatron_tune_name">
-<span class="sig-name descname"><span class="pre">betatron_tune_name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></em><a class="headerlink" href="#pyaml.tuning_tools.tune_response_matrix.ConfigModel.betatron_tune_name" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pyaml.tuning_tools.tune_response_matrix.ConfigModel.quad_array_name">
-<span class="sig-name descname"><span class="pre">quad_array_name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></em><a class="headerlink" href="#pyaml.tuning_tools.tune_response_matrix.ConfigModel.quad_array_name" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pyaml.tuning_tools.tune_response_matrix.ConfigModel.quad_delta">
-<span class="sig-name descname"><span class="pre">quad_delta</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><span class="pre">float</span></a></em><a class="headerlink" href="#pyaml.tuning_tools.tune_response_matrix.ConfigModel.quad_delta" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
-
+<dt class="sig sig-object py" id="pyaml.tuning_tools.tune_response_matrix.TuneResponseMatrix.quad_array_name">
+<span class="sig-name descname"><span class="pre">quad_array_name</span></span><a class="headerlink" href="#pyaml.tuning_tools.tune_response_matrix.TuneResponseMatrix.quad_array_name" title="Link to this definition">#</a></dt>
+<dd><p>Name of the configured quadrupole array.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)">str</a></p>
+</dd>
+</dl>
 </dd></dl>
 
-<dl class="py class">
-<dt class="sig sig-object py" id="pyaml.tuning_tools.tune_response_matrix.TuneResponseMatrix">
-<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">TuneResponseMatrix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cfg</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/tuning_tools/tune_response_matrix.html#TuneResponseMatrix"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.tuning_tools.tune_response_matrix.TuneResponseMatrix" title="Link to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference internal" href="pyaml.tuning_tools.measurement_tool.html#pyaml.tuning_tools.measurement_tool.MeasurementTool" title="pyaml.tuning_tools.measurement_tool.MeasurementTool"><code class="xref py py-class docutils literal notranslate"><span class="pre">MeasurementTool</span></code></a></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyaml.tuning_tools.tune_response_matrix.TuneResponseMatrix.betatron_tune_name">
+<span class="sig-name descname"><span class="pre">betatron_tune_name</span></span><a class="headerlink" href="#pyaml.tuning_tools.tune_response_matrix.TuneResponseMatrix.betatron_tune_name" title="Link to this definition">#</a></dt>
+<dd><p>Name of the configured betatron tune monitor.</p>
 <dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)">str</a></p>
+</dd>
 </dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyaml.tuning_tools.tune_response_matrix.TuneResponseMatrix.quad_delta">
+<span class="sig-name descname"><span class="pre">quad_delta</span></span><a class="headerlink" href="#pyaml.tuning_tools.tune_response_matrix.TuneResponseMatrix.quad_delta" title="Link to this definition">#</a></dt>
+<dd><p>Configured quadrupole-strength change.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)">float</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyaml.tuning_tools.tune_response_matrix.TuneResponseMatrix.n_step">
+<span class="sig-name descname"><span class="pre">n_step</span></span><a class="headerlink" href="#pyaml.tuning_tools.tune_response_matrix.TuneResponseMatrix.n_step" title="Link to this definition">#</a></dt>
+<dd><p>Configured number of strength settings.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)">int</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyaml.tuning_tools.tune_response_matrix.TuneResponseMatrix.sleep_between_step">
+<span class="sig-name descname"><span class="pre">sleep_between_step</span></span><a class="headerlink" href="#pyaml.tuning_tools.tune_response_matrix.TuneResponseMatrix.sleep_between_step" title="Link to this definition">#</a></dt>
+<dd><p>Configured delay after each strength change.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)">float</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyaml.tuning_tools.tune_response_matrix.TuneResponseMatrix.n_avg_meas">
+<span class="sig-name descname"><span class="pre">n_avg_meas</span></span><a class="headerlink" href="#pyaml.tuning_tools.tune_response_matrix.TuneResponseMatrix.n_avg_meas" title="Link to this definition">#</a></dt>
+<dd><p>Configured number of tune measurements to average.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)">int</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyaml.tuning_tools.tune_response_matrix.TuneResponseMatrix.sleep_between_meas">
+<span class="sig-name descname"><span class="pre">sleep_between_meas</span></span><a class="headerlink" href="#pyaml.tuning_tools.tune_response_matrix.TuneResponseMatrix.sleep_between_meas" title="Link to this definition">#</a></dt>
+<dd><p>Configured delay between averaged tune measurements.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)">float</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<p class="rubric">Notes</p>
+<p>The generated response matrix has shape <code class="docutils literal notranslate"><span class="pre">(2,</span> <span class="pre">n_quadrupoles)</span></code>. The first
+row contains the horizontal tune response and the second row contains the
+vertical tune response.</p>
+<p>Quadrupole strengths are restored after each individual scan and again when
+the measurement exits because of an error or interruption.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="pyaml.tuning_tools.tune_response_matrix.TuneResponseMatrix.measure">
 <span class="sig-name descname"><span class="pre">measure</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">quad_delta</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_step</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sleep_between_step</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_avg_meas</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sleep_between_meas</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">callback</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/tuning_tools/tune_response_matrix.html#TuneResponseMatrix.measure"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.tuning_tools.tune_response_matrix.TuneResponseMatrix.measure" title="Link to this definition">#</a></dt>
@@ -691,13 +769,14 @@ callback_data dict contains:</p>
   </div>
   <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="pst-show_toc_level nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.tuning_tools.tune_response_matrix.ConfigModel"><code class="docutils literal notranslate"><span class="pre">ConfigModel</span></code></a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.tuning_tools.tune_response_matrix.ConfigModel.betatron_tune_name"><code class="docutils literal notranslate"><span class="pre">ConfigModel.betatron_tune_name</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.tuning_tools.tune_response_matrix.ConfigModel.quad_array_name"><code class="docutils literal notranslate"><span class="pre">ConfigModel.quad_array_name</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.tuning_tools.tune_response_matrix.ConfigModel.quad_delta"><code class="docutils literal notranslate"><span class="pre">ConfigModel.quad_delta</span></code></a></li>
-</ul>
-</li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.tuning_tools.tune_response_matrix.TuneResponseMatrix"><code class="docutils literal notranslate"><span class="pre">TuneResponseMatrix</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.tuning_tools.tune_response_matrix.TuneResponseMatrix.quad_array_name"><code class="docutils literal notranslate"><span class="pre">TuneResponseMatrix.quad_array_name</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.tuning_tools.tune_response_matrix.TuneResponseMatrix.betatron_tune_name"><code class="docutils literal notranslate"><span class="pre">TuneResponseMatrix.betatron_tune_name</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.tuning_tools.tune_response_matrix.TuneResponseMatrix.quad_delta"><code class="docutils literal notranslate"><span class="pre">TuneResponseMatrix.quad_delta</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.tuning_tools.tune_response_matrix.TuneResponseMatrix.n_step"><code class="docutils literal notranslate"><span class="pre">TuneResponseMatrix.n_step</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.tuning_tools.tune_response_matrix.TuneResponseMatrix.sleep_between_step"><code class="docutils literal notranslate"><span class="pre">TuneResponseMatrix.sleep_between_step</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.tuning_tools.tune_response_matrix.TuneResponseMatrix.n_avg_meas"><code class="docutils literal notranslate"><span class="pre">TuneResponseMatrix.n_avg_meas</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.tuning_tools.tune_response_matrix.TuneResponseMatrix.sleep_between_meas"><code class="docutils literal notranslate"><span class="pre">TuneResponseMatrix.sleep_between_meas</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.tuning_tools.tune_response_matrix.TuneResponseMatrix.measure"><code class="docutils literal notranslate"><span class="pre">TuneResponseMatrix.measure()</span></code></a></li>
 </ul>
 </li>

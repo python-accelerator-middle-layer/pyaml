@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>orbit &#8212; Python Accelerator Middle Layer 0.1.dev1+gd6055c190 documentation</title>
+    <title>orbit &#8212; Python Accelerator Middle Layer 0.1.dev1+g6e28b7905 documentation</title>
   
   
   
@@ -42,7 +42,7 @@
   <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=90905a2f556bf617f1a9" />
 <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=90905a2f556bf617f1a9" />
 
-    <script src="../_static/documentation_options.js?v=3948ae49"></script>
+    <script src="../_static/documentation_options.js?v=599ce0a7"></script>
     <script src="../_static/doctools.js?v=9bcbadda"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -128,8 +128,8 @@
       
     
     
-    <img src="../_static/logo.png" class="logo__image only-light" alt="Python Accelerator Middle Layer 0.1.dev1+gd6055c190 documentation - Home"/>
-    <img src="../_static/dark.png" class="logo__image only-dark pst-js-only" alt="Python Accelerator Middle Layer 0.1.dev1+gd6055c190 documentation - Home"/>
+    <img src="../_static/logo.png" class="logo__image only-light" alt="Python Accelerator Middle Layer 0.1.dev1+g6e28b7905 documentation - Home"/>
+    <img src="../_static/dark.png" class="logo__image only-dark pst-js-only" alt="Python Accelerator Middle Layer 0.1.dev1+g6e28b7905 documentation - Home"/>
   
   
 </a></div>
@@ -541,66 +541,9 @@
   <section id="module-pyaml.tuning_tools.orbit">
 <span id="orbit"></span><h1>orbit<a class="headerlink" href="#module-pyaml.tuning_tools.orbit" title="Link to this heading">#</a></h1>
 <dl class="py class">
-<dt class="sig sig-object py" id="pyaml.tuning_tools.orbit.ConfigModel">
-<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ConfigModel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">description</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lattice_names</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bpm_array_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hcorr_array_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vcorr_array_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rf_plant_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">singular_values</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">singular_values_H</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">singular_values_V</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">virtual_target</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">response_matrix</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/tuning_tools/orbit.html#ConfigModel"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.tuning_tools.orbit.ConfigModel" title="Link to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference internal" href="pyaml.common.element.html#pyaml.common.element.ElementConfigModel" title="pyaml.common.element.ElementConfigModel"><code class="xref py py-class docutils literal notranslate"><span class="pre">ElementConfigModel</span></code></a></p>
-<p>Create a new model by parsing and validating input data from keyword arguments.</p>
-<p>Raises [<cite>ValidationError</cite>][pydantic_core.ValidationError] if the input data cannot be
-validated to form a valid model.</p>
-<p><cite>self</cite> is explicitly positional-only to allow <cite>self</cite> as a field name.</p>
-<dl class="field-list simple">
-</dl>
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pyaml.tuning_tools.orbit.ConfigModel.bpm_array_name">
-<span class="sig-name descname"><span class="pre">bpm_array_name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></em><a class="headerlink" href="#pyaml.tuning_tools.orbit.ConfigModel.bpm_array_name" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pyaml.tuning_tools.orbit.ConfigModel.hcorr_array_name">
-<span class="sig-name descname"><span class="pre">hcorr_array_name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></em><a class="headerlink" href="#pyaml.tuning_tools.orbit.ConfigModel.hcorr_array_name" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pyaml.tuning_tools.orbit.ConfigModel.response_matrix">
-<span class="sig-name descname"><span class="pre">response_matrix</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference internal" href="pyaml.tuning_tools.orbit_response_matrix_data.html#pyaml.tuning_tools.orbit_response_matrix_data.OrbitResponseMatrixData" title="pyaml.tuning_tools.orbit_response_matrix_data.OrbitResponseMatrixData"><span class="pre">OrbitResponseMatrixData</span></a></em><a class="headerlink" href="#pyaml.tuning_tools.orbit.ConfigModel.response_matrix" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pyaml.tuning_tools.orbit.ConfigModel.rf_plant_name">
-<span class="sig-name descname"><span class="pre">rf_plant_name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></em><a class="headerlink" href="#pyaml.tuning_tools.orbit.ConfigModel.rf_plant_name" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pyaml.tuning_tools.orbit.ConfigModel.singular_values">
-<span class="sig-name descname"><span class="pre">singular_values</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></em><a class="headerlink" href="#pyaml.tuning_tools.orbit.ConfigModel.singular_values" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pyaml.tuning_tools.orbit.ConfigModel.singular_values_H">
-<span class="sig-name descname"><span class="pre">singular_values_H</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></em><a class="headerlink" href="#pyaml.tuning_tools.orbit.ConfigModel.singular_values_H" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pyaml.tuning_tools.orbit.ConfigModel.singular_values_V">
-<span class="sig-name descname"><span class="pre">singular_values_V</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></em><a class="headerlink" href="#pyaml.tuning_tools.orbit.ConfigModel.singular_values_V" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pyaml.tuning_tools.orbit.ConfigModel.vcorr_array_name">
-<span class="sig-name descname"><span class="pre">vcorr_array_name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></em><a class="headerlink" href="#pyaml.tuning_tools.orbit.ConfigModel.vcorr_array_name" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pyaml.tuning_tools.orbit.ConfigModel.virtual_target">
-<span class="sig-name descname"><span class="pre">virtual_target</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><span class="pre">float</span></a></em><a class="headerlink" href="#pyaml.tuning_tools.orbit.ConfigModel.virtual_target" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
-
-</dd></dl>
-
-<dl class="py class">
 <dt class="sig sig-object py" id="pyaml.tuning_tools.orbit.Orbit">
-<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Orbit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cfg</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/tuning_tools/orbit.html#Orbit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.tuning_tools.orbit.Orbit" title="Link to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference internal" href="pyaml.tuning_tools.tuning_tool.html#pyaml.tuning_tools.tuning_tool.TuningTool" title="pyaml.tuning_tools.tuning_tool.TuningTool"><code class="xref py py-class docutils literal notranslate"><span class="pre">TuningTool</span></code></a></p>
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Orbit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/tuning_tools/orbit.html#Orbit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.tuning_tools.orbit.Orbit" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="pyaml.tuning_tools.tuning_tool.html#pyaml.tuning_tools.tuning_tool.TuningTool" title="pyaml.tuning_tools.tuning_tool.TuningTool"><code class="xref py py-class docutils literal notranslate"><span class="pre">TuningTool</span></code></a>, <a class="reference internal" href="pyaml.validation.validation_models.html#pyaml.validation.validation_models.DynamicValidation" title="pyaml.validation.validation_models.DynamicValidation"><code class="xref py py-class docutils literal notranslate"><span class="pre">DynamicValidation</span></code></a></p>
 <dl class="field-list simple">
 </dl>
 <dl class="py method">
@@ -750,18 +693,6 @@ None or if plane = ‘H’.</p></li>
   </div>
   <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="pst-show_toc_level nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.tuning_tools.orbit.ConfigModel"><code class="docutils literal notranslate"><span class="pre">ConfigModel</span></code></a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.tuning_tools.orbit.ConfigModel.bpm_array_name"><code class="docutils literal notranslate"><span class="pre">ConfigModel.bpm_array_name</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.tuning_tools.orbit.ConfigModel.hcorr_array_name"><code class="docutils literal notranslate"><span class="pre">ConfigModel.hcorr_array_name</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.tuning_tools.orbit.ConfigModel.response_matrix"><code class="docutils literal notranslate"><span class="pre">ConfigModel.response_matrix</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.tuning_tools.orbit.ConfigModel.rf_plant_name"><code class="docutils literal notranslate"><span class="pre">ConfigModel.rf_plant_name</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.tuning_tools.orbit.ConfigModel.singular_values"><code class="docutils literal notranslate"><span class="pre">ConfigModel.singular_values</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.tuning_tools.orbit.ConfigModel.singular_values_H"><code class="docutils literal notranslate"><span class="pre">ConfigModel.singular_values_H</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.tuning_tools.orbit.ConfigModel.singular_values_V"><code class="docutils literal notranslate"><span class="pre">ConfigModel.singular_values_V</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.tuning_tools.orbit.ConfigModel.vcorr_array_name"><code class="docutils literal notranslate"><span class="pre">ConfigModel.vcorr_array_name</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.tuning_tools.orbit.ConfigModel.virtual_target"><code class="docutils literal notranslate"><span class="pre">ConfigModel.virtual_target</span></code></a></li>
-</ul>
-</li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.tuning_tools.orbit.Orbit"><code class="docutils literal notranslate"><span class="pre">Orbit</span></code></a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.tuning_tools.orbit.Orbit.correct"><code class="docutils literal notranslate"><span class="pre">Orbit.correct()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.tuning_tools.orbit.Orbit.get_rf_weight"><code class="docutils literal notranslate"><span class="pre">Orbit.get_rf_weight()</span></code></a></li>

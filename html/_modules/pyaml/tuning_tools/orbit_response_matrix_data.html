@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>pyaml.tuning_tools.orbit_response_matrix_data &#8212; Python Accelerator Middle Layer 0.1.dev1+gd6055c190 documentation</title>
+    <title>pyaml.tuning_tools.orbit_response_matrix_data &#8212; Python Accelerator Middle Layer 0.1.dev1+g6e28b7905 documentation</title>
   
   
   
@@ -41,7 +41,7 @@
   <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=90905a2f556bf617f1a9" />
 <link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=90905a2f556bf617f1a9" />
 
-    <script src="../../../_static/documentation_options.js?v=3948ae49"></script>
+    <script src="../../../_static/documentation_options.js?v=599ce0a7"></script>
     <script src="../../../_static/doctools.js?v=9bcbadda"></script>
     <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -125,8 +125,8 @@
       
     
     
-    <img src="../../../_static/logo.png" class="logo__image only-light" alt="Python Accelerator Middle Layer 0.1.dev1+gd6055c190 documentation - Home"/>
-    <img src="../../../_static/dark.png" class="logo__image only-dark pst-js-only" alt="Python Accelerator Middle Layer 0.1.dev1+gd6055c190 documentation - Home"/>
+    <img src="../../../_static/logo.png" class="logo__image only-light" alt="Python Accelerator Middle Layer 0.1.dev1+g6e28b7905 documentation - Home"/>
+    <img src="../../../_static/dark.png" class="logo__image only-dark pst-js-only" alt="Python Accelerator Middle Layer 0.1.dev1+g6e28b7905 documentation - Home"/>
   
   
 </a></div>
@@ -388,45 +388,49 @@
                 <article class="bd-article">
                   
   <h1>Source code for pyaml.tuning_tools.orbit_response_matrix_data</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Optional</span>
+<span></span><span class="kn">from</span><span class="w"> </span><span class="nn">dataclasses</span><span class="w"> </span><span class="kn">import</span> <span class="n">dataclass</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Optional</span>
 
-<span class="kn">from</span><span class="w"> </span><span class="nn">.response_matrix_data</span><span class="w"> </span><span class="kn">import</span> <span class="n">ConfigModel</span> <span class="k">as</span> <span class="n">ReponseMatrixDataConfigModel</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">..validation</span><span class="w"> </span><span class="kn">import</span> <span class="n">DynamicValidation</span><span class="p">,</span> <span class="n">register_schema</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">.response_matrix_data</span><span class="w"> </span><span class="kn">import</span> <span class="n">ResponseMatrixData</span>
 
 <span class="n">PYAMLCLASS</span> <span class="o">=</span> <span class="s2">"OrbitResponseMatrixData"</span>
 
 
-<div class="viewcode-block" id="ConfigModel">
-<a class="viewcode-back" href="../../../api/pyaml.tuning_tools.orbit_response_matrix_data.html#pyaml.tuning_tools.orbit_response_matrix_data.ConfigModel">[docs]</a>
-<span class="k">class</span><span class="w"> </span><span class="nc">ConfigModel</span><span class="p">(</span><span class="n">ReponseMatrixDataConfigModel</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">"""</span>
-<span class="sd">    Configuration model for orbit response matrix</span>
+<div class="viewcode-block" id="OrbitResponseMatrixData">
+<a class="viewcode-back" href="../../../api/pyaml.tuning_tools.orbit_response_matrix_data.html#pyaml.tuning_tools.orbit_response_matrix_data.OrbitResponseMatrixData">[docs]</a>
+<span class="nd">@register_schema</span>
+<span class="nd">@dataclass</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">OrbitResponseMatrixData</span><span class="p">(</span><span class="n">ResponseMatrixData</span><span class="p">,</span> <span class="n">DynamicValidation</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""Store orbit response matrix data and related metadata.</span>
+
+<span class="sd">    In addition to the response matrix, variable names, and observable names</span>
+<span class="sd">    provided by :class:`ResponseMatrixData`, this class stores the RF response</span>
+<span class="sd">    and the plane associated with each variable and observable.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">    rf_response : list[float], optional</span>
-<span class="sd">        RF response data</span>
-<span class="sd">    variable_names : list[str], optional</span>
-<span class="sd">        Vaiable plane names, basically the plane of the actuators</span>
-<span class="sd">    observable_names : list[str], optional</span>
-<span class="sd">        Observable plane names, basically the plane of measurements</span>
+<span class="sd">    matrix : list[list[float]]</span>
+<span class="sd">        Orbit response matrix. Each row corresponds to an observable and each</span>
+<span class="sd">        column corresponds to a variable.</span>
+<span class="sd">    variable_names : list[str] or None</span>
+<span class="sd">        Names of the response-matrix variables, typically orbit correctors.</span>
+<span class="sd">    observable_names : list[str]</span>
+<span class="sd">        Names of the response-matrix observables, typically beam position</span>
+<span class="sd">        monitors.</span>
+<span class="sd">    rf_response : list[float] or None, optional</span>
+<span class="sd">        Orbit response to an RF-frequency change.</span>
+<span class="sd">    variable_planes : list[str] or None, optional</span>
+<span class="sd">        Plane associated with each response-matrix variable, typically the</span>
+<span class="sd">        plane of the corresponding actuator.</span>
+<span class="sd">    observable_planes : list[str] or None, optional</span>
+<span class="sd">        Plane associated with each response-matrix observable, typically the</span>
+<span class="sd">        plane of the corresponding measurement.</span>
 <span class="sd">    """</span>
 
     <span class="n">rf_response</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="nb">float</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="n">variable_planes</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="n">observable_planes</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span></div>
-
-
-
-<div class="viewcode-block" id="OrbitResponseMatrixData">
-<a class="viewcode-back" href="../../../api/pyaml.tuning_tools.orbit_response_matrix_data.html#pyaml.tuning_tools.orbit_response_matrix_data.OrbitResponseMatrixData">[docs]</a>
-<span class="k">class</span><span class="w"> </span><span class="nc">OrbitResponseMatrixData</span><span class="p">(</span><span class="n">ResponseMatrixData</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">"""</span>
-<span class="sd">    Orbit response matrix loader</span>
-<span class="sd">    """</span>
-
-    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cfg</span><span class="p">:</span> <span class="n">ConfigModel</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_cfg</span> <span class="o">=</span> <span class="n">cfg</span></div>
 
 </pre></div>
 
