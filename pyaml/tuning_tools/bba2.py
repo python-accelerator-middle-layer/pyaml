@@ -1,5 +1,6 @@
 import logging
 import time
+from enum import Enum
 from typing import Callable, Optional
 
 import matplotlib.pyplot as plt
@@ -32,6 +33,8 @@ class ConfigModel(MeasurementToolConfigModel):
         Vertical corrector used to make a deviation in the quad
     quad_name : str
         Quadrupole used to find the center
+    optimum_check: bool
+        Make an extra step to check the optimun
     tune_correction_name: str
         Tune tuning tool
     hcorr_delta : float
@@ -53,6 +56,7 @@ class ConfigModel(MeasurementToolConfigModel):
     hcorr_name: str
     vcorr_name: str
     quad_name: str
+    optimum_check: bool = True
     tune_correction_name: str
     hcorr_delta: float
     vcorr_delta: float
@@ -62,16 +66,18 @@ class ConfigModel(MeasurementToolConfigModel):
 
 
 class BBAData:
+    class OPT_TYPE(Enum):
+        NONE = 0
+        INTERPOLATED = 1
+        MEASURED = 2
+
     def __init__(self):
         self.k = []  # Fitted kick
         self.bpm_pos = []  # BPM#i position
         self.allbpm_pos = []  # IOS (Induced Orbit Shift)
-        self.s2 = []  # sum of square
         self.steps = []  # steerer step
-        self.lastfit = []  # Last linear fit
 
-        self.offset = np.nan
-        self.error = np.nan
+        self.opt_type = BBAData.OPT_TYPE.NONE
 
     def append(self, st, dk, bpm, allbpm):
         # Append new dataset
@@ -80,11 +86,39 @@ class BBAData:
         self.bpm_pos.append(bpm)
         self.allbpm_pos.append(allbpm)
 
-    def update_offset(self, x, error, fit):
-        # Update offset value
-        self.offset = x
-        self.error = error
-        self.lastfit = fit
+    def set_optimum(
+        self,
+        type: OPT_TYPE,
+        s: float = np.nan,
+        x: float = np.nan,
+        k: float = np.nan,
+        error: float = np.nan,
+        fit: np.array = None,
+    ):
+        # Update optimum values
+        self.opt_type = type
+        self.opt_step = s
+        self.opt_k = k
+        self.opt_offset = x
+        self.opt_error = error
+        self.opt_fit = fit
+
+    def to_dict(self) -> dict:
+        def _arr(v):
+            return v.tolist() if isinstance(v, np.ndarray) else v
+
+        return {
+            "k": _arr(self.k),
+            "bpm_pos": _arr(self.bpm_pos),
+            "allbpm_pos": [_arr(a) for a in self.allbpm_pos],
+            "steps": _arr(self.steps),
+            "opt_type": self.opt_type.name,
+            "opt_step": getattr(self, "opt_step", np.nan),
+            "opt_k": getattr(self, "opt_k", np.nan),
+            "opt_offset": getattr(self, "opt_offset", np.nan),
+            "opt_error": getattr(self, "opt_error", np.nan),
+            "opt_fit": _arr(getattr(self, "opt_fit", None)),
+        }
 
 
 class BBA2(MeasurementTool):
@@ -93,16 +127,15 @@ class BBA2(MeasurementTool):
         self._cfg = cfg
 
     @staticmethod
-    def _x_intercept(x, k, n):
-        # Linear fit on last n points
+    def _x_intercept(x, k):
         # x is not necessary ordered
-        xx = np.polynomial.polynomial.polyfit(x[-n:], k[-n:], 1)
+        xx = np.polynomial.polynomial.polyfit(x, k, 1)
         err = 0
-        if n > 2:
+        if len(x) > 2:
             # Compute error of the ratio r = -xx[0] / xx[1]
-            X = np.polynomial.polynomial.polyvander(x[-n:], 1)
-            R = k[-n:] - X @ xx
-            S2 = np.sum(R**2) / float(n - 2)
+            X = np.polynomial.polynomial.polyvander(x, 1)
+            R = k - X @ xx
+            S2 = np.sum(R**2) / float(len(x) - 2)
             COV = S2 * np.linalg.inv(X.T @ X)
             J = [-1 / xx[1], xx[0] / xx[1] ** 2]  # Jacobian [dr/d(xx[0]) , dr/d(xx[1])]
             err = np.sqrt(J @ COV @ J)
@@ -218,18 +251,18 @@ class BBA2(MeasurementTool):
         avgorb /= float(self._nb_meas)
         return avgorb
 
-    def _one_step_dk(self, dk0: list[float], dk1: float, bipolar_delta: bool):
-        # Measrue IOS
+    def _one_step_dk(self, dk0: list[float], dk1: float, doH: bool, doV: bool, bipolar_delta: bool):
+        # Measure IOS
 
         if any(abs(dk) > 200e-6 for dk in dk0):
             raise PyAMLException("Requested dk too high (>200urad), consider using bump")
 
         # Set steerer
-        if np.fabs(dk0[0]) > 0:
+        if doH:
             _str = dk0[0] + self._initial_k0[0]
             self._h_steer.strength.set(_str)
             self.send_callback(Action.APPLY, {"step": self._step, "magnet": self._h_steer.name, "strength": _str})
-        if np.fabs(dk0[1]) > 0:
+        if doV:
             _str = dk0[1] + self._initial_k0[1]
             self._v_steer.strength.set(_str)
             self.send_callback(Action.APPLY, {"step": self._step, "magnet": self._v_steer.name, "strength": _str})
@@ -331,6 +364,9 @@ class BBA2(MeasurementTool):
         plane: str, optional
             Plane to perform ("H" or "V", None => both plane)
         """
+        if self._cfg.n_step < 2:
+            raise PyAMLException(f"{self._cfg.n_step} steps configured but at least 2 steps are required to perform BBA")
+
         self._nb_meas = n_avg_meas if n_avg_meas is not None else self._cfg.n_avg_meas
         self._sleep_step = sleep_between_step if sleep_between_step is not None else self._cfg.sleep_between_step
         self._sleep_meas = sleep_between_meas if sleep_between_meas is not None else self._cfg.sleep_between_meas
@@ -347,6 +383,10 @@ class BBA2(MeasurementTool):
         self._initial_k0 = [self._h_steer.strength.get(), self._v_steer.strength.get()]
         self._initial_k1 = self._quad.strength.get()
         self._quad_polarity = np.sign(self._initial_k1) if self._initial_k1 != 0 else 1
+        self._register_callback(callback)
+        self._init_measure()
+        X = BBAData()
+        Y = BBAData()
 
         self._ref_ios, fx, fy = self._init_responses(
             self._cfg.tune_correction_name,
@@ -371,13 +411,6 @@ class BBA2(MeasurementTool):
         logger.debug(f"Initial quad {self._cfg.quad_name} value: {self._initial_k1} m-1")
 
         try:
-            self._register_callback(callback)
-            self._init_measure()
-            self.latest_measurement["HData"] = None
-            self.latest_measurement["VData"] = None
-            X = BBAData()
-            Y = BBAData()
-
             # Mini cycle
             if self._cfg.minicyle_sleep_time > 0:
                 logger.debug(f"Quad mini cycling {self._cfg.quad_name}")
@@ -390,78 +423,58 @@ class BBA2(MeasurementTool):
                 self.send_callback(Action.APPLY, {"step": -1, "magnet": self._quad.name, "strength": _str})
                 time.sleep(self._cfg.minicyle_sleep_time)
 
-            opt_found = False
-            self._step = 0
-            stx = 0
-            sty = 0
-            while not opt_found and self._step < 9:
-                ist = self._step % 3
-                _from = f"{stx},{sty}"
+            stepsx = np.linspace(-dk0h, dk0h, self._cfg.n_step)
+            stepsy = np.linspace(-dk0v, dk0v, self._cfg.n_step)
 
-                if ist == 0:
-                    stx -= dk0h
-                    sty -= dk0v
-                    _to = f"{stx},{sty}"
-                    logger.debug(f"Moving in the negative direction: {_from} -> {_to}")
-
-                if ist == 1:
-                    stx += 2 * dk0h
-                    sty += 2 * dk0v
-                    _to = f"{stx},{sty}"
-                    logger.debug(f"Moving in the positive direction: {_from} -> {_to}")
-
-                if ist == 2:
-                    H_found = False
-                    V_found = False
-
-                    if doH:
-                        stx, _, _ = BBA2._x_intercept(X.steps, X.k, 2)
-                        H_found = X.steps[-2] <= stx <= X.steps[-1]  # don't rely on extrapolation
-                    if doV:
-                        sty, _, _ = BBA2._x_intercept(Y.steps, Y.k, 2)
-                        V_found = Y.steps[-2] <= sty <= Y.steps[-1]  # don't rely on extrapolation
-
-                    opt_found = (
-                        doH and not doV and H_found or not doH and doV and V_found or doH and doV and H_found and V_found
-                    )
-
-                    _to = f"{stx},{sty}"
-                    logger.debug(f"Moving to the best guess: {_from} -> {_to}")
-
-                x, dkx, y, dky, dataxbpm, dataybpm = self._one_step_dk([stx, sty], dk1, bidelta)
+            # IOS measurement loop
+            for s in range(self._cfg.n_step):
+                self._step = s
+                stx = stepsx[s]
+                sty = stepsy[s]
+                _to = f"{stx},{sty}"
+                logger.debug(f"Moving to: {_to}")
+                x, dkx, y, dky, dataxbpm, dataybpm = self._one_step_dk([stx, sty], dk1, doH, doV, bidelta)
                 X.append(stx, dkx, x, dataxbpm)
                 Y.append(sty, dky, y, dataybpm)
-
                 if doH:
-                    self.send_callback(Action.MEASURE, {"step": self._step, "plane": "H", "bpm_pos": x, "ios": dataxbpm})
-
+                    self.send_callback(Action.MEASURE, {"step": s, "plane": "H", "bpm_pos": x, "ios": dataxbpm})
                 if doV:
-                    self.send_callback(Action.MEASURE, {"step": self._step, "plane": "V", "bpm_pos": y, "ios": dataybpm})
+                    self.send_callback(Action.MEASURE, {"step": s, "plane": "V", "bpm_pos": y, "ios": dataybpm})
 
-                self._step += 1
+            # inter(extra)polate optimum
+            stx, x, dkx, errx, lxfit = (0, 0, 0, np.nan, None)
+            sty, y, dky, erry, lyfit = (0, 0, 0, np.nan, None)
+            opt_type = BBAData.OPT_TYPE.NONE
+            if doH:
+                stx, lxfit, errx = BBA2._x_intercept(X.steps, X.k)
+            if doV:
+                sty, lyfit, erry = BBA2._x_intercept(Y.steps, Y.k)
+            found = f"{stx},{sty}"
+            logger.debug(f"Found optimum: {found}")
 
-            # Final step
+            # Optimum check
+            if self._cfg.optimum_check:
+                logger.debug(f"Moving to optimum: {found}")
+                x, dkx, y, dky, dataxbpm, dataybpm = self._one_step_dk([stx, sty], dk1, doH, doV, bidelta)
+                X.append(stx, dkx, x, dataxbpm)
+                Y.append(sty, dky, y, dataybpm)
+                opt_type = BBAData.OPT_TYPE.MEASURED
+            else:
+                logger.debug(f"Approximate BPM offset at optimum: {found}")
+                xfitpos = np.polynomial.polynomial.polyfit(X.steps, X.bpm_pos, 1)
+                yfitpos = np.polynomial.polynomial.polyfit(Y.steps, Y.bpm_pos, 1)
+                x = stx * xfitpos[1] + xfitpos[0]
+                y = sty * yfitpos[1] + yfitpos[0]
+                opt_type = BBAData.OPT_TYPE.INTERPOLATED
 
             if doH:
-                stx, lxfit, errx = BBA2._x_intercept(X.steps, X.k, 3)
+                X.set_optimum(opt_type, stx, x, dkx, errx * np.fabs(fx), lxfit)
 
             if doV:
-                sty, lyfit, erry = BBA2._x_intercept(Y.steps, Y.k, 3)
+                Y.set_optimum(opt_type, sty, y, dky, erry * np.fabs(fy), lyfit)
 
-            _to = f"{stx},{sty}"
-            logger.debug(f"Moving to the optimum: {_to}")
-
-            x, dkx, y, dky, dataxbpm, dataybpm = self._one_step_dk([stx, sty], dk1, bidelta)
-            X.append(stx, dkx, x, dataxbpm)
-            Y.append(sty, dky, y, dataybpm)
-
-            if doH:
-                X.update_offset(x, errx * np.fabs(fx), lxfit)
-                self.latest_measurement["HData"] = X
-
-            if doV:
-                Y.update_offset(y, erry * np.fabs(fy), lyfit)
-                self.latest_measurement["VData"] = Y
+            self.latest_measurement["HData"] = X.to_dict()
+            self.latest_measurement["VData"] = Y.to_dict()
 
         except Exception as ex:
             err = ex
@@ -489,30 +502,42 @@ class BBA2(MeasurementTool):
 
         return True
 
+    def _check_opt(self, plane):
+        if self.latest_measurement is None:
+            raise PyAMLException("No BBA data, please call measure() first")
+        if self.latest_measurement[plane]["opt_type"] == BBAData.OPT_TYPE.NONE.name:
+            raise PyAMLException(f"No BBA data found for {plane}")
+
     def h_offset(self) -> float:
-        return self.latest_measurement["HData"].offset if self.latest_measurement["HData"] is not None else np.nan
+        self._check_opt("HData")
+        return self.latest_measurement["HData"]["opt_offset"]
 
     def h_offset_error(self) -> float:
-        return self.latest_measurement["HData"].error if self.latest_measurement["HData"] is not None else np.nan
+        self._check_opt("HData")
+        return self.latest_measurement["HData"]["opt_error"]
 
     def v_offset(self) -> float:
-        return self.latest_measurement["VData"].offset if self.latest_measurement["VData"] is not None else np.nan
+        self._check_opt("VData")
+        return self.latest_measurement["VData"]["opt_offset"]
 
     def v_offset_error(self) -> float:
-        return self.latest_measurement["VData"].error if self.latest_measurement["VData"] is not None else np.nan
+        self._check_opt("VData")
+        return self.latest_measurement["VData"]["opt_error"]
 
     def plot_plane_data(self, ax, plane: str):
-        yp = self.latest_measurement[plane].k
-        xp = self.latest_measurement[plane].steps
-
-        b = self.latest_measurement[plane].lastfit[0]
-        a = self.latest_measurement[plane].lastfit[1]
-
+        yp = self.latest_measurement[plane]["k"]
+        xp = self.latest_measurement[plane]["steps"]
         ax.plot(xp, yp, marker="o", linewidth=0)
+
+        b = self.latest_measurement[plane]["opt_fit"][0]
+        a = self.latest_measurement[plane]["opt_fit"][1]
         ax.axline((0, b), slope=a, linestyle="--", color="lightblue", label="last fit")
-        ax.plot(xp[-4:-1], yp[-4:-1], color="salmon", marker="o", linewidth=0, label="last fit")
-        ax.plot(xp[-1:], yp[-1:], color="green", marker="o", linewidth=0, label="optimum")
-        ax.set_xlabel(f"Steerer (rad)\nOptimun kick @ bpm={self.latest_measurement[plane].offset * 1e6:.3f} um")
+
+        optx = self.latest_measurement[plane]["opt_step"]
+        opty = self.latest_measurement[plane]["opt_k"]
+        ax.plot([optx], [opty], color="green", marker="o", linewidth=0, label="optimum")
+
+        ax.set_xlabel(f"Steerer (rad)\nOptimun kick @ bpm={self.latest_measurement[plane]['opt_offset'] * 1e6:.3f} um")
         ax.set_ylabel("Fitted kick")
         ax.grid()
         ax.legend()
@@ -521,9 +546,11 @@ class BBA2(MeasurementTool):
         """
         Plot BBA data.
         """
+        if self.latest_measurement is None:
+            raise PyAMLException("No BBA data, please call measure() first")
 
-        noH = "HData" not in self.latest_measurement or self.latest_measurement["HData"] is None
-        noV = "VData" not in self.latest_measurement or self.latest_measurement["VData"] is None
+        noH = self.latest_measurement["HData"]["opt_type"] == BBAData.OPT_TYPE.NONE.name
+        noV = self.latest_measurement["VData"]["opt_type"] == BBAData.OPT_TYPE.NONE.name
         nrow = 0 if noH else 1
         nrow += 0 if noV else 1
 

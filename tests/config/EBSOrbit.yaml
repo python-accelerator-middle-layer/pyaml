@@ -60,6 +60,7 @@ devices:
   hcorr_name : SF2E-C02-H
   vcorr_name : SD1A-C26-V
   quad_name : QF6B-C04
+  n_step: 3
   tune_correction_name: DEFAULT_TUNE_CORRECTION
   hcorr_delta : 1e-05
   vcorr_delta : 1e-05
