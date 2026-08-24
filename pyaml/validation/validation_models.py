@@ -3,7 +3,7 @@
 import inspect
 import logging
 from abc import ABCMeta
-from typing import Any, cast
+from typing import Any, ClassVar, cast
 
 from pydantic import BaseModel, ConfigDict, ValidationError, create_model
 
@@ -104,19 +104,41 @@ class ValidationMeta(ABCMeta):
         return super().__call__(**validated.model_dump())
 
 
-class DynamicValidation(metaclass=ValidationMeta):
-    """
-    Base class for automatic constructor argument validation.
+class ValidationModelDescriptor:
+    """Provide a lazily generated validation model on the class."""
 
-    When a subclass is defined, a validation model is generated
-    automatically from its constructor signature and assigned to
-    ``validation_model``. The generated model is then used to validate
-    constructor arguments before object creation.
+    def __get__(
+        self,
+        instance: object | None,
+        owner: type["DynamicValidation"],
+    ) -> type[ValidationModel]:
+        model = owner.__dict__.get("_validation_model")
+
+        if model is None:
+            model = owner._build_validation_model()
+            owner._validation_model = model
+
+        return model
+
+
+class DynamicValidation(metaclass=ValidationMeta):
+    """Base class for automatic constructor argument validation.
+
+    When a subclass is defined, a validation model is generated from either
+    its explicitly declared constructor or its directly declared class
+    annotations.
+
+    Class annotations are used when no constructor has yet been defined. This
+    supports classes decorated with ``@dataclass``, because their generated
+    constructor is not available while ``__init_subclass__`` is running.
 
     Subclasses must not define ``validation_model`` manually.
     """
 
-    validation_model: type[ValidationModel] | None = None
+    _validation_model: ClassVar[type[ValidationModel] | None] = None
+
+    # Lazy construction of the validation class
+    validation_model: ClassVar[ValidationModelDescriptor] = ValidationModelDescriptor()
 
     def __init_subclass__(cls, **kwargs):
         """
@@ -135,31 +157,33 @@ class DynamicValidation(metaclass=ValidationMeta):
 
         super().__init_subclass__(**kwargs)
 
+        # Check if validation model already exists
+        # This only checks for the current class and not parent classes
         if "validation_model" in cls.__dict__:
             raise TypeError(f"{cls.__name__} may not define validation_model manually.")
 
-        cls.validation_model = cls._build_validation_model()
+        # Set the _validation_model to None since should be built using lazy construction
+        cls._validation_model = None
 
     @classmethod
     def _build_validation_model(cls) -> type[ValidationModel]:
-        """
-        Generate a validation model from the constructor signature.
+        """Generate a validation model from the class definition.
 
-        The generated model contains one field for each parameter in the
-        subclass's ``__init__`` method, excluding ``self``, ``*args``, and
-        ``**kwargs``. Field types are obtained from the constructor's type
-        annotations and default values are preserved.
+        For classes with an explicitly defined ``__init__``, fields are
+        extracted from the constructor signature. Otherwise, fields are
+        extracted from annotations declared directly on the class. The latter
+        supports dataclasses before their generated constructor is available.
 
         Returns
         -------
         type[ValidationModel]
-            A dynamically generated subclass of :class:`ValidationModel`
-            representing the constructor arguments accepted by the subclass.
+            Dynamically generated validation model representing the arguments
+            accepted by the class.
         """
 
         logger.debug("Building validation model for %s.", f"{cls.__module__}.{cls.__name__}")
 
-        fields: dict[str, tuple[Any, Any]] = _fields_from_constructor_signature(cls, expand_arbitrary_types=False)
+        fields: dict[str, Any] = _fields_from_constructor_signature(cls, expand_arbitrary_types=False)
 
         model = create_model(f"{cls.__name__}ValidationModel", **cast(Any, fields), __base__=ValidationModel)
 

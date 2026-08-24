@@ -169,7 +169,7 @@ def _configuration_schema_from_basemodel(
     if not isinstance(validation_model, type) or not issubclass(validation_model, BaseModel):
         raise TypeError("validation_model must be a subclass of pydantic.BaseModel.")
 
-    fields: dict[str, tuple[object, object]] = {}
+    fields: dict[str, Any] = {}
 
     for field_name, field_info in validation_model.model_fields.items():
         if field_name in RESERVED_CONFIGURATION_FIELDS:
@@ -187,7 +187,7 @@ def _configuration_schema_from_basemodel(
     )
 
 
-def _field_definition_from_field_info(field_name: str, field_info: FieldInfo) -> tuple[object, object]:
+def _field_definition_from_field_info(field_name: str, field_info: FieldInfo) -> tuple[Any, Any]:
     """
     Convert a Pydantic field definition into a ``create_model`` field tuple.
     """
@@ -214,7 +214,7 @@ def _field_definition_from_field_info(field_name: str, field_info: FieldInfo) ->
         return annotation, default
 
 
-def _resolve_annotation(annotation: object) -> object:
+def _resolve_annotation(annotation: Any) -> Any:
     """
     Resolve an annotation into a schema-friendly type.
 
@@ -287,12 +287,12 @@ def _resolve_annotation(annotation: object) -> object:
         raise TypeError(f"Unsupported generic annotation: {annotation!r}")
 
 
-def _field_kwargs(field_name: str, field_info: object) -> dict[str, object]:
+def _field_kwargs(field_name: str, field_info: Any) -> dict[str, Any]:
     """
     Collect supported field metadata for ``pydantic.create_model``.
     """
 
-    kwargs: dict[str, object] = {}
+    kwargs: dict[str, Any] = {}
 
     description = getattr(field_info, "description", None)
     if description is not None:
@@ -328,7 +328,7 @@ def _configuration_schema_from_constructor(cls: type) -> type[ConfigurationSchem
     if not isinstance(cls, type):
         raise TypeError("cls must be a class.")
 
-    fields = _fields_from_constructor_signature(
+    fields: dict[str, Any] = _fields_from_constructor_signature(
         cls,
         expand_arbitrary_types=True,
     )
@@ -341,7 +341,7 @@ def _configuration_schema_from_constructor(cls: type) -> type[ConfigurationSchem
     )
 
 
-def _fields_from_constructor_signature(cls: type, expand_arbitrary_types: bool = False) -> dict[str, tuple[object, object]]:
+def _fields_from_constructor_signature(cls: type, expand_arbitrary_types: bool = False) -> dict[str, tuple[Any, Any]]:
     """
     Extract field definitions from a class constructor signature.
 

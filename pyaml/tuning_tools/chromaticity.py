@@ -3,7 +3,7 @@ from typing import TYPE_CHECKING
 
 from .. import PyAMLException
 from ..validation import DynamicValidation, register_schema
-from .chromaticity_monitor import ChomaticityMonitor
+from .chromaticity_monitor import ChromaticityMonitor
 from .response_matrix_data import ResponseMatrixData
 from .tuning_tool import TuningTool
 
@@ -61,7 +61,7 @@ class Chromaticity(TuningTool, DynamicValidation):
 
         # Invert matrix
         if self._response_matrix:
-            self._response_matrix = np.array(self._response_matrix._cfg.matrix)
+            self._response_matrix = np.array(self._response_matrix.matrix)
             self._correctionmat = np.linalg.pinv(self._response_matrix)
 
         # TODO: Initialise first setpoint
@@ -84,11 +84,11 @@ class Chromaticity(TuningTool, DynamicValidation):
             Filename of the :class:`~.ResponseMatrixData` to load
         """
         self._response_matrix = ResponseMatrixData.load(load_path)
-        self._response_matrix = np.array(self._response_matrix._cfg.matrix)
+        self._response_matrix = np.array(self._response_matrix.matrix)
         self._correctionmat = np.linalg.pinv(self._response_matrix)
 
     @property
-    def _cm(self) -> "ChomaticityMonitor":
+    def _cm(self) -> "ChromaticityMonitor":
         self.check_peer()
         return self.peer.get_chromaticity_monitor(self._chromaticity_monitor_name)
 

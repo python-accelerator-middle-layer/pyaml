@@ -5,13 +5,7 @@ from typing import TYPE_CHECKING
 
 import numpy as np
 
-try:
-    from typing import Self  # Python 3.11+
-except ImportError:
-    from typing_extensions import Self  # Python 3.10 and earlier
-
 from .. import PyAMLException
-from ..common.element import ElementConfigModel
 from .response_matrix_data import ResponseMatrixData
 from .tuning_tool import TuningTool
 
@@ -19,62 +13,77 @@ if TYPE_CHECKING:
     from ..arrays.magnet_array import MagnetArray
     from ..diagnostics.tune_monitor import BetatronTuneMonitor
 
+from ..validation import DynamicValidation, register_schema
+
 logger = logging.getLogger(__name__)
 
 # Define the main class name for this module
 PYAMLCLASS = "Tune"
 
 
-class ConfigModel(ElementConfigModel):
-    """
-    Configuration model for Tune
+@register_schema
+class Tune(TuningTool, DynamicValidation):
+    """Adjust the horizontal and vertical betatron tunes.
+
+    The tune correction is calculated from a response matrix describing the
+    change in horizontal and vertical tune produced by changes in quadrupole
+    strength. The pseudo-inverse of this matrix is used to convert a requested
+    tune change into the corresponding quadrupole-strength changes.
+
+    The response matrix may be supplied directly as a
+    :class:`ResponseMatrixData` instance or loaded from a file. The tune is
+    measured using the configured betatron tune monitor, while corrections are
+    applied through the configured quadrupole array.
 
     Parameters
     ----------
+    name : str
+        Name of the tuning tool.
     quad_array_name : str
-        Array name of quad used to adjust the tune
+        Name of the quadrupole array used to adjust the tune.
     betatron_tune_name : str
-        Name of the diagnostic pyaml device for measuring the tune
-    quad_delta : float
-        Delta strength used to get the response matrix
+        Name of the betatron tune monitor used to measure the horizontal and
+        vertical tunes.
+    response_matrix : str or ResponseMatrixData
+        Tune response matrix or path to a file containing the response matrix.
+        The matrix is expected to have one row for each tune plane and one
+        column for each quadrupole.
 
+    Attributes
+    ----------
+    quad_array_name : str
+        Name of the configured quadrupole array.
+    betatron_tune_name : str
+        Name of the configured betatron tune monitor.
+    response_matrix : ResponseMatrixData or None
+        Loaded tune response matrix.
     """
 
-    quad_array_name: str
-    betatron_tune_name: str
-    response_matrix: str | ResponseMatrixData
+    def __init__(
+        self,
+        name: str,
+        quad_array_name: str,
+        betatron_tune_name: str,
+        response_matrix: str | ResponseMatrixData,
+    ):
+        super().__init__(name)
 
-
-class Tune(TuningTool):
-    """
-    Class providing tune adjustment tool
-    """
-
-    def __init__(self, cfg: ConfigModel):
-        """
-        Construct a Tune adjustment object.
-
-        Parameters
-        ----------
-        cfg : ConfigModel
-            Configuration for the tune adjustment.
-        """
-        super().__init__(cfg.name)
-        self._cfg = cfg
-        self._response_matrix = None
+        self.quad_array_name = quad_array_name
+        self.betatron_tune_name = betatron_tune_name
+        self._response_matrix = response_matrix
         self._correctionmat = None
 
         # If the configuration response matrix is a filename, load it
-        if type(cfg.response_matrix) is str:
+        if type(self._response_matrix) is str:
             try:
-                cfg.response_matrix = ResponseMatrixData.load(cfg.response_matrix)
+                self._response_matrix = ResponseMatrixData.load(self._response_matrix)
             except Exception as e:
                 logger.warning(f"{str(e)}")
-                cfg.response_matrix = None
+                self._response_matrix = None
 
         # Invert matrix
-        if cfg.response_matrix:
-            self._response_matrix = np.array(cfg.response_matrix._cfg.matrix)
+        if self._response_matrix:
+            self._response_matrix = np.array(self._response_matrix.matrix)
             self._correctionmat = np.linalg.pinv(self._response_matrix)
 
         # TODO: Initialise first setpoint
@@ -90,8 +99,8 @@ class Tune(TuningTool):
             Filename of the :class:`~.ResponseMatrixData` to load
 
         """
-        self._cfg.response_matrix = ResponseMatrixData.load(load_path)
-        self._response_matrix = np.array(self._cfg.response_matrix._cfg.matrix)
+        self._response_matrix = ResponseMatrixData.load(load_path)
+        self._response_matrix = np.array(self._response_matrix.matrix)
         self._correctionmat = np.linalg.pinv(self._response_matrix)
 
     @property
@@ -99,17 +108,17 @@ class Tune(TuningTool):
         """
         Return the response matrix if it has been loaded None otherwise
         """
-        return self._cfg.response_matrix
+        return self._response_matrix
 
     @property
     def _tm(self) -> "BetatronTuneMonitor":
         self.check_peer()
-        return self.peer.get_betatron_tune_monitor(self._cfg.betatron_tune_name)
+        return self.peer.get_betatron_tune_monitor(self.betatron_tune_name)
 
     @property
     def _quads(self) -> "MagnetArray":
         self.check_peer()
-        return self.peer.magnets.get(self._cfg.quad_array_name)
+        return self.peer.magnets.get(self.quad_array_name)
 
     def get(self):
         """
