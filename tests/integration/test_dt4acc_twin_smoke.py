@@ -10,7 +10,7 @@ from pyaml.configuration import ConfigurationManager
 QF_001 = "QF_001_314d440dcc3348c687785c80e67fce27"
 QF_001_STRENGTH = "AN01-AR/EM-QP/QF.01/magnetic_strength"
 RF_REFERENCE_FREQUENCY = "simulator/ringsimulator/ringsimulator/reference_frequency"
-EXAMPLES_ROOT = Path(__file__).parent.parent.parent / "examples"
+EXAMPLES_ROOT = Path(__file__).parent.parent.parent / "examples" / "use_cases" / "config"
 FODO_1GEV_6D_ROOT = Path(__file__).parent / "data" / "fodo_1gev_6d"
 FODO_1GEV_6D_TANGO_PYAML_CONFIG = {
     "accelerator": "fodo_1gev_6d_pyaml_accelerator.yaml",
@@ -132,11 +132,10 @@ def test_dt4acc_twin_reads_all_declared_magnetic_strengths(root_folder: Path, co
 @pytest.mark.parametrize(
     ("root_folder", "config_file"),
     [
-        (EXAMPLES_ROOT / "BESSY2_example", "BESSY2Tune.yaml"),
-        (EXAMPLES_ROOT / "BESSY2_example", "BESSY2Orbit.yaml"),
-        (EXAMPLES_ROOT / "SOLEIL_examples", "p.yaml"),
+        (EXAMPLES_ROOT / "bessy2", "bessy2.yaml"),
+        (EXAMPLES_ROOT / "soleil_ii", "p.yaml"),
     ],
-    ids=["bessy_ii_tune", "bessy_ii_orbit", "soleil_ii"],
+    ids=["bessy_ii", "soleil_ii"],
 )
 def test_examples_can_be_loaded(root_folder: Path, config_file: str):
     accelerator: Accelerator = Accelerator.load(str(root_folder / config_file))
