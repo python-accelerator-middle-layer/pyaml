@@ -9,7 +9,7 @@ from pydantic import BaseModel, ConfigDict, ValidationError, create_model
 
 from .configuration_models import PyAMLBaseModel
 from .errors import raise_validation_error
-from .schema_builder import generate_class_path,_fields_from_constructor_signature
+from .schema_builder import _fields_from_constructor_signature, generate_class_path
 
 logger = logging.getLogger(__name__)
 
