@@ -19,7 +19,7 @@ from ...magnet.magnet import Magnet
 from ...magnet.serialized_magnet import SerializedMagnets
 from ...rf.rf_plant import RFPlant
 from ...rf.rf_transmitter import RFTransmitter
-from ...tuning_tools.chromaticity_monitor import ChomaticityMonitor
+from ...tuning_tools.chromaticity_monitor import ChromaticityMonitor
 from ..abstract_aggregator import ScalarAggregator
 from ..element import Element
 from ..exception import PyAMLException
@@ -254,8 +254,8 @@ class ElementHolder(metaclass=ABCMeta):
 
     # ---- Chromaticity -------------------------------------------------
 
-    def get_chromaticity_monitor(self, name: str) -> ChomaticityMonitor:
-        obj = self._get("Chomaticity monitor", name, self._TOOLS)
+    def get_chromaticity_monitor(self, name: str) -> ChromaticityMonitor:
+        obj = self._get("Chromaticity monitor", name, self._TOOLS)
         return obj
 
     def get_chromaticity_tuning(self, name: str) -> "Chromaticity":
