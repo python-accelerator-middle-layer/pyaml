@@ -4,61 +4,15 @@ from typing import Callable, Optional
 
 import matplotlib.pyplot as plt
 import numpy as np
-from pydantic import ConfigDict
 
 from ..common.constants import Action
 from ..common.exception import PyAMLException
-from .measurement_tool import MeasurementTool, MeasurementToolConfigModel
+from ..validation import DynamicValidation, register_schema
+from .measurement_tool import MeasurementTool
 
 logger = logging.getLogger(__name__)
 
 PYAMLCLASS = "BBA2"
-
-
-class ConfigModel(MeasurementToolConfigModel):
-    """
-    Configuration model for Beam Based Alignment.
-    BBA finds the magnetic center of a quad (zero crossing).
-
-    Parameters
-    ----------
-    bpm_array_name : str
-        BPM array name (orbit)
-    bpm_name : str
-        BPM to be corrected (close to the quad)
-    hcorr_name : str
-        Horizontal corrector used to make a deviation in the quad
-    vcorr_name : str
-        Vertical corrector used to make a deviation in the quad
-    quad_name : str
-        Quadrupole used to find the center
-    tune_correction_name: str
-        Tune tuning tool
-    hcorr_delta : float
-        Horizontal corrector delta strength
-    vcorr_delta : float
-        Vertical corrector delta strength
-    quad_delta : float
-        Quadrupole delta strength
-    bipolar_delta : bool
-        Perform scan at initial_quad_strength +/- quad delta
-    minicyle_sleep_time : float
-        Time to wait for quad mini cycle
-    """
-
-    model_config = ConfigDict(arbitrary_types_allowed=True, extra="forbid")
-
-    bpm_array_name: str
-    bpm_name: str
-    hcorr_name: str
-    vcorr_name: str
-    quad_name: str
-    tune_correction_name: str
-    hcorr_delta: float
-    vcorr_delta: float
-    quad_delta: float
-    bipolar_delta: bool = False
-    minicyle_sleep_time: float = 5
 
 
 class BBAData:
@@ -87,10 +41,95 @@ class BBAData:
         self.lastfit = fit
 
 
-class BBA2(MeasurementTool):
-    def __init__(self, cfg: ConfigModel):
-        super().__init__(cfg.name)
-        self._cfg = cfg
+@register_schema
+class BBA2(MeasurementTool, DynamicValidation):
+    """
+    Beam-based alignment tool with tune correction.
+
+    This tool determines the magnetic center of a quadrupole from the BPM
+    response to controlled horizontal and vertical orbit offsets. During the
+    measurement, the quadrupole strength is varied and tune correction is used
+    to compensate for the resulting tune change.
+
+    Parameters
+    ----------
+    name : str
+        Name of the measurement tool.
+    bpm_array_name : str
+        Name of the BPM array used to measure the orbit.
+    bpm_name : str
+        Name of the BPM located near the quadrupole whose center is measured.
+    hcorr_name : str
+        Name of the horizontal corrector used to create horizontal orbit
+        offsets at the quadrupole.
+    vcorr_name : str
+        Name of the vertical corrector used to create vertical orbit offsets
+        at the quadrupole.
+    quad_name : str
+        Name of the quadrupole to align.
+    tune_correction_name : str
+        Name of the tune-correction tool used to compensate for tune changes
+        caused by varying the quadrupole strength.
+    hcorr_delta : float
+        Change in horizontal corrector strength used for each horizontal
+        orbit-offset step.
+    vcorr_delta : float
+        Change in vertical corrector strength used for each vertical
+        orbit-offset step.
+    quad_delta : float
+        Change in quadrupole strength used for the alignment measurement.
+    bipolar_delta : bool, default=False
+        If `True`, vary the quadrupole strength both above and below its
+        initial value by `quad_delta`. If `False`, apply the change in one
+        direction only.
+    minicycle_sleep_time : float, default=5
+        Time in seconds to wait for the quadrupole minicycle to complete after
+        changing its strength.
+    n_step : int, default=1
+        Number of orbit-offset steps to perform in each plane.
+    sleep_between_step : float, default=0
+        Time in seconds to wait after changing an orbit offset.
+    n_avg_meas : int, default=1
+        Number of BPM measurements to average at each step.
+    sleep_between_meas : float, default=0
+        Time in seconds to wait between individual BPM measurements.
+    """
+
+    def __init__(
+        self,
+        name: str,
+        bpm_array_name: str,
+        bpm_name: str,
+        hcorr_name: str,
+        vcorr_name: str,
+        quad_name: str,
+        tune_correction_name: str,
+        hcorr_delta: float,
+        vcorr_delta: float,
+        quad_delta: float,
+        bipolar_delta: bool = False,
+        minicycle_sleep_time: float = 5,
+        n_step: int = 1,
+        sleep_between_step: float = 0,
+        n_avg_meas: int = 1,
+        sleep_between_meas: float = 0,
+    ):
+        super().__init__(name)
+        self.bpm_array_name = bpm_array_name
+        self.bpm_name = bpm_name
+        self.hcorr_name = hcorr_name
+        self.vcorr_name = vcorr_name
+        self.quad_name = quad_name
+        self.tune_correction_name = tune_correction_name
+        self.hcorr_delta = hcorr_delta
+        self.vcorr_delta = vcorr_delta
+        self.quad_delta = quad_delta
+        self.bipolar_delta = bipolar_delta
+        self.minicycle_sleep_time = minicycle_sleep_time
+        self.n_step = n_step
+        self.sleep_between_step = sleep_between_step
+        self.n_avg_meas = n_avg_meas
+        self.sleep_between_meas = sleep_between_meas
 
     @staticmethod
     def _x_intercept(x, k, n):
@@ -331,17 +370,17 @@ class BBA2(MeasurementTool):
         plane: str, optional
             Plane to perform ("H" or "V", None => both plane)
         """
-        self._nb_meas = n_avg_meas if n_avg_meas is not None else self._cfg.n_avg_meas
-        self._sleep_step = sleep_between_step if sleep_between_step is not None else self._cfg.sleep_between_step
-        self._sleep_meas = sleep_between_meas if sleep_between_meas is not None else self._cfg.sleep_between_meas
+        self._nb_meas = n_avg_meas if n_avg_meas is not None else self.n_avg_meas
+        self._sleep_step = sleep_between_step if sleep_between_step is not None else self.sleep_between_step
+        self._sleep_meas = sleep_between_meas if sleep_between_meas is not None else self.sleep_between_meas
 
         # Device handles
         self.check_peer()
-        self._h_steer = self.peer.magnet.get(self._cfg.hcorr_name)
-        self._v_steer = self.peer.magnet.get(self._cfg.vcorr_name)
-        self._quad = self.peer.magnet.get(self._cfg.quad_name)
-        self._bpms = self.peer.bpms.get(self._cfg.bpm_array_name)
-        self._bpmi = self._bpms.names().index(self._cfg.bpm_name)
+        self._h_steer = self.peer.magnet.get(self.hcorr_name)
+        self._v_steer = self.peer.magnet.get(self.vcorr_name)
+        self._quad = self.peer.magnet.get(self.quad_name)
+        self._bpms = self.peer.bpms.get(self.bpm_array_name)
+        self._bpmi = self._bpms.names().index(self.bpm_name)
 
         # Initial values
         self._initial_k0 = [self._h_steer.strength.get(), self._v_steer.strength.get()]
@@ -349,26 +388,26 @@ class BBA2(MeasurementTool):
         self._quad_polarity = np.sign(self._initial_k1) if self._initial_k1 != 0 else 1
 
         self._ref_ios, fx, fy = self._init_responses(
-            self._cfg.tune_correction_name,
-            self._cfg.bpm_array_name,
-            self._cfg.quad_name,
-            self._cfg.hcorr_name,
-            self._cfg.vcorr_name,
+            self.tune_correction_name,
+            self.bpm_array_name,
+            self.quad_name,
+            self.hcorr_name,
+            self.vcorr_name,
             self._bpmi,
         )
 
-        dk0h = self._cfg.hcorr_delta if plane is None or plane == "H" else 0
-        dk0v = self._cfg.vcorr_delta if plane is None or plane == "V" else 0
-        dk1 = self._cfg.quad_delta
-        bidelta = self._cfg.bipolar_delta
+        dk0h = self.hcorr_delta if plane is None or plane == "H" else 0
+        dk0v = self.vcorr_delta if plane is None or plane == "V" else 0
+        dk1 = self.quad_delta
+        bidelta = self.bipolar_delta
         doH = dk0h != 0
         doV = dk0v != 0
         aborted = False
         err = None
 
-        logger.debug(f"Initial H corrector {self._cfg.hcorr_name} value: {self._initial_k0[0]} rad")
-        logger.debug(f"Initial V corrector {self._cfg.vcorr_name} value: {self._initial_k0[1]} rad")
-        logger.debug(f"Initial quad {self._cfg.quad_name} value: {self._initial_k1} m-1")
+        logger.debug(f"Initial H corrector {self.hcorr_name} value: {self._initial_k0[0]} rad")
+        logger.debug(f"Initial V corrector {self.vcorr_name} value: {self._initial_k0[1]} rad")
+        logger.debug(f"Initial quad {self.quad_name} value: {self._initial_k1} m-1")
 
         try:
             self._register_callback(callback)
@@ -379,16 +418,16 @@ class BBA2(MeasurementTool):
             Y = BBAData()
 
             # Mini cycle
-            if self._cfg.minicyle_sleep_time > 0:
-                logger.debug(f"Quad mini cycling {self._cfg.quad_name}")
+            if self.minicycle_sleep_time > 0:
+                logger.debug(f"Quad mini cycling {self.quad_name}")
                 _str = self._initial_k1 + dk1 * self._quad_polarity
                 self._quad.strength.set(_str)
                 self.send_callback(Action.APPLY, {"step": -1, "magnet": self._quad.name, "strength": _str})
-                time.sleep(self._cfg.minicyle_sleep_time)
+                time.sleep(self.minicycle_sleep_time)
                 _str = self._initial_k1
                 self._quad.strength.set(_str)
                 self.send_callback(Action.APPLY, {"step": -1, "magnet": self._quad.name, "strength": _str})
-                time.sleep(self._cfg.minicyle_sleep_time)
+                time.sleep(self.minicycle_sleep_time)
 
             opt_found = False
             self._step = 0
@@ -541,6 +580,6 @@ class BBA2(MeasurementTool):
             self.plot_plane_data(ax, "VData")
 
         fig.tight_layout()
-        fig.canvas.manager.set_window_title(f"BBA {self._cfg.bpm_name}")
+        fig.canvas.manager.set_window_title(f"BBA {self.bpm_name}")
 
         plt.show()
