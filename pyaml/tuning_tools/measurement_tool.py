@@ -137,11 +137,8 @@ class MeasurementTool(Element, metaclass=ABCMeta):
         self._callback = callback
 
     def attach(self, peer: "ElementHolder") -> Self:
-        if hasattr(self, "_cfg"):
-            obj = self.__class__(self._cfg)
-        else:
-            obj = copy.copy(self)
-            obj._after_attach()
+        obj = copy.copy(self)
+        obj._after_attach()
         obj._peer = peer
         return obj
 
