@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>pyaml.tuning_tools.bba &#8212; Python Accelerator Middle Layer 0.1.dev1+g45f7c8743 documentation</title>
+    <title>pyaml.tuning_tools.bba &#8212; Python Accelerator Middle Layer 0.1.dev1+gfcbb87f73 documentation</title>
   
   
   
@@ -41,7 +41,7 @@
   <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=cb8930eaaf36d9849b67" />
 <link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=cb8930eaaf36d9849b67" />
 
-    <script src="../../../_static/documentation_options.js?v=d8788e72"></script>
+    <script src="../../../_static/documentation_options.js?v=16219b93"></script>
     <script src="../../../_static/doctools.js?v=9bcbadda"></script>
     <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -125,8 +125,8 @@
       
     
     
-    <img src="../../../_static/logo.png" class="logo__image only-light" alt="Python Accelerator Middle Layer 0.1.dev1+g45f7c8743 documentation - Home"/>
-    <img src="../../../_static/dark.png" class="logo__image only-dark pst-js-only" alt="Python Accelerator Middle Layer 0.1.dev1+g45f7c8743 documentation - Home"/>
+    <img src="../../../_static/logo.png" class="logo__image only-light" alt="Python Accelerator Middle Layer 0.1.dev1+gfcbb87f73 documentation - Home"/>
+    <img src="../../../_static/dark.png" class="logo__image only-dark pst-js-only" alt="Python Accelerator Middle Layer 0.1.dev1+gfcbb87f73 documentation - Home"/>
   
   
 </a></div>
@@ -394,7 +394,6 @@
 <span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">pySC</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">pydantic</span><span class="w"> </span><span class="kn">import</span> <span class="n">ConfigDict</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">pySC.apps</span><span class="w"> </span><span class="kn">import</span> <span class="n">measure_bba</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">pySC.apps.bba</span><span class="w"> </span><span class="kn">import</span> <span class="n">BBAAnalysis</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">pySC.apps.codes</span><span class="w"> </span><span class="kn">import</span> <span class="n">BBACode</span>
@@ -402,63 +401,95 @@
 <span class="kn">from</span><span class="w"> </span><span class="nn">..common.constants</span><span class="w"> </span><span class="kn">import</span> <span class="n">Action</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">..common.exception</span><span class="w"> </span><span class="kn">import</span> <span class="n">PyAMLException</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">..external.pySC_interface</span><span class="w"> </span><span class="kn">import</span> <span class="n">pySCInterface</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">.measurement_tool</span><span class="w"> </span><span class="kn">import</span> <span class="n">MeasurementTool</span><span class="p">,</span> <span class="n">MeasurementToolConfigModel</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">..validation</span><span class="w"> </span><span class="kn">import</span> <span class="n">DynamicValidation</span><span class="p">,</span> <span class="n">register_schema</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.measurement_tool</span><span class="w"> </span><span class="kn">import</span> <span class="n">MeasurementTool</span>
 
 <span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
 
 <span class="n">PYAMLCLASS</span> <span class="o">=</span> <span class="s2">"BBA"</span>
 
 
-<div class="viewcode-block" id="ConfigModel">
-<a class="viewcode-back" href="../../../api/pyaml.tuning_tools.bba.html#pyaml.tuning_tools.bba.ConfigModel">[docs]</a>
-<span class="k">class</span><span class="w"> </span><span class="nc">ConfigModel</span><span class="p">(</span><span class="n">MeasurementToolConfigModel</span><span class="p">):</span>
+<div class="viewcode-block" id="BBA">
+<a class="viewcode-back" href="../../../api/pyaml.tuning_tools.bba.html#pyaml.tuning_tools.bba.BBA">[docs]</a>
+<span class="nd">@register_schema</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">BBA</span><span class="p">(</span><span class="n">MeasurementTool</span><span class="p">,</span> <span class="n">DynamicValidation</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">"""</span>
-<span class="sd">    Configuration model for Beam Based Alignment.</span>
-<span class="sd">    BBA finds the magnetic center of a quad (zero crossing).</span>
+<span class="sd">    Beam-based alignment measurement tool.</span>
+
+<span class="sd">    This tool determines the magnetic center of a quadrupole by varying its</span>
+<span class="sd">    strength while applying controlled horizontal and vertical orbit offsets.</span>
+<span class="sd">    The quadrupole center is identified from the corresponding zero crossings</span>
+<span class="sd">    in the BPM response.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
+<span class="sd">    name : str</span>
+<span class="sd">        Name of the measurement tool.</span>
 <span class="sd">    bpm_array_name : str</span>
-<span class="sd">        BPM array name (orbit)</span>
+<span class="sd">        Name of the BPM array used to measure the orbit.</span>
 <span class="sd">    bpm_name : str</span>
-<span class="sd">        BPM to be corrected (close to the quad)</span>
+<span class="sd">        Name of the BPM located near the quadrupole whose center is measured.</span>
 <span class="sd">    hcorr_name : str</span>
-<span class="sd">        Horizontal corrector used to make a deviation in the quad</span>
+<span class="sd">        Name of the horizontal corrector used to create horizontal orbit</span>
+<span class="sd">        offsets at the quadrupole.</span>
 <span class="sd">    vcorr_name : str</span>
-<span class="sd">        Vertical corrector used to make a deviation in the quad</span>
+<span class="sd">        Name of the vertical corrector used to create vertical orbit offsets</span>
+<span class="sd">        at the quadrupole.</span>
 <span class="sd">    quad_name : str</span>
-<span class="sd">        Quadrupole used to find the center</span>
+<span class="sd">        Name of the quadrupole to align.</span>
 <span class="sd">    hcorr_delta : float</span>
-<span class="sd">        Horizontal corrector delta strength</span>
+<span class="sd">        Change in horizontal corrector strength used for each horizontal</span>
+<span class="sd">        orbit-offset step.</span>
 <span class="sd">    vcorr_delta : float</span>
-<span class="sd">        Vertical corrector delta strength</span>
+<span class="sd">        Change in vertical corrector strength used for each vertical</span>
+<span class="sd">        orbit-offset step.</span>
 <span class="sd">    hquad_delta : float</span>
-<span class="sd">        Quadrupole delta strength (for h search)</span>
+<span class="sd">        Change in quadrupole strength used during the horizontal alignment</span>
+<span class="sd">        measurement.</span>
 <span class="sd">    vquad_delta : float</span>
-<span class="sd">        Quadrupole delta strength (for v search)</span>
-
+<span class="sd">        Change in quadrupole strength used during the vertical alignment</span>
+<span class="sd">        measurement.</span>
+<span class="sd">    n_step : int, default=1</span>
+<span class="sd">        Number of orbit-offset steps to perform in each plane.</span>
+<span class="sd">    sleep_between_step : float, default=0</span>
+<span class="sd">        Time in seconds to wait after changing an orbit offset.</span>
+<span class="sd">    n_avg_meas : int, default=1</span>
+<span class="sd">        Number of BPM measurements to average at each step.</span>
+<span class="sd">    sleep_between_meas : float, default=0</span>
+<span class="sd">        Time in seconds to wait between individual BPM measurements.</span>
 <span class="sd">    """</span>
 
-    <span class="n">model_config</span> <span class="o">=</span> <span class="n">ConfigDict</span><span class="p">(</span><span class="n">arbitrary_types_allowed</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">extra</span><span class="o">=</span><span class="s2">"forbid"</span><span class="p">)</span>
-
-    <span class="n">bpm_array_name</span><span class="p">:</span> <span class="nb">str</span>
-    <span class="n">bpm_name</span><span class="p">:</span> <span class="nb">str</span>
-    <span class="n">hcorr_name</span><span class="p">:</span> <span class="nb">str</span>
-    <span class="n">vcorr_name</span><span class="p">:</span> <span class="nb">str</span>
-    <span class="n">quad_name</span><span class="p">:</span> <span class="nb">str</span>
-    <span class="n">hcorr_delta</span><span class="p">:</span> <span class="nb">float</span>
-    <span class="n">vcorr_delta</span><span class="p">:</span> <span class="nb">float</span>
-    <span class="n">hquad_delta</span><span class="p">:</span> <span class="nb">float</span>
-    <span class="n">vquad_delta</span><span class="p">:</span> <span class="nb">float</span></div>
-
-
-
-<div class="viewcode-block" id="BBA">
-<a class="viewcode-back" href="../../../api/pyaml.tuning_tools.bba.html#pyaml.tuning_tools.bba.BBA">[docs]</a>
-<span class="k">class</span><span class="w"> </span><span class="nc">BBA</span><span class="p">(</span><span class="n">MeasurementTool</span><span class="p">):</span>
-    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cfg</span><span class="p">:</span> <span class="n">ConfigModel</span><span class="p">):</span>
-        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">cfg</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_cfg</span> <span class="o">=</span> <span class="n">cfg</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">bpm_array_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">bpm_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">hcorr_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">vcorr_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">quad_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">hcorr_delta</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+        <span class="n">vcorr_delta</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+        <span class="n">hquad_delta</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+        <span class="n">vquad_delta</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+        <span class="n">n_step</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
+        <span class="n">sleep_between_step</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+        <span class="n">n_avg_meas</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
+        <span class="n">sleep_between_meas</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">bpm_array_name</span> <span class="o">=</span> <span class="n">bpm_array_name</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">bpm_name</span> <span class="o">=</span> <span class="n">bpm_name</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">hcorr_name</span> <span class="o">=</span> <span class="n">hcorr_name</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">vcorr_name</span> <span class="o">=</span> <span class="n">vcorr_name</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">quad_name</span> <span class="o">=</span> <span class="n">quad_name</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">hcorr_delta</span> <span class="o">=</span> <span class="n">hcorr_delta</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">vcorr_delta</span> <span class="o">=</span> <span class="n">vcorr_delta</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">hquad_delta</span> <span class="o">=</span> <span class="n">hquad_delta</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">vquad_delta</span> <span class="o">=</span> <span class="n">vquad_delta</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">n_step</span> <span class="o">=</span> <span class="n">n_step</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sleep_between_step</span> <span class="o">=</span> <span class="n">sleep_between_step</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">n_avg_meas</span> <span class="o">=</span> <span class="n">n_avg_meas</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sleep_between_meas</span> <span class="o">=</span> <span class="n">sleep_between_meas</span>
 
 <div class="viewcode-block" id="BBA.measure">
 <a class="viewcode-back" href="../../../api/pyaml.tuning_tools.bba.html#pyaml.tuning_tools.bba.BBA.measure">[docs]</a>
@@ -508,29 +539,29 @@
 <span class="sd">        plane: str, optional</span>
 <span class="sd">            Plane to perform ("H" or "V", None =&gt; both plane)</span>
 <span class="sd">        """</span>
-        <span class="n">nb_meas</span> <span class="o">=</span> <span class="n">n_avg_meas</span> <span class="k">if</span> <span class="n">n_avg_meas</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cfg</span><span class="o">.</span><span class="n">n_avg_meas</span>
-        <span class="n">sleep_step</span> <span class="o">=</span> <span class="n">sleep_between_step</span> <span class="k">if</span> <span class="n">sleep_between_step</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cfg</span><span class="o">.</span><span class="n">sleep_between_step</span>
-        <span class="n">sleep_meas</span> <span class="o">=</span> <span class="n">sleep_between_meas</span> <span class="k">if</span> <span class="n">sleep_between_meas</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cfg</span><span class="o">.</span><span class="n">sleep_between_meas</span>
+        <span class="n">nb_meas</span> <span class="o">=</span> <span class="n">n_avg_meas</span> <span class="k">if</span> <span class="n">n_avg_meas</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_avg_meas</span>
+        <span class="n">sleep_step</span> <span class="o">=</span> <span class="n">sleep_between_step</span> <span class="k">if</span> <span class="n">sleep_between_step</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">sleep_between_step</span>
+        <span class="n">sleep_meas</span> <span class="o">=</span> <span class="n">sleep_between_meas</span> <span class="k">if</span> <span class="n">sleep_between_meas</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">sleep_between_meas</span>
 
         <span class="n">element_holder</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_peer</span>
         <span class="n">interface</span> <span class="o">=</span> <span class="n">pySCInterface</span><span class="p">(</span>
             <span class="n">element_holder</span><span class="o">=</span><span class="n">element_holder</span><span class="p">,</span>
-            <span class="n">bpm_array_name</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_cfg</span><span class="o">.</span><span class="n">bpm_array_name</span><span class="p">,</span>
+            <span class="n">bpm_array_name</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">bpm_array_name</span><span class="p">,</span>
         <span class="p">)</span>
         <span class="n">interface</span><span class="o">.</span><span class="n">set_wait_time</span> <span class="o">=</span> <span class="n">sleep_step</span>
         <span class="n">interface</span><span class="o">.</span><span class="n">read_wait_time</span> <span class="o">=</span> <span class="n">sleep_meas</span>
 
-        <span class="n">bpms_names</span> <span class="o">=</span> <span class="n">element_holder</span><span class="o">.</span><span class="n">bpms</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_cfg</span><span class="o">.</span><span class="n">bpm_array_name</span><span class="p">)</span><span class="o">.</span><span class="n">names</span><span class="p">()</span>
+        <span class="n">bpms_names</span> <span class="o">=</span> <span class="n">element_holder</span><span class="o">.</span><span class="n">bpms</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">bpm_array_name</span><span class="p">)</span><span class="o">.</span><span class="n">names</span><span class="p">()</span>
 
         <span class="n">bba_pySC_config</span> <span class="o">=</span> <span class="p">{</span>
-            <span class="s2">"number"</span><span class="p">:</span> <span class="n">bpms_names</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_cfg</span><span class="o">.</span><span class="n">bpm_name</span><span class="p">),</span>
-            <span class="s2">"QUAD"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cfg</span><span class="o">.</span><span class="n">quad_name</span><span class="p">,</span>
-            <span class="s2">"HCORR"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cfg</span><span class="o">.</span><span class="n">hcorr_name</span><span class="p">,</span>
-            <span class="s2">"VCORR"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cfg</span><span class="o">.</span><span class="n">vcorr_name</span><span class="p">,</span>
-            <span class="s2">"HCORR_delta"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cfg</span><span class="o">.</span><span class="n">hcorr_delta</span><span class="p">,</span>
-            <span class="s2">"QUAD_dk_H"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cfg</span><span class="o">.</span><span class="n">hquad_delta</span><span class="p">,</span>
-            <span class="s2">"VCORR_delta"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cfg</span><span class="o">.</span><span class="n">vcorr_delta</span><span class="p">,</span>
-            <span class="s2">"QUAD_dk_V"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cfg</span><span class="o">.</span><span class="n">vquad_delta</span><span class="p">,</span>
+            <span class="s2">"number"</span><span class="p">:</span> <span class="n">bpms_names</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">bpm_name</span><span class="p">),</span>
+            <span class="s2">"QUAD"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">quad_name</span><span class="p">,</span>
+            <span class="s2">"HCORR"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">hcorr_name</span><span class="p">,</span>
+            <span class="s2">"VCORR"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">vcorr_name</span><span class="p">,</span>
+            <span class="s2">"HCORR_delta"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">hcorr_delta</span><span class="p">,</span>
+            <span class="s2">"QUAD_dk_H"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">hquad_delta</span><span class="p">,</span>
+            <span class="s2">"VCORR_delta"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">vcorr_delta</span><span class="p">,</span>
+            <span class="s2">"QUAD_dk_V"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">vquad_delta</span><span class="p">,</span>
             <span class="s2">"magnet_type"</span><span class="p">:</span> <span class="s2">"normal_quadrupole"</span><span class="p">,</span>
         <span class="p">}</span>
 
@@ -539,10 +570,10 @@
 
         <span class="n">generator</span> <span class="o">=</span> <span class="n">measure_bba</span><span class="p">(</span>
             <span class="n">interface</span><span class="o">=</span><span class="n">interface</span><span class="p">,</span>
-            <span class="n">bpm_name</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_cfg</span><span class="o">.</span><span class="n">bpm_name</span><span class="p">,</span>
+            <span class="n">bpm_name</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">bpm_name</span><span class="p">,</span>
             <span class="n">config</span><span class="o">=</span><span class="n">bba_pySC_config</span><span class="p">,</span>
             <span class="n">shots_per_orbit</span><span class="o">=</span><span class="n">nb_meas</span><span class="p">,</span>
-            <span class="n">n_corr_steps</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_cfg</span><span class="o">.</span><span class="n">n_step</span><span class="p">,</span>
+            <span class="n">n_corr_steps</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">n_step</span><span class="p">,</span>
             <span class="n">bipolar</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
             <span class="n">skip_save</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
             <span class="n">plane</span><span class="o">=</span><span class="n">plane</span><span class="p">,</span>
@@ -678,7 +709,7 @@
             <span class="n">axes</span><span class="p">[</span><span class="s2">"A"</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">xx</span><span class="p">[</span><span class="n">final_mask</span><span class="p">],</span> <span class="n">yy</span><span class="p">[</span><span class="n">final_mask</span><span class="p">],</span> <span class="s2">"."</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="s2">"C0"</span><span class="p">)</span>
             <span class="n">axes</span><span class="p">[</span><span class="s2">"A"</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">xx</span><span class="p">[</span><span class="o">~</span><span class="n">final_mask</span><span class="p">],</span> <span class="n">yy</span><span class="p">[</span><span class="o">~</span><span class="n">final_mask</span><span class="p">],</span> <span class="s2">"."</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="s2">"C1"</span><span class="p">)</span>
 
-        <span class="n">axes</span><span class="p">[</span><span class="s2">"A"</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="sa">f</span><span class="s2">"BPM position [μm]</span><span class="se">\n</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_cfg</span><span class="o">.</span><span class="n">bpm_name</span><span class="si">}</span><span class="s2"> offset = </span><span class="si">{</span><span class="n">offset</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mf">1e6</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2"> [μm]"</span><span class="p">)</span>
+        <span class="n">axes</span><span class="p">[</span><span class="s2">"A"</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="sa">f</span><span class="s2">"BPM position [μm]</span><span class="se">\n</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">bpm_name</span><span class="si">}</span><span class="s2"> offset = </span><span class="si">{</span><span class="n">offset</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mf">1e6</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2"> [μm]"</span><span class="p">)</span>
         <span class="n">axes</span><span class="p">[</span><span class="s2">"A"</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">"Modulation [μm]"</span><span class="p">)</span>
         <span class="n">axes</span><span class="p">[</span><span class="s2">"A"</span><span class="p">]</span><span class="o">.</span><span class="n">grid</span><span class="p">()</span>
 
@@ -697,7 +728,7 @@
         <span class="n">axes</span><span class="p">[</span><span class="s2">"C"</span><span class="p">]</span><span class="o">.</span><span class="n">grid</span><span class="p">()</span>
 
         <span class="n">fig</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
-        <span class="n">fig</span><span class="o">.</span><span class="n">canvas</span><span class="o">.</span><span class="n">manager</span><span class="o">.</span><span class="n">set_window_title</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">plane</span><span class="si">}</span><span class="s2"> BBA </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_cfg</span><span class="o">.</span><span class="n">bpm_name</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+        <span class="n">fig</span><span class="o">.</span><span class="n">canvas</span><span class="o">.</span><span class="n">manager</span><span class="o">.</span><span class="n">set_window_title</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">plane</span><span class="si">}</span><span class="s2"> BBA </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">bpm_name</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
 
         <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span></div>
 </div>

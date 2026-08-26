@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>bba &#8212; Python Accelerator Middle Layer 0.1.dev1+g45f7c8743 documentation</title>
+    <title>bba &#8212; Python Accelerator Middle Layer 0.1.dev1+gfcbb87f73 documentation</title>
   
   
   
@@ -42,7 +42,7 @@
   <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=cb8930eaaf36d9849b67" />
 <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=cb8930eaaf36d9849b67" />
 
-    <script src="../_static/documentation_options.js?v=d8788e72"></script>
+    <script src="../_static/documentation_options.js?v=16219b93"></script>
     <script src="../_static/doctools.js?v=9bcbadda"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -128,8 +128,8 @@
       
     
     
-    <img src="../_static/logo.png" class="logo__image only-light" alt="Python Accelerator Middle Layer 0.1.dev1+g45f7c8743 documentation - Home"/>
-    <img src="../_static/dark.png" class="logo__image only-dark pst-js-only" alt="Python Accelerator Middle Layer 0.1.dev1+g45f7c8743 documentation - Home"/>
+    <img src="../_static/logo.png" class="logo__image only-light" alt="Python Accelerator Middle Layer 0.1.dev1+gfcbb87f73 documentation - Home"/>
+    <img src="../_static/dark.png" class="logo__image only-dark pst-js-only" alt="Python Accelerator Middle Layer 0.1.dev1+gfcbb87f73 documentation - Home"/>
   
   
 </a></div>
@@ -541,82 +541,39 @@
   <section id="module-pyaml.tuning_tools.bba">
 <span id="bba"></span><h1>bba<a class="headerlink" href="#module-pyaml.tuning_tools.bba" title="Link to this heading">#</a></h1>
 <dl class="py class">
-<dt class="sig sig-object py" id="pyaml.tuning_tools.bba.ConfigModel">
-<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ConfigModel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">description</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lattice_names</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_step</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sleep_between_step</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_avg_meas</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sleep_between_meas</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bpm_array_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bpm_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hcorr_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vcorr_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">quad_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hcorr_delta</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vcorr_delta</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hquad_delta</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vquad_delta</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/tuning_tools/bba.html#ConfigModel"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.tuning_tools.bba.ConfigModel" title="Link to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference internal" href="pyaml.tuning_tools.measurement_tool.html#pyaml.tuning_tools.measurement_tool.MeasurementToolConfigModel" title="pyaml.tuning_tools.measurement_tool.MeasurementToolConfigModel"><code class="xref py py-class docutils literal notranslate"><span class="pre">MeasurementToolConfigModel</span></code></a></p>
-<p>Configuration model for Beam Based Alignment.
-BBA finds the magnetic center of a quad (zero crossing).</p>
+<dt class="sig sig-object py" id="pyaml.tuning_tools.bba.BBA">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">BBA</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/tuning_tools/bba.html#BBA"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.tuning_tools.bba.BBA" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="pyaml.tuning_tools.measurement_tool.html#pyaml.tuning_tools.measurement_tool.MeasurementTool" title="pyaml.tuning_tools.measurement_tool.MeasurementTool"><code class="xref py py-class docutils literal notranslate"><span class="pre">MeasurementTool</span></code></a>, <a class="reference internal" href="pyaml.validation.validation_models.html#pyaml.validation.validation_models.DynamicValidation" title="pyaml.validation.validation_models.DynamicValidation"><code class="xref py py-class docutils literal notranslate"><span class="pre">DynamicValidation</span></code></a></p>
+<p>Beam-based alignment measurement tool.</p>
+<p>This tool determines the magnetic center of a quadrupole by varying its
+strength while applying controlled horizontal and vertical orbit offsets.
+The quadrupole center is identified from the corresponding zero crossings
+in the BPM response.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>bpm_array_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>) – BPM array name (orbit)</p></li>
-<li><p><strong>bpm_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>) – BPM to be corrected (close to the quad)</p></li>
-<li><p><strong>hcorr_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>) – Horizontal corrector used to make a deviation in the quad</p></li>
-<li><p><strong>vcorr_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>) – Vertical corrector used to make a deviation in the quad</p></li>
-<li><p><strong>quad_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>) – Quadrupole used to find the center</p></li>
-<li><p><strong>hcorr_delta</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><em>float</em></a>) – Horizontal corrector delta strength</p></li>
-<li><p><strong>vcorr_delta</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><em>float</em></a>) – Vertical corrector delta strength</p></li>
-<li><p><strong>hquad_delta</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><em>float</em></a>) – Quadrupole delta strength (for h search)</p></li>
-<li><p><strong>vquad_delta</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><em>float</em></a>) – Quadrupole delta strength (for v search)</p></li>
+<li><p><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>) – Name of the measurement tool.</p></li>
+<li><p><strong>bpm_array_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>) – Name of the BPM array used to measure the orbit.</p></li>
+<li><p><strong>bpm_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>) – Name of the BPM located near the quadrupole whose center is measured.</p></li>
+<li><p><strong>hcorr_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>) – Name of the horizontal corrector used to create horizontal orbit
+offsets at the quadrupole.</p></li>
+<li><p><strong>vcorr_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>) – Name of the vertical corrector used to create vertical orbit offsets
+at the quadrupole.</p></li>
+<li><p><strong>quad_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>) – Name of the quadrupole to align.</p></li>
+<li><p><strong>hcorr_delta</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><em>float</em></a>) – Change in horizontal corrector strength used for each horizontal
+orbit-offset step.</p></li>
+<li><p><strong>vcorr_delta</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><em>float</em></a>) – Change in vertical corrector strength used for each vertical
+orbit-offset step.</p></li>
+<li><p><strong>hquad_delta</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><em>float</em></a>) – Change in quadrupole strength used during the horizontal alignment
+measurement.</p></li>
+<li><p><strong>vquad_delta</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><em>float</em></a>) – Change in quadrupole strength used during the vertical alignment
+measurement.</p></li>
+<li><p><strong>n_step</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><em>int</em></a><em>, </em><em>default=1</em>) – Number of orbit-offset steps to perform in each plane.</p></li>
+<li><p><strong>sleep_between_step</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><em>float</em></a><em>, </em><em>default=0</em>) – Time in seconds to wait after changing an orbit offset.</p></li>
+<li><p><strong>n_avg_meas</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><em>int</em></a><em>, </em><em>default=1</em>) – Number of BPM measurements to average at each step.</p></li>
+<li><p><strong>sleep_between_meas</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><em>float</em></a><em>, </em><em>default=0</em>) – Time in seconds to wait between individual BPM measurements.</p></li>
 </ul>
 </dd>
-</dl>
-<p>Create a new model by parsing and validating input data from keyword arguments.</p>
-<p>Raises [<cite>ValidationError</cite>][pydantic_core.ValidationError] if the input data cannot be
-validated to form a valid model.</p>
-<p><cite>self</cite> is explicitly positional-only to allow <cite>self</cite> as a field name.</p>
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pyaml.tuning_tools.bba.ConfigModel.bpm_array_name">
-<span class="sig-name descname"><span class="pre">bpm_array_name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></em><a class="headerlink" href="#pyaml.tuning_tools.bba.ConfigModel.bpm_array_name" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pyaml.tuning_tools.bba.ConfigModel.bpm_name">
-<span class="sig-name descname"><span class="pre">bpm_name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></em><a class="headerlink" href="#pyaml.tuning_tools.bba.ConfigModel.bpm_name" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pyaml.tuning_tools.bba.ConfigModel.hcorr_delta">
-<span class="sig-name descname"><span class="pre">hcorr_delta</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><span class="pre">float</span></a></em><a class="headerlink" href="#pyaml.tuning_tools.bba.ConfigModel.hcorr_delta" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pyaml.tuning_tools.bba.ConfigModel.hcorr_name">
-<span class="sig-name descname"><span class="pre">hcorr_name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></em><a class="headerlink" href="#pyaml.tuning_tools.bba.ConfigModel.hcorr_name" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pyaml.tuning_tools.bba.ConfigModel.hquad_delta">
-<span class="sig-name descname"><span class="pre">hquad_delta</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><span class="pre">float</span></a></em><a class="headerlink" href="#pyaml.tuning_tools.bba.ConfigModel.hquad_delta" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pyaml.tuning_tools.bba.ConfigModel.quad_name">
-<span class="sig-name descname"><span class="pre">quad_name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></em><a class="headerlink" href="#pyaml.tuning_tools.bba.ConfigModel.quad_name" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pyaml.tuning_tools.bba.ConfigModel.vcorr_delta">
-<span class="sig-name descname"><span class="pre">vcorr_delta</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><span class="pre">float</span></a></em><a class="headerlink" href="#pyaml.tuning_tools.bba.ConfigModel.vcorr_delta" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pyaml.tuning_tools.bba.ConfigModel.vcorr_name">
-<span class="sig-name descname"><span class="pre">vcorr_name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></em><a class="headerlink" href="#pyaml.tuning_tools.bba.ConfigModel.vcorr_name" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pyaml.tuning_tools.bba.ConfigModel.vquad_delta">
-<span class="sig-name descname"><span class="pre">vquad_delta</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><span class="pre">float</span></a></em><a class="headerlink" href="#pyaml.tuning_tools.bba.ConfigModel.vquad_delta" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
-
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="pyaml.tuning_tools.bba.BBA">
-<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">BBA</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cfg</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/tuning_tools/bba.html#BBA"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.tuning_tools.bba.BBA" title="Link to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference internal" href="pyaml.tuning_tools.measurement_tool.html#pyaml.tuning_tools.measurement_tool.MeasurementTool" title="pyaml.tuning_tools.measurement_tool.MeasurementTool"><code class="xref py py-class docutils literal notranslate"><span class="pre">MeasurementTool</span></code></a></p>
-<dl class="field-list simple">
 </dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="pyaml.tuning_tools.bba.BBA.h_offset">
@@ -745,18 +702,6 @@ If the callback returns false, then the process is aborted.</p></li>
   </div>
   <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="pst-show_toc_level nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.tuning_tools.bba.ConfigModel"><code class="docutils literal notranslate"><span class="pre">ConfigModel</span></code></a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.tuning_tools.bba.ConfigModel.bpm_array_name"><code class="docutils literal notranslate"><span class="pre">ConfigModel.bpm_array_name</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.tuning_tools.bba.ConfigModel.bpm_name"><code class="docutils literal notranslate"><span class="pre">ConfigModel.bpm_name</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.tuning_tools.bba.ConfigModel.hcorr_delta"><code class="docutils literal notranslate"><span class="pre">ConfigModel.hcorr_delta</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.tuning_tools.bba.ConfigModel.hcorr_name"><code class="docutils literal notranslate"><span class="pre">ConfigModel.hcorr_name</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.tuning_tools.bba.ConfigModel.hquad_delta"><code class="docutils literal notranslate"><span class="pre">ConfigModel.hquad_delta</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.tuning_tools.bba.ConfigModel.quad_name"><code class="docutils literal notranslate"><span class="pre">ConfigModel.quad_name</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.tuning_tools.bba.ConfigModel.vcorr_delta"><code class="docutils literal notranslate"><span class="pre">ConfigModel.vcorr_delta</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.tuning_tools.bba.ConfigModel.vcorr_name"><code class="docutils literal notranslate"><span class="pre">ConfigModel.vcorr_name</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.tuning_tools.bba.ConfigModel.vquad_delta"><code class="docutils literal notranslate"><span class="pre">ConfigModel.vquad_delta</span></code></a></li>
-</ul>
-</li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.tuning_tools.bba.BBA"><code class="docutils literal notranslate"><span class="pre">BBA</span></code></a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.tuning_tools.bba.BBA.h_offset"><code class="docutils literal notranslate"><span class="pre">BBA.h_offset()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.tuning_tools.bba.BBA.h_offset_error"><code class="docutils literal notranslate"><span class="pre">BBA.h_offset_error()</span></code></a></li>
