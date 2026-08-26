@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>attribute_linker &#8212; Python Accelerator Middle Layer 0.1.dev1+gcb3dc7a0e documentation</title>
+    <title>attribute_linker &#8212; Python Accelerator Middle Layer 0.1.dev1+g45f7c8743 documentation</title>
   
   
   
@@ -27,8 +27,8 @@
   </noscript>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="../_static/styles/theme.css?digest=90905a2f556bf617f1a9" rel="stylesheet" />
-<link href="../_static/styles/pydata-sphinx-theme.css?digest=90905a2f556bf617f1a9" rel="stylesheet" />
+  <link href="../_static/styles/theme.css?digest=cb8930eaaf36d9849b67" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=cb8930eaaf36d9849b67" rel="stylesheet" />
 
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=8f2a1f02" />
     <link rel="stylesheet" type="text/css" href="../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css" />
@@ -37,12 +37,12 @@
     <link rel="stylesheet" type="text/css" href="../_static/css/custom.css" />
   
   <!-- So that users can add custom icons -->
-  <script defer src="../_static/scripts/fontawesome.js?digest=90905a2f556bf617f1a9"></script>
+  <script defer src="../_static/scripts/fontawesome.js?digest=cb8930eaaf36d9849b67"></script>
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=90905a2f556bf617f1a9" />
-<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=90905a2f556bf617f1a9" />
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=cb8930eaaf36d9849b67" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=cb8930eaaf36d9849b67" />
 
-    <script src="../_static/documentation_options.js?v=ec11c2e7"></script>
+    <script src="../_static/documentation_options.js?v=d8788e72"></script>
     <script src="../_static/doctools.js?v=9bcbadda"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -128,8 +128,8 @@
       
     
     
-    <img src="../_static/logo.png" class="logo__image only-light" alt="Python Accelerator Middle Layer 0.1.dev1+gcb3dc7a0e documentation - Home"/>
-    <img src="../_static/dark.png" class="logo__image only-dark pst-js-only" alt="Python Accelerator Middle Layer 0.1.dev1+gcb3dc7a0e documentation - Home"/>
+    <img src="../_static/logo.png" class="logo__image only-light" alt="Python Accelerator Middle Layer 0.1.dev1+g45f7c8743 documentation - Home"/>
+    <img src="../_static/dark.png" class="logo__image only-dark pst-js-only" alt="Python Accelerator Middle Layer 0.1.dev1+g45f7c8743 documentation - Home"/>
   
   
 </a></div>
@@ -541,51 +541,32 @@
   <section id="module-pyaml.lattice.attribute_linker">
 <span id="attribute-linker"></span><h1>attribute_linker<a class="headerlink" href="#module-pyaml.lattice.attribute_linker" title="Link to this heading">#</a></h1>
 <dl class="py class">
-<dt class="sig sig-object py" id="pyaml.lattice.attribute_linker.ConfigModel">
-<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ConfigModel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">attribute_name</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/lattice/attribute_linker.html#ConfigModel"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.lattice.attribute_linker.ConfigModel" title="Link to this definition">#</a></dt>
+<dt class="sig sig-object py" id="pyaml.lattice.attribute_linker.PyAtAttributeConfigModel">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">PyAtAttributeConfigModel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">attribute_name</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/lattice/attribute_linker.html#PyAtAttributeConfigModel"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.lattice.attribute_linker.PyAtAttributeConfigModel" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference internal" href="pyaml.lattice.lattice_elements_linker.html#pyaml.lattice.lattice_elements_linker.LinkerConfigModel" title="pyaml.lattice.lattice_elements_linker.LinkerConfigModel"><code class="xref py py-class docutils literal notranslate"><span class="pre">LinkerConfigModel</span></code></a></p>
-<p>Base configuration model for linker definitions.</p>
-<p>This class defines the configuration structure used to instantiate
-a specific linking strategy. Each concrete implementation of a
-<cite>LatticeElementsLinker</cite> may define its own subclass extending this model
-to include additional configuration parameters.</p>
+<p>Configuration model for <code class="docutils literal notranslate"><span class="pre">PyAtAttributeElementsLinker</span></code>.</p>
 <dl class="field-list simple">
-</dl>
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pyaml.lattice.attribute_linker.ConfigModel.model_config">
-<span class="sig-name descname"><span class="pre">model_config</span></span><a class="headerlink" href="#pyaml.lattice.attribute_linker.ConfigModel.model_config" title="Link to this definition">#</a></dt>
-<dd><p>Pydantic configuration allowing arbitrary field types and forbidding
-unexpected extra keys.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>ConfigDict</p>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>attribute_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>) – Name of the PyAT element attribute used to identify matching
+lattice elements.</p>
 </dd>
 </dl>
-</dd></dl>
-
-<p>Create a new model by parsing and validating input data from keyword arguments.</p>
-<p>Raises [<cite>ValidationError</cite>][pydantic_core.ValidationError] if the input data cannot be
-validated to form a valid model.</p>
-<p><cite>self</cite> is explicitly positional-only to allow <cite>self</cite> as a field name.</p>
 <dl class="py attribute">
-<dt class="sig sig-object py" id="pyaml.lattice.attribute_linker.ConfigModel.attribute_name">
-<span class="sig-name descname"><span class="pre">attribute_name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></em><a class="headerlink" href="#pyaml.lattice.attribute_linker.ConfigModel.attribute_name" title="Link to this definition">#</a></dt>
+<dt class="sig sig-object py" id="pyaml.lattice.attribute_linker.PyAtAttributeConfigModel.attribute_name">
+<span class="sig-name descname"><span class="pre">attribute_name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></em><a class="headerlink" href="#pyaml.lattice.attribute_linker.PyAtAttributeConfigModel.attribute_name" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="pyaml.lattice.attribute_linker.PyAtAttributeElementsLinker">
-<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">PyAtAttributeElementsLinker</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config_model</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/lattice/attribute_linker.html#PyAtAttributeElementsLinker"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.lattice.attribute_linker.PyAtAttributeElementsLinker" title="Link to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference internal" href="pyaml.lattice.lattice_elements_linker.html#pyaml.lattice.lattice_elements_linker.LatticeElementsLinker" title="pyaml.lattice.lattice_elements_linker.LatticeElementsLinker"><code class="xref py py-class docutils literal notranslate"><span class="pre">LatticeElementsLinker</span></code></a></p>
-<p>Abstract base class defining the interface for PyAT–PyAML element linking.</p>
-<p>Implementations of this class define how PyAML elements are matched
-to PyAT elements based on a given linking strategy (e.g., by family name,
-by index, or by a custom attribute).</p>
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">PyAtAttributeElementsLinker</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/lattice/attribute_linker.html#PyAtAttributeElementsLinker"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.lattice.attribute_linker.PyAtAttributeElementsLinker" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="pyaml.lattice.lattice_elements_linker.html#pyaml.lattice.lattice_elements_linker.LatticeElementsLinker" title="pyaml.lattice.lattice_elements_linker.LatticeElementsLinker"><code class="xref py py-class docutils literal notranslate"><span class="pre">LatticeElementsLinker</span></code></a>, <a class="reference internal" href="pyaml.validation.validation_models.html#pyaml.validation.validation_models.DynamicValidation" title="pyaml.validation.validation_models.DynamicValidation"><code class="xref py py-class docutils literal notranslate"><span class="pre">DynamicValidation</span></code></a></p>
+<p>Link lattice elements using a specified PyAT element attribute.</p>
+<p>This linker associates PyAML elements with PyAT elements by comparing
+the value of a configurable PyAT attribute against the identifier
+extracted from the PyAML element.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>config_model</strong> (<a class="reference internal" href="#pyaml.lattice.attribute_linker.ConfigModel" title="pyaml.lattice.attribute_linker.ConfigModel"><em>ConfigModel</em></a>) – The configuration model for the linking strategy.</p>
-</dd>
 </dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="pyaml.lattice.attribute_linker.PyAtAttributeElementsLinker.get_element_identifier">
@@ -607,13 +588,14 @@ by index, or by a custom attribute).</p>
 <dt class="sig sig-object py" id="pyaml.lattice.attribute_linker.PyAtAttributeIdentifier">
 <em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">PyAtAttributeIdentifier</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">attribute_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">identifier</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaml/lattice/attribute_linker.html#PyAtAttributeIdentifier"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaml.lattice.attribute_linker.PyAtAttributeIdentifier" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference internal" href="pyaml.lattice.lattice_elements_linker.html#pyaml.lattice.lattice_elements_linker.LinkerIdentifier" title="pyaml.lattice.lattice_elements_linker.LinkerIdentifier"><code class="xref py py-class docutils literal notranslate"><span class="pre">LinkerIdentifier</span></code></a></p>
-<p>Abstract base class for identifiers used to match PyAML and PyAT elements.</p>
-<p>The identifier acts as an intermediate representation between the PyAML
-configuration and the PyAT lattice. Its exact structure depends on the
-linking strategy (e.g., family name, element index, or user-defined tag).</p>
-<p>Subclasses should define the fields and logic necessary to represent
-a unique reference to one or more PyAT elements.</p>
+<p>Identifier based on a PyAT element attribute.</p>
 <dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>attribute_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>) – Name of the PyAT attribute used for matching.</p></li>
+<li><p><strong>identifier</strong> – Expected value of the attribute.</p></li>
+</ul>
+</dd>
 </dl>
 </dd></dl>
 
@@ -666,9 +648,8 @@ a unique reference to one or more PyAT elements.</p>
   </div>
   <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="pst-show_toc_level nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.lattice.attribute_linker.ConfigModel"><code class="docutils literal notranslate"><span class="pre">ConfigModel</span></code></a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.lattice.attribute_linker.ConfigModel.model_config"><code class="docutils literal notranslate"><span class="pre">ConfigModel.model_config</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.lattice.attribute_linker.ConfigModel.attribute_name"><code class="docutils literal notranslate"><span class="pre">ConfigModel.attribute_name</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.lattice.attribute_linker.PyAtAttributeConfigModel"><code class="docutils literal notranslate"><span class="pre">PyAtAttributeConfigModel</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.lattice.attribute_linker.PyAtAttributeConfigModel.attribute_name"><code class="docutils literal notranslate"><span class="pre">PyAtAttributeConfigModel.attribute_name</span></code></a></li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pyaml.lattice.attribute_linker.PyAtAttributeElementsLinker"><code class="docutils literal notranslate"><span class="pre">PyAtAttributeElementsLinker</span></code></a><ul class="nav section-nav flex-column">
@@ -692,8 +673,8 @@ a unique reference to one or more PyAT elements.</p>
   </div>
   
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script defer src="../_static/scripts/bootstrap.js?digest=90905a2f556bf617f1a9"></script>
-<script defer src="../_static/scripts/pydata-sphinx-theme.js?digest=90905a2f556bf617f1a9"></script>
+  <script defer src="../_static/scripts/bootstrap.js?digest=cb8930eaaf36d9849b67"></script>
+<script defer src="../_static/scripts/pydata-sphinx-theme.js?digest=cb8930eaaf36d9849b67"></script>
 
   <footer class="bd-footer">
 <div class="bd-footer__inner bd-page-width">
@@ -727,7 +708,7 @@ a unique reference to one or more PyAT elements.</p>
         <div class="footer-item">
 <p class="theme-version">
   <!-- # L10n: Setting the PST URL as an argument as this does not need to be localized -->
-  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.20.0.
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.21.0.
 </p></div>
       
     </div>
