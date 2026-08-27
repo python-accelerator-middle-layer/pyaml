@@ -151,6 +151,9 @@ class BPM(Element, DynamicValidation):
         obj._peer = peer
         return obj
 
+    def fill_device(self, holder) -> None:
+        holder.fill_bpm(self)
+
     def get_pos_devices(self) -> list[str | None]:
         """
         Get device handles used for position reading
