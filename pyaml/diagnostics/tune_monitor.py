@@ -53,6 +53,9 @@ class BetatronTuneMonitor(Element, DynamicValidation, ABetatronTuneMonitor):
     def set_harmonic(self, h: int):
         self._h = float(h)
 
+    def fill_device(self, holder) -> None:
+        holder.fill_betatron_tune_monitor(self)
+
     @property
     def tune_h(self) -> str | None:
         return self._tune_h

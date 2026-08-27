@@ -57,6 +57,9 @@ class RFPlant(Element, DynamicValidation):
         obj._peer = peer
         return obj
 
+    def fill_device(self, holder) -> None:
+        holder.fill_rf_plant(self)
+
 
 class RWTotalVoltage(abstract.ReadWriteFloatScalar):
     def __init__(self, transmitters: list[RFTransmitter]):
