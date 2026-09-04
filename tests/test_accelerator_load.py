@@ -17,6 +17,13 @@ def test_peer():
     assert isinstance(tm.peer, ElementHolder)
 
 
+def test_repr_does_not_recurse_through_peer():
+    sr = Accelerator.load("tests/config/tune_monitor.yaml")
+    tm = sr.design.get_betatron_tune_monitor("BETATRON_TUNE")
+
+    assert "peer='Simulator:design'" in repr(tm)
+
+
 def test_accelerator_load_rejects_non_accelerator_root(tmp_path):
     config_file = tmp_path / "quadrupole.yaml"
     config_file.write_text("type: pyaml.magnet.quadrupole\nname: QF1A-C01\n", encoding="utf-8")
