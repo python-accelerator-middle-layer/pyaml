@@ -1,5 +1,4 @@
 import numpy as np
-from pydantic import BaseModel, ConfigDict
 from scipy.interpolate import make_smoothing_spline
 
 from ..common.element import __pyaml_repr__

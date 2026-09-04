@@ -7,11 +7,7 @@ import re
 from abc import ABCMeta, abstractmethod
 from typing import TYPE_CHECKING
 
-from ...arrays.bpm_array import BPMArray
-from ...arrays.cfm_magnet_array import CombinedFunctionMagnetArray
 from ...arrays.element_array import ElementArray
-from ...arrays.magnet_array import MagnetArray
-from ...arrays.serialized_magnet_array import SerializedMagnetsArray
 from ...bpm.bpm import BPM
 from ...diagnostics.tune_monitor import BetatronTuneMonitor
 from ...magnet.cfm_magnet import CombinedFunctionMagnet

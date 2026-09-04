@@ -4,7 +4,6 @@ from time import sleep
 from typing import Callable, Optional
 
 import numpy as np
-from pydantic import ConfigDict
 
 from ..common.constants import Action
 from ..validation import DynamicValidation, register_schema

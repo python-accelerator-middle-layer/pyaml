@@ -6,7 +6,7 @@ from copy import deepcopy
 from pathlib import Path
 from typing import Any
 
-from pydantic.json_schema import GenerateJsonSchema, JsonSchemaValue
+from pydantic.json_schema import GenerateJsonSchema
 from pydantic_core import core_schema
 
 from .configuration_models import ConfigurationSchema
