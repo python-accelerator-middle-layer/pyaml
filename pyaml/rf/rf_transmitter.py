@@ -1,3 +1,9 @@
+"""RF-transmitter configuration and read/write interfaces.
+
+This module models RF transmitters, their cavity assignments, harmonic and
+voltage distribution, and the voltage and phase handles bound on attachment.
+"""
+
 import copy
 from typing import Self
 
@@ -13,7 +19,10 @@ PYAMLCLASS = "RFTransmitter"
 @register_schema
 class RFTransmitter(Element, DynamicValidation):
     """
-    Class that handle a RF transmitter
+    Represent an RF transmitter and its cavity controls.
+
+    A transmitter may expose read/write voltage and phase handles after it is
+    attached to a simulator or control-system element holder.
     """
 
     def __init__(
@@ -27,6 +36,28 @@ class RFTransmitter(Element, DynamicValidation):
         lattice_names: str | None = None,
         description: str | None = None,
     ):
+        """
+        Initialize an RF-transmitter configuration.
+
+        Parameters
+        ----------
+        name : str
+            Name of the transmitter.
+        cavities : list[str]
+            Names of cavities driven by the transmitter.
+        voltage : str | None
+            Name of the voltage device, if configured.
+        phase : str | None
+            Name of the phase device, if configured.
+        harmonic : float
+            Harmonic number associated with the transmitter.
+        distribution : float
+            Fraction of aggregate voltage assigned to this transmitter.
+        lattice_names : str | None
+            Optional lattice-element mapping.
+        description : str | None
+            Optional human-readable description.
+        """
         super().__init__(name, lattice_names, description)
         self.voltage_name = voltage
         self.phase_name = phase
@@ -40,17 +71,17 @@ class RFTransmitter(Element, DynamicValidation):
     @property
     def voltage(self) -> abstract.ReadWriteFloatScalar:
         """
-        Get the RF voltage in [V].
+        Return the read/write RF-voltage handle in volts.
 
         Returns
         -------
         abstract.ReadWriteFloatScalar
-            Read/write access to RF voltage
+            Read/write access to the transmitter voltage.
 
         Raises
         ------
         PyAMLException
-            If transmitter is unattached or has no voltage device defined
+            If the transmitter is unattached or has no voltage device.
         """
         if self.__voltage is None:
             raise PyAMLException(f"{str(self.name)} is unattached or has no voltage device defined")
@@ -59,17 +90,17 @@ class RFTransmitter(Element, DynamicValidation):
     @property
     def phase(self) -> abstract.ReadWriteFloatScalar:
         """
-        Get the RF phase in [rad].
+        Return the read/write RF-phase handle in radians.
 
         Returns
         -------
         abstract.ReadWriteFloatScalar
-            Read/write access to RF phase
+            Read/write access to the transmitter phase.
 
         Raises
         ------
         PyAMLException
-            If transmitter is unattached or has no phase device defined
+            If the transmitter is unattached or has no phase device.
         """
         if self.__phase is None:
             raise PyAMLException(f"{str(self.name)} is unattached or has no phase device defined")
@@ -82,21 +113,21 @@ class RFTransmitter(Element, DynamicValidation):
         phase: abstract.ReadWriteFloatScalar,
     ) -> Self:
         """
-        Attach voltage and phase attributes to a peer.
+        Return a copy with voltage and phase handles attached.
 
         Parameters
         ----------
         peer : object
-            The peer object (simulator or control system)
+            Simulator or control-system element holder.
         voltage : abstract.ReadWriteFloatScalar
-            Voltage accessor to attach
+            Read/write voltage accessor.
         phase : abstract.ReadWriteFloatScalar
-            Phase accessor to attach
+            Read/write phase accessor.
 
         Returns
         -------
         Self
-            A new attached instance of RFTransmitter
+            Attached copy of the transmitter.
         """
         # Attach voltage and phase attribute and returns a new reference
         obj = copy.copy(self)
@@ -106,4 +137,7 @@ class RFTransmitter(Element, DynamicValidation):
         return obj
 
     def __repr__(self):
+        """
+        Implement the ``__repr__`` string.
+        """
         return __pyaml_repr__(self, exclude=["voltage", "phase"])
