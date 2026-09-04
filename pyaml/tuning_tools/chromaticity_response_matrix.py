@@ -1,3 +1,10 @@
+"""Chromaticity response-matrix measurement tools.
+
+The :class:`ChromaticityResponseMatrix` measures how sextupole-strength
+changes affect horizontal and vertical chromaticity and stores the fitted
+slopes as a response matrix.
+"""
+
 import logging
 import time
 from dataclasses import asdict
@@ -160,6 +167,12 @@ class ChromaticityResponseMatrix(MeasurementTool, DynamicValidation):
               strength:float # Magnet strength
               chroma:np.array # The measured chroma (on Action.MEASURE)
               dchroma:np.array # The chroma variation (on Action.RESTORE)
+
+        Returns
+        -------
+        bool
+            ``True`` when the response matrix is measured successfully;
+            ``False`` when the measurement is aborted by the callback.
 
         """
         # Get devices

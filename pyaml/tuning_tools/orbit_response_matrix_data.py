@@ -1,3 +1,9 @@
+"""Data model for measured orbit response matrices.
+
+The data model stores the response matrix together with actuator and BPM names,
+plane information, and optional RF response data.
+"""
+
 from dataclasses import dataclass
 from typing import Optional
 

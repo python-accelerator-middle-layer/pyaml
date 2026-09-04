@@ -1,3 +1,10 @@
+"""Beam-based alignment measurement tools.
+
+The :class:`BBA` tool determines the magnetic center of a quadrupole by
+combining controlled quadrupole-strength changes with orbit measurements from
+nearby beam-position monitors.
+"""
+
 import logging
 from typing import Callable, Optional
 
@@ -84,6 +91,40 @@ class BBA(MeasurementTool, DynamicValidation):
         n_avg_meas: int = 1,
         sleep_between_meas: float = 0,
     ):
+        """
+        Initialize the BBA.
+
+        Parameters
+        ----------
+        name : str
+            Input value for this operation.
+        bpm_array_name : str
+            Input value for this operation.
+        bpm_name : str
+            Input value for this operation.
+        hcorr_name : str
+            Input value for this operation.
+        vcorr_name : str
+            Input value for this operation.
+        quad_name : str
+            Input value for this operation.
+        hcorr_delta : float
+            Input value for this operation.
+        vcorr_delta : float
+            Input value for this operation.
+        hquad_delta : float
+            Input value for this operation.
+        vquad_delta : float
+            Input value for this operation.
+        n_step : int
+            Input value for this operation.
+        sleep_between_step : float
+            Input value for this operation.
+        n_avg_meas : int
+            Input value for this operation.
+        sleep_between_meas : float
+            Input value for this operation.
+        """
         super().__init__(name)
         self.bpm_array_name = bpm_array_name
         self.bpm_name = bpm_name
@@ -252,15 +293,19 @@ class BBA(MeasurementTool, DynamicValidation):
         return True
 
     def h_offset(self) -> float:
+        """Return the measured horizontal magnetic-center offset."""
         return self.latest_measurement["HData"].offset if self.latest_measurement["HData"] is not None else np.nan
 
     def h_offset_error(self) -> float:
+        """Return the uncertainty of the horizontal center offset."""
         return self.latest_measurement["HData"].offset_error if self.latest_measurement["HData"] is not None else np.nan
 
     def v_offset(self) -> float:
+        """Return the measured vertical magnetic-center offset."""
         return self.latest_measurement["VData"].offset if self.latest_measurement["VData"] is not None else np.nan
 
     def v_offset_error(self) -> float:
+        """Return the uncertainty of the vertical center offset."""
         return self.latest_measurement["VData"].offset_error if self.latest_measurement["VData"] is not None else np.nan
 
     def plot_data(self, plane: str):

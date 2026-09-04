@@ -1,3 +1,10 @@
+"""Betatron-tune response-matrix measurement tools.
+
+The :class:`TuneResponseMatrix` measures the sensitivity of horizontal and
+vertical betatron tune to quadrupole-strength changes and stores the fitted
+responses in a serializable response-matrix data model.
+"""
+
 import logging
 from dataclasses import asdict
 from time import sleep
@@ -96,6 +103,28 @@ class TuneResponseMatrix(MeasurementTool, DynamicValidation):
         n_avg_meas: Optional[int] = 1,
         sleep_between_meas: Optional[float] = 0,
     ):
+        """
+        Initialize a betatron-tune response-matrix measurement tool.
+
+        Parameters
+        ----------
+        name : str
+            Name of the measurement tool.
+        quad_array_name : str
+            Name of the quadrupole array used for the measurement.
+        betatron_tune_name : str
+            Name of the betatron-tune monitor used for readback.
+        quad_delta : float
+            Maximum positive and negative quadrupole-strength change.
+        n_step : Optional[int]
+            Number of quadrupole-strength settings used for each scan.
+        sleep_between_step : Optional[float]
+            Delay in seconds after changing a quadrupole strength.
+        n_avg_meas : Optional[int]
+            Number of tune measurements averaged at each setting.
+        sleep_between_meas : Optional[float]
+            Delay in seconds between measurements used for averaging.
+        """
         super().__init__(name)
         self.quad_array_name = quad_array_name
         self.betatron_tune_name = betatron_tune_name

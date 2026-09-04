@@ -1,3 +1,9 @@
+"""Beam-based alignment analysis tools.
+
+This module contains data structures and analysis helpers for estimating
+quadrupole magnetic-center offsets from beam-position-monitor responses.
+"""
+
 import logging
 import time
 from typing import Callable, Optional
@@ -16,7 +22,18 @@ PYAMLCLASS = "BBA2"
 
 
 class BBAData:
+    """
+    Store intermediate data from one beam-based alignment plane.
+
+    The container keeps fitted kicks, steerer steps, BPM responses, and the
+    latest magnetic-center estimate for either the horizontal or vertical
+    measurement.
+    """
+
     def __init__(self):
+        """
+        Initialize the BBAData.
+        """
         self.k = []  # Fitted kick
         self.bpm_pos = []  # BPM#i position
         self.allbpm_pos = []  # IOS (Induced Orbit Shift)
@@ -29,6 +46,20 @@ class BBAData:
 
     def append(self, st, dk, bpm, allbpm):
         # Append new dataset
+        """
+        Append one steerer-step measurement to the alignment data.
+
+        Parameters
+        ----------
+        st : object
+            Steerer kick applied for the measurement.
+        dk : object
+            Fitted kick response.
+        bpm : object
+            Orbit position at the reference BPM.
+        allbpm : object
+            Induced orbit shift measured at all BPMs.
+        """
         self.steps.append(st)
         self.k.append(dk)
         self.bpm_pos.append(bpm)
@@ -36,6 +67,18 @@ class BBAData:
 
     def update_offset(self, x, error, fit):
         # Update offset value
+        """
+        Store the fitted magnetic-center offset and its uncertainty.
+
+        Parameters
+        ----------
+        x : object
+            Estimated magnetic-center offset.
+        error : object
+            Estimated standard error of the offset.
+        fit : object
+            Coefficients of the final linear fit.
+        """
         self.offset = x
         self.error = error
         self.lastfit = fit
@@ -114,6 +157,44 @@ class BBA2(MeasurementTool, DynamicValidation):
         n_avg_meas: int = 1,
         sleep_between_meas: float = 0,
     ):
+        """
+        Initialize a beam-based alignment tool with tune compensation.
+
+        Parameters
+        ----------
+        name : str
+            Name of the alignment tool.
+        bpm_array_name : str
+            Name of the BPM array used for orbit readback.
+        bpm_name : str
+            Name of the BPM used as the alignment reference.
+        hcorr_name : str
+            Name of the horizontal corrector.
+        vcorr_name : str
+            Name of the vertical corrector.
+        quad_name : str
+            Name of the quadrupole being aligned.
+        tune_correction_name : str
+            Name of the tune-correction tool used during the scan.
+        hcorr_delta : float
+            Horizontal corrector-strength step.
+        vcorr_delta : float
+            Vertical corrector-strength step.
+        quad_delta : float
+            Quadrupole-strength step.
+        bipolar_delta : bool
+            Whether to measure positive and negative quadrupole steps.
+        minicycle_sleep_time : float
+            Delay in seconds for the quadrupole minicycle.
+        n_step : int
+            Number of orbit-offset steps per plane.
+        sleep_between_step : float
+            Delay in seconds between orbit-offset steps.
+        n_avg_meas : int
+            Number of BPM measurements averaged at each step.
+        sleep_between_meas : float
+            Delay in seconds between averaged BPM measurements.
+        """
         super().__init__(name)
         self.bpm_array_name = bpm_array_name
         self.bpm_name = bpm_name
@@ -135,6 +216,33 @@ class BBA2(MeasurementTool, DynamicValidation):
     def _x_intercept(x, k, n):
         # Linear fit on last n points
         # x is not necessary ordered
+        """
+        Estimate the zero crossing of a linear fit.
+
+        A first-degree polynomial is fitted to the final ``n`` samples of
+        ``(x, k)``. The zero crossing of that fit and, when enough samples are
+        available, its propagated standard error are returned.
+
+        Parameters
+        ----------
+        x : array_like
+            Independent-variable samples used for the fit.
+        k : array_like
+            Dependent-variable samples to fit as a function of ``x``.
+        n : int
+            Number of trailing samples to include in the fit.
+
+        Returns
+        -------
+        intercept : float
+            Estimated value of ``x`` for which the fitted ``k`` is zero.
+        coefficients : numpy.ndarray
+            Polynomial coefficients in increasing order, ``[intercept,
+            slope]`` for the fitted ``k`` values.
+        error : float
+            Propagated standard error of ``intercept``. This is zero when
+            fewer than three samples are used.
+        """
         xx = np.polynomial.polynomial.polyfit(x[-n:], k[-n:], 1)
         err = 0
         if n > 2:
@@ -158,6 +266,29 @@ class BBA2(MeasurementTool, DynamicValidation):
         #   normalized response of vertical steerer from the model at bpm #i
 
         # Retrieve model handle
+        """
+        Calculate normalized model responses for the alignment scan.
+
+        The responses describe the effect of a dipole kick at the quadrupole
+        and the horizontal and vertical steerers at the reference BPM.
+
+        Parameters
+        ----------
+        tunename : str
+            Name of the tune-correction tool.
+        bpmname : str
+            Name of the BPM array.
+        quadname : str
+            Name of the quadrupole.
+        steererhname : str
+            Name of the horizontal steerer.
+        steerervname : str
+            Name of the vertical steerer.
+        bpmi : int
+            Index of the reference BPM.
+        dk0 : object
+            Small calibration kick used to calculate model responses.
+        """
         design = self.peer.peer.design
 
         # handles
@@ -237,6 +368,28 @@ class BBA2(MeasurementTool, DynamicValidation):
     def _fit_kick(self, meas, ref, mask):
         # Correlate measured ios and theoretical one
 
+        """
+        Fit a scale factor between measured and reference orbit shifts.
+
+        The fit is performed through the origin using the selected samples.
+        This estimates the kick amplitude that best matches ``ref`` to
+        ``meas`` in a least-squares sense.
+
+        Parameters
+        ----------
+        meas : array_like
+            Measured induced orbit shifts.
+        ref : array_like
+            Reference or theoretical orbit shifts.
+        mask : array_like
+            Boolean mask selecting samples included in the fit.
+
+        Returns
+        -------
+        float
+            Fitted scale factor. Returns ``0`` when the selected reference
+            shifts contain no signal.
+        """
         xy = np.multiply(meas[mask], ref[mask])
         xx = np.multiply(ref[mask], ref[mask])
         if sum(xx) == 0:
@@ -247,6 +400,7 @@ class BBA2(MeasurementTool, DynamicValidation):
     def _get_averaged_orbit(self):
         # Get averaged orbit
 
+        """Return the orbit averaged over the configured measurements."""
         avgorb = np.zeros((len(self._bpms), 2))
         for avg in range(self._nb_meas):
             o = self._bpms.positions.get()
@@ -260,6 +414,35 @@ class BBA2(MeasurementTool, DynamicValidation):
     def _one_step_dk(self, dk0: list[float], dk1: float, bipolar_delta: bool):
         # Measrue IOS
 
+        """
+        Measure the induced orbit shift for one quadrupole-strength step.
+
+        The configured steerers and quadrupole are changed temporarily. The
+        orbit is measured before and after the quadrupole step, then the
+        quadrupole is restored to its initial strength. For bipolar steps, the
+        response is calculated from both positive and negative perturbations.
+
+        Parameters
+        ----------
+        dk0 : list[float]
+            Horizontal and vertical steerer kicks to apply.
+        dk1 : float
+            Quadrupole-strength step.
+        bipolar_delta : bool
+            If ``True``, measure both positive and negative quadrupole steps.
+
+        Returns
+        -------
+        tuple
+            ``(x, dkx, y, dky, ios_x, ios_y)`` containing the orbit at the
+            reference BPM, fitted horizontal and vertical kick factors, and
+            the horizontal and vertical induced orbit shifts.
+
+        Raises
+        ------
+        PyAMLException
+            If either requested steerer kick exceeds 200 microradians.
+        """
         if any(abs(dk) > 200e-6 for dk in dk0):
             raise PyAMLException("Requested dk too high (>200urad), consider using bump")
 
@@ -529,18 +712,32 @@ class BBA2(MeasurementTool, DynamicValidation):
         return True
 
     def h_offset(self) -> float:
+        """Return the measured horizontal magnetic-center offset."""
         return self.latest_measurement["HData"].offset if self.latest_measurement["HData"] is not None else np.nan
 
     def h_offset_error(self) -> float:
+        """Return the uncertainty of the horizontal center offset."""
         return self.latest_measurement["HData"].error if self.latest_measurement["HData"] is not None else np.nan
 
     def v_offset(self) -> float:
+        """Return the measured vertical magnetic-center offset."""
         return self.latest_measurement["VData"].offset if self.latest_measurement["VData"] is not None else np.nan
 
     def v_offset_error(self) -> float:
+        """Return the uncertainty of the vertical center offset."""
         return self.latest_measurement["VData"].error if self.latest_measurement["VData"] is not None else np.nan
 
     def plot_plane_data(self, ax, plane: str):
+        """
+        Plot measured kicks and the fitted alignment response for one plane.
+
+        Parameters
+        ----------
+        ax : object
+            Matplotlib axes on which to draw the data.
+        plane : str
+            Plane data key, typically ``"HData"`` or ``"VData"``.
+        """
         yp = self.latest_measurement[plane].k
         xp = self.latest_measurement[plane].steps
 

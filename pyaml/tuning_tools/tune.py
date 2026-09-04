@@ -1,3 +1,10 @@
+"""Betatron-tune measurement and correction tools.
+
+The :class:`Tune` tool reads horizontal and vertical betatron tune, computes
+quadrupole-strength corrections from a response matrix, and applies those
+corrections to the configured quadrupole array.
+"""
+
 import logging
 from pathlib import Path
 from time import sleep
@@ -66,6 +73,20 @@ class Tune(TuningTool, DynamicValidation):
         betatron_tune_name: str,
         response_matrix: str | ResponseMatrixData,
     ):
+        """
+        Initialize a betatron-tune correction tool.
+
+        Parameters
+        ----------
+        name : str
+            Name of the tuning tool.
+        quad_array_name : str
+            Name of the quadrupole array used for correction.
+        betatron_tune_name : str
+            Name of the betatron-tune monitor used for readback.
+        response_matrix : str | ResponseMatrixData
+            Tune response matrix or path to a serialized response matrix.
+        """
         super().__init__(name)
 
         self.quad_array_name = quad_array_name
@@ -91,12 +112,12 @@ class Tune(TuningTool, DynamicValidation):
 
     def load(self, load_path: Path):
         """
-        Dynamically loads a response matrix.
+        Load a tune response matrix and prepare its pseudoinverse.
 
         Parameters
         ----------
         load_path : Path
-            Filename of the :class:`~.ResponseMatrixData` to load
+            Path to the serialized :class:`~.ResponseMatrixData` file.
 
         """
         self._response_matrix = ResponseMatrixData.load(load_path)
@@ -105,46 +126,42 @@ class Tune(TuningTool, DynamicValidation):
 
     @property
     def response_matrix(self) -> ResponseMatrixData | None:
-        """
-        Return the response matrix if it has been loaded None otherwise
-        """
+        """Return the loaded tune response matrix, if available."""
         return self._response_matrix
 
     @property
     def _tm(self) -> "BetatronTuneMonitor":
+        """Return the betatron tune monitor."""
         self.check_peer()
         return self.peer.get_betatron_tune_monitor(self.betatron_tune_name)
 
     @property
     def _quads(self) -> "MagnetArray":
+        """Return the quadrupole array."""
         self.check_peer()
         return self.peer.magnets.get(self.quad_array_name)
 
     def get(self):
-        """
-        Return the betatron tune setpoint
-        """
+        """Return the requested horizontal and vertical tune setpoint."""
         return self._setpoint
 
     def readback(self):
-        """
-        Return the betatron tune measurement
-        """
+        """Return the current horizontal and vertical betatron tune."""
         self.check_peer()
         return self._tm.tune.get()
 
     def set(self, tune: np.array, iter: int = 1, wait_time: float = 0.0):
         """
-        Sets the tune
+        Iteratively correct the betatron tune to a requested setpoint.
 
         Parameters
         ----------
         tune : np.array
-            Tune setpoint
-        iter_nb : int
-            Number of iteration
+            Target horizontal and vertical tune values.
+        iter : int
+            Number of correction iterations.
         wait_time : float
-            Time to wait in second between 2 iterations
+            Delay in seconds between correction iterations.
         """
         if np.shape(tune) != (2,):
             raise PyAMLException("Tune.add(): invalid input tune dimension, (2,) expected")
@@ -157,12 +174,23 @@ class Tune(TuningTool, DynamicValidation):
 
     def correct(self, dtune: np.array) -> np.array:
         """
-        Return delta strengths for tune correction
+        Calculate quadrupole-strength changes for a tune change.
 
         Parameters
         ----------
         dtune : np.array
-            Delta tune
+            Desired horizontal and vertical tune change.
+
+        Returns
+        -------
+        numpy.ndarray
+            Quadrupole-strength changes calculated from the response-matrix
+            pseudoinverse.
+
+        Raises
+        ------
+        PyAMLException
+            If no response matrix has been loaded.
         """
         if self._correctionmat is None:
             raise PyAMLException("Tune.correct(): no matrix loaded or measured")
@@ -170,14 +198,14 @@ class Tune(TuningTool, DynamicValidation):
 
     def add(self, dtune: np.array, wait_time: float = 0.0):
         """
-        Add delta tune to the tune
+        Apply a tune correction relative to the current setpoint.
 
         Parameters
         ----------
         dtune : np.array
-            Delta tune
-        iter_nb: int
-        wait_time: float
+            Horizontal and vertical tune change to apply.
+        wait_time : float
+            Delay in seconds after changing quadrupole strengths.
         """
         if np.shape(dtune) != (2,):
             raise PyAMLException("Tune.add(): invalid input dtune dimension, (2,) expected")

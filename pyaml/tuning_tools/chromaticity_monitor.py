@@ -1,3 +1,10 @@
+"""Chromaticity and dispersion measurement tools.
+
+The :class:`ChromaticityMonitor` acquires and exposes fitted chromaticity or
+dispersion data from sextupole-based measurements, including read access to
+the resulting values and their associated units.
+"""
+
 import logging
 from collections.abc import Callable
 from time import sleep
@@ -24,11 +31,24 @@ class RChromaDispArray(ReadFloatArray):
     """
 
     def __init__(self, parent: "ChromaticityMonitor", name: str, unit: str):
+        """
+        Initialize the RChromaDispArray.
+
+        Parameters
+        ----------
+        parent : 'ChromaticityMonitor'
+            Input value for this operation.
+        name : str
+            Input value for this operation.
+        unit : str
+            Input value for this operation.
+        """
         self._parent = parent
         self._name = name
         self._unit = unit
 
     def get(self) -> np.array:
+        """Execute get."""
         last = self._parent.latest_measurement
         if last is not None and self._name in last:
             return np.array(last[self._name])
@@ -36,6 +56,7 @@ class RChromaDispArray(ReadFloatArray):
             return None
 
     def unit(self) -> str:
+        """Execute unit."""
         return self.unit
 
 
@@ -137,6 +158,17 @@ class ChromaticityMonitor(MeasurementTool, DynamicValidation):
         return self._chromaticity
 
     def set_mcf(self, alphac: float):
+        """
+        Set the momentum-compaction factor for frequency-step measurements.
+
+        The factor is used to convert an RF-frequency variation into the
+        corresponding relative energy deviation when measuring chromaticity.
+
+        Parameters
+        ----------
+        alphac : float
+            Momentum-compaction factor, usually dimensionless.
+        """
         self._alphac = alphac
 
     @property
@@ -387,8 +419,17 @@ class ChromaticityMonitor(MeasurementTool, DynamicValidation):
             plt.show()
 
     def _after_attach(self):
+        """Recreate readback handles after attaching the monitor.
+
+        The handles are bound to the attached monitor instance and therefore
+        must be refreshed after the monitor is copied and attached to an
+        element holder.
+        """
         self._chromaticity = RChromaDispArray(self, "chromaticity", "1")
         self._dispersion = RChromaDispArray(self, "dispersion", "m")
 
     def __repr__(self):
+        """
+        Implement the ``__repr__`` string.
+        """
         return __pyaml_repr__(self, exclude=["chromaticity", "dispersion"])

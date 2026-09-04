@@ -1,3 +1,10 @@
+"""Orbit response-matrix measurement tools.
+
+This module measures BPM orbit changes caused by horizontal and vertical
+corrector perturbations and stores the fitted response in a structured data
+model.
+"""
+
 import logging
 from dataclasses import asdict
 from typing import Callable, List, Optional
@@ -87,6 +94,30 @@ class OrbitResponseMatrix(MeasurementTool, DynamicValidation):
         n_avg_meas: Optional[int] = 1,
         sleep_between_meas: Optional[float] = 0,
     ):
+        """
+        Initialize an orbit response-matrix measurement tool.
+
+        Parameters
+        ----------
+        name : str
+            Name of the measurement tool.
+        bpm_array_name : str
+            Name of the BPM array used for orbit readback.
+        hcorr_array_name : str
+            Name of the horizontal corrector array.
+        vcorr_array_name : str
+            Name of the vertical corrector array.
+        corrector_delta : float
+            Corrector-strength perturbation used for the scan.
+        n_step : Optional[int]
+            Number of strength steps used to fit each response slope.
+        sleep_between_step : Optional[float]
+            Delay in seconds after changing a corrector.
+        n_avg_meas : Optional[int]
+            Number of orbit measurements averaged at each step.
+        sleep_between_meas : Optional[float]
+            Delay in seconds between averaged orbit measurements.
+        """
         super().__init__(name)
 
         self.bpm_array_name = bpm_array_name
@@ -209,6 +240,26 @@ class OrbitResponseMatrix(MeasurementTool, DynamicValidation):
     def _pySC_response_data_to_ORMData(self, data: dict) -> OrbitResponseMatrixData:
         # all metadata is discarded here. Should we keep something?
 
+        """
+        Convert pySC response data to an orbit response-matrix model.
+
+        pySC uses ``input_names`` and ``output_names`` fields, whereas PyAML
+        stores actuator and observable names separately. This method performs
+        that conversion, infers the horizontal or vertical plane for each
+        actuator, and represents every BPM as one horizontal and one vertical
+        observable.
+
+        Parameters
+        ----------
+        data : dict
+            pySC response data containing ``matrix`` and ``input_names``.
+
+        Returns
+        -------
+        OrbitResponseMatrixData
+            PyAML response-matrix data with actuator names, BPM names, and
+            their associated planes.
+        """
         element_holder = self._peer
         all_hcorrector_names = element_holder.magnets.get(self.hcorr_array_name).names()
         all_vcorrector_names = element_holder.magnets.get(self.vcorr_array_name).names()

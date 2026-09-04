@@ -1,3 +1,11 @@
+"""Serializable response-matrix data models.
+
+The :class:`ResponseMatrixData` model stores a numerical response matrix and
+the names of the variables and observables represented by its columns and
+rows. It is used to persist and exchange measured or calculated accelerator
+response data.
+"""
+
 from dataclasses import dataclass
 from pathlib import Path
 
