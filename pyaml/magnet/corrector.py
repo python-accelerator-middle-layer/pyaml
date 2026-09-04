@@ -1,3 +1,8 @@
+"""Corrector magnet elements.
+
+This module defines horizontal and vertical orbit-corrector elements.
+"""
+
 import numpy as np
 
 from ..common import abstract
@@ -7,7 +12,7 @@ from .magnet import Magnet
 class RWCorrectorAngle(abstract.ReadWriteFloatScalar):
     """
     Set the angle of a horizontal or vertical corrector.
-    KickAngle sign convention is defined the a global PyAML constant
+    The kick-angle sign convention is defined by the global PyAML constant
     (see pyaml.common.constant.HORIZONTAL_KICK_SIGN).
     To change the convention, you have execute the code below prior to everything:
     import pyaml.common.constants
@@ -15,6 +20,14 @@ class RWCorrectorAngle(abstract.ReadWriteFloatScalar):
     """
 
     def __init__(self, corr: Magnet):
+        """
+        Initialize a corrector-angle access wrapper.
+
+        Parameters
+        ----------
+        corr : Magnet
+            Corrector magnet whose strength represents the kick angle.
+        """
         self._mag = corr
 
     def get(self) -> float:
@@ -24,7 +37,7 @@ class RWCorrectorAngle(abstract.ReadWriteFloatScalar):
         Returns
         -------
         float
-            Kick angle in radians
+            Kick angle in radians.
         """
         return np.arctan(self._mag.strength.get())
 
@@ -35,7 +48,7 @@ class RWCorrectorAngle(abstract.ReadWriteFloatScalar):
         Parameters
         ----------
         value : float
-            Kick angle to set in radians
+            Target kick angle in radians.
         """
         self._mag.strength.set(np.tan(value))
 

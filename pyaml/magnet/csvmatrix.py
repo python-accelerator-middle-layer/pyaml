@@ -1,3 +1,8 @@
+"""Magnet response matrices.
+
+This module defines matrix representations used by magnet models.
+"""
+
 import numpy as np
 from numpy.typing import NDArray
 
@@ -32,6 +37,14 @@ class CSVMatrix(Matrix, DynamicValidation):
     """
 
     def __init__(self, file: str):
+        """
+        Initialize the CSVMatrix.
+
+        Parameters
+        ----------
+        file : str
+            Input value for this operation.
+        """
         self._file = file
 
         # Load CSV matrix
@@ -43,6 +56,7 @@ class CSVMatrix(Matrix, DynamicValidation):
 
     @property
     def file(self):
+        """Return the configured CSV file path."""
         return self._file
 
     def get_matrix(self) -> NDArray[np.float64]:
@@ -57,4 +71,7 @@ class CSVMatrix(Matrix, DynamicValidation):
         return self._mat
 
     def __repr__(self):
+        """
+        Implement the ``__repr__`` string.
+        """
         return __pyaml_repr__(self)

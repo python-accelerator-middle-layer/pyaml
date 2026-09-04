@@ -1,3 +1,9 @@
+"""Abstract interfaces for magnet conversion models.
+
+The :class:`MagnetModel` contract covers conversion between physical strengths
+and hardware setpoints, unit metadata, device names, and magnetic rigidity.
+"""
+
 from abc import ABCMeta, abstractmethod
 
 import numpy as np
@@ -6,8 +12,10 @@ import numpy.typing as npt
 
 class MagnetModel(metaclass=ABCMeta):
     """
-    Abstract class providing strength to coil current conversion
-    and access to underlying power supplies
+    Define the interface for magnet strength and hardware conversion.
+
+    Concrete models implement the relationship between accelerator physics
+    strengths and power-supply values for one or more magnet functions.
     """
 
     @abstractmethod
@@ -66,8 +74,8 @@ class MagnetModel(metaclass=ABCMeta):
 
         Returns
         -------
-        list[DevstriceAccess]
-            Array of device name
+            list[str | None]
+            Array of associated device names.
         """
         pass
 

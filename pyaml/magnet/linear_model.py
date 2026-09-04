@@ -1,3 +1,8 @@
+"""Linear conversion model for single-function magnets.
+
+This model maps one magnet strength to one hardware value using linear calibration parameters and an optional excitation curve.
+"""
+
 import numpy as np
 
 from ..common.element import __pyaml_repr__
@@ -57,6 +62,26 @@ class LinearMagnetModel(MagnetModel, DynamicValidation):
         calibration_offset: float = 0.0,
         crosstalk: float = 1.0,
     ):
+        """
+        Initialize the LinearMagnetModel.
+
+        Parameters
+        ----------
+        unit : str
+            Input value for this operation.
+        hardware_unit : str
+            Input value for this operation.
+        curve : Curve | None
+            Input value for this operation.
+        powerconverter : str | None
+            Input value for this operation.
+        calibration_factor : float
+            Input value for this operation.
+        calibration_offset : float
+            Input value for this operation.
+        crosstalk : float
+            Input value for this operation.
+        """
         if curve:
             self.__curve = curve.get_curve()
             self.__curve[:, 1] = self.__curve[:, 1] * calibration_factor * crosstalk + calibration_offset
@@ -72,6 +97,19 @@ class LinearMagnetModel(MagnetModel, DynamicValidation):
         self.__brho = np.nan
 
     def compute_hardware_values(self, strengths: np.array) -> np.array:
+        """
+        Convert magnet strengths to hardware values.
+
+        Parameters
+        ----------
+        strengths : np.array
+            Input value for this operation.
+
+        Returns
+        -------
+        np.array
+            Result produced by the operation.
+        """
         if self.__rcurve is not None:
             _current = np.interp(strengths[0] * self.__brho, self.__rcurve[:, 0], self.__rcurve[:, 1])
         else:
@@ -79,6 +117,19 @@ class LinearMagnetModel(MagnetModel, DynamicValidation):
         return np.array([_current])
 
     def compute_strengths(self, currents: np.array) -> np.array:
+        """
+        Convert hardware values to magnet strengths.
+
+        Parameters
+        ----------
+        currents : np.array
+            Input value for this operation.
+
+        Returns
+        -------
+        np.array
+            Result produced by the operation.
+        """
         if self.__curve is not None:
             _strength = np.interp(currents[0], self.__curve[:, 0], self.__curve[:, 1]) / self.__brho
         else:
@@ -86,16 +137,30 @@ class LinearMagnetModel(MagnetModel, DynamicValidation):
         return np.array([_strength])
 
     def get_strength_units(self) -> list[str]:
+        """Return the units of magnet strengths."""
         return [self.__strength_unit] if self.__strength_unit is not None else [""]
 
     def get_hardware_units(self) -> list[str]:
+        """Return the units of hardware values."""
         return [self.__hardware_unit] if self.__hardware_unit is not None else [""]
 
     def get_device_names(self) -> list[str | None]:
+        """Return the associated device names."""
         return [self.__ps]
 
     def set_magnet_rigidity(self, brho: np.double):
+        """
+        Set the magnetic rigidity used for conversion.
+
+        Parameters
+        ----------
+        brho : np.double
+            Input value for this operation.
+        """
         self.__brho = brho
 
     def __repr__(self):
+        """
+        Implement the ``__repr__`` string.
+        """
         return __pyaml_repr__(self)

@@ -1,3 +1,9 @@
+"""Base interfaces for physical and simulated magnets.
+
+This module defines the common magnet element interface and its access to
+strength, hardware, and magnet-model information.
+"""
+
 import copy
 from typing import Self
 
@@ -101,6 +107,9 @@ class Magnet(Element):
         return self.__modelName
 
     def __repr__(self):
+        """
+        Implement the ``__repr__`` string.
+        """
         return "%s(peer='%s', name='%s', model_name='%s', magnet_model=%s)" % (
             self.__class__.__name__,
             self.attached_to(),

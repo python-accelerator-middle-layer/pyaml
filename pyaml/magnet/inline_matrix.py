@@ -1,3 +1,8 @@
+"""Magnet response matrices.
+
+This module defines matrix representations used by magnet models.
+"""
+
 import numpy as np
 from numpy.typing import NDArray
 
@@ -27,10 +32,19 @@ class InlineMatrix(Matrix, DynamicValidation):
 
     def __init__(self, mat: list[list[float]]):
         # Load the matrix
+        """
+        Initialize the InlineMatrix.
+
+        Parameters
+        ----------
+        mat : list[list[float]]
+            Input value for this operation.
+        """
         self._mat = np.array(mat)
 
     @property
     def mat(self):
+        """Return the original in-memory magnet matrix."""
         return self._mat
 
     def get_matrix(self) -> NDArray[np.float64]:
@@ -45,4 +59,7 @@ class InlineMatrix(Matrix, DynamicValidation):
         return self._mat
 
     def __repr__(self):
+        """
+        Implement the ``__repr__`` string.
+        """
         return __pyaml_repr__(self)

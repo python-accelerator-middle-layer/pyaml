@@ -1,3 +1,9 @@
+"""Function mappings used by magnet models.
+
+This module provides mappings between configured magnet functions and the
+corresponding model or hardware channels.
+"""
+
 from pyaml.magnet.hcorrector import HCorrector
 from pyaml.magnet.octupole import Octupole
 from pyaml.magnet.quadrupole import Quadrupole

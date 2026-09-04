@@ -1,3 +1,8 @@
+"""Magnet response matrices.
+
+This module defines matrix representations used by magnet models.
+"""
+
 from abc import ABCMeta, abstractmethod
 
 from numpy import array
