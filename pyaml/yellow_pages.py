@@ -14,7 +14,7 @@ Key points:
             yp["re:^SH1A-C0[12]-H$"]
 
 :class:`~pyaml.accelerator.Accelerator` interface
-------------------------------
+--------------------------------------------------
     - controls()   -> dict[str, ElementHolder]
     - simulators() -> dict[str, ElementHolder]
     - modes()      -> dict[str, ElementHolder]
@@ -32,6 +32,10 @@ if TYPE_CHECKING:
 
 
 class YellowPagesCategory(str, Enum):
+    """
+    YellowPagesCategory configuration or runtime object.
+    """
+
     ARRAYS = "Arrays"
     TOOLS = "Tools"
     DIAGNOSTICS = "Diagnostics"
@@ -103,6 +107,14 @@ class YellowPages:
     """
 
     def __init__(self, accelerator: "Accelerator"):
+        """
+        Initialize the YellowPages.
+
+        Parameters
+        ----------
+        accelerator : 'Accelerator'
+            Input value for this operation.
+        """
         self._acc = accelerator
 
     def has(self, key: str) -> bool:
@@ -471,9 +483,18 @@ class YellowPages:
         return "\n".join(lines).rstrip()
 
     def __str__(self) -> str:
+        """
+        Return a human-readable string representation of the object.
+
+        Returns
+        -------
+        str
+            Result produced by the operation.
+        """
         return self.__repr__()
 
     def _discover(self) -> dict[YellowPagesCategory, list[str]]:
+        """Execute _discover."""
         arrays: list[str] = []
         tools: list[str] = []
         diags: list[str] = []
@@ -507,6 +528,7 @@ class YellowPages:
                 target.append(value)
 
     def _all_keys(self) -> list[str]:
+        """Execute _all_keys."""
         discovered = self._discover()
         out: list[str] = []
         for keys in discovered.values():
@@ -514,10 +536,36 @@ class YellowPages:
         return out
 
     def _require_key(self, key: str) -> None:
+        """
+        Execute _require_key.
+
+        Parameters
+        ----------
+        key : str
+            Input value for this operation.
+
+        Returns
+        -------
+        None
+            Result produced by the operation.
+        """
         if key not in self._all_keys():
             raise KeyError(self._unknown_key_message(key))
 
     def _unknown_key_message(self, key: str) -> str:
+        """
+        Execute _unknown_key_message.
+
+        Parameters
+        ----------
+        key : str
+            Input value for this operation.
+
+        Returns
+        -------
+        str
+            Result produced by the operation.
+        """
         available = ", ".join(self._all_keys())
         return f"Unknown YellowPages key '{key}'. Available keys: {available if available else '<none>'}"
 
@@ -641,6 +689,19 @@ class YellowPages:
             return [str(obj)]
 
     def _ids_for_key_union_all_modes(self, key: str) -> list[str]:
+        """
+        Execute _ids_for_key_union_all_modes.
+
+        Parameters
+        ----------
+        key : str
+            Input value for this operation.
+
+        Returns
+        -------
+        list[str]
+            Result produced by the operation.
+        """
         out: list[str] = []
         resolved = self._get_object(key)
         for obj in resolved.values():
@@ -660,6 +721,19 @@ class YellowPages:
         return all_ids
 
     def _ids_from_holder(self, holder) -> list[str]:
+        """
+        Execute _ids_from_holder.
+
+        Parameters
+        ----------
+        holder : object
+            Input value for this operation.
+
+        Returns
+        -------
+        list[str]
+            Result produced by the operation.
+        """
         ids: list[str] = []
 
         try:
