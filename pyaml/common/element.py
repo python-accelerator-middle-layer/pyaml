@@ -18,17 +18,6 @@ def __pyaml_repr__(obj, exclude: list[str] | None = None):
 
     cls_name = obj.__class__.__name__
 
-    # Keep the old behavior when _cfg exists
-    cfg = getattr(obj, "_cfg", None)
-    if cfg is not None:
-        if isinstance(obj, Element):
-            return repr(cfg).replace(
-                "ConfigModel(",
-                f"{cls_name}(peer={obj.attached_to()!r}, ",
-                1,
-            )
-        return repr(cfg).replace("ConfigModel", cls_name, 1)
-
     attrs = {}
 
     for name in dir(obj):
@@ -43,6 +32,9 @@ def __pyaml_repr__(obj, exclude: list[str] | None = None):
             # This prevents: BPM(get_name=<bound method...>)
             if callable(value):
                 continue
+
+            if name == "peer":
+                value = obj.attached_to() if isinstance(obj, Element) else value.__class__.__name__
 
             attrs[name] = value
         except Exception as e:
@@ -59,8 +51,8 @@ def __pyaml_repr__(obj, exclude: list[str] | None = None):
     # its own __repr__ is called (providing the "one level below" effect).
     if not attrs:
         return cls_name
-
-    parts = ", ".join(f"{k}={v!r}" for k, v in sorted(attrs.items()))
+    parts = ", ".join(f"{k}={v!r}" for k, v in sorted(attrs.items())[:10])
+    # Limit to 10 attributes to avoid overly long representations
     return f"{cls_name}({parts})"
 
 
