@@ -112,6 +112,26 @@ class ValidationModelDescriptor:
         instance: object | None,
         owner: type["DynamicValidation"],
     ) -> type[ValidationModel]:
+        """
+        Return the validation model associated with ``owner``.
+
+        The model is generated on first access and cached on the owning class.
+        Because this descriptor exposes class-level metadata, ``instance`` is
+        not used.
+
+        Parameters
+        ----------
+        instance : object | None
+            Instance through which the descriptor was accessed, or ``None``
+            when accessed on the class.
+        owner : type[DynamicValidation]
+            Class whose validation model is requested.
+
+        Returns
+        -------
+        type[ValidationModel]
+            The cached or newly generated validation model.
+        """
         model = owner.__dict__.get("_validation_model")
 
         if model is None:

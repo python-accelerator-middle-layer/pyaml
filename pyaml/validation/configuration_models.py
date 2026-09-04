@@ -21,10 +21,12 @@ class PyAMLBaseModel(BaseModel):
     """
 
     def model_dump(self, **kwargs):
+        """Execute model_dump."""
         kwargs.setdefault("serialize_as_any", True)
         return super().model_dump(**kwargs)
 
     def model_dump_json(self, **kwargs):
+        """Execute model_dump_json."""
         kwargs.setdefault("serialize_as_any", True)
         return super().model_dump_json(**kwargs)
 
@@ -70,6 +72,9 @@ class ConfigurationSchema(PyAMLBaseModel):
     _virtual_subclasses: ClassVar[set[type["ConfigurationSchema"]]]
 
     def __init_subclass__(cls, **kwargs):
+        """
+        Implement the __init_subclass__ protocol operation.
+        """
         super().__init_subclass__(**kwargs)
         cls._virtual_subclasses = set()
 
@@ -138,6 +143,23 @@ class ConfigurationSchema(PyAMLBaseModel):
         checked: set[type["ConfigurationSchema"]] = set()
 
         def subclass_exists(current_cls: type["ConfigurationSchema"]) -> bool:
+            """
+            Recursively check whether a registered subclass exists.
+
+            The ``checked`` set prevents cycles while traversing the virtual
+            subclass hierarchy.
+
+            Parameters
+            ----------
+            current_cls : type[ConfigurationSchema]
+                Schema class whose registered subclasses are inspected.
+
+            Returns
+            -------
+            bool
+                ``True`` if ``current_cls`` has a registered subclass;
+                otherwise, ``False``.
+            """
             if current_cls in checked:
                 return False
             checked.add(current_cls)
@@ -176,6 +198,26 @@ class ConfigurationSchema(PyAMLBaseModel):
 
         def validate(value, nxt):
             # Already the expected schema type
+            """
+            Accept schema instances and delegate other values to Pydantic.
+
+            Instances of ``cls`` and its registered virtual subclasses are
+            returned unchanged. All other values are passed to the wrapped
+            Pydantic validator.
+
+            Parameters
+            ----------
+            value : object
+                Value being validated.
+            nxt : object
+                Wrapped Pydantic validator used for ordinary input values.
+
+            Returns
+            -------
+            object
+                The original schema instance or the value returned by
+                ``nxt``.
+            """
             if isinstance(value, cls):
                 return value
 

@@ -23,6 +23,17 @@ class SchemaRegistry:
     _schemas: dict[str, Type[ConfigurationSchema]]
 
     def __new__(cls) -> "SchemaRegistry":
+        """
+        Return the shared schema registry instance.
+
+        The registry is a singleton: the first call creates the instance and
+        initializes its schema store; subsequent calls return the same object.
+
+        Returns
+        -------
+        SchemaRegistry
+            The shared schema registry.
+        """
         if cls._instance is None:
             cls._instance = super().__new__(cls)
             cls._instance._schemas = {}
@@ -338,6 +349,19 @@ def register_schema(arg: type | None = None):
     registry = SchemaRegistry()
 
     def _generate_and_register_schema(cls: type[ClassT]) -> type[ClassT]:
+        """
+        Generate and register a schema for a decorated class.
+
+        Parameters
+        ----------
+        cls : type[ClassT]
+            Configuration class for which a schema should be generated.
+
+        Returns
+        -------
+        type[ClassT]
+            The original class, unchanged, for use as a decorator result.
+        """
         generate_configuration_schema(cls)
         return cls
 

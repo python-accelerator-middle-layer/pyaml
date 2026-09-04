@@ -150,6 +150,7 @@ class RegistryJsonSchema(GenerateJsonSchema):
 
         - If the model defines a ``class`` field, all registered aliases
         corresponding to the model are added as allowed literal values.
+
         - If registered subclasses exist, the schema is replaced by an
         ``anyOf`` union containing the schemas of all registered subclasses.
 
