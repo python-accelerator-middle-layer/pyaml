@@ -1,11 +1,6 @@
 """Magnet Array module.
 
 This module provides magnet array functionality for the PyAML accelerator middle layer.
-
-Notes
------
-The public classes and functions defined here are documented using NumPy-style
-docstrings.
 """
 
 import numpy as np

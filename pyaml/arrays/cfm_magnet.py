@@ -1,11 +1,6 @@
 """Cfm Magnet module.
 
 This module provides cfm magnet functionality for the PyAML accelerator middle layer.
-
-Notes
------
-The public classes and functions defined here are documented using NumPy-style
-docstrings.
 """
 
 from ..common.holders.element_holder import ElementHolder
