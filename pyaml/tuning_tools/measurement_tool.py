@@ -2,46 +2,16 @@ import copy
 import logging
 from abc import ABCMeta, abstractmethod
 from pathlib import Path
-from typing import TYPE_CHECKING, Callable, Optional, Self
-
-from pydantic import ConfigDict
+from typing import TYPE_CHECKING, Callable, Self
 
 from ..common.constants import Action
-from ..common.element import Element, ElementConfigModel
+from ..common.element import Element
 from ..common.exception import PyAMLException
 
 if TYPE_CHECKING:
     from ..common.holders.element_holder import ElementHolder
 
 logger = logging.getLogger(__name__)
-
-
-class MeasurementToolConfigModel(ElementConfigModel):
-    """
-    Measurement tool configuration model
-
-    Parameters
-    ----------
-    n_step: int, optional
-        Number of measurement step [-delta/n_step..delta/n_step]
-        Default 1
-    sleep_between_step: float, optional
-        Default sleep time after an actuator excitation
-        Default: 0
-    n_avg_meas : int, optional
-        Default number of measurement per step used for averaging
-        Default 1
-    sleep_between_meas: float, optional
-        Default sleep time between two measurments
-        Default: 0
-    """
-
-    model_config = ConfigDict(arbitrary_types_allowed=True, extra="forbid")
-
-    n_step: Optional[int] = 1
-    sleep_between_step: Optional[float] = 0
-    n_avg_meas: Optional[int] = 1
-    sleep_between_meas: Optional[float] = 0
 
 
 class MeasurementTool(Element, metaclass=ABCMeta):
@@ -167,11 +137,8 @@ class MeasurementTool(Element, metaclass=ABCMeta):
         self._callback = callback
 
     def attach(self, peer: "ElementHolder") -> Self:
-        if hasattr(self, "_cfg"):
-            obj = self.__class__(self._cfg)
-        else:
-            obj = copy.copy(self)
-            obj._after_attach()
+        obj = copy.copy(self)
+        obj._after_attach()
         obj._peer = peer
         return obj
 

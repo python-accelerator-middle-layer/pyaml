@@ -4,7 +4,6 @@ from typing import Callable, Optional
 import matplotlib.pyplot as plt
 import numpy as np
 import pySC
-from pydantic import ConfigDict
 from pySC.apps import measure_bba
 from pySC.apps.bba import BBAAnalysis
 from pySC.apps.codes import BBACode
@@ -12,58 +11,93 @@ from pySC.apps.codes import BBACode
 from ..common.constants import Action
 from ..common.exception import PyAMLException
 from ..external.pySC_interface import pySCInterface
-from .measurement_tool import MeasurementTool, MeasurementToolConfigModel
+from ..validation import DynamicValidation, register_schema
+from .measurement_tool import MeasurementTool
 
 logger = logging.getLogger(__name__)
 
 PYAMLCLASS = "BBA"
 
 
-class ConfigModel(MeasurementToolConfigModel):
+@register_schema
+class BBA(MeasurementTool, DynamicValidation):
     """
-    Configuration model for Beam Based Alignment.
-    BBA finds the magnetic center of a quad (zero crossing).
+    Beam-based alignment measurement tool.
+
+    This tool determines the magnetic center of a quadrupole by varying its
+    strength while applying controlled horizontal and vertical orbit offsets.
+    The quadrupole center is identified from the corresponding zero crossings
+    in the BPM response.
 
     Parameters
     ----------
+    name : str
+        Name of the measurement tool.
     bpm_array_name : str
-        BPM array name (orbit)
+        Name of the BPM array used to measure the orbit.
     bpm_name : str
-        BPM to be corrected (close to the quad)
+        Name of the BPM located near the quadrupole whose center is measured.
     hcorr_name : str
-        Horizontal corrector used to make a deviation in the quad
+        Name of the horizontal corrector used to create horizontal orbit
+        offsets at the quadrupole.
     vcorr_name : str
-        Vertical corrector used to make a deviation in the quad
+        Name of the vertical corrector used to create vertical orbit offsets
+        at the quadrupole.
     quad_name : str
-        Quadrupole used to find the center
+        Name of the quadrupole to align.
     hcorr_delta : float
-        Horizontal corrector delta strength
+        Change in horizontal corrector strength used for each horizontal
+        orbit-offset step.
     vcorr_delta : float
-        Vertical corrector delta strength
+        Change in vertical corrector strength used for each vertical
+        orbit-offset step.
     hquad_delta : float
-        Quadrupole delta strength (for h search)
+        Change in quadrupole strength used during the horizontal alignment
+        measurement.
     vquad_delta : float
-        Quadrupole delta strength (for v search)
-
+        Change in quadrupole strength used during the vertical alignment
+        measurement.
+    n_step : int, default=1
+        Number of orbit-offset steps to perform in each plane.
+    sleep_between_step : float, default=0
+        Time in seconds to wait after changing an orbit offset.
+    n_avg_meas : int, default=1
+        Number of BPM measurements to average at each step.
+    sleep_between_meas : float, default=0
+        Time in seconds to wait between individual BPM measurements.
     """
 
-    model_config = ConfigDict(arbitrary_types_allowed=True, extra="forbid")
-
-    bpm_array_name: str
-    bpm_name: str
-    hcorr_name: str
-    vcorr_name: str
-    quad_name: str
-    hcorr_delta: float
-    vcorr_delta: float
-    hquad_delta: float
-    vquad_delta: float
-
-
-class BBA(MeasurementTool):
-    def __init__(self, cfg: ConfigModel):
-        super().__init__(cfg.name)
-        self._cfg = cfg
+    def __init__(
+        self,
+        name: str,
+        bpm_array_name: str,
+        bpm_name: str,
+        hcorr_name: str,
+        vcorr_name: str,
+        quad_name: str,
+        hcorr_delta: float,
+        vcorr_delta: float,
+        hquad_delta: float,
+        vquad_delta: float,
+        n_step: int = 1,
+        sleep_between_step: float = 0,
+        n_avg_meas: int = 1,
+        sleep_between_meas: float = 0,
+    ):
+        super().__init__(name)
+        self.bpm_array_name = bpm_array_name
+        self.bpm_name = bpm_name
+        self.hcorr_name = hcorr_name
+        self.vcorr_name = vcorr_name
+        self.quad_name = quad_name
+        self.hcorr_delta = hcorr_delta
+        self.vcorr_delta = vcorr_delta
+        self.hquad_delta = hquad_delta
+        self.vquad_delta = vquad_delta
+        self.n_step = n_step
+        self.sleep_between_step = sleep_between_step
+        self.n_avg_meas = n_avg_meas
+        self.sleep_between_meas = sleep_between_meas
 
     def measure(
         self,
@@ -111,29 +145,29 @@ class BBA(MeasurementTool):
         plane: str, optional
             Plane to perform ("H" or "V", None => both plane)
         """
-        nb_meas = n_avg_meas if n_avg_meas is not None else self._cfg.n_avg_meas
-        sleep_step = sleep_between_step if sleep_between_step is not None else self._cfg.sleep_between_step
-        sleep_meas = sleep_between_meas if sleep_between_meas is not None else self._cfg.sleep_between_meas
+        nb_meas = n_avg_meas if n_avg_meas is not None else self.n_avg_meas
+        sleep_step = sleep_between_step if sleep_between_step is not None else self.sleep_between_step
+        sleep_meas = sleep_between_meas if sleep_between_meas is not None else self.sleep_between_meas
 
         element_holder = self._peer
         interface = pySCInterface(
             element_holder=element_holder,
-            bpm_array_name=self._cfg.bpm_array_name,
+            bpm_array_name=self.bpm_array_name,
         )
         interface.set_wait_time = sleep_step
         interface.read_wait_time = sleep_meas
 
-        bpms_names = element_holder.bpms.get(self._cfg.bpm_array_name).names()
+        bpms_names = element_holder.bpms.get(self.bpm_array_name).names()
 
         bba_pySC_config = {
-            "number": bpms_names.index(self._cfg.bpm_name),
-            "QUAD": self._cfg.quad_name,
-            "HCORR": self._cfg.hcorr_name,
-            "VCORR": self._cfg.vcorr_name,
-            "HCORR_delta": self._cfg.hcorr_delta,
-            "QUAD_dk_H": self._cfg.hquad_delta,
-            "VCORR_delta": self._cfg.vcorr_delta,
-            "QUAD_dk_V": self._cfg.vquad_delta,
+            "number": bpms_names.index(self.bpm_name),
+            "QUAD": self.quad_name,
+            "HCORR": self.hcorr_name,
+            "VCORR": self.vcorr_name,
+            "HCORR_delta": self.hcorr_delta,
+            "QUAD_dk_H": self.hquad_delta,
+            "VCORR_delta": self.vcorr_delta,
+            "QUAD_dk_V": self.vquad_delta,
             "magnet_type": "normal_quadrupole",
         }
 
@@ -142,10 +176,10 @@ class BBA(MeasurementTool):
 
         generator = measure_bba(
             interface=interface,
-            bpm_name=self._cfg.bpm_name,
+            bpm_name=self.bpm_name,
             config=bba_pySC_config,
             shots_per_orbit=nb_meas,
-            n_corr_steps=self._cfg.n_step,
+            n_corr_steps=self.n_step,
             bipolar=False,
             skip_save=True,
             plane=plane,
@@ -266,7 +300,7 @@ class BBA(MeasurementTool):
             axes["A"].plot(xx[final_mask], yy[final_mask], ".", c="C0")
             axes["A"].plot(xx[~final_mask], yy[~final_mask], ".", c="C1")
 
-        axes["A"].set_xlabel(f"BPM position [μm]\n{self._cfg.bpm_name} offset = {offset * 1e6:.3f} [μm]")
+        axes["A"].set_xlabel(f"BPM position [μm]\n{self.bpm_name} offset = {offset * 1e6:.3f} [μm]")
         axes["A"].set_ylabel("Modulation [μm]")
         axes["A"].grid()
 
@@ -285,6 +319,6 @@ class BBA(MeasurementTool):
         axes["C"].grid()
 
         fig.tight_layout()
-        fig.canvas.manager.set_window_title(f"{plane} BBA {self._cfg.bpm_name}")
+        fig.canvas.manager.set_window_title(f"{plane} BBA {self.bpm_name}")
 
         plt.show()

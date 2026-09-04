@@ -14,7 +14,7 @@ from ..validation import DynamicValidation, register_schema
 
 logger = logging.getLogger(__name__)
 
-PYAMLCLASS = "ChomaticityMonitor"
+PYAMLCLASS = "ChromaticityMonitor"
 
 
 class RChromaDispArray(ReadFloatArray):
@@ -23,7 +23,7 @@ class RChromaDispArray(ReadFloatArray):
     Returns arrays of shape (fit_order,2) or None
     """
 
-    def __init__(self, parent: "ChomaticityMonitor", name: str, unit: str):
+    def __init__(self, parent: "ChromaticityMonitor", name: str, unit: str):
         self._parent = parent
         self._name = name
         self._unit = unit
@@ -40,7 +40,7 @@ class RChromaDispArray(ReadFloatArray):
 
 
 @register_schema
-class ChomaticityMonitor(MeasurementTool, DynamicValidation):
+class ChromaticityMonitor(MeasurementTool, DynamicValidation):
     """
     Class providing access to a chromaticity monitor
     of a physical or simulated lattice. The monitor provides

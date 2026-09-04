@@ -19,7 +19,7 @@ def test_bba():
 
     # BBA (model dependant method)
     bba = SR.get_bba("BBA2-BPM_C04-04")
-    bba._cfg.minicyle_sleep_time = 0
+    bba.minicycle_sleep_time = 0
     bba.measure()
     assert np.abs(bba.h_offset() - 20e-6) < 1e-6
     assert np.abs(bba.v_offset() + 15e-6) < 1e-6

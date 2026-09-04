@@ -1,14 +1,12 @@
 import logging
-from typing import Callable, Optional, Self
+from typing import Callable, Optional
 
-from pydantic import ConfigDict
 from pySC.apps import measure_dispersion
 from pySC.apps.codes import DispersionCode
 
 from ..common.constants import Action
-from ..common.element import ElementConfigModel
-from ..common.holders.element_holder import ElementHolder
 from ..external.pySC_interface import pySCInterface
+from ..validation import DynamicValidation, register_schema
 from .measurement_tool import MeasurementTool
 
 logger = logging.getLogger(__name__)
@@ -16,35 +14,41 @@ logger = logging.getLogger(__name__)
 PYAMLCLASS = "Dispersion"
 
 
-class ConfigModel(ElementConfigModel):
-    """
-    Configuration model for dispersion measurement
+@register_schema
+class Dispersion(MeasurementTool, DynamicValidation):
+    """Measure beam dispersion by changing the RF frequency.
+
+    The measurement uses a :class:`pySCInterface` to change the frequency of
+    an RF plant and acquire orbit data from a BPM array. Progress is reported
+    through the callback mechanism provided by :class:`MeasurementTool`.
 
     Parameters
     ----------
+    name : str
+        Name of the dispersion measurement tool.
     bpm_array_name : str
-        BPM array name
+        Name of the BPM array used to measure the orbit.
     rf_plant_name : str
-        RF plant name
+        Name of the RF plant whose frequency is varied.
     frequency_delta : float
-        Frequency delta for measurement
+        RF-frequency change applied during the measurement.
+
+    Attributes
+    ----------
+    bpm_array_name : str
+        Name of the BPM array used for the measurement.
+    rf_plant_name : str
+        Name of the RF plant used for the measurement.
+    frequency_delta : float
+        RF-frequency change applied during the measurement.
     """
 
-    model_config = ConfigDict(arbitrary_types_allowed=True, extra="forbid")
+    def __init__(self, name: str, bpm_array_name: str, rf_plant_name: str, frequency_delta: float):
+        super().__init__(name)
 
-    bpm_array_name: str
-    rf_plant_name: str
-    frequency_delta: float
-
-
-class Dispersion(MeasurementTool):
-    def __init__(self, cfg: ConfigModel):
-        super().__init__(cfg.name)
-        self._cfg = cfg
-
-        self.bpm_array_name = cfg.bpm_array_name
-        self.rf_plant_name = cfg.rf_plant_name
-        self.frequency_delta = cfg.frequency_delta
+        self.bpm_array_name = bpm_array_name
+        self.rf_plant_name = rf_plant_name
+        self.frequency_delta = frequency_delta
 
     def measure(
         self,
