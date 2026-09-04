@@ -1,3 +1,9 @@
+"""Betatron tune monitor element and runtime data bindings.
+
+The monitor identifies tune measurements, attaches them to a runtime peer,
+and optionally converts tune fractions to frequencies using an RF plant.
+"""
+
 import copy
 from typing import Self
 
@@ -43,6 +49,21 @@ class BetatronTuneMonitor(Element, DynamicValidation, ABetatronTuneMonitor):
         tune_v: str | None = None,
         rf_plant_name: str | None = None,
     ):
+        """Initialize a betatron tune monitor.
+
+        Parameters
+        ----------
+        name : str
+            Element name.
+        description : str | None
+            Human-readable description of the monitor.
+        tune_h : str | None
+            Device catalog key for the horizontal tune measurement.
+        tune_v : str | None
+            Device catalog key for the vertical tune measurement.
+        rf_plant_name : str | None
+            Name of the RF plant used for tune-to-frequency conversion.
+        """
         super().__init__(name, None, description)
         self._tune_h = tune_h
         self._tune_v = tune_v
@@ -51,14 +72,24 @@ class BetatronTuneMonitor(Element, DynamicValidation, ABetatronTuneMonitor):
         self._h = None
 
     def set_harmonic(self, h: int):
+        """Set the harmonic number used for tune-frequency conversion.
+
+        Parameters
+        ----------
+        h : int
+            Harmonic number relating the RF frequency to the measured
+            betatron tune frequency.
+        """
         self._h = float(h)
 
     @property
     def tune_h(self) -> str | None:
+        """Return the horizontal tune device catalog key."""
         return self._tune_h
 
     @property
     def tune_v(self) -> str | None:
+        """Return the vertical tune device catalog key."""
         return self._tune_v
 
     @property
@@ -69,7 +100,7 @@ class BetatronTuneMonitor(Element, DynamicValidation, ABetatronTuneMonitor):
         Returns
         -------
         ReadFloatArray
-            Array of tune values [horizontal, vertical]
+            Readable array containing the horizontal and vertical tunes.
         """
         self.check_peer()
         return self.__tune
@@ -77,19 +108,36 @@ class BetatronTuneMonitor(Element, DynamicValidation, ABetatronTuneMonitor):
     @property
     def frequency(self) -> ReadFloatArray:
         """
-        Get the betatron tune values in frequency
+        Return the betatron tune values converted to frequency.
 
         Returns
         -------
         ReadFloatArray
-            Array of tune values in frequency [horizontal, vertical]
+            Readable array containing horizontal and vertical frequencies.
         """
 
         class TuneFreq(ReadFloatArray):
+            """
+            Read-only view that converts tune values to frequencies.
+
+            Parameters
+            ----------
+            parent : BetatronTuneMonitor
+                Monitor providing the source tune and RF data.
+            """
+
             def __init__(self, parent: BetatronTuneMonitor):
+                """Initialize the tune-frequency view.
+
+                Parameters
+                ----------
+                parent : BetatronTuneMonitor
+                    Monitor providing tune data and RF-plant configuration.
+                """
                 self.parent = parent
 
             def get(self) -> NDArray:
+                """Return tune frequencies in hertz."""
                 h = self.parent._h
                 rf_name = self.parent._rf_plant_name
                 if h is not None and rf_name is not None:
@@ -99,6 +147,7 @@ class BetatronTuneMonitor(Element, DynamicValidation, ABetatronTuneMonitor):
                     return tune * freq / h
 
             def unit(self) -> str:
+                """Return the frequency unit label."""
                 return "Hz"
 
         self.check_peer()
@@ -111,14 +160,16 @@ class BetatronTuneMonitor(Element, DynamicValidation, ABetatronTuneMonitor):
         Parameters
         ----------
         peer : object
-            The peer object (simulator or control system)
+            Simulator or control-system peer providing the RF plant.
         betatron_tune : ReadFloatArray
-            The betatron tune array to monitor
+            Readable array containing the measured horizontal and vertical
+            tunes.
 
         Returns
         -------
         Self
-            A new attached instance of TuneMonitor
+            A shallow copy of this monitor bound to ``peer`` and
+            ``betatron_tune``.
         """
         obj = copy.copy(self)
         obj.__tune = betatron_tune
@@ -126,4 +177,7 @@ class BetatronTuneMonitor(Element, DynamicValidation, ABetatronTuneMonitor):
         return obj
 
     def __repr__(self):
+        """
+        Implement the ``__repr__`` string.
+        """
         return __pyaml_repr__(self, exclude=["tune", "frequency"])
