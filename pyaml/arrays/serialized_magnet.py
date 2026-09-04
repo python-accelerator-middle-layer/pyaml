@@ -1,3 +1,8 @@
+"""Serialized Magnet module.
+
+This module provides serialized magnet functionality.
+"""
+
 from ..common.holders.element_holder import ElementHolder
 from ..validation import DynamicValidation, register_schema
 from .array import ArrayConfig
@@ -25,6 +30,16 @@ class SerializedMagnets(ArrayConfig, DynamicValidation):
     """
 
     def __init__(self, name: str, elements: list[str]):
+        """
+        Initialize the SerializedMagnets.
+
+        Parameters
+        ----------
+        name : str
+            Input value for this operation.
+        elements : list[str]
+            Input value for this operation.
+        """
         super().__init__(name, elements)
 
     def fill_array(self, holder: ElementHolder):

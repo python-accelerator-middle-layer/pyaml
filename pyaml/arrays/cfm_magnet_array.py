@@ -1,3 +1,8 @@
+"""Combined function magnet array module.
+
+This module provides combined function magnet array functionality.
+"""
+
 import numpy as np
 
 from ..common.abstract import ReadWriteFloatArray
@@ -9,13 +14,35 @@ from .element_array import ElementArray
 
 
 class RWMagnetStrengths(ReadWriteFloatArray):
+    """
+    RWMagnetStrengths configuration or runtime object.
+
+    Parameters
+    ----------
+    name : str
+        Input value for this operation.
+    magnets : list[CombinedFunctionMagnet]
+        Input value for this operation.
+    """
+
     def __init__(self, name: str, magnets: list[CombinedFunctionMagnet]):
+        """
+        Initialize the RWMagnetStrengths.
+
+        Parameters
+        ----------
+        name : str
+            Input value for this operation.
+        magnets : list[CombinedFunctionMagnet]
+            Input value for this operation.
+        """
         self.__name = name
         self.__magnets = magnets
         self.__nb = sum(m.nb_multipole() for m in magnets)
 
     # Gets the values
     def get(self) -> np.array:
+        """Execute get."""
         r = np.zeros(self.__nb)
         idx = 0
         for m in self.__magnets:
@@ -25,6 +52,14 @@ class RWMagnetStrengths(ReadWriteFloatArray):
 
     # Sets the values
     def set(self, value: np.array):
+        """
+        Execute set.
+
+        Parameters
+        ----------
+        value : np.array
+            Input value for this operation.
+        """
         nvalue = np.ones(self.__nb) * value if isinstance(value, float) else value
         idx = 0
         for m in self.__magnets:
@@ -33,10 +68,19 @@ class RWMagnetStrengths(ReadWriteFloatArray):
 
     # Sets the values and waits that the read values reach their setpoint
     def set_and_wait(self, value: np.array):
+        """
+        Execute set_and_wait.
+
+        Parameters
+        ----------
+        value : np.array
+            Input value for this operation.
+        """
         raise NotImplementedError("Not implemented yet.")
 
     # Gets the unit of the values
     def unit(self) -> list[str]:
+        """Execute unit."""
         r = []
         for m in self.__magnets:
             r.extend(m.strengths.unit())
@@ -44,13 +88,35 @@ class RWMagnetStrengths(ReadWriteFloatArray):
 
 
 class RWMagnetHardwares(ReadWriteFloatArray):
+    """
+    RWMagnetHardwares configuration or runtime object.
+
+    Parameters
+    ----------
+    name : str
+        Input value for this operation.
+    magnets : list[CombinedFunctionMagnet]
+        Input value for this operation.
+    """
+
     def __init__(self, name: str, magnets: list[CombinedFunctionMagnet]):
+        """
+        Initialize the RWMagnetHardwares.
+
+        Parameters
+        ----------
+        name : str
+            Input value for this operation.
+        magnets : list[CombinedFunctionMagnet]
+            Input value for this operation.
+        """
         self.__name = name
         self.__magnets = magnets
         self.__nb = sum(m.nb_multipole() for m in magnets)
 
     # Gets the values
     def get(self) -> np.array:
+        """Execute get."""
         r = np.zeros(self.__nb)
         idx = 0
         for m in self.__magnets:
@@ -60,6 +126,14 @@ class RWMagnetHardwares(ReadWriteFloatArray):
 
     # Sets the values
     def set(self, value: np.array):
+        """
+        Execute set.
+
+        Parameters
+        ----------
+        value : np.array
+            Input value for this operation.
+        """
         nvalue = np.ones(self.__nb) * value if isinstance(value, float) else value
         idx = 0
         for m in self.__magnets:
@@ -68,10 +142,19 @@ class RWMagnetHardwares(ReadWriteFloatArray):
 
     # Sets the values and waits that the read values reach their setpoint
     def set_and_wait(self, value: np.array):
+        """
+        Execute set_and_wait.
+
+        Parameters
+        ----------
+        value : np.array
+            Input value for this operation.
+        """
         raise NotImplementedError("Not implemented yet.")
 
     # Gets the unit of the values
     def unit(self) -> list[str]:
+        """Execute unit."""
         r = []
         for m in self.__magnets:
             r.extend(m.hardwares.unit())
@@ -100,6 +183,18 @@ class CombinedFunctionMagnetArray(ElementArray):
         magnets: list[CombinedFunctionMagnet],
         use_aggregator=False,
     ):
+        """
+        Initialize the CombinedFunctionMagnetArray.
+
+        Parameters
+        ----------
+        arrayName : str
+            Input value for this operation.
+        magnets : list[CombinedFunctionMagnet]
+            Input value for this operation.
+        use_aggregator : object
+            Input value for this operation.
+        """
         super().__init__(arrayName, magnets, use_aggregator)
 
         self.__rwstrengths = RWMagnetStrengths(arrayName, magnets)

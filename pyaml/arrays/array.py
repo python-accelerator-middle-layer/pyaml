@@ -23,15 +23,27 @@ class ArrayConfig(DynamicValidation):
     """
 
     def __init__(self, name: str, elements: list[str]):
+        """
+        Initialize the ArrayConfig.
+
+        Parameters
+        ----------
+        name : str
+            Input value for this operation.
+        elements : list[str]
+            Input value for this operation.
+        """
         self._name = name
         self._elements = elements
 
     @property
     def name(self):
+        """Return the name."""
         return self._name
 
     @property
     def elements(self):
+        """Return the elements."""
         return self._elements
 
     def fill_array(self, holder: ElementHolder):
@@ -54,4 +66,7 @@ class ArrayConfig(DynamicValidation):
         raise PyAMLException("Array.fill_array() is not subclassed")
 
     def __repr__(self):
+        """
+        Implement the ``__repr__`` string.
+        """
         return __pyaml_repr__(self)

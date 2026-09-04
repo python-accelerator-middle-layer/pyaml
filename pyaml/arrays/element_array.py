@@ -1,3 +1,8 @@
+"""Element Array module.
+
+This module provides element array functionality.
+"""
+
 import fnmatch
 import importlib
 from typing import TYPE_CHECKING, Sequence
@@ -43,6 +48,18 @@ class ElementArray(list[Element]):
     """
 
     def __init__(self, array_name: str, elements: list[Element], use_aggregator=True):
+        """
+        Initialize the ElementArray.
+
+        Parameters
+        ----------
+        array_name : str
+            Input value for this operation.
+        elements : list[Element]
+            Input value for this operation.
+        use_aggregator : object
+            Input value for this operation.
+        """
         super().__init__(i for i in elements)
         self.__name = array_name
         self.__peer = None
@@ -77,6 +94,18 @@ class ElementArray(list[Element]):
         return [e.get_name() for e in self]
 
     def __create_array(self, array_name: str, element_type: type, elements: list):
+        """
+        Implement the __create_array protocol operation.
+
+        Parameters
+        ----------
+        array_name : str
+            Input value for this operation.
+        element_type : type
+            Input value for this operation.
+        elements : list
+            Input value for this operation.
+        """
         if element_type is None:
             element_type = Element
 
@@ -102,6 +131,21 @@ class ElementArray(list[Element]):
             raise PyAMLException(f"Unsupported sliced array for type {str(element_type)}")
 
     def __eval_field(self, attribute_name: str, element: Element) -> str:
+        """
+        Implement the __eval_field protocol operation.
+
+        Parameters
+        ----------
+        attribute_name : str
+            Input value for this operation.
+        element : Element
+            Input value for this operation.
+
+        Returns
+        -------
+        str
+            Result produced by the operation.
+        """
         function_name = "get_" + attribute_name
         func = getattr(element, function_name, None)
         return func() if func is not None else ""
@@ -134,6 +178,7 @@ class ElementArray(list[Element]):
 
         def mro_as_list(cls: type) -> list[type]:
             # inspect.getmro returns (cls, ..., object)
+            """Execute mro_as_list."""
             return list(inspect.getmro(cls))
 
         # Start from the first element MRO as reference order (most specific first).
@@ -240,6 +285,14 @@ class ElementArray(list[Element]):
     def __rand__(self, other: object):
         # Support "array on the right" for array operands; for masks, we don't enforce
         # commutativity.
+        """
+        Implement the __rand__ protocol operation.
+
+        Parameters
+        ----------
+        other : object
+            Input value for this operation.
+        """
         if isinstance(other, ElementArray):
             return other.__and__(self)
         return NotImplemented
@@ -351,6 +404,14 @@ class ElementArray(list[Element]):
         return self.__auto_array(res)
 
     def __ror__(self, other: object):
+        """
+        Implement the __ror__ protocol operation.
+
+        Parameters
+        ----------
+        other : object
+            Input value for this operation.
+        """
         if isinstance(other, ElementArray):
             return other.__or__(self)
         return NotImplemented
@@ -381,6 +442,14 @@ class ElementArray(list[Element]):
         return self.__or__(other)
 
     def __radd__(self, other: object):
+        """
+        Implement the __radd__ protocol operation.
+
+        Parameters
+        ----------
+        other : object
+            Input value for this operation.
+        """
         if isinstance(other, ElementArray):
             return other.__add__(self)
         return NotImplemented
@@ -429,10 +498,26 @@ class ElementArray(list[Element]):
         return self.__auto_array(filtered)
 
     def exclude_type(self, element_type):
+        """
+        Execute exclude_type.
+
+        Parameters
+        ----------
+        element_type : object
+            Input value for this operation.
+        """
         mask = self.mask_by_type(element_type)
         return self - mask
 
     def __getitem__(self, key):
+        """
+        Implement the __getitem__ protocol operation.
+
+        Parameters
+        ----------
+        key : object
+            Input value for this operation.
+        """
         if isinstance(key, slice):
             # Slicing
             element_type = None

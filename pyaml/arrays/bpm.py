@@ -1,3 +1,8 @@
+"""BPM module.
+
+This module provides BPM functionality for the PyAML accelerator middle layer.
+"""
+
 from ..common.holders.element_holder import ElementHolder
 from ..validation import DynamicValidation, register_schema
 from .array import ArrayConfig
@@ -39,6 +44,16 @@ class BPM(ArrayConfig, DynamicValidation):
     """
 
     def __init__(self, name: str, elements: list[str]):
+        """
+        Initialize the BPM.
+
+        Parameters
+        ----------
+        name : str
+            Input value for this operation.
+        elements : list[str]
+            Input value for this operation.
+        """
         super().__init__(name, elements)
 
     def fill_array(self, holder: ElementHolder):

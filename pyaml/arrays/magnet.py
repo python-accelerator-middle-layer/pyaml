@@ -1,3 +1,13 @@
+"""Magnet module.
+
+This module provides magnet functionality for the PyAML accelerator middle layer.
+
+Notes
+-----
+The public classes and functions defined here are documented using NumPy-style
+docstrings.
+"""
+
 from ..common.holders.element_holder import ElementHolder
 from ..validation import DynamicValidation, register_schema
 from .array import ArrayConfig
@@ -24,6 +34,16 @@ class Magnet(ArrayConfig, DynamicValidation):
     """
 
     def __init__(self, name: str, elements: list[str]):
+        """
+        Initialize the Magnet.
+
+        Parameters
+        ----------
+        name : str
+            Input value for this operation.
+        elements : list[str]
+            Input value for this operation.
+        """
         super().__init__(name, elements)
 
     def fill_array(self, holder: ElementHolder):

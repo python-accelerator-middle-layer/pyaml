@@ -1,3 +1,8 @@
+"""BPM Array module.
+
+This module provides bpm array functionality for the PyAML accelerator middle layer.
+"""
+
 import numpy as np
 
 from ..bpm.bpm import BPM
@@ -23,6 +28,16 @@ class RWBPMPosition(ReadFloatArray):
     """
 
     def __init__(self, name: str, bpms: list[BPM]):
+        """
+        Initialize the RWBPMPosition.
+
+        Parameters
+        ----------
+        name : str
+            Input value for this operation.
+        bpms : list[BPM]
+            Input value for this operation.
+        """
         self.__bpms = bpms
         self.__name = name
         self.__aggregator: DeviceAccessList = None
@@ -87,6 +102,18 @@ class RWBPMSinglePosition(ReadFloatArray):
     """
 
     def __init__(self, name: str, bpms: list[BPM], idx: int):
+        """
+        Initialize the RWBPMSinglePosition.
+
+        Parameters
+        ----------
+        name : str
+            Input value for this operation.
+        bpms : list[BPM]
+            Input value for this operation.
+        idx : int
+            Input value for this operation.
+        """
         self.__bpms = bpms
         self.__name = name
         self.__idx = idx
@@ -165,6 +192,18 @@ class BPMArray(ElementArray):
     """
 
     def __init__(self, arrayName: str, bpms: list[BPM], use_aggregator=True):
+        """
+        Initialize the BPMArray.
+
+        Parameters
+        ----------
+        arrayName : str
+            Input value for this operation.
+        bpms : list[BPM]
+            Input value for this operation.
+        use_aggregator : object
+            Input value for this operation.
+        """
         super().__init__(arrayName, bpms, use_aggregator)
 
         self.__hvpos = RWBPMPosition(arrayName, bpms)
