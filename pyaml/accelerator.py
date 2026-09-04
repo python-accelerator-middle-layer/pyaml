@@ -290,14 +290,7 @@ class Accelerator:
 
     @property
     def yellow_pages(self) -> YellowPages:
-        """
-        Execute yellow_pages.
-
-        Returns
-        -------
-        YellowPages
-            Result produced by the operation.
-        """
+        """Return the yellow pages."""
         return self._yellow_pages
 
     def simulators(self) -> dict[str, "ElementHolder"]:
