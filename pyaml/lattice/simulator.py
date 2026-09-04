@@ -1,3 +1,9 @@
+"""PyAT-backed accelerator simulator interfaces.
+
+This module loads Accelerator Toolbox lattices and binds PyAML elements to
+their simulated lattice counterparts.
+"""
+
 from pathlib import Path
 
 import at
@@ -109,17 +115,21 @@ class Simulator(ElementHolder, DynamicValidation):
                     self._elements_indexing[e.FamName] = [e]
 
     def name(self) -> str:
+        """Return the simulator name."""
         return self._name
 
     @property
     def lattice(self) -> str:
+        """Return the configured lattice file path."""
         return self._lattice
 
     def get_lattice(self) -> at.Lattice:
+        """Return the loaded Accelerator Toolbox lattice."""
         return self.ring
 
     @property
     def mat_key(self) -> str | None:
+        """Return the MATLAB variable name used to load the lattice."""
         return self._mat_key
 
     def get_description(self) -> str | None:
@@ -130,13 +140,52 @@ class Simulator(ElementHolder, DynamicValidation):
 
     def create_magnet_strength_aggregator(self, magnets: list[Magnet]) -> ScalarAggregator:
         # No magnet aggregator for simulator
+        """
+        Return the magnet-strength aggregator for this simulator.
+
+        Parameters
+        ----------
+        magnets : list[Magnet]
+            Magnets for which aggregation was requested.
+
+        Returns
+        -------
+        ScalarAggregator
+            ``None`` because simulated magnet values are accessed directly.
+        """
         return None
 
     def create_magnet_hardware_aggregator(self, magnets: list[Magnet]) -> ScalarAggregator:
         # No magnet aggregator for simulator
+        """
+        Return the magnet-hardware aggregator for this simulator.
+
+        Parameters
+        ----------
+        magnets : list[Magnet]
+            Magnets for which aggregation was requested.
+
+        Returns
+        -------
+        ScalarAggregator
+            ``None`` because simulated hardware values are accessed directly.
+        """
         return None
 
     def create_bpm_aggregators(self, bpms: list[BPM]) -> list[ScalarAggregator]:
+        """
+        Create BPM position aggregators for the loaded lattice.
+
+        Parameters
+        ----------
+        bpms : list[BPM]
+            BPM elements whose positions should be read.
+
+        Returns
+        -------
+        list[ScalarAggregator]
+            Aggregators for combined, horizontal, and vertical BPM positions.
+        """
         agg = BPMScalarAggregator(self.get_lattice())
         aggh = BPMHScalarAggregator(self.get_lattice())
         aggv = BPMVScalarAggregator(self.get_lattice())
@@ -148,6 +197,14 @@ class Simulator(ElementHolder, DynamicValidation):
         return [agg, aggh, aggv]
 
     def fill_device(self, elements: list[Element]):
+        """
+        Attach PyAML elements to their matching PyAT lattice elements.
+
+        Parameters
+        ----------
+        elements : list[Element]
+            Elements to bind to simulated lattice accessors.
+        """
         for e in elements:
             # Need conversion to physics unit to work with simulator
             if isinstance(e, Magnet):
@@ -323,6 +380,19 @@ class Simulator(ElementHolder, DynamicValidation):
         return (element.get_name(), None)
 
     def get_at_elems(self, element: Element) -> list[at.Element]:
+        """
+        Resolve a PyAML element to matching PyAT lattice elements.
+
+        Parameters
+        ----------
+        element : Element
+            PyAML element whose lattice mapping should be resolved.
+
+        Returns
+        -------
+        list[at.Element]
+            Matching Accelerator Toolbox lattice elements.
+        """
         if self._linker:
             identifier = self._linker.get_element_identifier(element)
             element_list = self._linker.get_at_elements(identifier)
@@ -358,4 +428,7 @@ class Simulator(ElementHolder, DynamicValidation):
                     return [elts[idx] for idx in indices]
 
     def __repr__(self):
+        """
+        Implement the ``__repr__`` string.
+        """
         return __pyaml_repr__(self)

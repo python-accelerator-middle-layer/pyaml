@@ -1,3 +1,9 @@
+"""Interfaces for linking PyAML elements to PyAT lattice elements.
+
+Linkers translate PyAML element references into matching Accelerator Toolbox
+elements and provide the runtime objects used by simulator accessors.
+"""
+
 from abc import ABC, abstractmethod
 from typing import Iterable
 
@@ -41,10 +47,6 @@ class LatticeElementsLinker(ABC):
     to PyAT elements based on a given linking strategy (e.g., by family name,
     by index, or by a custom attribute).
 
-    Parameters
-    ----------
-    attribute_name: str
-
     linker_config_model : LinkerConfigModel
         The configuration model for the linking strategy.
 
@@ -55,6 +57,14 @@ class LatticeElementsLinker(ABC):
     """
 
     def __init__(self, linker_config_model: LinkerConfigModel):
+        """
+        Initialize a lattice-element linker.
+
+        Parameters
+        ----------
+        linker_config_model : LinkerConfigModel
+            Strategy-specific configuration used to identify lattice elements.
+        """
         self.linker_config_model = linker_config_model
         self.lattice: Lattice | None = None
 
@@ -71,6 +81,21 @@ class LatticeElementsLinker(ABC):
 
     @abstractmethod
     def _test_at_element(self, identifier: LinkerIdentifier, element: at.Element) -> bool:
+        """
+        Test whether a PyAT element matches a linker identifier.
+
+        Parameters
+        ----------
+        identifier : LinkerIdentifier
+            Identifier describing the desired lattice element.
+        element : at.Element
+            PyAT lattice element to test.
+
+        Returns
+        -------
+        bool
+            ``True`` if the element matches; otherwise ``False``.
+        """
         pass
 
     @abstractmethod
@@ -91,7 +116,7 @@ class LatticeElementsLinker(ABC):
         pass
 
     def _iter_matches(self, identifier: LinkerIdentifier) -> Iterable[at.Element]:
-        """Yield all elements in the lattice whose matches the identifier."""
+        """Yield all lattice elements matching ``identifier``."""
         if self.lattice:
             for elem in self.lattice:
                 if self._test_at_element(identifier, elem):

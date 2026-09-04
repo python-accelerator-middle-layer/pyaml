@@ -1,3 +1,9 @@
+"""Link PyAML elements to Accelerator Toolbox elements by attributes.
+
+This module compares a configured PyAT attribute with a PyAML element name to
+identify the corresponding lattice element during simulator initialization.
+"""
+
 from dataclasses import dataclass
 
 import at
@@ -40,10 +46,26 @@ class PyAtAttributeIdentifier(LinkerIdentifier):
     """
 
     def __init__(self, attribute_name: str, identifier):
+        """
+        Create an attribute-based lattice-element identifier.
+
+        The identifier is later compared with the value of ``attribute_name``
+        on each PyAT element considered by the linker.
+
+        Parameters
+        ----------
+        attribute_name : str
+            Name of the PyAT attribute used for matching.
+        identifier : object
+            Expected value of the matching PyAT attribute.
+        """
         self.attribute_name = attribute_name
         self.identifier = identifier
 
     def __repr__(self):
+        """
+        Implement the ``__repr__`` string.
+        """
         return f"{self.attribute_name}={self.identifier}"
 
 
@@ -57,6 +79,17 @@ class PyAtAttributeElementsLinker(LatticeElementsLinker, DynamicValidation):
     """
 
     def __init__(self, attribute_name: str):
+        """
+        Configure an attribute-based PyAT element linker.
+
+        During simulator initialization, the linker compares this attribute's
+        value on each PyAT element with the corresponding PyAML element name.
+
+        Parameters
+        ----------
+        attribute_name : str
+            Name of the PyAT attribute used to identify matching elements.
+        """
         config_model = PyAtAttributeConfigModel(attribute_name)
         super().__init__(config_model)
 
@@ -77,5 +110,20 @@ class PyAtAttributeElementsLinker(LatticeElementsLinker, DynamicValidation):
         return PyAtAttributeIdentifier(self.linker_config_model.attribute_name, element.get_name())
 
     def _test_at_element(self, identifier: PyAtAttributeIdentifier, element: at.Element) -> bool:
+        """
+        Check whether a PyAT element matches a linker identifier.
+
+        Parameters
+        ----------
+        identifier : PyAtAttributeIdentifier
+            Attribute name and expected identifier to compare.
+        element : at.Element
+            PyAT lattice element being tested.
+
+        Returns
+        -------
+        bool
+            ``True`` if the attribute value matches; otherwise ``False``.
+        """
         attr_value = getattr(element, identifier.attribute_name, None)
         return attr_value == identifier.identifier
