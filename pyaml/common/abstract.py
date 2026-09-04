@@ -1,3 +1,10 @@
+"""Abstract read/write interfaces for scalar and array values.
+
+The interfaces define the small protocol used by PyAML runtime elements to
+read values, write setpoints, report units, and map scalar channels onto
+array-backed data.
+"""
+
 from abc import ABCMeta, abstractmethod
 
 from numpy import array, double
@@ -6,77 +13,121 @@ from numpy import array, double
 
 
 class ReadFloatScalar(metaclass=ABCMeta):
-    """
-    Abstract class providing read access to a scalar double
-    """
+    """Define read-only access to one floating-point value."""
 
     @abstractmethod
     def get(self) -> double:
-        """Get the value"""
+        """Return the current scalar value.
+
+        Returns
+        -------
+        float
+            Current value.
+        """
         pass
 
     @abstractmethod
     def unit(self) -> str:
-        """Get the unit of the value"""
+        """Return the physical unit of the scalar value.
+
+        Returns
+        -------
+        str
+            Unit label.
+        """
         pass
 
 
 class ReadWriteFloatScalar(ReadFloatScalar):
-    """
-    Abstract class providing read write access to a scalar double
-    """
+    """Define read/write access to one floating-point value."""
 
     @abstractmethod
     def set(self, value: double):
-        """Set the value"""
+        """Write a scalar setpoint.
+
+        Parameters
+        ----------
+        value : float
+            Value to write.
+        """
         pass
 
     # Sets the value and wait that the read value reach the setpoint
     @abstractmethod
     def set_and_wait(self, value: double):
-        """Set the value and wait that setpoint is reached"""
+        """Write a setpoint and wait for readback confirmation.
+
+        Parameters
+        ----------
+        value : float
+            Target value.
+        """
         pass
 
 
 class ReadFloatArray(metaclass=ABCMeta):
-    """
-    Abstract class providing read access to a vector of float
-    """
+    """Define read-only access to an array of floating-point values."""
 
     @abstractmethod
     def get(self) -> array:
-        """Get the value"""
+        """Return the current values as an array."""
         pass
 
     @abstractmethod
     def unit(self) -> list[str]:
-        """Get the unit of the values"""
+        """Return the units associated with the array values."""
         pass
 
 
 class ReadWriteFloatArray(ReadFloatScalar):
-    """
-    Abstract class providing read write access to a vector of double
-    """
+    """Define read/write access to an array of floating-point values."""
 
     @abstractmethod
     def set(self, value: array):
-        """Set the values"""
+        """Write array values in the interface's defined order.
+
+        Parameters
+        ----------
+        value : numpy.ndarray
+            Values to write.
+        """
         pass
 
     # Sets the value and waits that the read value reach the setpoint
     @abstractmethod
     def set_and_wait(self, value: array):
-        """Set the values and wait that setpoints are reached"""
+        """Write array values and wait for readback confirmation.
+
+        Parameters
+        ----------
+        value : numpy.ndarray
+            Target values.
+        """
         pass
 
 
 class RWMapper(ReadWriteFloatScalar):
-    """
-    Class mapping a scalar to an element of an array
+    """Expose one array element through a scalar read/write interface.
+
+    Parameters
+    ----------
+    bind : ReadWriteFloatArray
+        Array interface containing the mapped value.
+    idx : int
+        Zero-based index of the mapped element.
     """
 
     def __init__(self, bind, idx: int):
+        """
+        Initialize the RWMapper.
+
+        Parameters
+        ----------
+        bind : object
+            Array interface containing the mapped value.
+        idx : int
+            Zero-based index of the mapped element.
+        """
         self.bind = bind
         self.idx = idx
 

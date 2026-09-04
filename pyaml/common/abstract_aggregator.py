@@ -1,3 +1,8 @@
+"""Abstract Aggregator module.
+
+This module provides abstract aggregator functionality for the PyAML accelerator middle layer.
+"""
+
 from abc import ABCMeta, abstractmethod
 
 import numpy as np

@@ -1,3 +1,5 @@
+"""Holder interfaces for RF plants and their transmitters."""
+
 from typing import TYPE_CHECKING
 
 from ...rf.rf_plant import RFPlant
@@ -9,69 +11,112 @@ if TYPE_CHECKING:
 
 
 class RFTransmitterHolder:
+    """Provide name-based access to RF transmitter elements.
+
+    Parameters
+    ----------
+    peer : 'ElementHolder'
+        Parent holder containing the transmitter store.
+    """
+
     def __init__(self, peer: "ElementHolder"):
+        """Initialize a transmitter holder for an element holder.
+
+        Parameters
+        ----------
+        peer : 'ElementHolder'
+            Parent holder containing the transmitter store.
+        """
         self._peer = peer
 
     def get(self, name: str) -> RFTransmitter:
+        """
+        Return a transmitter by name.
+
+        Parameters
+        ----------
+        name : str
+            Transmitter name.
+
+        Returns
+        -------
+        RFTransmitter
+            Matching RF transmitter.
+        """
         return self._peer._get("RFTransmitter", name, self._peer._RFTRANSMITTER)
 
     def add(self, rf: RFTransmitter):
+        """
+        Add an RF transmitter to the holder.
+
+        Parameters
+        ----------
+        rf : RFTransmitter
+            Transmitter to add.
+
+        Returns
+        -------
+        None
+            The transmitter is registered in the parent holder in place.
+        """
         self._peer._add(self._peer._RFTRANSMITTER, rf)
 
 
 class RFHolder:
-    """
-    RF holder
-    """
+    """Provide access to RF plants and their transmitters."""
 
     def __init__(self, peer: "ElementHolder"):
+        """Initialize an RF holder for an element holder.
+
+        Parameters
+        ----------
+        peer : 'ElementHolder'
+            Parent holder containing the RF plant store.
+        """
         self._peer = peer
         self._rftransmitter_holder = RFTransmitterHolder(peer)
 
     @property
     def transmitter(self) -> RFTransmitterHolder:
-        """
-        Returns RF transmitter holder
-
-        Parameters
-        ----------
-        name : str
-            Name of the element
-        """
+        """Return the holder for RF transmitter elements."""
         return self._rftransmitter_holder
 
     @property
     def frequency(self) -> ReadWriteFloatScalar:
-        """
-        Return a handle to RF frequency of the DEFAULT_RF_PLANT
-        """
+        """Return the default RF plant's frequency interface."""
         return self.get("DEFAULT_RF_PLANT").frequency
 
     @property
     def voltage(self) -> ReadWriteFloatScalar:
-        """
-        Return a handle to RF voltage of the DEFAULT_RF_PLANT
-        """
+        """Return the default RF plant's total-voltage interface."""
         return self.get("DEFAULT_RF_PLANT").voltage
 
     def get(self, name: str) -> RFPlant:
-        """
-        Returns the specified RF plant
+        """Return an RF plant by name.
 
         Parameters
         ----------
         name : str
-            Name of the RF plant
+            RF plant name.
+
+        Returns
+        -------
+        RFPlant
+            RF plant registered under ``name``.
         """
         return self._peer._get("RFPlant", name, self._peer._RFPLANT)
 
     def add(self, rf: RFPlant):
-        """
-        Adds the specified RF plant to the holder
+        """Add an RF plant to the holder.
 
         Parameters
         ----------
         rf : RFPlant
-            RF Plant to be added
+            RF plant to add.
+
+        Returns
+        -------
+        None
+            The plant is registered in the parent holder in place.
         """
         self._peer._add(self._peer._RFPLANT, rf)
