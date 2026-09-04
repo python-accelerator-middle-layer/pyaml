@@ -1,3 +1,9 @@
+"""Abstract collection interface for control-system devices.
+
+Backends implement :class:`DeviceAccessList` to expose ordered groups of
+device variables with bulk read, write, range, unit, and availability support.
+"""
+
 from abc import ABCMeta, abstractmethod
 
 import numpy as np
@@ -7,50 +13,81 @@ from .deviceaccess import DeviceAccess
 
 
 class DeviceAccessList(metaclass=ABCMeta):
-    """
-    Abstract class providing access to a list of control system variales.
-    Internal structure depends on the backend and might not be trivially mutable.
+    """Define ordered bulk access to control-system device variables.
+
+    The internal representation is backend-dependent.  Implementations expose
+    devices in a stable order so array values correspond to the same order for
+    reads, writes, readbacks, and ranges.
     """
 
     @abstractmethod
     def add_devices(self, devices: DeviceAccess | list[DeviceAccess]):
-        """Add a DeviceAccess (or a list) to this list"""
+        """Add one device or a list of devices to the collection."""
         pass
 
     @abstractmethod
     def get_device_at(self, index: int) -> DeviceAccess:
-        """Returns the device at the given index"""
+        """Return the device at a zero-based index.
+
+        Parameters
+        ----------
+        index : int
+            Position of the requested device.
+
+        Returns
+        -------
+        DeviceAccess
+            Device at ``index``.
+        """
         pass
 
     @abstractmethod
     def len(self) -> int:
-        """Get the DeviceAccessList length"""
+        """Return the number of devices in the collection."""
         pass
 
     @abstractmethod
     def set(self, value: npt.NDArray[np.float64]):
-        """Write a list of control system device variable
-        (i.e. a power supply currents)"""
+        """Write one setpoint for each device in collection order.
+
+        Parameters
+        ----------
+        value : numpy.typing.NDArray[numpy.float64]
+            Setpoints ordered to match the devices.
+        """
         pass
 
     @abstractmethod
     def set_and_wait(self, value: npt.NDArray[np.float64]):
-        """Write a list control system device variable (i.e. a power supply currents)"""
+        """Write setpoints and wait for all devices to reach them.
+
+        Parameters
+        ----------
+        value : numpy.typing.NDArray[numpy.float64]
+            Setpoints ordered to match the devices.
+        """
         pass
 
     @abstractmethod
     def get(self) -> npt.NDArray[np.float64]:
-        """Return a list of setpoints of control system device variables"""
+        """Return all current setpoints in collection order."""
         pass
 
     @abstractmethod
     def readback(self) -> np.array:
-        """Return the measured variables"""
+        """Return the latest measured values in collection order.
+
+        Returns
+        -------
+        numpy.ndarray
+            Readback values corresponding to the devices returned by
+            :meth:`get_device_at` at each index.
+        """
         pass
 
     @abstractmethod
     def unit(self) -> str:
-        """Return the variable unit"""
+        """Return the unit or units associated with the devices."""
         pass
 
     @abstractmethod
@@ -61,7 +98,8 @@ class DeviceAccessList(metaclass=ABCMeta):
         Returns
         -------
         list[float]
-            List containing [min0, max0, min1, max1, ...] values
+            Flat list containing ``[min0, max0, min1, max1, ...]``.
+            ``None`` may represent an unbounded limit.
         """
         pass
 
@@ -73,23 +111,44 @@ class DeviceAccessList(metaclass=ABCMeta):
         Returns
         -------
         bool
-            True if all devices are available, False otherwise
+            ``True`` only if every device is available and accessible.
         """
         pass
 
     # Immutable list implementation
 
     def __getitem__(self, index):
+        """Return the device at ``index``.
+
+        Parameters
+        ----------
+        index : object
+            Integer index of the requested device.
+
+        Returns
+        -------
+        DeviceAccess
+            Device selected by ``index``.
+        """
         return self.get_device_at(index)
 
     def __len__(self):
+        """Return the number of devices in the collection."""
         return self.len()
 
     def __iter__(self):
+        """Return an iterator over the devices in collection order."""
         self._iter_pos = 0
         return self
 
     def __next__(self):
+        """Return the next device during iteration.
+
+        Raises
+        ------
+        StopIteration
+            When all devices have been visited.
+        """
         if self._iter_pos < len(self._items):
             self._iter_pos += 1
             return self._items[self._iter_pos - 1]

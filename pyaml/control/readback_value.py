@@ -1,3 +1,9 @@
+"""Values returned by control-system readback channels.
+
+The module provides quality indicators and a :class:`Value` wrapper that keeps
+the measured value together with its quality state and acquisition timestamp.
+"""
+
 from datetime import datetime
 from enum import Enum, auto
 from typing import Union
@@ -6,21 +12,20 @@ import numpy as np
 
 
 class Quality(Enum):
-    """
-    Enumeration for data quality indicators.
+    """Describe the quality state associated with a readback value.
 
     Attributes
     ----------
     VALID : int
-        Data is valid and reliable
+        Data is valid and reliable.
     INVALID : int
-        Data is invalid
+        Data is invalid.
     ALARM : int
-        Data indicates an alarm condition
+        Data indicates an alarm condition.
     CHANGING : int
-        Data is currently changing
+        Data is currently changing.
     WARNING : int
-        Data indicates a warning condition
+        Data indicates a warning condition.
     """
 
     VALID = auto()
@@ -30,6 +35,9 @@ class Quality(Enum):
     WARNING = auto()
 
     def __str__(self):
+        """
+        Return a human-readable string representation of the object.
+        """
         return self.name
 
 
@@ -56,6 +64,19 @@ class Value:
         quality: Quality = Quality.VALID,
         timestamp: datetime = None,
     ):
+        """Initialize a value with quality metadata and an acquisition time.
+
+        Parameters
+        ----------
+        value : Union[float, int, np.ndarray]
+            Scalar or array-like measurement to wrap.
+        quality : Quality, optional
+            Quality state reported for the measurement. Defaults to
+            :attr:`Quality.VALID`.
+        timestamp : datetime, optional
+            Measurement timestamp. If omitted, the current local time is
+            recorded.
+        """
         self.value = value
         self.quality = quality
         self.timestamp = timestamp or datetime.now()
