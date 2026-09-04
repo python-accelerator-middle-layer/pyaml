@@ -1,3 +1,10 @@
+"""Build PyAML objects from configuration dictionaries and lists.
+
+The factory resolves class paths, optionally validates configuration with
+Pydantic models, recursively builds nested values, and registers constructed
+accelerator elements.
+"""
+
 import fnmatch
 from dataclasses import dataclass
 from importlib import import_module
@@ -158,6 +165,22 @@ BUILD_KEYS = NEW_KEYS + (LEGACY_KEY,)
 
 @dataclass(frozen=True)
 class BuildInfo:
+    """Store the resolved information required to construct one object.
+
+    Attributes
+    ----------
+    module : types.ModuleType
+        Module containing the target class.
+    config_cls : type[pydantic.BaseModel] or None
+        Optional configuration model used to validate the object data.
+    class_cls : type
+        Class to instantiate.
+    control_modes : list of str or None
+        Control-system modes for creating an :class:`UnboundElement`.
+    config : dict of str to object
+        Remaining constructor configuration.
+    """
+
     module: ModuleType
     config_cls: type[BaseModel] | None  # Legacy
     class_cls: type[Any]
@@ -166,6 +189,20 @@ class BuildInfo:
 
 
 def _import_module(module_path: str, ignore_external: bool) -> ModuleType | None:
+    """Import a module referenced by a configuration class path.
+
+    Parameters
+    ----------
+    module_path : str
+        Dotted module path to import.
+    ignore_external : bool
+        If ``True``, return ``None`` when the module is unavailable.
+
+    Returns
+    -------
+    ModuleType | None
+        Imported module, or ``None`` when an external module is ignored.
+    """
     try:
         return import_module(module_path)
     except ModuleNotFoundError as exc:
@@ -176,6 +213,20 @@ def _import_module(module_path: str, ignore_external: bool) -> ModuleType | None
 
 def _resolve_class_name(module: ModuleType, module_path: str) -> str:
     # Legacy
+    """Resolve the legacy default class name exposed by a module.
+
+    Parameters
+    ----------
+    module : ModuleType
+        Imported module containing ``PYAMLCLASS``.
+    module_path : str
+        Module path used in configuration error messages.
+
+    Returns
+    -------
+    str
+        Class name stored in the module's ``PYAMLCLASS`` attribute.
+    """
     class_name = getattr(module, "PYAMLCLASS", None)
     if class_name is None:
         raise PyAMLConfigException(f"Module '{module_path}' does not define PYAMLCLASS.")
@@ -183,6 +234,20 @@ def _resolve_class_name(module: ModuleType, module_path: str) -> str:
 
 
 def _resolve_build_info(data: dict, ignore_external: bool) -> BuildInfo | None:
+    """Resolve a configuration mapping into object-construction metadata.
+
+    Parameters
+    ----------
+    data : dict
+        Configuration mapping containing a legacy ``type`` or a class path.
+    ignore_external : bool
+        If ``True``, ignore unavailable external modules.
+
+    Returns
+    -------
+    BuildInfo | None
+        Resolved build metadata, or ``None`` for an ignored external module.
+    """
     if not isinstance(data, dict):
         raise PyAMLConfigException(f"Unexpected object {data!r}. It needs to be a dict.")
 
@@ -251,13 +316,40 @@ def _resolve_build_info(data: dict, ignore_external: bool) -> BuildInfo | None:
 
 
 class PyAMLFactory:
+    """Construct PyAML objects from recursively nested configuration data."""
+
     def build(self, data: dict | list, ignore_external: bool = False) -> Any:
+        """
+        Build objects from a top-level mapping or sequence.
+
+        Parameters
+        ----------
+        data : dict | list
+            Configuration dictionary or list to resolve.
+        ignore_external : bool
+            If ``True``, ignore unavailable external modules.
+
+        Returns
+        -------
+        Any
+            Built object, list, or recursively processed mapping.
+        """
         if not isinstance(data, (dict, list)):
             raise PyAMLConfigException(f"Unexpected element found. Expected 'dict' or 'list' but got '{type(data).__name__}'")
 
         return self._build(data, ignore_external)
 
     def _build(self, value: Any, ignore_external: bool = False):
+        """
+        Recursively build one configuration value.
+
+        Parameters
+        ----------
+        value : Any
+            Value to process; mappings and lists are traversed recursively.
+        ignore_external : bool
+            If ``True``, ignore unavailable external modules.
+        """
         if isinstance(value, list):
             return self._build_list(value, ignore_external)
 
@@ -267,15 +359,45 @@ class PyAMLFactory:
         return value
 
     def _build_list(self, items: list[Any], ignore_external: bool = False):
+        """
+        Recursively build every item in a configuration list.
+
+        Parameters
+        ----------
+        items : list[Any]
+            Items to process.
+        ignore_external : bool
+            If ``True``, ignore unavailable external modules.
+        """
         return [self._build(item, ignore_external) for item in items]
 
     def _build_dict(self, data: dict, ignore_external: bool = False):
+        """
+        Recursively build a mapping or instantiate its declared object.
+
+        Parameters
+        ----------
+        data : dict
+            Configuration mapping to process.
+        ignore_external : bool
+            If ``True``, ignore unavailable external modules.
+        """
         if any(key in data for key in BUILD_KEYS):
             return self._build_object(data, ignore_external)
 
         return {key: self._build(value, ignore_external) for key, value in data.items()}
 
     def _build_object(self, data: dict, ignore_external: bool = False):
+        """
+        Validate and instantiate an object declared by a configuration mapping.
+
+        Parameters
+        ----------
+        data : dict
+            Mapping containing a class declaration and constructor data.
+        ignore_external : bool
+            If ``True``, ignore unavailable external modules.
+        """
         build_info = _resolve_build_info(data, ignore_external)
         if build_info is None:
             return None

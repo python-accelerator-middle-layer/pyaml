@@ -1,3 +1,10 @@
+"""Deferred construction of control-system-specific elements.
+
+An :class:`UnboundElement` stores a class, validated configuration, and the
+control modes in which it is available until an :class:`ElementHolder` is
+known and the concrete element can be instantiated.
+"""
+
 from pydantic import BaseModel
 
 from ..common.element import Element
@@ -5,23 +12,32 @@ from ..common.exception import PyAMLConfigException
 
 
 class UnboundElement(Element):
-    """
-    Class that holds a configuration for an element created on the fly when ElementHolder is filled
+    """Store configuration for an element instantiated when a holder is filled.
+
+    Parameters
+    ----------
+    element_class : type
+        Concrete element class to instantiate.
+    module_name : str
+        Module path used to identify the element in error messages.
+    modes : list of str
+        Control-system modes in which the element should be created.
+    config : pydantic.BaseModel
+        Validated configuration passed to the element constructor.
     """
 
     def __init__(self, element_class, module_name: str, modes: list[str], config: BaseModel):
-        """
-        Construct an External element
+        """Initialize a deferred element configuration.
         Parameters
         ----------
         element_class : class
-            Element class
+            Concrete element class to instantiate later.
         module_name : str
-            Element module
+            Fully qualified module name of ``element_class``.
         control_modes: list[str]
-            List of control modes to add the element to
+            Control-system modes in which to instantiate the element.
         config: BaseModel
-            Element configuration
+            Validated element configuration.
         """
         super().__init__(config.name)
         self._class = element_class
@@ -30,6 +46,9 @@ class UnboundElement(Element):
         self._config = config
 
     def __repr__(self):
+        """
+        Implement the ``__repr__`` string.
+        """
         return "%s(name='%s', class_name='%s', module_name=%s)" % (
             self.__class__.__name__,
             self.get_name(),
