@@ -1,7 +1,7 @@
 from collections.abc import Callable
 from typing import TYPE_CHECKING, Generic, TypeVar
 
-from ..element import Element
+from ..element import Element, __pyaml_repr__
 
 if TYPE_CHECKING:
     from .element_holder import ElementHolder
@@ -65,3 +65,6 @@ class GenericArrayHolder(Generic[T, A]):
 
     def __getitem__(self, key):
         return self.get().__getitem__(key)
+
+    def __repr__(self):
+        return __pyaml_repr__(self)

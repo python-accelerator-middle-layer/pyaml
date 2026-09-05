@@ -3,6 +3,7 @@ from typing import TYPE_CHECKING
 from ...rf.rf_plant import RFPlant
 from ...rf.rf_transmitter import RFTransmitter
 from ..abstract import ReadWriteFloatScalar
+from ..element import __pyaml_repr__
 
 if TYPE_CHECKING:
     from .element_holder import ElementHolder
@@ -17,6 +18,9 @@ class RFTransmitterHolder:
 
     def add(self, rf: RFTransmitter):
         self._peer._add(self._peer._RFTRANSMITTER, rf)
+
+    def __repr__(self):
+        return __pyaml_repr__(self)
 
 
 class RFHolder:
@@ -75,3 +79,6 @@ class RFHolder:
             RF Plant to be added
         """
         self._peer._add(self._peer._RFPLANT, rf)
+
+    def __repr__(self):
+        return __pyaml_repr__(self)

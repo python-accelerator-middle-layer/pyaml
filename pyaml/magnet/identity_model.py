@@ -44,20 +44,20 @@ class IdentityMagnetModel(MagnetModel):
         physics: str | None = None,
         unit: str | None = None,
     ):
-        self._physics = physics
-        self._powerconverter = powerconverter
-        self._unit = unit
+        self.physics = physics
+        self.powerconverter = powerconverter
+        self.unit = unit
 
-        if self._physics is None and self._powerconverter is None:
+        if self.physics is None and self.powerconverter is None:
             raise PyAMLException("Invalid IdentityMagnetModel configuration,physics or powerconverter device required")
-        if self._physics is not None and self._powerconverter is not None:
+        if self.physics is not None and self.powerconverter is not None:
             raise PyAMLException(
                 "Invalid IdentityMagnetModel configuration,physics or powerconverter device required but not both"
             )
-        if self._physics:
-            self.__device = self._physics
+        if self.physics:
+            self.__device = self.physics
         else:
-            self.__device = self._powerconverter
+            self.__device = self.powerconverter
 
     def compute_hardware_values(self, strengths: np.array) -> np.array:
         return strengths
@@ -66,10 +66,10 @@ class IdentityMagnetModel(MagnetModel):
         return currents
 
     def get_strength_units(self) -> list[str]:
-        return [self._unit]
+        return [self.unit]
 
     def get_hardware_units(self) -> list[str]:
-        return [self._unit]
+        return [self.unit]
 
     def get_device_names(self) -> list[str | None]:
         return [self.__device]
@@ -78,10 +78,10 @@ class IdentityMagnetModel(MagnetModel):
         pass
 
     def has_physics(self) -> bool:
-        return self._physics is not None
+        return self.physics is not None
 
     def has_hardware(self) -> bool:
-        return self._powerconverter is not None
+        return self.powerconverter is not None
 
     def __repr__(self):
         return __pyaml_repr__(self)

@@ -1,6 +1,6 @@
 from typing import TYPE_CHECKING, Generic, TypeVar
 
-from ..element import Element
+from ..element import Element, __pyaml_repr__
 
 if TYPE_CHECKING:
     from .element_holder import ElementHolder
@@ -50,3 +50,6 @@ class GenericElementHolder(Generic[T]):
            Element to be added
         """
         self._peer._add(self._store, m)
+
+    def __repr__(self):
+        return __pyaml_repr__(self)
