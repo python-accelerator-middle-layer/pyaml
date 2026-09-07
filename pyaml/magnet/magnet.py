@@ -79,8 +79,8 @@ class Magnet(Element):
         obj._peer = peer
         return obj
 
-    def fill_device(self, holder) -> None:
-        holder.fill_magnet(self)
+    def _fill_device(self, holder) -> None:
+        holder._fill_magnet(self)
 
     def set_energy(self, energy: float):
         """

@@ -147,40 +147,40 @@ class ElementHolder(metaclass=ABCMeta):
         for e in self.get_all_elements():
             e.post_init()
 
-    def fill_device(self, elements: list[Element]):
+    def _fill_device(self, elements: list[Element]):
         for element in elements:
-            element.fill_device(self)
+            element._fill_device(self)
 
     @abstractmethod
-    def fill_magnet(self, magnet: Magnet) -> None:
+    def _fill_magnet(self, magnet: Magnet) -> None:
         pass
 
     @abstractmethod
-    def fill_combined_function_magnet(self, magnet: CombinedFunctionMagnet) -> None:
+    def _fill_combined_function_magnet(self, magnet: CombinedFunctionMagnet) -> None:
         pass
 
     @abstractmethod
-    def fill_serialized_magnets(self, magnets: SerializedMagnets) -> None:
+    def _fill_serialized_magnets(self, magnets: SerializedMagnets) -> None:
         pass
 
     @abstractmethod
-    def fill_bpm(self, bpm: BPM) -> None:
+    def _fill_bpm(self, bpm: BPM) -> None:
         pass
 
     @abstractmethod
-    def fill_rf_plant(self, rf_plant: RFPlant) -> None:
+    def _fill_rf_plant(self, rf_plant: RFPlant) -> None:
         pass
 
     @abstractmethod
-    def fill_betatron_tune_monitor(self, monitor: BetatronTuneMonitor) -> None:
+    def _fill_betatron_tune_monitor(self, monitor: BetatronTuneMonitor) -> None:
         pass
 
     @abstractmethod
-    def fill_tool(self, tool: "TuningTool | MeasurementTool") -> None:
+    def _fill_tool(self, tool: "TuningTool | MeasurementTool") -> None:
         pass
 
     @abstractmethod
-    def fill_unbound_element(self, element: "UnboundElement") -> None:
+    def _fill_unbound_element(self, element: "UnboundElement") -> None:
         pass
 
     # Aggregators

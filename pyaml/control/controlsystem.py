@@ -119,13 +119,13 @@ class ControlSystem(ElementHolder, metaclass=ABCMeta):
             aggv.add_devices(devs[1])
         return [agg, aggh, aggv]
 
-    def fill_magnet(self, magnet: Magnet) -> None:
+    def _fill_magnet(self, magnet: Magnet) -> None:
         device = self.get_device_access(magnet.model.get_device_names()[0])
         current = RWHardwareScalar(magnet.model, device) if magnet.model.has_hardware() else None
         strength = RWStrengthScalar(magnet.model, device) if magnet.model.has_physics() else None
         self.magnet.add(magnet.attach(self, strength, current))
 
-    def fill_combined_function_magnet(self, magnet: CombinedFunctionMagnet) -> None:
+    def _fill_combined_function_magnet(self, magnet: CombinedFunctionMagnet) -> None:
         devices = self.get_devices_access(magnet.model.get_device_names())
         currents = RWHardwareArray(magnet.model, devices)
         strengths = RWStrengthArray(magnet.model, devices)
@@ -134,7 +134,7 @@ class ControlSystem(ElementHolder, metaclass=ABCMeta):
         for virtual_magnet in attached_magnets[1:]:
             self.magnet.add(virtual_magnet)
 
-    def fill_serialized_magnets(self, magnets: SerializedMagnets) -> None:
+    def _fill_serialized_magnets(self, magnets: SerializedMagnets) -> None:
         devices = self.get_devices_access(magnets.model.get_device_names())
         currents = []
         strengths = []
@@ -150,7 +150,7 @@ class ControlSystem(ElementHolder, metaclass=ABCMeta):
         for magnet in attached_magnets[1:]:
             self.magnet.add(magnet)
 
-    def fill_bpm(self, bpm: BPM) -> None:
+    def _fill_bpm(self, bpm: BPM) -> None:
         position_devices = self.get_devices_access(bpm.get_pos_devices())
         tilt_devices = self.get_devices_access([bpm.get_tilt_device()])
         offset_devices = self.get_devices_access(bpm.get_offset_devices())
@@ -159,7 +159,7 @@ class ControlSystem(ElementHolder, metaclass=ABCMeta):
         offsets = RWBpmOffsetArray(offset_devices[0], offset_devices[1])
         self.bpm.add(bpm.attach(self, positions, offsets, tilt))
 
-    def fill_rf_plant(self, rf_plant: RFPlant) -> None:
+    def _fill_rf_plant(self, rf_plant: RFPlant) -> None:
         attached_transmitters: list[RFTransmitter] = []
         if rf_plant.transmitters:
             for transmitter in rf_plant.transmitters:
@@ -175,14 +175,14 @@ class ControlSystem(ElementHolder, metaclass=ABCMeta):
         voltage = RWTotalVoltage(attached_transmitters) if rf_plant.transmitters else None
         self.rf.add(rf_plant.attach(self, frequency, voltage))
 
-    def fill_betatron_tune_monitor(self, monitor: BetatronTuneMonitor) -> None:
+    def _fill_betatron_tune_monitor(self, monitor: BetatronTuneMonitor) -> None:
         devices = self.get_devices_access([monitor.tune_h, monitor.tune_v])
         self.add_betatron_tune_monitor(monitor.attach(self, RBetatronTuneArray(monitor, devices)))
 
-    def fill_tool(self, tool: TuningTool | MeasurementTool) -> None:
+    def _fill_tool(self, tool: TuningTool | MeasurementTool) -> None:
         self.add_tool(tool.attach(self))
 
-    def fill_unbound_element(self, element: UnboundElement) -> None:
+    def _fill_unbound_element(self, element: UnboundElement) -> None:
         if self.name() not in element._control_modes:
             return
         attached_element = element.instantiate(self)
