@@ -50,6 +50,6 @@ def test_fill_device_delegates_to_elements():
     holder = DispatchHolder()
     elements = [DispatchElement("FIRST"), DispatchElement("SECOND")]
 
-    holder._fill_device(elements)
+    holder.fill_device(elements)
 
     assert holder.filled_elements == elements
