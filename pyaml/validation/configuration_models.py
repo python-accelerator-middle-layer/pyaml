@@ -28,6 +28,20 @@ class PyAMLBaseModel(BaseModel):
         kwargs.setdefault("serialize_as_any", True)
         return super().model_dump_json(**kwargs)
 
+    @classmethod
+    def describe(cls) -> str:
+        """Return a readable description of the model fields."""
+        lines = [f"{cls.__name__}("]
+
+        for name, field in cls.model_fields.items():
+            line = f"    {name}: {getattr(field.annotation, '__name__', field.annotation)}"
+            if field.description:
+                line += f" — {field.description}"
+            lines.append(line)
+
+        lines.append(")")
+        return "\n".join(lines)
+
 
 class ConfigurationSchema(PyAMLBaseModel):
     """
