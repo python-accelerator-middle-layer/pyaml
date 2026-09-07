@@ -65,7 +65,7 @@ def test_duplicate_error_reports_source_line_and_column_across_files(tmp_path):
     )
 
     with pytest.raises(PyAMLConfigException) as exc:
-        Accelerator.load(str(root), include_locations=True, validate=False)
+        Accelerator.load(str(root), include_locations=True, validate=True)
 
     message = str(exc.value)
     assert "Configuration entry 'BPM_DUPLICATE' is duplicated inside category 'devices'" in message
