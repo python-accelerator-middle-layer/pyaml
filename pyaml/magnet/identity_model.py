@@ -1,5 +1,7 @@
 import numpy as np
 
+from pyaml.validation import DynamicValidation, register_schema
+
 from .. import PyAMLException
 from ..common.element import __pyaml_repr__
 from .model import MagnetModel
@@ -8,7 +10,8 @@ from .model import MagnetModel
 PYAMLCLASS = "IdentityMagnetModel"
 
 
-class IdentityMagnetModel(MagnetModel):
+@register_schema
+class IdentityMagnetModel(MagnetModel, DynamicValidation):
     """
     Identity magnet model.
 
