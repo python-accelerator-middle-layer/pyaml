@@ -151,7 +151,7 @@ class Simulator(ElementHolder, DynamicValidation):
             aggv.add_elem(e)
         return [agg, aggh, aggv]
 
-    def fill_magnet(self, magnet: Magnet) -> None:
+    def _fill_magnet(self, magnet: Magnet) -> None:
         current = (
             RWHardwareScalar(self.get_at_elems(magnet), magnet.polynom, magnet.model) if magnet.model.has_physics() else None
         )
@@ -160,7 +160,7 @@ class Simulator(ElementHolder, DynamicValidation):
         )
         self.magnet.add(magnet.attach(self, strength, current))
 
-    def fill_combined_function_magnet(self, magnet: CombinedFunctionMagnet) -> None:
+    def _fill_combined_function_magnet(self, magnet: CombinedFunctionMagnet) -> None:
         currents = (
             RWHardwareArray(self.get_at_elems(magnet), magnet.polynoms, magnet.model) if magnet.model.has_physics() else None
         )
@@ -172,7 +172,7 @@ class Simulator(ElementHolder, DynamicValidation):
         for virtual_magnet in magnets[1:]:
             self.magnet.add(virtual_magnet)
 
-    def fill_serialized_magnets(self, magnets: SerializedMagnets) -> None:
+    def _fill_serialized_magnets(self, magnets: SerializedMagnets) -> None:
         currents = []
         strengths = []
         for index, magnet in enumerate(magnets.get_magnets()):
@@ -198,7 +198,7 @@ class Simulator(ElementHolder, DynamicValidation):
         for magnet in attached_magnets[1:]:
             self.magnet.add(magnet)
 
-    def fill_bpm(self, bpm: BPM) -> None:
+    def _fill_bpm(self, bpm: BPM) -> None:
         bpm_elt = self.get_at_elems(bpm)[0]
         if not hasattr(bpm_elt, "Tilt"):
             bpm_elt.Tilt = 0.0
@@ -209,7 +209,7 @@ class Simulator(ElementHolder, DynamicValidation):
         update_bpm_transform_matrix(bpm_elt)
         self.bpm.add(bpm.attach(self, RBpmArray(bpm_elt, self.ring), RWBpmOffsetArray(bpm_elt), RWBpmTiltScalar(bpm_elt)))
 
-    def fill_rf_plant(self, rf_plant: RFPlant) -> None:
+    def _fill_rf_plant(self, rf_plant: RFPlant) -> None:
         if rf_plant.transmitters:
             cavities: list[at.Element] = []
             harmonics: list[float] = []
@@ -234,13 +234,13 @@ class Simulator(ElementHolder, DynamicValidation):
         else:
             self.rf.add(rf_plant.attach(self, RWRFATFrequencyScalar(self.ring), RWRFATotalVoltageScalar(self.ring)))
 
-    def fill_betatron_tune_monitor(self, monitor: BetatronTuneMonitor) -> None:
+    def _fill_betatron_tune_monitor(self, monitor: BetatronTuneMonitor) -> None:
         self.add_betatron_tune_monitor(monitor.attach(self, RBetatronTuneArray(self.ring)))
 
-    def fill_tool(self, tool: TuningTool | MeasurementTool) -> None:
+    def _fill_tool(self, tool: TuningTool | MeasurementTool) -> None:
         self.add_tool(tool.attach(self))
 
-    def fill_unbound_element(self, element: "UnboundElement") -> None:
+    def _fill_unbound_element(self, element: "UnboundElement") -> None:
         pass
 
     def get_names(self, element: Element) -> list[str] | None:

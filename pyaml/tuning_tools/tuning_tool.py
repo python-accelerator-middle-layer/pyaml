@@ -26,8 +26,8 @@ class TuningTool(Element):
         obj._peer = peer
         return obj
 
-    def fill_device(self, holder: "ElementHolder") -> None:
-        holder.fill_tool(self)
+    def _fill_device(self, holder: "ElementHolder") -> None:
+        holder._fill_tool(self)
 
     def _after_attach(self) -> None:
         """Hook for subclasses to rebind internal references after attach."""
