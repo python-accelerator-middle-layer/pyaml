@@ -37,8 +37,8 @@ class UnboundElement(Element):
             self._module_name,
         )
 
-    def fill_device(self, holder) -> None:
-        holder.fill_unbound_element(self)
+    def _fill_device(self, holder) -> None:
+        holder._fill_unbound_element(self)
 
     def instantiate(self, holder) -> Element:
         """
