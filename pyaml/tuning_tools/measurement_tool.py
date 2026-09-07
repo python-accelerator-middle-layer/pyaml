@@ -27,8 +27,8 @@ class MeasurementTool(Element, metaclass=ABCMeta):
         self._peer: "ElementHolder" = None  # Peer: ControlSystem or Simulator
         self._callback: Callable = None
 
-    def fill_device(self, holder: "ElementHolder") -> None:
-        holder.fill_tool(self)
+    def _fill_device(self, holder: "ElementHolder") -> None:
+        holder._fill_tool(self)
 
     def _init_measure(self, measurement_type: str | None = None):
         # Initialize measurement data

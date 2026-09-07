@@ -100,7 +100,7 @@ class Accelerator:
                 else:
                     # Add as dynamic attribute
                     setattr(self, c.name(), c)
-                c.fill_device(self._devices)
+                c._fill_device(self._devices)
                 c._peer = self
                 self._controls[c.name()] = c
 
@@ -111,7 +111,7 @@ class Accelerator:
                 else:
                     # Add as dynamic attribute
                     setattr(self, s.name(), s)
-                s.fill_device(self._devices)
+                s._fill_device(self._devices)
                 s._peer = self
                 self._simulators[s.name()] = s
 
@@ -201,11 +201,11 @@ class Accelerator:
         self._devices.append(dev)
         if self._controls is not None:
             for c in self._controls:
-                c.fill_device([dev])
+                c._fill_device([dev])
 
         if self._simulators is not None:
             for s in self._simulators:
-                s.fill_device([dev])
+                s._fill_device([dev])
 
     def post_init(self):
         """
