@@ -5,10 +5,7 @@ from scipy.constants import speed_of_light
 
 from ..common import abstract
 from ..common.abstract_aggregator import ScalarAggregator
-from ..common.exception import PyAMLException
 from ..magnet.model import MagnetModel
-from ..rf.rf_plant import RFPlant
-from ..rf.rf_transmitter import RFTransmitter
 from .polynom_info import PolynomInfo
 
 # TODO handle serialized magnets for magnet array

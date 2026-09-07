@@ -1,7 +1,6 @@
 from dataclasses import dataclass
 from pathlib import Path
 
-from pyaml.common.element import __pyaml_repr__
 from pyaml.configuration.factory import Factory
 
 from .. import PyAMLException

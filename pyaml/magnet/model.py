@@ -3,8 +3,6 @@ from abc import ABCMeta, abstractmethod
 import numpy as np
 import numpy.typing as npt
 
-from ..control.deviceaccess import DeviceAccess
-
 
 class MagnetModel(metaclass=ABCMeta):
     """

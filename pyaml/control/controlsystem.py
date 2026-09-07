@@ -8,7 +8,6 @@ from ..common.abstract_aggregator import ScalarAggregator
 from ..common.element import Element
 from ..common.exception import PyAMLException
 from ..common.holders.element_holder import ElementHolder
-from ..configuration.factory import Factory
 from ..configuration.unbound_element import UnboundElement
 from ..control.abstract_impl import (
     CSScalarAggregator,

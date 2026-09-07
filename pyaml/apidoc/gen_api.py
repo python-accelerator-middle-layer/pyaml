@@ -1,7 +1,6 @@
 import importlib
 import inspect
 import sys
-from pathlib import Path
 
 # List of PyAML modules to include in the API reference
 # for i in `find . | grep ".py" | grep -v "cache" | grep -v "__init__"`;
