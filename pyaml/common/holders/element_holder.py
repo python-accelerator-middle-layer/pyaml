@@ -143,7 +143,7 @@ class ElementHolder(metaclass=ABCMeta):
         for e in self.get_all_elements():
             e.post_init()
 
-    def _fill_device(self, elements: list[Element]):
+    def fill_device(self, elements: list[Element]):
         for element in elements:
             element._fill_device(self)
 
