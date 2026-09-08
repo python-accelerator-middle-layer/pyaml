@@ -131,6 +131,9 @@ class Magnet(Element):
         obj._peer = peer
         return obj
 
+    def _fill_device(self, holder) -> None:
+        holder._fill_magnet(self)
+
     def set_energy(self, energy: float):
         """
         Set the energy in eV to compute and set the magnet rigidity

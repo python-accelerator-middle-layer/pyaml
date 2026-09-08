@@ -176,6 +176,9 @@ class BPM(Element, DynamicValidation):
         obj._peer = peer
         return obj
 
+    def _fill_device(self, holder) -> None:
+        holder._fill_bpm(self)
+
     def get_pos_devices(self) -> list[str | None]:
         """
         Return configured device keys used for position readback.
