@@ -31,7 +31,6 @@ class ResponseMatrixData(DynamicValidation):
     matrix: list[list[float]]
     observable_names: list[str]
     variable_names: list[str] | None = None
-    type: str | None = None
 
     @staticmethod
     def load(filename: str) -> "ResponseMatrixData":
