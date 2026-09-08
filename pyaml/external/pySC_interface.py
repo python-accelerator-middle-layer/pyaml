@@ -1,4 +1,5 @@
-"""Adapter between PyAML elements and pySC measurement applications.
+"""
+Adapter between PyAML elements and pySC measurement applications.
 
 The :class:`pySCInterface` exposes the orbit, magnet-strength, and RF-frequency
 operations expected by pySC while using PyAML element-holder accessors.
@@ -21,11 +22,11 @@ class pySCInterface:
     Parameters
     ----------
     element_holder : 'ElementHolder'
-        Input value for this operation.
+        Accelerator mode, control system or simulator, exposed to pySC.
     bpm_array_name : str
-        Input value for this operation.
+        Name of the BPM array used for orbit readback.
     rf_plant_name : Optional[str]
-        Input value for this operation.
+        Optional RF plant name, required for RF-related pySC operations.
     """
 
     set_wait_time: float = 0

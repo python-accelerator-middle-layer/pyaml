@@ -46,7 +46,8 @@ def dump_nested(value: Any) -> Any:
 
 
 class SchemaValidator:
-    """Recursive validator for configuration dictionaries.
+    """
+    Recursive validator for configuration dictionaries.
 
     The validator traverses nested configuration data structures and
     converts dictionaries representing configuration objects into
@@ -70,7 +71,8 @@ class SchemaValidator:
         cls,
         data: dict[str, Any],
     ) -> ConfigurationSchema:
-        """Validate configuration data recursively.
+        """
+        Validate configuration data recursively.
 
         Parameters
         ----------
@@ -109,7 +111,8 @@ class SchemaValidator:
 
     @classmethod
     def _recursive_validate(cls, obj: Any) -> Any:
-        """Recursively validate nested configuration objects.
+        """
+        Recursively validate nested configuration objects.
 
         Lists are traversed recursively element-by-element. Dictionaries
         are recursively traversed and then interpreted as configuration

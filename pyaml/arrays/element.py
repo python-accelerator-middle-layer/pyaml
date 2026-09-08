@@ -1,4 +1,5 @@
-"""Element module.
+"""
+Element module.
 
 This module provides element functionality.
 """
@@ -16,8 +17,8 @@ class Element(ArrayConfig, DynamicValidation):
     """
     :py:class:`.ElementArray` configuration.
 
-    Example
-    -------
+    Examples
+    --------
 
     An element array configuration can also be created by code using
     the following example:
@@ -28,8 +29,6 @@ class Element(ArrayConfig, DynamicValidation):
         elt_cfg = Element(
            ElementArrayConfigModel(name="MyArray", elements=["BPM_C04-01","SH1A-C04-H"])
         )
-
-
     """
 
     def __init__(self, name: str, elements: list[str]):
@@ -39,9 +38,10 @@ class Element(ArrayConfig, DynamicValidation):
         Parameters
         ----------
         name : str
-            Input value for this operation.
+            Name under which the array is registered and later looked up.
         elements : list[str]
-            Input value for this operation.
+            Element name patterns making up the array: literal names, ``fnmatch`` wildcards, or ``re:`` regular
+            expressions.
         """
         super().__init__(name, elements)
 

@@ -29,9 +29,9 @@ class ArrayConfig(DynamicValidation):
         Parameters
         ----------
         name : str
-            Input value for this operation.
+            Name of the array
         elements : list[str]
-            Input value for this operation.
+            List of pyaml element names
         """
         self._name = name
         self._elements = elements

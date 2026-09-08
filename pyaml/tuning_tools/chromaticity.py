@@ -1,4 +1,5 @@
-"""Chromaticity correction and response-matrix tools.
+"""
+Chromaticity correction and response-matrix tools.
 
 The :class:`Chromaticity` tool reads measured chromaticity, computes sextupole
 strength corrections from a response matrix, and applies those corrections to

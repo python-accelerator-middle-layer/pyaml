@@ -1,4 +1,5 @@
-"""PyAT-backed accelerator simulator interfaces.
+"""
+PyAT-backed accelerator simulator interfaces.
 
 This module loads Accelerator Toolbox lattices and binds PyAML elements to
 their simulated lattice counterparts.
@@ -52,7 +53,8 @@ PYAMLCLASS = "Simulator"
 
 @register_schema
 class Simulator(ElementHolder, DynamicValidation):
-    """Simulator interface backed by a PyAT lattice.
+    """
+    Simulator interface backed by a PyAT lattice.
 
     The simulator loads a PyAT lattice from disk and attaches PyAML
     elements to their corresponding PyAT elements. Once attached, the
@@ -61,6 +63,36 @@ class Simulator(ElementHolder, DynamicValidation):
 
     Elements may be matched either using the default name-based lookup
     or a custom :class:`LatticeElementsLinker`.
+
+    Attributes
+    ----------
+    lattice
+        Underlying PyAT lattice.
+    mat_key
+        Key used to read the lattice out of a MATLAB file.
+
+    Methods
+    -------
+    name()
+        Return the simulator name.
+    get_lattice()
+        Return the underlying PyAT lattice.
+    get_names(element)
+        Return the PyAT element names matching a PyAML element.
+    get_indices(element)
+        Return the lattice indices matching a PyAML element.
+    get_at_elems(element)
+        Return the PyAT elements matching a PyAML element.
+    fill_device(elements)
+        Bind elements to their PyAT counterparts through read/write accessors.
+    create_magnet_strength_aggregator(magnets)
+        Build a grouped strength accessor for a set of magnets.
+    create_magnet_hardware_aggregator(magnets)
+        Build a grouped hardware accessor for a set of magnets.
+    create_bpm_aggregators(bpms)
+        Build grouped position accessors for a set of BPMs.
+    get_description()
+        Return the human-readable simulator description.
     """
 
     def __init__(
@@ -71,7 +103,8 @@ class Simulator(ElementHolder, DynamicValidation):
         linker: LatticeElementsLinker | None = None,
         description: str | None = None,
     ):
-        """Create a simulator from a PyAT lattice.
+        """
+        Create a simulator from a PyAT lattice.
 
         Parameters
         ----------

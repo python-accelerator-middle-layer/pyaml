@@ -1,4 +1,5 @@
-"""Linear conversion model for serialized magnets.
+"""
+Linear conversion model for serialized magnets.
 
 This model applies linear calibration to a configurable sequence of serialized magnet elements and hardware channels.
 """

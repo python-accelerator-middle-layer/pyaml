@@ -1,4 +1,5 @@
-"""Values returned by control-system readback channels.
+"""
+Values returned by control-system readback channels.
 
 The module provides quality indicators and a :class:`Value` wrapper that keeps
 the measured value together with its quality state and acquisition timestamp.
@@ -12,7 +13,8 @@ import numpy as np
 
 
 class Quality(Enum):
-    """Describe the quality state associated with a readback value.
+    """
+    Describe the quality state associated with a readback value.
 
     Attributes
     ----------
@@ -64,7 +66,8 @@ class Value:
         quality: Quality = Quality.VALID,
         timestamp: datetime = None,
     ):
-        """Initialize a value with quality metadata and an acquisition time.
+        """
+        Initialize a value with quality metadata and an acquisition time.
 
         Parameters
         ----------

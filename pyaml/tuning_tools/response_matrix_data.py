@@ -1,4 +1,5 @@
-"""Serializable response-matrix data models.
+"""
+Serializable response-matrix data models.
 
 The :class:`ResponseMatrixData` model stores a numerical response matrix and
 the names of the variables and observables represented by its columns and
@@ -21,7 +22,8 @@ PYAMLCLASS = "ResponseMatrixData"
 @register_schema
 @dataclass
 class ResponseMatrixData(DynamicValidation):
-    """Response matrix data and its associated variable and observable names.
+    """
+    Response matrix data and its associated variable and observable names.
 
     Parameters
     ----------
@@ -43,7 +45,8 @@ class ResponseMatrixData(DynamicValidation):
 
     @staticmethod
     def load(filename: str) -> "ResponseMatrixData":
-        """Load response matrix data from a configuration file.
+        """
+        Load response matrix data from a configuration file.
 
         Parameters
         ----------

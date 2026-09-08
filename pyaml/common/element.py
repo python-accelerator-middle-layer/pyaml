@@ -11,7 +11,8 @@ if TYPE_CHECKING:
 
 
 def __pyaml_repr__(obj, exclude: list[str] | None = None):
-    """Build a representation from configuration fields and public properties.
+    """
+    Build a representation from configuration fields and public properties.
 
     Parameters
     ----------
@@ -93,7 +94,8 @@ class ElementConfigModel(BaseModel):
 
 
 class Element:
-    """Base class for an element in a physical or simulated lattice.
+    """
+    Base class for an element in a physical or simulated lattice.
 
     Parameters
     ----------
@@ -112,7 +114,8 @@ class Element:
         lattice_names: str | None = None,
         description: str | None = None,
     ):
-        """Initialize an element and its optional lattice association.
+        """
+        Initialize an element and its optional lattice association.
 
         Parameters
         ----------
@@ -129,7 +132,8 @@ class Element:
         self._peer: ElementHolder | None = None
 
     def _cfg_value(self, attr: str, fallback: Any) -> Any:
-        """Return a configured attribute, falling back to the base value.
+        """
+        Return a configured attribute, falling back to the base value.
 
         Parameters
         ----------
@@ -181,7 +185,8 @@ class Element:
         return self.description
 
     def set_energy(self, E: float):
-        """Set the beam energy used by this element, if supported.
+        """
+        Set the beam energy used by this element, if supported.
 
         Parameters
         ----------
@@ -191,7 +196,8 @@ class Element:
         pass
 
     def set_mcf(self, alphac: float):
-        """Set the momentum compaction factor, if supported.
+        """
+        Set the momentum compaction factor, if supported.
 
         Parameters
         ----------
@@ -201,7 +207,8 @@ class Element:
         pass
 
     def set_harmonic(self, h: int):
-        """Set the RF harmonic number, if supported.
+        """
+        Set the RF harmonic number, if supported.
 
         Parameters
         ----------
@@ -211,7 +218,8 @@ class Element:
         pass
 
     def check_peer(self):
-        """Raise an error if the element is not attached to a peer.
+        """
+        Raise an error if the element is not attached to a peer.
 
         Raises
         ------
@@ -227,7 +235,8 @@ class Element:
         return self._peer
 
     def attached_to(self) -> str:
-        """Return a human-readable description of the attached peer.
+        """
+        Return a human-readable description of the attached peer.
 
         Returns
         -------
@@ -237,7 +246,8 @@ class Element:
         return "None" if self._peer is None else f"{self._peer.__class__.__name__}:{self._peer.name()}"
 
     def post_init(self):
-        """Perform post-construction initialization after attachment.
+        """
+        Perform post-construction initialization after attachment.
 
         Base elements do not require additional initialization.
         """

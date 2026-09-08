@@ -1,4 +1,5 @@
-"""Identity conversion model for combined-function magnets.
+"""
+Identity conversion model for combined-function magnets.
 
 This model provides direct per-multipole conversion without excitation-curve interpolation.
 """
@@ -55,13 +56,13 @@ class IdentityCFMagnetModel(MagnetModel, DynamicValidation):
         Parameters
         ----------
         multipoles : list[str]
-            Input value for this operation.
+            List of supported multipoles, for example ["B0", "A1", "B2"].
         powerconverters : list[str | None] | None
-            Input value for this operation.
+            Names of the power converter devices used for hardware access.
         physics : list[str | None] | None
-            Input value for this operation.
+            Names of the physics devices used for strength access.
         units : list[str] | None
-            Input value for this operation.
+            List of units for the supported multipoles.
         """
         self.multipoles = multipoles
         self._powerconverters = powerconverters
@@ -117,12 +118,12 @@ class IdentityCFMagnetModel(MagnetModel, DynamicValidation):
         Parameters
         ----------
         strengths : np.array
-            Input value for this operation.
+            Strength of each magnet function, ordered as declared by the model.
 
         Returns
         -------
         np.array
-            Result produced by the operation.
+            Hardware value of each power converter, ordered as declared by the model.
         """
         return strengths
 
@@ -133,12 +134,12 @@ class IdentityCFMagnetModel(MagnetModel, DynamicValidation):
         Parameters
         ----------
         currents : np.array
-            Input value for this operation.
+            Hardware value of each power converter, ordered as declared by the model.
 
         Returns
         -------
         np.array
-            Result produced by the operation.
+            Strength of each magnet function, ordered as declared by the model.
         """
         return currents
 
@@ -161,7 +162,7 @@ class IdentityCFMagnetModel(MagnetModel, DynamicValidation):
         Parameters
         ----------
         brho : np.double
-            Input value for this operation.
+            Magnetic rigidity in tesla metres. Ignored: an identity model applies no rigidity scaling.
         """
         pass
 

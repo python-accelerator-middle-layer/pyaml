@@ -34,7 +34,7 @@ class Location:
         Returns
         -------
         str
-            Result produced by the operation.
+            Location rendered as ``file:line:column``.
         """
         return f"{self.file}: line {self.line}, column {self.column}"
 

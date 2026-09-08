@@ -1,4 +1,5 @@
-"""RF-plant interfaces for accelerator frequency and voltage control.
+"""
+RF-plant interfaces for accelerator frequency and voltage control.
 
 This module models the master clock and RF transmitters and exposes combined
 read/write handles for the plant frequency and total fundamental-harmonic
@@ -25,6 +26,18 @@ class RFPlant(Element, DynamicValidation):
 
     The plant exposes frequency and voltage handles after it is attached to a
     simulator or control-system element holder.
+
+    Attributes
+    ----------
+    frequency
+        Read/write accessor for the RF frequency, in hertz.
+    voltage
+        Read/write accessor for the total accelerating voltage, in volts.
+
+    Methods
+    -------
+    attach(peer, frequency, voltage)
+        Return a copy of this RF plant bound to one control system or simulator.
     """
 
     def __init__(
@@ -110,7 +123,7 @@ class RWTotalVoltage(abstract.ReadWriteFloatScalar):
     Parameters
     ----------
     transmitters : list[RFTransmitter]
-        Input value for this operation.
+        Transmitters whose fundamental-harmonic voltages are summed.
     """
 
     def __init__(self, transmitters: list[RFTransmitter]):

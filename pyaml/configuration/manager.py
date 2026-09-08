@@ -1,4 +1,5 @@
-"""Aggregate accelerator configuration fragments before runtime construction.
+"""
+Aggregate accelerator configuration fragments before runtime construction.
 
 The manager loads dictionaries and YAML/JSON files, merges named categories,
 tracks source information, and provides the final configuration to the
@@ -79,7 +80,8 @@ class ConfigurationManager:
 
     @classmethod
     def root_fields(cls) -> tuple[str, ...]:
-        r"""Return the supported accelerator root fields in order.
+        r"""
+        Return the supported accelerator root fields in order.
         Return the ordered root fields supported by the accelerator configuration.
 
         The field order is derived from :meth:`Accelerator.__init__`, excluding
@@ -95,7 +97,6 @@ class ConfigurationManager:
         .. code-block:: python
 
         >>> ConfigurationManager.root_fields()
-
         """
         params = inspect.signature(cls.__init__).parameters
 
@@ -113,7 +114,8 @@ class ConfigurationManager:
         return ("type", *fields)
 
     def __init__(self):
-        """Initialize an empty configuration manager.
+        """
+        Initialize an empty configuration manager.
 
         The manager starts with the default accelerator type and empty named
         categories.  Source tracking is enabled as fragments are added.

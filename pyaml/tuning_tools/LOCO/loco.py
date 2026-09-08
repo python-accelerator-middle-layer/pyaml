@@ -1,4 +1,5 @@
-"""Linear optics from closed orbit (LOCO) analysis tools.
+"""
+Linear optics from closed orbit (LOCO) analysis tools.
 
 This module contains the interface for measuring an orbit response matrix and
 running linear-optics analysis with the accelerator commissioning tools.

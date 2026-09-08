@@ -1,4 +1,5 @@
-"""In-memory magnet excitation curves.
+"""
+In-memory magnet excitation curves.
 
 This module validates and exposes two-column excitation data supplied directly
 as Python sequences.
@@ -45,7 +46,8 @@ class InlineCurve(Curve, DynamicValidation):
         Parameters
         ----------
         mat : list[list[float]]
-            Input value for this operation.
+            Curve data as a two-column matrix. Each row represents one point in the curve, with ``mat[i][0]`` being the
+            x-value and ``mat[i][1]`` being the y-value.
         """
         self._mat = mat
 

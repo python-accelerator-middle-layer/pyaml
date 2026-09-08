@@ -1,4 +1,5 @@
-"""Slow-orbit feedback control tools.
+"""
+Slow-orbit feedback control tools.
 
 This module provides the interface for applying slow orbit corrections and
 analyzing the singular-value decomposition used to select orbit steerers.

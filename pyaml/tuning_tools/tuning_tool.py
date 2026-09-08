@@ -1,4 +1,5 @@
-"""Base class for accelerator tuning tools.
+"""
+Base class for accelerator tuning tools.
 
 The classes in this module provide the common lifecycle for tools that adjust
 accelerator parameters, including attachment to a simulator or control system.
@@ -17,6 +18,16 @@ class TuningTool(Element):
 
     Tuning tools are configured independently and attached to an element holder
     before they access accelerator devices.
+
+    Parameters
+    ----------
+    name : object
+        Name of the tuning tool.
+
+    Methods
+    -------
+    attach(peer)
+        Return a copy of this tool bound to one control system or simulator.
     """
 
     def __init__(self, name):

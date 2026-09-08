@@ -1,4 +1,5 @@
-"""Interfaces for linking PyAML elements to PyAT lattice elements.
+"""
+Interfaces for linking PyAML elements to PyAT lattice elements.
 
 Linkers translate PyAML element references into matching Accelerator Toolbox
 elements and provide the runtime objects used by simulator accessors.
@@ -15,7 +16,8 @@ from pyaml.common.element import Element
 
 
 class LinkerConfigModel(ABC):
-    """Base configuration model for linker definitions.
+    """
+    Base configuration model for linker definitions.
 
     This class defines the configuration structure used to instantiate
     a specific linking strategy. Each concrete implementation of a
@@ -27,7 +29,8 @@ class LinkerConfigModel(ABC):
 
 
 class LinkerIdentifier(ABC):
-    """Abstract base class for identifiers used to match PyAML and PyAT elements.
+    """
+    Abstract base class for identifiers used to match PyAML and PyAT elements.
 
     The identifier acts as an intermediate representation between the PyAML
     configuration and the PyAT lattice. Its exact structure depends on the
@@ -41,7 +44,8 @@ class LinkerIdentifier(ABC):
 
 
 class LatticeElementsLinker(ABC):
-    """Abstract base class defining the interface for PyAT–PyAML element linking.
+    """
+    Abstract base class defining the interface for PyAT–PyAML element linking.
 
     Implementations of this class define how PyAML elements are matched
     to PyAT elements based on a given linking strategy (e.g., by family name,
@@ -49,6 +53,11 @@ class LatticeElementsLinker(ABC):
 
     linker_config_model : LinkerConfigModel
         The configuration model for the linking strategy.
+
+    Parameters
+    ----------
+    linker_config_model : LinkerConfigModel
+        Strategy-specific configuration used to identify lattice elements.
 
     Attributes
     ----------
@@ -116,14 +125,22 @@ class LatticeElementsLinker(ABC):
         pass
 
     def _iter_matches(self, identifier: LinkerIdentifier) -> Iterable[at.Element]:
-        """Yield all lattice elements matching ``identifier``."""
+        """
+        Yield all lattice elements matching ``identifier``.
+
+        Parameters
+        ----------
+        identifier : LinkerIdentifier
+            Criterion used to select the PyAT elements.
+        """
         if self.lattice:
             for elem in self.lattice:
                 if self._test_at_element(identifier, elem):
                     yield elem
 
     def get_at_elements(self, element_id: LinkerIdentifier | list[LinkerIdentifier]) -> list[at.Element]:
-        """Return a list of PyAT elements matching the given identifiers.
+        """
+        Return a list of PyAT elements matching the given identifiers.
 
         This method should resolve one or multiple PyAML identifiers
         into their corresponding PyAT elements according to the specific
@@ -159,7 +176,8 @@ class LatticeElementsLinker(ABC):
         return results
 
     def get_at_element(self, element_id: LinkerIdentifier) -> at.Element:
-        """Return a single PyAT element matching the given identifier.
+        """
+        Return a single PyAT element matching the given identifier.
 
         Parameters
         ----------

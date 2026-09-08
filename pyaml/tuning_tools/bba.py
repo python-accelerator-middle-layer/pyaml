@@ -1,4 +1,5 @@
-"""Beam-based alignment measurement tools.
+"""
+Beam-based alignment measurement tools.
 
 The :class:`BBA` tool determines the magnetic center of a quadrupole by
 combining controlled quadrupole-strength changes with orbit measurements from
@@ -97,33 +98,33 @@ class BBA(MeasurementTool, DynamicValidation):
         Parameters
         ----------
         name : str
-            Input value for this operation.
+            Name of the measurement tool.
         bpm_array_name : str
-            Input value for this operation.
+            Name of the BPM array used to measure the orbit.
         bpm_name : str
-            Input value for this operation.
+            Name of the BPM located near the quadrupole whose center is measured.
         hcorr_name : str
-            Input value for this operation.
+            Name of the horizontal corrector used to create horizontal orbit offsets at the quadrupole.
         vcorr_name : str
-            Input value for this operation.
+            Name of the vertical corrector used to create vertical orbit offsets at the quadrupole.
         quad_name : str
-            Input value for this operation.
+            Name of the quadrupole to align.
         hcorr_delta : float
-            Input value for this operation.
+            Change in horizontal corrector strength used for each horizontal orbit-offset step.
         vcorr_delta : float
-            Input value for this operation.
+            Change in vertical corrector strength used for each vertical orbit-offset step.
         hquad_delta : float
-            Input value for this operation.
+            Change in quadrupole strength used during the horizontal alignment measurement.
         vquad_delta : float
-            Input value for this operation.
+            Change in quadrupole strength used during the vertical alignment measurement.
         n_step : int
-            Input value for this operation.
+            Number of orbit-offset steps to perform in each plane.
         sleep_between_step : float
-            Input value for this operation.
+            Time in seconds to wait after changing an orbit offset.
         n_avg_meas : int
-            Input value for this operation.
+            Number of BPM measurements to average at each step.
         sleep_between_meas : float
-            Input value for this operation.
+            Time in seconds to wait between individual BPM measurements.
         """
         super().__init__(name)
         self.bpm_array_name = bpm_array_name
@@ -169,13 +170,13 @@ class BBA(MeasurementTool, DynamicValidation):
 
         Parameters
         ----------
-        sleep_between_step: float
+        sleep_between_step : float
             Default time sleep after steerer or quad exitation
             Default: from config
         n_avg_meas : int, optional
             Default number of orbit measurement per step used for averaging
             Default from config
-        sleep_between_meas: float
+        sleep_between_meas : float
             Default time sleep between two orbit measurment
             Default: from config
         callback : Callable, optional
@@ -183,7 +184,7 @@ class BBA(MeasurementTool, DynamicValidation):
             callback is executed after each strength setting and after each orbit
             reading.
             If the callback returns false, then the process is aborted.
-        plane: str, optional
+        plane : str, optional
             Plane to perform ("H" or "V", None => both plane)
         """
         nb_meas = n_avg_meas if n_avg_meas is not None else self.n_avg_meas
@@ -314,7 +315,7 @@ class BBA(MeasurementTool, DynamicValidation):
 
         Parameters
         ----------
-        plane: str
+        plane : str
             Plane to plot ("H" or "V")
         """
 

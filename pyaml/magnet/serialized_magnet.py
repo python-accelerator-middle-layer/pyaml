@@ -1,4 +1,5 @@
-"""Serialized magnet elements.
+"""
+Serialized magnet elements.
 
 This module defines magnet elements composed of multiple serialized magnets.
 """
@@ -26,9 +27,9 @@ class ReadWriteSerializedStrengths(abstract.ReadWriteFloatScalar):
     Parameters
     ----------
     elements : list[abstract.ReadWriteFloatScalar]
-        Input value for this operation.
+        Per-magnet accessors sharing the group setpoint.
     model : MagnetModel | None
-        Input value for this operation.
+        Magnet model used to convert between strength and hardware value. Optional for a hardware-only group.
     """
 
     def __init__(
@@ -42,9 +43,9 @@ class ReadWriteSerializedStrengths(abstract.ReadWriteFloatScalar):
         Parameters
         ----------
         elements : list[abstract.ReadWriteFloatScalar]
-            Input value for this operation.
+            Per-magnet accessors sharing the group setpoint.
         model : MagnetModel | None
-            Input value for this operation.
+            Magnet model used to convert between strength and hardware value. Optional for a hardware-only group.
         """
         self.elements = elements
         self.model = model
@@ -60,7 +61,7 @@ class ReadWriteSerializedStrengths(abstract.ReadWriteFloatScalar):
         Parameters
         ----------
         value : float
-            Input value for this operation.
+            Strength applied to every magnet of the group.
         """
         self.elements[0].set(value)
 
@@ -71,7 +72,12 @@ class ReadWriteSerializedStrengths(abstract.ReadWriteFloatScalar):
         Parameters
         ----------
         value : float
-            Input value for this operation.
+            Strength applied to every magnet of the group.
+
+        Raises
+        ------
+        NotImplementedError
+            Waiting for readback convergence is not implemented for this accessor.
         """
         raise NotImplementedError("Not implemented yet.")
 
@@ -94,7 +100,7 @@ class ReadWriteSerializedStrengths(abstract.ReadWriteFloatScalar):
         Parameters
         ----------
         brho : np.double
-            Input value for this operation.
+            Magnetic rigidity in tesla metres, forwarded to the magnet model.
         """
         [element.set_magnet_rigidity(brho) for element in self.elements]
 
@@ -106,9 +112,9 @@ class ReadWriteSerializedHardwares(ReadWriteSerializedStrengths):
     Parameters
     ----------
     elements : list[abstract.ReadWriteFloatScalar]
-        Input value for this operation.
+        Per-magnet accessors sharing the group setpoint.
     model : MagnetModel | None
-        Input value for this operation.
+        Magnet model used to convert between strength and hardware value. Optional for a hardware-only group.
     """
 
     def __init__(
@@ -122,9 +128,9 @@ class ReadWriteSerializedHardwares(ReadWriteSerializedStrengths):
         Parameters
         ----------
         elements : list[abstract.ReadWriteFloatScalar]
-            Input value for this operation.
+            Per-magnet accessors sharing the group setpoint.
         model : MagnetModel | None
-            Input value for this operation.
+            Magnet model used to convert between strength and hardware value. Optional for a hardware-only group.
         """
         super().__init__(elements, model)
 
@@ -139,7 +145,7 @@ class ReadWriteSerializedHardwares(ReadWriteSerializedStrengths):
         Parameters
         ----------
         brho : np.double
-            Input value for this operation.
+            Magnetic rigidity in tesla metres, forwarded to the magnet model.
         """
         [element.set_magnet_rigidity(brho) for element in self.elements]
 
@@ -197,17 +203,17 @@ class SerializedMagnets(Element, DynamicValidation):
         Parameters
         ----------
         name : str
-            Input value for this operation.
+            Name of the serialized magnet group.
         function : str
-            Input value for this operation.
+            Magnet function identifier used to select the concrete virtual magnet type.
         elements : list[str] | str
-            Input value for this operation.
+            Names of the individual magnets in the group.
         model : MagnetModel | None
-            Input value for this operation.
+            Magnet model used to convert between strengths and hardware values.
         description : str | None
-            Input value for this operation.
+            Human-readable description of the serialized magnet group.
         peer : object
-            Input value for this operation.
+            Control-system or simulator peer used when attaching the magnet group.
         """
         super().__init__(name, None, description)
 
@@ -278,16 +284,16 @@ class SerializedMagnets(Element, DynamicValidation):
         Parameters
         ----------
         peer : object
-            Input value for this operation.
+            Control system or simulator the group is bound to.
         strengths : list[abstract.ReadWriteFloatScalar]
-            Input value for this operation.
+            Strength accessor of each magnet in the group, in declaration order.
         hardwares : list[abstract.ReadWriteFloatScalar]
-            Input value for this operation.
+            Hardware accessor of each magnet in the group, in declaration order.
 
         Returns
         -------
         list[Magnet]
-            Result produced by the operation.
+            Virtual magnets of the group, each bound to ``peer``.
         """
         l = []
         n_ser_mag = SerializedMagnets(self._name, self.function, self.__elements, self.model, self.description, peer)

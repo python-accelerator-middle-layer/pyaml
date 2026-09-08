@@ -21,12 +21,12 @@ class PyAMLBaseModel(BaseModel):
     """
 
     def model_dump(self, **kwargs):
-        """Execute model_dump."""
+        """Serialize the model to a dictionary, using each field's runtime type."""
         kwargs.setdefault("serialize_as_any", True)
         return super().model_dump(**kwargs)
 
     def model_dump_json(self, **kwargs):
-        """Execute model_dump_json."""
+        """Serialize the model to a JSON string, using each field's runtime type."""
         kwargs.setdefault("serialize_as_any", True)
         return super().model_dump_json(**kwargs)
 

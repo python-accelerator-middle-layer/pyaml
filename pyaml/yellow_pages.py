@@ -1,5 +1,5 @@
 """
-yellow_pages.py
+Dynamic discovery service for accelerator objects.
 
 Fully dynamic YellowPages service attached to :class:`~pyaml.accelerator.Accelerator`.
 
@@ -33,7 +33,16 @@ if TYPE_CHECKING:
 
 class YellowPagesCategory(str, Enum):
     """
-    YellowPagesCategory configuration or runtime object.
+    Kind of object a YellowPages entry refers to.
+
+    Attributes
+    ----------
+    ARRAYS : str
+        Named element families declared in the ``arrays`` configuration section.
+    TOOLS : str
+        Tuning and measurement tools attached to a mode.
+    DIAGNOSTICS : str
+        Monitors such as betatron tune and chromaticity monitors.
     """
 
     ARRAYS = "Arrays"
@@ -63,6 +72,19 @@ class YellowPages:
     Entries are discovered dynamically by scanning all
     :class:`~pyaml.element_holder.ElementHolder` instances
     associated with the :class:`~pyaml.accelerator.Accelerator` control and simulation modes.
+
+    Methods
+    -------
+    categories()
+        Return the categories that currently hold at least one object.
+    keys(category=None)
+        Return the known keys, optionally restricted to one category.
+    has(key)
+        Return whether a key is known in any category.
+    availability(key)
+        Return the modes in which a key resolves to an object.
+    get(query, mode=None)
+        Resolve a query to the matching element identifiers, across modes or in one mode.
 
     Notes
     -----
@@ -113,7 +135,7 @@ class YellowPages:
         Parameters
         ----------
         accelerator : 'Accelerator'
-            Input value for this operation.
+            Accelerator whose modes are scanned on every query.
         """
         self._acc = accelerator
 
@@ -143,7 +165,6 @@ class YellowPages:
 
             >>> sr.yellow_pages.has("UNKNOWN")
             False
-
         """
         return key in self._all_keys()
 
@@ -164,7 +185,6 @@ class YellowPages:
 
             >>> sr.yellow_pages.categories()
             ['Arrays', 'Tools', 'Diagnostics']
-
         """
         discovered = self._discover()
         present = {cat for cat, keys in discovered.items() if keys}
@@ -203,7 +223,6 @@ class YellowPages:
         .. code-block:: python
 
             >>> sr.yellow_pages.keys(YellowPagesCategory.ARRAYS)
-
         """
         discovered = self._discover()
 
@@ -311,7 +330,6 @@ class YellowPages:
         .. code-block:: python
 
             >>> sr.yellow_pages.BPM
-
         """
         self._require_key(key)
 
@@ -362,7 +380,6 @@ class YellowPages:
             >>> sr.yellow_pages.get("OH4*", mode="live")
 
             >>> sr.yellow_pages.get("re:^SH1A-C0[12]-H$")
-
         """
         if not query or not query.strip():
             raise YellowPagesQueryError("Empty YellowPages query.")
@@ -489,12 +506,12 @@ class YellowPages:
         Returns
         -------
         str
-            Result produced by the operation.
+            Table of the discovered categories and their keys.
         """
         return self.__repr__()
 
     def _discover(self) -> dict[YellowPagesCategory, list[str]]:
-        """Execute _discover."""
+        """Scan every mode and group the objects it exposes by category."""
         arrays: list[str] = []
         tools: list[str] = []
         diags: list[str] = []
@@ -528,7 +545,7 @@ class YellowPages:
                 target.append(value)
 
     def _all_keys(self) -> list[str]:
-        """Execute _all_keys."""
+        """Return every discovered key, across all categories."""
         discovered = self._discover()
         out: list[str] = []
         for keys in discovered.values():
@@ -537,34 +554,34 @@ class YellowPages:
 
     def _require_key(self, key: str) -> None:
         """
-        Execute _require_key.
+        Raise if a key is not present in any discovered category.
 
         Parameters
         ----------
         key : str
-            Input value for this operation.
+            Key to check.
 
         Returns
         -------
         None
-            Result produced by the operation.
+            Nothing; raises ``KeyError`` if the key is unknown.
         """
         if key not in self._all_keys():
             raise KeyError(self._unknown_key_message(key))
 
     def _unknown_key_message(self, key: str) -> str:
         """
-        Execute _unknown_key_message.
+        Build the error message listing the available keys.
 
         Parameters
         ----------
         key : str
-            Input value for this operation.
+            Key that could not be resolved.
 
         Returns
         -------
         str
-            Result produced by the operation.
+            Error message naming the available keys.
         """
         available = ", ".join(self._all_keys())
         return f"Unknown YellowPages key '{key}'. Available keys: {available if available else '<none>'}"
@@ -690,17 +707,17 @@ class YellowPages:
 
     def _ids_for_key_union_all_modes(self, key: str) -> list[str]:
         """
-        Execute _ids_for_key_union_all_modes.
+        Collect the identifiers behind a key across every mode, without duplicates.
 
         Parameters
         ----------
         key : str
-            Input value for this operation.
+            Key to resolve in every mode.
 
         Returns
         -------
         list[str]
-            Result produced by the operation.
+            Element identifiers, in discovery order and without duplicates.
         """
         out: list[str] = []
         resolved = self._get_object(key)
@@ -722,17 +739,17 @@ class YellowPages:
 
     def _ids_from_holder(self, holder) -> list[str]:
         """
-        Execute _ids_from_holder.
+        Collect the identifiers of every array exposed by a holder.
 
         Parameters
         ----------
         holder : object
-            Input value for this operation.
+            Control system or simulator to scan.
 
         Returns
         -------
         list[str]
-            Result produced by the operation.
+            Element identifiers of every array the holder exposes.
         """
         ids: list[str] = []
 

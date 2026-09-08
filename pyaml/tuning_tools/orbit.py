@@ -1,4 +1,5 @@
-"""Orbit measurement and correction tools.
+"""
+Orbit measurement and correction tools.
 
 The :class:`Orbit` tool reads orbit response data, computes corrector changes,
 and applies horizontal, vertical, and optional RF corrections.
@@ -75,25 +76,25 @@ class Orbit(TuningTool, DynamicValidation):
         Parameters
         ----------
         name : str
-            Input value for this operation.
+            Name of the orbit tool.
         bpm_array_name : str
-            Input value for this operation.
+            Name of the BPM array used for orbit readback.
         hcorr_array_name : str
-            Input value for this operation.
+            Name of the horizontal corrector array.
         vcorr_array_name : str
-            Input value for this operation.
+            Name of the vertical corrector array.
         response_matrix : Union[str, OrbitResponseMatrixData]
-            Input value for this operation.
+            Orbit response matrix or path to a serialized matrix.
         rf_plant_name : Optional[str]
-            Input value for this operation.
+            Optional RF plant used for RF orbit correction.
         singular_values : Optional[int]
-            Input value for this operation.
+            Common number of singular values retained for both planes.
         singular_values_H : Optional[int]
-            Input value for this operation.
+            Number of horizontal singular values retained.
         singular_values_V : Optional[int]
-            Input value for this operation.
+            Number of vertical singular values retained.
         virtual_target : float
-            Input value for this operation.
+            Target value for virtual orbit correction.
         """
         super().__init__(name)
 

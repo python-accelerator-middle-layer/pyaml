@@ -1,4 +1,5 @@
-"""CSV-backed magnet excitation curves.
+"""
+CSV-backed magnet excitation curves.
 
 This module loads two-column excitation data from CSV files for magnet-model
 calibration and interpolation.
@@ -64,7 +65,7 @@ class CSVCurve(Curve, DynamicValidation):
         Parameters
         ----------
         file : str
-            Input value for this operation.
+            Path to the CSV file. Relative paths are resolved using the project's configured root directory.
         """
         self._file = file
 

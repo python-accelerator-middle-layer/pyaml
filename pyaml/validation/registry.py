@@ -48,7 +48,8 @@ class SchemaRegistry:
         class_path: str,
         schema: type[ConfigurationSchema],
     ) -> None:
-        """Register a schema for a class path.
+        """
+        Register a schema for a class path.
 
         Parameters
         ----------
@@ -77,7 +78,8 @@ class SchemaRegistry:
         self._schemas[class_path] = schema
 
     def discover(self) -> None:
-        """Discover and register schemas.
+        """
+        Discover and register schemas.
 
         This imports modules in the package so classes decorated with
         :func:`register_schema` are registered, then registers legacy
@@ -97,7 +99,8 @@ class SchemaRegistry:
         self,
         class_path: str,
     ) -> None:
-        """Unregister a schema.
+        """
+        Unregister a schema.
 
         Parameters
         ----------
@@ -116,7 +119,8 @@ class SchemaRegistry:
             raise KeyError(f"No schema registered for '{class_path}'") from None
 
     def clear(self) -> None:
-        """Remove all registered schemas.
+        """
+        Remove all registered schemas.
 
         This clears the registry in place.
         """
@@ -146,7 +150,8 @@ class SchemaRegistry:
         self,
         class_path: str,
     ) -> Type[ConfigurationSchema]:
-        """Return the registered schema for a class path.
+        """
+        Return the registered schema for a class path.
 
         Parameters
         ----------
@@ -174,7 +179,8 @@ class SchemaRegistry:
         self,
         class_path: str,
     ) -> type[ConfigurationSchema] | None:
-        """Return the registered schema for a class path.
+        """
+        Return the registered schema for a class path.
 
         Parameters
         ----------
@@ -197,7 +203,8 @@ class SchemaRegistry:
         self,
         class_path: str,
     ) -> bool:
-        """Return whether a schema is registered for a class path.
+        """
+        Return whether a schema is registered for a class path.
 
         Parameters
         ----------
@@ -215,7 +222,8 @@ class SchemaRegistry:
     def items(
         self,
     ) -> ItemsView[str, Type[ConfigurationSchema]]:
-        """Return a view of registered schema items.
+        """
+        Return a view of registered schema items.
 
         Returns
         -------
@@ -227,7 +235,8 @@ class SchemaRegistry:
     def keys(
         self,
     ) -> KeysView[str]:
-        """Return a view of registered class paths.
+        """
+        Return a view of registered class paths.
 
         Returns
         -------
@@ -239,7 +248,8 @@ class SchemaRegistry:
     def values(
         self,
     ) -> ValuesView[Type[ConfigurationSchema]]:
-        """Return a view of registered schemas.
+        """
+        Return a view of registered schemas.
 
         Returns
         -------
@@ -251,7 +261,8 @@ class SchemaRegistry:
     def __len__(
         self,
     ) -> int:
-        """Return the number of registered schemas.
+        """
+        Return the number of registered schemas.
 
         Returns
         -------
@@ -263,7 +274,8 @@ class SchemaRegistry:
     def __iter__(
         self,
     ) -> Iterator[str]:
-        """Iterate over registered class paths.
+        """
+        Iterate over registered class paths.
 
         Returns
         -------
@@ -281,7 +293,8 @@ class SchemaRegistry:
         class_path: str,
         schema: type[ConfigurationSchema],
     ) -> None:
-        """Replace the schema registered for a class path.
+        """
+        Replace the schema registered for a class path.
 
         Parameters
         ----------

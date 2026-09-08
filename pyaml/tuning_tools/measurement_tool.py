@@ -1,4 +1,5 @@
-"""Base classes for accelerator measurement tools.
+"""
+Base classes for accelerator measurement tools.
 
 Measurement tools perform scans or response measurements, report progress
 through callbacks, and retain their latest results for inspection or export.
@@ -26,6 +27,29 @@ class MeasurementTool(Element, metaclass=ABCMeta):
 
     Subclasses implement :meth:`measure` and may use the shared callback,
     result-storage, attachment, and persistence helpers provided here.
+
+    Parameters
+    ----------
+    name : object
+        Name of the measurement tool.
+
+    Attributes
+    ----------
+    latest_measurement
+        Data produced by the last measurement, or ``None`` before the first one.
+
+    Methods
+    -------
+    measure()
+        Run the measurement. Implemented by each subclass.
+    get()
+        Return the data produced by the last measurement.
+    save(save_path, with_type='json')
+        Write the last measurement to disk as json, yaml, or npz.
+    send_callback(action, cb_data, raiseException=True)
+        Report progress to the registered callback and honour an abort request.
+    attach(peer)
+        Return a copy of this tool bound to one control system or simulator.
     """
 
     def __init__(self, name):

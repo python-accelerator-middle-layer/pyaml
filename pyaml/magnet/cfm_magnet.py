@@ -1,4 +1,5 @@
-"""Combined-function magnet elements.
+"""
+Combined-function magnet elements.
 
 This module defines magnets that combine multiple multipole components and
 provide separate strength and hardware access for those components.
@@ -80,15 +81,16 @@ class CombinedFunctionMagnet(Element, DynamicValidation):
         Parameters
         ----------
         name : str
-            Input value for this operation.
+            Name of the combined-function magnet.
         mapping : list[list[str]]
-            Input value for this operation.
+            List of ``[multipole, magnet_name]`` pairs. The first entry selects the virtual magnet type, and the second
+            entry gives the name of the virtual magnet.
         model : MagnetModel | None
-            Input value for this operation.
+            Magnet model used to convert strengths to hardware values and vice versa.
         description : str | None
-            Input value for this operation.
+            Human-readable description of the magnet.
         peer : object
-            Input value for this operation.
+            Control-system or simulator peer used when attaching the magnet.
         """
         super().__init__(name, None, description)
 

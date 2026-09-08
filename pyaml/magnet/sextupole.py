@@ -1,4 +1,5 @@
-"""Sextupole magnet elements.
+"""
+Sextupole magnet elements.
 
 This module defines normal sextupole configuration and runtime interfaces.
 """
@@ -14,7 +15,30 @@ PYAMLCLASS = "Sextupole"
 
 @register_schema
 class Sextupole(Magnet, DynamicValidation):
-    """Sextupole class"""
+    """
+    Normal sextupole magnet element.
+
+    The strength is applied to the ``PolynomB[2]`` component of the underlying lattice element, the
+    field component used for correcting chromaticity. Strengths are expressed in ``m-2`` and
+    converted to power-converter values by the attached magnet model.
+
+    Parameters
+    ----------
+    name : str
+        Element name.
+    model : MagnetModel | None, optional
+        Magnet model used to convert between strength and hardware value, and to
+        resolve the underlying control-system device names.
+    lattice_names : str | None, optional
+        Name or names of the matching element(s) in the simulated lattice. Defaults
+        to ``name``.
+    description : str | None, optional
+        Human-readable description of the magnet.
+
+    See Also
+    --------
+    Magnet : Base class listing the strength and hardware accessors.
+    """
 
     polynom = PolynomInfo("PolynomB", 2)
 
@@ -27,12 +51,13 @@ class Sextupole(Magnet, DynamicValidation):
         Parameters
         ----------
         name : str
-            Input value for this operation.
+            Element name.
         model : MagnetModel | None
-            Input value for this operation.
+            Magnet model used to convert between strength and hardware value, and to resolve the underlying
+            control-system device names.
         lattice_names : str | None
-            Input value for this operation.
+            Name or names of the matching element(s) in the simulated lattice. Defaults to ``name``.
         description : str | None
-            Input value for this operation.
+            Human-readable description of the magnet.
         """
         super().__init__(name, model, lattice_names, description)

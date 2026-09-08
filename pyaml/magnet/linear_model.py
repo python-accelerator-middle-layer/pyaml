@@ -1,4 +1,5 @@
-"""Linear conversion model for single-function magnets.
+"""
+Linear conversion model for single-function magnets.
 
 This model maps one magnet strength to one hardware value using linear calibration parameters and an optional excitation curve.
 """
@@ -68,19 +69,19 @@ class LinearMagnetModel(MagnetModel, DynamicValidation):
         Parameters
         ----------
         unit : str
-            Input value for this operation.
+            Unit of the magnet strength, for example ``"1/m"`` or ``"m-1"``.
         hardware_unit : str
-            Input value for this operation.
+            Unit of the hardware value, for example ``"A"`` or ``"V"``.
         curve : Curve | None
-            Input value for this operation.
+            Excitation curve used for interpolation. If omitted, a linear conversion is used instead.
         powerconverter : str | None
-            Input value for this operation.
+            Name of the power converter device used to apply current.
         calibration_factor : float
-            Input value for this operation.
+            Multiplicative correction applied to the curve or linear scaling. Default is ``1.0``.
         calibration_offset : float
-            Input value for this operation.
+            Additive correction applied to the curve or linear scaling. Default is ``0.0``.
         crosstalk : float
-            Input value for this operation.
+            Crosstalk factor applied together with the calibration factor. Default is ``1.0``.
         """
         if curve:
             self.__curve = curve.get_curve()
@@ -103,12 +104,12 @@ class LinearMagnetModel(MagnetModel, DynamicValidation):
         Parameters
         ----------
         strengths : np.array
-            Input value for this operation.
+            Magnet strengths to convert, in the unit reported by :meth:`get_strength_unit`.
 
         Returns
         -------
         np.array
-            Result produced by the operation.
+            Hardware values corresponding to ``strengths``.
         """
         if self.__rcurve is not None:
             _current = np.interp(strengths[0] * self.__brho, self.__rcurve[:, 0], self.__rcurve[:, 1])
@@ -123,12 +124,12 @@ class LinearMagnetModel(MagnetModel, DynamicValidation):
         Parameters
         ----------
         currents : np.array
-            Input value for this operation.
+            Hardware values to convert, in the unit reported by :meth:`get_hardware_unit`.
 
         Returns
         -------
         np.array
-            Result produced by the operation.
+            Strengths corresponding to ``currents``.
         """
         if self.__curve is not None:
             _strength = np.interp(currents[0], self.__curve[:, 0], self.__curve[:, 1]) / self.__brho
@@ -155,7 +156,7 @@ class LinearMagnetModel(MagnetModel, DynamicValidation):
         Parameters
         ----------
         brho : np.double
-            Input value for this operation.
+            Magnetic rigidity in tesla metres, used to scale strengths into hardware values.
         """
         self.__brho = brho
 

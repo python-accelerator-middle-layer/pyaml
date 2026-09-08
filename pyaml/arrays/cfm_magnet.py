@@ -1,4 +1,5 @@
-"""Cfm Magnet module.
+"""
+Cfm Magnet module.
 
 This module provides cfm magnet functionality for the PyAML accelerator middle layer.
 """
@@ -14,10 +15,10 @@ PYAMLCLASS = "CombinedFunctionMagnet"
 @register_schema
 class CombinedFunctionMagnet(ArrayConfig, DynamicValidation):
     """
-    Combined function magnet array confirguration
+    :py:class:`.CombinedFunctionMagnetArray` configuration.
 
-    Example
-    -------
+    Examples
+    --------
 
     A magnet array configuration can also be created by code using
     the following example::
@@ -36,9 +37,10 @@ class CombinedFunctionMagnet(ArrayConfig, DynamicValidation):
         Parameters
         ----------
         name : str
-            Input value for this operation.
+            Name under which the array is registered and later looked up.
         elements : list[str]
-            Input value for this operation.
+            Element name patterns making up the array: literal names, ``fnmatch`` wildcards, or ``re:`` regular
+            expressions.
         """
         super().__init__(name, elements)
 

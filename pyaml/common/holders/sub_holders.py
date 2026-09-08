@@ -18,7 +18,8 @@ if TYPE_CHECKING:
 
 
 class MagnetHolder(GenericElementHolder[Magnet]):
-    """Provide access to individual magnet elements.
+    """
+    Provide access to individual magnet elements.
 
     Parameters
     ----------
@@ -39,7 +40,8 @@ class MagnetHolder(GenericElementHolder[Magnet]):
 
 
 class MagnetsHolder(GenericArrayHolder[Magnet, MagnetArray]):
-    """Provide access to arrays of individual magnets.
+    """
+    Provide access to arrays of individual magnets.
 
     Parameters
     ----------
@@ -67,7 +69,8 @@ class MagnetsHolder(GenericArrayHolder[Magnet, MagnetArray]):
 
 
 class CombinedFunctionMagnetHolder(GenericElementHolder[CombinedFunctionMagnet]):
-    """Provide access to individual combined-function magnets.
+    """
+    Provide access to individual combined-function magnets.
 
     Parameters
     ----------
@@ -88,7 +91,8 @@ class CombinedFunctionMagnetHolder(GenericElementHolder[CombinedFunctionMagnet])
 
 
 class CombinedFunctionMagnetsHolder(GenericArrayHolder[CombinedFunctionMagnet, CombinedFunctionMagnetArray]):
-    """Provide access to arrays of combined-function magnets.
+    """
+    Provide access to arrays of combined-function magnets.
 
     Parameters
     ----------
@@ -116,7 +120,8 @@ class CombinedFunctionMagnetsHolder(GenericArrayHolder[CombinedFunctionMagnet, C
 
 
 class SerializedMagnetHolder(GenericElementHolder[SerializedMagnets]):
-    """Provide access to individual serialized magnet groups.
+    """
+    Provide access to individual serialized magnet groups.
 
     Parameters
     ----------
@@ -137,7 +142,8 @@ class SerializedMagnetHolder(GenericElementHolder[SerializedMagnets]):
 
 
 class SerializedMagnetsHolder(GenericArrayHolder[SerializedMagnets, SerializedMagnetsArray]):
-    """Provide access to arrays of serialized magnet groups.
+    """
+    Provide access to arrays of serialized magnet groups.
 
     Parameters
     ----------
@@ -165,7 +171,8 @@ class SerializedMagnetsHolder(GenericArrayHolder[SerializedMagnets, SerializedMa
 
 
 class BPMHolder(GenericElementHolder[BPM]):
-    """Provide access to individual beam-position monitors.
+    """
+    Provide access to individual beam-position monitors.
 
     Parameters
     ----------
@@ -186,7 +193,8 @@ class BPMHolder(GenericElementHolder[BPM]):
 
 
 class BPMsHolder(GenericArrayHolder[BPM, BPMArray]):
-    """Provide access to arrays of beam-position monitors.
+    """
+    Provide access to arrays of beam-position monitors.
 
     Parameters
     ----------

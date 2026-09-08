@@ -1,4 +1,5 @@
-"""Orbit response-matrix measurement tools.
+"""
+Orbit response-matrix measurement tools.
 
 This module measures BPM orbit changes caused by horizontal and vertical
 corrector perturbations and stores the fitted response in a structured data
@@ -26,7 +27,8 @@ PYAMLCLASS = "OrbitResponseMatrix"
 
 @register_schema
 class OrbitResponseMatrix(MeasurementTool, DynamicValidation):
-    """Measure an orbit response matrix using BPMs and orbit correctors.
+    """
+    Measure an orbit response matrix using BPMs and orbit correctors.
 
     The orbit response matrix describes the change in measured beam position
     produced by a change in corrector strength. This measurement tool uses
@@ -154,13 +156,13 @@ class OrbitResponseMatrix(MeasurementTool, DynamicValidation):
 
         Parameters
         ----------
-        sleep_between_step: float
+        sleep_between_step : float
             Default time sleep after steerer exitation
             Default: from config
         n_avg_meas : int, optional
             Default number of orbit measurement per step used for averaging
             Default from config
-        sleep_between_meas: float
+        sleep_between_meas : float
             Default time sleep between two orbit measurment
             Default: from config
         callback : Callable, optional

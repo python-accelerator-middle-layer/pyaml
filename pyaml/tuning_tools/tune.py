@@ -1,4 +1,5 @@
-"""Betatron-tune measurement and correction tools.
+"""
+Betatron-tune measurement and correction tools.
 
 The :class:`Tune` tool reads horizontal and vertical betatron tune, computes
 quadrupole-strength corrections from a response matrix, and applies those
@@ -30,7 +31,8 @@ PYAMLCLASS = "Tune"
 
 @register_schema
 class Tune(TuningTool, DynamicValidation):
-    """Adjust the horizontal and vertical betatron tunes.
+    """
+    Adjust the horizontal and vertical betatron tunes.
 
     The tune correction is calculated from a response matrix describing the
     change in horizontal and vertical tune produced by changes in quadrupole
@@ -118,7 +120,6 @@ class Tune(TuningTool, DynamicValidation):
         ----------
         load_path : Path
             Path to the serialized :class:`~.ResponseMatrixData` file.
-
         """
         self._response_matrix = ResponseMatrixData.load(load_path)
         self._response_matrix = np.array(self._response_matrix.matrix)

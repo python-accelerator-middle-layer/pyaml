@@ -1,11 +1,11 @@
-"""Shared constants and callback action identifiers.
+"""
+Shared constants and callback action identifiers.
 
 .. data:: HORIZONTAL_KICK_SIGN
 
    Sign convention applied to horizontal kicks and kick angles. A value of
    ``-1.0`` follows the convention used by the PyAML orbit and response-matrix
    tools.
-
 """
 
 from enum import Enum
@@ -14,7 +14,8 @@ HORIZONTAL_KICK_SIGN: float = -1.0
 
 
 class Action(Enum):
-    """Identify callback points in measurement-tool workflows.
+    """
+    Identify callback points in measurement-tool workflows.
 
     Attributes
     ----------

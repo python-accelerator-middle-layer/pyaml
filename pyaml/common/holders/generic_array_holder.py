@@ -13,12 +13,28 @@ A = TypeVar("A")
 
 
 class GenericArrayHolder(Generic[T, A]):
-    """Provide typed access to named arrays of one element type.
+    """
+    Provide typed access to named arrays of one element type.
 
     Concrete holders (:class:`.MagnetsHolder`, :class:`.SerializedMagnetsHolder`,
     :class:`.CombinedFunctionMagnetsHolder`, ...) subclass this with the
     element type ``T`` and the array type ``A`` they handle, so callers keep
     full static typing on :meth:`get`, :meth:`add` and :meth:`__getitem__`.
+
+    Parameters
+    ----------
+    peer : 'ElementHolder'
+        Parent element holder.
+    array_store : dict[str, A]
+        Mapping from array names to stored arrays.
+    all_func : Callable[[], list[T]]
+        Callback returning all elements.
+    get_func : Callable[[str], T]
+        Callback resolving an element by name.
+    constructor : Callable[[str, list[T]], A]
+        Callback constructing an array from a name and elements.
+    what : str
+        Human-readable array type used for lookup errors.
     """
 
     def __init__(
@@ -30,7 +46,8 @@ class GenericArrayHolder(Generic[T, A]):
         constructor: Callable[[str, list[T]], A],
         what: str,
     ):
-        """Initialize an array holder with storage and lookup callbacks.
+        """
+        Initialize an array holder with storage and lookup callbacks.
 
         Parameters
         ----------
@@ -55,7 +72,8 @@ class GenericArrayHolder(Generic[T, A]):
         self._what = what
 
     def get(self, name: str | None = None) -> A:
-        """Return a named array or a transient array of all elements.
+        """
+        Return a named array or a transient array of all elements.
 
         Parameters
         ----------
@@ -73,7 +91,8 @@ class GenericArrayHolder(Generic[T, A]):
             return self._peer._get(self._what, name, self._array_store)
 
     def add(self, arrayName: str, elementNames: list[str]):
-        """Create and register a named array from element selectors.
+        """
+        Create and register a named array from element selectors.
 
         Parameters
         ----------
@@ -91,7 +110,8 @@ class GenericArrayHolder(Generic[T, A]):
         self._peer._fill_array(arrayName, elementNames, self._get_func, self._constructor, self._array_store)
 
     def __getitem__(self, key):
-        """Return an element from the aggregate array by index.
+        """
+        Return an element from the aggregate array by index.
 
         Parameters
         ----------

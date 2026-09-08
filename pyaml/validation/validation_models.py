@@ -142,7 +142,8 @@ class ValidationModelDescriptor:
 
 
 class DynamicValidation(metaclass=ValidationMeta):
-    """Base class for automatic constructor argument validation.
+    """
+    Base class for automatic constructor argument validation.
 
     When a subclass is defined, a validation model is generated from either
     its explicitly declared constructor or its directly declared class
@@ -187,7 +188,8 @@ class DynamicValidation(metaclass=ValidationMeta):
 
     @classmethod
     def _build_validation_model(cls) -> type[ValidationModel]:
-        """Generate a validation model from the class definition.
+        """
+        Generate a validation model from the class definition.
 
         For classes with an explicitly defined ``__init__``, fields are
         extracted from the constructor signature. Otherwise, fields are

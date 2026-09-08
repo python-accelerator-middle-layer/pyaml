@@ -2,7 +2,8 @@
 
 
 class PyAMLException(Exception):
-    """Base exception for errors raised by PyAML runtime components.
+    """
+    Base exception for errors raised by PyAML runtime components.
 
     Parameters
     ----------
@@ -11,7 +12,8 @@ class PyAMLException(Exception):
     """
 
     def __init__(self, message):
-        """Initialize a PyAML runtime exception.
+        """
+        Initialize a PyAML runtime exception.
 
         Parameters
         ----------
@@ -23,7 +25,8 @@ class PyAMLException(Exception):
 
 
 class PyAMLConfigException(Exception):
-    """Exception raised when configuration cannot be loaded or validated.
+    """
+    Exception raised when configuration cannot be loaded or validated.
 
     Parameters
     ----------
@@ -32,7 +35,8 @@ class PyAMLConfigException(Exception):
     """
 
     def __init__(self, message):
-        """Initialize a configuration exception.
+        """
+        Initialize a configuration exception.
 
         Parameters
         ----------

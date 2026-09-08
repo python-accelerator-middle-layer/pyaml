@@ -1,4 +1,5 @@
-"""Abstract interfaces for magnet conversion models.
+"""
+Abstract interfaces for magnet conversion models.
 
 The :class:`MagnetModel` contract covers conversion between physical strengths
 and hardware setpoints, unit metadata, device names, and magnetic rigidity.
@@ -70,11 +71,11 @@ class MagnetModel(metaclass=ABCMeta):
     @abstractmethod
     def get_device_names(self) -> list[str | None]:
         """
-        Get device names
+        Return the control-system device names used by this model.
 
         Returns
         -------
-            list[str | None]
+        list[str | None]
             Array of associated device names.
         """
         pass
@@ -86,7 +87,7 @@ class MagnetModel(metaclass=ABCMeta):
 
         Parameters
         ----------
-        brho: np.double
+        brho : np.double
             Magnet rigidity used to calculate power supply setpoints
         """
         pass

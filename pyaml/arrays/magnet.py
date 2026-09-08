@@ -1,4 +1,5 @@
-"""Magnet module.
+"""
+Magnet module.
 
 This module provides magnet functionality for the PyAML accelerator middle layer.
 """
@@ -14,10 +15,10 @@ PYAMLCLASS = "Magnet"
 @register_schema
 class Magnet(ArrayConfig, DynamicValidation):
     """
-    Magnet array confirguration
+    :py:class:`.MagnetArray` configuration.
 
-    Example
-    -------
+    Examples
+    --------
 
     A magnet array configuration can also be created by code using
     the following example::
@@ -35,9 +36,10 @@ class Magnet(ArrayConfig, DynamicValidation):
         Parameters
         ----------
         name : str
-            Input value for this operation.
+            Name under which the array is registered and later looked up.
         elements : list[str]
-            Input value for this operation.
+            Element name patterns making up the array: literal names, ``fnmatch`` wildcards, or ``re:`` regular
+            expressions.
         """
         super().__init__(name, elements)
 

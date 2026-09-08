@@ -1,4 +1,5 @@
-"""Magnet response matrices.
+"""
+Magnet response matrices.
 
 This module defines matrix representations used by magnet models.
 """
@@ -43,7 +44,7 @@ class CSVMatrix(Matrix, DynamicValidation):
         Parameters
         ----------
         file : str
-            Input value for this operation.
+            Path to the CSV file. Relative paths are resolved using the project's configured root directory.
         """
         self._file = file
 

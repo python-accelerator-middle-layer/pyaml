@@ -42,7 +42,64 @@ if TYPE_CHECKING:
 
 
 class ElementHolder(metaclass=ABCMeta):
-    """Manage named elements, diagnostics, tools, and element arrays."""
+    """
+    Manage named elements, diagnostics, tools, and element arrays.
+
+    An element holder owns every element of one accelerator mode and exposes them
+    through per-type accessors. :class:`~pyaml.control.controlsystem.ControlSystem`
+    and :class:`~pyaml.lattice.simulator.Simulator` both derive from it, so the same
+    API drives a live machine and a simulation.
+
+    Attributes
+    ----------
+    magnet, magnets
+        Single magnet by name, or a named magnet array.
+    bpm, bpms
+        Single BPM by name, or a named BPM array.
+    combined_function_magnet, combined_function_magnets
+        Single combined-function magnet by name, or a named array.
+    serialized_magnet, serialized_magnets
+        Single serialized magnet group by name, or a named array.
+    rf
+        RF plant and transmitters of this mode.
+    tune, chromaticity, orbit, dispersion
+        Tuning tools attached to this mode, looked up by name.
+    trm, crm, orm
+        Response-matrix measurement tools, looked up by name.
+
+    Methods
+    -------
+    get_element(name)
+        Return a registered element by name.
+    get_elements(name)
+        Return a registered generic element array by name.
+    get_all_elements()
+        Return every registered element, in insertion order.
+    add_element(element)
+        Register an element under its own name.
+    find_elements(filter)
+        Return the element names matching a literal name, wildcard, or ``re:`` pattern.
+    fill_element_array(arrayName, elementNames)
+        Create and register a generic element array.
+    fill_device(elements)
+        Attach elements to this holder, wrapping each in mode-specific accessors.
+    add_tool(tool)
+        Register a tuning or measurement tool.
+    add_betatron_tune_monitor(tune_monitor)
+        Register a betatron tune monitor.
+    get_betatron_tune_monitor(name)
+        Return a registered betatron tune monitor.
+    get_chromaticity_monitor(name)
+        Return a registered chromaticity monitor.
+    create_magnet_strength_aggregator(magnets)
+        Build a grouped strength accessor for a set of magnets.
+    create_magnet_hardware_aggregator(magnets)
+        Build a grouped hardware accessor for a set of magnets.
+    create_bpm_aggregators(bpms)
+        Build grouped position accessors for a set of BPMs.
+    post_init()
+        Finalize the holder once every element has been attached.
+    """
 
     def __init__(self):
         # Device handle
@@ -142,7 +199,8 @@ class ElementHolder(metaclass=ABCMeta):
             e.post_init()
 
     def fill_device(self, elements: list[Element]):
-        """Bind configured elements to the holder's runtime backend.
+        """
+        Bind configured elements to the holder's runtime backend.
 
         Concrete holders resolve device references and attach the resulting
         read/write interfaces before storing the elements in their typed
@@ -165,7 +223,8 @@ class ElementHolder(metaclass=ABCMeta):
 
     @abstractmethod
     def create_magnet_strength_aggregator(self, magnets: list[Magnet]) -> ScalarAggregator | None:
-        """Create an aggregator exposing the selected magnets' strengths.
+        """
+        Create an aggregator exposing the selected magnets' strengths.
 
         Parameters
         ----------
@@ -181,7 +240,8 @@ class ElementHolder(metaclass=ABCMeta):
 
     @abstractmethod
     def create_magnet_hardware_aggregator(self, magnets: list[Magnet]) -> ScalarAggregator | None:
-        """Create an aggregator exposing the selected hardware values.
+        """
+        Create an aggregator exposing the selected hardware values.
 
         Parameters
         ----------
@@ -197,7 +257,8 @@ class ElementHolder(metaclass=ABCMeta):
 
     @abstractmethod
     def create_bpm_aggregators(self, bpms: list[BPM]) -> list[ScalarAggregator | None]:
-        """Create aggregate BPM position interfaces.
+        """
+        Create aggregate BPM position interfaces.
 
         Parameters
         ----------
@@ -214,7 +275,8 @@ class ElementHolder(metaclass=ABCMeta):
     # Elements
 
     def find_elements(self, filter: str) -> list[str]:
-        """Find element names matching a literal, wildcard, or regular expression.
+        """
+        Find element names matching a literal, wildcard, or regular expression.
 
         Parameters
         ----------
@@ -245,7 +307,8 @@ class ElementHolder(metaclass=ABCMeta):
         ARR: dict,
     ):
         # Handle wildcard, regexp and exclusion pattern
-        """Resolve selectors and store a constructed element array.
+        """
+        Resolve selectors and store a constructed element array.
 
         Parameters
         ----------
@@ -284,7 +347,8 @@ class ElementHolder(metaclass=ABCMeta):
         ARR[array_name] = constructor(array_name, a)
 
     def _add(self, array, element: Element):
-        """Register an element in a typed store and the global index.
+        """
+        Register an element in a typed store and the global index.
 
         Parameters
         ----------
@@ -299,7 +363,8 @@ class ElementHolder(metaclass=ABCMeta):
         self._ALL[element.get_name()] = element
 
     def _get(self, what, name, array) -> Element:
-        """Return a named object from a typed store.
+        """
+        Return a named object from a typed store.
 
         Parameters
         ----------
@@ -327,9 +392,9 @@ class ElementHolder(metaclass=ABCMeta):
         Parameters
         ----------
         arrayName : str
-            Input value for this operation.
+            Name under which the new array is registered.
         elementNames : list[str]
-            Input value for this operation.
+            Names of the elements to gather into the array, in the order they should appear.
         """
         self._fill_array(
             arrayName,
@@ -346,7 +411,7 @@ class ElementHolder(metaclass=ABCMeta):
         Parameters
         ----------
         element : Element
-            Input value for this operation.
+            Element to register, keyed by its own name.
         """
         self._ALL[element.get_name()] = element
 
@@ -357,12 +422,12 @@ class ElementHolder(metaclass=ABCMeta):
         Parameters
         ----------
         name : str
-            Input value for this operation.
+            Name of the element to look up, as declared in the configuration.
 
         Returns
         -------
         Element
-            Result produced by the operation.
+            The element registered under ``name``.
         """
         return self._get("Element", name, self._ALL)
 
@@ -373,12 +438,12 @@ class ElementHolder(metaclass=ABCMeta):
         Parameters
         ----------
         name : str
-            Input value for this operation.
+            Name of the element array to look up, as declared in the configuration.
 
         Returns
         -------
         ElementArray
-            Result produced by the operation.
+            The element array registered under ``name``.
         """
         return self._get("Element array", name, self._ELEMENT_ARRAYS)
 
@@ -395,12 +460,12 @@ class ElementHolder(metaclass=ABCMeta):
         Parameters
         ----------
         name : str
-            Input value for this operation.
+            Name of the betatron tune monitor to look up, as declared in the configuration.
 
         Returns
         -------
         BetatronTuneMonitor
-            Result produced by the operation.
+            The betatron tune monitor registered under ``name``.
         """
         return self._get("Diagnostic", name, self._DIAG)
 
@@ -411,7 +476,7 @@ class ElementHolder(metaclass=ABCMeta):
         Parameters
         ----------
         tune_monitor : Element
-            Input value for this operation.
+            Betatron tune monitor to register, keyed by its own name.
         """
         self._add(self._DIAG, tune_monitor)
 
@@ -424,7 +489,7 @@ class ElementHolder(metaclass=ABCMeta):
         Parameters
         ----------
         tool : Element
-            Input value for this operation.
+            Tuning or measurement tool to register, keyed by its own name.
         """
         self._add(self._TOOLS, tool)
 
@@ -437,12 +502,12 @@ class ElementHolder(metaclass=ABCMeta):
         Parameters
         ----------
         name : str
-            Input value for this operation.
+            Name of the chromaticity monitor to look up, as declared in the configuration.
 
         Returns
         -------
         ChromaticityMonitor
-            Result produced by the operation.
+            The chromaticity monitor registered under ``name``.
         """
         obj = self._get("Chromaticity monitor", name, self._TOOLS)
         return obj
@@ -454,12 +519,12 @@ class ElementHolder(metaclass=ABCMeta):
         Parameters
         ----------
         name : str
-            Input value for this operation.
+            Name of the chromaticity tuning tool to look up, as declared in the configuration.
 
         Returns
         -------
         'Chromaticity'
-            Result produced by the operation.
+            The chromaticity tuning tool registered under ``name``.
         """
         return self._get("Chromaticity tool", name, self._TOOLS)
 
@@ -470,12 +535,12 @@ class ElementHolder(metaclass=ABCMeta):
         Parameters
         ----------
         name : str
-            Input value for this operation.
+            Name of the chromaticity response-matrix tool to look up, as declared in the configuration.
 
         Returns
         -------
         'ChromaticityResponseMatrix'
-            Result produced by the operation.
+            The chromaticity response-matrix tool registered under ``name``.
         """
         return self._get("ChromaticityResponseMatrix tool", name, self._TOOLS)
 
@@ -498,12 +563,12 @@ class ElementHolder(metaclass=ABCMeta):
         Parameters
         ----------
         name : str
-            Input value for this operation.
+            Name of the tune correction tool to look up, as declared in the configuration.
 
         Returns
         -------
         'Tune'
-            Result produced by the operation.
+            The tune correction tool registered under ``name``.
         """
         return self._get("Tune tuning tool", name, self._TOOLS)
 
@@ -519,12 +584,12 @@ class ElementHolder(metaclass=ABCMeta):
         Parameters
         ----------
         name : str
-            Input value for this operation.
+            Name of the tune response-matrix tool to look up, as declared in the configuration.
 
         Returns
         -------
         'TuneResponseMatrix'
-            Result produced by the operation.
+            The tune response-matrix tool registered under ``name``.
         """
         return self._get("TuneResponseMatrix tool", name, self._TOOLS)
 
@@ -542,12 +607,12 @@ class ElementHolder(metaclass=ABCMeta):
         Parameters
         ----------
         name : str
-            Input value for this operation.
+            Name of the orbit correction tool to look up, as declared in the configuration.
 
         Returns
         -------
         'Orbit'
-            Result produced by the operation.
+            The orbit correction tool registered under ``name``.
         """
         return self._get("Orbit tuning tool", name, self._TOOLS)
 
@@ -563,12 +628,12 @@ class ElementHolder(metaclass=ABCMeta):
         Parameters
         ----------
         name : str
-            Input value for this operation.
+            Name of the orbit response-matrix tool to look up, as declared in the configuration.
 
         Returns
         -------
         'OrbitResponseMatrix'
-            Result produced by the operation.
+            The orbit response-matrix tool registered under ``name``.
         """
         return self._get("OrbitResponseMatrix tool", name, self._TOOLS)
 
@@ -586,12 +651,12 @@ class ElementHolder(metaclass=ABCMeta):
         Parameters
         ----------
         name : str
-            Input value for this operation.
+            Name of the beam-based alignment tool to look up, as declared in the configuration.
 
         Returns
         -------
         'BBA'
-            Result produced by the operation.
+            The beam-based alignment tool registered under ``name``.
         """
         return self._get("BBA tool", name, self._TOOLS)
 
@@ -604,12 +669,12 @@ class ElementHolder(metaclass=ABCMeta):
         Parameters
         ----------
         name : str
-            Input value for this operation.
+            Name of the dispersion tuning tool to look up, as declared in the configuration.
 
         Returns
         -------
         'Dispersion'
-            Result produced by the operation.
+            The dispersion tuning tool registered under ``name``.
         """
         return self._get("Dispersion tool", name, self._TOOLS)
 

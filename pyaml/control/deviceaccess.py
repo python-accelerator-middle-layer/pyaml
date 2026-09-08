@@ -1,4 +1,5 @@
-"""Abstract interface for control-system device access.
+"""
+Abstract interface for control-system device access.
 
 Backends implement :class:`DeviceAccess` to expose device names, setpoints,
 readbacks, units, limits, and availability through a common PyAML interface.
@@ -10,7 +11,8 @@ from abc import ABCMeta, abstractmethod
 
 
 class DeviceAccess(metaclass=ABCMeta):
-    """Define the interface for one control-system device variable.
+    """
+    Define the interface for one control-system device variable.
 
     Implementations may represent a process variable, power-supply channel,
     measurement channel, or another backend-specific device.  ``get`` and
@@ -19,7 +21,8 @@ class DeviceAccess(metaclass=ABCMeta):
 
     @abstractmethod
     def name(self) -> str:
-        """Return the backend identifier of the device variable.
+        """
+        Return the backend identifier of the device variable.
 
         Returns
         -------
@@ -30,7 +33,8 @@ class DeviceAccess(metaclass=ABCMeta):
 
     @abstractmethod
     def measure_name(self) -> str:
-        """Return the identifier of the device's measurement channel.
+        """
+        Return the identifier of the device's measurement channel.
 
         Returns
         -------
@@ -41,7 +45,8 @@ class DeviceAccess(metaclass=ABCMeta):
 
     @abstractmethod
     def set(self, value):
-        """Write a new setpoint to the device variable.
+        """
+        Write a new setpoint to the device variable.
 
         Parameters
         ----------
@@ -52,7 +57,8 @@ class DeviceAccess(metaclass=ABCMeta):
 
     @abstractmethod
     def set_and_wait(self, value):
-        """Write a setpoint and wait until the device reaches it.
+        """
+        Write a setpoint and wait until the device reaches it.
 
         Parameters
         ----------
@@ -68,7 +74,8 @@ class DeviceAccess(metaclass=ABCMeta):
 
     @abstractmethod
     def readback(self):
-        """Return the latest measured value reported by the device.
+        """
+        Return the latest measured value reported by the device.
 
         Returns
         -------
@@ -80,7 +87,8 @@ class DeviceAccess(metaclass=ABCMeta):
 
     @abstractmethod
     def unit(self) -> str:
-        """Return the physical unit of the device variable.
+        """
+        Return the physical unit of the device variable.
 
         Returns
         -------

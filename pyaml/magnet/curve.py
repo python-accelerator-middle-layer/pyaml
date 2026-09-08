@@ -1,4 +1,5 @@
-"""Excitation-curve interfaces for magnet calibration.
+"""
+Excitation-curve interfaces for magnet calibration.
 
 An excitation curve represents paired magnet-strength and hardware values as
 an ``(n, 2)`` array. Concrete implementations provide those points from a

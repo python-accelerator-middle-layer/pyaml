@@ -1,4 +1,5 @@
-"""Control-system element binding and runtime device interfaces.
+"""
+Control-system element binding and runtime device interfaces.
 
 The classes in this module resolve configured device references, attach
 accelerator elements to a control-system backend, and construct the scalar,
@@ -45,7 +46,34 @@ from .deviceaccesslist import DeviceAccessList
 
 
 class ControlSystem(ElementHolder, metaclass=ABCMeta):
-    """Define the interface for binding accelerator elements to a backend."""
+    """
+    Define the interface for binding accelerator elements to a backend.
+
+    A control system resolves PyAML element names to control-system devices and
+    wraps them in read/write accessors, so tools written against
+    :class:`~pyaml.common.holders.element_holder.ElementHolder` drive a live
+    machine unchanged. Concrete backends live in separate packages and are
+    selected from the configuration.
+
+    Methods
+    -------
+    name()
+        Return the backend control-system name. Abstract.
+    get_device_access(ref)
+        Return the device handle for a control-system reference. Abstract.
+    get_devices_access(refs)
+        Return the device handles for several references. Abstract.
+    get_aggregator()
+        Return an empty device-access list used to group device I/O. Abstract.
+    fill_device(elements)
+        Bind elements to this control system through read/write accessors.
+    create_magnet_strength_aggregator(magnets)
+        Build a grouped strength accessor for a set of magnets.
+    create_magnet_hardware_aggregator(magnets)
+        Build a grouped hardware accessor for a set of magnets.
+    create_bpm_aggregators(bpms)
+        Build grouped position accessors for a set of BPMs.
+    """
 
     def __init__(self):
         """
@@ -74,7 +102,8 @@ class ControlSystem(ElementHolder, metaclass=ABCMeta):
         pass
 
     def get_devices_access(self, refs: list[str | BaseModel | None]) -> list[DeviceAccess]:
-        """Resolve a list of backend references into device access objects.
+        """
+        Resolve a list of backend references into device access objects.
 
         Parameters
         ----------
@@ -127,11 +156,22 @@ class ControlSystem(ElementHolder, metaclass=ABCMeta):
         return magg
 
     def create_magnet_hardware_aggregator(self, magnets: list[Magnet]) -> ScalarAggregator | None:
-        """Create an aggregator for magnet hardware values.
+        """
+        Create an aggregator for magnet hardware values.
 
         One power-supply device is selected for each magnet strength exposed
         in hardware space.  ``None`` is returned if a magnet lacks hardware
         support or the backend does not provide aggregators.
+
+        Parameters
+        ----------
+        magnets : list[Magnet]
+            Magnets whose hardware channels should be grouped.
+
+        Returns
+        -------
+        ScalarAggregator | None
+            Grouped accessor, or ``None`` when a magnet exposes no hardware device.
         """
         agg = self._create_scalar_aggregator()
         if agg is None:

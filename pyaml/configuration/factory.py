@@ -1,4 +1,5 @@
-"""Build PyAML objects from configuration dictionaries and lists.
+"""
+Build PyAML objects from configuration dictionaries and lists.
 
 The factory resolves class paths, optionally validates configuration with
 Pydantic models, recursively builds nested values, and registers constructed
@@ -165,7 +166,8 @@ BUILD_KEYS = NEW_KEYS + (LEGACY_KEY,)
 
 @dataclass(frozen=True)
 class BuildInfo:
-    """Store the resolved information required to construct one object.
+    """
+    Store the resolved information required to construct one object.
 
     Attributes
     ----------
@@ -189,7 +191,8 @@ class BuildInfo:
 
 
 def _import_module(module_path: str, ignore_external: bool) -> ModuleType | None:
-    """Import a module referenced by a configuration class path.
+    """
+    Import a module referenced by a configuration class path.
 
     Parameters
     ----------
@@ -213,7 +216,8 @@ def _import_module(module_path: str, ignore_external: bool) -> ModuleType | None
 
 def _resolve_class_name(module: ModuleType, module_path: str) -> str:
     # Legacy
-    """Resolve the legacy default class name exposed by a module.
+    """
+    Resolve the legacy default class name exposed by a module.
 
     Parameters
     ----------
@@ -234,7 +238,8 @@ def _resolve_class_name(module: ModuleType, module_path: str) -> str:
 
 
 def _resolve_build_info(data: dict, ignore_external: bool) -> BuildInfo | None:
-    """Resolve a configuration mapping into object-construction metadata.
+    """
+    Resolve a configuration mapping into object-construction metadata.
 
     Parameters
     ----------

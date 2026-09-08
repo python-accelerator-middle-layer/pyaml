@@ -1,4 +1,5 @@
-"""RF-transmitter configuration and read/write interfaces.
+"""
+RF-transmitter configuration and read/write interfaces.
 
 This module models RF transmitters, their cavity assignments, harmonic and
 voltage distribution, and the voltage and phase handles bound on attachment.

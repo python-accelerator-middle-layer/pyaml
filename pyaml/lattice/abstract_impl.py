@@ -1,4 +1,5 @@
-"""Read/write interfaces for simulated lattice elements.
+"""
+Read/write interfaces for simulated lattice elements.
 
 This module adapts Accelerator Toolbox lattice elements to PyAML accessors for
 magnet strengths, hardware values, BPM readings, RF parameters, and tune data.
@@ -25,6 +26,16 @@ class RWHardwareScalar(abstract.ReadWriteFloatScalar):
 
     Hardware values are converted through the associated magnet model while
     the underlying lattice polynomial is updated on writes.
+
+    Parameters
+    ----------
+    elements : list[at.Element]
+        Accelerator Toolbox elements making up the magnet; their contributions are summed.
+    poly : PolynomInfo
+        Polynomial component driven by this accessor: the ``PolynomA``/``PolynomB`` attribute name, its multipole
+        index and the sign convention.
+    model : MagnetModel
+        Magnet model used to convert between physical strength and hardware value.
     """
 
     def __init__(self, elements: list[at.Element], poly: PolynomInfo, model: MagnetModel):
@@ -34,11 +45,12 @@ class RWHardwareScalar(abstract.ReadWriteFloatScalar):
         Parameters
         ----------
         elements : list[at.Element]
-            Input value for this operation.
+            Accelerator Toolbox elements making up the magnet; their contributions are summed.
         poly : PolynomInfo
-            Input value for this operation.
+            Polynomial component driven by this accessor: the ``PolynomA``/``PolynomB`` attribute name, its multipole
+            index and the sign convention.
         model : MagnetModel
-            Input value for this operation.
+            Magnet model used to convert between physical strength and hardware value.
         """
         self._model = model
         self._elements = elements
@@ -67,7 +79,7 @@ class RWHardwareScalar(abstract.ReadWriteFloatScalar):
         Parameters
         ----------
         value : float
-            Input value for this operation.
+            Hardware value to apply, in the unit reported by the magnet model.
         """
         s = self._model.compute_strengths([value])[0]
         for idx, _ in enumerate(self._elements):
@@ -80,7 +92,12 @@ class RWHardwareScalar(abstract.ReadWriteFloatScalar):
         Parameters
         ----------
         value : float
-            Input value for this operation.
+            Hardware value to apply, in the unit reported by the magnet model.
+
+        Raises
+        ------
+        NotImplementedError
+            Waiting for readback convergence is not implemented for this accessor.
         """
         raise NotImplementedError("Not implemented yet.")
 
@@ -102,6 +119,16 @@ class RWStrengthScalar(abstract.ReadWriteFloatScalar):
 
     The accessor aggregates the selected lattice polynomial over all mapped
     elements and distributes writes across those elements.
+
+    Parameters
+    ----------
+    elements : list[at.Element]
+        Accelerator Toolbox elements making up the magnet; their contributions are summed.
+    poly : PolynomInfo
+        Polynomial component driven by this accessor: the ``PolynomA``/``PolynomB`` attribute name, its multipole
+        index and the sign convention.
+    model : MagnetModel
+        Magnet model used to convert between physical strength and hardware value.
     """
 
     def __init__(self, elements: list[at.Element], poly: PolynomInfo, model: MagnetModel):
@@ -111,11 +138,12 @@ class RWStrengthScalar(abstract.ReadWriteFloatScalar):
         Parameters
         ----------
         elements : list[at.Element]
-            Input value for this operation.
+            Accelerator Toolbox elements making up the magnet; their contributions are summed.
         poly : PolynomInfo
-            Input value for this operation.
+            Polynomial component driven by this accessor: the ``PolynomA``/``PolynomB`` attribute name, its multipole
+            index and the sign convention.
         model : MagnetModel
-            Input value for this operation.
+            Magnet model used to convert between physical strength and hardware value.
         """
         self._model = model
         self._elements = elements
@@ -138,14 +166,15 @@ class RWStrengthScalar(abstract.ReadWriteFloatScalar):
         Parameters
         ----------
         polynom : str
-            Input value for this operation.
+            Lattice polynomial to address, ``"PolynomA"`` or ``"PolynomB"``. Defaults to the component configured for
+            this accessor.
         polyidx : int
-            Input value for this operation.
+            Multipole index within ``polynom``. Only used when ``polynom`` is given.
 
         Returns
         -------
         float
-            Result produced by the operation.
+            Integrated strength summed over the lattice elements.
         """
         if polynom is None:
             pIdx = self._polyIdx
@@ -168,11 +197,12 @@ class RWStrengthScalar(abstract.ReadWriteFloatScalar):
         Parameters
         ----------
         value : float
-            Input value for this operation.
+            Integrated strength to apply, distributed over the lattice elements.
         polynom : str
-            Input value for this operation.
+            Lattice polynomial to address, ``"PolynomA"`` or ``"PolynomB"``. Defaults to the component configured for
+            this accessor.
         polyidx : int
-            Input value for this operation.
+            Multipole index within ``polynom``. Only used when ``polynom`` is given.
         """
         if polynom is None:
             pIdx = self._polyIdx
@@ -193,7 +223,12 @@ class RWStrengthScalar(abstract.ReadWriteFloatScalar):
         Parameters
         ----------
         value : float
-            Input value for this operation.
+            Integrated strength to apply, distributed over the lattice elements.
+
+        Raises
+        ------
+        NotImplementedError
+            Waiting for readback convergence is not implemented for this accessor.
         """
         raise NotImplementedError("Not implemented yet.")
 
@@ -218,9 +253,9 @@ class RWSerializedHardware(abstract.ReadWriteFloatScalar):
     Parameters
     ----------
     elements : list[RWHardwareScalar]
-        Input value for this operation.
+        Hardware accessors of the magnets sharing the serialized power supply.
     element_index : int
-        Input value for this operation.
+        Index of the magnet this accessor represents within the serialized group.
     """
 
     def __init__(self, elements: list[RWHardwareScalar], element_index: int):
@@ -230,9 +265,9 @@ class RWSerializedHardware(abstract.ReadWriteFloatScalar):
         Parameters
         ----------
         elements : list[RWHardwareScalar]
-            Input value for this operation.
+            Hardware accessors of the magnets sharing the serialized power supply.
         element_index : int
-            Input value for this operation.
+            Index of the magnet this accessor represents within the serialized group.
         """
         self.__elements = elements
         self.__element_index = element_index
@@ -261,7 +296,7 @@ class RWSerializedHardware(abstract.ReadWriteFloatScalar):
         Parameters
         ----------
         value : float
-            Input value for this operation.
+            Hardware value to apply to the whole serialized group.
         """
         [element.set(value) for element in self.__elements]
 
@@ -273,7 +308,12 @@ class RWSerializedHardware(abstract.ReadWriteFloatScalar):
         Parameters
         ----------
         value : float
-            Input value for this operation.
+            Hardware value to apply to the whole serialized group.
+
+        Raises
+        ------
+        NotImplementedError
+            Waiting for readback convergence is not implemented for this accessor.
         """
         raise NotImplementedError("Not implemented yet.")
 
@@ -289,7 +329,7 @@ class RWSerializedHardware(abstract.ReadWriteFloatScalar):
         Parameters
         ----------
         brho : np.double
-            Input value for this operation.
+            Magnetic rigidity in tesla metres, used to convert strengths to hardware values.
         """
         [element.get_model().set_magnet_rigidity(brho) for element in self.__elements]
 
@@ -301,11 +341,11 @@ class RWSerializedStrength(abstract.ReadWriteFloatScalar):
     Parameters
     ----------
     elements_strength : list[RWStrengthScalar]
-        Input value for this operation.
+        Strength accessors of the magnets sharing the serialized power supply.
     elements_hardware : list[RWHardwareScalar]
-        Input value for this operation.
+        Hardware accessors of the same magnets, used to apply the shared setpoint.
     element_index : int
-        Input value for this operation.
+        Index of the magnet this accessor represents within the serialized group.
     """
 
     def __init__(
@@ -320,11 +360,11 @@ class RWSerializedStrength(abstract.ReadWriteFloatScalar):
         Parameters
         ----------
         elements_strength : list[RWStrengthScalar]
-            Input value for this operation.
+            Strength accessors of the magnets sharing the serialized power supply.
         elements_hardware : list[RWHardwareScalar]
-            Input value for this operation.
+            Hardware accessors of the same magnets, used to apply the shared setpoint.
         element_index : int
-            Input value for this operation.
+            Index of the magnet this accessor represents within the serialized group.
         """
         self.__element = elements_strength[element_index]
         self.__elements_strength = elements_strength
@@ -355,7 +395,7 @@ class RWSerializedStrength(abstract.ReadWriteFloatScalar):
         Parameters
         ----------
         value : float
-            Input value for this operation.
+            Strength to apply to the magnet, converted to the shared hardware setpoint.
         """
         elements_values = [value * e.get_length() / self.get_total_length() for e in self.__elements_hardware]
         self.__element.set(elements_values[self.__element_index])
@@ -379,7 +419,12 @@ class RWSerializedStrength(abstract.ReadWriteFloatScalar):
         Parameters
         ----------
         value : float
-            Input value for this operation.
+            Strength to apply to the magnet, converted to the shared hardware setpoint.
+
+        Raises
+        ------
+        NotImplementedError
+            Waiting for readback convergence is not implemented for this accessor.
         """
         raise NotImplementedError("Not implemented yet.")
 
@@ -395,7 +440,7 @@ class RWSerializedStrength(abstract.ReadWriteFloatScalar):
         Parameters
         ----------
         brho : np.double
-            Input value for this operation.
+            Magnetic rigidity in tesla metres, used to convert strengths to hardware values.
         """
         pass
 
@@ -413,11 +458,12 @@ class RWHardwareArray(abstract.ReadWriteFloatArray):
         Parameters
         ----------
         elements : list[at.Element]
-            Input value for this operation.
+            Accelerator Toolbox elements of every magnet in the array.
         poly : list[PolynomInfo]
-            Input value for this operation.
+            Polynomial component for each magnet, giving the ``PolynomA``/``PolynomB`` attribute name, multipole index
+            and sign convention.
         model : MagnetModel
-            Input value for this operation.
+            Magnet model used to convert between physical strength and hardware value.
         """
         self.__elements = elements
         self.__poly = []
@@ -446,7 +492,7 @@ class RWHardwareArray(abstract.ReadWriteFloatArray):
         Parameters
         ----------
         value : np.array
-            Input value for this operation.
+            Hardware values to apply, one per magnet and ordered like the array.
         """
         nbStrength = len(self.__poly)
         s = self.__model.compute_strengths(value)
@@ -461,7 +507,12 @@ class RWHardwareArray(abstract.ReadWriteFloatArray):
         Parameters
         ----------
         value : np.array
-            Input value for this operation.
+            Hardware values to apply, one per magnet and ordered like the array.
+
+        Raises
+        ------
+        NotImplementedError
+            Waiting for readback convergence is not implemented for this accessor.
         """
         raise NotImplementedError("Not implemented yet.")
 
@@ -486,11 +537,12 @@ class RWStrengthArray(abstract.ReadWriteFloatArray):
         Parameters
         ----------
         elements : list[at.Element]
-            Input value for this operation.
+            Accelerator Toolbox elements of every magnet in the array.
         poly : list[PolynomInfo]
-            Input value for this operation.
+            Polynomial component for each magnet, giving the ``PolynomA``/``PolynomB`` attribute name, multipole index
+            and sign convention.
         model : MagnetModel
-            Input value for this operation.
+            Magnet model used to convert between physical strength and hardware value.
         """
         self.__elements = elements
         self.__poly = []
@@ -519,7 +571,7 @@ class RWStrengthArray(abstract.ReadWriteFloatArray):
         Parameters
         ----------
         value : np.array
-            Input value for this operation.
+            Integrated strengths to apply, one per magnet and ordered like the array.
         """
         nbStrength = len(self.__poly)
         s = np.zeros(nbStrength)
@@ -534,7 +586,12 @@ class RWStrengthArray(abstract.ReadWriteFloatArray):
         Parameters
         ----------
         value : np.array
-            Input value for this operation.
+            Integrated strengths to apply, one per magnet and ordered like the array.
+
+        Raises
+        ------
+        NotImplementedError
+            Waiting for readback convergence is not implemented for this accessor.
         """
         raise NotImplementedError("Not implemented yet.")
 
@@ -559,7 +616,7 @@ class BPMScalarAggregator(ScalarAggregator):
         Parameters
         ----------
         ring : at.Lattice
-            Input value for this operation.
+            Lattice used to resolve element positions into reference points.
         """
         self._lattice = ring
         self._refpts = []
@@ -572,7 +629,7 @@ class BPMScalarAggregator(ScalarAggregator):
         Parameters
         ----------
         elem : at.Element
-            Input value for this operation.
+            BPM lattice element to append to the aggregate.
         """
         self._refpts.append(self._lattice.index(elem))
         self._matrices.append(elem._transform)
@@ -584,7 +641,7 @@ class BPMScalarAggregator(ScalarAggregator):
         Parameters
         ----------
         value : NDArray[np.float64]
-            Input value for this operation.
+            Ignored. BPM readings derive from the closed orbit and cannot be written.
         """
         pass
 
@@ -595,7 +652,7 @@ class BPMScalarAggregator(ScalarAggregator):
         Parameters
         ----------
         value : NDArray[np.float64]
-            Input value for this operation.
+            Ignored. BPM readings derive from the closed orbit and cannot be written.
         """
         pass
 
@@ -688,9 +745,9 @@ class RBpmArray(abstract.ReadFloatArray):
         Parameters
         ----------
         element : at.Element
-            Input value for this operation.
+            BPM lattice element whose position is read.
         lattice : at.Lattice
-            Input value for this operation.
+            Lattice on which the closed orbit is computed.
         """
         self._element = element
         self._lattice = lattice
@@ -725,7 +782,7 @@ class RWBpmOffsetArray(abstract.ReadWriteFloatArray):
         Parameters
         ----------
         element : at.Element
-            Input value for this operation.
+            BPM lattice element whose ``Offset`` attribute is accessed.
         """
         self._element = element
 
@@ -742,7 +799,7 @@ class RWBpmOffsetArray(abstract.ReadWriteFloatArray):
         Parameters
         ----------
         value : np.array
-            Input value for this operation.
+            Two-element array with the horizontal and vertical offsets, in metres.
         """
         self._element.Offset = value
         update_bpm_transform_matrix(self._element)
@@ -755,7 +812,12 @@ class RWBpmOffsetArray(abstract.ReadWriteFloatArray):
         Parameters
         ----------
         value : np.array
-            Input value for this operation.
+            Two-element array with the horizontal and vertical offsets, in metres.
+
+        Raises
+        ------
+        NotImplementedError
+            Waiting for readback convergence is not implemented for this accessor.
         """
         raise NotImplementedError("Not implemented yet.")
 
@@ -774,6 +836,11 @@ class RWBpmTiltScalar(abstract.ReadWriteFloatScalar):
 
     The value is read from and written to the Accelerator Toolbox ``Tilt``
     attribute. Writing the tilt also refreshes the BPM coordinate transform.
+
+    Parameters
+    ----------
+    element : at.Element
+        BPM lattice element whose ``Tilt`` attribute is accessed.
     """
 
     def __init__(self, element: at.Element):
@@ -803,7 +870,7 @@ class RWBpmTiltScalar(abstract.ReadWriteFloatScalar):
         Parameters
         ----------
         value : float
-            Input value for this operation.
+            Tilt angle to apply, in radians.
         """
         self._element.Tilt = value
         update_bpm_transform_matrix(self._element)
@@ -816,7 +883,12 @@ class RWBpmTiltScalar(abstract.ReadWriteFloatScalar):
         Parameters
         ----------
         value : float
-            Input value for this operation.
+            Tilt angle to apply, in radians.
+
+        Raises
+        ------
+        NotImplementedError
+            Waiting for readback convergence is not implemented for this accessor.
         """
         raise NotImplementedError("Not implemented yet.")
 
@@ -842,7 +914,7 @@ class RWRFVoltageScalar(abstract.ReadWriteFloatScalar):
         Parameters
         ----------
         elements : list[at.Element]
-            Input value for this operation.
+            RF cavity elements sharing this voltage setpoint.
         """
         self.__elements = elements
 
@@ -860,7 +932,7 @@ class RWRFVoltageScalar(abstract.ReadWriteFloatScalar):
         Parameters
         ----------
         value : float
-            Input value for this operation.
+            Cavity voltage to apply, in volts.
         """
         v = value / len(self.__elements)
         for e in self.__elements:
@@ -873,7 +945,12 @@ class RWRFVoltageScalar(abstract.ReadWriteFloatScalar):
         Parameters
         ----------
         value : float
-            Input value for this operation.
+            Cavity voltage to apply, in volts.
+
+        Raises
+        ------
+        NotImplementedError
+            Waiting for readback convergence is not implemented for this accessor.
         """
         raise NotImplementedError("Not implemented yet.")
 
@@ -892,6 +969,11 @@ class RWRFPhaseScalar(abstract.ReadWriteFloatScalar):
     Accelerator Toolbox represents the phase through each cavity's
     ``TimeLag`` attribute. This accessor uses the first cavity's frequency and
     keeps the phase synchronized across all cavities in the transmitter.
+
+    Parameters
+    ----------
+    elements : list[at.Element]
+        RF cavity elements sharing the transmitter phase.
     """
 
     def __init__(self, elements: list[at.Element]):
@@ -919,7 +1001,7 @@ class RWRFPhaseScalar(abstract.ReadWriteFloatScalar):
         Parameters
         ----------
         value : float
-            Input value for this operation.
+            Cavity phase to apply, in radians.
         """
         wavelength = speed_of_light / self.__elements[0].Frequency
         for e in self.__elements:
@@ -932,7 +1014,12 @@ class RWRFPhaseScalar(abstract.ReadWriteFloatScalar):
         Parameters
         ----------
         value : float
-            Input value for this operation.
+            Cavity phase to apply, in radians.
+
+        Raises
+        ------
+        NotImplementedError
+            Waiting for readback convergence is not implemented for this accessor.
         """
         raise NotImplementedError("Not implemented yet.")
 
@@ -956,9 +1043,9 @@ class RWRFFrequencyScalar(abstract.ReadWriteFloatScalar):
         Parameters
         ----------
         elements : list[at.Element]
-            Input value for this operation.
+            RF cavity elements driven by this frequency setpoint.
         harmonics : list[float]
-            Input value for this operation.
+            Multiplier applied to the requested frequency for each cavity.
         """
         self.__elements = elements
         self.__harm = harmonics
@@ -975,7 +1062,7 @@ class RWRFFrequencyScalar(abstract.ReadWriteFloatScalar):
         Parameters
         ----------
         value : float
-            Input value for this operation.
+            Fundamental RF frequency to apply, in hertz.
         """
         for idx, e in enumerate(self.__elements):
             e.Frequency = value * self.__harm[idx]
@@ -987,7 +1074,12 @@ class RWRFFrequencyScalar(abstract.ReadWriteFloatScalar):
         Parameters
         ----------
         value : float
-            Input value for this operation.
+            Frequency setpoint. Not implemented by the simulator.
+
+        Raises
+        ------
+        NotImplementedError
+            Waiting for readback convergence is not implemented for this accessor.
         """
         raise NotImplementedError("Not implemented yet.")
 
@@ -1005,6 +1097,11 @@ class RWRFATFrequencyScalar(abstract.ReadWriteFloatScalar):
 
     The accessor delegates frequency reads and writes to
     ``Lattice.get_rf_frequency`` and ``Lattice.set_rf_frequency``.
+
+    Parameters
+    ----------
+    ring : at.Lattice
+        Accelerator Toolbox lattice whose RF frequency is accessed.
     """
 
     def __init__(self, ring: at.Lattice):
@@ -1029,7 +1126,7 @@ class RWRFATFrequencyScalar(abstract.ReadWriteFloatScalar):
         Parameters
         ----------
         value : float
-            Input value for this operation.
+            RF frequency to apply, in hertz.
         """
         self.__ring.set_rf_frequency(value)
 
@@ -1040,7 +1137,12 @@ class RWRFATFrequencyScalar(abstract.ReadWriteFloatScalar):
         Parameters
         ----------
         value : float
-            Input value for this operation.
+            RF frequency to apply, in hertz.
+
+        Raises
+        ------
+        NotImplementedError
+            Waiting for readback convergence is not implemented for this accessor.
         """
         raise NotImplementedError("Not implemented yet.")
 
@@ -1058,6 +1160,11 @@ class RWRFATotalVoltageScalar(abstract.ReadWriteFloatScalar):
 
     The accessor delegates to the Accelerator Toolbox lattice methods
     ``get_rf_voltage`` and ``set_rf_voltage``.
+
+    Parameters
+    ----------
+    ring : at.Lattice
+        Accelerator Toolbox lattice whose total RF voltage is accessed.
     """
 
     def __init__(self, ring: at.Lattice):
@@ -1082,7 +1189,7 @@ class RWRFATotalVoltageScalar(abstract.ReadWriteFloatScalar):
         Parameters
         ----------
         value : float
-            Input value for this operation.
+            Total RF voltage to apply over the whole ring, in volts.
         """
         self.__ring.set_rf_voltage(value)
 
@@ -1093,7 +1200,12 @@ class RWRFATotalVoltageScalar(abstract.ReadWriteFloatScalar):
         Parameters
         ----------
         value : float
-            Input value for this operation.
+            Total RF voltage to apply over the whole ring, in volts.
+
+        Raises
+        ------
+        NotImplementedError
+            Waiting for readback convergence is not implemented for this accessor.
         """
         raise NotImplementedError("Not implemented yet.")
 
@@ -1117,7 +1229,7 @@ class RBetatronTuneArray(abstract.ReadFloatArray):
         Parameters
         ----------
         ring : at.Lattice
-            Input value for this operation.
+            Accelerator Toolbox lattice whose betatron tunes are computed.
         """
         self.__ring = ring
 

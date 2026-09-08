@@ -38,6 +38,26 @@ class BPM(Element, DynamicValidation):
         Device catalog key for the vertical BPM offset.
     tilt : str | None, optional
         Device catalog key for the BPM tilt.
+
+    Attributes
+    ----------
+    positions
+        Read accessor for the horizontal and vertical beam positions, in metres.
+    offset
+        Read/write accessor for the two calibration offsets, in metres.
+    tilt
+        Read/write accessor for the mechanical tilt, in radians.
+
+    Methods
+    -------
+    attach(peer, positions, offset, tilt)
+        Return a copy of this BPM bound to one control system or simulator.
+    get_pos_devices()
+        Return the control-system names behind the position readings.
+    get_offset_devices()
+        Return the control-system names behind the offsets.
+    get_tilt_device()
+        Return the control-system name behind the tilt.
     """
 
     def __init__(
@@ -51,7 +71,8 @@ class BPM(Element, DynamicValidation):
         y_offset: str | None = None,
         tilt: str | None = None,
     ):
-        """Initialize a beam-position monitor configuration.
+        """
+        Initialize a beam-position monitor configuration.
 
         Parameters
         ----------
@@ -89,7 +110,7 @@ class BPM(Element, DynamicValidation):
 
         Returns
         -------
-            ReadFloatArray
+        ReadFloatArray
             Read-only array containing horizontal and vertical positions.
 
         Raises
@@ -108,7 +129,7 @@ class BPM(Element, DynamicValidation):
 
         Returns
         -------
-            ReadWriteFloatArray
+        ReadWriteFloatArray
             Read/write array containing horizontal and vertical offsets.
 
         Raises
@@ -127,7 +148,7 @@ class BPM(Element, DynamicValidation):
 
         Returns
         -------
-            ReadWriteFloatScalar
+        ReadWriteFloatScalar
             Read/write BPM tilt angle used for rotation correction.
 
         Raises
@@ -180,7 +201,7 @@ class BPM(Element, DynamicValidation):
 
         Returns
         -------
-            list of str or None
+        list of str or None
             Horizontal and vertical position device keys.
         """
         return [self._x_pos, self._y_pos]
@@ -191,7 +212,7 @@ class BPM(Element, DynamicValidation):
 
         Returns
         -------
-            str or None
+        str or None
             Tilt device key.
         """
         return self._tilt_name
@@ -202,7 +223,7 @@ class BPM(Element, DynamicValidation):
 
         Returns
         -------
-            list of str or None
+        list of str or None
             Horizontal and vertical offset device keys.
         """
         return [self._x_offset, self._y_offset]

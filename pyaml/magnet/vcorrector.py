@@ -1,4 +1,5 @@
-"""Vertical orbit-corrector elements.
+"""
+Vertical orbit-corrector elements.
 
 This module defines the vertical corrector configuration and runtime
 interface, including its vertical kick-angle access.
@@ -58,6 +59,20 @@ class VCorrector(Magnet, DynamicValidation):
     ) -> Self:
         """
         Return an attached copy with a bound vertical-angle handle.
+
+        Parameters
+        ----------
+        peer : ElementHolder
+            Control system or simulator the copy is bound to.
+        strength : abstract.ReadWriteFloatScalar
+            Accessor for the physical strength on that peer.
+        hardware : abstract.ReadWriteFloatScalar
+            Accessor for the hardware value on that peer.
+
+        Returns
+        -------
+        Self
+            Copy of this magnet bound to ``peer``.
         """
         obj = super().attach(peer, strength, hardware)
         obj.__angle = RWCorrectorAngle(obj)

@@ -1,4 +1,5 @@
-"""Function mappings used by magnet models.
+"""
+Function mappings used by magnet models.
 
 This module provides mappings between configured magnet functions and the
 corresponding model or hardware channels.

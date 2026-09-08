@@ -1,4 +1,5 @@
-"""Beam-dispersion measurement tools.
+"""
+Beam-dispersion measurement tools.
 
 The :class:`Dispersion` tool varies an RF-plant frequency, measures the orbit
 response with a BPM array, and stores the resulting horizontal and vertical
@@ -23,7 +24,8 @@ PYAMLCLASS = "Dispersion"
 
 @register_schema
 class Dispersion(MeasurementTool, DynamicValidation):
-    """Measure beam dispersion by changing the RF frequency.
+    """
+    Measure beam dispersion by changing the RF frequency.
 
     The measurement uses a :class:`pySCInterface` to change the frequency of
     an RF plant and acquire orbit data from a BPM array. Progress is reported

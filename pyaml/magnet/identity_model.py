@@ -1,4 +1,5 @@
-"""Identity conversion model for magnets without calibration curves.
+"""
+Identity conversion model for magnets without calibration curves.
 
 This model passes physical values through to hardware values, subject to the configured units and magnetic-rigidity scaling.
 """
@@ -58,11 +59,11 @@ class IdentityMagnetModel(MagnetModel, DynamicValidation):
         Parameters
         ----------
         powerconverter : str | None
-            Input value for this operation.
+            Name of the power converter device used to apply current.
         physics : str | None
-            Input value for this operation.
+            Name of the physics device used to apply strength.
         unit : str | None
-            Input value for this operation.
+            Unit of the magnet strength and hardware value, for example ``"1/m"`` or ``"m-1"``.
         """
         self._physics = physics
         self._powerconverter = powerconverter
@@ -86,12 +87,12 @@ class IdentityMagnetModel(MagnetModel, DynamicValidation):
         Parameters
         ----------
         strengths : np.array
-            Input value for this operation.
+            Magnet strengths to convert, in the unit reported by :meth:`get_strength_unit`.
 
         Returns
         -------
         np.array
-            Result produced by the operation.
+            Hardware values corresponding to ``strengths``.
         """
         return strengths
 
@@ -102,12 +103,12 @@ class IdentityMagnetModel(MagnetModel, DynamicValidation):
         Parameters
         ----------
         currents : np.array
-            Input value for this operation.
+            Hardware values to convert, in the unit reported by :meth:`get_hardware_unit`.
 
         Returns
         -------
         np.array
-            Result produced by the operation.
+            Strengths corresponding to ``currents``.
         """
         return currents
 
@@ -130,7 +131,7 @@ class IdentityMagnetModel(MagnetModel, DynamicValidation):
         Parameters
         ----------
         brho : np.double
-            Input value for this operation.
+            Magnetic rigidity in tesla metres. Ignored: an identity model applies no rigidity scaling.
         """
         pass
 

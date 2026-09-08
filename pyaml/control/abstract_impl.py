@@ -1,4 +1,5 @@
-"""Control-system implementations of PyAML read/write interfaces.
+"""
+Control-system implementations of PyAML read/write interfaces.
 
 The classes in this module adapt control-system devices to PyAML scalar and
 array interfaces, including conversions between hardware values, magnet
@@ -86,7 +87,8 @@ def check_range(values: Any, dev_range: Any) -> bool:
 
 
 def _as_1d_float_array(values: Any) -> np.ndarray:
-    """Convert scalar or array-like values to a one-dimensional float array.
+    """
+    Convert scalar or array-like values to a one-dimensional float array.
 
     Parameters
     ----------
@@ -105,11 +107,13 @@ def _as_1d_float_array(values: Any) -> np.ndarray:
 
 
 def _iter_devices_and_ranges(devs: DeviceAccess | DeviceAccessList):
-    """Return each device together with its inclusive hardware range.
+    """
+    Return each device together with its inclusive hardware range.
 
     Works for:
       - DeviceAccess: yields 1 item
       - DeviceAccessList: yields N items based on get_devices() and get_range() flattening
+
     Parameters
     ----------
     devs : DeviceAccess or DeviceAccessList
@@ -196,7 +200,14 @@ def format_out_of_range_message(
 
 
 class CSScalarAggregator(ScalarAggregator):
-    """Aggregate scalar control-system devices into one PyAML interface."""
+    """
+    Aggregate scalar control-system devices into one PyAML interface.
+
+    Parameters
+    ----------
+    devs : DeviceAccessList
+        Devices managed by the aggregator.
+    """
 
     def __init__(self, devs: DeviceAccessList):
         """
@@ -210,7 +221,8 @@ class CSScalarAggregator(ScalarAggregator):
         self._devs = devs
 
     def add_devices(self, devices: DeviceAccess | list[DeviceAccess]):
-        """Add one or more devices to the scalar aggregator.
+        """
+        Add one or more devices to the scalar aggregator.
 
         Parameters
         ----------
@@ -220,7 +232,8 @@ class CSScalarAggregator(ScalarAggregator):
         self._devs.add_devices(devices)
 
     def set(self, value: NDArray[np.float64]):
-        """Write scalar values to the managed control-system devices.
+        """
+        Write scalar values to the managed control-system devices.
 
         Parameters
         ----------
@@ -230,7 +243,8 @@ class CSScalarAggregator(ScalarAggregator):
         self._devs.set(value)
 
     def set_and_wait(self, value: NDArray[np.float64]):
-        """Set values and wait for readback confirmation.
+        """
+        Set values and wait for readback confirmation.
 
         This control-system implementation does not currently support
         waiting for device readback and raises :class:`NotImplementedError`.
@@ -269,11 +283,17 @@ class CSScalarAggregator(ScalarAggregator):
 
 
 class CSStrengthScalarAggregator(CSScalarAggregator):
-    """Aggregate magnet strengths while avoiding duplicate hardware writes.
+    """
+    Aggregate magnet strengths while avoiding duplicate hardware writes.
 
     Magnet models convert between exposed strengths and hardware setpoints.
     Shared models, such as those used by virtual magnets from combined-function
     magnets, are written only once per underlying power supply.
+
+    Parameters
+    ----------
+    peer : CSScalarAggregator
+        Scalar device aggregator containing the hardware devices.
     """
 
     def __init__(self, peer: CSScalarAggregator):
@@ -295,7 +315,8 @@ class CSStrengthScalarAggregator(CSScalarAggregator):
         # a CombinedFunctionMagnet or simple magnet.
         # All magnets exported from a same CombinedFunctionMagnet share the same model
         # TODO: check that strength is supported (m.strength may be None)
-        """Register a magnet and its hardware devices with the aggregator.
+        """
+        Register a magnet and its hardware devices with the aggregator.
 
         Parameters
         ----------
@@ -316,7 +337,8 @@ class CSStrengthScalarAggregator(CSScalarAggregator):
         self.__nbMagnet += 1
 
     def set(self, value: NDArray[np.float64]):
-        """Convert strengths to hardware values and write the setpoints.
+        """
+        Convert strengths to hardware values and write the setpoints.
 
         Parameters
         ----------
@@ -339,7 +361,8 @@ class CSStrengthScalarAggregator(CSScalarAggregator):
         self._devs.set(newHardwareValues)
 
     def set_and_wait(self, value: NDArray[np.float64]):
-        """Set magnet strengths and wait for hardware readback.
+        """
+        Set magnet strengths and wait for hardware readback.
 
         Waiting for readback is not implemented by this aggregator.
 
@@ -369,7 +392,8 @@ class CSStrengthScalarAggregator(CSScalarAggregator):
         return allStrength
 
     def readback(self) -> np.array:
-        """Read back magnet strengths from measured hardware values.
+        """
+        Read back magnet strengths from measured hardware values.
 
         Returns
         -------
@@ -399,7 +423,16 @@ class CSStrengthScalarAggregator(CSScalarAggregator):
 
 
 class RWHardwareScalar(abstract.ReadWriteFloatScalar):
-    """Expose one magnet hardware setpoint as a readable/writable scalar."""
+    """
+    Expose one magnet hardware setpoint as a readable/writable scalar.
+
+    Parameters
+    ----------
+    model : MagnetModel
+        Magnet model used to determine the hardware unit.
+    dev : DeviceAccess
+        Control-system device holding the hardware setpoint.
+    """
 
     def __init__(self, model: MagnetModel, dev: DeviceAccess):
         """
@@ -420,7 +453,8 @@ class RWHardwareScalar(abstract.ReadWriteFloatScalar):
         return self.__dev.get()
 
     def set(self, value: float):
-        """Validate and write a magnet hardware setpoint.
+        """
+        Validate and write a magnet hardware setpoint.
 
         Parameters
         ----------
@@ -438,7 +472,8 @@ class RWHardwareScalar(abstract.ReadWriteFloatScalar):
         self.__dev.set(value)
 
     def set_and_wait(self, value: double):
-        """Set the hardware value and wait for readback confirmation.
+        """
+        Set the hardware value and wait for readback confirmation.
 
         Parameters
         ----------
@@ -457,7 +492,8 @@ class RWHardwareScalar(abstract.ReadWriteFloatScalar):
         return self.__model.get_hardware_units()[0]
 
     def set_magnet_rigidity(self, brho: np.double):
-        """Set the beam rigidity used by the magnet model.
+        """
+        Set the beam rigidity used by the magnet model.
 
         Parameters
         ----------
@@ -471,7 +507,16 @@ class RWHardwareScalar(abstract.ReadWriteFloatScalar):
 
 
 class RWStrengthScalar(abstract.ReadWriteFloatScalar):
-    """Expose one magnet strength with hardware-value conversion."""
+    """
+    Expose one magnet strength with hardware-value conversion.
+
+    Parameters
+    ----------
+    model : MagnetModel
+        Magnet model used for strength conversion and units.
+    dev : DeviceAccess
+        Control-system device holding the corresponding hardware value.
+    """
 
     def __init__(self, model: MagnetModel, dev: DeviceAccess):
         """
@@ -495,7 +540,8 @@ class RWStrengthScalar(abstract.ReadWriteFloatScalar):
 
     # Sets the value
     def set(self, value: float):
-        """Convert and write a magnet strength setpoint.
+        """
+        Convert and write a magnet strength setpoint.
 
         Parameters
         ----------
@@ -516,7 +562,8 @@ class RWStrengthScalar(abstract.ReadWriteFloatScalar):
 
     # Sets the value and wait that the read value reach the setpoint
     def set_and_wait(self, value: float):
-        """Set a magnet strength and wait for readback confirmation.
+        """
+        Set a magnet strength and wait for readback confirmation.
 
         Parameters
         ----------
@@ -536,7 +583,8 @@ class RWStrengthScalar(abstract.ReadWriteFloatScalar):
         return self.__model.get_strength_units()[0]
 
     def set_magnet_rigidity(self, brho: np.double):
-        """Set the beam rigidity used by the magnet model.
+        """
+        Set the beam rigidity used by the magnet model.
 
         Parameters
         ----------
@@ -550,7 +598,16 @@ class RWStrengthScalar(abstract.ReadWriteFloatScalar):
 
 
 class RWHardwareArray(abstract.ReadWriteFloatArray):
-    """Expose multiple magnet hardware setpoints as an array interface."""
+    """
+    Expose multiple magnet hardware setpoints as an array interface.
+
+    Parameters
+    ----------
+    model : MagnetModel
+        Magnet model defining the hardware units.
+    devs : list[DeviceAccess]
+        Control-system devices holding the hardware setpoints.
+    """
 
     def __init__(self, model: MagnetModel, devs: list[DeviceAccess]):
         """
@@ -573,7 +630,8 @@ class RWHardwareArray(abstract.ReadWriteFloatArray):
 
     # Sets the value
     def set(self, value: np.array):
-        """Validate and write hardware values for all devices.
+        """
+        Validate and write hardware values for all devices.
 
         Parameters
         ----------
@@ -593,7 +651,8 @@ class RWHardwareArray(abstract.ReadWriteFloatArray):
 
     # Sets the value and waits that the read value reach the setpoint
     def set_and_wait(self, value: np.array):
-        """Set hardware values and wait for readback confirmation.
+        """
+        Set hardware values and wait for readback confirmation.
 
         Parameters
         ----------
@@ -617,7 +676,16 @@ class RWHardwareArray(abstract.ReadWriteFloatArray):
 
 
 class RWStrengthArray(abstract.ReadWriteFloatArray):
-    """Expose multiple magnet strengths with hardware-value conversion."""
+    """
+    Expose multiple magnet strengths with hardware-value conversion.
+
+    Parameters
+    ----------
+    model : MagnetModel
+        Magnet model used for strength conversion and units.
+    devs : list[DeviceAccess]
+        Control-system devices corresponding to the model's hardware values.
+    """
 
     def __init__(self, model: MagnetModel, devs: list[DeviceAccess]):
         """
@@ -642,7 +710,8 @@ class RWStrengthArray(abstract.ReadWriteFloatArray):
 
     # Sets the value
     def set(self, value: np.array):
-        """Convert strengths to hardware values and write the setpoints.
+        """
+        Convert strengths to hardware values and write the setpoints.
 
         Parameters
         ----------
@@ -660,7 +729,8 @@ class RWStrengthArray(abstract.ReadWriteFloatArray):
 
     # Sets the value and waits that the read value reach the setpoint
     def set_and_wait(self, value: np.array):
-        """Set magnet strengths and wait for readback confirmation.
+        """
+        Set magnet strengths and wait for readback confirmation.
 
         Parameters
         ----------
@@ -684,7 +754,16 @@ class RWStrengthArray(abstract.ReadWriteFloatArray):
 
 
 class RBpmArray(abstract.ReadFloatArray):
-    """Expose horizontal and vertical BPM positions as an array."""
+    """
+    Expose horizontal and vertical BPM positions as an array.
+
+    Parameters
+    ----------
+    hDev : DeviceAccess
+        Device providing the horizontal BPM position.
+    vDev : DeviceAccess
+        Device providing the vertical BPM position.
+    """
 
     def __init__(self, hDev: DeviceAccess, vDev: DeviceAccess):
         """
@@ -726,7 +805,7 @@ class RWBpmTiltScalar(abstract.ReadFloatScalar):
         Parameters
         ----------
         dev : DeviceAccess
-            Input value for this operation.
+            Device handle giving access to the BPM tilt attribute.
         """
         self._dev = dev
 
@@ -735,7 +814,8 @@ class RWBpmTiltScalar(abstract.ReadFloatScalar):
         return self._dev.get()
 
     def set(self, value: float):
-        """Write the BPM tilt value to the control-system device.
+        """
+        Write the BPM tilt value to the control-system device.
 
         Parameters
         ----------
@@ -745,7 +825,8 @@ class RWBpmTiltScalar(abstract.ReadFloatScalar):
         self._dev.set(value)
 
     def set_and_wait(self, value: NDArray[np.float64]):
-        """Set the BPM tilt and wait for readback confirmation.
+        """
+        Set the BPM tilt and wait for readback confirmation.
 
         Parameters
         ----------
@@ -769,7 +850,16 @@ class RWBpmTiltScalar(abstract.ReadFloatScalar):
 
 
 class RWBpmOffsetArray(abstract.ReadWriteFloatArray):
-    """Expose horizontal and vertical BPM offsets as a writable array."""
+    """
+    Expose horizontal and vertical BPM offsets as a writable array.
+
+    Parameters
+    ----------
+    hDev : DeviceAccess
+        Device handle for the horizontal BPM offset.
+    vDev : DeviceAccess
+        Device handle for the vertical BPM offset.
+    """
 
     def __init__(self, hDev: DeviceAccess, vDev: DeviceAccess):
         """
@@ -778,9 +868,9 @@ class RWBpmOffsetArray(abstract.ReadWriteFloatArray):
         Parameters
         ----------
         hDev : DeviceAccess
-            Input value for this operation.
+            Device handle for the horizontal BPM offset.
         vDev : DeviceAccess
-            Input value for this operation.
+            Device handle for the vertical BPM offset.
         """
         self._hDev = hDev
         self._vDev = vDev
@@ -790,7 +880,8 @@ class RWBpmOffsetArray(abstract.ReadWriteFloatArray):
         return np.array([self._hDev.get(), self._vDev.get()])
 
     def set(self, value: NDArray[np.float64]):
-        """Write horizontal and vertical BPM offsets.
+        """
+        Write horizontal and vertical BPM offsets.
 
         Parameters
         ----------
@@ -801,7 +892,8 @@ class RWBpmOffsetArray(abstract.ReadWriteFloatArray):
         self._vDev.set(value[1])
 
     def set_and_wait(self, value: NDArray[np.float64]):
-        """Set BPM offsets and wait for readback confirmation.
+        """
+        Set BPM offsets and wait for readback confirmation.
 
         Parameters
         ----------
@@ -850,7 +942,8 @@ class RWRFVoltageScalar(abstract.ReadWriteFloatScalar):
         return self.__dev.get()
 
     def set(self, value: float):
-        """Write a cavity-voltage setpoint to the transmitter device.
+        """
+        Write a cavity-voltage setpoint to the transmitter device.
 
         Parameters
         ----------
@@ -860,7 +953,8 @@ class RWRFVoltageScalar(abstract.ReadWriteFloatScalar):
         self.__dev.set(value)
 
     def set_and_wait(self, value: float):
-        """Set the cavity voltage and wait for readback confirmation.
+        """
+        Set the cavity voltage and wait for readback confirmation.
 
         Parameters
         ----------
@@ -907,7 +1001,8 @@ class RWRFPhaseScalar(abstract.ReadWriteFloatScalar):
         return self.__dev.get()
 
     def set(self, value: float):
-        """Write a cavity-phase setpoint to the transmitter device.
+        """
+        Write a cavity-phase setpoint to the transmitter device.
 
         Parameters
         ----------
@@ -917,7 +1012,8 @@ class RWRFPhaseScalar(abstract.ReadWriteFloatScalar):
         self.__dev.set(value)
 
     def set_and_wait(self, value: float):
-        """Set the cavity phase and wait for readback confirmation.
+        """
+        Set the cavity phase and wait for readback confirmation.
 
         Parameters
         ----------
@@ -964,7 +1060,8 @@ class RWRFFrequencyScalar(abstract.ReadWriteFloatScalar):
         return self.__dev.get()
 
     def set(self, value: float):
-        """Write an RF-frequency setpoint to the plant device.
+        """
+        Write an RF-frequency setpoint to the plant device.
 
         Parameters
         ----------
@@ -974,7 +1071,8 @@ class RWRFFrequencyScalar(abstract.ReadWriteFloatScalar):
         self.__dev.set(value)
 
     def set_and_wait(self, value: float):
-        """Set the RF frequency and wait for readback confirmation.
+        """
+        Set the RF frequency and wait for readback confirmation.
 
         Parameters
         ----------
@@ -997,7 +1095,16 @@ class RWRFFrequencyScalar(abstract.ReadWriteFloatScalar):
 
 
 class RBetatronTuneArray(abstract.ReadFloatArray):
-    """Expose horizontal and vertical betatron tunes as a read-only array."""
+    """
+    Expose horizontal and vertical betatron tunes as a read-only array.
+
+    Parameters
+    ----------
+    tune_monitor : object
+        Tune monitor configuration supplying the tune unit.
+    devs : list[DeviceAccess]
+        Devices providing horizontal and vertical tune measurements.
+    """
 
     def __init__(self, tune_monitor, devs: list[DeviceAccess]):
         """

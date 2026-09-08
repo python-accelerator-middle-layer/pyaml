@@ -1,4 +1,5 @@
-"""Spline-based conversion model for calibrated magnets.
+"""
+Spline-based conversion model for calibrated magnets.
 
 This model uses excitation-curve interpolation to convert between physical magnet strengths and hardware values.
 """
@@ -73,21 +74,22 @@ class SplineMagnetModel(MagnetModel, DynamicValidation):
         Parameters
         ----------
         curve : Curve
-            Input value for this operation.
+            Excitation curve used for interpolation.
         powerconverter : str | None
-            Input value for this operation.
+            Name of the associated power converter device.
         calibration_factor : float
-            Input value for this operation.
+            Multiplicative correction applied to the curve. Default is ``1.0``.
         calibration_offset : float
-            Input value for this operation.
+            Additive correction applied to the curve. Default is ``0.0``.
         crosstalk : float
-            Input value for this operation.
+            Crosstalk factor applied to the curve. Default is ``1.0``.
         unit : str | None
-            Input value for this operation.
+            Strength unit, such as ``m-1`` or ``m-2``.
         hardware_unit : str | None
-            Input value for this operation.
+            Hardware unit, such as ``A`` or ``V``.
         alpha : float
-            Input value for this operation.
+            Smoothing parameter passed to :func:`scipy.interpolate.make_smoothing_spline`. ``alpha = 0`` gives exact
+            interpolation through the data points.
         """
         self.__curve = curve.get_curve()
         self.__curve[:, 1] = self.__curve[:, 1] * calibration_factor * crosstalk + calibration_offset
@@ -106,12 +108,12 @@ class SplineMagnetModel(MagnetModel, DynamicValidation):
         Parameters
         ----------
         strengths : np.array
-            Input value for this operation.
+            Magnet strengths to convert, in the unit reported by :meth:`get_strength_unit`.
 
         Returns
         -------
         np.array
-            Result produced by the operation.
+            Hardware values corresponding to ``strengths``.
         """
         _current = self.__rspl(strengths[0] * self.__brho)
         return np.array([_current])
@@ -123,12 +125,12 @@ class SplineMagnetModel(MagnetModel, DynamicValidation):
         Parameters
         ----------
         currents : np.array
-            Input value for this operation.
+            Hardware values to convert, in the unit reported by :meth:`get_hardware_unit`.
 
         Returns
         -------
         np.array
-            Result produced by the operation.
+            Strengths corresponding to ``currents``.
         """
         _strength = self.__spl(currents[0]) / self.__brho
         return np.array([_strength])
@@ -152,7 +154,7 @@ class SplineMagnetModel(MagnetModel, DynamicValidation):
         Parameters
         ----------
         brho : np.double
-            Input value for this operation.
+            Magnetic rigidity in tesla metres, used to scale strengths into hardware values.
         """
         self.__brho = brho
 

@@ -1,4 +1,5 @@
-"""BPM module.
+"""
+BPM module.
 
 This module provides BPM functionality for the PyAML accelerator middle layer.
 """
@@ -16,8 +17,8 @@ class BPM(ArrayConfig, DynamicValidation):
     """
     :py:class:`.BPMArray` configuration.
 
-    Example
-    -------
+    Examples
+    --------
     Here is an example using a yaml configuration file:
 
     .. code-block:: yaml
@@ -40,7 +41,6 @@ class BPM(ArrayConfig, DynamicValidation):
                         name="BPM",
                         elements=["BPM_C04-01","BPM_C04-02","BPM_C04-03"]
                        ))
-
     """
 
     def __init__(self, name: str, elements: list[str]):
@@ -50,9 +50,10 @@ class BPM(ArrayConfig, DynamicValidation):
         Parameters
         ----------
         name : str
-            Input value for this operation.
+            Name under which the array is registered and later looked up.
         elements : list[str]
-            Input value for this operation.
+            Element name patterns making up the array: literal names, ``fnmatch`` wildcards, or ``re:`` regular
+            expressions.
         """
         super().__init__(name, elements)
 

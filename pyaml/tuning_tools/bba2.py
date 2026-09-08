@@ -1,4 +1,5 @@
-"""Beam-based alignment analysis tools.
+"""
+Beam-based alignment analysis tools.
 
 This module contains data structures and analysis helpers for estimating
 quadrupole magnetic-center offsets from beam-position-monitor responses.
@@ -533,16 +534,15 @@ class BBA2(MeasurementTool, DynamicValidation):
 
             bba.plot_data()
 
-
         Parameters
         ----------
-        sleep_between_step: float
+        sleep_between_step : float
             Default time sleep after steerer or quad exitation
             Default: from config
         n_avg_meas : int, optional
             Default number of orbit measurement per step used for averaging
             Default from config
-        sleep_between_meas: float
+        sleep_between_meas : float
             Default time sleep between two orbit measurment
             Default: from config
         callback : Callable, optional
@@ -550,7 +550,7 @@ class BBA2(MeasurementTool, DynamicValidation):
             callback is executed after each strength setting and after each orbit
             reading.
             If the callback returns false, then the process is aborted.
-        plane: str, optional
+        plane : str, optional
             Plane to perform ("H" or "V", None => both plane)
         """
         self._nb_meas = n_avg_meas if n_avg_meas is not None else self.n_avg_meas

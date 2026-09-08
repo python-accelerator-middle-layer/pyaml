@@ -1,4 +1,5 @@
-"""Betatron tune monitor element and runtime data bindings.
+"""
+Betatron tune monitor element and runtime data bindings.
 
 The monitor identifies tune measurements, attaches them to a runtime peer,
 and optionally converts tune fractions to frequencies using an RF plant.
@@ -49,7 +50,8 @@ class BetatronTuneMonitor(Element, DynamicValidation, ABetatronTuneMonitor):
         tune_v: str | None = None,
         rf_plant_name: str | None = None,
     ):
-        """Initialize a betatron tune monitor.
+        """
+        Initialize a betatron tune monitor.
 
         Parameters
         ----------
@@ -72,7 +74,8 @@ class BetatronTuneMonitor(Element, DynamicValidation, ABetatronTuneMonitor):
         self._h = None
 
     def set_harmonic(self, h: int):
-        """Set the harmonic number used for tune-frequency conversion.
+        """
+        Set the harmonic number used for tune-frequency conversion.
 
         Parameters
         ----------
@@ -127,7 +130,8 @@ class BetatronTuneMonitor(Element, DynamicValidation, ABetatronTuneMonitor):
             """
 
             def __init__(self, parent: BetatronTuneMonitor):
-                """Initialize the tune-frequency view.
+                """
+                Initialize the tune-frequency view.
 
                 Parameters
                 ----------

@@ -1,4 +1,5 @@
-"""Load PyAML configuration files and expand nested references.
+"""
+Load PyAML configuration files and expand nested references.
 
 The loader supports YAML and JSON files, environment and path resolvers,
 recursive file includes, and optional source-location metadata for diagnostics.
@@ -33,10 +34,18 @@ RESOLVER_PATTERN = re.compile(r"\$\{([^{}]+)\}")
 
 
 class RootFolder:
-    """Manage the base directory for relative configuration paths."""
+    """
+    Manage the base directory for relative configuration paths.
+
+    Parameters
+    ----------
+    path : str or pathlib.Path or None, optional
+        Directory used to resolve relative paths.
+    """
 
     def __init__(self, path: str | Path | None = None):
-        """Initialize the configuration path root.
+        """
+        Initialize the configuration path root.
 
         If ``path`` is omitted, the current working directory is used.
 
@@ -51,7 +60,8 @@ class RootFolder:
             self._path = Path(path).resolve()
 
     def set(self, path: str | Path) -> None:
-        """Set the directory used to resolve relative configuration files.
+        """
+        Set the directory used to resolve relative configuration files.
 
         Parameters
         ----------
@@ -65,7 +75,8 @@ class RootFolder:
         return self._path
 
     def expand_path(self, path: str | Path) -> Path:
-        """Resolve a configuration path against the root directory.
+        """
+        Resolve a configuration path against the root directory.
 
         Relative paths are interpreted relative to the configured root folder.
 
@@ -93,7 +104,8 @@ class PyAMLConfigCyclingException(PyAMLException):
     """Raised when a configuration file includes itself through a cycle."""
 
     def __init__(self, error_filename: str, path_stack: list[Path]):
-        """Initialize an exception describing a circular file include.
+        """
+        Initialize an exception describing a circular file include.
 
         Parameters
         ----------
@@ -111,7 +123,8 @@ class PyAMLConfigCyclingException(PyAMLException):
 
 @dataclass
 class LoadContext:
-    """Track include state during one recursive loading session.
+    """
+    Track include state during one recursive loading session.
 
     Parameters
     ----------
@@ -126,7 +139,8 @@ class LoadContext:
 
     @contextmanager
     def loading(self, path: Path):
-        """Temporarily add a file to the active include chain.
+        """
+        Temporarily add a file to the active include chain.
 
         Parameters
         ----------
@@ -159,7 +173,8 @@ RESOLVERS: dict[str, Resolver] = {}
 
 
 def resolver(name: str):
-    """Register a function as a configuration value resolver.
+    """
+    Register a function as a configuration value resolver.
 
     Args:
         name: Prefix used to invoke the resolver (for example ``"env"``
@@ -171,7 +186,8 @@ def resolver(name: str):
     """
 
     def decorate(func: Resolver) -> Resolver:
-        """Register ``func`` under the resolver prefix.
+        """
+        Register ``func`` under the resolver prefix.
 
         Parameters
         ----------
@@ -191,7 +207,8 @@ def resolver(name: str):
 
 @resolver("env")
 def resolve_env(value: str, _context: LoadContext | None = None) -> str:
-    """Resolve an environment variable by name.
+    """
+    Resolve an environment variable by name.
 
     Parameters
     ----------
@@ -218,7 +235,8 @@ def resolve_env(value: str, _context: LoadContext | None = None) -> str:
 
 @resolver("path")
 def resolve_path(value: str, _context: LoadContext | None = None) -> str:
-    """Resolve a configuration path without loading the file.
+    """
+    Resolve a configuration path without loading the file.
 
     Relative paths are expanded using the configured root folder.
 
@@ -239,7 +257,8 @@ def resolve_path(value: str, _context: LoadContext | None = None) -> str:
 
 @resolver("file")
 def resolve_file(value: str, context: LoadContext | None = None) -> Any:
-    """Load and return the contents of a configuration file.
+    """
+    Load and return the contents of a configuration file.
 
     Parameters
     ----------
@@ -264,7 +283,8 @@ def resolve_file(value: str, context: LoadContext | None = None) -> Any:
 
 
 def load(filename: str, include_locations: bool = False) -> Union[dict, list]:
-    """Load a configuration file.
+    """
+    Load a configuration file.
 
     When include_locations is False, uses the faster C-based YAML loader
     and skips including source location metadata.
@@ -298,7 +318,8 @@ def _is_supported_file(value: Any) -> bool:
 
 
 class ConfigLoader(ABC):
-    """Base class for parsers that expand nested configuration references.
+    """
+    Base class for parsers that expand nested configuration references.
 
     Parameters
     ----------
@@ -315,7 +336,8 @@ class ConfigLoader(ABC):
         self.context = context
 
     def expand(self, obj: Union[dict, list, Any]) -> Union[dict, list, Any]:
-        """Recursively expand configuration values.
+        """
+        Recursively expand configuration values.
 
         Dictionaries and lists are traversed recursively, while string values
         are resolved using the registered resolvers. All other values are
@@ -331,7 +353,8 @@ class ConfigLoader(ABC):
         return obj
 
     def _expand_string(self, value: str) -> Any:
-        """Expand resolver expressions and file references in a string.
+        """
+        Expand resolver expressions and file references in a string.
 
         If the entire string is a resolver expression (for example
         ``"${env:HOME}"`` or ``"${file:config.yaml}"``), the resolved value is
@@ -358,7 +381,8 @@ class ConfigLoader(ABC):
 
         # Handle embedded case
         def replace(match: re.Match[str]) -> str:
-            """Replace one embedded resolver expression with its value.
+            """
+            Replace one embedded resolver expression with its value.
 
             Parameters
             ----------
@@ -388,7 +412,8 @@ class ConfigLoader(ABC):
         return value
 
     def _resolve_resolver_expression(self, expr: str) -> Any:
-        """Resolve a single resolver expression.
+        """
+        Resolve a single resolver expression.
 
         The expression must have the form ``"<resolver>:<payload>"``, for
         example ``"env:HOME"`` or ``"file:config.yaml"``. The resolver is
@@ -441,7 +466,8 @@ class ConfigLoader(ABC):
         raise PyAMLException(f"Circular file inclusion of {exc.error_filename}{location_str}") from exc
 
     def _expand_list(self, items: list) -> list:
-        """Recursively expand the elements of a list.
+        """
+        Recursively expand the elements of a list.
 
         Plain string values that refer to supported configuration files are
         treated as list includes. If the referenced file loads to a list, its

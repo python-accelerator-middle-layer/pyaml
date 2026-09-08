@@ -1,4 +1,5 @@
-"""Fetch and expand configuration documents from HTTP(S) sources.
+"""
+Fetch and expand configuration documents from HTTP(S) sources.
 
 The helpers in this module download YAML or JSON documents, resolve relative
 remote includes, expand path references, and detect circular inclusions.
@@ -27,7 +28,8 @@ FILE_PREFIX = "${path:"
 
 
 class _NamedStringIO(io.StringIO):
-    """In-memory text stream that preserves a source name for YAML errors.
+    """
+    In-memory text stream that preserves a source name for YAML errors.
 
     Parameters
     ----------
@@ -53,7 +55,8 @@ class _NamedStringIO(io.StringIO):
 
 
 def is_remote_url(value: str) -> bool:
-    """Return whether a string uses the HTTP or HTTPS URL scheme.
+    """
+    Return whether a string uses the HTTP or HTTPS URL scheme.
 
     Parameters
     ----------
@@ -69,7 +72,8 @@ def is_remote_url(value: str) -> bool:
 
 
 def fetch_remote_config(url: str, *, include_locations: bool = True) -> tuple[dict[str, Any] | list[Any], str]:
-    """Fetch, parse, and expand a remote configuration document.
+    """
+    Fetch, parse, and expand a remote configuration document.
 
     Parameters
     ----------
@@ -89,7 +93,8 @@ def fetch_remote_config(url: str, *, include_locations: bool = True) -> tuple[di
 
 
 def resolve_reference(reference: str, source_root: SourceRoot) -> str:
-    """Resolve a local or remote configuration reference.
+    """
+    Resolve a local or remote configuration reference.
 
     Parameters
     ----------
@@ -116,7 +121,8 @@ def resolve_reference(reference: str, source_root: SourceRoot) -> str:
 
 
 def _normalize_remote_url(url: str) -> str:
-    """Validate that a configuration source is an HTTP(S) URL.
+    """
+    Validate that a configuration source is an HTTP(S) URL.
 
     Parameters
     ----------
@@ -140,7 +146,8 @@ def _load_remote_document(
     include_locations: bool,
     stack: list[str],
 ) -> dict[str, Any] | list[Any]:
-    """Download, parse, and recursively expand one remote document.
+    """
+    Download, parse, and recursively expand one remote document.
 
     Parameters
     ----------
@@ -165,7 +172,8 @@ def _load_remote_document(
 
 
 def _download_text(url: str) -> tuple[str, str]:
-    """Download a remote document and return its text and media type.
+    """
+    Download a remote document and return its text and media type.
 
     Parameters
     ----------
@@ -199,7 +207,8 @@ def _parse_remote_document(
     *,
     include_locations: bool,
 ) -> dict[str, Any] | list[Any]:
-    """Parse downloaded JSON or YAML text into Python objects.
+    """
+    Parse downloaded JSON or YAML text into Python objects.
 
     Parameters
     ----------
@@ -234,7 +243,8 @@ def _parse_remote_document(
 
 
 def _expand_remote_value(value, base_url: str, stack: list[str], *, include_locations: bool):
-    """Recursively expand references in a remote configuration value.
+    """
+    Recursively expand references in a remote configuration value.
 
     Parameters
     ----------
@@ -261,7 +271,8 @@ def _expand_remote_dict(
     *,
     include_locations: bool,
 ) -> dict[str, Any]:
-    """Expand file and document references within a remote mapping.
+    """
+    Expand file and document references within a remote mapping.
 
     Parameters
     ----------
@@ -298,7 +309,8 @@ def _expand_remote_dict(
 
 
 def _expand_remote_list(values: list[Any], base_url: str, stack: list[str], *, include_locations: bool) -> list[Any]:
-    """Expand file and document references within a remote list.
+    """
+    Expand file and document references within a remote list.
 
     Parameters
     ----------
@@ -344,7 +356,8 @@ def _expand_remote_list(values: list[Any], base_url: str, stack: list[str], *, i
 
 
 def _is_config_reference(value: Any) -> bool:
-    """Return whether a value names a supported configuration document.
+    """
+    Return whether a value names a supported configuration document.
 
     Parameters
     ----------
@@ -368,7 +381,8 @@ def _is_config_reference(value: Any) -> bool:
 
 
 def _resolve_remote_config_reference(reference: str, base_url: str) -> str:
-    """Resolve a remote include against its containing document URL.
+    """
+    Resolve a remote include against its containing document URL.
 
     Parameters
     ----------
@@ -388,7 +402,8 @@ def _resolve_remote_config_reference(reference: str, base_url: str) -> str:
 
 
 def _remote_base_url(url: str) -> str:
-    """Return the directory-like base URL for a remote document.
+    """
+    Return the directory-like base URL for a remote document.
 
     Parameters
     ----------

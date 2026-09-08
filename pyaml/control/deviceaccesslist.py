@@ -1,4 +1,5 @@
-"""Abstract collection interface for control-system devices.
+"""
+Abstract collection interface for control-system devices.
 
 Backends implement :class:`DeviceAccessList` to expose ordered groups of
 device variables with bulk read, write, range, unit, and availability support.
@@ -13,7 +14,8 @@ from .deviceaccess import DeviceAccess
 
 
 class DeviceAccessList(metaclass=ABCMeta):
-    """Define ordered bulk access to control-system device variables.
+    """
+    Define ordered bulk access to control-system device variables.
 
     The internal representation is backend-dependent.  Implementations expose
     devices in a stable order so array values correspond to the same order for
@@ -22,12 +24,20 @@ class DeviceAccessList(metaclass=ABCMeta):
 
     @abstractmethod
     def add_devices(self, devices: DeviceAccess | list[DeviceAccess]):
-        """Add one device or a list of devices to the collection."""
+        """
+        Add one device or a list of devices to the collection.
+
+        Parameters
+        ----------
+        devices : DeviceAccess | list[DeviceAccess]
+            Device or devices to append, in the order they should be read.
+        """
         pass
 
     @abstractmethod
     def get_device_at(self, index: int) -> DeviceAccess:
-        """Return the device at a zero-based index.
+        """
+        Return the device at a zero-based index.
 
         Parameters
         ----------
@@ -48,7 +58,8 @@ class DeviceAccessList(metaclass=ABCMeta):
 
     @abstractmethod
     def set(self, value: npt.NDArray[np.float64]):
-        """Write one setpoint for each device in collection order.
+        """
+        Write one setpoint for each device in collection order.
 
         Parameters
         ----------
@@ -59,7 +70,8 @@ class DeviceAccessList(metaclass=ABCMeta):
 
     @abstractmethod
     def set_and_wait(self, value: npt.NDArray[np.float64]):
-        """Write setpoints and wait for all devices to reach them.
+        """
+        Write setpoints and wait for all devices to reach them.
 
         Parameters
         ----------
@@ -75,7 +87,8 @@ class DeviceAccessList(metaclass=ABCMeta):
 
     @abstractmethod
     def readback(self) -> np.array:
-        """Return the latest measured values in collection order.
+        """
+        Return the latest measured values in collection order.
 
         Returns
         -------
@@ -118,7 +131,8 @@ class DeviceAccessList(metaclass=ABCMeta):
     # Immutable list implementation
 
     def __getitem__(self, index):
-        """Return the device at ``index``.
+        """
+        Return the device at ``index``.
 
         Parameters
         ----------
@@ -142,7 +156,8 @@ class DeviceAccessList(metaclass=ABCMeta):
         return self
 
     def __next__(self):
-        """Return the next device during iteration.
+        """
+        Return the next device during iteration.
 
         Raises
         ------

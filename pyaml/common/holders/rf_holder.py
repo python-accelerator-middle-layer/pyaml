@@ -11,7 +11,8 @@ if TYPE_CHECKING:
 
 
 class RFTransmitterHolder:
-    """Provide name-based access to RF transmitter elements.
+    """
+    Provide name-based access to RF transmitter elements.
 
     Parameters
     ----------
@@ -20,7 +21,8 @@ class RFTransmitterHolder:
     """
 
     def __init__(self, peer: "ElementHolder"):
-        """Initialize a transmitter holder for an element holder.
+        """
+        Initialize a transmitter holder for an element holder.
 
         Parameters
         ----------
@@ -63,10 +65,18 @@ class RFTransmitterHolder:
 
 
 class RFHolder:
-    """Provide access to RF plants and their transmitters."""
+    """
+    Provide access to RF plants and their transmitters.
+
+    Parameters
+    ----------
+    peer : 'ElementHolder'
+        Parent holder containing the RF plant store.
+    """
 
     def __init__(self, peer: "ElementHolder"):
-        """Initialize an RF holder for an element holder.
+        """
+        Initialize an RF holder for an element holder.
 
         Parameters
         ----------
@@ -92,7 +102,8 @@ class RFHolder:
         return self.get("DEFAULT_RF_PLANT").voltage
 
     def get(self, name: str) -> RFPlant:
-        """Return an RF plant by name.
+        """
+        Return an RF plant by name.
 
         Parameters
         ----------
@@ -107,7 +118,8 @@ class RFHolder:
         return self._peer._get("RFPlant", name, self._peer._RFPLANT)
 
     def add(self, rf: RFPlant):
-        """Add an RF plant to the holder.
+        """
+        Add an RF plant to the holder.
 
         Parameters
         ----------

@@ -1,4 +1,5 @@
-"""Abstract read/write interfaces for scalar and array values.
+"""
+Abstract read/write interfaces for scalar and array values.
 
 The interfaces define the small protocol used by PyAML runtime elements to
 read values, write setpoints, report units, and map scalar channels onto
@@ -17,7 +18,8 @@ class ReadFloatScalar(metaclass=ABCMeta):
 
     @abstractmethod
     def get(self) -> double:
-        """Return the current scalar value.
+        """
+        Return the current scalar value.
 
         Returns
         -------
@@ -28,7 +30,8 @@ class ReadFloatScalar(metaclass=ABCMeta):
 
     @abstractmethod
     def unit(self) -> str:
-        """Return the physical unit of the scalar value.
+        """
+        Return the physical unit of the scalar value.
 
         Returns
         -------
@@ -43,7 +46,8 @@ class ReadWriteFloatScalar(ReadFloatScalar):
 
     @abstractmethod
     def set(self, value: double):
-        """Write a scalar setpoint.
+        """
+        Write a scalar setpoint.
 
         Parameters
         ----------
@@ -55,7 +59,8 @@ class ReadWriteFloatScalar(ReadFloatScalar):
     # Sets the value and wait that the read value reach the setpoint
     @abstractmethod
     def set_and_wait(self, value: double):
-        """Write a setpoint and wait for readback confirmation.
+        """
+        Write a setpoint and wait for readback confirmation.
 
         Parameters
         ----------
@@ -84,7 +89,8 @@ class ReadWriteFloatArray(ReadFloatScalar):
 
     @abstractmethod
     def set(self, value: array):
-        """Write array values in the interface's defined order.
+        """
+        Write array values in the interface's defined order.
 
         Parameters
         ----------
@@ -96,7 +102,8 @@ class ReadWriteFloatArray(ReadFloatScalar):
     # Sets the value and waits that the read value reach the setpoint
     @abstractmethod
     def set_and_wait(self, value: array):
-        """Write array values and wait for readback confirmation.
+        """
+        Write array values and wait for readback confirmation.
 
         Parameters
         ----------
@@ -107,7 +114,8 @@ class ReadWriteFloatArray(ReadFloatScalar):
 
 
 class RWMapper(ReadWriteFloatScalar):
-    """Expose one array element through a scalar read/write interface.
+    """
+    Expose one array element through a scalar read/write interface.
 
     Parameters
     ----------

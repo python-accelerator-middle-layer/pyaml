@@ -53,6 +53,38 @@ class Accelerator:
     description : str, optional
         Human-readable description of the accelerator.
 
+    Attributes
+    ----------
+    live
+        Control system named ``live``, if one is configured.
+    design
+        Simulator named ``design``, if one is configured.
+    yellow_pages
+        Discovery service over the arrays, tools and diagnostics of every mode.
+
+    Methods
+    -------
+    load(filename, include_locations=False, ignore_external=False, validate=False)
+        Build an accelerator from a single configuration file. Class method.
+    from_dict(config_dict, ignore_external=False, validate=False)
+        Build an accelerator from an already loaded configuration mapping. Class method.
+    modes()
+        Return every control system and simulator, keyed by name.
+    controls()
+        Return the configured control systems, keyed by name.
+    simulators()
+        Return the configured simulators, keyed by name.
+    add_device(config, ignore_external=False)
+        Build a device from a configuration mapping and attach it to every mode.
+    set_energy(E)
+        Set the beam energy on every element of every mode.
+    set_mcf(alphac)
+        Set the momentum compaction factor on every element of every mode.
+    set_harmonic_number(h)
+        Set the harmonic number on every element of every mode.
+    get_description()
+        Return the human-readable accelerator description.
+
     Notes
     -----
     Control systems and simulators are registered by name and are exposed as
@@ -81,27 +113,27 @@ class Accelerator:
         Parameters
         ----------
         facility : str
-            Input value for this operation.
+            Facility name.
         machine : str
-            Input value for this operation.
+            Accelerator name.
         energy : float
-            Input value for this operation.
+            Nominal accelerator energy.
         alphac : float | None
-            Input value for this operation.
+            Momentum compaction factor.
         harmonic_number : int | None
-            Input value for this operation.
+            Harmonic number.
         controls : list[ControlSystem] | None
-            Input value for this operation.
+            Control systems associated with the accelerator.
         simulators : list[Simulator] | None
-            Input value for this operation.
+            Simulators associated with the accelerator.
         arrays : list[ArrayConfig] | None
-            Input value for this operation.
+            Array configurations.
         devices : list[Element] | None
-            Input value for this operation.
+            Accelerator devices.
         data_folder : str | None
-            Input value for this operation.
+            Path to the accelerator data directory.
         description : str | None
-            Input value for this operation.
+            Human-readable description of the accelerator.
         """
         self.facility = facility
         self.machine = machine
@@ -168,14 +200,14 @@ class Accelerator:
     def _set_properties(self, method: str, value):
         # Sets global property
         """
-        Execute _set_properties.
+        Propagate a machine-wide property to every element of every mode.
 
         Parameters
         ----------
         method : str
-            Input value for this operation.
+            Name of the element setter to call, for example ``"set_energy"``.
         value : object
-            Input value for this operation.
+            Value passed to that setter on every element.
         """
         if self._simulators is not None:
             for s in self._simulators.values():

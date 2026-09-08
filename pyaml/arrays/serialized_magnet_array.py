@@ -1,4 +1,5 @@
-"""Serialized Magnet Array module.
+"""
+Serialized Magnet Array module.
 
 This module provides serialized magnet array functionality.
 """
@@ -15,14 +16,14 @@ from .element_array import ElementArray
 
 class RWMagnetStrengths(ReadWriteFloatArray):
     """
-    RWMagnetStrengths configuration or runtime object.
+    Array accessor for the strengths of serialized magnet groups.
 
     Parameters
     ----------
     name : str
-        Input value for this operation.
+        Name of the array, used when the accessor is reported or logged.
     magnets : list[SerializedMagnets]
-        Input value for this operation.
+        Serialized magnet groups making up the array, in the order their values are read and written.
     """
 
     def __init__(self, name: str, magnets: list[SerializedMagnets]):
@@ -32,9 +33,9 @@ class RWMagnetStrengths(ReadWriteFloatArray):
         Parameters
         ----------
         name : str
-            Input value for this operation.
+            Name of the array, used when the accessor is reported or logged.
         magnets : list[SerializedMagnets]
-            Input value for this operation.
+            Serialized magnet groups making up the array, in the order their values are read and written.
         """
         self.__name = name
         self.__magnets = magnets
@@ -42,18 +43,18 @@ class RWMagnetStrengths(ReadWriteFloatArray):
 
     # Gets the values
     def get(self) -> np.array:
-        """Execute get."""
+        """Return the shared strength of every serialized group."""
         return np.array([m.strength.get() for m in self.__magnets])
 
     # Sets the values
     def set(self, value: np.array):
         """
-        Execute set.
+        Set the shared strength of every serialized group.
 
         Parameters
         ----------
         value : np.array
-            Input value for this operation.
+            Shared strength for each serialized group, ordered like the array.
         """
         nvalue = np.ones(len(self.__magnets)) * value if isinstance(value, float) else value
         for value, m in zip(nvalue, self.__magnets, strict=True):
@@ -62,18 +63,23 @@ class RWMagnetStrengths(ReadWriteFloatArray):
     # Sets the values and waits that the read values reach their setpoint
     def set_and_wait(self, value: np.array):
         """
-        Execute set_and_wait.
+        Set every shared strength and wait for the readbacks to converge.
 
         Parameters
         ----------
         value : np.array
-            Input value for this operation.
+            Shared strength for each serialized group, ordered like the array.
+
+        Raises
+        ------
+        NotImplementedError
+            Waiting for readback convergence is not implemented for this accessor.
         """
         raise NotImplementedError("Not implemented yet.")
 
     # Gets the unit of the values
     def unit(self) -> list[str]:
-        """Execute unit."""
+        """Return the strength unit of every serialized group."""
         r = []
         for m in self.__magnets:
             r.extend(m.strength.unit())
@@ -82,14 +88,14 @@ class RWMagnetStrengths(ReadWriteFloatArray):
 
 class RWMagnetHardwares(ReadWriteFloatArray):
     """
-    RWMagnetHardwares configuration or runtime object.
+    Array accessor for the hardware values of serialized magnet groups.
 
     Parameters
     ----------
     name : str
-        Input value for this operation.
+        Name of the array, used when the accessor is reported or logged.
     magnets : list[SerializedMagnets]
-        Input value for this operation.
+        Serialized magnet groups making up the array, in the order their values are read and written.
     """
 
     def __init__(self, name: str, magnets: list[SerializedMagnets]):
@@ -99,9 +105,9 @@ class RWMagnetHardwares(ReadWriteFloatArray):
         Parameters
         ----------
         name : str
-            Input value for this operation.
+            Name of the array, used when the accessor is reported or logged.
         magnets : list[SerializedMagnets]
-            Input value for this operation.
+            Serialized magnet groups making up the array, in the order their values are read and written.
         """
         self.__name = name
         self.__magnets = magnets
@@ -109,18 +115,18 @@ class RWMagnetHardwares(ReadWriteFloatArray):
 
     # Gets the values
     def get(self) -> np.array:
-        """Execute get."""
+        """Return the shared hardware value of every serialized group."""
         return np.array([m.hardware.get() for m in self.__magnets])
 
     # Sets the values
     def set(self, value: np.array):
         """
-        Execute set.
+        Set the shared hardware value of every serialized group.
 
         Parameters
         ----------
         value : np.array
-            Input value for this operation.
+            Shared hardware value for each serialized group, ordered like the array.
         """
         nvalue = np.ones(len(self.__magnets)) * value if isinstance(value, float) else value
         for value, m in zip(nvalue, self.__magnets, strict=True):
@@ -129,18 +135,23 @@ class RWMagnetHardwares(ReadWriteFloatArray):
     # Sets the values and waits that the read values reach their setpoint
     def set_and_wait(self, value: np.array):
         """
-        Execute set_and_wait.
+        Set every shared hardware value and wait for the readbacks to converge.
 
         Parameters
         ----------
         value : np.array
-            Input value for this operation.
+            Shared hardware value for each serialized group, ordered like the array.
+
+        Raises
+        ------
+        NotImplementedError
+            Waiting for readback convergence is not implemented for this accessor.
         """
         raise NotImplementedError("Not implemented yet.")
 
     # Gets the unit of the values
     def unit(self) -> list[str]:
-        """Execute unit."""
+        """Return the hardware unit of every serialized group."""
         r = []
         for m in self.__magnets:
             r.extend(m.hardware.unit())
@@ -175,11 +186,11 @@ class SerializedMagnetsArray(ElementArray):
         Parameters
         ----------
         arrayName : str
-            Input value for this operation.
+            Array name
         magnets : list[SerializedMagnets]
-            Input value for this operation.
+            Magnet list, all elements must be attached to the same instance of either a Simulator or a ControlSystem.
         use_aggregator : object
-            Input value for this operation.
+            Use aggregator to increase performance by using parallel access to underlying devices.
         """
         super().__init__(arrayName, magnets, use_aggregator)
 

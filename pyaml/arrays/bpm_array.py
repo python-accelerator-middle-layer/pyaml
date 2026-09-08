@@ -1,4 +1,5 @@
-"""BPM Array module.
+"""
+BPM Array module.
 
 This module provides bpm array functionality for the PyAML accelerator middle layer.
 """
@@ -34,9 +35,9 @@ class RWBPMPosition(ReadFloatArray):
         Parameters
         ----------
         name : str
-            Input value for this operation.
+            Name of the position accessor
         bpms : list[BPM]
-            Input value for this operation.
+            List of BPM objects to access
         """
         self.__bpms = bpms
         self.__name = name
@@ -108,11 +109,11 @@ class RWBPMSinglePosition(ReadFloatArray):
         Parameters
         ----------
         name : str
-            Input value for this operation.
+            Name of the position accessor
         bpms : list[BPM]
-            Input value for this operation.
+            List of BPM objects to access
         idx : int
-            Input value for this operation.
+            Index for the position axis (0 for horizontal, 1 for vertical)
         """
         self.__bpms = bpms
         self.__name = name
@@ -175,8 +176,8 @@ class BPMArray(ElementArray):
         Use aggregator to increase performance by using paralell
         access to underlying devices.
 
-    Example
-    -------
+    Examples
+    --------
 
     An array can be retrieved from the configuration as in the following
     example:
@@ -188,7 +189,6 @@ class BPMArray(ElementArray):
         >>> orbit = bpms.positions.get()      # Get the orbit
 
     or can be created by code using :py:class:`pyaml.arrays.bpm.BPM`.
-
     """
 
     def __init__(self, arrayName: str, bpms: list[BPM], use_aggregator=True):
@@ -198,11 +198,13 @@ class BPMArray(ElementArray):
         Parameters
         ----------
         arrayName : str
-            Input value for this operation.
+            Array name
         bpms : list[BPM]
-            Input value for this operation.
+            BPM list, all elements must be attached to the same instance of either a
+            (:py:class:`~pyaml.lattice.simulator.Simulator` or a
+            :py:class:`~pyaml.control.controlsystem.ControlSystem`).
         use_aggregator : object
-            Input value for this operation.
+            Use aggregator to increase performance by using paralell access to underlying devices.
         """
         super().__init__(arrayName, bpms, use_aggregator)
 

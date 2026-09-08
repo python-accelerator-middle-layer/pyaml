@@ -1,4 +1,5 @@
-"""Magnet response matrices.
+"""
+Magnet response matrices.
 
 This module defines matrix representations used by magnet models.
 """

@@ -1,4 +1,5 @@
-"""Base interfaces for physical and simulated magnets.
+"""
+Base interfaces for physical and simulated magnets.
 
 This module defines the common magnet element interface and its access to
 strength, hardware, and magnet-model information.
@@ -18,7 +19,46 @@ from .model import MagnetModel
 
 class Magnet(Element):
     """
-    Class providing access to one magnet of a physical or simulated lattice
+    Access one magnet of a physical or simulated lattice.
+
+    A magnet couples a device to its calibration: the attached
+    :class:`~pyaml.magnet.model.MagnetModel` owns the strength to hardware-current
+    conversion and the underlying control-system device names. The same magnet is
+    therefore readable and writable both as a physical strength and as a raw
+    hardware value.
+
+    Parameters
+    ----------
+    name : str
+        Element name.
+    model : MagnetModel | None, optional
+        Magnet model used to convert between strength and hardware value, and to
+        resolve the underlying control-system device names.
+    lattice_names : str | None, optional
+        Name or names of the matching element(s) in the simulated lattice. Defaults
+        to ``name``.
+    description : str | None, optional
+        Human-readable description of the magnet.
+
+    Attributes
+    ----------
+    strength
+        Read/write accessor for the physical strength, in the model's strength unit.
+    hardware
+        Read/write accessor for the hardware value, in the model's hardware unit.
+    model
+        Magnet model performing the strength to hardware conversion.
+
+    Methods
+    -------
+    attach(peer, strength, hardware)
+        Return a copy of this magnet bound to one control system or simulator.
+    set_energy(energy)
+        Set the beam energy, updating the magnetic rigidity used by the model.
+    get_model_name()
+        Return the name of the attached magnet model.
+    set_model_name(name)
+        Set the name of the attached magnet model.
     """
 
     def __init__(
@@ -75,8 +115,21 @@ class Magnet(Element):
         hardware: abstract.ReadWriteFloatScalar,
     ) -> Self:
         """
-        Create a new reference to attach this magnet to a simulator
-        or a control systemand.
+        Return a copy of this magnet bound to a control system or simulator.
+
+        Parameters
+        ----------
+        peer : ElementHolder
+            Control system or simulator the copy is bound to.
+        strength : abstract.ReadWriteFloatScalar
+            Accessor for the physical strength on that peer.
+        hardware : abstract.ReadWriteFloatScalar
+            Accessor for the hardware value on that peer.
+
+        Returns
+        -------
+        Self
+            Copy of this magnet bound to ``peer``.
         """
         obj = copy.copy(self)
         obj.__modelName = self.__modelName

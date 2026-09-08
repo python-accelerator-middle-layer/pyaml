@@ -1,4 +1,5 @@
-"""Deferred construction of control-system-specific elements.
+"""
+Deferred construction of control-system-specific elements.
 
 An :class:`UnboundElement` stores a class, validated configuration, and the
 control modes in which it is available until an :class:`ElementHolder` is
@@ -12,7 +13,8 @@ from ..common.exception import PyAMLConfigException
 
 
 class UnboundElement(Element):
-    """Store configuration for an element instantiated when a holder is filled.
+    """
+    Store configuration for an element instantiated when a holder is filled.
 
     Parameters
     ----------
@@ -27,16 +29,18 @@ class UnboundElement(Element):
     """
 
     def __init__(self, element_class, module_name: str, modes: list[str], config: BaseModel):
-        """Initialize a deferred element configuration.
+        """
+        Initialize a deferred element configuration.
+
         Parameters
         ----------
         element_class : class
             Concrete element class to instantiate later.
         module_name : str
             Fully qualified module name of ``element_class``.
-        control_modes: list[str]
+        modes : list[str]
             Control-system modes in which to instantiate the element.
-        config: BaseModel
+        config : BaseModel
             Validated element configuration.
         """
         super().__init__(config.name)

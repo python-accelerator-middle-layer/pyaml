@@ -1,4 +1,5 @@
-"""Element Array module.
+"""
+Element Array module.
 
 This module provides element array functionality.
 """
@@ -35,8 +36,8 @@ class ElementArray(list[Element]):
         Use aggregator to increase performance by using paralell
         access to underlying devices.
 
-    Example
-    -------
+    Examples
+    --------
 
     An array can be retrieved from the configuration as in the following example:
 
@@ -44,7 +45,6 @@ class ElementArray(list[Element]):
 
         >>> sr = Accelerator.load("acc.yaml")
         >>> elements = sr.design.get_elements("QuadForTune")
-
     """
 
     def __init__(self, array_name: str, elements: list[Element], use_aggregator=True):
@@ -54,11 +54,11 @@ class ElementArray(list[Element]):
         Parameters
         ----------
         array_name : str
-            Input value for this operation.
+            Array name
         elements : list[Element]
-            Input value for this operation.
+            Element list, all elements must be attached to the same instance of either a Simulator or a ControlSystem.
         use_aggregator : object
-            Input value for this operation.
+            Use aggregator to increase performance by using paralell access to underlying devices.
         """
         super().__init__(i for i in elements)
         self.__name = array_name
@@ -100,11 +100,11 @@ class ElementArray(list[Element]):
         Parameters
         ----------
         array_name : str
-            Input value for this operation.
+            Name given to the newly created array.
         element_type : type
-            Input value for this operation.
+            Common element type of ``elements``, used to pick the matching array class.
         elements : list
-            Input value for this operation.
+            Elements to place in the new array.
         """
         if element_type is None:
             element_type = Element
@@ -137,14 +137,14 @@ class ElementArray(list[Element]):
         Parameters
         ----------
         attribute_name : str
-            Input value for this operation.
+            Attribute to read, resolved through the element's ``get_<attribute_name>`` method.
         element : Element
-            Input value for this operation.
+            Element to read the attribute from.
 
         Returns
         -------
         str
-            Result produced by the operation.
+            Attribute value, or ``None`` if the element has no such getter.
         """
         function_name = "get_" + attribute_name
         func = getattr(element, function_name, None)
@@ -164,7 +164,8 @@ class ElementArray(list[Element]):
         return other
 
     def __auto_array(self, elements: list[Element]):
-        """Create the most specific array type for the given element list.
+        """
+        Create the most specific array type for the given element list.
 
         The target element type is the most specific common base class (nearest common
         ancestor) of all elements. This supports heterogeneous subclasses (e.g.,
@@ -178,7 +179,7 @@ class ElementArray(list[Element]):
 
         def mro_as_list(cls: type) -> list[type]:
             # inspect.getmro returns (cls, ..., object)
-            """Execute mro_as_list."""
+            """Return the class MRO, most specific first."""
             return list(inspect.getmro(cls))
 
         # Start from the first element MRO as reference order (most specific first).
@@ -264,7 +265,6 @@ class ElementArray(list[Element]):
             :py:class:`.CombinedFunctionMagnetArray` or
             :py:class:`.SerializedMagnetsArray` or
             :py:class:`.ElementArray`.
-
         """
         # --- mask filtering ---
         if self.__is_bool_mask(other):
@@ -291,7 +291,7 @@ class ElementArray(list[Element]):
         Parameters
         ----------
         other : object
-            Input value for this operation.
+            Left-hand operand, evaluated when it does not implement the operation itself.
         """
         if isinstance(other, ElementArray):
             return other.__and__(self)
@@ -337,7 +337,6 @@ class ElementArray(list[Element]):
             :py:class:`.CombinedFunctionMagnetArray` or
             :py:class:`.SerializedMagnetsArray` or
             :py:class:`.ElementArray`.
-
         """
         # --- mask removal ---
         if self.__is_bool_mask(other):
@@ -363,8 +362,8 @@ class ElementArray(list[Element]):
         Order is stable: elements from ``self`` first, followed by
         elements from ``other`` that are not already present.
 
-        Example
-        -------
+        Examples
+        --------
 
         .. code-block:: python
 
@@ -382,7 +381,6 @@ class ElementArray(list[Element]):
             :py:class:`.CombinedFunctionMagnetArray` or
             :py:class:`.SerializedMagnetsArray` or
             :py:class:`.ElementArray`.
-
         """
         other_arr = self.__ensure_compatible_operand(other)
 
@@ -410,7 +408,7 @@ class ElementArray(list[Element]):
         Parameters
         ----------
         other : object
-            Input value for this operation.
+            Left-hand operand, evaluated when it does not implement the operation itself.
         """
         if isinstance(other, ElementArray):
             return other.__or__(self)
@@ -420,8 +418,8 @@ class ElementArray(list[Element]):
         """
         Alias for the union operator ``|``.
 
-        Example
-        -------
+        Examples
+        --------
 
         .. code-block:: python
 
@@ -437,7 +435,6 @@ class ElementArray(list[Element]):
             :py:class:`.CombinedFunctionMagnetArray` or
             :py:class:`.SerializedMagnetsArray` or
             :py:class:`.ElementArray`.
-
         """
         return self.__or__(other)
 
@@ -448,14 +445,15 @@ class ElementArray(list[Element]):
         Parameters
         ----------
         other : object
-            Input value for this operation.
+            Left-hand operand, evaluated when it does not implement the operation itself.
         """
         if isinstance(other, ElementArray):
             return other.__add__(self)
         return NotImplemented
 
     def mask_by_type(self, element_type: type) -> list[bool]:
-        """Return a boolean mask indicating which elements are instances of the given
+        """
+        Return a boolean mask indicating which elements are instances of the given
         type.
 
         Parameters
@@ -475,7 +473,8 @@ class ElementArray(list[Element]):
         return [isinstance(e, element_type) for e in self]
 
     def of_type(self, element_type: type):
-        """Return a new array containing only elements of the given type.
+        """
+        Return a new array containing only elements of the given type.
 
         The resulting array is automatically typed according to the most
         specific common base class of the filtered elements.
@@ -499,12 +498,12 @@ class ElementArray(list[Element]):
 
     def exclude_type(self, element_type):
         """
-        Execute exclude_type.
+        Return a copy of the array without the elements of a given type.
 
         Parameters
         ----------
         element_type : object
-            Input value for this operation.
+            Element type to drop; instances of its subclasses are dropped as well.
         """
         mask = self.mask_by_type(element_type)
         return self - mask
@@ -516,7 +515,7 @@ class ElementArray(list[Element]):
         Parameters
         ----------
         key : object
-            Input value for this operation.
+            Index or slice. A slice returns a new array of the most specific common element type.
         """
         if isinstance(key, slice):
             # Slicing

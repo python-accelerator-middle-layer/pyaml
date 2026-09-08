@@ -1,4 +1,5 @@
-"""Link PyAML elements to Accelerator Toolbox elements by attributes.
+"""
+Link PyAML elements to Accelerator Toolbox elements by attributes.
 
 This module compares a configured PyAT attribute with a PyAML element name to
 identify the corresponding lattice element during simulator initialization.
@@ -22,7 +23,8 @@ PYAMLCLASS = "PyAtAttributeElementsLinker"
 
 @dataclass
 class PyAtAttributeConfigModel(LinkerConfigModel):
-    """Configuration model for ``PyAtAttributeElementsLinker``.
+    """
+    Configuration model for ``PyAtAttributeElementsLinker``.
 
     Parameters
     ----------
@@ -35,7 +37,8 @@ class PyAtAttributeConfigModel(LinkerConfigModel):
 
 
 class PyAtAttributeIdentifier(LinkerIdentifier):
-    """Identifier based on a PyAT element attribute.
+    """
+    Identifier based on a PyAT element attribute.
 
     Parameters
     ----------
@@ -71,7 +74,8 @@ class PyAtAttributeIdentifier(LinkerIdentifier):
 
 @register_schema
 class PyAtAttributeElementsLinker(LatticeElementsLinker, DynamicValidation):
-    """Link lattice elements using a specified PyAT element attribute.
+    """
+    Link lattice elements using a specified PyAT element attribute.
 
     This linker associates PyAML elements with PyAT elements by comparing
     the value of a configurable PyAT attribute against the identifier

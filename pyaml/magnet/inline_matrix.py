@@ -1,4 +1,5 @@
-"""Magnet response matrices.
+"""
+Magnet response matrices.
 
 This module defines matrix representations used by magnet models.
 """
@@ -38,7 +39,7 @@ class InlineMatrix(Matrix, DynamicValidation):
         Parameters
         ----------
         mat : list[list[float]]
-            Input value for this operation.
+            Matrix data given as a nested list of numbers.
         """
         self._mat = np.array(mat)
 

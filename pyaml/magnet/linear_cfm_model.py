@@ -1,4 +1,5 @@
-"""Linear conversion model for combined-function magnets.
+"""
+Linear conversion model for combined-function magnets.
 
 This model converts multiple multipole strengths to hardware values using per-function linear calibration parameters.
 """
@@ -81,25 +82,25 @@ class LinearCFMagnetModel(MagnetModel, DynamicValidation):
         Parameters
         ----------
         multipoles : list[str]
-            Input value for this operation.
+            Names of the supported multipoles, for example ["B0", "A1", "B2"].
         curves : list[Curve]
-            Input value for this operation.
+            Excitation curves, one per multipole.
         powerconverters : list[str | None]
-            Input value for this operation.
+            Names of the power converter devices associated with the hardware currents.
         hardware_units : list[str]
-            Input value for this operation.
+            Units of the hardware variables, one per power converter.
         calibration_factors : list[float] | None
-            Input value for this operation.
+            Multiplicative correction factors applied to the excitation curves. Defaults to ones.
         calibration_offsets : list[float] | None
-            Input value for this operation.
+            Additive correction offsets applied to the excitation curves. Defaults to zeros.
         pseudo_factors : list[float] | None
-            Input value for this operation.
+            Multiplicative factors applied to pseudo currents. Defaults to ones.
         pseudo_offsets : list[float] | None
-            Input value for this operation.
+            Additive offsets applied to pseudo currents. Defaults to zeros.
         matrix : Matrix | None
-            Input value for this operation.
+            Coupling matrix mapping power-supply currents to pseudo currents. Defaults to the identity matrix.
         units : list[str] | None
-            Input value for this operation.
+            Strength units, one per multipole.
         """
         self.multipoles = multipoles
         self._curves = curves
@@ -201,12 +202,12 @@ class LinearCFMagnetModel(MagnetModel, DynamicValidation):
         Parameters
         ----------
         strengths : np.array
-            Input value for this operation.
+            Strength of each magnet function, ordered as declared by the model.
 
         Returns
         -------
         np.array
-            Result produced by the operation.
+            Hardware value of each power converter, ordered as declared by the model.
         """
         _pI = np.zeros(self.__nbFunction)
         for idx, c in enumerate(self.__rcurves):
@@ -221,12 +222,12 @@ class LinearCFMagnetModel(MagnetModel, DynamicValidation):
         Parameters
         ----------
         currents : np.array
-            Input value for this operation.
+            Hardware value of each power converter, ordered as declared by the model.
 
         Returns
         -------
         np.array
-            Result produced by the operation.
+            Strength of each magnet function, ordered as declared by the model.
         """
         _strength = np.zeros(self.__nbFunction)
         _pI = np.matmul(self.__matrix, currents)
@@ -253,7 +254,7 @@ class LinearCFMagnetModel(MagnetModel, DynamicValidation):
         Parameters
         ----------
         brho : np.double
-            Input value for this operation.
+            Magnetic rigidity in tesla metres, used to scale strengths into hardware values.
         """
         self._brho = brho
 
