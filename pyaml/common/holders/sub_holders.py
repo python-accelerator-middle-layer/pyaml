@@ -1,3 +1,5 @@
+"""Specialized holders for accelerator element categories and arrays."""
+
 from typing import TYPE_CHECKING
 
 from ...arrays.bpm_array import BPMArray
@@ -16,12 +18,36 @@ if TYPE_CHECKING:
 
 
 class MagnetHolder(GenericElementHolder[Magnet]):
+    """
+    Provide access to individual magnet elements.
+
+    Parameters
+    ----------
+    peer : 'ElementHolder'
+        Parent element holder that owns this specialized holder.
+    """
+
     def __init__(self, peer: "ElementHolder"):
+        """
+        Initialize the MagnetHolder.
+        """
         super().__init__(peer, peer._MAGNETS, "Magnet")
 
 
 class MagnetsHolder(GenericArrayHolder[Magnet, MagnetArray]):
+    """
+    Provide access to arrays of individual magnets.
+
+    Parameters
+    ----------
+    peer : 'ElementHolder'
+        Parent element holder that owns this specialized holder.
+    """
+
     def __init__(self, peer: "ElementHolder"):
+        """
+        Initialize the MagnetsHolder.
+        """
         super().__init__(
             peer,
             peer._MAGNET_ARRAYS,
@@ -33,12 +59,36 @@ class MagnetsHolder(GenericArrayHolder[Magnet, MagnetArray]):
 
 
 class CombinedFunctionMagnetHolder(GenericElementHolder[CombinedFunctionMagnet]):
+    """
+    Provide access to individual combined-function magnets.
+
+    Parameters
+    ----------
+    peer : 'ElementHolder'
+        Parent element holder that owns this specialized holder.
+    """
+
     def __init__(self, peer: "ElementHolder"):
+        """
+        Initialize the CombinedFunctionMagnetHolder.
+        """
         super().__init__(peer, peer._CFM_MAGNETS, "Combined function magnet")
 
 
 class CombinedFunctionMagnetsHolder(GenericArrayHolder[CombinedFunctionMagnet, CombinedFunctionMagnetArray]):
+    """
+    Provide access to arrays of combined-function magnets.
+
+    Parameters
+    ----------
+    peer : 'ElementHolder'
+        Parent element holder that owns this specialized holder.
+    """
+
     def __init__(self, peer: "ElementHolder"):
+        """
+        Initialize the CombinedFunctionMagnetsHolder.
+        """
         super().__init__(
             peer,
             peer._CFM_MAGNET_ARRAYS,
@@ -50,12 +100,36 @@ class CombinedFunctionMagnetsHolder(GenericArrayHolder[CombinedFunctionMagnet, C
 
 
 class SerializedMagnetHolder(GenericElementHolder[SerializedMagnets]):
+    """
+    Provide access to individual serialized magnet groups.
+
+    Parameters
+    ----------
+    peer : 'ElementHolder'
+        Parent element holder that owns this specialized holder.
+    """
+
     def __init__(self, peer: "ElementHolder"):
+        """
+        Initialize the SerializedMagnetHolder.
+        """
         super().__init__(peer, peer._SERIALIZED_MAGNETS, "Serialized magnet")
 
 
 class SerializedMagnetsHolder(GenericArrayHolder[SerializedMagnets, SerializedMagnetsArray]):
+    """
+    Provide access to arrays of serialized magnet groups.
+
+    Parameters
+    ----------
+    peer : 'ElementHolder'
+        Parent element holder that owns this specialized holder.
+    """
+
     def __init__(self, peer: "ElementHolder"):
+        """
+        Initialize the SerializedMagnetsHolder.
+        """
         super().__init__(
             peer,
             peer._SERIALIZED_MAGNETS_ARRAYS,
@@ -67,12 +141,36 @@ class SerializedMagnetsHolder(GenericArrayHolder[SerializedMagnets, SerializedMa
 
 
 class BPMHolder(GenericElementHolder[BPM]):
+    """
+    Provide access to individual beam-position monitors.
+
+    Parameters
+    ----------
+    peer : 'ElementHolder'
+        Parent element holder that owns this specialized holder.
+    """
+
     def __init__(self, peer: "ElementHolder"):
+        """
+        Initialize the BPMHolder.
+        """
         super().__init__(peer, peer._BPMS, "BPM")
 
 
 class BPMsHolder(GenericArrayHolder[BPM, BPMArray]):
+    """
+    Provide access to arrays of beam-position monitors.
+
+    Parameters
+    ----------
+    peer : 'ElementHolder'
+        Parent element holder that owns this specialized holder.
+    """
+
     def __init__(self, peer: "ElementHolder"):
+        """
+        Initialize the BPMsHolder.
+        """
         super().__init__(
             peer,
             peer._BPM_ARRAYS,

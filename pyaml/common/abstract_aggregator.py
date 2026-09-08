@@ -1,3 +1,9 @@
+"""
+Abstract Aggregator module.
+
+This module provides abstract aggregator functionality for the PyAML accelerator middle layer.
+"""
+
 from abc import ABCMeta, abstractmethod
 
 import numpy as np
@@ -7,6 +13,19 @@ import numpy.typing as npt
 class ScalarAggregator(metaclass=ABCMeta):
     """
     Abstract class providing access to a list of scalar variables
+
+    Methods
+    -------
+    set(value)
+        Write a list of variable
+    set_and_wait(value)
+        Write a list of variable and wait that setpoint are reached
+    get()
+        Return a list variables
+    readback()
+        Return  a list variables (measurements)
+    unit()
+        Return the variables unit
     """
 
     @abstractmethod

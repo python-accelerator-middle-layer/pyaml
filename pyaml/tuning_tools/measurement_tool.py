@@ -1,3 +1,10 @@
+"""
+Base classes for accelerator measurement tools.
+
+Measurement tools perform scans or response measurements, report progress
+through callbacks, and retain their latest results for inspection or export.
+"""
+
 import copy
 import logging
 from abc import ABCMeta, abstractmethod
@@ -16,14 +23,41 @@ logger = logging.getLogger(__name__)
 
 class MeasurementTool(Element, metaclass=ABCMeta):
     """
-    Base class for measurement tool such as reponse matrix measurement or other scans.
+    Base class for response-matrix measurements and accelerator scans.
+
+    Subclasses implement :meth:`measure` and may use the shared callback,
+    result-storage, attachment, and persistence helpers provided here.
+
+    Parameters
+    ----------
+    name : object
+        Name of the measurement tool.
+
+    Attributes
+    ----------
+    latest_measurement
+        Data produced by the last measurement, or ``None`` before the first one.
+
+    Methods
+    -------
+    measure()
+        Run the measurement implemented by a subclass.
+    get()
+        Return the most recently stored measurement data.
+    save(save_path, with_type='json')
+        Save the latest measurement data to disk.
+    send_callback(action, cb_data, raiseException=True)
+        Notify the caller about measurement progress.
+    attach(peer)
+        Return a copy attached to an element holder.
     """
 
     def __init__(self, name):
+        """
+        Initialize a measurement tool.
+        """
         super().__init__(name)
         self._latest_measurement: dict = None
-        """
-        """
         self._peer: "ElementHolder" = None  # Peer: ControlSystem or Simulator
         self._callback: Callable = None
 
@@ -33,6 +67,15 @@ class MeasurementTool(Element, metaclass=ABCMeta):
     def _init_measure(self, measurement_type: str | None = None):
         # Initialize measurement data
         # type is used there to be able to reload a measurement, typically a reponse matrix, using the PyAML factory.
+        """
+        Reset the latest measurement before starting a new scan.
+
+        Parameters
+        ----------
+        measurement_type : str | None
+            Optional fully qualified configuration type to store with the
+            measurement data.
+        """
         self._latest_measurement = {}
         if measurement_type is not None:
             self._latest_measurement["type"] = measurement_type
@@ -40,49 +83,54 @@ class MeasurementTool(Element, metaclass=ABCMeta):
     @abstractmethod
     def measure(self) -> bool:
         """
-        Launch measurement
+        Run the measurement implemented by a subclass.
+
         Returns
         -------
         bool
-            True if the process has been aborted
+            ``True`` when the measurement completes; ``False`` when it is
+            aborted according to the subclass contract.
         """
         raise NotImplementedError()
 
     @property
     def latest_measurement(self) -> dict:
         """
-        Return last measurement data, a dictionary containing last measurement data.
-        See sub class of MeasurementTool to get description.
+        Return the most recently stored measurement data.
 
         Returns
         -------
         dict
-            Return latest measurement or None
+            Measurement data, or ``None`` before the first measurement.
         """
         return self._latest_measurement
 
     def get(self) -> dict:
         """
-        Return last measurement data, a dictionary containing last measurement data.
-        See sub class of MeasurementTool to get description.
+        Return the most recently stored measurement data.
 
         Returns
         -------
         dict
-            Return latest measurement or None
+            Measurement data, or ``None`` before the first measurement.
         """
         return self._latest_measurement
 
     def save(self, save_path: Path, with_type: str = "json"):
         """
-        Save measurement data
+        Save the latest measurement data to disk.
 
         Parameters
         ----------
-        save_path: Path
-            Matrix filename
-        with_type: str
-            File type (json,yaml,npz)
+        save_path : Path
+            Destination filename.
+        with_type : str
+            Serialization format: ``"json"``, ``"yaml"``, or ``"npz"``.
+
+        Raises
+        ------
+        PyAMLException
+            If ``with_type`` is not a supported serialization format.
         """
         if with_type == "json":
             import json
@@ -104,8 +152,12 @@ class MeasurementTool(Element, metaclass=ABCMeta):
 
     def send_callback(self, action: Action, cb_data: dict, raiseException: bool = True):
         """
-        Send callback from this Measurement tool to the caller.
-        If the callback returns False, the scan is aborted and actuators are restored to their orignal values.
+        Notify the caller about measurement progress.
+
+        If the registered callback returns ``False``, the scan is aborted by
+        raising ``KeyboardInterrupt`` when ``raiseException`` is ``True``.
+        The measurement tool adds its mode and source to ``cb_data`` before
+        invoking the callback.
         Callback example:
 
         .. code-block:: python
@@ -119,11 +171,18 @@ class MeasurementTool(Element, metaclass=ABCMeta):
 
         Parameters
         ----------
-        action: Action
-          See :py:class:`pyaml.common.constants.Action`
+        action : Action
+          Measurement lifecycle event.
 
-        cb_data: dict
-          Callback data
+        cb_data : dict
+          Mutable event data passed to the callback.
+        raiseException : bool, optional
+          Whether a callback rejection should raise ``KeyboardInterrupt``.
+
+        Returns
+        -------
+        bool
+            Callback result, or ``True`` when no callback is registered.
         """
         ok = True
         if self._callback is not None:
@@ -137,9 +196,33 @@ class MeasurementTool(Element, metaclass=ABCMeta):
         return ok
 
     def _register_callback(self, callback: Callable):
+        """
+        Register a progress callback for the next measurement.
+
+        Parameters
+        ----------
+        callback : Callable
+            Callable receiving an :class:`Action` and event-data dictionary.
+        """
         self._callback = callback
 
     def attach(self, peer: "ElementHolder") -> Self:
+        """
+        Return a copy attached to an element holder.
+
+        A shallow copy is created so the configured measurement tool remains
+        reusable. Subclasses can rebind internal handles in :meth:`_after_attach`.
+
+        Parameters
+        ----------
+        peer : 'ElementHolder'
+            Accelerator, simulator, or control-system element holder.
+
+        Returns
+        -------
+        Self
+            Attached copy of this measurement tool.
+        """
         obj = copy.copy(self)
         obj._after_attach()
         obj._peer = peer

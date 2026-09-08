@@ -1,3 +1,9 @@
+"""
+BPM Array module.
+
+This module provides bpm array functionality for the PyAML accelerator middle layer.
+"""
+
 import numpy as np
 
 from ..bpm.bpm import BPM
@@ -20,9 +26,21 @@ class RWBPMPosition(ReadFloatArray):
         Name of the position accessor
     bpms : list[pyaml.bpm.bpm.BPM]
         List of BPM objects to access
+
+    Methods
+    -------
+    get()
+        Get BPM positions.
+    unit()
+        Get the units for BPM positions.
+    set_aggregator(agg)
+        Set the device access list aggregator for improved performance.
     """
 
     def __init__(self, name: str, bpms: list[BPM]):
+        """
+        Initialize the RWBPMPosition.
+        """
         self.__bpms = bpms
         self.__name = name
         self.__aggregator: DeviceAccessList = None
@@ -84,9 +102,21 @@ class RWBPMSinglePosition(ReadFloatArray):
         List of BPM objects to access
     idx : int
         Index for the position axis (0 for horizontal, 1 for vertical)
+
+    Methods
+    -------
+    get()
+        Get single axis BPM positions.
+    unit()
+        Get the units for BPM positions.
+    set_aggregator(agg)
+        Set the device access list aggregator for improved performance.
     """
 
     def __init__(self, name: str, bpms: list[BPM], idx: int):
+        """
+        Initialize the RWBPMSinglePosition.
+        """
         self.__bpms = bpms
         self.__name = name
         self.__idx = idx
@@ -145,11 +175,20 @@ class BPMArray(ElementArray):
         either a (:py:class:`~pyaml.lattice.simulator.Simulator`
         or a :py:class:`~pyaml.control.controlsystem.ControlSystem`).
     use_aggregator : bool
-        Use aggregator to increase performance by using paralell
+        Use aggregator to increase performance by using parallel
         access to underlying devices.
 
-    Example
-    -------
+    Attributes
+    ----------
+    positions
+        Returns position of each bpm of this array
+    h
+        Returns horizontal position of each bpm of this array
+    v
+        Returns vertical position of each bpm of this array
+
+    Examples
+    --------
 
     An array can be retrieved from the configuration as in the following
     example:
@@ -161,10 +200,12 @@ class BPMArray(ElementArray):
         >>> orbit = bpms.positions.get()      # Get the orbit
 
     or can be created by code using :py:class:`pyaml.arrays.bpm.BPM`.
-
     """
 
     def __init__(self, arrayName: str, bpms: list[BPM], use_aggregator=True):
+        """
+        Initialize the BPMArray.
+        """
         super().__init__(arrayName, bpms, use_aggregator)
 
         self.__hvpos = RWBPMPosition(arrayName, bpms)

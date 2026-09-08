@@ -1,3 +1,10 @@
+"""
+In-memory magnet excitation curves.
+
+This module validates and exposes two-column excitation data supplied directly
+as Python sequences.
+"""
+
 import numpy as np
 from numpy.typing import NDArray
 
@@ -26,6 +33,16 @@ class InlineCurve(Curve, DynamicValidation):
         curve, with ``mat[i][0]`` being the x-value and ``mat[i][1]`` being the
         y-value.
 
+    Attributes
+    ----------
+    mat
+        Return the original in-memory curve point matrix.
+
+    Methods
+    -------
+    get_curve()
+        Get the curve data.
+
     Raises
     ------
     PyAMLException
@@ -33,6 +50,9 @@ class InlineCurve(Curve, DynamicValidation):
     """
 
     def __init__(self, mat: list[list[float]]):
+        """
+        Initialize the InlineCurve.
+        """
         self._mat = mat
 
         # Load the curve
@@ -44,6 +64,7 @@ class InlineCurve(Curve, DynamicValidation):
 
     @property
     def mat(self):
+        """Return the original in-memory curve point matrix."""
         return self._mat
 
     def get_curve(self) -> NDArray[np.float64]:
@@ -58,4 +79,7 @@ class InlineCurve(Curve, DynamicValidation):
         return self._curve
 
     def __repr__(self):
+        """
+        Implement the ``__repr__`` string.
+        """
         return __pyaml_repr__(self)

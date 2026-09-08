@@ -1,3 +1,10 @@
+"""
+CSV-backed magnet excitation curves.
+
+This module loads two-column excitation data from CSV files for magnet-model
+calibration and interpolation.
+"""
+
 import numpy as np
 from numpy.typing import NDArray
 
@@ -37,6 +44,11 @@ class CSVCurve(Curve, DynamicValidation):
     file : str
         Path to the CSV file provided during initialization.
 
+    Methods
+    -------
+    get_curve()
+        Get the curve data.
+
     Raises
     ------
     PyAMLException
@@ -52,6 +64,9 @@ class CSVCurve(Curve, DynamicValidation):
     """
 
     def __init__(self, file: str):
+        """
+        Initialize the CSVCurve.
+        """
         self._file = file
 
         # Load CSV curve
@@ -67,6 +82,7 @@ class CSVCurve(Curve, DynamicValidation):
 
     @property
     def file(self):
+        """Return the configured CSV file path."""
         return self._file
 
     def get_curve(self) -> NDArray[np.float64]:
@@ -81,4 +97,7 @@ class CSVCurve(Curve, DynamicValidation):
         return self._curve
 
     def __repr__(self):
+        """
+        Implement the ``__repr__`` string.
+        """
         return __pyaml_repr__(self)

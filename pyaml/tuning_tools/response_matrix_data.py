@@ -1,3 +1,12 @@
+"""
+Serializable response-matrix data models.
+
+The :class:`ResponseMatrixData` model stores a numerical response matrix and
+the names of the variables and observables represented by its columns and
+rows. It is used to persist and exchange measured or calculated accelerator
+response data.
+"""
+
 from dataclasses import dataclass
 from pathlib import Path
 
@@ -13,7 +22,8 @@ PYAMLCLASS = "ResponseMatrixData"
 @register_schema
 @dataclass
 class ResponseMatrixData(DynamicValidation):
-    """Response matrix data and its associated variable and observable names.
+    """
+    Response matrix data and its associated variable and observable names.
 
     Parameters
     ----------
@@ -26,6 +36,11 @@ class ResponseMatrixData(DynamicValidation):
     observable_names : list[str]
         Names of the observables represented by the matrix rows, typically
         measured quantities.
+
+    Methods
+    -------
+    load(filename)
+        Load response matrix data from a configuration file.
     """
 
     matrix: list[list[float]]
@@ -35,7 +50,8 @@ class ResponseMatrixData(DynamicValidation):
 
     @staticmethod
     def load(filename: str) -> "ResponseMatrixData":
-        """Load response matrix data from a configuration file.
+        """
+        Load response matrix data from a configuration file.
 
         Parameters
         ----------

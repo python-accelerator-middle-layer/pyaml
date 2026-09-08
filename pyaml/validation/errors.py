@@ -28,6 +28,14 @@ class Location:
     column: int
 
     def __str__(self) -> str:
+        """
+        Return a human-readable string representation of the object.
+
+        Returns
+        -------
+        str
+            Location rendered as ``file:line:column``.
+        """
         return f"{self.file}: line {self.line}, column {self.column}"
 
 

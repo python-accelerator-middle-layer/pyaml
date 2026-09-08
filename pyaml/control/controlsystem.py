@@ -1,3 +1,11 @@
+"""
+Control-system element binding and runtime device interfaces.
+
+The classes in this module resolve configured device references, attach
+accelerator elements to a control-system backend, and construct the scalar,
+array, and aggregator interfaces used to access those elements at runtime.
+"""
+
 from abc import ABCMeta, abstractmethod
 
 from pydantic import BaseModel
@@ -38,20 +46,50 @@ from .deviceaccesslist import DeviceAccessList
 
 class ControlSystem(ElementHolder, metaclass=ABCMeta):
     """
-    Abstract class providing access to a control system float variable
+    Define the interface for binding accelerator elements to a backend.
+
+    A control system resolves PyAML element names to control-system devices and
+    wraps them in read/write accessors, so tools written against
+    :class:`~pyaml.common.holders.element_holder.ElementHolder` drive a live
+    machine unchanged. Concrete backends live in separate packages and are
+    selected from the configuration.
+
+    Methods
+    -------
+    name()
+        Return the backend control-system name.
+    get_aggregator()
+        Return an empty device aggregator, or ``None`` for direct access.
+    get_device_access(ref)
+        Return a device reference for this control system. YAML element configuration passes opaque strings. Public
+        Python APIs may also pass backend ConfigModel instances. Concrete backends own all lookup, parsing and
+        DeviceAccess construction.
+    get_devices_access(refs)
+        Resolve a list of backend references into device access objects.
+    create_magnet_strength_aggregator(magnets)
+        Create an aggregator that exposes magnet strengths.
+    create_magnet_hardware_aggregator(magnets)
+        Create an aggregator for magnet hardware values.
+    create_bpm_aggregators(bpms)
+        Create aggregate BPM position channels.
+    fill_device(elements)
+        Fill device of this control system with Element coming from the configuration file
     """
 
     def __init__(self):
+        """
+        Initialize the ControlSystem.
+        """
         ElementHolder.__init__(self)
 
     @abstractmethod
     def name(self) -> str:
-        """Return control system name (i.e. live)"""
+        """Return the backend control-system name."""
         pass
 
     @abstractmethod
     def get_aggregator(self) -> DeviceAccessList | None:
-        """Returns a new empty DeviceAccessList. If None is returned serialized readings/writtings are performed"""
+        """Return an empty device aggregator, or ``None`` for direct access."""
         pass
 
     @abstractmethod
@@ -66,22 +104,49 @@ class ControlSystem(ElementHolder, metaclass=ABCMeta):
 
     def get_devices_access(self, refs: list[str | BaseModel | None]) -> list[DeviceAccess]:
         """
-        Return a device reference for this control system.
-        YAML element configuration passes opaque strings. Public Python APIs may
-        also pass backend ConfigModel instances. Concrete backends own all
-        lookup, parsing and DeviceAccess construction.
+        Resolve a list of backend references into device access objects.
+
+        Parameters
+        ----------
+        refs : list of str or BaseModel or None
+            Backend-specific device references from the configuration.
+
+        Returns
+        -------
+        list of DeviceAccess
+            Device access objects in the same order as ``refs``.
+
+        Raises
+        ------
+        PyAMLException
+            If ``refs`` is not a list.
         """
         if not isinstance(refs, list):
             raise PyAMLException(f"get_devices() expect a list as input arguments but got {str(type(refs))}")
         return [self.get_device_access(ref) for ref in refs]
 
     def _create_scalar_aggregator(self) -> ScalarAggregator | None:
+        """Create an empty scalar aggregator for this control-system backend."""
         agg = self.get_aggregator()
         if agg is None:
             return None
         return CSScalarAggregator(agg)
 
     def create_magnet_strength_aggregator(self, magnets: list[Magnet]) -> ScalarAggregator | None:
+        """
+        Create an aggregator that exposes magnet strengths.
+
+        Parameters
+        ----------
+        magnets : list[Magnet]
+            Magnets whose strength channels should be aggregated.
+
+        Returns
+        -------
+        ScalarAggregator | None
+            Strength aggregator, or ``None`` when the backend does not use
+            aggregators.
+        """
         agg = self._create_scalar_aggregator()
         if agg is None:
             return None
@@ -92,8 +157,22 @@ class ControlSystem(ElementHolder, metaclass=ABCMeta):
         return magg
 
     def create_magnet_hardware_aggregator(self, magnets: list[Magnet]) -> ScalarAggregator | None:
-        """When working in hardware space, 1 single power
-        supply device per multipolar strength is required
+        """
+        Create an aggregator for magnet hardware values.
+
+        One power-supply device is selected for each magnet strength exposed
+        in hardware space.  ``None`` is returned if a magnet lacks hardware
+        support or the backend does not provide aggregators.
+
+        Parameters
+        ----------
+        magnets : list[Magnet]
+            Magnets whose hardware channels should be grouped.
+
+        Returns
+        -------
+        ScalarAggregator | None
+            Grouped accessor, or ``None`` when a magnet exposes no hardware device.
         """
         agg = self._create_scalar_aggregator()
         if agg is None:
@@ -106,6 +185,19 @@ class ControlSystem(ElementHolder, metaclass=ABCMeta):
         return agg
 
     def create_bpm_aggregators(self, bpms: list[BPM]) -> list[ScalarAggregator | None]:
+        """
+        Create aggregate BPM position channels.
+
+        Parameters
+        ----------
+        bpms : list[BPM]
+            BPM elements whose position devices should be aggregated.
+
+        Returns
+        -------
+        list[ScalarAggregator | None]
+            Aggregators for combined, horizontal, and vertical positions.
+        """
         agg = self._create_scalar_aggregator()
         aggh = self._create_scalar_aggregator()
         aggv = self._create_scalar_aggregator()
@@ -193,17 +285,44 @@ class ControlSystem(ElementHolder, metaclass=ABCMeta):
 
 class ControlSystemAdapter(ControlSystem):
     """
-    Control system adapter class
+    Provide a no-op adapter for serialized or backend-independent access.
+
+    Methods
+    -------
+    name()
+        Return the adapter's control-system name.
+    get_aggregator()
+        Return ``None`` because the adapter has no device aggregator.
+    get_device_access(ref)
+        Return the device access object for a backend reference.
     """
 
     def __init__(self):
+        """
+        Initialize the ControlSystemAdapter.
+        """
         ControlSystem.__init__(self)
 
     def name(self) -> str:
+        """Return the adapter's control-system name."""
         pass
 
     def get_aggregator(self) -> DeviceAccessList | None:
+        """Return ``None`` because the adapter has no device aggregator."""
         return None
 
     def get_device_access(self, ref: str | BaseModel | None) -> DeviceAccess | None:
+        """
+        Return the device access object for a backend reference.
+
+        Parameters
+        ----------
+        ref : str | BaseModel | None
+            Backend-specific device reference.
+
+        Returns
+        -------
+        DeviceAccess | None
+            Resolved device access object, or ``None`` when unsupported.
+        """
         pass
