@@ -1,3 +1,10 @@
+"""
+Data model for measured orbit response matrices.
+
+The data model stores the response matrix together with actuator and BPM names,
+plane information, and optional RF response data.
+"""
+
 from dataclasses import dataclass
 from typing import Optional
 
@@ -10,7 +17,8 @@ PYAMLCLASS = "OrbitResponseMatrixData"
 @register_schema
 @dataclass
 class OrbitResponseMatrixData(ResponseMatrixData, DynamicValidation):
-    """Store orbit response matrix data and related metadata.
+    """
+    Store orbit response matrix data and related metadata.
 
     In addition to the response matrix, variable names, and observable names
     provided by :class:`ResponseMatrixData`, this class stores the RF response

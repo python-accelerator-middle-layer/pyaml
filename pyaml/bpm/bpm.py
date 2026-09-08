@@ -1,3 +1,5 @@
+"""Beam-position monitor elements and their runtime interfaces."""
+
 import copy
 from typing import Self
 
@@ -36,6 +38,26 @@ class BPM(Element, DynamicValidation):
         Device catalog key for the vertical BPM offset.
     tilt : str | None, optional
         Device catalog key for the BPM tilt.
+
+    Attributes
+    ----------
+    positions
+        Read accessor for the horizontal and vertical beam positions, in metres.
+    offset
+        Read/write accessor for the two calibration offsets, in metres.
+    tilt
+        Read/write accessor for the mechanical tilt, in radians.
+
+    Methods
+    -------
+    attach(peer, positions, offset, tilt)
+        Attach BPM attributes to a peer.
+    get_pos_devices()
+        Return configured device keys used for position readback.
+    get_tilt_device()
+        Return the configured device key used for tilt access.
+    get_offset_devices()
+        Return configured device keys used for offset control.
     """
 
     def __init__(
@@ -49,6 +71,9 @@ class BPM(Element, DynamicValidation):
         y_offset: str | None = None,
         tilt: str | None = None,
     ):
+        """
+        Initialize a beam-position monitor configuration.
+        """
         super().__init__(name, lattice_names, description)
         self._x_pos = x_pos
         self._y_pos = y_pos
@@ -66,8 +91,8 @@ class BPM(Element, DynamicValidation):
 
         Returns
         -------
-        RBpmArray
-            BPM position array containing horizontal and vertical positions
+        ReadFloatArray
+            Read-only array containing horizontal and vertical positions.
 
         Raises
         ------
@@ -85,8 +110,8 @@ class BPM(Element, DynamicValidation):
 
         Returns
         -------
-        RWBpmOffsetArray
-            BPM offset array for position correction
+        ReadWriteFloatArray
+            Read/write array containing horizontal and vertical offsets.
 
         Raises
         ------
@@ -104,8 +129,8 @@ class BPM(Element, DynamicValidation):
 
         Returns
         -------
-        RWBpmTiltScalar
-            BPM tilt angle for rotation correction
+        ReadWriteFloatScalar
+            Read/write BPM tilt angle used for rotation correction.
 
         Raises
         ------
@@ -129,18 +154,18 @@ class BPM(Element, DynamicValidation):
         Parameters
         ----------
         peer : object
-            The peer object (simulator or control system)
+            Simulator or control-system peer.
         positions : RBpmArray
-            BPM position readings
+            Read-only horizontal and vertical position interface.
         offset : RWBpmOffsetArray
-            BPM offset values for correction
+            Read/write horizontal and vertical offset interface.
         tilt : RWBpmTiltScalar
-            BPM tilt angle for rotation correction
+            Read/write tilt interface.
 
         Returns
         -------
         Self
-            A new attached instance of BPM
+            Shallow copy of this BPM bound to ``peer`` and its interfaces.
         """
         # Attach positions, offset and tilt attributes and returns a new
         # reference
@@ -151,38 +176,44 @@ class BPM(Element, DynamicValidation):
         obj._peer = peer
         return obj
 
+    def _fill_device(self, holder) -> None:
+        holder._fill_bpm(self)
+
     def get_pos_devices(self) -> list[str | None]:
         """
-        Get device handles used for position reading
+        Return configured device keys used for position readback.
 
         Returns
         -------
-        list[DeviceAccess]
-            Array of DeviceAcess
+        list of str or None
+            Horizontal and vertical position device keys.
         """
         return [self._x_pos, self._y_pos]
 
     def get_tilt_device(self) -> str | None:
         """
-        Get device handle used for tilt access
+        Return the configured device key used for tilt access.
 
         Returns
         -------
-        DeviceAccess
-            DeviceAcess
+        str or None
+            Tilt device key.
         """
         return self._tilt_name
 
     def get_offset_devices(self) -> list[str | None]:
         """
-        Get device handles used for offset access
+        Return configured device keys used for offset control.
 
         Returns
         -------
-        list[DeviceAccess]
-            Array of DeviceAcess
+        list of str or None
+            Horizontal and vertical offset device keys.
         """
         return [self._x_offset, self._y_offset]
 
     def __repr__(self):
+        """
+        Implement the ``__repr__`` string.
+        """
         return __pyaml_repr__(self, exclude=["positions", "offset", "tilt"])

@@ -1,3 +1,11 @@
+"""
+Deferred construction of control-system-specific elements.
+
+An :class:`UnboundElement` stores a class, validated configuration, and the
+control modes in which it is available until an :class:`ElementHolder` is
+known and the concrete element can be instantiated.
+"""
+
 from pydantic import BaseModel
 
 from ..common.element import Element
@@ -6,22 +14,28 @@ from ..common.exception import PyAMLConfigException
 
 class UnboundElement(Element):
     """
-    Class that holds a configuration for an element created on the fly when ElementHolder is filled
+    Store configuration for an element instantiated when a holder is filled.
+
+    Parameters
+    ----------
+    element_class : type
+        Concrete element class to instantiate.
+    module_name : str
+        Module path used to identify the element in error messages.
+    modes : list of str
+        Control-system modes in which the element should be created.
+    config : pydantic.BaseModel
+        Validated configuration passed to the element constructor.
+
+    Methods
+    -------
+    instantiate(holder)
+        Instantiate the element represented by this UnboundElement.
     """
 
     def __init__(self, element_class, module_name: str, modes: list[str], config: BaseModel):
         """
-        Construct an External element
-        Parameters
-        ----------
-        element_class : class
-            Element class
-        module_name : str
-            Element module
-        control_modes: list[str]
-            List of control modes to add the element to
-        config: BaseModel
-            Element configuration
+        Initialize a deferred element configuration.
         """
         super().__init__(config.name)
         self._class = element_class
@@ -30,12 +44,18 @@ class UnboundElement(Element):
         self._config = config
 
     def __repr__(self):
+        """
+        Implement the ``__repr__`` string.
+        """
         return "%s(name='%s', class_name='%s', module_name=%s)" % (
             self.__class__.__name__,
             self.get_name(),
             self._class.__name__,
             self._module_name,
         )
+
+    def _fill_device(self, holder) -> None:
+        holder._fill_unbound_element(self)
 
     def instantiate(self, holder) -> Element:
         """

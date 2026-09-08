@@ -1,3 +1,11 @@
+"""
+Chromaticity correction and response-matrix tools.
+
+The :class:`Chromaticity` tool reads measured chromaticity, computes sextupole
+strength corrections from a response matrix, and applies those corrections to
+an accelerator model or control-system interface.
+"""
+
 from pathlib import Path
 from typing import TYPE_CHECKING
 
@@ -24,7 +32,42 @@ PYAMLCLASS = "Chromaticity"
 @register_schema
 class Chromaticity(TuningTool, DynamicValidation):
     """
-    Class providing chromaticity adjustment tool
+    Adjust horizontal and vertical chromaticity with sextupole strengths.
+
+    A response matrix maps sextupole-strength changes to chromaticity changes.
+    Its pseudoinverse is used to calculate the strength correction required for
+    a requested chromaticity change.
+
+    Parameters
+    ----------
+    name : str
+        Name of the tuning tool.
+    sextu_array_name : str
+        Name of the sextupole array used to adjust the chromaticity.
+    chromaticity_monitor_name : str
+        Name of the chromaticity monitor used for readback.
+    response_matrix : str | ResponseMatrixData
+        Chromaticity response matrix or path to a saved response matrix file.
+
+    Attributes
+    ----------
+    response_matrix
+        Return the loaded chromaticity response matrix, if available.
+
+    Methods
+    -------
+    load(load_path)
+        Load a chromaticity response matrix and prepare its pseudoinverse.
+    get()
+        Return the requested horizontal and vertical chromaticity.
+    readback()
+        Measure and return the current horizontal and vertical chromaticity.
+    set(chroma, iter=1, wait_time=0.0)
+        Iteratively correct chromaticity to a requested setpoint.
+    correct(dchroma)
+        Calculate sextupole-strength changes for a chromaticity change.
+    add(dchroma, wait_time=0.0)
+        Apply a chromaticity correction relative to the current setpoint.
     """
 
     def __init__(
@@ -32,17 +75,6 @@ class Chromaticity(TuningTool, DynamicValidation):
     ):
         """
         Initialize a chromaticity adjustment tool.
-
-        Parameters
-        ----------
-        name : str
-            Name of the tuning tool.
-        sextu_array_name : str
-            Name of the sextupole array used to adjust the chromaticity.
-        chromaticity_monitor_name : str
-            Name of the chromaticity monitor used for readback.
-        response_matrix : str | ResponseMatrixData
-            Chromaticity response matrix or path to a saved response matrix file.
         """
         super().__init__(name)
         self.sextu_array_name = sextu_array_name
@@ -69,19 +101,17 @@ class Chromaticity(TuningTool, DynamicValidation):
 
     @property
     def response_matrix(self) -> ResponseMatrixData | None:
-        """
-        Return the response matrix if it has been loaded None otherwise
-        """
+        """Return the loaded chromaticity response matrix, if available."""
         return self._response_matrix
 
     def load(self, load_path: Path):
         """
-        Dynamically loads a response matrix.
+        Load a chromaticity response matrix and prepare its pseudoinverse.
 
         Parameters
         ----------
         load_path : Path
-            Filename of the :class:`~.ResponseMatrixData` to load
+            Path to the serialized :class:`~.ResponseMatrixData` file.
         """
         self._response_matrix = ResponseMatrixData.load(load_path)
         self._response_matrix = np.array(self._response_matrix.matrix)
@@ -89,39 +119,37 @@ class Chromaticity(TuningTool, DynamicValidation):
 
     @property
     def _cm(self) -> "ChromaticityMonitor":
+        """Return the chromaticity monitor."""
         self.check_peer()
         return self.peer.get_chromaticity_monitor(self._chromaticity_monitor_name)
 
     @property
     def _sextu(self) -> "MagnetArray":
+        """Return the sextupole array."""
         self.check_peer()
         return self.peer.magnets.get(self.sextu_array_name)
 
     def get(self):
-        """
-        Return the chromaticity setpoint
-        """
+        """Return the requested horizontal and vertical chromaticity."""
         return self._setpoint
 
     def readback(self):
-        """
-        Launch a chromaticity scan and returns the measured chromaticity.
-        """
+        """Measure and return the current horizontal and vertical chromaticity."""
         self._cm.measure()
         return self._cm.chromaticity.get()
 
     def set(self, chroma: np.array, iter: int = 1, wait_time: float = 0.0):
         """
-        Sets the chromaticity
+        Iteratively correct chromaticity to a requested setpoint.
 
         Parameters
         ----------
-        chromaticity : np.array
-            Chromaticity setpoint
-        iter_nb : int
-            Number of iteration
+        chroma : numpy.ndarray
+            Target horizontal and vertical chromaticity values.
+        iter : int
+            Number of correction iterations.
         wait_time : float
-            Time to wait in second between 2 iterations
+            Delay in seconds between correction iterations.
         """
         for i in range(iter):
             diff_chroma = chroma - self.readback()
@@ -132,12 +160,23 @@ class Chromaticity(TuningTool, DynamicValidation):
 
     def correct(self, dchroma: np.array) -> np.array:
         """
-        Return delta strengths for chromaticity correction
+        Calculate sextupole-strength changes for a chromaticity change.
 
         Parameters
         ----------
-        dchroma : np.array
-            Delta chroma
+        dchroma : numpy.ndarray
+            Desired horizontal and vertical chromaticity change.
+
+        Returns
+        -------
+        numpy.ndarray
+            Sextupole-strength changes obtained from the response-matrix
+            pseudoinverse.
+
+        Raises
+        ------
+        PyAMLException
+            If no response matrix has been loaded or measured.
         """
         if self._correctionmat is None:
             raise PyAMLException("Chromaticity.correct(): no matrix loaded or measured")
@@ -145,14 +184,14 @@ class Chromaticity(TuningTool, DynamicValidation):
 
     def add(self, dchroma: np.array, wait_time: float = 0.0):
         """
-        Add delta chromaticity to the actual chromaticity
+        Apply a chromaticity correction relative to the current setpoint.
 
         Parameters
         ----------
-        dchroma : np.array
-            Delta tune
-        iter_nb: int
-        wait_time: float
+        dchroma : numpy.ndarray
+            Horizontal and vertical chromaticity change to apply.
+        wait_time : float
+            Delay in seconds after changing sextupole strengths.
         """
         strengths = self._sextu.strengths.get()
         strengths += self.correct(dchroma)

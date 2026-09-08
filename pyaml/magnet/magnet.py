@@ -1,3 +1,10 @@
+"""
+Base interfaces for physical and simulated magnets.
+
+This module defines the common magnet element interface and its access to
+strength, hardware, and magnet-model information.
+"""
+
 import copy
 from typing import Self
 
@@ -12,7 +19,46 @@ from .model import MagnetModel
 
 class Magnet(Element):
     """
-    Class providing access to one magnet of a physical or simulated lattice
+    Access one magnet of a physical or simulated lattice.
+
+    A magnet couples a device to its calibration: the attached
+    :class:`~pyaml.magnet.model.MagnetModel` owns the strength to hardware-current
+    conversion and the underlying control-system device names. The same magnet is
+    therefore readable and writable both as a physical strength and as a raw
+    hardware value.
+
+    Parameters
+    ----------
+    name : str
+        Element name.
+    model : MagnetModel | None, optional
+        Magnet model used to convert between strength and hardware value, and to
+        resolve the underlying control-system device names.
+    lattice_names : str | None, optional
+        Name or names of the matching element(s) in the simulated lattice. Defaults
+        to ``name``.
+    description : str | None, optional
+        Human-readable description of the magnet.
+
+    Attributes
+    ----------
+    strength
+        Read/write accessor for the physical strength, in the model's strength unit.
+    hardware
+        Read/write accessor for the hardware value, in the model's hardware unit.
+    model
+        Magnet model performing the strength to hardware conversion.
+
+    Methods
+    -------
+    attach(peer, strength, hardware)
+        Return a copy of this magnet bound to a control system or simulator.
+    set_energy(energy)
+        Set the energy in eV to compute and set the magnet rigidity on the underlying magnet model.
+    set_model_name(name)
+        Sets the name of this magnet in the model (Used for combined function magnet)
+    get_model_name()
+        Returns the model name of this magnet
     """
 
     def __init__(
@@ -20,13 +66,6 @@ class Magnet(Element):
     ):
         """
         Construct a magnet
-
-        Parameters
-        ----------
-        name : str
-            Element name
-        model : MagnetModel
-            Magnet model in charge of computing coil(s) current
         """
         super().__init__(name, lattice_names, description)
         self.__model = model
@@ -69,8 +108,21 @@ class Magnet(Element):
         hardware: abstract.ReadWriteFloatScalar,
     ) -> Self:
         """
-        Create a new reference to attach this magnet to a simulator
-        or a control systemand.
+        Return a copy of this magnet bound to a control system or simulator.
+
+        Parameters
+        ----------
+        peer : ElementHolder
+            Control system or simulator the copy is bound to.
+        strength : abstract.ReadWriteFloatScalar
+            Accessor for the physical strength on that peer.
+        hardware : abstract.ReadWriteFloatScalar
+            Accessor for the hardware value on that peer.
+
+        Returns
+        -------
+        Self
+            Copy of this magnet bound to ``peer``.
         """
         obj = copy.copy(self)
         obj.__modelName = self.__modelName
@@ -78,6 +130,9 @@ class Magnet(Element):
         obj.__hardware = hardware
         obj._peer = peer
         return obj
+
+    def _fill_device(self, holder) -> None:
+        holder._fill_magnet(self)
 
     def set_energy(self, energy: float):
         """
@@ -90,7 +145,7 @@ class Magnet(Element):
     def set_model_name(self, name: str):
         """
         Sets the name of this magnet in the model
-        (Used for combined function manget)
+        (Used for combined function magnet)
         """
         self.__modelName = name
 
@@ -101,6 +156,9 @@ class Magnet(Element):
         return self.__modelName
 
     def __repr__(self):
+        """
+        Implement the ``__repr__`` string.
+        """
         return "%s(peer='%s', name='%s', model_name='%s', magnet_model=%s)" % (
             self.__class__.__name__,
             self.attached_to(),

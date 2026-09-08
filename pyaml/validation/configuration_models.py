@@ -18,13 +18,24 @@ class PyAMLBaseModel(BaseModel):
     ``serialize_as_any=True`` by default. This ensures that fields are
     serialized according to their runtime type rather than their declared
     annotation type.
+
+    Methods
+    -------
+    model_dump(**kwargs)
+        Serialize the model to a dictionary, using each field's runtime type.
+    model_dump_json(**kwargs)
+        Serialize the model to a JSON string, using each field's runtime type.
+    describe()
+        Return a readable description of the model fields.
     """
 
     def model_dump(self, **kwargs):
+        """Serialize the model to a dictionary, using each field's runtime type."""
         kwargs.setdefault("serialize_as_any", True)
         return super().model_dump(**kwargs)
 
     def model_dump_json(self, **kwargs):
+        """Serialize the model to a JSON string, using each field's runtime type."""
         kwargs.setdefault("serialize_as_any", True)
         return super().model_dump_json(**kwargs)
 
@@ -51,6 +62,15 @@ class ConfigurationSchema(PyAMLBaseModel):
     specific object. The required ``class`` field specifies the fully
     qualified class path of the object to construct.
 
+    Methods
+    -------
+    virtual_subclasses()
+        Return the registered virtual subclasses.
+    register_virtual_subclass(subclass)
+        Register a virtual subclass.
+    is_virtual_subclass_of(superclass)
+        Check whether this class is a subclass of another schema.
+
     Notes
     -----
     Virtual subclasses may be registered to allow compatible schema types to
@@ -70,6 +90,9 @@ class ConfigurationSchema(PyAMLBaseModel):
     _virtual_subclasses: ClassVar[set[type["ConfigurationSchema"]]]
 
     def __init_subclass__(cls, **kwargs):
+        """
+        Implement the __init_subclass__ protocol operation.
+        """
         super().__init_subclass__(**kwargs)
         cls._virtual_subclasses = set()
 
@@ -138,6 +161,23 @@ class ConfigurationSchema(PyAMLBaseModel):
         checked: set[type["ConfigurationSchema"]] = set()
 
         def subclass_exists(current_cls: type["ConfigurationSchema"]) -> bool:
+            """
+            Recursively check whether a registered subclass exists.
+
+            The ``checked`` set prevents cycles while traversing the virtual
+            subclass hierarchy.
+
+            Parameters
+            ----------
+            current_cls : type[ConfigurationSchema]
+                Schema class whose registered subclasses are inspected.
+
+            Returns
+            -------
+            bool
+                ``True`` if ``current_cls`` has a registered subclass;
+                otherwise, ``False``.
+            """
             if current_cls in checked:
                 return False
             checked.add(current_cls)
@@ -176,6 +216,26 @@ class ConfigurationSchema(PyAMLBaseModel):
 
         def validate(value, nxt):
             # Already the expected schema type
+            """
+            Accept schema instances and delegate other values to Pydantic.
+
+            Instances of ``cls`` and its registered virtual subclasses are
+            returned unchanged. All other values are passed to the wrapped
+            Pydantic validator.
+
+            Parameters
+            ----------
+            value : object
+                Value being validated.
+            nxt : object
+                Wrapped Pydantic validator used for ordinary input values.
+
+            Returns
+            -------
+            object
+                The original schema instance or the value returned by
+                ``nxt``.
+            """
             if isinstance(value, cls):
                 return value
 
@@ -196,6 +256,11 @@ class ModuleConfigurationSchema(PyAMLBaseModel):
     This schema exists to support legacy module-based configurations. It
     defines the expected input for configuring a specific object, with the
     target class resolved from the module's ``PYAMLCLASS`` attribute.
+
+    Methods
+    -------
+    to_configuration()
+        Convert the module-based configuration to a ``ConfigurationSchema``.
     """
 
     model_config = ConfigDict(validate_by_name=True, validate_by_alias=True, extra="forbid")

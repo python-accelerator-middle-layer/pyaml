@@ -1,3 +1,9 @@
+"""
+BPM module.
+
+This module provides BPM functionality for the PyAML accelerator middle layer.
+"""
+
 from ..common.holders.element_holder import ElementHolder
 from ..validation import DynamicValidation, register_schema
 from .array import ArrayConfig
@@ -11,8 +17,24 @@ class BPM(ArrayConfig, DynamicValidation):
     """
     :py:class:`.BPMArray` configuration.
 
-    Example
+    Parameters
+    ----------
+    name : str
+        Name under which the array is registered and later looked up.
+    elements : list[str]
+        Element name patterns making up the array: literal names, ``fnmatch`` wildcards, or ``re:`` regular
+        expressions.
+
+    Methods
     -------
+    fill_array(holder)
+        Fill the :py:class:`.BPMArray` using element holder (:py:class:`~pyaml.lattice.simulator.Simulator` or
+        :py:class:`~pyaml.control.controlsystem.ControlSystem`) and add the array to the holder. This method is
+        called when an :py:class:`~pyaml.accelerator.Accelerator` is loaded but can be used to create arrays by
+        code as shown bellow:
+
+    Examples
+    --------
     Here is an example using a yaml configuration file:
 
     .. code-block:: yaml
@@ -35,10 +57,12 @@ class BPM(ArrayConfig, DynamicValidation):
                         name="BPM",
                         elements=["BPM_C04-01","BPM_C04-02","BPM_C04-03"]
                        ))
-
     """
 
     def __init__(self, name: str, elements: list[str]):
+        """
+        Initialize the BPM.
+        """
         super().__init__(name, elements)
 
     def fill_array(self, holder: ElementHolder):

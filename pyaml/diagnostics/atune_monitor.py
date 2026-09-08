@@ -1,3 +1,10 @@
+"""
+Abstract interfaces for betatron tune monitors.
+
+The interfaces describe the tune and frequency quantities exposed by concrete
+betatron tune monitor implementations.
+"""
+
 from abc import ABCMeta, abstractmethod
 
 from ..common.abstract import ReadFloatArray
@@ -5,14 +12,30 @@ from ..common.abstract import ReadFloatArray
 
 class ABetatronTuneMonitor(metaclass=ABCMeta):
     """
-    Abstract class providing access to a betatron tune monitor
+    Define the read-only interface for a betatron tune monitor.
+
+    Concrete monitors provide horizontal and vertical tune values and their
+    corresponding frequencies.
+
+    Attributes
+    ----------
+    tune
+        Return the fractional horizontal and vertical betatron tunes.
+    frequency
+        Return the horizontal and vertical tune frequencies.
     """
 
     @property
     @abstractmethod
     def tune(self) -> ReadFloatArray:
         """
-        Returns the tune fractionnal part
+        Return the fractional horizontal and vertical betatron tunes.
+
+        Returns
+        -------
+        ReadFloatArray
+            Readable array containing the horizontal and vertical tune
+            fractions.
         """
         ...
 
@@ -20,6 +43,12 @@ class ABetatronTuneMonitor(metaclass=ABCMeta):
     @abstractmethod
     def frequency(self) -> ReadFloatArray:
         """
-        Returns the tune in frequency
+        Return the horizontal and vertical tune frequencies.
+
+        Returns
+        -------
+        ReadFloatArray
+            Readable array containing the frequencies corresponding to the
+            tune measurements.
         """
         ...

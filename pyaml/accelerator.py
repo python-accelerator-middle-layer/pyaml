@@ -53,6 +53,40 @@ class Accelerator:
     description : str, optional
         Human-readable description of the accelerator.
 
+    Attributes
+    ----------
+    live
+        Control system named ``live``, if one is configured.
+    design
+        Simulator named ``design``, if one is configured.
+    yellow_pages
+        Discovery service over the arrays, tools and diagnostics of every mode.
+
+    Methods
+    -------
+    set_energy(E)
+        Set the energy for all simulators and control systems.
+    set_mcf(alphac)
+        Set the moment compaction factor for all simulators and control systems.
+    set_harmonic_number(h)
+        Set the number of bucket.
+    add_device(config, ignore_external=False)
+        Dynamically add a device to this accelerator.
+    post_init()
+        Method triggered after all initialisations are done
+    get_description()
+        Returns the description of the accelerator
+    simulators()
+        Return all registered simulator modes.
+    controls()
+        Return all registered control modes.
+    modes()
+        Return all registered control and simulator modes.
+    from_dict(config_dict, ignore_external=False, validate=False)
+        Construct an accelerator from a dictionary.
+    load(filename, include_locations=False, ignore_external=False, validate=False)
+        Load an accelerator from a config file.
+
     Notes
     -----
     Control systems and simulators are registered by name and are exposed as
@@ -75,6 +109,9 @@ class Accelerator:
         data_folder: str | None = None,
         description: str | None = None,
     ):
+        """
+        Initialize the Accelerator.
+        """
         self.facility = facility
         self.machine = machine
         self._data_folder = data_folder
@@ -139,6 +176,16 @@ class Accelerator:
 
     def _set_properties(self, method: str, value):
         # Sets global property
+        """
+        Propagate a machine-wide property to every element of every mode.
+
+        Parameters
+        ----------
+        method : str
+            Name of the element setter to call, for example ``"set_energy"``.
+        value : object
+            Value passed to that setter on every element.
+        """
         if self._simulators is not None:
             for s in self._simulators.values():
                 m = getattr(s, method)
@@ -183,14 +230,16 @@ class Accelerator:
 
     def add_device(self, config: dict, ignore_external=False):
         """
-        Dynamically add a device to this accelerator
+        Dynamically add a device to this accelerator.
 
-        config_dict : str
-            Dictionary containing accelerator config
-        ignore_external: bool
-            Ignore external modules and return None for object that
-            cannot be created. pydantic schema that support that an
-            object is not created should handle None fields.
+        Parameters
+        ----------
+        config : dict
+            Configuration dictionary describing the device to add.
+        ignore_external : bool
+            Ignore external modules and return ``None`` for objects that
+            cannot be created. Pydantic schemas that support an absent object
+            should declare the corresponding fields as optional.
         """
         dev = Factory.build(config, ignore_external)
         if not isinstance(dev, Element):
@@ -250,6 +299,7 @@ class Accelerator:
 
     @property
     def yellow_pages(self) -> YellowPages:
+        """Return the yellow pages."""
         return self._yellow_pages
 
     def simulators(self) -> dict[str, "ElementHolder"]:
@@ -268,6 +318,9 @@ class Accelerator:
         return modes
 
     def __repr__(self):
+        """
+        Implement the __repr__ string.
+        """
         return __pyaml_repr__(self)
 
     @staticmethod
@@ -278,11 +331,20 @@ class Accelerator:
         Parameters
         ----------
         config_dict : dict
-            Dictionary containing accelerator config
-        ignore_external: bool
-            Ignore external modules and return None for object that
-            cannot be created. pydantic schema that support that an
-            object is not created should handle None fields.
+            Dictionary containing the accelerator configuration.
+        ignore_external : bool
+            Ignore external modules and return ``None`` for objects that
+            cannot be created. Pydantic schemas that support an absent object
+            should declare the corresponding fields as optional.
+        validate : bool
+            Validate the configuration dictionary against the registered
+            Pydantic schemas before constructing the accelerator. If ``True``,
+            validation errors are raised before the factory builds the object.
+
+        Returns
+        -------
+        Accelerator
+            Constructed accelerator instance.
         """
 
         if ignore_external:

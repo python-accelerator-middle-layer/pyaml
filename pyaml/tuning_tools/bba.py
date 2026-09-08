@@ -1,3 +1,11 @@
+"""
+Beam-based alignment measurement tools.
+
+The :class:`BBA` tool determines the magnetic center of a quadrupole by
+combining controlled quadrupole-strength changes with orbit measurements from
+nearby beam-position monitors.
+"""
+
 import logging
 from typing import Callable, Optional
 
@@ -65,6 +73,21 @@ class BBA(MeasurementTool, DynamicValidation):
         Number of BPM measurements to average at each step.
     sleep_between_meas : float, default=0
         Time in seconds to wait between individual BPM measurements.
+
+    Methods
+    -------
+    measure(...)
+        Measure BBA.
+    h_offset()
+        Return the measured horizontal magnetic-center offset.
+    h_offset_error()
+        Return the uncertainty of the horizontal center offset.
+    v_offset()
+        Return the measured vertical magnetic-center offset.
+    v_offset_error()
+        Return the uncertainty of the vertical center offset.
+    plot_data(plane)
+        Plot BBA data.
     """
 
     def __init__(
@@ -84,6 +107,9 @@ class BBA(MeasurementTool, DynamicValidation):
         n_avg_meas: int = 1,
         sleep_between_meas: float = 0,
     ):
+        """
+        Initialize the BBA.
+        """
         super().__init__(name)
         self.bpm_array_name = bpm_array_name
         self.bpm_name = bpm_name
@@ -128,13 +154,13 @@ class BBA(MeasurementTool, DynamicValidation):
 
         Parameters
         ----------
-        sleep_between_step: float
-            Default time sleep after steerer or quad exitation
+        sleep_between_step : float
+            Default time sleep after steerer or quad excitation
             Default: from config
         n_avg_meas : int, optional
             Default number of orbit measurement per step used for averaging
             Default from config
-        sleep_between_meas: float
+        sleep_between_meas : float
             Default time sleep between two orbit measurment
             Default: from config
         callback : Callable, optional
@@ -142,7 +168,7 @@ class BBA(MeasurementTool, DynamicValidation):
             callback is executed after each strength setting and after each orbit
             reading.
             If the callback returns false, then the process is aborted.
-        plane: str, optional
+        plane : str, optional
             Plane to perform ("H" or "V", None => both plane)
         """
         nb_meas = n_avg_meas if n_avg_meas is not None else self.n_avg_meas
@@ -252,15 +278,19 @@ class BBA(MeasurementTool, DynamicValidation):
         return True
 
     def h_offset(self) -> float:
+        """Return the measured horizontal magnetic-center offset."""
         return self.latest_measurement["HData"].offset if self.latest_measurement["HData"] is not None else np.nan
 
     def h_offset_error(self) -> float:
+        """Return the uncertainty of the horizontal center offset."""
         return self.latest_measurement["HData"].offset_error if self.latest_measurement["HData"] is not None else np.nan
 
     def v_offset(self) -> float:
+        """Return the measured vertical magnetic-center offset."""
         return self.latest_measurement["VData"].offset if self.latest_measurement["VData"] is not None else np.nan
 
     def v_offset_error(self) -> float:
+        """Return the uncertainty of the vertical center offset."""
         return self.latest_measurement["VData"].offset_error if self.latest_measurement["VData"] is not None else np.nan
 
     def plot_data(self, plane: str):
@@ -269,7 +299,7 @@ class BBA(MeasurementTool, DynamicValidation):
 
         Parameters
         ----------
-        plane: str
+        plane : str
             Plane to plot ("H" or "V")
         """
 

@@ -1,3 +1,9 @@
+"""
+Corrector magnet elements.
+
+This module defines horizontal and vertical orbit-corrector elements.
+"""
+
 import numpy as np
 
 from ..common import abstract
@@ -7,14 +13,35 @@ from .magnet import Magnet
 class RWCorrectorAngle(abstract.ReadWriteFloatScalar):
     """
     Set the angle of a horizontal or vertical corrector.
-    KickAngle sign convention is defined the a global PyAML constant
-    (see pyaml.common.constant.HORIZONTAL_KICK_SIGN).
-    To change the convention, you have execute the code below prior to everything:
-    import pyaml.common.constants
-    pyaml.common.constants.HORIZONTAL_KICK_SIGN = -1.0
+
+    The kick-angle sign convention is defined by the global PyAML constant
+    :data:`pyaml.common.constants.HORIZONTAL_KICK_SIGN`. To change the convention,
+    run the following before building the accelerator::
+
+        import pyaml.common.constants
+        pyaml.common.constants.HORIZONTAL_KICK_SIGN = -1.0
+
+    Parameters
+    ----------
+    corr : Magnet
+        Corrector magnet whose strength represents the kick angle.
+
+    Methods
+    -------
+    get()
+        Get the corrector kick angle.
+    set(value)
+        Set the corrector kick angle.
+    set_and_wait(value)
+        Set the kick angle and wait for it to reach the setpoint.
+    unit()
+        Get the unit for the kick angle.
     """
 
     def __init__(self, corr: Magnet):
+        """
+        Initialize a corrector-angle access wrapper.
+        """
         self._mag = corr
 
     def get(self) -> float:
@@ -24,7 +51,7 @@ class RWCorrectorAngle(abstract.ReadWriteFloatScalar):
         Returns
         -------
         float
-            Kick angle in radians
+            Kick angle in radians.
         """
         return np.arctan(self._mag.strength.get())
 
@@ -35,7 +62,7 @@ class RWCorrectorAngle(abstract.ReadWriteFloatScalar):
         Parameters
         ----------
         value : float
-            Kick angle to set in radians
+            Target kick angle in radians.
         """
         self._mag.strength.set(np.tan(value))
 
