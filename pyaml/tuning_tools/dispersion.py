@@ -50,22 +50,18 @@ class Dispersion(MeasurementTool, DynamicValidation):
         Name of the RF plant used for the measurement.
     frequency_delta : float
         RF-frequency change applied during the measurement.
+
+    Methods
+    -------
+    measure(set_waiting_time=0, callback=None)
+        Measure beam dispersion by varying the RF frequency.
+    get()
+        Return the most recently measured dispersion data.
     """
 
     def __init__(self, name: str, bpm_array_name: str, rf_plant_name: str, frequency_delta: float):
         """
         Initialize a beam-dispersion measurement tool.
-
-        Parameters
-        ----------
-        name : str
-            Name of the measurement tool.
-        bpm_array_name : str
-            Name of the BPM array used to measure the orbit.
-        rf_plant_name : str
-            Name of the RF plant whose frequency is varied.
-        frequency_delta : float
-            RF-frequency change applied during the measurement.
         """
         super().__init__(name)
 

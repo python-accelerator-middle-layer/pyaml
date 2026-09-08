@@ -25,16 +25,22 @@ class RWCorrectorAngle(abstract.ReadWriteFloatScalar):
     ----------
     corr : Magnet
         Corrector magnet whose strength represents the kick angle.
+
+    Methods
+    -------
+    get()
+        Get the corrector kick angle.
+    set(value)
+        Set the corrector kick angle.
+    set_and_wait(value)
+        Set the kick angle and wait for it to reach the setpoint.
+    unit()
+        Get the unit for the kick angle.
     """
 
     def __init__(self, corr: Magnet):
         """
         Initialize a corrector-angle access wrapper.
-
-        Parameters
-        ----------
-        corr : Magnet
-            Corrector magnet whose strength represents the kick angle.
         """
         self._mag = corr
 

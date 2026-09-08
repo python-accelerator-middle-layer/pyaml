@@ -61,6 +61,46 @@ class LinearCFMagnetModel(MagnetModel, DynamicValidation):
     PyAMLException
     If the list lengths do not match, if the matrix has the wrong shape, or
     if the configuration is otherwise inconsistent.
+
+    Parameters
+    ----------
+    multipoles : list[str]
+        Names of the supported multipoles, for example ["B0", "A1", "B2"].
+    curves : list[Curve]
+        Excitation curves, one per multipole.
+    powerconverters : list[str | None]
+        Names of the power converter devices associated with the hardware currents.
+    hardware_units : list[str]
+        Units of the hardware variables, one per power converter.
+    calibration_factors : list[float] | None
+        Multiplicative correction factors applied to the excitation curves. Defaults to ones.
+    calibration_offsets : list[float] | None
+        Additive correction offsets applied to the excitation curves. Defaults to zeros.
+    pseudo_factors : list[float] | None
+        Multiplicative factors applied to pseudo currents. Defaults to ones.
+    pseudo_offsets : list[float] | None
+        Additive offsets applied to pseudo currents. Defaults to zeros.
+    matrix : Matrix | None
+        Coupling matrix mapping power-supply currents to pseudo currents. Defaults to the identity matrix.
+    units : list[str] | None
+        Strength units, one per multipole.
+
+    Methods
+    -------
+    compute_hardware_values(strengths)
+        Convert magnet strengths to hardware values.
+    compute_strengths(currents)
+        Convert hardware values to magnet strengths.
+    get_strength_units()
+        Return the units of magnet strengths.
+    get_hardware_units()
+        Return the units of hardware values.
+    get_device_names()
+        Return the associated device names.
+    set_magnet_rigidity(brho)
+        Set the magnetic rigidity used for conversion.
+    has_hardware()
+        Return whether the model provides hardware values.
     """
 
     def __init__(
@@ -78,29 +118,6 @@ class LinearCFMagnetModel(MagnetModel, DynamicValidation):
     ):
         """
         Initialize the LinearCFMagnetModel.
-
-        Parameters
-        ----------
-        multipoles : list[str]
-            Names of the supported multipoles, for example ["B0", "A1", "B2"].
-        curves : list[Curve]
-            Excitation curves, one per multipole.
-        powerconverters : list[str | None]
-            Names of the power converter devices associated with the hardware currents.
-        hardware_units : list[str]
-            Units of the hardware variables, one per power converter.
-        calibration_factors : list[float] | None
-            Multiplicative correction factors applied to the excitation curves. Defaults to ones.
-        calibration_offsets : list[float] | None
-            Additive correction offsets applied to the excitation curves. Defaults to zeros.
-        pseudo_factors : list[float] | None
-            Multiplicative factors applied to pseudo currents. Defaults to ones.
-        pseudo_offsets : list[float] | None
-            Additive offsets applied to pseudo currents. Defaults to zeros.
-        matrix : Matrix | None
-            Coupling matrix mapping power-supply currents to pseudo currents. Defaults to the identity matrix.
-        units : list[str] | None
-            Strength units, one per multipole.
         """
         self.multipoles = multipoles
         self._curves = curves

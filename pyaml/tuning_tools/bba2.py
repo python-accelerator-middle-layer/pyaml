@@ -29,6 +29,13 @@ class BBAData:
     The container keeps fitted kicks, steerer steps, BPM responses, and the
     latest magnetic-center estimate for either the horizontal or vertical
     measurement.
+
+    Methods
+    -------
+    append(st, dk, bpm, allbpm)
+        Append one steerer-step measurement to the alignment data.
+    update_offset(x, error, fit)
+        Store the fitted magnetic-center offset and its uncertainty.
     """
 
     def __init__(self):
@@ -137,6 +144,23 @@ class BBA2(MeasurementTool, DynamicValidation):
         Number of BPM measurements to average at each step.
     sleep_between_meas : float, default=0
         Time in seconds to wait between individual BPM measurements.
+
+    Methods
+    -------
+    measure(...)
+        Measure BBA.
+    h_offset()
+        Return the measured horizontal magnetic-center offset.
+    h_offset_error()
+        Return the uncertainty of the horizontal center offset.
+    v_offset()
+        Return the measured vertical magnetic-center offset.
+    v_offset_error()
+        Return the uncertainty of the vertical center offset.
+    plot_plane_data(ax, plane)
+        Plot measured kicks and the fitted alignment response for one plane.
+    plot_data()
+        Plot BBA data.
     """
 
     def __init__(
@@ -160,41 +184,6 @@ class BBA2(MeasurementTool, DynamicValidation):
     ):
         """
         Initialize a beam-based alignment tool with tune compensation.
-
-        Parameters
-        ----------
-        name : str
-            Name of the alignment tool.
-        bpm_array_name : str
-            Name of the BPM array used for orbit readback.
-        bpm_name : str
-            Name of the BPM used as the alignment reference.
-        hcorr_name : str
-            Name of the horizontal corrector.
-        vcorr_name : str
-            Name of the vertical corrector.
-        quad_name : str
-            Name of the quadrupole being aligned.
-        tune_correction_name : str
-            Name of the tune-correction tool used during the scan.
-        hcorr_delta : float
-            Horizontal corrector-strength step.
-        vcorr_delta : float
-            Vertical corrector-strength step.
-        quad_delta : float
-            Quadrupole-strength step.
-        bipolar_delta : bool
-            Whether to measure positive and negative quadrupole steps.
-        minicycle_sleep_time : float
-            Delay in seconds for the quadrupole minicycle.
-        n_step : int
-            Number of orbit-offset steps per plane.
-        sleep_between_step : float
-            Delay in seconds between orbit-offset steps.
-        n_avg_meas : int
-            Number of BPM measurements averaged at each step.
-        sleep_between_meas : float
-            Delay in seconds between averaged BPM measurements.
         """
         super().__init__(name)
         self.bpm_array_name = bpm_array_name
@@ -537,7 +526,7 @@ class BBA2(MeasurementTool, DynamicValidation):
         Parameters
         ----------
         sleep_between_step : float
-            Default time sleep after steerer or quad exitation
+            Default time sleep after steerer or quad excitation
             Default: from config
         n_avg_meas : int, optional
             Default number of orbit measurement per step used for averaging

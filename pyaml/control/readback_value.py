@@ -58,6 +58,11 @@ class Value:
         The quality of the value. Defaults to Quality.VALID.
     timestamp : datetime, optional
         Timestamp associated with the value. Defaults to current time.
+
+    Methods
+    -------
+    is_good()
+        Check if the value quality is good.
     """
 
     def __init__(
@@ -68,17 +73,6 @@ class Value:
     ):
         """
         Initialize a value with quality metadata and an acquisition time.
-
-        Parameters
-        ----------
-        value : Union[float, int, np.ndarray]
-            Scalar or array-like measurement to wrap.
-        quality : Quality, optional
-            Quality state reported for the measurement. Defaults to
-            :attr:`Quality.VALID`.
-        timestamp : datetime, optional
-            Measurement timestamp. If omitted, the current local time is
-            recorded.
         """
         self.value = value
         self.quality = quality

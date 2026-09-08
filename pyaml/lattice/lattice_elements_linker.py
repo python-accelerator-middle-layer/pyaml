@@ -63,16 +63,22 @@ class LatticeElementsLinker(ABC):
     ----------
     lattice : at.Lattice
         Reference to the PyAT lattice handled by this linker.
+
+    Methods
+    -------
+    set_lattice(lattice)
+        Set the lattice for element linking.
+    get_element_identifier(element)
+        Get the identifier for linking an element.
+    get_at_elements(element_id)
+        Return a list of PyAT elements matching the given identifiers.
+    get_at_element(element_id)
+        Return a single PyAT element matching the given identifier.
     """
 
     def __init__(self, linker_config_model: LinkerConfigModel):
         """
         Initialize a lattice-element linker.
-
-        Parameters
-        ----------
-        linker_config_model : LinkerConfigModel
-            Strategy-specific configuration used to identify lattice elements.
         """
         self.linker_config_model = linker_config_model
         self.lattice: Lattice | None = None

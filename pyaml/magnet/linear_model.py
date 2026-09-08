@@ -46,6 +46,21 @@ class LinearMagnetModel(MagnetModel, DynamicValidation):
         Crosstalk factor applied together with the calibration factor.
         Default is ``1.0``.
 
+    Methods
+    -------
+    compute_hardware_values(strengths)
+        Convert magnet strengths to hardware values.
+    compute_strengths(currents)
+        Convert hardware values to magnet strengths.
+    get_strength_units()
+        Return the units of magnet strengths.
+    get_hardware_units()
+        Return the units of hardware values.
+    get_device_names()
+        Return the associated device names.
+    set_magnet_rigidity(brho)
+        Set the magnetic rigidity used for conversion.
+
     Notes
     -----
     If a curve is provided, the model interpolates between strength and current
@@ -65,23 +80,6 @@ class LinearMagnetModel(MagnetModel, DynamicValidation):
     ):
         """
         Initialize the LinearMagnetModel.
-
-        Parameters
-        ----------
-        unit : str
-            Unit of the magnet strength, for example ``"1/m"`` or ``"m-1"``.
-        hardware_unit : str
-            Unit of the hardware value, for example ``"A"`` or ``"V"``.
-        curve : Curve | None
-            Excitation curve used for interpolation. If omitted, a linear conversion is used instead.
-        powerconverter : str | None
-            Name of the power converter device used to apply current.
-        calibration_factor : float
-            Multiplicative correction applied to the curve or linear scaling. Default is ``1.0``.
-        calibration_offset : float
-            Additive correction applied to the curve or linear scaling. Default is ``0.0``.
-        crosstalk : float
-            Crosstalk factor applied together with the calibration factor. Default is ``1.0``.
         """
         if curve:
             self.__curve = curve.get_curve()

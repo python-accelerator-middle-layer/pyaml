@@ -33,22 +33,15 @@ class _NamedStringIO(io.StringIO):
 
     Parameters
     ----------
-        value : str
-            Text content exposed by the stream.
-        name : str
-            Source name retained for parser diagnostics.
+    value : str
+        Text content exposed by the stream.
+    name : str
+        Source name retained for parser diagnostics.
     """
 
     def __init__(self, value: str, name: str):
         """
         Initialize the _NamedStringIO.
-
-        Parameters
-        ----------
-        value : str
-            Document text exposed by the stream.
-        name : str
-            Source name associated with the document.
         """
         super().__init__(value)
         self.name = name

@@ -20,7 +20,30 @@ PYAMLCLASS = "VCorrector"
 
 @register_schema
 class VCorrector(Magnet, DynamicValidation):
-    """Represent a vertical orbit corrector."""
+    """
+    Represent a vertical orbit corrector.
+
+    Parameters
+    ----------
+    name : str
+        Corrector name.
+    model : MagnetModel | None
+        Optional magnet model.
+    lattice_names : str | None
+        Optional lattice-element mapping.
+    description : str | None
+        Optional human-readable description.
+
+    Attributes
+    ----------
+    angle
+        Return read/write access to the vertical kick angle in radians.
+
+    Methods
+    -------
+    attach(peer, strength, hardware)
+        Return an attached copy with a bound vertical-angle handle.
+    """
 
     polynom = PolynomInfo("PolynomA", 0)
 
@@ -29,17 +52,6 @@ class VCorrector(Magnet, DynamicValidation):
     ):
         """
         Initialize the VCorrector.
-
-        Parameters
-        ----------
-        name : str
-            Corrector name.
-        model : MagnetModel | None
-            Optional magnet model.
-        lattice_names : str | None
-            Optional lattice-element mapping.
-        description : str | None
-            Optional human-readable description.
         """
         super().__init__(name, model, lattice_names, description)
         self.__angle = RWCorrectorAngle(self)

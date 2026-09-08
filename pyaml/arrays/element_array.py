@@ -23,7 +23,7 @@ if TYPE_CHECKING:
 
 class ElementArray(list[Element]):
     """
-    Class that implements access to an element array
+    Class that implements access to an element array.
 
     Parameters
     ----------
@@ -33,8 +33,24 @@ class ElementArray(list[Element]):
         Element list, all elements must be attached to the same instance of
         either a Simulator or a ControlSystem.
     use_aggregator : bool
-        Use aggregator to increase performance by using paralell
+        Use aggregator to increase performance by using parallel
         access to underlying devices.
+
+    Methods
+    -------
+    get_peer()
+        Returns the peer (:py:class:`~pyaml.lattice.simulator.Simulator` or
+        :py:class:`~pyaml.control.controlsystem.ControlSystem`) of an element list
+    get_name()
+        Returns the array name
+    names()
+        Returns the element names
+    mask_by_type(element_type)
+        Return a boolean mask indicating which elements are instances of the given type.
+    of_type(element_type)
+        Return a new array containing only elements of the given type.
+    exclude_type(element_type)
+        Return a copy of the array without the elements of a given type.
 
     Examples
     --------
@@ -50,15 +66,6 @@ class ElementArray(list[Element]):
     def __init__(self, array_name: str, elements: list[Element], use_aggregator=True):
         """
         Initialize the ElementArray.
-
-        Parameters
-        ----------
-        array_name : str
-            Array name
-        elements : list[Element]
-            Element list, all elements must be attached to the same instance of either a Simulator or a ControlSystem.
-        use_aggregator : object
-            Use aggregator to increase performance by using paralell access to underlying devices.
         """
         super().__init__(i for i in elements)
         self.__name = array_name
@@ -362,14 +369,10 @@ class ElementArray(list[Element]):
         Order is stable: elements from ``self`` first, followed by
         elements from ``other`` that are not already present.
 
-        Examples
-        --------
-
-        .. code-block:: python
-
-            >>> hcorr = sr.live.get_magnets("HCORR")
-            >>> vcorr = sr.live.get_magnets("VCORR")
-            >>> all_corr = hcorr | vcorr
+        Parameters
+        ----------
+        other : ElementArray or list[Element]
+            Array whose elements are combined with this one.
 
         Returns
         -------
@@ -381,6 +384,15 @@ class ElementArray(list[Element]):
             :py:class:`.CombinedFunctionMagnetArray` or
             :py:class:`.SerializedMagnetsArray` or
             :py:class:`.ElementArray`.
+
+        Examples
+        --------
+
+        .. code-block:: python
+
+            >>> hcorr = sr.live.get_magnets("HCORR")
+            >>> vcorr = sr.live.get_magnets("VCORR")
+            >>> all_corr = hcorr | vcorr
         """
         other_arr = self.__ensure_compatible_operand(other)
 
@@ -418,12 +430,10 @@ class ElementArray(list[Element]):
         """
         Alias for the union operator ``|``.
 
-        Examples
-        --------
-
-        .. code-block:: python
-
-            >>> all_corr = hcorr + vcorr
+        Parameters
+        ----------
+        other : ElementArray or list[Element]
+            Array whose elements are combined with this one.
 
         Returns
         -------
@@ -435,6 +445,13 @@ class ElementArray(list[Element]):
             :py:class:`.CombinedFunctionMagnetArray` or
             :py:class:`.SerializedMagnetsArray` or
             :py:class:`.ElementArray`.
+
+        Examples
+        --------
+
+        .. code-block:: python
+
+            >>> all_corr = hcorr + vcorr
         """
         return self.__or__(other)
 

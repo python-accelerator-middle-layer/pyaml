@@ -27,6 +27,19 @@ class RFPlant(Element, DynamicValidation):
     The plant exposes frequency and voltage handles after it is attached to a
     simulator or control-system element holder.
 
+    Parameters
+    ----------
+    name : str
+        Name of the RF plant.
+    masterclock : str | None
+        Name of the master-clock device, if configured.
+    transmitters : list[RFTransmitter] | None
+        RF transmitters belonging to the plant.
+    lattice_names : str | None
+        Optional lattice-element mapping.
+    description : str | None
+        Optional human-readable description.
+
     Attributes
     ----------
     frequency
@@ -37,7 +50,7 @@ class RFPlant(Element, DynamicValidation):
     Methods
     -------
     attach(peer, frequency, voltage)
-        Return a copy of this RF plant bound to one control system or simulator.
+        Return a copy attached to RF read/write handles.
     """
 
     def __init__(
@@ -50,19 +63,6 @@ class RFPlant(Element, DynamicValidation):
     ):
         """
         Initialize an RF plant configuration.
-
-        Parameters
-        ----------
-        name : str
-            Name of the RF plant.
-        masterclock : str | None
-            Name of the master-clock device, if configured.
-        transmitters : list[RFTransmitter] | None
-            RF transmitters belonging to the plant.
-        lattice_names : str | None
-            Optional lattice-element mapping.
-        description : str | None
-            Optional human-readable description.
         """
         super().__init__(name, lattice_names, description)
 
@@ -124,17 +124,22 @@ class RWTotalVoltage(abstract.ReadWriteFloatScalar):
     ----------
     transmitters : list[RFTransmitter]
         Transmitters whose fundamental-harmonic voltages are summed.
+
+    Methods
+    -------
+    get()
+        Return the sum of the fundamental-harmonic transmitter voltages.
+    set(value)
+        Set the total fundamental-harmonic voltage.
+    set_and_wait(value)
+        Set the total voltage and wait for readback convergence.
+    unit()
+        Return the voltage unit reported by the first transmitter.
     """
 
     def __init__(self, transmitters: list[RFTransmitter]):
         """
         Construct an aggregate transmitter-voltage handle.
-
-        Parameters
-        ----------
-        transmitters : list[RFTransmitter]
-            Transmitters whose fundamental-harmonic voltages are summed and
-            distributed.
         """
         self.__trans = transmitters
 

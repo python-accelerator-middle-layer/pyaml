@@ -33,6 +33,16 @@ class InlineCurve(Curve, DynamicValidation):
         curve, with ``mat[i][0]`` being the x-value and ``mat[i][1]`` being the
         y-value.
 
+    Attributes
+    ----------
+    mat
+        Return the original in-memory curve point matrix.
+
+    Methods
+    -------
+    get_curve()
+        Get the curve data.
+
     Raises
     ------
     PyAMLException
@@ -42,12 +52,6 @@ class InlineCurve(Curve, DynamicValidation):
     def __init__(self, mat: list[list[float]]):
         """
         Initialize the InlineCurve.
-
-        Parameters
-        ----------
-        mat : list[list[float]]
-            Curve data as a two-column matrix. Each row represents one point in the curve, with ``mat[i][0]`` being the
-            x-value and ``mat[i][1]`` being the y-value.
         """
         self._mat = mat
 

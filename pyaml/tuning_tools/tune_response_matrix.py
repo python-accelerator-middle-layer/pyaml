@@ -84,6 +84,13 @@ class TuneResponseMatrix(MeasurementTool, DynamicValidation):
     sleep_between_meas : float
         Configured delay between averaged tune measurements.
 
+    Methods
+    -------
+    measure(...)
+        Measure tune response matrix.
+
+        :py:attr:`~pyaml.tuning_tools.measurement_tool.MeasurementTool.latest_measurement` contains:
+
     Notes
     -----
     The generated response matrix has shape ``(2, n_quadrupoles)``. The first
@@ -107,25 +114,6 @@ class TuneResponseMatrix(MeasurementTool, DynamicValidation):
     ):
         """
         Initialize a betatron-tune response-matrix measurement tool.
-
-        Parameters
-        ----------
-        name : str
-            Name of the measurement tool.
-        quad_array_name : str
-            Name of the quadrupole array used for the measurement.
-        betatron_tune_name : str
-            Name of the betatron-tune monitor used for readback.
-        quad_delta : float
-            Maximum positive and negative quadrupole-strength change.
-        n_step : Optional[int]
-            Number of quadrupole-strength settings used for each scan.
-        sleep_between_step : Optional[float]
-            Delay in seconds after changing a quadrupole strength.
-        n_avg_meas : Optional[int]
-            Number of tune measurements averaged at each setting.
-        sleep_between_meas : Optional[float]
-            Delay in seconds between measurements used for averaging.
         """
         super().__init__(name)
         self.quad_array_name = quad_array_name
@@ -147,6 +135,7 @@ class TuneResponseMatrix(MeasurementTool, DynamicValidation):
     ):
         """
         Measure tune response matrix.
+
         :py:attr:`~pyaml.tuning_tools.measurement_tool.MeasurementTool.latest_measurement` contains:
 
         .. code-block:: python
@@ -182,7 +171,7 @@ class TuneResponseMatrix(MeasurementTool, DynamicValidation):
             Number of step for fitting the tune slope [-quad_delta/n_step..quad_delta/n_step]
             Default from config
         sleep_between_step : float
-            Default time sleep after quad exitation
+            Default time sleep after quad excitation
             Default: from config
         n_avg_meas : int, optional
             Default number of tune measurement per step used for averaging

@@ -17,6 +17,23 @@ class MagnetModel(metaclass=ABCMeta):
 
     Concrete models implement the relationship between accelerator physics
     strengths and power-supply values for one or more magnet functions.
+
+    Methods
+    -------
+    compute_hardware_values(strengths)
+        Compute hardware value(s) from magnet strength(s)
+    compute_strengths(hardware_values)
+        Compute magnet strength(s) from hardware value(s)
+    get_strength_units()
+        Get strength units
+    get_device_names()
+        Return the control-system device names used by this model.
+    set_magnet_rigidity(brho)
+        Set the magnet rigidity.
+    has_hardware()
+        Tells if the model allows to work in hardware unit.
+    has_physics()
+        Tells if the model allows to work in physics unit.
     """
 
     @abstractmethod
@@ -83,7 +100,7 @@ class MagnetModel(metaclass=ABCMeta):
     @abstractmethod
     def set_magnet_rigidity(self, brho: np.double):
         """
-        Set magnet rigidity
+        Set the magnet rigidity.
 
         Parameters
         ----------

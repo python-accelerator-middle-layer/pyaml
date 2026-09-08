@@ -33,6 +33,19 @@ class ElementRegistry:
 
     Elements are registered by name and can later be retrieved
     individually, by wildcard pattern, or by type.
+
+    Methods
+    -------
+    register(element)
+        Register an Element by name.
+    get(name)
+        Return an Element by name.
+    get_by_name(wildcard)
+        Return all elements whose name matches a wildcard pattern.
+    get_by_type(element_type)
+        Return all registered elements of the given type.
+    clear()
+        Remove all registered elements.
     """
 
     _instance = None
@@ -321,7 +334,16 @@ def _resolve_build_info(data: dict, ignore_external: bool) -> BuildInfo | None:
 
 
 class PyAMLFactory:
-    """Construct PyAML objects from recursively nested configuration data."""
+    """
+    Construct PyAML objects from recursively nested configuration data.
+
+    Methods
+    -------
+    build(data, ignore_external=False)
+        Build objects from a top-level mapping or sequence.
+    clear()
+        Remove all registered elements from the global registry.
+    """
 
     def build(self, data: dict | list, ignore_external: bool = False) -> Any:
         """

@@ -30,6 +30,23 @@ class ReadWriteSerializedStrengths(abstract.ReadWriteFloatScalar):
         Per-magnet accessors sharing the group setpoint.
     model : MagnetModel | None
         Magnet model used to convert between strength and hardware value. Optional for a hardware-only group.
+
+    Methods
+    -------
+    get()
+        Return the sum of the serialized element strengths.
+    set(value)
+        Set the shared serialized-magnet strength.
+    set_and_wait(value)
+        Set the shared strength and wait for convergence.
+    unit()
+        Return the physical strength unit.
+    get_model()
+        Return the magnet conversion model.
+    get_elements()
+        Return the underlying scalar element accessors.
+    set_magnet_rigidity(brho)
+        Set the magnetic rigidity used for conversion.
     """
 
     def __init__(
@@ -39,13 +56,6 @@ class ReadWriteSerializedStrengths(abstract.ReadWriteFloatScalar):
     ):
         """
         Initialize a shared strength accessor for serialized elements.
-
-        Parameters
-        ----------
-        elements : list[abstract.ReadWriteFloatScalar]
-            Per-magnet accessors sharing the group setpoint.
-        model : MagnetModel | None
-            Magnet model used to convert between strength and hardware value. Optional for a hardware-only group.
         """
         self.elements = elements
         self.model = model
@@ -115,6 +125,13 @@ class ReadWriteSerializedHardwares(ReadWriteSerializedStrengths):
         Per-magnet accessors sharing the group setpoint.
     model : MagnetModel | None
         Magnet model used to convert between strength and hardware value. Optional for a hardware-only group.
+
+    Methods
+    -------
+    unit()
+        Return the hardware-value unit.
+    set_magnet_rigidity(brho)
+        Set the magnetic rigidity used for conversion.
     """
 
     def __init__(
@@ -124,13 +141,6 @@ class ReadWriteSerializedHardwares(ReadWriteSerializedStrengths):
     ):
         """
         Initialize a shared hardware accessor for serialized elements.
-
-        Parameters
-        ----------
-        elements : list[abstract.ReadWriteFloatScalar]
-            Per-magnet accessors sharing the group setpoint.
-        model : MagnetModel | None
-            Magnet model used to convert between strength and hardware value. Optional for a hardware-only group.
         """
         super().__init__(elements, model)
 
@@ -175,6 +185,26 @@ class SerializedMagnets(Element, DynamicValidation):
     peer : object, optional
         Control-system or simulator peer used when attaching the magnet group.
 
+    Attributes
+    ----------
+    strength
+        Gives access to the strengths of those magnets in physics unit
+    hardware
+        Gives access to the strengths of this those magnets in hardware unit when possible
+
+    Methods
+    -------
+    get_nb_magnets()
+        Return the number of magnets in the serialized group.
+    get_magnets()
+        Return the group's virtual single-function magnets.
+    attach(peer, strengths, hardwares)
+        Attach the group and its virtual magnets to a runtime peer.
+    set_energy(energy)
+        Set beam energy for serialized-magnet strength conversion.
+    get_device_names()
+        Return the associated device names.
+
     Raises
     ------
     PyAMLException
@@ -199,21 +229,6 @@ class SerializedMagnets(Element, DynamicValidation):
     ):
         """
         Initialize a group of magnets sharing one setpoint.
-
-        Parameters
-        ----------
-        name : str
-            Name of the serialized magnet group.
-        function : str
-            Magnet function identifier used to select the concrete virtual magnet type.
-        elements : list[str] | str
-            Names of the individual magnets in the group.
-        model : MagnetModel | None
-            Magnet model used to convert between strengths and hardware values.
-        description : str | None
-            Human-readable description of the serialized magnet group.
-        peer : object
-            Control-system or simulator peer used when attaching the magnet group.
         """
         super().__init__(name, None, description)
 

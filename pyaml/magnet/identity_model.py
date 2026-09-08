@@ -35,6 +35,25 @@ class IdentityMagnetModel(MagnetModel, DynamicValidation):
         Unit of the magnet strength and hardware value, for example ``"1/m"`` or
         ``"m-1"``.
 
+    Methods
+    -------
+    compute_hardware_values(strengths)
+        Convert magnet strengths to hardware values.
+    compute_strengths(currents)
+        Convert hardware values to magnet strengths.
+    get_strength_units()
+        Return the units of magnet strengths.
+    get_hardware_units()
+        Return the units of hardware values.
+    get_device_names()
+        Return the associated device names.
+    set_magnet_rigidity(brho)
+        Set the magnetic rigidity used for conversion.
+    has_physics()
+        Return whether the model provides physics strengths.
+    has_hardware()
+        Return whether the model provides hardware values.
+
     Raises
     ------
     PyAMLException
@@ -55,15 +74,6 @@ class IdentityMagnetModel(MagnetModel, DynamicValidation):
     ):
         """
         Initialize the IdentityMagnetModel.
-
-        Parameters
-        ----------
-        powerconverter : str | None
-            Name of the power converter device used to apply current.
-        physics : str | None
-            Name of the physics device used to apply strength.
-        unit : str | None
-            Unit of the magnet strength and hardware value, for example ``"1/m"`` or ``"m-1"``.
         """
         self._physics = physics
         self._powerconverter = powerconverter

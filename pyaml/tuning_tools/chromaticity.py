@@ -37,6 +37,37 @@ class Chromaticity(TuningTool, DynamicValidation):
     A response matrix maps sextupole-strength changes to chromaticity changes.
     Its pseudoinverse is used to calculate the strength correction required for
     a requested chromaticity change.
+
+    Parameters
+    ----------
+    name : str
+        Name of the tuning tool.
+    sextu_array_name : str
+        Name of the sextupole array used to adjust the chromaticity.
+    chromaticity_monitor_name : str
+        Name of the chromaticity monitor used for readback.
+    response_matrix : str | ResponseMatrixData
+        Chromaticity response matrix or path to a saved response matrix file.
+
+    Attributes
+    ----------
+    response_matrix
+        Return the loaded chromaticity response matrix, if available.
+
+    Methods
+    -------
+    load(load_path)
+        Load a chromaticity response matrix and prepare its pseudoinverse.
+    get()
+        Return the requested horizontal and vertical chromaticity.
+    readback()
+        Measure and return the current horizontal and vertical chromaticity.
+    set(chroma, iter=1, wait_time=0.0)
+        Iteratively correct chromaticity to a requested setpoint.
+    correct(dchroma)
+        Calculate sextupole-strength changes for a chromaticity change.
+    add(dchroma, wait_time=0.0)
+        Apply a chromaticity correction relative to the current setpoint.
     """
 
     def __init__(
@@ -44,17 +75,6 @@ class Chromaticity(TuningTool, DynamicValidation):
     ):
         """
         Initialize a chromaticity adjustment tool.
-
-        Parameters
-        ----------
-        name : str
-            Name of the tuning tool.
-        sextu_array_name : str
-            Name of the sextupole array used to adjust the chromaticity.
-        chromaticity_monitor_name : str
-            Name of the chromaticity monitor used for readback.
-        response_matrix : str | ResponseMatrixData
-            Chromaticity response matrix or path to a saved response matrix file.
         """
         super().__init__(name)
         self.sextu_array_name = sextu_array_name

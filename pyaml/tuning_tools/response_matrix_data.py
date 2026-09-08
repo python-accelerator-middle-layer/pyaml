@@ -36,6 +36,11 @@ class ResponseMatrixData(DynamicValidation):
     observable_names : list[str]
         Names of the observables represented by the matrix rows, typically
         measured quantities.
+
+    Methods
+    -------
+    load(filename)
+        Load response matrix data from a configuration file.
     """
 
     matrix: list[list[float]]

@@ -44,8 +44,8 @@ class PyAtAttributeIdentifier(LinkerIdentifier):
     ----------
     attribute_name : str
         Name of the PyAT attribute used for matching.
-    identifier
-        Expected value of the attribute.
+    identifier : object
+        Expected value of the attribute, compared with ``attribute_name`` on each element.
     """
 
     def __init__(self, attribute_name: str, identifier):
@@ -54,13 +54,6 @@ class PyAtAttributeIdentifier(LinkerIdentifier):
 
         The identifier is later compared with the value of ``attribute_name``
         on each PyAT element considered by the linker.
-
-        Parameters
-        ----------
-        attribute_name : str
-            Name of the PyAT attribute used for matching.
-        identifier : object
-            Expected value of the matching PyAT attribute.
         """
         self.attribute_name = attribute_name
         self.identifier = identifier
@@ -80,6 +73,16 @@ class PyAtAttributeElementsLinker(LatticeElementsLinker, DynamicValidation):
     This linker associates PyAML elements with PyAT elements by comparing
     the value of a configurable PyAT attribute against the identifier
     extracted from the PyAML element.
+
+    Parameters
+    ----------
+    attribute_name : str
+        Name of the PyAT attribute used to identify matching elements.
+
+    Methods
+    -------
+    get_element_identifier(element)
+        Get the element identifier for the given element.
     """
 
     def __init__(self, attribute_name: str):
@@ -88,11 +91,6 @@ class PyAtAttributeElementsLinker(LatticeElementsLinker, DynamicValidation):
 
         During simulator initialization, the linker compares this attribute's
         value on each PyAT element with the corresponding PyAML element name.
-
-        Parameters
-        ----------
-        attribute_name : str
-            Name of the PyAT attribute used to identify matching elements.
         """
         config_model = PyAtAttributeConfigModel(attribute_name)
         super().__init__(config_model)

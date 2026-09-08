@@ -64,6 +64,22 @@ class Simulator(ElementHolder, DynamicValidation):
     Elements may be matched either using the default name-based lookup
     or a custom :class:`LatticeElementsLinker`.
 
+    Parameters
+    ----------
+    name : str
+        Name of the simulator.
+    lattice : str
+        Path to the PyAT lattice file, relative to the configured
+        PyAML root directory.
+    mat_key : str, optional
+        Variable name of the lattice when loading a MATLAB ``.mat``
+        lattice file.
+    linker : LatticeElementsLinker, optional
+        Custom linker used to associate PyAML elements with PyAT
+        lattice elements. If omitted, elements are matched by name.
+    description : str, optional
+        Human-readable description of the simulator.
+
     Attributes
     ----------
     lattice
@@ -76,23 +92,23 @@ class Simulator(ElementHolder, DynamicValidation):
     name()
         Return the simulator name.
     get_lattice()
-        Return the underlying PyAT lattice.
-    get_names(element)
-        Return the PyAT element names matching a PyAML element.
-    get_indices(element)
-        Return the lattice indices matching a PyAML element.
-    get_at_elems(element)
-        Return the PyAT elements matching a PyAML element.
-    fill_device(elements)
-        Bind elements to their PyAT counterparts through read/write accessors.
-    create_magnet_strength_aggregator(magnets)
-        Build a grouped strength accessor for a set of magnets.
-    create_magnet_hardware_aggregator(magnets)
-        Build a grouped hardware accessor for a set of magnets.
-    create_bpm_aggregators(bpms)
-        Build grouped position accessors for a set of BPMs.
+        Return the loaded Accelerator Toolbox lattice.
     get_description()
-        Return the human-readable simulator description.
+        Returns the description of the accelerator
+    create_magnet_strength_aggregator(magnets)
+        Return the magnet-strength aggregator for this simulator.
+    create_magnet_hardware_aggregator(magnets)
+        Return the magnet-hardware aggregator for this simulator.
+    create_bpm_aggregators(bpms)
+        Create BPM position aggregators for the loaded lattice.
+    fill_device(elements)
+        Attach PyAML elements to their matching PyAT lattice elements.
+    get_names(element)
+        Parse element lattice_name syntax. see Element.ConfigModel.lattice_name.
+    get_indices(element)
+        Parse element lattice_name syntax. see Element.ConfigModel.lattice_name.
+    get_at_elems(element)
+        Resolve a PyAML element to matching PyAT lattice elements.
     """
 
     def __init__(
@@ -105,22 +121,6 @@ class Simulator(ElementHolder, DynamicValidation):
     ):
         """
         Create a simulator from a PyAT lattice.
-
-        Parameters
-        ----------
-        name : str
-            Name of the simulator.
-        lattice : str
-            Path to the PyAT lattice file, relative to the configured
-            PyAML root directory.
-        mat_key : str, optional
-            Variable name of the lattice when loading a MATLAB ``.mat``
-            lattice file.
-        linker : LatticeElementsLinker, optional
-            Custom linker used to associate PyAML elements with PyAT
-            lattice elements. If omitted, elements are matched by name.
-        description : str, optional
-            Human-readable description of the simulator.
         """
 
         super().__init__()

@@ -36,21 +36,26 @@ class RWHardwareScalar(abstract.ReadWriteFloatScalar):
         index and the sign convention.
     model : MagnetModel
         Magnet model used to convert between physical strength and hardware value.
+
+    Methods
+    -------
+    get_length()
+        Return the total length of the lattice elements.
+    get()
+        Return the current value.
+    set(value)
+        Set the current value.
+    set_and_wait(value)
+        Set the value and wait for readback convergence.
+    unit()
+        Return the value unit.
+    get_model()
+        Return the associated magnet model.
     """
 
     def __init__(self, elements: list[at.Element], poly: PolynomInfo, model: MagnetModel):
         """
         Initialize the RWHardwareScalar.
-
-        Parameters
-        ----------
-        elements : list[at.Element]
-            Accelerator Toolbox elements making up the magnet; their contributions are summed.
-        poly : PolynomInfo
-            Polynomial component driven by this accessor: the ``PolynomA``/``PolynomB`` attribute name, its multipole
-            index and the sign convention.
-        model : MagnetModel
-            Magnet model used to convert between physical strength and hardware value.
         """
         self._model = model
         self._elements = elements
@@ -129,21 +134,26 @@ class RWStrengthScalar(abstract.ReadWriteFloatScalar):
         index and the sign convention.
     model : MagnetModel
         Magnet model used to convert between physical strength and hardware value.
+
+    Methods
+    -------
+    get_element_length()
+        Return the total length of the represented element.
+    get(polynom=None, polyidx=None)
+        Return the current value.
+    set(value, polynom=None, polyidx=None)
+        Set the current value.
+    set_and_wait(value)
+        Set the value and wait for readback convergence.
+    unit()
+        Return the value unit.
+    get_model()
+        Return the associated magnet model.
     """
 
     def __init__(self, elements: list[at.Element], poly: PolynomInfo, model: MagnetModel):
         """
         Initialize the RWStrengthScalar.
-
-        Parameters
-        ----------
-        elements : list[at.Element]
-            Accelerator Toolbox elements making up the magnet; their contributions are summed.
-        poly : PolynomInfo
-            Polynomial component driven by this accessor: the ``PolynomA``/``PolynomB`` attribute name, its multipole
-            index and the sign convention.
-        model : MagnetModel
-            Magnet model used to convert between physical strength and hardware value.
         """
         self._model = model
         self._elements = elements
@@ -256,18 +266,28 @@ class RWSerializedHardware(abstract.ReadWriteFloatScalar):
         Hardware accessors of the magnets sharing the serialized power supply.
     element_index : int
         Index of the magnet this accessor represents within the serialized group.
+
+    Methods
+    -------
+    get_element_length()
+        Return the total length of the represented element.
+    get_total_length()
+        Return the total length of the represented elements.
+    get()
+        Return the current value.
+    set(value)
+        Set the current value.
+    set_and_wait(value)
+        Set the value and wait for readback convergence.
+    unit()
+        Return the value unit.
+    set_magnet_rigidity(brho)
+        Set the magnetic rigidity used for conversion.
     """
 
     def __init__(self, elements: list[RWHardwareScalar], element_index: int):
         """
         Initialize the RWSerializedHardware.
-
-        Parameters
-        ----------
-        elements : list[RWHardwareScalar]
-            Hardware accessors of the magnets sharing the serialized power supply.
-        element_index : int
-            Index of the magnet this accessor represents within the serialized group.
         """
         self.__elements = elements
         self.__element_index = element_index
@@ -346,6 +366,23 @@ class RWSerializedStrength(abstract.ReadWriteFloatScalar):
         Hardware accessors of the same magnets, used to apply the shared setpoint.
     element_index : int
         Index of the magnet this accessor represents within the serialized group.
+
+    Methods
+    -------
+    get_element_length()
+        Return the total length of the represented element.
+    get_total_length()
+        Return the total length of the represented elements.
+    get()
+        Return the current value.
+    set(value)
+        Set the current value.
+    set_and_wait(value)
+        Set the value and wait for readback convergence.
+    unit()
+        Return the value unit.
+    set_magnet_rigidity(brho)
+        Set the magnetic rigidity used for conversion.
     """
 
     def __init__(
@@ -356,15 +393,6 @@ class RWSerializedStrength(abstract.ReadWriteFloatScalar):
     ):
         """
         Initialize the RWSerializedStrength.
-
-        Parameters
-        ----------
-        elements_strength : list[RWStrengthScalar]
-            Strength accessors of the magnets sharing the serialized power supply.
-        elements_hardware : list[RWHardwareScalar]
-            Hardware accessors of the same magnets, used to apply the shared setpoint.
-        element_index : int
-            Index of the magnet this accessor represents within the serialized group.
         """
         self.__element = elements_strength[element_index]
         self.__elements_strength = elements_strength
@@ -449,21 +477,32 @@ class RWHardwareArray(abstract.ReadWriteFloatArray):
     """
     Class providing read write access to a magnet of a simulator in hardware units.
     Hardware units are converted from strengths using the magnet model
+
+    Parameters
+    ----------
+    elements : list[at.Element]
+        Accelerator Toolbox elements of every magnet in the array.
+    poly : list[PolynomInfo]
+        Polynomial component for each magnet, giving the ``PolynomA``/``PolynomB`` attribute name, multipole index
+        and sign convention.
+    model : MagnetModel
+        Magnet model used to convert between physical strength and hardware value.
+
+    Methods
+    -------
+    get()
+        Return the current value.
+    set(value)
+        Set the current value.
+    set_and_wait(value)
+        Set the value and wait for readback convergence.
+    unit()
+        Return the value unit.
     """
 
     def __init__(self, elements: list[at.Element], poly: list[PolynomInfo], model: MagnetModel):
         """
         Initialize the RWHardwareArray.
-
-        Parameters
-        ----------
-        elements : list[at.Element]
-            Accelerator Toolbox elements of every magnet in the array.
-        poly : list[PolynomInfo]
-            Polynomial component for each magnet, giving the ``PolynomA``/``PolynomB`` attribute name, multipole index
-            and sign convention.
-        model : MagnetModel
-            Magnet model used to convert between physical strength and hardware value.
         """
         self.__elements = elements
         self.__poly = []
@@ -528,21 +567,32 @@ class RWHardwareArray(abstract.ReadWriteFloatArray):
 class RWStrengthArray(abstract.ReadWriteFloatArray):
     """
     Class providing read write access to a strength (array) of a simulator
+
+    Parameters
+    ----------
+    elements : list[at.Element]
+        Accelerator Toolbox elements of every magnet in the array.
+    poly : list[PolynomInfo]
+        Polynomial component for each magnet, giving the ``PolynomA``/``PolynomB`` attribute name, multipole index
+        and sign convention.
+    model : MagnetModel
+        Magnet model used to convert between physical strength and hardware value.
+
+    Methods
+    -------
+    get()
+        Return the current value.
+    set(value)
+        Set the current value.
+    set_and_wait(value)
+        Set the value and wait for readback convergence.
+    unit()
+        Return the value unit.
     """
 
     def __init__(self, elements: list[at.Element], poly: list[PolynomInfo], model: MagnetModel):
         """
         Initialize the RWStrengthArray.
-
-        Parameters
-        ----------
-        elements : list[at.Element]
-            Accelerator Toolbox elements of every magnet in the array.
-        poly : list[PolynomInfo]
-            Polynomial component for each magnet, giving the ``PolynomA``/``PolynomB`` attribute name, multipole index
-            and sign convention.
-        model : MagnetModel
-            Magnet model used to convert between physical strength and hardware value.
         """
         self.__elements = elements
         self.__poly = []
@@ -607,16 +657,31 @@ class RWStrengthArray(abstract.ReadWriteFloatArray):
 class BPMScalarAggregator(ScalarAggregator):
     """
     BPM simulator aggregator
+
+    Parameters
+    ----------
+    ring : at.Lattice
+        Lattice used to resolve element positions into reference points.
+
+    Methods
+    -------
+    add_elem(elem)
+        Add a lattice element to the aggregate.
+    set(value)
+        Set the current value.
+    set_and_wait(value)
+        Set the value and wait for readback convergence.
+    get()
+        Return the current value.
+    readback()
+        Return the current readback value.
+    unit()
+        Return the value unit.
     """
 
     def __init__(self, ring: at.Lattice):
         """
         Initialize the BPMScalarAggregator.
-
-        Parameters
-        ----------
-        ring : at.Lattice
-            Lattice used to resolve element positions into reference points.
         """
         self._lattice = ring
         self._refpts = []
@@ -683,6 +748,11 @@ class BPMScalarAggregator(ScalarAggregator):
 class BPMHScalarAggregator(BPMScalarAggregator):
     """
     Horizontal BPM simulator aggregator
+
+    Methods
+    -------
+    get()
+        Return the current value.
     """
 
     def get(self) -> np.array:
@@ -696,6 +766,11 @@ class BPMHScalarAggregator(BPMScalarAggregator):
 class BPMVScalarAggregator(BPMScalarAggregator):
     """
     Vertical BPM simulator aggregator
+
+    Methods
+    -------
+    get()
+        Return the current value.
     """
 
     def get(self) -> np.array:
@@ -736,18 +811,25 @@ class RBpmArray(abstract.ReadFloatArray):
     Position in pyAT is calculated using find_orbit function, which returns the
     orbit at a specified index. The position is then extracted from the orbit
     array as the first two elements (x, y).
+
+    Parameters
+    ----------
+    element : at.Element
+        BPM lattice element whose position is read.
+    lattice : at.Lattice
+        Lattice on which the closed orbit is computed.
+
+    Methods
+    -------
+    get()
+        Return the current value.
+    unit()
+        Return the value unit.
     """
 
     def __init__(self, element: at.Element, lattice: at.Lattice):
         """
         Initialize the RBpmArray.
-
-        Parameters
-        ----------
-        element : at.Element
-            BPM lattice element whose position is read.
-        lattice : at.Lattice
-            Lattice on which the closed orbit is computed.
         """
         self._element = element
         self._lattice = lattice
@@ -773,16 +855,27 @@ class RWBpmOffsetArray(abstract.ReadWriteFloatArray):
     """
     Class providing read write access to a BPM offset (array) of a simulator.
     Offset in pyAT is defined in Offset attribute as a 2-element array.
+
+    Parameters
+    ----------
+    element : at.Element
+        BPM lattice element whose ``Offset`` attribute is accessed.
+
+    Methods
+    -------
+    get()
+        Return the current value.
+    set(value)
+        Set the current value.
+    set_and_wait(value)
+        Set the value and wait for readback convergence.
+    unit()
+        Return the value unit.
     """
 
     def __init__(self, element: at.Element):
         """
         Initialize the RWBpmOffsetArray.
-
-        Parameters
-        ----------
-        element : at.Element
-            BPM lattice element whose ``Offset`` attribute is accessed.
         """
         self._element = element
 
@@ -841,16 +934,22 @@ class RWBpmTiltScalar(abstract.ReadWriteFloatScalar):
     ----------
     element : at.Element
         BPM lattice element whose ``Tilt`` attribute is accessed.
+
+    Methods
+    -------
+    get()
+        Return the current value.
+    set(value)
+        Set the current value.
+    set_and_wait(value)
+        Set the value and wait for readback convergence.
+    unit()
+        Return the value unit.
     """
 
     def __init__(self, element: at.Element):
         """
         Initialize a BPM-tilt accessor.
-
-        Parameters
-        ----------
-        element : at.Element
-            BPM lattice element whose ``Tilt`` attribute is accessed.
         """
         self._element = element
 
@@ -905,16 +1004,27 @@ class RWRFVoltageScalar(abstract.ReadWriteFloatScalar):
     """
     Class providing read write access to a cavity voltage
     of a simulator for a given RF trasnmitter.
+
+    Parameters
+    ----------
+    elements : list[at.Element]
+        RF cavity elements sharing this voltage setpoint.
+
+    Methods
+    -------
+    get()
+        Return the current value.
+    set(value)
+        Set the current value.
+    set_and_wait(value)
+        Set the value and wait for readback convergence.
+    unit()
+        Return the value unit.
     """
 
     def __init__(self, elements: list[at.Element]):
         """
         Initialize the RWRFVoltageScalar.
-
-        Parameters
-        ----------
-        elements : list[at.Element]
-            RF cavity elements sharing this voltage setpoint.
         """
         self.__elements = elements
 
@@ -974,16 +1084,22 @@ class RWRFPhaseScalar(abstract.ReadWriteFloatScalar):
     ----------
     elements : list[at.Element]
         RF cavity elements sharing the transmitter phase.
+
+    Methods
+    -------
+    get()
+        Return the current value.
+    set(value)
+        Set the current value.
+    set_and_wait(value)
+        Set the value and wait for readback convergence.
+    unit()
+        Return the value unit.
     """
 
     def __init__(self, elements: list[at.Element]):
         """
         Initialize an RF-cavity phase accessor.
-
-        Parameters
-        ----------
-        elements : list[at.Element]
-            RF cavity elements sharing the transmitter phase.
         """
         self.__elements = elements
 
@@ -1034,18 +1150,29 @@ class RWRFPhaseScalar(abstract.ReadWriteFloatScalar):
 class RWRFFrequencyScalar(abstract.ReadWriteFloatScalar):
     """
     Class providing read write access to RF frequency of a simulator.
+
+    Parameters
+    ----------
+    elements : list[at.Element]
+        RF cavity elements driven by this frequency setpoint.
+    harmonics : list[float]
+        Multiplier applied to the requested frequency for each cavity.
+
+    Methods
+    -------
+    get()
+        Return the current value.
+    set(value)
+        Set the current value.
+    set_and_wait(value)
+        Set the value and wait for readback convergence.
+    unit()
+        Return the value unit.
     """
 
     def __init__(self, elements: list[at.Element], harmonics: list[float]):
         """
         Initialize the RWRFFrequencyScalar.
-
-        Parameters
-        ----------
-        elements : list[at.Element]
-            RF cavity elements driven by this frequency setpoint.
-        harmonics : list[float]
-            Multiplier applied to the requested frequency for each cavity.
         """
         self.__elements = elements
         self.__harm = harmonics
@@ -1102,16 +1229,22 @@ class RWRFATFrequencyScalar(abstract.ReadWriteFloatScalar):
     ----------
     ring : at.Lattice
         Accelerator Toolbox lattice whose RF frequency is accessed.
+
+    Methods
+    -------
+    get()
+        Return the current value.
+    set(value)
+        Set the current value.
+    set_and_wait(value)
+        Set the value and wait for readback convergence.
+    unit()
+        Return the value unit.
     """
 
     def __init__(self, ring: at.Lattice):
         """
         Initialize an Accelerator Toolbox RF-frequency accessor.
-
-        Parameters
-        ----------
-        ring : at.Lattice
-            Accelerator Toolbox lattice whose RF frequency is accessed.
         """
         self.__ring = ring
 
@@ -1165,16 +1298,22 @@ class RWRFATotalVoltageScalar(abstract.ReadWriteFloatScalar):
     ----------
     ring : at.Lattice
         Accelerator Toolbox lattice whose total RF voltage is accessed.
+
+    Methods
+    -------
+    get()
+        Return the current value.
+    set(value)
+        Set the current value.
+    set_and_wait(value)
+        Set the value and wait for readback convergence.
+    unit()
+        Return the value unit.
     """
 
     def __init__(self, ring: at.Lattice):
         """
         Initialize an Accelerator Toolbox RF-voltage accessor.
-
-        Parameters
-        ----------
-        ring : at.Lattice
-            Accelerator Toolbox lattice whose total RF voltage is accessed.
         """
         self.__ring = ring
 
@@ -1220,16 +1359,23 @@ class RWRFATotalVoltageScalar(abstract.ReadWriteFloatScalar):
 class RBetatronTuneArray(abstract.ReadFloatArray):
     """
     Class providing read-only access to the betatron tune of a ring.
+
+    Parameters
+    ----------
+    ring : at.Lattice
+        Accelerator Toolbox lattice whose betatron tunes are computed.
+
+    Methods
+    -------
+    get()
+        Return the current value.
+    unit()
+        Return the value unit.
     """
 
     def __init__(self, ring: at.Lattice):
         """
         Initialize the RBetatronTuneArray.
-
-        Parameters
-        ----------
-        ring : at.Lattice
-            Accelerator Toolbox lattice whose betatron tunes are computed.
         """
         self.__ring = ring
 

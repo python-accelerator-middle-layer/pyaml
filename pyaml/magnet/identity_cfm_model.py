@@ -41,6 +41,36 @@ class IdentityCFMagnetModel(MagnetModel, DynamicValidation):
     PyAMLException
     If both physics and powerconverters are missing, if both are
     provided at the same time, or if the configuration lengths do not match.
+
+    Parameters
+    ----------
+    multipoles : list[str]
+        List of supported multipoles, for example ["B0", "A1", "B2"].
+    powerconverters : list[str | None] | None
+        Names of the power converter devices used for hardware access.
+    physics : list[str | None] | None
+        Names of the physics devices used for strength access.
+    units : list[str] | None
+        List of units for the supported multipoles.
+
+    Methods
+    -------
+    compute_hardware_values(strengths)
+        Convert magnet strengths to hardware values.
+    compute_strengths(currents)
+        Convert hardware values to magnet strengths.
+    get_strength_units()
+        Return the units of magnet strengths.
+    get_hardware_units()
+        Return the units of hardware values.
+    get_device_names()
+        Return the associated device names.
+    set_magnet_rigidity(brho)
+        Set the magnetic rigidity used for conversion.
+    has_physics()
+        Return whether the model provides physics strengths.
+    has_hardware()
+        Return whether the model provides hardware values.
     """
 
     def __init__(
@@ -52,17 +82,6 @@ class IdentityCFMagnetModel(MagnetModel, DynamicValidation):
     ):
         """
         Initialize the IdentityCFMagnetModel.
-
-        Parameters
-        ----------
-        multipoles : list[str]
-            List of supported multipoles, for example ["B0", "A1", "B2"].
-        powerconverters : list[str | None] | None
-            Names of the power converter devices used for hardware access.
-        physics : list[str | None] | None
-            Names of the physics devices used for strength access.
-        units : list[str] | None
-            List of units for the supported multipoles.
         """
         self.multipoles = multipoles
         self._powerconverters = powerconverters

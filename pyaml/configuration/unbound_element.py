@@ -26,22 +26,16 @@ class UnboundElement(Element):
         Control-system modes in which the element should be created.
     config : pydantic.BaseModel
         Validated configuration passed to the element constructor.
+
+    Methods
+    -------
+    instantiate(holder)
+        Instantiate the element represented by this UnboundElement.
     """
 
     def __init__(self, element_class, module_name: str, modes: list[str], config: BaseModel):
         """
         Initialize a deferred element configuration.
-
-        Parameters
-        ----------
-        element_class : class
-            Concrete element class to instantiate later.
-        module_name : str
-            Fully qualified module name of ``element_class``.
-        modes : list[str]
-            Control-system modes in which to instantiate the element.
-        config : BaseModel
-            Validated element configuration.
         """
         super().__init__(config.name)
         self._class = element_class

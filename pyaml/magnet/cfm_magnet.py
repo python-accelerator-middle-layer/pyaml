@@ -65,6 +65,24 @@ class CombinedFunctionMagnet(Element, DynamicValidation):
     peer : object, optional
         Control-system or simulator peer used when attaching the magnet.
 
+    Attributes
+    ----------
+    strengths
+        Gives access to the strengths of this combined function magnet in physics unit
+    hardwares
+        Gives access to the strengths of this combined function magnet in hardware unit when possible
+
+    Methods
+    -------
+    get_model_name()
+        Returns the model name of this magnet
+    nb_multipole()
+        Return the number of configured multipole components.
+    attach(peer, strengths, hardwares)
+        Attach the combined-function magnet and its virtual components.
+    set_energy(E)
+        Set beam energy for magnetic-strength conversion.
+
     Raises
     ------
     PyAMLException
@@ -77,20 +95,6 @@ class CombinedFunctionMagnet(Element, DynamicValidation):
     ):
         """
         Initialize the CombinedFunctionMagnet.
-
-        Parameters
-        ----------
-        name : str
-            Name of the combined-function magnet.
-        mapping : list[list[str]]
-            List of ``[multipole, magnet_name]`` pairs. The first entry selects the virtual magnet type, and the second
-            entry gives the name of the virtual magnet.
-        model : MagnetModel | None
-            Magnet model used to convert strengths to hardware values and vice versa.
-        description : str | None
-            Human-readable description of the magnet.
-        peer : object
-            Control-system or simulator peer used when attaching the magnet.
         """
         super().__init__(name, None, description)
 

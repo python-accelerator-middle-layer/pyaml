@@ -66,6 +66,21 @@ class Tune(TuningTool, DynamicValidation):
         Name of the configured betatron tune monitor.
     response_matrix : ResponseMatrixData or None
         Loaded tune response matrix.
+
+    Methods
+    -------
+    load(load_path)
+        Load a tune response matrix and prepare its pseudoinverse.
+    get()
+        Return the requested horizontal and vertical tune setpoint.
+    readback()
+        Return the current horizontal and vertical betatron tune.
+    set(tune, iter=1, wait_time=0.0)
+        Iteratively correct the betatron tune to a requested setpoint.
+    correct(dtune)
+        Calculate quadrupole-strength changes for a tune change.
+    add(dtune, wait_time=0.0)
+        Apply a tune correction relative to the current setpoint.
     """
 
     def __init__(
@@ -77,17 +92,6 @@ class Tune(TuningTool, DynamicValidation):
     ):
         """
         Initialize a betatron-tune correction tool.
-
-        Parameters
-        ----------
-        name : str
-            Name of the tuning tool.
-        quad_array_name : str
-            Name of the quadrupole array used for correction.
-        betatron_tune_name : str
-            Name of the betatron-tune monitor used for readback.
-        response_matrix : str | ResponseMatrixData
-            Tune response matrix or path to a serialized response matrix.
         """
         super().__init__(name)
 

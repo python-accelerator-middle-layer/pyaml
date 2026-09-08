@@ -46,6 +46,40 @@ class ConfigurationManager:
     dictionaries and exposes convenience helpers to inspect, query and update
     them before constructing the final runtime object graph.
 
+    Methods
+    -------
+    root_fields()
+        Return the supported accelerator root fields in order. Return the ordered root fields supported by the
+        accelerator configuration.
+    add(payload, **kwargs)
+        Add a configuration fragment from a dict or a YAML/JSON file.
+    remove(category, name)
+        Remove a named entry from an aggregated category.
+    replace(category, element)
+        Replace an existing named entry in an aggregated category.
+    clear(category=None)
+        Clear the aggregated state, or a single root field/category.
+    categories()
+        Return categories that currently contain entries.
+    keys(category=None)
+        Return known entry names.
+    has(category, name)
+        Check whether a named entry exists.
+    get(category, name)
+        Return a named configuration entry.
+    find(pattern, category=None)
+        Search entry names using wildcards or regular expressions.
+    settings()
+        Return aggregated scalar accelerator settings.
+    to_dict()
+        Return the aggregated configuration as a plain dictionary.
+    build(ignore_external=False, validate=False)
+        Build an Accelerator from the aggregated configuration snapshot.
+    strip_internal_metadata(value)
+        Remove additionnal internal informations info from value
+    strip_runtime_internal_metadata(value)
+        Remove additionnal internal informations info from value
+
     Notes
     -----
     The manager only accepts accelerator-root fragments and merges named

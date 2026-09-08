@@ -24,6 +24,37 @@ class RFTransmitter(Element, DynamicValidation):
 
     A transmitter may expose read/write voltage and phase handles after it is
     attached to a simulator or control-system element holder.
+
+    Parameters
+    ----------
+    name : str
+        Name of the transmitter.
+    cavities : list[str]
+        Names of cavities driven by the transmitter.
+    voltage : str | None
+        Name of the voltage device, if configured.
+    phase : str | None
+        Name of the phase device, if configured.
+    harmonic : float
+        Harmonic number associated with the transmitter.
+    distribution : float
+        Fraction of aggregate voltage assigned to this transmitter.
+    lattice_names : str | None
+        Optional lattice-element mapping.
+    description : str | None
+        Optional human-readable description.
+
+    Attributes
+    ----------
+    voltage
+        Return the read/write RF-voltage handle in volts.
+    phase
+        Return the read/write RF-phase handle in radians.
+
+    Methods
+    -------
+    attach(peer, voltage, phase)
+        Return a copy with voltage and phase handles attached.
     """
 
     def __init__(
@@ -39,25 +70,6 @@ class RFTransmitter(Element, DynamicValidation):
     ):
         """
         Initialize an RF-transmitter configuration.
-
-        Parameters
-        ----------
-        name : str
-            Name of the transmitter.
-        cavities : list[str]
-            Names of cavities driven by the transmitter.
-        voltage : str | None
-            Name of the voltage device, if configured.
-        phase : str | None
-            Name of the phase device, if configured.
-        harmonic : float
-            Harmonic number associated with the transmitter.
-        distribution : float
-            Fraction of aggregate voltage assigned to this transmitter.
-        lattice_names : str | None
-            Optional lattice-element mapping.
-        description : str | None
-            Optional human-readable description.
         """
         super().__init__(name, lattice_names, description)
         self.voltage_name = voltage

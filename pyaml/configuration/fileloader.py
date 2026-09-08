@@ -41,6 +41,15 @@ class RootFolder:
     ----------
     path : str or pathlib.Path or None, optional
         Directory used to resolve relative paths.
+
+    Methods
+    -------
+    set(path)
+        Set the directory used to resolve relative configuration files.
+    get()
+        Return the resolved configuration root directory.
+    expand_path(path)
+        Resolve a configuration path against the root directory.
     """
 
     def __init__(self, path: str | Path | None = None):
@@ -48,11 +57,6 @@ class RootFolder:
         Initialize the configuration path root.
 
         If ``path`` is omitted, the current working directory is used.
-
-        Parameters
-        ----------
-        path : str or pathlib.Path or None, optional
-            Directory used to resolve relative paths.
         """
         if path is None:
             self._path = Path.cwd().resolve()
@@ -101,18 +105,20 @@ ROOT = RootFolder()
 
 
 class PyAMLConfigCyclingException(PyAMLException):
-    """Raised when a configuration file includes itself through a cycle."""
+    """
+    Raised when a configuration file includes itself through a cycle.
+
+    Parameters
+    ----------
+    error_filename : str
+        File that triggered the cycle.
+    path_stack : list[pathlib.Path]
+        Include chain leading to the cycle.
+    """
 
     def __init__(self, error_filename: str, path_stack: list[Path]):
         """
         Initialize an exception describing a circular file include.
-
-        Parameters
-        ----------
-        error_filename : str
-            File that triggered the cycle.
-        path_stack : list[pathlib.Path]
-            Include chain leading to the cycle.
         """
 
         self.error_filename = error_filename
@@ -132,6 +138,11 @@ class LoadContext:
         Preserve source locations in loaded mappings.
     include_stack : list[pathlib.Path], optional
         Active include chain. Usually left empty for a new session.
+
+    Methods
+    -------
+    loading(path)
+        Temporarily add a file to the active include chain.
     """
 
     include_locations: bool = False
@@ -327,6 +338,13 @@ class ConfigLoader(ABC):
         Configuration file being loaded.
     context : LoadContext
         Shared state for recursive includes and cycle detection.
+
+    Methods
+    -------
+    expand(obj)
+        Recursively expand configuration values.
+    load()
+        Load and parse the current configuration file.
     """
 
     def __init__(self, path: Path, context: LoadContext):
@@ -504,7 +522,21 @@ class ConfigLoader(ABC):
 
 
 class YAMLLoader(ConfigLoader):
-    """Load and expand YAML configuration files."""
+    """
+    Load and expand YAML configuration files.
+
+    Parameters
+    ----------
+    path : pathlib.Path
+        Configuration file being loaded.
+    context : LoadContext
+        Shared state for recursive includes and cycle detection.
+
+    Methods
+    -------
+    load()
+        Parse the YAML file and expand nested configuration references.
+    """
 
     def __init__(self, path: Path, context: LoadContext):
         """Create a YAML loader for the given file."""
@@ -524,7 +556,21 @@ class YAMLLoader(ConfigLoader):
 
 
 class JSONLoader(ConfigLoader):
-    """Load and expand JSON configuration files."""
+    """
+    Load and expand JSON configuration files.
+
+    Parameters
+    ----------
+    path : pathlib.Path
+        Configuration file being loaded.
+    context : LoadContext
+        Shared state for recursive includes and cycle detection.
+
+    Methods
+    -------
+    load()
+        Parse the JSON file and expand nested configuration references.
+    """
 
     def __init__(self, path: Path, context: LoadContext):
         """Create a JSON loader for the given file."""
@@ -543,7 +589,19 @@ class JSONLoader(ConfigLoader):
 
 
 class SafeLineLoader(SafeLoader):
-    """YAML loader that preserves line and column information for mappings."""
+    """
+    YAML loader that preserves line and column information for mappings.
+
+    Parameters
+    ----------
+    stream : io.TextIOBase
+        Stream to parse. Its ``name`` is recorded so errors can cite the source file.
+
+    Methods
+    -------
+    construct_mapping(node, deep=False)
+        Build a mapping and attach location metadata to it.
+    """
 
     def __init__(self, stream):
         """Create the YAML loader and record the source filename."""

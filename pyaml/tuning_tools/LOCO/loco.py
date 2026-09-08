@@ -7,7 +7,16 @@ running linear-optics analysis with the accelerator commissioning tools.
 
 
 class loco:
-    """Coordinate LOCO measurements and linear-optics analysis."""
+    """
+    Coordinate LOCO measurements and linear-optics analysis.
+
+    Methods
+    -------
+    run()
+        Run the configured LOCO analysis.
+    measure_orm()
+        Measure the orbit response matrix required by LOCO.
+    """
 
     def run():
         """Run the configured LOCO analysis."""

@@ -7,7 +7,16 @@ analyzing the singular-value decomposition used to select orbit steerers.
 
 
 class slow_orbit_feeback:
-    """Coordinate slow orbit feedback corrections."""
+    """
+    Coordinate slow orbit feedback corrections.
+
+    Methods
+    -------
+    run()
+        Run the configured slow-orbit feedback correction.
+    get_svd_decomposition()
+        Return the SVD decomposition used for orbit steering.
+    """
 
     def run():
         """Run the configured slow-orbit feedback correction."""

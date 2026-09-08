@@ -20,18 +20,23 @@ class ArrayConfig(DynamicValidation):
         Name of the array
     elements : list[str]
         List of pyaml element names
+
+    Attributes
+    ----------
+    name
+        Return the name.
+    elements
+        Return the elements.
+
+    Methods
+    -------
+    fill_array(holder)
+        Fill array with elements from the holder and add the array to the holder.
     """
 
     def __init__(self, name: str, elements: list[str]):
         """
         Initialize the ArrayConfig.
-
-        Parameters
-        ----------
-        name : str
-            Name of the array
-        elements : list[str]
-            List of pyaml element names
         """
         self._name = name
         self._elements = elements

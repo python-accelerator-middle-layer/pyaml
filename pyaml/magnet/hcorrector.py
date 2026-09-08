@@ -21,7 +21,30 @@ PYAMLCLASS = "HCorrector"
 
 @register_schema
 class HCorrector(Magnet, DynamicValidation):
-    """Represent a horizontal orbit corrector."""
+    """
+    Represent a horizontal orbit corrector.
+
+    Parameters
+    ----------
+    name : str
+        Corrector name.
+    model : MagnetModel | None
+        Optional magnet model.
+    lattice_names : str | None
+        Optional lattice-element mapping.
+    description : str | None
+        Optional human-readable description.
+
+    Attributes
+    ----------
+    angle
+        Return read/write access to the horizontal kick angle in radians.
+
+    Methods
+    -------
+    attach(peer, strength, hardware)
+        Return an attached copy with a bound horizontal-angle handle.
+    """
 
     polynom = PolynomInfo("PolynomB", 0, HORIZONTAL_KICK_SIGN)
 
@@ -30,17 +53,6 @@ class HCorrector(Magnet, DynamicValidation):
     ):
         """
         Initialize the HCorrector.
-
-        Parameters
-        ----------
-        name : str
-            Corrector name.
-        model : MagnetModel | None
-            Optional magnet model.
-        lattice_names : str | None
-            Optional lattice-element mapping.
-        description : str | None
-            Optional human-readable description.
         """
         super().__init__(name, model, lattice_names, description)
         self.__angle = RWCorrectorAngle(self)

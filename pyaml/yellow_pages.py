@@ -73,18 +73,23 @@ class YellowPages:
     :class:`~pyaml.element_holder.ElementHolder` instances
     associated with the :class:`~pyaml.accelerator.Accelerator` control and simulation modes.
 
+    Parameters
+    ----------
+    accelerator : 'Accelerator'
+        Accelerator whose modes are scanned on every query.
+
     Methods
     -------
-    categories()
-        Return the categories that currently hold at least one object.
-    keys(category=None)
-        Return the known keys, optionally restricted to one category.
     has(key)
-        Return whether a key is known in any category.
+        Check whether a YellowPages key exists.
+    categories()
+        Return the list of available categories.
+    keys(category=None)
+        Return available YellowPages keys.
     availability(key)
-        Return the modes in which a key resolves to an object.
+        Return the set of modes where a key is available.
     get(query, mode=None)
-        Resolve a query to the matching element identifiers, across modes or in one mode.
+        Search identifiers using a wildcard or regular expression.
 
     Notes
     -----
@@ -131,11 +136,6 @@ class YellowPages:
     def __init__(self, accelerator: "Accelerator"):
         """
         Initialize the YellowPages.
-
-        Parameters
-        ----------
-        accelerator : 'Accelerator'
-            Accelerator whose modes are scanned on every query.
         """
         self._acc = accelerator
 

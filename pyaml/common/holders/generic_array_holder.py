@@ -35,6 +35,13 @@ class GenericArrayHolder(Generic[T, A]):
         Callback constructing an array from a name and elements.
     what : str
         Human-readable array type used for lookup errors.
+
+    Methods
+    -------
+    get(name=None)
+        Return a named array or a transient array of all elements.
+    add(arrayName, elementNames)
+        Create and register a named array from element selectors.
     """
 
     def __init__(
@@ -48,21 +55,6 @@ class GenericArrayHolder(Generic[T, A]):
     ):
         """
         Initialize an array holder with storage and lookup callbacks.
-
-        Parameters
-        ----------
-        peer : 'ElementHolder'
-            Parent element holder.
-        array_store : dict[str, A]
-            Mapping from array names to stored arrays.
-        all_func : Callable[[], list[T]]
-            Callback returning all elements.
-        get_func : Callable[[str], T]
-            Callback resolving an element by name.
-        constructor : Callable[[str, list[T]], A]
-            Callback constructing an array from a name and elements.
-        what : str
-            Human-readable array type used for lookup errors.
         """
         self._peer = peer
         self._array_store = array_store

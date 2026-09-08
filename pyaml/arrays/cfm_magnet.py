@@ -17,6 +17,19 @@ class CombinedFunctionMagnet(ArrayConfig, DynamicValidation):
     """
     :py:class:`.CombinedFunctionMagnetArray` configuration.
 
+    Parameters
+    ----------
+    name : str
+        Name under which the array is registered and later looked up.
+    elements : list[str]
+        Element name patterns making up the array: literal names, ``fnmatch`` wildcards, or ``re:`` regular
+        expressions.
+
+    Methods
+    -------
+    fill_array(holder)
+        Fill the combined function magnet array in the element holder.
+
     Examples
     --------
 
@@ -33,14 +46,6 @@ class CombinedFunctionMagnet(ArrayConfig, DynamicValidation):
     def __init__(self, name: str, elements: list[str]):
         """
         Initialize the CombinedFunctionMagnet.
-
-        Parameters
-        ----------
-        name : str
-            Name under which the array is registered and later looked up.
-        elements : list[str]
-            Element name patterns making up the array: literal names, ``fnmatch`` wildcards, or ``re:`` regular
-            expressions.
         """
         super().__init__(name, elements)
 

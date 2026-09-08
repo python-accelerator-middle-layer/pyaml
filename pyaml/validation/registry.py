@@ -17,6 +17,27 @@ class SchemaRegistry:
 
     The registry is used to validate data and produce
     jsonschemas for dynamic nested models.
+
+    Methods
+    -------
+    register(class_path, schema)
+        Register a schema for a class path.
+    discover()
+        Discover and register schemas.
+    unregister(class_path)
+        Unregister a schema.
+    clear()
+        Remove all registered schemas.
+    get(class_path)
+        Return the registered schema for a class path.
+    items()
+        Return a view of registered schema items.
+    keys()
+        Return a view of registered class paths.
+    values()
+        Return a view of registered schemas.
+    update(class_path, schema)
+        Replace the schema registered for a class path.
     """
 
     _instance: "SchemaRegistry | None" = None

@@ -27,6 +27,19 @@ class pySCInterface:
         Name of the BPM array used for orbit readback.
     rf_plant_name : Optional[str]
         Optional RF plant name, required for RF-related pySC operations.
+
+    Methods
+    -------
+    get_orbit()
+        Return horizontal and vertical orbit readings from the BPM array.
+    get(name)
+        Return the current strength of a named magnet.
+    set(name, value)
+        Set the strength of a named magnet and wait for the configured delay.
+    get_rf_main_frequency()
+        Return the main RF frequency from the configured RF plant.
+    set_rf_main_frequency(value)
+        Set the main RF frequency and wait for the configured delay.
     """
 
     set_wait_time: float = 0
@@ -40,15 +53,6 @@ class pySCInterface:
     ):
         """
         Initialize a pySC adapter from a PyAML element holder.
-
-        Parameters
-        ----------
-        element_holder : 'ElementHolder'
-            Simulator or control-system element holder.
-        bpm_array_name : str
-            Name of the BPM array used for orbit readback.
-        rf_plant_name : Optional[str]
-            Optional RF-plant name used for frequency operations.
         """
         self.element_holder = element_holder
 

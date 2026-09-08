@@ -55,6 +55,32 @@ class Orbit(TuningTool, DynamicValidation):
         Number of vertical singular values retained.
     virtual_target : float
         Target value for virtual orbit correction.
+
+    Attributes
+    ----------
+    response_matrix
+        Return the response matrix if it has been loaded None otherwise
+
+    Methods
+    -------
+    load(load_path)
+        Dynamically loads a response matrix.
+    correct(...)
+        Perform orbit correction using the configured response matrix and corrector arrays.
+    set_weight(name, weight, plane=None)
+        Set the weight of a response-matrix input or output.
+    set_virtual_weight(weight)
+        Set the weight of the virtual orbit target.
+    set_rf_weight(weight)
+        Set the weight of the RF-frequency correction variable.
+    get_weight(name, plane=None)
+        Return the response-matrix weight for a named input or output.
+    get_virtual_weight()
+        Return the configured virtual-orbit target weight.
+    get_rf_weight()
+        Return the configured RF-frequency correction weight.
+    post_init()
+        Bind orbit corrector and RF handles after attachment.
     """
 
     def __init__(
@@ -72,29 +98,6 @@ class Orbit(TuningTool, DynamicValidation):
     ):
         """
         Initialize the Orbit.
-
-        Parameters
-        ----------
-        name : str
-            Name of the orbit tool.
-        bpm_array_name : str
-            Name of the BPM array used for orbit readback.
-        hcorr_array_name : str
-            Name of the horizontal corrector array.
-        vcorr_array_name : str
-            Name of the vertical corrector array.
-        response_matrix : Union[str, OrbitResponseMatrixData]
-            Orbit response matrix or path to a serialized matrix.
-        rf_plant_name : Optional[str]
-            Optional RF plant used for RF orbit correction.
-        singular_values : Optional[int]
-            Common number of singular values retained for both planes.
-        singular_values_H : Optional[int]
-            Number of horizontal singular values retained.
-        singular_values_V : Optional[int]
-            Number of vertical singular values retained.
-        virtual_target : float
-            Target value for virtual orbit correction.
         """
         super().__init__(name)
 

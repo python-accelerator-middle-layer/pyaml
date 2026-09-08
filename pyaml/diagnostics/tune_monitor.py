@@ -40,6 +40,24 @@ class BetatronTuneMonitor(Element, DynamicValidation, ABetatronTuneMonitor):
         Device catalog key for the vertical betatron tune measurement.
     rf_plant_name : str | None, optional
         Name of the associated RF plant element used by the monitor.
+
+    Attributes
+    ----------
+    tune_h
+        Return the horizontal tune device catalog key.
+    tune_v
+        Return the vertical tune device catalog key.
+    tune
+        Get the betatron tune values.
+    frequency
+        Return the betatron tune values converted to frequency.
+
+    Methods
+    -------
+    set_harmonic(h)
+        Set the harmonic number used for tune-frequency conversion.
+    attach(peer, betatron_tune)
+        Attach the tune monitor to a peer with betatron tune data.
     """
 
     def __init__(
@@ -52,19 +70,6 @@ class BetatronTuneMonitor(Element, DynamicValidation, ABetatronTuneMonitor):
     ):
         """
         Initialize a betatron tune monitor.
-
-        Parameters
-        ----------
-        name : str
-            Element name.
-        description : str | None
-            Human-readable description of the monitor.
-        tune_h : str | None
-            Device catalog key for the horizontal tune measurement.
-        tune_v : str | None
-            Device catalog key for the vertical tune measurement.
-        rf_plant_name : str | None
-            Name of the RF plant used for tune-to-frequency conversion.
         """
         super().__init__(name, None, description)
         self._tune_h = tune_h
@@ -127,16 +132,18 @@ class BetatronTuneMonitor(Element, DynamicValidation, ABetatronTuneMonitor):
             ----------
             parent : BetatronTuneMonitor
                 Monitor providing the source tune and RF data.
+
+            Methods
+            -------
+            get()
+                Return tune frequencies in hertz.
+            unit()
+                Return the frequency unit label.
             """
 
             def __init__(self, parent: BetatronTuneMonitor):
                 """
                 Initialize the tune-frequency view.
-
-                Parameters
-                ----------
-                parent : BetatronTuneMonitor
-                    Monitor providing tune data and RF-plant configuration.
                 """
                 self.parent = parent
 

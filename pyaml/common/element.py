@@ -106,6 +106,38 @@ class Element:
         ``name`` when omitted.
     description : str or None, optional
         Human-readable element description.
+
+    Attributes
+    ----------
+    name
+        Return the element name.
+    lattice_names
+        Return the lattice selector associated with the element.
+    description
+        Return the element description, if one is configured.
+    peer
+        Return the simulator or control system attached to the element.
+
+    Methods
+    -------
+    get_name()
+        Return the element name.
+    get_lattice_names()
+        Return the lattice selector associated with the element.
+    get_description()
+        Return the element description, if available.
+    set_energy(E)
+        Set the beam energy used by this element, if supported.
+    set_mcf(alphac)
+        Set the momentum compaction factor, if supported.
+    set_harmonic(h)
+        Set the RF harmonic number, if supported.
+    check_peer()
+        Raise an error if the element is not attached to a peer.
+    attached_to()
+        Return a human-readable description of the attached peer.
+    post_init()
+        Perform post-construction initialization after attachment.
     """
 
     def __init__(
@@ -116,15 +148,6 @@ class Element:
     ):
         """
         Initialize an element and its optional lattice association.
-
-        Parameters
-        ----------
-        name : str
-            Unique element name.
-        lattice_names : str | None
-            Lattice element selector. Defaults to the element name.
-        description : str | None
-            Human-readable description.
         """
         self._name = name
         self._lattice_names = lattice_names

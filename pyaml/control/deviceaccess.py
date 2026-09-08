@@ -17,6 +17,27 @@ class DeviceAccess(metaclass=ABCMeta):
     Implementations may represent a process variable, power-supply channel,
     measurement channel, or another backend-specific device.  ``get`` and
     ``readback`` distinguish the requested setpoint from the measured value.
+
+    Methods
+    -------
+    name()
+        Return the backend identifier of the device variable.
+    measure_name()
+        Return the identifier of the device's measurement channel.
+    set(value)
+        Write a new setpoint to the device variable.
+    set_and_wait(value)
+        Write a setpoint and wait until the device reaches it.
+    get()
+        Return the current device setpoint.
+    readback()
+        Return the latest measured value reported by the device.
+    unit()
+        Return the physical unit of the device variable.
+    get_range()
+        Get the valid range for the device variable.
+    check_device_availability()
+        Check if the device is available and accessible.
     """
 
     @abstractmethod

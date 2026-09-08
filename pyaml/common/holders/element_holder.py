@@ -69,36 +69,52 @@ class ElementHolder(metaclass=ABCMeta):
 
     Methods
     -------
-    get_element(name)
-        Return a registered element by name.
-    get_elements(name)
-        Return a registered generic element array by name.
-    get_all_elements()
-        Return every registered element, in insertion order.
-    add_element(element)
-        Register an element under its own name.
+    post_init()
+        Run post-initialization hooks for every stored element.
+    fill_device(elements)
+        Bind configured elements to the holder's runtime backend.
+    create_magnet_strength_aggregator(magnets)
+        Create an aggregator exposing the selected magnets' strengths.
+    create_magnet_hardware_aggregator(magnets)
+        Create an aggregator exposing the selected hardware values.
+    create_bpm_aggregators(bpms)
+        Create aggregate BPM position interfaces.
     find_elements(filter)
-        Return the element names matching a literal name, wildcard, or ``re:`` pattern.
+        Find element names matching a literal, wildcard, or regular expression.
     fill_element_array(arrayName, elementNames)
         Create and register a generic element array.
-    fill_device(elements)
-        Attach elements to this holder, wrapping each in mode-specific accessors.
-    add_tool(tool)
-        Register a tuning or measurement tool.
-    add_betatron_tune_monitor(tune_monitor)
-        Register a betatron tune monitor.
+    add_element(element)
+        Add an element to the global element store.
+    get_element(name)
+        Return a named element from the global store.
+    get_elements(name)
+        Return a named generic element array.
+    get_all_elements()
+        Return all registered elements in insertion order.
     get_betatron_tune_monitor(name)
-        Return a registered betatron tune monitor.
+        Return a named betatron tune monitor.
+    add_betatron_tune_monitor(tune_monitor)
+        Add a betatron tune monitor to the diagnostics store.
+    add_tool(tool)
+        Add a tuning or measurement tool to the tool store.
     get_chromaticity_monitor(name)
-        Return a registered chromaticity monitor.
-    create_magnet_strength_aggregator(magnets)
-        Build a grouped strength accessor for a set of magnets.
-    create_magnet_hardware_aggregator(magnets)
-        Build a grouped hardware accessor for a set of magnets.
-    create_bpm_aggregators(bpms)
-        Build grouped position accessors for a set of BPMs.
-    post_init()
-        Finalize the holder once every element has been attached.
+        Return a named chromaticity monitor.
+    get_chromaticity_tuning(name)
+        Return a named chromaticity tuning tool.
+    get_crm_tuning(name)
+        Return a named chromaticity response-matrix tool.
+    get_tune_tuning(name)
+        Return a named tune correction tool.
+    get_trm_tuning(name)
+        Return a named tune response-matrix tool.
+    get_orbit_tuning(name)
+        Return a named orbit correction tool.
+    get_orm_tuning(name)
+        Return a named orbit response-matrix tool.
+    get_bba(name)
+        Return a named beam-based alignment tool.
+    get_dispersion_tuning(name)
+        Return a named dispersion tuning tool.
     """
 
     def __init__(self):

@@ -51,13 +51,13 @@ class BPM(Element, DynamicValidation):
     Methods
     -------
     attach(peer, positions, offset, tilt)
-        Return a copy of this BPM bound to one control system or simulator.
+        Attach BPM attributes to a peer.
     get_pos_devices()
-        Return the control-system names behind the position readings.
-    get_offset_devices()
-        Return the control-system names behind the offsets.
+        Return configured device keys used for position readback.
     get_tilt_device()
-        Return the control-system name behind the tilt.
+        Return the configured device key used for tilt access.
+    get_offset_devices()
+        Return configured device keys used for offset control.
     """
 
     def __init__(
@@ -73,25 +73,6 @@ class BPM(Element, DynamicValidation):
     ):
         """
         Initialize a beam-position monitor configuration.
-
-        Parameters
-        ----------
-        name : str
-            BPM element name.
-        lattice_names : str | None
-            Lattice selector associated with the BPM.
-        description : str | None
-            Human-readable BPM description.
-        x_pos : str | None
-            Device key for horizontal position readback.
-        y_pos : str | None
-            Device key for vertical position readback.
-        x_offset : str | None
-            Device key for horizontal offset control.
-        y_offset : str | None
-            Device key for vertical offset control.
-        tilt : str | None
-            Device key for BPM tilt control.
         """
         super().__init__(name, lattice_names, description)
         self._x_pos = x_pos

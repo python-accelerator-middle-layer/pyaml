@@ -82,6 +82,11 @@ class OrbitResponseMatrix(MeasurementTool, DynamicValidation):
         Configured number of orbit measurements to average.
     sleep_between_meas : float
         Configured delay between averaged orbit measurements.
+
+    Methods
+    -------
+    measure(...)
+        Measure orbit response matrix.
     """
 
     def __init__(
@@ -98,27 +103,6 @@ class OrbitResponseMatrix(MeasurementTool, DynamicValidation):
     ):
         """
         Initialize an orbit response-matrix measurement tool.
-
-        Parameters
-        ----------
-        name : str
-            Name of the measurement tool.
-        bpm_array_name : str
-            Name of the BPM array used for orbit readback.
-        hcorr_array_name : str
-            Name of the horizontal corrector array.
-        vcorr_array_name : str
-            Name of the vertical corrector array.
-        corrector_delta : float
-            Corrector-strength perturbation used for the scan.
-        n_step : Optional[int]
-            Number of strength steps used to fit each response slope.
-        sleep_between_step : Optional[float]
-            Delay in seconds after changing a corrector.
-        n_avg_meas : Optional[int]
-            Number of orbit measurements averaged at each step.
-        sleep_between_meas : Optional[float]
-            Delay in seconds between averaged orbit measurements.
         """
         super().__init__(name)
 
@@ -156,8 +140,11 @@ class OrbitResponseMatrix(MeasurementTool, DynamicValidation):
 
         Parameters
         ----------
+        corrector_names : list[str], optional
+            Correctors to excite. Defaults to every corrector of the horizontal and
+            vertical arrays.
         sleep_between_step : float
-            Default time sleep after steerer exitation
+            Default time sleep after steerer excitation
             Default: from config
         n_avg_meas : int, optional
             Default number of orbit measurement per step used for averaging

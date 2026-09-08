@@ -20,6 +20,29 @@ class DeviceAccessList(metaclass=ABCMeta):
     The internal representation is backend-dependent.  Implementations expose
     devices in a stable order so array values correspond to the same order for
     reads, writes, readbacks, and ranges.
+
+    Methods
+    -------
+    add_devices(devices)
+        Add one device or a list of devices to the collection.
+    get_device_at(index)
+        Return the device at a zero-based index.
+    len()
+        Return the number of devices in the collection.
+    set(value)
+        Write one setpoint for each device in collection order.
+    set_and_wait(value)
+        Write setpoints and wait for all devices to reach them.
+    get()
+        Return all current setpoints in collection order.
+    readback()
+        Return the latest measured values in collection order.
+    unit()
+        Return the unit or units associated with the devices.
+    get_range()
+        Get the valid range for the device variables.
+    check_device_availability()
+        Check if all devices in the list are available and accessible.
     """
 
     @abstractmethod

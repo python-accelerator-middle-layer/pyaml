@@ -26,18 +26,20 @@ class RWBPMPosition(ReadFloatArray):
         Name of the position accessor
     bpms : list[pyaml.bpm.bpm.BPM]
         List of BPM objects to access
+
+    Methods
+    -------
+    get()
+        Get BPM positions.
+    unit()
+        Get the units for BPM positions.
+    set_aggregator(agg)
+        Set the device access list aggregator for improved performance.
     """
 
     def __init__(self, name: str, bpms: list[BPM]):
         """
         Initialize the RWBPMPosition.
-
-        Parameters
-        ----------
-        name : str
-            Name of the position accessor
-        bpms : list[BPM]
-            List of BPM objects to access
         """
         self.__bpms = bpms
         self.__name = name
@@ -100,20 +102,20 @@ class RWBPMSinglePosition(ReadFloatArray):
         List of BPM objects to access
     idx : int
         Index for the position axis (0 for horizontal, 1 for vertical)
+
+    Methods
+    -------
+    get()
+        Get single axis BPM positions.
+    unit()
+        Get the units for BPM positions.
+    set_aggregator(agg)
+        Set the device access list aggregator for improved performance.
     """
 
     def __init__(self, name: str, bpms: list[BPM], idx: int):
         """
         Initialize the RWBPMSinglePosition.
-
-        Parameters
-        ----------
-        name : str
-            Name of the position accessor
-        bpms : list[BPM]
-            List of BPM objects to access
-        idx : int
-            Index for the position axis (0 for horizontal, 1 for vertical)
         """
         self.__bpms = bpms
         self.__name = name
@@ -173,8 +175,17 @@ class BPMArray(ElementArray):
         either a (:py:class:`~pyaml.lattice.simulator.Simulator`
         or a :py:class:`~pyaml.control.controlsystem.ControlSystem`).
     use_aggregator : bool
-        Use aggregator to increase performance by using paralell
+        Use aggregator to increase performance by using parallel
         access to underlying devices.
+
+    Attributes
+    ----------
+    positions
+        Returns position of each bpm of this array
+    h
+        Returns horizontal position of each bpm of this array
+    v
+        Returns vertical position of each bpm of this array
 
     Examples
     --------
@@ -194,17 +205,6 @@ class BPMArray(ElementArray):
     def __init__(self, arrayName: str, bpms: list[BPM], use_aggregator=True):
         """
         Initialize the BPMArray.
-
-        Parameters
-        ----------
-        arrayName : str
-            Array name
-        bpms : list[BPM]
-            BPM list, all elements must be attached to the same instance of either a
-            (:py:class:`~pyaml.lattice.simulator.Simulator` or a
-            :py:class:`~pyaml.control.controlsystem.ControlSystem`).
-        use_aggregator : object
-            Use aggregator to increase performance by using paralell access to underlying devices.
         """
         super().__init__(arrayName, bpms, use_aggregator)
 

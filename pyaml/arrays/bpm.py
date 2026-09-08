@@ -17,6 +17,22 @@ class BPM(ArrayConfig, DynamicValidation):
     """
     :py:class:`.BPMArray` configuration.
 
+    Parameters
+    ----------
+    name : str
+        Name under which the array is registered and later looked up.
+    elements : list[str]
+        Element name patterns making up the array: literal names, ``fnmatch`` wildcards, or ``re:`` regular
+        expressions.
+
+    Methods
+    -------
+    fill_array(holder)
+        Fill the :py:class:`.BPMArray` using element holder (:py:class:`~pyaml.lattice.simulator.Simulator` or
+        :py:class:`~pyaml.control.controlsystem.ControlSystem`) and add the array to the holder. This method is
+        called when an :py:class:`~pyaml.accelerator.Accelerator` is loaded but can be used to create arrays by
+        code as shown bellow:
+
     Examples
     --------
     Here is an example using a yaml configuration file:
@@ -46,14 +62,6 @@ class BPM(ArrayConfig, DynamicValidation):
     def __init__(self, name: str, elements: list[str]):
         """
         Initialize the BPM.
-
-        Parameters
-        ----------
-        name : str
-            Name under which the array is registered and later looked up.
-        elements : list[str]
-            Element name patterns making up the array: literal names, ``fnmatch`` wildcards, or ``re:`` regular
-            expressions.
         """
         super().__init__(name, elements)
 

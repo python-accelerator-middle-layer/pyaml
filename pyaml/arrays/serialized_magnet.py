@@ -15,7 +15,20 @@ PYAMLCLASS = "SerializedMagnets"
 @register_schema
 class SerializedMagnets(ArrayConfig, DynamicValidation):
     """
-    Serialized magnets array configuration
+    Serialized magnets array configuration.
+
+    Parameters
+    ----------
+    name : str
+        Name under which the array is registered and later looked up.
+    elements : list[str]
+        Element name patterns making up the array: literal names, ``fnmatch`` wildcards, or ``re:`` regular
+        expressions.
+
+    Methods
+    -------
+    fill_array(holder)
+        Fill the serialized magnet array in the element holder.
 
     Examples
     --------
@@ -33,14 +46,6 @@ class SerializedMagnets(ArrayConfig, DynamicValidation):
     def __init__(self, name: str, elements: list[str]):
         """
         Initialize the SerializedMagnets.
-
-        Parameters
-        ----------
-        name : str
-            Name under which the array is registered and later looked up.
-        elements : list[str]
-            Element name patterns making up the array: literal names, ``fnmatch`` wildcards, or ``re:`` regular
-            expressions.
         """
         super().__init__(name, elements)
 

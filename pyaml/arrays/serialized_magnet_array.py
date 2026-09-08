@@ -24,18 +24,22 @@ class RWMagnetStrengths(ReadWriteFloatArray):
         Name of the array, used when the accessor is reported or logged.
     magnets : list[SerializedMagnets]
         Serialized magnet groups making up the array, in the order their values are read and written.
+
+    Methods
+    -------
+    get()
+        Return the shared strength of every serialized group.
+    set(value)
+        Set the shared strength of every serialized group.
+    set_and_wait(value)
+        Set every shared strength and wait for the readbacks to converge.
+    unit()
+        Return the strength unit of every serialized group.
     """
 
     def __init__(self, name: str, magnets: list[SerializedMagnets]):
         """
         Initialize the RWMagnetStrengths.
-
-        Parameters
-        ----------
-        name : str
-            Name of the array, used when the accessor is reported or logged.
-        magnets : list[SerializedMagnets]
-            Serialized magnet groups making up the array, in the order their values are read and written.
         """
         self.__name = name
         self.__magnets = magnets
@@ -96,18 +100,22 @@ class RWMagnetHardwares(ReadWriteFloatArray):
         Name of the array, used when the accessor is reported or logged.
     magnets : list[SerializedMagnets]
         Serialized magnet groups making up the array, in the order their values are read and written.
+
+    Methods
+    -------
+    get()
+        Return the shared hardware value of every serialized group.
+    set(value)
+        Set the shared hardware value of every serialized group.
+    set_and_wait(value)
+        Set every shared hardware value and wait for the readbacks to converge.
+    unit()
+        Return the hardware unit of every serialized group.
     """
 
     def __init__(self, name: str, magnets: list[SerializedMagnets]):
         """
         Initialize the RWMagnetHardwares.
-
-        Parameters
-        ----------
-        name : str
-            Name of the array, used when the accessor is reported or logged.
-        magnets : list[SerializedMagnets]
-            Serialized magnet groups making up the array, in the order their values are read and written.
         """
         self.__name = name
         self.__magnets = magnets
@@ -166,12 +174,19 @@ class SerializedMagnetsArray(ElementArray):
     ----------
     arrayName : str
         Array name
-    magnets : list[Magnet]
+    magnets : list[SerializedMagnets]
         Magnet list, all elements must be attached to the same instance of
         either a Simulator or a ControlSystem.
     use_aggregator : bool
         Use aggregator to increase performance by using parallel
         access to underlying devices.
+
+    Attributes
+    ----------
+    strengths
+        Give access to strength of each magnet of this array
+    hardwares
+        Give access to hardware value of each magnet of this array
     """
 
     def __init__(
@@ -182,15 +197,6 @@ class SerializedMagnetsArray(ElementArray):
     ):
         """
         Initialize the SerializedMagnetsArray.
-
-        Parameters
-        ----------
-        arrayName : str
-            Array name
-        magnets : list[SerializedMagnets]
-            Magnet list, all elements must be attached to the same instance of either a Simulator or a ControlSystem.
-        use_aggregator : object
-            Use aggregator to increase performance by using parallel access to underlying devices.
         """
         super().__init__(arrayName, magnets, use_aggregator)
 

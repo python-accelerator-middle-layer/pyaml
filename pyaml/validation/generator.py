@@ -42,6 +42,13 @@ class SchemaGenerator:
 
     Primitive unions such as ``str | None`` are emitted using compact
     ``type: [...]`` representations when supported by Pydantic.
+
+    Methods
+    -------
+    generate(class_path)
+        Generate a JSON Schema for a registered configuration schema.
+    save(class_path, filename, *, indent=2)
+        Generate JSON Schema and save it to a file.
     """
 
     _registry = SchemaRegistry()
@@ -136,6 +143,11 @@ class RegistryJsonSchema(GenerateJsonSchema):
     instead of ``anyOf`` for improved compatibility with downstream tooling.
     Primitive unions such as ``str | None`` continue to use compact
     ``type: [...]`` representations when supported by Pydantic.
+
+    Methods
+    -------
+    model_schema(schema)
+        Generate a JSON Schema for a Pydantic model.
     """
 
     _registry = SchemaRegistry()

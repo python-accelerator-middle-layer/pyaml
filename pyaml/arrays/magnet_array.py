@@ -22,18 +22,24 @@ class RWMagnetStrength(ReadWriteFloatArray):
         Name of the array, used when the accessor is reported or logged.
     magnets : list[Magnet]
         Magnets making up the array, in the order their values are read and written.
+
+    Methods
+    -------
+    get()
+        Return the strength of every magnet in the array.
+    set(value)
+        Set the strength of every magnet in the array.
+    set_and_wait(value)
+        Set every strength and wait for the readbacks to converge.
+    unit()
+        Return the strength unit of every magnet in the array.
+    set_aggregator(agg)
+        Install an aggregator so the array is read and written in a single call.
     """
 
     def __init__(self, name: str, magnets: list[Magnet]):
         """
         Initialize the RWMagnetStrength.
-
-        Parameters
-        ----------
-        name : str
-            Name of the array, used when the accessor is reported or logged.
-        magnets : list[Magnet]
-            Magnets making up the array, in the order their values are read and written.
         """
         self.__name = name
         self.__magnets = magnets
@@ -111,18 +117,24 @@ class RWMagnetHardware(ReadWriteFloatArray):
         Name of the array, used when the accessor is reported or logged.
     magnets : list[Magnet]
         Magnets making up the array, in the order their values are read and written.
+
+    Methods
+    -------
+    get()
+        Return the hardware value of every magnet in the array.
+    set(value)
+        Set the hardware value of every magnet in the array.
+    set_and_wait(value)
+        Set every hardware value and wait for the readbacks to converge.
+    unit()
+        Return the hardware unit of every magnet in the array.
+    set_aggregator(agg)
+        Install an aggregator so the array is read and written in a single call.
     """
 
     def __init__(self, name: str, magnets: list[Magnet]):
         """
         Initialize the RWMagnetHardware.
-
-        Parameters
-        ----------
-        name : str
-            Name of the array, used when the accessor is reported or logged.
-        magnets : list[Magnet]
-            Magnets making up the array, in the order their values are read and written.
         """
         self.__name = name
         self.__magnets = magnets
@@ -192,7 +204,7 @@ class RWMagnetHardware(ReadWriteFloatArray):
 
 class MagnetArray(ElementArray):
     """
-    Class that implements access to a magnet array
+    Class that implements access to a magnet array.
 
     Parameters
     ----------
@@ -203,7 +215,14 @@ class MagnetArray(ElementArray):
         either a Simulator or a ControlSystem.
     use_aggregator : bool
         Use aggregator to increase performance by using
-        paralell access to underlying devices.
+        parallel access to underlying devices.
+
+    Attributes
+    ----------
+    strengths
+        Give access to strength of each magnet of this array
+    hardwares
+        Give access to hardware value of each magnet of this array
 
     Examples
     --------
@@ -217,15 +236,6 @@ class MagnetArray(ElementArray):
     def __init__(self, arrayName: str, magnets: list[Magnet], use_aggregator=True):
         """
         Initialize the MagnetArray.
-
-        Parameters
-        ----------
-        arrayName : str
-            Array name
-        magnets : list[Magnet]
-            Magnet list, all elements must be attached to the same instance of either a Simulator or a ControlSystem.
-        use_aggregator : object
-            Use aggregator to increase performance by using paralell access to underlying devices.
         """
         super().__init__(arrayName, magnets, use_aggregator)
 

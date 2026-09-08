@@ -51,6 +51,21 @@ class SplineMagnetModel(MagnetModel, DynamicValidation):
         Smoothing parameter passed to :func:`scipy.interpolate.make_smoothing_spline`.
         ``alpha = 0`` gives exact interpolation through the data points.
 
+    Methods
+    -------
+    compute_hardware_values(strengths)
+        Convert magnet strengths to hardware values.
+    compute_strengths(currents)
+        Convert hardware values to magnet strengths.
+    get_strength_units()
+        Return the units of magnet strengths.
+    get_hardware_units()
+        Return the units of hardware values.
+    get_device_names()
+        Return the associated device names.
+    set_magnet_rigidity(brho)
+        Set the magnetic rigidity used for conversion.
+
     Notes
     -----
     The magnet rigidity ``brho`` must be set with :meth:`set_magnet_rigidity`
@@ -70,26 +85,6 @@ class SplineMagnetModel(MagnetModel, DynamicValidation):
     ):
         """
         Initialize the SplineMagnetModel.
-
-        Parameters
-        ----------
-        curve : Curve
-            Excitation curve used for interpolation.
-        powerconverter : str | None
-            Name of the associated power converter device.
-        calibration_factor : float
-            Multiplicative correction applied to the curve. Default is ``1.0``.
-        calibration_offset : float
-            Additive correction applied to the curve. Default is ``0.0``.
-        crosstalk : float
-            Crosstalk factor applied to the curve. Default is ``1.0``.
-        unit : str | None
-            Strength unit, such as ``m-1`` or ``m-2``.
-        hardware_unit : str | None
-            Hardware unit, such as ``A`` or ``V``.
-        alpha : float
-            Smoothing parameter passed to :func:`scipy.interpolate.make_smoothing_spline`. ``alpha = 0`` gives exact
-            interpolation through the data points.
         """
         self.__curve = curve.get_curve()
         self.__curve[:, 1] = self.__curve[:, 1] * calibration_factor * crosstalk + calibration_offset

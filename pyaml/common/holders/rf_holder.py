@@ -18,16 +18,18 @@ class RFTransmitterHolder:
     ----------
     peer : 'ElementHolder'
         Parent holder containing the transmitter store.
+
+    Methods
+    -------
+    get(name)
+        Return a transmitter by name.
+    add(rf)
+        Add an RF transmitter to the holder.
     """
 
     def __init__(self, peer: "ElementHolder"):
         """
         Initialize a transmitter holder for an element holder.
-
-        Parameters
-        ----------
-        peer : 'ElementHolder'
-            Parent holder containing the transmitter store.
         """
         self._peer = peer
 
@@ -72,16 +74,27 @@ class RFHolder:
     ----------
     peer : 'ElementHolder'
         Parent holder containing the RF plant store.
+
+    Attributes
+    ----------
+    transmitter
+        Return the holder for RF transmitter elements.
+    frequency
+        Return the default RF plant's frequency interface.
+    voltage
+        Return the default RF plant's total-voltage interface.
+
+    Methods
+    -------
+    get(name)
+        Return an RF plant by name.
+    add(rf)
+        Add an RF plant to the holder.
     """
 
     def __init__(self, peer: "ElementHolder"):
         """
         Initialize an RF holder for an element holder.
-
-        Parameters
-        ----------
-        peer : 'ElementHolder'
-            Parent holder containing the RF plant store.
         """
         self._peer = peer
         self._rftransmitter_holder = RFTransmitterHolder(peer)

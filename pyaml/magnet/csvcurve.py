@@ -44,6 +44,11 @@ class CSVCurve(Curve, DynamicValidation):
     file : str
         Path to the CSV file provided during initialization.
 
+    Methods
+    -------
+    get_curve()
+        Get the curve data.
+
     Raises
     ------
     PyAMLException
@@ -61,11 +66,6 @@ class CSVCurve(Curve, DynamicValidation):
     def __init__(self, file: str):
         """
         Initialize the CSVCurve.
-
-        Parameters
-        ----------
-        file : str
-            Path to the CSV file. Relative paths are resolved using the project's configured root directory.
         """
         self._file = file
 

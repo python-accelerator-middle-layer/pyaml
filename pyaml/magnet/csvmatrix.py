@@ -31,6 +31,16 @@ class CSVMatrix(Matrix, DynamicValidation):
         Path to the CSV file. Relative paths are resolved using the
         project's configured root directory.
 
+    Attributes
+    ----------
+    file
+        Return the configured CSV file path.
+
+    Methods
+    -------
+    get_matrix()
+        Get the matrix data.
+
     Raises
     ------
     PyAMLException
@@ -40,11 +50,6 @@ class CSVMatrix(Matrix, DynamicValidation):
     def __init__(self, file: str):
         """
         Initialize the CSVMatrix.
-
-        Parameters
-        ----------
-        file : str
-            Path to the CSV file. Relative paths are resolved using the project's configured root directory.
         """
         self._file = file
 

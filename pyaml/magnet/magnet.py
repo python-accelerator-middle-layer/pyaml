@@ -52,13 +52,13 @@ class Magnet(Element):
     Methods
     -------
     attach(peer, strength, hardware)
-        Return a copy of this magnet bound to one control system or simulator.
+        Return a copy of this magnet bound to a control system or simulator.
     set_energy(energy)
-        Set the beam energy, updating the magnetic rigidity used by the model.
-    get_model_name()
-        Return the name of the attached magnet model.
+        Set the energy in eV to compute and set the magnet rigidity on the underlying magnet model.
     set_model_name(name)
-        Set the name of the attached magnet model.
+        Sets the name of this magnet in the model (Used for combined function magnet)
+    get_model_name()
+        Returns the model name of this magnet
     """
 
     def __init__(
@@ -66,13 +66,6 @@ class Magnet(Element):
     ):
         """
         Construct a magnet
-
-        Parameters
-        ----------
-        name : str
-            Element name
-        model : MagnetModel
-            Magnet model in charge of computing coil(s) current
         """
         super().__init__(name, lattice_names, description)
         self.__model = model
@@ -149,7 +142,7 @@ class Magnet(Element):
     def set_model_name(self, name: str):
         """
         Sets the name of this magnet in the model
-        (Used for combined function manget)
+        (Used for combined function magnet)
         """
         self.__modelName = name
 

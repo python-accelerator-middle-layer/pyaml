@@ -16,6 +16,13 @@ class ABetatronTuneMonitor(metaclass=ABCMeta):
 
     Concrete monitors provide horizontal and vertical tune values and their
     corresponding frequencies.
+
+    Attributes
+    ----------
+    tune
+        Return the fractional horizontal and vertical betatron tunes.
+    frequency
+        Return the horizontal and vertical tune frequencies.
     """
 
     @property

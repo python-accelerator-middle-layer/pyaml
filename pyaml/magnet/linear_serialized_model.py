@@ -152,6 +152,27 @@ class LinearSerializedMagnetModel(MagnetModel, DynamicValidation):
     hardware_unit : str, optional
         Hardware unit, typically ``A`` or ``V``.
 
+    Methods
+    -------
+    set_number_of_magnets(nb_magnets)
+        Set the number of serialized magnets and rebuild submodels.
+    get_sub_model(index)
+        Return the linear submodel for one serialized magnet.
+    compute_hardware_values(strengths)
+        Convert magnet strengths to hardware values.
+    compute_strengths(currents)
+        Convert hardware values to magnet strengths.
+    get_strength_units()
+        Return the units of magnet strengths.
+    get_hardware_units()
+        Return the units of hardware values.
+    get_device_names()
+        Return the associated device names.
+    set_magnet_rigidity(brho)
+        Set the magnetic rigidity used for conversion.
+    get_magnet_rigidity()
+        Return the configured magnetic rigidity.
+
     Notes
     -----
     The number of magnets is inferred from the longest list among the supplied
@@ -170,23 +191,6 @@ class LinearSerializedMagnetModel(MagnetModel, DynamicValidation):
     ):
         """
         Initialize a linear model for serialized magnets.
-
-        Parameters
-        ----------
-        curves : Curve | list[Curve]
-            Excitation curve shared by all magnets or one curve per magnet.
-        calibration_factors : float | list[float] | None
-            Multiplicative calibration factor or one factor per magnet.
-        calibration_offsets : float | list[float] | None
-            Additive calibration offset or one offset per magnet.
-        crosstalk : float | list[float]
-            Crosstalk factor or one factor per magnet.
-        powerconverter : str | None
-            Associated power-converter name, if configured.
-        unit : str | None
-            Physical strength unit.
-        hardware_unit : str | None
-            Hardware setpoint unit.
         """
         self.__brho = np.nan
         self._curves = curves

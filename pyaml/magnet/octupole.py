@@ -47,17 +47,5 @@ class Octupole(Magnet, DynamicValidation):
     ):
         """
         Initialize the Octupole.
-
-        Parameters
-        ----------
-        name : str
-            Element name.
-        model : MagnetModel | None
-            Magnet model used to convert between strength and hardware value, and to resolve the underlying
-            control-system device names.
-        lattice_names : str | None
-            Name or names of the matching element(s) in the simulated lattice. Defaults to ``name``.
-        description : str | None
-            Human-readable description of the magnet.
         """
         super().__init__(name, model, lattice_names, description)

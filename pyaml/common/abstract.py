@@ -14,7 +14,16 @@ from numpy import array, double
 
 
 class ReadFloatScalar(metaclass=ABCMeta):
-    """Define read-only access to one floating-point value."""
+    """
+    Define read-only access to one floating-point value.
+
+    Methods
+    -------
+    get()
+        Return the current scalar value.
+    unit()
+        Return the physical unit of the scalar value.
+    """
 
     @abstractmethod
     def get(self) -> double:
@@ -42,7 +51,16 @@ class ReadFloatScalar(metaclass=ABCMeta):
 
 
 class ReadWriteFloatScalar(ReadFloatScalar):
-    """Define read/write access to one floating-point value."""
+    """
+    Define read/write access to one floating-point value.
+
+    Methods
+    -------
+    set(value)
+        Write a scalar setpoint.
+    set_and_wait(value)
+        Write a setpoint and wait for readback confirmation.
+    """
 
     @abstractmethod
     def set(self, value: double):
@@ -71,7 +89,16 @@ class ReadWriteFloatScalar(ReadFloatScalar):
 
 
 class ReadFloatArray(metaclass=ABCMeta):
-    """Define read-only access to an array of floating-point values."""
+    """
+    Define read-only access to an array of floating-point values.
+
+    Methods
+    -------
+    get()
+        Return the current values as an array.
+    unit()
+        Return the units associated with the array values.
+    """
 
     @abstractmethod
     def get(self) -> array:
@@ -85,7 +112,16 @@ class ReadFloatArray(metaclass=ABCMeta):
 
 
 class ReadWriteFloatArray(ReadFloatScalar):
-    """Define read/write access to an array of floating-point values."""
+    """
+    Define read/write access to an array of floating-point values.
+
+    Methods
+    -------
+    set(value)
+        Write array values in the interface's defined order.
+    set_and_wait(value)
+        Write array values and wait for readback confirmation.
+    """
 
     @abstractmethod
     def set(self, value: array):
@@ -123,18 +159,24 @@ class RWMapper(ReadWriteFloatScalar):
         Array interface containing the mapped value.
     idx : int
         Zero-based index of the mapped element.
+
+    Methods
+    -------
+    get()
+        Get the value at the mapped index.
+    set(value)
+        Set the value at the mapped index.
+    set_and_wait(value)
+        Set the value and wait for it to reach the setpoint.
+    unit()
+        Get the unit for the value.
+    index()
+        Get the mapped array index.
     """
 
     def __init__(self, bind, idx: int):
         """
         Initialize the RWMapper.
-
-        Parameters
-        ----------
-        bind : object
-            Array interface containing the mapped value.
-        idx : int
-            Zero-based index of the mapped element.
         """
         self.bind = bind
         self.idx = idx

@@ -24,18 +24,22 @@ class RWMagnetStrengths(ReadWriteFloatArray):
         Name of the array, used when the accessor is reported or logged.
     magnets : list[CombinedFunctionMagnet]
         Combined-function magnets making up the array; each contributes one entry per multipole.
+
+    Methods
+    -------
+    get()
+        Return the strength of every multipole, concatenated over the magnets.
+    set(value)
+        Set the strength of every multipole, concatenated over the magnets.
+    set_and_wait(value)
+        Set every multipole strength and wait for the readbacks to converge.
+    unit()
+        Return the strength unit of every multipole.
     """
 
     def __init__(self, name: str, magnets: list[CombinedFunctionMagnet]):
         """
         Initialize the RWMagnetStrengths.
-
-        Parameters
-        ----------
-        name : str
-            Name of the array, used when the accessor is reported or logged.
-        magnets : list[CombinedFunctionMagnet]
-            Combined-function magnets making up the array; each contributes one entry per multipole.
         """
         self.__name = name
         self.__magnets = magnets
@@ -103,18 +107,22 @@ class RWMagnetHardwares(ReadWriteFloatArray):
         Name of the array, used when the accessor is reported or logged.
     magnets : list[CombinedFunctionMagnet]
         Combined-function magnets making up the array; each contributes one entry per multipole.
+
+    Methods
+    -------
+    get()
+        Return the hardware value of every multipole, concatenated over the magnets.
+    set(value)
+        Set the hardware value of every multipole, concatenated over the magnets.
+    set_and_wait(value)
+        Set every hardware value and wait for the readbacks to converge.
+    unit()
+        Return the hardware unit of every multipole.
     """
 
     def __init__(self, name: str, magnets: list[CombinedFunctionMagnet]):
         """
         Initialize the RWMagnetHardwares.
-
-        Parameters
-        ----------
-        name : str
-            Name of the array, used when the accessor is reported or logged.
-        magnets : list[CombinedFunctionMagnet]
-            Combined-function magnets making up the array; each contributes one entry per multipole.
         """
         self.__name = name
         self.__magnets = magnets
@@ -180,12 +188,19 @@ class CombinedFunctionMagnetArray(ElementArray):
     ----------
     arrayName : str
         Array name
-    magnets : list[Magnet]
+    magnets : list[CombinedFunctionMagnet]
         Magnet list, all elements must be attached to the same instance of
         either a Simulator or a ControlSystem.
     use_aggregator : bool
-        Use aggregator to increase performance by using paralell
+        Use aggregator to increase performance by using parallel
         access to underlying devices.
+
+    Attributes
+    ----------
+    strengths
+        Give access to strength of each magnet of this array
+    hardwares
+        Give access to hardware value of each magnet of this array
     """
 
     def __init__(
@@ -196,15 +211,6 @@ class CombinedFunctionMagnetArray(ElementArray):
     ):
         """
         Initialize the CombinedFunctionMagnetArray.
-
-        Parameters
-        ----------
-        arrayName : str
-            Array name
-        magnets : list[CombinedFunctionMagnet]
-            Magnet list, all elements must be attached to the same instance of either a Simulator or a ControlSystem.
-        use_aggregator : object
-            Use aggregator to increase performance by using paralell access to underlying devices.
         """
         super().__init__(arrayName, magnets, use_aggregator)
 

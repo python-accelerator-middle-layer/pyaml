@@ -30,11 +30,6 @@ class MagnetHolder(GenericElementHolder[Magnet]):
     def __init__(self, peer: "ElementHolder"):
         """
         Initialize the MagnetHolder.
-
-        Parameters
-        ----------
-        peer : 'ElementHolder'
-            Parent element holder that owns this specialized holder.
         """
         super().__init__(peer, peer._MAGNETS, "Magnet")
 
@@ -52,11 +47,6 @@ class MagnetsHolder(GenericArrayHolder[Magnet, MagnetArray]):
     def __init__(self, peer: "ElementHolder"):
         """
         Initialize the MagnetsHolder.
-
-        Parameters
-        ----------
-        peer : 'ElementHolder'
-            Parent element holder that owns this specialized holder.
         """
         super().__init__(
             peer,
@@ -81,11 +71,6 @@ class CombinedFunctionMagnetHolder(GenericElementHolder[CombinedFunctionMagnet])
     def __init__(self, peer: "ElementHolder"):
         """
         Initialize the CombinedFunctionMagnetHolder.
-
-        Parameters
-        ----------
-        peer : 'ElementHolder'
-            Parent element holder that owns this specialized holder.
         """
         super().__init__(peer, peer._CFM_MAGNETS, "Combined function magnet")
 
@@ -103,11 +88,6 @@ class CombinedFunctionMagnetsHolder(GenericArrayHolder[CombinedFunctionMagnet, C
     def __init__(self, peer: "ElementHolder"):
         """
         Initialize the CombinedFunctionMagnetsHolder.
-
-        Parameters
-        ----------
-        peer : 'ElementHolder'
-            Parent element holder that owns this specialized holder.
         """
         super().__init__(
             peer,
@@ -132,11 +112,6 @@ class SerializedMagnetHolder(GenericElementHolder[SerializedMagnets]):
     def __init__(self, peer: "ElementHolder"):
         """
         Initialize the SerializedMagnetHolder.
-
-        Parameters
-        ----------
-        peer : 'ElementHolder'
-            Parent element holder that owns this specialized holder.
         """
         super().__init__(peer, peer._SERIALIZED_MAGNETS, "Serialized magnet")
 
@@ -154,11 +129,6 @@ class SerializedMagnetsHolder(GenericArrayHolder[SerializedMagnets, SerializedMa
     def __init__(self, peer: "ElementHolder"):
         """
         Initialize the SerializedMagnetsHolder.
-
-        Parameters
-        ----------
-        peer : 'ElementHolder'
-            Parent element holder that owns this specialized holder.
         """
         super().__init__(
             peer,
@@ -183,11 +153,6 @@ class BPMHolder(GenericElementHolder[BPM]):
     def __init__(self, peer: "ElementHolder"):
         """
         Initialize the BPMHolder.
-
-        Parameters
-        ----------
-        peer : 'ElementHolder'
-            Parent element holder that owns this specialized holder.
         """
         super().__init__(peer, peer._BPMS, "BPM")
 
@@ -205,11 +170,6 @@ class BPMsHolder(GenericArrayHolder[BPM, BPMArray]):
     def __init__(self, peer: "ElementHolder"):
         """
         Initialize the BPMsHolder.
-
-        Parameters
-        ----------
-        peer : 'ElementHolder'
-            Parent element holder that owns this specialized holder.
         """
         super().__init__(
             peer,

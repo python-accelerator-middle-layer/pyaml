@@ -64,26 +64,28 @@ class Accelerator:
 
     Methods
     -------
-    load(filename, include_locations=False, ignore_external=False, validate=False)
-        Build an accelerator from a single configuration file. Class method.
-    from_dict(config_dict, ignore_external=False, validate=False)
-        Build an accelerator from an already loaded configuration mapping. Class method.
-    modes()
-        Return every control system and simulator, keyed by name.
-    controls()
-        Return the configured control systems, keyed by name.
-    simulators()
-        Return the configured simulators, keyed by name.
-    add_device(config, ignore_external=False)
-        Build a device from a configuration mapping and attach it to every mode.
     set_energy(E)
-        Set the beam energy on every element of every mode.
+        Set the energy for all simulators and control systems.
     set_mcf(alphac)
-        Set the momentum compaction factor on every element of every mode.
+        Set the moment compaction factor for all simulators and control systems.
     set_harmonic_number(h)
-        Set the harmonic number on every element of every mode.
+        Set the number of bucket.
+    add_device(config, ignore_external=False)
+        Dynamically add a device to this accelerator.
+    post_init()
+        Method triggered after all initialisations are done
     get_description()
-        Return the human-readable accelerator description.
+        Returns the description of the accelerator
+    simulators()
+        Return all registered simulator modes.
+    controls()
+        Return all registered control modes.
+    modes()
+        Return all registered control and simulator modes.
+    from_dict(config_dict, ignore_external=False, validate=False)
+        Construct an accelerator from a dictionary.
+    load(filename, include_locations=False, ignore_external=False, validate=False)
+        Load an accelerator from a config file.
 
     Notes
     -----
@@ -109,31 +111,6 @@ class Accelerator:
     ):
         """
         Initialize the Accelerator.
-
-        Parameters
-        ----------
-        facility : str
-            Facility name.
-        machine : str
-            Accelerator name.
-        energy : float
-            Nominal accelerator energy.
-        alphac : float | None
-            Momentum compaction factor.
-        harmonic_number : int | None
-            Harmonic number.
-        controls : list[ControlSystem] | None
-            Control systems associated with the accelerator.
-        simulators : list[Simulator] | None
-            Simulators associated with the accelerator.
-        arrays : list[ArrayConfig] | None
-            Array configurations.
-        devices : list[Element] | None
-            Accelerator devices.
-        data_folder : str | None
-            Path to the accelerator data directory.
-        description : str | None
-            Human-readable description of the accelerator.
         """
         self.facility = facility
         self.machine = machine

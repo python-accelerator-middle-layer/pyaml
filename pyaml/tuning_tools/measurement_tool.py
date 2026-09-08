@@ -41,25 +41,20 @@ class MeasurementTool(Element, metaclass=ABCMeta):
     Methods
     -------
     measure()
-        Run the measurement. Implemented by each subclass.
+        Run the measurement implemented by a subclass.
     get()
-        Return the data produced by the last measurement.
+        Return the most recently stored measurement data.
     save(save_path, with_type='json')
-        Write the last measurement to disk as json, yaml, or npz.
+        Save the latest measurement data to disk.
     send_callback(action, cb_data, raiseException=True)
-        Report progress to the registered callback and honour an abort request.
+        Notify the caller about measurement progress.
     attach(peer)
-        Return a copy of this tool bound to one control system or simulator.
+        Return a copy attached to an element holder.
     """
 
     def __init__(self, name):
         """
         Initialize a measurement tool.
-
-        Parameters
-        ----------
-        name : object
-            Name of the measurement tool.
         """
         super().__init__(name)
         self._latest_measurement: dict = None

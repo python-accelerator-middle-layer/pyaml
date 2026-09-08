@@ -51,6 +51,11 @@ class ChromaticityResponseMatrix(MeasurementTool, DynamicValidation):
         Default number of chromaticity measurements to average at each step.
     sleep_between_meas : float, optional
         Default delay in seconds between averaged measurements.
+
+    Methods
+    -------
+    measure(...)
+        Measure the chromaticity response matrix.
     """
 
     def __init__(
@@ -66,25 +71,6 @@ class ChromaticityResponseMatrix(MeasurementTool, DynamicValidation):
     ):
         """
         Initialize the chromaticity response matrix measurement tool.
-
-        Parameters
-        ----------
-        name : str
-            Name of the response matrix measurement tool.
-        sextu_array_name : str
-            Name of the sextupole array to excite.
-        chromaticity_name : str
-            Name of the chromaticity monitor used to measure the response.
-        sextu_delta : float
-            Default sextupole excitation applied during the measurement.
-        n_step : int, optional
-            Default number of excitation steps used to fit the response.
-        sleep_between_step : float, optional
-            Default delay in seconds after changing the sextupole strength.
-        n_avg_meas : int, optional
-            Default number of chromaticity measurements to average at each step.
-        sleep_between_meas : float, optional
-            Default delay in seconds between averaged measurements.
         """
 
         super().__init__(name)
@@ -144,7 +130,7 @@ class ChromaticityResponseMatrix(MeasurementTool, DynamicValidation):
             Number of step for fitting the chomaticity slope [-sextu_delta/n_step..sextu_delta/n_step]
             Default from config
         sleep_between_step : float
-            Default time sleep after sextu exitation
+            Default time sleep after sextu excitation
             Default: from config
         n_avg_meas : int, optional
             Default number of chromaticity measurement per step used for averaging

@@ -62,6 +62,13 @@ class SchemaValidator:
     - Dictionaries with unknown schemas are left unchanged
 
     Schema lookup is performed through the :class:`SchemaRegistry`.
+
+    Methods
+    -------
+    validate(data)
+        Validate configuration data recursively.
+    validate_to_dict(data)
+        Validate configuration data recursively and return it as a dictionary.
     """
 
     _registry = SchemaRegistry()

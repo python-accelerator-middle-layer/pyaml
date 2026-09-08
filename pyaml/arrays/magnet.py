@@ -17,6 +17,19 @@ class Magnet(ArrayConfig, DynamicValidation):
     """
     :py:class:`.MagnetArray` configuration.
 
+    Parameters
+    ----------
+    name : str
+        Name under which the array is registered and later looked up.
+    elements : list[str]
+        Element name patterns making up the array: literal names, ``fnmatch`` wildcards, or ``re:`` regular
+        expressions.
+
+    Methods
+    -------
+    fill_array(holder)
+        Fill the magnet array in the element holder.
+
     Examples
     --------
 
@@ -32,14 +45,6 @@ class Magnet(ArrayConfig, DynamicValidation):
     def __init__(self, name: str, elements: list[str]):
         """
         Initialize the Magnet.
-
-        Parameters
-        ----------
-        name : str
-            Name under which the array is registered and later looked up.
-        elements : list[str]
-            Element name patterns making up the array: literal names, ``fnmatch`` wildcards, or ``re:`` regular
-            expressions.
         """
         super().__init__(name, elements)
 

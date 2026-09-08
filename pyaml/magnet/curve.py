@@ -18,6 +18,13 @@ class Curve(metaclass=ABCMeta):
 
     Curves are represented by two columns of paired values and are used to
     interpolate between physical magnet strengths and hardware setpoints.
+
+    Methods
+    -------
+    get_curve()
+        Returns the curve (n rows,2 columns). Curve is expected to be monotonic (non-decreasing or non-increasing).
+    inverse(curve)
+        Returns the inverse curve. Basically swap x and y and sort y in ascending order.
     """
 
     @abstractmethod

@@ -27,20 +27,20 @@ class GenericElementHolder(Generic[T]):
         Mapping from element names to elements.
     what : str
         Human-readable element type used for lookup errors.
+
+    Methods
+    -------
+    all()
+        Return all stored elements in insertion order.
+    get(name)
+        Return the element with the requested name.
+    add(m)
+        Add an element to the holder's name-indexed store.
     """
 
     def __init__(self, peer: "ElementHolder", store: dict[str, T], what: str):
         """
         Initialize a holder backed by an element store.
-
-        Parameters
-        ----------
-        peer : 'ElementHolder'
-            Parent element holder.
-        store : dict[str, T]
-            Mapping from element names to elements.
-        what : str
-            Human-readable element type used for lookup errors.
         """
         self._peer = peer
         self._store = store

@@ -27,17 +27,12 @@ class TuningTool(Element):
     Methods
     -------
     attach(peer)
-        Return a copy of this tool bound to one control system or simulator.
+        Return a copy attached to a simulator or control system.
     """
 
     def __init__(self, name):
         """
         Initialize a tuning tool.
-
-        Parameters
-        ----------
-        name : object
-            Name of the tuning tool.
         """
         super().__init__(name)
 

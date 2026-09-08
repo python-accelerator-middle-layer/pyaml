@@ -207,16 +207,28 @@ class CSScalarAggregator(ScalarAggregator):
     ----------
     devs : DeviceAccessList
         Devices managed by the aggregator.
+
+    Methods
+    -------
+    add_devices(devices)
+        Add one or more devices to the scalar aggregator.
+    set(value)
+        Write scalar values to the managed control-system devices.
+    set_and_wait(value)
+        Set values and wait for readback confirmation.
+    get()
+        Read the current values from all managed devices.
+    readback()
+        Read the last available values from all managed devices.
+    unit()
+        Return the unit reported by the managed devices.
+    nb_device()
+        Return the number of managed devices.
     """
 
     def __init__(self, devs: DeviceAccessList):
         """
         Initialize the CSScalarAggregator.
-
-        Parameters
-        ----------
-        devs : DeviceAccessList
-            Devices managed by the aggregator.
         """
         self._devs = devs
 
@@ -294,16 +306,26 @@ class CSStrengthScalarAggregator(CSScalarAggregator):
     ----------
     peer : CSScalarAggregator
         Scalar device aggregator containing the hardware devices.
+
+    Methods
+    -------
+    add_magnet(magnet, devs)
+        Register a magnet and its hardware devices with the aggregator.
+    set(value)
+        Convert strengths to hardware values and write the setpoints.
+    set_and_wait(value)
+        Set magnet strengths and wait for hardware readback.
+    get()
+        Read the current values from the underlying devices.
+    readback()
+        Read back magnet strengths from measured hardware values.
+    unit()
+        Return the units associated with the underlying devices.
     """
 
     def __init__(self, peer: CSScalarAggregator):
         """
         Initialize the CSStrengthScalarAggregator.
-
-        Parameters
-        ----------
-        peer : CSScalarAggregator
-            Scalar device aggregator containing the hardware devices.
         """
         CSScalarAggregator.__init__(self, peer._devs)
         self.__models: list[MagnetModel] = []  # List of magnet model
@@ -432,18 +454,24 @@ class RWHardwareScalar(abstract.ReadWriteFloatScalar):
         Magnet model used to determine the hardware unit.
     dev : DeviceAccess
         Control-system device holding the hardware setpoint.
+
+    Methods
+    -------
+    get()
+        Return the current hardware setpoint.
+    set(value)
+        Validate and write a magnet hardware setpoint.
+    set_and_wait(value)
+        Set the hardware value and wait for readback confirmation.
+    unit()
+        Return the hardware unit defined by the magnet model.
+    set_magnet_rigidity(brho)
+        Set the beam rigidity used by the magnet model.
     """
 
     def __init__(self, model: MagnetModel, dev: DeviceAccess):
         """
         Initialize the RWHardwareScalar.
-
-        Parameters
-        ----------
-        model : MagnetModel
-            Magnet model used to determine the hardware unit.
-        dev : DeviceAccess
-            Control-system device holding the hardware setpoint.
         """
         self.__model = model
         self.__dev = dev
@@ -516,18 +544,24 @@ class RWStrengthScalar(abstract.ReadWriteFloatScalar):
         Magnet model used for strength conversion and units.
     dev : DeviceAccess
         Control-system device holding the corresponding hardware value.
+
+    Methods
+    -------
+    get()
+        Read the hardware value and convert it to magnet strength.
+    set(value)
+        Convert and write a magnet strength setpoint.
+    set_and_wait(value)
+        Set a magnet strength and wait for readback confirmation.
+    unit()
+        Return the strength unit defined by the magnet model.
+    set_magnet_rigidity(brho)
+        Set the beam rigidity used by the magnet model.
     """
 
     def __init__(self, model: MagnetModel, dev: DeviceAccess):
         """
         Initialize the RWStrengthScalar.
-
-        Parameters
-        ----------
-        model : MagnetModel
-            Magnet model used for strength conversion and units.
-        dev : DeviceAccess
-            Control-system device holding the corresponding hardware value.
         """
         self.__model = model
         self.__dev = dev
@@ -607,18 +641,22 @@ class RWHardwareArray(abstract.ReadWriteFloatArray):
         Magnet model defining the hardware units.
     devs : list[DeviceAccess]
         Control-system devices holding the hardware setpoints.
+
+    Methods
+    -------
+    get()
+        Return the current hardware values in device order.
+    set(value)
+        Validate and write hardware values for all devices.
+    set_and_wait(value)
+        Set hardware values and wait for readback confirmation.
+    unit()
+        Return the hardware units defined by the magnet model.
     """
 
     def __init__(self, model: MagnetModel, devs: list[DeviceAccess]):
         """
         Initialize the RWHardwareArray.
-
-        Parameters
-        ----------
-        model : MagnetModel
-            Magnet model defining the hardware units.
-        devs : list[DeviceAccess]
-            Control-system devices holding the hardware setpoints.
         """
         self.__model = model
         self.__devs = devs
@@ -685,18 +723,22 @@ class RWStrengthArray(abstract.ReadWriteFloatArray):
         Magnet model used for strength conversion and units.
     devs : list[DeviceAccess]
         Control-system devices corresponding to the model's hardware values.
+
+    Methods
+    -------
+    get()
+        Read hardware values and convert them to magnet strengths.
+    set(value)
+        Convert strengths to hardware values and write the setpoints.
+    set_and_wait(value)
+        Set magnet strengths and wait for readback confirmation.
+    unit()
+        Return the strength units defined by the magnet model.
     """
 
     def __init__(self, model: MagnetModel, devs: list[DeviceAccess]):
         """
         Initialize the RWStrengthArray.
-
-        Parameters
-        ----------
-        model : MagnetModel
-            Magnet model used for strength conversion and units.
-        devs : list[DeviceAccess]
-            Control-system devices corresponding to the model's hardware values.
         """
         self.__model = model
         self.__devs = devs
@@ -763,18 +805,18 @@ class RBpmArray(abstract.ReadFloatArray):
         Device providing the horizontal BPM position.
     vDev : DeviceAccess
         Device providing the vertical BPM position.
+
+    Methods
+    -------
+    get()
+        Return horizontal and vertical BPM positions.
+    unit()
+        Return the unit reported by the BPM device.
     """
 
     def __init__(self, hDev: DeviceAccess, vDev: DeviceAccess):
         """
         Initialize the RBpmArray.
-
-        Parameters
-        ----------
-        hDev : DeviceAccess
-            Device providing the horizontal BPM position.
-        vDev : DeviceAccess
-            Device providing the vertical BPM position.
         """
         self._hDev = hDev
         self._vDev = vDev
@@ -796,16 +838,27 @@ class RBpmArray(abstract.ReadFloatArray):
 class RWBpmTiltScalar(abstract.ReadFloatScalar):
     """
     Class providing read access to a BPM tilt of a control system
+
+    Parameters
+    ----------
+    dev : DeviceAccess
+        Device handle giving access to the BPM tilt attribute.
+
+    Methods
+    -------
+    get()
+        Return horizontal and vertical BPM positions.
+    set(value)
+        Write the BPM tilt value to the control-system device.
+    set_and_wait(value)
+        Set the BPM tilt and wait for readback confirmation.
+    unit()
+        Return the unit shared by the BPM devices.
     """
 
     def __init__(self, dev: DeviceAccess):
         """
         Initialize the RWBpmTiltScalar.
-
-        Parameters
-        ----------
-        dev : DeviceAccess
-            Device handle giving access to the BPM tilt attribute.
         """
         self._dev = dev
 
@@ -859,18 +912,22 @@ class RWBpmOffsetArray(abstract.ReadWriteFloatArray):
         Device handle for the horizontal BPM offset.
     vDev : DeviceAccess
         Device handle for the vertical BPM offset.
+
+    Methods
+    -------
+    get()
+        Return horizontal and vertical BPM offsets.
+    set(value)
+        Write horizontal and vertical BPM offsets.
+    set_and_wait(value)
+        Set BPM offsets and wait for readback confirmation.
+    unit()
+        Return the unit shared by the BPM offset devices.
     """
 
     def __init__(self, hDev: DeviceAccess, vDev: DeviceAccess):
         """
         Initialize the RWBpmOffsetArray.
-
-        Parameters
-        ----------
-        hDev : DeviceAccess
-            Device handle for the horizontal BPM offset.
-        vDev : DeviceAccess
-            Device handle for the vertical BPM offset.
         """
         self._hDev = hDev
         self._vDev = vDev
@@ -921,18 +978,29 @@ class RWRFVoltageScalar(abstract.ReadWriteFloatScalar):
     """
     Class providing read write access to cavity voltage
     for a transmitter of a control system.
+
+    Parameters
+    ----------
+    transmitter : RFTransmitter
+        RF transmitter whose configuration supplies the voltage unit.
+    dev : DeviceAccess
+        Control-system device holding the cavity-voltage value.
+
+    Methods
+    -------
+    get()
+        Return the current cavity voltage.
+    set(value)
+        Write a cavity-voltage setpoint to the transmitter device.
+    set_and_wait(value)
+        Set the cavity voltage and wait for readback confirmation.
+    unit()
+        Return the configured cavity-voltage unit.
     """
 
     def __init__(self, transmitter: RFTransmitter, dev: DeviceAccess):
         """
         Initialize the RWRFVoltageScalar.
-
-        Parameters
-        ----------
-        transmitter : RFTransmitter
-            RF transmitter whose configuration supplies the voltage unit.
-        dev : DeviceAccess
-            Control-system device holding the cavity-voltage value.
         """
         self.__transmitter = transmitter
         self.__dev = dev
@@ -980,18 +1048,29 @@ class RWRFPhaseScalar(abstract.ReadWriteFloatScalar):
     """
     Class providing read write access to cavity phase
     for a transmitter of a control system.
+
+    Parameters
+    ----------
+    transmitter : RFTransmitter
+        RF transmitter whose configuration supplies the phase unit.
+    dev : DeviceAccess
+        Control-system device holding the cavity phase.
+
+    Methods
+    -------
+    get()
+        Return the current cavity phase.
+    set(value)
+        Write a cavity-phase setpoint to the transmitter device.
+    set_and_wait(value)
+        Set the cavity phase and wait for readback confirmation.
+    unit()
+        Return the configured cavity-phase unit.
     """
 
     def __init__(self, transmitter: RFTransmitter, dev: DeviceAccess):
         """
         Initialize the RWRFPhaseScalar.
-
-        Parameters
-        ----------
-        transmitter : RFTransmitter
-            RF transmitter whose configuration supplies the phase unit.
-        dev : DeviceAccess
-            Control-system device holding the cavity phase.
         """
         self.__transmitter = transmitter
         self.__dev = dev
@@ -1038,18 +1117,29 @@ class RWRFPhaseScalar(abstract.ReadWriteFloatScalar):
 class RWRFFrequencyScalar(abstract.ReadWriteFloatScalar):
     """
     Class providing read write access to RF frequency of a control system.
+
+    Parameters
+    ----------
+    rf : RFPlant
+        RF plant whose configuration supplies the frequency unit.
+    dev : DeviceAccess
+        Control-system device holding the RF frequency.
+
+    Methods
+    -------
+    get()
+        Return the current RF frequency.
+    set(value)
+        Write an RF-frequency setpoint to the plant device.
+    set_and_wait(value)
+        Set the RF frequency and wait for readback confirmation.
+    unit()
+        Return the configured RF-frequency unit.
     """
 
     def __init__(self, rf: RFPlant, dev: DeviceAccess):
         """
         Initialize the RWRFFrequencyScalar.
-
-        Parameters
-        ----------
-        rf : RFPlant
-            RF plant whose configuration supplies the frequency unit.
-        dev : DeviceAccess
-            Control-system device holding the RF frequency.
         """
         self.__rf = rf
         self.__dev = dev
@@ -1104,18 +1194,18 @@ class RBetatronTuneArray(abstract.ReadFloatArray):
         Tune monitor configuration supplying the tune unit.
     devs : list[DeviceAccess]
         Devices providing horizontal and vertical tune measurements.
+
+    Methods
+    -------
+    get()
+        Return horizontal and vertical betatron tunes.
+    unit()
+        Return the configured betatron-tune unit.
     """
 
     def __init__(self, tune_monitor, devs: list[DeviceAccess]):
         """
         Initialize the RBetatronTuneArray.
-
-        Parameters
-        ----------
-        tune_monitor : object
-            Tune monitor configuration supplying the tune unit.
-        devs : list[DeviceAccess]
-            Devices providing horizontal and vertical tune measurements.
         """
         self.__tune_monitor = tune_monitor
         self.__devs = devs

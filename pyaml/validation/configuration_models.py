@@ -18,6 +18,15 @@ class PyAMLBaseModel(BaseModel):
     ``serialize_as_any=True`` by default. This ensures that fields are
     serialized according to their runtime type rather than their declared
     annotation type.
+
+    Methods
+    -------
+    model_dump(**kwargs)
+        Serialize the model to a dictionary, using each field's runtime type.
+    model_dump_json(**kwargs)
+        Serialize the model to a JSON string, using each field's runtime type.
+    describe()
+        Return a readable description of the model fields.
     """
 
     def model_dump(self, **kwargs):
@@ -52,6 +61,15 @@ class ConfigurationSchema(PyAMLBaseModel):
     Each configuration schema defines the expected input for constructing a
     specific object. The required ``class`` field specifies the fully
     qualified class path of the object to construct.
+
+    Methods
+    -------
+    virtual_subclasses()
+        Return the registered virtual subclasses.
+    register_virtual_subclass(subclass)
+        Register a virtual subclass.
+    is_virtual_subclass_of(superclass)
+        Check whether this class is a subclass of another schema.
 
     Notes
     -----
@@ -238,6 +256,11 @@ class ModuleConfigurationSchema(PyAMLBaseModel):
     This schema exists to support legacy module-based configurations. It
     defines the expected input for configuring a specific object, with the
     target class resolved from the module's ``PYAMLCLASS`` attribute.
+
+    Methods
+    -------
+    to_configuration()
+        Convert the module-based configuration to a ``ConfigurationSchema``.
     """
 
     model_config = ConfigDict(validate_by_name=True, validate_by_alias=True, extra="forbid")

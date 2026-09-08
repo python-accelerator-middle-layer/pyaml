@@ -29,17 +29,17 @@ class InlineMatrix(Matrix, DynamicValidation):
     ----------
     _mat : np.ndarray
         Internal NumPy representation of the matrix.
+
+    Methods
+    -------
+    get_matrix()
+        Get the matrix data.
     """
 
     def __init__(self, mat: list[list[float]]):
         # Load the matrix
         """
         Initialize the InlineMatrix.
-
-        Parameters
-        ----------
-        mat : list[list[float]]
-            Matrix data given as a nested list of numbers.
         """
         self._mat = np.array(mat)
 

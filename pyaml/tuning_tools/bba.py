@@ -73,6 +73,21 @@ class BBA(MeasurementTool, DynamicValidation):
         Number of BPM measurements to average at each step.
     sleep_between_meas : float, default=0
         Time in seconds to wait between individual BPM measurements.
+
+    Methods
+    -------
+    measure(...)
+        Measure BBA.
+    h_offset()
+        Return the measured horizontal magnetic-center offset.
+    h_offset_error()
+        Return the uncertainty of the horizontal center offset.
+    v_offset()
+        Return the measured vertical magnetic-center offset.
+    v_offset_error()
+        Return the uncertainty of the vertical center offset.
+    plot_data(plane)
+        Plot BBA data.
     """
 
     def __init__(
@@ -94,37 +109,6 @@ class BBA(MeasurementTool, DynamicValidation):
     ):
         """
         Initialize the BBA.
-
-        Parameters
-        ----------
-        name : str
-            Name of the measurement tool.
-        bpm_array_name : str
-            Name of the BPM array used to measure the orbit.
-        bpm_name : str
-            Name of the BPM located near the quadrupole whose center is measured.
-        hcorr_name : str
-            Name of the horizontal corrector used to create horizontal orbit offsets at the quadrupole.
-        vcorr_name : str
-            Name of the vertical corrector used to create vertical orbit offsets at the quadrupole.
-        quad_name : str
-            Name of the quadrupole to align.
-        hcorr_delta : float
-            Change in horizontal corrector strength used for each horizontal orbit-offset step.
-        vcorr_delta : float
-            Change in vertical corrector strength used for each vertical orbit-offset step.
-        hquad_delta : float
-            Change in quadrupole strength used during the horizontal alignment measurement.
-        vquad_delta : float
-            Change in quadrupole strength used during the vertical alignment measurement.
-        n_step : int
-            Number of orbit-offset steps to perform in each plane.
-        sleep_between_step : float
-            Time in seconds to wait after changing an orbit offset.
-        n_avg_meas : int
-            Number of BPM measurements to average at each step.
-        sleep_between_meas : float
-            Time in seconds to wait between individual BPM measurements.
         """
         super().__init__(name)
         self.bpm_array_name = bpm_array_name
@@ -171,7 +155,7 @@ class BBA(MeasurementTool, DynamicValidation):
         Parameters
         ----------
         sleep_between_step : float
-            Default time sleep after steerer or quad exitation
+            Default time sleep after steerer or quad excitation
             Default: from config
         n_avg_meas : int, optional
             Default number of orbit measurement per step used for averaging

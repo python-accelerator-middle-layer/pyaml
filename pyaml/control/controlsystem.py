@@ -58,21 +58,23 @@ class ControlSystem(ElementHolder, metaclass=ABCMeta):
     Methods
     -------
     name()
-        Return the backend control-system name. Abstract.
-    get_device_access(ref)
-        Return the device handle for a control-system reference. Abstract.
-    get_devices_access(refs)
-        Return the device handles for several references. Abstract.
+        Return the backend control-system name.
     get_aggregator()
-        Return an empty device-access list used to group device I/O. Abstract.
-    fill_device(elements)
-        Bind elements to this control system through read/write accessors.
+        Return an empty device aggregator, or ``None`` for direct access.
+    get_device_access(ref)
+        Return a device reference for this control system. YAML element configuration passes opaque strings. Public
+        Python APIs may also pass backend ConfigModel instances. Concrete backends own all lookup, parsing and
+        DeviceAccess construction.
+    get_devices_access(refs)
+        Resolve a list of backend references into device access objects.
     create_magnet_strength_aggregator(magnets)
-        Build a grouped strength accessor for a set of magnets.
+        Create an aggregator that exposes magnet strengths.
     create_magnet_hardware_aggregator(magnets)
-        Build a grouped hardware accessor for a set of magnets.
+        Create an aggregator for magnet hardware values.
     create_bpm_aggregators(bpms)
-        Build grouped position accessors for a set of BPMs.
+        Create aggregate BPM position channels.
+    fill_device(elements)
+        Fill device of this control system with Element coming from the configuration file
     """
 
     def __init__(self):
@@ -306,7 +308,18 @@ class ControlSystem(ElementHolder, metaclass=ABCMeta):
 
 
 class ControlSystemAdapter(ControlSystem):
-    """Provide a no-op adapter for serialized or backend-independent access."""
+    """
+    Provide a no-op adapter for serialized or backend-independent access.
+
+    Methods
+    -------
+    name()
+        Return the adapter's control-system name.
+    get_aggregator()
+        Return ``None`` because the adapter has no device aggregator.
+    get_device_access(ref)
+        Return the device access object for a backend reference.
+    """
 
     def __init__(self):
         """
