@@ -31,14 +31,17 @@ from .sub_holders import (
 
 if TYPE_CHECKING:
     from ...accelerator import Accelerator
+    from ...configuration.unbound_element import UnboundElement
     from ...tuning_tools.bba import BBA
     from ...tuning_tools.chromaticity import Chromaticity
     from ...tuning_tools.chromaticity_response_matrix import ChromaticityResponseMatrix
     from ...tuning_tools.dispersion import Dispersion
+    from ...tuning_tools.measurement_tool import MeasurementTool
     from ...tuning_tools.orbit import Orbit
     from ...tuning_tools.orbit_response_matrix import OrbitResponseMatrix
     from ...tuning_tools.tune import Tune
     from ...tuning_tools.tune_response_matrix import TuneResponseMatrix
+    from ...tuning_tools.tuning_tool import TuningTool
 
 
 class ElementHolder(metaclass=ABCMeta):
@@ -215,25 +218,40 @@ class ElementHolder(metaclass=ABCMeta):
             e.post_init()
 
     def fill_device(self, elements: list[Element]):
-        """
-        Bind configured elements to the holder's runtime backend.
+        for element in elements:
+            element._fill_device(self)
 
-        Concrete holders resolve device references and attach the resulting
-        read/write interfaces before storing the elements in their typed
-        sub-holders.  The base holder cannot perform this operation.
+    @abstractmethod
+    def _fill_magnet(self, magnet: Magnet) -> None:
+        pass
 
-        Parameters
-        ----------
-        elements : list[Element]
-            Configured elements to bind to the runtime backend.
+    @abstractmethod
+    def _fill_combined_function_magnet(self, magnet: CombinedFunctionMagnet) -> None:
+        pass
 
-        Raises
-        ------
-        PyAMLException
-            Always raised because this base class has no backend-specific
-            device-binding implementation.
-        """
-        raise PyAMLException("ElementHolder.fill_device() is not subclassed")
+    @abstractmethod
+    def _fill_serialized_magnets(self, magnets: SerializedMagnets) -> None:
+        pass
+
+    @abstractmethod
+    def _fill_bpm(self, bpm: BPM) -> None:
+        pass
+
+    @abstractmethod
+    def _fill_rf_plant(self, rf_plant: RFPlant) -> None:
+        pass
+
+    @abstractmethod
+    def _fill_betatron_tune_monitor(self, monitor: BetatronTuneMonitor) -> None:
+        pass
+
+    @abstractmethod
+    def _fill_tool(self, tool: "TuningTool | MeasurementTool") -> None:
+        pass
+
+    @abstractmethod
+    def _fill_unbound_element(self, element: "UnboundElement") -> None:
+        pass
 
     # Aggregators
 

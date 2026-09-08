@@ -13,7 +13,6 @@ from pydantic import BaseModel
 from ..bpm.bpm import BPM
 from ..common.abstract import RWMapper
 from ..common.abstract_aggregator import ScalarAggregator
-from ..common.element import Element
 from ..common.exception import PyAMLException
 from ..common.holders.element_holder import ElementHolder
 from ..configuration.unbound_element import UnboundElement
@@ -211,100 +210,77 @@ class ControlSystem(ElementHolder, metaclass=ABCMeta):
             aggv.add_devices(devs[1])
         return [agg, aggh, aggv]
 
-    def fill_device(self, elements: list[Element]):
-        """
-        Fill device of this control system with Element
-        coming from the configuration file
+    def _fill_magnet(self, magnet: Magnet) -> None:
+        device = self.get_device_access(magnet.model.get_device_names()[0])
+        current = RWHardwareScalar(magnet.model, device) if magnet.model.has_hardware() else None
+        strength = RWStrengthScalar(magnet.model, device) if magnet.model.has_physics() else None
+        self.magnet.add(magnet.attach(self, strength, current))
 
-        Parameters
-        ----------
-        elements : list[Element]
-            List of elements coming from the configuration
-            file to attach to this control system
-        """
-        for e in elements:
-            if isinstance(e, Magnet):
-                dev = self.get_device_access(e.model.get_device_names()[0])
-                current = RWHardwareScalar(e.model, dev) if e.model.has_hardware() else None
-                strength = RWStrengthScalar(e.model, dev) if e.model.has_physics() else None
-                # Create a unique ref for this control system
-                m = e.attach(self, strength, current)
-                self.magnet.add(m)
+    def _fill_combined_function_magnet(self, magnet: CombinedFunctionMagnet) -> None:
+        devices = self.get_devices_access(magnet.model.get_device_names())
+        currents = RWHardwareArray(magnet.model, devices)
+        strengths = RWStrengthArray(magnet.model, devices)
+        attached_magnets = magnet.attach(self, strengths, currents)
+        self.combined_function_magnet.add(attached_magnets[0])
+        for virtual_magnet in attached_magnets[1:]:
+            self.magnet.add(virtual_magnet)
 
-            elif isinstance(e, CombinedFunctionMagnet):
-                devs = self.get_devices_access(e.model.get_device_names())
-                currents = RWHardwareArray(e.model, devs)
-                strengths = RWStrengthArray(e.model, devs)
-                # Create unique refs the cfm and
-                # each of its function for this control system
-                ms = e.attach(self, strengths, currents)
-                self.combined_function_magnet.add(ms[0])
-                for m in ms[1:]:
-                    self.magnet.add(m)
+    def _fill_serialized_magnets(self, magnets: SerializedMagnets) -> None:
+        devices = self.get_devices_access(magnets.model.get_device_names())
+        currents = []
+        strengths = []
+        for index in range(magnets.get_nb_magnets()):
+            currents.append(
+                RWHardwareScalar(magnets.model.get_sub_model(index), devices[index]) if magnets.model.has_hardware() else None
+            )
+            strengths.append(
+                RWStrengthScalar(magnets.model.get_sub_model(index), devices[index]) if magnets.model.has_physics() else None
+            )
+        attached_magnets = magnets.attach(self, strengths, currents)
+        self.serialized_magnet.add(attached_magnets[0])
+        for magnet in attached_magnets[1:]:
+            self.magnet.add(magnet)
 
-            elif isinstance(e, SerializedMagnets):
-                devs = self.get_devices_access(e.model.get_device_names())
-                currents = []
-                strengths = []
-                # Create unique refs the series and each of its function for this
-                # control system
-                for i in range(e.get_nb_magnets()):
-                    current = RWHardwareScalar(e.model.get_sub_model(i), devs[i]) if e.model.has_hardware() else None
-                    strength = RWStrengthScalar(e.model.get_sub_model(i), devs[i]) if e.model.has_physics() else None
-                    currents.append(current)
-                    strengths.append(strength)
-                ms = e.attach(self, strengths, currents)
-                self.serialized_magnet.add(ms[0])
-                for m in ms[1:]:
-                    self.magnet.add(m)
+    def _fill_bpm(self, bpm: BPM) -> None:
+        position_devices = self.get_devices_access(bpm.get_pos_devices())
+        tilt_devices = self.get_devices_access([bpm.get_tilt_device()])
+        offset_devices = self.get_devices_access(bpm.get_offset_devices())
+        positions = RBpmArray(position_devices[0], position_devices[1])
+        tilt = RWBpmTiltScalar(tilt_devices[0])
+        offsets = RWBpmOffsetArray(offset_devices[0], offset_devices[1])
+        self.bpm.add(bpm.attach(self, positions, offsets, tilt))
 
-            elif isinstance(e, BPM):
-                pos_devs = self.get_devices_access(e.get_pos_devices())
-                tilt_devs = self.get_devices_access([e.get_tilt_device()])
-                offset_devs = self.get_devices_access(e.get_offset_devices())
-                positions = RBpmArray(pos_devs[0], pos_devs[1])
-                tilt = RWBpmTiltScalar(tilt_devs[0])
-                offsets = RWBpmOffsetArray(offset_devs[0], offset_devs[1])
-                e = e.attach(self, positions, offsets, tilt)
-                self.bpm.add(e)
+    def _fill_rf_plant(self, rf_plant: RFPlant) -> None:
+        attached_transmitters: list[RFTransmitter] = []
+        if rf_plant.transmitters:
+            for transmitter in rf_plant.transmitters:
+                voltage_device = self.get_device_access(transmitter.voltage_name)
+                phase_device = self.get_device_access(transmitter.phase_name)
+                voltage = RWRFVoltageScalar(transmitter, voltage_device)
+                phase = RWRFPhaseScalar(transmitter, phase_device)
+                attached_transmitter = transmitter.attach(self, voltage, phase)
+                self.rf.transmitter.add(attached_transmitter)
+                attached_transmitters.append(attached_transmitter)
+        frequency_device = self.get_device_access(rf_plant.masterclock)
+        frequency = RWRFFrequencyScalar(rf_plant, frequency_device)
+        voltage = RWTotalVoltage(attached_transmitters) if rf_plant.transmitters else None
+        self.rf.add(rf_plant.attach(self, frequency, voltage))
 
-            elif isinstance(e, RFPlant):
-                attachedTrans: list[RFTransmitter] = []
-                if e.transmitters:
-                    for t in e.transmitters:
-                        vDev = self.get_device_access(t.voltage_name)
-                        pDev = self.get_device_access(t.phase_name)
-                        voltage = RWRFVoltageScalar(t, vDev)
-                        phase = RWRFPhaseScalar(t, pDev)
-                        nt = t.attach(self, voltage, phase)
-                        self.rf.transmitter.add(nt)
-                        attachedTrans.append(nt)
+    def _fill_betatron_tune_monitor(self, monitor: BetatronTuneMonitor) -> None:
+        devices = self.get_devices_access([monitor.tune_h, monitor.tune_v])
+        self.add_betatron_tune_monitor(monitor.attach(self, RBetatronTuneArray(monitor, devices)))
 
-                fDev = self.get_device_access(e.masterclock)
-                frequency = RWRFFrequencyScalar(e, fDev)
-                voltage = RWTotalVoltage(attachedTrans) if e.transmitters else None
-                ne = e.attach(self, frequency, voltage)
-                self.rf.add(ne)
+    def _fill_tool(self, tool: TuningTool | MeasurementTool) -> None:
+        self.add_tool(tool.attach(self))
 
-            elif isinstance(e, BetatronTuneMonitor):
-                # Built in tune monitor
-                tuneDevs = self.get_devices_access([e.tune_h, e.tune_v])
-                betatron_tune = RBetatronTuneArray(e, tuneDevs)
-                e = e.attach(self, betatron_tune)
-                self.add_betatron_tune_monitor(e)
-
-            elif isinstance(e, TuningTool) | isinstance(e, MeasurementTool):
-                self.add_tool(e.attach(self))
-
-            elif isinstance(e, UnboundElement):
-                if self.name() in e._control_modes:
-                    ne = e.instantiate(self)
-
-                    if isinstance(ne, ABetatronTuneMonitor):
-                        self.add_betatron_tune_monitor(ne)
-                    else:
-                        # Default to standard Element
-                        self.add_element(ne)
+    def _fill_unbound_element(self, element: UnboundElement) -> None:
+        if self.name() not in element._control_modes:
+            return
+        attached_element = element.instantiate(self)
+        if isinstance(attached_element, ABetatronTuneMonitor):
+            self.add_betatron_tune_monitor(attached_element)
+        else:
+            self.add_element(attached_element)
 
 
 class ControlSystemAdapter(ControlSystem):

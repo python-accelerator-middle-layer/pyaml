@@ -90,6 +90,9 @@ class BetatronTuneMonitor(Element, DynamicValidation, ABetatronTuneMonitor):
         """
         self._h = float(h)
 
+    def _fill_device(self, holder) -> None:
+        holder._fill_betatron_tune_monitor(self)
+
     @property
     def tune_h(self) -> str | None:
         """Return the horizontal tune device catalog key."""

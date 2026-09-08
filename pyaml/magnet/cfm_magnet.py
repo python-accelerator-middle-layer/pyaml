@@ -131,6 +131,9 @@ class CombinedFunctionMagnet(Element, DynamicValidation):
             # Attach
             self._peer = peer
 
+    def _fill_device(self, holder) -> None:
+        holder._fill_combined_function_magnet(self)
+
     def get_model_name(self) -> str:
         """
         Returns the model name of this magnet

@@ -257,6 +257,9 @@ class SerializedMagnets(Element, DynamicValidation):
             # Attach
             self._peer = peer
 
+    def _fill_device(self, holder) -> None:
+        holder._fill_serialized_magnets(self)
+
     def __create_virtual_magnet(self, name: str) -> Magnet:
         """
         Create a virtual magnet for one serialized element.
