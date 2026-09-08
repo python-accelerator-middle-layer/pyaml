@@ -1,3 +1,9 @@
+"""
+Linear conversion model for combined-function magnets.
+
+This model converts multiple multipole strengths to hardware values using per-function linear calibration parameters.
+"""
+
 import numpy as np
 
 from ..common.element import __pyaml_repr__
@@ -55,6 +61,46 @@ class LinearCFMagnetModel(MagnetModel, DynamicValidation):
     PyAMLException
     If the list lengths do not match, if the matrix has the wrong shape, or
     if the configuration is otherwise inconsistent.
+
+    Parameters
+    ----------
+    multipoles : list[str]
+        Names of the supported multipoles, for example ["B0", "A1", "B2"].
+    curves : list[Curve]
+        Excitation curves, one per multipole.
+    powerconverters : list[str | None]
+        Names of the power converter devices associated with the hardware currents.
+    hardware_units : list[str]
+        Units of the hardware variables, one per power converter.
+    calibration_factors : list[float] | None
+        Multiplicative correction factors applied to the excitation curves. Defaults to ones.
+    calibration_offsets : list[float] | None
+        Additive correction offsets applied to the excitation curves. Defaults to zeros.
+    pseudo_factors : list[float] | None
+        Multiplicative factors applied to pseudo currents. Defaults to ones.
+    pseudo_offsets : list[float] | None
+        Additive offsets applied to pseudo currents. Defaults to zeros.
+    matrix : Matrix | None
+        Coupling matrix mapping power-supply currents to pseudo currents. Defaults to the identity matrix.
+    units : list[str] | None
+        Strength units, one per multipole.
+
+    Methods
+    -------
+    compute_hardware_values(strengths)
+        Convert magnet strengths to hardware values.
+    compute_strengths(currents)
+        Convert hardware values to magnet strengths.
+    get_strength_units()
+        Return the units of magnet strengths.
+    get_hardware_units()
+        Return the units of hardware values.
+    get_device_names()
+        Return the associated device names.
+    set_magnet_rigidity(brho)
+        Set the magnetic rigidity used for conversion.
+    has_hardware()
+        Return whether the model provides hardware values.
     """
 
     def __init__(
@@ -70,6 +116,9 @@ class LinearCFMagnetModel(MagnetModel, DynamicValidation):
         matrix: Matrix | None = None,
         units: list[str] | None = None,
     ):
+        """
+        Initialize the LinearCFMagnetModel.
+        """
         self.multipoles = multipoles
         self._curves = curves
         self._powerconverters = powerconverters
@@ -140,6 +189,23 @@ class LinearCFMagnetModel(MagnetModel, DynamicValidation):
         self.__inv = np.linalg.pinv(self.__matrix)
 
     def __check_len(self, obj, name, expected_len):
+        """
+        Validate the length of a model configuration sequence.
+
+        Parameters
+        ----------
+        obj : object
+            Sequence whose length should be checked.
+        name : object
+            Configuration-field name used in an error message.
+        expected_len : object
+            Required number of entries.
+
+        Raises
+        ------
+        PyAMLException
+            If ``obj`` does not contain ``expected_len`` entries.
+        """
         lgth = len(obj)
         if lgth != expected_len:
             raise PyAMLException(
@@ -147,6 +213,19 @@ class LinearCFMagnetModel(MagnetModel, DynamicValidation):
             )
 
     def compute_hardware_values(self, strengths: np.array) -> np.array:
+        """
+        Convert magnet strengths to hardware values.
+
+        Parameters
+        ----------
+        strengths : np.array
+            Strength of each magnet function, ordered as declared by the model.
+
+        Returns
+        -------
+        np.array
+            Hardware value of each power converter, ordered as declared by the model.
+        """
         _pI = np.zeros(self.__nbFunction)
         for idx, c in enumerate(self.__rcurves):
             _pI[idx] = self.__pf[idx] * np.interp(strengths[idx] * self._brho, c[:, 0], c[:, 1]) + self.__po[idx]
@@ -154,6 +233,19 @@ class LinearCFMagnetModel(MagnetModel, DynamicValidation):
         return _currents
 
     def compute_strengths(self, currents: np.array) -> np.array:
+        """
+        Convert hardware values to magnet strengths.
+
+        Parameters
+        ----------
+        currents : np.array
+            Hardware value of each power converter, ordered as declared by the model.
+
+        Returns
+        -------
+        np.array
+            Strength of each magnet function, ordered as declared by the model.
+        """
         _strength = np.zeros(self.__nbFunction)
         _pI = np.matmul(self.__matrix, currents)
         for idx, c in enumerate(self.__curves):
@@ -161,19 +253,34 @@ class LinearCFMagnetModel(MagnetModel, DynamicValidation):
         return _strength
 
     def get_strength_units(self) -> list[str]:
+        """Return the units of magnet strengths."""
         return self.units
 
     def get_hardware_units(self) -> list[str]:
+        """Return the units of hardware values."""
         return self.hardware_units
 
     def get_device_names(self) -> list[str | None]:
+        """Return the associated device names."""
         return self._powerconverters
 
     def set_magnet_rigidity(self, brho: np.double):
+        """
+        Set the magnetic rigidity used for conversion.
+
+        Parameters
+        ----------
+        brho : np.double
+            Magnetic rigidity in tesla metres, used to scale strengths into hardware values.
+        """
         self._brho = brho
 
     def has_hardware(self) -> bool:
+        """Return whether the model provides hardware values."""
         return (self.__nbPS == self.__nbFunction) and np.allclose(self.__matrix, np.eye(self.__nbFunction))
 
     def __repr__(self):
+        """
+        Implement the ``__repr__`` string.
+        """
         return __pyaml_repr__(self)

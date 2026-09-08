@@ -1,3 +1,12 @@
+"""
+Excitation-curve interfaces for magnet calibration.
+
+An excitation curve represents paired magnet-strength and hardware values as
+an ``(n, 2)`` array. Concrete implementations provide those points from a
+file or in-memory data, while :class:`Curve` supplies the inverse-curve
+operation used for reverse conversion.
+"""
+
 from abc import ABCMeta, abstractmethod
 
 import numpy as np
@@ -5,7 +14,17 @@ import numpy as np
 
 class Curve(metaclass=ABCMeta):
     """
-    Abstract class providing access to a curve
+    Define the interface for a monotonic magnet excitation curve.
+
+    Curves are represented by two columns of paired values and are used to
+    interpolate between physical magnet strengths and hardware setpoints.
+
+    Methods
+    -------
+    get_curve()
+        Returns the curve (n rows,2 columns). Curve is expected to be monotonic (non-decreasing or non-increasing).
+    inverse(curve)
+        Returns the inverse curve. Basically swap x and y and sort y in ascending order.
     """
 
     @abstractmethod
