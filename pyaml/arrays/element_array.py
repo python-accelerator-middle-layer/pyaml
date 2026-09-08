@@ -433,47 +433,50 @@ class ElementArray(list[Element]):
         return self - mask
 
     def __getitem__(self, key):
+        """Return an element or a selection typed by its common element class.
+
+        Parameters
+        ----------
+        key : int, slice or str
+            Element index, slice, name pattern, or existing field selector.
+
+        Returns
+        -------
+        Element or ElementArray
+            Indexed element or an array inferred from all selected elements.
+            Different Magnet subclasses produce a MagnetArray; mixed element
+            families produce an ElementArray. Empty selections return an
+            empty ElementArray.
+
+        Examples
+        --------
+        >>> magnets = sr.design.magnets.get()
+        >>> subset = magnets[:]  # MagnetArray, including mixed magnet classes
+        >>> correctors = magnets["SH*"]  # MagnetArray
+        """
         if isinstance(key, slice):
             # Slicing
-            element_type = None
-            r = []
-            for i in range(*key.indices(len(self))):
-                if element_type is None:
-                    element_type = type(self[i])
-                elif not isinstance(self[i], element_type):
-                    element_type = Element  # Fall back to element
-                r.append(self[i])
-            return self.__create_array("", element_type, r)
+            r = super().__getitem__(key)
 
         elif isinstance(key, str):
             fields = key.split(":")
 
             if len(fields) <= 1:
                 # Selection by name
-                element_type = None
                 r = []
                 for e in self:
                     if fnmatch.fnmatch(e.get_name(), key):
-                        if element_type is None:
-                            element_type = type(e)
-                        elif not isinstance(e, element_type):
-                            element_type = Element  # Fall back to element
                         r.append(e)
             else:
                 # Selection by fields
-                element_type = None
                 r = []
                 for e in self:
                     txt = self.__eval_field(fields[0], e)
                     if fnmatch.fnmatch(txt, fields[1]):
-                        if element_type is None:
-                            element_type = type(e)
-                        elif not isinstance(e, element_type):
-                            element_type = Element  # Fall back to element
                         r.append(e)
-
-            return self.__create_array("", element_type, r)
 
         else:
             # Default to super selection
             return super().__getitem__(key)
+
+        return self.__auto_array(r) if r else self.__create_array("", Element, r)
