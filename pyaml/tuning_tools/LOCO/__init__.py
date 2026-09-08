@@ -3,7 +3,6 @@ LOCO package
 ~~~~~~~~~~~~~~~~
 
 pyAML
-
 """
 
 __title__ = "pyAML"

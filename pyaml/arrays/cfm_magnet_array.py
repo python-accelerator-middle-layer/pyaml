@@ -1,3 +1,9 @@
+"""
+Combined function magnet array module.
+
+This module provides combined function magnet array functionality.
+"""
+
 import numpy as np
 
 from ..common.abstract import ReadWriteFloatArray
@@ -9,13 +15,39 @@ from .element_array import ElementArray
 
 
 class RWMagnetStrengths(ReadWriteFloatArray):
+    """
+    Array accessor for the multipole strengths of combined-function magnets.
+
+    Parameters
+    ----------
+    name : str
+        Name of the array, used when the accessor is reported or logged.
+    magnets : list[CombinedFunctionMagnet]
+        Combined-function magnets making up the array; each contributes one entry per multipole.
+
+    Methods
+    -------
+    get()
+        Return the strength of every multipole, concatenated over the magnets.
+    set(value)
+        Set the strength of every multipole, concatenated over the magnets.
+    set_and_wait(value)
+        Set every multipole strength and wait for the readbacks to converge.
+    unit()
+        Return the strength unit of every multipole.
+    """
+
     def __init__(self, name: str, magnets: list[CombinedFunctionMagnet]):
+        """
+        Initialize the RWMagnetStrengths.
+        """
         self.__name = name
         self.__magnets = magnets
         self.__nb = sum(m.nb_multipole() for m in magnets)
 
     # Gets the values
     def get(self) -> np.array:
+        """Return the strength of every multipole, concatenated over the magnets."""
         r = np.zeros(self.__nb)
         idx = 0
         for m in self.__magnets:
@@ -25,6 +57,14 @@ class RWMagnetStrengths(ReadWriteFloatArray):
 
     # Sets the values
     def set(self, value: np.array):
+        """
+        Set the strength of every multipole, concatenated over the magnets.
+
+        Parameters
+        ----------
+        value : np.array
+            Strength of every multipole, concatenated magnet by magnet. A scalar is broadcast to all of them.
+        """
         nvalue = np.ones(self.__nb) * value if isinstance(value, float) else value
         idx = 0
         for m in self.__magnets:
@@ -33,10 +73,24 @@ class RWMagnetStrengths(ReadWriteFloatArray):
 
     # Sets the values and waits that the read values reach their setpoint
     def set_and_wait(self, value: np.array):
+        """
+        Set every multipole strength and wait for the readbacks to converge.
+
+        Parameters
+        ----------
+        value : np.array
+            Strength of every multipole, concatenated magnet by magnet. A scalar is broadcast to all of them.
+
+        Raises
+        ------
+        NotImplementedError
+            Waiting for readback convergence is not implemented for this accessor.
+        """
         raise NotImplementedError("Not implemented yet.")
 
     # Gets the unit of the values
     def unit(self) -> list[str]:
+        """Return the strength unit of every multipole."""
         r = []
         for m in self.__magnets:
             r.extend(m.strengths.unit())
@@ -44,13 +98,39 @@ class RWMagnetStrengths(ReadWriteFloatArray):
 
 
 class RWMagnetHardwares(ReadWriteFloatArray):
+    """
+    Array accessor for the hardware values of combined-function magnets.
+
+    Parameters
+    ----------
+    name : str
+        Name of the array, used when the accessor is reported or logged.
+    magnets : list[CombinedFunctionMagnet]
+        Combined-function magnets making up the array; each contributes one entry per multipole.
+
+    Methods
+    -------
+    get()
+        Return the hardware value of every multipole, concatenated over the magnets.
+    set(value)
+        Set the hardware value of every multipole, concatenated over the magnets.
+    set_and_wait(value)
+        Set every hardware value and wait for the readbacks to converge.
+    unit()
+        Return the hardware unit of every multipole.
+    """
+
     def __init__(self, name: str, magnets: list[CombinedFunctionMagnet]):
+        """
+        Initialize the RWMagnetHardwares.
+        """
         self.__name = name
         self.__magnets = magnets
         self.__nb = sum(m.nb_multipole() for m in magnets)
 
     # Gets the values
     def get(self) -> np.array:
+        """Return the hardware value of every multipole, concatenated over the magnets."""
         r = np.zeros(self.__nb)
         idx = 0
         for m in self.__magnets:
@@ -60,6 +140,14 @@ class RWMagnetHardwares(ReadWriteFloatArray):
 
     # Sets the values
     def set(self, value: np.array):
+        """
+        Set the hardware value of every multipole, concatenated over the magnets.
+
+        Parameters
+        ----------
+        value : np.array
+            Hardware value of every multipole, concatenated magnet by magnet. A scalar is broadcast to all of them.
+        """
         nvalue = np.ones(self.__nb) * value if isinstance(value, float) else value
         idx = 0
         for m in self.__magnets:
@@ -68,10 +156,24 @@ class RWMagnetHardwares(ReadWriteFloatArray):
 
     # Sets the values and waits that the read values reach their setpoint
     def set_and_wait(self, value: np.array):
+        """
+        Set every hardware value and wait for the readbacks to converge.
+
+        Parameters
+        ----------
+        value : np.array
+            Hardware value of every multipole, concatenated magnet by magnet. A scalar is broadcast to all of them.
+
+        Raises
+        ------
+        NotImplementedError
+            Waiting for readback convergence is not implemented for this accessor.
+        """
         raise NotImplementedError("Not implemented yet.")
 
     # Gets the unit of the values
     def unit(self) -> list[str]:
+        """Return the hardware unit of every multipole."""
         r = []
         for m in self.__magnets:
             r.extend(m.hardwares.unit())
@@ -86,12 +188,19 @@ class CombinedFunctionMagnetArray(ElementArray):
     ----------
     arrayName : str
         Array name
-    magnets : list[Magnet]
+    magnets : list[CombinedFunctionMagnet]
         Magnet list, all elements must be attached to the same instance of
         either a Simulator or a ControlSystem.
     use_aggregator : bool
-        Use aggregator to increase performance by using paralell
+        Use aggregator to increase performance by using parallel
         access to underlying devices.
+
+    Attributes
+    ----------
+    strengths
+        Give access to strength of each magnet of this array
+    hardwares
+        Give access to hardware value of each magnet of this array
     """
 
     def __init__(
@@ -100,6 +209,9 @@ class CombinedFunctionMagnetArray(ElementArray):
         magnets: list[CombinedFunctionMagnet],
         use_aggregator=False,
     ):
+        """
+        Initialize the CombinedFunctionMagnetArray.
+        """
         super().__init__(arrayName, magnets, use_aggregator)
 
         self.__rwstrengths = RWMagnetStrengths(arrayName, magnets)

@@ -1,3 +1,11 @@
+"""
+Chromaticity response-matrix measurement tools.
+
+The :class:`ChromaticityResponseMatrix` measures how sextupole-strength
+changes affect horizontal and vertical chromaticity and stores the fitted
+slopes as a response matrix.
+"""
+
 import logging
 import time
 from dataclasses import asdict
@@ -43,6 +51,11 @@ class ChromaticityResponseMatrix(MeasurementTool, DynamicValidation):
         Default number of chromaticity measurements to average at each step.
     sleep_between_meas : float, optional
         Default delay in seconds between averaged measurements.
+
+    Methods
+    -------
+    measure(...)
+        Measure the chromaticity response matrix.
     """
 
     def __init__(
@@ -58,25 +71,6 @@ class ChromaticityResponseMatrix(MeasurementTool, DynamicValidation):
     ):
         """
         Initialize the chromaticity response matrix measurement tool.
-
-        Parameters
-        ----------
-        name : str
-            Name of the response matrix measurement tool.
-        sextu_array_name : str
-            Name of the sextupole array to excite.
-        chromaticity_name : str
-            Name of the chromaticity monitor used to measure the response.
-        sextu_delta : float
-            Default sextupole excitation applied during the measurement.
-        n_step : int, optional
-            Default number of excitation steps used to fit the response.
-        sleep_between_step : float, optional
-            Default delay in seconds after changing the sextupole strength.
-        n_avg_meas : int, optional
-            Default number of chromaticity measurements to average at each step.
-        sleep_between_meas : float, optional
-            Default delay in seconds between averaged measurements.
         """
 
         super().__init__(name)
@@ -99,7 +93,8 @@ class ChromaticityResponseMatrix(MeasurementTool, DynamicValidation):
         callback: Optional[Callable] = None,
     ):
         """
-        Measure chromaticity response matrix.
+        Measure the chromaticity response matrix.
+
         :py:attr:`~pyaml.tuning_tools.measurement_tool.MeasurementTool.latest_measurement` contains:
 
         .. code-block:: python
@@ -127,21 +122,20 @@ class ChromaticityResponseMatrix(MeasurementTool, DynamicValidation):
                 acc.crm.save("ideal_crm.yaml", with_type="yaml")
                 acc.crm.save("ideal_crm.npz", with_type="npz")
 
-
         Parameters
         ----------
         sextu_delta : float
             Delta strength used to get the response matrix
-        n_step: int, optional
+        n_step : int, optional
             Number of step for fitting the chomaticity slope [-sextu_delta/n_step..sextu_delta/n_step]
             Default from config
-        sleep_between_step: float
-            Default time sleep after sextu exitation
+        sleep_between_step : float
+            Default time sleep after sextu excitation
             Default: from config
         n_avg_meas : int, optional
             Default number of chromaticity measurement per step used for averaging
             Default from config
-        sleep_between_meas: float
+        sleep_between_meas : float
             Default time sleep between two chomaticity measurment
             Default: from config
         callback : Callable, optional
@@ -161,6 +155,11 @@ class ChromaticityResponseMatrix(MeasurementTool, DynamicValidation):
               chroma:np.array # The measured chroma (on Action.MEASURE)
               dchroma:np.array # The chroma variation (on Action.RESTORE)
 
+        Returns
+        -------
+        bool
+            ``True`` when the response matrix is measured successfully;
+            ``False`` when the measurement is aborted by the callback.
         """
         # Get devices
         self.check_peer()

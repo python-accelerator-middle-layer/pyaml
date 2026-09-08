@@ -1,3 +1,9 @@
+"""
+Magnet module.
+
+This module provides magnet functionality for the PyAML accelerator middle layer.
+"""
+
 from ..common.holders.element_holder import ElementHolder
 from ..validation import DynamicValidation, register_schema
 from .array import ArrayConfig
@@ -9,10 +15,23 @@ PYAMLCLASS = "Magnet"
 @register_schema
 class Magnet(ArrayConfig, DynamicValidation):
     """
-    Magnet array confirguration
+    :py:class:`.MagnetArray` configuration.
 
-    Example
+    Parameters
+    ----------
+    name : str
+        Name under which the array is registered and later looked up.
+    elements : list[str]
+        Element name patterns making up the array: literal names, ``fnmatch`` wildcards, or ``re:`` regular
+        expressions.
+
+    Methods
     -------
+    fill_array(holder)
+        Fill the magnet array in the element holder.
+
+    Examples
+    --------
 
     A magnet array configuration can also be created by code using
     the following example::
@@ -24,6 +43,9 @@ class Magnet(ArrayConfig, DynamicValidation):
     """
 
     def __init__(self, name: str, elements: list[str]):
+        """
+        Initialize the Magnet.
+        """
         super().__init__(name, elements)
 
     def fill_array(self, holder: ElementHolder):

@@ -112,6 +112,26 @@ class ValidationModelDescriptor:
         instance: object | None,
         owner: type["DynamicValidation"],
     ) -> type[ValidationModel]:
+        """
+        Return the validation model associated with ``owner``.
+
+        The model is generated on first access and cached on the owning class.
+        Because this descriptor exposes class-level metadata, ``instance`` is
+        not used.
+
+        Parameters
+        ----------
+        instance : object | None
+            Instance through which the descriptor was accessed, or ``None``
+            when accessed on the class.
+        owner : type[DynamicValidation]
+            Class whose validation model is requested.
+
+        Returns
+        -------
+        type[ValidationModel]
+            The cached or newly generated validation model.
+        """
         model = owner.__dict__.get("_validation_model")
 
         if model is None:
@@ -122,7 +142,8 @@ class ValidationModelDescriptor:
 
 
 class DynamicValidation(metaclass=ValidationMeta):
-    """Base class for automatic constructor argument validation.
+    """
+    Base class for automatic constructor argument validation.
 
     When a subclass is defined, a validation model is generated from either
     its explicitly declared constructor or its directly declared class
@@ -167,7 +188,8 @@ class DynamicValidation(metaclass=ValidationMeta):
 
     @classmethod
     def _build_validation_model(cls) -> type[ValidationModel]:
-        """Generate a validation model from the class definition.
+        """
+        Generate a validation model from the class definition.
 
         For classes with an explicitly defined ``__init__``, fields are
         extracted from the constructor signature. Otherwise, fields are
