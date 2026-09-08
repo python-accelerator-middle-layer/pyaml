@@ -2,6 +2,7 @@ from dataclasses import dataclass
 from pathlib import Path
 
 from pyaml.configuration.factory import Factory
+from pyaml.validation import SchemaValidator
 
 from .. import PyAMLException
 from ..configuration.fileloader import load
@@ -54,6 +55,7 @@ class ResponseMatrixData(DynamicValidation):
         path = Path(filename)
         if path.exists():
             config_dict = load(str(path.resolve()))
+            SchemaValidator.validate(config_dict)
             return Factory.build(config_dict, ignore_external=False)
         else:
             raise PyAMLException(f"{filename}: file not found")
