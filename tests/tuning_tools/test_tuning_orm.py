@@ -1,4 +1,5 @@
 import logging
+import tempfile
 from pathlib import Path
 
 import numpy as np
@@ -24,3 +25,10 @@ def test_tuning_orm():
     orm_data = orm.get()
     orm_shape = np.array(orm_data["matrix"]).shape
     assert orm_shape == (2 * len(bpms), 8)
+
+    with tempfile.NamedTemporaryFile(mode="w", suffix=".json", prefix="orm_") as f:
+        # save file
+        orm.save(save_path=f.name)
+
+        # load saved file
+        element_holder.orbit.load(f.name)
