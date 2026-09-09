@@ -784,7 +784,9 @@ class ConfigurationManager:
         if not isinstance(value, dict):
             return value
 
-        normalized = {key: cls._normalize_class_paths(item) for key, item in value.items()}
+        normalized = {
+            key: item if key in _INTERNAL_METADATA_KEYS else cls._normalize_class_paths(item) for key, item in value.items()
+        }
         class_path = normalized.pop("class_path", None)
         legacy_type = normalized.pop("type", None)
         class_alias = normalized.pop("class", None)
