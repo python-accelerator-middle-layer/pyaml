@@ -4,11 +4,34 @@ import importlib
 import logging
 import pkgutil
 from collections.abc import ItemsView, Iterator, KeysView, ValuesView
+from importlib import metadata
 from typing import Callable, Type, TypeVar, overload
 
 from .configuration_models import ConfigurationSchema
 
 logger = logging.getLogger(__name__)
+
+_SCHEMA_ENTRY_POINT_GROUP = "pyaml.schemas"
+
+
+def _import_module(module_name: str) -> None:
+    """Import a module and recursively import its submodules.
+
+    Parameters
+    ----------
+    module_name : str
+        Fully qualified name of the module or package to import.
+    """
+
+    module = importlib.import_module(module_name)
+
+    # Check if module is a package and then recursively import
+    if hasattr(module, "__path__"):
+        for _, submodule_name, _ in pkgutil.walk_packages(
+            module.__path__,
+            module.__name__ + ".",
+        ):
+            importlib.import_module(submodule_name)
 
 
 class SchemaRegistry:
@@ -102,19 +125,32 @@ class SchemaRegistry:
         """
         Discover and register schemas.
 
-        This imports modules in the package so classes decorated with
-        :func:`register_schema` are registered, then registers legacy
-        schemas from ``pyproject.toml``.
+        This recursively imports modules in the :mod:`pyaml` package so
+        classes decorated with :func:`register_schema` are registered. It
+        also imports modules and packages advertised through the
+        ``pyaml.schemas`` entry-point group, allowing external packages to
+        register schemas.
         """
 
-        # Import package modules so schema registration runs.
+        # Discover schemas inside the pyaml core
+        # Import package modules so schema registration runs
+
         root_package = __package__.split(".")[0]
-        package = importlib.import_module(root_package)
-        for _, module_name, _ in pkgutil.walk_packages(
-            package.__path__,
-            package.__name__ + ".",
-        ):
-            importlib.import_module(module_name)
+
+        _import_module(root_package)
+
+        # Discover schemas from external packages
+        # This uses entry points
+
+        for entry_point in metadata.entry_points(group=_SCHEMA_ENTRY_POINT_GROUP):
+            logger.debug("Loading schema entry point %s", entry_point)
+
+            if entry_point.attr is not None:
+                raise ValueError(
+                    f"Schema entry point {entry_point.name!r} must reference a package or module, not an attribute."
+                )
+
+            _import_module(entry_point.value)
 
     def unregister(
         self,
