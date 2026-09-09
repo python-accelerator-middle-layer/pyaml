@@ -202,6 +202,12 @@ class SchemaValidator:
 
         try:
             ConfigurationSchema.model_validate(validated_dict, extra="allow")
+            # ``class`` is accepted as a validation alias for ``class_path``
+            # by ConfigurationSchema, but schema lookup below requires the
+            # canonical key to be present in the dictionary itself.
+            if "class_path" not in validated_dict and "class" in validated_dict:
+                validated_dict = dict(validated_dict)
+                validated_dict["class_path"] = validated_dict.pop("class")
             return validated_dict
         except ValidationError:
             logger.debug("Could not validate against ConfigurationSchema.")
