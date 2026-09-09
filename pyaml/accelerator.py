@@ -12,14 +12,15 @@ from .configuration import ConfigurationManager, UnsupportedConfigurationRootErr
 from .configuration.factory import Factory
 from .control.controlsystem import ControlSystem
 from .lattice.simulator import Simulator
-from .validation import SchemaValidator
+from .validation import DynamicValidation, SchemaValidator, register_schema
 from .yellow_pages import YellowPages
 
 # Define the main class name for this module
 PYAMLCLASS = "Accelerator"
 
 
-class Accelerator:
+@register_schema
+class Accelerator(DynamicValidation):
     """
     Top-level accelerator object.
 
