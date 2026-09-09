@@ -10,7 +10,5 @@ data_folder: /data/store
 devices:
 - type: pyaml.bpm.bpm
   name: BPM_C01-01
-  model:
-    type: pyaml.bpm.bpm_simple_model
-    x_pos: srdiag/bpm/c01-01/SA_HPosition
-    y_pos: srdiag/bpm/c01-01/SA_VPosition
+  x_pos: srdiag/bpm/c01-01/SA_HPosition
+  y_pos: srdiag/bpm/c01-01/SA_VPosition
