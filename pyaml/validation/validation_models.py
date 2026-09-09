@@ -36,7 +36,41 @@ class ValidationMeta(ABCMeta):
     invoked.
 
     Pass `validate=False` to skip validation for a single construction.
+
+    The signature reported by :func:`inspect.signature` for classes using this
+    metaclass is that of their ``__init__``, not of :meth:`__call__`. The
+    ``validate`` keyword is therefore not part of the reported signature.
     """
+
+    @property
+    def __signature__(cls) -> inspect.Signature | None:
+        """
+        Report the constructor signature of the class.
+
+        Without this, :func:`inspect.signature` resolves to :meth:`__call__` and
+        reports ``(*args, **kwargs)`` for every class using this metaclass, which
+        hides the real parameters from ``help()``, Sphinx and other tooling.
+
+        Returns
+        -------
+        inspect.Signature | None
+            Signature of ``cls.__init__`` without ``self``, or ``None`` if it
+            cannot be determined, in which case the default introspection applies.
+        """
+        # Classes relying on ``object.__init__`` take no argument, as reported by
+        # ``inspect.signature`` for a class without a metaclass
+        if cls.__init__ is object.__init__ and cls.__new__ is object.__new__:
+            return inspect.Signature()
+
+        try:
+            signature = inspect.signature(cls.__init__)
+        except (TypeError, ValueError):  # pragma: no cover - defensive
+            return None
+
+        # Drop ``self`` and the constructor return annotation
+        parameters = list(signature.parameters.values())[1:]
+
+        return signature.replace(parameters=parameters, return_annotation=inspect.Signature.empty)
 
     def __call__(cls, *args: Any, **kwargs: Any):
         """
