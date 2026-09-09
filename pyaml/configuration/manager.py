@@ -775,9 +775,9 @@ class ConfigurationManager:
     def _normalize_class_paths(cls, value: Any) -> Any:
         """Normalize legacy and new configuration references to ``class_path``.
 
-        Legacy ``type`` entries are resolved using their explicit ``class`` or
-        the module's ``PYAMLCLASS`` value. The manager then uses only the new
-        fully qualified ``class_path`` representation internally.
+        Legacy ``type`` entries are resolved using the module's ``PYAMLCLASS``
+        value. The modern ``class`` alias is accepted as a fully qualified
+        class path. The manager then uses only ``class_path`` internally.
         """
         if isinstance(value, list):
             return [cls._normalize_class_paths(item) for item in value]
@@ -787,22 +787,25 @@ class ConfigurationManager:
         normalized = {key: cls._normalize_class_paths(item) for key, item in value.items()}
         class_path = normalized.pop("class_path", None)
         legacy_type = normalized.pop("type", None)
-        legacy_class = normalized.pop("class", None)
+        class_alias = normalized.pop("class", None)
         if class_path is None and legacy_type is None:
-            if legacy_class is not None:
-                normalized["class"] = legacy_class
-            return normalized
-        if class_path is not None and (legacy_type is not None or legacy_class is not None):
+            if class_alias is not None:
+                # ``class`` is also supported as an alias for ``class_path``.
+                class_path = class_alias
+                class_alias = None
+            else:
+                return normalized
+        if class_path is not None and (legacy_type is not None or class_alias is not None):
             raise PyAMLConfigException("Configuration cannot combine class_path with type or class.")
         if class_path is None:
             if not isinstance(legacy_type, str):
                 raise PyAMLConfigException(f"Invalid type '{legacy_type}'.")
-            if legacy_class is None:
+            if class_alias is None:
                 module = import_module(legacy_type)
-                legacy_class = getattr(module, "PYAMLCLASS", None)
-                if legacy_class is None:
+                class_alias = getattr(module, "PYAMLCLASS", None)
+                if class_alias is None:
                     raise PyAMLConfigException(f"Module '{legacy_type}' does not define PYAMLCLASS.")
-            class_path = f"{legacy_type}.{legacy_class}"
+            class_path = f"{legacy_type}.{class_alias}"
         if not isinstance(class_path, str) or "." not in class_path:
             raise PyAMLConfigException(f"Invalid class_path '{class_path}'. Expected 'module.Class'.")
         normalized["class_path"] = class_path
