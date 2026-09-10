@@ -5,7 +5,7 @@ from typing import TYPE_CHECKING, Sequence
 import numpy as np
 
 from ..bpm.bpm import BPM
-from ..common.element import Element
+from ..common.element import Element, __pyaml_repr__
 from ..common.exception import PyAMLException
 from ..magnet.cfm_magnet import CombinedFunctionMagnet
 from ..magnet.magnet import Magnet
@@ -75,6 +75,17 @@ class ElementArray(list[Element]):
         Returns the element names
         """
         return [e.get_name() for e in self]
+
+    def _pyaml_repr_fields(self) -> dict[str, object]:
+        return {
+            "name": self.get_name(),
+            "size": len(self),
+            "peer": self.get_peer(),
+            "elements": self.names(),
+        }
+
+    def __repr__(self):
+        return __pyaml_repr__(self)
 
     def __create_array(self, array_name: str, element_type: type, elements: list):
         if element_type is None:

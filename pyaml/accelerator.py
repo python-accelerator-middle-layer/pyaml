@@ -61,6 +61,8 @@ class Accelerator:
     :attr:`live` and :attr:`design` properties.
     """
 
+    __pyaml_repr_exclude__ = ("description", "yellow_pages")
+
     def __init__(
         self,
         facility: str,
@@ -266,6 +268,14 @@ class Accelerator:
         modes.update(self._simulators)
         modes.update(self._controls)
         return modes
+
+    def _pyaml_repr_fields(self) -> dict[str, object]:
+        return {
+            "facility": self.facility,
+            "machine": self.machine,
+            "simulators": list(self._simulators),
+            "controls": list(self._controls),
+        }
 
     def __repr__(self):
         return __pyaml_repr__(self)

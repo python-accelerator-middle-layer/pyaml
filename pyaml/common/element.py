@@ -1,59 +1,215 @@
+from collections.abc import Mapping, Sequence
+from dataclasses import dataclass
 from typing import TYPE_CHECKING, Any
 
 from pydantic import BaseModel, ConfigDict
 
+from . import abstract
 from .exception import PyAMLException
 
 if TYPE_CHECKING:
     from .holders.element_holder import ElementHolder
 
 
+@dataclass(frozen=True)
+class ReprOptions:
+    """Limits applied to PyAML object representations."""
+
+    max_items: int = 3
+    max_depth: int = 2
+    max_length: int = 800
+
+
+_repr_options = ReprOptions()
+
+
+def set_repr_options(
+    max_items: int | None = None,
+    max_depth: int | None = None,
+    max_length: int | None = None,
+) -> ReprOptions:
+    """
+    Configure the limits used by PyAML object representations.
+
+    Passing no arguments returns the current options. Every supplied value must
+    be a positive integer.
+    """
+    global _repr_options
+
+    values = {
+        "max_items": _repr_options.max_items if max_items is None else max_items,
+        "max_depth": _repr_options.max_depth if max_depth is None else max_depth,
+        "max_length": _repr_options.max_length if max_length is None else max_length,
+    }
+    for name, value in values.items():
+        if not isinstance(value, int) or value < 1:
+            raise ValueError(f"{name} must be a positive integer")
+
+    _repr_options = ReprOptions(**values)
+    return _repr_options
+
+
+def _unavailable(error: Exception) -> str:
+    return f"<unavailable: {error.__class__.__name__}>"
+
+
+def _class_exclusions(obj) -> set[str]:
+    exclusions: set[str] = set()
+    for cls in type(obj).__mro__:
+        exclusions.update(getattr(cls, "__pyaml_repr_exclude__", ()))
+    return exclusions
+
+
+def _properties(obj) -> dict[str, Any]:
+    values: dict[str, Any] = {}
+    for cls in reversed(type(obj).__mro__):
+        for name, descriptor in vars(cls).items():
+            if name.startswith("_") or not isinstance(descriptor, property):
+                continue
+            try:
+                values[name] = getattr(obj, name)
+            except Exception as error:
+                values[name] = _unavailable(error)
+    return values
+
+
+def _fields(obj) -> dict[str, Any]:
+    custom_fields = getattr(obj, "_pyaml_repr_fields", None)
+    if custom_fields is not None:
+        try:
+            return custom_fields()
+        except Exception as error:
+            return {"value": _unavailable(error)}
+
+    values = _properties(obj)
+    for name, value in vars(obj).items():
+        if not name.startswith("_"):
+            values.setdefault(name, value)
+    return values
+
+
+def _identity(obj) -> str:
+    name = getattr(obj, "name", None)
+    try:
+        name = name() if callable(name) else name
+    except Exception:
+        name = None
+    if isinstance(name, str):
+        return f"{obj.__class__.__name__}:{name}"
+    return obj.__class__.__name__
+
+
+def _short_object_repr(obj) -> str:
+    name = getattr(obj, "name", None)
+    try:
+        name = name() if callable(name) else name
+    except Exception:
+        name = None
+    if isinstance(name, str):
+        return f"{obj.__class__.__name__}(name={_format_value(name, 0, set())})"
+    return obj.__class__.__name__
+
+
+def _selected_items(values: Sequence | set) -> tuple[list[Any], int]:
+    items = list(values)
+    omitted = len(items) - _repr_options.max_items
+    if omitted <= 0:
+        return items, 0
+
+    head_count = (_repr_options.max_items + 1) // 2
+    tail_count = _repr_options.max_items - head_count
+    selected = items[:head_count]
+    if tail_count:
+        selected.extend(items[-tail_count:])
+    return selected, omitted
+
+
+def _format_sequence(values: Sequence | set, depth: int, active: set[int]) -> str:
+    selected, omitted = _selected_items(values)
+    parts = [_format_value(value, depth, active) for value in selected]
+    if omitted:
+        insert_at = (_repr_options.max_items + 1) // 2
+        parts.insert(insert_at, f"... +{omitted} more ...")
+
+    if isinstance(values, tuple):
+        if len(parts) == 1 and not omitted:
+            return f"({parts[0]},)"
+        return f"({', '.join(parts)})"
+    if isinstance(values, set):
+        return "{" + ", ".join(parts) + "}"
+    return "[" + ", ".join(parts) + "]"
+
+
+def _format_mapping(values: Mapping, depth: int, active: set[int]) -> str:
+    selected, omitted = _selected_items(list(values.items()))
+    parts = [f"{_format_value(key, depth, active)}: {_format_value(value, depth, active)}" for key, value in selected]
+    if omitted:
+        parts.insert((_repr_options.max_items + 1) // 2, f"... +{omitted} more ...")
+    return "{" + ", ".join(parts) + "}"
+
+
+def _format_object(obj, depth: int, active: set[int], extra_exclusions: set[str] | None = None) -> str:
+    if depth >= _repr_options.max_depth:
+        return _short_object_repr(obj)
+    if id(obj) in active:
+        return f"<recursive {obj.__class__.__name__}>"
+
+    active.add(id(obj))
+    try:
+        values = _fields(obj)
+        exclusions = _class_exclusions(obj)
+        if extra_exclusions:
+            exclusions.update(extra_exclusions)
+        parts = []
+        for name, value in values.items():
+            if name.startswith("_") or name in exclusions or callable(value):
+                continue
+            if isinstance(value, (abstract.ReadFloatScalar, abstract.ReadFloatArray, abstract.ReadWriteFloatArray)):
+                continue
+            formatted = _identity(value) if name == "peer" and value is not None else _format_value(value, depth + 1, active)
+            parts.append(f"{name}={formatted}")
+        return f"{obj.__class__.__name__}({', '.join(parts)})" if parts else obj.__class__.__name__
+    except Exception as error:
+        return f"{obj.__class__.__name__}({_unavailable(error)})"
+    finally:
+        active.remove(id(obj))
+
+
+def _format_value(value, depth: int, active: set[int]) -> str:
+    if isinstance(value, str):
+        limit = max(1, _repr_options.max_length // 4)
+        suffix = "..." if len(value) > limit else ""
+        return repr(value[:limit] + suffix)
+    if value is None or isinstance(value, (bool, int, float, complex)):
+        return repr(value)
+    if isinstance(value, Mapping):
+        return _format_mapping(value, depth, active)
+    if isinstance(value, (list, tuple, set, frozenset)):
+        return _format_sequence(value, depth, active)
+    if type(value).__module__.startswith("numpy"):
+        shape = getattr(value, "shape", None)
+        dtype = getattr(value, "dtype", None)
+        return f"{value.__class__.__name__}(shape={shape!r}, dtype={dtype!r})"
+    if type(value).__module__.startswith("pyaml"):
+        return _format_object(value, depth, active)
+    try:
+        result = repr(value)
+    except Exception as error:
+        return _unavailable(error)
+    limit = max(1, _repr_options.max_length // 2)
+    return result if len(result) <= limit else result[:limit] + "..."
+
+
 def __pyaml_repr__(obj, exclude: list[str] | None = None):
     """
-    Returns a string representation of a pyaml object,
-    including inherited properties and one level of nested objects.
+    Return an informative, bounded representation of a PyAML object.
+
+    Public attributes and read-only properties are included unless they are
+    excluded. Device accessors are omitted so rendering never reads a control
+    system value.
     """
-    if exclude is None:
-        exclude = []
-
-    cls_name = obj.__class__.__name__
-
-    attrs = {}
-
-    for name in dir(obj):
-        # Skip private attributes and user-excluded names
-        if name.startswith("_") or name in exclude:
-            continue
-
-        try:
-            value = getattr(obj, name)
-
-            # Skip methods/functions (we only want data)
-            # This prevents: BPM(get_name=<bound method...>)
-            if callable(value):
-                continue
-
-            if name == "peer":
-                value = obj.attached_to() if isinstance(obj, Element) else value.__class__.__name__
-
-            attrs[name] = value
-        except Exception as e:
-            attrs[name] = f"<error: {e}>"
-
-    # Special handling for 'name' if it's an Element but not in attrs
-    if isinstance(obj, Element) and "name" not in attrs and "name" not in exclude:
-        try:
-            attrs["name"] = obj.get_name()
-        except Exception:
-            pass
-
-    # The !r flag ensures that if 'v' is another pyaml object,
-    # its own __repr__ is called (providing the "one level below" effect).
-    if not attrs:
-        return cls_name
-    parts = ", ".join(f"{k}={v!r}" for k, v in sorted(attrs.items())[:10])
-    # Limit to 10 attributes to avoid overly long representations
-    return f"{cls_name}({parts})"
+    result = _format_object(obj, 0, set(), set(exclude or ()))
+    return result[: _repr_options.max_length] + ("..." if len(result) > _repr_options.max_length else "")
 
 
 class ElementConfigModel(BaseModel):
@@ -88,6 +244,8 @@ class Element:
     """
     Class providing access to one element of a physical or simulated lattice
     """
+
+    __pyaml_repr_exclude__ = ("description",)
 
     def __init__(
         self,
