@@ -6,7 +6,7 @@ strength, hardware, and magnet-model information.
 """
 
 import copy
-from typing import Self
+from typing import TYPE_CHECKING, Self
 
 import numpy as np
 from scipy.constants import speed_of_light
@@ -15,6 +15,9 @@ from .. import PyAMLException
 from ..common import abstract
 from ..common.element import Element
 from .model import MagnetModel
+
+if TYPE_CHECKING:
+    from ..common.holders.element_holder import ElementHolder
 
 
 class Magnet(Element):
@@ -131,7 +134,7 @@ class Magnet(Element):
         obj._peer = peer
         return obj
 
-    def _fill_device(self, holder) -> None:
+    def _fill_device(self, holder: "ElementHolder") -> None:
         holder._fill_magnet(self)
 
     def set_energy(self, energy: float):

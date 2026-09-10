@@ -4,6 +4,8 @@ Serialized magnet elements.
 This module defines magnet elements composed of multiple serialized magnets.
 """
 
+from typing import TYPE_CHECKING
+
 import numpy as np
 from scipy.constants import speed_of_light
 
@@ -15,6 +17,9 @@ from ..validation import DynamicValidation, register_schema
 from .function_mapping import function_map
 from .magnet import Magnet
 from .model import MagnetModel
+
+if TYPE_CHECKING:
+    from ..common.holders.element_holder import ElementHolder
 
 # Define the main class name for this module
 PYAMLCLASS = "SerializedMagnets"
@@ -257,7 +262,7 @@ class SerializedMagnets(Element, DynamicValidation):
             # Attach
             self._peer = peer
 
-    def _fill_device(self, holder) -> None:
+    def _fill_device(self, holder: "ElementHolder") -> None:
         holder._fill_serialized_magnets(self)
 
     def __create_virtual_magnet(self, name: str) -> Magnet:
