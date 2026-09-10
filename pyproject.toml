@@ -50,6 +50,7 @@ cs-oa-tango = [
 test = [
     "pytest>=7.4",
     "pytest-cov>=3.0",
+    "pyaml-test-lattice @ git+https://github.com/python-accelerator-middle-layer/pyaml-test-lattice.git@main",
 ]
 doc = [
     "sphinx ~= 8.1",
