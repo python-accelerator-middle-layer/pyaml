@@ -22,7 +22,15 @@ def test_repr_is_informative_and_bounded():
     bpm = sr.design.bpm.get("BPM_C04-04")
     bpms = sr.design.bpms.get("BPM")
 
-    assert repr(bpm) == "BPM(name='BPM_C04-04', lattice_names='BPM_C04-04', peer=Simulator:design)"
+    assert repr(bpm) == (
+        "BPM(name='BPM_C04-04', lattice_names='BPM_C04-04', "
+        + "peer=Simulator:design, x_pos='srdiag/bpm/c04-04/SA_HPosition', "
+        + "y_pos='srdiag/bpm/c04-04/SA_VPosition', "
+        + "x_offset='srdiag/bpm/c04-04/HOffset', "
+        + "y_offset='srdiag/bpm/c04-04/VOffset', "
+        + "tilt_name=None)"
+    )
+
     assert repr(sr.design) == (
         f"Simulator(name='design', lattice={sr.design.lattice!r}, mat_key=None, n_elements={len(sr.design.ring)})"
     )
