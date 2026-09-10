@@ -6,10 +6,15 @@ control modes in which it is available until an :class:`ElementHolder` is
 known and the concrete element can be instantiated.
 """
 
+from typing import TYPE_CHECKING
+
 from pydantic import BaseModel
 
 from ..common.element import Element
 from ..common.exception import PyAMLConfigException
+
+if TYPE_CHECKING:
+    from ..common.holders.element_holder import ElementHolder
 
 
 class UnboundElement(Element):
@@ -54,7 +59,7 @@ class UnboundElement(Element):
             self._module_name,
         )
 
-    def _fill_device(self, holder) -> None:
+    def _fill_device(self, holder: "ElementHolder") -> None:
         holder._fill_unbound_element(self)
 
     def instantiate(self, holder) -> Element:

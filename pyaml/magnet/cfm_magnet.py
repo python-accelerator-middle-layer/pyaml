@@ -5,6 +5,8 @@ This module defines magnets that combine multiple multipole components and
 provide separate strength and hardware access for those components.
 """
 
+from typing import TYPE_CHECKING
+
 from scipy.constants import speed_of_light
 
 from ..common import abstract
@@ -23,6 +25,9 @@ from .skewoctu import SkewOctu
 from .skewquad import SkewQuad
 from .skewsext import SkewSext
 from .vcorrector import VCorrector
+
+if TYPE_CHECKING:
+    from ..common.holders.element_holder import ElementHolder
 
 _fmap: dict = {
     "B0": HCorrector,
@@ -131,7 +136,7 @@ class CombinedFunctionMagnet(Element, DynamicValidation):
             # Attach
             self._peer = peer
 
-    def _fill_device(self, holder) -> None:
+    def _fill_device(self, holder: "ElementHolder") -> None:
         holder._fill_combined_function_magnet(self)
 
     def get_model_name(self) -> str:
