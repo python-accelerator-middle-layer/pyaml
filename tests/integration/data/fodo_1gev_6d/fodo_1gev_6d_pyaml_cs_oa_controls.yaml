@@ -1,4 +1,0 @@
-controls:
-- type: pyaml_cs_oa.controlsystem
-  name: live
-  catalog: fodo_1gev_6d_pyaml_cs_oa_catalog.yaml

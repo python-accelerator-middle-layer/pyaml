@@ -60,8 +60,8 @@ jobs:
           python -m pip install -e ".[test]"
           python -m pip install "ophyd-async[tango, ca, pva]"
           python -m pip install --no-deps \
-            "tango-pyaml @ git+https://github.com/python-accelerator-middle-layer/tango-pyaml.git" \
-            "pyaml-cs-oa @ git+https://github.com/python-accelerator-middle-layer/pyaml-cs-oa.git"
+            "tango-pyaml @ git+https://github.com/python-accelerator-middle-layer/tango-pyaml.git@0.3.3" \
+            "pyaml-cs-oa @ git+https://github.com/python-accelerator-middle-layer/pyaml-cs-oa.git@0.2.0"
           python -c "import tango; import tango.pyaml; import pyaml_cs_oa"
 
       - name: Log in to GitLab registry
@@ -85,9 +85,12 @@ jobs:
           LOG_FILE="${RUNNER_TEMP}/dt4acc-twin.log"
           PID_FILE="${RUNNER_TEMP}/dt4acc-twin.pid"
 
+          ACCEL_SETUP_FILE=$(python -c "from pyaml_test_lattice import configurations; print(configurations['dt4acc/fodo_1gev_6d_dt4acc_tango.json'])")
+          LATTICE_FILE=$(python -c "from pyaml_test_lattice import lattices; print(lattices['fodo_1gev_6d.json'])")
+
           bash tests/integration/start_dt4acc_twin.sh \
-            --accelerator-setup-file "${GITHUB_WORKSPACE}/tests/integration/data/fodo_1gev_6d/fodo_1gev_6d_dt4acc.json" \
-            --lattice-file "${GITHUB_WORKSPACE}/tests/integration/data/fodo_1gev_6d/fodo_1gev_6d.json" \
+            --accelerator-setup-file "${ACCEL_SETUP_FILE}" \
+            --lattice-file "${LATTICE_FILE}" \
             --tango-host "${TANGO_HOST%:*}" \
             --tango-port "${TANGO_HOST##*:}" \
             --sif "${RUNNER_TEMP}/apptainer/dt4acc-soleil-twin.sif" \
