@@ -60,7 +60,7 @@ jobs:
           python -m pip install -e ".[test]"
           python -m pip install "ophyd-async[tango, ca, pva]"
           python -m pip install --no-deps \
-            "tango-pyaml @ git+https://github.com/python-accelerator-middle-layer/tango-pyaml.git@0.3.3" \
+            "tango-pyaml @ git+https://github.com/python-accelerator-middle-layer/tango-pyaml.git@1f010735bd675ad2f918958abd0396cb6766f14e" \
             "pyaml-cs-oa @ git+https://github.com/python-accelerator-middle-layer/pyaml-cs-oa.git@0.2.0"
           python -c "import tango; import tango.pyaml; import pyaml_cs_oa"
 
