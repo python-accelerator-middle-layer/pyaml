@@ -63,8 +63,6 @@ class BPM(Element, DynamicValidation):
         Return configured device keys used for offset control.
     """
 
-    __pyaml_repr_exclude__ = ("x_pos", "y_pos", "x_offset", "y_offset", "tilt_name")
-
     def __init__(
         self,
         name: str,
