@@ -6,7 +6,7 @@ and optionally converts tune fractions to frequencies using an RF plant.
 """
 
 import copy
-from typing import Self
+from typing import TYPE_CHECKING, Self
 
 from numpy.typing import NDArray
 
@@ -14,6 +14,9 @@ from ..common.abstract import ReadFloatArray
 from ..common.element import Element, __pyaml_repr__
 from ..validation import DynamicValidation, register_schema
 from .atune_monitor import ABetatronTuneMonitor
+
+if TYPE_CHECKING:
+    from ..common.holders.element_holder import ElementHolder
 
 PYAMLCLASS = "BetatronTuneMonitor"
 
@@ -90,7 +93,7 @@ class BetatronTuneMonitor(Element, DynamicValidation, ABetatronTuneMonitor):
         """
         self._h = float(h)
 
-    def _fill_device(self, holder) -> None:
+    def _fill_device(self, holder: "ElementHolder") -> None:
         holder._fill_betatron_tune_monitor(self)
 
     @property
