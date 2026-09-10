@@ -7,13 +7,16 @@ voltage.
 """
 
 import copy
-from typing import Self
+from typing import TYPE_CHECKING, Self
 
 from .. import PyAMLException
 from ..common import abstract
 from ..common.element import Element, __pyaml_repr__
 from ..validation import DynamicValidation, register_schema
 from .rf_transmitter import RFTransmitter
+
+if TYPE_CHECKING:
+    from ..common.holders.element_holder import ElementHolder
 
 # Define the main class name for this module
 PYAMLCLASS = "RFPlant"
@@ -115,7 +118,7 @@ class RFPlant(Element, DynamicValidation):
         obj._peer = peer
         return obj
 
-    def _fill_device(self, holder) -> None:
+    def _fill_device(self, holder: "ElementHolder") -> None:
         holder._fill_rf_plant(self)
 
 

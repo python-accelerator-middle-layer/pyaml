@@ -1,12 +1,15 @@
 """Beam-position monitor elements and their runtime interfaces."""
 
 import copy
-from typing import Self
+from typing import TYPE_CHECKING, Self
 
 from ..common.abstract import ReadFloatArray, ReadWriteFloatArray, ReadWriteFloatScalar
 from ..common.element import Element, __pyaml_repr__
 from ..common.exception import PyAMLException
 from ..validation import DynamicValidation, register_schema
+
+if TYPE_CHECKING:
+    from ..common.holders.element_holder import ElementHolder
 
 PYAMLCLASS = "BPM"
 
@@ -176,7 +179,7 @@ class BPM(Element, DynamicValidation):
         obj._peer = peer
         return obj
 
-    def _fill_device(self, holder) -> None:
+    def _fill_device(self, holder: "ElementHolder") -> None:
         holder._fill_bpm(self)
 
     def get_pos_devices(self) -> list[str | None]:

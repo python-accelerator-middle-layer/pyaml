@@ -268,6 +268,12 @@ class Element:
         """
         return "None" if self._peer is None else f"{self._peer.__class__.__name__}:{self._peer.name()}"
 
+    def _fill_device(self, holder: "ElementHolder"):
+        """
+        Add this element to a holder (Simultor or ControlSystem)
+        """
+        raise PyAMLException(f"__fill_device() is not implemented for {self.__class__.__name__}")
+
     def post_init(self):
         """
         Perform post-construction initialization after attachment.
