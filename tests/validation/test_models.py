@@ -1,6 +1,8 @@
 """Tests of the configuration models."""
 
+import inspect
 import json
+from dataclasses import dataclass
 
 import pytest
 from pydantic import BaseModel, ValidationError
@@ -364,3 +366,80 @@ def test_static_validation_requires_a_validation_model():
         class Broken(StaticValidation):
             def __init__(self, name: str):
                 self.name = name
+
+
+# ==========================================================
+# ValidationMeta signatures
+# ==========================================================
+
+
+def test_dynamic_validation_exposes_constructor_signature():
+    class MyClass(DynamicValidation):
+        def __init__(self, name: str, count: int = 0):
+            self.name = name
+            self.count = count
+
+    signature = inspect.signature(MyClass)
+
+    assert list(signature.parameters) == ["name", "count"]
+    assert signature.parameters["count"].default == 0
+    assert signature.return_annotation is inspect.Signature.empty
+
+
+def test_static_validation_exposes_constructor_signature():
+    class ExampleModel(BaseModel):
+        name: str
+
+    class Example(StaticValidation):
+        validation_model = ExampleModel
+
+        def __init__(self, name: str):
+            self.name = name
+
+    assert list(inspect.signature(Example).parameters) == ["name"]
+
+
+def test_validation_signature_excludes_validate_keyword():
+    class MyClass(DynamicValidation):
+        def __init__(self, name: str):
+            self.name = name
+
+    assert "validate" not in inspect.signature(MyClass).parameters
+
+
+def test_validation_signature_uses_inherited_constructor():
+    class Parent(DynamicValidation):
+        def __init__(self, name: str, count: int = 0):
+            self.name = name
+            self.count = count
+
+    class Child(Parent):
+        pass
+
+    assert list(inspect.signature(Child).parameters) == ["name", "count"]
+
+
+def test_validation_signature_of_class_without_constructor_is_empty():
+    class MyClass(DynamicValidation):
+        pass
+
+    assert inspect.signature(MyClass) == inspect.Signature()
+
+
+def test_validation_signature_matches_dataclass_fields():
+    @dataclass
+    class MyClass(DynamicValidation):
+        name: str
+        count: int = 0
+
+    assert list(inspect.signature(MyClass).parameters) == ["name", "count"]
+
+
+def test_validation_signature_not_visible_on_instances():
+    class MyClass(DynamicValidation):
+        def __init__(self, name: str):
+            self.name = name
+
+    obj = MyClass("test")
+
+    assert not hasattr(obj, "__signature__")

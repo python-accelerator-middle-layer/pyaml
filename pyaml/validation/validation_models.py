@@ -36,7 +36,41 @@ class ValidationMeta(ABCMeta):
     invoked.
 
     Pass `validate=False` to skip validation for a single construction.
+
+    The signature reported by :func:`inspect.signature` for classes using this
+    metaclass is that of their ``__init__``, not of :meth:`__call__`. The
+    ``validate`` keyword is therefore not part of the reported signature.
     """
+
+    @property
+    def __signature__(cls) -> inspect.Signature | None:
+        """
+        Report the constructor signature of the class.
+
+        Without this, :func:`inspect.signature` resolves to :meth:`__call__` and
+        reports ``(*args, **kwargs)`` for every class using this metaclass, which
+        hides the real parameters from ``help()``, Sphinx and other tooling.
+
+        Returns
+        -------
+        inspect.Signature | None
+            Signature of ``cls.__init__`` without ``self``, or ``None`` if it
+            cannot be determined, in which case the default introspection applies.
+        """
+        # Classes relying on ``object.__init__`` take no argument, as reported by
+        # ``inspect.signature`` for a class without a metaclass
+        if cls.__init__ is object.__init__ and cls.__new__ is object.__new__:
+            return inspect.Signature()
+
+        try:
+            signature = inspect.signature(cls.__init__)
+        except (TypeError, ValueError):  # pragma: no cover - defensive
+            return None
+
+        # Drop ``self`` and the constructor return annotation
+        parameters = list(signature.parameters.values())[1:]
+
+        return signature.replace(parameters=parameters, return_annotation=inspect.Signature.empty)
 
     def __call__(cls, *args: Any, **kwargs: Any):
         """
@@ -112,6 +146,26 @@ class ValidationModelDescriptor:
         instance: object | None,
         owner: type["DynamicValidation"],
     ) -> type[ValidationModel]:
+        """
+        Return the validation model associated with ``owner``.
+
+        The model is generated on first access and cached on the owning class.
+        Because this descriptor exposes class-level metadata, ``instance`` is
+        not used.
+
+        Parameters
+        ----------
+        instance : object | None
+            Instance through which the descriptor was accessed, or ``None``
+            when accessed on the class.
+        owner : type[DynamicValidation]
+            Class whose validation model is requested.
+
+        Returns
+        -------
+        type[ValidationModel]
+            The cached or newly generated validation model.
+        """
         model = owner.__dict__.get("_validation_model")
 
         if model is None:
@@ -122,7 +176,8 @@ class ValidationModelDescriptor:
 
 
 class DynamicValidation(metaclass=ValidationMeta):
-    """Base class for automatic constructor argument validation.
+    """
+    Base class for automatic constructor argument validation.
 
     When a subclass is defined, a validation model is generated from either
     its explicitly declared constructor or its directly declared class
@@ -167,7 +222,8 @@ class DynamicValidation(metaclass=ValidationMeta):
 
     @classmethod
     def _build_validation_model(cls) -> type[ValidationModel]:
-        """Generate a validation model from the class definition.
+        """
+        Generate a validation model from the class definition.
 
         For classes with an explicitly defined ``__init__``, fields are
         extracted from the constructor signature. Otherwise, fields are

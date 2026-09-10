@@ -1,3 +1,11 @@
+"""
+Control-system element binding and runtime device interfaces.
+
+The classes in this module resolve configured device references, attach
+accelerator elements to a control-system backend, and construct the scalar,
+array, and aggregator interfaces used to access those elements at runtime.
+"""
+
 from abc import ABCMeta, abstractmethod
 
 from pydantic import BaseModel
@@ -5,10 +13,8 @@ from pydantic import BaseModel
 from ..bpm.bpm import BPM
 from ..common.abstract import RWMapper
 from ..common.abstract_aggregator import ScalarAggregator
-from ..common.element import Element
 from ..common.exception import PyAMLException
 from ..common.holders.element_holder import ElementHolder
-from ..configuration.factory import Factory
 from ..configuration.unbound_element import UnboundElement
 from ..control.abstract_impl import (
     CSScalarAggregator,
@@ -40,20 +46,50 @@ from .deviceaccesslist import DeviceAccessList
 
 class ControlSystem(ElementHolder, metaclass=ABCMeta):
     """
-    Abstract class providing access to a control system float variable
+    Define the interface for binding accelerator elements to a backend.
+
+    A control system resolves PyAML element names to control-system devices and
+    wraps them in read/write accessors, so tools written against
+    :class:`~pyaml.common.holders.element_holder.ElementHolder` drive a live
+    machine unchanged. Concrete backends live in separate packages and are
+    selected from the configuration.
+
+    Methods
+    -------
+    name()
+        Return the backend control-system name.
+    get_aggregator()
+        Return an empty device aggregator, or ``None`` for direct access.
+    get_device_access(ref)
+        Return a device reference for this control system. YAML element configuration passes opaque strings. Public
+        Python APIs may also pass backend ConfigModel instances. Concrete backends own all lookup, parsing and
+        DeviceAccess construction.
+    get_devices_access(refs)
+        Resolve a list of backend references into device access objects.
+    create_magnet_strength_aggregator(magnets)
+        Create an aggregator that exposes magnet strengths.
+    create_magnet_hardware_aggregator(magnets)
+        Create an aggregator for magnet hardware values.
+    create_bpm_aggregators(bpms)
+        Create aggregate BPM position channels.
+    fill_device(elements)
+        Fill device of this control system with Element coming from the configuration file
     """
 
     def __init__(self):
+        """
+        Initialize the ControlSystem.
+        """
         ElementHolder.__init__(self)
 
     @abstractmethod
     def name(self) -> str:
-        """Return control system name (i.e. live)"""
+        """Return the backend control-system name."""
         pass
 
     @abstractmethod
     def get_aggregator(self) -> DeviceAccessList | None:
-        """Returns a new empty DeviceAccessList. If None is returned serialized readings/writtings are performed"""
+        """Return an empty device aggregator, or ``None`` for direct access."""
         pass
 
     @abstractmethod
@@ -68,22 +104,49 @@ class ControlSystem(ElementHolder, metaclass=ABCMeta):
 
     def get_devices_access(self, refs: list[str | BaseModel | None]) -> list[DeviceAccess]:
         """
-        Return a device reference for this control system.
-        YAML element configuration passes opaque strings. Public Python APIs may
-        also pass backend ConfigModel instances. Concrete backends own all
-        lookup, parsing and DeviceAccess construction.
+        Resolve a list of backend references into device access objects.
+
+        Parameters
+        ----------
+        refs : list of str or BaseModel or None
+            Backend-specific device references from the configuration.
+
+        Returns
+        -------
+        list of DeviceAccess
+            Device access objects in the same order as ``refs``.
+
+        Raises
+        ------
+        PyAMLException
+            If ``refs`` is not a list.
         """
         if not isinstance(refs, list):
             raise PyAMLException(f"get_devices() expect a list as input arguments but got {str(type(refs))}")
         return [self.get_device_access(ref) for ref in refs]
 
     def _create_scalar_aggregator(self) -> ScalarAggregator | None:
+        """Create an empty scalar aggregator for this control-system backend."""
         agg = self.get_aggregator()
         if agg is None:
             return None
         return CSScalarAggregator(agg)
 
     def create_magnet_strength_aggregator(self, magnets: list[Magnet]) -> ScalarAggregator | None:
+        """
+        Create an aggregator that exposes magnet strengths.
+
+        Parameters
+        ----------
+        magnets : list[Magnet]
+            Magnets whose strength channels should be aggregated.
+
+        Returns
+        -------
+        ScalarAggregator | None
+            Strength aggregator, or ``None`` when the backend does not use
+            aggregators.
+        """
         agg = self._create_scalar_aggregator()
         if agg is None:
             return None
@@ -94,8 +157,22 @@ class ControlSystem(ElementHolder, metaclass=ABCMeta):
         return magg
 
     def create_magnet_hardware_aggregator(self, magnets: list[Magnet]) -> ScalarAggregator | None:
-        """When working in hardware space, 1 single power
-        supply device per multipolar strength is required
+        """
+        Create an aggregator for magnet hardware values.
+
+        One power-supply device is selected for each magnet strength exposed
+        in hardware space.  ``None`` is returned if a magnet lacks hardware
+        support or the backend does not provide aggregators.
+
+        Parameters
+        ----------
+        magnets : list[Magnet]
+            Magnets whose hardware channels should be grouped.
+
+        Returns
+        -------
+        ScalarAggregator | None
+            Grouped accessor, or ``None`` when a magnet exposes no hardware device.
         """
         agg = self._create_scalar_aggregator()
         if agg is None:
@@ -108,6 +185,19 @@ class ControlSystem(ElementHolder, metaclass=ABCMeta):
         return agg
 
     def create_bpm_aggregators(self, bpms: list[BPM]) -> list[ScalarAggregator | None]:
+        """
+        Create aggregate BPM position channels.
+
+        Parameters
+        ----------
+        bpms : list[BPM]
+            BPM elements whose position devices should be aggregated.
+
+        Returns
+        -------
+        list[ScalarAggregator | None]
+            Aggregators for combined, horizontal, and vertical positions.
+        """
         agg = self._create_scalar_aggregator()
         aggh = self._create_scalar_aggregator()
         aggv = self._create_scalar_aggregator()
@@ -120,115 +210,119 @@ class ControlSystem(ElementHolder, metaclass=ABCMeta):
             aggv.add_devices(devs[1])
         return [agg, aggh, aggv]
 
-    def fill_device(self, elements: list[Element]):
-        """
-        Fill device of this control system with Element
-        coming from the configuration file
+    def _fill_magnet(self, magnet: Magnet) -> None:
+        device = self.get_device_access(magnet.model.get_device_names()[0])
+        current = RWHardwareScalar(magnet.model, device) if magnet.model.has_hardware() else None
+        strength = RWStrengthScalar(magnet.model, device) if magnet.model.has_physics() else None
+        self.magnet.add(magnet.attach(self, strength, current))
 
-        Parameters
-        ----------
-        elements : list[Element]
-            List of elements coming from the configuration
-            file to attach to this control system
-        """
-        for e in elements:
-            if isinstance(e, Magnet):
-                dev = self.get_device_access(e.model.get_device_names()[0])
-                current = RWHardwareScalar(e.model, dev) if e.model.has_hardware() else None
-                strength = RWStrengthScalar(e.model, dev) if e.model.has_physics() else None
-                # Create a unique ref for this control system
-                m = e.attach(self, strength, current)
-                self.magnet.add(m)
+    def _fill_combined_function_magnet(self, magnet: CombinedFunctionMagnet) -> None:
+        devices = self.get_devices_access(magnet.model.get_device_names())
+        currents = RWHardwareArray(magnet.model, devices)
+        strengths = RWStrengthArray(magnet.model, devices)
+        attached_magnets = magnet.attach(self, strengths, currents)
+        self.combined_function_magnet.add(attached_magnets[0])
+        for virtual_magnet in attached_magnets[1:]:
+            self.magnet.add(virtual_magnet)
 
-            elif isinstance(e, CombinedFunctionMagnet):
-                devs = self.get_devices_access(e.model.get_device_names())
-                currents = RWHardwareArray(e.model, devs)
-                strengths = RWStrengthArray(e.model, devs)
-                # Create unique refs the cfm and
-                # each of its function for this control system
-                ms = e.attach(self, strengths, currents)
-                self.combined_function_magnet.add(ms[0])
-                for m in ms[1:]:
-                    self.magnet.add(m)
+    def _fill_serialized_magnets(self, magnets: SerializedMagnets) -> None:
+        devices = self.get_devices_access(magnets.model.get_device_names())
+        currents = []
+        strengths = []
+        for index in range(magnets.get_nb_magnets()):
+            currents.append(
+                RWHardwareScalar(magnets.model.get_sub_model(index), devices[index]) if magnets.model.has_hardware() else None
+            )
+            strengths.append(
+                RWStrengthScalar(magnets.model.get_sub_model(index), devices[index]) if magnets.model.has_physics() else None
+            )
+        attached_magnets = magnets.attach(self, strengths, currents)
+        self.serialized_magnet.add(attached_magnets[0])
+        for magnet in attached_magnets[1:]:
+            self.magnet.add(magnet)
 
-            elif isinstance(e, SerializedMagnets):
-                devs = self.get_devices_access(e.model.get_device_names())
-                currents = []
-                strengths = []
-                # Create unique refs the series and each of its function for this
-                # control system
-                for i in range(e.get_nb_magnets()):
-                    current = RWHardwareScalar(e.model.get_sub_model(i), devs[i]) if e.model.has_hardware() else None
-                    strength = RWStrengthScalar(e.model.get_sub_model(i), devs[i]) if e.model.has_physics() else None
-                    currents.append(current)
-                    strengths.append(strength)
-                ms = e.attach(self, strengths, currents)
-                self.serialized_magnet.add(ms[0])
-                for m in ms[1:]:
-                    self.magnet.add(m)
+    def _fill_bpm(self, bpm: BPM) -> None:
+        position_devices = self.get_devices_access(bpm.get_pos_devices())
+        tilt_devices = self.get_devices_access([bpm.get_tilt_device()])
+        offset_devices = self.get_devices_access(bpm.get_offset_devices())
+        positions = RBpmArray(position_devices[0], position_devices[1])
+        tilt = RWBpmTiltScalar(tilt_devices[0])
+        offsets = RWBpmOffsetArray(offset_devices[0], offset_devices[1])
+        self.bpm.add(bpm.attach(self, positions, offsets, tilt))
 
-            elif isinstance(e, BPM):
-                pos_devs = self.get_devices_access(e.get_pos_devices())
-                tilt_devs = self.get_devices_access([e.get_tilt_device()])
-                offset_devs = self.get_devices_access(e.get_offset_devices())
-                positions = RBpmArray(pos_devs[0], pos_devs[1])
-                tilt = RWBpmTiltScalar(tilt_devs[0])
-                offsets = RWBpmOffsetArray(offset_devs[0], offset_devs[1])
-                e = e.attach(self, positions, offsets, tilt)
-                self.bpm.add(e)
+    def _fill_rf_plant(self, rf_plant: RFPlant) -> None:
+        attached_transmitters: list[RFTransmitter] = []
+        if rf_plant.transmitters:
+            for transmitter in rf_plant.transmitters:
+                voltage_device = self.get_device_access(transmitter.voltage_name)
+                phase_device = self.get_device_access(transmitter.phase_name)
+                voltage = RWRFVoltageScalar(transmitter, voltage_device)
+                phase = RWRFPhaseScalar(transmitter, phase_device)
+                attached_transmitter = transmitter.attach(self, voltage, phase)
+                self.rf.transmitter.add(attached_transmitter)
+                attached_transmitters.append(attached_transmitter)
+        frequency_device = self.get_device_access(rf_plant.masterclock)
+        frequency = RWRFFrequencyScalar(rf_plant, frequency_device)
+        voltage = RWTotalVoltage(attached_transmitters) if rf_plant.transmitters else None
+        self.rf.add(rf_plant.attach(self, frequency, voltage))
 
-            elif isinstance(e, RFPlant):
-                attachedTrans: list[RFTransmitter] = []
-                if e.transmitters:
-                    for t in e.transmitters:
-                        vDev = self.get_device_access(t.voltage_name)
-                        pDev = self.get_device_access(t.phase_name)
-                        voltage = RWRFVoltageScalar(t, vDev)
-                        phase = RWRFPhaseScalar(t, pDev)
-                        nt = t.attach(self, voltage, phase)
-                        self.rf.transmitter.add(nt)
-                        attachedTrans.append(nt)
+    def _fill_betatron_tune_monitor(self, monitor: BetatronTuneMonitor) -> None:
+        devices = self.get_devices_access([monitor.tune_h, monitor.tune_v])
+        self.add_betatron_tune_monitor(monitor.attach(self, RBetatronTuneArray(monitor, devices)))
 
-                fDev = self.get_device_access(e.masterclock)
-                frequency = RWRFFrequencyScalar(e, fDev)
-                voltage = RWTotalVoltage(attachedTrans) if e.transmitters else None
-                ne = e.attach(self, frequency, voltage)
-                self.rf.add(ne)
+    def _fill_tool(self, tool: TuningTool | MeasurementTool) -> None:
+        self.add_tool(tool.attach(self))
 
-            elif isinstance(e, BetatronTuneMonitor):
-                # Built in tune monitor
-                tuneDevs = self.get_devices_access([e.tune_h, e.tune_v])
-                betatron_tune = RBetatronTuneArray(e, tuneDevs)
-                e = e.attach(self, betatron_tune)
-                self.add_betatron_tune_monitor(e)
-
-            elif isinstance(e, TuningTool) | isinstance(e, MeasurementTool):
-                self.add_tool(e.attach(self))
-
-            elif isinstance(e, UnboundElement):
-                if self.name() in e._control_modes:
-                    ne = e.instantiate(self)
-
-                    if isinstance(ne, ABetatronTuneMonitor):
-                        self.add_betatron_tune_monitor(ne)
-                    else:
-                        # Default to standard Element
-                        self.add_element(ne)
+    def _fill_unbound_element(self, element: UnboundElement) -> None:
+        if self.name() not in element._control_modes:
+            return
+        attached_element = element.instantiate(self)
+        if isinstance(attached_element, ABetatronTuneMonitor):
+            self.add_betatron_tune_monitor(attached_element)
+        else:
+            self.add_element(attached_element)
 
 
 class ControlSystemAdapter(ControlSystem):
     """
-    Control system adapter class
+    Provide a no-op adapter for serialized or backend-independent access.
+
+    Methods
+    -------
+    name()
+        Return the adapter's control-system name.
+    get_aggregator()
+        Return ``None`` because the adapter has no device aggregator.
+    get_device_access(ref)
+        Return the device access object for a backend reference.
     """
 
     def __init__(self):
+        """
+        Initialize the ControlSystemAdapter.
+        """
         ControlSystem.__init__(self)
 
     def name(self) -> str:
+        """Return the adapter's control-system name."""
         pass
 
     def get_aggregator(self) -> DeviceAccessList | None:
+        """Return ``None`` because the adapter has no device aggregator."""
         return None
 
     def get_device_access(self, ref: str | BaseModel | None) -> DeviceAccess | None:
+        """
+        Return the device access object for a backend reference.
+
+        Parameters
+        ----------
+        ref : str | BaseModel | None
+            Backend-specific device reference.
+
+        Returns
+        -------
+        DeviceAccess | None
+            Resolved device access object, or ``None`` when unsupported.
+        """
         pass

@@ -1,3 +1,11 @@
+"""
+Beam-dispersion measurement tools.
+
+The :class:`Dispersion` tool varies an RF-plant frequency, measures the orbit
+response with a BPM array, and stores the resulting horizontal and vertical
+dispersion data.
+"""
+
 import logging
 from typing import Callable, Optional
 
@@ -16,7 +24,8 @@ PYAMLCLASS = "Dispersion"
 
 @register_schema
 class Dispersion(MeasurementTool, DynamicValidation):
-    """Measure beam dispersion by changing the RF frequency.
+    """
+    Measure beam dispersion by changing the RF frequency.
 
     The measurement uses a :class:`pySCInterface` to change the frequency of
     an RF plant and acquire orbit data from a BPM array. Progress is reported
@@ -41,9 +50,19 @@ class Dispersion(MeasurementTool, DynamicValidation):
         Name of the RF plant used for the measurement.
     frequency_delta : float
         RF-frequency change applied during the measurement.
+
+    Methods
+    -------
+    measure(set_waiting_time=0, callback=None)
+        Measure beam dispersion by varying the RF frequency.
+    get()
+        Return the most recently measured dispersion data.
     """
 
     def __init__(self, name: str, bpm_array_name: str, rf_plant_name: str, frequency_delta: float):
+        """
+        Initialize a beam-dispersion measurement tool.
+        """
         super().__init__(name)
 
         self.bpm_array_name = bpm_array_name
@@ -55,6 +74,27 @@ class Dispersion(MeasurementTool, DynamicValidation):
         set_waiting_time: float = 0,
         callback: Optional[Callable] = None,
     ):
+        """
+        Measure beam dispersion by varying the RF frequency.
+
+        Measurements are reported through ``callback``. If the callback
+        requests an abort, the measurement returns ``False``; otherwise the
+        dispersion data are stored in ``latest_measurement``.
+
+        Parameters
+        ----------
+        set_waiting_time : float
+            Delay in seconds after changing the RF frequency.
+        callback : Optional[Callable]
+            Optional callback invoked after applying, measuring, and restoring
+            settings.
+
+        Returns
+        -------
+        bool
+            ``True`` when the measurement completes successfully, or ``False``
+            when it is aborted by the callback.
+        """
         element_holder = self._peer
         interface = pySCInterface(
             element_holder=element_holder,
@@ -121,4 +161,5 @@ class Dispersion(MeasurementTool, DynamicValidation):
         return True
 
     def get(self):
+        """Return the most recently measured dispersion data."""
         return self.latest_measurement

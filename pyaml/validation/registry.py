@@ -4,11 +4,34 @@ import importlib
 import logging
 import pkgutil
 from collections.abc import ItemsView, Iterator, KeysView, ValuesView
+from importlib import metadata
 from typing import Callable, Type, TypeVar, overload
 
 from .configuration_models import ConfigurationSchema
 
 logger = logging.getLogger(__name__)
+
+_SCHEMA_ENTRY_POINT_GROUP = "pyaml.schemas"
+
+
+def _import_module(module_name: str) -> None:
+    """Import a module and recursively import its submodules.
+
+    Parameters
+    ----------
+    module_name : str
+        Fully qualified name of the module or package to import.
+    """
+
+    module = importlib.import_module(module_name)
+
+    # Check if module is a package and then recursively import
+    if hasattr(module, "__path__"):
+        for _, submodule_name, _ in pkgutil.walk_packages(
+            module.__path__,
+            module.__name__ + ".",
+        ):
+            importlib.import_module(submodule_name)
 
 
 class SchemaRegistry:
@@ -17,12 +40,44 @@ class SchemaRegistry:
 
     The registry is used to validate data and produce
     jsonschemas for dynamic nested models.
+
+    Methods
+    -------
+    register(class_path, schema)
+        Register a schema for a class path.
+    discover()
+        Discover and register schemas.
+    unregister(class_path)
+        Unregister a schema.
+    clear()
+        Remove all registered schemas.
+    get(class_path)
+        Return the registered schema for a class path.
+    items()
+        Return a view of registered schema items.
+    keys()
+        Return a view of registered class paths.
+    values()
+        Return a view of registered schemas.
+    update(class_path, schema)
+        Replace the schema registered for a class path.
     """
 
     _instance: "SchemaRegistry | None" = None
     _schemas: dict[str, Type[ConfigurationSchema]]
 
     def __new__(cls) -> "SchemaRegistry":
+        """
+        Return the shared schema registry instance.
+
+        The registry is a singleton: the first call creates the instance and
+        initializes its schema store; subsequent calls return the same object.
+
+        Returns
+        -------
+        SchemaRegistry
+            The shared schema registry.
+        """
         if cls._instance is None:
             cls._instance = super().__new__(cls)
             cls._instance._schemas = {}
@@ -37,7 +92,8 @@ class SchemaRegistry:
         class_path: str,
         schema: type[ConfigurationSchema],
     ) -> None:
-        """Register a schema for a class path.
+        """
+        Register a schema for a class path.
 
         Parameters
         ----------
@@ -66,27 +122,42 @@ class SchemaRegistry:
         self._schemas[class_path] = schema
 
     def discover(self) -> None:
-        """Discover and register schemas.
+        """
+        Discover and register schemas.
 
-        This imports modules in the package so classes decorated with
-        :func:`register_schema` are registered, then registers legacy
-        schemas from ``pyproject.toml``.
+        This recursively imports modules in the :mod:`pyaml` package so
+        classes decorated with :func:`register_schema` are registered. It
+        also imports modules and packages advertised through the
+        ``pyaml.schemas`` entry-point group, allowing external packages to
+        register schemas.
         """
 
-        # Import package modules so schema registration runs.
+        # Discover schemas inside the pyaml core
+        # Import package modules so schema registration runs
+
         root_package = __package__.split(".")[0]
-        package = importlib.import_module(root_package)
-        for _, module_name, _ in pkgutil.walk_packages(
-            package.__path__,
-            package.__name__ + ".",
-        ):
-            importlib.import_module(module_name)
+
+        _import_module(root_package)
+
+        # Discover schemas from external packages
+        # This uses entry points
+
+        for entry_point in metadata.entry_points(group=_SCHEMA_ENTRY_POINT_GROUP):
+            logger.debug("Loading schema entry point %s", entry_point)
+
+            if entry_point.attr is not None:
+                raise ValueError(
+                    f"Schema entry point {entry_point.name!r} must reference a package or module, not an attribute."
+                )
+
+            _import_module(entry_point.value)
 
     def unregister(
         self,
         class_path: str,
     ) -> None:
-        """Unregister a schema.
+        """
+        Unregister a schema.
 
         Parameters
         ----------
@@ -105,7 +176,8 @@ class SchemaRegistry:
             raise KeyError(f"No schema registered for '{class_path}'") from None
 
     def clear(self) -> None:
-        """Remove all registered schemas.
+        """
+        Remove all registered schemas.
 
         This clears the registry in place.
         """
@@ -135,7 +207,8 @@ class SchemaRegistry:
         self,
         class_path: str,
     ) -> Type[ConfigurationSchema]:
-        """Return the registered schema for a class path.
+        """
+        Return the registered schema for a class path.
 
         Parameters
         ----------
@@ -163,7 +236,8 @@ class SchemaRegistry:
         self,
         class_path: str,
     ) -> type[ConfigurationSchema] | None:
-        """Return the registered schema for a class path.
+        """
+        Return the registered schema for a class path.
 
         Parameters
         ----------
@@ -186,7 +260,8 @@ class SchemaRegistry:
         self,
         class_path: str,
     ) -> bool:
-        """Return whether a schema is registered for a class path.
+        """
+        Return whether a schema is registered for a class path.
 
         Parameters
         ----------
@@ -204,7 +279,8 @@ class SchemaRegistry:
     def items(
         self,
     ) -> ItemsView[str, Type[ConfigurationSchema]]:
-        """Return a view of registered schema items.
+        """
+        Return a view of registered schema items.
 
         Returns
         -------
@@ -216,7 +292,8 @@ class SchemaRegistry:
     def keys(
         self,
     ) -> KeysView[str]:
-        """Return a view of registered class paths.
+        """
+        Return a view of registered class paths.
 
         Returns
         -------
@@ -228,7 +305,8 @@ class SchemaRegistry:
     def values(
         self,
     ) -> ValuesView[Type[ConfigurationSchema]]:
-        """Return a view of registered schemas.
+        """
+        Return a view of registered schemas.
 
         Returns
         -------
@@ -240,7 +318,8 @@ class SchemaRegistry:
     def __len__(
         self,
     ) -> int:
-        """Return the number of registered schemas.
+        """
+        Return the number of registered schemas.
 
         Returns
         -------
@@ -252,7 +331,8 @@ class SchemaRegistry:
     def __iter__(
         self,
     ) -> Iterator[str]:
-        """Iterate over registered class paths.
+        """
+        Iterate over registered class paths.
 
         Returns
         -------
@@ -270,7 +350,8 @@ class SchemaRegistry:
         class_path: str,
         schema: type[ConfigurationSchema],
     ) -> None:
-        """Replace the schema registered for a class path.
+        """
+        Replace the schema registered for a class path.
 
         Parameters
         ----------
@@ -338,6 +419,19 @@ def register_schema(arg: type | None = None):
     registry = SchemaRegistry()
 
     def _generate_and_register_schema(cls: type[ClassT]) -> type[ClassT]:
+        """
+        Generate and register a schema for a decorated class.
+
+        Parameters
+        ----------
+        cls : type[ClassT]
+            Configuration class for which a schema should be generated.
+
+        Returns
+        -------
+        type[ClassT]
+            The original class, unchanged, for use as a decorator result.
+        """
         generate_configuration_schema(cls)
         return cls
 

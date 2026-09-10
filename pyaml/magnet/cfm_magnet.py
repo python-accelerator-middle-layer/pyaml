@@ -1,3 +1,12 @@
+"""
+Combined-function magnet elements.
+
+This module defines magnets that combine multiple multipole components and
+provide separate strength and hardware access for those components.
+"""
+
+from typing import TYPE_CHECKING
+
 from scipy.constants import speed_of_light
 
 from ..common import abstract
@@ -16,6 +25,9 @@ from .skewoctu import SkewOctu
 from .skewquad import SkewQuad
 from .skewsext import SkewSext
 from .vcorrector import VCorrector
+
+if TYPE_CHECKING:
+    from ..common.holders.element_holder import ElementHolder
 
 _fmap: dict = {
     "B0": HCorrector,
@@ -58,6 +70,24 @@ class CombinedFunctionMagnet(Element, DynamicValidation):
     peer : object, optional
         Control-system or simulator peer used when attaching the magnet.
 
+    Attributes
+    ----------
+    strengths
+        Gives access to the strengths of this combined function magnet in physics unit
+    hardwares
+        Gives access to the strengths of this combined function magnet in hardware unit when possible
+
+    Methods
+    -------
+    get_model_name()
+        Returns the model name of this magnet
+    nb_multipole()
+        Return the number of configured multipole components.
+    attach(peer, strengths, hardwares)
+        Attach the combined-function magnet and its virtual components.
+    set_energy(E)
+        Set beam energy for magnetic-strength conversion.
+
     Raises
     ------
     PyAMLException
@@ -68,6 +98,9 @@ class CombinedFunctionMagnet(Element, DynamicValidation):
     def __init__(
         self, name: str, mapping: list[list[str]], model: MagnetModel | None = None, description: str | None = None, peer=None
     ):
+        """
+        Initialize the CombinedFunctionMagnet.
+        """
         super().__init__(name, None, description)
 
         self._mapping = mapping
@@ -103,6 +136,9 @@ class CombinedFunctionMagnet(Element, DynamicValidation):
             # Attach
             self._peer = peer
 
+    def _fill_device(self, holder: "ElementHolder") -> None:
+        holder._fill_combined_function_magnet(self)
+
     def get_model_name(self) -> str:
         """
         Returns the model name of this magnet
@@ -110,12 +146,31 @@ class CombinedFunctionMagnet(Element, DynamicValidation):
         return self._name
 
     def __create_virutal_manget(self, name: str, idx: int) -> Magnet:
+        """
+        Create a virtual magnet for one multipole component.
+
+        The virtual magnet provides the standard single-function magnet
+        interface for a component of this combined-function magnet.
+
+        Parameters
+        ----------
+        name : str
+            Name assigned to the virtual magnet.
+        idx : int
+            Multipole key used to select the virtual-magnet class.
+
+        Returns
+        -------
+        Magnet
+            Newly created virtual magnet linked to this magnet's model.
+        """
         args = {"name": name, "model": self.model}
         mVirtual: Magnet = _fmap[idx](**args)
         mVirtual.set_model_name(self.get_name())
         return mVirtual
 
     def nb_multipole(self) -> int:
+        """Return the number of configured multipole components."""
         return len(self._mapping)
 
     def attach(
@@ -124,6 +179,29 @@ class CombinedFunctionMagnet(Element, DynamicValidation):
         strengths: abstract.ReadWriteFloatArray,
         hardwares: abstract.ReadWriteFloatArray,
     ) -> list[Magnet]:
+        """
+        Attach the combined-function magnet and its virtual components.
+
+        The returned list contains the attached combined-function magnet
+        followed by one attached single-function virtual magnet per configured
+        multipole. Each virtual magnet receives a mapped view of the shared
+        strength and hardware arrays.
+
+        Parameters
+        ----------
+        peer : object
+            Simulator or control-system element holder.
+        strengths : abstract.ReadWriteFloatArray
+            Array accessor for the physical multipole strengths.
+        hardwares : abstract.ReadWriteFloatArray
+            Array accessor for the hardware values.
+
+        Returns
+        -------
+        list[Magnet]
+            Attached combined-function magnet and its virtual component
+            magnets.
+        """
         l = []
         # Attached the CombinedFunctionMagnet itself
         nCFM = CombinedFunctionMagnet(self._name, self._mapping, self.model, self._description, peer)
@@ -161,8 +239,22 @@ class CombinedFunctionMagnet(Element, DynamicValidation):
         return self.__hardwares
 
     def set_energy(self, E: float):
+        """
+        Set beam energy for magnetic-strength conversion.
+
+        The energy is converted from electronvolts to magnetic rigidity and
+        supplied to the underlying combined-function magnet model.
+
+        Parameters
+        ----------
+        E : float
+            Beam energy in electronvolts.
+        """
         if self.model is not None:
             self.model.set_magnet_rigidity(E / speed_of_light)
 
     def __repr__(self):
+        """
+        Implement the ``__repr__`` string.
+        """
         return __pyaml_repr__(self)

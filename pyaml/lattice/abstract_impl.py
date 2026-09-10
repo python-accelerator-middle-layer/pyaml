@@ -1,3 +1,10 @@
+"""
+Read/write interfaces for simulated lattice elements.
+
+This module adapts Accelerator Toolbox lattice elements to PyAML accessors for
+magnet strengths, hardware values, BPM readings, RF parameters, and tune data.
+"""
+
 import at
 import numpy as np
 from numpy.typing import NDArray
@@ -5,10 +12,7 @@ from scipy.constants import speed_of_light
 
 from ..common import abstract
 from ..common.abstract_aggregator import ScalarAggregator
-from ..common.exception import PyAMLException
 from ..magnet.model import MagnetModel
-from ..rf.rf_plant import RFPlant
-from ..rf.rf_transmitter import RFTransmitter
 from .polynom_info import PolynomInfo
 
 # TODO handle serialized magnets for magnet array
@@ -18,11 +22,41 @@ from .polynom_info import PolynomInfo
 
 class RWHardwareScalar(abstract.ReadWriteFloatScalar):
     """
-    Class providing read write access to a magnet of a simulator in hardware unit.
-    Hardware unit is converted from strength using the magnet model
+    Provide read/write access to a simulated magnet in hardware units.
+
+    Hardware values are converted through the associated magnet model while
+    the underlying lattice polynomial is updated on writes.
+
+    Parameters
+    ----------
+    elements : list[at.Element]
+        Accelerator Toolbox elements making up the magnet; their contributions are summed.
+    poly : PolynomInfo
+        Polynomial component driven by this accessor: the ``PolynomA``/``PolynomB`` attribute name, its multipole
+        index and the sign convention.
+    model : MagnetModel
+        Magnet model used to convert between physical strength and hardware value.
+
+    Methods
+    -------
+    get_length()
+        Return the total length of the lattice elements.
+    get()
+        Return the current value.
+    set(value)
+        Set the current value.
+    set_and_wait(value)
+        Set the value and wait for readback convergence.
+    unit()
+        Return the value unit.
+    get_model()
+        Return the associated magnet model.
     """
 
     def __init__(self, elements: list[at.Element], poly: PolynomInfo, model: MagnetModel):
+        """
+        Initialize the RWHardwareScalar.
+        """
         self._model = model
         self._elements = elements
         self._poly = [e.__getattribute__(poly.attName) for e in elements]
@@ -33,26 +67,51 @@ class RWHardwareScalar(abstract.ReadWriteFloatScalar):
             self._length += e.Length
 
     def get_length(self) -> float:
+        """Return the total length of the lattice elements."""
         return self._length
 
     def get(self) -> float:
+        """Return the current value."""
         s = 0
         for idx, e in enumerate(self._elements):
             s += self._poly[idx][self._polyIdx] * self._sign * e.Length
         return self._model.compute_hardware_values([s])[0]
 
     def set(self, value: float):
+        """
+        Set the current value.
+
+        Parameters
+        ----------
+        value : float
+            Hardware value to apply, in the unit reported by the magnet model.
+        """
         s = self._model.compute_strengths([value])[0]
         for idx, _ in enumerate(self._elements):
             self._poly[idx][self._polyIdx] = s / (self._length * self._sign)
 
     def set_and_wait(self, value: float):
+        """
+        Set the value and wait for readback convergence.
+
+        Parameters
+        ----------
+        value : float
+            Hardware value to apply, in the unit reported by the magnet model.
+
+        Raises
+        ------
+        NotImplementedError
+            Waiting for readback convergence is not implemented for this accessor.
+        """
         raise NotImplementedError("Not implemented yet.")
 
     def unit(self) -> str:
+        """Return the value unit."""
         return self._model.get_hardware_units()[0]
 
     def get_model(self) -> MagnetModel:
+        """Return the associated magnet model."""
         return self._model
 
 
@@ -61,10 +120,41 @@ class RWHardwareScalar(abstract.ReadWriteFloatScalar):
 
 class RWStrengthScalar(abstract.ReadWriteFloatScalar):
     """
-    Class providing read write access to a strength of a simulator
+    Provide read/write access to a simulated magnet strength.
+
+    The accessor aggregates the selected lattice polynomial over all mapped
+    elements and distributes writes across those elements.
+
+    Parameters
+    ----------
+    elements : list[at.Element]
+        Accelerator Toolbox elements making up the magnet; their contributions are summed.
+    poly : PolynomInfo
+        Polynomial component driven by this accessor: the ``PolynomA``/``PolynomB`` attribute name, its multipole
+        index and the sign convention.
+    model : MagnetModel
+        Magnet model used to convert between physical strength and hardware value.
+
+    Methods
+    -------
+    get_element_length()
+        Return the total length of the represented element.
+    get(polynom=None, polyidx=None)
+        Return the current value.
+    set(value, polynom=None, polyidx=None)
+        Set the current value.
+    set_and_wait(value)
+        Set the value and wait for readback convergence.
+    unit()
+        Return the value unit.
+    get_model()
+        Return the associated magnet model.
     """
 
     def __init__(self, elements: list[at.Element], poly: PolynomInfo, model: MagnetModel):
+        """
+        Initialize the RWStrengthScalar.
+        """
         self._model = model
         self._elements = elements
         self._poly = [e.__getattribute__(poly.attName) for e in elements]
@@ -75,10 +165,27 @@ class RWStrengthScalar(abstract.ReadWriteFloatScalar):
             self._length += e.Length
 
     def get_element_length(self) -> float:
+        """Return the total length of the represented element."""
         return self._length
 
     # Gets the value
     def get(self, polynom: str = None, polyidx: int = None) -> float:
+        """
+        Return the current value.
+
+        Parameters
+        ----------
+        polynom : str
+            Lattice polynomial to address, ``"PolynomA"`` or ``"PolynomB"``. Defaults to the component configured for
+            this accessor.
+        polyidx : int
+            Multipole index within ``polynom``. Only used when ``polynom`` is given.
+
+        Returns
+        -------
+        float
+            Integrated strength summed over the lattice elements.
+        """
         if polynom is None:
             pIdx = self._polyIdx
             poly = self._poly
@@ -94,6 +201,19 @@ class RWStrengthScalar(abstract.ReadWriteFloatScalar):
 
     # Sets the value
     def set(self, value: float, polynom: str = None, polyidx: int = None):
+        """
+        Set the current value.
+
+        Parameters
+        ----------
+        value : float
+            Integrated strength to apply, distributed over the lattice elements.
+        polynom : str
+            Lattice polynomial to address, ``"PolynomA"`` or ``"PolynomB"``. Defaults to the component configured for
+            this accessor.
+        polyidx : int
+            Multipole index within ``polynom``. Only used when ``polynom`` is given.
+        """
         if polynom is None:
             pIdx = self._polyIdx
             poly = self._poly
@@ -107,14 +227,29 @@ class RWStrengthScalar(abstract.ReadWriteFloatScalar):
 
     # Sets the value and wait that the read value reach the setpoint
     def set_and_wait(self, value: float):
+        """
+        Set the value and wait for readback convergence.
+
+        Parameters
+        ----------
+        value : float
+            Integrated strength to apply, distributed over the lattice elements.
+
+        Raises
+        ------
+        NotImplementedError
+            Waiting for readback convergence is not implemented for this accessor.
+        """
         raise NotImplementedError("Not implemented yet.")
 
     # Gets the unit of the value
     def unit(self) -> str:
+        """Return the value unit."""
         return self._model.get_strength_units()[0]
 
     # ------------------------------------------------------------------------------
     def get_model(self) -> MagnetModel:
+        """Return the associated magnet model."""
         return self._model
 
 
@@ -122,7 +257,38 @@ class RWStrengthScalar(abstract.ReadWriteFloatScalar):
 
 
 class RWSerializedHardware(abstract.ReadWriteFloatScalar):
+    """
+    RWSerializedHardware configuration or runtime object.
+
+    Parameters
+    ----------
+    elements : list[RWHardwareScalar]
+        Hardware accessors of the magnets sharing the serialized power supply.
+    element_index : int
+        Index of the magnet this accessor represents within the serialized group.
+
+    Methods
+    -------
+    get_element_length()
+        Return the total length of the represented element.
+    get_total_length()
+        Return the total length of the represented elements.
+    get()
+        Return the current value.
+    set(value)
+        Set the current value.
+    set_and_wait(value)
+        Set the value and wait for readback convergence.
+    unit()
+        Return the value unit.
+    set_magnet_rigidity(brho)
+        Set the magnetic rigidity used for conversion.
+    """
+
     def __init__(self, elements: list[RWHardwareScalar], element_index: int):
+        """
+        Initialize the RWSerializedHardware.
+        """
         self.__elements = elements
         self.__element_index = element_index
         self.__total_length = 0
@@ -130,38 +296,104 @@ class RWSerializedHardware(abstract.ReadWriteFloatScalar):
             self.__total_length += e.get_length()
 
     def get_element_length(self) -> float:
+        """Return the total length of the represented element."""
         return self.__elements[self.__element_index].get_length()
 
     def get_total_length(self) -> float:
+        """Return the total length of the represented elements."""
         return self.__total_length
 
     # Gets the value
     def get(self) -> float:
+        """Return the current value."""
         return self.__elements[self.__element_index].get()
 
     # Sets the value
     def set(self, value: float):
+        """
+        Set the current value.
+
+        Parameters
+        ----------
+        value : float
+            Hardware value to apply to the whole serialized group.
+        """
         [element.set(value) for element in self.__elements]
 
     # Sets the value and wait that the read value reach the setpoint
     def set_and_wait(self, value: float):
+        """
+        Set the value and wait for readback convergence.
+
+        Parameters
+        ----------
+        value : float
+            Hardware value to apply to the whole serialized group.
+
+        Raises
+        ------
+        NotImplementedError
+            Waiting for readback convergence is not implemented for this accessor.
+        """
         raise NotImplementedError("Not implemented yet.")
 
     # Gets the unit of the value
     def unit(self) -> str:
+        """Return the value unit."""
         return self.__elements[self.__element_index].unit()
 
     def set_magnet_rigidity(self, brho: np.double):
+        """
+        Set the magnetic rigidity used for conversion.
+
+        Parameters
+        ----------
+        brho : np.double
+            Magnetic rigidity in tesla metres, used to convert strengths to hardware values.
+        """
         [element.get_model().set_magnet_rigidity(brho) for element in self.__elements]
 
 
 class RWSerializedStrength(abstract.ReadWriteFloatScalar):
+    """
+    RWSerializedStrength configuration or runtime object.
+
+    Parameters
+    ----------
+    elements_strength : list[RWStrengthScalar]
+        Strength accessors of the magnets sharing the serialized power supply.
+    elements_hardware : list[RWHardwareScalar]
+        Hardware accessors of the same magnets, used to apply the shared setpoint.
+    element_index : int
+        Index of the magnet this accessor represents within the serialized group.
+
+    Methods
+    -------
+    get_element_length()
+        Return the total length of the represented element.
+    get_total_length()
+        Return the total length of the represented elements.
+    get()
+        Return the current value.
+    set(value)
+        Set the current value.
+    set_and_wait(value)
+        Set the value and wait for readback convergence.
+    unit()
+        Return the value unit.
+    set_magnet_rigidity(brho)
+        Set the magnetic rigidity used for conversion.
+    """
+
     def __init__(
         self,
         elements_strength: list[RWStrengthScalar],
         elements_hardware: list[RWHardwareScalar],
         element_index: int,
     ):
+        """
+        Initialize the RWSerializedStrength.
+        """
         self.__element = elements_strength[element_index]
         self.__elements_strength = elements_strength
         self.__elements_hardware = elements_hardware
@@ -171,17 +403,28 @@ class RWSerializedStrength(abstract.ReadWriteFloatScalar):
             self.__total_length += e.get_length()
 
     def get_element_length(self) -> float:
+        """Return the total length of the represented element."""
         return self.__element.get_element_length()
 
     def get_total_length(self) -> float:
+        """Return the total length of the represented elements."""
         return self.__total_length
 
     # Gets the value
     def get(self) -> float:
+        """Return the current value."""
         return self.__elements_strength[self.__element_index].get()
 
     # Sets the value
     def set(self, value: float):
+        """
+        Set the current value.
+
+        Parameters
+        ----------
+        value : float
+            Strength to apply to the magnet, converted to the shared hardware setpoint.
+        """
         elements_values = [value * e.get_length() / self.get_total_length() for e in self.__elements_hardware]
         self.__element.set(elements_values[self.__element_index])
 
@@ -198,13 +441,35 @@ class RWSerializedStrength(abstract.ReadWriteFloatScalar):
 
     # Sets the value and wait that the read value reach the setpoint
     def set_and_wait(self, value: float):
+        """
+        Set the value and wait for readback convergence.
+
+        Parameters
+        ----------
+        value : float
+            Strength to apply to the magnet, converted to the shared hardware setpoint.
+
+        Raises
+        ------
+        NotImplementedError
+            Waiting for readback convergence is not implemented for this accessor.
+        """
         raise NotImplementedError("Not implemented yet.")
 
     # Gets the unit of the value
     def unit(self) -> str:
+        """Return the value unit."""
         return self.__element.unit()
 
     def set_magnet_rigidity(self, brho: np.double):
+        """
+        Set the magnetic rigidity used for conversion.
+
+        Parameters
+        ----------
+        brho : np.double
+            Magnetic rigidity in tesla metres, used to convert strengths to hardware values.
+        """
         pass
 
 
@@ -212,9 +477,33 @@ class RWHardwareArray(abstract.ReadWriteFloatArray):
     """
     Class providing read write access to a magnet of a simulator in hardware units.
     Hardware units are converted from strengths using the magnet model
+
+    Parameters
+    ----------
+    elements : list[at.Element]
+        Accelerator Toolbox elements of every magnet in the array.
+    poly : list[PolynomInfo]
+        Polynomial component for each magnet, giving the ``PolynomA``/``PolynomB`` attribute name, multipole index
+        and sign convention.
+    model : MagnetModel
+        Magnet model used to convert between physical strength and hardware value.
+
+    Methods
+    -------
+    get()
+        Return the current value.
+    set(value)
+        Set the current value.
+    set_and_wait(value)
+        Set the value and wait for readback convergence.
+    unit()
+        Return the value unit.
     """
 
     def __init__(self, elements: list[at.Element], poly: list[PolynomInfo], model: MagnetModel):
+        """
+        Initialize the RWHardwareArray.
+        """
         self.__elements = elements
         self.__poly = []
         self.__polyIdx = []
@@ -227,6 +516,7 @@ class RWHardwareArray(abstract.ReadWriteFloatArray):
 
     # Gets the value
     def get(self) -> np.array:
+        """Return the current value."""
         nbStrength = len(self.__poly)
         s = np.zeros(nbStrength)
         for i in range(nbStrength):
@@ -235,6 +525,14 @@ class RWHardwareArray(abstract.ReadWriteFloatArray):
 
     # Sets the value
     def set(self, value: np.array):
+        """
+        Set the current value.
+
+        Parameters
+        ----------
+        value : np.array
+            Hardware values to apply, one per magnet and ordered like the array.
+        """
         nbStrength = len(self.__poly)
         s = self.__model.compute_strengths(value)
         for i in range(nbStrength):
@@ -242,10 +540,24 @@ class RWHardwareArray(abstract.ReadWriteFloatArray):
 
     # Sets the value and wait that the read value reach the setpoint
     def set_and_wait(self, value: np.array):
+        """
+        Set the value and wait for readback convergence.
+
+        Parameters
+        ----------
+        value : np.array
+            Hardware values to apply, one per magnet and ordered like the array.
+
+        Raises
+        ------
+        NotImplementedError
+            Waiting for readback convergence is not implemented for this accessor.
+        """
         raise NotImplementedError("Not implemented yet.")
 
     # Gets the unit of the value
     def unit(self) -> list[str]:
+        """Return the value unit."""
         return self.__model.get_hardware_units()
 
 
@@ -255,9 +567,33 @@ class RWHardwareArray(abstract.ReadWriteFloatArray):
 class RWStrengthArray(abstract.ReadWriteFloatArray):
     """
     Class providing read write access to a strength (array) of a simulator
+
+    Parameters
+    ----------
+    elements : list[at.Element]
+        Accelerator Toolbox elements of every magnet in the array.
+    poly : list[PolynomInfo]
+        Polynomial component for each magnet, giving the ``PolynomA``/``PolynomB`` attribute name, multipole index
+        and sign convention.
+    model : MagnetModel
+        Magnet model used to convert between physical strength and hardware value.
+
+    Methods
+    -------
+    get()
+        Return the current value.
+    set(value)
+        Set the current value.
+    set_and_wait(value)
+        Set the value and wait for readback convergence.
+    unit()
+        Return the value unit.
     """
 
     def __init__(self, elements: list[at.Element], poly: list[PolynomInfo], model: MagnetModel):
+        """
+        Initialize the RWStrengthArray.
+        """
         self.__elements = elements
         self.__poly = []
         self.__polyIdx = []
@@ -270,6 +606,7 @@ class RWStrengthArray(abstract.ReadWriteFloatArray):
 
     # Gets the value
     def get(self) -> np.array:
+        """Return the current value."""
         nbStrength = len(self.__poly)
         s = np.zeros(nbStrength)
         for i in range(nbStrength):
@@ -278,6 +615,14 @@ class RWStrengthArray(abstract.ReadWriteFloatArray):
 
     # Sets the value
     def set(self, value: np.array):
+        """
+        Set the current value.
+
+        Parameters
+        ----------
+        value : np.array
+            Integrated strengths to apply, one per magnet and ordered like the array.
+        """
         nbStrength = len(self.__poly)
         s = np.zeros(nbStrength)
         for i in range(nbStrength):
@@ -285,10 +630,24 @@ class RWStrengthArray(abstract.ReadWriteFloatArray):
 
     # Sets the value and wait that the read value reach the setpoint
     def set_and_wait(self, value: np.array):
+        """
+        Set the value and wait for readback convergence.
+
+        Parameters
+        ----------
+        value : np.array
+            Integrated strengths to apply, one per magnet and ordered like the array.
+
+        Raises
+        ------
+        NotImplementedError
+            Waiting for readback convergence is not implemented for this accessor.
+        """
         raise NotImplementedError("Not implemented yet.")
 
     # Gets the unit of the value
     def unit(self) -> list[str]:
+        """Return the value unit."""
         return self.__model.get_strength_units()
 
 
@@ -298,33 +657,84 @@ class RWStrengthArray(abstract.ReadWriteFloatArray):
 class BPMScalarAggregator(ScalarAggregator):
     """
     BPM simulator aggregator
+
+    Parameters
+    ----------
+    ring : at.Lattice
+        Lattice used to resolve element positions into reference points.
+
+    Methods
+    -------
+    add_elem(elem)
+        Add a lattice element to the aggregate.
+    set(value)
+        Set the current value.
+    set_and_wait(value)
+        Set the value and wait for readback convergence.
+    get()
+        Return the current value.
+    readback()
+        Return the current readback value.
+    unit()
+        Return the value unit.
     """
 
     def __init__(self, ring: at.Lattice):
+        """
+        Initialize the BPMScalarAggregator.
+        """
         self._lattice = ring
         self._refpts = []
         self._matrices = []
 
     def add_elem(self, elem: at.Element):
+        """
+        Add a lattice element to the aggregate.
+
+        Parameters
+        ----------
+        elem : at.Element
+            BPM lattice element to append to the aggregate.
+        """
         self._refpts.append(self._lattice.index(elem))
         self._matrices.append(elem._transform)
 
     def set(self, value: NDArray[np.float64]):
+        """
+        Set the current value.
+
+        Parameters
+        ----------
+        value : NDArray[np.float64]
+            Ignored. BPM readings derive from the closed orbit and cannot be written.
+        """
         pass
 
     def set_and_wait(self, value: NDArray[np.float64]):
+        """
+        Set the value and wait for readback convergence.
+
+        Parameters
+        ----------
+        value : NDArray[np.float64]
+            Ignored. BPM readings derive from the closed orbit and cannot be written.
+        """
         pass
 
     def get(self) -> np.array:
+        """Return the current value."""
         return self._transform().flatten()
 
     def readback(self) -> np.array:
+        """Return the current readback value."""
         return self.get()
 
     def unit(self) -> str:
+        """Return the value unit."""
         return "m"
 
     def _transform(self) -> np.array:
+        """Transform the configured value for the lattice interface."""
         _, orbit = at.find_orbit(self._lattice, refpts=self._refpts)
         ones = np.ones(len(self._refpts))
         pts = orbit[:, [0, 2]]  # Extract x,y
@@ -338,9 +748,15 @@ class BPMScalarAggregator(ScalarAggregator):
 class BPMHScalarAggregator(BPMScalarAggregator):
     """
     Horizontal BPM simulator aggregator
+
+    Methods
+    -------
+    get()
+        Return the current value.
     """
 
     def get(self) -> np.array:
+        """Return the current value."""
         return self._transform()[:, 0]
 
 
@@ -350,9 +766,15 @@ class BPMHScalarAggregator(BPMScalarAggregator):
 class BPMVScalarAggregator(BPMScalarAggregator):
     """
     Vertical BPM simulator aggregator
+
+    Methods
+    -------
+    get()
+        Return the current value.
     """
 
     def get(self) -> np.array:
+        """Return the current value."""
         return self._transform()[:, 1]
 
 
@@ -361,6 +783,19 @@ class BPMVScalarAggregator(BPMScalarAggregator):
 
 def update_bpm_transform_matrix(element: at.Element):
     # BPM transformation matrix (homogeneous coordinates)
+    """
+    Update the coordinate transform for a beam-position monitor.
+
+    The transform combines the BPM element's horizontal and vertical offsets
+    with its tilt, allowing measured positions to be expressed in the BPM
+    coordinate system.
+
+    Parameters
+    ----------
+    element : at.Element
+        BPM lattice element with ``Offset`` and ``Tilt`` attributes. The
+        resulting matrix is stored on the element as ``_transform``.
+    """
     tx = element.Offset[0]
     ty = element.Offset[1]
     cos_theta = np.cos(element.Tilt)
@@ -376,14 +811,32 @@ class RBpmArray(abstract.ReadFloatArray):
     Position in pyAT is calculated using find_orbit function, which returns the
     orbit at a specified index. The position is then extracted from the orbit
     array as the first two elements (x, y).
+
+    Parameters
+    ----------
+    element : at.Element
+        BPM lattice element whose position is read.
+    lattice : at.Lattice
+        Lattice on which the closed orbit is computed.
+
+    Methods
+    -------
+    get()
+        Return the current value.
+    unit()
+        Return the value unit.
     """
 
     def __init__(self, element: at.Element, lattice: at.Lattice):
+        """
+        Initialize the RBpmArray.
+        """
         self._element = element
         self._lattice = lattice
 
     # Gets the value
     def get(self) -> np.array:
+        """Return the current value."""
         index = self._lattice.index(self._element)
         _, orbit = at.find_orbit(self._lattice, refpts=index)
         pts = orbit[0, [0, 2]]
@@ -391,6 +844,7 @@ class RBpmArray(abstract.ReadFloatArray):
 
     # Gets the unit of the value
     def unit(self) -> str:
+        """Return the value unit."""
         return "m"
 
 
@@ -401,26 +855,68 @@ class RWBpmOffsetArray(abstract.ReadWriteFloatArray):
     """
     Class providing read write access to a BPM offset (array) of a simulator.
     Offset in pyAT is defined in Offset attribute as a 2-element array.
+
+    Parameters
+    ----------
+    element : at.Element
+        BPM lattice element whose ``Offset`` attribute is accessed.
+
+    Methods
+    -------
+    get()
+        Return the current value.
+    set(value)
+        Set the current value.
+    set_and_wait(value)
+        Set the value and wait for readback convergence.
+    unit()
+        Return the value unit.
     """
 
     def __init__(self, element: at.Element):
+        """
+        Initialize the RWBpmOffsetArray.
+        """
         self._element = element
 
     # Gets the value
     def get(self) -> np.array:
+        """Return the current value."""
         return self._element.Offset
 
     # Sets the value
     def set(self, value: np.array):
+        """
+        Set the current value.
+
+        Parameters
+        ----------
+        value : np.array
+            Two-element array with the horizontal and vertical offsets, in metres.
+        """
         self._element.Offset = value
         update_bpm_transform_matrix(self._element)
 
     # Sets the value and wait that the read value reach the setpoint
     def set_and_wait(self, value: np.array):
+        """
+        Set the value and wait for readback convergence.
+
+        Parameters
+        ----------
+        value : np.array
+            Two-element array with the horizontal and vertical offsets, in metres.
+
+        Raises
+        ------
+        NotImplementedError
+            Waiting for readback convergence is not implemented for this accessor.
+        """
         raise NotImplementedError("Not implemented yet.")
 
     # Gets the unit of the value
     def unit(self) -> str:
+        """Return the value unit."""
         return "m"  # Assuming all offsets are in m
 
 
@@ -429,15 +925,37 @@ class RWBpmOffsetArray(abstract.ReadWriteFloatArray):
 
 class RWBpmTiltScalar(abstract.ReadWriteFloatScalar):
     """
-    Class providing read write access to a BPM tilt of a simulator. Tilt in
-    pyAT is defined in Rotation attribute as a first element.
+    Provide read/write access to a simulated BPM tilt.
+
+    The value is read from and written to the Accelerator Toolbox ``Tilt``
+    attribute. Writing the tilt also refreshes the BPM coordinate transform.
+
+    Parameters
+    ----------
+    element : at.Element
+        BPM lattice element whose ``Tilt`` attribute is accessed.
+
+    Methods
+    -------
+    get()
+        Return the current value.
+    set(value)
+        Set the current value.
+    set_and_wait(value)
+        Set the value and wait for readback convergence.
+    unit()
+        Return the value unit.
     """
 
     def __init__(self, element: at.Element):
+        """
+        Initialize a BPM-tilt accessor.
+        """
         self._element = element
 
     # Gets the value
     def get(self) -> float:
+        """Return the current value."""
         return self._element.Tilt
 
     # Sets the value
@@ -445,15 +963,37 @@ class RWBpmTiltScalar(abstract.ReadWriteFloatScalar):
         self,
         value: float,
     ):
+        """
+        Set the current value.
+
+        Parameters
+        ----------
+        value : float
+            Tilt angle to apply, in radians.
+        """
         self._element.Tilt = value
         update_bpm_transform_matrix(self._element)
 
     # Sets the value and wait that the read value reach the setpoint
     def set_and_wait(self, value: float):
+        """
+        Set the value and wait for readback convergence.
+
+        Parameters
+        ----------
+        value : float
+            Tilt angle to apply, in radians.
+
+        Raises
+        ------
+        NotImplementedError
+            Waiting for readback convergence is not implemented for this accessor.
+        """
         raise NotImplementedError("Not implemented yet.")
 
     # Gets the unit of the value
     def unit(self) -> str:
+        """Return the value unit."""
         return "rad"  # Assuming BPM tilts are in rad
 
 
@@ -464,26 +1004,68 @@ class RWRFVoltageScalar(abstract.ReadWriteFloatScalar):
     """
     Class providing read write access to a cavity voltage
     of a simulator for a given RF trasnmitter.
+
+    Parameters
+    ----------
+    elements : list[at.Element]
+        RF cavity elements sharing this voltage setpoint.
+
+    Methods
+    -------
+    get()
+        Return the current value.
+    set(value)
+        Set the current value.
+    set_and_wait(value)
+        Set the value and wait for readback convergence.
+    unit()
+        Return the value unit.
     """
 
     def __init__(self, elements: list[at.Element]):
+        """
+        Initialize the RWRFVoltageScalar.
+        """
         self.__elements = elements
 
     def get(self) -> float:
+        """Return the current value."""
         sum = 0
         for _idx, e in enumerate(self.__elements):
             sum += e.Voltage
         return sum
 
     def set(self, value: float):
+        """
+        Set the current value.
+
+        Parameters
+        ----------
+        value : float
+            Cavity voltage to apply, in volts.
+        """
         v = value / len(self.__elements)
         for e in self.__elements:
             e.Voltage = v
 
     def set_and_wait(self, value: float):
+        """
+        Set the value and wait for readback convergence.
+
+        Parameters
+        ----------
+        value : float
+            Cavity voltage to apply, in volts.
+
+        Raises
+        ------
+        NotImplementedError
+            Waiting for readback convergence is not implemented for this accessor.
+        """
         raise NotImplementedError("Not implemented yet.")
 
     def unit(self) -> str:
+        """Return the value unit."""
         return "V"
 
 
@@ -492,28 +1074,73 @@ class RWRFVoltageScalar(abstract.ReadWriteFloatScalar):
 
 class RWRFPhaseScalar(abstract.ReadWriteFloatScalar):
     """
-    Class providing read write access to a cavity phase of
-    a simulator for a given RF trasnmitter.
+    Provide read/write access to the phase of simulated RF cavities.
+
+    Accelerator Toolbox represents the phase through each cavity's
+    ``TimeLag`` attribute. This accessor uses the first cavity's frequency and
+    keeps the phase synchronized across all cavities in the transmitter.
+
+    Parameters
+    ----------
+    elements : list[at.Element]
+        RF cavity elements sharing the transmitter phase.
+
+    Methods
+    -------
+    get()
+        Return the current value.
+    set(value)
+        Set the current value.
+    set_and_wait(value)
+        Set the value and wait for readback convergence.
+    unit()
+        Return the value unit.
     """
 
     def __init__(self, elements: list[at.Element]):
+        """
+        Initialize an RF-cavity phase accessor.
+        """
         self.__elements = elements
 
     def get(self) -> float:
         # Assume that all cavities of this transmitter
         # have the same Time Lag and Frequency
+        """Return the current value."""
         wavelength = speed_of_light / self.__elements[0].Frequency
         return (wavelength / self.__elements[0].TimeLag) * 2.0 * np.pi
 
     def set(self, value: float):
+        """
+        Set the current value.
+
+        Parameters
+        ----------
+        value : float
+            Cavity phase to apply, in radians.
+        """
         wavelength = speed_of_light / self.__elements[0].Frequency
         for e in self.__elements:
             e.TimeLag = wavelength * value / (2.0 * np.pi)
 
     def set_and_wait(self, value: float):
+        """
+        Set the value and wait for readback convergence.
+
+        Parameters
+        ----------
+        value : float
+            Cavity phase to apply, in radians.
+
+        Raises
+        ------
+        NotImplementedError
+            Waiting for readback convergence is not implemented for this accessor.
+        """
         raise NotImplementedError("Not implemented yet.")
 
     def unit(self) -> str:
+        """Return the value unit."""
         return "rad"
 
 
@@ -523,24 +1150,68 @@ class RWRFPhaseScalar(abstract.ReadWriteFloatScalar):
 class RWRFFrequencyScalar(abstract.ReadWriteFloatScalar):
     """
     Class providing read write access to RF frequency of a simulator.
+
+    Parameters
+    ----------
+    elements : list[at.Element]
+        RF cavity elements driven by this frequency setpoint.
+    harmonics : list[float]
+        Multiplier applied to the requested frequency for each cavity.
+
+    Methods
+    -------
+    get()
+        Return the current value.
+    set(value)
+        Set the current value.
+    set_and_wait(value)
+        Set the value and wait for readback convergence.
+    unit()
+        Return the value unit.
     """
 
     def __init__(self, elements: list[at.Element], harmonics: list[float]):
+        """
+        Initialize the RWRFFrequencyScalar.
+        """
         self.__elements = elements
         self.__harm = harmonics
 
     def get(self) -> float:
         # Serialized cavity has the same frequency
+        """Return the current value."""
         return self.__elements[0].Frequency
 
     def set(self, value: float):
+        """
+        Set the current value.
+
+        Parameters
+        ----------
+        value : float
+            Fundamental RF frequency to apply, in hertz.
+        """
         for idx, e in enumerate(self.__elements):
             e.Frequency = value * self.__harm[idx]
 
     def set_and_wait(self, value: float):
+        """
+        Set the value and wait for readback convergence.
+
+        Parameters
+        ----------
+        value : float
+            Frequency setpoint. Not implemented by the simulator.
+
+        Raises
+        ------
+        NotImplementedError
+            Waiting for readback convergence is not implemented for this accessor.
+        """
         raise NotImplementedError("Not implemented yet.")
 
     def unit(self) -> str:
+        """Return the value unit."""
         return "Hz"
 
 
@@ -549,23 +1220,67 @@ class RWRFFrequencyScalar(abstract.ReadWriteFloatScalar):
 
 class RWRFATFrequencyScalar(abstract.ReadWriteFloatScalar):
     """
-    Class providing read write access to RF frequency of a simulator using
-    AT methods.
+    Provide read/write access to simulated RF frequency through AT methods.
+
+    The accessor delegates frequency reads and writes to
+    ``Lattice.get_rf_frequency`` and ``Lattice.set_rf_frequency``.
+
+    Parameters
+    ----------
+    ring : at.Lattice
+        Accelerator Toolbox lattice whose RF frequency is accessed.
+
+    Methods
+    -------
+    get()
+        Return the current value.
+    set(value)
+        Set the current value.
+    set_and_wait(value)
+        Set the value and wait for readback convergence.
+    unit()
+        Return the value unit.
     """
 
     def __init__(self, ring: at.Lattice):
+        """
+        Initialize an Accelerator Toolbox RF-frequency accessor.
+        """
         self.__ring = ring
 
     def get(self) -> float:
+        """Return the current value."""
         return self.__ring.get_rf_frequency()
 
     def set(self, value: float):
+        """
+        Set the current value.
+
+        Parameters
+        ----------
+        value : float
+            RF frequency to apply, in hertz.
+        """
         self.__ring.set_rf_frequency(value)
 
     def set_and_wait(self, value: float):
+        """
+        Set the value and wait for readback convergence.
+
+        Parameters
+        ----------
+        value : float
+            RF frequency to apply, in hertz.
+
+        Raises
+        ------
+        NotImplementedError
+            Waiting for readback convergence is not implemented for this accessor.
+        """
         raise NotImplementedError("Not implemented yet.")
 
     def unit(self) -> str:
+        """Return the value unit."""
         return "Hz"
 
 
@@ -574,22 +1289,67 @@ class RWRFATFrequencyScalar(abstract.ReadWriteFloatScalar):
 
 class RWRFATotalVoltageScalar(abstract.ReadWriteFloatScalar):
     """
-    Class providing read write access to a RF voltage of a simulator using AT methods.
+    Provide read/write access to total simulated RF voltage.
+
+    The accessor delegates to the Accelerator Toolbox lattice methods
+    ``get_rf_voltage`` and ``set_rf_voltage``.
+
+    Parameters
+    ----------
+    ring : at.Lattice
+        Accelerator Toolbox lattice whose total RF voltage is accessed.
+
+    Methods
+    -------
+    get()
+        Return the current value.
+    set(value)
+        Set the current value.
+    set_and_wait(value)
+        Set the value and wait for readback convergence.
+    unit()
+        Return the value unit.
     """
 
     def __init__(self, ring: at.Lattice):
+        """
+        Initialize an Accelerator Toolbox RF-voltage accessor.
+        """
         self.__ring = ring
 
     def get(self) -> float:
+        """Return the current value."""
         return self.__ring.get_rf_voltage()
 
     def set(self, value: float):
+        """
+        Set the current value.
+
+        Parameters
+        ----------
+        value : float
+            Total RF voltage to apply over the whole ring, in volts.
+        """
         self.__ring.set_rf_voltage(value)
 
     def set_and_wait(self, value: float):
+        """
+        Set the value and wait for readback convergence.
+
+        Parameters
+        ----------
+        value : float
+            Total RF voltage to apply over the whole ring, in volts.
+
+        Raises
+        ------
+        NotImplementedError
+            Waiting for readback convergence is not implemented for this accessor.
+        """
         raise NotImplementedError("Not implemented yet.")
 
     def unit(self) -> str:
+        """Return the value unit."""
         return "V"
 
 
@@ -599,15 +1359,32 @@ class RWRFATotalVoltageScalar(abstract.ReadWriteFloatScalar):
 class RBetatronTuneArray(abstract.ReadFloatArray):
     """
     Class providing read-only access to the betatron tune of a ring.
+
+    Parameters
+    ----------
+    ring : at.Lattice
+        Accelerator Toolbox lattice whose betatron tunes are computed.
+
+    Methods
+    -------
+    get()
+        Return the current value.
+    unit()
+        Return the value unit.
     """
 
     def __init__(self, ring: at.Lattice):
+        """
+        Initialize the RBetatronTuneArray.
+        """
         self.__ring = ring
 
     def get(self) -> float:
+        """Return the current value."""
         return self.__ring.get_tune()[:2]
 
     def unit(self) -> str:
+        """Return the value unit."""
         return "1"
 
 

@@ -1,10 +1,17 @@
+"""
+Betatron-tune response-matrix measurement tools.
+
+The :class:`TuneResponseMatrix` measures the sensitivity of horizontal and
+vertical betatron tune to quadrupole-strength changes and stores the fitted
+responses in a serializable response-matrix data model.
+"""
+
 import logging
 from dataclasses import asdict
 from time import sleep
 from typing import Callable, Optional
 
 import numpy as np
-from pydantic import ConfigDict
 
 from ..common.constants import Action
 from ..validation import DynamicValidation, register_schema
@@ -18,7 +25,8 @@ PYAMLCLASS = "TuneResponseMatrix"
 
 @register_schema
 class TuneResponseMatrix(MeasurementTool, DynamicValidation):
-    """Measure the response of the betatron tune to quadrupole-strength changes.
+    """
+    Measure the response of the betatron tune to quadrupole-strength changes.
 
     The tune response matrix describes the change in horizontal and vertical
     betatron tune produced by changes in quadrupole strength. Each quadrupole
@@ -76,6 +84,13 @@ class TuneResponseMatrix(MeasurementTool, DynamicValidation):
     sleep_between_meas : float
         Configured delay between averaged tune measurements.
 
+    Methods
+    -------
+    measure(...)
+        Measure tune response matrix.
+
+        :py:attr:`~pyaml.tuning_tools.measurement_tool.MeasurementTool.latest_measurement` contains:
+
     Notes
     -----
     The generated response matrix has shape ``(2, n_quadrupoles)``. The first
@@ -97,6 +112,9 @@ class TuneResponseMatrix(MeasurementTool, DynamicValidation):
         n_avg_meas: Optional[int] = 1,
         sleep_between_meas: Optional[float] = 0,
     ):
+        """
+        Initialize a betatron-tune response-matrix measurement tool.
+        """
         super().__init__(name)
         self.quad_array_name = quad_array_name
         self.betatron_tune_name = betatron_tune_name
@@ -117,6 +135,7 @@ class TuneResponseMatrix(MeasurementTool, DynamicValidation):
     ):
         """
         Measure tune response matrix.
+
         :py:attr:`~pyaml.tuning_tools.measurement_tool.MeasurementTool.latest_measurement` contains:
 
         .. code-block:: python
@@ -148,16 +167,16 @@ class TuneResponseMatrix(MeasurementTool, DynamicValidation):
         ----------
         quad_delta : float
             Delta strength used to get the response matrix
-        n_step: int, optional
+        n_step : int, optional
             Number of step for fitting the tune slope [-quad_delta/n_step..quad_delta/n_step]
             Default from config
-        sleep_between_step: float
-            Default time sleep after quad exitation
+        sleep_between_step : float
+            Default time sleep after quad excitation
             Default: from config
         n_avg_meas : int, optional
             Default number of tune measurement per step used for averaging
             Default from config
-        sleep_between_meas: float
+        sleep_between_meas : float
             Default time sleep between two tune measurment
             Default: from config
         callback : Callable, optional
@@ -176,7 +195,6 @@ class TuneResponseMatrix(MeasurementTool, DynamicValidation):
               strength:float # Magnet strength
               tune:np.array # The measured tune (on Action.MEASURE)
               dtune:np.array # The tune variation (on Action.RESTORE)
-
         """
         # Get devices
         self.check_peer()

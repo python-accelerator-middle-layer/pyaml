@@ -1,22 +1,37 @@
-class PyAMLException(Exception):
-    """Exception raised for PyAML error scenarios.
+"""Exception types used to report PyAML and configuration failures."""
 
-    Attributes:
-        message -- explanation of the error
+
+class PyAMLException(Exception):
+    """
+    Base exception for errors raised by PyAML runtime components.
+
+    Parameters
+    ----------
+    message : object
+        Error description retained on the exception as ``message``.
     """
 
     def __init__(self, message):
+        """
+        Initialize a PyAML runtime exception.
+        """
         super().__init__(message)
         self.message = message
 
 
 class PyAMLConfigException(Exception):
-    """Exception raised for PyAML configuration error scenarios.
+    """
+    Exception raised when configuration cannot be loaded or validated.
 
-    Attributes:
-        message -- explanation of the error
+    Parameters
+    ----------
+    message : object
+        Error description retained on the exception as ``message``.
     """
 
     def __init__(self, message):
+        """
+        Initialize a configuration exception.
+        """
         super().__init__(message)
         self.message = message

@@ -1,5 +1,10 @@
+"""
+Spline-based conversion model for calibrated magnets.
+
+This model uses excitation-curve interpolation to convert between physical magnet strengths and hardware values.
+"""
+
 import numpy as np
-from pydantic import BaseModel, ConfigDict
 from scipy.interpolate import make_smoothing_spline
 
 from ..common.element import __pyaml_repr__
@@ -46,6 +51,21 @@ class SplineMagnetModel(MagnetModel, DynamicValidation):
         Smoothing parameter passed to :func:`scipy.interpolate.make_smoothing_spline`.
         ``alpha = 0`` gives exact interpolation through the data points.
 
+    Methods
+    -------
+    compute_hardware_values(strengths)
+        Convert magnet strengths to hardware values.
+    compute_strengths(currents)
+        Convert hardware values to magnet strengths.
+    get_strength_units()
+        Return the units of magnet strengths.
+    get_hardware_units()
+        Return the units of hardware values.
+    get_device_names()
+        Return the associated device names.
+    set_magnet_rigidity(brho)
+        Set the magnetic rigidity used for conversion.
+
     Notes
     -----
     The magnet rigidity ``brho`` must be set with :meth:`set_magnet_rigidity`
@@ -63,6 +83,9 @@ class SplineMagnetModel(MagnetModel, DynamicValidation):
         hardware_unit: str | None = None,
         alpha: float = 0.0,
     ):
+        """
+        Initialize the SplineMagnetModel.
+        """
         self.__curve = curve.get_curve()
         self.__curve[:, 1] = self.__curve[:, 1] * calibration_factor * crosstalk + calibration_offset
         rcurve = Curve.inverse(self.__curve)
@@ -74,24 +97,64 @@ class SplineMagnetModel(MagnetModel, DynamicValidation):
         self.__rspl = make_smoothing_spline(rcurve[:, 0], rcurve[:, 1], lam=alpha)
 
     def compute_hardware_values(self, strengths: np.array) -> np.array:
+        """
+        Convert magnet strengths to hardware values.
+
+        Parameters
+        ----------
+        strengths : np.array
+            Magnet strengths to convert, in the unit reported by :meth:`get_strength_unit`.
+
+        Returns
+        -------
+        np.array
+            Hardware values corresponding to ``strengths``.
+        """
         _current = self.__rspl(strengths[0] * self.__brho)
         return np.array([_current])
 
     def compute_strengths(self, currents: np.array) -> np.array:
+        """
+        Convert hardware values to magnet strengths.
+
+        Parameters
+        ----------
+        currents : np.array
+            Hardware values to convert, in the unit reported by :meth:`get_hardware_unit`.
+
+        Returns
+        -------
+        np.array
+            Strengths corresponding to ``currents``.
+        """
         _strength = self.__spl(currents[0]) / self.__brho
         return np.array([_strength])
 
     def get_strength_units(self) -> list[str]:
+        """Return the units of magnet strengths."""
         return [self.__strength_unit] if self.__strength_unit is not None else [""]
 
     def get_hardware_units(self) -> list[str]:
+        """Return the units of hardware values."""
         return [self.__hardware_unit] if self.__hardware_unit is not None else [""]
 
     def get_device_names(self) -> list[str | None]:
+        """Return the associated device names."""
         return [self.__ps]
 
     def set_magnet_rigidity(self, brho: np.double):
+        """
+        Set the magnetic rigidity used for conversion.
+
+        Parameters
+        ----------
+        brho : np.double
+            Magnetic rigidity in tesla metres, used to scale strengths into hardware values.
+        """
         self.__brho = brho
 
     def __repr__(self):
+        """
+        Implement the ``__repr__`` string.
+        """
         return __pyaml_repr__(self)

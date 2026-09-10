@@ -1,3 +1,11 @@
+"""
+Chromaticity and dispersion measurement tools.
+
+The :class:`ChromaticityMonitor` acquires and exposes fitted chromaticity or
+dispersion data from sextupole-based measurements, including read access to
+the resulting values and their associated units.
+"""
+
 import logging
 from collections.abc import Callable
 from time import sleep
@@ -21,14 +29,34 @@ class RChromaDispArray(ReadFloatArray):
     """
     Class providing read access to chromaticity or dispersion.
     Returns arrays of shape (fit_order,2) or None
+
+    Parameters
+    ----------
+    parent : 'ChromaticityMonitor'
+        Monitor owning the measured values.
+    name : str
+        Attribute of the parent monitor to read, such as chromaticity or dispersion.
+    unit : str
+        Unit reported for the values, such as ``m``.
+
+    Methods
+    -------
+    get()
+        Return the latest chromaticity or dispersion values.
+    unit()
+        Return the unit of the reported values.
     """
 
     def __init__(self, parent: "ChromaticityMonitor", name: str, unit: str):
+        """
+        Initialize the RChromaDispArray.
+        """
         self._parent = parent
         self._name = name
         self._unit = unit
 
     def get(self) -> np.array:
+        """Return the latest chromaticity or dispersion values."""
         last = self._parent.latest_measurement
         if last is not None and self._name in last:
             return np.array(last[self._name])
@@ -36,6 +64,7 @@ class RChromaDispArray(ReadFloatArray):
             return None
 
     def unit(self) -> str:
+        """Return the unit of the reported values."""
         return self.unit
 
 
@@ -45,6 +74,59 @@ class ChromaticityMonitor(MeasurementTool, DynamicValidation):
     Class providing access to a chromaticity monitor
     of a physical or simulated lattice. The monitor provides
     horizontal and vertical chromaticity measurements.
+
+    Parameters
+    ----------
+    name : str
+        Name of the chromaticity monitor.
+    betatron_tune_name : str
+        Name of the betatron tune monitor used to measure the horizontal
+        and vertical tunes.
+    rf_plant_name : str
+        Name of the RF plant used to vary the RF frequency.
+    bpm_array_name : str, optional
+        Name of the BPM array used for dispersion measurements. Required
+        only when dispersion fitting is enabled.
+    e_delta : float, optional
+        Default relative momentum deviation used during the measurement.
+    max_e_delta : float, optional
+        Maximum permitted relative momentum deviation.
+    fit_order : int, optional
+        Polynomial order used to fit the chromaticity.
+    fit_disp_order : int, optional
+        Polynomial order used to fit the dispersion.
+    fit_dispersion : bool, optional
+        Whether to fit the machine dispersion in addition to the
+        chromaticity.
+    n_step : int, optional
+        Number of RF frequency steps.
+    sleep_between_step : float, optional
+        Delay in seconds after changing the RF frequency.
+    n_avg_meas : int, optional
+        Number of tune (and orbit) measurements to average at each RF
+        frequency.
+    sleep_between_meas : float, optional
+        Delay in seconds between consecutive measurements during
+        averaging.
+
+    Attributes
+    ----------
+    chromaticity
+        Get the chromaticity values.
+    dispersion
+        Get the dispersion values.
+
+    Methods
+    -------
+    set_mcf(alphac)
+        Set the momentum-compaction factor for frequency-step measurements.
+    measure(...)
+        Main function for chromaticity measurement.
+
+        :py:attr:`~pyaml.tuning_tools.measurement_tool.MeasurementTool.latest_measurement` contains:
+    fit(deltas, Q, order, orbit=None, fit_disp_order=None, do_plot=False)
+        Compute chromaticity (and dispersion) from input data and update
+        :py:attr:`~pyaml.tuning_tools.measurement_tool.MeasurementTool.latest_measurement`.
     """
 
     def __init__(
@@ -69,40 +151,6 @@ class ChromaticityMonitor(MeasurementTool, DynamicValidation):
         The monitor performs chromaticity measurements by varying the RF
         frequency, acquiring tune measurements from a betatron tune monitor,
         and optionally fitting the machine dispersion using BPM orbit data.
-
-        Parameters
-        ----------
-        name : str
-            Name of the chromaticity monitor.
-        betatron_tune_name : str
-            Name of the betatron tune monitor used to measure the horizontal
-            and vertical tunes.
-        rf_plant_name : str
-            Name of the RF plant used to vary the RF frequency.
-        bpm_array_name : str, optional
-            Name of the BPM array used for dispersion measurements. Required
-            only when dispersion fitting is enabled.
-        e_delta : float, optional
-            Default relative momentum deviation used during the measurement.
-        max_e_delta : float, optional
-            Maximum permitted relative momentum deviation.
-        fit_order : int, optional
-            Polynomial order used to fit the chromaticity.
-        fit_disp_order : int, optional
-            Polynomial order used to fit the dispersion.
-        fit_dispersion : bool, optional
-            Whether to fit the machine dispersion in addition to the
-            chromaticity.
-        n_step : int, optional
-            Number of RF frequency steps.
-        sleep_between_step : float, optional
-            Delay in seconds after changing the RF frequency.
-        n_avg_meas : int, optional
-            Number of tune (and orbit) measurements to average at each RF
-            frequency.
-        sleep_between_meas : float, optional
-            Delay in seconds between consecutive measurements during
-            averaging.
         """
 
         super().__init__(name)
@@ -137,6 +185,17 @@ class ChromaticityMonitor(MeasurementTool, DynamicValidation):
         return self._chromaticity
 
     def set_mcf(self, alphac: float):
+        """
+        Set the momentum-compaction factor for frequency-step measurements.
+
+        The factor is used to convert an RF-frequency variation into the
+        corresponding relative energy deviation when measuring chromaticity.
+
+        Parameters
+        ----------
+        alphac : float
+            Momentum-compaction factor, usually dimensionless.
+        """
         self._alphac = alphac
 
     @property
@@ -168,6 +227,7 @@ class ChromaticityMonitor(MeasurementTool, DynamicValidation):
     ):
         """
         Main function for chromaticity measurment.
+
         :py:attr:`~pyaml.tuning_tools.measurement_tool.MeasurementTool.latest_measurement` contains:
 
         .. code-block:: python
@@ -180,33 +240,33 @@ class ChromaticityMonitor(MeasurementTool, DynamicValidation):
 
         Parameters
         ----------
-        n_step: int
+        n_step : int
             Default number of RF step during chromaticity
             measurment [default: from config]
-        alphac: float | None
+        alphac : float | None
             Moment compaction factor [default: from config]
-        w_delta: float
+        e_delta : float
             Default variation of relative energy during chromaticity measurment:
             f0 - f0 * E_delta * alphac  < f_RF < f0 + f0 * E_delta * alphac
             [default: from config]
-        max_e_delta: float
+        max_e_delta : float
             Maximum autorized variation of relative energy during chromaticity
             measurment [default: from config]
-        n_avg_meas: int
+        n_avg_meas : int
             Default number of tune/orbit measurment per RF frequency [default: from config]
-        sleep_between_meas: float
+        sleep_between_meas : float
             Default time sleep between two tune measurment [default: from config]
-        sleep_between_step: float
+        sleep_between_step : float
             Default time sleep after RF frequency variation [default: from config]
-        fit_order: int
+        fit_order : int
             Fitting order [default: from config]
         fit_disp_order : int, optional
             Dispersion fitting order [default: from config]
-        fit_dispersion : bool, optionnal
+        fit_dispersion : bool, optional
             Fit dispersion, [default: from config]
         do_plot : bool
             Do you want to plot the fitting results ?
-        callback: Callable, optional
+        callback : Callable, optional
             Callback is executed after each measurement or setting.
             If the callback return false, then the process is aborted.
             callback_data dict contains:
@@ -220,7 +280,6 @@ class ChromaticityMonitor(MeasurementTool, DynamicValidation):
               tune:np.array # The measured tune (on Action.MEASURE)
               orbit:np_array # The measured orbit, if fit_dispersion is True, (on Action.MEASURE)
               dtune:np.array # The tune variation (on Action.RESTORE)
-
         """
         n_step = n_step if n_step is not None else self.n_step
         alphac = alphac if alphac is not None else self._alphac
@@ -327,14 +386,14 @@ class ChromaticityMonitor(MeasurementTool, DynamicValidation):
             Relative energy (delta) variation steps done.
         Q : array of [Qx,Qy]
             Horizontal,Vertical tune measured.
-        orbit: array of [[x0,y0],[x1,y1],...]
-        fit_order: int
-            Chromaticity fitting order
+        order : int
+            Chromaticity fitting order.
+        orbit : array of [[x0,y0],[x1,y1],...], optional
+            Horizontal and vertical orbit at each energy step, used to fit the dispersion.
         fit_disp_order : int, optional
-            Dispersion fitting order
-        plot : bool, optional
-            If True, plot the fit.
-
+            Dispersion fitting order.
+        do_plot : bool, optional
+            If ``True``, plot the fit.
         """
         chroma = np.polynomial.polynomial.polyfit(deltas, Q, order).T
         self.latest_measurement["chromaticity_fit"] = chroma
@@ -387,8 +446,18 @@ class ChromaticityMonitor(MeasurementTool, DynamicValidation):
             plt.show()
 
     def _after_attach(self):
+        """
+        Recreate readback handles after attaching the monitor.
+
+        The handles are bound to the attached monitor instance and therefore
+        must be refreshed after the monitor is copied and attached to an
+        element holder.
+        """
         self._chromaticity = RChromaDispArray(self, "chromaticity", "1")
         self._dispersion = RChromaDispArray(self, "dispersion", "m")
 
     def __repr__(self):
+        """
+        Implement the ``__repr__`` string.
+        """
         return __pyaml_repr__(self, exclude=["chromaticity", "dispersion"])

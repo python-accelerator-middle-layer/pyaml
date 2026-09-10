@@ -1,3 +1,9 @@
+"""
+Element Array module.
+
+This module provides element array functionality.
+"""
+
 import fnmatch
 import importlib
 from typing import TYPE_CHECKING, Sequence
@@ -17,7 +23,7 @@ if TYPE_CHECKING:
 
 class ElementArray(list[Element]):
     """
-    Class that implements access to an element array
+    Class that implements access to an element array.
 
     Parameters
     ----------
@@ -27,11 +33,27 @@ class ElementArray(list[Element]):
         Element list, all elements must be attached to the same instance of
         either a Simulator or a ControlSystem.
     use_aggregator : bool
-        Use aggregator to increase performance by using paralell
+        Use aggregator to increase performance by using parallel
         access to underlying devices.
 
-    Example
+    Methods
     -------
+    get_peer()
+        Returns the peer (:py:class:`~pyaml.lattice.simulator.Simulator` or
+        :py:class:`~pyaml.control.controlsystem.ControlSystem`) of an element list
+    get_name()
+        Returns the array name
+    names()
+        Returns the element names
+    mask_by_type(element_type)
+        Return a boolean mask indicating which elements are instances of the given type.
+    of_type(element_type)
+        Return a new array containing only elements of the given type.
+    exclude_type(element_type)
+        Return a copy of the array without the elements of a given type.
+
+    Examples
+    --------
 
     An array can be retrieved from the configuration as in the following example:
 
@@ -39,10 +61,12 @@ class ElementArray(list[Element]):
 
         >>> sr = Accelerator.load("acc.yaml")
         >>> elements = sr.design.get_elements("QuadForTune")
-
     """
 
     def __init__(self, array_name: str, elements: list[Element], use_aggregator=True):
+        """
+        Initialize the ElementArray.
+        """
         super().__init__(i for i in elements)
         self.__name = array_name
         self.__peer = None
@@ -88,6 +112,18 @@ class ElementArray(list[Element]):
         return __pyaml_repr__(self)
 
     def __create_array(self, array_name: str, element_type: type, elements: list):
+        """
+        Implement the __create_array protocol operation.
+
+        Parameters
+        ----------
+        array_name : str
+            Name given to the newly created array.
+        element_type : type
+            Common element type of ``elements``, used to pick the matching array class.
+        elements : list
+            Elements to place in the new array.
+        """
         if element_type is None:
             element_type = Element
 
@@ -113,6 +149,21 @@ class ElementArray(list[Element]):
             raise PyAMLException(f"Unsupported sliced array for type {str(element_type)}")
 
     def __eval_field(self, attribute_name: str, element: Element) -> str:
+        """
+        Implement the __eval_field protocol operation.
+
+        Parameters
+        ----------
+        attribute_name : str
+            Attribute to read, resolved through the element's ``get_<attribute_name>`` method.
+        element : Element
+            Element to read the attribute from.
+
+        Returns
+        -------
+        str
+            Attribute value, or ``None`` if the element has no such getter.
+        """
         function_name = "get_" + attribute_name
         func = getattr(element, function_name, None)
         return func() if func is not None else ""
@@ -131,7 +182,8 @@ class ElementArray(list[Element]):
         return other
 
     def __auto_array(self, elements: list[Element]):
-        """Create the most specific array type for the given element list.
+        """
+        Create the most specific array type for the given element list.
 
         The target element type is the most specific common base class (nearest common
         ancestor) of all elements. This supports heterogeneous subclasses (e.g.,
@@ -145,6 +197,7 @@ class ElementArray(list[Element]):
 
         def mro_as_list(cls: type) -> list[type]:
             # inspect.getmro returns (cls, ..., object)
+            """Return the class MRO, most specific first."""
             return list(inspect.getmro(cls))
 
         # Start from the first element MRO as reference order (most specific first).
@@ -230,7 +283,6 @@ class ElementArray(list[Element]):
             :py:class:`.CombinedFunctionMagnetArray` or
             :py:class:`.SerializedMagnetsArray` or
             :py:class:`.ElementArray`.
-
         """
         # --- mask filtering ---
         if self.__is_bool_mask(other):
@@ -251,6 +303,14 @@ class ElementArray(list[Element]):
     def __rand__(self, other: object):
         # Support "array on the right" for array operands; for masks, we don't enforce
         # commutativity.
+        """
+        Implement the __rand__ protocol operation.
+
+        Parameters
+        ----------
+        other : object
+            Left-hand operand, evaluated when it does not implement the operation itself.
+        """
         if isinstance(other, ElementArray):
             return other.__and__(self)
         return NotImplemented
@@ -295,7 +355,6 @@ class ElementArray(list[Element]):
             :py:class:`.CombinedFunctionMagnetArray` or
             :py:class:`.SerializedMagnetsArray` or
             :py:class:`.ElementArray`.
-
         """
         # --- mask removal ---
         if self.__is_bool_mask(other):
@@ -321,14 +380,10 @@ class ElementArray(list[Element]):
         Order is stable: elements from ``self`` first, followed by
         elements from ``other`` that are not already present.
 
-        Example
-        -------
-
-        .. code-block:: python
-
-            >>> hcorr = sr.live.get_magnets("HCORR")
-            >>> vcorr = sr.live.get_magnets("VCORR")
-            >>> all_corr = hcorr | vcorr
+        Parameters
+        ----------
+        other : ElementArray or list[Element]
+            Array whose elements are combined with this one.
 
         Returns
         -------
@@ -341,6 +396,14 @@ class ElementArray(list[Element]):
             :py:class:`.SerializedMagnetsArray` or
             :py:class:`.ElementArray`.
 
+        Examples
+        --------
+
+        .. code-block:: python
+
+            >>> hcorr = sr.live.get_magnets("HCORR")
+            >>> vcorr = sr.live.get_magnets("VCORR")
+            >>> all_corr = hcorr | vcorr
         """
         other_arr = self.__ensure_compatible_operand(other)
 
@@ -362,6 +425,14 @@ class ElementArray(list[Element]):
         return self.__auto_array(res)
 
     def __ror__(self, other: object):
+        """
+        Implement the __ror__ protocol operation.
+
+        Parameters
+        ----------
+        other : object
+            Left-hand operand, evaluated when it does not implement the operation itself.
+        """
         if isinstance(other, ElementArray):
             return other.__or__(self)
         return NotImplemented
@@ -370,12 +441,10 @@ class ElementArray(list[Element]):
         """
         Alias for the union operator ``|``.
 
-        Example
-        -------
-
-        .. code-block:: python
-
-            >>> all_corr = hcorr + vcorr
+        Parameters
+        ----------
+        other : ElementArray or list[Element]
+            Array whose elements are combined with this one.
 
         Returns
         -------
@@ -388,16 +457,31 @@ class ElementArray(list[Element]):
             :py:class:`.SerializedMagnetsArray` or
             :py:class:`.ElementArray`.
 
+        Examples
+        --------
+
+        .. code-block:: python
+
+            >>> all_corr = hcorr + vcorr
         """
         return self.__or__(other)
 
     def __radd__(self, other: object):
+        """
+        Implement the __radd__ protocol operation.
+
+        Parameters
+        ----------
+        other : object
+            Left-hand operand, evaluated when it does not implement the operation itself.
+        """
         if isinstance(other, ElementArray):
             return other.__add__(self)
         return NotImplemented
 
     def mask_by_type(self, element_type: type) -> list[bool]:
-        """Return a boolean mask indicating which elements are instances of the given
+        """
+        Return a boolean mask indicating which elements are instances of the given
         type.
 
         Parameters
@@ -417,7 +501,8 @@ class ElementArray(list[Element]):
         return [isinstance(e, element_type) for e in self]
 
     def of_type(self, element_type: type):
-        """Return a new array containing only elements of the given type.
+        """
+        Return a new array containing only elements of the given type.
 
         The resulting array is automatically typed according to the most
         specific common base class of the filtered elements.
@@ -440,51 +525,62 @@ class ElementArray(list[Element]):
         return self.__auto_array(filtered)
 
     def exclude_type(self, element_type):
+        """
+        Return a copy of the array without the elements of a given type.
+
+        Parameters
+        ----------
+        element_type : object
+            Element type to drop; instances of its subclasses are dropped as well.
+        """
         mask = self.mask_by_type(element_type)
         return self - mask
 
     def __getitem__(self, key):
+        """Return an element or a selection typed by its common element class.
+
+        Parameters
+        ----------
+        key : int, slice or str
+            Element index, slice, name pattern, or existing field selector.
+
+        Returns
+        -------
+        Element or ElementArray
+            Indexed element or an array inferred from all selected elements.
+            Different Magnet subclasses produce a MagnetArray; mixed element
+            families produce an ElementArray. Empty selections return an
+            empty ElementArray.
+
+        Examples
+        --------
+        >>> magnets = sr.design.magnets.get()
+        >>> subset = magnets[:]  # MagnetArray, including mixed magnet classes
+        >>> correctors = magnets["SH*"]  # MagnetArray
+        """
         if isinstance(key, slice):
             # Slicing
-            element_type = None
-            r = []
-            for i in range(*key.indices(len(self))):
-                if element_type is None:
-                    element_type = type(self[i])
-                elif not isinstance(self[i], element_type):
-                    element_type = Element  # Fall back to element
-                r.append(self[i])
-            return self.__create_array("", element_type, r)
+            r = super().__getitem__(key)
 
         elif isinstance(key, str):
             fields = key.split(":")
 
             if len(fields) <= 1:
                 # Selection by name
-                element_type = None
                 r = []
                 for e in self:
                     if fnmatch.fnmatch(e.get_name(), key):
-                        if element_type is None:
-                            element_type = type(e)
-                        elif not isinstance(e, element_type):
-                            element_type = Element  # Fall back to element
                         r.append(e)
             else:
                 # Selection by fields
-                element_type = None
                 r = []
                 for e in self:
                     txt = self.__eval_field(fields[0], e)
                     if fnmatch.fnmatch(txt, fields[1]):
-                        if element_type is None:
-                            element_type = type(e)
-                        elif not isinstance(e, element_type):
-                            element_type = Element  # Fall back to element
                         r.append(e)
-
-            return self.__create_array("", element_type, r)
 
         else:
             # Default to super selection
             return super().__getitem__(key)
+
+        return self.__auto_array(r) if r else self.__create_array("", Element, r)

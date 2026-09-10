@@ -3,49 +3,23 @@ from pathlib import Path
 
 import numpy as np
 import pytest
+import yaml
+from pyaml_test_lattice import configurations, lattices
 
 from pyaml.accelerator import Accelerator
 from pyaml.configuration import ConfigurationManager
 
-QF_001 = "QF_001_314d440dcc3348c687785c80e67fce27"
+QF_001 = "QF_001"
 QF_001_STRENGTH = "AN01-AR/EM-QP/QF.01/magnetic_strength"
 RF_REFERENCE_FREQUENCY = "simulator/ringsimulator/ringsimulator/reference_frequency"
 EXAMPLES_ROOT = Path(__file__).parent.parent.parent / "examples" / "use_cases" / "config"
-FODO_1GEV_6D_ROOT = Path(__file__).parent / "data" / "fodo_1gev_6d"
-FODO_1GEV_6D_TANGO_PYAML_CONFIG = {
-    "accelerator": "fodo_1gev_6d_pyaml_accelerator.yaml",
-    "simulator": "fodo_1gev_6d_pyaml_simulators.yaml",
-    "control_system": "fodo_1gev_6d_pyaml_tango_controls.yaml",  # tango-pyaml
-    "arrays": "fodo_1gev_6d_pyaml_arrays.yaml",
-    "bpm_devices": "fodo_1gev_6d_pyaml_devices_bpms.yaml",
-    "bends_devices": "fodo_1gev_6d_pyaml_devices_bends.yaml",
-    "correctors_devices": "fodo_1gev_6d_pyaml_devices_correctors.yaml",
-    "quadrupoles_devices": "fodo_1gev_6d_pyaml_devices_quadrupoles.yaml",
-    "sextupoles_devices": "fodo_1gev_6d_pyaml_devices_sextupoles.yaml",
-    "diagnostic_devices": "fodo_1gev_6d_pyaml_devices_diagnostics.yaml",
-    "rf_devices": "fodo_1gev_6d_pyaml_devices_rf.yaml",
-}
+
+FODO_LATTICE_KEY = "fodo_1gev_6d.json"
+FODO_1GEV_6D_TANGO_PYAML_CONFIG_KEY = "pyaml/tango/tango-pyaml/fodo_1gev_6d_pyaml.yaml"
+FODO_1GEV_6D_CS_OA_CONFIG_KEY = "pyaml/tango/pyaml-cs-oa/fodo_1gev_6d_pyaml-oa.yaml"
 FODO_1GEV_6D_CONFIGS = [
-    (
-        FODO_1GEV_6D_ROOT,
-        FODO_1GEV_6D_TANGO_PYAML_CONFIG,
-    ),
-    (
-        FODO_1GEV_6D_ROOT,
-        {
-            "accelerator": "fodo_1gev_6d_pyaml_accelerator.yaml",
-            "simulator": "fodo_1gev_6d_pyaml_simulators.yaml",
-            "control_system": "fodo_1gev_6d_pyaml_cs_oa_controls.yaml",  # pyaml-cs-oa
-            "arrays": "fodo_1gev_6d_pyaml_arrays.yaml",
-            "bpm_devices": "fodo_1gev_6d_pyaml_devices_bpms.yaml",
-            "bends_devices": "fodo_1gev_6d_pyaml_devices_bends.yaml",
-            "correctors_devices": "fodo_1gev_6d_pyaml_devices_correctors.yaml",
-            "quadrupoles_devices": "fodo_1gev_6d_pyaml_devices_quadrupoles.yaml",
-            "sextupoles_devices": "fodo_1gev_6d_pyaml_devices_sextupoles.yaml",
-            "diagnostic_devices": "fodo_1gev_6d_pyaml_devices_diagnostics.yaml",
-            "rf_devices": "fodo_1gev_6d_pyaml_devices_rf.yaml",
-        },
-    ),
+    FODO_1GEV_6D_TANGO_PYAML_CONFIG_KEY,
+    FODO_1GEV_6D_CS_OA_CONFIG_KEY,
 ]
 pytestmark = [
     pytest.mark.integration,
@@ -60,21 +34,38 @@ def _readback_value(device_access):
     return float(device_access.readback())
 
 
-def _build_accelerator(root_folder: Path, config_files: dict[str, str]):
+def _load_fragment(config_key: str) -> dict:
+    """Load one pyaml-test-lattice merged config fragment as a plain dict.
+
+    Bypasses pyaml's own YAML loader (which auto-loads any bare
+    ``*.yaml``/``*.json`` string value as a nested file relative to the
+    parent file's directory) since the lattice file ships under a different
+    package subtree (``data/lattice``) than the config fragment
+    (``data/configuration``). The ``lattice`` and ``catalog`` references are
+    resolved explicitly instead.
+    """
+    config_path = Path(configurations[config_key])
+    fragment = yaml.safe_load(config_path.read_text())
+
+    fragment["simulators"][0]["lattice"] = str(Path(lattices[FODO_LATTICE_KEY]))
+
+    catalog_name = fragment["controls"][0]["catalog"]
+    catalog_path = config_path.parent / catalog_name
+    fragment["controls"][0]["catalog"] = yaml.safe_load(catalog_path.read_text())
+
+    return fragment
+
+
+def _build_accelerator(config_key: str):
     configuration_manager: ConfigurationManager = ConfigurationManager()
-    for config_file in config_files.values():
-        configuration_manager.add(str(root_folder / config_file))
+    configuration_manager.add(_load_fragment(config_key))
 
     return Accelerator.from_dict(configuration_manager.to_dict())
 
 
-@pytest.mark.parametrize(
-    ("root_folder", "config_files"),
-    FODO_1GEV_6D_CONFIGS,
-    ids=["tango-pyaml", "pyaml-cs-oa"],
-)
-def test_dt4acc_twin_accelerator_instantiates_and_reads_live_values(root_folder: Path, config_files: dict[str, str]):
-    accelerator = _build_accelerator(root_folder, config_files)
+@pytest.mark.parametrize("config_key", FODO_1GEV_6D_CONFIGS, ids=["tango-pyaml", "pyaml-cs-oa"])
+def test_dt4acc_twin_accelerator_instantiates_and_reads_live_values(config_key: str):
+    accelerator = _build_accelerator(config_key)
 
     assert accelerator.live is not None
     assert "live" in accelerator.controls()
@@ -93,13 +84,9 @@ def test_dt4acc_twin_accelerator_instantiates_and_reads_live_values(root_folder:
     assert magnetic_strength > 0.0, f"{QF_001} magnetic strength should be positive, got {magnetic_strength!r}"
 
 
-@pytest.mark.parametrize(
-    ("root_folder", "config_files"),
-    FODO_1GEV_6D_CONFIGS,
-    ids=["tango-pyaml", "pyaml-cs-oa"],
-)
-def test_dt4acc_twin_reads_all_declared_magnetic_strengths(root_folder: Path, config_files: dict[str, str]):
-    accelerator = _build_accelerator(root_folder, config_files)
+@pytest.mark.parametrize("config_key", FODO_1GEV_6D_CONFIGS, ids=["tango-pyaml", "pyaml-cs-oa"])
+def test_dt4acc_twin_reads_all_declared_magnetic_strengths(config_key: str):
+    accelerator = _build_accelerator(config_key)
     magnets = [magnet for magnet in accelerator.live.magnets.get() if magnet.get_model_name() == magnet.get_name()]
     combined_function_magnets = accelerator.live.combined_function_magnet.all()
 
@@ -142,18 +129,10 @@ def test_examples_can_be_loaded(root_folder: Path, config_file: str):
     assert accelerator.yellow_pages is not None
 
 
-@pytest.mark.parametrize(
-    ("root_folder", "config_files"),
-    [
-        (
-            FODO_1GEV_6D_ROOT,
-            FODO_1GEV_6D_TANGO_PYAML_CONFIG,
-        ),
-    ],
-)
-def deactivated_test_orbit_correction(root_folder: Path, config_files: dict[str, str]):
+@pytest.mark.parametrize("config_key", [FODO_1GEV_6D_TANGO_PYAML_CONFIG_KEY])
+def deactivated_test_orbit_correction(config_key: str):
     try:
-        accelerator = _build_accelerator(root_folder, config_files)
+        accelerator = _build_accelerator(config_key)
         control_mode = accelerator.live
         bpms = control_mode.bpms.get("bpms")
         orbit_response_matrix = control_mode.get_orm_tuning("DEFAULT_ORBIT_RESPONSE_MATRIX")
@@ -190,20 +169,15 @@ def deactivated_test_orbit_correction(root_folder: Path, config_files: dict[str,
             time.sleep(3)
 
 
-@pytest.mark.parametrize(
-    ("root_folder", "config_files"),
-    [
-        (
-            FODO_1GEV_6D_ROOT,
-            FODO_1GEV_6D_TANGO_PYAML_CONFIG,
-        ),
-    ],
-)
-def test_chromaticity_measurement(root_folder: Path, config_files: dict[str, str]):
+@pytest.mark.parametrize("config_key", [FODO_1GEV_6D_TANGO_PYAML_CONFIG_KEY])
+def deactivated_test_chromaticity_measurement(config_key: str):
+    # Deactivated like test_orbit_correction above: pyaml-test-lattice's current fixture
+    # (as of commit 9d753c73) does not yet define BPMs/correctors or tuning tools
+    # (chromaticity/orbit/tune response matrix), which this test requires.
     try:
         from pyaml.common.constants import Action
 
-        accelerator = _build_accelerator(root_folder, config_files)
+        accelerator = _build_accelerator(config_key)
         control_mode = accelerator.live
         chromaticity_measurement = control_mode.get_chromaticity_monitor("DEFAULT_CHROMATICITY_MEASUREMENT")
 

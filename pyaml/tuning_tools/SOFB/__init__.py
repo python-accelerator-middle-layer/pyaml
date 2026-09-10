@@ -3,7 +3,6 @@ slow orbit feedback package
 ~~~~~~~~~~~~~~~~
 
 pyAML
-
 """
 
 __title__ = "pyAML"

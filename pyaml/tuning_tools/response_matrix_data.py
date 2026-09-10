@@ -1,8 +1,17 @@
+"""
+Serializable response-matrix data models.
+
+The :class:`ResponseMatrixData` model stores a numerical response matrix and
+the names of the variables and observables represented by its columns and
+rows. It is used to persist and exchange measured or calculated accelerator
+response data.
+"""
+
 from dataclasses import dataclass
 from pathlib import Path
 
-from pyaml.common.element import __pyaml_repr__
 from pyaml.configuration.factory import Factory
+from pyaml.validation import SchemaValidator
 
 from .. import PyAMLException
 from ..configuration.fileloader import load
@@ -14,7 +23,8 @@ PYAMLCLASS = "ResponseMatrixData"
 @register_schema
 @dataclass
 class ResponseMatrixData(DynamicValidation):
-    """Response matrix data and its associated variable and observable names.
+    """
+    Response matrix data and its associated variable and observable names.
 
     Parameters
     ----------
@@ -27,16 +37,21 @@ class ResponseMatrixData(DynamicValidation):
     observable_names : list[str]
         Names of the observables represented by the matrix rows, typically
         measured quantities.
+
+    Methods
+    -------
+    load(filename)
+        Load response matrix data from a configuration file.
     """
 
     matrix: list[list[float]]
     observable_names: list[str]
     variable_names: list[str] | None = None
-    type: str | None = None
 
     @staticmethod
     def load(filename: str) -> "ResponseMatrixData":
-        """Load response matrix data from a configuration file.
+        """
+        Load response matrix data from a configuration file.
 
         Parameters
         ----------
@@ -56,6 +71,7 @@ class ResponseMatrixData(DynamicValidation):
         path = Path(filename)
         if path.exists():
             config_dict = load(str(path.resolve()))
+            SchemaValidator.validate(config_dict)
             return Factory.build(config_dict, ignore_external=False)
         else:
             raise PyAMLException(f"{filename}: file not found")

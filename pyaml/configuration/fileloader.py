@@ -1,4 +1,9 @@
-"""PyAML configuration file loader."""
+"""
+Load PyAML configuration files and expand nested references.
+
+The loader supports YAML and JSON files, environment and path resolvers,
+recursive file includes, and optional source-location metadata for diagnostics.
+"""
 
 import io
 import json
@@ -29,12 +34,29 @@ RESOLVER_PATTERN = re.compile(r"\$\{([^{}]+)\}")
 
 
 class RootFolder:
-    """Manage the root directory used to resolve configuration paths."""
+    """
+    Manage the base directory for relative configuration paths.
+
+    Parameters
+    ----------
+    path : str or pathlib.Path or None, optional
+        Directory used to resolve relative paths.
+
+    Methods
+    -------
+    set(path)
+        Set the directory used to resolve relative configuration files.
+    get()
+        Return the resolved configuration root directory.
+    expand_path(path)
+        Resolve a configuration path against the root directory.
+    """
 
     def __init__(self, path: str | Path | None = None):
-        """Create a root folder.
+        """
+        Initialize the configuration path root.
 
-        If no path is provided, the current working directory is used.
+        If ``path`` is omitted, the current working directory is used.
         """
         if path is None:
             self._path = Path.cwd().resolve()
@@ -42,17 +64,35 @@ class RootFolder:
             self._path = Path(path).resolve()
 
     def set(self, path: str | Path) -> None:
-        """Set the root path used for resolving relative configuration files."""
+        """
+        Set the directory used to resolve relative configuration files.
+
+        Parameters
+        ----------
+        path : str or pathlib.Path
+            New configuration root directory.
+        """
         self._path = Path(path).resolve()
 
     def get(self) -> Path:
-        """Return the current root path."""
+        """Return the resolved configuration root directory."""
         return self._path
 
     def expand_path(self, path: str | Path) -> Path:
-        """Return an absolute, normalized configuration path.
+        """
+        Resolve a configuration path against the root directory.
 
         Relative paths are interpreted relative to the configured root folder.
+
+        Parameters
+        ----------
+        path : str or pathlib.Path
+            Path to resolve.
+
+        Returns
+        -------
+        pathlib.Path
+            Absolute, normalized path.
         """
 
         path = Path(path)
@@ -65,14 +105,20 @@ ROOT = RootFolder()
 
 
 class PyAMLConfigCyclingException(PyAMLException):
-    """Raised when a configuration file includes itself through a cycle."""
+    """
+    Raised when a configuration file includes itself through a cycle.
+
+    Parameters
+    ----------
+    error_filename : str
+        File that triggered the cycle.
+    path_stack : list[pathlib.Path]
+        Include chain leading to the cycle.
+    """
 
     def __init__(self, error_filename: str, path_stack: list[Path]):
-        """Create a circular-include error.
-
-        Args:
-            error_filename: The file that triggered the cycle.
-            path_stack: The include chain leading to the cycle.
+        """
+        Initialize an exception describing a circular file include.
         """
 
         self.error_filename = error_filename
@@ -83,18 +129,39 @@ class PyAMLConfigCyclingException(PyAMLException):
 
 @dataclass
 class LoadContext:
-    """Track state for one recursive configuration-loading session."""
+    """
+    Track include state during one recursive loading session.
+
+    Parameters
+    ----------
+    include_locations : bool, optional
+        Preserve source locations in loaded mappings.
+    include_stack : list[pathlib.Path], optional
+        Active include chain. Usually left empty for a new session.
+
+    Methods
+    -------
+    loading(path)
+        Temporarily add a file to the active include chain.
+    """
 
     include_locations: bool = False
     include_stack: list[Path] = field(default_factory=list)
 
     @contextmanager
     def loading(self, path: Path):
-        """Register a file as currently being loaded and remove it afterward.
+        """
+        Temporarily add a file to the active include chain.
 
-        Raises:
-            PyAMLConfigCyclingException: If the file is already on the active
-                include stack.
+        Parameters
+        ----------
+        path : pathlib.Path
+            File that is about to be loaded.
+
+        Raises
+        ------
+        PyAMLConfigCyclingException
+            If ``path`` is already on the active include stack.
         """
 
         # Check if the file is currently in the chain
@@ -117,7 +184,8 @@ RESOLVERS: dict[str, Resolver] = {}
 
 
 def resolver(name: str):
-    """Register a function as a configuration value resolver.
+    """
+    Register a function as a configuration value resolver.
 
     Args:
         name: Prefix used to invoke the resolver (for example ``"env"``
@@ -129,6 +197,19 @@ def resolver(name: str):
     """
 
     def decorate(func: Resolver) -> Resolver:
+        """
+        Register ``func`` under the resolver prefix.
+
+        Parameters
+        ----------
+        func : Resolver
+            Resolver function accepting a payload and loading context.
+
+        Returns
+        -------
+        Resolver
+            The original resolver function.
+        """
         RESOLVERS[name] = func
         return func
 
@@ -137,15 +218,25 @@ def resolver(name: str):
 
 @resolver("env")
 def resolve_env(value: str, _context: LoadContext | None = None) -> str:
-    """Resolve an environment variable.
+    """
+    Resolve an environment variable by name.
 
-    Args:
-        value: Name of the environment variable.
-        context: Unused loading context. Present to match the resolver
-            interface.
+    Parameters
+    ----------
+    value : str
+        Name of the environment variable.
+    _context : LoadContext or None, optional
+        Unused loading context retained for resolver compatibility.
 
-    Raises:
-        PyAMLException: If the environment variable is not set.
+    Returns
+    -------
+    str
+        Environment variable value.
+
+    Raises
+    ------
+    PyAMLException
+        If the environment variable is not set.
     """
     try:
         return os.environ[value]
@@ -155,32 +246,47 @@ def resolve_env(value: str, _context: LoadContext | None = None) -> str:
 
 @resolver("path")
 def resolve_path(value: str, _context: LoadContext | None = None) -> str:
-    """Resolve a configuration path without loading the file.
+    """
+    Resolve a configuration path without loading the file.
 
     Relative paths are expanded using the configured root folder.
 
-    Args:
-        value: Path to resolve.
-        context: Unused loading context. Present to match the resolver
-            interface.
+    Parameters
+    ----------
+    value : str
+        Path to resolve.
+    _context : LoadContext or None, optional
+        Unused loading context retained for resolver compatibility.
 
-    Returns:
-        The absolute, normalized path as a string.
+    Returns
+    -------
+    str
+        Absolute, normalized path.
     """
     return str(ROOT.expand_path(value))
 
 
 @resolver("file")
 def resolve_file(value: str, context: LoadContext | None = None) -> Any:
-    """Load and return the contents of a configuration file.
+    """
+    Load and return the contents of a configuration file.
 
-    Args:
-        value: Path to the configuration file.
-        context: Shared loading context used to track recursive includes
-            and detect inclusion cycles.
+    Parameters
+    ----------
+    value : str
+        Path to the configuration file.
+    context : LoadContext, optional
+        Shared loading context used to detect inclusion cycles.
 
-    Raises:
-        RuntimeError: If no loading context is provided.
+    Returns
+    -------
+    object
+        Parsed and expanded configuration data.
+
+    Raises
+    ------
+    RuntimeError
+        If no loading context is provided.
     """
     if context is None:
         raise RuntimeError("File resolver requires LoadContext")
@@ -188,7 +294,8 @@ def resolve_file(value: str, context: LoadContext | None = None) -> Any:
 
 
 def load(filename: str, include_locations: bool = False) -> Union[dict, list]:
-    """Load a configuration file.
+    """
+    Load a configuration file.
 
     When include_locations is False, uses the faster C-based YAML loader
     and skips including source location metadata.
@@ -222,7 +329,23 @@ def _is_supported_file(value: Any) -> bool:
 
 
 class ConfigLoader(ABC):
-    """Base class for loaders that expand nested configuration references."""
+    """
+    Base class for parsers that expand nested configuration references.
+
+    Parameters
+    ----------
+    path : pathlib.Path
+        Configuration file being loaded.
+    context : LoadContext
+        Shared state for recursive includes and cycle detection.
+
+    Methods
+    -------
+    expand(obj)
+        Recursively expand configuration values.
+    load()
+        Load and parse the current configuration file.
+    """
 
     def __init__(self, path: Path, context: LoadContext):
         """Store the file path and shared loading context."""
@@ -231,7 +354,8 @@ class ConfigLoader(ABC):
         self.context = context
 
     def expand(self, obj: Union[dict, list, Any]) -> Union[dict, list, Any]:
-        """Recursively expand configuration values.
+        """
+        Recursively expand configuration values.
 
         Dictionaries and lists are traversed recursively, while string values
         are resolved using the registered resolvers. All other values are
@@ -247,7 +371,8 @@ class ConfigLoader(ABC):
         return obj
 
     def _expand_string(self, value: str) -> Any:
-        """Expand resolver expressions and file references in a string.
+        """
+        Expand resolver expressions and file references in a string.
 
         If the entire string is a resolver expression (for example
         ``"${env:HOME}"`` or ``"${file:config.yaml}"``), the resolved value is
@@ -274,6 +399,19 @@ class ConfigLoader(ABC):
 
         # Handle embedded case
         def replace(match: re.Match[str]) -> str:
+            """
+            Replace one embedded resolver expression with its value.
+
+            Parameters
+            ----------
+            match : re.Match[str]
+                Match containing the resolver expression to expand.
+
+            Returns
+            -------
+            str
+                String representation of the resolved scalar value.
+            """
             resolved = self._resolve_resolver_expression(match.group(1).strip())
 
             if isinstance(resolved, (dict, list)):
@@ -292,7 +430,8 @@ class ConfigLoader(ABC):
         return value
 
     def _resolve_resolver_expression(self, expr: str) -> Any:
-        """Resolve a single resolver expression.
+        """
+        Resolve a single resolver expression.
 
         The expression must have the form ``"<resolver>:<payload>"``, for
         example ``"env:HOME"`` or ``"file:config.yaml"``. The resolver is
@@ -345,7 +484,8 @@ class ConfigLoader(ABC):
         raise PyAMLException(f"Circular file inclusion of {exc.error_filename}{location_str}") from exc
 
     def _expand_list(self, items: list) -> list:
-        """Recursively expand the elements of a list.
+        """
+        Recursively expand the elements of a list.
 
         Plain string values that refer to supported configuration files are
         treated as list includes. If the referenced file loads to a list, its
@@ -382,7 +522,21 @@ class ConfigLoader(ABC):
 
 
 class YAMLLoader(ConfigLoader):
-    """Load and expand YAML configuration files."""
+    """
+    Load and expand YAML configuration files.
+
+    Parameters
+    ----------
+    path : pathlib.Path
+        Configuration file being loaded.
+    context : LoadContext
+        Shared state for recursive includes and cycle detection.
+
+    Methods
+    -------
+    load()
+        Parse the YAML file and expand nested configuration references.
+    """
 
     def __init__(self, path: Path, context: LoadContext):
         """Create a YAML loader for the given file."""
@@ -402,7 +556,21 @@ class YAMLLoader(ConfigLoader):
 
 
 class JSONLoader(ConfigLoader):
-    """Load and expand JSON configuration files."""
+    """
+    Load and expand JSON configuration files.
+
+    Parameters
+    ----------
+    path : pathlib.Path
+        Configuration file being loaded.
+    context : LoadContext
+        Shared state for recursive includes and cycle detection.
+
+    Methods
+    -------
+    load()
+        Parse the JSON file and expand nested configuration references.
+    """
 
     def __init__(self, path: Path, context: LoadContext):
         """Create a JSON loader for the given file."""
@@ -421,7 +589,19 @@ class JSONLoader(ConfigLoader):
 
 
 class SafeLineLoader(SafeLoader):
-    """YAML loader that preserves line and column information for mappings."""
+    """
+    YAML loader that preserves line and column information for mappings.
+
+    Parameters
+    ----------
+    stream : io.TextIOBase
+        Stream to parse. Its ``name`` is recorded so errors can cite the source file.
+
+    Methods
+    -------
+    construct_mapping(node, deep=False)
+        Build a mapping and attach location metadata to it.
+    """
 
     def __init__(self, stream):
         """Create the YAML loader and record the source filename."""

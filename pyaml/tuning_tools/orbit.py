@@ -1,3 +1,10 @@
+"""
+Orbit measurement and correction tools.
+
+The :class:`Orbit` tool reads orbit response data, computes corrector changes,
+and applies horizontal, vertical, and optional RF corrections.
+"""
+
 import logging
 from dataclasses import asdict
 from pathlib import Path
@@ -23,6 +30,59 @@ PYAMLCLASS = "Orbit"
 
 @register_schema
 class Orbit(TuningTool, DynamicValidation):
+    """
+    Correct the measured orbit using a configured response matrix.
+
+    Parameters
+    ----------
+    name : str
+        Name of the orbit tool.
+    bpm_array_name : str
+        Name of the BPM array used for orbit readback.
+    hcorr_array_name : str
+        Name of the horizontal corrector array.
+    vcorr_array_name : str
+        Name of the vertical corrector array.
+    response_matrix : Union[str, OrbitResponseMatrixData]
+        Orbit response matrix or path to a serialized matrix.
+    rf_plant_name : Optional[str]
+        Optional RF plant used for RF orbit correction.
+    singular_values : Optional[int]
+        Common number of singular values retained for both planes.
+    singular_values_H : Optional[int]
+        Number of horizontal singular values retained.
+    singular_values_V : Optional[int]
+        Number of vertical singular values retained.
+    virtual_target : float
+        Target value for virtual orbit correction.
+
+    Attributes
+    ----------
+    response_matrix
+        Return the response matrix if it has been loaded None otherwise
+
+    Methods
+    -------
+    load(load_path)
+        Dynamically loads a response matrix.
+    correct(...)
+        Perform orbit correction using the configured response matrix and corrector arrays.
+    set_weight(name, weight, plane=None)
+        Set the weight of a response-matrix input or output.
+    set_virtual_weight(weight)
+        Set the weight of the virtual orbit target.
+    set_rf_weight(weight)
+        Set the weight of the RF-frequency correction variable.
+    get_weight(name, plane=None)
+        Return the response-matrix weight for a named input or output.
+    get_virtual_weight()
+        Return the configured virtual-orbit target weight.
+    get_rf_weight()
+        Return the configured RF-frequency correction weight.
+    post_init()
+        Bind orbit corrector and RF handles after attachment.
+    """
+
     def __init__(
         self,
         name: str,
@@ -36,6 +96,9 @@ class Orbit(TuningTool, DynamicValidation):
         singular_values_V: Optional[int] = None,
         virtual_target: float = 0,
     ):
+        """
+        Initialize the Orbit.
+        """
         super().__init__(name)
 
         self.bpm_array_name = bpm_array_name
@@ -90,6 +153,19 @@ class Orbit(TuningTool, DynamicValidation):
         self._set_response_matrix(self.response_matrix)
 
     def _set_response_matrix(self, mat):
+        """
+        Configure the pySC response matrix from PyAML response data.
+
+        The PyAML variable and observable fields are renamed to the names
+        expected by pySC, including their horizontal and vertical plane
+        metadata. The original PyAML model is retained for later access.
+
+        Parameters
+        ----------
+        mat : OrbitResponseMatrixData
+            Orbit response-matrix data containing the matrix, names, and
+            plane metadata.
+        """
         m = asdict(mat)
         m["input_names"] = m.pop("variable_names")
         m["output_names"] = m.pop("observable_names")
@@ -256,18 +332,83 @@ class Orbit(TuningTool, DynamicValidation):
         return
 
     def set_weight(self, name: str, weight: float, plane: Optional[Literal["H", "V"]] = None) -> None:
+        """
+        Set the weight of a response-matrix input or output.
+
+        Weights affect the relative importance of variables and observables
+        during orbit correction. A plane is required when ``name`` occurs in
+        more than one plane.
+
+        Parameters
+        ----------
+        name : str
+            Variable or observable name whose weight should be changed.
+        weight : float
+            New weight applied during orbit correction.
+        plane : Optional[Literal['H', 'V']]
+            Optional plane selector, either ``"H"`` or ``"V"``.
+
+        Returns
+        -------
+        None
+            This method does not return a value.
+        """
         self._pySC_response_matrix.set_weight(name, weight, plane=plane)
         return
 
     def set_virtual_weight(self, weight: float) -> None:
+        """
+        Set the weight of the virtual orbit target.
+
+        Parameters
+        ----------
+        weight : float
+            New virtual-target weight used during correction.
+
+        Returns
+        -------
+        None
+            This method does not return a value.
+        """
         self._pySC_response_matrix.virtual_weight = weight
         return
 
     def set_rf_weight(self, weight: float) -> None:
+        """
+        Set the weight of the RF-frequency correction variable.
+
+        Parameters
+        ----------
+        weight : float
+            New RF-variable weight used during correction.
+
+        Returns
+        -------
+        None
+            This method does not return a value.
+        """
         self._pySC_response_matrix.rf_weight = weight
         return
 
     def get_weight(self, name: str, plane: Optional[Literal["H", "V"]] = None) -> float:
+        """
+        Return the response-matrix weight for a named input or output.
+
+        If the name is present in multiple planes, pass ``plane`` to select
+        the desired weight.
+
+        Parameters
+        ----------
+        name : str
+            Variable or observable name whose weight should be returned.
+        plane : Optional[Literal['H', 'V']]
+            Optional plane selector, either ``"H"`` or ``"V"``.
+
+        Returns
+        -------
+        float
+            Configured response-matrix weight.
+        """
         names = []
         planes = []
         weights = []
@@ -298,12 +439,15 @@ class Orbit(TuningTool, DynamicValidation):
             raise PyAMLException(f"More than one weight found, please select plane. {names=}, {planes=}, {weights=}")
 
     def get_virtual_weight(self) -> float:
+        """Return the configured virtual-orbit target weight."""
         return self._pySC_response_matrix.virtual_weight
 
     def get_rf_weight(self) -> float:
+        """Return the configured RF-frequency correction weight."""
         return self._pySC_response_matrix.rf_weight
 
     def post_init(self):
+        """Bind orbit corrector and RF handles after attachment."""
         self._hcorr = self.peer.magnets.get(self.hcorr_array_name)
         self._vcorr = self.peer.magnets.get(self.vcorr_array_name)
         hvElts = []
