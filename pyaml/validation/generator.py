@@ -230,7 +230,7 @@ class RegistryJsonSchema(GenerateJsonSchema):
         subschemas = [self.generate_inner(item.__pydantic_core_schema__) for item in subclasses]
 
         # TODO: get the schemas to work when using oneOf instead
-        merged: dict[str, Any] = {"anyOf": subschemas}
+        merged: dict[str, Any] = {"oneOf": subschemas}
 
         for key in METADATA_KEYS:
             if key in base_schema and key not in merged:
