@@ -3,6 +3,7 @@
 import inspect
 import logging
 import types
+from abc import ABC
 from datetime import date, datetime, time, timedelta
 from decimal import Decimal
 from enum import Enum
@@ -21,6 +22,15 @@ from .registry import SchemaRegistry
 logger = logging.getLogger(__name__)
 
 RESERVED_CONFIGURATION_FIELDS = {"class_path"}
+
+# Types that should not be included in the registry when
+# registing classes by walking a class's MRO.
+EXCLUDED_TYPES: set[object] = {
+    object,
+    BaseModel,
+    ConfigurationSchema,
+    ABC,
+}
 
 SUPPORTED_TYPES = (
     int,
@@ -80,7 +90,7 @@ def _extract_source_bases(source: type) -> list[type]:
     bases: list[type] = []
 
     for base in source.__mro__[1:]:
-        if base in (object, BaseModel, ConfigurationSchema):
+        if base in EXCLUDED_TYPES:
             continue
         bases.append(base)
 
@@ -222,7 +232,7 @@ def _resolve_annotation(annotation: Any) -> Any:
     generic types are resolved recursively into equivalent type hints.
     """
 
-    if annotation is inspect._empty:
+    if annotation is inspect._empty or annotation is Any:
         return Any
 
     if annotation is None:

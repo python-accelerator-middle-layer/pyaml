@@ -1,6 +1,7 @@
 """Tests of the schema builder."""
 
 import inspect
+from abc import ABC
 from collections.abc import Generator
 from enum import Enum
 from typing import Annotated, Any, Literal, get_args, get_origin
@@ -11,6 +12,7 @@ from pydantic import BaseModel, Field
 from pyaml.validation.configuration_models import ConfigurationSchema
 from pyaml.validation.registry import SchemaRegistry
 from pyaml.validation.schema_builder import (
+    EXCLUDED_TYPES,
     _configuration_schema_from_basemodel,
     _field_definition_from_field_info,
     _fields_from_constructor_signature,
@@ -189,6 +191,7 @@ def test_fields_from_constructor_signature_rejects_reserved_parameter():
 
 def test_resolve_annotation():
     assert _resolve_annotation(inspect._empty) is Any
+    assert _resolve_annotation(Any) is Any
     assert _resolve_annotation(None) is type(None)
     assert _resolve_annotation(int) is int
     assert _resolve_annotation(Color) is Color
@@ -204,6 +207,23 @@ def test_resolve_annotation():
     annotated = _resolve_annotation(Annotated[int, "meta"])
     assert get_origin(annotated) is Annotated
     assert get_args(annotated) == (int, "meta")
+
+
+def test_excluded_framework_bases_are_not_registered():
+    class FrameworkConfig(ABC):
+        pass
+
+    class UserConfig(FrameworkConfig):
+        pass
+
+    EXCLUDED_TYPES.add(FrameworkConfig)
+    try:
+        generate_configuration_schema(UserConfig)
+        registry = SchemaRegistry()
+        assert f"{FrameworkConfig.__module__}.{FrameworkConfig.__name__}" not in registry
+        assert f"{UserConfig.__module__}.{UserConfig.__name__}" in registry
+    finally:
+        EXCLUDED_TYPES.remove(FrameworkConfig)
 
 
 def test_resolve_annotation_rejects_forward_reference():
