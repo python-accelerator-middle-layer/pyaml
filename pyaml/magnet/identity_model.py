@@ -75,20 +75,20 @@ class IdentityMagnetModel(MagnetModel, DynamicValidation):
         """
         Initialize the IdentityMagnetModel.
         """
-        self._physics = physics
-        self._powerconverter = powerconverter
-        self._unit = unit
+        self.physics = physics
+        self.powerconverter = powerconverter
+        self.unit = unit
 
-        if self._physics is None and self._powerconverter is None:
+        if self.physics is None and self.powerconverter is None:
             raise PyAMLException("Invalid IdentityMagnetModel configuration,physics or powerconverter device required")
-        if self._physics is not None and self._powerconverter is not None:
+        if self.physics is not None and self.powerconverter is not None:
             raise PyAMLException(
                 "Invalid IdentityMagnetModel configuration,physics or powerconverter device required but not both"
             )
-        if self._physics:
-            self.__device = self._physics
+        if self.physics:
+            self.__device = self.physics
         else:
-            self.__device = self._powerconverter
+            self.__device = self.powerconverter
 
     def compute_hardware_values(self, strengths: np.array) -> np.array:
         """
@@ -124,11 +124,11 @@ class IdentityMagnetModel(MagnetModel, DynamicValidation):
 
     def get_strength_units(self) -> list[str]:
         """Return the units of magnet strengths."""
-        return [self._unit]
+        return [self.unit]
 
     def get_hardware_units(self) -> list[str]:
         """Return the units of hardware values."""
-        return [self._unit]
+        return [self.unit]
 
     def get_device_names(self) -> list[str | None]:
         """Return the associated device names."""
@@ -147,11 +147,11 @@ class IdentityMagnetModel(MagnetModel, DynamicValidation):
 
     def has_physics(self) -> bool:
         """Return whether the model provides physics strengths."""
-        return self._physics is not None
+        return self.physics is not None
 
     def has_hardware(self) -> bool:
         """Return whether the model provides hardware values."""
-        return self._powerconverter is not None
+        return self.powerconverter is not None
 
     def __repr__(self):
         """

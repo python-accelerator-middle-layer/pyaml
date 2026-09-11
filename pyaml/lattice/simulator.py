@@ -115,6 +115,8 @@ class Simulator(ElementHolder, DynamicValidation):
         Resolve a PyAML element to matching PyAT lattice elements.
     """
 
+    __pyaml_repr_exclude__ = ("description", "ring")
+
     def __init__(
         self,
         name: str,
@@ -428,6 +430,14 @@ class Simulator(ElementHolder, DynamicValidation):
                     return elts
                 else:
                     return [elts[idx] for idx in indices]
+
+    def _pyaml_repr_fields(self) -> dict[str, object]:
+        return {
+            "name": self.name(),
+            "lattice": self.lattice,
+            "mat_key": self.mat_key,
+            "n_elements": len(self.ring),
+        }
 
     def __repr__(self):
         """

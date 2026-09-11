@@ -13,7 +13,7 @@ from scipy.constants import speed_of_light
 
 from .. import PyAMLException
 from ..common import abstract
-from ..common.element import Element
+from ..common.element import Element, __pyaml_repr__
 from .model import MagnetModel
 
 if TYPE_CHECKING:
@@ -158,14 +158,13 @@ class Magnet(Element):
         """
         return self.__modelName
 
+    @property
+    def model_name(self) -> str:
+        """Name used to identify this magnet in its model."""
+        return self.__modelName
+
     def __repr__(self):
         """
         Implement the ``__repr__`` string.
         """
-        return "%s(peer='%s', name='%s', model_name='%s', magnet_model=%s)" % (
-            self.__class__.__name__,
-            self.attached_to(),
-            self.get_name(),
-            self.__modelName,
-            repr(self.__model),
-        )
+        return __pyaml_repr__(self, exclude=["strength", "hardware"])

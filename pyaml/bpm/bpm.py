@@ -78,11 +78,11 @@ class BPM(Element, DynamicValidation):
         Initialize a beam-position monitor configuration.
         """
         super().__init__(name, lattice_names, description)
-        self._x_pos = x_pos
-        self._y_pos = y_pos
-        self._x_offset = x_offset
-        self._y_offset = y_offset
-        self._tilt_name = tilt
+        self.x_pos = x_pos
+        self.y_pos = y_pos
+        self.x_offset = x_offset
+        self.y_offset = y_offset
+        self.tilt_name = tilt
         self._positions = None
         self._offset = None
         self._tilt = None
@@ -191,7 +191,7 @@ class BPM(Element, DynamicValidation):
         list of str or None
             Horizontal and vertical position device keys.
         """
-        return [self._x_pos, self._y_pos]
+        return [self.x_pos, self.y_pos]
 
     def get_tilt_device(self) -> str | None:
         """
@@ -202,7 +202,7 @@ class BPM(Element, DynamicValidation):
         str or None
             Tilt device key.
         """
-        return self._tilt_name
+        return self.tilt_name
 
     def get_offset_devices(self) -> list[str | None]:
         """
@@ -213,7 +213,7 @@ class BPM(Element, DynamicValidation):
         list of str or None
             Horizontal and vertical offset device keys.
         """
-        return [self._x_offset, self._y_offset]
+        return [self.x_offset, self.y_offset]
 
     def __repr__(self):
         """
