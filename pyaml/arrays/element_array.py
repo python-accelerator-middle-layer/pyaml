@@ -182,6 +182,25 @@ class ElementArray(list[Element]):
         if len(elements) == 0:
             return []
 
+        return self._typed_array(elements)
+
+    def _typed_array(self, elements: list[Element]) -> "ElementArray":
+        """Build a collection using the most specific compatible array type.
+
+        Parameters
+        ----------
+        elements : list[Element]
+            Selected references, in their desired order.
+
+        Returns
+        -------
+        ElementArray
+            Specialized array when possible, otherwise a generic array.
+            An empty selection returns an empty generic array.
+        """
+        if not elements:
+            return self.__create_array("", Element, elements)
+
         import inspect
 
         def mro_as_list(cls: type) -> list[type]:
@@ -209,6 +228,22 @@ class ElementArray(list[Element]):
                 break
 
         return self.__create_array("", chosen, elements)
+
+    def _select_names(self, pattern: str) -> "ElementArray":
+        """Select names without interpreting field selectors.
+
+        Parameters
+        ----------
+        pattern : str
+            A fnmatch pattern applied to each element name.
+
+        Returns
+        -------
+        ElementArray
+            Typed selection in the original order, including an empty array
+            when no names match.
+        """
+        return self._typed_array([element for element in self if fnmatch.fnmatch(element.get_name(), pattern)])
 
     def __is_bool_mask(self, other: object) -> bool:
         """Return True if 'other' looks like a boolean mask (list or numpy array)."""
