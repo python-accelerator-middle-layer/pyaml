@@ -1,32 +1,217 @@
-from typing import TYPE_CHECKING
+"""Base classes for configured accelerator and lattice elements."""
+
+from collections.abc import Mapping, Sequence
+from dataclasses import dataclass
+from typing import TYPE_CHECKING, Any
 
 from pydantic import BaseModel, ConfigDict
 
+from . import abstract
 from .exception import PyAMLException
 
 if TYPE_CHECKING:
-    from ..common.element_holder import ElementHolder
+    from .holders.element_holder import ElementHolder
 
 
-def __pyaml_repr__(obj):
+@dataclass(frozen=True)
+class ReprOptions:
+    """Limits applied to PyAML object representations."""
+
+    max_items: int = 3
+    max_depth: int = 2
+    max_length: int = 800
+
+
+_repr_options = ReprOptions()
+
+
+def set_repr_options(
+    max_items: int | None = None,
+    max_depth: int | None = None,
+    max_length: int | None = None,
+) -> ReprOptions:
     """
-    Returns a string representation of a pyaml object
+    Configure the limits used by PyAML object representations.
+
+    Passing no arguments returns the current options. Every supplied value must
+    be a positive integer.
     """
-    if hasattr(obj, "_cfg"):
-        if isinstance(obj, Element):
-            return repr(obj._cfg).replace(
-                "ConfigModel(",
-                obj.__class__.__name__ + "(peer='" + obj.get_peer_name() + "', ",
-            )
-        else:
-            # no peer
-            return repr(obj._cfg).replace("ConfigModel", obj.__class__.__name__)
-    else:
-        # Object is not yet fully constructed
-        if isinstance(obj, Element):
-            return f"{obj.__class__.__name__}: {obj.get_name()}"
-        else:
-            return f"{obj.__class__.__name__}"
+    global _repr_options
+
+    values = {
+        "max_items": _repr_options.max_items if max_items is None else max_items,
+        "max_depth": _repr_options.max_depth if max_depth is None else max_depth,
+        "max_length": _repr_options.max_length if max_length is None else max_length,
+    }
+    for name, value in values.items():
+        if not isinstance(value, int) or value < 1:
+            raise ValueError(f"{name} must be a positive integer")
+
+    _repr_options = ReprOptions(**values)
+    return _repr_options
+
+
+def _unavailable(error: Exception) -> str:
+    return f"<unavailable: {error.__class__.__name__}>"
+
+
+def _class_exclusions(obj) -> set[str]:
+    exclusions: set[str] = set()
+    for cls in type(obj).__mro__:
+        exclusions.update(getattr(cls, "__pyaml_repr_exclude__", ()))
+    return exclusions
+
+
+def _properties(obj) -> dict[str, Any]:
+    values: dict[str, Any] = {}
+    for cls in reversed(type(obj).__mro__):
+        for name, descriptor in vars(cls).items():
+            if name.startswith("_") or not isinstance(descriptor, property):
+                continue
+            try:
+                values[name] = getattr(obj, name)
+            except Exception as error:
+                values[name] = _unavailable(error)
+    return values
+
+
+def _fields(obj) -> dict[str, Any]:
+    custom_fields = getattr(obj, "_pyaml_repr_fields", None)
+    if custom_fields is not None:
+        try:
+            return custom_fields()
+        except Exception as error:
+            return {"value": _unavailable(error)}
+
+    values = _properties(obj)
+    for name, value in vars(obj).items():
+        if not name.startswith("_"):
+            values.setdefault(name, value)
+    return values
+
+
+def _identity(obj) -> str:
+    name = getattr(obj, "name", None)
+    try:
+        name = name() if callable(name) else name
+    except Exception:
+        name = None
+    if isinstance(name, str):
+        return f"{obj.__class__.__name__}:{name}"
+    return obj.__class__.__name__
+
+
+def _short_object_repr(obj) -> str:
+    name = getattr(obj, "name", None)
+    try:
+        name = name() if callable(name) else name
+    except Exception:
+        name = None
+    if isinstance(name, str):
+        return f"{obj.__class__.__name__}(name={_format_value(name, 0, set())})"
+    return obj.__class__.__name__
+
+
+def _selected_items(values: Sequence | set) -> tuple[list[Any], int]:
+    items = list(values)
+    omitted = len(items) - _repr_options.max_items
+    if omitted <= 0:
+        return items, 0
+
+    head_count = (_repr_options.max_items + 1) // 2
+    tail_count = _repr_options.max_items - head_count
+    selected = items[:head_count]
+    if tail_count:
+        selected.extend(items[-tail_count:])
+    return selected, omitted
+
+
+def _format_sequence(values: Sequence | set, depth: int, active: set[int]) -> str:
+    selected, omitted = _selected_items(values)
+    parts = [_format_value(value, depth, active) for value in selected]
+    if omitted:
+        insert_at = (_repr_options.max_items + 1) // 2
+        parts.insert(insert_at, f"... +{omitted} more ...")
+
+    if isinstance(values, tuple):
+        if len(parts) == 1 and not omitted:
+            return f"({parts[0]},)"
+        return f"({', '.join(parts)})"
+    if isinstance(values, set):
+        return "{" + ", ".join(parts) + "}"
+    return "[" + ", ".join(parts) + "]"
+
+
+def _format_mapping(values: Mapping, depth: int, active: set[int]) -> str:
+    selected, omitted = _selected_items(list(values.items()))
+    parts = [f"{_format_value(key, depth, active)}: {_format_value(value, depth, active)}" for key, value in selected]
+    if omitted:
+        parts.insert((_repr_options.max_items + 1) // 2, f"... +{omitted} more ...")
+    return "{" + ", ".join(parts) + "}"
+
+
+def _format_object(obj, depth: int, active: set[int], extra_exclusions: set[str] | None = None) -> str:
+    if depth >= _repr_options.max_depth:
+        return _short_object_repr(obj)
+    if id(obj) in active:
+        return f"<recursive {obj.__class__.__name__}>"
+
+    active.add(id(obj))
+    try:
+        values = _fields(obj)
+        exclusions = _class_exclusions(obj)
+        if extra_exclusions:
+            exclusions.update(extra_exclusions)
+        parts = []
+        for name, value in values.items():
+            if name.startswith("_") or name in exclusions or callable(value):
+                continue
+            if isinstance(value, (abstract.ReadFloatScalar, abstract.ReadFloatArray, abstract.ReadWriteFloatArray)):
+                continue
+            formatted = _identity(value) if name == "peer" and value is not None else _format_value(value, depth + 1, active)
+            parts.append(f"{name}={formatted}")
+        return f"{obj.__class__.__name__}({', '.join(parts)})" if parts else obj.__class__.__name__
+    except Exception as error:
+        return f"{obj.__class__.__name__}({_unavailable(error)})"
+    finally:
+        active.remove(id(obj))
+
+
+def _format_value(value, depth: int, active: set[int]) -> str:
+    if isinstance(value, str):
+        limit = max(1, _repr_options.max_length // 4)
+        suffix = "..." if len(value) > limit else ""
+        return repr(value[:limit] + suffix)
+    if value is None or isinstance(value, (bool, int, float, complex)):
+        return repr(value)
+    if isinstance(value, Mapping):
+        return _format_mapping(value, depth, active)
+    if isinstance(value, (list, tuple, set, frozenset)):
+        return _format_sequence(value, depth, active)
+    if type(value).__module__.startswith("numpy"):
+        shape = getattr(value, "shape", None)
+        dtype = getattr(value, "dtype", None)
+        return f"{value.__class__.__name__}(shape={shape!r}, dtype={dtype!r})"
+    if type(value).__module__.startswith("pyaml"):
+        return _format_object(value, depth, active)
+    try:
+        result = repr(value)
+    except Exception as error:
+        return _unavailable(error)
+    limit = max(1, _repr_options.max_length // 2)
+    return result if len(result) <= limit else result[:limit] + "..."
+
+
+def __pyaml_repr__(obj, exclude: list[str] | None = None):
+    """
+    Return an informative, bounded representation of a PyAML object.
+
+    Public attributes and read-only properties are included unless they are
+    excluded. Device accessors are omitted so rendering never reads a control
+    system value.
+    """
+    result = _format_object(obj, 0, set(), set(exclude or ()))
+    return result[: _repr_options.max_length] + ("..." if len(result) > _repr_options.max_length else "")
 
 
 class ElementConfigModel(BaseModel):
@@ -38,7 +223,7 @@ class ElementConfigModel(BaseModel):
     name : str
         The name of the PyAML element.
     description : str, optional
-        Description of the element.
+        Human-readable description of the element.
     lattice_names : str or None, optional
         The name(s) of the associated element(s) in the lattice. By default,
         the PyAML element name is used. lattice_name accept the following
@@ -57,84 +242,199 @@ class ElementConfigModel(BaseModel):
     lattice_names: str | None = None
 
 
-class Element(object):
+class Element:
     """
-    Class providing access to one element of a physical or simulated lattice
+    Base class for an element in a physical or simulated lattice.
 
-    Attributes:
-      name: str
-        The unique name identifying the element in the configuration file
+    Parameters
+    ----------
+    name : str
+        Unique element name.
+    lattice_names : str or None, optional
+        Lattice element selector associated with this element. Defaults to
+        ``name`` when omitted.
+    description : str or None, optional
+        Human-readable element description.
+
+    Attributes
+    ----------
+    name
+        Return the element name.
+    lattice_names
+        Return the lattice selector associated with the element.
+    description
+        Return the element description, if one is configured.
+    peer
+        Return the simulator or control system attached to the element.
+
+    Methods
+    -------
+    get_name()
+        Return the element name.
+    get_lattice_names()
+        Return the lattice selector associated with the element.
+    get_description()
+        Return the element description, if available.
+    set_energy(E)
+        Set the beam energy used by this element, if supported.
+    set_mcf(alphac)
+        Set the momentum compaction factor, if supported.
+    set_harmonic(h)
+        Set the RF harmonic number, if supported.
+    check_peer()
+        Raise an error if the element is not attached to a peer.
+    attached_to()
+        Return a human-readable description of the attached peer.
+    post_init()
+        Perform post-construction initialization after attachment.
     """
 
-    def __init__(self, name: str):
-        self._name: str = name
-        self._peer: "ElementHolder" = None  # Peer: ControlSystem, Simulator
+    __pyaml_repr_exclude__ = ("description",)
+
+    def __init__(
+        self,
+        name: str,
+        lattice_names: str | None = None,
+        description: str | None = None,
+    ):
+        """
+        Initialize an element and its optional lattice association.
+        """
+        self._name = name
+        self._lattice_names = lattice_names
+        self._description = description
+        self._peer: ElementHolder | None = None
+
+    def _cfg_value(self, attr: str, fallback: Any) -> Any:
+        """
+        Return a configured attribute, falling back to the base value.
+
+        Parameters
+        ----------
+        attr : str
+            Configuration attribute name.
+        fallback : object
+            Value returned when no configured value is available.
+        """
+        cfg = getattr(self, "_cfg", None)
+        if cfg is not None:
+            value = getattr(cfg, attr, None)
+            if value is not None:
+                return value
+        return fallback
+
+    @property
+    def name(self) -> str:
+        """Return the element name."""
+        return self._cfg_value("name", self._name)
+
+    @property
+    def lattice_names(self) -> str:
+        """Return the lattice selector associated with the element."""
+        cfg = getattr(self, "_cfg", None)
+
+        if cfg is not None and cfg.lattice_names is not None:
+            return cfg.lattice_names
+
+        if self._lattice_names is not None:
+            return self._lattice_names
+
+        return self.name
+
+    @property
+    def description(self) -> str | None:
+        """Return the element description, if one is configured."""
+        return self._cfg_value("description", self._description)
 
     def get_name(self) -> str:
-        """
-        Returns the name of the element
-        """
-        return self._name
+        """Return the element name."""
+        return self.name
 
-    def get_lattice_names(self) -> str:
-        """
-        Returns the name of associated lattice element(s)
-        """
-        if not hasattr(self, "_cfg"):
-            return self._name
-        else:
-            return self._cfg.lattice_names
+    def get_lattice_names(self) -> str | None:
+        """Return the lattice selector associated with the element."""
+        return self.lattice_names
 
-    def get_description(self) -> str:
-        """
-        Returns the description of the element
-        """
-        return self._cfg.description
+    def get_description(self) -> str | None:
+        """Return the element description, if available."""
+        return self.description
 
     def set_energy(self, E: float):
         """
-        Set the instrument energy on this element
+        Set the beam energy used by this element, if supported.
+
+        Parameters
+        ----------
+        E : float
+            Beam energy.
         """
         pass
 
     def set_mcf(self, alphac: float):
         """
-        Set the instrument moment compaction factor on this element
+        Set the momentum compaction factor, if supported.
+
+        Parameters
+        ----------
+        alphac : float
+            Momentum compaction factor.
         """
         pass
 
     def set_harmonic(self, h: int):
         """
-        Sets the harmonic number (number of bucket) on this element
+        Set the RF harmonic number, if supported.
+
+        Parameters
+        ----------
+        h : int
+            Number of RF buckets per revolution.
         """
         pass
 
     def check_peer(self):
         """
-        Throws an exception if the element is not attacched
-        to a simulator or to a control system
+        Raise an error if the element is not attached to a peer.
+
+        Raises
+        ------
+        PyAMLException
+            If the element is not attached to a simulator or control system.
         """
         if self._peer is None:
-            raise PyAMLException(f"{str(self)} is not attachedto a control system or the a simulator")
+            raise PyAMLException(f"{str(self.name)} is not attachedto a control system or the a simulator")
 
     @property
     def peer(self) -> "ElementHolder":
-        """
-        Returns the peer simulator or control system
-        """
+        """Return the simulator or control system attached to the element."""
         return self._peer
 
-    def get_peer_name(self) -> str:
+    def attached_to(self) -> str:
         """
-        Returns a string representation of peer simulator or control system
+        Return a human-readable description of the attached peer.
+
+        Returns
+        -------
+        str
+            Peer type and name, or ``"None"`` when unattached.
         """
         return "None" if self._peer is None else f"{self._peer.__class__.__name__}:{self._peer.name()}"
 
+    def _fill_device(self, holder: "ElementHolder"):
+        """
+        Add this element to a holder (Simultor or ControlSystem)
+        """
+        raise PyAMLException(f"__fill_device() is not implemented for {self.__class__.__name__}")
+
     def post_init(self):
         """
-        Method triggered after all initialisations are done
+        Perform post-construction initialization after attachment.
+
+        Base elements do not require additional initialization.
         """
         pass
 
     def __repr__(self):
+        """
+        Implement the ``__repr__`` string.
+        """
         return __pyaml_repr__(self)

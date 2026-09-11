@@ -1,225 +1,479 @@
-# PyAML factory (construct AML objects from config files)
-import fnmatch
-import importlib
-from threading import Lock
-from typing import TypedDict, get_type_hints
+"""
+Build PyAML objects from configuration dictionaries and lists.
 
-from pydantic import ValidationError
+The factory resolves class paths, optionally validates configuration with
+Pydantic models, recursively builds nested values, and registers constructed
+accelerator elements.
+"""
+
+import fnmatch
+from dataclasses import dataclass
+from importlib import import_module
+from types import ModuleType
+from typing import Any, TypeVar
+
+from pydantic import BaseModel, ValidationError
 
 from ..common.element import Element
 from ..common.exception import PyAMLConfigException
+from ..validation.errors import raise_validation_error
+from ..validation.schema_builder import generate_class_path
 from .unbound_element import UnboundElement
 
+# ---------------------------------------------------------------------
+# Element registry
+# ---------------------------------------------------------------------
 
-class PyAMLFactory:
-    """Singleton factory to build PyAML elements with future compatibility logic."""
+TElement = TypeVar("TElement", bound=Element)
+
+
+class ElementRegistry:
+    """
+    Singleton registry of all instantiated Elements.
+
+    Elements are registered by name and can later be retrieved
+    individually, by wildcard pattern, or by type.
+
+    Methods
+    -------
+    register(element)
+        Register an Element by name.
+    get(name)
+        Return an Element by name.
+    get_by_name(wildcard)
+        Return all elements whose name matches a wildcard pattern.
+    get_by_type(element_type)
+        Return all registered elements of the given type.
+    clear()
+        Remove all registered elements.
+    """
 
     _instance = None
-    _lock = Lock()
 
     def __new__(cls):
         """
-        No matter how many times you call PyAMLFactory(),
-        it will be created only once.
+        Return the singleton registry instance.
         """
-        with cls._lock:
-            if cls._instance is None:
-                cls._instance = super().__new__(cls)
-                cls._instance._elements = {}
-                cls._instance._strategies = []
-            return cls._instance
 
-    def handle_validation_error(self, e, type_str: str, location_str: str, field_locations: dict):
-        # Handle pydantic errors
-        globalMessage = ""
-        for err in e.errors():
-            msg = err["msg"]
-            field = ""
-            if len(err["loc"]) == 2:
-                field, fieldIdx = err["loc"]
-                message = f"'{field}.{fieldIdx}': {msg}"
-            else:
-                field = err["loc"][0]
-                message = f"'{field}': {msg}"
-            if field_locations and field in field_locations:
-                file, line, col = field_locations[field]
-                loc = f"{file} at line {line}, colum {col}"
-                message += f" {loc}"
-            globalMessage += message
-            globalMessage += ", "
-        # Discard pydantic stack trace
-        raise PyAMLConfigException(f"{globalMessage} for object: '{type_str}' {location_str}") from None
+        if cls._instance is None:
+            cls._instance = super().__new__(cls)
+            cls._instance._elements = {}
+        return cls._instance
 
-    def get_field_type(self, config_cls, field_name) -> type:
-        # Get type of a pydantic ConfigModel field
-        if config_cls is None:
-            return None
-        type_hints = get_type_hints(config_cls)
-        return type_hints[field_name] if field_name in type_hints else None
-
-    def get_infos(self, d, ignore_external: bool):
-        # Retrieve informations of object to be constructed
-        location = d["__location__"] if "__location__" in d else None
-        field_locations = d["__fieldlocations__"] if "__fieldlocations__" in d else None
-        location_str = ""
-        if location:
-            file, line, col = location
-            location_str = f"{file} at line {line}, column {col}."
-
-        if not isinstance(d, dict):
-            raise PyAMLConfigException(f"Unexpected object {str(d)} {location_str}")
-        if "type" not in d:
-            raise PyAMLConfigException(f"No type specified for {str(type(d))}:{str(d)} {location_str}")
-
-        module_str = d["type"]
-        class_str = d["class"] if "class" in d else None
-        validation_class_str = d["validation_class"] if "validation_class" in d else "ConfigModel"
-
-        # Import the module
-        try:
-            module = importlib.import_module(module_str)
-        except ModuleNotFoundError as ex:
-            if not ignore_external:
-                # Discard module not found stack trace
-                raise PyAMLConfigException(
-                    "Module referenced in type cannot be found:" + f"'{module_str}' {location_str}"
-                ) from None
-            else:
-                return None
-
-        # Get the object class name
-        if class_str is None:
-            class_str = getattr(module, "PYAMLCLASS", None)
-        if class_str is None:
-            raise PyAMLConfigException(
-                f"PYAMLCLASS definition not found or class not specified in '{module_str}' {location_str}"
-            )
-
-        # Get the validation class
-        config_cls = getattr(module, validation_class_str, None)
-        if config_cls is None:
-            raise PyAMLConfigException(f"No validation class for '{module.__name__}.{class_str}' {location_str}")
-
-        return (module, config_cls, class_str, field_locations, location_str)
-
-    def build_object(self, d: dict, ignore_external: bool = False):
-        """Build an object from the dict"""
-
-        (module, config_cls, class_str, field_locations, location_str) = self.get_infos(d, ignore_external)
-
-        # Clean up dict
-        d.pop("__location__", None)
-        d.pop("__fieldlocations__", None)
-        d.pop("type")
-        d.pop("class", None)
-        d.pop("validation_class", None)
-        control_modes = d.pop("control_modes", None)
-
-        # Validate the model
-        try:
-            cfg = config_cls.model_validate(d)
-        except ValidationError as e:
-            self.handle_validation_error(e, module.__name__, location_str, field_locations)
-
-        elem_cls = getattr(module, class_str, None)
-        if elem_cls is None:
-            raise PyAMLConfigException(f"Unknown element class '{module.__name__}.{class_str}' {location_str}")
-
-        if control_modes is None:
-            # Immediate contruction of the object
-            try:
-                obj = elem_cls(cfg)
-                self.register_element(obj)
-            except Exception as e:
-                raise PyAMLConfigException(f"{str(e)} when creating '{module.__name__}.{class_str}' {location_str}") from e
-
-        else:
-            # Delayed construction
-            # An UnboundElement will be constructuced during the filling of the ElementHolder
-            try:
-                obj = UnboundElement(elem_cls, module.__name__, control_modes, cfg)
-                self.register_element(obj)
-            except Exception as e:
-                raise PyAMLConfigException(
-                    f"{str(e)} when creating unbounded '{module.__name__}.{class_str}' {location_str}"
-                ) from e
-
-        return obj
-
-    def build_unbound(self, e: UnboundElement, holder) -> Element:
-        try:
-            obj = e._class(holder, e._config)
-        except Exception as ex:
-            raise PyAMLConfigException(f"{str(ex)} when creating '{e._module_name}.{e._class.__name__}'") from ex
-
-        if not isinstance(obj, Element):
-            raise PyAMLConfigException(f"'{e._module_name}.{e._class.__name__}' is not a sub class of Element")
-
-        obj._peer = holder
-
-        return obj
-
-    def depth_first_build(self, d, ignore_external: bool):
+    def register(self, element: Element) -> None:
         """
-        Main factory function (Depth-first factory)
+        Register an Element by name.
 
         Parameters
         ----------
-        ignore_external: bool
-            Ignore `module not found` and return None when an object cannot be created
+        element : Element
+            Element to register.
+
+        Raises
+        ------
+        PyAMLConfigException
+            If the object is not an Element or if another element
+            with the same name is already registered.
         """
 
-        if isinstance(d, list):
-            # list can be a list of objects or a list of native types
-            l = []
-            for _index, e in enumerate(d):
-                if isinstance(e, dict) or isinstance(e, list):
-                    obj = self.depth_first_build(e, ignore_external)
-                    l.append(obj)
-                else:
-                    l.append(e)
-            return l
+        if not isinstance(element, Element):
+            raise PyAMLConfigException(f"Cannot register object of type '{type(element).__name__}' since expected Element.")
 
-        elif isinstance(d, dict):
-            _, config_cls, *_ = self.get_infos(d, ignore_external)
+        name = element.get_name()
+        if name in self._elements:
+            raise PyAMLConfigException(f"Element {name} already defined.")
+        self._elements[name] = element
 
-            for key, value in d.items():
-                if not key == "__fieldlocations__":
-                    if isinstance(value, dict) or isinstance(value, list):
-                        # Get the type of the field
-                        fieldType = self.get_field_type(config_cls, key)
-                        # Do not recurse dict defined in ConfigModel
-                        # pydantic use TypedDict not usable with isinstance
-                        if str(fieldType) != "<class 'dict'>":
-                            obj = self.depth_first_build(value, ignore_external)
-                            # Replace the inner dict by the object itself
-                            d[key] = obj
+    def get(self, name: str) -> Element:
+        """
+        Return an Element by name.
 
-            # We are now on leaf (no nested object), we can construct
-            return self.build_object(d, ignore_external)
+        Parameters
+        ----------
+        name : str
+            Element name.
 
-        raise PyAMLConfigException("Unexpected element found. 'dict' or 'list' expected but got '{d.__class__.__name__}'")
+        Returns
+        -------
+        Element
+            Registered element.
 
-    def register_element(self, elt):
-        if isinstance(elt, Element):
-            name = elt.get_name()
-            if name in self._elements:
-                raise PyAMLConfigException(f"element {name} already defined")
-            self._elements[name] = elt
+        Raises
+        ------
+        PyAMLConfigException
+            If the element is not registered.
+        """
 
-    def get_element(self, name: str):
-        if name not in self._elements:
-            raise PyAMLConfigException(f"element {name} not defined")
-        return self._elements[name]
+        try:
+            return self._elements[name]
+        except KeyError:
+            raise PyAMLConfigException(f"Element {name} not defined.") from None
 
-    def get_elements_by_name(self, wildcard: str) -> list[Element]:
-        return [e for k, e in self._elements.items() if fnmatch.fnmatch(k, wildcard)]
+    def get_by_name(self, wildcard: str) -> list[Element]:
+        """
+        Return all elements whose name matches a wildcard pattern.
 
-    def get_elements_by_type(self, type) -> list[Element]:
-        return [e for k, e in self._elements.items() if isinstance(e, type)]
+        Parameters
+        ----------
+        wildcard : str
+            Wildcard expression compatible with ``fnmatch``.
 
-    def clear(self):
+        Returns
+        -------
+        list[Element]
+            Matching elements.
+        """
+
+        return [e for n, e in self._elements.items() if fnmatch.fnmatch(n, wildcard)]
+
+    def get_by_type(self, element_type: type[TElement]) -> list[TElement]:
+        """
+        Return all registered elements of the given type.
+
+        Parameters
+        ----------
+        element_type : type[Element]
+            Element type to match.
+
+        Returns
+        -------
+        list[TElement]
+            Matching elements.
+        """
+
+        return [e for e in self._elements.values() if isinstance(e, element_type)]
+
+    def clear(self) -> None:
+        """
+        Remove all registered elements.
+        """
+
         self._elements.clear()
 
+    def __contains__(self, name: str) -> bool:
+        """
+        Return whether an element with the given name is registered.
+        """
 
+        return name in self._elements
+
+    def __len__(self) -> int:
+        """
+        Return the number of registered elements.
+        """
+
+        return len(self._elements)
+
+
+# Global element registry used during configuration loading.
+ELEMENT_REGISTRY = ElementRegistry()
+
+# ---------------------------------------------------------------------
+# Handle build information
+# ---------------------------------------------------------------------
+
+NEW_KEYS = ("class", "class_path")
+LEGACY_KEY = "type"
+BUILD_KEYS = NEW_KEYS + (LEGACY_KEY,)
+
+
+@dataclass(frozen=True)
+class BuildInfo:
+    """
+    Store the resolved information required to construct one object.
+
+    Attributes
+    ----------
+    module : types.ModuleType
+        Module containing the target class.
+    config_cls : type[pydantic.BaseModel] or None
+        Optional configuration model used to validate the object data.
+    class_cls : type
+        Class to instantiate.
+    control_modes : list of str or None
+        Control-system modes for creating an :class:`UnboundElement`.
+    config : dict of str to object
+        Remaining constructor configuration.
+    """
+
+    module: ModuleType
+    config_cls: type[BaseModel] | None  # Legacy
+    class_cls: type[Any]
+    control_modes: list[str] | None
+    config: dict[str, Any]
+
+
+def _import_module(module_path: str, ignore_external: bool) -> ModuleType | None:
+    """
+    Import a module referenced by a configuration class path.
+
+    Parameters
+    ----------
+    module_path : str
+        Dotted module path to import.
+    ignore_external : bool
+        If ``True``, return ``None`` when the module is unavailable.
+
+    Returns
+    -------
+    ModuleType | None
+        Imported module, or ``None`` when an external module is ignored.
+    """
+    try:
+        return import_module(module_path)
+    except ModuleNotFoundError as exc:
+        if ignore_external:
+            return None
+        raise PyAMLConfigException(f"Module '{module_path}' cannot be found: {exc}") from None
+
+
+def _resolve_class_name(module: ModuleType, module_path: str) -> str:
+    # Legacy
+    """
+    Resolve the legacy default class name exposed by a module.
+
+    Parameters
+    ----------
+    module : ModuleType
+        Imported module containing ``PYAMLCLASS``.
+    module_path : str
+        Module path used in configuration error messages.
+
+    Returns
+    -------
+    str
+        Class name stored in the module's ``PYAMLCLASS`` attribute.
+    """
+    class_name = getattr(module, "PYAMLCLASS", None)
+    if class_name is None:
+        raise PyAMLConfigException(f"Module '{module_path}' does not define PYAMLCLASS.")
+    return class_name
+
+
+def _resolve_build_info(data: dict, ignore_external: bool) -> BuildInfo | None:
+    """
+    Resolve a configuration mapping into object-construction metadata.
+
+    Parameters
+    ----------
+    data : dict
+        Configuration mapping containing a legacy ``type`` or a class path.
+    ignore_external : bool
+        If ``True``, ignore unavailable external modules.
+
+    Returns
+    -------
+    BuildInfo | None
+        Resolved build metadata, or ``None`` for an ignored external module.
+    """
+    if not isinstance(data, dict):
+        raise PyAMLConfigException(f"Unexpected object {data!r}. It needs to be a dict.")
+
+    config = dict(data)
+
+    if LEGACY_KEY in config:
+        # Legacy module/class format:
+        #   type: some.module
+        #   class: MyClass        (optional; otherwise PYAMLCLASS is used)
+
+        module_path = config.pop(LEGACY_KEY, None)
+
+        module = _import_module(module_path, ignore_external)
+        if module is None:
+            return None
+
+        class_name = config.pop("class", None)
+        if class_name is None:
+            class_name = _resolve_class_name(module, module_path)
+
+        class_path = f"{module_path}.{class_name}"
+
+    else:
+        # New class_path/class alias format:
+        #   class_path: some.module.MyClass
+        # or
+        #   class: some.module.MyClass
+
+        present = [key for key in NEW_KEYS if key in data]
+        if len(present) != 1:
+            raise PyAMLConfigException(f"Exactly one of {NEW_KEYS} must be specified when '{LEGACY_KEY}' is not used.")
+
+        class_key = present[0]
+        class_path = config.pop(class_key, None)
+        module_path, class_name = class_path.rsplit(".", 1)
+
+        module = _import_module(module_path, ignore_external)
+        if module is None:
+            return None
+
+    # Get the class
+    class_cls = getattr(module, class_name, None)
+    if class_cls is None:
+        raise PyAMLConfigException(f"Unknown class '{class_path}'.")
+
+    # Get the config class if it exists
+    validation_class_name = config.pop("validation_class", None)
+
+    if validation_class_name is not None:
+        config_cls = getattr(module, validation_class_name, None)
+        if config_cls is None:
+            raise PyAMLConfigException(f"Module '{module_path}' does not define validation class '{validation_class_name}'.")
+    else:
+        config_cls = getattr(module, "ConfigModel", None)
+
+    control_modes = config.pop("control_modes", None)
+    if control_modes is not None and not isinstance(control_modes, list):
+        raise PyAMLConfigException(f"'control_modes' must be a list, got '{type(control_modes).__name__}'.")
+
+    return BuildInfo(module=module, config_cls=config_cls, class_cls=class_cls, control_modes=control_modes, config=config)
+
+
+# ---------------------------------------------------------------------
+# Factory
+# ---------------------------------------------------------------------
+
+
+class PyAMLFactory:
+    """
+    Construct PyAML objects from recursively nested configuration data.
+
+    Methods
+    -------
+    build(data, ignore_external=False)
+        Build objects from a top-level mapping or sequence.
+    clear()
+        Remove all registered elements from the global registry.
+    """
+
+    def build(self, data: dict | list, ignore_external: bool = False) -> Any:
+        """
+        Build objects from a top-level mapping or sequence.
+
+        Parameters
+        ----------
+        data : dict | list
+            Configuration dictionary or list to resolve.
+        ignore_external : bool
+            If ``True``, ignore unavailable external modules.
+
+        Returns
+        -------
+        Any
+            Built object, list, or recursively processed mapping.
+        """
+        if not isinstance(data, (dict, list)):
+            raise PyAMLConfigException(f"Unexpected element found. Expected 'dict' or 'list' but got '{type(data).__name__}'")
+
+        return self._build(data, ignore_external)
+
+    def _build(self, value: Any, ignore_external: bool = False):
+        """
+        Recursively build one configuration value.
+
+        Parameters
+        ----------
+        value : Any
+            Value to process; mappings and lists are traversed recursively.
+        ignore_external : bool
+            If ``True``, ignore unavailable external modules.
+        """
+        if isinstance(value, list):
+            return self._build_list(value, ignore_external)
+
+        if isinstance(value, dict):
+            return self._build_dict(value, ignore_external)
+
+        return value
+
+    def _build_list(self, items: list[Any], ignore_external: bool = False):
+        """
+        Recursively build every item in a configuration list.
+
+        Parameters
+        ----------
+        items : list[Any]
+            Items to process.
+        ignore_external : bool
+            If ``True``, ignore unavailable external modules.
+        """
+        return [self._build(item, ignore_external) for item in items]
+
+    def _build_dict(self, data: dict, ignore_external: bool = False):
+        """
+        Recursively build a mapping or instantiate its declared object.
+
+        Parameters
+        ----------
+        data : dict
+            Configuration mapping to process.
+        ignore_external : bool
+            If ``True``, ignore unavailable external modules.
+        """
+        if any(key in data for key in BUILD_KEYS):
+            return self._build_object(data, ignore_external)
+
+        return {key: self._build(value, ignore_external) for key, value in data.items()}
+
+    def _build_object(self, data: dict, ignore_external: bool = False):
+        """
+        Validate and instantiate an object declared by a configuration mapping.
+
+        Parameters
+        ----------
+        data : dict
+            Mapping containing a class declaration and constructor data.
+        ignore_external : bool
+            If ``True``, ignore unavailable external modules.
+        """
+        build_info = _resolve_build_info(data, ignore_external)
+        if build_info is None:
+            return None
+
+        config = {key: self._build(value, ignore_external) for key, value in build_info.config.items()}
+
+        if build_info.config_cls is not None:
+            try:
+                cfg = build_info.config_cls.model_validate(config)
+            except ValidationError as exc:
+                raise_validation_error(
+                    exc,
+                    class_path=generate_class_path(build_info.config_cls),
+                )
+        else:
+            cfg = config
+
+        try:
+            if build_info.control_modes is None:
+                if isinstance(cfg, dict):
+                    obj = build_info.class_cls(**cfg)
+                else:
+                    obj = build_info.class_cls(cfg)
+
+            else:
+                obj = UnboundElement(
+                    build_info.class_cls,
+                    build_info.module.__name__,
+                    build_info.control_modes,
+                    cfg,
+                )
+        except Exception as exc:
+            mode = " unbounded" if build_info.control_modes is not None else ""
+            raise PyAMLConfigException(
+                f"{exc} when creating{mode} '{build_info.module.__name__}.{build_info.class_cls.__name__}'"
+            ) from exc
+
+        if isinstance(obj, Element):
+            ELEMENT_REGISTRY.register(obj)
+
+        return obj
+
+    def clear(self):
+        """
+        Remove all registered elements from the global registry.
+        """
+        ELEMENT_REGISTRY.clear()
+
+
+# Shared factory instance maintained for compatibility with
+# existing code using Factory.build(...) and Factory.clear(...).
 Factory = PyAMLFactory()

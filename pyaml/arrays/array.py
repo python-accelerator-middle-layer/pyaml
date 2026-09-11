@@ -2,18 +2,17 @@
 Array configuration
 """
 
-from pydantic import BaseModel, ConfigDict
-
 from pyaml.common.exception import PyAMLException
 
-from ..common.element_holder import ElementHolder
+from ..common.element import __pyaml_repr__
+from ..common.holders.element_holder import ElementHolder
+from ..validation import DynamicValidation, register_schema
 
 
-class ArrayConfigModel(BaseModel):
+@register_schema
+class ArrayConfig(DynamicValidation):
     """
-    Base class for configuration of array of :py:class:`~pyaml.arrays.element.Element`,
-    :py:class:`~pyaml.arrays.bpm.BPM`, :py:class:`~pyaml.arrays.magnet.Magnet` or
-    :py:class:`~pyaml.arrays.cfm_magnet.CombinedFunctionMagnet`.
+    Base class for configuration of arrays (families).
 
     Parameters
     ----------
@@ -21,21 +20,36 @@ class ArrayConfigModel(BaseModel):
         Name of the array
     elements : list[str]
         List of pyaml element names
+
+    Attributes
+    ----------
+    name
+        Return the name.
+    elements
+        Return the elements.
+
+    Methods
+    -------
+    fill_array(holder)
+        Fill array with elements from the holder and add the array to the holder.
     """
 
-    model_config = ConfigDict(arbitrary_types_allowed=True, extra="forbid")
+    def __init__(self, name: str, elements: list[str]):
+        """
+        Initialize the ArrayConfig.
+        """
+        self._name = name
+        self._elements = elements
 
-    name: str
-    elements: list[str]
+    @property
+    def name(self):
+        """Return the name."""
+        return self._name
 
-
-class ArrayConfig(object):
-    """
-    Base class that implements configuration for access to arrays (families)
-    """
-
-    def __init__(self, cfg: ArrayConfigModel):
-        self._cfg = cfg
+    @property
+    def elements(self):
+        """Return the elements."""
+        return self._elements
 
     def fill_array(self, holder: ElementHolder):
         """
@@ -57,6 +71,7 @@ class ArrayConfig(object):
         raise PyAMLException("Array.fill_array() is not subclassed")
 
     def __repr__(self):
-        # ArrayConfigModel is a super class
-        # ConfigModel is expected from sub classes
-        return repr(self._cfg).replace("ConfigModel", self.__class__.__name__)
+        """
+        Implement the ``__repr__`` string.
+        """
+        return __pyaml_repr__(self)

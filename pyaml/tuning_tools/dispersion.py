@@ -1,14 +1,20 @@
-import logging
-from typing import Callable, Optional, Self
+"""
+Beam-dispersion measurement tools.
 
-from pydantic import ConfigDict
+The :class:`Dispersion` tool varies an RF-plant frequency, measures the orbit
+response with a BPM array, and stores the resulting horizontal and vertical
+dispersion data.
+"""
+
+import logging
+from typing import Callable, Optional
+
 from pySC.apps import measure_dispersion
 from pySC.apps.codes import DispersionCode
 
 from ..common.constants import Action
-from ..common.element import ElementConfigModel
-from ..common.element_holder import ElementHolder
 from ..external.pySC_interface import pySCInterface
+from ..validation import DynamicValidation, register_schema
 from .measurement_tool import MeasurementTool
 
 logger = logging.getLogger(__name__)
@@ -16,41 +22,79 @@ logger = logging.getLogger(__name__)
 PYAMLCLASS = "Dispersion"
 
 
-class ConfigModel(ElementConfigModel):
+@register_schema
+class Dispersion(MeasurementTool, DynamicValidation):
     """
-    Configuration model for dispersion measurement
+    Measure beam dispersion by changing the RF frequency.
+
+    The measurement uses a :class:`pySCInterface` to change the frequency of
+    an RF plant and acquire orbit data from a BPM array. Progress is reported
+    through the callback mechanism provided by :class:`MeasurementTool`.
 
     Parameters
     ----------
+    name : str
+        Name of the dispersion measurement tool.
     bpm_array_name : str
-        BPM array name
+        Name of the BPM array used to measure the orbit.
     rf_plant_name : str
-        RF plant name
+        Name of the RF plant whose frequency is varied.
     frequency_delta : float
-        Frequency delta for measurement
+        RF-frequency change applied during the measurement.
+
+    Attributes
+    ----------
+    bpm_array_name : str
+        Name of the BPM array used for the measurement.
+    rf_plant_name : str
+        Name of the RF plant used for the measurement.
+    frequency_delta : float
+        RF-frequency change applied during the measurement.
+
+    Methods
+    -------
+    measure(set_waiting_time=0, callback=None)
+        Measure beam dispersion by varying the RF frequency.
+    get()
+        Return the most recently measured dispersion data.
     """
 
-    model_config = ConfigDict(arbitrary_types_allowed=True, extra="forbid")
+    def __init__(self, name: str, bpm_array_name: str, rf_plant_name: str, frequency_delta: float):
+        """
+        Initialize a beam-dispersion measurement tool.
+        """
+        super().__init__(name)
 
-    bpm_array_name: str
-    rf_plant_name: str
-    frequency_delta: float
-
-
-class Dispersion(MeasurementTool):
-    def __init__(self, cfg: ConfigModel):
-        super().__init__(cfg.name)
-        self._cfg = cfg
-
-        self.bpm_array_name = cfg.bpm_array_name
-        self.rf_plant_name = cfg.rf_plant_name
-        self.frequency_delta = cfg.frequency_delta
+        self.bpm_array_name = bpm_array_name
+        self.rf_plant_name = rf_plant_name
+        self.frequency_delta = frequency_delta
 
     def measure(
         self,
         set_waiting_time: float = 0,
         callback: Optional[Callable] = None,
     ):
+        """
+        Measure beam dispersion by varying the RF frequency.
+
+        Measurements are reported through ``callback``. If the callback
+        requests an abort, the measurement returns ``False``; otherwise the
+        dispersion data are stored in ``latest_measurement``.
+
+        Parameters
+        ----------
+        set_waiting_time : float
+            Delay in seconds after changing the RF frequency.
+        callback : Optional[Callable]
+            Optional callback invoked after applying, measuring, and restoring
+            settings.
+
+        Returns
+        -------
+        bool
+            ``True`` when the measurement completes successfully, or ``False``
+            when it is aborted by the callback.
+        """
         element_holder = self._peer
         interface = pySCInterface(
             element_holder=element_holder,
@@ -117,4 +161,5 @@ class Dispersion(MeasurementTool):
         return True
 
     def get(self):
+        """Return the most recently measured dispersion data."""
         return self.latest_measurement

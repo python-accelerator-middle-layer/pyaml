@@ -1,8 +1,25 @@
+"""
+Linear optics from closed orbit (LOCO) analysis tools.
+
+This module contains the interface for measuring an orbit response matrix and
+running linear-optics analysis with the accelerator commissioning tools.
+"""
+
+
 class loco:
-    """loco help"""
+    """
+    Coordinate LOCO measurements and linear-optics analysis.
+
+    Methods
+    -------
+    run()
+        Run the configured LOCO analysis.
+    measure_orm()
+        Measure the orbit response matrix required by LOCO.
+    """
 
     def run():
-        """loco run help"""
+        """Run the configured LOCO analysis."""
 
     def measure_orm():
-        """loco measure help"""
+        """Measure the orbit response matrix required by LOCO."""

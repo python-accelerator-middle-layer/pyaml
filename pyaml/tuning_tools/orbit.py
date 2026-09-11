@@ -1,25 +1,24 @@
-import logging
-from pathlib import Path
-from typing import TYPE_CHECKING, Literal, Optional, Union
+"""
+Orbit measurement and correction tools.
 
-try:
-    from typing import Self  # Python 3.11+
-except ImportError:
-    from typing_extensions import Self  # Python 3.10 and earlier
+The :class:`Orbit` tool reads orbit response data, computes corrector changes,
+and applies horizontal, vertical, and optional RF corrections.
+"""
+
+import logging
+from dataclasses import asdict
+from pathlib import Path
+from typing import Literal, Optional, Union
 
 import numpy as np
-from pydantic import ConfigDict
-
-if TYPE_CHECKING:
-    from ..common.element_holder import ElementHolder
 from pySC import ResponseMatrix as pySC_ResponseMatrix
 from pySC.apps import orbit_correction
 
 from ..arrays.magnet_array import MagnetArray
-from ..common.element import Element, ElementConfigModel
 from ..common.exception import PyAMLException
 from ..external.pySC_interface import pySCInterface
 from ..rf.rf_plant import RFPlant
+from ..validation import DynamicValidation, register_schema
 from .orbit_response_matrix_data import OrbitResponseMatrixData
 from .tuning_tool import TuningTool
 
@@ -29,57 +28,112 @@ logging.getLogger("pyaml.external.pySC").setLevel(logging.WARNING)
 PYAMLCLASS = "Orbit"
 
 
-class ConfigModel(ElementConfigModel):
-    model_config = ConfigDict(arbitrary_types_allowed=True, extra="forbid")
+@register_schema
+class Orbit(TuningTool, DynamicValidation):
+    """
+    Correct the measured orbit using a configured response matrix.
 
-    bpm_array_name: str
-    hcorr_array_name: str
-    vcorr_array_name: str
-    rf_plant_name: Optional[str] = None
-    singular_values: Optional[int] = None
-    singular_values_H: Optional[int] = None
-    singular_values_V: Optional[int] = None
-    virtual_target: float = 0
-    response_matrix: Union[str, OrbitResponseMatrixData]
+    Parameters
+    ----------
+    name : str
+        Name of the orbit tool.
+    bpm_array_name : str
+        Name of the BPM array used for orbit readback.
+    hcorr_array_name : str
+        Name of the horizontal corrector array.
+    vcorr_array_name : str
+        Name of the vertical corrector array.
+    response_matrix : Union[str, OrbitResponseMatrixData]
+        Orbit response matrix or path to a serialized matrix.
+    rf_plant_name : Optional[str]
+        Optional RF plant used for RF orbit correction.
+    singular_values : Optional[int]
+        Common number of singular values retained for both planes.
+    singular_values_H : Optional[int]
+        Number of horizontal singular values retained.
+    singular_values_V : Optional[int]
+        Number of vertical singular values retained.
+    virtual_target : float
+        Target value for virtual orbit correction.
 
+    Attributes
+    ----------
+    response_matrix
+        Return the response matrix if it has been loaded None otherwise
 
-class Orbit(TuningTool):
-    def __init__(self, cfg: ConfigModel):
-        super().__init__(cfg.name)
-        self._cfg = cfg
-        self.bpm_array_name = cfg.bpm_array_name
-        self.hcorr_array_name = cfg.hcorr_array_name
-        self.vcorr_array_name = cfg.vcorr_array_name
+    Methods
+    -------
+    load(load_path)
+        Dynamically loads a response matrix.
+    correct(...)
+        Perform orbit correction using the configured response matrix and corrector arrays.
+    set_weight(name, weight, plane=None)
+        Set the weight of a response-matrix input or output.
+    set_virtual_weight(weight)
+        Set the weight of the virtual orbit target.
+    set_rf_weight(weight)
+        Set the weight of the RF-frequency correction variable.
+    get_weight(name, plane=None)
+        Return the response-matrix weight for a named input or output.
+    get_virtual_weight()
+        Return the configured virtual-orbit target weight.
+    get_rf_weight()
+        Return the configured RF-frequency correction weight.
+    post_init()
+        Bind orbit corrector and RF handles after attachment.
+    """
+
+    def __init__(
+        self,
+        name: str,
+        bpm_array_name: str,
+        hcorr_array_name: str,
+        vcorr_array_name: str,
+        response_matrix: Union[str, OrbitResponseMatrixData],
+        rf_plant_name: Optional[str] = None,
+        singular_values: Optional[int] = None,
+        singular_values_H: Optional[int] = None,
+        singular_values_V: Optional[int] = None,
+        virtual_target: float = 0,
+    ):
+        """
+        Initialize the Orbit.
+        """
+        super().__init__(name)
+
+        self.bpm_array_name = bpm_array_name
+        self.hcorr_array_name = hcorr_array_name
+        self.vcorr_array_name = vcorr_array_name
         self._pySC_response_matrix = None
+        self.rf_plant_name = rf_plant_name
+        self.virtual_target = virtual_target
 
-        self.virtual_target = cfg.virtual_target
-
-        if cfg.singular_values is None:
-            if cfg.singular_values_H is None or cfg.singular_values_V is None:
+        if singular_values is None:
+            if singular_values_H is None or singular_values_V is None:
                 raise PyAMLException(
                     "Either `singular_values` or `singular_values_H` and `singular_values_V` must be provided."
                 )
-            self.singular_values_H = cfg.singular_values_H
-            self.singular_values_V = cfg.singular_values_V
+            self.singular_values_H = singular_values_H
+            self.singular_values_V = singular_values_V
         else:
-            if cfg.singular_values_H is not None or cfg.singular_values_V is not None:
+            if singular_values_H is not None or singular_values_V is not None:
                 raise PyAMLException(
                     "Either `singular_values` or `singular_values_H` and `singular_values_V` must be provided, not both."
                 )
-            self.singular_values_H = cfg.singular_values
-            self.singular_values_V = cfg.singular_values
+            self.singular_values_H = singular_values
+            self.singular_values_V = singular_values
 
         # If the configuration response matrix is a filename, load it
-        if type(cfg.response_matrix) is str:
+        if type(response_matrix) is str:
             try:
-                cfg.response_matrix = OrbitResponseMatrixData.load(cfg.response_matrix)
+                self._response_matrix = OrbitResponseMatrixData.load(response_matrix)
             except Exception as e:
-                logger.warning(f"Loading {cfg.response_matrix} failed {str(e)}")
-                cfg.response_matrix = None
+                logger.warning(f"Loading {response_matrix} failed {str(e)}")
+                self._response_matrix = None
 
         # Converts to self._pySC_response_matrix
-        if cfg.response_matrix:
-            self._set_response_matrix(cfg.response_matrix)
+        if self._response_matrix:
+            self._set_response_matrix(self._response_matrix)
 
         self._hcorr: MagnetArray = None
         self._vcorr: MagnetArray = None
@@ -95,16 +149,30 @@ class Orbit(TuningTool):
         load_path : Path
             Filename of the :class:`~.OrbitResponseMatrixData` to load
         """
-        self._cfg.response_matrix = OrbitResponseMatrixData.load(load_path)
-        self._set_response_matrix(self._cfg.response_matrix)
+        self._response_matrix = OrbitResponseMatrixData.load(load_path)
+        self._set_response_matrix(self.response_matrix)
 
     def _set_response_matrix(self, mat):
-        m = mat._cfg.model_dump()
+        """
+        Configure the pySC response matrix from PyAML response data.
+
+        The PyAML variable and observable fields are renamed to the names
+        expected by pySC, including their horizontal and vertical plane
+        metadata. The original PyAML model is retained for later access.
+
+        Parameters
+        ----------
+        mat : OrbitResponseMatrixData
+            Orbit response-matrix data containing the matrix, names, and
+            plane metadata.
+        """
+        m = asdict(mat)
         m["input_names"] = m.pop("variable_names")
         m["output_names"] = m.pop("observable_names")
         m["input_planes"] = m.pop("variable_planes")
         m["output_planes"] = m.pop("observable_planes")
-        self._cfg.response_matrix = mat
+        m.pop("type", None)
+        self._response_matrix = mat
         self._pySC_response_matrix = pySC_ResponseMatrix.model_validate(m)
 
     @property
@@ -112,7 +180,7 @@ class Orbit(TuningTool):
         """
         Return the response matrix if it has been loaded None otherwise
         """
-        return self._cfg.response_matrix
+        return self._response_matrix
 
     def correct(
         self,
@@ -264,18 +332,83 @@ class Orbit(TuningTool):
         return
 
     def set_weight(self, name: str, weight: float, plane: Optional[Literal["H", "V"]] = None) -> None:
+        """
+        Set the weight of a response-matrix input or output.
+
+        Weights affect the relative importance of variables and observables
+        during orbit correction. A plane is required when ``name`` occurs in
+        more than one plane.
+
+        Parameters
+        ----------
+        name : str
+            Variable or observable name whose weight should be changed.
+        weight : float
+            New weight applied during orbit correction.
+        plane : Optional[Literal['H', 'V']]
+            Optional plane selector, either ``"H"`` or ``"V"``.
+
+        Returns
+        -------
+        None
+            This method does not return a value.
+        """
         self._pySC_response_matrix.set_weight(name, weight, plane=plane)
         return
 
     def set_virtual_weight(self, weight: float) -> None:
+        """
+        Set the weight of the virtual orbit target.
+
+        Parameters
+        ----------
+        weight : float
+            New virtual-target weight used during correction.
+
+        Returns
+        -------
+        None
+            This method does not return a value.
+        """
         self._pySC_response_matrix.virtual_weight = weight
         return
 
     def set_rf_weight(self, weight: float) -> None:
+        """
+        Set the weight of the RF-frequency correction variable.
+
+        Parameters
+        ----------
+        weight : float
+            New RF-variable weight used during correction.
+
+        Returns
+        -------
+        None
+            This method does not return a value.
+        """
         self._pySC_response_matrix.rf_weight = weight
         return
 
     def get_weight(self, name: str, plane: Optional[Literal["H", "V"]] = None) -> float:
+        """
+        Return the response-matrix weight for a named input or output.
+
+        If the name is present in multiple planes, pass ``plane`` to select
+        the desired weight.
+
+        Parameters
+        ----------
+        name : str
+            Variable or observable name whose weight should be returned.
+        plane : Optional[Literal['H', 'V']]
+            Optional plane selector, either ``"H"`` or ``"V"``.
+
+        Returns
+        -------
+        float
+            Configured response-matrix weight.
+        """
         names = []
         planes = []
         weights = []
@@ -306,17 +439,20 @@ class Orbit(TuningTool):
             raise PyAMLException(f"More than one weight found, please select plane. {names=}, {planes=}, {weights=}")
 
     def get_virtual_weight(self) -> float:
+        """Return the configured virtual-orbit target weight."""
         return self._pySC_response_matrix.virtual_weight
 
     def get_rf_weight(self) -> float:
+        """Return the configured RF-frequency correction weight."""
         return self._pySC_response_matrix.rf_weight
 
     def post_init(self):
-        self._hcorr = self.peer.get_magnets(self._cfg.hcorr_array_name)
-        self._vcorr = self.peer.get_magnets(self._cfg.vcorr_array_name)
+        """Bind orbit corrector and RF handles after attachment."""
+        self._hcorr = self.peer.magnets.get(self.hcorr_array_name)
+        self._vcorr = self.peer.magnets.get(self.vcorr_array_name)
         hvElts = []
         hvElts.extend(self._hcorr)
         hvElts.extend(self._vcorr)
         self._hvcorr = MagnetArray("", hvElts)
-        if self._cfg.rf_plant_name is not None:
-            self._rf_plant = self.peer.get_rf_plant(self._cfg.rf_plant_name)
+        if self.rf_plant_name is not None:
+            self._rf_plant = self.peer.rf.get(self.rf_plant_name)

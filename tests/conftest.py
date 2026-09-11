@@ -1,5 +1,6 @@
 import importlib
 import importlib.machinery
+import os
 import pathlib
 import sys
 import types
@@ -215,6 +216,10 @@ def _installed_test_packages(
 
 @pytest.fixture(scope="session", autouse=True)
 def install_default_test_packages():
+    if os.environ.get("PYAML_DT4ACC_INTEGRATION") == "1":
+        yield
+        return
+
     package_paths = [spec.local_path.resolve() for spec in _TEST_PACKAGES.values()]
     with _installed_test_packages(
         package_paths,

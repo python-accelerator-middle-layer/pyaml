@@ -1,129 +1,155 @@
-from ..bpm.bpm_model import BPMModel
-from ..common.element import Element, ElementConfigModel
-from ..common.exception import PyAMLException
-from ..lattice.abstract_impl import RBpmArray, RWBpmOffsetArray, RWBpmTiltScalar
+"""Beam-position monitor elements and their runtime interfaces."""
 
-try:
-    from typing import Self  # Python 3.11+
-except ImportError:
-    from typing_extensions import Self  # Python 3.10 and earlier
+import copy
+from typing import TYPE_CHECKING, Self
+
+from ..common.abstract import ReadFloatArray, ReadWriteFloatArray, ReadWriteFloatScalar
+from ..common.element import Element, __pyaml_repr__
+from ..common.exception import PyAMLException
+from ..validation import DynamicValidation, register_schema
+
+if TYPE_CHECKING:
+    from ..common.holders.element_holder import ElementHolder
 
 PYAMLCLASS = "BPM"
 
 
-class ConfigModel(ElementConfigModel):
+@register_schema
+class BPM(Element, DynamicValidation):
     """
-    Configuration model for BPM element.
+    Beam position monitor (BPM) element.
+
+    Represents a BPM in the accelerator lattice and provides access to its
+    associated readback signals, including horizontal and vertical beam
+    positions, calibration offsets, and mechanical tilt.
+
+    Parameters
+    ----------
+    name : str
+        Name of the BPM.
+    lattice_names : str | None, optional
+        Lattice-specific name or names identifying the BPM.
+    description : str | None, optional
+        Description of the BPM.
+    x_pos : str | None, optional
+        Device catalog key for the horizontal beam position.
+    y_pos : str | None, optional
+        Device catalog key for the vertical beam position.
+    x_offset : str | None, optional
+        Device catalog key for the horizontal BPM offset.
+    y_offset : str | None, optional
+        Device catalog key for the vertical BPM offset.
+    tilt : str | None, optional
+        Device catalog key for the BPM tilt.
 
     Attributes
     ----------
-    model : BPMModel or None, optional
-        Object in charge of BPM modeling
+    positions
+        Read accessor for the horizontal and vertical beam positions, in metres.
+    offset
+        Read/write accessor for the two calibration offsets, in metres.
+    tilt
+        Read/write accessor for the mechanical tilt, in radians.
+
+    Methods
+    -------
+    attach(peer, positions, offset, tilt)
+        Attach BPM attributes to a peer.
+    get_pos_devices()
+        Return configured device keys used for position readback.
+    get_tilt_device()
+        Return the configured device key used for tilt access.
+    get_offset_devices()
+        Return configured device keys used for offset control.
     """
 
-    model: BPMModel | None = None
-
-
-class BPM(Element):
-    """
-    Class providing access to one BPM of a physical or simulated lattice
-    """
-
-    def __init__(self, cfg: ConfigModel):
+    def __init__(
+        self,
+        name: str,
+        lattice_names: str | None = None,
+        description: str | None = None,
+        x_pos: str | None = None,
+        y_pos: str | None = None,
+        x_offset: str | None = None,
+        y_offset: str | None = None,
+        tilt: str | None = None,
+    ):
         """
-        Construct a BPM
-
-        Parameters
-        ----------
-        name : str
-            Element name
-        model : BPMModel
-            BPM model in charge of computing beam position
+        Initialize a beam-position monitor configuration.
         """
-
-        super().__init__(cfg.name)
-
-        self.__model = cfg.model if hasattr(cfg, "model") else None
-        self._cfg = cfg
-        self.__positions = None
-        self.__offset = None
-        self.__tilt = None
+        super().__init__(name, lattice_names, description)
+        self.x_pos = x_pos
+        self.y_pos = y_pos
+        self.x_offset = x_offset
+        self.y_offset = y_offset
+        self.tilt_name = tilt
+        self._positions = None
+        self._offset = None
+        self._tilt = None
 
     @property
-    def model(self) -> BPMModel:
-        """
-        Get the BPM model.
-
-        Returns
-        -------
-        BPMModel
-            The BPM model instance
-        """
-        return self.__model
-
-    @property
-    def positions(self) -> RBpmArray:
+    def positions(self) -> ReadFloatArray:
         """
         Get the BPM position readings.
 
         Returns
         -------
-        RBpmArray
-            BPM position array containing horizontal and vertical positions
+        ReadFloatArray
+            Read-only array containing horizontal and vertical positions.
 
         Raises
         ------
         PyAMLException
             If positions have not been attached
         """
-        if self.__positions is None:
+        if self._positions is None:
             raise PyAMLException(f"{str(self)} has no attached positions")
-        return self.__positions
+        return self._positions
 
     @property
-    def offset(self) -> RWBpmOffsetArray:
+    def offset(self) -> ReadWriteFloatArray:
         """
         Get the BPM offset values.
 
         Returns
         -------
-        RWBpmOffsetArray
-            BPM offset array for position correction
+        ReadWriteFloatArray
+            Read/write array containing horizontal and vertical offsets.
 
         Raises
         ------
         PyAMLException
             If offset has not been attached
         """
-        if self.__offset is None:
+        if self._offset is None:
             raise PyAMLException(f"{str(self)} has no attached offset")
-        return self.__offset
+        return self._offset
 
     @property
-    def tilt(self) -> RWBpmTiltScalar:
+    def tilt(self) -> ReadWriteFloatScalar:
         """
         Get the BPM tilt angle.
 
         Returns
         -------
-        RWBpmTiltScalar
-            BPM tilt angle for rotation correction
+        ReadWriteFloatScalar
+            Read/write BPM tilt angle used for rotation correction.
 
         Raises
         ------
         PyAMLException
             If tilt has not been attached
         """
-        if self.__tilt is None:
+        if self._tilt is None:
             raise PyAMLException(f"{str(self)} has no attached tilt")
-        return self.__tilt
+        return self._tilt
 
     def attach(
         self,
         peer,
-        positions: RBpmArray,
-        offset: RWBpmOffsetArray,
-        tilt: RWBpmTiltScalar,
+        positions: ReadFloatArray,
+        offset: ReadWriteFloatArray,
+        tilt: ReadWriteFloatScalar,
     ) -> Self:
         """
         Attach BPM attributes to a peer.
@@ -131,25 +157,66 @@ class BPM(Element):
         Parameters
         ----------
         peer : object
-            The peer object (simulator or control system)
+            Simulator or control-system peer.
         positions : RBpmArray
-            BPM position readings
+            Read-only horizontal and vertical position interface.
         offset : RWBpmOffsetArray
-            BPM offset values for correction
+            Read/write horizontal and vertical offset interface.
         tilt : RWBpmTiltScalar
-            BPM tilt angle for rotation correction
+            Read/write tilt interface.
 
         Returns
         -------
         Self
-            A new attached instance of BPM
+            Shallow copy of this BPM bound to ``peer`` and its interfaces.
         """
         # Attach positions, offset and tilt attributes and returns a new
         # reference
-        obj = self.__class__(self._cfg)
-        obj.__model = self.__model
-        obj.__positions = positions
-        obj.__offset = offset
-        obj.__tilt = tilt
+        obj = copy.copy(self)
+        obj._positions = positions
+        obj._offset = offset
+        obj._tilt = tilt
         obj._peer = peer
         return obj
+
+    def _fill_device(self, holder: "ElementHolder") -> None:
+        holder._fill_bpm(self)
+
+    def get_pos_devices(self) -> list[str | None]:
+        """
+        Return configured device keys used for position readback.
+
+        Returns
+        -------
+        list of str or None
+            Horizontal and vertical position device keys.
+        """
+        return [self.x_pos, self.y_pos]
+
+    def get_tilt_device(self) -> str | None:
+        """
+        Return the configured device key used for tilt access.
+
+        Returns
+        -------
+        str or None
+            Tilt device key.
+        """
+        return self.tilt_name
+
+    def get_offset_devices(self) -> list[str | None]:
+        """
+        Return configured device keys used for offset control.
+
+        Returns
+        -------
+        list of str or None
+            Horizontal and vertical offset device keys.
+        """
+        return [self.x_offset, self.y_offset]
+
+    def __repr__(self):
+        """
+        Implement the ``__repr__`` string.
+        """
+        return __pyaml_repr__(self, exclude=["positions", "offset", "tilt"])

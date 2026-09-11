@@ -10,6 +10,7 @@ controls:
   - type: tango.pyaml.controlsystem
     tango_host: ebs-simu-3:10000
     name: live
+    catalog: catalogs/sr_catalogs.yaml
 data_folder: /data/store
 arrays:
   - type: pyaml.arrays.magnet

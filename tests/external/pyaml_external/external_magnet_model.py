@@ -16,7 +16,7 @@ PYAMLCLASS = "ExternalMagnetModel"
 class ConfigModel(BaseModel):
     model_config = ConfigDict(arbitrary_types_allowed=True, extra="forbid")
 
-    powersupply: DeviceAccess
+    powersupply: str
     param: str = None
 
 
@@ -30,7 +30,7 @@ class ExternalMagnetModel(MagnetModel):
     """
 
     def __init__(self, cfg: ConfigModel):
-        print("ExternalMagnetModel:\n  powersupply:%s\n  param:%s" % (cfg.powersupply.name(), cfg.param))
+        print("ExternalMagnetModel:\n  powersupply:%s\n  param:%s" % (cfg.powersupply, cfg.param))
         self._cfg = cfg
 
     # Implementation of the MagnetModel abstract class
@@ -53,7 +53,7 @@ class ExternalMagnetModel(MagnetModel):
     def get_hardware_units(self) -> list[str]:
         return ["A"]
 
-    def get_devices(self) -> list[DeviceAccess]:
+    def get_device_names(self) -> list[DeviceAccess]:
         return [self._cfg.powersupply]
 
     def has_hardware(self) -> bool:

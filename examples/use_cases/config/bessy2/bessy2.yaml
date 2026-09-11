@@ -1,0 +1,2462 @@
+class: pyaml.accelerator.Accelerator
+machine: sr
+facility: BESSY2
+energy: 1.7185e9
+simulators:
+- class: pyaml.lattice.simulator.Simulator
+  lattice: bessy2_standard_user.mat
+  name: design
+controls:
+- class: pyaml_cs_oa.controlsystem.OphydAsyncControlSystem
+  prefix: 'pons:'
+  name: live
+  catalog:
+    class: pyaml_cs_oa.dynamic_catalog.DynamicCatalog
+    backend: epics
+data_folder: /data/store
+arrays:
+- class: pyaml.arrays.magnet.Magnet
+  name: HCorr
+  elements:
+  - HS4M2D1R
+  - HS1MT1R
+  - HS4M1T1R
+  - HS4M2T1R
+  - HS1MD2R
+  - HS4M1D2R
+  - HS4M2D2R
+  - HS1MT2R
+  - HS4M1T2R
+  - HS4M2T2R
+  - HS1MD3R
+  - HS4M1D3R
+  - HS4M2D3R
+  - HS1MT3R
+  - HS4M1T3R
+  - HS4M2T3R
+  - HS1MD4R
+  - HS4M1D4R
+  - HS4M2D4R
+  - HS1MT4R
+  - HS4M1T4R
+  - HS4M2T4R
+  - HS1MD5R
+  - HS4M1D5R
+  - HS4M2D5R
+  - HS1MT5R
+  - HS4M1T5R
+  - HS4M2T5R
+  - HS1MD6R
+  - HS4M1D6R
+  - HS4M2D6R
+  - HS1MT6R
+  - HS4M1T6R
+  - HS4M2T6R
+  - HS1MD7R
+  - HS4M1D7R
+  - HS4M2D7R
+  - HS1MT7R
+  - HS4M1T7R
+  - HS4M2T7R
+  - HS1MD8R
+  - HS4M1D8R
+  - HS4M2D8R
+  - HS1MT8R
+  - HS4M1T8R
+  - HS4M2T8R
+  - HS1MD1R
+  - HS4M1D1R
+- class: pyaml.arrays.magnet.Magnet
+  name: VCorr
+  elements:
+  - VS3M2D1R
+  - VS2M2D1R
+  - VS2M1T1R
+  - VS3M1T1R
+  - VS3M2T1R
+  - VS2M2T1R
+  - VS2M1D2R
+  - VS3M1D2R
+  - VS3M2D2R
+  - VS2M2D2R
+  - VS2M1T2R
+  - VS3M1T2R
+  - VS3M2T2R
+  - VS2M2T2R
+  - VS2M1D3R
+  - VS3M1D3R
+  - VS3M2D3R
+  - VS2M2D3R
+  - VS2M1T3R
+  - VS3M1T3R
+  - VS3M2T3R
+  - VS2M2T3R
+  - VS2M1D4R
+  - VS3M1D4R
+  - VS3M2D4R
+  - VS2M2D4R
+  - VS2M1T4R
+  - VS3M1T4R
+  - VS3M2T4R
+  - VS2M2T4R
+  - VS2M1D5R
+  - VS3M1D5R
+  - VS3M2D5R
+  - VS2M2D5R
+  - VS2M1T5R
+  - VS3M1T5R
+  - VS3M2T5R
+  - VS2M2T5R
+  - VS2M1D6R
+  - VS3M1D6R
+  - VS3M2D6R
+  - VS2M2D6R
+  - VS2M1T6R
+  - VS3M1T6R
+  - VS3M2T6R
+  - VS2M2T6R
+  - VS2M1D7R
+  - VS3M1D7R
+  - VS3M2D7R
+  - VS2M2D7R
+  - VS2M1T7R
+  - VS3M1T7R
+  - VS3M2T7R
+  - VS2M2T7R
+  - VS2M1D8R
+  - VS3M1D8R
+  - VS3M2D8R
+  - VS2M2D8R
+  - VS2M1T8R
+  - VS3M1T8R
+  - VS3M2T8R
+  - VS2M2T8R
+  - VS2M1D1R
+  - VS3M1D1R
+- class: pyaml.arrays.bpm.BPM
+  name: BPM
+  elements:
+  - BPMZ5D1R
+  - BPMZ6D1R
+  - BPMZ7D1R
+  - BPMZ1T1R
+  - BPMZ2T1R
+  - BPMZ3T1R
+  - BPMZ4T1R
+  - BPMZ41T1R
+  - BPMZ5T1R
+  - BPMZ6T1R
+  - BPMZ7T1R
+  - BPMZ1D2R
+  - BPMZ2D2R
+  - BPMZ3D2R
+  - BPMZ4D2R
+  - BPMZ5D2R
+  - BPMZ6D2R
+  - BPMZ7D2R
+  - BPMZ1T2R
+  - BPMZ2T2R
+  - BPMZ3T2R
+  - BPMZ4T2R
+  - BPMZ41T2R
+  - BPMZ42T2R
+  - BPMZ43T2R
+  - BPMZ5T2R
+  - BPMZ6T2R
+  - BPMZ7T2R
+  - BPMZ1D3R
+  - BPMZ2D3R
+  - BPMZ3D3R
+  - BPMZ4D3R
+  - BPMZ5D3R
+  - BPMZ6D3R
+  - BPMZ7D3R
+  - BPMZ1T3R
+  - BPMZ2T3R
+  - BPMZ3T3R
+  - BPMZ4T3R
+  - BPMZ5T3R
+  - BPMZ6T3R
+  - BPMZ7T3R
+  - BPMZ1D4R
+  - BPMZ2D4R
+  - BPMZ3D4R
+  - BPMZ4D4R
+  - BPMZ5D4R
+  - BPMZ6D4R
+  - BPMZ7D4R
+  - BPMZ1T4R
+  - BPMZ2T4R
+  - BPMZ3T4R
+  - BPMZ4T4R
+  - BPMZ5T4R
+  - BPMZ6T4R
+  - BPMZ7T4R
+  - BPMZ1D5R
+  - BPMZ2D5R
+  - BPMZ3D5R
+  - BPMZ4D5R
+  - BPMZ5D5R
+  - BPMZ6D5R
+  - BPMZ7D5R
+  - BPMZ1T5R
+  - BPMZ2T5R
+  - BPMZ3T5R
+  - BPMZ4T5R
+  - BPMZ5T5R
+  - BPMZ6T5R
+  - BPMZ7T5R
+  - BPMZ1D6R
+  - BPMZ2D6R
+  - BPMZ3D6R
+  - BPMZ4D6R
+  - BPMZ41D6R
+  - BPMZ42D6R
+  - BPMZ43D6R
+  - BPMZ44D6R
+  - BPMZ6D6R
+  - BPMZ7D6R
+  - BPMZ1T6R
+  - BPMZ2T6R
+  - BPMZ3T6R
+  - BPMZ4T6R
+  - BPMZ41T6R
+  - BPMZ5T6R
+  - BPMZ6T6R
+  - BPMZ7T6R
+  - BPMZ1D7R
+  - BPMZ2D7R
+  - BPMZ3D7R
+  - BPMZ4D7R
+  - BPMZ5D7R
+  - BPMZ6D7R
+  - BPMZ7D7R
+  - BPMZ1T7R
+  - BPMZ2T7R
+  - BPMZ3T7R
+  - BPMZ4T7R
+  - BPMZ41T7R
+  - BPMZ5T7R
+  - BPMZ6T7R
+  - BPMZ7T7R
+  - BPMZ1D8R
+  - BPMZ2D8R
+  - BPMZ3D8R
+  - BPMZ4D8R
+  - BPMZ5D8R
+  - BPMZ6D8R
+  - BPMZ7D8R
+  - BPMZ1T8R
+  - BPMZ2T8R
+  - BPMZ3T8R
+  - BPMZ4T8R
+  - BPMZ5T8R
+  - BPMZ6T8R
+  - BPMZ7T8R
+  - BPMZ1D1R
+  - BPMZ2D1R
+  - BPMZ3D1R
+  - BPMZ4D1R
+  - BPMZ41D1R
+  - BPMZ42D1R
+- class: pyaml.arrays.magnet.Magnet
+  name: QForTune
+  elements:
+  - Q3M2D1R
+  - Q3M1T1R
+  - Q3M2T1R
+  - Q3M1D2R
+  - Q3M2D2R
+  - Q3M1T2R
+  - Q3M2T2R
+  - Q3M1D3R
+  - Q3M2D3R
+  - Q3M1T3R
+  - Q3M2T3R
+  - Q3M1D4R
+  - Q3M2D4R
+  - Q3M1T4R
+  - Q3M2T4R
+  - Q3M1D5R
+  - Q3M2D5R
+  - Q3M1T5R
+  - Q3M2T5R
+  - Q3M1D6R
+  - Q3M2D6R
+  - Q3M1T6R
+  - Q3M2T6R
+  - Q3M1D7R
+  - Q3M2D7R
+  - Q3M1T7R
+  - Q3M2T7R
+  - Q3M1D8R
+  - Q3M2D8R
+  - Q3M1T8R
+  - Q3M2T8R
+  - Q3M1D1R
+  - Q4M2D1R
+  - Q4M1T1R
+  - Q4M2T1R
+  - Q4M1D2R
+  - Q4M2D2R
+  - Q4M1T2R
+  - Q4M2T2R
+  - Q4M1D3R
+  - Q4M2D3R
+  - Q4M1T3R
+  - Q4M2T3R
+  - Q4M1D4R
+  - Q4M2D4R
+  - Q4M1T4R
+  - Q4M2T4R
+  - Q4M1D5R
+  - Q4M2D5R
+  - Q4M1T5R
+  - Q4M2T5R
+  - Q4M1D6R
+  - Q4M2D6R
+  - Q4M1T6R
+  - Q4M2T6R
+  - Q4M1D7R
+  - Q4M2D7R
+  - Q4M1T7R
+  - Q4M2T7R
+  - Q4M1D8R
+  - Q4M2D8R
+  - Q4M1T8R
+  - Q4M2T8R
+  - Q4M1D1R
+devices:
+- class: pyaml.tuning_tools.orbit_response_matrix.OrbitResponseMatrix
+  bpm_array_name: BPM
+  hcorr_array_name: HCorr
+  vcorr_array_name: VCorr
+  corrector_delta: 1e-6
+  name: DEFAULT_ORBIT_RESPONSE_MATRIX
+- class: pyaml.tuning_tools.dispersion.Dispersion
+  bpm_array_name: BPM
+  rf_plant_name: RF
+  frequency_delta: 10
+  name: DEFAULT_DISPERSION
+- class: pyaml.tuning_tools.orbit.Orbit
+  bpm_array_name: BPM
+  hcorr_array_name: HCorr
+  vcorr_array_name: VCorr
+  name: DEFAULT_ORBIT_CORRECTION
+  singular_values: 16
+  response_matrix: ${path:orm.json}
+- class: pyaml.rf.rf_plant.RFPlant
+  name: RF
+  masterclock: (MCLKHX251C:freq)[KHz]
+- class: pyaml.magnet.hcorrector.HCorrector
+  name: HS4M2D1R
+  lattice_names: S4M2D1R@0
+  model:
+    class: pyaml.magnet.linear_model.LinearMagnetModel
+    calibration_factor: -0.0044502
+    unit: 1/m
+    powerconverter: (HS4P2D1R:rdbk, HS4P2D1R:set)[A]
+    hardware_unit: A
+- class: pyaml.magnet.hcorrector.HCorrector
+  name: HS1MT1R
+  lattice_names: S1MT1R@0
+  model:
+    class: pyaml.magnet.linear_model.LinearMagnetModel
+    calibration_factor: -0.00553438
+    unit: 1/m
+    powerconverter: (HS1PT1R:rdbk, HS1PT1R:set)[A]
+    hardware_unit: A
+- class: pyaml.magnet.hcorrector.HCorrector
+  name: HS4M1T1R
+  lattice_names: S4M1T1R@0
+  model:
+    class: pyaml.magnet.linear_model.LinearMagnetModel
+    calibration_factor: -0.0044502
+    unit: 1/m
+    powerconverter: (HS4P1T1R:rdbk, HS4P1T1R:set)[A]
+    hardware_unit: A
+- class: pyaml.magnet.hcorrector.HCorrector
+  name: HS4M2T1R
+  lattice_names: S4M2T1R@0
+  model:
+    class: pyaml.magnet.linear_model.LinearMagnetModel
+    calibration_factor: -0.0044502
+    unit: 1/m
+    powerconverter: (HS4P2T1R:rdbk, HS4P2T1R:set)[A]
+    hardware_unit: A
+- class: pyaml.magnet.hcorrector.HCorrector
+  name: HS1MD2R
+  lattice_names: S1MD2R@0
+  model:
+    class: pyaml.magnet.linear_model.LinearMagnetModel
+    calibration_factor: -0.00553438
+    unit: 1/m
+    powerconverter: (HS1PD2R:rdbk, HS1PD2R:set)[A]
+    hardware_unit: A
+- class: pyaml.magnet.hcorrector.HCorrector
+  name: HS4M1D2R
+  lattice_names: S4M1D2R@0
+  model:
+    class: pyaml.magnet.linear_model.LinearMagnetModel
+    calibration_factor: -0.0044502
+    unit: 1/m
+    powerconverter: (HS4P1D2R:rdbk, HS4P1D2R:set)[A]
+    hardware_unit: A
+- class: pyaml.magnet.hcorrector.HCorrector
+  name: HS4M2D2R
+  lattice_names: S4M2D2R@0
+  model:
+    class: pyaml.magnet.linear_model.LinearMagnetModel
+    calibration_factor: -0.0044502
+    unit: 1/m
+    powerconverter: (HS4P2D2R:rdbk, HS4P2D2R:set)[A]
+    hardware_unit: A
+- class: pyaml.magnet.hcorrector.HCorrector
+  name: HS1MT2R
+  lattice_names: S1MT2R@0
+  model:
+    class: pyaml.magnet.linear_model.LinearMagnetModel
+    calibration_factor: -0.00553438
+    unit: 1/m
+    powerconverter: (HS1PT2R:rdbk, HS1PT2R:set)[A]
+    hardware_unit: A
+- class: pyaml.magnet.hcorrector.HCorrector
+  name: HS4M1T2R
+  lattice_names: S4M1T2R@0
+  model:
+    class: pyaml.magnet.linear_model.LinearMagnetModel
+    calibration_factor: -0.0044502
+    unit: 1/m
+    powerconverter: (HS4P1T2R:rdbk, HS4P1T2R:set)[A]
+    hardware_unit: A
+- class: pyaml.magnet.hcorrector.HCorrector
+  name: HS4M2T2R
+  lattice_names: S4M2T2R@0
+  model:
+    class: pyaml.magnet.linear_model.LinearMagnetModel
+    calibration_factor: -0.0044502
+    unit: 1/m
+    powerconverter: (HS4P2T2R:rdbk, HS4P2T2R:set)[A]
+    hardware_unit: A
+- class: pyaml.magnet.hcorrector.HCorrector
+  name: HS1MD3R
+  lattice_names: S1MD3R@0
+  model:
+    class: pyaml.magnet.linear_model.LinearMagnetModel
+    calibration_factor: -0.00553438
+    unit: 1/m
+    powerconverter: (HS1PD3R:rdbk, HS1PD3R:set)[A]
+    hardware_unit: A
+- class: pyaml.magnet.hcorrector.HCorrector
+  name: HS4M1D3R
+  lattice_names: S4M1D3R@0
+  model:
+    class: pyaml.magnet.linear_model.LinearMagnetModel
+    calibration_factor: -0.0044502
+    unit: 1/m
+    powerconverter: (HS4P1D3R:rdbk, HS4P1D3R:set)[A]
+    hardware_unit: A
+- class: pyaml.magnet.hcorrector.HCorrector
+  name: HS4M2D3R
+  lattice_names: S4M2D3R@0
+  model:
+    class: pyaml.magnet.linear_model.LinearMagnetModel
+    calibration_factor: -0.0044502
+    unit: 1/m
+    powerconverter: (HS4P2D3R:rdbk, HS4P2D3R:set)[A]
+    hardware_unit: A
+- class: pyaml.magnet.hcorrector.HCorrector
+  name: HS1MT3R
+  lattice_names: S1MT3R@0
+  model:
+    class: pyaml.magnet.linear_model.LinearMagnetModel
+    calibration_factor: -0.00553438
+    unit: 1/m
+    powerconverter: (HS1PT3R:rdbk, HS1PT3R:set)[A]
+    hardware_unit: A
+- class: pyaml.magnet.hcorrector.HCorrector
+  name: HS4M1T3R
+  lattice_names: S4M1T3R@0
+  model:
+    class: pyaml.magnet.linear_model.LinearMagnetModel
+    calibration_factor: -0.0044502
+    unit: 1/m
+    powerconverter: (HS4P1T3R:rdbk, HS4P1T3R:set)[A]
+    hardware_unit: A
+- class: pyaml.magnet.hcorrector.HCorrector
+  name: HS4M2T3R
+  lattice_names: S4M2T3R@0
+  model:
+    class: pyaml.magnet.linear_model.LinearMagnetModel
+    calibration_factor: -0.0044502
+    unit: 1/m
+    powerconverter: (HS4P2T3R:rdbk, HS4P2T3R:set)[A]
+    hardware_unit: A
+- class: pyaml.magnet.hcorrector.HCorrector
+  name: HS1MD4R
+  lattice_names: S1MD4R@0
+  model:
+    class: pyaml.magnet.linear_model.LinearMagnetModel
+    calibration_factor: -0.00553438
+    unit: 1/m
+    powerconverter: (HS1PD4R:rdbk, HS1PD4R:set)[A]
+    hardware_unit: A
+- class: pyaml.magnet.hcorrector.HCorrector
+  name: HS4M1D4R
+  lattice_names: S4M1D4R@0
+  model:
+    class: pyaml.magnet.linear_model.LinearMagnetModel
+    calibration_factor: -0.0044502
+    unit: 1/m
+    powerconverter: (HS4P1D4R:rdbk, HS4P1D4R:set)[A]
+    hardware_unit: A
+- class: pyaml.magnet.hcorrector.HCorrector
+  name: HS4M2D4R
+  lattice_names: S4M2D4R@0
+  model:
+    class: pyaml.magnet.linear_model.LinearMagnetModel
+    calibration_factor: -0.0044502
+    unit: 1/m
+    powerconverter: (HS4P2D4R:rdbk, HS4P2D4R:set)[A]
+    hardware_unit: A
+- class: pyaml.magnet.hcorrector.HCorrector
+  name: HS1MT4R
+  lattice_names: S1MT4R@0
+  model:
+    class: pyaml.magnet.linear_model.LinearMagnetModel
+    calibration_factor: -0.00553438
+    unit: 1/m
+    powerconverter: (HS1PT4R:rdbk, HS1PT4R:set)[A]
+    hardware_unit: A
+- class: pyaml.magnet.hcorrector.HCorrector
+  name: HS4M1T4R
+  lattice_names: S4M1T4R@0
+  model:
+    class: pyaml.magnet.linear_model.LinearMagnetModel
+    calibration_factor: -0.0044502
+    unit: 1/m
+    powerconverter: (HS4P1T4R:rdbk, HS4P1T4R:set)[A]
+    hardware_unit: A
+- class: pyaml.magnet.hcorrector.HCorrector
+  name: HS4M2T4R
+  lattice_names: S4M2T4R@0
+  model:
+    class: pyaml.magnet.linear_model.LinearMagnetModel
+    calibration_factor: -0.0044502
+    unit: 1/m
+    powerconverter: (HS4P2T4R:rdbk, HS4P2T4R:set)[A]
+    hardware_unit: A
+- class: pyaml.magnet.hcorrector.HCorrector
+  name: HS1MD5R
+  lattice_names: S1MD5R@0
+  model:
+    class: pyaml.magnet.linear_model.LinearMagnetModel
+    calibration_factor: -0.00553438
+    unit: 1/m
+    powerconverter: (HS1PD5R:rdbk, HS1PD5R:set)[A]
+    hardware_unit: A
+- class: pyaml.magnet.hcorrector.HCorrector
+  name: HS4M1D5R
+  lattice_names: S4M1D5R@0
+  model:
+    class: pyaml.magnet.linear_model.LinearMagnetModel
+    calibration_factor: -0.0044502
+    unit: 1/m
+    powerconverter: (HS4P1D5R:rdbk, HS4P1D5R:set)[A]
+    hardware_unit: A
+- class: pyaml.magnet.hcorrector.HCorrector
+  name: HS4M2D5R
+  lattice_names: S4M2D5R@0
+  model:
+    class: pyaml.magnet.linear_model.LinearMagnetModel
+    calibration_factor: -0.0044502
+    unit: 1/m
+    powerconverter: (HS4P2D5R:rdbk, HS4P2D5R:set)[A]
+    hardware_unit: A
+- class: pyaml.magnet.hcorrector.HCorrector
+  name: HS1MT5R
+  lattice_names: S1MT5R@0
+  model:
+    class: pyaml.magnet.linear_model.LinearMagnetModel
+    calibration_factor: -0.00553438
+    unit: 1/m
+    powerconverter: (HS1PT5R:rdbk, HS1PT5R:set)[A]
+    hardware_unit: A
+- class: pyaml.magnet.hcorrector.HCorrector
+  name: HS4M1T5R
+  lattice_names: S4M1T5R@0
+  model:
+    class: pyaml.magnet.linear_model.LinearMagnetModel
+    calibration_factor: -0.0044502
+    unit: 1/m
+    powerconverter: (HS4P1T5R:rdbk, HS4P1T5R:set)[A]
+    hardware_unit: A
+- class: pyaml.magnet.hcorrector.HCorrector
+  name: HS4M2T5R
+  lattice_names: S4M2T5R@0
+  model:
+    class: pyaml.magnet.linear_model.LinearMagnetModel
+    calibration_factor: -0.0044502
+    unit: 1/m
+    powerconverter: (HS4P2T5R:rdbk, HS4P2T5R:set)[A]
+    hardware_unit: A
+- class: pyaml.magnet.hcorrector.HCorrector
+  name: HS1MD6R
+  lattice_names: S1MD6R@0
+  model:
+    class: pyaml.magnet.linear_model.LinearMagnetModel
+    calibration_factor: -0.00553438
+    unit: 1/m
+    powerconverter: (HS1PD6R:rdbk, HS1PD6R:set)[A]
+    hardware_unit: A
+- class: pyaml.magnet.hcorrector.HCorrector
+  name: HS4M1D6R
+  lattice_names: S4M1D6R@0
+  model:
+    class: pyaml.magnet.linear_model.LinearMagnetModel
+    calibration_factor: -0.0044502
+    unit: 1/m
+    powerconverter: (HS4P1D6R:rdbk, HS4P1D6R:set)[A]
+    hardware_unit: A
+- class: pyaml.magnet.hcorrector.HCorrector
+  name: HS4M2D6R
+  lattice_names: S4M2D6R@0
+  model:
+    class: pyaml.magnet.linear_model.LinearMagnetModel
+    calibration_factor: -0.0044502
+    unit: 1/m
+    powerconverter: (HS4P2D6R:rdbk, HS4P2D6R:set)[A]
+    hardware_unit: A
+- class: pyaml.magnet.hcorrector.HCorrector
+  name: HS1MT6R
+  lattice_names: S1MT6R@0
+  model:
+    class: pyaml.magnet.linear_model.LinearMagnetModel
+    calibration_factor: -0.00553438
+    unit: 1/m
+    powerconverter: (HS1PT6R:rdbk, HS1PT6R:set)[A]
+    hardware_unit: A
+- class: pyaml.magnet.hcorrector.HCorrector
+  name: HS4M1T6R
+  lattice_names: S4M1T6R@0
+  model:
+    class: pyaml.magnet.linear_model.LinearMagnetModel
+    calibration_factor: -0.0044502
+    unit: 1/m
+    powerconverter: (HS4P1T6R:rdbk, HS4P1T6R:set)[A]
+    hardware_unit: A
+- class: pyaml.magnet.hcorrector.HCorrector
+  name: HS4M2T6R
+  lattice_names: S4M2T6R@0
+  model:
+    class: pyaml.magnet.linear_model.LinearMagnetModel
+    calibration_factor: -0.0044502
+    unit: 1/m
+    powerconverter: (HS4P2T6R:rdbk, HS4P2T6R:set)[A]
+    hardware_unit: A
+- class: pyaml.magnet.hcorrector.HCorrector
+  name: HS1MD7R
+  lattice_names: S1MD7R@0
+  model:
+    class: pyaml.magnet.linear_model.LinearMagnetModel
+    calibration_factor: -0.00553438
+    unit: 1/m
+    powerconverter: (HS1PD7R:rdbk, HS1PD7R:set)[A]
+    hardware_unit: A
+- class: pyaml.magnet.hcorrector.HCorrector
+  name: HS4M1D7R
+  lattice_names: S4M1D7R@0
+  model:
+    class: pyaml.magnet.linear_model.LinearMagnetModel
+    calibration_factor: -0.0044502
+    unit: 1/m
+    powerconverter: (HS4P1D7R:rdbk, HS4P1D7R:set)[A]
+    hardware_unit: A
+- class: pyaml.magnet.hcorrector.HCorrector
+  name: HS4M2D7R
+  lattice_names: S4M2D7R@0
+  model:
+    class: pyaml.magnet.linear_model.LinearMagnetModel
+    calibration_factor: -0.0044502
+    unit: 1/m
+    powerconverter: (HS4P2D7R:rdbk, HS4P2D7R:set)[A]
+    hardware_unit: A
+- class: pyaml.magnet.hcorrector.HCorrector
+  name: HS1MT7R
+  lattice_names: S1MT7R@0
+  model:
+    class: pyaml.magnet.linear_model.LinearMagnetModel
+    calibration_factor: -0.00553438
+    unit: 1/m
+    powerconverter: (HS1PT7R:rdbk, HS1PT7R:set)[A]
+    hardware_unit: A
+- class: pyaml.magnet.hcorrector.HCorrector
+  name: HS4M1T7R
+  lattice_names: S4M1T7R@0
+  model:
+    class: pyaml.magnet.linear_model.LinearMagnetModel
+    calibration_factor: -0.0044502
+    unit: 1/m
+    powerconverter: (HS4P1T7R:rdbk, HS4P1T7R:set)[A]
+    hardware_unit: A
+- class: pyaml.magnet.hcorrector.HCorrector
+  name: HS4M2T7R
+  lattice_names: S4M2T7R@0
+  model:
+    class: pyaml.magnet.linear_model.LinearMagnetModel
+    calibration_factor: -0.0044502
+    unit: 1/m
+    powerconverter: (HS4P2T7R:rdbk, HS4P2T7R:set)[A]
+    hardware_unit: A
+- class: pyaml.magnet.hcorrector.HCorrector
+  name: HS1MD8R
+  lattice_names: S1MD8R@0
+  model:
+    class: pyaml.magnet.linear_model.LinearMagnetModel
+    calibration_factor: -0.00553438
+    unit: 1/m
+    powerconverter: (HS1PD8R:rdbk, HS1PD8R:set)[A]
+    hardware_unit: A
+- class: pyaml.magnet.hcorrector.HCorrector
+  name: HS4M1D8R
+  lattice_names: S4M1D8R@0
+  model:
+    class: pyaml.magnet.linear_model.LinearMagnetModel
+    calibration_factor: -0.0044502
+    unit: 1/m
+    powerconverter: (HS4P1D8R:rdbk, HS4P1D8R:set)[A]
+    hardware_unit: A
+- class: pyaml.magnet.hcorrector.HCorrector
+  name: HS4M2D8R
+  lattice_names: S4M2D8R@0
+  model:
+    class: pyaml.magnet.linear_model.LinearMagnetModel
+    calibration_factor: -0.0044502
+    unit: 1/m
+    powerconverter: (HS4P2D8R:rdbk, HS4P2D8R:set)[A]
+    hardware_unit: A
+- class: pyaml.magnet.hcorrector.HCorrector
+  name: HS1MT8R
+  lattice_names: S1MT8R@0
+  model:
+    class: pyaml.magnet.linear_model.LinearMagnetModel
+    calibration_factor: -0.00553438
+    unit: 1/m
+    powerconverter: (HS1PT8R:rdbk, HS1PT8R:set)[A]
+    hardware_unit: A
+- class: pyaml.magnet.hcorrector.HCorrector
+  name: HS4M1T8R
+  lattice_names: S4M1T8R@0
+  model:
+    class: pyaml.magnet.linear_model.LinearMagnetModel
+    calibration_factor: -0.0044502
+    unit: 1/m
+    powerconverter: (HS4P1T8R:rdbk, HS4P1T8R:set)[A]
+    hardware_unit: A
+- class: pyaml.magnet.hcorrector.HCorrector
+  name: HS4M2T8R
+  lattice_names: S4M2T8R@0
+  model:
+    class: pyaml.magnet.linear_model.LinearMagnetModel
+    calibration_factor: -0.0044502
+    unit: 1/m
+    powerconverter: (HS4P2T8R:rdbk, HS4P2T8R:set)[A]
+    hardware_unit: A
+- class: pyaml.magnet.hcorrector.HCorrector
+  name: HS1MD1R
+  lattice_names: S1MD1R@0
+  model:
+    class: pyaml.magnet.linear_model.LinearMagnetModel
+    calibration_factor: -0.00553438
+    unit: 1/m
+    powerconverter: (HS1PD1R:rdbk, HS1PD1R:set)[A]
+    hardware_unit: A
+- class: pyaml.magnet.hcorrector.HCorrector
+  name: HS4M1D1R
+  lattice_names: S4M1D1R@0
+  model:
+    class: pyaml.magnet.linear_model.LinearMagnetModel
+    calibration_factor: -0.0044502
+    unit: 1/m
+    powerconverter: (HS4P1D1R:rdbk, HS4P1D1R:set)[A]
+    hardware_unit: A
+- class: pyaml.magnet.vcorrector.VCorrector
+  name: VS3M2D1R
+  lattice_names: S3M2D1R@0
+  model:
+    class: pyaml.magnet.linear_model.LinearMagnetModel
+    calibration_factor: 0.00297607
+    unit: 1/m
+    powerconverter: (VS3P2D1R:rdbk, VS3P2D1R:set)[A]
+    hardware_unit: A
+- class: pyaml.magnet.vcorrector.VCorrector
+  name: VS2M2D1R
+  lattice_names: S2M2D1R@0
+  model:
+    class: pyaml.magnet.linear_model.LinearMagnetModel
+    calibration_factor: 0.00297607
+    unit: 1/m
+    powerconverter: (VS2P2D1R:rdbk, VS2P2D1R:set)[A]
+    hardware_unit: A
+- class: pyaml.magnet.vcorrector.VCorrector
+  name: VS2M1T1R
+  lattice_names: S2M1T1R@0
+  model:
+    class: pyaml.magnet.linear_model.LinearMagnetModel
+    calibration_factor: 0.00297607
+    unit: 1/m
+    powerconverter: (VS2P1T1R:rdbk, VS2P1T1R:set)[A]
+    hardware_unit: A
+- class: pyaml.magnet.vcorrector.VCorrector
+  name: VS3M1T1R
+  lattice_names: S3M1T1R@0
+  model:
+    class: pyaml.magnet.linear_model.LinearMagnetModel
+    calibration_factor: 0.00297607
+    unit: 1/m
+    powerconverter: (VS3P1T1R:rdbk, VS3P1T1R:set)[A]
+    hardware_unit: A
+- class: pyaml.magnet.vcorrector.VCorrector
+  name: VS3M2T1R
+  lattice_names: S3M2T1R@0
+  model:
+    class: pyaml.magnet.linear_model.LinearMagnetModel
+    calibration_factor: 0.00297607
+    unit: 1/m
+    powerconverter: (VS3P2T1R:rdbk, VS3P2T1R:set)[A]
+    hardware_unit: A
+- class: pyaml.magnet.vcorrector.VCorrector
+  name: VS2M2T1R
+  lattice_names: S2M2T1R@0
+  model:
+    class: pyaml.magnet.linear_model.LinearMagnetModel
+    calibration_factor: 0.00297607
+    unit: 1/m
+    powerconverter: (VS2P2T1R:rdbk, VS2P2T1R:set)[A]
+    hardware_unit: A
+- class: pyaml.magnet.vcorrector.VCorrector
+  name: VS2M1D2R
+  lattice_names: S2M1D2R@0
+  model:
+    class: pyaml.magnet.linear_model.LinearMagnetModel
+    calibration_factor: 0.00297607
+    unit: 1/m
+    powerconverter: (VS2P1D2R:rdbk, VS2P1D2R:set)[A]
+    hardware_unit: A
+- class: pyaml.magnet.vcorrector.VCorrector
+  name: VS3M1D2R
+  lattice_names: S3M1D2R@0
+  model:
+    class: pyaml.magnet.linear_model.LinearMagnetModel
+    calibration_factor: 0.00297607
+    unit: 1/m
+    powerconverter: (VS3P1D2R:rdbk, VS3P1D2R:set)[A]
+    hardware_unit: A
+- class: pyaml.magnet.vcorrector.VCorrector
+  name: VS3M2D2R
+  lattice_names: S3M2D2R@0
+  model:
+    class: pyaml.magnet.linear_model.LinearMagnetModel
+    calibration_factor: 0.00297607
+    unit: 1/m
+    powerconverter: (VS3P2D2R:rdbk, VS3P2D2R:set)[A]
+    hardware_unit: A
+- class: pyaml.magnet.vcorrector.VCorrector
+  name: VS2M2D2R
+  lattice_names: S2M2D2R@0
+  model:
+    class: pyaml.magnet.linear_model.LinearMagnetModel
+    calibration_factor: 0.00297607
+    unit: 1/m
+    powerconverter: (VS2P2D2R:rdbk, VS2P2D2R:set)[A]
+    hardware_unit: A
+- class: pyaml.magnet.vcorrector.VCorrector
+  name: VS2M1T2R
+  lattice_names: S2M1T2R@0
+  model:
+    class: pyaml.magnet.linear_model.LinearMagnetModel
+    calibration_factor: 0.00297607
+    unit: 1/m
+    powerconverter: (VS2P1T2R:rdbk, VS2P1T2R:set)[A]
+    hardware_unit: A
+- class: pyaml.magnet.vcorrector.VCorrector
+  name: VS3M1T2R
+  lattice_names: S3M1T2R@0
+  model:
+    class: pyaml.magnet.linear_model.LinearMagnetModel
+    calibration_factor: 0.00297607
+    unit: 1/m
+    powerconverter: (VS3P1T2R:rdbk, VS3P1T2R:set)[A]
+    hardware_unit: A
+- class: pyaml.magnet.vcorrector.VCorrector
+  name: VS3M2T2R
+  lattice_names: S3M2T2R@0
+  model:
+    class: pyaml.magnet.linear_model.LinearMagnetModel
+    calibration_factor: 0.00297607
+    unit: 1/m
+    powerconverter: (VS3P2T2R:rdbk, VS3P2T2R:set)[A]
+    hardware_unit: A
+- class: pyaml.magnet.vcorrector.VCorrector
+  name: VS2M2T2R
+  lattice_names: S2M2T2R@0
+  model:
+    class: pyaml.magnet.linear_model.LinearMagnetModel
+    calibration_factor: 0.00297607
+    unit: 1/m
+    powerconverter: (VS2P2T2R:rdbk, VS2P2T2R:set)[A]
+    hardware_unit: A
+- class: pyaml.magnet.vcorrector.VCorrector
+  name: VS2M1D3R
+  lattice_names: S2M1D3R@0
+  model:
+    class: pyaml.magnet.linear_model.LinearMagnetModel
+    calibration_factor: 0.00297607
+    unit: 1/m
+    powerconverter: (VS2P1D3R:rdbk, VS2P1D3R:set)[A]
+    hardware_unit: A
+- class: pyaml.magnet.vcorrector.VCorrector
+  name: VS3M1D3R
+  lattice_names: S3M1D3R@0
+  model:
+    class: pyaml.magnet.linear_model.LinearMagnetModel
+    calibration_factor: 0.00297607
+    unit: 1/m
+    powerconverter: (VS3P1D3R:rdbk, VS3P1D3R:set)[A]
+    hardware_unit: A
+- class: pyaml.magnet.vcorrector.VCorrector
+  name: VS3M2D3R
+  lattice_names: S3M2D3R@0
+  model:
+    class: pyaml.magnet.linear_model.LinearMagnetModel
+    calibration_factor: 0.00297607
+    unit: 1/m
+    powerconverter: (VS3P2D3R:rdbk, VS3P2D3R:set)[A]
+    hardware_unit: A
+- class: pyaml.magnet.vcorrector.VCorrector
+  name: VS2M2D3R
+  lattice_names: S2M2D3R@0
+  model:
+    class: pyaml.magnet.linear_model.LinearMagnetModel
+    calibration_factor: 0.00297607
+    unit: 1/m
+    powerconverter: (VS2P2D3R:rdbk, VS2P2D3R:set)[A]
+    hardware_unit: A
+- class: pyaml.magnet.vcorrector.VCorrector
+  name: VS2M1T3R
+  lattice_names: S2M1T3R@0
+  model:
+    class: pyaml.magnet.linear_model.LinearMagnetModel
+    calibration_factor: 0.00297607
+    unit: 1/m
+    powerconverter: (VS2P1T3R:rdbk, VS2P1T3R:set)[A]
+    hardware_unit: A
+- class: pyaml.magnet.vcorrector.VCorrector
+  name: VS3M1T3R
+  lattice_names: S3M1T3R@0
+  model:
+    class: pyaml.magnet.linear_model.LinearMagnetModel
+    calibration_factor: 0.00297607
+    unit: 1/m
+    powerconverter: (VS3P1T3R:rdbk, VS3P1T3R:set)[A]
+    hardware_unit: A
+- class: pyaml.magnet.vcorrector.VCorrector
+  name: VS3M2T3R
+  lattice_names: S3M2T3R@0
+  model:
+    class: pyaml.magnet.linear_model.LinearMagnetModel
+    calibration_factor: 0.00297607
+    unit: 1/m
+    powerconverter: (VS3P2T3R:rdbk, VS3P2T3R:set)[A]
+    hardware_unit: A
+- class: pyaml.magnet.vcorrector.VCorrector
+  name: VS2M2T3R
+  lattice_names: S2M2T3R@0
+  model:
+    class: pyaml.magnet.linear_model.LinearMagnetModel
+    calibration_factor: 0.00297607
+    unit: 1/m
+    powerconverter: (VS2P2T3R:rdbk, VS2P2T3R:set)[A]
+    hardware_unit: A
+- class: pyaml.magnet.vcorrector.VCorrector
+  name: VS2M1D4R
+  lattice_names: S2M1D4R@0
+  model:
+    class: pyaml.magnet.linear_model.LinearMagnetModel
+    calibration_factor: 0.00297607
+    unit: 1/m
+    powerconverter: (VS2P1D4R:rdbk, VS2P1D4R:set)[A]
+    hardware_unit: A
+- class: pyaml.magnet.vcorrector.VCorrector
+  name: VS3M1D4R
+  lattice_names: S3M1D4R@0
+  model:
+    class: pyaml.magnet.linear_model.LinearMagnetModel
+    calibration_factor: 0.00297607
+    unit: 1/m
+    powerconverter: (VS3P1D4R:rdbk, VS3P1D4R:set)[A]
+    hardware_unit: A
+- class: pyaml.magnet.vcorrector.VCorrector
+  name: VS3M2D4R
+  lattice_names: S3M2D4R@0
+  model:
+    class: pyaml.magnet.linear_model.LinearMagnetModel
+    calibration_factor: 0.00297607
+    unit: 1/m
+    powerconverter: (VS3P2D4R:rdbk, VS3P2D4R:set)[A]
+    hardware_unit: A
+- class: pyaml.magnet.vcorrector.VCorrector
+  name: VS2M2D4R
+  lattice_names: S2M2D4R@0
+  model:
+    class: pyaml.magnet.linear_model.LinearMagnetModel
+    calibration_factor: 0.00297607
+    unit: 1/m
+    powerconverter: (VS2P2D4R:rdbk, VS2P2D4R:set)[A]
+    hardware_unit: A
+- class: pyaml.magnet.vcorrector.VCorrector
+  name: VS2M1T4R
+  lattice_names: S2M1T4R@0
+  model:
+    class: pyaml.magnet.linear_model.LinearMagnetModel
+    calibration_factor: 0.00297607
+    unit: 1/m
+    powerconverter: (VS2P1T4R:rdbk, VS2P1T4R:set)[A]
+    hardware_unit: A
+- class: pyaml.magnet.vcorrector.VCorrector
+  name: VS3M1T4R
+  lattice_names: S3M1T4R@0
+  model:
+    class: pyaml.magnet.linear_model.LinearMagnetModel
+    calibration_factor: 0.00297607
+    unit: 1/m
+    powerconverter: (VS3P1T4R:rdbk, VS3P1T4R:set)[A]
+    hardware_unit: A
+- class: pyaml.magnet.vcorrector.VCorrector
+  name: VS3M2T4R
+  lattice_names: S3M2T4R@0
+  model:
+    class: pyaml.magnet.linear_model.LinearMagnetModel
+    calibration_factor: 0.00297607
+    unit: 1/m
+    powerconverter: (VS3P2T4R:rdbk, VS3P2T4R:set)[A]
+    hardware_unit: A
+- class: pyaml.magnet.vcorrector.VCorrector
+  name: VS2M2T4R
+  lattice_names: S2M2T4R@0
+  model:
+    class: pyaml.magnet.linear_model.LinearMagnetModel
+    calibration_factor: 0.00297607
+    unit: 1/m
+    powerconverter: (VS2P2T4R:rdbk, VS2P2T4R:set)[A]
+    hardware_unit: A
+- class: pyaml.magnet.vcorrector.VCorrector
+  name: VS2M1D5R
+  lattice_names: S2M1D5R@0
+  model:
+    class: pyaml.magnet.linear_model.LinearMagnetModel
+    calibration_factor: 0.00297607
+    unit: 1/m
+    powerconverter: (VS2P1D5R:rdbk, VS2P1D5R:set)[A]
+    hardware_unit: A
+- class: pyaml.magnet.vcorrector.VCorrector
+  name: VS3M1D5R
+  lattice_names: S3M1D5R@0
+  model:
+    class: pyaml.magnet.linear_model.LinearMagnetModel
+    calibration_factor: 0.00297607
+    unit: 1/m
+    powerconverter: (VS3P1D5R:rdbk, VS3P1D5R:set)[A]
+    hardware_unit: A
+- class: pyaml.magnet.vcorrector.VCorrector
+  name: VS3M2D5R
+  lattice_names: S3M2D5R@0
+  model:
+    class: pyaml.magnet.linear_model.LinearMagnetModel
+    calibration_factor: 0.00297607
+    unit: 1/m
+    powerconverter: (VS3P2D5R:rdbk, VS3P2D5R:set)[A]
+    hardware_unit: A
+- class: pyaml.magnet.vcorrector.VCorrector
+  name: VS2M2D5R
+  lattice_names: S2M2D5R@0
+  model:
+    class: pyaml.magnet.linear_model.LinearMagnetModel
+    calibration_factor: 0.00297607
+    unit: 1/m
+    powerconverter: (VS2P2D5R:rdbk, VS2P2D5R:set)[A]
+    hardware_unit: A
+- class: pyaml.magnet.vcorrector.VCorrector
+  name: VS2M1T5R
+  lattice_names: S2M1T5R@0
+  model:
+    class: pyaml.magnet.linear_model.LinearMagnetModel
+    calibration_factor: 0.00297607
+    unit: 1/m
+    powerconverter: (VS2P1T5R:rdbk, VS2P1T5R:set)[A]
+    hardware_unit: A
+- class: pyaml.magnet.vcorrector.VCorrector
+  name: VS3M1T5R
+  lattice_names: S3M1T5R@0
+  model:
+    class: pyaml.magnet.linear_model.LinearMagnetModel
+    calibration_factor: 0.00297607
+    unit: 1/m
+    powerconverter: (VS3P1T5R:rdbk, VS3P1T5R:set)[A]
+    hardware_unit: A
+- class: pyaml.magnet.vcorrector.VCorrector
+  name: VS3M2T5R
+  lattice_names: S3M2T5R@0
+  model:
+    class: pyaml.magnet.linear_model.LinearMagnetModel
+    calibration_factor: 0.00297607
+    unit: 1/m
+    powerconverter: (VS3P2T5R:rdbk, VS3P2T5R:set)[A]
+    hardware_unit: A
+- class: pyaml.magnet.vcorrector.VCorrector
+  name: VS2M2T5R
+  lattice_names: S2M2T5R@0
+  model:
+    class: pyaml.magnet.linear_model.LinearMagnetModel
+    calibration_factor: 0.00297607
+    unit: 1/m
+    powerconverter: (VS2P2T5R:rdbk, VS2P2T5R:set)[A]
+    hardware_unit: A
+- class: pyaml.magnet.vcorrector.VCorrector
+  name: VS2M1D6R
+  lattice_names: S2M1D6R@0
+  model:
+    class: pyaml.magnet.linear_model.LinearMagnetModel
+    calibration_factor: 0.00297607
+    unit: 1/m
+    powerconverter: (VS2P1D6R:rdbk, VS2P1D6R:set)[A]
+    hardware_unit: A
+- class: pyaml.magnet.vcorrector.VCorrector
+  name: VS3M1D6R
+  lattice_names: S3M1D6R@0
+  model:
+    class: pyaml.magnet.linear_model.LinearMagnetModel
+    calibration_factor: 0.00297607
+    unit: 1/m
+    powerconverter: (VS3P1D6R:rdbk, VS3P1D6R:set)[A]
+    hardware_unit: A
+- class: pyaml.magnet.vcorrector.VCorrector
+  name: VS3M2D6R
+  lattice_names: S3M2D6R@0
+  model:
+    class: pyaml.magnet.linear_model.LinearMagnetModel
+    calibration_factor: 0.00297607
+    unit: 1/m
+    powerconverter: (VS3P2D6R:rdbk, VS3P2D6R:set)[A]
+    hardware_unit: A
+- class: pyaml.magnet.vcorrector.VCorrector
+  name: VS2M2D6R
+  lattice_names: S2M2D6R@0
+  model:
+    class: pyaml.magnet.linear_model.LinearMagnetModel
+    calibration_factor: 0.00297607
+    unit: 1/m
+    powerconverter: (VS2P2D6R:rdbk, VS2P2D6R:set)[A]
+    hardware_unit: A
+- class: pyaml.magnet.vcorrector.VCorrector
+  name: VS2M1T6R
+  lattice_names: S2M1T6R@0
+  model:
+    class: pyaml.magnet.linear_model.LinearMagnetModel
+    calibration_factor: 0.00297607
+    unit: 1/m
+    powerconverter: (VS2P1T6R:rdbk, VS2P1T6R:set)[A]
+    hardware_unit: A
+- class: pyaml.magnet.vcorrector.VCorrector
+  name: VS3M1T6R
+  lattice_names: S3M1T6R@0
+  model:
+    class: pyaml.magnet.linear_model.LinearMagnetModel
+    calibration_factor: 0.00297607
+    unit: 1/m
+    powerconverter: (VS3P1T6R:rdbk, VS3P1T6R:set)[A]
+    hardware_unit: A
+- class: pyaml.magnet.vcorrector.VCorrector
+  name: VS3M2T6R
+  lattice_names: S3M2T6R@0
+  model:
+    class: pyaml.magnet.linear_model.LinearMagnetModel
+    calibration_factor: 0.00297607
+    unit: 1/m
+    powerconverter: (VS3P2T6R:rdbk, VS3P2T6R:set)[A]
+    hardware_unit: A
+- class: pyaml.magnet.vcorrector.VCorrector
+  name: VS2M2T6R
+  lattice_names: S2M2T6R@0
+  model:
+    class: pyaml.magnet.linear_model.LinearMagnetModel
+    calibration_factor: 0.00297607
+    unit: 1/m
+    powerconverter: (VS2P2T6R:rdbk, VS2P2T6R:set)[A]
+    hardware_unit: A
+- class: pyaml.magnet.vcorrector.VCorrector
+  name: VS2M1D7R
+  lattice_names: S2M1D7R@0
+  model:
+    class: pyaml.magnet.linear_model.LinearMagnetModel
+    calibration_factor: 0.00297607
+    unit: 1/m
+    powerconverter: (VS2P1D7R:rdbk, VS2P1D7R:set)[A]
+    hardware_unit: A
+- class: pyaml.magnet.vcorrector.VCorrector
+  name: VS3M1D7R
+  lattice_names: S3M1D7R@0
+  model:
+    class: pyaml.magnet.linear_model.LinearMagnetModel
+    calibration_factor: 0.00297607
+    unit: 1/m
+    powerconverter: (VS3P1D7R:rdbk, VS3P1D7R:set)[A]
+    hardware_unit: A
+- class: pyaml.magnet.vcorrector.VCorrector
+  name: VS3M2D7R
+  lattice_names: S3M2D7R@0
+  model:
+    class: pyaml.magnet.linear_model.LinearMagnetModel
+    calibration_factor: 0.00297607
+    unit: 1/m
+    powerconverter: (VS3P2D7R:rdbk, VS3P2D7R:set)[A]
+    hardware_unit: A
+- class: pyaml.magnet.vcorrector.VCorrector
+  name: VS2M2D7R
+  lattice_names: S2M2D7R@0
+  model:
+    class: pyaml.magnet.linear_model.LinearMagnetModel
+    calibration_factor: 0.00297607
+    unit: 1/m
+    powerconverter: (VS2P2D7R:rdbk, VS2P2D7R:set)[A]
+    hardware_unit: A
+- class: pyaml.magnet.vcorrector.VCorrector
+  name: VS2M1T7R
+  lattice_names: S2M1T7R@0
+  model:
+    class: pyaml.magnet.linear_model.LinearMagnetModel
+    calibration_factor: 0.00297607
+    unit: 1/m
+    powerconverter: (VS2P1T7R:rdbk, VS2P1T7R:set)[A]
+    hardware_unit: A
+- class: pyaml.magnet.vcorrector.VCorrector
+  name: VS3M1T7R
+  lattice_names: S3M1T7R@0
+  model:
+    class: pyaml.magnet.linear_model.LinearMagnetModel
+    calibration_factor: 0.00297607
+    unit: 1/m
+    powerconverter: (VS3P1T7R:rdbk, VS3P1T7R:set)[A]
+    hardware_unit: A
+- class: pyaml.magnet.vcorrector.VCorrector
+  name: VS3M2T7R
+  lattice_names: S3M2T7R@0
+  model:
+    class: pyaml.magnet.linear_model.LinearMagnetModel
+    calibration_factor: 0.00297607
+    unit: 1/m
+    powerconverter: (VS3P2T7R:rdbk, VS3P2T7R:set)[A]
+    hardware_unit: A
+- class: pyaml.magnet.vcorrector.VCorrector
+  name: VS2M2T7R
+  lattice_names: S2M2T7R@0
+  model:
+    class: pyaml.magnet.linear_model.LinearMagnetModel
+    calibration_factor: 0.00297607
+    unit: 1/m
+    powerconverter: (VS2P2T7R:rdbk, VS2P2T7R:set)[A]
+    hardware_unit: A
+- class: pyaml.magnet.vcorrector.VCorrector
+  name: VS2M1D8R
+  lattice_names: S2M1D8R@0
+  model:
+    class: pyaml.magnet.linear_model.LinearMagnetModel
+    calibration_factor: 0.00297607
+    unit: 1/m
+    powerconverter: (VS2P1D8R:rdbk, VS2P1D8R:set)[A]
+    hardware_unit: A
+- class: pyaml.magnet.vcorrector.VCorrector
+  name: VS3M1D8R
+  lattice_names: S3M1D8R@0
+  model:
+    class: pyaml.magnet.linear_model.LinearMagnetModel
+    calibration_factor: 0.00297607
+    unit: 1/m
+    powerconverter: (VS3P1D8R:rdbk, VS3P1D8R:set)[A]
+    hardware_unit: A
+- class: pyaml.magnet.vcorrector.VCorrector
+  name: VS3M2D8R
+  lattice_names: S3M2D8R@0
+  model:
+    class: pyaml.magnet.linear_model.LinearMagnetModel
+    calibration_factor: 0.00297607
+    unit: 1/m
+    powerconverter: (VS3P2D8R:rdbk, VS3P2D8R:set)[A]
+    hardware_unit: A
+- class: pyaml.magnet.vcorrector.VCorrector
+  name: VS2M2D8R
+  lattice_names: S2M2D8R@0
+  model:
+    class: pyaml.magnet.linear_model.LinearMagnetModel
+    calibration_factor: 0.00297607
+    unit: 1/m
+    powerconverter: (VS2P2D8R:rdbk, VS2P2D8R:set)[A]
+    hardware_unit: A
+- class: pyaml.magnet.vcorrector.VCorrector
+  name: VS2M1T8R
+  lattice_names: S2M1T8R@0
+  model:
+    class: pyaml.magnet.linear_model.LinearMagnetModel
+    calibration_factor: 0.00297607
+    unit: 1/m
+    powerconverter: (VS2P1T8R:rdbk, VS2P1T8R:set)[A]
+    hardware_unit: A
+- class: pyaml.magnet.vcorrector.VCorrector
+  name: VS3M1T8R
+  lattice_names: S3M1T8R@0
+  model:
+    class: pyaml.magnet.linear_model.LinearMagnetModel
+    calibration_factor: 0.00297607
+    unit: 1/m
+    powerconverter: (VS3P1T8R:rdbk, VS3P1T8R:set)[A]
+    hardware_unit: A
+- class: pyaml.magnet.vcorrector.VCorrector
+  name: VS3M2T8R
+  lattice_names: S3M2T8R@0
+  model:
+    class: pyaml.magnet.linear_model.LinearMagnetModel
+    calibration_factor: 0.00297607
+    unit: 1/m
+    powerconverter: (VS3P2T8R:rdbk, VS3P2T8R:set)[A]
+    hardware_unit: A
+- class: pyaml.magnet.vcorrector.VCorrector
+  name: VS2M2T8R
+  lattice_names: S2M2T8R@0
+  model:
+    class: pyaml.magnet.linear_model.LinearMagnetModel
+    calibration_factor: 0.00297607
+    unit: 1/m
+    powerconverter: (VS2P2T8R:rdbk, VS2P2T8R:set)[A]
+    hardware_unit: A
+- class: pyaml.magnet.vcorrector.VCorrector
+  name: VS2M1D1R
+  lattice_names: S2M1D1R@0
+  model:
+    class: pyaml.magnet.linear_model.LinearMagnetModel
+    calibration_factor: 0.00297607
+    unit: 1/m
+    powerconverter: (VS2P1D1R:rdbk, VS2P1D1R:set)[A]
+    hardware_unit: A
+- class: pyaml.magnet.vcorrector.VCorrector
+  name: VS3M1D1R
+  lattice_names: S3M1D1R@0
+  model:
+    class: pyaml.magnet.linear_model.LinearMagnetModel
+    calibration_factor: 0.00297607
+    unit: 1/m
+    powerconverter: (VS3P1D1R:rdbk, VS3P1D1R:set)[A]
+    hardware_unit: A
+- class: pyaml.bpm.bpm.BPM
+  name: BPMZ5D1R
+  x_pos: ORBITCC:rdPos@0
+  y_pos: ORBITCC:rdPos@1
+- class: pyaml.bpm.bpm.BPM
+  name: BPMZ6D1R
+  x_pos: ORBITCC:rdPos@2
+  y_pos: ORBITCC:rdPos@3
+- class: pyaml.bpm.bpm.BPM
+  name: BPMZ7D1R
+  x_pos: ORBITCC:rdPos@4
+  y_pos: ORBITCC:rdPos@5
+- class: pyaml.bpm.bpm.BPM
+  name: BPMZ1T1R
+  x_pos: ORBITCC:rdPos@6
+  y_pos: ORBITCC:rdPos@7
+- class: pyaml.bpm.bpm.BPM
+  name: BPMZ2T1R
+  x_pos: ORBITCC:rdPos@8
+  y_pos: ORBITCC:rdPos@9
+- class: pyaml.bpm.bpm.BPM
+  name: BPMZ3T1R
+  x_pos: ORBITCC:rdPos@10
+  y_pos: ORBITCC:rdPos@11
+- class: pyaml.bpm.bpm.BPM
+  name: BPMZ4T1R
+  x_pos: ORBITCC:rdPos@12
+  y_pos: ORBITCC:rdPos@13
+- class: pyaml.bpm.bpm.BPM
+  name: BPMZ41T1R
+  x_pos: ORBITCC:rdPos@14
+  y_pos: ORBITCC:rdPos@15
+- class: pyaml.bpm.bpm.BPM
+  name: BPMZ5T1R
+  x_pos: ORBITCC:rdPos@16
+  y_pos: ORBITCC:rdPos@17
+- class: pyaml.bpm.bpm.BPM
+  name: BPMZ6T1R
+  x_pos: ORBITCC:rdPos@18
+  y_pos: ORBITCC:rdPos@19
+- class: pyaml.bpm.bpm.BPM
+  name: BPMZ7T1R
+  x_pos: ORBITCC:rdPos@20
+  y_pos: ORBITCC:rdPos@21
+- class: pyaml.bpm.bpm.BPM
+  name: BPMZ1D2R
+  x_pos: ORBITCC:rdPos@22
+  y_pos: ORBITCC:rdPos@23
+- class: pyaml.bpm.bpm.BPM
+  name: BPMZ2D2R
+  x_pos: ORBITCC:rdPos@24
+  y_pos: ORBITCC:rdPos@25
+- class: pyaml.bpm.bpm.BPM
+  name: BPMZ3D2R
+  x_pos: ORBITCC:rdPos@26
+  y_pos: ORBITCC:rdPos@27
+- class: pyaml.bpm.bpm.BPM
+  name: BPMZ4D2R
+  x_pos: ORBITCC:rdPos@28
+  y_pos: ORBITCC:rdPos@29
+- class: pyaml.bpm.bpm.BPM
+  name: BPMZ5D2R
+  x_pos: ORBITCC:rdPos@30
+  y_pos: ORBITCC:rdPos@31
+- class: pyaml.bpm.bpm.BPM
+  name: BPMZ6D2R
+  x_pos: ORBITCC:rdPos@32
+  y_pos: ORBITCC:rdPos@33
+- class: pyaml.bpm.bpm.BPM
+  name: BPMZ7D2R
+  x_pos: ORBITCC:rdPos@34
+  y_pos: ORBITCC:rdPos@35
+- class: pyaml.bpm.bpm.BPM
+  name: BPMZ1T2R
+  x_pos: ORBITCC:rdPos@36
+  y_pos: ORBITCC:rdPos@37
+- class: pyaml.bpm.bpm.BPM
+  name: BPMZ2T2R
+  x_pos: ORBITCC:rdPos@38
+  y_pos: ORBITCC:rdPos@39
+- class: pyaml.bpm.bpm.BPM
+  name: BPMZ3T2R
+  x_pos: ORBITCC:rdPos@40
+  y_pos: ORBITCC:rdPos@41
+- class: pyaml.bpm.bpm.BPM
+  name: BPMZ4T2R
+  x_pos: ORBITCC:rdPos@42
+  y_pos: ORBITCC:rdPos@43
+- class: pyaml.bpm.bpm.BPM
+  name: BPMZ41T2R
+  x_pos: ORBITCC:rdPos@44
+  y_pos: ORBITCC:rdPos@45
+- class: pyaml.bpm.bpm.BPM
+  name: BPMZ42T2R
+  x_pos: ORBITCC:rdPos@46
+  y_pos: ORBITCC:rdPos@47
+- class: pyaml.bpm.bpm.BPM
+  name: BPMZ43T2R
+  x_pos: ORBITCC:rdPos@48
+  y_pos: ORBITCC:rdPos@49
+- class: pyaml.bpm.bpm.BPM
+  name: BPMZ5T2R
+  x_pos: ORBITCC:rdPos@50
+  y_pos: ORBITCC:rdPos@51
+- class: pyaml.bpm.bpm.BPM
+  name: BPMZ6T2R
+  x_pos: ORBITCC:rdPos@52
+  y_pos: ORBITCC:rdPos@53
+- class: pyaml.bpm.bpm.BPM
+  name: BPMZ7T2R
+  x_pos: ORBITCC:rdPos@54
+  y_pos: ORBITCC:rdPos@55
+- class: pyaml.bpm.bpm.BPM
+  name: BPMZ1D3R
+  x_pos: ORBITCC:rdPos@56
+  y_pos: ORBITCC:rdPos@57
+- class: pyaml.bpm.bpm.BPM
+  name: BPMZ2D3R
+  x_pos: ORBITCC:rdPos@58
+  y_pos: ORBITCC:rdPos@59
+- class: pyaml.bpm.bpm.BPM
+  name: BPMZ3D3R
+  x_pos: ORBITCC:rdPos@60
+  y_pos: ORBITCC:rdPos@61
+- class: pyaml.bpm.bpm.BPM
+  name: BPMZ4D3R
+  x_pos: ORBITCC:rdPos@62
+  y_pos: ORBITCC:rdPos@63
+- class: pyaml.bpm.bpm.BPM
+  name: BPMZ5D3R
+  x_pos: ORBITCC:rdPos@64
+  y_pos: ORBITCC:rdPos@65
+- class: pyaml.bpm.bpm.BPM
+  name: BPMZ6D3R
+  x_pos: ORBITCC:rdPos@66
+  y_pos: ORBITCC:rdPos@67
+- class: pyaml.bpm.bpm.BPM
+  name: BPMZ7D3R
+  x_pos: ORBITCC:rdPos@68
+  y_pos: ORBITCC:rdPos@69
+- class: pyaml.bpm.bpm.BPM
+  name: BPMZ1T3R
+  x_pos: ORBITCC:rdPos@70
+  y_pos: ORBITCC:rdPos@71
+- class: pyaml.bpm.bpm.BPM
+  name: BPMZ2T3R
+  x_pos: ORBITCC:rdPos@72
+  y_pos: ORBITCC:rdPos@73
+- class: pyaml.bpm.bpm.BPM
+  name: BPMZ3T3R
+  x_pos: ORBITCC:rdPos@74
+  y_pos: ORBITCC:rdPos@75
+- class: pyaml.bpm.bpm.BPM
+  name: BPMZ4T3R
+  x_pos: ORBITCC:rdPos@76
+  y_pos: ORBITCC:rdPos@77
+- class: pyaml.bpm.bpm.BPM
+  name: BPMZ5T3R
+  x_pos: ORBITCC:rdPos@78
+  y_pos: ORBITCC:rdPos@79
+- class: pyaml.bpm.bpm.BPM
+  name: BPMZ6T3R
+  x_pos: ORBITCC:rdPos@80
+  y_pos: ORBITCC:rdPos@81
+- class: pyaml.bpm.bpm.BPM
+  name: BPMZ7T3R
+  x_pos: ORBITCC:rdPos@82
+  y_pos: ORBITCC:rdPos@83
+- class: pyaml.bpm.bpm.BPM
+  name: BPMZ1D4R
+  x_pos: ORBITCC:rdPos@84
+  y_pos: ORBITCC:rdPos@85
+- class: pyaml.bpm.bpm.BPM
+  name: BPMZ2D4R
+  x_pos: ORBITCC:rdPos@86
+  y_pos: ORBITCC:rdPos@87
+- class: pyaml.bpm.bpm.BPM
+  name: BPMZ3D4R
+  x_pos: ORBITCC:rdPos@88
+  y_pos: ORBITCC:rdPos@89
+- class: pyaml.bpm.bpm.BPM
+  name: BPMZ4D4R
+  x_pos: ORBITCC:rdPos@90
+  y_pos: ORBITCC:rdPos@91
+- class: pyaml.bpm.bpm.BPM
+  name: BPMZ5D4R
+  x_pos: ORBITCC:rdPos@92
+  y_pos: ORBITCC:rdPos@93
+- class: pyaml.bpm.bpm.BPM
+  name: BPMZ6D4R
+  x_pos: ORBITCC:rdPos@94
+  y_pos: ORBITCC:rdPos@95
+- class: pyaml.bpm.bpm.BPM
+  name: BPMZ7D4R
+  x_pos: ORBITCC:rdPos@96
+  y_pos: ORBITCC:rdPos@97
+- class: pyaml.bpm.bpm.BPM
+  name: BPMZ1T4R
+  x_pos: ORBITCC:rdPos@98
+  y_pos: ORBITCC:rdPos@99
+- class: pyaml.bpm.bpm.BPM
+  name: BPMZ2T4R
+  x_pos: ORBITCC:rdPos@100
+  y_pos: ORBITCC:rdPos@101
+- class: pyaml.bpm.bpm.BPM
+  name: BPMZ3T4R
+  x_pos: ORBITCC:rdPos@102
+  y_pos: ORBITCC:rdPos@103
+- class: pyaml.bpm.bpm.BPM
+  name: BPMZ4T4R
+  x_pos: ORBITCC:rdPos@104
+  y_pos: ORBITCC:rdPos@105
+- class: pyaml.bpm.bpm.BPM
+  name: BPMZ5T4R
+  x_pos: ORBITCC:rdPos@106
+  y_pos: ORBITCC:rdPos@107
+- class: pyaml.bpm.bpm.BPM
+  name: BPMZ6T4R
+  x_pos: ORBITCC:rdPos@108
+  y_pos: ORBITCC:rdPos@109
+- class: pyaml.bpm.bpm.BPM
+  name: BPMZ7T4R
+  x_pos: ORBITCC:rdPos@110
+  y_pos: ORBITCC:rdPos@111
+- class: pyaml.bpm.bpm.BPM
+  name: BPMZ1D5R
+  x_pos: ORBITCC:rdPos@112
+  y_pos: ORBITCC:rdPos@113
+- class: pyaml.bpm.bpm.BPM
+  name: BPMZ2D5R
+  x_pos: ORBITCC:rdPos@114
+  y_pos: ORBITCC:rdPos@115
+- class: pyaml.bpm.bpm.BPM
+  name: BPMZ3D5R
+  x_pos: ORBITCC:rdPos@116
+  y_pos: ORBITCC:rdPos@117
+- class: pyaml.bpm.bpm.BPM
+  name: BPMZ4D5R
+  x_pos: ORBITCC:rdPos@118
+  y_pos: ORBITCC:rdPos@119
+- class: pyaml.bpm.bpm.BPM
+  name: BPMZ5D5R
+  x_pos: ORBITCC:rdPos@120
+  y_pos: ORBITCC:rdPos@121
+- class: pyaml.bpm.bpm.BPM
+  name: BPMZ6D5R
+  x_pos: ORBITCC:rdPos@122
+  y_pos: ORBITCC:rdPos@123
+- class: pyaml.bpm.bpm.BPM
+  name: BPMZ7D5R
+  x_pos: ORBITCC:rdPos@124
+  y_pos: ORBITCC:rdPos@125
+- class: pyaml.bpm.bpm.BPM
+  name: BPMZ1T5R
+  x_pos: ORBITCC:rdPos@126
+  y_pos: ORBITCC:rdPos@127
+- class: pyaml.bpm.bpm.BPM
+  name: BPMZ2T5R
+  x_pos: ORBITCC:rdPos@128
+  y_pos: ORBITCC:rdPos@129
+- class: pyaml.bpm.bpm.BPM
+  name: BPMZ3T5R
+  x_pos: ORBITCC:rdPos@130
+  y_pos: ORBITCC:rdPos@131
+- class: pyaml.bpm.bpm.BPM
+  name: BPMZ4T5R
+  x_pos: ORBITCC:rdPos@132
+  y_pos: ORBITCC:rdPos@133
+- class: pyaml.bpm.bpm.BPM
+  name: BPMZ5T5R
+  x_pos: ORBITCC:rdPos@134
+  y_pos: ORBITCC:rdPos@135
+- class: pyaml.bpm.bpm.BPM
+  name: BPMZ6T5R
+  x_pos: ORBITCC:rdPos@136
+  y_pos: ORBITCC:rdPos@137
+- class: pyaml.bpm.bpm.BPM
+  name: BPMZ7T5R
+  x_pos: ORBITCC:rdPos@138
+  y_pos: ORBITCC:rdPos@139
+- class: pyaml.bpm.bpm.BPM
+  name: BPMZ1D6R
+  x_pos: ORBITCC:rdPos@140
+  y_pos: ORBITCC:rdPos@141
+- class: pyaml.bpm.bpm.BPM
+  name: BPMZ2D6R
+  x_pos: ORBITCC:rdPos@142
+  y_pos: ORBITCC:rdPos@143
+- class: pyaml.bpm.bpm.BPM
+  name: BPMZ3D6R
+  x_pos: ORBITCC:rdPos@144
+  y_pos: ORBITCC:rdPos@145
+- class: pyaml.bpm.bpm.BPM
+  name: BPMZ4D6R
+  x_pos: ORBITCC:rdPos@146
+  y_pos: ORBITCC:rdPos@147
+- class: pyaml.bpm.bpm.BPM
+  name: BPMZ41D6R
+  x_pos: ORBITCC:rdPos@148
+  y_pos: ORBITCC:rdPos@149
+- class: pyaml.bpm.bpm.BPM
+  name: BPMZ42D6R
+  x_pos: ORBITCC:rdPos@150
+  y_pos: ORBITCC:rdPos@151
+- class: pyaml.bpm.bpm.BPM
+  name: BPMZ43D6R
+  x_pos: ORBITCC:rdPos@152
+  y_pos: ORBITCC:rdPos@153
+- class: pyaml.bpm.bpm.BPM
+  name: BPMZ44D6R
+  x_pos: ORBITCC:rdPos@154
+  y_pos: ORBITCC:rdPos@155
+- class: pyaml.bpm.bpm.BPM
+  name: BPMZ6D6R
+  x_pos: ORBITCC:rdPos@156
+  y_pos: ORBITCC:rdPos@157
+- class: pyaml.bpm.bpm.BPM
+  name: BPMZ7D6R
+  x_pos: ORBITCC:rdPos@158
+  y_pos: ORBITCC:rdPos@159
+- class: pyaml.bpm.bpm.BPM
+  name: BPMZ1T6R
+  x_pos: ORBITCC:rdPos@160
+  y_pos: ORBITCC:rdPos@161
+- class: pyaml.bpm.bpm.BPM
+  name: BPMZ2T6R
+  x_pos: ORBITCC:rdPos@162
+  y_pos: ORBITCC:rdPos@163
+- class: pyaml.bpm.bpm.BPM
+  name: BPMZ3T6R
+  x_pos: ORBITCC:rdPos@164
+  y_pos: ORBITCC:rdPos@165
+- class: pyaml.bpm.bpm.BPM
+  name: BPMZ4T6R
+  x_pos: ORBITCC:rdPos@166
+  y_pos: ORBITCC:rdPos@167
+- class: pyaml.bpm.bpm.BPM
+  name: BPMZ41T6R
+  x_pos: ORBITCC:rdPos@168
+  y_pos: ORBITCC:rdPos@169
+- class: pyaml.bpm.bpm.BPM
+  name: BPMZ5T6R
+  x_pos: ORBITCC:rdPos@170
+  y_pos: ORBITCC:rdPos@171
+- class: pyaml.bpm.bpm.BPM
+  name: BPMZ6T6R
+  x_pos: ORBITCC:rdPos@172
+  y_pos: ORBITCC:rdPos@173
+- class: pyaml.bpm.bpm.BPM
+  name: BPMZ7T6R
+  x_pos: ORBITCC:rdPos@174
+  y_pos: ORBITCC:rdPos@175
+- class: pyaml.bpm.bpm.BPM
+  name: BPMZ1D7R
+  x_pos: ORBITCC:rdPos@176
+  y_pos: ORBITCC:rdPos@177
+- class: pyaml.bpm.bpm.BPM
+  name: BPMZ2D7R
+  x_pos: ORBITCC:rdPos@178
+  y_pos: ORBITCC:rdPos@179
+- class: pyaml.bpm.bpm.BPM
+  name: BPMZ3D7R
+  x_pos: ORBITCC:rdPos@180
+  y_pos: ORBITCC:rdPos@181
+- class: pyaml.bpm.bpm.BPM
+  name: BPMZ4D7R
+  x_pos: ORBITCC:rdPos@182
+  y_pos: ORBITCC:rdPos@183
+- class: pyaml.bpm.bpm.BPM
+  name: BPMZ5D7R
+  x_pos: ORBITCC:rdPos@184
+  y_pos: ORBITCC:rdPos@185
+- class: pyaml.bpm.bpm.BPM
+  name: BPMZ6D7R
+  x_pos: ORBITCC:rdPos@186
+  y_pos: ORBITCC:rdPos@187
+- class: pyaml.bpm.bpm.BPM
+  name: BPMZ7D7R
+  x_pos: ORBITCC:rdPos@188
+  y_pos: ORBITCC:rdPos@189
+- class: pyaml.bpm.bpm.BPM
+  name: BPMZ1T7R
+  x_pos: ORBITCC:rdPos@190
+  y_pos: ORBITCC:rdPos@191
+- class: pyaml.bpm.bpm.BPM
+  name: BPMZ2T7R
+  x_pos: ORBITCC:rdPos@192
+  y_pos: ORBITCC:rdPos@193
+- class: pyaml.bpm.bpm.BPM
+  name: BPMZ3T7R
+  x_pos: ORBITCC:rdPos@194
+  y_pos: ORBITCC:rdPos@195
+- class: pyaml.bpm.bpm.BPM
+  name: BPMZ4T7R
+  x_pos: ORBITCC:rdPos@196
+  y_pos: ORBITCC:rdPos@197
+- class: pyaml.bpm.bpm.BPM
+  name: BPMZ41T7R
+  x_pos: ORBITCC:rdPos@198
+  y_pos: ORBITCC:rdPos@199
+- class: pyaml.bpm.bpm.BPM
+  name: BPMZ5T7R
+  x_pos: ORBITCC:rdPos@200
+  y_pos: ORBITCC:rdPos@201
+- class: pyaml.bpm.bpm.BPM
+  name: BPMZ6T7R
+  x_pos: ORBITCC:rdPos@202
+  y_pos: ORBITCC:rdPos@203
+- class: pyaml.bpm.bpm.BPM
+  name: BPMZ7T7R
+  x_pos: ORBITCC:rdPos@204
+  y_pos: ORBITCC:rdPos@205
+- class: pyaml.bpm.bpm.BPM
+  name: BPMZ1D8R
+  x_pos: ORBITCC:rdPos@206
+  y_pos: ORBITCC:rdPos@207
+- class: pyaml.bpm.bpm.BPM
+  name: BPMZ2D8R
+  x_pos: ORBITCC:rdPos@208
+  y_pos: ORBITCC:rdPos@209
+- class: pyaml.bpm.bpm.BPM
+  name: BPMZ3D8R
+  x_pos: ORBITCC:rdPos@210
+  y_pos: ORBITCC:rdPos@211
+- class: pyaml.bpm.bpm.BPM
+  name: BPMZ4D8R
+  x_pos: ORBITCC:rdPos@212
+  y_pos: ORBITCC:rdPos@213
+- class: pyaml.bpm.bpm.BPM
+  name: BPMZ5D8R
+  x_pos: ORBITCC:rdPos@214
+  y_pos: ORBITCC:rdPos@215
+- class: pyaml.bpm.bpm.BPM
+  name: BPMZ6D8R
+  x_pos: ORBITCC:rdPos@216
+  y_pos: ORBITCC:rdPos@217
+- class: pyaml.bpm.bpm.BPM
+  name: BPMZ7D8R
+  x_pos: ORBITCC:rdPos@218
+  y_pos: ORBITCC:rdPos@219
+- class: pyaml.bpm.bpm.BPM
+  name: BPMZ1T8R
+  x_pos: ORBITCC:rdPos@220
+  y_pos: ORBITCC:rdPos@221
+- class: pyaml.bpm.bpm.BPM
+  name: BPMZ2T8R
+  x_pos: ORBITCC:rdPos@222
+  y_pos: ORBITCC:rdPos@223
+- class: pyaml.bpm.bpm.BPM
+  name: BPMZ3T8R
+  x_pos: ORBITCC:rdPos@224
+  y_pos: ORBITCC:rdPos@225
+- class: pyaml.bpm.bpm.BPM
+  name: BPMZ4T8R
+  x_pos: ORBITCC:rdPos@226
+  y_pos: ORBITCC:rdPos@227
+- class: pyaml.bpm.bpm.BPM
+  name: BPMZ5T8R
+  x_pos: ORBITCC:rdPos@228
+  y_pos: ORBITCC:rdPos@229
+- class: pyaml.bpm.bpm.BPM
+  name: BPMZ6T8R
+  x_pos: ORBITCC:rdPos@230
+  y_pos: ORBITCC:rdPos@231
+- class: pyaml.bpm.bpm.BPM
+  name: BPMZ7T8R
+  x_pos: ORBITCC:rdPos@232
+  y_pos: ORBITCC:rdPos@233
+- class: pyaml.bpm.bpm.BPM
+  name: BPMZ1D1R
+  x_pos: ORBITCC:rdPos@234
+  y_pos: ORBITCC:rdPos@235
+- class: pyaml.bpm.bpm.BPM
+  name: BPMZ2D1R
+  x_pos: ORBITCC:rdPos@236
+  y_pos: ORBITCC:rdPos@237
+- class: pyaml.bpm.bpm.BPM
+  name: BPMZ3D1R
+  x_pos: ORBITCC:rdPos@238
+  y_pos: ORBITCC:rdPos@239
+- class: pyaml.bpm.bpm.BPM
+  name: BPMZ4D1R
+  x_pos: ORBITCC:rdPos@240
+  y_pos: ORBITCC:rdPos@241
+- class: pyaml.bpm.bpm.BPM
+  name: BPMZ41D1R
+  x_pos: ORBITCC:rdPos@242
+  y_pos: ORBITCC:rdPos@243
+- class: pyaml.bpm.bpm.BPM
+  name: BPMZ42D1R
+  x_pos: ORBITCC:rdPos@244
+  y_pos: ORBITCC:rdPos@245
+- class: pyaml.magnet.quadrupole.Quadrupole
+  name: Q3M1D1R
+  lattice_names: Q3M1D1R
+  model:
+    class: pyaml.magnet.linear_model.LinearMagnetModel
+    calibration_factor: -0.0158575
+    unit: 1/m
+    powerconverter: (Q3PD1R:rdbk, Q3PD1R:set)[A]
+    hardware_unit: A
+- class: pyaml.magnet.quadrupole.Quadrupole
+  name: Q3M2D1R
+  lattice_names: Q3M2D1R
+  model:
+    class: pyaml.magnet.linear_model.LinearMagnetModel
+    calibration_factor: -0.0158575
+    unit: 1/m
+    powerconverter: (Q3PD1R:rdbk, Q3PD1R:set)[A]
+    hardware_unit: A
+- class: pyaml.magnet.quadrupole.Quadrupole
+  name: Q3M1T1R
+  lattice_names: Q3M1T1R
+  model:
+    class: pyaml.magnet.linear_model.LinearMagnetModel
+    calibration_factor: -0.015735
+    unit: 1/m
+    powerconverter: (Q3P1T1R:rdbk, Q3P1T1R:set)[A]
+    hardware_unit: A
+- class: pyaml.magnet.quadrupole.Quadrupole
+  name: Q3M2T1R
+  lattice_names: Q3M2T1R
+  model:
+    class: pyaml.magnet.linear_model.LinearMagnetModel
+    calibration_factor: -0.015735
+    unit: 1/m
+    powerconverter: (Q3P2T1R:rdbk, Q3P2T1R:set)[A]
+    hardware_unit: A
+- class: pyaml.magnet.quadrupole.Quadrupole
+  name: Q3M1D2R
+  lattice_names: Q3M1D2R
+  model:
+    class: pyaml.magnet.linear_model.LinearMagnetModel
+    calibration_factor: -0.0158575
+    unit: 1/m
+    powerconverter: (Q3PD2R:rdbk, Q3PD2R:set)[A]
+    hardware_unit: A
+- class: pyaml.magnet.quadrupole.Quadrupole
+  name: Q3M2D2R
+  lattice_names: Q3M2D2R
+  model:
+    class: pyaml.magnet.linear_model.LinearMagnetModel
+    calibration_factor: -0.0158575
+    unit: 1/m
+    powerconverter: (Q3PD2R:rdbk, Q3PD2R:set)[A]
+    hardware_unit: A
+- class: pyaml.magnet.quadrupole.Quadrupole
+  name: Q3M1T2R
+  lattice_names: Q3M1T2R
+  model:
+    class: pyaml.magnet.linear_model.LinearMagnetModel
+    calibration_factor: -0.015735
+    unit: 1/m
+    powerconverter: (Q3PT2R:rdbk, Q3PT2R:set)[A]
+    hardware_unit: A
+- class: pyaml.magnet.quadrupole.Quadrupole
+  name: Q3M2T2R
+  lattice_names: Q3M2T2R
+  model:
+    class: pyaml.magnet.linear_model.LinearMagnetModel
+    calibration_factor: -0.015735
+    unit: 1/m
+    powerconverter: (Q3PT2R:rdbk, Q3PT2R:set)[A]
+    hardware_unit: A
+- class: pyaml.magnet.quadrupole.Quadrupole
+  name: Q3M1D3R
+  lattice_names: Q3M1D3R
+  model:
+    class: pyaml.magnet.linear_model.LinearMagnetModel
+    calibration_factor: -0.0158575
+    unit: 1/m
+    powerconverter: (Q3PD3R:rdbk, Q3PD3R:set)[A]
+    hardware_unit: A
+- class: pyaml.magnet.quadrupole.Quadrupole
+  name: Q3M2D3R
+  lattice_names: Q3M2D3R
+  model:
+    class: pyaml.magnet.linear_model.LinearMagnetModel
+    calibration_factor: -0.0158575
+    unit: 1/m
+    powerconverter: (Q3PD3R:rdbk, Q3PD3R:set)[A]
+    hardware_unit: A
+- class: pyaml.magnet.quadrupole.Quadrupole
+  name: Q3M1T3R
+  lattice_names: Q3M1T3R
+  model:
+    class: pyaml.magnet.linear_model.LinearMagnetModel
+    calibration_factor: -0.015735
+    unit: 1/m
+    powerconverter: (Q3PT3R:rdbk, Q3PT3R:set)[A]
+    hardware_unit: A
+- class: pyaml.magnet.quadrupole.Quadrupole
+  name: Q3M2T3R
+  lattice_names: Q3M2T3R
+  model:
+    class: pyaml.magnet.linear_model.LinearMagnetModel
+    calibration_factor: -0.015735
+    unit: 1/m
+    powerconverter: (Q3PT3R:rdbk, Q3PT3R:set)[A]
+    hardware_unit: A
+- class: pyaml.magnet.quadrupole.Quadrupole
+  name: Q3M1D4R
+  lattice_names: Q3M1D4R
+  model:
+    class: pyaml.magnet.linear_model.LinearMagnetModel
+    calibration_factor: -0.0158575
+    unit: 1/m
+    powerconverter: (Q3PD4R:rdbk, Q3PD4R:set)[A]
+    hardware_unit: A
+- class: pyaml.magnet.quadrupole.Quadrupole
+  name: Q3M2D4R
+  lattice_names: Q3M2D4R
+  model:
+    class: pyaml.magnet.linear_model.LinearMagnetModel
+    calibration_factor: -0.0158575
+    unit: 1/m
+    powerconverter: (Q3PD4R:rdbk, Q3PD4R:set)[A]
+    hardware_unit: A
+- class: pyaml.magnet.quadrupole.Quadrupole
+  name: Q3M1T4R
+  lattice_names: Q3M1T4R
+  model:
+    class: pyaml.magnet.linear_model.LinearMagnetModel
+    calibration_factor: -0.015735
+    unit: 1/m
+    powerconverter: (Q3PT4R:rdbk, Q3PT4R:set)[A]
+    hardware_unit: A
+- class: pyaml.magnet.quadrupole.Quadrupole
+  name: Q3M2T4R
+  lattice_names: Q3M2T4R
+  model:
+    class: pyaml.magnet.linear_model.LinearMagnetModel
+    calibration_factor: -0.015735
+    unit: 1/m
+    powerconverter: (Q3PT4R:rdbk, Q3PT4R:set)[A]
+    hardware_unit: A
+- class: pyaml.magnet.quadrupole.Quadrupole
+  name: Q3M1D5R
+  lattice_names: Q3M1D5R
+  model:
+    class: pyaml.magnet.linear_model.LinearMagnetModel
+    calibration_factor: -0.0158575
+    unit: 1/m
+    powerconverter: (Q3PD5R:rdbk, Q3PD5R:set)[A]
+    hardware_unit: A
+- class: pyaml.magnet.quadrupole.Quadrupole
+  name: Q3M2D5R
+  lattice_names: Q3M2D5R
+  model:
+    class: pyaml.magnet.linear_model.LinearMagnetModel
+    calibration_factor: -0.0158575
+    unit: 1/m
+    powerconverter: (Q3PD5R:rdbk, Q3PD5R:set)[A]
+    hardware_unit: A
+- class: pyaml.magnet.quadrupole.Quadrupole
+  name: Q3M1T5R
+  lattice_names: Q3M1T5R
+  model:
+    class: pyaml.magnet.linear_model.LinearMagnetModel
+    calibration_factor: -0.015735
+    unit: 1/m
+    powerconverter: (Q3PT5R:rdbk, Q3PT5R:set)[A]
+    hardware_unit: A
+- class: pyaml.magnet.quadrupole.Quadrupole
+  name: Q3M2T5R
+  lattice_names: Q3M2T5R
+  model:
+    class: pyaml.magnet.linear_model.LinearMagnetModel
+    calibration_factor: -0.015735
+    unit: 1/m
+    powerconverter: (Q3PT5R:rdbk, Q3PT5R:set)[A]
+    hardware_unit: A
+- class: pyaml.magnet.quadrupole.Quadrupole
+  name: Q3M1D6R
+  lattice_names: Q3M1D6R
+  model:
+    class: pyaml.magnet.linear_model.LinearMagnetModel
+    calibration_factor: -0.0158575
+    unit: 1/m
+    powerconverter: (Q3PD6R:rdbk, Q3PD6R:set)[A]
+    hardware_unit: A
+- class: pyaml.magnet.quadrupole.Quadrupole
+  name: Q3M2D6R
+  lattice_names: Q3M2D6R
+  model:
+    class: pyaml.magnet.linear_model.LinearMagnetModel
+    calibration_factor: -0.0158575
+    unit: 1/m
+    powerconverter: (Q3PD6R:rdbk, Q3PD6R:set)[A]
+    hardware_unit: A
+- class: pyaml.magnet.quadrupole.Quadrupole
+  name: Q3M1T6R
+  lattice_names: Q3M1T6R
+  model:
+    class: pyaml.magnet.linear_model.LinearMagnetModel
+    calibration_factor: -0.015735
+    unit: 1/m
+    powerconverter: (Q3P1T6R:rdbk, Q3P1T6R:set)[A]
+    hardware_unit: A
+- class: pyaml.magnet.quadrupole.Quadrupole
+  name: Q3M2T6R
+  lattice_names: Q3M2T6R
+  model:
+    class: pyaml.magnet.linear_model.LinearMagnetModel
+    calibration_factor: -0.015735
+    unit: 1/m
+    powerconverter: (Q3P2T6R:rdbk, Q3P2T6R:set)[A]
+    hardware_unit: A
+- class: pyaml.magnet.quadrupole.Quadrupole
+  name: Q3M1D7R
+  lattice_names: Q3M1D7R
+  model:
+    class: pyaml.magnet.linear_model.LinearMagnetModel
+    calibration_factor: -0.0158575
+    unit: 1/m
+    powerconverter: (Q3PD7R:rdbk, Q3PD7R:set)[A]
+    hardware_unit: A
+- class: pyaml.magnet.quadrupole.Quadrupole
+  name: Q3M2D7R
+  lattice_names: Q3M2D7R
+  model:
+    class: pyaml.magnet.linear_model.LinearMagnetModel
+    calibration_factor: -0.0158575
+    unit: 1/m
+    powerconverter: (Q3PD7R:rdbk, Q3PD7R:set)[A]
+    hardware_unit: A
+- class: pyaml.magnet.quadrupole.Quadrupole
+  name: Q3M1T7R
+  lattice_names: Q3M1T7R
+  model:
+    class: pyaml.magnet.linear_model.LinearMagnetModel
+    calibration_factor: -0.015735
+    unit: 1/m
+    powerconverter: (Q3PT7R:rdbk, Q3PT7R:set)[A]
+    hardware_unit: A
+- class: pyaml.magnet.quadrupole.Quadrupole
+  name: Q3M2T7R
+  lattice_names: Q3M2T7R
+  model:
+    class: pyaml.magnet.linear_model.LinearMagnetModel
+    calibration_factor: -0.015735
+    unit: 1/m
+    powerconverter: (Q3PT7R:rdbk, Q3PT7R:set)[A]
+    hardware_unit: A
+- class: pyaml.magnet.quadrupole.Quadrupole
+  name: Q3M1D8R
+  lattice_names: Q3M1D8R
+  model:
+    class: pyaml.magnet.linear_model.LinearMagnetModel
+    calibration_factor: -0.0158575
+    unit: 1/m
+    powerconverter: (Q3PD8R:rdbk, Q3PD8R:set)[A]
+    hardware_unit: A
+- class: pyaml.magnet.quadrupole.Quadrupole
+  name: Q3M2D8R
+  lattice_names: Q3M2D8R
+  model:
+    class: pyaml.magnet.linear_model.LinearMagnetModel
+    calibration_factor: -0.0158575
+    unit: 1/m
+    powerconverter: (Q3PD8R:rdbk, Q3PD8R:set)[A]
+    hardware_unit: A
+- class: pyaml.magnet.quadrupole.Quadrupole
+  name: Q3M1T8R
+  lattice_names: Q3M1T8R
+  model:
+    class: pyaml.magnet.linear_model.LinearMagnetModel
+    calibration_factor: -0.015735
+    unit: 1/m
+    powerconverter: (Q3P1T8R:rdbk, Q3P1T8R:set)[A]
+    hardware_unit: A
+- class: pyaml.magnet.quadrupole.Quadrupole
+  name: Q3M2T8R
+  lattice_names: Q3M2T8R
+  model:
+    class: pyaml.magnet.linear_model.LinearMagnetModel
+    calibration_factor: -0.015735
+    unit: 1/m
+    powerconverter: (Q3P2T8R:rdbk, Q3P2T8R:set)[A]
+    hardware_unit: A
+- class: pyaml.magnet.quadrupole.Quadrupole
+  name: Q4M1D1R
+  lattice_names: Q4M1D1R
+  model:
+    class: pyaml.magnet.linear_model.LinearMagnetModel
+    calibration_factor: 0.0303165
+    unit: 1/m
+    powerconverter: (Q4PD1R:rdbk, Q4PD1R:set)[A]
+    hardware_unit: A
+- class: pyaml.magnet.quadrupole.Quadrupole
+  name: Q4M2D1R
+  lattice_names: Q4M2D1R
+  model:
+    class: pyaml.magnet.linear_model.LinearMagnetModel
+    calibration_factor: 0.0303165
+    unit: 1/m
+    powerconverter: (Q4PD1R:rdbk, Q4PD1R:set)[A]
+    hardware_unit: A
+- class: pyaml.magnet.quadrupole.Quadrupole
+  name: Q4M1T1R
+  lattice_names: Q4M1T1R
+  model:
+    class: pyaml.magnet.linear_model.LinearMagnetModel
+    calibration_factor: 0.0296695
+    unit: 1/m
+    powerconverter: (Q4P1T1R:rdbk, Q4P1T1R:set)[A]
+    hardware_unit: A
+- class: pyaml.magnet.quadrupole.Quadrupole
+  name: Q4M2T1R
+  lattice_names: Q4M2T1R
+  model:
+    class: pyaml.magnet.linear_model.LinearMagnetModel
+    calibration_factor: 0.0296695
+    unit: 1/m
+    powerconverter: (Q4P2T1R:rdbk, Q4P2T1R:set)[A]
+    hardware_unit: A
+- class: pyaml.magnet.quadrupole.Quadrupole
+  name: Q4M1D2R
+  lattice_names: Q4M1D2R
+  model:
+    class: pyaml.magnet.linear_model.LinearMagnetModel
+    calibration_factor: 0.0303165
+    unit: 1/m
+    powerconverter: (Q4PD2R:rdbk, Q4PD2R:set)[A]
+    hardware_unit: A
+- class: pyaml.magnet.quadrupole.Quadrupole
+  name: Q4M2D2R
+  lattice_names: Q4M2D2R
+  model:
+    class: pyaml.magnet.linear_model.LinearMagnetModel
+    calibration_factor: 0.0303165
+    unit: 1/m
+    powerconverter: (Q4PD2R:rdbk, Q4PD2R:set)[A]
+    hardware_unit: A
+- class: pyaml.magnet.quadrupole.Quadrupole
+  name: Q4M1T2R
+  lattice_names: Q4M1T2R
+  model:
+    class: pyaml.magnet.linear_model.LinearMagnetModel
+    calibration_factor: 0.0296695
+    unit: 1/m
+    powerconverter: (Q4PT2R:rdbk, Q4PT2R:set)[A]
+    hardware_unit: A
+- class: pyaml.magnet.quadrupole.Quadrupole
+  name: Q4M2T2R
+  lattice_names: Q4M2T2R
+  model:
+    class: pyaml.magnet.linear_model.LinearMagnetModel
+    calibration_factor: 0.0296695
+    unit: 1/m
+    powerconverter: (Q4PT2R:rdbk, Q4PT2R:set)[A]
+    hardware_unit: A
+- class: pyaml.magnet.quadrupole.Quadrupole
+  name: Q4M1D3R
+  lattice_names: Q4M1D3R
+  model:
+    class: pyaml.magnet.linear_model.LinearMagnetModel
+    calibration_factor: 0.0303165
+    unit: 1/m
+    powerconverter: (Q4PD3R:rdbk, Q4PD3R:set)[A]
+    hardware_unit: A
+- class: pyaml.magnet.quadrupole.Quadrupole
+  name: Q4M2D3R
+  lattice_names: Q4M2D3R
+  model:
+    class: pyaml.magnet.linear_model.LinearMagnetModel
+    calibration_factor: 0.0303165
+    unit: 1/m
+    powerconverter: (Q4PD3R:rdbk, Q4PD3R:set)[A]
+    hardware_unit: A
+- class: pyaml.magnet.quadrupole.Quadrupole
+  name: Q4M1T3R
+  lattice_names: Q4M1T3R
+  model:
+    class: pyaml.magnet.linear_model.LinearMagnetModel
+    calibration_factor: 0.0296695
+    unit: 1/m
+    powerconverter: (Q4PT3R:rdbk, Q4PT3R:set)[A]
+    hardware_unit: A
+- class: pyaml.magnet.quadrupole.Quadrupole
+  name: Q4M2T3R
+  lattice_names: Q4M2T3R
+  model:
+    class: pyaml.magnet.linear_model.LinearMagnetModel
+    calibration_factor: 0.0296695
+    unit: 1/m
+    powerconverter: (Q4PT3R:rdbk, Q4PT3R:set)[A]
+    hardware_unit: A
+- class: pyaml.magnet.quadrupole.Quadrupole
+  name: Q4M1D4R
+  lattice_names: Q4M1D4R
+  model:
+    class: pyaml.magnet.linear_model.LinearMagnetModel
+    calibration_factor: 0.0303165
+    unit: 1/m
+    powerconverter: (Q4PD4R:rdbk, Q4PD4R:set)[A]
+    hardware_unit: A
+- class: pyaml.magnet.quadrupole.Quadrupole
+  name: Q4M2D4R
+  lattice_names: Q4M2D4R
+  model:
+    class: pyaml.magnet.linear_model.LinearMagnetModel
+    calibration_factor: 0.0303165
+    unit: 1/m
+    powerconverter: (Q4PD4R:rdbk, Q4PD4R:set)[A]
+    hardware_unit: A
+- class: pyaml.magnet.quadrupole.Quadrupole
+  name: Q4M1T4R
+  lattice_names: Q4M1T4R
+  model:
+    class: pyaml.magnet.linear_model.LinearMagnetModel
+    calibration_factor: 0.0296695
+    unit: 1/m
+    powerconverter: (Q4PT4R:rdbk, Q4PT4R:set)[A]
+    hardware_unit: A
+- class: pyaml.magnet.quadrupole.Quadrupole
+  name: Q4M2T4R
+  lattice_names: Q4M2T4R
+  model:
+    class: pyaml.magnet.linear_model.LinearMagnetModel
+    calibration_factor: 0.0296695
+    unit: 1/m
+    powerconverter: (Q4PT4R:rdbk, Q4PT4R:set)[A]
+    hardware_unit: A
+- class: pyaml.magnet.quadrupole.Quadrupole
+  name: Q4M1D5R
+  lattice_names: Q4M1D5R
+  model:
+    class: pyaml.magnet.linear_model.LinearMagnetModel
+    calibration_factor: 0.0303165
+    unit: 1/m
+    powerconverter: (Q4PD5R:rdbk, Q4PD5R:set)[A]
+    hardware_unit: A
+- class: pyaml.magnet.quadrupole.Quadrupole
+  name: Q4M2D5R
+  lattice_names: Q4M2D5R
+  model:
+    class: pyaml.magnet.linear_model.LinearMagnetModel
+    calibration_factor: 0.0303165
+    unit: 1/m
+    powerconverter: (Q4PD5R:rdbk, Q4PD5R:set)[A]
+    hardware_unit: A
+- class: pyaml.magnet.quadrupole.Quadrupole
+  name: Q4M1T5R
+  lattice_names: Q4M1T5R
+  model:
+    class: pyaml.magnet.linear_model.LinearMagnetModel
+    calibration_factor: 0.0296695
+    unit: 1/m
+    powerconverter: (Q4PT5R:rdbk, Q4PT5R:set)[A]
+    hardware_unit: A
+- class: pyaml.magnet.quadrupole.Quadrupole
+  name: Q4M2T5R
+  lattice_names: Q4M2T5R
+  model:
+    class: pyaml.magnet.linear_model.LinearMagnetModel
+    calibration_factor: 0.0296695
+    unit: 1/m
+    powerconverter: (Q4PT5R:rdbk, Q4PT5R:set)[A]
+    hardware_unit: A
+- class: pyaml.magnet.quadrupole.Quadrupole
+  name: Q4M1D6R
+  lattice_names: Q4M1D6R
+  model:
+    class: pyaml.magnet.linear_model.LinearMagnetModel
+    calibration_factor: 0.0303165
+    unit: 1/m
+    powerconverter: (Q4PD6R:rdbk, Q4PD6R:set)[A]
+    hardware_unit: A
+- class: pyaml.magnet.quadrupole.Quadrupole
+  name: Q4M2D6R
+  lattice_names: Q4M2D6R
+  model:
+    class: pyaml.magnet.linear_model.LinearMagnetModel
+    calibration_factor: 0.0303165
+    unit: 1/m
+    powerconverter: (Q4PD6R:rdbk, Q4PD6R:set)[A]
+    hardware_unit: A
+- class: pyaml.magnet.quadrupole.Quadrupole
+  name: Q4M1T6R
+  lattice_names: Q4M1T6R
+  model:
+    class: pyaml.magnet.linear_model.LinearMagnetModel
+    calibration_factor: 0.0296695
+    unit: 1/m
+    powerconverter: (Q4P1T6R:rdbk, Q4P1T6R:set)[A]
+    hardware_unit: A
+- class: pyaml.magnet.quadrupole.Quadrupole
+  name: Q4M2T6R
+  lattice_names: Q4M2T6R
+  model:
+    class: pyaml.magnet.linear_model.LinearMagnetModel
+    calibration_factor: 0.0296695
+    unit: 1/m
+    powerconverter: (Q4P2T6R:rdbk, Q4P2T6R:set)[A]
+    hardware_unit: A
+- class: pyaml.magnet.quadrupole.Quadrupole
+  name: Q4M1D7R
+  lattice_names: Q4M1D7R
+  model:
+    class: pyaml.magnet.linear_model.LinearMagnetModel
+    calibration_factor: 0.0303165
+    unit: 1/m
+    powerconverter: (Q4PD7R:rdbk, Q4PD7R:set)[A]
+    hardware_unit: A
+- class: pyaml.magnet.quadrupole.Quadrupole
+  name: Q4M2D7R
+  lattice_names: Q4M2D7R
+  model:
+    class: pyaml.magnet.linear_model.LinearMagnetModel
+    calibration_factor: 0.0303165
+    unit: 1/m
+    powerconverter: (Q4PD7R:rdbk, Q4PD7R:set)[A]
+    hardware_unit: A
+- class: pyaml.magnet.quadrupole.Quadrupole
+  name: Q4M1T7R
+  lattice_names: Q4M1T7R
+  model:
+    class: pyaml.magnet.linear_model.LinearMagnetModel
+    calibration_factor: 0.0296695
+    unit: 1/m
+    powerconverter: (Q4PT7R:rdbk, Q4PT7R:set)[A]
+    hardware_unit: A
+- class: pyaml.magnet.quadrupole.Quadrupole
+  name: Q4M2T7R
+  lattice_names: Q4M2T7R
+  model:
+    class: pyaml.magnet.linear_model.LinearMagnetModel
+    calibration_factor: 0.0296695
+    unit: 1/m
+    powerconverter: (Q4PT7R:rdbk, Q4PT7R:set)[A]
+    hardware_unit: A
+- class: pyaml.magnet.quadrupole.Quadrupole
+  name: Q4M1D8R
+  lattice_names: Q4M1D8R
+  model:
+    class: pyaml.magnet.linear_model.LinearMagnetModel
+    calibration_factor: 0.0303165
+    unit: 1/m
+    powerconverter: (Q4PD8R:rdbk, Q4PD8R:set)[A]
+    hardware_unit: A
+- class: pyaml.magnet.quadrupole.Quadrupole
+  name: Q4M2D8R
+  lattice_names: Q4M2D8R
+  model:
+    class: pyaml.magnet.linear_model.LinearMagnetModel
+    calibration_factor: 0.0303165
+    unit: 1/m
+    powerconverter: (Q4PD8R:rdbk, Q4PD8R:set)[A]
+    hardware_unit: A
+- class: pyaml.magnet.quadrupole.Quadrupole
+  name: Q4M1T8R
+  lattice_names: Q4M1T8R
+  model:
+    class: pyaml.magnet.linear_model.LinearMagnetModel
+    calibration_factor: 0.0296695
+    unit: 1/m
+    powerconverter: (Q4P1T8R:rdbk, Q4P1T8R:set)[A]
+    hardware_unit: A
+- class: pyaml.magnet.quadrupole.Quadrupole
+  name: Q4M2T8R
+  lattice_names: Q4M2T8R
+  model:
+    class: pyaml.magnet.linear_model.LinearMagnetModel
+    calibration_factor: 0.0296695
+    unit: 1/m
+    powerconverter: (Q4P2T8R:rdbk, Q4P2T8R:set)[A]
+    hardware_unit: A
+- class: pyaml.diagnostics.tune_monitor.BetatronTuneMonitor
+  name: BETATRON_TUNE
+  tune_h: beam:twiss:x:tune
+  tune_v: beam:twiss:y:tune
+- class: pyaml.tuning_tools.tune.Tune
+  name: DEFAULT_TUNE_CORRECTION
+  quad_array_name: QForTune
+  betatron_tune_name: BETATRON_TUNE
+  response_matrix: ${path:trm.json}
+- class: pyaml.tuning_tools.tune_response_matrix.TuneResponseMatrix
+  name: DEFAULT_TUNE_RESPONSE_MATRIX
+  quad_array_name: QForTune
+  betatron_tune_name: BETATRON_TUNE
+  quad_delta: 1e-4
+- class: pyaml.tuning_tools.chromaticity_monitor.ChromaticityMonitor
+  name: KSI
+  betatron_tune_name: BETATRON_TUNE
+  rf_plant_name: RF
+  fit_order: 2
+  n_avg_meas: 1
+  n_step: 5
+  sleep_between_meas: 2
+  sleep_between_step: 2
+  e_delta: 1e-3
+  max_e_delta: 1e-3
+- class: pyaml.tuning_tools.chromaticity_monitor.ChromaticityMonitor
+  name: CHROMATICITY_MONITOR
+  betatron_tune_name: BETATRON_TUNE
+  rf_plant_name: RF
+  fit_order: 2
+  n_avg_meas: 1
+  n_step: 5
+  sleep_between_meas: 2
+  sleep_between_step: 2
+  e_delta: 1e-3
+  max_e_delta: 1e-3

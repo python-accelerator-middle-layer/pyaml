@@ -1,3 +1,11 @@
+"""
+Control-system implementations of PyAML read/write interfaces.
+
+The classes in this module adapt control-system devices to PyAML scalar and
+array interfaces, including conversions between hardware values, magnet
+strengths, BPM readings, and RF quantities.
+"""
+
 from typing import Any
 
 import numpy as np
@@ -5,7 +13,6 @@ from numpy import double
 from numpy.typing import NDArray
 
 from .. import PyAMLException
-from ..bpm.bpm_model import BPMModel
 from ..common import abstract
 from ..common.abstract_aggregator import ScalarAggregator
 from ..control.deviceaccess import DeviceAccess
@@ -80,7 +87,19 @@ def check_range(values: Any, dev_range: Any) -> bool:
 
 
 def _as_1d_float_array(values: Any) -> np.ndarray:
-    """Normalize input values to a 1D float NumPy array."""
+    """
+    Convert scalar or array-like values to a one-dimensional float array.
+
+    Parameters
+    ----------
+    values : object
+        Scalar or array-like values to normalize.
+
+    Returns
+    -------
+    numpy.ndarray
+        One-dimensional array with ``float`` dtype.
+    """
     v = np.asarray(values, dtype=float)
     if v.ndim == 0:
         return v.reshape(1)
@@ -89,28 +108,38 @@ def _as_1d_float_array(values: Any) -> np.ndarray:
 
 def _iter_devices_and_ranges(devs: DeviceAccess | DeviceAccessList):
     """
-    Yield tuples (device, [min, max]) for each underlying device.
+    Return each device together with its inclusive hardware range.
 
     Works for:
       - DeviceAccess: yields 1 item
       - DeviceAccessList: yields N items based on get_devices() and get_range() flattening
+
+    Parameters
+    ----------
+    devs : DeviceAccess or DeviceAccessList
+        Device or device collection whose ranges should be inspected.
+
+    Returns
+    -------
+    list of tuple
+        Pairs containing a device and its ``[minimum, maximum]`` range.
     """
     # Single device
-    if hasattr(devs, "get") and hasattr(devs, "get_range") and not hasattr(devs, "get_devices"):
+    if isinstance(devs, DeviceAccess):
         r = devs.get_range()
         if r is None:
             r = [None, None]
         return [(devs, [r[0], r[1]])]
 
-    # Device list (expects get_devices() + get_range() flat list)
-    devices = devs.get_devices()
-    flat = np.asarray(devs.get_range(), dtype=object).ravel()
-    if (flat.size % 2) != 0:
+    # get_range() return a flat list
+    flat = devs.get_range()
+    if (len(flat) % 2) != 0:
         raise ValueError(f"dev_range must have an even length, got {flat.size}")
 
+    # Reshape
     pairs = []
-    for i, d in enumerate(devices):
-        pairs.append((d, [flat[2 * i], flat[2 * i + 1]]))
+    for i, dev in enumerate(devs):
+        pairs.append((dev, [flat[2 * i], flat[2 * i + 1]]))
     return pairs
 
 
@@ -172,32 +201,94 @@ def format_out_of_range_message(
 
 class CSScalarAggregator(ScalarAggregator):
     """
-    Basic control system aggregator for a list of scalar values
+    Aggregate scalar control-system devices into one PyAML interface.
+
+    Parameters
+    ----------
+    devs : DeviceAccessList
+        Devices managed by the aggregator.
+
+    Methods
+    -------
+    add_devices(devices)
+        Add one or more devices to the scalar aggregator.
+    set(value)
+        Write scalar values to the managed control-system devices.
+    set_and_wait(value)
+        Set values and wait for readback confirmation.
+    get()
+        Read the current values from all managed devices.
+    readback()
+        Read the last available values from all managed devices.
+    unit()
+        Return the unit reported by the managed devices.
+    nb_device()
+        Return the number of managed devices.
     """
 
     def __init__(self, devs: DeviceAccessList):
+        """
+        Initialize the CSScalarAggregator.
+        """
         self._devs = devs
 
     def add_devices(self, devices: DeviceAccess | list[DeviceAccess]):
+        """
+        Add one or more devices to the scalar aggregator.
+
+        Parameters
+        ----------
+        devices : DeviceAccess | list[DeviceAccess]
+            Control-system device or devices to manage.
+        """
         self._devs.add_devices(devices)
 
     def set(self, value: NDArray[np.float64]):
+        """
+        Write scalar values to the managed control-system devices.
+
+        Parameters
+        ----------
+        value : NDArray[np.float64]
+            Values to write, in the same order as the managed devices.
+        """
         self._devs.set(value)
 
     def set_and_wait(self, value: NDArray[np.float64]):
+        """
+        Set values and wait for readback confirmation.
+
+        This control-system implementation does not currently support
+        waiting for device readback and raises :class:`NotImplementedError`.
+
+        Parameters
+        ----------
+        value : NDArray[np.float64]
+            Values that would be written to the managed devices.
+
+        Raises
+        ------
+        NotImplementedError
+            Always raised because asynchronous setpoint confirmation is not
+            implemented.
+        """
         self._devs.set_and_wait(value)
 
     def get(self) -> NDArray[np.float64]:
+        """Read the current values from all managed devices."""
         return self._devs.get()
 
     def readback(self) -> np.array:
+        """Read the last available values from all managed devices."""
         return self._devs.readback()
 
     def unit(self) -> str:
+        """Return the unit reported by the managed devices."""
         return self._devs.unit()
 
     def nb_device(self) -> int:
-        return self._devs.__len__()
+        """Return the number of managed devices."""
+        return self._devs.len()
 
 
 # ------------------------------------------------------------------------------
@@ -205,14 +296,37 @@ class CSScalarAggregator(ScalarAggregator):
 
 class CSStrengthScalarAggregator(CSScalarAggregator):
     """
-    Control system aggregator for a list of magnet strengths.
-    This aggregator is in charge of computing hardware setpoints
-    and applying them without overlap.
-    When virtual magnets exported from combined function mangets are present (RWMapper),
-    the aggregator prevents to apply several times the same power supply setpoint.
+    Aggregate magnet strengths while avoiding duplicate hardware writes.
+
+    Magnet models convert between exposed strengths and hardware setpoints.
+    Shared models, such as those used by virtual magnets from combined-function
+    magnets, are written only once per underlying power supply.
+
+    Parameters
+    ----------
+    peer : CSScalarAggregator
+        Scalar device aggregator containing the hardware devices.
+
+    Methods
+    -------
+    add_magnet(magnet, devs)
+        Register a magnet and its hardware devices with the aggregator.
+    set(value)
+        Convert strengths to hardware values and write the setpoints.
+    set_and_wait(value)
+        Set magnet strengths and wait for hardware readback.
+    get()
+        Read the current values from the underlying devices.
+    readback()
+        Read back magnet strengths from measured hardware values.
+    unit()
+        Return the units associated with the underlying devices.
     """
 
     def __init__(self, peer: CSScalarAggregator):
+        """
+        Initialize the CSStrengthScalarAggregator.
+        """
         CSScalarAggregator.__init__(self, peer._devs)
         self.__models: list[MagnetModel] = []  # List of magnet model
         self.__modelToMagnet: list[list[tuple[int, int]]] = []  # strengths indexing
@@ -223,6 +337,16 @@ class CSStrengthScalarAggregator(CSScalarAggregator):
         # a CombinedFunctionMagnet or simple magnet.
         # All magnets exported from a same CombinedFunctionMagnet share the same model
         # TODO: check that strength is supported (m.strength may be None)
+        """
+        Register a magnet and its hardware devices with the aggregator.
+
+        Parameters
+        ----------
+        magnet : Magnet
+            Magnet whose strength is being aggregated.
+        devs : list[DeviceAccess]
+            Hardware devices associated with the magnet model.
+        """
         strengthIndex = magnet.strength.index() if isinstance(magnet.strength, abstract.RWMapper) else 0
         if magnet.model not in self.__models:
             index = len(self.__models)
@@ -235,11 +359,19 @@ class CSStrengthScalarAggregator(CSScalarAggregator):
         self.__nbMagnet += 1
 
     def set(self, value: NDArray[np.float64]):
+        """
+        Convert strengths to hardware values and write the setpoints.
+
+        Parameters
+        ----------
+        value : NDArray[np.float64]
+            Magnet strengths, ordered according to the registered magnets.
+        """
         allHardwareValues = self._devs.get()  # Read all hardware setpoints
         newHardwareValues = np.zeros(self.nb_device())
         hardwareIndex = 0
         for modelIndex, model in enumerate(self.__models):
-            nbDev = len(model.get_devices())
+            nbDev = len(model.get_device_names())
             mStrengths = model.compute_strengths(allHardwareValues[hardwareIndex : hardwareIndex + nbDev])
             for valueIdx, strengthIdx in self.__modelToMagnet[modelIndex]:
                 mStrengths[strengthIdx] = value[valueIdx]
@@ -251,14 +383,30 @@ class CSStrengthScalarAggregator(CSScalarAggregator):
         self._devs.set(newHardwareValues)
 
     def set_and_wait(self, value: NDArray[np.float64]):
+        """
+        Set magnet strengths and wait for hardware readback.
+
+        Waiting for readback is not implemented by this aggregator.
+
+        Parameters
+        ----------
+        value : NDArray[np.float64]
+            Magnet strengths to convert and write.
+
+        Raises
+        ------
+        NotImplementedError
+            Always raised because asynchronous confirmation is unsupported.
+        """
         raise NotImplementedError("Not implemented yet.")
 
     def get(self) -> NDArray[np.float64]:
+        """Read the current values from the underlying devices."""
         allHardwareValues = self._devs.get()  # Read all hardware setpoints
         allStrength = np.zeros(self.__nbMagnet)
         hardwareIndex = 0
         for modelIndex, model in enumerate(self.__models):
-            nbDev = len(model.get_devices())
+            nbDev = len(model.get_device_names())
             mStrengths = model.compute_strengths(allHardwareValues[hardwareIndex : hardwareIndex + nbDev])
             for valueIdx, strengthIdx in self.__modelToMagnet[modelIndex]:
                 allStrength[valueIdx] = mStrengths[strengthIdx]
@@ -266,11 +414,19 @@ class CSStrengthScalarAggregator(CSScalarAggregator):
         return allStrength
 
     def readback(self) -> np.array:
+        """
+        Read back magnet strengths from measured hardware values.
+
+        Returns
+        -------
+        numpy.ndarray
+            Magnet strengths corresponding to the latest device readbacks.
+        """
         allHardwareValues = self._devs.readback()  # Read all hardware readback
         allStrength = np.zeros(self.__nbMagnet)
         hardwareIndex = 0
         for modelIndex, model in enumerate(self.__models):
-            nbDev = len(model.get_devices())
+            nbDev = len(model.get_device_names())
             mStrengths = model.compute_strengths(allHardwareValues[hardwareIndex : hardwareIndex + nbDev])
             for valueIdx, strengthIdx in self.__modelToMagnet[modelIndex]:
                 allStrength[valueIdx] = mStrengths[strengthIdx]
@@ -278,43 +434,11 @@ class CSStrengthScalarAggregator(CSScalarAggregator):
         return allStrength
 
     def unit(self) -> str:
+        """Return the units associated with the underlying devices."""
         return self._devs.unit()
 
 
 # ------------------------------------------------------------------------------
-
-
-class CSBPMArrayMapper(CSScalarAggregator):
-    """
-    Wrapper to a native CS aggregator for BPM
-    """
-
-    def __init__(self, devs: list[DeviceAccess], indices: list[list[int]]):
-        self._indices = indices
-        self._devs = devs
-
-    def set(self, value: NDArray[np.float64]):
-        raise Exception("BPM are not writable")
-
-    def get(self) -> NDArray[np.float64]:
-        if len(self._devs) == 1:
-            v = self._devs[0].get()
-            return v[self._indices[0]]
-        else:
-            # TODO read using DeviceAccessList
-            v0 = self._devs[0].get()[self._indices[0]]
-            v1 = self._devs[1].get()[self._indices[1]]
-            # Interleave
-            xy = np.zeros(v0.size + v1.size)
-            xy[0::2] = v0
-            xy[1::2] = v1
-            return xy
-
-    def readback(self) -> np.array:
-        return self.get()
-
-    def unit(self) -> str:
-        return self._dev.unit()
 
 
 # ------------------------------------------------------------------------------
@@ -322,30 +446,88 @@ class CSBPMArrayMapper(CSScalarAggregator):
 
 class RWHardwareScalar(abstract.ReadWriteFloatScalar):
     """
-    Class providing read write access to a magnet
-    of a control system (in hardware units)
+    Expose one magnet hardware setpoint as a readable/writable scalar.
+
+    Parameters
+    ----------
+    model : MagnetModel
+        Magnet model used to determine the hardware unit.
+    dev : DeviceAccess
+        Control-system device holding the hardware setpoint.
+
+    Methods
+    -------
+    get()
+        Return the current hardware setpoint.
+    set(value)
+        Validate and write a magnet hardware setpoint.
+    set_and_wait(value)
+        Set the hardware value and wait for readback confirmation.
+    unit()
+        Return the hardware unit defined by the magnet model.
+    set_magnet_rigidity(brho)
+        Set the beam rigidity used by the magnet model.
     """
 
     def __init__(self, model: MagnetModel, dev: DeviceAccess):
+        """
+        Initialize the RWHardwareScalar.
+        """
         self.__model = model
         self.__dev = dev
 
     def get(self) -> float:
+        """Return the current hardware setpoint."""
         return self.__dev.get()
 
     def set(self, value: float):
+        """
+        Validate and write a magnet hardware setpoint.
+
+        Parameters
+        ----------
+        value : float
+            Hardware value to write to the control-system device.
+
+        Raises
+        ------
+        PyAMLException
+            If ``value`` is outside the device's configured range.
+        """
         dev_range = self.__dev.get_range()
         if not check_range(value, dev_range):
             raise PyAMLException(format_out_of_range_message(value, self.__dev))
         self.__dev.set(value)
 
     def set_and_wait(self, value: double):
+        """
+        Set the hardware value and wait for readback confirmation.
+
+        Parameters
+        ----------
+        value : double
+            Hardware value to write.
+
+        Raises
+        ------
+        NotImplementedError
+            Always raised because asynchronous confirmation is unsupported.
+        """
         raise NotImplementedError("Not implemented yet.")
 
     def unit(self) -> str:
+        """Return the hardware unit defined by the magnet model."""
         return self.__model.get_hardware_units()[0]
 
     def set_magnet_rigidity(self, brho: np.double):
+        """
+        Set the beam rigidity used by the magnet model.
+
+        Parameters
+        ----------
+        brho : np.double
+            Magnetic rigidity in tesla metres.
+        """
         self.__model.set_magnet_rigidity(brho)
 
 
@@ -354,20 +536,58 @@ class RWHardwareScalar(abstract.ReadWriteFloatScalar):
 
 class RWStrengthScalar(abstract.ReadWriteFloatScalar):
     """
-    Class providing read write access to a strength of a control system
+    Expose one magnet strength with hardware-value conversion.
+
+    Parameters
+    ----------
+    model : MagnetModel
+        Magnet model used for strength conversion and units.
+    dev : DeviceAccess
+        Control-system device holding the corresponding hardware value.
+
+    Methods
+    -------
+    get()
+        Read the hardware value and convert it to magnet strength.
+    set(value)
+        Convert and write a magnet strength setpoint.
+    set_and_wait(value)
+        Set a magnet strength and wait for readback confirmation.
+    unit()
+        Return the strength unit defined by the magnet model.
+    set_magnet_rigidity(brho)
+        Set the beam rigidity used by the magnet model.
     """
 
     def __init__(self, model: MagnetModel, dev: DeviceAccess):
+        """
+        Initialize the RWStrengthScalar.
+        """
         self.__model = model
         self.__dev = dev
 
     # Gets the value
     def get(self) -> float:
+        """Read the hardware value and convert it to magnet strength."""
         current = self.__dev.get()
         return self.__model.compute_strengths([current])[0]
 
     # Sets the value
     def set(self, value: float):
+        """
+        Convert and write a magnet strength setpoint.
+
+        Parameters
+        ----------
+        value : float
+            Magnet strength to convert to hardware units and write.
+
+        Raises
+        ------
+        PyAMLException
+            If the converted hardware value is outside the device's
+            configured range.
+        """
         current = self.__model.compute_hardware_values([value])[0]
         dev_range = self.__dev.get_range()
         if not check_range(current, dev_range):
@@ -376,13 +596,35 @@ class RWStrengthScalar(abstract.ReadWriteFloatScalar):
 
     # Sets the value and wait that the read value reach the setpoint
     def set_and_wait(self, value: float):
+        """
+        Set a magnet strength and wait for readback confirmation.
+
+        Parameters
+        ----------
+        value : float
+            Magnet strength to convert and write.
+
+        Raises
+        ------
+        NotImplementedError
+            Always raised because asynchronous confirmation is unsupported.
+        """
         raise NotImplementedError("Not implemented yet.")
 
     # Gets the unit of the value
     def unit(self) -> str:
+        """Return the strength unit defined by the magnet model."""
         return self.__model.get_strength_units()[0]
 
     def set_magnet_rigidity(self, brho: np.double):
+        """
+        Set the beam rigidity used by the magnet model.
+
+        Parameters
+        ----------
+        brho : np.double
+            Magnetic rigidity in tesla metres.
+        """
         self.__model.set_magnet_rigidity(brho)
 
 
@@ -391,20 +633,54 @@ class RWStrengthScalar(abstract.ReadWriteFloatScalar):
 
 class RWHardwareArray(abstract.ReadWriteFloatArray):
     """
-    Class providing read write access to a magnet array
-    of a control system (in hardware units)
+    Expose multiple magnet hardware setpoints as an array interface.
+
+    Parameters
+    ----------
+    model : MagnetModel
+        Magnet model defining the hardware units.
+    devs : list[DeviceAccess]
+        Control-system devices holding the hardware setpoints.
+
+    Methods
+    -------
+    get()
+        Return the current hardware values in device order.
+    set(value)
+        Validate and write hardware values for all devices.
+    set_and_wait(value)
+        Set hardware values and wait for readback confirmation.
+    unit()
+        Return the hardware units defined by the magnet model.
     """
 
     def __init__(self, model: MagnetModel, devs: list[DeviceAccess]):
+        """
+        Initialize the RWHardwareArray.
+        """
         self.__model = model
         self.__devs = devs
 
     # Gets the value
     def get(self) -> np.array:
+        """Return the current hardware values in device order."""
         return np.array([p.get() for p in self.__devs])
 
     # Sets the value
     def set(self, value: np.array):
+        """
+        Validate and write hardware values for all devices.
+
+        Parameters
+        ----------
+        value : np.array
+            Hardware values ordered to match ``self.__devs``.
+
+        Raises
+        ------
+        PyAMLException
+            If any value is outside its device's configured range.
+        """
         for idx, p in enumerate(self.__devs):
             dev_range = p.get_range()
             if not check_range(value[idx], dev_range):
@@ -413,10 +689,24 @@ class RWHardwareArray(abstract.ReadWriteFloatArray):
 
     # Sets the value and waits that the read value reach the setpoint
     def set_and_wait(self, value: np.array):
+        """
+        Set hardware values and wait for readback confirmation.
+
+        Parameters
+        ----------
+        value : np.array
+            Hardware values to write in device order.
+
+        Raises
+        ------
+        NotImplementedError
+            Always raised because asynchronous confirmation is unsupported.
+        """
         raise NotImplementedError("Not implemented yet.")
 
     # Gets the unit of the value
     def unit(self) -> list[str]:
+        """Return the hardware units defined by the magnet model."""
         return self.__model.get_hardware_units()
 
 
@@ -425,21 +715,51 @@ class RWHardwareArray(abstract.ReadWriteFloatArray):
 
 class RWStrengthArray(abstract.ReadWriteFloatArray):
     """
-    Class providing read write access to magnet strengths of a control system
+    Expose multiple magnet strengths with hardware-value conversion.
+
+    Parameters
+    ----------
+    model : MagnetModel
+        Magnet model used for strength conversion and units.
+    devs : list[DeviceAccess]
+        Control-system devices corresponding to the model's hardware values.
+
+    Methods
+    -------
+    get()
+        Read hardware values and convert them to magnet strengths.
+    set(value)
+        Convert strengths to hardware values and write the setpoints.
+    set_and_wait(value)
+        Set magnet strengths and wait for readback confirmation.
+    unit()
+        Return the strength units defined by the magnet model.
     """
 
     def __init__(self, model: MagnetModel, devs: list[DeviceAccess]):
+        """
+        Initialize the RWStrengthArray.
+        """
         self.__model = model
         self.__devs = devs
 
     # Gets the value
     def get(self) -> np.array:
+        """Read hardware values and convert them to magnet strengths."""
         r = np.array([p.get() for p in self.__devs])
         str = self.__model.compute_strengths(r)
         return str
 
     # Sets the value
     def set(self, value: np.array):
+        """
+        Convert strengths to hardware values and write the setpoints.
+
+        Parameters
+        ----------
+        value : np.array
+            Magnet strengths ordered to match ``self.__devs``.
+        """
         cur = self.__model.compute_hardware_values(value)
         for idx, p in enumerate(self.__devs):
             dev_range = p.get_range()
@@ -451,10 +771,24 @@ class RWStrengthArray(abstract.ReadWriteFloatArray):
 
     # Sets the value and waits that the read value reach the setpoint
     def set_and_wait(self, value: np.array):
+        """
+        Set magnet strengths and wait for readback confirmation.
+
+        Parameters
+        ----------
+        value : np.array
+            Magnet strengths to convert and write.
+
+        Raises
+        ------
+        NotImplementedError
+            Always raised because asynchronous confirmation is unsupported.
+        """
         raise NotImplementedError("Not implemented yet.")
 
     # Gets the unit of the value
     def unit(self) -> list[str]:
+        """Return the strength units defined by the magnet model."""
         return self.__model.get_strength_units()
 
 
@@ -463,35 +797,39 @@ class RWStrengthArray(abstract.ReadWriteFloatArray):
 
 class RBpmArray(abstract.ReadFloatArray):
     """
-    Class providing read access to a BPM position [x,y] of a control system
+    Expose horizontal and vertical BPM positions as an array.
+
+    Parameters
+    ----------
+    hDev : DeviceAccess
+        Device providing the horizontal BPM position.
+    vDev : DeviceAccess
+        Device providing the vertical BPM position.
+
+    Methods
+    -------
+    get()
+        Return horizontal and vertical BPM positions.
+    unit()
+        Return the unit reported by the BPM device.
     """
 
-    def __init__(self, model: BPMModel, hDev: DeviceAccess, vDev: DeviceAccess):
-        self._model = model
+    def __init__(self, hDev: DeviceAccess, vDev: DeviceAccess):
+        """
+        Initialize the RBpmArray.
+        """
         self._hDev = hDev
         self._vDev = vDev
-        self._hIdx = self._model.x_pos_index()
-        self._vIdx = self._model.y_pos_index()
 
-    # Gets the values
     def get(self) -> np.array:
-        if self._hDev != self._vDev:
-            allhVal = self._hDev.get()
-            allvVal = self._vDev.get()
-            hVal = allhVal if self._hIdx is None else allhVal[self._hIdx]
-            vVal = allvVal if self._vIdx is None else allvVal[self._vIdx]
-        else:
-            # When h and v devices are identical, indexed
-            # values are expected
-            allVal = self._hDev.get()
-            hVal = allVal[self._hIdx]
-            vVal = allVal[self._vIdx]
-        return np.array([hVal, vVal])
+        """Return horizontal and vertical BPM positions."""
+        return np.array([self._hDev.get(), self._vDev.get()])
 
     # Gets the unit of the value Assume that x and y, offsets and positions
     # have the same unit
     def unit(self) -> str:
-        return self._model.get_pos_devices()[0].unit()
+        """Return the unit reported by the BPM device."""
+        return self._hDev.unit()
 
 
 # ------------------------------------------------------------------------------
@@ -500,30 +838,65 @@ class RBpmArray(abstract.ReadFloatArray):
 class RWBpmTiltScalar(abstract.ReadFloatScalar):
     """
     Class providing read access to a BPM tilt of a control system
+
+    Parameters
+    ----------
+    dev : DeviceAccess
+        Device handle giving access to the BPM tilt attribute.
+
+    Methods
+    -------
+    get()
+        Return horizontal and vertical BPM positions.
+    set(value)
+        Write the BPM tilt value to the control-system device.
+    set_and_wait(value)
+        Set the BPM tilt and wait for readback confirmation.
+    unit()
+        Return the unit shared by the BPM devices.
     """
 
-    def __init__(self, model: BPMModel, dev: DeviceAccess):
-        self._model = model
+    def __init__(self, dev: DeviceAccess):
+        """
+        Initialize the RWBpmTiltScalar.
+        """
         self._dev = dev
-        self._idx = model.tilt_index()
 
-    # Gets the value
     def get(self) -> float:
-        allTilt = self._dev.get()
-        if self._idx is not None:
-            return allTilt[self._idx]
-        else:
-            return allTilt
+        """Return horizontal and vertical BPM positions."""
+        return self._dev.get()
 
     def set(self, value: float):
+        """
+        Write the BPM tilt value to the control-system device.
+
+        Parameters
+        ----------
+        value : float
+            BPM tilt value in the device's configured units.
+        """
         self._dev.set(value)
 
     def set_and_wait(self, value: NDArray[np.float64]):
+        """
+        Set the BPM tilt and wait for readback confirmation.
+
+        Parameters
+        ----------
+        value : NDArray[np.float64]
+            BPM tilt value to write.
+
+        Raises
+        ------
+        NotImplementedError
+            Always raised because asynchronous confirmation is unsupported.
+        """
         raise NotImplementedError("Not implemented yet.")
 
     # Gets the unit of the value
     def unit(self) -> str:
-        return self._model.get_tilt_device().unit()
+        """Return the unit shared by the BPM devices."""
+        return self._dev.unit()
 
 
 # ------------------------------------------------------------------------------
@@ -531,51 +904,71 @@ class RWBpmTiltScalar(abstract.ReadFloatScalar):
 
 class RWBpmOffsetArray(abstract.ReadWriteFloatArray):
     """
-    Class providing read write access to a BPM offset [x,y] of a control system
+    Expose horizontal and vertical BPM offsets as a writable array.
+
+    Parameters
+    ----------
+    hDev : DeviceAccess
+        Device handle for the horizontal BPM offset.
+    vDev : DeviceAccess
+        Device handle for the vertical BPM offset.
+
+    Methods
+    -------
+    get()
+        Return horizontal and vertical BPM offsets.
+    set(value)
+        Write horizontal and vertical BPM offsets.
+    set_and_wait(value)
+        Set BPM offsets and wait for readback confirmation.
+    unit()
+        Return the unit shared by the BPM offset devices.
     """
 
-    def __init__(self, model: BPMModel, hDev: DeviceAccess, vDev: DeviceAccess):
-        self._model = model
+    def __init__(self, hDev: DeviceAccess, vDev: DeviceAccess):
+        """
+        Initialize the RWBpmOffsetArray.
+        """
         self._hDev = hDev
         self._vDev = vDev
-        self._hIdx = self._model.x_pos_index()
-        self._vIdx = self._model.y_pos_index()
 
-    # Gets the values
     def get(self) -> np.array:
-        if self._hDev != self._vDev:
-            allhVal = self._hDev.get()
-            allvVal = self._vDev.get()
-            hVal = allhVal if self._hIdx is None else allhVal[self._hIdx]
-            vVal = allvVal if self._vIdx is None else allvVal[self._vIdx]
-        else:
-            # When h and v devices are identical, indexed
-            # values are expected
-            allVal = self._hDev.get()
-            hVal = allVal[self._hIdx]
-            vVal = allVal[self._vIdx]
-        return np.array([hVal, vVal])
+        """Return horizontal and vertical BPM offsets."""
+        return np.array([self._hDev.get(), self._vDev.get()])
 
-    # Sets the values
     def set(self, value: NDArray[np.float64]):
-        if self._hDev != self._vDev:
-            self._hDev.set(value[0])
-            self._vDev.set(value[1])
-        else:
-            # When h and v devices are identical, indexed
-            # values are expected
-            newValue = self._hDev.get()
-            newValue[self._hIdx] = value[0]
-            newValue[self._vIdx] = value[1]
-            self._hDev.set(newValue)
+        """
+        Write horizontal and vertical BPM offsets.
+
+        Parameters
+        ----------
+        value : NDArray[np.float64]
+            Two-element array containing horizontal and vertical offsets.
+        """
+        self._hDev.set(value[0])
+        self._vDev.set(value[1])
 
     def set_and_wait(self, value: NDArray[np.float64]):
+        """
+        Set BPM offsets and wait for readback confirmation.
+
+        Parameters
+        ----------
+        value : NDArray[np.float64]
+            Two-element array containing horizontal and vertical offsets.
+
+        Raises
+        ------
+        NotImplementedError
+            Always raised because asynchronous confirmation is unsupported.
+        """
         raise NotImplementedError("Not implemented yet.")
 
     # Gets the unit of the value Assume that x and y, offsets and positions
     # have the same unit
     def unit(self) -> str:
-        return self._model.get_pos_devices()[0].unit()
+        """Return the unit shared by the BPM offset devices."""
+        return self._hDev.unit()
 
 
 # ------------------------------------------------------------------------------
@@ -585,22 +978,66 @@ class RWRFVoltageScalar(abstract.ReadWriteFloatScalar):
     """
     Class providing read write access to cavity voltage
     for a transmitter of a control system.
+
+    Parameters
+    ----------
+    transmitter : RFTransmitter
+        RF transmitter whose configuration supplies the voltage unit.
+    dev : DeviceAccess
+        Control-system device holding the cavity-voltage value.
+
+    Methods
+    -------
+    get()
+        Return the current cavity voltage.
+    set(value)
+        Write a cavity-voltage setpoint to the transmitter device.
+    set_and_wait(value)
+        Set the cavity voltage and wait for readback confirmation.
+    unit()
+        Return the configured cavity-voltage unit.
     """
 
     def __init__(self, transmitter: RFTransmitter, dev: DeviceAccess):
+        """
+        Initialize the RWRFVoltageScalar.
+        """
         self.__transmitter = transmitter
         self.__dev = dev
 
     def get(self) -> float:
+        """Return the current cavity voltage."""
         return self.__dev.get()
 
     def set(self, value: float):
+        """
+        Write a cavity-voltage setpoint to the transmitter device.
+
+        Parameters
+        ----------
+        value : float
+            Cavity-voltage setpoint in the configured voltage unit.
+        """
         self.__dev.set(value)
 
     def set_and_wait(self, value: float):
+        """
+        Set the cavity voltage and wait for readback confirmation.
+
+        Parameters
+        ----------
+        value : float
+            Cavity-voltage setpoint.
+
+        Raises
+        ------
+        NotImplementedError
+            Always raised because asynchronous confirmation is unsupported.
+        """
         raise NotImplementedError("Not implemented yet.")
 
     def unit(self) -> str:
+        """Return the configured cavity-voltage unit."""
         return self.__transmitter._cfg.voltage.unit()
 
 
@@ -611,22 +1048,66 @@ class RWRFPhaseScalar(abstract.ReadWriteFloatScalar):
     """
     Class providing read write access to cavity phase
     for a transmitter of a control system.
+
+    Parameters
+    ----------
+    transmitter : RFTransmitter
+        RF transmitter whose configuration supplies the phase unit.
+    dev : DeviceAccess
+        Control-system device holding the cavity phase.
+
+    Methods
+    -------
+    get()
+        Return the current cavity phase.
+    set(value)
+        Write a cavity-phase setpoint to the transmitter device.
+    set_and_wait(value)
+        Set the cavity phase and wait for readback confirmation.
+    unit()
+        Return the configured cavity-phase unit.
     """
 
     def __init__(self, transmitter: RFTransmitter, dev: DeviceAccess):
+        """
+        Initialize the RWRFPhaseScalar.
+        """
         self.__transmitter = transmitter
         self.__dev = dev
 
     def get(self) -> float:
+        """Return the current cavity phase."""
         return self.__dev.get()
 
     def set(self, value: float):
+        """
+        Write a cavity-phase setpoint to the transmitter device.
+
+        Parameters
+        ----------
+        value : float
+            Cavity-phase setpoint in the configured phase unit.
+        """
         self.__dev.set(value)
 
     def set_and_wait(self, value: float):
+        """
+        Set the cavity phase and wait for readback confirmation.
+
+        Parameters
+        ----------
+        value : float
+            Cavity-phase setpoint.
+
+        Raises
+        ------
+        NotImplementedError
+            Always raised because asynchronous confirmation is unsupported.
+        """
         raise NotImplementedError("Not implemented yet.")
 
     def unit(self) -> str:
+        """Return the configured cavity-phase unit."""
         return self.__transmitter._cfg.phase.unit()
 
 
@@ -636,23 +1117,67 @@ class RWRFPhaseScalar(abstract.ReadWriteFloatScalar):
 class RWRFFrequencyScalar(abstract.ReadWriteFloatScalar):
     """
     Class providing read write access to RF frequency of a control system.
+
+    Parameters
+    ----------
+    rf : RFPlant
+        RF plant whose configuration supplies the frequency unit.
+    dev : DeviceAccess
+        Control-system device holding the RF frequency.
+
+    Methods
+    -------
+    get()
+        Return the current RF frequency.
+    set(value)
+        Write an RF-frequency setpoint to the plant device.
+    set_and_wait(value)
+        Set the RF frequency and wait for readback confirmation.
+    unit()
+        Return the configured RF-frequency unit.
     """
 
     def __init__(self, rf: RFPlant, dev: DeviceAccess):
+        """
+        Initialize the RWRFFrequencyScalar.
+        """
         self.__rf = rf
         self.__dev = dev
 
     def get(self) -> float:
         # Serialized cavity has the same frequency
+        """Return the current RF frequency."""
         return self.__dev.get()
 
     def set(self, value: float):
+        """
+        Write an RF-frequency setpoint to the plant device.
+
+        Parameters
+        ----------
+        value : float
+            RF-frequency setpoint in the configured frequency unit.
+        """
         self.__dev.set(value)
 
     def set_and_wait(self, value: float):
+        """
+        Set the RF frequency and wait for readback confirmation.
+
+        Parameters
+        ----------
+        value : float
+            RF-frequency setpoint.
+
+        Raises
+        ------
+        NotImplementedError
+            Always raised because asynchronous confirmation is unsupported.
+        """
         raise NotImplementedError("Not implemented yet.")
 
     def unit(self) -> str:
+        """Return the configured RF-frequency unit."""
         return self.__rf._cfg.masterclock.unit()
 
 
@@ -661,15 +1186,33 @@ class RWRFFrequencyScalar(abstract.ReadWriteFloatScalar):
 
 class RBetatronTuneArray(abstract.ReadFloatArray):
     """
-    Class providing read write access to betatron tune of a control system.
+    Expose horizontal and vertical betatron tunes as a read-only array.
+
+    Parameters
+    ----------
+    tune_monitor : object
+        Tune monitor configuration supplying the tune unit.
+    devs : list[DeviceAccess]
+        Devices providing horizontal and vertical tune measurements.
+
+    Methods
+    -------
+    get()
+        Return horizontal and vertical betatron tunes.
+    unit()
+        Return the configured betatron-tune unit.
     """
 
     def __init__(self, tune_monitor, devs: list[DeviceAccess]):
+        """
+        Initialize the RBetatronTuneArray.
+        """
         self.__tune_monitor = tune_monitor
         self.__devs = devs
 
     def get(self) -> NDArray:
         # Return horizontal and vertical betatron tunes as a NumPy array
+        """Return horizontal and vertical betatron tunes."""
         return np.array(
             [
                 self.__devs[0].get(),
@@ -678,6 +1221,7 @@ class RBetatronTuneArray(abstract.ReadFloatArray):
         )
 
     def unit(self) -> str:
+        """Return the configured betatron-tune unit."""
         return self.__tune_monitor._cfg.tune_v.unit()
 
 

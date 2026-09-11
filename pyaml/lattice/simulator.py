@@ -1,14 +1,21 @@
+"""
+PyAT-backed accelerator simulator interfaces.
+
+This module loads Accelerator Toolbox lattices and binds PyAML elements to
+their simulated lattice counterparts.
+"""
+
 from pathlib import Path
+from typing import TYPE_CHECKING
 
 import at
-from pydantic import BaseModel, ConfigDict
 
 from ..bpm.bpm import BPM
 from ..common.abstract_aggregator import ScalarAggregator
-from ..common.element import Element
-from ..common.element_holder import ElementHolder
+from ..common.element import Element, __pyaml_repr__
 from ..common.exception import PyAMLException
-from ..configuration import get_root_folder
+from ..common.holders.element_holder import ElementHolder
+from ..configuration import ROOT
 from ..diagnostics.tune_monitor import BetatronTuneMonitor
 from ..lattice.abstract_impl import (
     BPMHScalarAggregator,
@@ -29,6 +36,7 @@ from ..lattice.abstract_impl import (
     RWSerializedStrength,
     RWStrengthArray,
     RWStrengthScalar,
+    update_bpm_transform_matrix,
 )
 from ..magnet.cfm_magnet import CombinedFunctionMagnet
 from ..magnet.magnet import Magnet
@@ -37,61 +45,104 @@ from ..rf.rf_plant import RFPlant, RWTotalVoltage
 from ..rf.rf_transmitter import RFTransmitter
 from ..tuning_tools.measurement_tool import MeasurementTool
 from ..tuning_tools.tuning_tool import TuningTool
-from .attribute_linker import (
-    ConfigModel as PyAtAttrLinkerConfigModel,
-)
-from .attribute_linker import (
-    PyAtAttributeElementsLinker,
-)
+from ..validation import DynamicValidation, register_schema
 from .lattice_elements_linker import LatticeElementsLinker
+
+if TYPE_CHECKING:
+    from ..configuration.unbound_element import UnboundElement
 
 # Define the main class name for this module
 PYAMLCLASS = "Simulator"
 
 
-class ConfigModel(BaseModel):
+@register_schema
+class Simulator(ElementHolder, DynamicValidation):
     """
-    Configuration model for Simulator
+    Simulator interface backed by a PyAT lattice.
+
+    The simulator loads a PyAT lattice from disk and attaches PyAML
+    elements to their corresponding PyAT elements. Once attached, the
+    resulting device objects expose read/write interfaces operating
+    directly on the simulation model.
+
+    Elements may be matched either using the default name-based lookup
+    or a custom :class:`LatticeElementsLinker`.
 
     Parameters
     ----------
     name : str
-        Simulator name
+        Name of the simulator.
     lattice : str
-        AT lattice file
+        Path to the PyAT lattice file, relative to the configured
+        PyAML root directory.
     mat_key : str, optional
-        AT lattice ring name
+        Variable name of the lattice when loading a MATLAB ``.mat``
+        lattice file.
     linker : LatticeElementsLinker, optional
-        The linker configuration model
-    description : str , optional
-        Simulator description
+        Custom linker used to associate PyAML elements with PyAT
+        lattice elements. If omitted, elements are matched by name.
+    description : str, optional
+        Human-readable description of the simulator.
+
+    Attributes
+    ----------
+    lattice
+        Underlying PyAT lattice.
+    mat_key
+        Key used to read the lattice out of a MATLAB file.
+
+    Methods
+    -------
+    name()
+        Return the simulator name.
+    get_lattice()
+        Return the loaded Accelerator Toolbox lattice.
+    get_description()
+        Returns the description of the accelerator
+    create_magnet_strength_aggregator(magnets)
+        Return the magnet-strength aggregator for this simulator.
+    create_magnet_hardware_aggregator(magnets)
+        Return the magnet-hardware aggregator for this simulator.
+    create_bpm_aggregators(bpms)
+        Create BPM position aggregators for the loaded lattice.
+    fill_device(elements)
+        Attach PyAML elements to their matching PyAT lattice elements.
+    get_names(element)
+        Parse element lattice_name syntax. see Element.ConfigModel.lattice_name.
+    get_indices(element)
+        Parse element lattice_name syntax. see Element.ConfigModel.lattice_name.
+    get_at_elems(element)
+        Resolve a PyAML element to matching PyAT lattice elements.
     """
 
-    model_config = ConfigDict(arbitrary_types_allowed=True, extra="forbid")
+    __pyaml_repr_exclude__ = ("description", "ring")
 
-    name: str
-    lattice: str
-    mat_key: str = None
-    linker: LatticeElementsLinker = None
-    description: str | None = None
+    def __init__(
+        self,
+        name: str,
+        lattice: str,
+        mat_key: str | None = None,
+        linker: LatticeElementsLinker | None = None,
+        description: str | None = None,
+    ):
+        """
+        Create a simulator from a PyAT lattice.
+        """
 
-
-class Simulator(ElementHolder):
-    """
-    Class that implements access to AT simulator
-    """
-
-    def __init__(self, cfg: ConfigModel):
         super().__init__()
-        self._cfg = cfg
-        path: Path = get_root_folder() / cfg.lattice
+        self._name = name
+        self._lattice = lattice
+        self._mat_key = mat_key
+        self.description = description
 
-        if self._cfg.mat_key is None:
+        path: Path = ROOT.get() / self._lattice
+
+        if self._mat_key is None:
             self.ring = at.load_lattice(path)
         else:
-            self.ring = at.load_lattice(path, mat_key=f"{self._cfg.mat_key}")
+            self.ring = at.load_lattice(path, mat_key=f"{self._mat_key}")
 
-        self._linker = cfg.linker
+        self._linker = linker
         if self._linker:
             self._linker.set_lattice(self.ring)
         else:
@@ -103,26 +154,77 @@ class Simulator(ElementHolder):
                     self._elements_indexing[e.FamName] = [e]
 
     def name(self) -> str:
-        return self._cfg.name
+        """Return the simulator name."""
+        return self._name
+
+    @property
+    def lattice(self) -> str:
+        """Return the configured lattice file path."""
+        return self._lattice
 
     def get_lattice(self) -> at.Lattice:
+        """Return the loaded Accelerator Toolbox lattice."""
         return self.ring
 
-    def get_description(self) -> str:
+    @property
+    def mat_key(self) -> str | None:
+        """Return the MATLAB variable name used to load the lattice."""
+        return self._mat_key
+
+    def get_description(self) -> str | None:
         """
         Returns the description of the accelerator
         """
-        return self._cfg.description
+        return self.description
 
     def create_magnet_strength_aggregator(self, magnets: list[Magnet]) -> ScalarAggregator:
         # No magnet aggregator for simulator
+        """
+        Return the magnet-strength aggregator for this simulator.
+
+        Parameters
+        ----------
+        magnets : list[Magnet]
+            Magnets for which aggregation was requested.
+
+        Returns
+        -------
+        ScalarAggregator
+            ``None`` because simulated magnet values are accessed directly.
+        """
         return None
 
     def create_magnet_hardware_aggregator(self, magnets: list[Magnet]) -> ScalarAggregator:
         # No magnet aggregator for simulator
+        """
+        Return the magnet-hardware aggregator for this simulator.
+
+        Parameters
+        ----------
+        magnets : list[Magnet]
+            Magnets for which aggregation was requested.
+
+        Returns
+        -------
+        ScalarAggregator
+            ``None`` because simulated hardware values are accessed directly.
+        """
         return None
 
     def create_bpm_aggregators(self, bpms: list[BPM]) -> list[ScalarAggregator]:
+        """
+        Create BPM position aggregators for the loaded lattice.
+
+        Parameters
+        ----------
+        bpms : list[BPM]
+            BPM elements whose positions should be read.
+
+        Returns
+        -------
+        list[ScalarAggregator]
+            Aggregators for combined, horizontal, and vertical BPM positions.
+        """
         agg = BPMScalarAggregator(self.get_lattice())
         aggh = BPMHScalarAggregator(self.get_lattice())
         aggv = BPMVScalarAggregator(self.get_lattice())
@@ -133,113 +235,97 @@ class Simulator(ElementHolder):
             aggv.add_elem(e)
         return [agg, aggh, aggv]
 
-    def fill_device(self, elements: list[Element]):
-        for e in elements:
-            # Need conversion to physics unit to work with simulator
-            if isinstance(e, Magnet):
-                current = RWHardwareScalar(self.get_at_elems(e), e.polynom, e.model) if e.model.has_physics() else None
-                strength = RWStrengthScalar(self.get_at_elems(e), e.polynom, e.model) if e.model.has_physics() else None
-                # Create a unique ref for this simulator
-                m = e.attach(self, strength, current)
-                self.add_magnet(m)
+    def _fill_magnet(self, magnet: Magnet) -> None:
+        current = (
+            RWHardwareScalar(self.get_at_elems(magnet), magnet.polynom, magnet.model) if magnet.model.has_physics() else None
+        )
+        strength = (
+            RWStrengthScalar(self.get_at_elems(magnet), magnet.polynom, magnet.model) if magnet.model.has_physics() else None
+        )
+        self.magnet.add(magnet.attach(self, strength, current))
 
-            elif isinstance(e, CombinedFunctionMagnet):
-                currents = RWHardwareArray(self.get_at_elems(e), e.polynoms, e.model) if e.model.has_physics() else None
-                strengths = RWStrengthArray(self.get_at_elems(e), e.polynoms, e.model) if e.model.has_physics() else None
-                # Create unique refs of each function for this simulator
-                ms = e.attach(self, strengths, currents)
-                self.add_cfm_magnet(ms[0])
-                for m in ms[1:]:
-                    self.add_magnet(m)
+    def _fill_combined_function_magnet(self, magnet: CombinedFunctionMagnet) -> None:
+        currents = (
+            RWHardwareArray(self.get_at_elems(magnet), magnet.polynoms, magnet.model) if magnet.model.has_physics() else None
+        )
+        strengths = (
+            RWStrengthArray(self.get_at_elems(magnet), magnet.polynoms, magnet.model) if magnet.model.has_physics() else None
+        )
+        magnets = magnet.attach(self, strengths, currents)
+        self.combined_function_magnet.add(magnets[0])
+        for virtual_magnet in magnets[1:]:
+            self.magnet.add(virtual_magnet)
 
-            elif isinstance(e, SerializedMagnets):
-                currents = []
-                strengths = []
-                # Create unique refs the series and each of its function for this
-                # control system
-                # Link hardware to strengths and bind strength together
-                for index, magnet in enumerate(e.get_magnets()):
-                    current = (
-                        RWHardwareScalar(
-                            self.get_at_elems(magnet),
-                            e.polynom,
-                            e.model.get_sub_model(index),
-                        )
-                        if e.model.has_hardware()
-                        else None
-                    )
-                    strength = (
-                        RWStrengthScalar(
-                            self.get_at_elems(magnet),
-                            e.polynom,
-                            e.model.get_sub_model(index),
-                        )
-                        if e.model.has_physics()
-                        else None
-                    )
-                    currents.append(current)
-                    strengths.append(strength)
-                linked_currents = []
-                linked_strengths = []
-                for i in range(e.get_nb_magnets()):
-                    current = RWSerializedHardware(currents, i) if e.model.has_hardware() else None
-                    strength = RWSerializedStrength(strengths, currents, i) if e.model.has_physics() else None
-                    linked_currents.append(current)
-                    linked_strengths.append(strength)
-                ms = e.attach(self, linked_strengths, linked_currents)
-                self.add_serialized_magnet(ms[0])
-                for m in ms[1:]:
-                    self.add_magnet(m)
+    def _fill_serialized_magnets(self, magnets: SerializedMagnets) -> None:
+        currents = []
+        strengths = []
+        for index, magnet in enumerate(magnets.get_magnets()):
+            current = (
+                RWHardwareScalar(self.get_at_elems(magnet), magnets.polynom, magnets.model.get_sub_model(index))
+                if magnets.model.has_hardware()
+                else None
+            )
+            strength = (
+                RWStrengthScalar(self.get_at_elems(magnet), magnets.polynom, magnets.model.get_sub_model(index))
+                if magnets.model.has_physics()
+                else None
+            )
+            currents.append(current)
+            strengths.append(strength)
+        linked_currents = []
+        linked_strengths = []
+        for index in range(magnets.get_nb_magnets()):
+            linked_currents.append(RWSerializedHardware(currents, index) if magnets.model.has_hardware() else None)
+            linked_strengths.append(RWSerializedStrength(strengths, currents, index) if magnets.model.has_physics() else None)
+        attached_magnets = magnets.attach(self, linked_strengths, linked_currents)
+        self.serialized_magnet.add(attached_magnets[0])
+        for magnet in attached_magnets[1:]:
+            self.magnet.add(magnet)
 
-            elif isinstance(e, BPM):
-                # This assumes unique BPM names in the pyAT lattice
-                tilt = RWBpmTiltScalar(self.get_at_elems(e)[0])
-                offsets = RWBpmOffsetArray(self.get_at_elems(e)[0])
-                positions = RBpmArray(self.get_at_elems(e)[0], self.ring)
-                e = e.attach(self, positions, offsets, tilt)
-                self.add_bpm(e)
+    def _fill_bpm(self, bpm: BPM) -> None:
+        bpm_elt = self.get_at_elems(bpm)[0]
+        if not hasattr(bpm_elt, "Tilt"):
+            bpm_elt.Tilt = 0.0
+        if not hasattr(bpm_elt, "Offset"):
+            bpm_elt.Offset = [0.0, 0.0]
+        if len(bpm_elt.Offset) != 2:
+            raise PyAMLException(f"BPM {bpm.get_name()} offset must be a 2-element array.")
+        update_bpm_transform_matrix(bpm_elt)
+        self.bpm.add(bpm.attach(self, RBpmArray(bpm_elt, self.ring), RWBpmOffsetArray(bpm_elt), RWBpmTiltScalar(bpm_elt)))
 
-            elif isinstance(e, RFPlant):
-                if e._cfg.transmitters:
-                    cavs: list[at.Element] = []
-                    harmonics: list[float] = []
-                    attachedTrans: list[RFTransmitter] = []
-                    for t in e._cfg.transmitters:
-                        cavsPerTrans: list[at.Element] = []
-                        for c in t._cfg.cavities:
-                            # Expect unique name for cavities
-                            cav = self.get_at_elems(Element(c))
-                            if len(cav) > 1:
-                                raise PyAMLException(f"RF transmitter {t.get_name()},multiple cavity definition:{{cav[0]}}")
-                            if len(cav) == 0:
-                                raise PyAMLException(f"RF transmitter {t.get_name()}, No cavity found")
-                            cavsPerTrans.append(cav[0])
-                            harmonics.append(t._cfg.harmonic)
-                        voltage = RWRFVoltageScalar(cavsPerTrans)
-                        phase = RWRFPhaseScalar(cavsPerTrans)
-                        nt = t.attach(self, voltage, phase)
-                        self.add_rf_transnmitter(nt)
-                        cavs.extend(cavsPerTrans)
-                        attachedTrans.append(nt)
+    def _fill_rf_plant(self, rf_plant: RFPlant) -> None:
+        if rf_plant.transmitters:
+            cavities: list[at.Element] = []
+            harmonics: list[float] = []
+            attached_transmitters: list[RFTransmitter] = []
+            for transmitter in rf_plant.transmitters:
+                transmitter_cavities: list[at.Element] = []
+                for cavity_name in transmitter.cavities:
+                    cavity = self.get_at_elems(Element(cavity_name))
+                    if len(cavity) > 1:
+                        raise PyAMLException(f"RF transmitter {transmitter.get_name()},multiple cavity definition:{{cav[0]}}")
+                    if len(cavity) == 0:
+                        raise PyAMLException(f"RF transmitter {transmitter.get_name()}, No cavity found")
+                    transmitter_cavities.append(cavity[0])
+                    harmonics.append(transmitter.harmonic)
+                voltage = RWRFVoltageScalar(transmitter_cavities)
+                phase = RWRFPhaseScalar(transmitter_cavities)
+                attached_transmitter = transmitter.attach(self, voltage, phase)
+                self.rf.transmitter.add(attached_transmitter)
+                cavities.extend(transmitter_cavities)
+                attached_transmitters.append(attached_transmitter)
+            self.rf.add(rf_plant.attach(self, RWRFFrequencyScalar(cavities, harmonics), RWTotalVoltage(attached_transmitters)))
+        else:
+            self.rf.add(rf_plant.attach(self, RWRFATFrequencyScalar(self.ring), RWRFATotalVoltageScalar(self.ring)))
 
-                    frequency = RWRFFrequencyScalar(cavs, harmonics)
-                    voltage = RWTotalVoltage(attachedTrans)
-                    ne = e.attach(self, frequency, voltage)
-                    self.add_rf_plant(ne)
-                else:
-                    # No transmitter defined switch to AT methods
-                    frequency = RWRFATFrequencyScalar(self.ring)
-                    voltage = RWRFATotalVoltageScalar(self.ring)
-                    ne = e.attach(self, frequency, voltage)
-                    self.add_rf_plant(ne)
+    def _fill_betatron_tune_monitor(self, monitor: BetatronTuneMonitor) -> None:
+        self.add_betatron_tune_monitor(monitor.attach(self, RBetatronTuneArray(self.ring)))
 
-            elif isinstance(e, BetatronTuneMonitor):
-                betatron_tune = RBetatronTuneArray(self.ring)
-                e = e.attach(self, betatron_tune)
-                self.add_betatron_tune_monitor(e)
+    def _fill_tool(self, tool: TuningTool | MeasurementTool) -> None:
+        self.add_tool(tool.attach(self))
 
-            elif isinstance(e, MeasurementTool) | isinstance(e, TuningTool):
-                self.add_tool(e.attach(self))
+    def _fill_unbound_element(self, element: "UnboundElement") -> None:
+        pass
 
     def get_names(self, element: Element) -> list[str] | None:
         """
@@ -298,6 +384,19 @@ class Simulator(ElementHolder):
         return (element.get_name(), None)
 
     def get_at_elems(self, element: Element) -> list[at.Element]:
+        """
+        Resolve a PyAML element to matching PyAT lattice elements.
+
+        Parameters
+        ----------
+        element : Element
+            PyAML element whose lattice mapping should be resolved.
+
+        Returns
+        -------
+        list[at.Element]
+            Matching Accelerator Toolbox lattice elements.
+        """
         if self._linker:
             identifier = self._linker.get_element_identifier(element)
             element_list = self._linker.get_at_elements(identifier)
@@ -332,5 +431,16 @@ class Simulator(ElementHolder):
                 else:
                     return [elts[idx] for idx in indices]
 
+    def _pyaml_repr_fields(self) -> dict[str, object]:
+        return {
+            "name": self.name(),
+            "lattice": self.lattice,
+            "mat_key": self.mat_key,
+            "n_elements": len(self.ring),
+        }
+
     def __repr__(self):
-        return repr(self._cfg).replace("ConfigModel", self.__class__.__name__)
+        """
+        Implement the ``__repr__`` string.
+        """
+        return __pyaml_repr__(self)

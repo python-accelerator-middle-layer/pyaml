@@ -1,32 +1,50 @@
-[![Documentation Status](https://readthedocs.org/projects/pyaml/badge/?version=latest)](https://pyaml.readthedocs.io/en/latest/?badge=latest)
-![Current release](https://img.shields.io/github/v/tag/python-accelerator-middle-layer/pyaml)
+# pyaml
 
-# Python Accelerator Middle Layer
+**Package for the Python Accelerator Middle Layer core**
 
-Python Accelerator Middle Layer (pyAML) is a joint technology platform for design, commissioning and operation of particle accelerators.
+[![Documentation Status](https://readthedocs.org/projects/pyaml/badge/?version=stable)](https://pyaml.readthedocs.io/en/stable/?badge=stable)
+[![Latest stable release](https://img.shields.io/pypi/v/accelerator-middle-layer.svg)](https://pypi.org/project/accelerator-middle-layer/)
 
-The code is still under development. The features include among others:
+## Overview
 
-- A control system agnostic interface to interact with the accelerator.
-- Same interface to different backends: live accelerator, virtual accelerator and simulator.
-- Machine independence allowing configuration of different type of accelerators and facility specific naming conventions.
-- Unit conversions.
-- Automatic generation of metadata and standardized format for measurement data.
-- A set of standard applications and a framework for developing new applications.
+<!-- Replace the paragraph below with a longer description of the package. -->
 
-**This repository is for the core of pyAML.** It is control system independent and provides the core functionality of pyAML. It is intended to be used together with a package that implements the control system specific interface.
+Python Accelerator Middle Layer (pyAML) is a joint technology platform for design, commissioning and operation of particle accelerators. This repository is for the core of pyAML. It is control system independent and is intended to be used together with a package that implements the control system specific interface.
 
-Available packages for bindings:
+## Installation
 
-TANGO: [tango-pyaml](https://github.com/python-accelerator-middle-layer/tango-pyaml)
-TANGO or EPICS: [pyaml-cs-oa](https://github.com/python-accelerator-middle-layer/pyaml-cs-oa)
+Install the package from PyPI:
 
-#### Installation
+```bash
+pip install accelerator-middle-layer
+```
 
-Installation instructions for both user and development installation can be found in the [documentation](https://pyaml.readthedocs.io/en/latest/?badge=latest).
+## Development
 
-#### Documentation
+Install the development dependencies with:
 
-The documentation is available [here](https://pyaml.readthedocs.io/en/latest/?badge=latest).
+```bash
+pip install accelerator-middle-layer[dev]
+```
 
-In the documentation there are both examples and Jupyter notebooks available for how to use the package.
+Run the test suite with:
+
+```bash
+pytest
+```
+
+Install the pre-commit hooks with:
+
+```bash
+pre-commit install
+```
+
+## Documentation
+
+The documentation is available at:
+
+<https://pyaml.readthedocs.io/en/latest/>
+
+## Contributing
+
+Please use the issue tracker or submit a pull request.

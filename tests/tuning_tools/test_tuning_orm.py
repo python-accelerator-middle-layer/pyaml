@@ -1,0 +1,34 @@
+import logging
+import tempfile
+from pathlib import Path
+
+import numpy as np
+
+from pyaml.accelerator import Accelerator
+
+
+def test_tuning_orm():
+    logging.getLogger("pyaml.tuning_tools").setLevel(logging.WARNING)
+
+    parent_folder = Path(__file__).parent
+    config_path = parent_folder.joinpath("..", "config", "EBSOrbit.yaml").resolve()
+    sr = Accelerator.load(config_path)
+    element_holder = sr.design
+
+    orm = element_holder.orm
+
+    bpms = element_holder.bpms.get("BPM")
+    hcorr_names = element_holder.magnets.get("HCorr").names()[:4]
+    vcorr_names = element_holder.magnets.get("VCorr").names()[:4]
+    orm.measure(corrector_names=hcorr_names + vcorr_names)
+
+    orm_data = orm.get()
+    orm_shape = np.array(orm_data["matrix"]).shape
+    assert orm_shape == (2 * len(bpms), 8)
+
+    with tempfile.NamedTemporaryFile(mode="w", suffix=".json", prefix="orm_") as f:
+        # save file
+        orm.save(save_path=f.name)
+
+        # load saved file
+        element_holder.orbit.load(f.name)

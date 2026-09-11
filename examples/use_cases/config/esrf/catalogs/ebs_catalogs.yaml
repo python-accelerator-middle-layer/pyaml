@@ -1,0 +1,8 @@
+type: tango.pyaml.static_catalog
+entries:
+  - catalogs/ebs_bpm_catalogs.yaml
+  - catalogs/ebs_rf_catalogs.yaml
+  - catalogs/ebs_diag_catalogs.yaml
+  - catalogs/ebs_magnets_catalogs.yaml
+  - catalogs/ebs_sh_catalogs.yaml
+  - catalogs/ebs_sext_catalogs.yaml

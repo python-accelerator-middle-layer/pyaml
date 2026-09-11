@@ -1,0 +1,12 @@
+- type: tango.pyaml.static_catalog_entry
+  key: srdiag/beam-tune/main/Qh
+  device:
+    type: tango.pyaml.attribute_read_only
+    attribute: srdiag/beam-tune/main/Qh
+    unit: ""
+- type: tango.pyaml.static_catalog_entry
+  key: srdiag/beam-tune/main/Qv
+  device:
+    type: tango.pyaml.attribute_read_only
+    attribute: srdiag/beam-tune/main/Qv
+    unit: ""

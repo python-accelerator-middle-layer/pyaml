@@ -1,10 +1,9 @@
 """
-manager.py
+Aggregate accelerator configuration fragments before runtime construction.
 
-Configuration aggregation helpers for :class:`~pyaml.accelerator.Accelerator`.
-
-This module provides :class:`ConfigurationManager`, a lightweight service used
-to collect configuration fragments before runtime objects are built.
+The manager loads dictionaries and YAML/JSON files, merges named categories,
+tracks source information, and provides the final configuration to the
+accelerator factory.
 
 Typical usage is:
 
@@ -15,13 +14,15 @@ Typical usage is:
 
 import copy
 import fnmatch
+import inspect
 import os
 import re
+from importlib import import_module
 from pathlib import Path
 from typing import Any
 
 from ..common.exception import PyAMLConfigException
-from .fileloader import get_root_folder, load, set_root_folder
+from .fileloader import ROOT, load
 from .restfetcher import REMOTE_BASE_URL_KEY, SourceRoot, fetch_remote_config, is_remote_url, resolve_reference
 
 _INTERNAL_METADATA_KEYS = {"__location__", "__fieldlocations__", REMOTE_BASE_URL_KEY}
@@ -35,7 +36,7 @@ _CATEGORY_TITLES = {
 
 
 class UnsupportedConfigurationRootError(PyAMLConfigException):
-    """Raised when a fragment root is outside ConfigurationManager scope."""
+    """Raised when a fragment contains unsupported root-level fields."""
 
 
 class ConfigurationManager:
@@ -45,6 +46,40 @@ class ConfigurationManager:
     :class:`ConfigurationManager` stores configuration fragments as plain
     dictionaries and exposes convenience helpers to inspect, query and update
     them before constructing the final runtime object graph.
+
+    Methods
+    -------
+    root_fields()
+        Return the supported accelerator root fields in order. Return the ordered root fields supported by the
+        accelerator configuration.
+    add(payload, **kwargs)
+        Add a configuration fragment from a dict or a YAML/JSON file.
+    remove(category, name)
+        Remove a named entry from an aggregated category.
+    replace(category, element)
+        Replace an existing named entry in an aggregated category.
+    clear(category=None)
+        Clear the aggregated state, or a single root field/category.
+    categories()
+        Return categories that currently contain entries.
+    keys(category=None)
+        Return known entry names.
+    has(category, name)
+        Check whether a named entry exists.
+    get(category, name)
+        Return a named configuration entry.
+    find(pattern, category=None)
+        Search entry names using wildcards or regular expressions.
+    settings()
+        Return aggregated scalar accelerator settings.
+    to_dict()
+        Return the aggregated configuration as a plain dictionary.
+    build(ignore_external=False, validate=False)
+        Build an Accelerator from the aggregated configuration snapshot.
+    strip_internal_metadata(value)
+        Remove additionnal internal informations info from value
+    strip_runtime_internal_metadata(value)
+        Remove additionnal internal informations info from value
 
     Notes
     -----
@@ -74,6 +109,9 @@ class ConfigurationManager:
         'design'
     """
 
+    DEFAULT_CLASS_PATH = "pyaml.accelerator.Accelerator"
+    # Kept as a public compatibility constant for callers using the legacy
+    # module-based manager API.
     DEFAULT_TYPE = "pyaml.accelerator"
     NAMED_CATEGORIES = ("controls", "simulators", "arrays", "devices")
     _SUPPORTED_FILE_SUFFIXES = {".yaml", ".yml", ".json"}
@@ -81,35 +119,50 @@ class ConfigurationManager:
     @classmethod
     def root_fields(cls) -> tuple[str, ...]:
         r"""
-        Return the ordered root fields supported by the accelerator model.
+        Return the supported accelerator root fields in order.
+        Return the ordered root fields supported by the accelerator configuration.
 
-        The field order is derived from
-        :class:`~pyaml.accelerator.ConfigModel`.
+        The field order is derived from :meth:`Accelerator.__init__`, excluding
+        internal or categorized fields such as control and simulator collections.
 
         Returns
         -------
         tuple[str, ...]
+            Root field names in configuration order, prefixed with ``"type"``.
 
         Examples
-        --------
 
         .. code-block:: python
 
-            >>> ConfigurationManager.root_fields()
+        >>> ConfigurationManager.root_fields()
         """
-        from ..accelerator import ConfigModel as AcceleratorConfigModel
+        params = inspect.signature(cls.__init__).parameters
 
-        config_fields = tuple(
-            field_name for field_name in AcceleratorConfigModel.model_fields if field_name not in cls.NAMED_CATEGORIES
+        fields = tuple(
+            name
+            for name, param in params.items()
+            if name != "self"
+            and name not in cls.NAMED_CATEGORIES
+            and param.kind
+            in (
+                inspect.Parameter.POSITIONAL_OR_KEYWORD,
+                inspect.Parameter.KEYWORD_ONLY,
+            )
         )
-        return ("type", *config_fields)
+        return ("class_path", *fields)
 
     def __init__(self):
-        self._state: dict[str, Any] = {"type": self.DEFAULT_TYPE}
+        """
+        Initialize an empty configuration manager.
+
+        The manager starts with the default accelerator type and empty named
+        categories.  Source tracking is enabled as fragments are added.
+        """
+        self._state: dict[str, Any] = {"class_path": self.DEFAULT_CLASS_PATH}
         self._items_by_category: dict[str, dict[str, dict[str, Any]]] = {category: {} for category in self.NAMED_CATEGORIES}
         self._sources_by_category: dict[str, dict[str, str]] = {category: {} for category in self.NAMED_CATEGORIES}
         self._field_sources: dict[str, str] = {}
-        self._build_root: SourceRoot = get_root_folder()
+        self._build_root: SourceRoot = ROOT.get()
         self._build_root_locked = False
 
     def add(self, payload, **kwargs) -> None:
@@ -122,7 +175,7 @@ class ConfigurationManager:
             Fragment to merge into the current aggregated state.
         source_name : str, optional
             Explicit source label to associate with the fragment.
-        use_fast_loader : bool, optional
+        include_locations : bool, optional
             Forwarded to the configuration loader.
 
         Examples
@@ -145,7 +198,7 @@ class ConfigurationManager:
             ... )
         """
         source_name = kwargs.pop("source_name", None)
-        use_fast_loader = kwargs.pop("use_fast_loader", False)
+        include_locations = kwargs.pop("include_locations", False)
         if kwargs:
             unknown = ", ".join(sorted(kwargs))
             raise PyAMLConfigException(f"Unsupported ConfigurationManager.add() arguments: {unknown}")
@@ -153,7 +206,7 @@ class ConfigurationManager:
         fragment, inferred_source_name, source_root = self._load_payload(
             payload,
             source_name=source_name,
-            use_fast_loader=use_fast_loader,
+            include_locations=include_locations,
         )
         prepared = self._prepare_fragment(fragment, source_root, inferred_source_name)
         self._merge_fragment(prepared, inferred_source_name)
@@ -253,12 +306,12 @@ class ConfigurationManager:
             >>> manager.clear()
         """
         if category is None:
-            self._state = {"type": self.DEFAULT_TYPE}
+            self._state = {"class_path": self.DEFAULT_CLASS_PATH}
             self._field_sources.clear()
             for name in self.NAMED_CATEGORIES:
                 self._items_by_category[name].clear()
                 self._sources_by_category[name].clear()
-            self._build_root = get_root_folder()
+            self._build_root = ROOT.get()
             self._build_root_locked = False
             return
 
@@ -268,9 +321,9 @@ class ConfigurationManager:
             self._sources_by_category[category].clear()
             return
 
-        if category == "type":
-            self._state["type"] = self.DEFAULT_TYPE
-            self._field_sources.pop("type", None)
+        if category in ("type", "class_path"):
+            self._state["class_path"] = self.DEFAULT_CLASS_PATH
+            self._field_sources.pop("class_path", None)
             return
 
         if category in self._state:
@@ -468,7 +521,7 @@ class ConfigurationManager:
         snapshot = self._snapshot(include_internal_metadata=False)
         return snapshot
 
-    def build(self, ignore_external: bool = False):
+    def build(self, ignore_external: bool = False, validate: bool = False):
         r"""
         Build an Accelerator from the aggregated configuration snapshot.
 
@@ -491,9 +544,9 @@ class ConfigurationManager:
         from ..accelerator import Accelerator
 
         if isinstance(self._build_root, Path):
-            set_root_folder(self._build_root)
+            ROOT.set(self._build_root)
         snapshot = ConfigurationManager.strip_runtime_internal_metadata(self._snapshot(include_internal_metadata=True))
-        return Accelerator.from_dict(snapshot, ignore_external=ignore_external)
+        return Accelerator.from_dict(snapshot, ignore_external=ignore_external, validate=validate)
 
     def __dir__(self):
         """
@@ -599,14 +652,31 @@ class ConfigurationManager:
         payload,
         *,
         source_name: str | None,
-        use_fast_loader: bool,
+        include_locations: bool,
     ) -> tuple[dict[str, Any], str, SourceRoot]:
+        """
+        Load a dictionary or file payload and determine its source metadata.
+
+        Parameters
+        ----------
+        payload : object
+            Configuration dictionary or path to a YAML/JSON file.
+        source_name : str | None
+            Optional explicit source label.
+        include_locations : bool
+            Whether to preserve source locations while loading.
+
+        Returns
+        -------
+        tuple[dict[str, Any], str, SourceRoot]
+            Loaded fragment, source label, and source root directory.
+        """
         if isinstance(payload, dict):
             return copy.deepcopy(payload), source_name or "<dict>", None
 
         payload_path = self._coerce_path(payload)
         if is_remote_url(payload_path):
-            fragment, source_root = fetch_remote_config(payload_path, use_fast_loader=use_fast_loader)
+            fragment, source_root = fetch_remote_config(payload_path, include_locations=include_locations)
             if not self._build_root_locked:
                 self._build_root = source_root
                 self._build_root_locked = True
@@ -624,13 +694,13 @@ class ConfigurationManager:
             raise PyAMLConfigException(f"{payload_path} file not found")
 
         resolved_path = path.resolve()
-        previous_root = get_root_folder()
+        previous_root = ROOT.get()
         source_root = resolved_path.parent
         try:
-            set_root_folder(source_root)
-            fragment = load(resolved_path.name, None, use_fast_loader)
+            ROOT.set(source_root)
+            fragment = load(resolved_path.name, include_locations)
         finally:
-            set_root_folder(previous_root)
+            ROOT.set(previous_root)
 
         if not self._build_root_locked:
             self._build_root = source_root
@@ -639,19 +709,38 @@ class ConfigurationManager:
         return fragment, source_name or str(resolved_path), source_root
 
     def _prepare_fragment(self, fragment: dict[str, Any], source_root: SourceRoot, source_name: str) -> dict[str, Any]:
+        """
+        Validate and normalize a loaded configuration fragment.
+
+        Parameters
+        ----------
+        fragment : dict[str, Any]
+            Fragment to prepare.
+        source_root : SourceRoot
+            Root directory used to resolve relative simulator paths.
+        source_name : str
+            Label identifying the fragment source.
+
+        Returns
+        -------
+        dict[str, Any]
+            Normalized fragment ready to merge.
+        """
         if not isinstance(fragment, dict):
             raise PyAMLConfigException(
                 f"ConfigurationManager.add() expects a mapping at the top level, got '{type(fragment).__name__}'."
             )
 
-        accelerator_type = fragment.get("type", self.DEFAULT_TYPE)
-        if accelerator_type != self.DEFAULT_TYPE:
+        prepared = self._normalize_class_paths(fragment)
+
+        accelerator_class_path = prepared.get("class_path", self.DEFAULT_CLASS_PATH)
+        if accelerator_class_path != self.DEFAULT_CLASS_PATH:
             raise UnsupportedConfigurationRootError(
-                f"ConfigurationManager only supports '{self.DEFAULT_TYPE}' roots, got '{accelerator_type}'."
+                f"ConfigurationManager only supports '{self.DEFAULT_CLASS_PATH}' roots, got '{accelerator_class_path}'."
             )
 
-        prepared = copy.deepcopy(fragment)
-        prepared["type"] = self.DEFAULT_TYPE
+        prepared = copy.deepcopy(prepared)
+        prepared["class_path"] = self.DEFAULT_CLASS_PATH
 
         for category in self.NAMED_CATEGORIES:
             if category not in prepared:
@@ -672,9 +761,9 @@ class ConfigurationManager:
                         f"Configuration category '{category}' expects named objects, "
                         f"but entry at index {index} from source '{source_name}' has no 'name'."
                     )
-                if "type" not in entry:
+                if "class_path" not in entry:
                     raise PyAMLConfigException(
-                        f"Configuration entry '{entry['name']}' in category '{category}' has no 'type'."
+                        f"Configuration entry '{entry['name']}' in category '{category}' has no 'class_path'."
                     )
 
                 if category == "simulators":
@@ -682,7 +771,64 @@ class ConfigurationManager:
 
         return prepared
 
+    @classmethod
+    def _normalize_class_paths(cls, value: Any) -> Any:
+        """Normalize legacy and new configuration references to ``class_path``.
+
+        Legacy ``type`` entries are resolved using the module's ``PYAMLCLASS``
+        value. The modern ``class`` alias is accepted as a fully qualified
+        class path. The manager then uses only ``class_path`` internally.
+        """
+        if isinstance(value, list):
+            return [cls._normalize_class_paths(item) for item in value]
+        if not isinstance(value, dict):
+            return value
+
+        normalized = {
+            key: item if key in _INTERNAL_METADATA_KEYS else cls._normalize_class_paths(item) for key, item in value.items()
+        }
+        class_path = normalized.pop("class_path", None)
+        legacy_type = normalized.pop("type", None)
+        class_alias = normalized.pop("class", None)
+        if class_path is None and legacy_type is None:
+            if class_alias is not None:
+                # ``class`` is also supported as an alias for ``class_path``.
+                class_path = class_alias
+                class_alias = None
+            else:
+                return normalized
+        if class_path is not None and (legacy_type is not None or class_alias is not None):
+            raise PyAMLConfigException("Configuration cannot combine class_path with type or class.")
+        if class_path is None:
+            if not isinstance(legacy_type, str):
+                raise PyAMLConfigException(f"Invalid type '{legacy_type}'.")
+            if class_alias is None:
+                module = import_module(legacy_type)
+                class_alias = getattr(module, "PYAMLCLASS", None)
+                if class_alias is None:
+                    raise PyAMLConfigException(f"Module '{legacy_type}' does not define PYAMLCLASS.")
+            class_path = f"{legacy_type}.{class_alias}"
+        if not isinstance(class_path, str) or "." not in class_path:
+            raise PyAMLConfigException(f"Invalid class_path '{class_path}'. Expected 'module.Class'.")
+        normalized["class_path"] = class_path
+        return normalized
+
     def _merge_fragment(self, fragment: dict[str, Any], source_name: str) -> None:
+        """
+        Merge a prepared fragment into the aggregated configuration.
+
+        Parameters
+        ----------
+        fragment : dict[str, Any]
+            Normalized fragment to merge.
+        source_name : str
+            Source label associated with the fragment.
+
+        Returns
+        -------
+        None
+            This method returns ``None`` and updates manager state in place.
+        """
         duplicate_errors: list[str] = []
         pending_by_category: dict[str, list[dict[str, Any]]] = {}
 
@@ -735,12 +881,40 @@ class ConfigurationManager:
                 self._sources_by_category[category][copied["name"]] = source_name
 
     def _snapshot(self, *, include_internal_metadata: bool) -> dict[str, Any]:
+        """
+        Return a deep copy of the current aggregated configuration.
+
+        Parameters
+        ----------
+        include_internal_metadata : bool
+            No arguments are required.
+
+        Returns
+        -------
+        dict[str, Any]
+            Independent configuration dictionary.
+        """
         snapshot = copy.deepcopy(self._state)
         if include_internal_metadata:
             return snapshot
         return ConfigurationManager.strip_internal_metadata(snapshot)
 
     def _normalize_simulator_paths(self, entry: dict[str, Any], source_root: SourceRoot) -> None:
+        """
+        Normalize simulator paths relative to their source configuration.
+
+        Parameters
+        ----------
+        entry : dict[str, Any]
+            Simulator configuration entry to normalize.
+        source_root : SourceRoot
+            Source root used for relative paths.
+
+        Returns
+        -------
+        None
+            Updated simulator entry.
+        """
         if source_root is None:
             return
 
@@ -749,12 +923,38 @@ class ConfigurationManager:
             entry["lattice"] = resolve_reference(lattice, source_root)
 
     def _require_named_category(self, category: str) -> None:
+        """
+        Validate that a category supports named entries.
+
+        Parameters
+        ----------
+        category : str
+            Category name to validate.
+
+        Returns
+        -------
+        None
+            This method returns ``None`` when the category is valid.
+        """
         if category not in self.NAMED_CATEGORIES:
             raise PyAMLConfigException(
                 f"Unknown configuration category '{category}'. Expected one of: {', '.join(self.NAMED_CATEGORIES)}."
             )
 
     def _categories_for_name(self, name: str) -> list[str]:
+        """
+        Find categories containing an entry with the given name.
+
+        Parameters
+        ----------
+        name : str
+            Entry name to search for.
+
+        Returns
+        -------
+        list[str]
+            Matching category names.
+        """
         categories: list[str] = []
         for category in self.NAMED_CATEGORIES:
             if name in self._items_by_category[category]:
@@ -762,9 +962,24 @@ class ConfigurationManager:
         return categories
 
     def _format_entry(self, category: str, entry: dict[str, Any]) -> str:
+        """
+        Format an entry for a user-facing configuration summary.
+
+        Parameters
+        ----------
+        category : str
+            Category containing the entry.
+        entry : dict[str, Any]
+            Entry to format.
+
+        Returns
+        -------
+        str
+            Formatted entry description.
+        """
         name = entry.get("name", "<unnamed>")
-        entry_type = entry.get("type")
-        type_part = f" ({entry_type})" if entry_type else ""
+        entry_class_path = entry.get("class_path")
+        type_part = f" ({entry_class_path})" if entry_class_path else ""
 
         details: list[str] = []
         if category == "arrays":
@@ -783,6 +998,19 @@ class ConfigurationManager:
         return f"    {name}{type_part}{detail_part}"
 
     def _format_source(self, source: str) -> str:
+        """
+        Format a source label for display.
+
+        Parameters
+        ----------
+        source : str
+            Source path or label.
+
+        Returns
+        -------
+        str
+            Human-readable source description.
+        """
         if source.startswith("<") and source.endswith(">"):
             return source
         source_path = Path(source)
@@ -792,6 +1020,21 @@ class ConfigurationManager:
         return source
 
     def _describe_entry_source(self, entry: dict[str, Any], fallback_source: str) -> str:
+        """
+        Describe where a named configuration entry originated.
+
+        Parameters
+        ----------
+        entry : dict[str, Any]
+            Category containing the entry.
+        fallback_source : str
+            Entry name to describe.
+
+        Returns
+        -------
+        str
+            Source description, or ``None`` if unavailable.
+        """
         location = entry.get("__location__")
         if isinstance(location, tuple) and len(location) == 3:
             source, line, column = location
@@ -799,11 +1042,39 @@ class ConfigurationManager:
         return f"source '{fallback_source}'"
 
     def _coerce_path(self, payload) -> str:
+        """
+        Convert a path-like value to an absolute configuration path.
+
+        Parameters
+        ----------
+        payload : object
+            Path value to convert.
+
+        Returns
+        -------
+        str
+            Resolved path.
+        """
         if isinstance(payload, (str, os.PathLike)):
             return os.fspath(payload)
         raise PyAMLConfigException(f"Cannot infer configuration source from payload of type '{type(payload).__name__}'.")
 
     def _extend_unique(self, target: list[str], values) -> None:
+        """
+        Append values that are not already present.
+
+        Parameters
+        ----------
+        target : list[str]
+            Destination sequence.
+        values : object
+            Values to append while preserving order.
+
+        Returns
+        -------
+        None
+            This method updates the destination sequence in place.
+        """
         for value in values:
             if value not in target:
                 target.append(value)

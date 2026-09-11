@@ -1,95 +1,122 @@
-import numpy as np
-from pydantic import BaseModel, ConfigDict
+"""
+RF-transmitter configuration and read/write interfaces.
 
-try:
-    from typing import Self  # Python 3.11+
-except ImportError:
-    from typing_extensions import Self  # Python 3.10 and earlier
+This module models RF transmitters, their cavity assignments, harmonic and
+voltage distribution, and the voltage and phase handles bound on attachment.
+"""
+
+import copy
+from typing import Self
 
 from .. import PyAMLException
 from ..common import abstract
-from ..common.element import Element, ElementConfigModel
-from ..control.deviceaccess import DeviceAccess
+from ..common.element import Element, __pyaml_repr__
+from ..validation import DynamicValidation, register_schema
 
 # Define the main class name for this module
 PYAMLCLASS = "RFTransmitter"
 
 
-class ConfigModel(ElementConfigModel):
+@register_schema
+class RFTransmitter(Element, DynamicValidation):
     """
-    Configuration model for RF Transmitter.
+    Represent an RF transmitter and its cavity controls.
+
+    A transmitter may expose read/write voltage and phase handles after it is
+    attached to a simulator or control-system element holder.
+
+    Parameters
+    ----------
+    name : str
+        Name of the transmitter.
+    cavities : list[str]
+        Names of cavities driven by the transmitter.
+    voltage : str | None
+        Name of the voltage device, if configured.
+    phase : str | None
+        Name of the phase device, if configured.
+    harmonic : float
+        Harmonic number associated with the transmitter.
+    distribution : float
+        Fraction of aggregate voltage assigned to this transmitter.
+    lattice_names : str | None
+        Optional lattice-element mapping.
+    description : str | None
+        Optional human-readable description.
 
     Attributes
     ----------
-    voltage : DeviceAccess or None, optional
-        Device to apply cavity voltage
-    phase : DeviceAccess or None, optional
-        Device to apply cavity phase
-    cavities : list[str]
-        List of cavity names connected to this transmitter
-    harmonic : float, optional
-        Harmonic frequency ratio, 1.0 for main frequency, by default 1.0
-    distribution : float, optional
-        RF distribution (Part of the total RF voltage powered by this transmitter),
-        by default 1.0
+    voltage
+        Return the read/write RF-voltage handle in volts.
+    phase
+        Return the read/write RF-phase handle in radians.
+
+    Methods
+    -------
+    attach(peer, voltage, phase)
+        Return a copy with voltage and phase handles attached.
     """
 
-    model_config = ConfigDict(arbitrary_types_allowed=True, extra="forbid")
+    def __init__(
+        self,
+        name: str,
+        cavities: list[str],
+        voltage: str | None = None,
+        phase: str | None = None,
+        harmonic: float = 1.0,
+        distribution: float = 1.0,
+        lattice_names: str | None = None,
+        description: str | None = None,
+    ):
+        """
+        Initialize an RF-transmitter configuration.
+        """
+        super().__init__(name, lattice_names, description)
+        self.voltage_name = voltage
+        self.phase_name = phase
+        self.cavities = cavities
+        self.harmonic = harmonic
+        self.distribution = distribution
 
-    voltage: DeviceAccess | None = None
-    phase: DeviceAccess | None = None
-    cavities: list[str]
-    harmonic: float = 1.0
-    distribution: float = 1.0
-
-
-class RFTransmitter(Element):
-    """
-    Class that handle a RF transmitter
-    """
-
-    def __init__(self, cfg: ConfigModel):
-        super().__init__(cfg.name)
-        self._cfg = cfg
         self.__voltage = None
         self.__phase = None
 
     @property
     def voltage(self) -> abstract.ReadWriteFloatScalar:
         """
-        Get the RF voltage in [V].
+        Return the read/write RF-voltage handle in volts.
 
         Returns
         -------
         abstract.ReadWriteFloatScalar
-            Read/write access to RF voltage
+            Read/write access to the transmitter voltage.
 
         Raises
         ------
         PyAMLException
-            If transmitter is unattached or has no voltage device defined
+            If the transmitter is unattached or has no voltage device.
         """
         if self.__voltage is None:
-            raise PyAMLException(f"{str(self)} is unattached or has no voltage device defined")
+            raise PyAMLException(f"{str(self.name)} is unattached or has no voltage device defined")
         return self.__voltage
 
     @property
     def phase(self) -> abstract.ReadWriteFloatScalar:
         """
-        Get the RF phase in [rad].
+        Return the read/write RF-phase handle in radians.
 
         Returns
         -------
         abstract.ReadWriteFloatScalar
-            Read/write access to RF phase
+            Read/write access to the transmitter phase.
 
         Raises
         ------
         PyAMLException
-            If transmitter is unattached or has no phase device defined
+            If the transmitter is unattached or has no phase device.
         """
         if self.__phase is None:
-            raise PyAMLException(f"{str(self)} is unattached or has no phase device defined")
+            raise PyAMLException(f"{str(self.name)} is unattached or has no phase device defined")
         return self.__phase
 
     def attach(
@@ -99,25 +126,31 @@ class RFTransmitter(Element):
         phase: abstract.ReadWriteFloatScalar,
     ) -> Self:
         """
-        Attach voltage and phase attributes to a peer.
+        Return a copy with voltage and phase handles attached.
 
         Parameters
         ----------
         peer : object
-            The peer object (simulator or control system)
+            Simulator or control-system element holder.
         voltage : abstract.ReadWriteFloatScalar
-            Voltage accessor to attach
+            Read/write voltage accessor.
         phase : abstract.ReadWriteFloatScalar
-            Phase accessor to attach
+            Read/write phase accessor.
 
         Returns
         -------
         Self
-            A new attached instance of RFTransmitter
+            Attached copy of the transmitter.
         """
         # Attach voltage and phase attribute and returns a new reference
-        obj = self.__class__(self._cfg)
+        obj = copy.copy(self)
         obj.__voltage = voltage
         obj.__phase = phase
         obj._peer = peer
         return obj
+
+    def __repr__(self):
+        """
+        Implement the ``__repr__`` string.
+        """
+        return __pyaml_repr__(self, exclude=["voltage", "phase"])

@@ -1,120 +1,298 @@
+"""
+Serialized magnet elements.
+
+This module defines magnet elements composed of multiple serialized magnets.
+"""
+
+from typing import TYPE_CHECKING
+
 import numpy as np
 from scipy.constants import speed_of_light
 
 from .. import PyAMLException
 from ..common import abstract
-from ..common.element import Element, ElementConfigModel, __pyaml_repr__
-from ..configuration import Factory
-from ..control.deviceaccess import DeviceAccess
+from ..common.element import Element, __pyaml_repr__
+from ..configuration.factory import ELEMENT_REGISTRY
+from ..validation import DynamicValidation, register_schema
 from .function_mapping import function_map
-from .magnet import Magnet, MagnetConfigModel
+from .magnet import Magnet
 from .model import MagnetModel
+
+if TYPE_CHECKING:
+    from ..common.holders.element_holder import ElementHolder
 
 # Define the main class name for this module
 PYAMLCLASS = "SerializedMagnets"
 
 
-class ConfigModel(ElementConfigModel):
-    function: str
-    """List of magnets"""
-    elements: list[str] | str
-    """List of magnets"""
-    model: MagnetModel | None = None
-    """Object in charge of converting magnet strengths to currents"""
-
-
 class ReadWriteSerializedStrengths(abstract.ReadWriteFloatScalar):
-    def __init__(self, cfg: ConfigModel, elements: list[abstract.ReadWriteFloatScalar]):
+    """
+    Read/write aggregate for serialized-magnet strengths.
+
+    Parameters
+    ----------
+    elements : list[abstract.ReadWriteFloatScalar]
+        Per-magnet accessors sharing the group setpoint.
+    model : MagnetModel | None
+        Magnet model used to convert between strength and hardware value. Optional for a hardware-only group.
+
+    Methods
+    -------
+    get()
+        Return the sum of the serialized element strengths.
+    set(value)
+        Set the shared serialized-magnet strength.
+    set_and_wait(value)
+        Set the shared strength and wait for convergence.
+    unit()
+        Return the physical strength unit.
+    get_model()
+        Return the magnet conversion model.
+    get_elements()
+        Return the underlying scalar element accessors.
+    set_magnet_rigidity(brho)
+        Set the magnetic rigidity used for conversion.
+    """
+
+    def __init__(
+        self,
+        elements: list[abstract.ReadWriteFloatScalar],
+        model: MagnetModel | None = None,
+    ):
+        """
+        Initialize a shared strength accessor for serialized elements.
+        """
         self.elements = elements
-        self._cfg = cfg
+        self.model = model
 
     def get(self) -> float:
+        """Return the sum of the serialized element strengths."""
         return sum([elem.get() for elem in self.elements])
 
     def set(self, value: float):
+        """
+        Set the shared serialized-magnet strength.
+
+        Parameters
+        ----------
+        value : float
+            Strength applied to every magnet of the group.
+        """
         self.elements[0].set(value)
 
     def set_and_wait(self, value: float):
+        """
+        Set the shared strength and wait for convergence.
+
+        Parameters
+        ----------
+        value : float
+            Strength applied to every magnet of the group.
+
+        Raises
+        ------
+        NotImplementedError
+            Waiting for readback convergence is not implemented for this accessor.
+        """
         raise NotImplementedError("Not implemented yet.")
 
     def unit(self) -> str:
-        return self._cfg.model.get_strength_units()[0]
+        """Return the physical strength unit."""
+        return self.model.get_strength_units()[0]
 
     def get_model(self) -> MagnetModel:
-        return self._cfg.model
+        """Return the magnet conversion model."""
+        return self.model
 
     def get_elements(self):
+        """Return the underlying scalar element accessors."""
         return self.elements
 
     def set_magnet_rigidity(self, brho: np.double):
+        """
+        Set the magnetic rigidity used for conversion.
+
+        Parameters
+        ----------
+        brho : np.double
+            Magnetic rigidity in tesla metres, forwarded to the magnet model.
+        """
         [element.set_magnet_rigidity(brho) for element in self.elements]
 
 
 class ReadWriteSerializedHardwares(ReadWriteSerializedStrengths):
-    def __init__(self, cfg: ConfigModel, elements: list[abstract.ReadWriteFloatScalar]):
-        super().__init__(cfg, elements)
-
-    def unit(self) -> str:
-        return self._cfg.model.get_hardware_units()[0]
-
-    def set_magnet_rigidity(self, brho: np.double):
-        [element.set_magnet_rigidity(brho) for element in self.elements]
-
-
-class SerializedMagnets(Element):
     """
-    Class managing serialized magnets: a set of magnet with the same set point.
-    The set point is usually managed by only one power supply but it can be covered by several ones.
-    If several power supplies
-
+    Read/write aggregate for serialized-magnet hardware values.
 
     Parameters
     ----------
-    cfg : ConfigModel
-        Configuration object TODO: to describe
+    elements : list[abstract.ReadWriteFloatScalar]
+        Per-magnet accessors sharing the group setpoint.
+    model : MagnetModel | None
+        Magnet model used to convert between strength and hardware value. Optional for a hardware-only group.
+
+    Methods
+    -------
+    unit()
+        Return the hardware-value unit.
+    set_magnet_rigidity(brho)
+        Set the magnetic rigidity used for conversion.
+    """
+
+    def __init__(
+        self,
+        elements: list[abstract.ReadWriteFloatScalar],
+        model: MagnetModel | None = None,
+    ):
+        """
+        Initialize a shared hardware accessor for serialized elements.
+        """
+        super().__init__(elements, model)
+
+    def unit(self) -> str:
+        """Return the hardware-value unit."""
+        return self.model.get_hardware_units()[0]
+
+    def set_magnet_rigidity(self, brho: np.double):
+        """
+        Set the magnetic rigidity used for conversion.
+
+        Parameters
+        ----------
+        brho : np.double
+            Magnetic rigidity in tesla metres, forwarded to the magnet model.
+        """
+        [element.set_magnet_rigidity(brho) for element in self.elements]
+
+
+@register_schema
+class SerializedMagnets(Element, DynamicValidation):
+    """
+    Serialized group of magnets that share the same set point.
+
+    This class represents a set of magnets that are controlled together as a
+    single logical device. The serialized magnets may be driven by one power
+    supply or by several power supplies, but they share a common physics or
+    hardware set point through a combined read/write interface.
+
+    Parameters
+    ----------
+    name : str
+        Name of the serialized magnet group.
+    function : str
+        Magnet function identifier used to select the concrete virtual magnet type.
+    elements : list[str] | str
+        Names of the individual magnets in the group.
+    model : MagnetModel | None, optional
+        Magnet model used to convert between strengths and hardware values.
+    description : str | None, optional
+        Human-readable description of the serialized magnet group.
+    peer : object, optional
+        Control-system or simulator peer used when attaching the magnet group.
+
+    Attributes
+    ----------
+    strength
+        Gives access to the strengths of those magnets in physics unit
+    hardware
+        Gives access to the strengths of this those magnets in hardware unit when possible
+
+    Methods
+    -------
+    get_nb_magnets()
+        Return the number of magnets in the serialized group.
+    get_magnets()
+        Return the group's virtual single-function magnets.
+    attach(peer, strengths, hardwares)
+        Attach the group and its virtual magnets to a runtime peer.
+    set_energy(energy)
+        Set beam energy for serialized-magnet strength conversion.
+    get_device_names()
+        Return the associated device names.
 
     Raises
     ------
-    pyaml.PyAMLException
-        In case of wrong initialization
+    PyAMLException
+        If the requested function is not implemented or if the configuration is
+        invalid.
+
+    Notes
+    -----
+    The serialized group stores a virtual magnet for each underlying element. When
+    attached, each virtual magnet is bound to the same peer and the group exposes
+    aggregate strength and hardware accessors.
     """
 
-    def __init__(self, cfg: ConfigModel, peer=None):
-        super().__init__(cfg.name)
-        self._cfg = cfg
-        self.model = cfg.model
+    def __init__(
+        self,
+        name: str,
+        function: str,
+        elements: list[str] | str,
+        model: MagnetModel | None = None,
+        description: str | None = None,
+        peer=None,
+    ):
+        """
+        Initialize a group of magnets sharing one setpoint.
+        """
+        super().__init__(name, None, description)
+
+        self.function = function
+        self.model = model
+
         self.polynom = None
         self.__strengths = None
         self.__hardwares = None
         self.__virtuals: list[Magnet] = []
-        self.__elements = cfg.elements if isinstance(cfg.elements, list) else [cfg.elements]
+        self.__elements = elements if isinstance(elements, list) else [elements]
         self.model.set_number_of_magnets(len(self.__elements))
         if peer is None:
             # Configuration part
-            self.polynom = function_map[self._cfg.function].polynom
-            if self._cfg.function not in function_map:
-                raise PyAMLException(self._cfg.function + " not implemented for serialized magnet")
+            self.polynom = function_map[self.function].polynom
+            if self.function not in function_map:
+                raise PyAMLException(self.function + " not implemented for serialized magnet")
             for element in self.__elements:
                 # Check mapping validity
                 # Create the virtual magnet for the corresponding magnet
                 vm = self.__create_virtual_magnet(element)
                 self.__virtuals.append(vm)
                 # Register the virtual element in the factory to have a coherent factory and improve error reporting
-                Factory.register_element(vm)
+                ELEMENT_REGISTRY.register(vm)
         else:
             # Attach
             self._peer = peer
 
+    def _fill_device(self, holder: "ElementHolder") -> None:
+        holder._fill_serialized_magnets(self)
+
     def __create_virtual_magnet(self, name: str) -> Magnet:
+        """
+        Create a virtual magnet for one serialized element.
+
+        The configured function mapping selects the concrete magnet class, and
+        the serialized group's model is shared with the new virtual magnet.
+
+        Parameters
+        ----------
+        name : str
+            Name assigned to the virtual magnet.
+
+        Returns
+        -------
+        Magnet
+            Newly created virtual magnet linked to the serialized group.
+        """
         args = {"name": name, "model": self.model}
-        virtual: Magnet = function_map[self._cfg.function](MagnetConfigModel(**args))
+        virtual: Magnet = function_map[self.function](**args)
         virtual.set_model_name(self.get_name())
         return virtual
 
     def get_nb_magnets(self) -> int:
+        """Return the number of magnets in the serialized group."""
         return len(self.__elements)
 
     def get_magnets(self) -> list[Magnet]:
+        """Return the group's virtual single-function magnets."""
         return self.__virtuals
 
     def attach(
@@ -123,10 +301,27 @@ class SerializedMagnets(Element):
         strengths: list[abstract.ReadWriteFloatScalar],
         hardwares: list[abstract.ReadWriteFloatScalar],
     ) -> list[Magnet]:
+        """
+        Attach the group and its virtual magnets to a runtime peer.
+
+        Parameters
+        ----------
+        peer : object
+            Control system or simulator the group is bound to.
+        strengths : list[abstract.ReadWriteFloatScalar]
+            Strength accessor of each magnet in the group, in declaration order.
+        hardwares : list[abstract.ReadWriteFloatScalar]
+            Hardware accessor of each magnet in the group, in declaration order.
+
+        Returns
+        -------
+        list[Magnet]
+            Virtual magnets of the group, each bound to ``peer``.
+        """
         l = []
-        n_ser_mag = SerializedMagnets(self._cfg, peer)
-        n_ser_mag.__strengths = ReadWriteSerializedStrengths(self._cfg, strengths)
-        n_ser_mag.__hardwares = ReadWriteSerializedHardwares(self._cfg, hardwares)
+        n_ser_mag = SerializedMagnets(self._name, self.function, self.__elements, self.model, self.description, peer)
+        n_ser_mag.__strengths = ReadWriteSerializedStrengths(strengths, self.model)
+        n_ser_mag.__hardwares = ReadWriteSerializedHardwares(hardwares, self.model)
         l.append(n_ser_mag)
         # Construct a single magnet for each magnet.
         sub_magnets: list[Magnet] = []
@@ -159,6 +354,17 @@ class SerializedMagnets(Element):
         return self.__hardwares
 
     def set_energy(self, energy: float):
+        """
+        Set beam energy for serialized-magnet strength conversion.
+
+        The energy is converted to magnetic rigidity and propagated to the
+        serialized magnet model.
+
+        Parameters
+        ----------
+        energy : float
+            Beam energy in electronvolts.
+        """
         brho = energy / speed_of_light
         if self.model is not None:
             self.model.set_magnet_rigidity(brho)
@@ -168,7 +374,11 @@ class SerializedMagnets(Element):
             self.__strengths.set_magnet_rigidity(brho)
 
     def __repr__(self):
+        """
+        Implement the ``__repr__`` string.
+        """
         return __pyaml_repr__(self)
 
-    def get_devices(self) -> list[DeviceAccess]:
-        return self.model.get_devices()
+    def get_device_names(self) -> list[str | None]:
+        """Return the associated device names."""
+        return self.model.get_device_names()

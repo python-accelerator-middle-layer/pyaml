@@ -1,4 +1,4 @@
 {
-  "type": "pyaml.configuration.csvcurve",
+  "type": "pyaml.magnet.csvcurve",
   "file": "sr/magnet_models/QF1_strength.csv"
 }

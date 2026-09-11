@@ -1,0 +1,21 @@
+import numpy as np
+
+from pyaml.configuration import ROOT
+from pyaml.magnet.csvcurve import CSVCurve
+from pyaml.magnet.curve import Curve
+
+
+def curve_test(file: str, current: float, strength: float):
+    curve = CSVCurve(file=file)
+    curveData = curve.get_curve()
+    icurveData = Curve.inverse(curveData)
+    x1 = np.interp(current, curveData[:, 0], curveData[:, 1])
+    assert np.abs(x1 - strength) < 1e-6
+    y1 = np.interp(x1, icurveData[:, 0], icurveData[:, 1])
+    assert np.abs(y1 - current) < 1e-6
+
+
+def test_curve(config_root_dir):
+    ROOT.set(config_root_dir)
+    curve_test("sr/magnet_models/QF1_strength.csv", 85, 16.618788)
+    curve_test("sr/magnet_models/QD2_strength.csv", 87, -12.319894)

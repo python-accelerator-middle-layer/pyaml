@@ -1,44 +1,18 @@
 import numpy as np
 from numpy import typing as npt
-from pydantic import BaseModel
 
 import pyaml
 from pyaml.control.deviceaccess import DeviceAccess
 from pyaml.control.deviceaccesslist import DeviceAccessList
 
 from .attribute import Attribute
-from .attribute import ConfigModel as AttributeConfigModel
-
-PYAMLCLASS: str = "MultiAttribute"
 
 LAST_NB_WRITTEN = 0
 
 
-class ConfigModel(BaseModel):
-    """
-    Configuration model for a list of DeviceAccess.
-
-    Attributes
-    ----------
-    attributes : list of str
-        List of Tango attribute paths.
-    name : str, optional
-        Group name.
-    unit : str, optional
-        Unit of the attributes.
-    """
-
-    attributes: list[str] = []
-    name: str = ""
-
-
 class MultiAttribute(DeviceAccessList):
-    def __init__(self, cfg: ConfigModel = None):
-        super().__init__()
-        self._cfg = cfg
-        if cfg.attributes:
-            for name in cfg.attributes:
-                self.add_devices(Attribute(AttributeConfigModel(name, cfg.unit)))
+    def __init__(self):
+        self._items = []
 
     def add_devices(self, devices: DeviceAccess | list[DeviceAccess]):
         if isinstance(devices, list):
@@ -49,7 +23,7 @@ class MultiAttribute(DeviceAccessList):
                         (tango.pyaml.attribute) but got
                         ({device.__class__.__name__})"""
                     )
-            super().extend(devices)
+            self._items.extend(devices)
         else:
             if not isinstance(devices, Attribute):
                 raise pyaml.PyAMLException(
@@ -57,46 +31,46 @@ class MultiAttribute(DeviceAccessList):
                     (tango.pyaml.attribute) but got
                     ({devices.__class__.__name__})"""
                 )
-            super().append(devices)
+            self._items.append(devices)
 
-    def get_devices(self) -> DeviceAccess | list[DeviceAccess]:
-        if len(self) == 1:
-            return self[0]
-        else:
-            return self
+    def len(self) -> int:
+        return len(self._items)
+
+    def get_device_at(self, index: int) -> DeviceAccess:
+        return self._items[index]
 
     def set(self, value: npt.NDArray[np.float64]):
         print(f"MultiAttribute.set({len(value)} values)")
         global LAST_NB_WRITTEN
         LAST_NB_WRITTEN += len(value)
-        for idx, a in enumerate(self):
+        for idx, a in enumerate(self._items):
             a.set(value[idx])
 
     def set_and_wait(self, value: npt.NDArray[np.float64]):
         pass
 
     def get(self) -> npt.NDArray[np.float64]:
-        print(f"MultiAttribute.get({len(self)} values)")
-        return np.array([a.get() for a in self])
+        print(f"MultiAttribute.get({len(self._items)} values)")
+        return np.array([a.get() for a in self._items])
 
     def readback(self) -> np.array:
         return np.array([])
 
     def unit(self) -> list[str]:
-        return [a.unit() for a in self]
+        return [a.unit() for a in self._items]
 
     def get_last_nb_written(self) -> int:
         return self.__last_nb_written
 
     def get_range(self) -> list[float]:
         attr_range: list[float] = []
-        for device in self:
+        for device in self._items:
             attr_range.extend(device.get_range())
         return attr_range
 
     def check_device_availability(self) -> bool:
         available = False
-        for device in self:
+        for device in self._items:
             available = device.check_device_availability()
             if not available:
                 break

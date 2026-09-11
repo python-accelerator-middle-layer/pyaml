@@ -32,13 +32,11 @@ devices:
       calibration_factors: 1.00504
       calibration_offsets: 0.0
       unit: m-1
+      hardware_unit: A
       curves:
-        type: pyaml.configuration.csvcurve
+        type: pyaml.magnet.csvcurve
         file: sr/magnet_models/serialized_strength.csv
-      powerconverter:
-        type: tango.pyaml.attribute
-        attribute: srmag/ps-corr-sh1/c01-a-ch1/current
-        unit: A
+      powerconverter: srmag/ps-corr-sh1/c01-a-ch1/current
   - type: pyaml.magnet.serialized_magnet
     name: QF1A
     function: B1
@@ -79,13 +77,11 @@ devices:
       calibration_factors: 1
       calibration_offsets: 0.0
       unit: m-1
+      hardware_unit: A
       curves:
-        type: pyaml.configuration.csvcurve
+        type: pyaml.magnet.csvcurve
         file: sr/magnet_models/QF1_strength.csv
-      powerconverter:
-        type: tango.pyaml.attribute
-        attribute: srmag/ps-corr-sh1/c01-a-ch1/current
-        unit: A
+      powerconverter: srmag/ps-corr-sh1/c01-a-ch1/current
   - type: pyaml.magnet.serialized_magnet
     name: QF1E
     function: B1
@@ -126,13 +122,11 @@ devices:
       calibration_factors: 1
       calibration_offsets: 0.0
       unit: m-1
+      hardware_unit: A
       curves:
-        type: pyaml.configuration.csvcurve
+        type: pyaml.magnet.csvcurve
         file: sr/magnet_models/QF1_strength.csv
-      powerconverter:
-        type: tango.pyaml.attribute
-        attribute: srmag/ps-corr-sh1/c01-a-ch1/current
-        unit: A
+      powerconverter: srmag/ps-corr-sh1/c01-a-ch1/current
   - type: pyaml.magnet.serialized_magnet
     name: QD2A
     function: B1
@@ -173,13 +167,11 @@ devices:
       calibration_factors: 1
       calibration_offsets: 0.0
       unit: m-1
+      hardware_unit: A
       curves:
-        type: pyaml.configuration.csvcurve
+        type: pyaml.magnet.csvcurve
         file: sr/magnet_models/QD2_strength.csv
-      powerconverter:
-        type: tango.pyaml.attribute
-        attribute: srmag/ps-corr-sh1/c01-a-ch1/current
-        unit: A
+      powerconverter: srmag/ps-corr-sh1/c01-a-ch1/current
   - type: pyaml.magnet.serialized_magnet
     name: QD2E
     function: B1
@@ -220,28 +212,20 @@ devices:
       calibration_factors: 1
       calibration_offsets: 0.0
       unit: m-1
+      hardware_unit: A
       curves:
-        type: pyaml.configuration.csvcurve
+        type: pyaml.magnet.csvcurve
         file: sr/magnet_models/QD2_strength.csv
-      powerconverter:
-        type: tango.pyaml.attribute
-        attribute: srmag/ps-corr-sh1/c01-a-ch1/current
-        unit: A
+      powerconverter: srmag/ps-corr-sh1/c01-a-ch1/current
   - type: pyaml.diagnostics.tune_monitor
     name: BETATRON_TUNE
-    tune_h:
-      type: tango.pyaml.attribute_read_only
-      attribute: srdiag/beam-tune/main/Qh
-      unit: mm
-    tune_v:
-      type: tango.pyaml.attribute_read_only
-      attribute: srdiag/beam-tune/main/Qv
-      unit: mm
+    tune_h: srdiag/beam-tune/main/Qh
+    tune_v: srdiag/beam-tune/main/Qv
   - type: pyaml.tuning_tools.tune
     name: DEFAULT_TUNE_CORRECTION
     quad_array_name: QForTune
     betatron_tune_name: BETATRON_TUNE
-    response_matrix: file:tune_response.json
+    response_matrix: ${path:tune_response.json}
   - type: pyaml.tuning_tools.tune_response_matrix
     name: DEFAULT_TUNE_RESPONSE_MATRIX
     quad_array_name: QForTune
