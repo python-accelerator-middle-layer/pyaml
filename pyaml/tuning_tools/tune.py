@@ -27,6 +27,7 @@ logger = logging.getLogger(__name__)
 
 # Define the main class name for this module
 PYAMLCLASS = "Tune"
+DEFAULT_BETATRON_TUNE_MONITOR = "BETATRON_TUNE"
 
 
 @register_schema
@@ -50,13 +51,13 @@ class Tune(TuningTool, DynamicValidation):
         Name of the tuning tool.
     quad_array_name : str
         Name of the quadrupole array used to adjust the tune.
-    betatron_tune_name : str
-        Name of the betatron tune monitor used to measure the horizontal and
-        vertical tunes.
     response_matrix : str or ResponseMatrixData
         Tune response matrix or path to a file containing the response matrix.
         The matrix is expected to have one row for each tune plane and one
         column for each quadrupole.
+    betatron_tune_name : str, optional
+        Name of the betatron tune monitor used to measure the horizontal and
+        vertical tunes. The default is ``"BETATRON_TUNE"``.
 
     Attributes
     ----------
@@ -64,6 +65,10 @@ class Tune(TuningTool, DynamicValidation):
         Name of the configured quadrupole array.
     betatron_tune_name : str
         Name of the configured betatron tune monitor.
+    quadrupoles : MagnetArray
+        Quadrupole array used by the correction.
+    tune_monitor : BetatronTuneMonitor
+        Betatron tune monitor used by the correction.
     response_matrix : ResponseMatrixData or None
         Loaded tune response matrix.
 
@@ -87,8 +92,8 @@ class Tune(TuningTool, DynamicValidation):
         self,
         name: str,
         quad_array_name: str,
-        betatron_tune_name: str,
         response_matrix: str | ResponseMatrixData,
+        betatron_tune_name: str = DEFAULT_BETATRON_TUNE_MONITOR,
     ):
         """
         Initialize a betatron-tune correction tool.
@@ -135,14 +140,14 @@ class Tune(TuningTool, DynamicValidation):
         return self._response_matrix
 
     @property
-    def _tm(self) -> "BetatronTuneMonitor":
-        """Return the betatron tune monitor."""
+    def tune_monitor(self) -> "BetatronTuneMonitor":
+        """Return the betatron tune monitor used by the correction."""
         self.check_peer()
         return self.peer.get_betatron_tune_monitor(self.betatron_tune_name)
 
     @property
-    def _quads(self) -> "MagnetArray":
-        """Return the quadrupole array."""
+    def quadrupoles(self) -> "MagnetArray":
+        """Return the quadrupole array used by the correction."""
         self.check_peer()
         return self.peer.magnets.get(self.quad_array_name)
 
@@ -153,7 +158,7 @@ class Tune(TuningTool, DynamicValidation):
     def readback(self):
         """Return the current horizontal and vertical betatron tune."""
         self.check_peer()
-        return self._tm.tune.get()
+        return self.tune_monitor.tune.get()
 
     def set(self, tune: np.array, iter: int = 1, wait_time: float = 0.0):
         """
@@ -214,8 +219,8 @@ class Tune(TuningTool, DynamicValidation):
         """
         if np.shape(dtune) != (2,):
             raise PyAMLException("Tune.add(): invalid input dtune dimension, (2,) expected")
-        strengths = self._quads.strengths.get()
+        strengths = self.quadrupoles.strengths.get()
         strengths += self.correct(dtune)
-        self._quads.strengths.set(strengths)
+        self.quadrupoles.strengths.set(strengths)
         sleep(wait_time)
         self._setpoint += dtune
