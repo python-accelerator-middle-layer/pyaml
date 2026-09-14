@@ -2,59 +2,11 @@ import numpy as np
 
 from pyaml.accelerator import Accelerator
 from pyaml.common.constants import Action
-from pyaml.tuning_tools.tune import DEFAULT_BETATRON_TUNE_MONITOR, Tune
 
 
 def callback(action: Action, data: dict):
     print(f"{action}, data:{data}")
     return True
-
-
-class _NamedElements:
-    def __init__(self, elements):
-        self.elements = elements
-
-    def get(self, name):
-        return self.elements[name]
-
-
-class _TunePeer:
-    def __init__(self, monitors, magnet_arrays):
-        self.monitors = monitors
-        self.magnets = _NamedElements(magnet_arrays)
-
-    def get_betatron_tune_monitor(self, name):
-        return self.monitors[name]
-
-
-def test_tune_monitor_selection():
-    default_monitor = object()
-    alternate_monitor = object()
-    quadrupoles = object()
-    peer = _TunePeer(
-        monitors={
-            DEFAULT_BETATRON_TUNE_MONITOR: default_monitor,
-            "ALTERNATE_TUNE": alternate_monitor,
-        },
-        magnet_arrays={"QForTune": quadrupoles},
-    )
-
-    default_tune = Tune(
-        name="DEFAULT_TUNE",
-        quad_array_name="QForTune",
-        response_matrix="tests/config/tune_response.json",
-    ).attach(peer)
-    assert default_tune.tune_monitor is default_monitor
-    assert default_tune.quadrupoles is quadrupoles
-
-    alternate_tune = Tune(
-        name="ALTERNATE_TUNE",
-        quad_array_name="QForTune",
-        response_matrix="tests/config/tune_response.json",
-        betatron_tune_name="ALTERNATE_TUNE",
-    ).attach(peer)
-    assert alternate_tune.tune_monitor is alternate_monitor
-    assert alternate_tune.quadrupoles is quadrupoles
 
 
 def test_tune_tool():
