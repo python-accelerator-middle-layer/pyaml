@@ -252,7 +252,17 @@ class Element:
         Unique element name.
     lattice_names : str or None, optional
         Lattice element selector associated with this element. Defaults to
-        ``name`` when omitted.
+        ``name`` when omitted. A pyAML element can be associated to several lattice elements.
+        Defaults to name when omitted.
+
+        | Supported syntax of lattice_names:
+        | ``list(name,[name])`` : Lattice element names
+        | ``[name]@idx[,idx]`` : Lattice element indices in the subset formed by name.
+        | ``[name]#start_idx..end_idx`` : Lattice element range in the subset formed by name.
+
+        In the above syntax, if the name is not specficied, the whole set
+        of lattice element is used for indexing.
+
     description : str or None, optional
         Human-readable element description.
 
