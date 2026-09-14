@@ -50,7 +50,7 @@ html_static_path = ["_static"]
 html_title = "pyaml"
 html_show_sourcelink = False
 html_css_files = ["custom.css"]
-html_logo = "_static/_images/logo.png"
+html_logo = "_static/_logo/pyaml-logo.svg"
 
 html_theme_options = {
     "navigation_depth": 4,
