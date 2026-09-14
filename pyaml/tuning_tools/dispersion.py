@@ -40,7 +40,7 @@ class Dispersion(MeasurementTool, DynamicValidation):
     rf_plant_name : str
         Name of the RF plant whose frequency is varied.
     frequency_delta : float
-        RF-frequency change applied during the measurement.
+        RF-frequency change applied during the measurement, in hertz.
 
     Attributes
     ----------
@@ -49,7 +49,7 @@ class Dispersion(MeasurementTool, DynamicValidation):
     rf_plant_name : str
         Name of the RF plant used for the measurement.
     frequency_delta : float
-        RF-frequency change applied during the measurement.
+        RF-frequency change applied during the measurement, in hertz.
 
     Methods
     -------
@@ -161,5 +161,5 @@ class Dispersion(MeasurementTool, DynamicValidation):
         return True
 
     def get(self):
-        """Return the most recently measured dispersion data."""
+        """Return the most recently measured dispersion data in metres."""
         return self.latest_measurement

@@ -54,17 +54,17 @@ class BBA(MeasurementTool, DynamicValidation):
     quad_name : str
         Name of the quadrupole to align.
     hcorr_delta : float
-        Change in horizontal corrector strength used for each horizontal
-        orbit-offset step.
+        Change in horizontal corrector kick angle used for each horizontal
+        orbit-offset step, in radians.
     vcorr_delta : float
-        Change in vertical corrector strength used for each vertical
-        orbit-offset step.
+        Change in vertical corrector kick angle used for each vertical
+        orbit-offset step, in radians.
     hquad_delta : float
         Change in quadrupole strength used during the horizontal alignment
-        measurement.
+        measurement, in the configured quadrupole unit (typically ``m^-1``).
     vquad_delta : float
         Change in quadrupole strength used during the vertical alignment
-        measurement.
+        measurement, in the configured quadrupole unit (typically ``m^-1``).
     n_step : int, default=1
         Number of orbit-offset steps to perform in each plane.
     sleep_between_step : float, default=0
@@ -155,14 +155,14 @@ class BBA(MeasurementTool, DynamicValidation):
         Parameters
         ----------
         sleep_between_step : float
-            Default time sleep after steerer or quad excitation
-            Default: from config
+            Delay in seconds after corrector or quadrupole excitation.
+            Default: from config.
         n_avg_meas : int, optional
             Default number of orbit measurement per step used for averaging
             Default from config
         sleep_between_meas : float
-            Default time sleep between two orbit measurment
-            Default: from config
+            Delay in seconds between two orbit measurements.
+            Default: from config.
         callback : Callable, optional
             example: callback(action:int, callback_data: 'Complicated struct')
             callback is executed after each strength setting and after each orbit
@@ -278,19 +278,19 @@ class BBA(MeasurementTool, DynamicValidation):
         return True
 
     def h_offset(self) -> float:
-        """Return the measured horizontal magnetic-center offset."""
+        """Return the measured horizontal magnetic-center offset in metres."""
         return self.latest_measurement["HData"].offset if self.latest_measurement["HData"] is not None else np.nan
 
     def h_offset_error(self) -> float:
-        """Return the uncertainty of the horizontal center offset."""
+        """Return the horizontal center-offset uncertainty in metres."""
         return self.latest_measurement["HData"].offset_error if self.latest_measurement["HData"] is not None else np.nan
 
     def v_offset(self) -> float:
-        """Return the measured vertical magnetic-center offset."""
+        """Return the measured vertical magnetic-center offset in metres."""
         return self.latest_measurement["VData"].offset if self.latest_measurement["VData"] is not None else np.nan
 
     def v_offset_error(self) -> float:
-        """Return the uncertainty of the vertical center offset."""
+        """Return the vertical center-offset uncertainty in metres."""
         return self.latest_measurement["VData"].offset_error if self.latest_measurement["VData"] is not None else np.nan
 
     def plot_data(self, plane: str):
