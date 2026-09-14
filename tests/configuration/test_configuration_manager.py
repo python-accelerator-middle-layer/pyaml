@@ -103,7 +103,7 @@ def test_configuration_manager_clear_category_and_settings(
     result = manager.clear()
 
     assert result is None
-    assert manager.to_dict() == {"type": "pyaml.accelerator"}
+    assert manager.to_dict() == {"class_path": "pyaml.accelerator.Accelerator"}
 
 
 def test_configuration_manager_settings_follow_accelerator_config_model_order():
@@ -121,7 +121,7 @@ def test_configuration_manager_settings_follow_accelerator_config_model_order():
     )
 
     assert list(manager.settings()) == [
-        "type",
+        "class_path",
         "facility",
         "machine",
         "energy",
@@ -187,10 +187,10 @@ def test_configuration_manager_accumulates_multiple_device_fragments(
     assert manager.has("devices", "BPM_C04-01")
     assert manager.has("devices", "BPM_C04-02")
     assert manager.has("devices", "BETATRON_TUNE")
-    assert manager.get("devices", "QF1A-C01")["type"] == "pyaml.magnet.quadrupole"
-    assert manager.get("devices", "SH1A-C01")["type"] == "pyaml.magnet.cfm_magnet"
-    assert manager.get("devices", "BPM_C04-01")["type"] == "pyaml.bpm.bpm"
-    assert manager.get("devices", "BETATRON_TUNE")["type"] == "pyaml.diagnostics.tune_monitor"
+    assert manager.get("devices", "QF1A-C01")["class_path"] == "pyaml.magnet.quadrupole.Quadrupole"
+    assert manager.get("devices", "SH1A-C01")["class_path"] == "pyaml.magnet.cfm_magnet.CombinedFunctionMagnet"
+    assert manager.get("devices", "BPM_C04-01")["class_path"] == "pyaml.bpm.bpm.BPM"
+    assert manager.get("devices", "BETATRON_TUNE")["class_path"] == "pyaml.diagnostics.tune_monitor.BetatronTuneMonitor"
 
 
 def test_accelerator_load_stays_compatible(config_manager_base_config):
@@ -270,10 +270,10 @@ def test_configuration_manager_repr_is_yellow_pages_like(
     assert "Simulators:" in output
     assert "Arrays:" in output
     assert "Devices:" in output
-    assert "live (tango.pyaml.controlsystem) source=config_manager_sr_base.yaml" in output
-    assert "design (pyaml.lattice.simulator) source=config_manager_sr_base.yaml" in output
-    assert "HCORR (pyaml.arrays.magnet) patterns=1 source=config_manager_sr_arrays.yaml" in output
-    assert "BPM_C04-01 (pyaml.bpm.bpm) source=config_manager_sr_devices.yaml" in output
+    assert "live (tango.pyaml.controlsystem.TangoControlSystem) source=config_manager_sr_base.yaml" in output
+    assert "design (pyaml.lattice.simulator.Simulator) source=config_manager_sr_base.yaml" in output
+    assert "HCORR (pyaml.arrays.magnet.Magnet) patterns=1 source=config_manager_sr_arrays.yaml" in output
+    assert "BPM_C04-01 (pyaml.bpm.bpm.BPM) source=config_manager_sr_devices.yaml" in output
     assert "    ." in output
 
 
@@ -288,5 +288,5 @@ def test_configuration_manager_yellow_pages_like_shortcuts(
     manager.add(sr_devices_fragment)
 
     assert manager["BPM_C04*"] == ["BPM_C04-01", "BPM_C04-02"]
-    assert manager.HCORR["type"] == "pyaml.arrays.magnet"
+    assert manager.HCORR["class_path"] == "pyaml.arrays.magnet.Magnet"
     assert manager.simulators == ["design"]

@@ -129,13 +129,13 @@ def test_generate_replaces_parent_schema_with_registered_subclasses(
 
     schema = SchemaGenerator.generate("pkg.module.Parent")
 
-    anyof = schema.get("anyOf", [])
-    refs = {item["$ref"] for item in anyof if "$ref" in item}
+    oneof = schema.get("oneOf", [])
+    refs = {item["$ref"] for item in oneof if "$ref" in item}
     if refs:
         assert "#/$defs/ChildSchemaA" in refs
         assert "#/$defs/ChildSchemaB" in refs
     else:
-        class_paths = {item["properties"]["class"]["const"] for item in anyof if "properties" in item}
+        class_paths = {item["properties"]["class"]["const"] for item in oneof if "properties" in item}
         assert "pkg.module.ChildA" in class_paths
         assert "pkg.module.ChildB" in class_paths
 
@@ -151,13 +151,13 @@ def test_generate_includes_real_and_virtual_subclasses(
 
     schema = SchemaGenerator.generate("pkg.module.Parent")
 
-    anyof = schema.get("anyOf", [])
-    refs = {item["$ref"] for item in anyof if "$ref" in item}
+    oneof = schema.get("oneOf", [])
+    refs = {item["$ref"] for item in oneof if "$ref" in item}
     if refs:
         assert "#/$defs/ChildSchemaA" in refs
         assert "#/$defs/VirtualChildSchema" in refs
     else:
-        class_paths = {item["properties"]["class"]["const"] for item in anyof if "properties" in item}
+        class_paths = {item["properties"]["class"]["const"] for item in oneof if "properties" in item}
         assert "pkg.module.ChildA" in class_paths
         assert "pkg.module.VirtualChild" in class_paths
 

@@ -3,7 +3,7 @@
 import fnmatch
 import re
 from abc import ABCMeta, abstractmethod
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, overload
 
 from ...arrays.element_array import ElementArray
 from ...bpm.bpm import BPM
@@ -419,6 +419,95 @@ class ElementHolder(metaclass=ABCMeta):
         return array[name]
 
     # Generic elements
+    def get(self) -> ElementArray:
+        """Return all registered elements in insertion order.
+
+        Returns
+        -------
+        ElementArray
+            New unnamed container sharing the registered element references.
+
+        Notes
+        -----
+        Registration order is not necessarily longitudinal lattice order.
+        Changing the returned container does not change the holder registry.
+        Each call reflects the current registry.
+
+        Examples
+        --------
+        >>> elements = sr.live.get()
+        >>> names = elements.names()
+        """
+        return ElementArray("", list(self._ALL.values()))
+
+    @overload
+    def __getitem__(self, key: int) -> Element: ...
+
+    @overload
+    def __getitem__(self, key: slice) -> ElementArray: ...
+
+    @overload
+    def __getitem__(self, key: str) -> Element | ElementArray | None: ...
+
+    def __getitem__(self, key: int | slice | str) -> Element | ElementArray | None:
+        """Retrieve an element or select a collection.
+
+        Parameters
+        ----------
+        key : int, slice or str
+            Index in registration order, slice, exact name, or name pattern.
+            Strings containing ``*``, ``?`` or ``[`` use fnmatch matching.
+            Other strings are exact registry keys. Colons are literal.
+
+        Returns
+        -------
+        Element or ElementArray or None
+            An index returns an element. An exact name returns its element
+            or None. Patterns and slices return the most specific compatible
+            array, or an empty ElementArray when nothing matches.
+            The full slice ``[:]`` returns a generic ElementArray, like get().
+
+        Raises
+        ------
+        IndexError
+            If the index is out of bounds.
+        TypeError
+            If the key is neither an integer, a slice, nor a string.
+        ValueError
+            If a slice has a zero step.
+
+        Notes
+        -----
+        Indices follow insertion order, not necessarily lattice order.
+        Collections share element references but do not modify the registry.
+        Field filters and regular expressions are not interpreted here.
+
+        Examples
+        --------
+        >>> bpm = sr.live["BPM01"]
+        >>> missing = sr.live["UNKNOWN"]  # None
+        >>> bpms = sr.live["BPM*"]
+        >>> bpms = sr.live["BPM0[123]"]  # BPM01, BPM02 or BPM03
+        >>> bpms = sr.live["BPM0[1-3]"]  # Same selection using a range
+        >>> quads = sr.live["Q[FD]*"]  # Names starting with QF or QD
+        >>> bpms = sr.live["BPM0[!3]"]  # One character after BPM0, except 3
+        >>> first = sr.live[0]
+        >>> subset = sr.live[1:10]
+        >>> all_elements = sr.live[:]
+        """
+        if isinstance(key, str):
+            if any(marker in key for marker in "*?["):
+                return self.get()._select_names(key)
+            return self._ALL.get(key)
+        if isinstance(key, int):
+            return list(self._ALL.values())[key]
+        if isinstance(key, slice):
+            elements = self.get()
+            if key == slice(None):
+                return elements
+            return elements._typed_array(list(elements)[key])
+        raise TypeError("ElementHolder keys must be integers, slices or strings")
+
     def fill_element_array(self, arrayName: str, elementNames: list[str]):
         """
         Create and register a generic element array.

@@ -25,7 +25,7 @@ def test_tune(install_test_package):
         ml: Accelerator = Accelerator.load("tests/config/bad_conf_duplicate_3.yaml", include_locations=True, validate=True)
     assert "Configuration entry 'BPM_C04-06' is duplicated inside category 'devices'" in str(exc.value)
     assert "bad_conf_duplicate_3.yaml" in str(exc.value)
-    assert "line 43, column 3" in str(exc.value)
+    assert "line 37, column 3" in str(exc.value)
 
     with pytest.raises(PyAMLConfigException) as exc:
         ml: Accelerator = Accelerator.load("tests/config/bad_conf_duplicate_4.yaml", include_locations=True, validate=False)
@@ -50,12 +50,12 @@ def test_tune(install_test_package):
 def test_duplicate_error_reports_source_line_and_column_across_files(tmp_path):
     devices_a = tmp_path / "devices_a.yaml"
     devices_a.write_text(
-        "- type: test.device\n  name: BPM_DUPLICATE\n",
+        "- type: pyaml.bpm.bpm\n  name: BPM_DUPLICATE\n",
         encoding="utf-8",
     )
     devices_b = tmp_path / "devices_b.yaml"
     devices_b.write_text(
-        "- type: test.device\n  name: BPM_UNIQUE\n- type: test.device\n  name: BPM_DUPLICATE\n",
+        "- type: pyaml.bpm.bpm\n  name: BPM_UNIQUE\n- type: pyaml.bpm.bpm\n  name: BPM_DUPLICATE\n",
         encoding="utf-8",
     )
     root = tmp_path / "root.yaml"

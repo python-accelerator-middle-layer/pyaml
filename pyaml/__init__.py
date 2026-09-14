@@ -16,9 +16,10 @@ __author_email__ = ""
 import logging.config
 import os
 
+from pyaml.common.element import ReprOptions, set_repr_options
 from pyaml.common.exception import PyAMLConfigException, PyAMLException
 
-__all__ = ["PyAMLException", "PyAMLConfigException"]
+__all__ = ["PyAMLException", "PyAMLConfigException", "ReprOptions", "set_repr_options"]
 
 
 config_file = os.getenv("PYAML_LOG_CONFIG", "pyaml_logging.conf")
