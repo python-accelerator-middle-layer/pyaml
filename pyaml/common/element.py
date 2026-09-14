@@ -253,7 +253,6 @@ class Element:
     lattice_names : str or None, optional
         Lattice element selector associated with this element. Defaults to
         ``name`` when omitted. A pyAML element can be associated to several lattice elements.
-        Defaults to name when omitted.
 
         | Supported syntax of lattice_names:
         | ``list(name,[name])`` : Lattice element names
