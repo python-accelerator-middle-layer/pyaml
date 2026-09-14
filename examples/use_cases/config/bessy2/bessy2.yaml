@@ -9,7 +9,6 @@ simulators:
 controls:
 - class: pyaml_cs_oa.controlsystem.OphydAsyncControlSystem
   prefix: 'pons:'
-  backend: "EPICS"
   name: live
 data_folder: /data/store
 arrays:
