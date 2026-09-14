@@ -7,7 +7,7 @@ dispersion data.
 """
 
 import logging
-from typing import Callable, Optional
+from typing import TYPE_CHECKING, Callable, Optional
 
 from pySC.apps import measure_dispersion
 from pySC.apps.codes import DispersionCode
@@ -16,6 +16,10 @@ from ..common.constants import Action
 from ..external.pySC_interface import pySCInterface
 from ..validation import DynamicValidation, register_schema
 from .measurement_tool import MeasurementTool
+
+if TYPE_CHECKING:
+    from ..arrays.bpm_array import BPMArray
+    from ..rf.rf_plant import RFPlant
 
 logger = logging.getLogger(__name__)
 
@@ -41,6 +45,10 @@ class Dispersion(MeasurementTool, DynamicValidation):
         Name of the RF plant whose frequency is varied.
     frequency_delta : float
         RF-frequency change applied during the measurement.
+    bpms : BPMArray
+        BPM array used for orbit readback.
+    rf_plant : RFPlant
+        RF plant varied during the measurement.
 
     Attributes
     ----------
@@ -68,6 +76,18 @@ class Dispersion(MeasurementTool, DynamicValidation):
         self.bpm_array_name = bpm_array_name
         self.rf_plant_name = rf_plant_name
         self.frequency_delta = frequency_delta
+
+    @property
+    def bpms(self) -> "BPMArray":
+        """Return the BPM array used for orbit readback."""
+        self.check_peer()
+        return self.peer.bpms.get(self.bpm_array_name)
+
+    @property
+    def rf_plant(self) -> "RFPlant":
+        """Return the RF plant varied during the measurement."""
+        self.check_peer()
+        return self.peer.rf.get(self.rf_plant_name)
 
     def measure(
         self,

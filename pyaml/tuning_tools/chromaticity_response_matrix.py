@@ -9,7 +9,7 @@ slopes as a response matrix.
 import logging
 import time
 from dataclasses import asdict
-from typing import Callable, Optional
+from typing import TYPE_CHECKING, Callable, Optional
 
 import numpy as np
 
@@ -17,6 +17,10 @@ from ..common.constants import Action
 from ..validation import DynamicValidation, register_schema
 from .measurement_tool import MeasurementTool
 from .response_matrix_data import ResponseMatrixData
+
+if TYPE_CHECKING:
+    from ..arrays.magnet_array import MagnetArray
+    from .chromaticity_monitor import ChromaticityMonitor
 
 logger = logging.getLogger(__name__)
 
@@ -56,6 +60,13 @@ class ChromaticityResponseMatrix(MeasurementTool, DynamicValidation):
     -------
     measure(...)
         Measure the chromaticity response matrix.
+
+    Attributes
+    ----------
+    sextupoles : MagnetArray
+        Sextupole array used for the measurement.
+    chromaticity_monitor : ChromaticityMonitor
+        Chromaticity monitor used for the measurement.
     """
 
     def __init__(
@@ -82,6 +93,18 @@ class ChromaticityResponseMatrix(MeasurementTool, DynamicValidation):
         self.n_avg_meas = n_avg_meas
         self.sleep_between_meas = sleep_between_meas
         self.aborted = False
+
+    @property
+    def sextupoles(self) -> "MagnetArray":
+        """Return the sextupole array used for the measurement."""
+        self.check_peer()
+        return self.peer.magnets.get(self.sextu_array_name)
+
+    @property
+    def chromaticity_monitor(self) -> "ChromaticityMonitor":
+        """Return the chromaticity monitor used for the measurement."""
+        self.check_peer()
+        return self.peer.get_chromaticity_monitor(self.chromaticity_name)
 
     def measure(
         self,
@@ -163,8 +186,8 @@ class ChromaticityResponseMatrix(MeasurementTool, DynamicValidation):
         """
         # Get devices
         self.check_peer()
-        sextus = self._peer.magnets.get(self.sextu_array_name)
-        cm = self._peer.get_chromaticity_monitor(self.chromaticity_name)
+        sextus = self.sextupoles
+        cm = self.chromaticity_monitor
 
         self._register_callback(callback)
         self._init_measure("pyaml.tuning_tools.response_matrix_data")

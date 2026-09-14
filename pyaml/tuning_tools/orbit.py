@@ -14,6 +14,7 @@ import numpy as np
 from pySC import ResponseMatrix as pySC_ResponseMatrix
 from pySC.apps import orbit_correction
 
+from ..arrays.bpm_array import BPMArray
 from ..arrays.magnet_array import MagnetArray
 from ..common.exception import PyAMLException
 from ..external.pySC_interface import pySCInterface
@@ -60,6 +61,16 @@ class Orbit(TuningTool, DynamicValidation):
     ----------
     response_matrix
         Return the response matrix if it has been loaded None otherwise
+    bpms
+        Return the BPM array used for orbit readback.
+    hcorrectors
+        Return the horizontal corrector array used for correction.
+    vcorrectors
+        Return the vertical corrector array used for correction.
+    correctors
+        Return the combined horizontal and vertical corrector array.
+    rf_plant
+        Return the optional RF plant used for correction.
 
     Methods
     -------
@@ -182,6 +193,46 @@ class Orbit(TuningTool, DynamicValidation):
         """
         return self._response_matrix
 
+    @property
+    def bpms(self) -> BPMArray:
+        """Return the BPM array used for orbit readback."""
+        self.check_peer()
+        return self.peer.bpms.get(self.bpm_array_name)
+
+    @property
+    def hcorrectors(self) -> MagnetArray:
+        """Return the horizontal corrector array used for correction."""
+        self.check_peer()
+        if self._hcorr is None:
+            return self.peer.magnets.get(self.hcorr_array_name)
+        return self._hcorr
+
+    @property
+    def vcorrectors(self) -> MagnetArray:
+        """Return the vertical corrector array used for correction."""
+        self.check_peer()
+        if self._vcorr is None:
+            return self.peer.magnets.get(self.vcorr_array_name)
+        return self._vcorr
+
+    @property
+    def correctors(self) -> MagnetArray:
+        """Return the combined horizontal and vertical corrector array."""
+        self.check_peer()
+        if self._hvcorr is None:
+            return MagnetArray("", [*self.hcorrectors, *self.vcorrectors])
+        return self._hvcorr
+
+    @property
+    def rf_plant(self) -> RFPlant | None:
+        """Return the optional RF plant used for orbit correction."""
+        self.check_peer()
+        if self.rf_plant_name is None:
+            return None
+        if self._rf_plant is None:
+            return self.peer.rf.get(self.rf_plant_name)
+        return self._rf_plant
+
     def correct(
         self,
         plane: Optional[Literal["H", "V"]] = None,
@@ -284,7 +335,7 @@ class Orbit(TuningTool, DynamicValidation):
         # take care of rf trim
         rf_flag = rf and (plane is None or plane == "H")
         if rf_flag:
-            if self._rf_plant is None:
+            if self.rf_plant is None:
                 raise PyAMLException("RF plant is not defined!")
             eff_gain_RF = gain_RF if gain_RF is not None else eff_gain_H
             ## pySC returns with an 'rf' entry into the dictionary if rf=True
@@ -298,17 +349,17 @@ class Orbit(TuningTool, DynamicValidation):
             for trim in trims_v:
                 trims_v[trim] *= eff_gain_V
             trims = {**trims_h, **trims_v}
-            corr_array = self._hvcorr
+            corr_array = self.correctors
         elif plane == "H":
             for trim in trims_h:
                 trims_h[trim] *= eff_gain_H
             trims = trims_h
-            corr_array = self._hcorr
+            corr_array = self.hcorrectors
         elif plane == "V":
             for trim in trims_v:
                 trims_v[trim] *= eff_gain_V
             trims = trims_v
-            corr_array = self._vcorr
+            corr_array = self.vcorrectors
 
         corrector_names = corr_array.names()
         corrector_to_index = {name: idx for idx, name in enumerate(corrector_names)}
@@ -326,8 +377,8 @@ class Orbit(TuningTool, DynamicValidation):
         # send trims
         corr_array.strengths.set(data_to_send)
         if rf_flag:
-            rf_frequency = self._rf_plant.frequency.get()
-            self._rf_plant.frequency.set(rf_frequency + rf_trim)
+            rf_frequency = self.rf_plant.frequency.get()
+            self.rf_plant.frequency.set(rf_frequency + rf_trim)
 
         return
 

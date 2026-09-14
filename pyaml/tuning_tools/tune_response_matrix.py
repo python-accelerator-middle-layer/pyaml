@@ -9,7 +9,7 @@ responses in a serializable response-matrix data model.
 import logging
 from dataclasses import asdict
 from time import sleep
-from typing import Callable, Optional
+from typing import TYPE_CHECKING, Callable, Optional
 
 import numpy as np
 
@@ -17,6 +17,10 @@ from ..common.constants import Action
 from ..validation import DynamicValidation, register_schema
 from .measurement_tool import MeasurementTool
 from .response_matrix_data import ResponseMatrixData
+
+if TYPE_CHECKING:
+    from ..arrays.magnet_array import MagnetArray
+    from ..diagnostics.tune_monitor import BetatronTuneMonitor
 
 logger = logging.getLogger(__name__)
 
@@ -83,6 +87,10 @@ class TuneResponseMatrix(MeasurementTool, DynamicValidation):
         Configured number of tune measurements to average.
     sleep_between_meas : float
         Configured delay between averaged tune measurements.
+    quadrupoles : MagnetArray
+        Quadrupole array used for the measurement.
+    tune_monitor : BetatronTuneMonitor
+        Betatron tune monitor used for the measurement.
 
     Methods
     -------
@@ -123,6 +131,18 @@ class TuneResponseMatrix(MeasurementTool, DynamicValidation):
         self.sleep_between_step = sleep_between_step
         self.n_avg_meas = n_avg_meas
         self.sleep_between_meas = sleep_between_meas
+
+    @property
+    def quadrupoles(self) -> "MagnetArray":
+        """Return the quadrupole array used for the measurement."""
+        self.check_peer()
+        return self.peer.magnets.get(self.quad_array_name)
+
+    @property
+    def tune_monitor(self) -> "BetatronTuneMonitor":
+        """Return the betatron tune monitor used for the measurement."""
+        self.check_peer()
+        return self.peer.get_betatron_tune_monitor(self.betatron_tune_name)
 
     def measure(
         self,
@@ -198,8 +218,8 @@ class TuneResponseMatrix(MeasurementTool, DynamicValidation):
         """
         # Get devices
         self.check_peer()
-        quads = self._peer.magnets.get(self.quad_array_name)
-        tm = self._peer.get_betatron_tune_monitor(self.betatron_tune_name)
+        quads = self.quadrupoles
+        tm = self.tune_monitor
 
         tunemat = np.zeros((len(quads), 2))
         initial_tune = tm.tune.get()
