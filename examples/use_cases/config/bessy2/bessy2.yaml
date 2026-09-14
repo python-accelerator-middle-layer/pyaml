@@ -10,6 +10,9 @@ controls:
 - class: pyaml_cs_oa.controlsystem.OphydAsyncControlSystem
   prefix: 'pons:'
   name: live
+  catalog:
+    class: pyaml_cs_oa.dynamic_catalog.DynamicCatalog
+    backend: "EPICS"
 data_folder: /data/store
 arrays:
 - class: pyaml.arrays.magnet.Magnet
