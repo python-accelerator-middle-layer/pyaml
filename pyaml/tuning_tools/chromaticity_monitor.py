@@ -9,6 +9,7 @@ the resulting values and their associated units.
 import logging
 from collections.abc import Callable
 from time import sleep
+from typing import TYPE_CHECKING
 
 import matplotlib.pyplot as plt
 import numpy as np
@@ -19,6 +20,11 @@ from ..common.element import __pyaml_repr__
 from ..common.exception import PyAMLException
 from ..tuning_tools.measurement_tool import MeasurementTool
 from ..validation import DynamicValidation, register_schema
+
+if TYPE_CHECKING:
+    from ..arrays.bpm_array import BPMArray
+    from ..diagnostics.tune_monitor import BetatronTuneMonitor
+    from ..rf.rf_plant import RFPlant
 
 logger = logging.getLogger(__name__)
 
@@ -116,6 +122,12 @@ class ChromaticityMonitor(MeasurementTool, DynamicValidation):
         Get the chromaticity values.
     dispersion
         Get the dispersion values.
+    tune_monitor
+        Return the betatron tune monitor used for measurements.
+    rf_plant
+        Return the RF plant varied during measurements.
+    bpms
+        Return the optional BPM array used for dispersion measurements.
 
     Methods
     -------
@@ -172,6 +184,26 @@ class ChromaticityMonitor(MeasurementTool, DynamicValidation):
         self._chromaticity = RChromaDispArray(self, "chromaticity", "1")
         self._dispersion = RChromaDispArray(self, "dispersion", "m")
         self._alphac = None
+
+    @property
+    def tune_monitor(self) -> "BetatronTuneMonitor":
+        """Return the betatron tune monitor used for measurements."""
+        self.check_peer()
+        return self.peer.get_betatron_tune_monitor(self.betatron_tune_name)
+
+    @property
+    def rf_plant(self) -> "RFPlant":
+        """Return the RF plant varied during measurements."""
+        self.check_peer()
+        return self.peer.rf.get(self.rf_plant_name)
+
+    @property
+    def bpms(self) -> "BPMArray | None":
+        """Return the optional BPM array used for dispersion measurements."""
+        self.check_peer()
+        if self.bpm_array_name is None:
+            return None
+        return self.peer.bpms.get(self.bpm_array_name)
 
     @property
     def chromaticity(self) -> ReadFloatArray:
@@ -306,14 +338,14 @@ class ChromaticityMonitor(MeasurementTool, DynamicValidation):
 
         # Get devices
         self.check_peer()
-        tm = self.peer.get_betatron_tune_monitor(self.betatron_tune_name)
-        rf = self.peer.rf.get(self.rf_plant_name)
+        tm = self.tune_monitor
+        rf = self.rf_plant
         bpms = None
         n_bpm = 0
         orbit = None
         if fit_dispersion and fit_disp_order is not None and self.bpm_array_name is not None:
             # For dispersion fit
-            bpms = self.peer.bpms.get(self.bpm_array_name)
+            bpms = self.bpms
             n_bpm = len(bpms)
 
         f0 = rf.frequency.get()

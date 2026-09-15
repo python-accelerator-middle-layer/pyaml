@@ -8,7 +8,7 @@ model.
 
 import logging
 from dataclasses import asdict
-from typing import Callable, List, Optional
+from typing import TYPE_CHECKING, Callable, List, Optional
 
 import pySC
 from pySC.apps import measure_ORM
@@ -19,6 +19,10 @@ from ..external.pySC_interface import pySCInterface
 from ..validation import DynamicValidation, register_schema
 from .measurement_tool import MeasurementTool
 from .orbit_response_matrix_data import OrbitResponseMatrixData
+
+if TYPE_CHECKING:
+    from ..arrays.bpm_array import BPMArray
+    from ..arrays.magnet_array import MagnetArray
 
 logger = logging.getLogger(__name__)
 
@@ -83,6 +87,12 @@ class OrbitResponseMatrix(MeasurementTool, DynamicValidation):
         Configured number of orbit measurements to average.
     sleep_between_meas : float
         Configured delay between averaged orbit measurements.
+    bpms : BPMArray
+        BPM array used for orbit readback.
+    hcorrectors : MagnetArray
+        Horizontal corrector array used for the measurement.
+    vcorrectors : MagnetArray
+        Vertical corrector array used for the measurement.
 
     Methods
     -------
@@ -115,6 +125,24 @@ class OrbitResponseMatrix(MeasurementTool, DynamicValidation):
         self.sleep_between_step = sleep_between_step
         self.n_avg_meas = n_avg_meas
         self.sleep_between_meas = sleep_between_meas
+
+    @property
+    def bpms(self) -> "BPMArray":
+        """Return the BPM array used for orbit readback."""
+        self.check_peer()
+        return self.peer.bpms.get(self.bpm_array_name)
+
+    @property
+    def hcorrectors(self) -> "MagnetArray":
+        """Return the horizontal corrector array used for the measurement."""
+        self.check_peer()
+        return self.peer.magnets.get(self.hcorr_array_name)
+
+    @property
+    def vcorrectors(self) -> "MagnetArray":
+        """Return the vertical corrector array used for the measurement."""
+        self.check_peer()
+        return self.peer.magnets.get(self.vcorr_array_name)
 
     def measure(
         self,
@@ -173,8 +201,8 @@ class OrbitResponseMatrix(MeasurementTool, DynamicValidation):
 
         if corrector_names is None:
             logger.info(f"Measuring correctors from the default arrays: {self.hcorr_array_name} and {self.vcorr_array_name}.")
-            hcorrector_names = element_holder.magnets.get(self.hcorr_array_name).names()
-            vcorrector_names = element_holder.magnets.get(self.vcorr_array_name).names()
+            hcorrector_names = self.hcorrectors.names()
+            vcorrector_names = self.vcorrectors.names()
             corrector_names = hcorrector_names + vcorrector_names
 
         generator = measure_ORM(
@@ -252,8 +280,8 @@ class OrbitResponseMatrix(MeasurementTool, DynamicValidation):
             their associated planes.
         """
         element_holder = self._peer
-        all_hcorrector_names = element_holder.magnets.get(self.hcorr_array_name).names()
-        all_vcorrector_names = element_holder.magnets.get(self.vcorr_array_name).names()
+        all_hcorrector_names = self.hcorrectors.names()
+        all_vcorrector_names = self.vcorrectors.names()
         variable_planes = []
         for corr in data["input_names"]:
             if corr in all_hcorrector_names:
@@ -261,7 +289,7 @@ class OrbitResponseMatrix(MeasurementTool, DynamicValidation):
             elif corr in all_vcorrector_names:
                 variable_planes.append("V")
 
-        bpm_names = element_holder.bpms.get(self.bpm_array_name).names()
+        bpm_names = self.bpms.names()
         # This is because we assume always dual-plane bpms now.
         len_b = len(bpm_names)
         observable_names = bpm_names * 2
