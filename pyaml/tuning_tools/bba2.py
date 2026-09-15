@@ -128,13 +128,14 @@ class BBA2(MeasurementTool, DynamicValidation):
         Name of the tune-correction tool used to compensate for tune changes
         caused by varying the quadrupole strength.
     hcorr_delta : float
-        Change in horizontal corrector strength used for each horizontal
-        orbit-offset step.
+        Change in horizontal corrector kick angle used for each horizontal
+        orbit-offset step, in radians.
     vcorr_delta : float
-        Change in vertical corrector strength used for each vertical
-        orbit-offset step.
+        Change in vertical corrector kick angle used for each vertical
+        orbit-offset step, in radians.
     quad_delta : float
-        Change in quadrupole strength used for the alignment measurement.
+        Change in quadrupole strength used for the alignment measurement, in
+        the configured quadrupole unit (typically ``m^-1``).
     bipolar_delta : bool, default=False
         If `True`, vary the quadrupole strength both above and below its
         initial value by `quad_delta`. If `False`, apply the change in one
@@ -583,14 +584,14 @@ class BBA2(MeasurementTool, DynamicValidation):
         Parameters
         ----------
         sleep_between_step : float
-            Default time sleep after steerer or quad excitation
-            Default: from config
+            Delay in seconds after corrector or quadrupole excitation.
+            Default: from config.
         n_avg_meas : int, optional
             Default number of orbit measurement per step used for averaging
             Default from config
         sleep_between_meas : float
-            Default time sleep between two orbit measurment
-            Default: from config
+            Delay in seconds between two orbit measurements.
+            Default: from config.
         callback : Callable, optional
             example: callback(action:int, callback_data: 'Complicated struct')
             callback is executed after each strength setting and after each orbit
@@ -758,19 +759,19 @@ class BBA2(MeasurementTool, DynamicValidation):
         return True
 
     def h_offset(self) -> float:
-        """Return the measured horizontal magnetic-center offset."""
+        """Return the measured horizontal magnetic-center offset in metres."""
         return self.latest_measurement["HData"].offset if self.latest_measurement["HData"] is not None else np.nan
 
     def h_offset_error(self) -> float:
-        """Return the uncertainty of the horizontal center offset."""
+        """Return the horizontal center-offset uncertainty in metres."""
         return self.latest_measurement["HData"].error if self.latest_measurement["HData"] is not None else np.nan
 
     def v_offset(self) -> float:
-        """Return the measured vertical magnetic-center offset."""
+        """Return the measured vertical magnetic-center offset in metres."""
         return self.latest_measurement["VData"].offset if self.latest_measurement["VData"] is not None else np.nan
 
     def v_offset_error(self) -> float:
-        """Return the uncertainty of the vertical center offset."""
+        """Return the vertical center-offset uncertainty in metres."""
         return self.latest_measurement["VData"].error if self.latest_measurement["VData"] is not None else np.nan
 
     def plot_plane_data(self, ax, plane: str):

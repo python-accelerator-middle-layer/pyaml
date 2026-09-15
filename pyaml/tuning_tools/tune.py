@@ -152,11 +152,11 @@ class Tune(TuningTool, DynamicValidation):
         return self.peer.magnets.get(self.quad_array_name)
 
     def get(self):
-        """Return the requested horizontal and vertical tune setpoint."""
+        """Return the requested dimensionless horizontal and vertical tune setpoint."""
         return self._setpoint
 
     def readback(self):
-        """Return the current horizontal and vertical betatron tune."""
+        """Return the current dimensionless horizontal and vertical betatron tune."""
         self.check_peer()
         return self.tune_monitor.tune.get()
 
@@ -167,7 +167,7 @@ class Tune(TuningTool, DynamicValidation):
         Parameters
         ----------
         tune : np.array
-            Target horizontal and vertical tune values.
+            Target horizontal and vertical tune values (dimensionless).
         iter : int
             Number of correction iterations.
         wait_time : float
@@ -189,13 +189,14 @@ class Tune(TuningTool, DynamicValidation):
         Parameters
         ----------
         dtune : np.array
-            Desired horizontal and vertical tune change.
+            Desired horizontal and vertical tune change (dimensionless).
 
         Returns
         -------
         numpy.ndarray
             Quadrupole-strength changes calculated from the response-matrix
-            pseudoinverse.
+            pseudoinverse, in the configured quadrupole strength units
+            (typically ``m^-1``).
 
         Raises
         ------
@@ -213,7 +214,7 @@ class Tune(TuningTool, DynamicValidation):
         Parameters
         ----------
         dtune : np.array
-            Horizontal and vertical tune change to apply.
+            Horizontal and vertical tune change to apply (dimensionless).
         wait_time : float
             Delay in seconds after changing quadrupole strengths.
         """

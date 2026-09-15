@@ -56,7 +56,8 @@ class TuneResponseMatrix(MeasurementTool, DynamicValidation):
         vertical tunes.
     quad_delta : float
         Maximum positive and negative quadrupole-strength change applied during
-        the measurement.
+        the measurement, in the configured quadrupole strength unit (typically
+        ``m^-1``).
     n_step : int, optional
         Number of quadrupole-strength settings used for each quadrupole. The
         settings are distributed linearly from ``-quad_delta`` to
@@ -78,7 +79,8 @@ class TuneResponseMatrix(MeasurementTool, DynamicValidation):
     betatron_tune_name : str
         Name of the configured betatron tune monitor.
     quad_delta : float
-        Configured quadrupole-strength change.
+        Configured quadrupole-strength change, in the configured quadrupole
+        unit (typically ``m^-1``).
     n_step : int
         Configured number of strength settings.
     sleep_between_step : float
@@ -186,19 +188,20 @@ class TuneResponseMatrix(MeasurementTool, DynamicValidation):
         Parameters
         ----------
         quad_delta : float
-            Delta strength used to get the response matrix
+            Quadrupole-strength change in the configured quadrupole unit
+            (typically ``m^-1``).
         n_step : int, optional
             Number of step for fitting the tune slope [-quad_delta/n_step..quad_delta/n_step]
             Default from config
         sleep_between_step : float
-            Default time sleep after quad excitation
-            Default: from config
+            Delay in seconds after quadrupole excitation.
+            Default: from config.
         n_avg_meas : int, optional
             Default number of tune measurement per step used for averaging
             Default from config
         sleep_between_meas : float
-            Default time sleep between two tune measurment
-            Default: from config
+            Delay in seconds between two tune measurements.
+            Default: from config.
         callback : Callable, optional
             Callback executed after each strength setting or measurement.
             See :py:meth:`~.measurement_tool.MeasurementTool.send_callback`.
@@ -212,9 +215,9 @@ class TuneResponseMatrix(MeasurementTool, DynamicValidation):
               step:int # The current step
               avg_step:int # The current avg step
               magnet:str # The magnet being excited
-              strength:float # Magnet strength
-              tune:np.array # The measured tune (on Action.MEASURE)
-              dtune:np.array # The tune variation (on Action.RESTORE)
+              strength:float # Quadrupole strength, typically in m^-1
+              tune:np.array # Dimensionless measured tune (on Action.MEASURE)
+              dtune:np.array # Tune change per quadrupole-strength unit (on Action.RESTORE)
         """
         # Get devices
         self.check_peer()

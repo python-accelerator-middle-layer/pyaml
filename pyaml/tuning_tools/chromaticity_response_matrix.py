@@ -46,7 +46,8 @@ class ChromaticityResponseMatrix(MeasurementTool, DynamicValidation):
     chromaticity_name : str
         Name of the chromaticity monitor used to measure the response.
     sextu_delta : float
-        Default sextupole excitation applied during the measurement.
+        Default sextupole-strength excitation applied during the measurement,
+        in the configured sextupole strength unit (typically ``m^-2``).
     n_step : int, optional
         Default number of excitation steps used to fit the response.
     sleep_between_step : float, optional
@@ -148,19 +149,20 @@ class ChromaticityResponseMatrix(MeasurementTool, DynamicValidation):
         Parameters
         ----------
         sextu_delta : float
-            Delta strength used to get the response matrix
+            Sextupole-strength change in the configured sextupole unit
+            (typically ``m^-2``).
         n_step : int, optional
             Number of step for fitting the chomaticity slope [-sextu_delta/n_step..sextu_delta/n_step]
             Default from config
         sleep_between_step : float
-            Default time sleep after sextu excitation
-            Default: from config
+            Delay in seconds after sextupole excitation.
+            Default: from config.
         n_avg_meas : int, optional
             Default number of chromaticity measurement per step used for averaging
             Default from config
         sleep_between_meas : float
-            Default time sleep between two chomaticity measurment
-            Default: from config
+            Delay in seconds between two chromaticity measurements.
+            Default: from config.
         callback : Callable, optional
             Callback executed after each strength setting or measurement.
             See :py:meth:`~.measurement_tool.MeasurementTool.send_callback`.
@@ -174,9 +176,9 @@ class ChromaticityResponseMatrix(MeasurementTool, DynamicValidation):
               step:int # The current step
               avg_step:int # The current averaging step
               magnet:str # The magnet being excited
-              strength:float # Magnet strength
-              chroma:np.array # The measured chroma (on Action.MEASURE)
-              dchroma:np.array # The chroma variation (on Action.RESTORE)
+              strength:float # Sextupole strength, typically in m^-2
+              chroma:np.array # Dimensionless measured chromaticity (on Action.MEASURE)
+              dchroma:np.array # Chromaticity change per sextupole-strength unit (on Action.RESTORE)
 
         Returns
         -------

@@ -71,7 +71,7 @@ class RChromaDispArray(ReadFloatArray):
 
     def unit(self) -> str:
         """Return the unit of the reported values."""
-        return self.unit
+        return self._unit
 
 
 @register_schema
@@ -94,9 +94,10 @@ class ChromaticityMonitor(MeasurementTool, DynamicValidation):
         Name of the BPM array used for dispersion measurements. Required
         only when dispersion fitting is enabled.
     e_delta : float, optional
-        Default relative momentum deviation used during the measurement.
+        Default relative momentum deviation, ``delta = dp/p`` (dimensionless),
+        used during the measurement.
     max_e_delta : float, optional
-        Maximum permitted relative momentum deviation.
+        Maximum permitted relative momentum deviation (dimensionless).
     fit_order : int, optional
         Polynomial order used to fit the chromaticity.
     fit_disp_order : int, optional
@@ -212,7 +213,7 @@ class ChromaticityMonitor(MeasurementTool, DynamicValidation):
         Returns
         -------
         ReadFloatArray
-            chromaticity values [q'x, q'y]
+            Chromaticity values ``[q'x, q'y]`` (dimensionless).
         """
         return self._chromaticity
 
@@ -226,7 +227,7 @@ class ChromaticityMonitor(MeasurementTool, DynamicValidation):
         Parameters
         ----------
         alphac : float
-            Momentum-compaction factor, usually dimensionless.
+            Momentum-compaction factor (dimensionless).
         """
         self._alphac = alphac
 
@@ -238,7 +239,8 @@ class ChromaticityMonitor(MeasurementTool, DynamicValidation):
         Returns
         -------
         ReadFloatArray
-            Array of dispersion values [[dx, dy],[d'x, d'y],...]
+            Array of dispersion values ``[[dx, dy], [d'x, d'y], ...]``, in
+            metres for the first-order values.
         """
         return self._dispersion
 
@@ -258,7 +260,7 @@ class ChromaticityMonitor(MeasurementTool, DynamicValidation):
         callback: Callable | None = None,
     ):
         """
-        Main function for chromaticity measurment.
+        Main function for chromaticity measurement.
 
         :py:attr:`~pyaml.tuning_tools.measurement_tool.MeasurementTool.latest_measurement` contains:
 
@@ -274,22 +276,23 @@ class ChromaticityMonitor(MeasurementTool, DynamicValidation):
         ----------
         n_step : int
             Default number of RF step during chromaticity
-            measurment [default: from config]
+            measurement [default: from config].
         alphac : float | None
-            Moment compaction factor [default: from config]
+            Momentum-compaction factor (dimensionless) [default: from config].
         e_delta : float
-            Default variation of relative energy during chromaticity measurment:
-            f0 - f0 * E_delta * alphac  < f_RF < f0 + f0 * E_delta * alphac
-            [default: from config]
+            Relative momentum variation ``delta = dp/p`` (dimensionless):
+            ``f0 - f0 * e_delta * alphac < f_RF <
+            f0 + f0 * e_delta * alphac`` [default: from config].
         max_e_delta : float
-            Maximum autorized variation of relative energy during chromaticity
-            measurment [default: from config]
+            Maximum permitted relative momentum variation (dimensionless)
+            [default: from config].
         n_avg_meas : int
-            Default number of tune/orbit measurment per RF frequency [default: from config]
+            Number of tune/orbit measurements per RF frequency
+            [default: from config].
         sleep_between_meas : float
-            Default time sleep between two tune measurment [default: from config]
+            Delay in seconds between two tune measurements [default: from config].
         sleep_between_step : float
-            Default time sleep after RF frequency variation [default: from config]
+            Delay in seconds after an RF-frequency variation [default: from config].
         fit_order : int
             Fitting order [default: from config]
         fit_disp_order : int, optional
@@ -308,10 +311,10 @@ class ChromaticityMonitor(MeasurementTool, DynamicValidation):
               source:MeasurementTool # Tool that triggered the callback
               step:int # The current step
               avg_step:int # The current averaging step
-              rf:float # RF frequency used for the current step
-              tune:np.array # The measured tune (on Action.MEASURE)
-              orbit:np_array # The measured orbit, if fit_dispersion is True, (on Action.MEASURE)
-              dtune:np.array # The tune variation (on Action.RESTORE)
+              rf:float # RF frequency in Hz used for the current step
+              tune:np.array # Dimensionless measured tune (on Action.MEASURE)
+              orbit:np_array # Orbit in m, if fit_dispersion is True (on Action.MEASURE)
+              dtune:np.array # Dimensionless tune variation (on Action.RESTORE)
         """
         n_step = n_step if n_step is not None else self.n_step
         alphac = alphac if alphac is not None else self._alphac
@@ -415,13 +418,14 @@ class ChromaticityMonitor(MeasurementTool, DynamicValidation):
         Parameters
         ----------
         deltas : array of float
-            Relative energy (delta) variation steps done.
+            Relative momentum variation steps, ``delta = dp/p`` (dimensionless).
         Q : array of [Qx,Qy]
-            Horizontal,Vertical tune measured.
+            Measured horizontal and vertical tune (dimensionless).
         order : int
             Chromaticity fitting order.
         orbit : array of [[x0,y0],[x1,y1],...], optional
-            Horizontal and vertical orbit at each energy step, used to fit the dispersion.
+            Horizontal and vertical orbit in metres at each energy step, used
+            to fit the dispersion.
         fit_disp_order : int, optional
             Dispersion fitting order.
         do_plot : bool, optional
