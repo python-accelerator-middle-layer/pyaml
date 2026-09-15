@@ -61,6 +61,20 @@ class MeasurementTool(Element, metaclass=ABCMeta):
         self._peer: "ElementHolder" = None  # Peer: ControlSystem or Simulator
         self._callback: Callable = None
 
+    @staticmethod
+    def get_peer_from_cb(cbdata: dict) -> "ElementHolder":
+        """
+        Return the ElementHolder that contains this measaurement tool
+        """
+        return MeasurementTool.get_from_cb(cbdata).peer
+
+    @staticmethod
+    def get_from_cb(cbdata: dict) -> "MeasurementTool":
+        """
+        Return the Measurement tool that triggered the callback
+        """
+        return cbdata["source"]
+
     def _fill_device(self, holder: "ElementHolder") -> None:
         holder._fill_tool(self)
 
@@ -79,6 +93,7 @@ class MeasurementTool(Element, metaclass=ABCMeta):
         self._latest_measurement = {}
         if measurement_type is not None:
             self._latest_measurement["type"] = measurement_type
+        self.send_callback(Action.INIT, {})
 
     @abstractmethod
     def measure(self) -> bool:

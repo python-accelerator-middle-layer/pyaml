@@ -33,3 +33,5 @@ class Action(Enum):
     "Triggered immediately after restoring the actuator to its initial value."
     MEASURE = 2
     "Triggered immediately after taking a measurement."
+    INIT = 3
+    "Triggered once before the measurement starts"
