@@ -66,7 +66,7 @@ class MeasurementTool(Element, metaclass=ABCMeta):
         """
         Return the ElementHolder that contains this measaurement tool
         """
-        return cbdata["mode"]
+        return MeasurementTool.get_from_cb(cbdata).peer
 
     @staticmethod
     def get_from_cb(cbdata: dict) -> "MeasurementTool":
