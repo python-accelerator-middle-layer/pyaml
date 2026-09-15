@@ -51,7 +51,8 @@ class OrbitResponseMatrix(MeasurementTool, DynamicValidation):
     vcorr_array_name : str
         Name of the vertical corrector array.
     corrector_delta : float
-        Change in corrector strength applied during the measurement.
+        Change in corrector kick angle applied during the measurement, in
+        radians.
     n_step : int, optional
         Number of strength steps used for each corrector. The default is 1.
     sleep_between_step : float, optional
@@ -73,7 +74,7 @@ class OrbitResponseMatrix(MeasurementTool, DynamicValidation):
     vcorr_array_name : str
         Name of the configured vertical corrector array.
     corrector_delta : float
-        Corrector-strength change used for the measurement.
+        Corrector kick-angle change used for the measurement, in radians.
     n_step : int
         Configured number of corrector-strength steps.
     sleep_between_step : float
@@ -144,14 +145,14 @@ class OrbitResponseMatrix(MeasurementTool, DynamicValidation):
             Correctors to excite. Defaults to every corrector of the horizontal and
             vertical arrays.
         sleep_between_step : float
-            Default time sleep after steerer excitation
-            Default: from config
+            Delay in seconds after a corrector excitation.
+            Default: from config.
         n_avg_meas : int, optional
             Default number of orbit measurement per step used for averaging
             Default from config
         sleep_between_meas : float
-            Default time sleep between two orbit measurment
-            Default: from config
+            Delay in seconds between two orbit measurements.
+            Default: from config.
         callback : Callable, optional
             example: callback(action:int, callback_data: 'Complicated struct')
             callback is executed after each strength setting and after each orbit
@@ -241,7 +242,8 @@ class OrbitResponseMatrix(MeasurementTool, DynamicValidation):
         Parameters
         ----------
         data : dict
-            pySC response data containing ``matrix`` and ``input_names``.
+            pySC response data containing ``matrix`` in metres per radian and
+            ``input_names``.
 
         Returns
         -------

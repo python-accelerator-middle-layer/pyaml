@@ -28,14 +28,15 @@ class OrbitResponseMatrixData(ResponseMatrixData, DynamicValidation):
     ----------
     matrix : list[list[float]]
         Orbit response matrix. Each row corresponds to an observable and each
-        column corresponds to a variable.
+        column corresponds to a variable. BPM-response entries are in metres
+        per radian.
     variable_names : list[str] or None
         Names of the response-matrix variables, typically orbit correctors.
     observable_names : list[str]
         Names of the response-matrix observables, typically beam position
         monitors.
     rf_response : list[float] or None, optional
-        Orbit response to an RF-frequency change.
+        Orbit response to an RF-frequency change, in metres per hertz.
     variable_planes : list[str] or None, optional
         Plane associated with each response-matrix variable, typically the
         plane of the corresponding actuator.

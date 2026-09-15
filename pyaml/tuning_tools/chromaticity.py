@@ -130,11 +130,11 @@ class Chromaticity(TuningTool, DynamicValidation):
         return self.peer.magnets.get(self.sextu_array_name)
 
     def get(self):
-        """Return the requested horizontal and vertical chromaticity."""
+        """Return the requested dimensionless horizontal and vertical chromaticity."""
         return self._setpoint
 
     def readback(self):
-        """Measure and return the current horizontal and vertical chromaticity."""
+        """Measure and return the current dimensionless horizontal and vertical chromaticity."""
         self._cm.measure()
         return self._cm.chromaticity.get()
 
@@ -145,7 +145,7 @@ class Chromaticity(TuningTool, DynamicValidation):
         Parameters
         ----------
         chroma : numpy.ndarray
-            Target horizontal and vertical chromaticity values.
+            Target horizontal and vertical chromaticity values (dimensionless).
         iter : int
             Number of correction iterations.
         wait_time : float
@@ -165,13 +165,14 @@ class Chromaticity(TuningTool, DynamicValidation):
         Parameters
         ----------
         dchroma : numpy.ndarray
-            Desired horizontal and vertical chromaticity change.
+            Desired horizontal and vertical chromaticity change (dimensionless).
 
         Returns
         -------
         numpy.ndarray
             Sextupole-strength changes obtained from the response-matrix
-            pseudoinverse.
+            pseudoinverse, in the configured sextupole strength units
+            (typically ``m^-2``).
 
         Raises
         ------
@@ -189,7 +190,7 @@ class Chromaticity(TuningTool, DynamicValidation):
         Parameters
         ----------
         dchroma : numpy.ndarray
-            Horizontal and vertical chromaticity change to apply.
+            Horizontal and vertical chromaticity change to apply (dimensionless).
         wait_time : float
             Delay in seconds after changing sextupole strengths.
         """

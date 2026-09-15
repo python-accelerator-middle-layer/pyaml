@@ -30,7 +30,8 @@ class ResponseMatrixData(DynamicValidation):
     ----------
     matrix : list[list[float]]
         Response matrix values. Each row corresponds to an observable and each
-        column corresponds to a variable.
+        column corresponds to a variable. Each value has units of the
+        corresponding observable divided by the corresponding variable.
     variable_names : list[str] or None
         Names of the variables represented by the matrix columns, typically
         actuators. May be ``None`` if the names are unavailable.

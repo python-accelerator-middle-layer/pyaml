@@ -93,7 +93,7 @@ print(tune_monitor)  # string representation
 # In[5]:
 
 
-qcorrectors = SR.get_magnets("QForTune")
+qcorrectors = SR.magnets.get("QForTune")
 first_q = qcorrectors[0]
 print(f"The ring has {len(qcorrectors)} quadrupolar correctors. First: {first_q.get_name()}")
 print(qcorrectors[0])  # string representation

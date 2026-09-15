@@ -14,6 +14,8 @@ def test_simulator_chromaticity_monitor():
     sr.design.get_lattice().enable_6d()
     chromaAT = sr.design.get_lattice().get_chrom()[:-1]
     chromaticity_monitor = sr.design.get_chromaticity_monitor("CHROMATICITY_MONITOR")
+    assert chromaticity_monitor.chromaticity.unit() == "1"
+    assert chromaticity_monitor.dispersion.unit() == "m"
     chromaticity_monitor.measure(fit_dispersion=True, callback=callback)
     chroma = chromaticity_monitor.chromaticity.get()
     assert np.abs(chroma[0] - chromaAT[0]) < 1e-2
