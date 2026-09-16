@@ -16,3 +16,5 @@ def test_load_conf_with_code():
     assert sr.live["BPM*"].names() == bpms.names()
     assert sr.live[:].names() == [element.get_name() for element in sr.live.get_all_elements()]
     assert sr.design["BPM*"].names() == sr.design.bpms.get("BPM").names()
+
+    assert sr.live.bpms.BPM is bpms
