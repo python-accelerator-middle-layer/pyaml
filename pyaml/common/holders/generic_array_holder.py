@@ -42,6 +42,13 @@ class GenericArrayHolder(Generic[T, A]):
         Return a named array or a transient array of all elements.
     add(arrayName, elementNames)
         Create and register a named array from element selectors.
+
+    Notes
+    -----
+    A configured array is also reachable as an attribute when its name is a
+    valid Python identifier, e.g. ``holder.QuadForTune`` is equivalent to
+    ``holder.get("QuadForTune")``. Array names appear in ``dir(holder)`` so
+    interactive completion (IPython, Jupyter) discovers them.
     """
 
     def __init__(
@@ -116,6 +123,50 @@ class GenericArrayHolder(Generic[T, A]):
             Element or sub-array selected by ``key``.
         """
         return self.get().__getitem__(key)
+
+    def __getattr__(self, name: str) -> A:
+        """
+        Return a configured array through attribute access.
+
+        Only called when normal attribute lookup fails, so it never shadows
+        :meth:`get`, :meth:`add`, or any other existing attribute.
+
+        Parameters
+        ----------
+        name : str
+            Configured array name. Must be a valid Python identifier.
+
+        Returns
+        -------
+        A
+            The array registered under ``name``.
+
+        Raises
+        ------
+        AttributeError
+            If ``name`` starts with an underscore, is not a valid Python
+            identifier, or does not match a configured array.
+
+        Examples
+        --------
+        >>> quad_family = sr.live.magnets.get("QuadForTune")
+        >>> same_quad_family = sr.live.magnets.QuadForTune
+        """
+        if name.startswith("_") or not name.isidentifier() or name not in self._array_store:
+            raise AttributeError(f"'{type(self).__name__}' object has no array named '{name}'")
+        return self._array_store[name]
+
+    def __dir__(self) -> list[str]:
+        """
+        List attributes, including configured array names.
+
+        Returns
+        -------
+        list of str
+            Default attributes plus configured array names that are valid
+            Python identifiers, for interactive completion (IPython, Jupyter).
+        """
+        return sorted(set(super().__dir__()) | {name for name in self._array_store if name.isidentifier()})
 
     def __repr__(self):
         return __pyaml_repr__(self)
