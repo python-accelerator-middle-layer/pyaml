@@ -3,6 +3,7 @@ import pytest
 
 from pyaml.accelerator import Accelerator
 from pyaml.common.exception import PyAMLException
+from pyaml.lattice.simulator import Simulator
 
 
 def test_rf():
@@ -105,3 +106,46 @@ def test_rf_multi_notrans(install_test_package):
 
     # Check that frequency and voltage has been applied on the masterclock device
     assert np.isclose(sr.live.rf.frequency.get(), 3.523e8)
+
+
+def test_masterclock_returns_the_default_rf_plant():
+    sr: Accelerator = Accelerator.load("tests/config/EBS_rf.yaml", ignore_external=True)
+
+    assert sr.design.rf.masterclock is sr.design.rf.get("DEFAULT_RF_PLANT")
+
+
+def test_frequency_and_voltage_are_masterclock_aliases():
+    sr: Accelerator = Accelerator.load("tests/config/EBS_rf.yaml", ignore_external=True)
+
+    assert sr.design.rf.frequency is sr.design.rf.masterclock.frequency
+    assert sr.design.rf.voltage is sr.design.rf.masterclock.voltage
+
+    sr.design.rf.masterclock.frequency.set(3.6e8)
+    assert sr.design.rf.frequency.get() == pytest.approx(3.6e8)
+
+    sr.design.rf.frequency.set(3.523e8)
+    assert sr.design.rf.masterclock.frequency.get() == pytest.approx(3.523e8)
+
+
+def test_masterclock_raises_when_default_rf_plant_missing(ebs_lattice_file):
+    holder = Simulator(name="empty", lattice=str(ebs_lattice_file))
+
+    with pytest.raises(PyAMLException) as exc:
+        _ = holder.rf.masterclock
+    assert "DEFAULT_RF_PLANT" in str(exc.value)
+
+
+def test_simple_rf_access():
+    sr: Accelerator = Accelerator.load("tests/config/EBS_rf.yaml", ignore_external=True)
+
+    masterclock = sr.design.rf.masterclock
+    masterclock.frequency.set(499.654e6)
+    masterclock.voltage.set(2.5e6)
+
+    same_frequency = sr.design.rf.frequency
+    assert same_frequency.get() == pytest.approx(499.654e6)
+
+    # No second RF plant is configured in this fixture: reuse the existing
+    # one to check that named lookup keeps working alongside the masterclock.
+    default_rf_plant = sr.design.rf.get("DEFAULT_RF_PLANT")
+    assert default_rf_plant is masterclock

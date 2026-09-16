@@ -83,10 +83,12 @@ class RFHolder:
     ----------
     transmitter
         Return the holder for RF transmitter elements.
+    masterclock
+        Return the RF plant configured as ``DEFAULT_RF_PLANT``.
     frequency
-        Return the default RF plant's frequency interface.
+        Return the masterclock's frequency interface.
     voltage
-        Return the default RF plant's total-voltage interface.
+        Return the masterclock's total-voltage interface.
 
     Methods
     -------
@@ -94,6 +96,22 @@ class RFHolder:
         Return an RF plant by name.
     add(rf)
         Add an RF plant to the holder.
+
+    Notes
+    -----
+    ``frequency`` and ``voltage`` are backward-compatible aliases for
+    ``masterclock.frequency`` and ``masterclock.voltage``. Do not confuse
+    this ``masterclock`` (the default :class:`~pyaml.rf.rf_plant.RFPlant`
+    object) with :attr:`~pyaml.rf.rf_plant.RFPlant.masterclock` (the
+    master-clock device name configured on an ``RFPlant``).
+
+    Examples
+    --------
+    >>> masterclock = sr.live.rf.masterclock
+    >>> masterclock.frequency.set(499.654e6)
+    >>> masterclock.voltage.set(2.5e6)
+    >>> same_frequency = sr.live.rf.frequency
+    >>> spare_rf_plant = sr.live.rf.get("SPARE_RF_PLANT")
     """
 
     def __init__(self, peer: "ElementHolder"):
@@ -109,14 +127,36 @@ class RFHolder:
         return self._rftransmitter_holder
 
     @property
+    def masterclock(self) -> RFPlant:
+        """
+        Return the RF plant configured as ``DEFAULT_RF_PLANT``.
+
+        Returns
+        -------
+        RFPlant
+            RF plant registered under ``DEFAULT_RF_PLANT``.
+
+        Raises
+        ------
+        PyAMLException
+            If no RF plant is registered under ``DEFAULT_RF_PLANT``.
+
+        Examples
+        --------
+        >>> masterclock = sr.live.rf.masterclock
+        >>> masterclock.frequency.set(499.654e6)
+        """
+        return self.get("DEFAULT_RF_PLANT")
+
+    @property
     def frequency(self) -> ReadWriteFloatScalar:
-        """Return the default RF plant's frequency interface."""
-        return self.get("DEFAULT_RF_PLANT").frequency
+        """Return the masterclock's frequency interface (alias for ``masterclock.frequency``)."""
+        return self.masterclock.frequency
 
     @property
     def voltage(self) -> ReadWriteFloatScalar:
-        """Return the default RF plant's total-voltage interface."""
-        return self.get("DEFAULT_RF_PLANT").voltage
+        """Return the masterclock's total-voltage interface (alias for ``masterclock.voltage``)."""
+        return self.masterclock.voltage
 
     def get(self, name: str) -> RFPlant:
         """
