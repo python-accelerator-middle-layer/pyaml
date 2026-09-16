@@ -178,6 +178,27 @@ def test_getitem_raises_clean_keyerror_for_missing_schema(registry: SchemaRegist
         _ = registry["pkg.module.Class"]
 
 
+def test_subclasses_of_returns_registered_concrete_schemas(registry: SchemaRegistry):
+    class ConcreteSchema(DummySchema):
+        pass
+
+    registry.register("pkg.module.Base", DummySchema)
+    registry.register("pkg.module.Concrete", ConcreteSchema)
+    registry.register("pkg.module.Other", OtherSchema)
+
+    assert registry.subclasses_of(DummySchema) == {
+        "pkg.module.Concrete": ConcreteSchema,
+    }
+
+
+def test_subclasses_of_can_include_base_schema(registry: SchemaRegistry):
+    registry.register("pkg.module.Base", DummySchema)
+
+    assert registry.subclasses_of(DummySchema, include_base=True) == {
+        "pkg.module.Base": DummySchema,
+    }
+
+
 def test_get_returns_registered_schema(registry: SchemaRegistry):
     registry.register("pkg.module.Class", DummySchema)
 

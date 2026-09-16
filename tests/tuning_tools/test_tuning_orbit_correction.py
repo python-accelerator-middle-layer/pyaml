@@ -2,6 +2,7 @@ import logging
 from pathlib import Path
 
 import numpy as np
+import pytest
 
 from pyaml.accelerator import Accelerator
 from pyaml.common.exception import PyAMLConfigException
@@ -49,40 +50,40 @@ def test_tuning_orbit_correction():
     assert np.isclose(std_ac[0], 5.054093306546607e-07, rtol=0, atol=1e-14)
     assert np.isclose(std_ac[1], 4.789271163619949e-07, rtol=0, atol=1e-14)
 
-    # mangle orbit again, test gain_H/gain_V
+    # mangle orbit again, test gain_h/gain_v
     hcorr.strengths.set(h_strengths)
     vcorr.strengths.set(v_strengths)
-    element_holder.orbit.correct(gain_H=0.5, gain_V=0.1)
+    element_holder.orbit.correct(gain_h=0.5, gain_v=0.1)
 
     positions_ac = bpms.positions.get()
     std_ac = np.std(positions_ac, axis=0)
     assert np.isclose(std_ac[0], 3.35697276761084e-05, rtol=0, atol=1e-14)
     assert np.isclose(std_ac[1], 4.134022877212121e-05, rtol=0, atol=1e-14)
 
-    # mangle orbit again, test gain/gain_V
+    # mangle orbit again, test gain/gain_v
     hcorr.strengths.set(h_strengths)
     vcorr.strengths.set(v_strengths)
-    element_holder.orbit.correct(gain=1, gain_V=0.1)
+    element_holder.orbit.correct(gain=1, gain_v=0.1)
 
     positions_ac = bpms.positions.get()
     std_ac = np.std(positions_ac, axis=0)
     assert np.isclose(std_ac[0], 5.119687659921698e-07, rtol=0, atol=1e-14)
     assert np.isclose(std_ac[1], 4.1314729706686444e-05, rtol=0, atol=1e-14)
 
-    # mangle orbit again, test singular_values_H
+    # mangle orbit again, test singular_values_h
     hcorr.strengths.set(h_strengths)
     vcorr.strengths.set(v_strengths)
-    element_holder.orbit.correct(singular_values_H=100)
+    element_holder.orbit.correct(singular_values_h=100)
 
     positions_ac = bpms.positions.get()
     std_ac = np.std(positions_ac, axis=0)
     assert np.isclose(std_ac[0], 1.407498808433106e-06, rtol=0, atol=1e-14)
     assert np.isclose(std_ac[1], 4.790103697644036e-07, rtol=0, atol=1e-14)
 
-    # mangle orbit again, test singular_values_V
+    # mangle orbit again, test singular_values_v
     hcorr.strengths.set(h_strengths)
     vcorr.strengths.set(v_strengths)
-    element_holder.orbit.correct(singular_values_V=50)
+    element_holder.orbit.correct(singular_values_v=50)
 
     positions_ac = bpms.positions.get()
     std_ac = np.std(positions_ac, axis=0)
@@ -190,8 +191,8 @@ def test_tuning_orbit_correction():
             reference=reference_before_rf,
             plane="H",
             rf=True,
-            gain_RF=1,
-            gain_H=0,
+            gain_rf=1,
+            gain_h=0,
         )
 
     frf_after = element_holder.rf.frequency.get()
@@ -210,8 +211,8 @@ def test_tuning_orbit_correction():
             reference=reference_before_rf,
             plane="H",
             rf=True,
-            gain_RF=1,
-            gain_H=0,
+            gain_rf=1,
+            gain_h=0,
         )
 
     frf_after = element_holder.rf.frequency.get()
@@ -244,7 +245,7 @@ def test_tuning_orbit_correction_config():
         "hcorr_array_name": "HCorr",
         "vcorr_array_name": "VCorr",
         "name": "TEST_ORBIT_CORRECTION",
-        "singular_values_H": "162",
+        "singular_values_h": "162",
         "response_matrix": "file:does_not_exist.json",
     }
     try:
@@ -259,9 +260,23 @@ def test_tuning_orbit_correction_config():
         "hcorr_array_name": "HCorr",
         "vcorr_array_name": "VCorr",
         "name": "TEST_ORBIT_CORRECTION",
+        "singular_values_h": "162",
+        "singular_values_v": "162",
+        "response_matrix": "file:does_not_exist.json",
+    }
+    orbit_cor = Factory.build(config_dict, ignore_external=False)
+    Factory.clear()
+
+    config_dict = {
+        "type": "pyaml.tuning_tools.orbit",
+        "bpm_array_name": "BPM",
+        "hcorr_array_name": "HCorr",
+        "vcorr_array_name": "VCorr",
+        "name": "TEST_ORBIT_CORRECTION",
         "singular_values_H": "162",
         "singular_values_V": "162",
         "response_matrix": "file:does_not_exist.json",
     }
-    orbit_cor = Factory.build(config_dict, ignore_external=False)
+    with pytest.raises(PyAMLConfigException):
+        Factory.build(config_dict, ignore_external=False)
     Factory.clear()

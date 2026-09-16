@@ -9,7 +9,7 @@ responses in a serializable response-matrix data model.
 import logging
 from dataclasses import asdict
 from time import sleep
-from typing import Callable, Optional
+from typing import TYPE_CHECKING, Callable, Optional
 
 import numpy as np
 
@@ -17,6 +17,10 @@ from ..common.constants import Action
 from ..validation import DynamicValidation, register_schema
 from .measurement_tool import MeasurementTool
 from .response_matrix_data import ResponseMatrixData
+
+if TYPE_CHECKING:
+    from ..arrays.magnet_array import MagnetArray
+    from ..diagnostics.tune_monitor import BetatronTuneMonitor
 
 logger = logging.getLogger(__name__)
 
@@ -52,7 +56,8 @@ class TuneResponseMatrix(MeasurementTool, DynamicValidation):
         vertical tunes.
     quad_delta : float
         Maximum positive and negative quadrupole-strength change applied during
-        the measurement.
+        the measurement, in the configured quadrupole strength unit (typically
+        ``m^-1``).
     n_step : int, optional
         Number of quadrupole-strength settings used for each quadrupole. The
         settings are distributed linearly from ``-quad_delta`` to
@@ -74,7 +79,8 @@ class TuneResponseMatrix(MeasurementTool, DynamicValidation):
     betatron_tune_name : str
         Name of the configured betatron tune monitor.
     quad_delta : float
-        Configured quadrupole-strength change.
+        Configured quadrupole-strength change, in the configured quadrupole
+        unit (typically ``m^-1``).
     n_step : int
         Configured number of strength settings.
     sleep_between_step : float
@@ -83,6 +89,10 @@ class TuneResponseMatrix(MeasurementTool, DynamicValidation):
         Configured number of tune measurements to average.
     sleep_between_meas : float
         Configured delay between averaged tune measurements.
+    quadrupoles : MagnetArray
+        Quadrupole array used for the measurement.
+    tune_monitor : BetatronTuneMonitor
+        Betatron tune monitor used for the measurement.
 
     Methods
     -------
@@ -123,6 +133,18 @@ class TuneResponseMatrix(MeasurementTool, DynamicValidation):
         self.sleep_between_step = sleep_between_step
         self.n_avg_meas = n_avg_meas
         self.sleep_between_meas = sleep_between_meas
+
+    @property
+    def quadrupoles(self) -> "MagnetArray":
+        """Return the quadrupole array used for the measurement."""
+        self.check_peer()
+        return self.peer.magnets.get(self.quad_array_name)
+
+    @property
+    def tune_monitor(self) -> "BetatronTuneMonitor":
+        """Return the betatron tune monitor used for the measurement."""
+        self.check_peer()
+        return self.peer.get_betatron_tune_monitor(self.betatron_tune_name)
 
     def measure(
         self,
@@ -166,19 +188,20 @@ class TuneResponseMatrix(MeasurementTool, DynamicValidation):
         Parameters
         ----------
         quad_delta : float
-            Delta strength used to get the response matrix
+            Quadrupole-strength change in the configured quadrupole unit
+            (typically ``m^-1``).
         n_step : int, optional
             Number of step for fitting the tune slope [-quad_delta/n_step..quad_delta/n_step]
             Default from config
         sleep_between_step : float
-            Default time sleep after quad excitation
-            Default: from config
+            Delay in seconds after quadrupole excitation.
+            Default: from config.
         n_avg_meas : int, optional
             Default number of tune measurement per step used for averaging
             Default from config
         sleep_between_meas : float
-            Default time sleep between two tune measurment
-            Default: from config
+            Delay in seconds between two tune measurements.
+            Default: from config.
         callback : Callable, optional
             Callback executed after each strength setting or measurement.
             See :py:meth:`~.measurement_tool.MeasurementTool.send_callback`.
@@ -192,14 +215,14 @@ class TuneResponseMatrix(MeasurementTool, DynamicValidation):
               step:int # The current step
               avg_step:int # The current avg step
               magnet:str # The magnet being excited
-              strength:float # Magnet strength
-              tune:np.array # The measured tune (on Action.MEASURE)
-              dtune:np.array # The tune variation (on Action.RESTORE)
+              strength:float # Quadrupole strength, typically in m^-1
+              tune:np.array # Dimensionless measured tune (on Action.MEASURE)
+              dtune:np.array # Tune change per quadrupole-strength unit (on Action.RESTORE)
         """
         # Get devices
         self.check_peer()
-        quads = self._peer.magnets.get(self.quad_array_name)
-        tm = self._peer.get_betatron_tune_monitor(self.betatron_tune_name)
+        quads = self.quadrupoles
+        tm = self.tune_monitor
 
         tunemat = np.zeros((len(quads), 2))
         initial_tune = tm.tune.get()

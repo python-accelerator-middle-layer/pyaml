@@ -401,7 +401,7 @@ class Simulator(ElementHolder, DynamicValidation):
             identifier = self._linker.get_element_identifier(element)
             element_list = self._linker.get_at_elements(identifier)
             if not element_list:
-                raise PyAMLException(f"{identifier} not found in lattice:{self._cfg.lattice}")
+                raise PyAMLException(f"{identifier} not found in lattice:{self._lattice}")
             return element_list
         else:
             # By list
@@ -411,7 +411,7 @@ class Simulator(ElementHolder, DynamicValidation):
                 names = []
                 for name in nameList:
                     if name not in self._elements_indexing:
-                        raise PyAMLException(f"{name} not found in lattice:{self._cfg.lattice}")
+                        raise PyAMLException(f"{name} not found in lattice:{self._lattice}")
                     elts = self._elements_indexing[name]
                     names.extend(elts)
                 return names
@@ -424,7 +424,7 @@ class Simulator(ElementHolder, DynamicValidation):
                 return [self.ring[idx] for idx in indices]
             else:
                 if name not in self._elements_indexing:
-                    raise PyAMLException(f"{name} not found in lattice:{self._cfg.lattice}")
+                    raise PyAMLException(f"{name} not found in lattice:{self._lattice}")
                 elts = self._elements_indexing[name]
                 if indices is None:
                     return elts

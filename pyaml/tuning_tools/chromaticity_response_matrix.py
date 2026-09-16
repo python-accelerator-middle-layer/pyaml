@@ -9,7 +9,7 @@ slopes as a response matrix.
 import logging
 import time
 from dataclasses import asdict
-from typing import Callable, Optional
+from typing import TYPE_CHECKING, Callable, Optional
 
 import numpy as np
 
@@ -17,6 +17,10 @@ from ..common.constants import Action
 from ..validation import DynamicValidation, register_schema
 from .measurement_tool import MeasurementTool
 from .response_matrix_data import ResponseMatrixData
+
+if TYPE_CHECKING:
+    from ..arrays.magnet_array import MagnetArray
+    from .chromaticity_monitor import ChromaticityMonitor
 
 logger = logging.getLogger(__name__)
 
@@ -42,7 +46,8 @@ class ChromaticityResponseMatrix(MeasurementTool, DynamicValidation):
     chromaticity_name : str
         Name of the chromaticity monitor used to measure the response.
     sextu_delta : float
-        Default sextupole excitation applied during the measurement.
+        Default sextupole-strength excitation applied during the measurement,
+        in the configured sextupole strength unit (typically ``m^-2``).
     n_step : int, optional
         Default number of excitation steps used to fit the response.
     sleep_between_step : float, optional
@@ -56,6 +61,13 @@ class ChromaticityResponseMatrix(MeasurementTool, DynamicValidation):
     -------
     measure(...)
         Measure the chromaticity response matrix.
+
+    Attributes
+    ----------
+    sextupoles : MagnetArray
+        Sextupole array used for the measurement.
+    chromaticity_monitor : ChromaticityMonitor
+        Chromaticity monitor used for the measurement.
     """
 
     def __init__(
@@ -82,6 +94,18 @@ class ChromaticityResponseMatrix(MeasurementTool, DynamicValidation):
         self.n_avg_meas = n_avg_meas
         self.sleep_between_meas = sleep_between_meas
         self.aborted = False
+
+    @property
+    def sextupoles(self) -> "MagnetArray":
+        """Return the sextupole array used for the measurement."""
+        self.check_peer()
+        return self.peer.magnets.get(self.sextu_array_name)
+
+    @property
+    def chromaticity_monitor(self) -> "ChromaticityMonitor":
+        """Return the chromaticity monitor used for the measurement."""
+        self.check_peer()
+        return self.peer.get_chromaticity_monitor(self.chromaticity_name)
 
     def measure(
         self,
@@ -125,19 +149,20 @@ class ChromaticityResponseMatrix(MeasurementTool, DynamicValidation):
         Parameters
         ----------
         sextu_delta : float
-            Delta strength used to get the response matrix
+            Sextupole-strength change in the configured sextupole unit
+            (typically ``m^-2``).
         n_step : int, optional
             Number of step for fitting the chomaticity slope [-sextu_delta/n_step..sextu_delta/n_step]
             Default from config
         sleep_between_step : float
-            Default time sleep after sextu excitation
-            Default: from config
+            Delay in seconds after sextupole excitation.
+            Default: from config.
         n_avg_meas : int, optional
             Default number of chromaticity measurement per step used for averaging
             Default from config
         sleep_between_meas : float
-            Default time sleep between two chomaticity measurment
-            Default: from config
+            Delay in seconds between two chromaticity measurements.
+            Default: from config.
         callback : Callable, optional
             Callback executed after each strength setting or measurement.
             See :py:meth:`~.measurement_tool.MeasurementTool.send_callback`.
@@ -151,9 +176,9 @@ class ChromaticityResponseMatrix(MeasurementTool, DynamicValidation):
               step:int # The current step
               avg_step:int # The current averaging step
               magnet:str # The magnet being excited
-              strength:float # Magnet strength
-              chroma:np.array # The measured chroma (on Action.MEASURE)
-              dchroma:np.array # The chroma variation (on Action.RESTORE)
+              strength:float # Sextupole strength, typically in m^-2
+              chroma:np.array # Dimensionless measured chromaticity (on Action.MEASURE)
+              dchroma:np.array # Chromaticity change per sextupole-strength unit (on Action.RESTORE)
 
         Returns
         -------
@@ -163,8 +188,8 @@ class ChromaticityResponseMatrix(MeasurementTool, DynamicValidation):
         """
         # Get devices
         self.check_peer()
-        sextus = self._peer.magnets.get(self.sextu_array_name)
-        cm = self._peer.get_chromaticity_monitor(self.chromaticity_name)
+        sextus = self.sextupoles
+        cm = self.chromaticity_monitor
 
         self._register_callback(callback)
         self._init_measure("pyaml.tuning_tools.response_matrix_data")

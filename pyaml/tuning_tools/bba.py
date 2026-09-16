@@ -7,7 +7,7 @@ nearby beam-position monitors.
 """
 
 import logging
-from typing import Callable, Optional
+from typing import TYPE_CHECKING, Callable, Optional
 
 import matplotlib.pyplot as plt
 import numpy as np
@@ -21,6 +21,11 @@ from ..common.exception import PyAMLException
 from ..external.pySC_interface import pySCInterface
 from ..validation import DynamicValidation, register_schema
 from .measurement_tool import MeasurementTool
+
+if TYPE_CHECKING:
+    from ..arrays.bpm_array import BPMArray
+    from ..bpm.bpm import BPM
+    from ..magnet.magnet import Magnet
 
 logger = logging.getLogger(__name__)
 
@@ -54,17 +59,17 @@ class BBA(MeasurementTool, DynamicValidation):
     quad_name : str
         Name of the quadrupole to align.
     hcorr_delta : float
-        Change in horizontal corrector strength used for each horizontal
-        orbit-offset step.
+        Change in horizontal corrector kick angle used for each horizontal
+        orbit-offset step, in radians.
     vcorr_delta : float
-        Change in vertical corrector strength used for each vertical
-        orbit-offset step.
+        Change in vertical corrector kick angle used for each vertical
+        orbit-offset step, in radians.
     hquad_delta : float
         Change in quadrupole strength used during the horizontal alignment
-        measurement.
+        measurement, in the configured quadrupole unit (typically ``m^-1``).
     vquad_delta : float
         Change in quadrupole strength used during the vertical alignment
-        measurement.
+        measurement, in the configured quadrupole unit (typically ``m^-1``).
     n_step : int, default=1
         Number of orbit-offset steps to perform in each plane.
     sleep_between_step : float, default=0
@@ -88,6 +93,19 @@ class BBA(MeasurementTool, DynamicValidation):
         Return the uncertainty of the vertical center offset.
     plot_data(plane)
         Plot BBA data.
+
+    Attributes
+    ----------
+    bpms : BPMArray
+        BPM array used for the measurement.
+    bpm : BPM
+        Reference BPM used for the alignment.
+    hcorrector : Magnet
+        Horizontal corrector used for the alignment.
+    vcorrector : Magnet
+        Vertical corrector used for the alignment.
+    quadrupole : Magnet
+        Quadrupole being aligned.
     """
 
     def __init__(
@@ -125,6 +143,36 @@ class BBA(MeasurementTool, DynamicValidation):
         self.n_avg_meas = n_avg_meas
         self.sleep_between_meas = sleep_between_meas
 
+    @property
+    def bpms(self) -> "BPMArray":
+        """Return the BPM array used for the measurement."""
+        self.check_peer()
+        return self.peer.bpms.get(self.bpm_array_name)
+
+    @property
+    def bpm(self) -> "BPM":
+        """Return the reference BPM used for the alignment."""
+        self.check_peer()
+        return self.peer.bpm.get(self.bpm_name)
+
+    @property
+    def hcorrector(self) -> "Magnet":
+        """Return the horizontal corrector used for the alignment."""
+        self.check_peer()
+        return self.peer.magnet.get(self.hcorr_name)
+
+    @property
+    def vcorrector(self) -> "Magnet":
+        """Return the vertical corrector used for the alignment."""
+        self.check_peer()
+        return self.peer.magnet.get(self.vcorr_name)
+
+    @property
+    def quadrupole(self) -> "Magnet":
+        """Return the quadrupole being aligned."""
+        self.check_peer()
+        return self.peer.magnet.get(self.quad_name)
+
     def measure(
         self,
         sleep_between_step: Optional[float] = None,
@@ -155,14 +203,14 @@ class BBA(MeasurementTool, DynamicValidation):
         Parameters
         ----------
         sleep_between_step : float
-            Default time sleep after steerer or quad excitation
-            Default: from config
+            Delay in seconds after corrector or quadrupole excitation.
+            Default: from config.
         n_avg_meas : int, optional
             Default number of orbit measurement per step used for averaging
             Default from config
         sleep_between_meas : float
-            Default time sleep between two orbit measurment
-            Default: from config
+            Delay in seconds between two orbit measurements.
+            Default: from config.
         callback : Callable, optional
             example: callback(action:int, callback_data: 'Complicated struct')
             callback is executed after each strength setting and after each orbit
@@ -183,7 +231,7 @@ class BBA(MeasurementTool, DynamicValidation):
         interface.set_wait_time = sleep_step
         interface.read_wait_time = sleep_meas
 
-        bpms_names = element_holder.bpms.get(self.bpm_array_name).names()
+        bpms_names = self.bpms.names()
 
         bba_pySC_config = {
             "number": bpms_names.index(self.bpm_name),
@@ -278,19 +326,19 @@ class BBA(MeasurementTool, DynamicValidation):
         return True
 
     def h_offset(self) -> float:
-        """Return the measured horizontal magnetic-center offset."""
+        """Return the measured horizontal magnetic-center offset in metres."""
         return self.latest_measurement["HData"].offset if self.latest_measurement["HData"] is not None else np.nan
 
     def h_offset_error(self) -> float:
-        """Return the uncertainty of the horizontal center offset."""
+        """Return the horizontal center-offset uncertainty in metres."""
         return self.latest_measurement["HData"].offset_error if self.latest_measurement["HData"] is not None else np.nan
 
     def v_offset(self) -> float:
-        """Return the measured vertical magnetic-center offset."""
+        """Return the measured vertical magnetic-center offset in metres."""
         return self.latest_measurement["VData"].offset if self.latest_measurement["VData"] is not None else np.nan
 
     def v_offset_error(self) -> float:
-        """Return the uncertainty of the vertical center offset."""
+        """Return the vertical center-offset uncertainty in metres."""
         return self.latest_measurement["VData"].offset_error if self.latest_measurement["VData"] is not None else np.nan
 
     def plot_data(self, plane: str):

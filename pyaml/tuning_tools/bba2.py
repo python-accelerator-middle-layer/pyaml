@@ -7,7 +7,7 @@ quadrupole magnetic-center offsets from beam-position-monitor responses.
 
 import logging
 import time
-from typing import Callable, Optional
+from typing import TYPE_CHECKING, Callable, Optional
 
 import matplotlib.pyplot as plt
 import numpy as np
@@ -16,6 +16,12 @@ from ..common.constants import Action
 from ..common.exception import PyAMLException
 from ..validation import DynamicValidation, register_schema
 from .measurement_tool import MeasurementTool
+
+if TYPE_CHECKING:
+    from ..arrays.bpm_array import BPMArray
+    from ..bpm.bpm import BPM
+    from ..magnet.magnet import Magnet
+    from .tune import Tune
 
 logger = logging.getLogger(__name__)
 
@@ -122,13 +128,14 @@ class BBA2(MeasurementTool, DynamicValidation):
         Name of the tune-correction tool used to compensate for tune changes
         caused by varying the quadrupole strength.
     hcorr_delta : float
-        Change in horizontal corrector strength used for each horizontal
-        orbit-offset step.
+        Change in horizontal corrector kick angle used for each horizontal
+        orbit-offset step, in radians.
     vcorr_delta : float
-        Change in vertical corrector strength used for each vertical
-        orbit-offset step.
+        Change in vertical corrector kick angle used for each vertical
+        orbit-offset step, in radians.
     quad_delta : float
-        Change in quadrupole strength used for the alignment measurement.
+        Change in quadrupole strength used for the alignment measurement, in
+        the configured quadrupole unit (typically ``m^-1``).
     bipolar_delta : bool, default=False
         If `True`, vary the quadrupole strength both above and below its
         initial value by `quad_delta`. If `False`, apply the change in one
@@ -161,6 +168,21 @@ class BBA2(MeasurementTool, DynamicValidation):
         Plot measured kicks and the fitted alignment response for one plane.
     plot_data()
         Plot BBA data.
+
+    Attributes
+    ----------
+    bpms
+        Return the BPM array used for the measurement.
+    bpm
+        Return the reference BPM used for the alignment.
+    hcorrector
+        Return the horizontal corrector used for the alignment.
+    vcorrector
+        Return the vertical corrector used for the alignment.
+    quadrupole
+        Return the quadrupole being aligned.
+    tune_correction
+        Return the tune-correction tool used during alignment.
     """
 
     def __init__(
@@ -201,6 +223,42 @@ class BBA2(MeasurementTool, DynamicValidation):
         self.sleep_between_step = sleep_between_step
         self.n_avg_meas = n_avg_meas
         self.sleep_between_meas = sleep_between_meas
+
+    @property
+    def bpms(self) -> "BPMArray":
+        """Return the BPM array used for the measurement."""
+        self.check_peer()
+        return self.peer.bpms.get(self.bpm_array_name)
+
+    @property
+    def bpm(self) -> "BPM":
+        """Return the reference BPM used for the alignment."""
+        self.check_peer()
+        return self.peer.bpm.get(self.bpm_name)
+
+    @property
+    def hcorrector(self) -> "Magnet":
+        """Return the horizontal corrector used for the alignment."""
+        self.check_peer()
+        return self.peer.magnet.get(self.hcorr_name)
+
+    @property
+    def vcorrector(self) -> "Magnet":
+        """Return the vertical corrector used for the alignment."""
+        self.check_peer()
+        return self.peer.magnet.get(self.vcorr_name)
+
+    @property
+    def quadrupole(self) -> "Magnet":
+        """Return the quadrupole being aligned."""
+        self.check_peer()
+        return self.peer.magnet.get(self.quad_name)
+
+    @property
+    def tune_correction(self) -> "Tune":
+        """Return the tune-correction tool used during alignment."""
+        self.check_peer()
+        return self.peer.get_tune_tuning(self.tune_correction_name)
 
     @staticmethod
     def _x_intercept(x, k, n):
@@ -526,14 +584,14 @@ class BBA2(MeasurementTool, DynamicValidation):
         Parameters
         ----------
         sleep_between_step : float
-            Default time sleep after steerer or quad excitation
-            Default: from config
+            Delay in seconds after corrector or quadrupole excitation.
+            Default: from config.
         n_avg_meas : int, optional
             Default number of orbit measurement per step used for averaging
             Default from config
         sleep_between_meas : float
-            Default time sleep between two orbit measurment
-            Default: from config
+            Delay in seconds between two orbit measurements.
+            Default: from config.
         callback : Callable, optional
             example: callback(action:int, callback_data: 'Complicated struct')
             callback is executed after each strength setting and after each orbit
@@ -548,10 +606,10 @@ class BBA2(MeasurementTool, DynamicValidation):
 
         # Device handles
         self.check_peer()
-        self._h_steer = self.peer.magnet.get(self.hcorr_name)
-        self._v_steer = self.peer.magnet.get(self.vcorr_name)
-        self._quad = self.peer.magnet.get(self.quad_name)
-        self._bpms = self.peer.bpms.get(self.bpm_array_name)
+        self._h_steer = self.hcorrector
+        self._v_steer = self.vcorrector
+        self._quad = self.quadrupole
+        self._bpms = self.bpms
         self._bpmi = self._bpms.names().index(self.bpm_name)
 
         # Initial values
@@ -701,19 +759,19 @@ class BBA2(MeasurementTool, DynamicValidation):
         return True
 
     def h_offset(self) -> float:
-        """Return the measured horizontal magnetic-center offset."""
+        """Return the measured horizontal magnetic-center offset in metres."""
         return self.latest_measurement["HData"].offset if self.latest_measurement["HData"] is not None else np.nan
 
     def h_offset_error(self) -> float:
-        """Return the uncertainty of the horizontal center offset."""
+        """Return the horizontal center-offset uncertainty in metres."""
         return self.latest_measurement["HData"].error if self.latest_measurement["HData"] is not None else np.nan
 
     def v_offset(self) -> float:
-        """Return the measured vertical magnetic-center offset."""
+        """Return the measured vertical magnetic-center offset in metres."""
         return self.latest_measurement["VData"].offset if self.latest_measurement["VData"] is not None else np.nan
 
     def v_offset_error(self) -> float:
-        """Return the uncertainty of the vertical center offset."""
+        """Return the vertical center-offset uncertainty in metres."""
         return self.latest_measurement["VData"].error if self.latest_measurement["VData"] is not None else np.nan
 
     def plot_plane_data(self, ax, plane: str):

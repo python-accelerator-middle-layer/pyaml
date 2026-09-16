@@ -59,6 +59,8 @@ class SchemaRegistry:
         Return a view of registered class paths.
     values()
         Return a view of registered schemas.
+    subclasses_of(schema, include_base=False)
+        Return registered schemas derived from a schema.
     update(class_path, schema)
         Replace the schema registered for a class path.
     """
@@ -314,6 +316,44 @@ class SchemaRegistry:
             View of registered schema classes.
         """
         return self._schemas.values()
+
+    def subclasses_of(
+        self,
+        schema: type[ConfigurationSchema],
+        *,
+        include_base: bool = False,
+    ) -> dict[str, type[ConfigurationSchema]]:
+        """Return registered schemas that are subclasses of ``schema``.
+
+        Registered virtual subclasses are included. By default, ``schema`` itself
+        is excluded; set ``include_base`` to ``True`` to include it when registered.
+
+        Parameters
+        ----------
+        schema : type[ConfigurationSchema]
+            Base schema to search for.
+        include_base : bool, optional
+            Include an entry whose schema is exactly ``schema``.
+
+        Returns
+        -------
+        dict[str, type[ConfigurationSchema]]
+            Mapping of registered class paths to matching schema classes.
+
+        Raises
+        ------
+        TypeError
+            If ``schema`` is not a ``ConfigurationSchema`` subclass.
+        """
+        if not isinstance(schema, type) or not issubclass(schema, ConfigurationSchema):
+            raise TypeError(f"{schema!r} must inherit from ConfigurationSchema.")
+
+        return {
+            class_path: registered_schema
+            for class_path, registered_schema in self._schemas.items()
+            if (include_base or registered_schema is not schema)
+            and (issubclass(registered_schema, schema) or registered_schema.is_virtual_subclass_of(schema))
+        }
 
     def __len__(
         self,

@@ -14,6 +14,7 @@ import numpy as np
 from pySC import ResponseMatrix as pySC_ResponseMatrix
 from pySC.apps import orbit_correction
 
+from ..arrays.bpm_array import BPMArray
 from ..arrays.magnet_array import MagnetArray
 from ..common.exception import PyAMLException
 from ..external.pySC_interface import pySCInterface
@@ -44,22 +45,34 @@ class Orbit(TuningTool, DynamicValidation):
     vcorr_array_name : str
         Name of the vertical corrector array.
     response_matrix : Union[str, OrbitResponseMatrixData]
-        Orbit response matrix or path to a serialized matrix.
+        Orbit response matrix or path to a serialized matrix. BPM-response
+        entries are in metres per radian; an optional RF response is in metres
+        per hertz.
     rf_plant_name : Optional[str]
         Optional RF plant used for RF orbit correction.
     singular_values : Optional[int]
         Common number of singular values retained for both planes.
-    singular_values_H : Optional[int]
+    singular_values_h : Optional[int]
         Number of horizontal singular values retained.
-    singular_values_V : Optional[int]
+    singular_values_v : Optional[int]
         Number of vertical singular values retained.
     virtual_target : float
-        Target value for virtual orbit correction.
+        Target sum of horizontal corrector changes, in radians.
 
     Attributes
     ----------
     response_matrix
         Return the response matrix if it has been loaded None otherwise
+    bpms
+        Return the BPM array used for orbit readback.
+    hcorrectors
+        Return the horizontal corrector array used for correction.
+    vcorrectors
+        Return the vertical corrector array used for correction.
+    correctors
+        Return the combined horizontal and vertical corrector array.
+    rf_plant
+        Return the optional RF plant used for correction.
 
     Methods
     -------
@@ -92,8 +105,8 @@ class Orbit(TuningTool, DynamicValidation):
         response_matrix: Union[str, OrbitResponseMatrixData],
         rf_plant_name: Optional[str] = None,
         singular_values: Optional[int] = None,
-        singular_values_H: Optional[int] = None,
-        singular_values_V: Optional[int] = None,
+        singular_values_h: Optional[int] = None,
+        singular_values_v: Optional[int] = None,
         virtual_target: float = 0,
     ):
         """
@@ -109,19 +122,19 @@ class Orbit(TuningTool, DynamicValidation):
         self.virtual_target = virtual_target
 
         if singular_values is None:
-            if singular_values_H is None or singular_values_V is None:
+            if singular_values_h is None or singular_values_v is None:
                 raise PyAMLException(
-                    "Either `singular_values` or `singular_values_H` and `singular_values_V` must be provided."
+                    "Either `singular_values` or `singular_values_h` and `singular_values_v` must be provided."
                 )
-            self.singular_values_H = singular_values_H
-            self.singular_values_V = singular_values_V
+            self.singular_values_h = singular_values_h
+            self.singular_values_v = singular_values_v
         else:
-            if singular_values_H is not None or singular_values_V is not None:
+            if singular_values_h is not None or singular_values_v is not None:
                 raise PyAMLException(
-                    "Either `singular_values` or `singular_values_H` and `singular_values_V` must be provided, not both."
+                    "Either `singular_values` or `singular_values_h` and `singular_values_v` must be provided, not both."
                 )
-            self.singular_values_H = singular_values
-            self.singular_values_V = singular_values
+            self.singular_values_h = singular_values
+            self.singular_values_v = singular_values
 
         # If the configuration response matrix is a filename, load it
         if type(response_matrix) is str:
@@ -182,15 +195,55 @@ class Orbit(TuningTool, DynamicValidation):
         """
         return self._response_matrix
 
+    @property
+    def bpms(self) -> BPMArray:
+        """Return the BPM array used for orbit readback."""
+        self.check_peer()
+        return self.peer.bpms.get(self.bpm_array_name)
+
+    @property
+    def hcorrectors(self) -> MagnetArray:
+        """Return the horizontal corrector array used for correction."""
+        self.check_peer()
+        if self._hcorr is None:
+            return self.peer.magnets.get(self.hcorr_array_name)
+        return self._hcorr
+
+    @property
+    def vcorrectors(self) -> MagnetArray:
+        """Return the vertical corrector array used for correction."""
+        self.check_peer()
+        if self._vcorr is None:
+            return self.peer.magnets.get(self.vcorr_array_name)
+        return self._vcorr
+
+    @property
+    def correctors(self) -> MagnetArray:
+        """Return the combined horizontal and vertical corrector array."""
+        self.check_peer()
+        if self._hvcorr is None:
+            return MagnetArray("", [*self.hcorrectors, *self.vcorrectors])
+        return self._hvcorr
+
+    @property
+    def rf_plant(self) -> RFPlant | None:
+        """Return the optional RF plant used for orbit correction."""
+        self.check_peer()
+        if self.rf_plant_name is None:
+            return None
+        if self._rf_plant is None:
+            return self.peer.rf.get(self.rf_plant_name)
+        return self._rf_plant
+
     def correct(
         self,
         plane: Optional[Literal["H", "V"]] = None,
         gain: float = 1.0,
-        gain_H: Optional[float] = None,
-        gain_V: Optional[float] = None,
-        gain_RF: Optional[float] = None,
-        singular_values_H: Optional[int] = None,
-        singular_values_V: Optional[int] = None,
+        gain_h: Optional[float] = None,
+        gain_v: Optional[float] = None,
+        gain_rf: Optional[float] = None,
+        singular_values_h: Optional[int] = None,
+        singular_values_v: Optional[int] = None,
         reference: Optional[np.ndarray] = None,
         rf: bool = False,
         virtual_target: Optional[float] = None,
@@ -201,33 +254,38 @@ class Orbit(TuningTool, DynamicValidation):
 
         Parameters
         ----------
-        reference : optional
+        reference : numpy.ndarray, optional
             Optional reference orbit to correct towards. If not specified, corrects
-            to zero orbit.
+            to zero orbit. Values are in metres.
         gain : float, default 1.0
-            Global gain applied to all corrector kicks if per-plane gains are not
-            specified.
+            Dimensionless global gain applied to all corrector kicks if per-plane
+            gains are not specified.
         plane : {'H', 'V'}, optional
             Plane to correct. If 'H', only horizontal correction is performed.
             If 'V', only vertical correction is performed.
             If None (default), both planes are corrected.
-        gain_H : float, optional
-            Gain for the horizontal plane. Overrides `gain` for H-plane if specified.
-        gain_V : float, optional
-            Gain for the vertical plane. Overrides `gain` for V-plane if specified.
-        gain_RF : optional
-            Gain for the correction with the rf frequency. If not specified,
-            the gain of the horizontal plane is used.
-        singular_values_H : int, optional
+        gain_h : float, optional
+            Dimensionless gain for the horizontal plane. Overrides ``gain`` for
+            H-plane if specified.
+        gain_v : float, optional
+            Dimensionless gain for the vertical plane. Overrides ``gain`` for
+            V-plane if specified.
+        gain_rf : float, optional
+            Dimensionless gain for the RF-frequency correction. If not specified,
+            the horizontal-plane gain is used.
+        singular_values_h : int, optional
             Number of singular values to use for SVD decomposition in the horizontal
             plane. If not specified, uses the default or configured value.
-        singular_values_V : int, optional
+        singular_values_v : int, optional
             Number of singular values to use for SVD decomposition in the vertical
             plane. If not specified, uses the default or configured value.
         rf : bool, default False,
             If set to true, the rf_response will also be used in the response matrix
             for correction of the horizontal orbit. Only takes into effect if plane is
             None or if plane = 'H'.
+        virtual_target : float, optional
+            Target sum of horizontal corrector changes, in radians. Defaults to
+            the configured value.
         """
 
         if self._pySC_response_matrix is None:
@@ -238,15 +296,15 @@ class Orbit(TuningTool, DynamicValidation):
             bpm_array_name=self.bpm_array_name,
         )
 
-        if singular_values_H is not None:
-            svH = singular_values_H
+        if singular_values_h is not None:
+            sv_h = singular_values_h
         else:
-            svH = self.singular_values_H
+            sv_h = self.singular_values_h
 
-        if singular_values_V is not None:
-            svV = singular_values_V
+        if singular_values_v is not None:
+            sv_v = singular_values_v
         else:
-            svV = self.singular_values_V
+            sv_v = self.singular_values_v
 
         if virtual_target is None:
             virtual_target = self.virtual_target
@@ -256,7 +314,7 @@ class Orbit(TuningTool, DynamicValidation):
                 interface=interface,
                 response_matrix=self._pySC_response_matrix,
                 method="svd_values",
-                parameter=svH,
+                parameter=sv_h,
                 virtual=True,
                 apply=False,
                 plane="H",
@@ -270,7 +328,7 @@ class Orbit(TuningTool, DynamicValidation):
                 interface=interface,
                 response_matrix=self._pySC_response_matrix,
                 method="svd_values",
-                parameter=svV,
+                parameter=sv_v,
                 virtual=False,
                 apply=False,
                 plane="V",
@@ -278,37 +336,37 @@ class Orbit(TuningTool, DynamicValidation):
                 rf=False,
             )
 
-        eff_gain_H = gain_H if gain_H is not None else gain
-        eff_gain_V = gain_V if gain_V is not None else gain
+        eff_gain_h = gain_h if gain_h is not None else gain
+        eff_gain_v = gain_v if gain_v is not None else gain
 
         # take care of rf trim
         rf_flag = rf and (plane is None or plane == "H")
         if rf_flag:
-            if self._rf_plant is None:
+            if self.rf_plant is None:
                 raise PyAMLException("RF plant is not defined!")
-            eff_gain_RF = gain_RF if gain_RF is not None else eff_gain_H
+            eff_gain_rf = gain_rf if gain_rf is not None else eff_gain_h
             ## pySC returns with an 'rf' entry into the dictionary if rf=True
-            rf_trim = eff_gain_RF * trims_h["rf"]
+            rf_trim = eff_gain_rf * trims_h["rf"]
             del trims_h["rf"]
 
         # collect all trims and apply gain
         if plane is None:
             for trim in trims_h:
-                trims_h[trim] *= eff_gain_H
+                trims_h[trim] *= eff_gain_h
             for trim in trims_v:
-                trims_v[trim] *= eff_gain_V
+                trims_v[trim] *= eff_gain_v
             trims = {**trims_h, **trims_v}
-            corr_array = self._hvcorr
+            corr_array = self.correctors
         elif plane == "H":
             for trim in trims_h:
-                trims_h[trim] *= eff_gain_H
+                trims_h[trim] *= eff_gain_h
             trims = trims_h
-            corr_array = self._hcorr
+            corr_array = self.hcorrectors
         elif plane == "V":
             for trim in trims_v:
-                trims_v[trim] *= eff_gain_V
+                trims_v[trim] *= eff_gain_v
             trims = trims_v
-            corr_array = self._vcorr
+            corr_array = self.vcorrectors
 
         corrector_names = corr_array.names()
         corrector_to_index = {name: idx for idx, name in enumerate(corrector_names)}
@@ -326,8 +384,8 @@ class Orbit(TuningTool, DynamicValidation):
         # send trims
         corr_array.strengths.set(data_to_send)
         if rf_flag:
-            rf_frequency = self._rf_plant.frequency.get()
-            self._rf_plant.frequency.set(rf_frequency + rf_trim)
+            rf_frequency = self.rf_plant.frequency.get()
+            self.rf_plant.frequency.set(rf_frequency + rf_trim)
 
         return
 
@@ -344,7 +402,7 @@ class Orbit(TuningTool, DynamicValidation):
         name : str
             Variable or observable name whose weight should be changed.
         weight : float
-            New weight applied during orbit correction.
+            New dimensionless weight applied during orbit correction.
         plane : Optional[Literal['H', 'V']]
             Optional plane selector, either ``"H"`` or ``"V"``.
 
@@ -363,7 +421,7 @@ class Orbit(TuningTool, DynamicValidation):
         Parameters
         ----------
         weight : float
-            New virtual-target weight used during correction.
+            New dimensionless virtual-target weight used during correction.
 
         Returns
         -------
@@ -380,7 +438,7 @@ class Orbit(TuningTool, DynamicValidation):
         Parameters
         ----------
         weight : float
-            New RF-variable weight used during correction.
+            New dimensionless RF-variable weight used during correction.
 
         Returns
         -------
@@ -407,7 +465,7 @@ class Orbit(TuningTool, DynamicValidation):
         Returns
         -------
         float
-            Configured response-matrix weight.
+            Configured dimensionless response-matrix weight.
         """
         names = []
         planes = []
@@ -450,9 +508,9 @@ class Orbit(TuningTool, DynamicValidation):
         """Bind orbit corrector and RF handles after attachment."""
         self._hcorr = self.peer.magnets.get(self.hcorr_array_name)
         self._vcorr = self.peer.magnets.get(self.vcorr_array_name)
-        hvElts = []
-        hvElts.extend(self._hcorr)
-        hvElts.extend(self._vcorr)
-        self._hvcorr = MagnetArray("", hvElts)
+        hv_elements = []
+        hv_elements.extend(self._hcorr)
+        hv_elements.extend(self._vcorr)
+        self._hvcorr = MagnetArray("", hv_elements)
         if self.rf_plant_name is not None:
             self._rf_plant = self.peer.rf.get(self.rf_plant_name)
