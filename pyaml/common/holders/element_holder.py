@@ -17,6 +17,7 @@ from ...tuning_tools.chromaticity_monitor import ChromaticityMonitor
 from ..abstract_aggregator import ScalarAggregator
 from ..element import Element
 from ..exception import PyAMLException
+from .diagnostic_holder import DiagnosticHolder
 from .rf_holder import RFHolder
 from .sub_holders import (
     BPMHolder,
@@ -65,6 +66,8 @@ class ElementHolder(metaclass=ABCMeta):
         Single serialized magnet group by name, or a named array.
     rf
         RF plant and transmitters of this mode.
+    diagnostic
+        Diagnostics of this mode, with typed default-name access.
     tune, chromaticity, orbit, dispersion
         Tuning tools attached to this mode, looked up by name.
     trm, crm, orm
@@ -159,6 +162,7 @@ class ElementHolder(metaclass=ABCMeta):
         self._bpm_holder = BPMHolder(self)
         self._bpms_holder = BPMsHolder(self)
         self._rf_holder = RFHolder(self)
+        self._diagnostic_holder = DiagnosticHolder(self)
 
     @property
     def peer(self) -> "Accelerator":
@@ -211,6 +215,11 @@ class ElementHolder(metaclass=ABCMeta):
     def rf(self) -> RFHolder:
         """Return the rf."""
         return self._rf_holder
+
+    @property
+    def diagnostic(self) -> DiagnosticHolder:
+        """Return the diagnostic."""
+        return self._diagnostic_holder
 
     def post_init(self):
         """Run post-initialization hooks for every stored element."""
