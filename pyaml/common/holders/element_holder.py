@@ -29,6 +29,7 @@ from .sub_holders import (
     SerializedMagnetHolder,
     SerializedMagnetsHolder,
 )
+from .tool_holder import ToolHolder
 
 if TYPE_CHECKING:
     from ...accelerator import Accelerator
@@ -68,10 +69,13 @@ class ElementHolder(metaclass=ABCMeta):
         RF plant and transmitters of this mode.
     diagnostic
         Diagnostics of this mode, with typed default-name access.
+    tool
+        Tuning and measurement tools of this mode, with typed default-name access.
     tune, chromaticity, orbit, dispersion
-        Tuning tools attached to this mode, looked up by name.
+        Backward-compatible aliases for ``tool.tune``, ``tool.chromaticity``, ``tool.orbit``
+        and ``tool.dispersion``.
     trm, crm, orm
-        Response-matrix measurement tools, looked up by name.
+        Backward-compatible aliases for ``tool.trm``, ``tool.crm`` and ``tool.orm``.
 
     Methods
     -------
@@ -163,6 +167,7 @@ class ElementHolder(metaclass=ABCMeta):
         self._bpms_holder = BPMsHolder(self)
         self._rf_holder = RFHolder(self)
         self._diagnostic_holder = DiagnosticHolder(self)
+        self._tool_holder = ToolHolder(self)
 
     @property
     def peer(self) -> "Accelerator":
@@ -220,6 +225,11 @@ class ElementHolder(metaclass=ABCMeta):
     def diagnostic(self) -> DiagnosticHolder:
         """Return the diagnostic."""
         return self._diagnostic_holder
+
+    @property
+    def tool(self) -> ToolHolder:
+        """Return the tool."""
+        return self._tool_holder
 
     def post_init(self):
         """Run post-initialization hooks for every stored element."""
@@ -678,13 +688,13 @@ class ElementHolder(metaclass=ABCMeta):
 
     @property
     def chromaticity(self) -> "Chromaticity":
-        """Return the chromaticity."""
-        return self.get_chromaticity_tuning("DEFAULT_CHROMATICITY_CORRECTION")
+        """Return the chromaticity. Alias for ``tool.chromaticity``."""
+        return self.tool.chromaticity
 
     @property
     def crm(self) -> "ChromaticityResponseMatrix":
-        """Return the crm."""
-        return self.get_crm_tuning("DEFAULT_CHROMATICITY_RESPONSE_MATRIX")
+        """Return the crm. Alias for ``tool.crm``."""
+        return self.tool.crm
 
     # ---- Tune ---------------------------------------------------------
 
@@ -706,8 +716,8 @@ class ElementHolder(metaclass=ABCMeta):
 
     @property
     def tune(self) -> "Tune":
-        """Return the tune."""
-        return self.get_tune_tuning("DEFAULT_TUNE_CORRECTION")
+        """Return the tune. Alias for ``tool.tune``."""
+        return self.tool.tune
 
     def get_trm_tuning(self, name: str) -> "TuneResponseMatrix":
         """
@@ -727,8 +737,8 @@ class ElementHolder(metaclass=ABCMeta):
 
     @property
     def trm(self) -> "TuneResponseMatrix":
-        """Return the default tune response-matrix tool."""
-        return self.get_trm_tuning("DEFAULT_TUNE_RESPONSE_MATRIX")
+        """Return the default tune response-matrix tool. Alias for ``tool.trm``."""
+        return self.tool.trm
 
     # ---- Orbit --------------------------------------------------------
 
@@ -750,8 +760,8 @@ class ElementHolder(metaclass=ABCMeta):
 
     @property
     def orbit(self) -> "Orbit":
-        """Return the orbit."""
-        return self.get_orbit_tuning("DEFAULT_ORBIT_CORRECTION")
+        """Return the orbit. Alias for ``tool.orbit``."""
+        return self.tool.orbit
 
     def get_orm_tuning(self, name: str) -> "OrbitResponseMatrix":
         """
@@ -771,8 +781,8 @@ class ElementHolder(metaclass=ABCMeta):
 
     @property
     def orm(self) -> "OrbitResponseMatrix":
-        """Return the default orbit response-matrix tool."""
-        return self.get_orm_tuning("DEFAULT_ORBIT_RESPONSE_MATRIX")
+        """Return the default orbit response-matrix tool. Alias for ``tool.orm``."""
+        return self.tool.orm
 
     # ---- BBA --------------------------------------------------------
 
@@ -812,8 +822,8 @@ class ElementHolder(metaclass=ABCMeta):
 
     @property
     def dispersion(self) -> "Dispersion":
-        """Return the dispersion."""
-        return self.get_dispersion_tuning("DEFAULT_DISPERSION")
+        """Return the dispersion. Alias for ``tool.dispersion``."""
+        return self.tool.dispersion
 
     def _get_array(self, name: str):
         """
