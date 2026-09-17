@@ -29,6 +29,7 @@ from .sub_holders import (
     SerializedMagnetHolder,
     SerializedMagnetsHolder,
 )
+from .tool_holder import ToolHolder
 
 if TYPE_CHECKING:
     from ...accelerator import Accelerator
@@ -68,10 +69,13 @@ class ElementHolder(metaclass=ABCMeta):
         RF plant and transmitters of this mode.
     diagnostic
         Diagnostics of this mode, with typed default-name access.
+    tool
+        Tuning and measurement tools of this mode, with typed default-name access.
     tune, chromaticity, orbit, dispersion
-        Tuning tools attached to this mode, looked up by name.
+        Backward-compatible aliases for ``tool.tune``, ``tool.chromaticity``, ``tool.orbit``
+        and ``tool.dispersion``.
     trm, crm, orm
-        Response-matrix measurement tools, looked up by name.
+        Backward-compatible aliases for ``tool.trm``, ``tool.crm`` and ``tool.orm``.
 
     Methods
     -------
@@ -163,6 +167,7 @@ class ElementHolder(metaclass=ABCMeta):
         self._bpms_holder = BPMsHolder(self)
         self._rf_holder = RFHolder(self)
         self._diagnostic_holder = DiagnosticHolder(self)
+        self._tool_holder = ToolHolder(self)
 
     @property
     def peer(self) -> "Accelerator":
@@ -220,6 +225,11 @@ class ElementHolder(metaclass=ABCMeta):
     def diagnostic(self) -> DiagnosticHolder:
         """Return the diagnostic."""
         return self._diagnostic_holder
+
+    @property
+    def tool(self) -> ToolHolder:
+        """Return the tool."""
+        return self._tool_holder
 
     def post_init(self):
         """Run post-initialization hooks for every stored element."""
