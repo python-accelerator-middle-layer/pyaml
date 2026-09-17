@@ -387,6 +387,12 @@ class Simulator(ElementHolder, DynamicValidation):
         """
         Resolve a PyAML element to matching PyAT lattice elements.
 
+        The ``lattice_names`` selector of the element is honoured with or without a
+        linker. With a linker, the names of the selector are resolved through
+        ``linker.get_identifier_for_name`` (e.g. the configured attribute for
+        ``pyaml.lattice.attribute_linker``) instead of ``FamName``; without a
+        selector the linker uses the element name.
+
         Parameters
         ----------
         element : Element
@@ -398,11 +404,28 @@ class Simulator(ElementHolder, DynamicValidation):
             Matching Accelerator Toolbox lattice elements.
         """
         if self._linker:
-            identifier = self._linker.get_element_identifier(element)
-            element_list = self._linker.get_at_elements(identifier)
-            if not element_list:
-                raise PyAMLException(f"{identifier} not found in lattice:{self._lattice}")
-            return element_list
+            if element.get_lattice_names() is None:
+                # By name
+                return self._linker.get_at_elements(self._linker.get_element_identifier(element))
+            # By list
+            nameList = self.get_names(element)
+            if nameList is not None:
+                identifiers = [self._linker.get_identifier_for_name(name) for name in nameList]
+                return self._linker.get_at_elements(identifiers)
+            # By name or indices
+            name, indices = self.get_indices(element)
+            if name is None:
+                # Direct indexing in the ring
+                return [self.ring[idx] for idx in indices]
+            elts = self._linker.get_at_elements(self._linker.get_identifier_for_name(name))
+            if indices is None:
+                return elts
+            try:
+                return [elts[idx] for idx in indices]
+            except IndexError as err:
+                strErr = f"{element.get_name()}: Invalid lattice_names index "
+                strErr += f"for {element.get_lattice_names()}, {len(elts)} element(s) found for {name}"
+                raise PyAMLException(strErr) from err
         else:
             # By list
             nameList = self.get_names(element)
