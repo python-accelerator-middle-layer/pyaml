@@ -12,12 +12,19 @@ from scipy.constants import speed_of_light
 
 from ..common import abstract
 from ..common.abstract_aggregator import ScalarAggregator
+from ..common.exception import PyAMLException
 from ..magnet.model import MagnetModel
 from .polynom_info import PolynomInfo
 
 # TODO handle serialized magnets for magnet array
 
 # ------------------------------------------------------------------------------
+
+
+def _divide_by_length(value: float, length: float) -> float:
+    if length == 0:
+        raise PyAMLException("Cannot set magnet value: lattice element length must be non-zero")
+    return value / length
 
 
 class RWHardwareScalar(abstract.ReadWriteFloatScalar):
@@ -88,7 +95,7 @@ class RWHardwareScalar(abstract.ReadWriteFloatScalar):
         """
         s = self._model.compute_strengths([value])[0]
         for idx, _ in enumerate(self._elements):
-            self._poly[idx][self._polyIdx] = s / (self._length * self._sign)
+            self._poly[idx][self._polyIdx] = _divide_by_length(s, self._length) / self._sign
 
     def set_and_wait(self, value: float):
         """
@@ -223,7 +230,7 @@ class RWStrengthScalar(abstract.ReadWriteFloatScalar):
             poly = [e.__getattribute__(polynom) for e in self._elements]
 
         for idx, _ in enumerate(self._elements):
-            poly[idx][pIdx] = value / (self._length * self._sign)
+            poly[idx][pIdx] = _divide_by_length(value, self._length) / self._sign
 
     # Sets the value and wait that the read value reach the setpoint
     def set_and_wait(self, value: float):
@@ -425,19 +432,24 @@ class RWSerializedStrength(abstract.ReadWriteFloatScalar):
         value : float
             Strength to apply to the magnet, converted to the shared hardware setpoint.
         """
-        elements_values = [value * e.get_length() / self.get_total_length() for e in self.__elements_hardware]
+        elements_values = [
+            _divide_by_length(value * e.get_length(), self.get_total_length()) for e in self.__elements_hardware
+        ]
         self.__element.set(elements_values[self.__element_index])
 
         # compute the local hardware value
         hardware_value = self.__elements_hardware[self.__element_index].get()
 
         # compute the total hardware value
-        total_hardware = hardware_value * self.get_total_length() / self.get_element_length()
+        total_hardware = _divide_by_length(
+            hardware_value * self.get_total_length(),
+            self.get_element_length(),
+        )
 
         # dispatch this value
         for index, element in enumerate(self.__elements_hardware):
             if index != self.__element_index:
-                element.set(total_hardware * element.get_length() / self.get_total_length())
+                element.set(_divide_by_length(total_hardware * element.get_length(), self.get_total_length()))
 
     # Sets the value and wait that the read value reach the setpoint
     def set_and_wait(self, value: float):
@@ -536,7 +548,7 @@ class RWHardwareArray(abstract.ReadWriteFloatArray):
         nbStrength = len(self.__poly)
         s = self.__model.compute_strengths(value)
         for i in range(nbStrength):
-            self.__poly[i][self.__polyIdx[i]] = s[i] / (self.__elements[0].Length * self.__sign[i])
+            self.__poly[i][self.__polyIdx[i]] = _divide_by_length(s[i], self.__elements[0].Length) / self.__sign[i]
 
     # Sets the value and wait that the read value reach the setpoint
     def set_and_wait(self, value: np.array):
@@ -626,7 +638,7 @@ class RWStrengthArray(abstract.ReadWriteFloatArray):
         nbStrength = len(self.__poly)
         s = np.zeros(nbStrength)
         for i in range(nbStrength):
-            self.__poly[i][self.__polyIdx[i]] = value[i] / (self.__elements[0].Length * self.__sign[i])
+            self.__poly[i][self.__polyIdx[i]] = _divide_by_length(value[i], self.__elements[0].Length) / self.__sign[i]
 
     # Sets the value and wait that the read value reach the setpoint
     def set_and_wait(self, value: np.array):
