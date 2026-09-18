@@ -2,6 +2,7 @@ import pytest
 
 from pyaml.accelerator import Accelerator
 from pyaml.arrays.cfm_magnet_array import CombinedFunctionMagnetArray
+from pyaml.common.exception import PyAMLException
 
 
 @pytest.fixture
@@ -97,3 +98,59 @@ def test_issue_373_example():
     one_magnet = sr.design.magnet.get("QF1E-C04")
     one_magnet.strength.set(0.8)
     assert one_magnet.strength.get() == pytest.approx(0.8)
+
+
+def test_configured_exclusion_family_reproduced_with_selection_and_difference():
+    """QForTest is QForTune minus a `~name`/`~pattern` YAML exclusion; `[]` and `-` reproduce it."""
+    sr = Accelerator.load("tests/config/EBSTune-patterns.yaml", ignore_external=True)
+    sr.design.get_lattice().disable_6d()
+
+    q_for_tune = sr.design.magnets.get("QForTune")
+    q_for_test = sr.design.magnets.get("QForTest")  # QForTune, minus ~QF1E-C05 and ~Q???-C06
+
+    reproduced = q_for_tune - sr.design.magnets["QF1E-C05"] - sr.design.magnets["Q???-C06"]
+
+    assert reproduced == q_for_test
+
+
+def test_magnet_holder_getitem_exact_name_matches_get(holder):
+    assert holder.magnet["SH1A-C01-H"] is holder.magnet.get("SH1A-C01-H")
+
+
+def test_magnet_holder_getitem_exact_name_miss_raises(holder):
+    with pytest.raises(PyAMLException):
+        holder.magnet["UNKNOWN"]
+
+
+def test_magnet_holder_getitem_wildcard_and_list_return_an_array(holder):
+    wildcard = holder.magnet["SH1A-C01-[HV]"]
+    assert sorted(wildcard.names()) == ["SH1A-C01-H", "SH1A-C01-V"]
+    assert holder.magnet["MISSING*"].names() == []
+
+    listed = holder.magnet[["SH1A-C01-H", "SH1A-C01-V"]]
+    assert listed.names() == ["SH1A-C01-H", "SH1A-C01-V"]
+
+
+def test_magnet_holder_getitem_regex(holder):
+    matching = holder.magnet["re:^SH1A-C0[12]-H$"]
+    assert sorted(matching.names()) == ["SH1A-C01-H", "SH1A-C02-H"]
+
+
+def test_combined_function_magnet_holder_getitem_exact_name_matches_get(holder):
+    assert holder.combined_function_magnet["SH1A-C01"] is holder.combined_function_magnet.get("SH1A-C01")
+
+
+def test_combined_function_magnet_holder_getitem_exact_name_miss_raises(holder):
+    with pytest.raises(PyAMLException):
+        holder.combined_function_magnet["UNKNOWN"]
+
+
+def test_serialized_magnet_holder_getitem_exact_name_matches_get(serialized_holder):
+    assert serialized_holder.serialized_magnet["mySeriesOfMagnets"] is serialized_holder.serialized_magnet.get(
+        "mySeriesOfMagnets"
+    )
+
+
+def test_serialized_magnet_holder_getitem_exact_name_miss_raises(serialized_holder):
+    with pytest.raises(PyAMLException):
+        serialized_holder.serialized_magnet["UNKNOWN"]

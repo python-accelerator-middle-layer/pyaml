@@ -79,3 +79,71 @@ def test_diagnostic_bpms_returns_named_array():
 
     bpms = design.diagnostic.bpms.get("BPM")
     assert design.diagnostic.bpm.get("BPM_C04-04") in bpms
+
+
+def test_diagnostic_getitem_exact_name_matches_get():
+    design = Accelerator.load(
+        "tests/config/EBSOrbit.yaml",
+        ignore_external=True,
+        include_locations=False,
+    ).design
+
+    assert design.diagnostic["BETATRON_TUNE"] is design.diagnostic.get("BETATRON_TUNE")
+
+
+def test_diagnostic_getitem_exact_name_miss_raises():
+    design = Accelerator.load(
+        "tests/config/EBSOrbit.yaml",
+        ignore_external=True,
+        include_locations=False,
+    ).design
+
+    with pytest.raises(PyAMLException):
+        design.diagnostic["UNKNOWN"]
+
+
+def test_diagnostic_getitem_wildcard_returns_an_array():
+    design = Accelerator.load(
+        "tests/config/EBSOrbit.yaml",
+        ignore_external=True,
+        include_locations=False,
+    ).design
+
+    matching = design.diagnostic["BETATRON*"]
+    assert matching.names() == ["BETATRON_TUNE"]
+    assert design.diagnostic["MISSING*"].names() == []
+
+
+def test_diagnostic_bpm_getitem_exact_name_matches_get():
+    design = Accelerator.load(
+        "tests/config/EBSOrbit.yaml",
+        ignore_external=True,
+        include_locations=False,
+    ).design
+
+    assert design.diagnostic.bpm["BPM_C04-04"] is design.diagnostic.bpm.get("BPM_C04-04")
+
+
+def test_diagnostic_bpm_getitem_exact_name_miss_raises():
+    design = Accelerator.load(
+        "tests/config/EBSOrbit.yaml",
+        ignore_external=True,
+        include_locations=False,
+    ).design
+
+    with pytest.raises(PyAMLException):
+        design.diagnostic.bpm["UNKNOWN"]
+
+
+def test_diagnostic_bpm_getitem_wildcard_and_list_return_an_array():
+    design = Accelerator.load(
+        "tests/config/EBSOrbit.yaml",
+        ignore_external=True,
+        include_locations=False,
+    ).design
+
+    wildcard = design.diagnostic.bpm["BPM_C04-0[14]"]
+    assert sorted(wildcard.names()) == ["BPM_C04-01", "BPM_C04-04"]
+
+    listed = design.diagnostic.bpm[["BPM_C04-01", "BPM_C04-04"]]
+    assert listed.names() == ["BPM_C04-01", "BPM_C04-04"]

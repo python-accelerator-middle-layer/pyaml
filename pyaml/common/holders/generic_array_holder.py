@@ -110,17 +110,41 @@ class GenericArrayHolder(Generic[T, A]):
 
     def __getitem__(self, key):
         """
-        Return an element from the aggregate array by index.
+        Select from the aggregate array of every individual element.
+
+        Delegates to :meth:`ElementArray.__getitem__
+        <pyaml.arrays.element_array.ElementArray.__getitem__>` on ``self.get()``
+        (the array of every individual element of this type), so ``key``
+        matches against **individual element names**, not against the
+        registered array/family names that :meth:`get` searches. These are
+        deliberately two different, non-overlapping namespaces: ``get(name)``
+        looks up a configured family (e.g. ``"QForTune"``), while ``[key]``
+        looks up the elements themselves (e.g. ``"QF1A-C01"`` or ``"QF1*"``).
 
         Parameters
         ----------
-        key : int or slice
-            Index or slice passed to the aggregate array.
+        key : int, slice, str, list[str] or tuple[str, ...]
+            Index or slice into the aggregate array, an individual element's
+            exact name, an fnmatch wildcard or ``re:`` regular expression
+            over element names, or a list/tuple of such patterns.
 
         Returns
         -------
         object
             Element or sub-array selected by ``key``.
+
+        Raises
+        ------
+        PyAMLException
+            If ``key`` is an exact literal element name (or a literal entry
+            within a list or tuple) that matches no individual element, or a
+            ``re:`` pattern is not a valid regular expression.
+
+        Examples
+        --------
+        >>> family = sr.live.magnets.get("QForTune")  # array-name namespace
+        >>> one_magnet = sr.live.magnets["QF1A-C01"]  # element-name namespace
+        >>> some_magnets = sr.live.magnets["QF1*"]  # element-name namespace
         """
         return self.get().__getitem__(key)
 
