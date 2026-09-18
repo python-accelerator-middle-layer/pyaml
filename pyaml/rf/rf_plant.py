@@ -54,6 +54,19 @@ class RFPlant(Element, DynamicValidation):
     -------
     attach(peer, frequency, voltage)
         Return a copy attached to RF read/write handles.
+
+    Configuration
+    -------------
+    .. code-block:: yaml
+
+        - type: pyaml.rf.rf_plant
+          name: RF
+          masterclock: DEVICE/RF_FREQUENCY
+          transmitters:
+            - type: pyaml.rf.rf_transmitter
+              name: RF_TRANSMITTER
+              cavities: [CAVITY_1, CAVITY_2]
+              voltage: DEVICE/RF_VOLTAGE
     """
 
     def __init__(
