@@ -20,8 +20,6 @@ from ..exception import PyAMLException
 from .diagnostic_holder import DiagnosticHolder
 from .rf_holder import RFHolder
 from .sub_holders import (
-    BPMHolder,
-    BPMsHolder,
     CombinedFunctionMagnetHolder,
     CombinedFunctionMagnetsHolder,
     MagnetHolder,
@@ -59,8 +57,6 @@ class ElementHolder(metaclass=ABCMeta):
     ----------
     magnet, magnets
         Single magnet by name, or a named magnet array.
-    bpm, bpms
-        Single BPM by name, or a named BPM array.
     combined_function_magnet, combined_function_magnets
         Single combined-function magnet by name, or a named array.
     serialized_magnet, serialized_magnets
@@ -163,8 +159,6 @@ class ElementHolder(metaclass=ABCMeta):
         self._serialized_magnets_holder = SerializedMagnetsHolder(self)
         self._combined_function_magnet_holder = CombinedFunctionMagnetHolder(self)
         self._combined_function_magnets_holder = CombinedFunctionMagnetsHolder(self)
-        self._bpm_holder = BPMHolder(self)
-        self._bpms_holder = BPMsHolder(self)
         self._rf_holder = RFHolder(self)
         self._diagnostic_holder = DiagnosticHolder(self)
         self._tool_holder = ToolHolder(self)
@@ -205,16 +199,6 @@ class ElementHolder(metaclass=ABCMeta):
     def combined_function_magnets(self) -> CombinedFunctionMagnetsHolder:
         """Return the combined function magnets."""
         return self._combined_function_magnets_holder
-
-    @property
-    def bpm(self) -> BPMHolder:
-        """Return the bpm."""
-        return self._bpm_holder
-
-    @property
-    def bpms(self) -> BPMsHolder:
-        """Return the bpms."""
-        return self._bpms_holder
 
     @property
     def rf(self) -> RFHolder:

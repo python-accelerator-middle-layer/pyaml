@@ -17,7 +17,7 @@ def test_tuning_orm():
 
     orm = element_holder.orm
 
-    bpms = element_holder.bpms.get("BPM")
+    bpms = element_holder.diagnostic.bpms.get("BPM")
     hcorr_names = element_holder.magnets.get("HCorr").names()[:4]
     vcorr_names = element_holder.magnets.get("VCorr").names()[:4]
     orm.measure(corrector_names=hcorr_names + vcorr_names)

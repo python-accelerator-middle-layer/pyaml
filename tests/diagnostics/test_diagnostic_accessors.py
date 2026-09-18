@@ -58,3 +58,24 @@ def test_diagnostic_raises_when_default_wrong_type():
         _ = design.diagnostic.betatron_tune
     assert "BETATRON_TUNE" in str(exc.value)
     assert "BetatronTuneMonitor" in str(exc.value)
+
+
+def test_diagnostic_bpm_returns_named_bpm():
+    design = Accelerator.load(
+        "tests/config/EBSOrbit.yaml",
+        ignore_external=True,
+        include_locations=False,
+    ).design
+
+    assert design.diagnostic.bpm.get("BPM_C04-04").get_name() == "BPM_C04-04"
+
+
+def test_diagnostic_bpms_returns_named_array():
+    design = Accelerator.load(
+        "tests/config/EBSOrbit.yaml",
+        ignore_external=True,
+        include_locations=False,
+    ).design
+
+    bpms = design.diagnostic.bpms.get("BPM")
+    assert design.diagnostic.bpm.get("BPM_C04-04") in bpms
