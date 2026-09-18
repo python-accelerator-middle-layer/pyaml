@@ -93,6 +93,21 @@ class CombinedFunctionMagnet(Element, DynamicValidation):
     PyAMLException
         If the mapping is invalid, if an unsupported multipole is requested, or
         if the model does not provide the required multipole information.
+
+    Configuration
+    -------------
+    The model can be defined inline or in a separate file. See
+    :mod:`pyaml.magnet.model` and its subclasses for model configuration.
+
+    .. code-block:: yaml
+
+        - type: pyaml.magnet.cfm_magnet
+          name: COMBINED_FUNCTION_MAGNET_NAME
+          mapping:
+            - [B2, SEXTUPOLE_NAME]
+            - [B0, HORIZONTAL_CORRECTOR_NAME]
+            - [A0, VERTICAL_CORRECTOR_NAME]
+          model: path/to/combined_function_magnet_model.yaml
     """
 
     def __init__(
