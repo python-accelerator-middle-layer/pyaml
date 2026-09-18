@@ -396,7 +396,17 @@ class PyAMLFactory:
         ignore_external : bool
             If ``True``, ignore unavailable external modules.
         """
-        return [self._build(item, ignore_external) for item in items]
+        list_out = []
+        for item in items:
+            obj = self._build(item, ignore_external)
+            from collections.abc import Iterator
+
+            if isinstance(obj, Iterator):
+                expanded_iterator = [*obj]
+                list_out.extend(expanded_iterator)
+            else:
+                list_out.append(obj)
+        return list_out
 
     def _build_dict(self, data: dict, ignore_external: bool = False):
         """

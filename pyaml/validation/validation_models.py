@@ -111,7 +111,12 @@ class ValidationMeta(ABCMeta):
             raise TypeError(f"{cls.__name__} must define validation_model.")
 
         # Inspect the signature of the class
-        signature = inspect.signature(cls.__init__)
+        if "__init__" in cls.__dict__:
+            signature = inspect.signature(cls.__init__)
+        elif "__new__" in cls.__dict__:
+            signature = inspect.signature(cls.__new__)
+        else:
+            raise Exception
 
         # Map arguments to parameters
         bound = signature.bind(None, *args, **kwargs)
