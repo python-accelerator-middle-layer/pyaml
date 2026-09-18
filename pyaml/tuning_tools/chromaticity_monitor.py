@@ -140,6 +140,18 @@ class ChromaticityMonitor(MeasurementTool, DynamicValidation):
     fit(deltas, Q, order, orbit=None, fit_disp_order=None, do_plot=False)
         Compute chromaticity (and dispersion) from input data and update
         :py:attr:`~pyaml.tuning_tools.measurement_tool.MeasurementTool.latest_measurement`.
+
+    Configuration
+    -------------
+    .. code-block:: yaml
+
+        - type: pyaml.tuning_tools.chromaticity_monitor
+          name: CHROMATICITY_MONITOR
+          betatron_tune_name: BETATRON_TUNE
+          rf_plant_name: RF
+          bpm_array_name: BPM
+          fit_dispersion: true
+          n_step: 5
     """
 
     def __init__(

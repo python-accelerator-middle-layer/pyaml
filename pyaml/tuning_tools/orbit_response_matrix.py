@@ -98,6 +98,17 @@ class OrbitResponseMatrix(MeasurementTool, DynamicValidation):
     -------
     measure(...)
         Measure orbit response matrix.
+
+    Configuration
+    -------------
+    .. code-block:: yaml
+
+        - type: pyaml.tuning_tools.orbit_response_matrix
+          name: ORBIT_RESPONSE_MATRIX
+          bpm_array_name: BPM
+          hcorr_array_name: HORIZONTAL_CORRECTORS
+          vcorr_array_name: VERTICAL_CORRECTORS
+          corrector_delta: 1e-6
     """
 
     def __init__(

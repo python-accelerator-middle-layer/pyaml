@@ -68,6 +68,16 @@ class ChromaticityResponseMatrix(MeasurementTool, DynamicValidation):
         Sextupole array used for the measurement.
     chromaticity_monitor : ChromaticityMonitor
         Chromaticity monitor used for the measurement.
+
+    Configuration
+    -------------
+    .. code-block:: yaml
+
+        - type: pyaml.tuning_tools.chromaticity_response_matrix
+          name: CHROMATICITY_RESPONSE_MATRIX
+          sextu_array_name: SEXTUPOLES
+          chromaticity_name: CHROMATICITY_MONITOR
+          sextu_delta: 1e-6
     """
 
     def __init__(

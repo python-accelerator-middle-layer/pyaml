@@ -65,6 +65,16 @@ class Dispersion(MeasurementTool, DynamicValidation):
         Measure beam dispersion by varying the RF frequency.
     get()
         Return the most recently measured dispersion data.
+
+    Configuration
+    -------------
+    .. code-block:: yaml
+
+        - type: pyaml.tuning_tools.dispersion
+          name: DISPERSION
+          bpm_array_name: BPM
+          rf_plant_name: RF
+          frequency_delta: 100
     """
 
     def __init__(self, name: str, bpm_array_name: str, rf_plant_name: str, frequency_delta: float):

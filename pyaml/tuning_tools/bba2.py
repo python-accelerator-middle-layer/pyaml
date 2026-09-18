@@ -183,6 +183,22 @@ class BBA2(MeasurementTool, DynamicValidation):
         Return the quadrupole being aligned.
     tune_correction
         Return the tune-correction tool used during alignment.
+
+    Configuration
+    -------------
+    .. code-block:: yaml
+
+        - type: pyaml.tuning_tools.bba2
+          name: BBA_WITH_TUNE_CORRECTION
+          bpm_array_name: BPM
+          bpm_name: BPM_NAME
+          hcorr_name: HORIZONTAL_CORRECTOR_NAME
+          vcorr_name: VERTICAL_CORRECTOR_NAME
+          quad_name: QUADRUPOLE_NAME
+          tune_correction_name: TUNE_CORRECTION
+          hcorr_delta: 1e-5
+          vcorr_delta: 1e-5
+          quad_delta: 5e-3
     """
 
     def __init__(
