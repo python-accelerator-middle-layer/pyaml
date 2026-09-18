@@ -16,7 +16,7 @@ def holder(accelerator_from_fragments, sr_configuration_fragments):
 
 
 def test_exact_name_returns_the_element_or_none(holder):
-    assert holder["BPM_C04-01"] is holder.bpm.get("BPM_C04-01")
+    assert holder["BPM_C04-01"] is holder.diagnostic.bpm.get("BPM_C04-01")
     assert holder["UNKNOWN"] is None
 
 
@@ -47,7 +47,7 @@ def test_new_calls_reflect_registry_additions(holder):
 
     assert "EXTRA_BPM" not in previous.names()
     assert holder.get().names() == previous.names() + ["EXTRA_BPM"]
-    assert holder["EXTRA_BPM"] is holder.bpm.get("EXTRA_BPM")
+    assert holder["EXTRA_BPM"] is holder.diagnostic.bpm.get("EXTRA_BPM")
 
 
 def test_patterns_always_return_arrays(holder):
@@ -70,7 +70,7 @@ def test_character_classes_in_name_patterns(holder):
 def test_colons_are_part_of_names(holder):
     holder.fill_device([BPM("CELL04:BPM01", lattice_names="list(BPM_C04-01)")])
 
-    assert holder["CELL04:BPM01"] is holder.bpm.get("CELL04:BPM01")
+    assert holder["CELL04:BPM01"] is holder.diagnostic.bpm.get("CELL04:BPM01")
     assert holder["CELL04:BPM*"].names() == ["CELL04:BPM01"]
     assert holder["model_name:*"].names() == []
 

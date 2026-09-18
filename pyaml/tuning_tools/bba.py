@@ -163,13 +163,13 @@ class BBA(MeasurementTool, DynamicValidation):
     def bpms(self) -> "BPMArray":
         """Return the BPM array used for the measurement."""
         self.check_peer()
-        return self.peer.bpms.get(self.bpm_array_name)
+        return self.peer.diagnostic.bpms.get(self.bpm_array_name)
 
     @property
     def bpm(self) -> "BPM":
         """Return the reference BPM used for the alignment."""
         self.check_peer()
-        return self.peer.bpm.get(self.bpm_name)
+        return self.peer.diagnostic.bpm.get(self.bpm_name)
 
     @property
     def hcorrector(self) -> "Magnet":

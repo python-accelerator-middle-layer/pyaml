@@ -215,7 +215,7 @@ class ChromaticityMonitor(MeasurementTool, DynamicValidation):
         self.check_peer()
         if self.bpm_array_name is None:
             return None
-        return self.peer.bpms.get(self.bpm_array_name)
+        return self.peer.diagnostic.bpms.get(self.bpm_array_name)
 
     @property
     def chromaticity(self) -> ReadFloatArray:
