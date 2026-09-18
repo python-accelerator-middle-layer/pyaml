@@ -17,10 +17,9 @@ from ...tuning_tools.chromaticity_monitor import ChromaticityMonitor
 from ..abstract_aggregator import ScalarAggregator
 from ..element import Element
 from ..exception import PyAMLException
+from .diagnostic_holder import DiagnosticHolder
 from .rf_holder import RFHolder
 from .sub_holders import (
-    BPMHolder,
-    BPMsHolder,
     CombinedFunctionMagnetHolder,
     CombinedFunctionMagnetsHolder,
     MagnetHolder,
@@ -28,6 +27,7 @@ from .sub_holders import (
     SerializedMagnetHolder,
     SerializedMagnetsHolder,
 )
+from .tool_holder import ToolHolder
 
 if TYPE_CHECKING:
     from ...accelerator import Accelerator
@@ -57,18 +57,21 @@ class ElementHolder(metaclass=ABCMeta):
     ----------
     magnet, magnets
         Single magnet by name, or a named magnet array.
-    bpm, bpms
-        Single BPM by name, or a named BPM array.
     combined_function_magnet, combined_function_magnets
         Single combined-function magnet by name, or a named array.
     serialized_magnet, serialized_magnets
         Single serialized magnet group by name, or a named array.
     rf
         RF plant and transmitters of this mode.
+    diagnostic
+        Diagnostics of this mode, with typed default-name access.
+    tool
+        Tuning and measurement tools of this mode, with typed default-name access.
     tune, chromaticity, orbit, dispersion
-        Tuning tools attached to this mode, looked up by name.
+        Backward-compatible aliases for ``tool.tune``, ``tool.chromaticity``, ``tool.orbit``
+        and ``tool.dispersion``.
     trm, crm, orm
-        Response-matrix measurement tools, looked up by name.
+        Backward-compatible aliases for ``tool.trm``, ``tool.crm`` and ``tool.orm``.
 
     Methods
     -------
@@ -156,9 +159,9 @@ class ElementHolder(metaclass=ABCMeta):
         self._serialized_magnets_holder = SerializedMagnetsHolder(self)
         self._combined_function_magnet_holder = CombinedFunctionMagnetHolder(self)
         self._combined_function_magnets_holder = CombinedFunctionMagnetsHolder(self)
-        self._bpm_holder = BPMHolder(self)
-        self._bpms_holder = BPMsHolder(self)
         self._rf_holder = RFHolder(self)
+        self._diagnostic_holder = DiagnosticHolder(self)
+        self._tool_holder = ToolHolder(self)
 
     @property
     def peer(self) -> "Accelerator":
@@ -198,19 +201,19 @@ class ElementHolder(metaclass=ABCMeta):
         return self._combined_function_magnets_holder
 
     @property
-    def bpm(self) -> BPMHolder:
-        """Return the bpm."""
-        return self._bpm_holder
-
-    @property
-    def bpms(self) -> BPMsHolder:
-        """Return the bpms."""
-        return self._bpms_holder
-
-    @property
     def rf(self) -> RFHolder:
         """Return the rf."""
         return self._rf_holder
+
+    @property
+    def diagnostic(self) -> DiagnosticHolder:
+        """Return the diagnostic."""
+        return self._diagnostic_holder
+
+    @property
+    def tool(self) -> ToolHolder:
+        """Return the tool."""
+        return self._tool_holder
 
     def post_init(self):
         """Run post-initialization hooks for every stored element."""

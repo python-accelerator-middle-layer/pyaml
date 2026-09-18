@@ -248,7 +248,7 @@ class ControlSystem(ElementHolder, metaclass=ABCMeta):
         positions = RBpmArray(position_devices[0], position_devices[1])
         tilt = RWBpmTiltScalar(tilt_devices[0])
         offsets = RWBpmOffsetArray(offset_devices[0], offset_devices[1])
-        self.bpm.add(bpm.attach(self, positions, offsets, tilt))
+        self.diagnostic.bpm.add(bpm.attach(self, positions, offsets, tilt))
 
     def _fill_rf_plant(self, rf_plant: RFPlant) -> None:
         attached_transmitters: list[RFTransmitter] = []
