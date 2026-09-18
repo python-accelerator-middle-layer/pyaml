@@ -62,10 +62,8 @@ class BPM(Element, DynamicValidation):
     get_offset_devices()
         Return configured device keys used for offset control.
 
-    Examples
-    --------
-    Example configuration:
-
+    Configuration
+    -------------
     .. code-block:: yaml
 
         - type: pyaml.bpm.bpm
