@@ -70,24 +70,6 @@ class CombinedFunctionMagnet(Element, DynamicValidation):
     peer : object, optional
         Control-system or simulator peer used when attaching the magnet.
 
-    Attributes
-    ----------
-    strengths
-        Gives access to the strengths of this combined function magnet in physics unit
-    hardwares
-        Gives access to the strengths of this combined function magnet in hardware unit when possible
-
-    Methods
-    -------
-    get_model_name()
-        Returns the model name of this magnet
-    nb_multipole()
-        Return the number of configured multipole components.
-    attach(peer, strengths, hardwares)
-        Attach the combined-function magnet and its virtual components.
-    set_energy(E)
-        Set beam energy for magnetic-strength conversion.
-
     Raises
     ------
     PyAMLException
@@ -156,7 +138,7 @@ class CombinedFunctionMagnet(Element, DynamicValidation):
 
     def get_model_name(self) -> str:
         """
-        Returns the model name of this magnet
+        Returns the model name of this magnet.
         """
         return self._name
 
@@ -234,8 +216,7 @@ class CombinedFunctionMagnet(Element, DynamicValidation):
     @property
     def strengths(self) -> abstract.ReadWriteFloatScalar:
         """
-        Gives access to the strengths of this combined
-        function magnet in physics unit
+        Gives access to the strengths of this combined function magnet in physics units.
         """
         self.check_peer()
         if self.__strengths is None:
@@ -245,8 +226,7 @@ class CombinedFunctionMagnet(Element, DynamicValidation):
     @property
     def hardwares(self) -> abstract.ReadWriteFloatScalar:
         """
-        Gives access to the strengths of this combined
-        function magnet in hardware unit when possible
+        Gives access to the strengths of this combined function magnet in hardware unit when possible.
         """
         self.check_peer()
         if self.__hardwares is None:
