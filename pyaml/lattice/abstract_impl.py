@@ -5,8 +5,6 @@ This module adapts Accelerator Toolbox lattice elements to PyAML accessors for
 magnet strengths, hardware values, BPM readings, RF parameters, and tune data.
 """
 
-import warnings
-
 import at
 import numpy as np
 from numpy.typing import NDArray
@@ -14,6 +12,7 @@ from scipy.constants import speed_of_light
 
 from ..common import abstract
 from ..common.abstract_aggregator import ScalarAggregator
+from ..common.exception import PyAMLException
 from ..magnet.model import MagnetModel
 from .polynom_info import PolynomInfo
 
@@ -22,15 +21,19 @@ from .polynom_info import PolynomInfo
 # ------------------------------------------------------------------------------
 
 
-def _divide_by_length(value: float, length: float) -> float:
-    if length == 0:
-        warnings.warn(
-            "Magnet length is zero; using 1.0 for strength conversion",
-            UserWarning,
-            stacklevel=2,
-        )
-        length = 1.0
-    return value / length
+def _effective_lengths(elements: list[at.Element]) -> list[float]:
+    """
+    Return the lengths used to convert between integrated strengths and polynom coefficients.
+
+    AT convention is followed: a zero-length (thin) element stores the *integrated* strength in
+    ``PolynomA``/``PolynomB``, so it behaves as a unit-length element for the conversion. When every element of the
+    group is thin, each one is given a unit length, so that the integrated strength is shared equally between the
+    slices. Otherwise the real lengths are used and any thin slice of the group is left untouched.
+    """
+    lengths = [float(e.Length) for e in elements]
+    if all(L == 0.0 for L in lengths):
+        return [1.0] * len(lengths)
+    return lengths
 
 
 class RWHardwareScalar(abstract.ReadWriteFloatScalar):
@@ -75,19 +78,23 @@ class RWHardwareScalar(abstract.ReadWriteFloatScalar):
         self._poly = [e.__getattribute__(poly.attName) for e in elements]
         self._sign = poly.sign
         self._polyIdx = poly.index
-        self._length: float = 0.0
-        for e in elements:
-            self._length += e.Length
+        self._is_thin = all(e.Length == 0 for e in elements)
+        self._lengths = _effective_lengths(elements)
+        self._length: float = sum(self._lengths)
 
     def get_length(self) -> float:
-        """Return the total length of the lattice elements."""
+        """Return the total effective length of the lattice elements (1.0 per element when they are all thin)."""
         return self._length
+
+    def is_thin(self) -> bool:
+        """Return True when every lattice element of this magnet has zero length."""
+        return self._is_thin
 
     def get(self) -> float:
         """Return the current value."""
         s = 0
-        for idx, e in enumerate(self._elements):
-            s += self._poly[idx][self._polyIdx] * self._sign * e.Length
+        for idx, _ in enumerate(self._elements):
+            s += self._poly[idx][self._polyIdx] * self._sign * self._lengths[idx]
         return self._model.compute_hardware_values([s])[0]
 
     def set(self, value: float):
@@ -101,7 +108,7 @@ class RWHardwareScalar(abstract.ReadWriteFloatScalar):
         """
         s = self._model.compute_strengths([value])[0]
         for idx, _ in enumerate(self._elements):
-            self._poly[idx][self._polyIdx] = _divide_by_length(s, self._length) / self._sign
+            self._poly[idx][self._polyIdx] = s / (self._length * self._sign)
 
     def set_and_wait(self, value: float):
         """
@@ -173,9 +180,8 @@ class RWStrengthScalar(abstract.ReadWriteFloatScalar):
         self._poly = [e.__getattribute__(poly.attName) for e in elements]
         self._sign = poly.sign
         self._polyIdx = poly.index
-        self._length = 0
-        for e in elements:
-            self._length += e.Length
+        self._lengths = _effective_lengths(elements)
+        self._length: float = sum(self._lengths)
 
     def get_element_length(self) -> float:
         """Return the total length of the represented element."""
@@ -208,8 +214,8 @@ class RWStrengthScalar(abstract.ReadWriteFloatScalar):
             poly = [e.__getattribute__(polynom) for e in self._elements]
 
         s = 0
-        for idx, e in enumerate(self._elements):
-            s += poly[idx][pIdx] * self._sign * e.Length
+        for idx, _ in enumerate(self._elements):
+            s += poly[idx][pIdx] * self._sign * self._lengths[idx]
         return s
 
     # Sets the value
@@ -236,7 +242,7 @@ class RWStrengthScalar(abstract.ReadWriteFloatScalar):
             poly = [e.__getattribute__(polynom) for e in self._elements]
 
         for idx, _ in enumerate(self._elements):
-            poly[idx][pIdx] = _divide_by_length(value, self._length) / self._sign
+            poly[idx][pIdx] = value / (self._length * self._sign)
 
     # Sets the value and wait that the read value reach the setpoint
     def set_and_wait(self, value: float):
@@ -411,6 +417,14 @@ class RWSerializedStrength(abstract.ReadWriteFloatScalar):
         self.__elements_strength = elements_strength
         self.__elements_hardware = elements_hardware
         self.__element_index = element_index
+        # The strength is shared between the serialized magnets in proportion to their (effective) length: thick
+        # magnets share by length, thin magnets share equally. Mixing both has no meaningful share rule.
+        thin_flags = [e.is_thin() for e in elements_hardware]
+        if any(thin_flags) and not all(thin_flags):
+            raise PyAMLException(
+                "Serialized magnets must be either all thin (zero length) or all thick; "
+                f"got {sum(thin_flags)} thin out of {len(thin_flags)} magnets"
+            )
         self.__total_length = 0
         for e in self.__elements_hardware:
             self.__total_length += e.get_length()
@@ -438,24 +452,19 @@ class RWSerializedStrength(abstract.ReadWriteFloatScalar):
         value : float
             Strength to apply to the magnet, converted to the shared hardware setpoint.
         """
-        elements_values = [
-            _divide_by_length(value * e.get_length(), self.get_total_length()) for e in self.__elements_hardware
-        ]
+        elements_values = [value * e.get_length() / self.get_total_length() for e in self.__elements_hardware]
         self.__element.set(elements_values[self.__element_index])
 
         # compute the local hardware value
         hardware_value = self.__elements_hardware[self.__element_index].get()
 
         # compute the total hardware value
-        total_hardware = _divide_by_length(
-            hardware_value * self.get_total_length(),
-            self.get_element_length(),
-        )
+        total_hardware = hardware_value * self.get_total_length() / self.get_element_length()
 
         # dispatch this value
         for index, element in enumerate(self.__elements_hardware):
             if index != self.__element_index:
-                element.set(_divide_by_length(total_hardware * element.get_length(), self.get_total_length()))
+                element.set(total_hardware * element.get_length() / self.get_total_length())
 
     # Sets the value and wait that the read value reach the setpoint
     def set_and_wait(self, value: float):
@@ -527,6 +536,7 @@ class RWHardwareArray(abstract.ReadWriteFloatArray):
         self.__polyIdx = []
         self.__sign = []
         self.__model = model
+        self.__length = _effective_lengths(elements[:1])[0]
         for p in poly:
             self.__poly.append(elements[0].__getattribute__(p.attName))
             self.__polyIdx.append(p.index)
@@ -538,7 +548,7 @@ class RWHardwareArray(abstract.ReadWriteFloatArray):
         nbStrength = len(self.__poly)
         s = np.zeros(nbStrength)
         for i in range(nbStrength):
-            s[i] = self.__poly[i][self.__polyIdx[i]] * self.__sign[i] * self.__elements[0].Length
+            s[i] = self.__poly[i][self.__polyIdx[i]] * self.__sign[i] * self.__length
         return self.__model.compute_hardware_values(s)
 
     # Sets the value
@@ -554,7 +564,7 @@ class RWHardwareArray(abstract.ReadWriteFloatArray):
         nbStrength = len(self.__poly)
         s = self.__model.compute_strengths(value)
         for i in range(nbStrength):
-            self.__poly[i][self.__polyIdx[i]] = _divide_by_length(s[i], self.__elements[0].Length) / self.__sign[i]
+            self.__poly[i][self.__polyIdx[i]] = s[i] / (self.__length * self.__sign[i])
 
     # Sets the value and wait that the read value reach the setpoint
     def set_and_wait(self, value: np.array):
@@ -617,6 +627,7 @@ class RWStrengthArray(abstract.ReadWriteFloatArray):
         self.__polyIdx = []
         self.__sign = []
         self.__model = model
+        self.__length = _effective_lengths(elements[:1])[0]
         for p in poly:
             self.__poly.append(elements[0].__getattribute__(p.attName))
             self.__polyIdx.append(p.index)
@@ -628,7 +639,7 @@ class RWStrengthArray(abstract.ReadWriteFloatArray):
         nbStrength = len(self.__poly)
         s = np.zeros(nbStrength)
         for i in range(nbStrength):
-            s[i] = self.__poly[i][self.__polyIdx[i]] * self.__sign[i] * self.__elements[0].Length
+            s[i] = self.__poly[i][self.__polyIdx[i]] * self.__sign[i] * self.__length
         return s
 
     # Sets the value
@@ -644,7 +655,7 @@ class RWStrengthArray(abstract.ReadWriteFloatArray):
         nbStrength = len(self.__poly)
         s = np.zeros(nbStrength)
         for i in range(nbStrength):
-            self.__poly[i][self.__polyIdx[i]] = _divide_by_length(value[i], self.__elements[0].Length) / self.__sign[i]
+            self.__poly[i][self.__polyIdx[i]] = value[i] / (self.__length * self.__sign[i])
 
     # Sets the value and wait that the read value reach the setpoint
     def set_and_wait(self, value: np.array):
